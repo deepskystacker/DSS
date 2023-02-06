@@ -964,23 +964,23 @@ Ctrl-A 或相當於選擇所有行
     </message>
     <message>
         <location filename="../FrameList.cpp" line="619"/>
-        <source>Master dark used and more than one dark loaded</source>
-        <translation>使用了 Master Dark 但加載了不止一張 Dark 圖像</translation>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="624"/>
-        <source>Master dark flat used and more than one dark flat loaded</source>
-        <translation>使用了 Master Dark Flat 但加載了不止一張 Dark Flat 圖像</translation>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="629"/>
-        <source>Master flat used and more than one flat loaded</source>
-        <translation>使用了 Master Flat 但加載了不止一張 Flat 圖像</translation>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="634"/>
-        <source>Master offset used and more than one offset loaded</source>
-        <translation>使用了 Master Offset 但加載了不止一張 Offset 圖像</translation>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="1376"/>
@@ -1257,7 +1257,7 @@ You can probably get another one or download the final release from the web site
 （稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="382"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
@@ -1885,7 +1885,7 @@ You can probably get another one or download the final release from the web site
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
         <translation>亮度</translation>
     </message>
@@ -1916,89 +1916,84 @@ You can probably get another one or download the final release from the web site
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="534"/>
+        <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayer矩陣轉換</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="543"/>
+        <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
         <translation>雙線性內插</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="563"/>
+        <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>自調適均質性導向(AHD)內插法</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="583"/>
+        <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>使用Bayer Drizzle (無內插，不解譯Bayer矩陣)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="599"/>
+        <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>本選項不對Bayer矩陣作任何更動與內插，每個像元只取Bayer矩陣中原有的顏色。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="641"/>
+        <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>本選項將以Bayer矩陣中每四個GRGB像元合併成一個大像元，因此產生的影像長寬將各減半。</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="289"/>
-        <source>Set the black point to 0</source>
-        <translation>設定黑色值為0</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="297"/>
+        <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
         <translation>FITS檔</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;單色16 bit FITS檔乃由DSLR或彩色CCD相機產生.&lt;br&gt;保留&lt;span style=“font-style:italic;”&gt;未选中&lt;/span&gt;尝试基于FITS关键字进行自动检测。&lt; p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="341"/>
+        <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
         <translation>相機:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="381"/>
+        <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
         <translation>色彩調整</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
         <translation>紅色比率</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="470"/>
+        <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
         <translation>藍色比率</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="492"/>
+        <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
         <translation>所使用的Bayer濾鏡配置</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="625"/>
+        <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>自原始Bayer矩陣產生大像元 (無內插)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="657"/>
+        <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>檔案中的數值有正負號時，強制忽略正負號。</translation>
     </message>
@@ -2277,13 +2272,13 @@ You can probably get another one or download the final release from the web site
         <translation>偵測星點 %1 (%2 顆星)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1048"/>
+        <location filename="../RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>計算明度 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1228"/>
+        <location filename="../RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2291,7 +2286,7 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1232"/>
+        <location filename="../RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2299,25 +2294,25 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>將已校正之影像存於 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1401"/>
+        <location filename="../RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>偵測星點中</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1436"/>
+        <location filename="../RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>偵測星點 %1 並對齊於 %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1453"/>
+        <location filename="../RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2325,7 +2320,7 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1455"/>
+        <location filename="../RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3306,7 +3301,7 @@ Only %3 are available on this drive.</source>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2101"/>
-        <location filename="../StackingEngine.cpp" line="2395"/>
+        <location filename="../StackingEngine.cpp" line="2407"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3314,13 +3309,13 @@ Do you really want to continue?</source>
 確定要繼續？</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2234"/>
+        <location filename="../StackingEngine.cpp" line="2252"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>將 %1 疊於 %2 - 位移量 [%3,%4] - 旋轉角: %5° </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2244"/>
+        <location filename="../StackingEngine.cpp" line="2260"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3328,7 +3323,7 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2246"/>
+        <location filename="../StackingEngine.cpp" line="2262"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3336,7 +3331,7 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2394"/>
+        <location filename="../StackingEngine.cpp" line="2406"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3350,7 +3345,7 @@ and help DeepSkyStacker find a transformation between the reference frame and th
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2405"/>
+        <location filename="../StackingEngine.cpp" line="2417"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>疊合中</translation>
@@ -3600,25 +3595,25 @@ compared to the standard deviation (%1).</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="358"/>
+        <location filename="../StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>產生總和偏壓影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>將偏壓影像 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>計算總和偏壓 (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="412"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -3626,39 +3621,39 @@ compared to the standard deviation (%1).</source>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="421"/>
+        <location filename="../StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>儲存總和偏壓檔</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="520"/>
+        <location filename="../StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>產生總和暗電流影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
+        <location filename="../StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>將暗電流影像 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="554"/>
-        <location filename="../StackingTasks.cpp" line="739"/>
-        <location filename="../StackingTasks.cpp" line="1166"/>
+        <location filename="../StackingTasks.cpp" line="510"/>
+        <location filename="../StackingTasks.cpp" line="692"/>
+        <location filename="../StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>扣除偏壓</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="578"/>
+        <location filename="../StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>計算總和暗電流 (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="596"/>
+        <location filename="../StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -3666,7 +3661,7 @@ compared to the standard deviation (%1).</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="783"/>
+        <location filename="../StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -3674,7 +3669,7 @@ compared to the standard deviation (%1).</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1241"/>
+        <location filename="../StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -3682,7 +3677,7 @@ compared to the standard deviation (%1).</source>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="606"/>
+        <location filename="../StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>儲存總和暗電流檔</translation>
@@ -3696,67 +3691,67 @@ compared to the standard deviation (%1).</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="704"/>
+        <location filename="../StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>產生總和平場暗電流影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="720"/>
+        <location filename="../StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>將暗電流 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="765"/>
+        <location filename="../StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>計算總和平場暗電流 (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="792"/>
+        <location filename="../StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>儲存總和平場暗電流</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="957"/>
+        <location filename="../StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>計算平場校正參數</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1009"/>
+        <location filename="../StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>套用平場校正參數</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1132"/>
+        <location filename="../StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>產生總和平場</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1148"/>
+        <location filename="../StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>將平場 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1184"/>
+        <location filename="../StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>扣除暗電流</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1224"/>
+        <location filename="../StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>計算總和平場 (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1250"/>
+        <location filename="../StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>儲存總和平場</translation>

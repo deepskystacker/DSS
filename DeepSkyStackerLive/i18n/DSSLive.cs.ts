@@ -260,6 +260,54 @@
     </message>
 </context>
 <context>
+    <name>DSS::StackingDlg</name>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="519"/>
+        <source>File %1 has already been loaded in group %2 (%3)</source>
+        <translation>Soubor %1 již byl načten ve skupině %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation>Rozdílná šířka</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation>Rozdílná výška</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation>Rozdílná barevná hloubka</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation>Rozdílný počet kanálů</translation>
+    </message>
+</context>
+<context>
     <name>DarkFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
@@ -461,25 +509,25 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="971"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="868"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Zarovnávání %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1000"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="897"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Zarovnávání %1 (%2 hvězd)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1151"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Výpočet jasu %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1331"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -487,7 +535,7 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1335"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -495,25 +543,25 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1466"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1504"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Zarovnání snímků</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1539"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Zarovnávání %1 z %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1556"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -521,7 +569,7 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1558"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -651,8 +699,8 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="307"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1251"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1348"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1249"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1346"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
@@ -670,356 +718,316 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
         <translation>Ukládání sloučených obrazů do %1 (DSImage)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="632"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="630"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Zpracování obrazu...</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="902"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="900"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Ukládání TIFF %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="905"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1100"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="903"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1098"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Ukládání %1</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="952"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="991"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1146"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1188"/>
+        <source>Picture saved with settings applied.</source>
+        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
+        <translation>Obraz byl uložen s použitím úprav.</translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="954"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="993"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1148"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1190"/>
-        <source>Picture saved with settings applied.</source>
-        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation>Obraz byl uložen s použitím úprav.</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="956"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="995"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1150"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Obraz byl uložen bez použití úprav.</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1097"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1095"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Ukládání FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1244"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Načítání TIFF %1 bit jednobarevného</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1248"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Načítání TIFF %1 bit/k</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1341"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Načítání FITS %1 bit jednobarevný</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1345"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Načítání FITS %1 bit/k</translation>
     </message>
 </context>
-  <context>
+<context>
     <name>StackingTasks</name>
     <message>
-      <location filename="../StackingTasks.cpp" line="56"/>
-      <source>
-        Loading %1 bits gray %2 dark frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYDARK</comment>
-      <translation>
-        Načítání %1 bitového šedého %2 snímku temného pozadí
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Načítání %1 bit/k %2 snímku temného pozadí
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="60"/>
-      <source>
-        Loading %1 bit/ch %2 dark flat frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBDARKFLAT</comment>
-      <translation>
-        Načítání %1 bit/k %2 snímku vyrovnání temného pozadí
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="56"/>
+        <source>Loading %1 bits gray %2 dark frame
+%3</source>
+        <comment>IDS_LOADGRAYDARK</comment>
+        <translation>Načítání %1 bitového šedého %2 snímku temného pozadí
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="62"/>
-      <source>
-        Loading %1 bits gray %2 dark flat frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYDARKFLAT</comment>
-      <translation>
-        Přidání %1 bitového šedého %2 snímku vyrovnání temného pozadí
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="60"/>
+        <source>Loading %1 bit/ch %2 dark flat frame
+%3</source>
+        <comment>IDS_LOADRGBDARKFLAT</comment>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání temného pozadí
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="66"/>
-      <source>
-        Loading %1 bit/ch %2 offset frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBOFFSET</comment>
-      <translation>
-        Načítání %1 bit/k %2 snímku zkreslení
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="62"/>
+        <source>Loading %1 bits gray %2 dark flat frame
+%3</source>
+        <comment>IDS_LOADGRAYDARKFLAT</comment>
+        <translation>Načítání %1 bitového šedého %2 snímku vyrovnání temného pozadí
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="68"/>
-      <source>
-        Loading %1 bits gray %2 offset frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYOFFSET</comment>
-      <translation>
-        Načítání %1 bitového šedého %2 snímku zkreslení
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="66"/>
+        <source>Loading %1 bit/ch %2 offset frame
+%3</source>
+        <comment>IDS_LOADRGBOFFSET</comment>
+        <translation>Načítání %1 bit/k %2 snímku zkreslení
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="72"/>
-      <source>
-        Loading %1 bit/ch %2 flat frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBFLAT</comment>
-      <translation>
-        Načítání %1 bit/k %2 snímku vyrovnání jasu
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="68"/>
+        <source>Loading %1 bits gray %2 offset frame
+%3</source>
+        <comment>IDS_LOADGRAYOFFSET</comment>
+        <translation>Načítání %1 bitového šedého %2 snímku zkreslení
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="74"/>
-      <source>
-        Loading %1 bits gray %2 flat frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYFLAT</comment>
-      <translation>
-        Načítání %1 bit/k %2 snímku vyrovnání jasu
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="72"/>
+        <source>Loading %1 bit/ch %2 flat frame
+%3</source>
+        <comment>IDS_LOADRGBFLAT</comment>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání jasu
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="78"/>
-      <source>
-        Loading %1 bit/ch %2 light frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBLIGHT</comment>
-      <translation>
-        Načítání %1 bit/k %2 aktivního snímku
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="74"/>
+        <source>Loading %1 bits gray %2 flat frame
+%3</source>
+        <comment>IDS_LOADGRAYFLAT</comment>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání jasu
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="80"/>
-      <source>
-        Loading %1 bits gray %2 light frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYLIGHT</comment>
-      <translation>
-        Načítání %1 bitového %2 aktivního šedého snímku
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="78"/>
+        <source>Loading %1 bit/ch %2 light frame
+%3</source>
+        <comment>IDS_LOADRGBLIGHT</comment>
+        <translation>Načítání %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="358"/>
-      <source>Create Master Offset Frame</source>
-      <comment>IDS_CREATEMASTEROFFSET</comment>
-      <translation>Vytvoření základního snímku zkreslení</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="80"/>
+        <source>Loading %1 bits gray %2 light frame
+%3</source>
+        <comment>IDS_LOADGRAYLIGHT</comment>
+        <translation>Načítání %1 bitového %2 aktivního šedého snímku
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="368"/>
-      <source>Adding Offset frame %1 of %2</source>
-      <comment>IDS_ADDOFFSET</comment>
-      <translation>Přidávání snímku zkreslení %1 z %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="295"/>
+        <source>Create Master Offset Frame</source>
+        <comment>IDS_CREATEMASTEROFFSET</comment>
+        <translation>Vytvoření základního snímku zkreslení</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="394"/>
-      <source>Computing master offset (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
-      <translation>Výpočet základního zkreslení (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="320"/>
+        <source>Adding Offset frame %1 of %2</source>
+        <comment>IDS_ADDOFFSET</comment>
+        <translation>Přidávání snímku zkreslení %1 z %2</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="343"/>
+        <source>Computing master offset (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
+        <translation>Výpočet základního zkreslení (%1)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="412"/>
-      <source>Master Offset created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANOFFSETINFO</comment>
-      <translation>
-        <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
-        <numerusform>Základní zkreslení vytvořeno ze %n snímků (%1)</numerusform>
-        <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="361"/>
+        <source>Master Offset created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANOFFSETINFO</comment>
+        <translation>
+            <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní zkreslení vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
+        </translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="421"/>
-      <source>Saving Master Offset</source>
-      <comment>IDS_SAVINGMASTEROFFSET</comment>
-      <translation>Uložení základního snímku zkreslení</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="370"/>
+        <source>Saving Master Offset</source>
+        <comment>IDS_SAVINGMASTEROFFSET</comment>
+        <translation>Uložení základního snímku zkreslení</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="520"/>
-      <source>Create Master Dark Frame</source>
-      <comment>IDS_CREATEMASTERDARK</comment>
-      <translation>Vytvoření základního snímku temného pozadí</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="462"/>
+        <source>Create Master Dark Frame</source>
+        <comment>IDS_CREATEMASTERDARK</comment>
+        <translation>Vytvoření základního snímku temného pozadí</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="535"/>
-      <source>Adding Dark frame %1 of %2</source>
-      <comment>IDS_ADDDARK</comment>
-      <translation>Přidávání snímku temného pozadí %1 z %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="493"/>
+        <source>Adding Dark frame %1 of %2</source>
+        <comment>IDS_ADDDARK</comment>
+        <translation>Přidávání snímku temného pozadí %1 z %2</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="554"/>
-      <location filename="../StackingTasks.cpp" line="739"/>
-      <location filename="../StackingTasks.cpp" line="1166"/>
-      <source>Subtracting Offset Frame</source>
-      <comment>IDS_SUBSTRACTINGOFFSET</comment>
-      <translation>Odečítání snímku zkreslení</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="510"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="692"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1128"/>
+        <source>Subtracting Offset Frame</source>
+        <comment>IDS_SUBSTRACTINGOFFSET</comment>
+        <translation>Odečítání snímku zkreslení</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="578"/>
-      <source>Computing master dark (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANDARK</comment>
-      <translation>Výpočet základního temného pozadí (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="533"/>
+        <source>Computing master dark (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANDARK</comment>
+        <translation>Výpočet základního temného pozadí (%1)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="596"/>
-      <source>Master Dark created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANDARKINFO</comment>
-      <translation>
-        <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
-        <numerusform>Základní temné pozadí vytvořeno ze %n snímků (%1)</numerusform>
-        <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="551"/>
+        <source>Master Dark created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKINFO</comment>
+        <translation>
+            <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní temné pozadí vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="783"/>
-      <source>Master Dark Flat created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANDARKFLATINFO</comment>
-      <translation>
-        <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
-        <numerusform>Základní vyrovnání temného pozadí vytvořeno ze %n snímků (%1)</numerusform>
-        <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="736"/>
+        <source>Master Dark Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKFLATINFO</comment>
+        <translation>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="1241"/>
-      <source>Master Flat created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANFLATINFO</comment>
-      <translation>
-        <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
-        <numerusform>Základní vyrovnání jasu vytvořeno ze %n snímků (%1)</numerusform>
-        <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1204"/>
+        <source>Master Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANFLATINFO</comment>
+        <translation>
+            <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání jasu vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
+        </translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="606"/>
-      <source>Saving Master Dark</source>
-      <comment>IDS_SAVINGMASTERDARK</comment>
-      <translation>Uložení základního snímku temného pozadí</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="560"/>
+        <source>Saving Master Dark</source>
+        <comment>IDS_SAVINGMASTERDARK</comment>
+        <translation>Uložení základního snímku temného pozadí</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="54"/>
-      <source>
-        Loading %1 bit/ch %2 dark frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBDARK</comment>
-      <translation>
-        Načítání %1 bit/k %2 snímku temného pozadí
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="657"/>
+        <source>Create Master Dark Flat Frame</source>
+        <comment>IDS_CREATEMASTERDARKFLAT</comment>
+        <translation>Vytvoření základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="704"/>
-      <source>Create Master Dark Flat Frame</source>
-      <comment>IDS_CREATEMASTERDARKFLAT</comment>
-      <translation>Vytvoření základního snímku vyrovnání temného pozadí</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="673"/>
+        <source>Adding Dark Flat frame %1 of %2</source>
+        <comment>IDS_ADDDARKFLAT</comment>
+        <translation>Přidávání snímku vyrovnání temného pozadí %1 z %2</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="720"/>
-      <source>Adding Dark Flat frame %1 of %2</source>
-      <comment>IDS_ADDDARKFLAT</comment>
-      <translation>Přidávání snímku vyrovnání temného pozadí %1 z %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="718"/>
+        <source>Computing master dark flat (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
+        <translation>Výpočet základního vyrovnání temného pozadí(%1)</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="765"/>
-      <source>Computing master dark flat (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
-      <translation>Výpočet základního vyrovnání temného pozadí(%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="745"/>
+        <source>Saving Master Dark Flat</source>
+        <comment>IDS_SAVINGMASTERDARKFLAT</comment>
+        <translation>Uložení základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="792"/>
-      <source>Saving Master Dark Flat</source>
-      <comment>IDS_SAVINGMASTERDARKFLAT</comment>
-      <translation>Uložení základního snímku vyrovnání temného pozadí</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="910"/>
+        <source>Computing Flat Calibration Parameters</source>
+        <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
+        <translation>Výpočet kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="957"/>
-      <source>Computing Flat Calibration Parameters</source>
-      <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
-      <translation>Výpočet kalibračních parametrů vyrovnání jasu</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="962"/>
+        <source>Applying Flat Calibration Parameters</source>
+        <comment>IDS_APPLYINGFLATCALIBRATION</comment>
+        <translation>Použití kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1009"/>
-      <source>Applying Flat Calibration Parameters</source>
-      <comment>IDS_APPLYINGFLATCALIBRATION</comment>
-      <translation>Použití kalibračních parametrů vyrovnání jasu</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1082"/>
+        <source>Create Master Flat Frame</source>
+        <comment>IDS_CREATEMASTERFLAT</comment>
+        <translation>Vytvoření základního snímku vyrovnání jasu</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1132"/>
-      <source>Create Master Flat Frame</source>
-      <comment>IDS_CREATEMASTERFLAT</comment>
-      <translation>Vytvoření základního snímku vyrovnání jasu</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1113"/>
+        <source>Adding Flat frame %1 of %2</source>
+        <comment>IDS_ADDFLAT</comment>
+        <translation>Přidávání snímku vyrovnání jasu %1 z %2</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1148"/>
-      <source>Adding Flat frame %1 of %2</source>
-      <comment>IDS_ADDFLAT</comment>
-      <translation>Přidávání snímku vyrovnání jasu %1 z %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1146"/>
+        <source>Subtracting Dark Frame</source>
+        <comment>IDS_SUBSTRACTINGDARK</comment>
+        <translation>Odečítání snímku temného pozadí</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1184"/>
-      <source>Subtracting Dark Frame</source>
-      <comment>IDS_SUBSTRACTINGDARK</comment>
-      <translation>Odečítání snímku temného pozadí</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1186"/>
+        <source>Computing master flat (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANFLAT</comment>
+        <translation>Výpočet základního vyrovnání jasu (%1)</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1224"/>
-      <source>Computing master flat (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANFLAT</comment>
-      <translation>Výpočet základního vyrovnání jasu (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1212"/>
+        <source>Saving Master Flat</source>
+        <comment>IDS_SAVINGMASTERFLAT</comment>
+        <translation>Uložení základního snímku vyrovnání jasu</translation>
     </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="1250"/>
-      <source>Saving Master Flat</source>
-      <comment>IDS_SAVINGMASTERFLAT</comment>
-      <translation>Uložení základního snímku vyrovnání jasu</translation>
-    </message>
-  </context>
+</context>
 </TS>

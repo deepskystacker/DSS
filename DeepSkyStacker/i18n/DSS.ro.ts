@@ -975,23 +975,23 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="619"/>
-        <source>Master dark used and more than one dark loaded</source>
-        <translation>Master Dark utilizat și mai mult de un Dark încărcat</translation>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="624"/>
-        <source>Master dark flat used and more than one dark flat loaded</source>
-        <translation>Master Dark-Flat utilizat și mai mult de un Dark-Flat încărcat</translation>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="629"/>
-        <source>Master flat used and more than one flat loaded</source>
-        <translation>Master Flat utilizat și mai mult de un Flat încărcat</translation>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="634"/>
-        <source>Master offset used and more than one offset loaded</source>
-        <translation>Master Offset utilizat și mai mult de un Offset încărcat</translation>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="1376"/>
@@ -1272,7 +1272,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 (Puteți modifica această opțiune mai târziu din fereastra Despre)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="382"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
@@ -1912,7 +1912,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
         <translation>Luminozitate</translation>
     </message>
@@ -1943,89 +1943,84 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="534"/>
+        <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Transformare folosind matricea Bayer</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="543"/>
+        <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
         <translation>Interpolare biliniară</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="563"/>
+        <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Interpolare omogenitate adaptivă orientată</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="583"/>
+        <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Folosește algoritmul de drizzle Bayer (fără interpoare, fără debayerizare)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="599"/>
+        <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Această opțiune utilizează matricea Bayer așa cum este ea. Nu se face nici o interpolare și fiecărui pixel i se acordă componenta primară din matrice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="641"/>
+        <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Această opțiune folosește matricea Bayer pentru a crea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultată este redusă la jumătate.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="289"/>
-        <source>Set the black point to 0</source>
-        <translation>Setează valoarea de negru la 0</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="297"/>
+        <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
         <translation>Fișiere FITS</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Fișierele FITS de 16 bit sunt fișiere RAW create cu un DSLR sau cu o cameră CCD color.&lt;br&gt;Lăsați &lt;span style=&quot;font-style: italic;&quot;&gt;bifat&lt;/span&gt; pentru a încerca detectarea automată pe baza cuvintelor cheie FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="341"/>
+        <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
         <translation>Camera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="381"/>
+        <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
         <translation>Ajustări culori</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
         <translation>Valoare roșu</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="470"/>
+        <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
         <translation>Valoare albastru</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="492"/>
+        <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Filtru model Bayer utilizat</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="625"/>
+        <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Creează super pixeli din matricea brută Bayer (fără interpolare)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="657"/>
+        <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Forțează utilizarea valorilor fără semn (pozitive) atunci când valorile cu semn sunt salvate</translation>
     </message>
@@ -2304,13 +2299,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <translation>Înregistrare %1 (%2 stele)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1048"/>
+        <location filename="../RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calculează luminanță %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1228"/>
+        <location filename="../RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2318,7 +2313,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1232"/>
+        <location filename="../RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2326,25 +2321,25 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Salvează imaginea Calibrată în %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1401"/>
+        <location filename="../RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Înregistrează imagini</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1436"/>
+        <location filename="../RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Înregistrează %1 din %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1453"/>
+        <location filename="../RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2352,7 +2347,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1455"/>
+        <location filename="../RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3333,7 +3328,7 @@ Doar %3 este disponibil pe acest drive.</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2101"/>
-        <location filename="../StackingEngine.cpp" line="2395"/>
+        <location filename="../StackingEngine.cpp" line="2407"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3341,13 +3336,13 @@ Do you really want to continue?</source>
 Sunteți sigur că vreți să continuați?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2234"/>
+        <location filename="../StackingEngine.cpp" line="2252"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Stivuiește %1 din %2 - Offset [%3,%4] - Unghi : %5° </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2244"/>
+        <location filename="../StackingEngine.cpp" line="2260"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3355,7 +3350,7 @@ Sunteți sigur că vreți să continuați?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2246"/>
+        <location filename="../StackingEngine.cpp" line="2262"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3363,7 +3358,7 @@ Sunteți sigur că vreți să continuați?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2394"/>
+        <location filename="../StackingEngine.cpp" line="2406"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3377,7 +3372,7 @@ Verificați/schimbați pragul de detecție pentru stele ca să detectați mai mu
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2405"/>
+        <location filename="../StackingEngine.cpp" line="2417"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Stivuire</translation>
@@ -3630,25 +3625,25 @@ comparativ cu abaterea standard (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="358"/>
+        <location filename="../StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Creează Cadru Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Adaugă cadru Offset %1 of %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Calculează master offset (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="412"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -3658,39 +3653,39 @@ comparativ cu abaterea standard (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="421"/>
+        <location filename="../StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Salvează Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="520"/>
+        <location filename="../StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Creează Cadru Master Dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
+        <location filename="../StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Adaugă cadru Dark %1 din %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="554"/>
-        <location filename="../StackingTasks.cpp" line="739"/>
-        <location filename="../StackingTasks.cpp" line="1166"/>
+        <location filename="../StackingTasks.cpp" line="510"/>
+        <location filename="../StackingTasks.cpp" line="692"/>
+        <location filename="../StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Scade Cadru Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="578"/>
+        <location filename="../StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Calculează cadru master dark (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="596"/>
+        <location filename="../StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -3700,7 +3695,7 @@ comparativ cu abaterea standard (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="783"/>
+        <location filename="../StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -3710,7 +3705,7 @@ comparativ cu abaterea standard (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1241"/>
+        <location filename="../StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -3720,7 +3715,7 @@ comparativ cu abaterea standard (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="606"/>
+        <location filename="../StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Salvează Master Dark</translation>
@@ -3734,67 +3729,67 @@ comparativ cu abaterea standard (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="704"/>
+        <location filename="../StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Creează cadru Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="720"/>
+        <location filename="../StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Adaugă cadru Dark Flat %1 of %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="765"/>
+        <location filename="../StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Calculează master dark flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="792"/>
+        <location filename="../StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Salvează Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="957"/>
+        <location filename="../StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Calculează parametrii de Calibrare Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1009"/>
+        <location filename="../StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Aplică Parametrii de Calibrare Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1132"/>
+        <location filename="../StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Creează Cadru Master Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1148"/>
+        <location filename="../StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Adaugă cadru Flat %1 of %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1184"/>
+        <location filename="../StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Scade Cadru Dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1224"/>
+        <location filename="../StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Calculează master flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1250"/>
+        <location filename="../StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Salvează Master Flat</translation>

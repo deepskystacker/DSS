@@ -48,20 +48,28 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 16. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
 
-17. Update Libraw to 0.21.0
+17. Bug fix for Comet/Star editing mode being forgotten when switching between images.
 
-18. Bug fix for Comet/Star editing mode being forgotten when switching between images.
+18. Don't remove files from image list if user says not to erase them.  Ensure image list information is updated.
 
-19. Don't remove files from image list if user says not to erase them.  Ensure image list information is updated.
+19. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
 
-20. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
+20. Fix for some issues with the progress dialog.
 
-21. Fix for some issues with the progress dialog.
+21. Ensure that the image list as always displayed when opening DSS.
 
-22. Ensure that the image list as always displayed when opening DSS.
+22. Resolve problems with loading file lists.
 
-23. Resolve problems with loading file lists.
+23. Change message for incompatible images to report the reason.
 
-24. Change message for incompatible images to report the reason.
+24. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.   Typically, the time to load the images will predominate on faster systems or those that use real disk drives.
 
-25. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.   I think this is a far as we can push the performance!!!
+25. Remove manual setting of "Set Black Point to Zero", this is now determined automatically.
+
+26. Fix for incorrect cropping of intersection mode stacking contributed by Peter Wolsley.
+
+27. Enable the Comet tab in Stacking Settings when it is invoked from Register Settings and Comet data is available.
+
+28. Change LibRaw supported camera list so that "Olympus OM-1" is recognised as well as "OM Digital Solutions OM-1"
+
+29. Update Libraw to 0.21.1

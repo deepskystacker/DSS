@@ -353,11 +353,24 @@ void DeepSkyStacker::onInitialise()
 	//
 	createStatusBar();
 
+	//
+	// Set initial size of the bottom dock widget (pictureList)
+	//
+	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
+
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
 	settings.beginGroup("MainWindow");
-	restoreGeometry(settings.value("geometry").toByteArray());
-	restoreState(settings.value("windowState").toByteArray());
+
+	auto geometry{ settings.value("geometry").toByteArray() };
+	ZTRACE_RUNTIME("Hex dump of geometry:");
+	ZTrace::dumpHex(geometry.constData(), geometry.length());
+	auto windowState{ settings.value("windowState").toByteArray() };
+	ZTRACE_RUNTIME("Hex dump of windowState:");
+	ZTrace::dumpHex(windowState.constData(), windowState.length());
+
+	restoreGeometry(geometry);
+	restoreState(windowState);
 	settings.endGroup();
 
 	//
@@ -394,6 +407,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
 	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
 		tableView->horizontalHeader()->saveState());
+	settings.sync();
 };
 
 
