@@ -255,6 +255,9 @@ void RegisterSettings::on_stackAfter_clicked()
 {
 	stackAfter = ui->stackAfter->isChecked();
 	workspace->setValue("Register/StackAfter", stackAfter);
+	// Enable stack after input field
+	ui->percentStack->setEnabled(stackAfter);
+
 }
 
 void RegisterSettings::on_percentStack_textEdited(const QString &text)
