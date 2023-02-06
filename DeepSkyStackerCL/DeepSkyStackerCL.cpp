@@ -242,6 +242,10 @@ void SaveBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 		BOOL					bMonochrome;
 		DSS::ProgressConsole		progress(g_TerminalOutputMode);
 
+		const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(g_strOutputFile.GetString())));
+		progress.Start1(strText, 0);
+		progress.Start2(strText, 0);
+
 		bMonochrome = pBitmap->IsMonochrome();
 
 		if (g_bFITSOutput)

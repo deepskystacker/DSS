@@ -659,8 +659,12 @@ bool CTIFFWriter::Write()
 
 		if (buff != nullptr)
 		{
+			const int nrProcessors = CMultitask::GetNrProcessors();
 			if (m_pProgress)
+			{
 				m_pProgress->Start2(h);
+				m_pProgress->SetNrUsedProcessors(nrProcessors);
+			}
 
 			auto* byteBuff = static_cast<std::uint8_t*>(buff);
 			auto* shortBuff = static_cast<std::uint16_t*>(buff);
@@ -756,8 +760,11 @@ bool CTIFFWriter::Write()
 
 				}
 				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
-					m_pProgress->Progress2(row / 2);
+					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
+
+			if (m_pProgress)
+				m_pProgress->SetNrUsedProcessors();
 
 			//
 			// Write the image out as Strips (i.e. not scanline by scanline)
@@ -792,6 +799,7 @@ bool CTIFFWriter::Write()
 			tsize_t stripSize = rowsPerStrip * scanLineSize;
 			tsize_t bytesRemaining = h * scanLineSize;
 			tsize_t size = stripSize;
+			int percentStep = (h / numStrips);
 			for (int strip = 0; strip < numStrips; strip++)
 			{
 				if (bytesRemaining < stripSize)
@@ -808,7 +816,7 @@ bool CTIFFWriter::Write()
 				bytesRemaining -= result;
 
 				if (m_pProgress != nullptr)
-					m_pProgress->Progress2(h / 2 + (h * strip) / (2 * numStrips));
+					m_pProgress->Progress2((h/2) + ((percentStep * strip) / 2));
 			}
 
 			free(buff);

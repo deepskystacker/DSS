@@ -69,11 +69,17 @@ bool ProgressBase::Progress1(const QString& szText, int lAchieved1)
 bool ProgressBase::Progress2(const QString& szText, int lAchieved2)
 {
 	// Always update after a min progress has occurred.
-	if ( (double)(lAchieved2 - m_lastTotal2) < (m_total2 / 100.0) * m_minProgressStep &&
+	float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+	float fRoundedSoFar = ceil(fAmountSoFar);
+
+	float fAmountGoingTo = (float)lAchieved2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+	float fRoundedGoingTo = ceil(fAmountGoingTo);
+
+	if (fRoundedGoingTo <= fRoundedSoFar &&
 		lAchieved2 < m_total2)
 		return false;
 
-	if (lAchieved2 >= m_total2)
+	if (lAchieved2 > m_total2)
 		m_total2 = lAchieved2;
 	m_lastTotal2 = lAchieved2;
 
@@ -91,12 +97,6 @@ bool ProgressBase::Progress2(const QString& szText, int lAchieved2)
 
 	if (m_jointProgress)
 	{
-// 		if (GetStartText().compare(szText, Qt::CaseInsensitive) != 0)
-// 		{
-// 			if (!szText.isEmpty())
-// 				m_strLastOut[OT_HEADING] = szText;
-// 			setStart1Text(GetStart2Text());
-// 		}
 		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
 		applyProgress1(lAchieved2);
 		m_total2 = 0;
@@ -112,6 +112,7 @@ bool ProgressBase::Progress2(const QString& szText, int lAchieved2)
 
 void ProgressBase::End2()
 {
+	Progress2(m_total2);	// Set to 100% is ending.
 	endProgress2();
 }
 bool ProgressBase::IsCanceled()
