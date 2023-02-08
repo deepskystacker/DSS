@@ -39,3 +39,12 @@ using std::max;
 // TODO: reference additional headers your program requires here
 
 #include "BitmapExt.h"
+
+
+#include <QFileInfo>
+#include <QDir>
+
+#include <gdiplus.h>
+using namespace Gdiplus;
+
+#pragma comment(lib, "gdiplus.lib")

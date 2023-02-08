@@ -55,7 +55,7 @@ namespace DSS
 			QString singleLineText(szText);
 			singleLineText.replace('\n', ' ');
 
-			switch (g_TerminalOutputMode)
+			switch (m_style)
 			{
 			case TERMINAL_OUTPUT_MODE::BASIC:
 				PrintBasic(singleLineText, type, false);
