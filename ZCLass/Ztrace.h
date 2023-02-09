@@ -164,6 +164,11 @@ static void
   write                    ( const QString&     text ),
   write                    (const char*    format, ...);
 
+/**
+* The dumpHex() method does what it says on the tin!
+*/
+static void dumpHex(const void* p, size_t len);
+
 enum Destination           {
   standardError,
   standardOutput,

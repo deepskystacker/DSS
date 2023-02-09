@@ -612,29 +612,31 @@ namespace DSS
 			}
 		}
 
+#if (0)
 		if (bResult)
 		{
 			if (bMasterDark && lNrDarks > 1)
 			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "Master dark used and more than one dark loaded");
+				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Dark must be the only Dark frame");
 				bResult = false;
 			}
 			if (bMasterDarkFlat && lNrDarkFlats > 1)
 			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "Master dark flat used and more than one dark flat loaded");
+				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Dark Flat must be the only Dark Flat frame");
 				bResult = false;
 			}
 			if (bMasterFlat && lNrFlats > 1)
 			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "Master flat used and more than one flat loaded");
+				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Flat must be the only Flat frame");
 				bResult = false;
 			}
 			if (bMasterOffset && lNrOffsets > 1)
 			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "Master offset used and more than one offset loaded");
+				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Offset must be the only Offset frame");
 				bResult = false;
 			}
 		};
+#endif
 
 		return bResult;
 	};

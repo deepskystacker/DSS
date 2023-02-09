@@ -53,7 +53,7 @@ public:
 		m_BackgroundInterpolation	= BackgroundInterpolation;
 		m_RGBBackgroundMethod		= RGBBackgroundMethod;
 	}
-	void ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, CDSSProgress* pProgress);
+	void ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress);
 
 	template <class T>
 	void ApplyCalibration(T& fRed, T& fGreen, T& fBlue) const
@@ -76,7 +76,7 @@ public:
 
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
-	void ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const;
+	void ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const;
 };
 
 #endif // __BACKGROUNDCALIBRATION_H__

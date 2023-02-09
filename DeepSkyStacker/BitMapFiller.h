@@ -8,7 +8,7 @@
 class BitmapFillerInterface
 {
 public:
-	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, const double redWb, const double greenWb, const double blueWb);
+	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, ProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb);
 	virtual ~BitmapFillerInterface() {}
 
 	virtual bool isThreadSafe() const;
@@ -25,7 +25,7 @@ public:
 class BitmapFillerBase : public BitmapFillerInterface
 {
 protected:
-	CDSSProgress* pProgress;
+	ProgressBase* pProgress;
 	CMemoryBitmap* pBitmap;
 	const float redScale;
 	const float greenScale;
@@ -40,7 +40,7 @@ protected:
 	std::vector<float> blueBuffer;
 	std::vector<float> cfaFactors;
 public:
-	BitmapFillerBase(CMemoryBitmap* pB, CDSSProgress* pP, const double redWb, const double greenWb, const double blueWb);
+	BitmapFillerBase(CMemoryBitmap* pB, ProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	virtual ~BitmapFillerBase() {}
 
 	virtual void SetCFAType(CFATYPE cfaType) override;

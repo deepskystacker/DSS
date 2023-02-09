@@ -343,8 +343,8 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 // ---------------
 // Progress
 // ---------------
-
-class MyProgress : public CDSSProgress
+using namespace DSS;
+class MyProgress : public ProgressBase
 {
 public:
 	int nrCallsStart2 = 0;
@@ -352,23 +352,23 @@ public:
 	int argumentStart2 = -1;
 	std::vector<int> argumentsAchieved2;
 public:
-	const QString GetStartText() const override { return strEmpty; }
-	const QString GetStart2Text() const override { return strEmpty; }
-	void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true) override {}
-	void Progress1(const QString& szText, int lAchieved1) override {}
-	void Start2(const QString& szText, int lTotal2) override {
+	virtual void applyStart1Text(const QString& strText) override {}
+	virtual void applyStart2Text(const QString& strText) override {
 		++nrCallsStart2;
-		argumentStart2 = lTotal2;
+		argumentStart2 = m_total2;
 	}
-	void Progress2(const QString& szText, int lAchieved2) override {
+	virtual void applyProgress1(int lAchieved) override {}
+	virtual void applyProgress2(int lAchieved) override {
 		++nrCallsProgress2;
-		argumentsAchieved2.push_back(lAchieved2);
+		argumentsAchieved2.push_back(lAchieved);
 	}
-	void End2() override {}
-	bool IsCanceled() override { return false; }
-	bool Close() override { return true; }
-private:
-	const QString strEmpty;
+	virtual void applyTitleText(const QString& strText) override {}
+	virtual void initialise() override {}
+	virtual void endProgress2() override {}
+	virtual bool hasBeenCanceled() override { return false; }
+	virtual void closeProgress() override { }
+	virtual bool doWarning(const QString& szText) override { return true; }
+	virtual void applyProcessorsUsed(int nCount) override {};
 };
 
 TEMPLATE_TEST_CASE("BitmapFiller progress check", "[Bitmap][BitmapFiller][progress]", AvxBitmapFiller, NonAvxBitmapFiller)

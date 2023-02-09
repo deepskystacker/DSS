@@ -172,7 +172,7 @@ void PopRAWSettings()
 
 namespace { // Only use in this .cpp file
 
-	static Thread CDSSProgress* g_Progress;
+	static Thread ProgressBase* g_Progress;
 
 	class DSSLibRaw : public LibRaw
 	{
@@ -311,7 +311,7 @@ namespace { // Only use in this .cpp file
 		};
 
 		bool IsRawFile() const;
-		bool LoadRawFile(CMemoryBitmap* pBitmap, CDSSProgress* pProgress = nullptr, bool bThumb = false);
+		bool LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr, bool bThumb = false);
 
 		bool GetModel(CString& strModel)
 		{
@@ -481,7 +481,7 @@ namespace { // Only use in this .cpp file
 	/* ------------------------------------------------------------------- */
 
 
-	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, bool bThumb)
+	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress, bool bThumb)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -1000,7 +1000,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress)
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;

@@ -238,8 +238,8 @@ public:
 		m_bRemoveHotPixels = bHotPixels;
 	}
 
-//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
-	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, CDSSProgress* pProgress = nullptr);
+//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, ProgressBase * pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

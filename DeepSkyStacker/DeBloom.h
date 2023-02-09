@@ -168,7 +168,7 @@ private:
 	int m_lWidth;
 	int m_lHeight;
 	std::shared_ptr<C8BitGrayBitmap> m_pMask;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	double m_fBackground;
 
 	bool	IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y);
@@ -205,8 +205,8 @@ public:
 
 	virtual ~CDeBloom() {};
 
-	void CreateBloomMask(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
-	void DeBloomImage(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
+	void CreateBloomMask(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
+	void DeBloomImage(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
 };
 
 #endif

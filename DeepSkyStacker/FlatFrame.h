@@ -141,8 +141,8 @@ public :
 		m_pFlatFrame.reset();
 	}
 
-	void ComputeFlatNormalization(CDSSProgress* pProgress = nullptr);
-	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress = nullptr);
+	void ComputeFlatNormalization(ProgressBase* pProgress = nullptr);
+	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

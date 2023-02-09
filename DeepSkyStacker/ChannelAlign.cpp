@@ -28,7 +28,7 @@ void CChannelAlign::CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* p
 }
 
 
-std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -84,7 +84,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 }
 
 
-bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -100,7 +100,7 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 		if (pProgress)
 		{
 			// We will advance the progress1 bar for each channel (3 of them)
-			pProgress->Start(3, false);
+			pProgress->Start1(3, false);
 			pProgress->Progress1(0);
 		}
 
@@ -204,7 +204,7 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 			if (pProgress != nullptr)
 			{
 				// Advance the progress1 bar for each alignment step (2 of them)
-				pProgress->Start(2, false);
+				pProgress->Start1(2, false);
 				pProgress->Progress1(0);
 			}
 

@@ -137,7 +137,7 @@ class CStackingEngine final
 private:
 	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
 	CLightFramesStackingInfo	m_StackingInfo;
-	CDSSProgress *				m_pProgress;
+	ProgressBase *				m_pProgress;
 	CString						m_strReferenceFrame;
 	int						m_lNrCurrentStackable;
 	std::atomic<int>		m_lNrStackable;
@@ -265,8 +265,8 @@ public:
 		m_fKeptPercentage = fPercent;
 	}
 
-	void ComputeOffsets(CAllStackingTasks& tasks, CDSSProgress* pProgress);
-	bool StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+	void ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pProgress);
+	bool StackLightFrames(CAllStackingTasks& tasks, ProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 
 	LIGHTFRAMEINFOVECTOR& LightFrames()
 	{

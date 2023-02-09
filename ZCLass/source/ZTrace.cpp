@@ -349,6 +349,63 @@ void ZTrace::write(const char* pszFormat, ...)
 	write(std::string(&vec[0]));
 }
 
+static constexpr char HEX[] = "0123456789ABCDEF";
+/*------------------------------------------------------------------------------
+| ZTrace::dumpHex                                                            |
+|                                                                              |
+| Format a block of data into hex and dump                                     |
+|                                                                              |
+| Offset    Data                                                               |
+| XXXXXXXX: XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX   ................             |
+| 0         1         2         3         4         5         6         7      |
+| 012345678901234567890123456789012345678901234567890123456789012345678901     |
+|                                                                              |
+------------------------------------------------------------------------------*/
+void ZTrace::dumpHex(const void* DataPointer, size_t DataLength)
+{
+    if (NULL != DataPointer)
+    {
+        char             StringBuffer[100] = { '\0' };
+        unsigned char* p = (unsigned char*)DataPointer;
+        unsigned char* pd;
+        unsigned char* pa;
+        size_t           PointerSize = sizeof(void*);
+        size_t           DataOffset = (PointerSize * 2) + 2;
+        size_t           AsciiOffset = DataOffset + 38;
+        size_t           LineLength = AsciiOffset + 16;
+        size_t           index, i;
+        int              n;
+
+
+        index = 0;
+        while (index < DataLength)
+        {
+            pd = (unsigned char*)StringBuffer + DataOffset;
+            pa = (unsigned char*)StringBuffer + AsciiOffset;
+
+            memset(StringBuffer, ' ', LineLength);
+            n = snprintf(StringBuffer, sizeof(StringBuffer), "%p", p);
+            StringBuffer[n] = ':';
+
+            for (i = 0; (i < 16) && (index < DataLength); i++)
+            {
+                if ((i % 4) == 0) pd++;
+
+                *pd++ = HEX[*p / 16];
+                *pd++ = HEX[*p % 16];
+                *pa++ = (' ' == *p || isgraph(*p)) ? *p : '.';
+
+                index++;
+                p++;
+            }
+
+            ZTrace::write(StringBuffer);
+        }
+    }
+}
+
+
+
 /*------------------------------------------------------------------------------
 | ZTrace::writeFormattedString                                                 |
 |                                                                              |

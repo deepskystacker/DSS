@@ -13,9 +13,6 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 	const size_t filterSize = m_pEngine->m_lFilterSize;
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	AvxImageFilter avxFilter(m_pEngine);
 	std::vector<T> values((filterSize * 2 + 1) * (filterSize * 2 + 1));
 
@@ -31,9 +28,6 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 			this->processNonAvx(row, endRow, values);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 template <typename T>
@@ -113,7 +107,7 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::processNonAvx(const int lineS
 }
 
 template <typename TType>
-void CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress* pProgress)
+void CInternalMedianFilterEngineT<TType>::ApplyFilter(ProgressBase* pProgress)
 {
 	if (pProgress != nullptr)
 		pProgress->Start2(m_lHeight);
@@ -125,8 +119,8 @@ void CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress* pProgress)
 }
 
 
-template void CInternalMedianFilterEngineT<unsigned char>::ApplyFilter(CDSSProgress*);
-template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(CDSSProgress*);
-template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(CDSSProgress*);
-template void CInternalMedianFilterEngineT<float>::ApplyFilter(CDSSProgress*);
-template void CInternalMedianFilterEngineT<double>::ApplyFilter(CDSSProgress*);
+template void CInternalMedianFilterEngineT<unsigned char>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<float>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<double>::ApplyFilter(ProgressBase*);

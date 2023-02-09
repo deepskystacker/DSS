@@ -13,7 +13,7 @@ private:
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pMedian;
 	std::shared_ptr<CMemoryBitmap> m_pDelta;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	CCosmeticStats m_Stats;
 	double m_fThreshold;
 	bool m_bHot;
@@ -68,7 +68,7 @@ private:
 	}
 
 public:
-	CDetectCosmeticTask(std::shared_ptr<CMemoryBitmap> pB, std::shared_ptr<CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, CDSSProgress* pPr) :
+	CDetectCosmeticTask(std::shared_ptr<CMemoryBitmap> pB, std::shared_ptr<CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, ProgressBase* pPr) :
 		m_pBitmap{ pB },
 		m_pMedian{ pM },
 		m_pDelta{ pD },
@@ -115,9 +115,6 @@ void CDetectCosmeticTask::doProcess()
 	int nrHotPixels = 0;
 	int nrColdPixels = 0;
 	int progress = 0;
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 #pragma omp parallel for schedule(static, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
@@ -166,9 +163,6 @@ void CDetectCosmeticTask::doProcess()
 
 	m_Stats.m_lNrDetectedHotPixels += nrHotPixels;
 	m_Stats.m_lNrDetectedColdPixels += nrColdPixels;
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 
@@ -178,7 +172,7 @@ private:
 	std::shared_ptr<CMemoryBitmap> m_pOutBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pOrgBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pDelta;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	CPostCalibrationSettings m_pcs;
 	int m_lWidth;
 	int m_lHeight;
@@ -232,7 +226,7 @@ private:
 	}
 
 public:
-    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<CMemoryBitmap> pOrg, std::shared_ptr<CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, CDSSProgress* pPr) :
+    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<CMemoryBitmap> pOrg, std::shared_ptr<CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, ProgressBase* pPr) :
 		m_pOutBitmap{ pOut },
 		m_pOrgBitmap{ pOrg },
 		m_pDelta{ pD },
@@ -264,9 +258,6 @@ void CCleanCosmeticTask::process()
 	const int nrProcessors = CMultitask::GetNrProcessors();
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 #pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
 	for (int row = 0; row < m_lHeight; ++row)
 	{
@@ -284,9 +275,6 @@ void CCleanCosmeticTask::process()
 				FixColdPixel(col, row);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fGray)
@@ -491,7 +479,7 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 }
 
 
-std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CDSSProgress* const pProgress)
+std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -579,7 +567,7 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 }
 
 
-void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress)
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

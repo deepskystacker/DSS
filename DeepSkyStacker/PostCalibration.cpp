@@ -332,7 +332,7 @@ void PostCalibration::on_testCosmetic_clicked()
 		tasks.ResolveTasks();
 		if (tasks.m_vStacks.size())
 		{
-			DSS::DSSProgressDlg				dlg;
+			DSS::ProgressDlg				dlg;
 			CStackingInfo &				StackingInfo = tasks.m_vStacks[0];
 
 			if (StackingInfo.m_pLightTask &&
@@ -362,7 +362,7 @@ void PostCalibration::on_testCosmetic_clicked()
 					StackingInfo.m_pLightTask->m_bDone = false;
 
 				QString strText(QCoreApplication::translate("PostCalibration", "Computing Cosmetic", "IDS_COMPUTINGCOSMETICSTATS"));
-				dlg.Start(strText, 0, false);
+				dlg.Start1(strText, 0, false);
 
 				dlg.SetJointProgress(true);
 				tasks.DoAllPreTasks(&dlg);

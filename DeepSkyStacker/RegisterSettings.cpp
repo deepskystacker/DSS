@@ -255,6 +255,9 @@ void RegisterSettings::on_stackAfter_clicked()
 {
 	stackAfter = ui->stackAfter->isChecked();
 	workspace->setValue("Register/StackAfter", stackAfter);
+	// Enable stack after input field
+	ui->percentStack->setEnabled(stackAfter);
+
 }
 
 void RegisterSettings::on_percentStack_textEdited(const QString &text)
@@ -276,7 +279,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::DSSProgressDlg				dlg;
+	DSS::ProgressDlg				dlg;
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);
@@ -284,7 +287,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	QString string = tr("Registering %1", "IDS_REGISTERINGNAME").arg(fileName);
 
-	dlg.Start(string, 0, false);
+	dlg.Start1(string, 0, false);
 	dlg.SetJointProgress(true);
 	fi.RegisterPicture(CString(firstLightFrame.toStdWString().c_str()), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
@@ -336,6 +339,12 @@ void RegisterSettings::on_stackingSettings_clicked()
 		dlg.setTabVisibility(pStackingTasks->AreDarkUsed(),
 			pStackingTasks->AreFlatUsed(),
 			pStackingTasks->AreBiasUsed());
+		
+		//
+		// Is comet data available?
+		//
+		if (pStackingTasks->IsCometAvailable())
+			dlg.enableCometStacking(true);
 	}
 	else
 	{

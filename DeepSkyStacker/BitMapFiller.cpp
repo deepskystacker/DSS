@@ -7,7 +7,7 @@
 // BitmapFillerInterface
 // ----------------------------------
 
-std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, const double redWb, const double greenWb, const double blueWb)
+std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, ProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb)
 {
 	if (AvxSupport::checkSimdAvailability())
 		return std::make_unique<AvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);
@@ -22,7 +22,7 @@ bool BitmapFillerInterface::isThreadSafe() const { return false; }
 // BitmapFillerBase
 // ----------------------------------
 
-BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, CDSSProgress* pP, const double redWb, const double greenWb, const double blueWb) :
+BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, ProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
 	pBitmap{ pB },
 	pProgress{ pP },
 	redScale{ static_cast<float>(redWb) },
@@ -103,7 +103,7 @@ void BitmapFillerBase::setMaxColors(int maxcolors)
 // Non-AVX Bitmap Filler
 // ---------------------------------
 
-NonAvxBitmapFiller::NonAvxBitmapFiller(CMemoryBitmap* pB, CDSSProgress* pP, const double redWb, const double greenWb, const double blueWb) :
+NonAvxBitmapFiller::NonAvxBitmapFiller(CMemoryBitmap* pB, ProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
 	BitmapFillerBase{ pB, pP, redWb, greenWb, blueWb }
 {}
 

@@ -1969,6 +1969,8 @@ namespace DSS
 	{
 		if (checkEditChanges() && checkWorkspaceChanges())
 		{
+			// Select the main group tab which will in turn select group 0
+			pictureList->tabBar->setCurrentIndex(0);
 			frameList.clear();
 			editStarsPtr->setBitmap(nullptr);
 			m_strShowFile.clear();
@@ -2259,7 +2261,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::DSSProgressDlg			dlg;
+		DSS::ProgressDlg			dlg;
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
@@ -2399,7 +2401,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames())
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::DSSProgressDlg	dlg;
+						DSS::ProgressDlg	dlg;
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2580,7 +2582,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::DSSProgressDlg dlg;
+		DSS::ProgressDlg dlg;
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2648,6 +2650,7 @@ namespace DSS
 
 					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
 					dlg.Start2(strText, 0);
+					dlg.SetJointProgress(true);
 
 					if (iff == IFF_TIFF)
 					{
@@ -2665,6 +2668,7 @@ namespace DSS
 					}
 
 					dlg.End2();
+					dlg.SetJointProgress(false);
 					dlg.Close();
 
 					dssApp->getProcessingDlg().LoadFile(strFileName);
@@ -2741,7 +2745,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames())
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::DSSProgressDlg	dlg;
+				DSS::ProgressDlg	dlg;
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2751,7 +2755,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::DSSProgressDlg			dlg;
+				DSS::ProgressDlg			dlg;
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

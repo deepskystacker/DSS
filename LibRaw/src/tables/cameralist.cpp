@@ -822,6 +822,7 @@ static const char *static_camera_list[] = {
 	"Olympus E-M5",
 	"Olympus E-M5 Mark II",
 	"Olympus E-M5 Mark III",
+	"Olympus OM-1",
 	"Olympus Pen-F",
 	"Olympus SP-310",
 	"Olympus SP-320",

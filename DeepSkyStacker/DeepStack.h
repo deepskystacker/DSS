@@ -22,7 +22,7 @@ private :
 	CRGBHistogram			m_OriginalHisto;
 	C32BitsBitmap			m_Bitmap;
 	bool					m_bNewStackedBitmap;
-	CDSSProgress *			m_pProgress;
+	ProgressBase *			m_pProgress;
 
 public :
 	CDeepStack()
@@ -55,7 +55,7 @@ private :
 	void	AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust);
 
 public :
-	void	SetProgress(CDSSProgress *	pProgress)
+	void	SetProgress(ProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
 	};

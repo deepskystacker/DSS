@@ -27,7 +27,7 @@ inline bool	IsFITSSuperPixels() { return false; };	// From FITSUtil.h
 
 /* ------------------------------------------------------------------- */
 
-class CDSSProgress;
+class DSS::ProgressBase;
 
 /* ------------------------------------------------------------------- */
 
@@ -219,9 +219,9 @@ inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int 
 
 /* ------------------------------------------------------------------- */
 
-bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
-bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr);
-bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
+bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
+bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress = nullptr);
+bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
 
 /* ------------------------------------------------------------------- */
 
@@ -759,15 +759,15 @@ void	CopyBitmapToClipboard(HBITMAP hBitmap);
 
 bool	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 //HBITMAP LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap = nullptr);
-bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = nullptr);
-bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, CDSSProgress * pProgress);
+bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, ProgressBase * pProgress = nullptr);
+bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase * pProgress);
 
 #endif // DSSFILEDECODING
-bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* const pProgress);
+bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress);
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
-std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, CDSSProgress* pProgress = nullptr);
+std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, ProgressBase* pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 

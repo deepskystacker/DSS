@@ -3,6 +3,10 @@
 #include <QSettings>
 #include <omp.h>
 
+int CMultitask::GetNrCurrentOmpThreads()
+{
+	return omp_get_num_threads();	// Returns 1 if outside parallel region, else will return threads/cores used!
+}
 
 int CMultitask::GetNrProcessors(bool bReal)
 {

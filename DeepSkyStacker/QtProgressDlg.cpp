@@ -7,116 +7,7 @@
 
 using namespace DSS;
 
-ProgressDlg::ProgressDlg(QWidget* parent) : 
-	QDialog(parent),
-	ui(new Ui::ProgressDlg),
-	m_bCancelInProgress(false)
-{
-	ui->setupUi(this);
-	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
-	connect(ui->StopButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
-
-	retainHiddenWidgetSize(*ui->ProcessText1);
-	retainHiddenWidgetSize(*ui->ProcessText2);
-	retainHiddenWidgetSize(*ui->ProgressBar1);
-	retainHiddenWidgetSize(*ui->ProgressBar2);
-}
-ProgressDlg::~ProgressDlg()
-{
-	if(ui)
-		delete ui;
-}
-
-void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
-{
-	QSizePolicy sp_retain = rWidget.sizePolicy();
-	sp_retain.setRetainSizeWhenHidden(true);
-	rWidget.setSizePolicy(sp_retain);
-}
-
-const QString ProgressDlg::getStart1Text() const
-{
-	return ui->ProcessText1->text();
-}
-const QString ProgressDlg::getStart2Text() const
-{
-	return ui->ProcessText2->text();
-}
-
-void ProgressDlg::setStart1Text(const QString& strText)
-{
-	if(!strText.isEmpty())
-		ui->ProcessText1->setText(strText);
-}
-void ProgressDlg::setStart2Text(const QString& strText)
-{
-	if (!strText.isEmpty())
-		ui->ProcessText2->setText(strText);
-}
-void ProgressDlg::setProgress1(int lAchieved)
-{
-	ui->ProgressBar1->setValue(lAchieved);
-}
-void ProgressDlg::setProgress2(int lAchieved)
-{
-	ui->ProgressBar2->setValue(lAchieved);
-}
-void ProgressDlg::setTimeRemaining(const QString& strText)
-{
-	if (!strText.isEmpty())
-		ui->TimeRemaining->setText(strText);
-}
-void ProgressDlg::setProcessorsUsed(int lNrProcessors)
-{
-	if (lNrProcessors == 1)
-		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processor Used"));
-	else
-		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processors Used"));
-}
-void ProgressDlg::cancelPressed()
-{
-	if (QMessageBox::question(this, tr("Are You Sure?"), tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
-	{
-		m_bCancelInProgress = true;
-		ui->StopButton->setEnabled(false);
-	}
-}
-void ProgressDlg::EnableCancelButton(bool bState)
-{
-	ui->StopButton->setEnabled(bState);
-}
-void ProgressDlg::SetTitleText(const QString& strText)
-{
-	if (!strText.isEmpty())
-		setWindowTitle(strText);
-}
-void ProgressDlg::setProgress1Range(int nMin, int nMax)
-{
-	ui->ProgressBar1->setRange(nMin, nMax);
-}
-void ProgressDlg::setProgress2Range(int nMin, int nMax)
-{
-	ui->ProgressBar2->setRange(nMin, nMax);
-}
-void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
-{
-	ui->ProcessText1->setVisible(bSet1);
-	ui->ProgressBar1->setVisible(bSet1);
-	
-	ui->ProcessText2->setVisible(bSet2);
-	ui->ProgressBar2->setVisible(bSet2);
-}
-void ProgressDlg::RunDialog()
-{
-	raise(); show(); 
-	QApplication::processEvents();
-}
-
-void ProgressDlg::closeEvent(QCloseEvent* pEvent)
-{
-	cancelPressed();
-	pEvent->ignore();
-}
+const QString ProgressDlg::m_emptyString;
 
 QMainWindow* GetMainApplicationWindow()
 {
@@ -126,202 +17,202 @@ QMainWindow* GetMainApplicationWindow()
 	return nullptr;
 }
 
-/////////////////////////////////////////////////////////////////
-const QString DSSProgressDlg::sm_EmptyString;
-const float DSSProgressDlg::sm_fMinProgressStep = 5.0f;	// Percentage minimum step size.
 
-DSSProgressDlg::DSSProgressDlg() :
-	m_pParent(GetMainApplicationWindow()),
-	m_bEnableCancel{ false },
-	m_lTotal1{ 0 },
-	m_lTotal2{ 0 },
-	m_dwStartTime{ 0 },
-	m_dwLastTime{ 0 },
-	m_lLastTotal1{ 0 },
-	m_lLastTotal2{ 0 },
-	m_bFirstProgress{ false }
-{}
+ProgressDlg::ProgressDlg() :
+	QDialog(GetMainApplicationWindow()),
+	m_ui(new Ui::ProgressDlg),
+	m_cancelInProgress(false)
+{
+	m_ui->setupUi(this);
+	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
+	connect(m_ui->StopButton, SIGNAL(clicked(bool)), this, SLOT(cancelPressed()));
 
-DSSProgressDlg::~DSSProgressDlg()
+	retainHiddenWidgetSize(*m_ui->ProcessText1);
+	retainHiddenWidgetSize(*m_ui->ProcessText2);
+	retainHiddenWidgetSize(*m_ui->ProgressBar1);
+	retainHiddenWidgetSize(*m_ui->ProgressBar2);
+}
+
+ProgressDlg::~ProgressDlg()
 {
 	Close();
-};
-
-void DSSProgressDlg::SetNrUsedProcessors(int lNrProcessors/*=1*/)
-{
-	if (!m_pDlg)
-		return;
-
-	m_pDlg->setProcessorsUsed(lNrProcessors);
+	if (m_ui)
+		delete m_ui;
 }
 
-const QString DSSProgressDlg::GetStartText() const
+void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
 {
-	if (!m_pDlg)
-		return sm_EmptyString;
-
-	return m_pDlg->getStart1Text();
-};
-
-const QString DSSProgressDlg::GetStart2Text() const
-{
-	if (!m_pDlg)
-		return sm_EmptyString;
-
-	return m_pDlg->getStart2Text();
-};
-
-void DSSProgressDlg::Start(const QString& szTitle, int lTotal1, bool bEnableCancel/*=true*/)
-{
-	if(!CreateProgressDialog())
-		return;
-
-	m_lLastTotal1 = 0;
-	m_lTotal1 = lTotal1;
-	m_dwStartTime = GetTickCount64();
-	m_dwLastTime = m_dwStartTime;
-	m_bFirstProgress = true;
-	m_bEnableCancel = bEnableCancel;
-	m_pDlg->EnableCancelButton(bEnableCancel);
-	m_pDlg->SetTitleText(szTitle);
-	m_pDlg->setProgress1Range(0, lTotal1);
-	m_pDlg->setItemVisibility(true, false);
-	m_pDlg->setFocus();
-
-	m_pDlg->RunDialog();
+	QSizePolicy sp_retain = rWidget.sizePolicy();
+	sp_retain.setRetainSizeWhenHidden(true);
+	rWidget.setSizePolicy(sp_retain);
 }
 
-void DSSProgressDlg::Progress1(const QString& szText, int lAchieved1)
-{	
-	unsigned long long dwCurrentTime = GetTickCount64();
-	m_pDlg->setStart1Text(szText);
+void ProgressDlg::EnableCancelButton(bool bState)
+{
+	m_ui->StopButton->setEnabled(bState);
+}
+void ProgressDlg::applyTitleText(const QString& strText)
+{
+	if (!strText.isEmpty())
+		setWindowTitle(strText);
+}
+void ProgressDlg::setProgress1Range(int nMin, int nMax)
+{
+	m_ui->ProgressBar1->setRange(nMin, nMax);
+}
+void ProgressDlg::setProgress2Range(int nMin, int nMax)
+{
+	m_ui->ProgressBar2->setRange(nMin, nMax);
+}
+void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
+{
+	m_ui->ProcessText1->setVisible(bSet1);
+	m_ui->ProgressBar1->setVisible(bSet1);
+	
+	m_ui->ProcessText2->setVisible(bSet2);
+	m_ui->ProgressBar2->setVisible(bSet2);
+}
 
-	if (m_bFirstProgress || 
-		(static_cast<double>(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)* sm_fMinProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
-		((dwCurrentTime - m_dwLastTime) > 1000)	// Ensures time is updated every second.
-		)
+void ProgressDlg::closeEvent(QCloseEvent* pEvent)
+{
+	cancelPressed();
+	pEvent->ignore();
+}
+
+void ProgressDlg::cancelPressed()
+{
+	if (QMessageBox::question(this, tr("Are You Sure?"), tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
-		m_bFirstProgress = false;
-		m_lLastTotal1 = lAchieved1;
-		m_dwLastTime = dwCurrentTime;
-		m_pDlg->setProgress1(lAchieved1);
-
-		if (m_lTotal1 > 1 && lAchieved1 > 1)
-		{
-			std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(dwCurrentTime - m_dwStartTime) / static_cast<double>(lAchieved1 - 1) * static_cast<double>(m_lTotal1 - lAchieved1 + 1));
-			dwRemainingTime /= 1000;
-
-			const std::uint32_t dwHour = dwRemainingTime / 3600;
-			dwRemainingTime -= dwHour * 3600;
-			const std::uint32_t dwMin = dwRemainingTime / 60;
-			dwRemainingTime -= dwMin * 60;
-			const std::uint32_t dwSec = dwRemainingTime;
-
-			QString qStrText;
-			if (dwHour != 0)
-				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: %1 hr %2 mn %3 s ",
-										 "IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
-			else if (dwMin != 0)
-				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: %1 mn %2 s ",
-										 "IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
-			else if (dwSec != 0)
-				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time : %1 s ",
-										"IDS_ESTIMATED1").arg(dwSec);
-			else
-				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: < 1 s ",
-										"IDS_ESTIMATED0");
-			
-			m_pDlg->setTimeRemaining(qStrText);
-		}
-		else
-		{
-			const QString qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining Time: Unknown",
-												"IDS_ESTIMATEDUNKNOWN");
-			m_pDlg->setTimeRemaining(qStrText);
-		};
-
-		m_pDlg->RunDialog();
-	};
+		m_cancelInProgress = true;
+		m_ui->StopButton->setEnabled(false);
+	}
 }
 
-void DSSProgressDlg::Start2(const QString& szText, int lTotal2)
+void ProgressDlg::setTimeRemaining(const QString& strText)
 {
-	if (!CreateProgressDialog())
-		return;
+	m_ui->TimeRemaining->setText(strText);
+	QApplication::processEvents();
+}
 
-	m_lLastTotal2 = 0;
-	m_pDlg->setStart2Text(szText);
+//////////////////////////////////////////////////////////////////////////
+// ProgressBase
+void ProgressDlg::initialise()
+{
+	// Disable child dialogs of DeepSkyStackerDlg
+	DeepSkyStacker::instance()->disableSubDialogs();
 
-	m_pDlg->setProgress2Range(0, lTotal2);
-	m_lTotal2 = lTotal2;
-	if (lTotal2 == 0)
+	EnableCancelButton(m_enableCancel);
+	setProgress1Range(0, m_total1);
+	setItemVisibility(true, false);
+	setFocus();
+	applyTitleText(GetTitleText());
+
+	raise();
+	show();
+	QApplication::processEvents();
+}
+
+void ProgressDlg::applyStart1Text(const QString& strText)
+{
+	m_ui->ProcessText1->setText(strText);
+	raise();
+	show();
+	QApplication::processEvents();
+}
+
+void ProgressDlg::applyStart2Text(const QString& strText)
+{
+	m_ui->ProcessText2->setText(strText);
+	setProgress2Range(0, m_total2);
+	if (m_total2 == 0)
 	{
-		m_pDlg->setItemVisibility(true, false);
+		setItemVisibility(true, false);
 	}
 	else
 	{
-		m_pDlg->setItemVisibility(true, true);
-		m_pDlg->setProgress2(0);
-	};
+		setItemVisibility(true, true);
+		applyProgress2(0);
+	}
+	raise();
+	show();
+	QApplication::processEvents();
+}
 
-	if (m_bJointProgress)
+void ProgressDlg::applyProgress1(int lAchieved)
+{
+	m_ui->ProgressBar1->setValue(lAchieved);
+
+	// Now do time remaining as well
+	if (m_total1 > 1 && lAchieved > 1)
 	{
-		Start("", lTotal2, m_bEnableCancel);
-		m_pDlg->setStart1Text(szText);
-	};
+		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1));
+		if (lAchieved > m_total1)	// If OpemMP tasks are not multiple of processors, this gets too large!
+			dwRemainingTime = 0;
+		else
+			dwRemainingTime /= 1000;
 
-	m_pDlg->RunDialog();
-}
+		const std::uint32_t dwHour = dwRemainingTime / 3600;
+		dwRemainingTime -= dwHour * 3600;
+		const std::uint32_t dwMin = dwRemainingTime / 60;
+		dwRemainingTime -= dwMin * 60;
+		const std::uint32_t dwSec = dwRemainingTime;
 
-void DSSProgressDlg::Progress2(const QString& szText, int lAchieved2)
-{
-	if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0) * sm_fMinProgressStep) // Update only if diff is sm_fMinProgressStep %age change
+		QString qStrText;
+		if (dwHour != 0)
+			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: %1 hr %2 mn %3 s ",
+				"IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
+		else if (dwMin != 0)
+			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: %1 mn %2 s ",
+				"IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
+		else if (dwSec != 0)
+			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time : %1 s ",
+				"IDS_ESTIMATED1").arg(dwSec);
+		else
+			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: < 1 s ",
+				"IDS_ESTIMATED0");
+
+		setTimeRemaining(qStrText);
+	}
+	else
 	{
-		m_lLastTotal2 = lAchieved2;
-		m_pDlg->setStart2Text(szText);
-		m_pDlg->setProgress2(lAchieved2);
-		m_pDlg->RunDialog();
+		const QString qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining Time: Unknown",
+			"IDS_ESTIMATEDUNKNOWN");
+		setTimeRemaining(qStrText);
 	};
-
-	if (m_bJointProgress)
-		Progress1(szText, lAchieved2);
 }
 
-void DSSProgressDlg::End2()
+void ProgressDlg::applyProgress2(int lAchieved)
 {
-	m_pDlg->setItemVisibility(true, false);
+	m_ui->ProgressBar2->setValue(lAchieved);
+	QApplication::processEvents();
 }
 
-bool DSSProgressDlg::IsCanceled()
+void ProgressDlg::applyProcessorsUsed(int nCount)
 {
-	return m_pDlg->IsCancelled();
+	if (nCount == 1)
+		m_ui->Processors->setText(QString::number(nCount) + tr(" Processor Used"));
+	else
+		m_ui->Processors->setText(QString::number(nCount) + tr(" Processors Used"));
+	QApplication::processEvents();
 }
 
-bool DSSProgressDlg::Warning(const QString& szText)
+void ProgressDlg::endProgress2()
 {
-	return (QMessageBox::question(m_pDlg.get(), "", szText) == QMessageBox::Yes);
+	setItemVisibility(true, false);
 }
 
-bool DSSProgressDlg::Close()
+bool ProgressDlg::hasBeenCanceled()
 {
-	if (!m_pDlg)
-		return true;
+	return IsCancelled();
+}
 
-	m_pDlg = nullptr;
+bool ProgressDlg::doWarning(const QString& szText)
+{
+	return (QMessageBox::question(this, "", szText) == QMessageBox::Yes);
+}
+
+void ProgressDlg::closeProgress()
+{
 	DeepSkyStacker::instance()->enableSubDialogs();
-	return true;
+	hide();
 }
-
-bool DSSProgressDlg::CreateProgressDialog()
-{
-	if (m_pDlg)
-		return true;
-	
-	m_pDlg = std::make_unique<ProgressDlg>(m_pParent);
-	if (!m_pDlg)
-		return false;
-
-	// Disable child dialogs of DeepSkyStackerDlg
-	DeepSkyStacker::instance()->disableSubDialogs();
-	return true;
-};

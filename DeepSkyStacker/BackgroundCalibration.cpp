@@ -14,7 +14,7 @@ CBackgroundCalibration::CBackgroundCalibration() :
 	m_RGBBackgroundMethod{ CAllStackingTasks::GetRGBBackgroundCalibrationMethod() }
 {}
 
-void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
+void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);
 	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
@@ -22,9 +22,6 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 	const int height = pBitmap->Height();
 	const auto nrProcessors = CMultitask::GetNrProcessors();
-
-	if (pProgress != nullptr)
-		pProgress->SetNrUsedProcessors(nrProcessors);
 
 #pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram, redLocalHist, greenLocalHist, blueLocalHist) if(nrProcessors > 1)
 	{
@@ -38,10 +35,11 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 				constexpr double Maxvalue = double{ std::numeric_limits<std::uint16_t>::max() };
 				const double fMultiplier = m_fMultiplier * 256.0;
 
+				if (pProgress != nullptr && omp_get_thread_num() == 0) // Only master thread
+					pProgress->Progress2(startNdx);
+
 				for (int j = startNdx; j < endNdx; ++j)
 				{
-					if (pProgress != nullptr && omp_get_thread_num() == 0) // Only master thread
-						pProgress->Progress2(startNdx);
 					for (int i = 0, width = pBitmap->Width(); i < width; ++i)
 					{
 						COLORREF16 crColor;
@@ -77,12 +75,9 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 				}
 		}
 	} // omp parallel
-
-	if (pProgress != nullptr)
-		pProgress->SetNrUsedProcessors(1);
 }
 
-void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, CDSSProgress* pProgress)
+void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_fSrcRedMax = 0;

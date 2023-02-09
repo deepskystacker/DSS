@@ -29,13 +29,13 @@ public :
 	{
 	};
 
-	void ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress);
-	void ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, CDSSProgress * pProgress);
-	void ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress);
-	void ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress);
-	void ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, CDSSProgress * pProgress);
+	void ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, ProgressBase * pProgress);
+	void ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, ProgressBase * pProgress);
 
-	bool	LoadMasters(const CStackingInfo* pStackingInfo, CDSSProgress* pProgress);
+	bool	LoadMasters(const CStackingInfo* pStackingInfo, ProgressBase* pProgress);
 };
 
 #endif // __MASTERFRAMES_H__

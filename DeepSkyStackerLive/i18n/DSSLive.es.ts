@@ -260,6 +260,54 @@
     </message>
 </context>
 <context>
+    <name>DSS::StackingDlg</name>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="519"/>
+        <source>File %1 has already been loaded in group %2 (%3)</source>
+        <translation>El archivo %1 ya se cargó en el grupo %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation>Desajuste de ancho</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation>Desajuste de altura</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation>Desajuste de cantidad de colores</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation>Desajuste de cantidad de canales</translation>
+    </message>
+</context>
+<context>
     <name>DarkFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
@@ -461,25 +509,25 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="971"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="868"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrando %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1000"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="897"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Registrando %1 (%2 estrellas)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1151"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calculando luminancias %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1331"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -487,7 +535,7 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1335"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -495,25 +543,25 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1466"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Guardando la imagen Calibrada en %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1504"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Registrando imágenes</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1539"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Registrando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1556"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -521,7 +569,7 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1558"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -651,8 +699,8 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="307"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1251"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1348"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1249"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1346"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Cargando %1</translation>
@@ -670,68 +718,68 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
         <translation>Guardando imagen apilada en %1 (DSImage)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="632"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="630"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Procesando Imagen...</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="902"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="900"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Guardando TIFF %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="905"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1100"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="903"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1098"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Guardando %1</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="952"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="991"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1146"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1188"/>
+        <source>Picture saved with settings applied.</source>
+        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
+        <translation>Imagen guardada con los ajustes aplicados.</translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="954"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="993"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1148"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1190"/>
-        <source>Picture saved with settings applied.</source>
-        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation>Imagen guardada con los ajustes aplicados.</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="956"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="995"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1150"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Imagen guardada con los ajustes integrados.</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1097"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1095"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Guardando FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1244"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Cargando TIFF %1 bit monocromo</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1248"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Cargando TIFF %1 bit/ch</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1341"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Cargando FITS %1 bit monocromática</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1345"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Cargando FITS %1 bit/ch</translation>
@@ -740,133 +788,105 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="56"/>
-        <source>
-        Loading %1 bits gray %2 dark frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Cargando %1 bit/ch %2 dark frame
+%3</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="56"/>
+        <source>Loading %1 bits gray %2 dark frame
+%3</source>
         <comment>IDS_LOADGRAYDARK</comment>
-        <translation>
-        Cargando %1 bits gray %2 dark frame
-        %3
-      </translation>
+        <translation>Cargando %1 bits gray %2 dark frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="60"/>
-        <source>
-        Loading %1 bit/ch %2 dark flat frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="60"/>
+        <source>Loading %1 bit/ch %2 dark flat frame
+%3</source>
         <comment>IDS_LOADRGBDARKFLAT</comment>
-        <translation>
-        Cargando %1 bit/ch %2 dark flat frame
-        %3
-      </translation>
+        <translation>Cargando %1 bit/ch %2 dark flat frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="62"/>
-        <source>
-        Loading %1 bits gray %2 dark flat frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="62"/>
+        <source>Loading %1 bits gray %2 dark flat frame
+%3</source>
         <comment>IDS_LOADGRAYDARKFLAT</comment>
-        <translation>
-        Cargando %1 bits gris %2 dark flat frame
-        %3
-      </translation>
+        <translation>Cargando %1 bits gris %2 dark flat frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="66"/>
-        <source>
-        Loading %1 bit/ch %2 offset frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="66"/>
+        <source>Loading %1 bit/ch %2 offset frame
+%3</source>
         <comment>IDS_LOADRGBOFFSET</comment>
-        <translation>
-        Cargando %1 bit/ch %2 offset frame
-        %3
-      </translation>
+        <translation>Cargando %1 bit/ch %2 offset frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="68"/>
-        <source>
-        Loading %1 bits gray %2 offset frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="68"/>
+        <source>Loading %1 bits gray %2 offset frame
+%3</source>
         <comment>IDS_LOADGRAYOFFSET</comment>
-        <translation>
-        Cargando %1 bits gray %2 offset frame
-        %3
-      </translation>
+        <translation>Cargando %1 bits gray %2 offset frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="72"/>
-        <source>
-        Loading %1 bit/ch %2 flat frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="72"/>
+        <source>Loading %1 bit/ch %2 flat frame
+%3</source>
         <comment>IDS_LOADRGBFLAT</comment>
-        <translation>
-        Cargando %1 bit/ch %2 flat frame
-        %3
-      </translation>
+        <translation>Cargando %1 bit/ch %2 flat frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="74"/>
-        <source>
-        Loading %1 bits gray %2 flat frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="74"/>
+        <source>Loading %1 bits gray %2 flat frame
+%3</source>
         <comment>IDS_LOADGRAYFLAT</comment>
-        <translation>
-        Cargando %1 bits gray %2 flat frame
-        %3
-      </translation>
+        <translation>Cargando %1 bits gray %2 flat frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="78"/>
-        <source>
-        Loading %1 bit/ch %2 light frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="78"/>
+        <source>Loading %1 bit/ch %2 light frame
+%3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>
-        Cargando %1 bit/ch %2 light frame
-        %3
-      </translation>
+        <translation>Cargando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="80"/>
-        <source>
-        Loading %1 bits gray %2 light frame
-        %3
-      </source>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="80"/>
+        <source>Loading %1 bits gray %2 light frame
+%3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>
-        Cargando %1 bits gray %2 light frame
-        %3
-      </translation>
+        <translation>Cargando %1 bits gray %2 light frame
+%3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="358"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Crear Offset Frame Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Agregando Offset frame %1 a %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Calculando offset maestro (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="412"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -875,39 +895,39 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="421"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Guardando Offset Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="520"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Crear Dark Frame Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Agregando Dark frame %1 a %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="554"/>
-        <location filename="../StackingTasks.cpp" line="739"/>
-        <location filename="../StackingTasks.cpp" line="1166"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="510"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="692"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Sustrayendo Offset Frame</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="578"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Calculando dark maestro (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="596"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -916,7 +936,7 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="783"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -925,7 +945,7 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1241"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -934,85 +954,73 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="606"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Guardando Dark Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>
-        Loading %1 bit/ch %2 dark frame
-        %3
-      </source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation>
-        Cargando %1 bit/ch %2 dark frame
-        %3
-      </translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="704"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Crear Dark Flat Frame Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="720"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Agregando Dark Flat frame %1 en %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="765"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Calculando el dark flat maestro (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="792"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Guardando Dark Flat Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="957"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Calculando Parámetros de Calibración de Flats</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1009"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Aplicando Parámetros de Calibración de Flats</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1132"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Crear Flat Frame Maestro</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1148"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Agregando Flat frame %1 a %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1184"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Sustrayendo Dark Frame</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1224"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Calculando  flat maestro (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1250"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Guardando Flat Maestro</translation>

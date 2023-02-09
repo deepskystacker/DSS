@@ -100,7 +100,7 @@ void CMultiBitmap::InitParts()
 
 /* ------------------------------------------------------------------- */
 
-bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -168,13 +168,13 @@ private:
 	int							m_lStartRow;
 	int							m_lEndRow;
 	size_t						m_lScanLineSize;
-	CDSSProgress*				m_pProgress;
+	ProgressBase*				m_pProgress;
 	CMultiBitmap*				m_pMultiBitmap;
 	void*						m_pBuffer;
 	CMemoryBitmap* m_pBitmap;
 
 public:
-    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, CDSSProgress* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
+    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, ProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
 		m_lStartRow{ startRow },
 		m_lEndRow{ endRow },
 		m_lScanLineSize{ scanLineSize },
@@ -200,9 +200,6 @@ void CCombineTask::process()
 
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
 	{
@@ -262,9 +259,6 @@ void CCombineTask::process()
 			handleError(errorMessage, MB_OK | MB_ICONSTOP);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 /* ------------------------------------------------------------------- */
@@ -355,7 +349,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap) c
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	std::shared_ptr<CMemoryBitmap> pBitmap;

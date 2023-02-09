@@ -3,7 +3,7 @@
 
 
 template <typename T>
-void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
+void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 {
 	const int nrProcessors = CMultitask::GetNrProcessors();
 
@@ -11,7 +11,6 @@ void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
 	{
 		const QString strText(QCoreApplication::translate("BitmapBase", "Detecting hot pixels", "IDS_REMOVINGHOTPIXELS"));
 		pProgress->Start2(strText, m_lHeight);
-		pProgress->SetNrUsedProcessors(nrProcessors);
 	};
 
 	const int height = this->Height();
@@ -50,14 +49,11 @@ void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
 		this->m_vPixels[hotOffset] = 0;
 
 	if (pProgress != nullptr)
-	{
-		pProgress->SetNrUsedProcessors(1);
 		pProgress->End2();
-	}
 }
 
-template void CGrayBitmapT<std::uint8_t>::RemoveHotPixels(CDSSProgress*);
-template void CGrayBitmapT<std::uint16_t>::RemoveHotPixels(CDSSProgress*);
-template void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(CDSSProgress*);
-template void CGrayBitmapT<float>::RemoveHotPixels(CDSSProgress*);
-template void CGrayBitmapT<double>::RemoveHotPixels(CDSSProgress*);
+template void CGrayBitmapT<std::uint8_t>::RemoveHotPixels(ProgressBase*);
+template void CGrayBitmapT<std::uint16_t>::RemoveHotPixels(ProgressBase*);
+template void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(ProgressBase*);
+template void CGrayBitmapT<float>::RemoveHotPixels(ProgressBase*);
+template void CGrayBitmapT<double>::RemoveHotPixels(ProgressBase*);

@@ -9,7 +9,7 @@
 class CChannelAlign
 {
 private :
-	std::shared_ptr<CMemoryBitmap> AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, CDSSProgress* pProgress);
+	std::shared_ptr<CMemoryBitmap> AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, ProgressBase* pProgress);
 	void CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* pTgtBitmap) const;
 
 public:
@@ -19,7 +19,7 @@ public:
 	~CChannelAlign()
 	{}
 
-	bool AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
+	bool AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
 };
 
 #endif

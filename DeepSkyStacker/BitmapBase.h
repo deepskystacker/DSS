@@ -18,6 +18,7 @@ template <typename TType> class CGrayMedianFilterEngineT;
 template <typename TType> class CGrayBitmapT;
 template <typename TType> class CColorBitmapT;
 
+using namespace DSS;
 
 #pragma pack(push, HDCOLORREFT, 1)
 
@@ -409,8 +410,8 @@ public:
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const = 0;
 
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const = 0;
-	virtual void AverageBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) {};
-	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) = 0;
+	virtual void AverageBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress) {};
+	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) = 0;
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 
 	virtual double GetMaximumValue() const = 0;
@@ -995,8 +996,8 @@ public:
 		return this->m_vImageOrder;
 	}
 
-	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, CDSSProgress* pProgress = nullptr);
-	virtual std::shared_ptr<CMemoryBitmap> GetResult(CDSSProgress* pProgress = nullptr);
+	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, ProgressBase* pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> GetResult(ProgressBase* pProgress = nullptr);
 	virtual int GetNrChannels() const = 0;
 	virtual int GetNrBytesPerChannel() const = 0;
 
@@ -1199,7 +1200,7 @@ class CMedianFilterEngine
 {
 protected:
 	int m_lFilterSize;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 
 public:
 	CMedianFilterEngine() :
@@ -1209,7 +1210,7 @@ public:
 
 	virtual ~CMedianFilterEngine() {};
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const = 0;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const = 0;
 };
 
 
@@ -1229,7 +1230,7 @@ public:
 		m_pInBitmap = pInBitmap;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, CDSSProgress* pProgress) const override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, ProgressBase* pProgress) const override;
 };
 
 
@@ -1794,7 +1795,7 @@ public:
 		return pResult;
 	}
 
-	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
 
 	TType* GetGrayPixel(int i, int j)
 	{
@@ -2113,7 +2114,7 @@ public:
 		m_pInBitmap = pInBitmap;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const override;
 };
 
 
@@ -2406,7 +2407,7 @@ public:
 		return m_fMultiplier * 256.0;
 	}
 
-	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override
+	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override
 	{
 		m_Red.RemoveHotPixels(pProgress);
 		m_Green.RemoveHotPixels(pProgress);

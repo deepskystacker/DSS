@@ -146,7 +146,7 @@ inline void	CheckPixel(int X, int Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIX
 
 /* ------------------------------------------------------------------- */
 
-void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, CDSSProgress* pProgress)
+void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR vExcluded = m_vExcludedPixels;
@@ -232,7 +232,7 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (m_bUseRejectThreshold)
@@ -312,7 +312,7 @@ void	CMedianImageFilter::ComputeMedianAt(int x, int y, double & fRedValue, doubl
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
 {
 	return GetFilteredImage(pInBitmap, m_lFilterSize, pProgress);
 }
@@ -371,7 +371,7 @@ void CDirectionalImageFilter::InitFilterMatrix(CFilterMatrix & fm)
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
 {
 	if (pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};

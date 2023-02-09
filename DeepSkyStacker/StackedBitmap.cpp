@@ -285,7 +285,7 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress)
+bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
@@ -294,7 +294,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 
 	QString strText(QCoreApplication::translate("StackedBitmap", "Loading DSImage", "IDS_LOADDSIMAGE"));
 	if (pProgress)
-		pProgress->Start(strText, 0, false);
+		pProgress->Start1(strText, 0, false);
 
 	hFile = _tfopen(szStackedFile, _T("rb"));
 	if (hFile)
@@ -322,7 +322,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			Allocate(Header.lWidth, Header.lHeight, false);
 
 			if (pProgress)
-				pProgress->Start(m_lWidth * m_lHeight, false);
+				pProgress->Start1(m_lWidth * m_lHeight, false);
 
 			for (int i = 0;i<m_vRedPlane.size();i++)
 			{
@@ -362,7 +362,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgress * pProgress)
+void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
@@ -408,7 +408,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 		if (pProgress)
 		{
 			QString strText(QCoreApplication::translate("StackedBitmap", "Saving DSImage File", "IDS_SAVINGDSIMAGE"));
-			pProgress->Start(strText, lWidth * lHeight, false);
+			pProgress->Start1(strText, lWidth * lHeight, false);
 			strText = QCoreApplication::translate("StackedBitmap", "Saving stacked picture in %1 (DSImage)", "IDS_SAVEDSIMAGE").arg(szStackedFile);
 			pProgress->Progress1(strText, 1);
 		};
@@ -604,7 +604,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(CDSSProgress* const pProgress)
+std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -681,7 +681,7 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(CDSSProgress* const pPr
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::Load(LPCTSTR szStackedFile, CDSSProgress * pProgress)
+bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CBitmapInfo		bmpInfo;
@@ -817,7 +817,7 @@ private :
 						m_lYStart;
 
 public :
-	CTIFFWriterStacker(LPCTSTR szFileName, LPRECT lprc, CDSSProgress *	pProgress) :
+	CTIFFWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
 	   CTIFFWriter(szFileName, pProgress)
 	{
 		m_lprc = lprc;
@@ -899,7 +899,7 @@ bool CTIFFWriterStacker::OnOpen()
 		m_pProgress->SetJointProgress(true);
 		strText = QCoreApplication::translate("StackedBitmap", "Saving TIFF %1 bit", "IDS_SAVINGTIFF").arg(bps);
 
-		m_pProgress->Start(strText, 0, false);
+		m_pProgress->Start1(strText, 0, false);
 		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
@@ -934,7 +934,7 @@ bool CTIFFWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
+void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
@@ -963,7 +963,7 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
+void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
@@ -1016,7 +1016,7 @@ private :
 						m_lYStart;
 
 public :
-	CFITSWriterStacker(LPCTSTR szFileName, LPRECT lprc, CDSSProgress *	pProgress) :
+	CFITSWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
 	   CFITSWriter(szFileName, pProgress)
 	{
 		m_lprc = lprc;
@@ -1094,7 +1094,7 @@ bool CFITSWriterStacker::OnOpen()
 		m_pProgress->SetJointProgress(true);
 		strText = QCoreApplication::translate("StackedBitmap", "Saving FITS %1 bit", "IDS_SAVINGFITS").arg(m_lBitsPerPixel);
 
-		m_pProgress->Start(strText, 0, false);
+		m_pProgress->Start1(strText, 0, false);
 		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
@@ -1129,7 +1129,7 @@ bool CFITSWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, bool bApplySettings)
+void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
@@ -1160,7 +1160,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, bool bApplySettings, bool bFloat)
+void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
@@ -1210,7 +1210,7 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CTIFFReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
+	CTIFFReadStacker(LPCTSTR szFileName, ProgressBase *	pProgress)
 		: CTIFFReader(szFileName, pProgress)
 	{
         m_pStackedBitmap = NULL;
@@ -1245,7 +1245,7 @@ bool CTIFFReadStacker::OnOpen()
 		else
 			strText = QCoreApplication::translate("StackedBitmap", "Loading TIFF %1 bit/ch", "IDS_LOADRGBTIFF").arg(bps);
 
-		m_pProgress->Start(strText, 0, false);
+		m_pProgress->Start1(strText, 0, false);
 		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
@@ -1281,7 +1281,7 @@ bool CTIFFReadStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress)
+bool CStackedBitmap::LoadTIFF(LPCTSTR szStackedFile, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
@@ -1307,7 +1307,7 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CFITSReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
+	CFITSReadStacker(LPCTSTR szFileName, ProgressBase *	pProgress)
 		: CFITSReader(szFileName, pProgress)
 	{
         m_pStackedBitmap = NULL;
@@ -1342,7 +1342,7 @@ bool CFITSReadStacker::OnOpen()
 		else
 			strText = QCoreApplication::translate("StackedBitmap", "Loading FITS %1 bit/ch", "IDS_LOADRGBFITS").arg(m_lBitsPerPixel);
 
-		m_pProgress->Start(strText, 0, false);
+		m_pProgress->Start1(strText, 0, false);
 		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
@@ -1377,7 +1377,7 @@ bool CFITSReadStacker::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress)
+bool CStackedBitmap::LoadFITS(LPCTSTR szStackedFile, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
