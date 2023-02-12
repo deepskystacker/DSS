@@ -710,6 +710,13 @@ int AvxStacking::pixelPartitioning()
 		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coord), _mm256_cmpgt_epi32(resultWidthOrHeight, coord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width). Same for y with height.
 	};
 
+	// Lambda for this check: DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut)
+	const auto resultRectCheck = [](const __m256i coordTrunc, const __m256i resultWidthOrHeight, const __m256 coord) -> __m256i
+	{
+		// (pt.x >= 0) && (pt.x <= width-1)  is equivalent to  !(0 > floor(pt.x)) && (width > ceil(pt.x))
+		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coordTrunc), _mm256_cmpgt_epi32(resultWidthOrHeight, _mm256_cvttps_epi32(_mm256_ceil_ps(coord))));
+	};
+
 	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
 	const __m256i allOnes = _mm256_set1_epi32(-1); // All bits '1' == all int elements -1
 	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
@@ -773,6 +780,13 @@ int AvxStacking::pixelPartitioning()
 			__m256 fraction2 = _mm256_mul_ps(xfractional, yfrac1);
 			const __m256i xii = _mm256_cvttps_epi32(xtruncated);
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
+
+			// DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut);
+			const auto resultRectMask = _mm256_and_si256(
+				resultRectCheck(xii, resultWidthVec, xcoord), // x-coord check against width
+				resultRectCheck(yii, resultHeightVec, ycoord) // y-coord check against height
+			);
+
 			const __m256i columnMask1 = getColumnOrRowMask(xii, resultWidthVec);
 			const __m256i columnMask2 = getColumnOrRowMask(_mm256_sub_epi32(xii, allOnes), resultWidthVec);
 			__m256i rowMask = getColumnOrRowMask(yii, resultHeightVec);
@@ -784,6 +798,7 @@ int AvxStacking::pixelPartitioning()
 			const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0))); // 'testc' returns 1 if all bits are '1' -> 0xffffffff == -1 -> ndx[i] - ndx[i+1] == -1
 			const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0)));
 
+			rowMask = _mm256_and_si256(rowMask, resultRectMask);
 			__m256i mask1 = _mm256_and_si256(columnMask1, rowMask);
 			__m256i mask2 = _mm256_and_si256(columnMask2, rowMask);
 			bool allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
@@ -804,6 +819,7 @@ int AvxStacking::pixelPartitioning()
 			fraction1 = _mm256_mul_ps(xfrac1, yfractional);
 			fraction2 = _mm256_mul_ps(xfractional, yfractional);
 			rowMask = getColumnOrRowMask(_mm256_sub_epi32(yii, allOnes), resultHeightVec);
+			rowMask = _mm256_and_si256(rowMask, resultRectMask);
 			mask1 = _mm256_and_si256(columnMask1, rowMask);
 			mask2 = _mm256_and_si256(columnMask2, rowMask);
 			allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
