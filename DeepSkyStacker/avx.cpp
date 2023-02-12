@@ -709,6 +709,10 @@ int AvxStacking::pixelPartitioning()
 	{
 		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coord), _mm256_cmpgt_epi32(resultWidthOrHeight, coord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width). Same for y with height.
 	};
+	const auto resultRectCheck = [](const __m256i coordTrunc, const __m256i resultWidthOrHeight, const __m256 coord) -> __m256i
+	{
+		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coordTrunc), _mm256_cmpgt_epi32(resultWidthOrHeight, _mm256_cvttps_epi32(_mm256_ceil_ps(coord))));
+	};
 
 	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
 	const __m256i allOnes = _mm256_set1_epi32(-1); // All bits '1' == all int elements -1
@@ -775,8 +779,8 @@ int AvxStacking::pixelPartitioning()
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
 
 			const auto resultRectMask = _mm256_and_si256(
-				_mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), xii), _mm256_cmpgt_epi32(resultWidthVec, _mm256_cvttps_epi32(_mm256_ceil_ps(xcoord)))),
-				_mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), yii), _mm256_cmpgt_epi32(resultHeightVec, _mm256_cvttps_epi32(_mm256_ceil_ps(ycoord))))
+				resultRectCheck(xii, resultWidthVec, xcoord),
+				resultRectCheck(yii, resultHeightVec, ycoord)
 			);
 
 			const __m256i columnMask1 = getColumnOrRowMask(xii, resultWidthVec);
