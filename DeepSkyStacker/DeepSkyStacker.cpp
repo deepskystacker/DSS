@@ -362,12 +362,21 @@ void DeepSkyStacker::onInitialise()
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 
-	auto geometry{ settings.value("geometry").toByteArray() };
-	ZTRACE_RUNTIME("Hex dump of geometry:");
-	ZTrace::dumpHex(geometry.constData(), geometry.length());
-	auto windowState{ settings.value("windowState").toByteArray() };
-	ZTRACE_RUNTIME("Hex dump of windowState:");
-	ZTrace::dumpHex(windowState.constData(), windowState.length());
+	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
+	auto windowState{ settings.value("windowState", QByteArray()).toByteArray() };
+
+#ifndef NDEBUG
+	if (geometry.length())
+	{
+		ZTRACE_RUNTIME("Hex dump of geometry:");
+		ZTrace::dumpHex(geometry.constData(), geometry.length());
+	}
+	if (windowState.length())
+	{
+		ZTRACE_RUNTIME("Hex dump of windowState:");
+		ZTrace::dumpHex(windowState.constData(), windowState.length());
+	}
+#endif
 
 	restoreGeometry(geometry);
 	restoreState(windowState);
@@ -399,10 +408,24 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	processingDlg.DestroyWindow();
 	stackingDlg->saveOnClose();
 
+	ZTRACE_RUNTIME("Saving Window State and Position");
+
 	QSettings settings;
 	settings.beginGroup("MainWindow");
-	settings.setValue("geometry", saveGeometry());
+	auto geometry{ saveGeometry() };
+	settings.setValue("geometry", geometry);
+#ifndef NDEBUG	
+	ZTRACE_RUNTIME("Hex dump of geometry:");
+	ZTrace::dumpHex(geometry.constData(), geometry.length());
+#endif 
+
+	auto windowState{ saveState()};
 	settings.setValue("windowState", saveState());
+#ifndef NDEBUG	
+	ZTRACE_RUNTIME("Hex dump of windowState:");
+	ZTrace::dumpHex(windowState.constData(), windowState.length());
+#endif
+
 	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
 	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
