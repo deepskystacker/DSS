@@ -20,7 +20,7 @@ Copyright (c) 2018-2022, David C. Partridge, Tony Cook, Mat Draper,
 Building DeepSkyStacker:
 ------------------------
 
-You will need to install Visual Studio 2019 (16.11.18), Qt 6.4.0 and Qt VS Tools 2.9.1 (rev 6) for
+You will need to install Visual Studio 2019 (16.11.18), Qt 6.4.0 and Qt VS Tools 2.10.1 (rev 2) for
 VS2019.   You can also use VS2022 and Qt VS Tools 2.9.1 (rev 6) for VS2022.
 
 Please **do not** accept VS2022's offer to upgrade the build environment the first time you open the
