@@ -73,3 +73,7 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 28. Change LibRaw supported camera list so that "Olympus OM-1" is recognised as well as "OM Digital Solutions OM-1"
 
 29. Update Libraw to 0.21.1
+
+30. Fix problem with incorrect handling of "No White Balance" and "Use Camera White Balance" settings for RAW files.
+
+31. Fix to SIMD code for Comet Stacking.
