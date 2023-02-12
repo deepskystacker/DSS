@@ -35,8 +35,8 @@ private slots:
 	void on_brightness_textEdited(const QString&);
 	void on_redScale_textEdited(const QString&);
 	void on_blueScale_textEdited(const QString&);
-	void on_noWB_clicked();
-	void on_cameraWB_clicked();
+	void on_noWB_stateChanged();
+	void on_cameraWB_stateChanged();
 	void on_bilinear_clicked();
 	void on_AHD_clicked();
 	void on_rawBayer_clicked();
