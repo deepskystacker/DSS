@@ -631,18 +631,29 @@ void RawDDPSettings::on_blueScale_textEdited(const QString& string)
 	workspace->setValue("RawDDP/BlueScale", value);
 }
 
-void RawDDPSettings::on_noWB_clicked()
+void RawDDPSettings::on_noWB_stateChanged()
 {
+	bool checked{ ui->noWB->isChecked() };
 
-	ui->cameraWB->setChecked(false);		// Can't have Camera WB selected if no WB selected.
-	workspace->setValue("RawDDP/NoWB", true);
-	workspace->setValue("RawDDP/CameraWB", false);
+	workspace->setValue("RawDDP/NoWB", checked);
+
+	if (checked)		// Can't have Camera WB selected if no WB selected.
+	{
+		ui->cameraWB->setChecked(false);
+		workspace->setValue("RawDDP/CameraWB", false);
+	}
 }
-void RawDDPSettings::on_cameraWB_clicked()
+void RawDDPSettings::on_cameraWB_stateChanged()
 {
-	ui->noWB->setChecked(false);			// Can't have no WB selected if Camera WB selected.
-	workspace->setValue("RawDDP/CameraWB", true);
-	workspace->setValue("RawDDP/NoWB", false);
+	bool checked { ui->cameraWB->isChecked() };
+
+	workspace->setValue("RawDDP/CameraWB", checked);
+
+	if (checked)		// Can't have no WB selected if Camera WB selected.
+	{
+		ui->noWB->setChecked(false);
+		workspace->setValue("RawDDP/NoWB", false);
+	}
 }
 
 void RawDDPSettings::on_bilinear_clicked()
