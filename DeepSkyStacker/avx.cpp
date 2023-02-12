@@ -709,8 +709,11 @@ int AvxStacking::pixelPartitioning()
 	{
 		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coord), _mm256_cmpgt_epi32(resultWidthOrHeight, coord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width). Same for y with height.
 	};
+
+	// Lambda for this check: DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut)
 	const auto resultRectCheck = [](const __m256i coordTrunc, const __m256i resultWidthOrHeight, const __m256 coord) -> __m256i
 	{
+		// (pt.x >= 0) && (pt.x <= width-1)  is equivalent to  !(0 > floor(pt.x)) && (width > ceil(pt.x))
 		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coordTrunc), _mm256_cmpgt_epi32(resultWidthOrHeight, _mm256_cvttps_epi32(_mm256_ceil_ps(coord))));
 	};
 
@@ -778,9 +781,10 @@ int AvxStacking::pixelPartitioning()
 			const __m256i xii = _mm256_cvttps_epi32(xtruncated);
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
 
+			// DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut);
 			const auto resultRectMask = _mm256_and_si256(
-				resultRectCheck(xii, resultWidthVec, xcoord),
-				resultRectCheck(yii, resultHeightVec, ycoord)
+				resultRectCheck(xii, resultWidthVec, xcoord), // x-coord check against width
+				resultRectCheck(yii, resultHeightVec, ycoord) // y-coord check against height
 			);
 
 			const __m256i columnMask1 = getColumnOrRowMask(xii, resultWidthVec);
