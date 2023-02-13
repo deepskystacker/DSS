@@ -328,14 +328,20 @@ static void ComputeWeightedAverage(int x, int y, CMemoryBitmap* pBitmap, CMemory
 	};
 };
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap) const
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, ProgressBase* const pProgress) const
 {
 	if (static_cast<bool>(m_pHomBitmap))
 	{
 		std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone() };
 
+		if (pProgress != nullptr)
+			pProgress->Start2(m_lWidth);
+
 		for (int i = 0; i < m_lWidth; ++i)
 		{
+			if (pProgress != nullptr)
+				pProgress->Progress2(i);
+
 			for (int j = 0; j < m_lHeight; ++j)
 			{
 				// Compute the weighted average of a 11x11 area around each pixel
@@ -343,6 +349,9 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap) c
 				ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap.get(), pOutBitmap.get());
 			}
 		}
+
+		if (pProgress != nullptr)
+			pProgress->End2();
 
 		return pOutBitmap;
 	}
@@ -416,7 +425,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 		{
 			// At this point the m_pHomBitmap might be used to smooth out any remaining
 			// star trails with a large filter
-			return SmoothOut(pBitmap.get());
+			return SmoothOut(pBitmap.get(), pProgress);
 		}
 	}
 	DestroyTempFiles();

@@ -945,7 +945,7 @@ protected:
 private:
 	void	DestroyTempFiles();
 	void	InitParts();
-	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap) const;
+	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap, ProgressBase *const pProgress) const;
 
 public:
 	CMultiBitmap() :
