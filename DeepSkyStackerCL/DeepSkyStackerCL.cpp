@@ -2,6 +2,7 @@
 //
 
 #include <stdafx.h>
+#include "DeepSkyStackerCL.h"
 #include "QtProgressConsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
@@ -9,40 +10,236 @@
 #include "FITSUtil.h"
 #include "SetUILanguage.h"
 
-class StackingParams
+DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
+	QCoreApplication(argc, argv),
+	m_consoleOut{ stdout }
 {
-public:
-	StackingParams() :
-		registering{ false },
-		stacking{ false },
-		g_bForceRegister{ false },
-		tiffFormat{ TF_32BITRGBFLOAT },
-		tiffCompression{ TC_NONE },
-		terminalOutputMode{ TERMINAL_OUTPUT_MODE::FORMATTED },
-		saveIntermediate{ false },
-		saveCalibrated{ false },
-		fitsOutput{ false },
-		consoleOut{ stdout }
-	{
-	}
-	bool registering;
-	bool stacking;
-	QString g_strListFile;
-	QString g_strOutputFile;
-	bool g_bForceRegister;
-	TIFFFORMAT tiffFormat;
-	TIFFCOMPRESSION tiffCompression;
-	TERMINAL_OUTPUT_MODE terminalOutputMode;
-	bool saveIntermediate;
-	bool saveCalibrated;
-	bool fitsOutput;
-	QTextStream consoleOut;
-};
-StackingParams params;
 
+}
+
+bool DeepSkyStackerCommandLine::Run()
+{
+	ConsoleOut() << "DeepSkyStacker " << VERSION_DEEPSKYSTACKER << " Command Line" << Qt::endl << Qt::endl;
+	if (!DecodeCommandLine())
+	{
+		OutputCommandLineHelp();
+		return false;
+	}
+
+	StackingTask* task = new StackingTask(this, Process, GetStackingParams(), ConsoleOut());
+	connect(task, SIGNAL(finished()), this, SLOT(quit()));
+	QTimer::singleShot(0, task, SLOT(run()));
+	exec();
+
+	return true;
+}
+
+void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
+{
+	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::FrameList frameList;
+	bool bContinue = true;
+
+	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER) && stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING))
+		consoleOut << "Registering and stacking from file list: ";
+	else if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER))
+		consoleOut << "Registering from file list: ";
+	else
+		consoleOut << "Stacking from file list: ";
+	consoleOut << stackingParams.GetFileList() << Qt::endl;
+
+	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER))
+		consoleOut << "Register again already registered light frames: " << (stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER) ? "yes" : "no") << Qt::endl;
+	consoleOut << Qt::endl;
+
+	frameList.loadFilesFromList(QDir(stackingParams.GetFileList()).filesystemAbsolutePath());
+
+	CAllStackingTasks tasks;
+	frameList.fillTasks(tasks);
+	tasks.ResolveTasks();
+
+	// Open list file
+	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER) || !frameList.countUnregisteredCheckedLightFrames())
+	{
+		// Register checked light frames
+		CRegisterEngine	RegisterEngine;
+		bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
+	}
+	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING) && bContinue)
+	{
+		// Stack register light frames
+		CStackingEngine StackingEngine;
+		std::shared_ptr<CMemoryBitmap> pBitmap;
+
+		StackingEngine.SetSaveIntermediate(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_INTERMEDIATE));
+		StackingEngine.SetSaveCalibrated(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_CALIBRATED));
+		bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
+		if (bContinue)
+		{
+			CString cstrOutputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
+			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT)))
+			{
+				stackingParams.SetOutputFile(QString::fromStdWString(cstrOutputPath.GetString()));
+				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
+				SaveBitmap(stackingParams, pBitmap);
+			}
+		}
+	}
+	consoleOut << Qt::endl;
+}
+
+bool DeepSkyStackerCommandLine::DecodeCommandLine()
+{
+	bool bResult = false;
+	LONG i;
+	const QStringList vCommandLine = arguments();
+
+	// At least 2 arguments (registering and/or stacking + filename)
+	bResult = (vCommandLine.size() >= 2);
+	for (i = 0; i < vCommandLine.size() && bResult; i++)
+	{
+		if (!vCommandLine[i].compare("/s", Qt::CaseInsensitive))
+		{
+			SetOption(StackingParams::eStackingOption::STACKING);
+		}
+		else if (!vCommandLine[i].compare("/SR", Qt::CaseInsensitive))
+		{
+			SetOption(StackingParams::eStackingOption::STACKING);
+			SetOption(StackingParams::eStackingOption::SAVE_INTERMEDIATE);
+		}
+		else if (!vCommandLine[i].compare("/SC", Qt::CaseInsensitive))
+		{
+			SetOption(StackingParams::eStackingOption::STACKING);
+			SetOption(StackingParams::eStackingOption::SAVE_CALIBRATED);
+		}
+		else if (!vCommandLine[i].compare("/FITS", Qt::CaseInsensitive))
+		{
+			SetOption(StackingParams::eStackingOption::FITS_OUTPUT);
+		}
+		else if (!vCommandLine[i].compare("/r", Qt::CaseInsensitive))
+		{
+			SetOption(StackingParams::eStackingOption::REGISTER);
+			if (!vCommandLine[i].compare("/R", Qt::CaseSensitive))
+				SetOption(StackingParams::eStackingOption::FORCE_REGISTER);
+		}
+		else if (!vCommandLine[i].left(3).compare("/O:", Qt::CaseInsensitive))
+		{
+			// Check output file name
+			const QString outputFile(vCommandLine[i].right(vCommandLine[i].length() - 3));
+			GetStackingParams().SetOutputFile(outputFile);
+			if (!checkFileCanBeWrittenTo(outputFile))
+			{
+				ConsoleOut() << "Cannot write to " << outputFile << " (not a valid filename)" << Qt::endl;
+				bResult = false;
+			}
+		}
+		else if (!vCommandLine[i].left(3).compare("/OF", Qt::CaseInsensitive))
+		{
+			QString strFormat(vCommandLine[i].right(vCommandLine[i].length() - 3));
+			if (strFormat == "16" || strFormat == "16i")
+				GetStackingParams().SetTiffFormat(TF_16BITRGB);
+			else if (strFormat == "32" || strFormat == "32i")
+				GetStackingParams().SetTiffFormat(TF_32BITRGB);
+			else if (strFormat == "32r")
+				GetStackingParams().SetTiffFormat(TF_32BITRGBFLOAT);
+			else
+			{
+				ConsoleOut() << "Unrecognized or unsupported bit format " << strFormat << Qt::endl;
+				bResult = false;
+			}
+		}
+		else if (!vCommandLine[i].left(3).compare("/OC", Qt::CaseInsensitive))
+		{
+			QString strCompression(vCommandLine[i].right(vCommandLine[i].length() - 3));
+			if (strCompression == "0")
+				GetStackingParams().SetTiffCompression(TC_NONE);
+			else if (strCompression == "1")
+				GetStackingParams().SetTiffCompression(TC_LZW);
+			else if (strCompression == "2")
+				GetStackingParams().SetTiffCompression(TC_DEFLATE);
+			else
+			{
+				ConsoleOut() << "Unrecognized or unsupported compression format " << strCompression << Qt::endl;
+				bResult = false;
+			}
+		}
+		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
+		{
+			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
+			if (strOutputMode == "0")
+				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
+			else if (strOutputMode == "1")
+				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
+			else if (strOutputMode == "2")
+				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::FORMATTED);
+			else
+			{
+				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
+				bResult = false;
+			}
+		}
+		else
+		{
+			QString fileList(vCommandLine[i]);
+			if (!fileList.isEmpty() && fileExists(fileList))
+				GetStackingParams().SetFileList(fileList);
+			else
+				bResult = false;
+		}
+	}
+
+	if (!(GetStackingParams().IsOptionSet(StackingParams::eStackingOption::STACKING) && 
+		  GetStackingParams().IsOptionSet(StackingParams::eStackingOption::REGISTER)
+		))
+		bResult = false;
+
+	return bResult;
+}
+
+void DeepSkyStackerCommandLine::OutputCommandLineHelp()
+{
+
+	ConsoleOut() << "Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>" << Qt::endl;
+	ConsoleOut() << Qt::endl;
+	ConsoleOut() << " /r	         - Register frames (only the ones not already registered)" << Qt::endl;
+	ConsoleOut() << " /R            - Register frames (even the ones already registered)" << Qt::endl;
+	ConsoleOut() << " /S            - Stack frames" << Qt::endl;
+	ConsoleOut() << " /SR           - Save each registered and calibrated light frame in" << Qt::endl;
+	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << " /SC           - Save each calibrated light frame in" << Qt::endl;
+	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << " /O:<filename> - Output file name (full path)" << Qt::endl;
+	ConsoleOut() << "                 Default is Autosave.tif in the folder of the first light frame" << Qt::endl;
+	ConsoleOut() << "                 (implies /S or /SC)" << Qt::endl;
+	ConsoleOut() << " /OFxxx        - Output format (16 or 32 bits depth)" << Qt::endl;
+	ConsoleOut() << "                 16 or 16i: 16 bits integer" << Qt::endl;
+	ConsoleOut() << "                 32 or 32i: 32 bits integer" << Qt::endl;
+	ConsoleOut() << "                 32r: 32 bits rational (default)" << Qt::endl;
+	ConsoleOut() << " /OCx          - Output file compression" << Qt::endl;
+	ConsoleOut() << "                 0: no compression (default)" << Qt::endl;
+	ConsoleOut() << "                 1: LZW compression" << Qt::endl;
+	ConsoleOut() << "                 2: ZIP (Deflate) compression" << Qt::endl;
+	ConsoleOut() << " /OSx          - Output style" << Qt::endl;
+	ConsoleOut() << "                 0: simple" << Qt::endl;
+	ConsoleOut() << "                 1: colored" << Qt::endl;
+	ConsoleOut() << "                 2: compact (default)" << Qt::endl;
+	ConsoleOut() << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
+	ConsoleOut() << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
+	ConsoleOut() << Qt::endl;
+	ConsoleOut() << "Examples:" << Qt::endl;
+	ConsoleOut() << "DeepSkyStackerCL /r /OS1 c:\\MyLists\\SampleList.txt" << Qt::endl;
+	ConsoleOut() << "  will register all the checked light frames of the list" << Qt::endl;
+	ConsoleOut() << "  and the output on the commandline will be colored" << Qt::endl;
+	ConsoleOut() << Qt::endl;
+	ConsoleOut() << "DeepSkyStackerCL /r /s /OF16i c:\\MyLists\\SampleList.txt" << Qt::endl;
+	ConsoleOut() << "  will register then stack all the checked light frames of the list" << Qt::endl;
+	ConsoleOut() << "  and save the result in a 16 bits integer TIFF file named" << Qt::endl;
+	ConsoleOut() << "  autosave.tif in the folder of the first light frame" << Qt::endl;
+	ConsoleOut() << Qt::endl;
+}
 /* ------------------------------------------------------------------- */
 
-bool fileExists(const QString& path)
+bool DeepSkyStackerCommandLine::fileExists(const QString& path)
 {
 	QFileInfo check_file(path);
 
@@ -51,7 +248,8 @@ bool fileExists(const QString& path)
 		return true;
 	return false;
 }
-bool checkFileCanBeWrittenTo(const QString& path)
+
+bool DeepSkyStackerCommandLine::checkFileCanBeWrittenTo(const QString& path)
 {
 	QFile file(path);
 	if (!file.open(QIODevice::WriteOnly))
@@ -62,176 +260,62 @@ bool checkFileCanBeWrittenTo(const QString& path)
 	return true;
 }
 
-bool DecodeCommandLine(int argc, _TCHAR* argv[])
+void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const std::shared_ptr<CMemoryBitmap> pBitmap)
 {
-	bool bResult = false;
-	LONG i;
-	std::vector<QString> vCommandLine;
+	if (!(pBitmap && !stackingParams.GetOutputFilename().isEmpty()))
+		return;
 
-	for (i = 1; i < argc; i++)
-		vCommandLine.emplace_back(QString::fromWCharArray(argv[i]));
+	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
 
-	// At least 2 arguments (registering and/or stacking + filename)
-	bResult = (vCommandLine.size() >= 2);
-	for (i = 0; i < vCommandLine.size() && bResult; i++)
+	const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(stackingParams.GetOutputFilename()));
+	progress.Start1(strText, 0);
+	progress.Start2(strText, 0);
+
+	bool bMonochrome = pBitmap->IsMonochrome();
+	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT))
 	{
-		if (!vCommandLine[i].compare("/s", Qt::CaseInsensitive))
+		FITSFORMAT fitsformat = FF_UNKNOWN;
+		switch (stackingParams.GetTiffFormat())
 		{
-			params.stacking = true;
+		case TF_16BITRGB:
+			fitsformat = bMonochrome ? FF_16BITGRAY : FF_16BITRGB;
+			break;
+		case TF_32BITRGB:
+			fitsformat = bMonochrome ? FF_32BITGRAY : FF_32BITRGB;
+			break;
+		case TF_32BITRGBFLOAT:
+			fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
+			break;
 		}
-		else if (!vCommandLine[i].compare("/SR", Qt::CaseInsensitive))
-		{
-			params.stacking = true;
-			params.saveIntermediate = true;
-		}
-		else if (!vCommandLine[i].compare("/SC", Qt::CaseInsensitive))
-		{
-			params.stacking = true;
-			params.saveCalibrated = true;
-		}
-		else if (!vCommandLine[i].compare("/FITS", Qt::CaseInsensitive))
-		{
-			params.fitsOutput = true;
-		}
-		else if (!vCommandLine[i].compare("/r", Qt::CaseInsensitive))
-		{
-			params.registering = true;
-			if (!vCommandLine[i].compare("/R", Qt::CaseSensitive))
-				params.g_bForceRegister = true;
-		}
-		else if (!vCommandLine[i].left(3).compare("/O:", Qt::CaseInsensitive))
-		{
-			// Check output file name
-			params.g_strOutputFile = vCommandLine[i].right(vCommandLine[i].length() - 3);
-			if (!checkFileCanBeWrittenTo(params.g_strOutputFile))
-			{
-				params.consoleOut << "Cannot write to " << params.g_strOutputFile << " (not a valid filename)" << Qt::endl;
-				bResult = false;
-			}
-		}
-		else if (!vCommandLine[i].left(3).compare("/OF", Qt::CaseInsensitive))
-		{
-			QString strFormat(vCommandLine[i].right(vCommandLine[i].length() - 3));
-			if (strFormat == "16" || strFormat == "16i")
-				params.tiffFormat = TF_16BITRGB;
-			else if (strFormat == "32" || strFormat == "32i")
-				params.tiffFormat = TF_32BITRGB;
-			else if (strFormat == "32r")
-				params.tiffFormat = TF_32BITRGBFLOAT;
-			else
-			{
-				params.consoleOut << "Unrecognized or unsupported bit format " << strFormat << Qt::endl;
-				bResult = false;
-			}
-		}
-		else if (!vCommandLine[i].left(3).compare("/OC", Qt::CaseInsensitive))
-		{
-			QString strCompression(vCommandLine[i].right(vCommandLine[i].length() - 3));
-			if (strCompression == "0")
-				params.tiffCompression = TC_NONE;
-			else if (strCompression == "1")
-				params.tiffCompression = TC_LZW;
-			else if (strCompression == "2")
-				params.tiffCompression = TC_DEFLATE;
-			else
-			{
-				params.consoleOut << "Unrecognized or unsupported compression format " << strCompression << Qt::endl;
-				bResult = false;
-			}
-		}
-		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
-		{
-			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
-			if (strOutputMode == "0")
-				params.terminalOutputMode = TERMINAL_OUTPUT_MODE::BASIC;
-			else if (strOutputMode == "1")
-				params.terminalOutputMode = TERMINAL_OUTPUT_MODE::COLOURED;
-			else if (strOutputMode == "2")
-				params.terminalOutputMode = TERMINAL_OUTPUT_MODE::FORMATTED;
-			else
-			{
-				params.consoleOut << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
-				bResult = false;
-			}
-		}
-		else
-		{
-			if (fileExists(vCommandLine[i]))
-				params.g_strListFile = vCommandLine[i];
-			else
-				bResult = false;
-		}
+		WriteFITS(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, fitsformat, nullptr);
 	}
-
-	if (!params.stacking && !params.registering)
-		bResult = false;
-
-	if (params.g_strListFile.isEmpty())
-		bResult = false;
-
-	return bResult;
-}
-
-/* ------------------------------------------------------------------- */
-
-void SaveBitmap(const std::shared_ptr<CMemoryBitmap> pBitmap)
-{
-	if (pBitmap && !params.g_strOutputFile.isEmpty())
+	else
 	{
-		bool bMonochrome;
-		DSS::ProgressConsole progress(params.terminalOutputMode);
-
-		const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(params.g_strOutputFile));
-		progress.Start1(strText, 0);
-		progress.Start2(strText, 0);
-
-		bMonochrome = pBitmap->IsMonochrome();
-
-		if (params.fitsOutput)
+		TIFFFORMAT tiffFormat = stackingParams.GetTiffFormat();
+		if (bMonochrome)
 		{
-			FITSFORMAT fitsformat = FF_UNKNOWN;
-			switch (params.tiffFormat)
+			switch (tiffFormat)
 			{
 			case TF_16BITRGB:
-				fitsformat = bMonochrome ? FF_16BITGRAY : FF_16BITRGB;
+				tiffFormat = TF_16BITGRAY;
 				break;
 			case TF_32BITRGB:
-				fitsformat = bMonochrome ? FF_32BITGRAY : FF_32BITRGB;
+				tiffFormat = TF_32BITGRAY;
 				break;
 			case TF_32BITRGBFLOAT:
-				fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
+			default:
+				tiffFormat = TF_32BITGRAYFLOAT;
 				break;
 			}
-			WriteFITS(params.g_strOutputFile.toStdWString().c_str(), pBitmap.get(), &progress, fitsformat, nullptr);
 		}
-		else
-		{
-			if (bMonochrome)
-			{
-				switch (params.tiffFormat)
-				{
-				case TF_16BITRGB:
-					params.tiffFormat = TF_16BITGRAY;
-					break;
-				case TF_32BITRGB:
-					params.tiffFormat = TF_32BITGRAY;
-					break;
-				case TF_32BITRGBFLOAT:
-					params.tiffFormat = TF_32BITGRAYFLOAT;
-					break;
-				}
-			}
-			WriteTIFF(params.g_strOutputFile.toStdWString().c_str(), pBitmap.get(), &progress, params.tiffFormat, params.tiffCompression, nullptr);
-		}
+		WriteTIFF(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, tiffFormat, stackingParams.GetTiffCompression(), nullptr);
 	}
 }
 
 /* ------------------------------------------------------------------- */
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, char* argv[])
 {
-	SetUILanguage();
-
 #ifndef NOGDIPLUS
 	GdiplusStartupInput		gdiplusStartupInput;
 	GdiplusStartupOutput	gdiSO;
@@ -244,103 +328,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	gdiSO.NotificationHook(&gdiHookToken);
 #endif
 
-	std::vector<QString>	vCommandLine;
+	SetUILanguage();
+	DeepSkyStackerCommandLine process(argc, argv);
 
-	params.consoleOut << "DeepSkyStacker " << VERSION_DEEPSKYSTACKER << " Command Line" << Qt::endl << Qt::endl;
-
-	// Decode command line
-	if (!DecodeCommandLine(argc, argv))
-	{
-		params.consoleOut << "Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>" << Qt::endl;
-		params.consoleOut << Qt::endl;
-		params.consoleOut << " /r	         - Register frames (only the ones not already registered)" << Qt::endl;
-		params.consoleOut << " /R            - Register frames (even the ones already registered)" << Qt::endl;
-		params.consoleOut << " /S            - Stack frames" << Qt::endl;
-		params.consoleOut << " /SR           - Save each registered and calibrated light frame in" << Qt::endl;
-		params.consoleOut << "                 a TIFF files (implies /S)" << Qt::endl;
-		params.consoleOut << " /SC           - Save each calibrated light frame in" << Qt::endl;
-		params.consoleOut << "                 a TIFF files (implies /S)" << Qt::endl;
-		params.consoleOut << " /O:<filename> - Output file name (full path)" << Qt::endl;
-		params.consoleOut << "                 Default is Autosave.tif in the folder of the first light frame" << Qt::endl;
-		params.consoleOut << "                 (implies /S or /SC)" << Qt::endl;
-		params.consoleOut << " /OFxxx        - Output format (16 or 32 bits depth)" << Qt::endl;
-		params.consoleOut << "                 16 or 16i: 16 bits integer" << Qt::endl;
-		params.consoleOut << "                 32 or 32i: 32 bits integer" << Qt::endl;
-		params.consoleOut << "                 32r: 32 bits rational (default)" << Qt::endl;
-		params.consoleOut << " /OCx          - Output file compression" << Qt::endl;
-		params.consoleOut << "                 0: no compression (default)" << Qt::endl;
-		params.consoleOut << "                 1: LZW compression" << Qt::endl;
-		params.consoleOut << "                 2: ZIP (Deflate) compression" << Qt::endl;
-		params.consoleOut << " /OSx          - Output style" << Qt::endl;
-		params.consoleOut << "                 0: simple" << Qt::endl;
-		params.consoleOut << "                 1: colored" << Qt::endl;
-		params.consoleOut << "                 2: compact (default)" << Qt::endl;
-		params.consoleOut << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
-		params.consoleOut << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
-		params.consoleOut << Qt::endl;
-		params.consoleOut << "Examples:" << Qt::endl;
-		params.consoleOut << "DeepSkyStackerCL /r /OS1 c:\\MyLists\\SampleList.txt" << Qt::endl;
-		params.consoleOut << "  will register all the checked light frames of the list" << Qt::endl;
-		params.consoleOut << "  and the output on the commandline will be colored" << Qt::endl;
-		params.consoleOut << Qt::endl;
-		params.consoleOut << "DeepSkyStackerCL /r /s /OF16i c:\\MyLists\\SampleList.txt" << Qt::endl;
-		params.consoleOut << "  will register then stack all the checked light frames of the list" << Qt::endl;
-		params.consoleOut << "  and save the result in a 16 bits integer TIFF file named" << Qt::endl;
-		params.consoleOut << "  autosave.tif in the folder of the first light frame" << Qt::endl;
-		params.consoleOut << Qt::endl;
-	}
-	else
-	{
-		DSS::ProgressConsole progress(params.terminalOutputMode);
-		DSS::FrameList frameList;
-		bool bContinue = true;
-
-		if (params.registering && params.stacking)
-			params.consoleOut << "Registering and stacking: " << params.g_strListFile << " list" << Qt::endl;
-		else if (params.registering)
-			params.consoleOut << "Registering: " << params.g_strListFile << " list" << Qt::endl;
-		else
-			params.consoleOut << "Stacking: " << params.g_strListFile << " list" << Qt::endl;
-
-		if (params.registering)
-			params.consoleOut << "Register again already registered light frames: " << (params.g_bForceRegister ? "yes" : "no") << Qt::endl;
-		params.consoleOut << Qt::endl;
-
-		frameList.loadFilesFromList(QDir(params.g_strListFile).filesystemAbsolutePath());
-
-		CAllStackingTasks tasks;
-		frameList.fillTasks(tasks);
-		tasks.ResolveTasks();
-
-		// Open list file
-		if (params.registering || !frameList.countUnregisteredCheckedLightFrames())
-		{
-			// Register checked light frames
-			CRegisterEngine	RegisterEngine;
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, params.g_bForceRegister, &progress);
-		}
-		if (params.stacking && bContinue)
-		{
-			// Stack register light frames
-			CStackingEngine StackingEngine;
-			std::shared_ptr<CMemoryBitmap> pBitmap;
-
-			StackingEngine.SetSaveIntermediate(params.saveIntermediate);
-			StackingEngine.SetSaveCalibrated(params.saveCalibrated);
-			bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
-			if (bContinue)
-			{
-				CString cstrOutputPath(params.g_strOutputFile.toStdWString().c_str());
-				if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, params.g_strListFile.toStdWString().c_str(), !params.fitsOutput))
-				{
-					params.g_strOutputFile = QString::fromStdWString(cstrOutputPath.GetString());
-					StackingEngine.WriteDescription(tasks, params.g_strOutputFile.toStdWString().c_str());
-					SaveBitmap(pBitmap);
-				}
-			}
-		}
-	}
-	params.consoleOut << Qt::endl;
+	process.Run();
 
 #ifndef NOGDIPLUS
 	// Shutdown GDI+

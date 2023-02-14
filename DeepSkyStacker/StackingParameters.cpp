@@ -66,7 +66,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	//
 	darkFactorValidator = new QDoubleValidator(0.0, 5.0, 4, this);
 	ui->darkMultiplicationFactor->setValidator(darkFactorValidator);
-	iterationValidator = new QIntValidator(0, 5, this);
+	iterationValidator = new QRegularExpressionValidator(QRegularExpression("([1-9]|1[0-9]|2[0])"), ui->iterations);
 	ui->iterations->setValidator(iterationValidator);
 	kappaValidator = new QDoubleValidator(0.0, 5.0, 2, this);
 	ui->kappa->setValidator(kappaValidator);

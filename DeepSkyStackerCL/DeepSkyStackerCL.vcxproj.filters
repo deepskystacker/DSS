@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DeepSkyStackerCL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -149,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
       <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepSkyStackerCL.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -592,6 +592,9 @@
   <ItemGroup>
     <QtMoc Include="..\DeepSkyStacker\ImageListModel.h">
       <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="DeepSkyStackerCL.h">
+      <Filter>Source Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
