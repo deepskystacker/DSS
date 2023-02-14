@@ -35,6 +35,12 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBa
 				constexpr double Maxvalue = double{ std::numeric_limits<std::uint16_t>::max() };
 				const double fMultiplier = m_fMultiplier * 256.0;
 
+				if (redLocalHist.empty()) {
+					redLocalHist.resize(HistogramSize(), 0);
+					greenLocalHist.resize(HistogramSize(), 0);
+					blueLocalHist.resize(HistogramSize(), 0);
+				}
+
 				if (pProgress != nullptr && omp_get_thread_num() == 0) // Only master thread
 					pProgress->Progress2(startNdx);
 
