@@ -537,6 +537,7 @@ namespace DSS
 
 		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
+		connect(&imageLoader, SIGNAL(imageLoadFailed()), this, SLOT(imageLoadFailed()));
 		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
 		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
 		//
@@ -1205,92 +1206,109 @@ namespace DSS
 	{
 		std::shared_ptr<CMemoryBitmap>	pBitmap;
 		std::shared_ptr<QImage>	pImage;
-
-		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
+		try
 		{
-			pictureList->tableView->setEnabled(true);
-			//
-			// Disabling the tableview resulted in it loosing focus
-			// so put the focus back
-			//
-			pictureList->tableView->setFocus(Qt::OtherFocusReason);
-			//
-			// The image we want is available in the cache
-			//
-			m_LoadedImage.m_Image = pImage;
-			m_LoadedImage.m_pBitmap = pBitmap;
-			if (m_GammaTransformation.IsInitialized())
-				ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
-
-			if (frameList.isLightFrame(m_strShowFile))
+			if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 			{
-				editStarsPtr->setLightFrame(m_strShowFile);
-				editStarsPtr->setBitmap(pBitmap);
-				if (pToolBar->rectAction->isChecked())
-					editStarsPtr->rectButtonPressed();
-				else if (pToolBar->starsAction->isChecked())
-					editStarsPtr->starsButtonPressed();
-				else if (pToolBar->cometAction->isChecked())
-					editStarsPtr->cometButtonPressed();
+				pictureList->tableView->setEnabled(true);
+				//
+				// Disabling the tableview resulted in it loosing focus
+				// so put the focus back
+				//
+				pictureList->tableView->setFocus(Qt::OtherFocusReason);
+				//
+				// The image we want is available in the cache
+				//
+				m_LoadedImage.m_Image = pImage;
+				m_LoadedImage.m_pBitmap = pBitmap;
+				if (m_GammaTransformation.IsInitialized())
+					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 
-				pToolBar->setVisible(true); pToolBar->setEnabled(true);
+				if (frameList.isLightFrame(m_strShowFile))
+				{
+					editStarsPtr->setLightFrame(m_strShowFile);
+					editStarsPtr->setBitmap(pBitmap);
+					if (pToolBar->rectAction->isChecked())
+						editStarsPtr->rectButtonPressed();
+					else if (pToolBar->starsAction->isChecked())
+						editStarsPtr->starsButtonPressed();
+					else if (pToolBar->cometAction->isChecked())
+						editStarsPtr->cometButtonPressed();
+
+					pToolBar->setVisible(true); pToolBar->setEnabled(true);
+				}
+				else
+				{
+					pToolBar->setVisible(false); pToolBar->setEnabled(false);
+					editStarsPtr->setBitmap(nullptr);
+				};
+
+				CBilinearParameters		Transformation;
+				VOTINGPAIRVECTOR		vVotedPairs;
+
+				if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
+					editStarsPtr->setTransformation(Transformation, vVotedPairs);
+				ui->information->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+				ui->information->setText(m_strShowFile);
+			}
+			else if (!m_strShowFile.isEmpty())
+			{
+				pictureList->tableView->setEnabled(false);
+				//
+				// Display the "Loading filename" with red background gradient while loading in background
+				//
+				ui->information->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
+				ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
+					.arg(m_strShowFile));
+				//
+				// No longer interested in signals from the imageView object
+				//
+				ui->picture->disconnect(editStarsPtr.get(), nullptr);
+				ui->picture->disconnect(selectRectPtr.get(), nullptr);
+
+				pToolBar->setVisible(false); pToolBar->setEnabled(false);
+				editStarsPtr->setBitmap(nullptr);
 			}
 			else
 			{
-				pToolBar->setVisible(false); pToolBar->setEnabled(false);
-				editStarsPtr->setBitmap(nullptr);
-			};
-
-			CBilinearParameters		Transformation;
-			VOTINGPAIRVECTOR		vVotedPairs;
-
-			if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
-				editStarsPtr->setTransformation(Transformation, vVotedPairs);
-			ui->information->setStyleSheet(
+				//
+				// Display the blue gradient with no text
+				//
+				ui->information->setStyleSheet(
 					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-			ui->information->setText(m_strShowFile);
-		}
-		else if (!m_strShowFile.isEmpty())
-		{
-			pictureList->tableView->setEnabled(false);
-			//
-			// Display the "Loading filename" with red background gradient while loading in background
-			//
-			ui->information->setStyleSheet(
-				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-				"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
-			ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-				.arg(m_strShowFile));
-			//
-			// No longer interested in signals from the imageView object
-			//
-			ui->picture->disconnect(editStarsPtr.get(), nullptr);
-			ui->picture->disconnect(selectRectPtr.get(), nullptr);
+				ui->information->setText("");
+				//
+				// No longer interested in signals from the imageView object
+				//
+				ui->picture->disconnect(editStarsPtr.get(), nullptr);
+				ui->picture->disconnect(selectRectPtr.get(), nullptr);
 
-			pToolBar->setVisible(false); pToolBar->setEnabled(false);
-			editStarsPtr->setBitmap(nullptr);
+				pToolBar->setVisible(false); pToolBar->setEnabled(false);
+				editStarsPtr->setBitmap(nullptr);
+			}
 		}
-		else
+		catch ([[maybe_unused]] ZAccessError& ze)
 		{
-			//
-			// Display the blue gradient with no text
-			//
-			ui->information->setStyleSheet(
-				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-				"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-			ui->information->setText("");
-			//
-			// No longer interested in signals from the imageView object
-			//
-			ui->picture->disconnect(editStarsPtr.get(), nullptr);
-			ui->picture->disconnect(selectRectPtr.get(), nullptr);
-		
-			pToolBar->setVisible(false); pToolBar->setEnabled(false);
-			editStarsPtr->setBitmap(nullptr);
-		};
+			QApplication::beep();
+			QMessageBox::warning(this,
+				"DeepSkyStacker",
+				tr("%1 does not exist or is not a file").arg(m_strShowFile));
+		}
 	};
+
+	void StackingDlg::imageLoadFailed()
+	{
+		QApplication::beep();
+		QMessageBox::warning(this,
+			"DeepSkyStacker",
+			tr("Failed to load image %1").arg(m_strShowFile));
+	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
 	{
@@ -1318,7 +1336,7 @@ namespace DSS
 		editStarsPtr->saveRegisterSettings();
 		pToolBar->setSaveEnabled(false);
 		// Update the list with the new info
-		//frameList.updateItemScores(m_strShowFile); //TODO
+		frameList.updateItemScores(m_strShowFile);
 	}
 
 	void StackingDlg::pictureChanged()

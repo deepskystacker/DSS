@@ -83,6 +83,7 @@ public:
 
 signals:
 	void imageLoaded();
+	void imageLoadFailed();
 };
 
 class ThreadLoader : public QObject, public QRunnable

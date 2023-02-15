@@ -153,6 +153,7 @@ namespace DSS
 	public slots:
 		void setSelectionRect(const QRectF& rect);
 		void imageLoad();
+		void imageLoadFailed();
 		
 		void toolBar_rectButtonPressed(bool checked);
 		void toolBar_starsButtonPressed(bool checked);

@@ -56,9 +56,14 @@ void ThreadLoader::run()
 			li.fileName = imageLoader->fileToLoad;
 			li.lastUse = 0;
 			imageLoader->imageVector.push_back(li);
-		};
-		emit(imageLoader->imageLoaded());
-	};
+			emit(imageLoader->imageLoaded());
+		}
+		else
+		{
+			emit(imageLoader->imageLoadFailed());
+		}
+
+	}
 }
 
 void ImageLoader::clearCache()
@@ -69,8 +74,17 @@ void ImageLoader::clearCache()
 
 bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
 {
-	bool found(false), result(false);
 	ZFUNCTRACE_RUNTIME();
+
+	fs::path p{ fileName.toStdU16String() };
+	
+	auto type{ status(p).type() };
+
+	if (fs::file_type::regular != type)
+	{
+		ZTHROW (ZAccessError("File not found"));
+	}
+	bool found(false), result(false);
 	std::lock_guard lock(mutex);
 
 	//

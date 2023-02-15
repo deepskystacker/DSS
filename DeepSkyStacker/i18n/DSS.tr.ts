@@ -347,7 +347,7 @@ Add the file lists you want to stack and click OK to start the stacking processe
 <context>
     <name>BitmapExt</name>
     <message>
-        <location filename="../CosmeticEngine.cpp" line="511"/>
+        <location filename="../CosmeticEngine.cpp" line="499"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>Kozmetik uyguluyor - Sıcak Gözeler (Pikseller)</translation>
@@ -471,23 +471,23 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
 <context>
     <name>CosmeticEngine</name>
     <message>
-        <location filename="../CosmeticEngine.cpp" line="514"/>
-        <location filename="../CosmeticEngine.cpp" line="543"/>
-        <location filename="../CosmeticEngine.cpp" line="599"/>
-        <location filename="../CosmeticEngine.cpp" line="628"/>
+        <location filename="../CosmeticEngine.cpp" line="502"/>
+        <location filename="../CosmeticEngine.cpp" line="531"/>
+        <location filename="../CosmeticEngine.cpp" line="587"/>
+        <location filename="../CosmeticEngine.cpp" line="616"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
         <translation>Orta değer Filtreli Görüntüyü Yaratıyor</translation>
     </message>
     <message>
-        <location filename="../CosmeticEngine.cpp" line="538"/>
-        <location filename="../CosmeticEngine.cpp" line="623"/>
+        <location filename="../CosmeticEngine.cpp" line="526"/>
+        <location filename="../CosmeticEngine.cpp" line="611"/>
         <source>Applying cosmetic - Cold Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
         <translation>Kozmetik uyguluyor - Soğuk Pikseller</translation>
     </message>
     <message>
-        <location filename="../CosmeticEngine.cpp" line="596"/>
+        <location filename="../CosmeticEngine.cpp" line="584"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>Kozmetik uyguluyor - Sıcak Gözeler (Pikseller)</translation>
@@ -855,22 +855,22 @@ veya yakınlaştırmak için fare tekerleğini kullanın
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="72"/>
+        <location filename="../QtProgressDlg.cpp" line="193"/>
         <source> Processor Used</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="74"/>
+        <location filename="../QtProgressDlg.cpp" line="195"/>
         <source> Processors Used</source>
         <translation> işleyici kullanıldı</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="78"/>
+        <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are You Sure?</source>
         <translation>Emin misin?</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="78"/>
+        <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
     </message>
@@ -878,12 +878,12 @@ veya yakınlaştırmak için fare tekerleğini kullanın
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="787"/>
+        <location filename="../StackingDlg.cpp" line="788"/>
         <source>Rename group</source>
         <translation>Grubu Yeniden Adlandır</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="876"/>
+        <location filename="../StackingDlg.cpp" line="877"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -893,43 +893,43 @@ Bu işlem geri alınamaz veya iptal edilemez.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="953"/>
+        <location filename="../StackingDlg.cpp" line="954"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Referans Kare olarak Kullan</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="957"/>
+        <location filename="../StackingDlg.cpp" line="958"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>İşaretle</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="959"/>
+        <location filename="../StackingDlg.cpp" line="960"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="962"/>
+        <location filename="../StackingDlg.cpp" line="963"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Listeden Kaldır</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="965"/>
+        <location filename="../StackingDlg.cpp" line="966"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Panoya Kopyala</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="968"/>
+        <location filename="../StackingDlg.cpp" line="969"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Sürücüden sil...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="690"/>
+        <location filename="../StackingDlg.cpp" line="691"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -940,88 +940,98 @@ Seçili satırları kaldırmak (silmemek) için Sil tuşu
 Menüyü görüntülemek için farenin sağ tuşu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1941"/>
+        <location filename="../StackingDlg.cpp" line="1301"/>
+        <source>%1 does not exist or is not a file</source>
+        <translation>%1 mevcut değil veya bir dosya değil</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1310"/>
+        <source>Failed to load image %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1959"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="697"/>
+        <location filename="../StackingDlg.cpp" line="698"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="699"/>
-        <location filename="../StackingDlg.cpp" line="1081"/>
+        <location filename="../StackingDlg.cpp" line="700"/>
+        <location filename="../StackingDlg.cpp" line="1082"/>
         <location filename="../group.h" line="72"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
         <translation>Ana grup</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1264"/>
+        <location filename="../StackingDlg.cpp" line="1266"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Yükleniyor %1</translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="519"/>
-        <location filename="../StackingDlg.cpp" line="1341"/>
+        <location filename="../StackingDlg.cpp" line="1359"/>
         <source>File %1 has already been loaded in group %2 (%3)</source>
         <translation>%1 dosyası zaten %2 (%3) grubuna yüklendi</translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="619"/>
+        <location filename="../FrameList.cpp" line="620"/>
         <source>A Master Dark must be the only Dark frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="624"/>
+        <location filename="../FrameList.cpp" line="625"/>
         <source>A Master Dark Flat must be the only Dark Flat frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="629"/>
+        <location filename="../FrameList.cpp" line="630"/>
         <source>A Master Flat must be the only Flat frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="634"/>
+        <location filename="../FrameList.cpp" line="635"/>
         <source>A Master Offset must be the only Offset frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1376"/>
+        <location filename="../StackingDlg.cpp" line="1394"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Görüntü Dosyalarını aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1481"/>
+        <location filename="../StackingDlg.cpp" line="1499"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Siyah Dosyaları aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1585"/>
+        <location filename="../StackingDlg.cpp" line="1603"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Siyah Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1689"/>
+        <location filename="../StackingDlg.cpp" line="1707"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1793"/>
+        <location filename="../StackingDlg.cpp" line="1811"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Ofset Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1954"/>
+        <location filename="../StackingDlg.cpp" line="1972"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -1035,37 +1045,37 @@ Siyah Düz Kareler: %4
 Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2034"/>
+        <location filename="../StackingDlg.cpp" line="2054"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Başka Bir Dosya Listesi Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2213"/>
+        <location filename="../StackingDlg.cpp" line="2233"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Sürüm %s indirilebilir.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2229"/>
+        <location filename="../StackingDlg.cpp" line="2249"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Sürüm kontrolü İnternet hata kodu %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2348"/>
+        <location filename="../StackingDlg.cpp" line="2368"/>
         <source>Total registering time: %1 %2</source>
         <translation>Toplam kayıt süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2367"/>
+        <location filename="../StackingDlg.cpp" line="2387"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Hizalama için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2428"/>
+        <location filename="../StackingDlg.cpp" line="2448"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1075,19 +1085,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker&apos;ın işlem sırasında bu klasörlere dosya oluşturması gerekiyor.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2469"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Seçilen resimler uyumlu değil: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2453"/>
+        <location filename="../StackingDlg.cpp" line="2473"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>İstiflemek için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2501"/>
+        <location filename="../StackingDlg.cpp" line="2521"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1097,18 +1107,18 @@ Do you want to save the changes?</source>
 Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2617"/>
+        <location filename="../StackingDlg.cpp" line="2637"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Toplam istifleme süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2649"/>
+        <location filename="../StackingDlg.cpp" line="2669"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2711"/>
+        <location filename="../StackingDlg.cpp" line="2733"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1210,6 +1220,39 @@ Davranışı değiştirmek için sağ tıklayın.</translation>
     </message>
 </context>
 <context>
+    <name>DSSProgressDlg</name>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Tahmin edilen kalan süre: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
+    </message>
+</context>
+<context>
     <name>DarkFrame</name>
     <message>
         <location filename="../DarkFrame.cpp" line="601"/>
@@ -1224,27 +1267,27 @@ Davranışı değiştirmek için sağ tıklayın.</translation>
         <translation>Orta değer Filtreli Görüntüyü Yaratıyor</translation>
     </message>
     <message>
-        <location filename="../DarkFrame.cpp" line="1733"/>
+        <location filename="../DarkFrame.cpp" line="1727"/>
         <source>Detecting Hot Pixels (1/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS1</comment>
         <translation>Sıcak gözeleri (pikselleri) tespit ediyor (1/2)</translation>
     </message>
     <message>
-        <location filename="../DarkFrame.cpp" line="1743"/>
+        <location filename="../DarkFrame.cpp" line="1737"/>
         <source>Detecting Hot Pixels (2/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS2</comment>
         <translation>Sıcak gözeleri (pikselleri) tespit ediyor (2/2)</translation>
     </message>
     <message>
-        <location filename="../DarkFrame.cpp" line="1933"/>
+        <location filename="../DarkFrame.cpp" line="1927"/>
         <source>Optimizing Dark Matching</source>
         <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
         <translation>Siyah Eşleşmesini En Uygun Hâle Getiriyor</translation>
     </message>
     <message>
-        <location filename="../DarkFrame.cpp" line="1940"/>
-        <location filename="../DarkFrame.cpp" line="1950"/>
-        <location filename="../DarkFrame.cpp" line="1959"/>
+        <location filename="../DarkFrame.cpp" line="1934"/>
+        <location filename="../DarkFrame.cpp" line="1944"/>
+        <location filename="../DarkFrame.cpp" line="1953"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Siyah Kareyi çıkartıyor</translation>
@@ -1268,7 +1311,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 (Bu seçeneği daha sonra Hakkında kısmından uygulayabilir veya kaldırabilirsiniz)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="382"/>
+        <location filename="../DeepSkyStacker.cpp" line="399"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
@@ -1851,36 +1894,6 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="222"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="225"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="228"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Tahmin edilen kalan süre: %1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="231"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="238"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
-    </message>
 </context>
 <context>
     <name>RawDDPSettings</name>
@@ -2283,13 +2296,13 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <translation>Hizalanıyor %1 (%2 yıldız)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1050"/>
+        <location filename="../RegisterEngine.cpp" line="1044"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Parlaklığı hesaplıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1230"/>
+        <location filename="../RegisterEngine.cpp" line="1224"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2297,7 +2310,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1234"/>
+        <location filename="../RegisterEngine.cpp" line="1228"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2305,25 +2318,25 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1365"/>
+        <location filename="../RegisterEngine.cpp" line="1359"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>%1 deki Kalibre edilen resim kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1395"/>
+        <location filename="../RegisterEngine.cpp" line="1389"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Görüntüleri hizalıyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1445"/>
+        <location filename="../RegisterEngine.cpp" line="1439"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Hizalanıyor %1&apos;si (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1456"/>
+        <location filename="../RegisterEngine.cpp" line="1450"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2331,7 +2344,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1458"/>
+        <location filename="../RegisterEngine.cpp" line="1452"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -2462,13 +2475,13 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <translation>Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="285"/>
+        <location filename="../RegisterSettings.cpp" line="288"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Hizalanıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="292"/>
+        <location filename="../RegisterSettings.cpp" line="295"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 yıldız</translation>
@@ -3228,82 +3241,82 @@ Bunları kaydetmek ister misiniz?</translation>
 <context>
     <name>StackingEngine</name>
     <message>
-        <location filename="../StackingEngine.cpp" line="761"/>
-        <location filename="../StackingEngine.cpp" line="822"/>
+        <location filename="../StackingEngine.cpp" line="758"/>
+        <location filename="../StackingEngine.cpp" line="815"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>Ofsetleri hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1114"/>
+        <location filename="../StackingEngine.cpp" line="1121"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>Resmin en son hali hesaplanıyor (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1215"/>
+        <location filename="../StackingEngine.cpp" line="1222"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>İstifleme - Bayer Ayarla - Ayarlamayı Hesapla</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1225"/>
+        <location filename="../StackingEngine.cpp" line="1232"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>Ayarlamayı hesapla %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1280"/>
+        <location filename="../StackingEngine.cpp" line="1287"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>İstifleme - Bayer Ayarla - Ayarları Uygula</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1282"/>
+        <location filename="../StackingEngine.cpp" line="1289"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>Maksimum ayarlamayı hesapla</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1317"/>
+        <location filename="../StackingEngine.cpp" line="1324"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>Ayarları uyguluyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1388"/>
+        <location filename="../StackingEngine.cpp" line="1395"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>%1 deki hizalanan ve kalibre edilen görüntüler kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1435"/>
-        <location filename="../StackingEngine.cpp" line="1547"/>
-        <location filename="../StackingEngine.cpp" line="1593"/>
+        <location filename="../StackingEngine.cpp" line="1442"/>
+        <location filename="../StackingEngine.cpp" line="1554"/>
+        <location filename="../StackingEngine.cpp" line="1600"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>%1 deki Kalibre edilen resim kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1819"/>
+        <location filename="../StackingEngine.cpp" line="1820"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>Uyabilen Homojenlikle Yönetilme (AHD) ile ara değerini hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1862"/>
+        <location filename="../StackingEngine.cpp" line="1863"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>Entropiyi hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1874"/>
+        <location filename="../StackingEngine.cpp" line="1875"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>Arkaplan Kalibrasyon Parametrelerini Hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2100"/>
+        <location filename="../StackingEngine.cpp" line="2101"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -3311,8 +3324,8 @@ Only %3 are available on this drive.</source>
 Kullanılacak olan %2 sürücüsünde sadece %3 boş alan var.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2101"/>
-        <location filename="../StackingEngine.cpp" line="2407"/>
+        <location filename="../StackingEngine.cpp" line="2102"/>
+        <location filename="../StackingEngine.cpp" line="2410"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3320,13 +3333,13 @@ Do you really want to continue?</source>
 Devam etmek istediğinize emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2252"/>
+        <location filename="../StackingEngine.cpp" line="2255"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>İstifleniyor %1 (toplam %2) - Ofset  [%3,%4] - Açı : %5° </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2260"/>
+        <location filename="../StackingEngine.cpp" line="2263"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3334,7 +3347,7 @@ Devam etmek istediğinize emin misiniz?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2262"/>
+        <location filename="../StackingEngine.cpp" line="2265"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3342,7 +3355,7 @@ Devam etmek istediğinize emin misiniz?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2406"/>
+        <location filename="../StackingEngine.cpp" line="2409"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3356,7 +3369,7 @@ ve DeepSkyStacker&apos;a referans kare ve diğerleri arasında dönüşüm bulab
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2417"/>
+        <location filename="../StackingEngine.cpp" line="2420"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>İstifleme</translation>
@@ -3653,21 +3666,21 @@ nispeten standart sapmadan (%1).</translation>
         <translation>Siyah kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="510"/>
-        <location filename="../StackingTasks.cpp" line="692"/>
-        <location filename="../StackingTasks.cpp" line="1128"/>
+        <location filename="../StackingTasks.cpp" line="509"/>
+        <location filename="../StackingTasks.cpp" line="687"/>
+        <location filename="../StackingTasks.cpp" line="1120"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Ofset Kareyi çıkarıyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="533"/>
+        <location filename="../StackingTasks.cpp" line="530"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Ana siyah kareyi hesaplıyor (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="551"/>
+        <location filename="../StackingTasks.cpp" line="548"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -3675,7 +3688,7 @@ nispeten standart sapmadan (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="736"/>
+        <location filename="../StackingTasks.cpp" line="729"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -3683,7 +3696,7 @@ nispeten standart sapmadan (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1204"/>
+        <location filename="../StackingTasks.cpp" line="1185"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -3691,7 +3704,7 @@ nispeten standart sapmadan (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="560"/>
+        <location filename="../StackingTasks.cpp" line="557"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Ana Siyah kaydediliyor</translation>
@@ -3705,67 +3718,67 @@ nispeten standart sapmadan (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="657"/>
+        <location filename="../StackingTasks.cpp" line="654"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Ana Siyah Düz kare oluşturuluyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="673"/>
+        <location filename="../StackingTasks.cpp" line="670"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Siyah düz kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="718"/>
+        <location filename="../StackingTasks.cpp" line="711"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Ana Siyah düz kareyi hesaplıyor (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="745"/>
+        <location filename="../StackingTasks.cpp" line="738"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Ana Siyah Düz kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="910"/>
+        <location filename="../StackingTasks.cpp" line="903"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Düz Kalibrasyon Parametrelerini Hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="962"/>
+        <location filename="../StackingTasks.cpp" line="955"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Düz Kalibrasyon Parametrelerini Uyguluyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1082"/>
+        <location filename="../StackingTasks.cpp" line="1075"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Ana Düz Kare oluştur</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1113"/>
+        <location filename="../StackingTasks.cpp" line="1106"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Düz kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1146"/>
+        <location filename="../StackingTasks.cpp" line="1132"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Siyah Kareyi çıkartıyor</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1186"/>
+        <location filename="../StackingTasks.cpp" line="1167"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Ana düz kareyi hesaplıyor (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1212"/>
+        <location filename="../StackingTasks.cpp" line="1193"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Ana Düz kaydediliyor</translation>
