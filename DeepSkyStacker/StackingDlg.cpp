@@ -1318,7 +1318,7 @@ namespace DSS
 		editStarsPtr->saveRegisterSettings();
 		pToolBar->setSaveEnabled(false);
 		// Update the list with the new info
-		//frameList.updateItemScores(m_strShowFile); //TODO
+		frameList.updateItemScores(m_strShowFile);
 	}
 
 	void StackingDlg::pictureChanged()
