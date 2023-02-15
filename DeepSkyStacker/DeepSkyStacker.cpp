@@ -388,7 +388,7 @@ void DeepSkyStacker::onInitialise()
 	if (2 <= args.size())
 	{
 		QString name{ args[1] };
-		fs::path file{ name.toStdWString() };
+		fs::path file{ name.toStdU16String() };
 		if (fs::file_type::regular == status(file).type())
 		{
 			stackingDlg->setFileList(file);
