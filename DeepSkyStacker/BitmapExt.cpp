@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include <tiffio.h>
 #include <QImage>
+#include <QMessageBox>
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
@@ -329,7 +330,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(szFileName, AllDepthBitmap.m_pBitmap, pProgress))
+		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, pProgress))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -1288,10 +1289,20 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress)
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
+
+	const auto fileName = filePath.generic_wstring(); // Otherwise szFileName could be a dangling pointer.
+	const wchar_t* szFileName = fileName.c_str();
+
+	if (fs::status(filePath).type() != fs::file_type::regular)
+	{
+		QMessageBox::warning(nullptr,
+			"DeepSkyStacker",
+			QCoreApplication::translate("FetchPicture", "%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)));
+	}
 
 #if DSSFILEDECODING==0
 	if (IsPCLPicture(szFileName, BitmapInfo))

@@ -6,6 +6,7 @@
 
 #include "Multitask.h"
 #include <zexcept.h>
+#include <filesystem>
 #include "BitmapBase.h"
 
 #ifndef DSSFILEDECODING
@@ -27,6 +28,7 @@ inline bool	IsFITSSuperPixels() { return false; };	// From FITSUtil.h
 
 /* ------------------------------------------------------------------- */
 
+namespace fs = std::filesystem;
 class DSS::ProgressBase;
 
 /* ------------------------------------------------------------------- */
@@ -763,7 +765,7 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, ProgressB
 bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase * pProgress);
 
 #endif // DSSFILEDECODING
-bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress);
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress);
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 

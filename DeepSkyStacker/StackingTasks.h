@@ -10,7 +10,7 @@
 
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool LoadFrame(const fs::path filePath, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */

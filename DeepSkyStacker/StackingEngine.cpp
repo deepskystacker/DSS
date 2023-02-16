@@ -2209,7 +2209,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_string().c_str());
 
 						std::shared_ptr<CMemoryBitmap> rpBitmap;
-						if (::LoadFrame(lightframeInfo.filePath.c_str(), PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap))
+						if (::LoadFrame(lightframeInfo.filePath, PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap))
 							return { rpBitmap, bitmapNdx };
 						else
 							return { {}, -1 };

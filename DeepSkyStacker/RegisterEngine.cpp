@@ -1233,7 +1233,7 @@ void CLightFrameInfo::RegisterPicture()
 			m_pProgress->Start2(strText, 0);
 
 		std::shared_ptr<CMemoryBitmap> pBitmap;
-		bLoaded = ::FetchPicture(filePath.generic_wstring().c_str(), pBitmap, m_pProgress);
+		bLoaded = ::FetchPicture(filePath, pBitmap, m_pProgress);
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
@@ -1316,7 +1316,8 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(lfi.filePath.generic_wstring().c_str(), szDrive, szDir, szName, nullptr);
+		const auto fileName = lfi.filePath.generic_wstring(); // Otherwise c_str() could be a dangling pointer.
+		_tsplitpath(fileName.c_str(), szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1408,20 +1409,20 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			-> std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>
 		{
 			if (bitmapNdx >= bitmaps.size())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			const auto& bitmap{ bitmaps[bitmapNdx] };
 			auto lfInfo = std::make_unique<CLightFrameInfo>();
 			lfInfo->SetBitmap(bitmap.filePath, false, false);
 			if (!bForce && lfInfo->IsRegistered())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			auto bmpInfo = std::make_unique<CBitmapInfo>();
 			if (!GetPictureInfo(lfInfo->filePath.c_str(), *bmpInfo) || !bmpInfo->CanLoad())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;
-			bool success = ::FetchPicture(lfInfo->filePath.c_str(), pBitmap, pTaskProgress);
+			bool success = ::FetchPicture(lfInfo->filePath, pBitmap, pTaskProgress);
 			return std::make_tuple(std::move(pBitmap), success, std::move(lfInfo), std::move(bmpInfo));
 		};
 

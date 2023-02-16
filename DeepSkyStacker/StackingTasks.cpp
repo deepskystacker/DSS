@@ -31,12 +31,15 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	bool bResult = false;
 	CBitmapInfo bmpInfo;
+
+	const auto fileName = filePath.generic_wstring(); // Otherwise szFile could be a dangling pointer.
+	const auto szFile = fileName.c_str();
 
 	if (GetPictureInfo(szFile, bmpInfo) && bmpInfo.CanLoad())
 	{
@@ -88,7 +91,7 @@ bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, ProgressBase * pProgress
 		if (bOverrideRAW)
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 
-		bResult = ::FetchPicture(szFile, rpBitmap, pProgress);
+		bResult = ::FetchPicture(filePath, rpBitmap, pProgress);
 
 		if (bOverrideRAW)
 			PopRAWSettings();
@@ -140,7 +143,12 @@ public:
 	{
 		ZFUNCTRACE_RUNTIME();
 
-		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
+		// Intentionally defined with CStringW and wchar_t. Compiler shall complain if compiling as MBCS.
+		const auto getU16chars = [](const CStringW& str) -> const wchar_t* {
+			return static_cast<const wchar_t*>(str);
+		};
+
+		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress, &getU16chars](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
 		{
 			if (taskId == pTaskInfo->m_dwTaskID && static_cast<bool>(pSrcBitmap))
 			{
@@ -150,7 +158,7 @@ public:
 			else
 			{
 				pSrcBitmap.reset();
-				if (LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, pSrcBitmap))
+				if (LoadFrame(fs::path{ getU16chars(pTaskInfo->m_strOutputFile) }, pTaskInfo->m_TaskType, pProgress, pSrcBitmap))
 				{
 					taskId = pTaskInfo->m_dwTaskID;
 					rpBitmap = pSrcBitmap;
@@ -303,7 +311,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 				if (bitmapNdx >= m_pOffsetTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pOffsetTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_OFFSETFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pOffsetTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_OFFSETFRAME, pProgress, pBitmap);
 				return { pBitmap, success };
 			};
 
@@ -475,7 +483,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pDarkTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_DARKFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pDarkTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_DARKFRAME, pProgress, pBitmap);
 				return { pBitmap, success };
 			};
 
@@ -673,7 +681,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_DARKFLATFRAME, pProgress, pBitmap))
+				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].filePath, PICTURETYPE_DARKFLATFRAME, pProgress, pBitmap))
 				{
 					if (!m_pDarkFlatTask->m_pMaster)
 						m_pDarkFlatTask->CreateEmptyMaster(pBitmap.get());
@@ -1089,7 +1097,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				if (bitmapNdx >= m_pFlatTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pFlatTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_FLATFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pFlatTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_FLATFRAME, pProgress, pBitmap);
 				return { pBitmap, success };
 			};
 

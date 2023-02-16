@@ -339,10 +339,10 @@ void PostCalibration::on_testCosmetic_clicked()
 				StackingInfo.m_pLightTask->m_vBitmaps.size())
 			{
 				// Keep Only the first light frame
-				CString				strFileName;
-
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
-				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath.generic_wstring().c_str();
+				const fs::path& filePath = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath;
+				const auto fileName = filePath.generic_wstring(); // Otherwise strFileName could be a dangling pointer.
+				const wchar_t* strFileName = fileName.c_str();
 
 				CMasterFrames	MasterFrames;
 
@@ -378,13 +378,13 @@ void PostCalibration::on_testCosmetic_clicked()
 					bmpInfo.GetDescription(strDescription);
 
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName.GetString()));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName.GetString()));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;
-					if (::FetchPicture(strFileName, pBitmap, &dlg))
+					if (::FetchPicture(filePath, pBitmap, &dlg))
 					{
 						// Apply offset, dark and flat to lightframe
 						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
