@@ -854,16 +854,6 @@ Ctrl+4 om de 4-Hoeken-modus in te schakelen</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="193"/>
-        <source> Processor Used</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="195"/>
-        <source> Processors Used</source>
-        <translation> processoren gebruikt</translation>
-    </message>
-    <message>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are You Sure?</source>
         <translation>Weet je het zeker?</translation>
@@ -872,6 +862,44 @@ Ctrl+4 om de 4-Hoeken-modus in te schakelen</translation>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Weet u zeker dat u deze bewerking wilt annuleren?</translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Geschatte resterende tijd: %1 uur %2 mn %3 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Geschatte resterende tijd: %1 mn %2 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Geschatte resterende tijd: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Geschatte resterende tijd: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Geen informatie beschikbaar</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>%n Processor gebruikt</numerusform>
+            <numerusform>%n Processors gebruikt</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1218,39 +1246,6 @@ Klik met de rechtermuisknop om gedrag te veranderen.</translation>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
         <translation>Altijd vragen</translation>
-    </message>
-</context>
-<context>
-    <name>DSSProgressDlg</name>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Geschatte resterende tijd: %1 uur %2 mn %3 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Geschatte resterende tijd: %1 mn %2 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Geschatte resterende tijd: %1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Geschatte resterende tijd: &lt; 1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Geen informatie beschikbaar</translation>
     </message>
 </context>
 <context>

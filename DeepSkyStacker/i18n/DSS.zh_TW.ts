@@ -847,16 +847,6 @@ Ctrl+4 切換四角模式</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="193"/>
-        <source> Processor Used</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="195"/>
-        <source> Processors Used</source>
-        <translation>個處理器</translation>
-    </message>
-    <message>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are You Sure?</source>
         <translation>你確定嗎？</translation>
@@ -865,6 +855,43 @@ Ctrl+4 切換四角模式</translation>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>您確定要取消此操作嗎？</translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>預計剩餘時間: %1 時 %2 分 %3 秒 </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>預計剩餘時間: %1 分 %2 秒 </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>預計剩餘時間: %1 秒 </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>預計剩餘時間: &lt;1 秒 </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>預計剩餘時間: 不明</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1206,39 +1233,6 @@ Right Click to change behaviour.</source>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
         <translation>每次都詢問</translation>
-    </message>
-</context>
-<context>
-    <name>DSSProgressDlg</name>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>預計剩餘時間: %1 時 %2 分 %3 秒 </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>預計剩餘時間: %1 分 %2 秒 </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>預計剩餘時間: %1 秒 </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>預計剩餘時間: &lt;1 秒 </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>預計剩餘時間: 不明</translation>
     </message>
 </context>
 <context>

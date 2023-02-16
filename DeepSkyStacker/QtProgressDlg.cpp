@@ -159,23 +159,23 @@ void ProgressDlg::applyProgress1(int lAchieved)
 
 		QString qStrText;
 		if (dwHour != 0)
-			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: %1 hr %2 mn %3 s ",
+			qStrText = tr("Estimated remaining time: %1 hr %2 mn %3 s ",
 				"IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
 		else if (dwMin != 0)
-			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: %1 mn %2 s ",
+			qStrText = tr("Estimated remaining time: %1 mn %2 s ",
 				"IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
 		else if (dwSec != 0)
-			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time : %1 s ",
+			qStrText = tr("Estimated remaining time : %1 s ",
 				"IDS_ESTIMATED1").arg(dwSec);
 		else
-			qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining time: < 1 s ",
+			qStrText = tr("Estimated remaining time: < 1 s ",
 				"IDS_ESTIMATED0");
 
 		setTimeRemaining(qStrText);
 	}
 	else
 	{
-		const QString qStrText = QCoreApplication::translate("DSSProgressDlg", "Estimated remaining Time: Unknown",
+		const QString qStrText = tr("Estimated remaining Time: Unknown",
 			"IDS_ESTIMATEDUNKNOWN");
 		setTimeRemaining(qStrText);
 	};
@@ -189,10 +189,7 @@ void ProgressDlg::applyProgress2(int lAchieved)
 
 void ProgressDlg::applyProcessorsUsed(int nCount)
 {
-	if (nCount == 1)
-		m_ui->Processors->setText(QString::number(nCount) + tr(" Processor Used"));
-	else
-		m_ui->Processors->setText(QString::number(nCount) + tr(" Processors Used"));
+	m_ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
 	QApplication::processEvents();
 }
 

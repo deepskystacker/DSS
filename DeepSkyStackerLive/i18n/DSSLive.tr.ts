@@ -13,7 +13,7 @@
 <context>
     <name>BitmapExt</name>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="511"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="499"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>Kozmetik uyguluyor - Sıcak Gözeler (Pikseller)</translation>
@@ -64,23 +64,23 @@
 <context>
     <name>CosmeticEngine</name>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="514"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="543"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="599"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="628"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="502"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="531"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="587"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="616"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
         <translation>Orta değer Filtreli Görüntüyü Yaratıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="538"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="623"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="526"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="611"/>
         <source>Applying cosmetic - Cold Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
         <translation>Kozmetik uyguluyor - Soğuk Pikseller</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="596"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="584"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>Kozmetik uyguluyor - Sıcak Gözeler (Pikseller)</translation>
@@ -267,22 +267,22 @@
         <translation>%1 dosyası zaten %2 (%3) grubuna yüklendi</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="620"/>
         <source>A Master Dark must be the only Dark frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="625"/>
         <source>A Master Dark Flat must be the only Dark Flat frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="630"/>
         <source>A Master Flat must be the only Flat frame</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="635"/>
         <source>A Master Offset must be the only Offset frame</source>
         <translation></translation>
     </message>
@@ -322,27 +322,27 @@
         <translation>Orta değer Filtreli Görüntüyü Yaratıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1733"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1727"/>
         <source>Detecting Hot Pixels (1/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS1</comment>
         <translation>Sıcak gözeleri (pikselleri) tespit ediyor (1/2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1743"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1737"/>
         <source>Detecting Hot Pixels (2/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS2</comment>
         <translation>Sıcak gözeleri (pikselleri) tespit ediyor (2/2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1933"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1927"/>
         <source>Optimizing Dark Matching</source>
         <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
         <translation>Siyah Eşleşmesini En Uygun Hâle Getiriyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1940"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1950"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1959"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1934"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1944"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1953"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Siyah Kareyi çıkartıyor</translation>
@@ -521,13 +521,13 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         <translation>Hizalanıyor %1 (%2 yıldız)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1050"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1044"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Parlaklığı hesaplıyor %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1230"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1224"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -535,7 +535,7 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1234"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1228"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -543,25 +543,25 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1365"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1359"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>%1 deki Kalibre edilen resim kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1395"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1389"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Görüntüleri hizalıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1445"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1439"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Hizalanıyor %1&apos;si (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1456"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1450"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -569,7 +569,7 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1458"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1452"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -904,21 +904,21 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         <translation>Siyah kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="510"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="692"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1128"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="509"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="687"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1120"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Ofset Kareyi çıkarıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="533"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="530"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Ana siyah kareyi hesaplıyor (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="551"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="548"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -926,7 +926,7 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="736"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="729"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -934,7 +934,7 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1204"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1185"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -942,7 +942,7 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         </translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="560"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="557"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Ana Siyah kaydediliyor</translation>
@@ -956,67 +956,67 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="657"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="654"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Ana Siyah Düz kare oluşturuluyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="673"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="670"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Siyah düz kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="718"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="711"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Ana Siyah düz kareyi hesaplıyor (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="745"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="738"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Ana Siyah Düz kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="910"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="903"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Düz Kalibrasyon Parametrelerini Hesaplıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="962"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="955"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Düz Kalibrasyon Parametrelerini Uyguluyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1082"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1075"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Ana Düz Kare oluştur</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1113"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1106"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Düz kareler ekleniyor %1 (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1146"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1132"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Siyah Kareyi çıkartıyor</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1186"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1167"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Ana düz kareyi hesaplıyor (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1212"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1193"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Ana Düz kaydediliyor</translation>

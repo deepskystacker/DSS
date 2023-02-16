@@ -857,16 +857,6 @@ Ctrl+4 přepne režim 4 rohů</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="193"/>
-        <source> Processor Used</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="195"/>
-        <source> Processors Used</source>
-        <translation> použité procesory</translation>
-    </message>
-    <message>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are You Sure?</source>
         <translation>Jsi si jistá?</translation>
@@ -875,6 +865,45 @@ Ctrl+4 přepne režim 4 rohů</translation>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Opravdu chcete tuto operaci zrušit?</translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Odhadovaný zbývající čas: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Odhadovaný zbývající čas: Neznámý</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>Použitý %n procesor</numerusform>
+            <numerusform>Použité %n procesory</numerusform>
+            <numerusform>Použito %n procesorů</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1224,39 +1253,6 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
         <translation>Vždy se zeptat</translation>
-    </message>
-</context>
-<context>
-    <name>DSSProgressDlg</name>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Odhadovaný zbývající čas: %1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Odhadovaný zbývající čas: Neznámý</translation>
     </message>
 </context>
 <context>

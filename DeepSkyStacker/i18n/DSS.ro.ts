@@ -855,16 +855,6 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="193"/>
-        <source> Processor Used</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="195"/>
-        <source> Processors Used</source>
-        <translation> Procesoare Folosite</translation>
-    </message>
-    <message>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are You Sure?</source>
         <translation>Sunteți Sigur?</translation>
@@ -873,6 +863,45 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
         <location filename="../QtProgressDlg.cpp" line="84"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Sunteți sigur că doriți să întrerupeți această operație?</translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Timp rămas estimat: %1 hr %2 mn %3 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Timp rămas estimat: %1 mn %2 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Timp rămas estimat : %1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Timp rămas estimat: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Timp rămas estimat: Nedeterminat</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>%n Procesor folosit</numerusform>
+            <numerusform>%n Procesoare utilizate</numerusform>
+            <numerusform>%n Procesoare utilizate</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -1221,39 +1250,6 @@ Faceți clic dreapta pentru a modifica comportamentul.</translation>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
         <translation>Confirmă de fiecare dată</translation>
-    </message>
-</context>
-<context>
-    <name>DSSProgressDlg</name>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Timp rămas estimat: %1 hr %2 mn %3 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Timp rămas estimat: %1 mn %2 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Timp rămas estimat : %1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Timp rămas estimat: &lt; 1 s </translation>
-    </message>
-    <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Timp rămas estimat: Nedeterminat</translation>
     </message>
 </context>
 <context>
