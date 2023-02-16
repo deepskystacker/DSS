@@ -898,7 +898,7 @@ veya yakınlaştırmak için fare tekerleğini kullanın
         <location filename="../QtProgressDlg.cpp" line="192"/>
         <source>%n Processor(s) Used</source>
         <translation>
-            <numerusform>%n Kullanılan işlemciler</numerusform>
+            <numerusform>%n işlemci kullanıldı</numerusform>
         </translation>
     </message>
 </context>

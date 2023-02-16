@@ -889,8 +889,8 @@ Ctrl+4 切換四角模式</translation>
     <message numerus="yes">
         <location filename="../QtProgressDlg.cpp" line="192"/>
         <source>%n Processor(s) Used</source>
-        <translation>
-            <numerusform></numerusform>
+        <translation type="unfinished">
+            <numerusform>%n 個處理器正在使用中</numerusform>
         </translation>
     </message>
 </context>
