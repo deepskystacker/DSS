@@ -13,7 +13,7 @@
 <context>
     <name>BitmapExt</name>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="511"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="499"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>Kosmetische Korrektur der Hot Pixel</translation>
@@ -64,23 +64,23 @@
 <context>
     <name>CosmeticEngine</name>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="514"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="543"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="599"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="628"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="502"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="531"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="587"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="616"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
         <translation>Median gefiltertes Bild erstelle</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="538"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="623"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="526"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="611"/>
         <source>Applying cosmetic - Cold Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
         <translation>Kosmetische Korrektur der Cold Pixel</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="596"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="584"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
         <translation>IDS_APPLYINGCOSMETIC_HOT</translation>
@@ -271,22 +271,22 @@
         <translation>Datei %1 wurde bereits in Gruppe %2 (%3) geladen</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="620"/>
         <source>A Master Dark must be the only Dark frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="625"/>
         <source>A Master Dark Flat must be the only Dark Flat frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="630"/>
         <source>A Master Flat must be the only Flat frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="635"/>
         <source>A Master Offset must be the only Offset frame</source>
         <translation type="unfinished"></translation>
     </message>
@@ -326,27 +326,27 @@
         <translation>Median gefiltertes Bild erstellen</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1733"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1727"/>
         <source>Detecting Hot Pixels (1/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS1</comment>
         <translation>Hot Pixel Erkennung (1/2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1743"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1737"/>
         <source>Detecting Hot Pixels (2/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS2</comment>
         <translation>Hot Pixel Erkennung (2/2)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1933"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1927"/>
         <source>Optimizing Dark Matching</source>
         <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
         <translation>Dark Anpassung optimieren</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1940"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1950"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1959"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1934"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1944"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1953"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Darkframe abziehen</translation>
@@ -526,13 +526,13 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <translation>Registrierung %1 (%2 Sterne)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1050"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1044"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Luminanz-Berechnung %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1230"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1224"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -540,7 +540,7 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1234"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1228"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -548,25 +548,25 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1365"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1359"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Kalibriertes Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1395"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1389"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Bilder registrieren</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1445"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1439"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Registriert %1 von %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1456"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1450"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -574,7 +574,7 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1458"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1452"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -918,21 +918,21 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <translation>Addiert Darkframe %1 von %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="510"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="692"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1128"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="509"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="687"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1120"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Offsetframe abziehen</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="533"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="530"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Master-Dark berechnen (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="551"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="548"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -941,7 +941,7 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="736"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="729"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -950,7 +950,7 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1204"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1185"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -959,73 +959,73 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         </translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="560"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="557"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Master Dark speichern</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="657"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="654"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Erstellt Master Dark Flatframe</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="673"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="670"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Addiert Dark Flatframe %1 von %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="718"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="711"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Master Dark-Flat berechnen (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="745"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="738"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Master Dark Flat speichern</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="910"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="903"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Flat Kalibrierungs-Parameter berechnen</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="962"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="955"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Flat Kalibrierungs-Parameter anwenden</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1082"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1075"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Erstellt Master Flatframe</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1113"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1106"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Addiert Flatframe %1 von %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1146"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1132"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Darkframe abziehen</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1186"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1167"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Master-Flat berechnen (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1212"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1193"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Master Flat speichern</translation>
