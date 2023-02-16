@@ -899,9 +899,9 @@ Ctrl+4 для переключения режима 4-х углов</translation
         <location filename="../QtProgressDlg.cpp" line="192"/>
         <source>%n Processor(s) Used</source>
         <translation>
-            <numerusform>%n процессор используется</numerusform>
+            <numerusform>Используется %n процессор</numerusform>
             <numerusform>Используются %n процессора</numerusform>
-            <numerusform>%n используемых процессоров</numerusform>
+            <numerusform>Используются %n процессоров</numerusform>
         </translation>
     </message>
 </context>

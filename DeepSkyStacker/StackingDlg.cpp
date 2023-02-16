@@ -428,7 +428,7 @@ namespace DSS
 		case Column::Exposure:
 			{
 				double secs{ index.model()->data(index, Qt::EditRole).toDouble() };
-				if (secs > 66399.999) secs = 86399.999;		// 24 hours less 1 ms
+				if (secs > 86399.999) secs = 86399.999;		// 24 hours less 1 ms
 				double msecs = secs * 1000.0;
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
 				Q_ASSERT(timeEdit);
