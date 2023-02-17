@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <zexcept.h>
 #include "Multitask.h"
 #include "DSSCommon.h"
 #include "DSSProgress.h"

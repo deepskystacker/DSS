@@ -1,5 +1,8 @@
 
 #include <stdafx.h>
+#include <QPoint>
+
+#include "resource.h"
 #include "dssrect.h"
 #include "RegisterEngine.h"
 

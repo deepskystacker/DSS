@@ -1,5 +1,7 @@
 #include "StdAfx.h"
 #include <QCoreApplication>
+#include <QPoint>
+#include <QPointF>
 #include "dssrect.h"
 #include "avx_avg.h"
 #include "avx_support.h"

@@ -56,6 +56,8 @@ using std::max;
 #include <QShowEvent>
 #include <QString>
 
+#include "commonresource.h"
+
 #include "RegisterSettings.h"
 #include "ui/ui_RegisterSettings.h"
 

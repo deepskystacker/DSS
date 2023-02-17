@@ -1,5 +1,6 @@
 #include <stdafx.h>
 
+#include "resource.h"
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"

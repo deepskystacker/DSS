@@ -1,11 +1,14 @@
 #include <stdafx.h>
+#include <set>
+#include <QSettings>
+#include <QRectF>
+
+#include "resource.h"
 #include "StackingTasks.h"
 
 #include "TIFFUtil.h"
-#include <set>
+
 #include "Settings.h"
-#include <QSettings>
-#include <QRectF>
 
 /* ------------------------------------------------------------------- */
 

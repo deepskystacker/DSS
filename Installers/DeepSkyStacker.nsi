@@ -1,5 +1,6 @@
 ##!include "MUI2.nsh"
 !include "FileAssociation.nsh"
+!include x64.nsh
 !verbose 4
 
 # Want to display Unicode readme
@@ -14,8 +15,9 @@ SetCompressor /SOLID lzma
 !include "WinVer.nsh"
 Function .onInit
 ${IfNot} ${AtLeastWin10}
-  MessageBox mb_iconStop "Windows 10 is required to install DeepSkyStacker 5.1.0"
-  Abort
+${OrIfNot} ${RunningX64}
+	MessageBox mb_iconStop "Windows 10 x64 is required to install DeepSkyStacker 5.1.0"
+	Abort
 ${EndIf}
 FunctionEnd
 
@@ -34,7 +36,7 @@ FunctionEnd
 
 !define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
 !define DSS_VERSION        "5.1.0"                         # For control panel
-!define DSS_VERSION_SUFFIX " Beta 2"		               # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX " Beta 3"		               # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -57,7 +59,6 @@ FunctionEnd
 !define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 
 CRCCheck On
-SetCompressor /SOLID lzma
 
 # define installer name
 

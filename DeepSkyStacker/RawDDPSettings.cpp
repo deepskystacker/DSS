@@ -28,10 +28,11 @@ using std::max;
 #include "ui/ui_RawDDPSettings.h"
 
 extern bool		g_bShowRefStars;
+#include "commonresource.h"
+#include "resource.h"
 
 #include "DeepSkyStacker.h"
 #include "DSSCommon.h"
-#include "commonresource.h"
 #include "BitmapExt.h"
 #include "QtProgressDlg.h"
 #include "RegisterEngine.h"

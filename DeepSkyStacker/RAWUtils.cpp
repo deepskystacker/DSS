@@ -1,9 +1,4 @@
 #include "stdafx.h"
-#include "BitmapExt.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-
-#include "RAWUtils.h"
 #include <chrono>
 #include <set>
 #include <list>
@@ -13,10 +8,17 @@
 #include <stdexcept>
 #include <utility>
 #include <float.h>
+#include <zexcept.h>
+#include <ztrace.h>
+
+#include "resource.h"
+#include "BitmapExt.h"
+#include "DSSTools.h"
+#include "DSSProgress.h"
+
+#include "RAWUtils.h"
 #include "Multitask.h"
 #include "Workspace.h"
-#include "zexcept.h"
-#include "ztrace.h"
 
 #include "libraw/libraw.h"
 

@@ -1,6 +1,7 @@
 #ifndef _DSSPROGRESS_H__
 #define _DSSPROGRESS_H__
 #include <QElapsedTimer>
+#include <QString>
 
 /* ------------------------------------------------------------------- */
 

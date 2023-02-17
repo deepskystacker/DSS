@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include <QSettings>
+#include "resource.h"
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "ImageList.h"

@@ -1,11 +1,15 @@
 #include <stdafx.h>
+#include <algorithm>
+#include <QPoint>
+
+#include "resource.h"
 #include "StackingTasks.h"
 
 #include "DSSTools.h"
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "Settings.h"
-#include <algorithm>
+
 
 /* ------------------------------------------------------------------- */
 

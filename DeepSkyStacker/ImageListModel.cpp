@@ -39,16 +39,17 @@
 #include <algorithm>
 using std::min;
 using std::max;
+#include <Ztrace.h>
+
+#include <Qt>
+#include <QTime>
 
 #include <iostream>
 
 #include "DSSCommon.h"
 #include "DSSMemory.h"
-#include "Ztrace.h"
 
-#include <Qt>
-#include <QTime>
-
+#include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
 

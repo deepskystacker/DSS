@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "resource.h"
 #include "LiveEngine.h"
 #include "RegisterEngine.h"
 #include "TIFFUtil.h"

@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include <QSettings>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
