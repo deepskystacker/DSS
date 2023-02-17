@@ -53,9 +53,6 @@ using std::max;
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#include "resource.h"
 #include <afxdlgs.h>
-
-#include "BitmapExt.h"
 
 #endif // !defined(AFX_STDAFX_H_)

@@ -77,3 +77,5 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 30. Fix problem with incorrect handling of "No White Balance" and "Use Camera White Balance" settings for RAW files.
 
 31. Fix to SIMD code for Comet Stacking.
+
+32. Ensure the image list is updated after a Comet/Stars editing action is saved.

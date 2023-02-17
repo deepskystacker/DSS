@@ -18,6 +18,7 @@ using std::max;
 #include <QTranslator>
 #include <QShowEvent>
 
+#include "commonresource.h"
 #include "About.h"
 #include "ui/ui_About.h"
 

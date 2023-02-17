@@ -338,6 +338,7 @@
     <ClInclude Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
     <ClInclude Include="MainBoard.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="RestartMonitoring.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="StackedSink.h" />

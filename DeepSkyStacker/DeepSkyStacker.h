@@ -37,10 +37,8 @@
 ****************************************************************************/
 #include <list>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QLabel>
-#include "commonresource.h"
-#include "DeepStack.h"
-
 
 #include "ExplorerBar.h"
 class QSplitter;
@@ -66,6 +64,7 @@ class DeepSkyStacker :
 
 protected slots:
 	void updateStatus(const QString& text);
+	void displayMessageBox(const QString& message, QMessageBox::Icon icon);
 
 private:
 	bool initialised;

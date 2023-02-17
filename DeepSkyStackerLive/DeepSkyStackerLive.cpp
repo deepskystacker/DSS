@@ -3,11 +3,6 @@
 
 #include "stdafx.h"
 #include <chrono>
-
-#include "DeepSkyStackerLive.h"
-#include "DeepSkyStackerLiveDlg.h"
-
-
 #include <QLibraryInfo>
 #include <QDebug>
 #include <QDir>
@@ -17,12 +12,18 @@
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QApplication>
-#include "qmfcapp.h"
-
 #include <gdiplus.h>
 using namespace Gdiplus;
 
 #pragma comment(lib, "gdiplus.lib")
+
+#include "resource.h"
+
+#include "qmfcapp.h"
+
+#include "DeepSkyStackerLive.h"
+#include "DeepSkyStackerLiveDlg.h"
+
 #include "SetUILanguage.h"
 
 // CDeepSkyStackerLiveApp
@@ -125,6 +126,11 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 				   )
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(_WINDOWS)
+	// Set console code page to UTF-8 so console known how to interpret string data
+	SetConsoleOutputCP(CP_UTF8);
+#endif
+
 	int nRetCode = 0;
 
 	OleInitialize(nullptr);

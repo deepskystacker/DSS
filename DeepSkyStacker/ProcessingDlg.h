@@ -17,6 +17,8 @@
 #include <list>
 #include "Label.h"
 
+#include "commonresource.h"
+
 #include "ProcessSettingsSheet.h"
 #include "dss_settings.h"
 

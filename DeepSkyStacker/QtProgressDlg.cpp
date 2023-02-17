@@ -9,12 +9,14 @@ using namespace DSS;
 
 const QString ProgressDlg::m_emptyString;
 
-QMainWindow* GetMainApplicationWindow()
-{
-	for (QWidget* pWnd : QApplication::topLevelWidgets())
-		if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
-			return dynamic_cast<QMainWindow*>(pWnd);
-	return nullptr;
+namespace {
+	QMainWindow* GetMainApplicationWindow()
+	{
+		for (QWidget* pWnd : QApplication::topLevelWidgets())
+			if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
+				return dynamic_cast<QMainWindow*>(pWnd);
+		return nullptr;
+	}
 }
 
 

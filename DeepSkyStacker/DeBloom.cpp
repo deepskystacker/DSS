@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "resource.h"
 #include "DeBloom.h"
 #include "TIFFUtil.h"
 #include "Filters.h"

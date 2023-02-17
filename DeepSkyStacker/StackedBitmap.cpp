@@ -1,16 +1,20 @@
 #include <stdafx.h>
-#include "DeepStack.h"
+
 #include <math.h>
 #include <tiffio.h>
 #include <algorithm>
 #include <set>
+#include <omp.h>
+
+#include "resource.h"
+#include "DeepStack.h"
+
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 

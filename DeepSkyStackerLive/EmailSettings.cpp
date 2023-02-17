@@ -1,7 +1,8 @@
-// DeepSkyStackerLiveDlg.cpp : implementation file
+// EmailSettings.cpp : implementation file
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "EmailSettings.h"
 #include <..\SMTP\PJNSMTP.h>
 

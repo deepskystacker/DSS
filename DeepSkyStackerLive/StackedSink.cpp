@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "resource.h"
 #include <WndImage.h>
 #include "BitmapExt.h"
 #include "StackedSink.h"

@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "resource.h"
 #include "BitmapExt.h"
 #include "AHDDemosaicing.h"
 #include <vector>

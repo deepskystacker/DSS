@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <omp.h>
+#include "resource.h"
 #include "BitmapBase.h"
 #include "BackgroundCalibration.h"
 #include "DSSProgress.h"

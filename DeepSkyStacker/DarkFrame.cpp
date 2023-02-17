@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <omp.h>
 #include <ZExcept.h>
+#include <QPoint>
+
+#include "resource.h"
 #include "dssrect.h"
 #include "DarkFrame.h"
 

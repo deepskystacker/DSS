@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include "FITSUtil.h"
+
 #include <float.h>
 #include <cmath>
 #include <iostream>
@@ -7,11 +7,14 @@
 #include <memory>
 #include <map>
 
-#include "Workspace.h"
 #include <QSettings>
 #include <QString>
-
 #include <omp.h>
+
+#include "resource.h"
+#include "Workspace.h"
+
+#include "FITSUtil.h"
 
 /* ------------------------------------------------------------------- */
 

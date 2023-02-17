@@ -1,10 +1,4 @@
 #include <stdafx.h>
-#include "Workspace.h"
-
-#include "BitmapExt.h"
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "StackingTasks.h"
 #include <algorithm>
 #include <deque>
 #include <memory>
@@ -12,6 +6,14 @@
 #include <QGlobalStatic>
 #include <QMutex>
 #include <QSettings>
+
+#include "resource.h"
+#include "Workspace.h"
+
+#include "BitmapExt.h"
+#include "DSSProgress.h"
+#include "DSSTools.h"
+#include "StackingTasks.h"
 
 class WorkspaceSettings
 {

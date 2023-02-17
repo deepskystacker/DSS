@@ -1,15 +1,23 @@
 #include <stdafx.h>
-#include "dssrect.h"
+
+#include <math.h>
+#define _USE_MATH_DEFINES
+#include <cmath>
+
+#include <QPoint>
 #include <QPointF>
+#include "resource.h"
+
+#include "dssrect.h"
+
 #include "RunningStackingEngine.h"
 
 #include "MatchingStars.h"
 #include "PixelTransform.h"
 #include "BitmapIterator.h"
-#include <math.h>
 
-#define _USE_MATH_DEFINES
-#include <cmath>
+
+
 
 
 CRunningStackingEngine::CRunningStackingEngine() :

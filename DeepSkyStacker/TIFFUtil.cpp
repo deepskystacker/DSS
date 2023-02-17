@@ -2,11 +2,11 @@
 #include <iostream>
 #include <QSettings>
 #include <limits>
-#include "TIFFUtil.h"
-
-#include "zlib.h"
-
+#include <zlib.h>
 #include <omp.h>
+
+#include "resource.h"
+#include "TIFFUtil.h"
 
 #define NRCUSTOMTIFFTAGS		12
 

@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <QCoreApplication>
 #include "BitmapBase.h"
 
 

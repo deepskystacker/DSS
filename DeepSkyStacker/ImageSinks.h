@@ -2,6 +2,7 @@
 #define __IMAGESINKS_H__
 
 /* ------------------------------------------------------------------- */
+extern bool     g_bShowRefStars;
 
 typedef enum tagSELECTRECTMODE
 {

@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "resource.h"
 #include "MasterFrames.h"
 #include "DSSProgress.h"
 #include "DeBloom.h"

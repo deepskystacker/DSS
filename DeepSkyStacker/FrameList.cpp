@@ -7,6 +7,7 @@
 #else
 #include <QMessageBox>
 #endif
+#include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"

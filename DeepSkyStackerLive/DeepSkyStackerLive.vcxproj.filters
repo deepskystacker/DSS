@@ -536,6 +536,9 @@
     <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp">

@@ -238,6 +238,12 @@ void DeepSkyStacker::updateStatus(const QString& text)
 	statusBarText->setText(text);
 }
 
+void DeepSkyStacker::displayMessageBox(const QString& message, QMessageBox::Icon icon)
+{
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this};
+	msgBox.exec();
+}
+
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
 {
 	if (e->mimeData()->hasFormat("text/uri-list"))
@@ -759,6 +765,11 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 
+#if defined(_WINDOWS)
+	// Set console code page to UTF-8 so console known how to interpret string data
+	SetConsoleOutputCP(CP_UTF8);
+#endif
+
 	//
 	// Save the program name in case we need it later
 	// 
@@ -907,6 +918,11 @@ int main(int argc, char* argv[])
 	askIfVersionCheckWanted();
 	if (firstInstance)
 		deleteRemainingTempFiles();
+
+	//
+	// Register the QMessageBox::Icon enum as a meta type
+	//
+	qRegisterMetaType<QMessageBox::Icon>();
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try

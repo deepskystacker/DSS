@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <omp.h>
+#include "BitmapBase.h"
 #include "MedianFilterEngine.h"
 #include "avx_filter.h"
 
