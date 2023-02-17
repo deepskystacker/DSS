@@ -34,18 +34,6 @@ using namespace Gdiplus;
 #include <PCLTools.h>
 #endif
 
-namespace {
-#ifndef _CONSOLE
-	QMainWindow* getMainApplicationWindow()
-	{
-		for (QWidget* pWnd : QApplication::topLevelWidgets())
-			if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
-				return dynamic_cast<QMainWindow*>(pWnd);
-		return nullptr;
-	}
-#endif
-}
-
 /* ------------------------------------------------------------------- */
 
 void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
@@ -1325,9 +1313,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 #if defined(_CONSOLE)
 		std::cerr << errorMessage.toUtf8().constData();
 #else
-		QMainWindow* mainWindow{ getMainApplicationWindow() };
-
-		DeepSkyStacker* dss = dynamic_cast<DeepSkyStacker*>(mainWindow);
+		DeepSkyStacker* dss = DeepSkyStacker::instance();
 		if (nullptr != dss)
 		{
 			bool result = QMetaObject::invokeMethod(dss, "displayMessageBox", Qt::QueuedConnection,
