@@ -1,7 +1,20 @@
 #include <stdafx.h>
 #include <tiffio.h>
-#include <QImage>
+#include <list>
+#include <float.h>
+#include <iostream>
+#include <zexcept.h>
+#include <omp.h>
+
+#include "resource.h"
+#ifndef _CONSOLE
+#include <QApplication>
+#include <QMainWindow>
 #include <QMessageBox>
+#include "DeepSkyStacker.h"
+#endif
+#include <QImage>
+
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
@@ -9,13 +22,8 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "RAWUtils.h"
-#include <list>
-#include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
-#include <iostream>
-#include <zexcept.h>
-#include <omp.h>
 #include "BitmapIterator.h"
 
 
@@ -26,37 +34,49 @@ using namespace Gdiplus;
 #include <PCLTools.h>
 #endif
 
+namespace {
+#ifndef _CONSOLE
+	QMainWindow* getMainApplicationWindow()
+	{
+		for (QWidget* pWnd : QApplication::topLevelWidgets())
+			if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
+				return dynamic_cast<QMainWindow*>(pWnd);
+		return nullptr;
+	}
+#endif
+}
+
 /* ------------------------------------------------------------------- */
 
-void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
+void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
 {
 	double			Y, U, V;
 	double			R, G, B;
 
-	Y = (fCyan+fYellow+fMagenta+fGreen2)/2.0;
-	U = -(fMagenta+fCyan-fYellow-fGreen2);//*0.492;
-	V = (fMagenta+fYellow-fCyan-fGreen2);//*0.877;
+	Y = (fCyan + fYellow + fMagenta + fGreen2) / 2.0;
+	U = -(fMagenta + fCyan - fYellow - fGreen2);//*0.492;
+	V = (fMagenta + fYellow - fCyan - fGreen2);//*0.877;
 
-	R   = 1.164*Y + 1.596 * (V-128.0);
-	G = 1.164*Y -0.813*(V-128.0)-0.391*(U-128);
-	B  = 1.164*Y + 2.018*(U-128.0);
+	R = 1.164 * Y + 1.596 * (V - 128.0);
+	G = 1.164 * Y - 0.813 * (V - 128.0) - 0.391 * (U - 128);
+	B = 1.164 * Y + 2.018 * (U - 128.0);
 
 
-	fRed	= R * 1.29948 + G * 0.0289296 - B * 0.934432;
-	fGreen	= -0.409754*R + 1.31042 *G  - 0.523692*B;
-	fBlue	= 0.110277*R  - 0.339351*G + 2.45812*B;
+	fRed = R * 1.29948 + G * 0.0289296 - B * 0.934432;
+	fGreen = -0.409754 * R + 1.31042 * G - 0.523692 * B;
+	fBlue = 0.110277 * R - 0.339351 * G + 2.45812 * B;
 
-//	fRed = (Y+1.13983*V)*255.0;
-//	fGreen = (Y-0.39465*U-0.5806*V)*255.0;
-//	fBlue  = (Y+2.03211*U)*255.0;
+	//	fRed = (Y+1.13983*V)*255.0;
+	//	fGreen = (Y-0.39465*U-0.5806*V)*255.0;
+	//	fBlue  = (Y+2.03211*U)*255.0;
 
-	fRed = std::max(0.0, std::min (255.0, fRed));
-	fGreen = std::max(0.0, std::min (255.0, fGreen));
-	fBlue = std::max(0.0, std::min (255.0, fBlue));
+	fRed = std::max(0.0, std::min(255.0, fRed));
+	fGreen = std::max(0.0, std::min(255.0, fGreen));
+	fBlue = std::max(0.0, std::min(255.0, fBlue));
 };
 
 
-void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
+void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
 {
 	fRed = fGreen = fBlue = 0;
 	// Basic formulae
@@ -69,43 +89,43 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = std::max(0.0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = std::max(0.0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = std::max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed = std::max(0.0, fMagenta + fYellow - fCyan) / 2.0;
+	fGreen = std::max(0.0, fYellow + fCyan - fMagenta) / 2.0;
+	fBlue = std::max(0.0, fMagenta + fCyan - fYellow) / 2.0;
 
-/*	if (fGreen2)
-	{
-		fRed  *= fGreen2/fGreen;
-		fBlue *= fGreen2/fGreen;
-		fGreen = fGreen2;
-	};
-	fRed = std::min(fRed, 255);
-	fBlue = std::min(fBlue, 255);
-	fGreen = std::min(fGreen, 255);*/
+	/*	if (fGreen2)
+		{
+			fRed  *= fGreen2/fGreen;
+			fBlue *= fGreen2/fGreen;
+			fGreen = fGreen2;
+		};
+		fRed = std::min(fRed, 255);
+		fBlue = std::min(fBlue, 255);
+		fGreen = std::min(fGreen, 255);*/
 
-	// RGB from CYG
-	// G = G
-	// R = Y - G
-	// B = C - G
+		// RGB from CYG
+		// G = G
+		// R = Y - G
+		// B = C - G
 	fGreen += fGreen2;
-	fRed   += fYellow-fGreen2;
-	fBlue  += fCyan-fGreen2;
+	fRed += fYellow - fGreen2;
+	fBlue += fCyan - fGreen2;
 
 	// RGB from CMG
 	// G = G
 	// B = C - G
 	// R = M - B = M - C + G
 //	fGreen += fGreen2;
-	fBlue  += fCyan-fGreen2;
-	fRed   += fMagenta - fCyan + fGreen2;
+	fBlue += fCyan - fGreen2;
+	fRed += fMagenta - fCyan + fGreen2;
 
 	// RGB from YMG
 	// G = G
 	// R = Y - G
 	// B = M - R = M - Y + G
 //	fGreen += fGreen2;
-	fRed   += fYellow - fGreen2;
-	fBlue  += fMagenta - fYellow + fGreen2;
+	fRed += fYellow - fGreen2;
+	fBlue += fMagenta - fYellow + fGreen2;
 
 	// Average the results
 	fRed /= 4.0;
@@ -116,13 +136,13 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	double	B = fBlue;
 	double	G = fGreen;
 
-	fRed	= R * 1.29948 + G * 0.0289296 - B * 0.934432;
-	fGreen	= -0.409754*R + 1.31042 *G  - 0.523692*B;
-	fBlue	= 0.110277*R  - 0.339351*G + 2.45812*B;
+	fRed = R * 1.29948 + G * 0.0289296 - B * 0.934432;
+	fGreen = -0.409754 * R + 1.31042 * G - 0.523692 * B;
+	fBlue = 0.110277 * R - 0.339351 * G + 2.45812 * B;
 
-	fRed = std::max(0.0, std::min (255.0, fRed));
-	fGreen = std::max(0.0, std::min (255.0, fGreen));
-	fBlue = std::max(0.0, std::min (255.0, fBlue));
+	fRed = std::max(0.0, std::min(255.0, fRed));
+	fGreen = std::max(0.0, std::min(255.0, fGreen));
+	fBlue = std::max(0.0, std::min(255.0, fBlue));
 };
 
 /* ------------------------------------------------------------------- */
@@ -132,11 +152,11 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 	ZFUNCTRACE_RUNTIME();
 	HDC					hScreenDC;
 	HDC					hSrcDC,
-						hTgtDC;
+		hTgtDC;
 	BITMAP				bmpInfo;
 	HBITMAP				hTgtBmp;
 	HBITMAP				hOldSrcBmp,
-						hOldTgtBmp;
+		hOldTgtBmp;
 
 	GetObject(hBitmap, sizeof(BITMAP), &bmpInfo);
 
@@ -152,7 +172,7 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 		hOldTgtBmp = (HBITMAP)SelectObject(hTgtDC, hTgtBmp);
 
 		BitBlt(hTgtDC, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight,
-			   hSrcDC, 0, 0, SRCCOPY);
+			hSrcDC, 0, 0, SRCCOPY);
 
 		SelectObject(hSrcDC, hOldSrcBmp);
 		SelectObject(hTgtDC, hOldTgtBmp);
@@ -174,7 +194,7 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 /* ------------------------------------------------------------------- */
 #if DSSFILEDECODING==1
 
-bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase * pProgress)
+bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -182,8 +202,8 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 	if (pInBitmap != nullptr && pInBitmap->IsCFA())
 	{
 		std::shared_ptr<CMemoryBitmap> pOutBitmap;
-		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pInBitmap);
-		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pInBitmap);
+		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
+		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pInBitmap);
 
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 		{
@@ -1299,9 +1319,28 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
-		QMessageBox::warning(nullptr,
-			"DeepSkyStacker",
-			QCoreApplication::translate("FetchPicture", "%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)));
+		QString errorMessage{ QCoreApplication::translate(
+			"DSS::StackingDlg",
+			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
+#if defined(_CONSOLE)
+		std::cerr << errorMessage.toUtf8().constData();
+#else
+		QMainWindow* mainWindow{ getMainApplicationWindow() };
+
+		DeepSkyStacker* dss = dynamic_cast<DeepSkyStacker*>(mainWindow);
+		if (nullptr != dss)
+		{
+			bool result = QMetaObject::invokeMethod(dss, "displayMessageBox", Qt::QueuedConnection,
+				Q_ARG(const QString&, errorMessage),
+				Q_ARG(QMessageBox::Icon, QMessageBox::Warning));
+		}
+		else    // This is here for DeepSkyStackerLive which is not yet Qt 
+		{
+			AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONWARNING);
+		}
+		
+#endif
+		return false;
 	}
 
 #if DSSFILEDECODING==0
