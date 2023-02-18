@@ -179,6 +179,7 @@
     <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_cfa.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_entropy.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_filter.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_histogram.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_luminance.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_output.h" />

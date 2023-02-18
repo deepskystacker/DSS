@@ -36,11 +36,13 @@
 ****************************************************************************/
 #include <mutex>
 #include <deque>
+#include <QCoreApplication>
 #include <QObject>
 #include <QAbstractTableModel>
 #include <QIcon>
 #include <QModelIndex>
 #include <QVariant>
+#include "BitmapBase.h"
 #include "FrameInfo.h"
 
 

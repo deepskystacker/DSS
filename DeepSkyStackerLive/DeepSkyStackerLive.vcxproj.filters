@@ -135,9 +135,6 @@
     <ClCompile Include="..\DeepSkyStacker\RunningStackingEngine.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\Settings.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -249,9 +246,6 @@
     <ClCompile Include="..\DeepSkyStacker\avx_support.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -262,6 +256,15 @@
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
   </ItemGroup>
@@ -532,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_filter.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

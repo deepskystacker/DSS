@@ -1,5 +1,7 @@
 #include "StdAfx.h"
+#include "resource.h"
 #include "BitmapBase.h"
+#include "BitmapExt.h"
 #include "avx_filter.h"
 #include "avx_support.h"
 #include <tuple>
