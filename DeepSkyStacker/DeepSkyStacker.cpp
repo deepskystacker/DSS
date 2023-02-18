@@ -410,9 +410,18 @@ void DeepSkyStacker::onInitialise()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	processingDlg.SaveOnClose();
+	if (false == processingDlg.SaveOnClose())
+	{
+		e->ignore();
+		return;
+	}
 	processingDlg.DestroyWindow();
-	stackingDlg->saveOnClose();
+	if (false == stackingDlg->saveOnClose())
+	{
+		e->ignore();
+		return;
+	}
+	e->accept();
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
