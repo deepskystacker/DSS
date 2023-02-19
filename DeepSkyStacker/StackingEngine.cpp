@@ -604,7 +604,7 @@ double	ElapsedTime(const SYSTEMTIME & dt1, const SYSTEMTIME & dt2)
 	memcpy(&t1, &ft1, sizeof(t1));
 	memcpy(&t2, &ft2, sizeof(t2));
 
-	return (t2.QuadPart-t1.QuadPart)/10000000.0;
+	return (t2.QuadPart >= t1.QuadPart ? static_cast<double>(t2.QuadPart - t1.QuadPart) : -static_cast<double>(t1.QuadPart - t2.QuadPart)) / 10000000.0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -613,6 +613,82 @@ inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFr
 {
 	return CompareDateTime(plfi2->m_DateTime, plfi1->m_DateTime);
 };
+
+bool interpolateCometPositions(CStackingEngine& stackingEngine)
+{
+	ZFUNCTRACE_RUNTIME();
+
+	if (stackingEngine.LightFrames().empty())
+		return false;
+
+	std::vector<double> times;
+	std::vector<double> xPositions;
+	std::vector<double> yPositions;
+	times.reserve(8);
+	xPositions.reserve(8);
+	yPositions.reserve(8);
+
+	const CLightFrameInfo& firstLightframe = stackingEngine.getBitmap(0);
+
+	std::for_each(stackingEngine.LightFrames().cbegin(), stackingEngine.LightFrames().cend(),
+		[&times, &xPositions, &yPositions, &firstLightframe](const CLightFrameInfo& lightframe) {
+			if (!lightframe.m_bDisabled && lightframe.m_bComet)
+			{
+				const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
+				times.push_back(ElapsedTime(firstLightframe.m_DateTime, lightframe.m_DateTime));
+				xPositions.push_back(position.x());
+				yPositions.push_back(position.y());
+			}
+		}
+	);
+
+	if (times.size() < 2)
+		return false;
+
+	const auto average = [](const std::vector<double>& vec) {
+		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [](const double accu, const double value) { return accu + value; }) / static_cast<double>(vec.size());
+	};
+	const auto secondMoment = [](const std::vector<double>& vec, const double average) {
+		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [average](const double accu, const double value) { const double y = value - average; return accu + y * y; });
+	};
+	const auto crossCorrelation = [](const std::vector<double>& r, const double rMean, const std::vector<double>& s, const double sMean) {
+		return std::inner_product(r.cbegin(), r.cend(), s.cbegin(), 0.0,
+			[](const double product, const double accu) { return accu + product; },
+			[rMean, sMean](const double rVal, const double sVal) { return (rVal - rMean) * (sVal - sMean); }
+		);
+	};
+
+	const double tAvg = average(times);
+	const double xAvg = average(xPositions);
+	const double yAvg = average(yPositions);
+	const double tSecondMoment = secondMoment(times, tAvg);
+
+	if (tSecondMoment == 0.0) // All elapsed times are equal?
+		return false;
+
+	const double xGradient = crossCorrelation(times, tAvg, xPositions, xAvg) / tSecondMoment;
+	const double xOffset = xAvg - xGradient * tAvg;
+
+	const double yGradient = crossCorrelation(times, tAvg, yPositions, yAvg) / tSecondMoment;
+	const double yOffset = yAvg - yGradient * tAvg;
+
+	int i = 0;
+	for (CLightFrameInfo& lightframe : stackingEngine.LightFrames())
+	{
+		if (!lightframe.m_bComet && !lightframe.m_bDisabled)
+		{
+			const double time = ElapsedTime(firstLightframe.m_DateTime, lightframe.m_DateTime);
+			lightframe.m_fXComet = xGradient * time + xOffset;
+			lightframe.m_fYComet = yGradient * time + yOffset;
+			lightframe.m_bTransformedCometPosition = true;
+			lightframe.m_bComet = true;
+			stackingEngine.incCometStackableIfBitmapHasComet(i);
+		}
+		++i;
+	}
+
+	return true;
+}
 
 void CStackingEngine::ComputeMissingCometPositions()
 {
@@ -833,7 +909,8 @@ void CStackingEngine::ComputeOffsets()
 
 		if (computeOffsets(this, this->m_pProgress, lLast)) // Offset calculation was successful (not stopped by pressing "Cancel")
 		{
-			ComputeMissingCometPositions();
+			interpolateCometPositions(*this);
+//			ComputeMissingCometPositions();
 			m_StackingInfo.Save();
 		}
 	}
