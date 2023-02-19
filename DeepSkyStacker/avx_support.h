@@ -56,6 +56,7 @@ public:
 
 	static bool checkAvx2CpuSupport();
 	static bool checkSimdAvailability();
+	static void reportCpuType();
 
 	template <class ElementType, class VectorElementType>
 	inline static size_t numberOfAvxVectors(const size_t width)

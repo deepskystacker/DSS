@@ -761,6 +761,8 @@ static char const* global_program_name;
 //#endif
 //}
 
+void reportCpuType();
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -904,6 +906,8 @@ int main(int argc, char* argv[])
 	// Do the old Windows language stuff
 	//
 	SetUILanguage();
+
+	reportCpuType();
 
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStacker mainWindow;
