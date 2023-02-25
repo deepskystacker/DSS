@@ -19,6 +19,7 @@
 #include "avx_avg.h"
 #include <omp.h>
 #include <QRectF>
+#include <future>
 
 
 #define _USE_MATH_DEFINES
@@ -1795,7 +1796,8 @@ std::shared_ptr<CMultiBitmap> CStackingEngine::CreateMasterLightMultiBitmap(cons
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet)
+template <class T>
+std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, T futureForWrite)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -2030,7 +2032,13 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			}
 			else if ((m_pLightTask->m_Method != MBP_ENTROPYAVERAGE) && static_cast<bool>(m_pMasterLight) && static_cast<bool>(StackTask.m_pTempBitmap))
 			{
-				m_pMasterLight->AddBitmap(StackTask.m_pTempBitmap.get(), m_pProgress);
+				if (futureForWrite.valid())
+					futureForWrite.get();
+				const auto writeTask = [masterLight = this->m_pMasterLight](std::shared_ptr<CMemoryBitmap> tempBitmap) -> bool {
+					return masterLight->AddBitmap(tempBitmap.get(), nullptr);
+				};
+//				m_pMasterLight->AddBitmap(StackTask.m_pTempBitmap.get(), m_pProgress);
+				futureForWrite = std::async(std::launch::async, writeTask, StackTask.m_pTempBitmap);
 			}
 
 			if (m_bSaveIntermediate && !m_bCreateCometImage)
@@ -2054,10 +2062,8 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			m_pProgress->End2();
 	}
 
-	return bResult;
+	return std::make_pair(bResult, std::move(futureForWrite));
 }
-
-#include <future>
 
 bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
@@ -2218,6 +2224,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					auto futureForRead = std::async(std::launch::deferred, readTask, 0, m_pProgress); // Load first lightframe synchronously.
 					const auto firstBitmap = m_vBitmaps.cbegin();
 
+					using T = std::future<bool>;
+					T futureForWriteTempFile{};
+
 					for (size_t i = 0; i < pStackingInfo->m_pLightTask->m_vBitmaps.size() && !bStop; ++i)
 					{
 						auto [pBitmap, bitmapNdx] = futureForRead.get();
@@ -2281,7 +2290,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							m_pProgress->Start2(strText, 0);
 
 						// Stack
-						bStop = !StackLightFrame(pBitmap, PixTransform, lightframeInfo.m_fExposure, lightframeInfo.m_bComet);
+						auto [stackSuccess, f] = StackLightFrame<T>(pBitmap, PixTransform, lightframeInfo.m_fExposure, lightframeInfo.m_bComet, std::move(futureForWriteTempFile));
+						futureForWriteTempFile = std::move(f);
+						bStop = !stackSuccess;
 						m_lNrStacked++;
 
 						if (m_bCreateCometImage)
@@ -2293,6 +2304,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							bStop = bStop || m_pProgress->IsCanceled();
 						}
 					}
+					futureForWriteTempFile.get(); // Wait for last temp file to be written.
 					pStackingInfo->m_pLightTask->m_bDone = true;
 					bEnd = bStop;
 				}
