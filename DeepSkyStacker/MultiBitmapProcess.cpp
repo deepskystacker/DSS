@@ -12,19 +12,17 @@
 #include <omp.h>
 #include <mutex>
 
-/* ------------------------------------------------------------------- */
+namespace {
 
-static void GetTempFileName(CString & strFile)
+QString GetTempFileName()
 {
-	TCHAR			szTempFileName[1+_MAX_PATH];
-	QString			strFolder(CAllStackingTasks::GetTemporaryFilesFolder());
+	TCHAR szTempFileName[1 + _MAX_PATH] = { '\0' };
+	::GetTempFileName(reinterpret_cast<LPCTSTR>(CAllStackingTasks::GetTemporaryFilesFolder().utf16()), _T("DSS"), 0, szTempFileName);
+	return QString::fromWCharArray(szTempFileName);
+}
 
-	GetTempFileName(CString((LPCTSTR)strFolder.utf16()), _T("DSS"), 0, szTempFileName);
+}
 
-	strFile = szTempFileName;
-};
-
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
@@ -36,14 +34,14 @@ void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
 
 void CMultiBitmap::DestroyTempFiles()
 {
-	for (int i = 0;i<m_vFiles.size();i++)
+	for (auto& bitmapPart : this->m_vFiles)
 	{
-		if (m_vFiles[i].m_strFile.GetLength())
-			DeleteFile(m_vFiles[i].m_strFile);
-		m_vFiles[i].m_strFile.Empty();
-	};
+		if (!bitmapPart.m_tempFileName.isEmpty())
+			DeleteFile(reinterpret_cast<LPCTSTR>(bitmapPart.m_tempFileName.utf16()));
+		bitmapPart.m_tempFileName.clear();
+	}
 	m_vFiles.clear();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -73,9 +71,6 @@ void CMultiBitmap::InitParts()
 
 	while (lEndRow < m_lHeight - 1)
 	{
-		CString strFile;
-		GetTempFileName(strFile);
-
 		lStartRow = lEndRow + 1;
 		lEndRow = lStartRow + lNrLines;
 		if (lNrRemainingLines != 0)
@@ -85,7 +80,7 @@ void CMultiBitmap::InitParts()
 		}
 		lEndRow = std::min(lEndRow, m_lHeight - 1);
 
-		m_vFiles.emplace_back(strFile, lStartRow, lEndRow);
+		m_vFiles.emplace_back(GetTempFileName(), lStartRow, lEndRow);
 	}
 
 	m_bInitDone.store(true);
@@ -121,7 +116,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 	for (const auto& file : m_vFiles)
 	{
 		auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
-		std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(file.m_strFile, _T("a+b")), dtor };
+		std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("a+b")), dtor };
 		if (pFile.get() == nullptr)
 			return false;
 
@@ -390,7 +385,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
 
-			FILE* hFile = _tfopen(file.m_strFile, _T("rb"));
+			FILE* hFile = _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("rb"));
 			if (hFile != nullptr)
 			{
 				bResult = fread(buffer.data(), 1, fileSize, hFile) == fileSize;

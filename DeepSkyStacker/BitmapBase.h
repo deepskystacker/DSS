@@ -878,26 +878,25 @@ public:
 };
 
 
-class CBitmapPartFile
+class CBitmapPartFile final
 {
 public:
-	CString m_strFile;
+	QString m_tempFileName;
 	int m_lStartRow;
 	int m_lEndRow;
-	int m_lWidth;
-	int m_lNrBitmaps;
-
-
+	int m_lWidth{ 0 };
+	int m_lNrBitmaps{ 0 };
 public:
-	CBitmapPartFile(LPCTSTR szFile, int lStartRow, int lEndRow) :
-		m_strFile{ szFile },
+	CBitmapPartFile(QString&& tmpFile, const int lStartRow, const int lEndRow) noexcept :
+		m_tempFileName{ std::move(tmpFile) },
 		m_lStartRow{ lStartRow },
-		m_lEndRow{ lEndRow },
-		m_lWidth{ 0 },
-		m_lNrBitmaps{ 0 }
+		m_lEndRow{ lEndRow }
 	{}
 	CBitmapPartFile(const CBitmapPartFile&) = default;
+	CBitmapPartFile(CBitmapPartFile&&) noexcept = default;
 	CBitmapPartFile& operator=(const CBitmapPartFile&) = default;
+	CBitmapPartFile& operator=(CBitmapPartFile&&) noexcept = default;
+	~CBitmapPartFile() = default;
 };
 
 class CMultiBitmap
