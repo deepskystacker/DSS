@@ -2304,7 +2304,8 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							bStop = bStop || m_pProgress->IsCanceled();
 						}
 					}
-					futureForWriteTempFile.get(); // Wait for last temp file to be written.
+					if (futureForWriteTempFile.valid())
+						futureForWriteTempFile.get(); // Wait for last temp file to be written.
 					pStackingInfo->m_pLightTask->m_bDone = true;
 					bEnd = bStop;
 				}
