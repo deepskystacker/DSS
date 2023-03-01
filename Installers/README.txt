@@ -1,7 +1,8 @@
-﻿Welcome to DeepSkyStacker 5.1.0 Beta 3
+﻿Welcome to DeepSkyStacker 5.1.0
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
 
 This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
-Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
@@ -11,7 +12,7 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 3. It is now possible to rename all groups with the exception of the initial group (Main Group).
 
-4. Some fields in the image list (Type, ISO/Gain, and Exposure) can the double-clicked to change the values.
+4. Some fields in the image list (Type, ISO/Gain, and Exposure) can be double-clicked to change the values.
 
 5. A large number of internal changes have been made with the intent of facilitating future enhancements and/or to improve processing.
 
@@ -40,42 +41,17 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 12. A file association is now created during installation so that .dssfilelist files will be opened by DeepSkyStacker.
 
-13. Fix a problem where the image list wasn't always hidden when switching to the Processing panel.
+13. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
 
-14. Reduce the depth of the rows in the image list so it takes less space.
-
-15. Change to AVX checking code to resolve a problem with SIGILL on older CPUs.
-
-16. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
-
-17. Bug fix for Comet/Star editing mode being forgotten when switching between images.
-
-18. Don't remove files from image list if user says not to erase them.  Ensure image list information is updated.
-
-19. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
-
-20. Fix for some issues with the progress dialog.
-
-21. Ensure that the image list as always displayed when opening DSS.
-
-22. Resolve problems with loading file lists.
-
-23. Change message for incompatible images to report the reason.
+14. Change message for incompatible images to report the reason.
 
 24. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.   Typically, the time to load the images will predominate on faster systems or those that use real disk drives.
 
-25. Remove manual setting of "Set Black Point to Zero", this is now determined automatically.
+15. Remove manual setting of "Set Black Point to Zero", this is now determined automatically.
 
-26. Fix for incorrect cropping of intersection mode stacking contributed by Peter Wolsley.
+16. Enable the Comet tab in Stacking Settings when it is invoked from Register Settings and Comet data is available.
 
-27. Enable the Comet tab in Stacking Settings when it is invoked from Register Settings and Comet data is available.
+17. Change LibRaw supported camera list so that "Olympus OM-1" is recognised as well as "OM Digital Solutions OM-1"
 
-28. Change LibRaw supported camera list so that "Olympus OM-1" is recognised as well as "OM Digital Solutions OM-1"
+18. Update Libraw to 0.21.1
 
-29. Update Libraw to 0.21.1
-
-30. Fix problem with incorrect handling of "No White Balance" and "Use Camera White Balance" settings for RAW files.
-
-31. Fix to SIMD code for Comet Stacking.
-
-32. Ensure the image list is updated after a Comet/Stars editing action is saved.
