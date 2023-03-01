@@ -62,7 +62,6 @@ unsigned libraw_sget4_static(short _order, uchar *s)
   else
     return s[0] << 24 | s[1] << 16 | s[2] << 8 | s[3];
 }
-#define sget4(s) sget4((uchar *)s)
 
 unsigned LibRaw::get4()
 {
@@ -173,5 +172,5 @@ void LibRaw::read_shorts(ushort *pixel, unsigned count)
   if ((unsigned)fread(pixel, 2, count, ifp) < count)
     derror();
   if ((order == 0x4949) == (ntohs(0x1234) == 0x1234))
-    swab((char *)pixel, (char *)pixel, count * 2);
+    libraw_swab(pixel, count * 2);
 }

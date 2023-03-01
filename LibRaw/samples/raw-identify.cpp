@@ -151,6 +151,12 @@ const char *WB_idx2hrstr(unsigned WBi)
   return 0;
 }
 
+double _log2(double a)
+{
+  if(a > 0.00000000001) return log(a)/log(2.0);
+  return -1000;
+}
+
 void trimSpaces(char *s)
 {
   char *p = s;
@@ -170,6 +176,7 @@ void print_usage(const char *pname)
 {
   printf("Usage: %s [options] inputfiles\n", pname);
   printf("Options:\n"
+         "\t-v\tverbose output\n"
          "\t-w\tprint white balance\n"
          "\t-u\tprint unpack function\n"
          "\t-f\tprint frame size (only w/ -u)\n"
@@ -508,13 +515,13 @@ void print_verbose(FILE *outfile, LibRaw &MyCoolRawProcessor, std::string &fn)
     fprintf(outfile, "Thumb size:  %4d x %d\n", T.twidth, T.theight);
   fprintf(outfile, "Full size:   %4d x %d\n", S.raw_width, S.raw_height);
 
-  if (S.raw_inset_crop.cwidth)
+  if (S.raw_inset_crops[0].cwidth)
   {
-    fprintf(outfile, "Raw inset, width x height: %4d x %d ", S.raw_inset_crop.cwidth, S.raw_inset_crop.cheight);
-    if (S.raw_inset_crop.cleft != 0xffff)
-      fprintf(outfile, "left: %d ", S.raw_inset_crop.cleft);
-    if (S.raw_inset_crop.ctop != 0xffff)
-      fprintf(outfile, "top: %d", S.raw_inset_crop.ctop);
+    fprintf(outfile, "Raw inset, width x height: %4d x %d ", S.raw_inset_crops[0].cwidth, S.raw_inset_crops[0].cheight);
+    if (S.raw_inset_crops[0].cleft != 0xffff)
+      fprintf(outfile, "left: %d ", S.raw_inset_crops[0].cleft);
+    if (S.raw_inset_crops[0].ctop != 0xffff)
+      fprintf(outfile, "top: %d", S.raw_inset_crops[0].ctop);
     fprintf(outfile, "\n");
   }
 
@@ -564,9 +571,9 @@ void print_verbose(FILE *outfile, LibRaw &MyCoolRawProcessor, std::string &fn)
     if ((C.cam_mul[0] > 0) && (C.cam_mul[1] > 0))
     {
       fprintf(outfile, "\n  %-23s   %g %g %g %g   %5.2f %5.2f %5.2f %5.2f", "As shot", C.cam_mul[0], C.cam_mul[1],
-              C.cam_mul[2], C.cam_mul[3], roundf(log2(C.cam_mul[0] / C.cam_mul[1]) * 100.0f) / 100.0f, 0.0f,
-              roundf(log2(C.cam_mul[2] / C.cam_mul[1]) * 100.0f) / 100.0f,
-              C.cam_mul[3] ? roundf(log2(C.cam_mul[3] / C.cam_mul[1]) * 100.0f) / 100.0f : 0.0f);
+              C.cam_mul[2], C.cam_mul[3], roundf(_log2(C.cam_mul[0] / C.cam_mul[1]) * 100.0f) / 100.0f, 0.0f,
+              roundf(_log2(C.cam_mul[2] / C.cam_mul[1]) * 100.0f) / 100.0f,
+              C.cam_mul[3] ? roundf(_log2(C.cam_mul[3] / C.cam_mul[1]) * 100.0f) / 100.0f : 0.0f);
     }
 
     for (int cnt = 0; cnt < int(sizeof WBToStr / sizeof *WBToStr); cnt++)
@@ -577,9 +584,9 @@ void print_verbose(FILE *outfile, LibRaw &MyCoolRawProcessor, std::string &fn)
         denom = (float)C.WB_Coeffs[WBi][1];
         fprintf(outfile, "\n  %-23s   %4d %4d %4d %4d   %5.2f %5.2f %5.2f %5.2f", WBToStr[cnt].hrStrId,
                 C.WB_Coeffs[WBi][0], C.WB_Coeffs[WBi][1], C.WB_Coeffs[WBi][2], C.WB_Coeffs[WBi][3],
-                roundf(log2((float)C.WB_Coeffs[WBi][0] / denom) * 100.0f) / 100.0f, 0.0f,
-                roundf(log2((float)C.WB_Coeffs[WBi][2] / denom) * 100.0f) / 100.0f,
-                C.WB_Coeffs[3] ? roundf(log2((float)C.WB_Coeffs[WBi][3] / denom) * 100.0f) / 100.0f : 0.0f);
+                roundf(_log2((float)C.WB_Coeffs[WBi][0] / denom) * 100.0f) / 100.0f, 0.0f,
+                roundf(_log2((float)C.WB_Coeffs[WBi][2] / denom) * 100.0f) / 100.0f,
+                C.WB_Coeffs[3] ? roundf(_log2((float)C.WB_Coeffs[WBi][3] / denom) * 100.0f) / 100.0f : 0.0f);
       }
     }
 
@@ -672,6 +679,7 @@ void print_verbose(FILE *outfile, LibRaw &MyCoolRawProcessor, std::string &fn)
     fprintf(outfile, "\nDerived D65 multipliers:");
     for (int c = 0; c < P1.colors; c++)
       fprintf(outfile, " %f", C.pre_mul[c]);
+    fprintf(outfile, "\n");
   }
 }
 

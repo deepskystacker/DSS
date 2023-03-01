@@ -14,6 +14,9 @@
  */
 
 #include "../../internal/libraw_cxx_defs.h"
+#ifdef USE_RAWSPEED3
+#include "rawspeed3_capi.h"
+#endif
 
 static void cleargps(libraw_gps_info_t *q)
 {
@@ -36,6 +39,7 @@ LibRaw::LibRaw(unsigned int flags) : memmgr(1024)
   ZERO(callbacks);
 
   _rawspeed_camerameta = _rawspeed_decoder = NULL;
+  _rawspeed3_handle = NULL;
   dnghost = NULL;
   dngnegative = NULL;
   dngimage = NULL;
@@ -47,10 +51,7 @@ LibRaw::LibRaw(unsigned int flags) : memmgr(1024)
                               // make_camera_metadata()
   _rawspeed_camerameta = static_cast<void *>(camerameta);
 #endif
-  callbacks.mem_cb = (flags & LIBRAW_OPIONS_NO_MEMERR_CALLBACK)
-                         ? NULL
-                         : &default_memory_callback;
-  callbacks.data_cb = (flags & LIBRAW_OPIONS_NO_DATAERR_CALLBACK)
+  callbacks.data_cb = (flags & LIBRAW_OPTIONS_NO_DATAERR_CALLBACK)
                           ? NULL
                           : &default_data_callback;
   callbacks.exif_cb = NULL; // no default callback
@@ -108,6 +109,12 @@ LibRaw::~LibRaw()
 {
   recycle();
   delete tls;
+#ifdef USE_RAWSPEED3
+  if (_rawspeed3_handle)
+      rawspeed3_close(_rawspeed3_handle);
+  _rawspeed3_handle = NULL;
+#endif
+
 #ifdef USE_RAWSPEED
   if (_rawspeed_camerameta)
   {
@@ -150,11 +157,13 @@ void LibRaw::recycle()
   FREE(imgdata.rawdata.raw_alloc);
   FREE(imgdata.idata.xmpdata);
 
+  parseCR3_Free();
+
 #undef FREE
 
   ZERO(imgdata.sizes);
-  imgdata.sizes.raw_inset_crop.cleft = 0xffff;
-  imgdata.sizes.raw_inset_crop.ctop  = 0xffff;
+  imgdata.sizes.raw_inset_crops[0].cleft = imgdata.sizes.raw_inset_crops[1].cleft = 0xffff;
+  imgdata.sizes.raw_inset_crops[0].ctop  = imgdata.sizes.raw_inset_crops[1].ctop = 0xffff;
 
   ZERO(imgdata.idata);
   ZERO(imgdata.color);
@@ -163,6 +172,7 @@ void LibRaw::recycle()
   ZERO(imgdata.rawdata);
   ZERO(imgdata.shootinginfo);
   ZERO(imgdata.thumbnail);
+  ZERO(imgdata.thumbs_list);
   ZERO(MN);
   cleargps(&imgdata.other.parsed_gps);
   ZERO(libraw_internal_data);
@@ -183,9 +193,9 @@ void LibRaw::recycle()
       imgdata.color.dng_color[1].illuminant = LIBRAW_WBI_None;
   for (int i = 0; i < 4; i++) imgdata.color.dng_levels.analogbalance[i] = 1.0f;
 
-  MN.canon.SensorLeftBorder = -1;
-  MN.canon.SensorTopBorder = -1;
-  MN.canon.AutoLightingOptimizer = 3; // 'off' value
+  MN.canon.DefaultCropAbsolute.l = -1;
+  MN.canon.DefaultCropAbsolute.t = -1;
+  MN.canon.AutoLightingOptimizer =  3; // 'off' value
 
   MN.fuji.WB_Preset = 0xffff;
   MN.fuji.ExpoMidPointShift = -999.f;
@@ -203,6 +213,11 @@ void LibRaw::recycle()
   MN.fuji.FocusWarning = 0xffff;
   for (int i = 0; i < 3; i++) MN.fuji.ImageStabilization[i] = 0xffff;
   MN.fuji.DriveMode = -1;
+  MN.fuji.ImageCount = -1;
+  MN.fuji.AutoBracketing = -1;
+  MN.fuji.SequenceNumber = -1;
+  MN.fuji.SeriesLength = -1;
+  MN.fuji.PixelShiftOffset[0] = MN.fuji.PixelShiftOffset[1] = -999.f;
 
   MN.hasselblad.nIFD_CM[0] = MN.hasselblad.nIFD_CM[1] = -1;
 
@@ -219,7 +234,7 @@ void LibRaw::recycle()
   MN.olympus.AFResult     = 0xffff;
   MN.olympus.AFFineTune   = 0xff;
   for (int i = 0; i < 3; i++) {
-    MN.olympus.AFFineTuneAdj[i] = (short)0x8000;
+    MN.olympus.AFFineTuneAdj[i] = -32768;
     MN.olympus.SpecialMode[i] = 0xffffffff;
   }
   MN.olympus.ZoomStepCount = 0xffff;
@@ -228,6 +243,7 @@ void LibRaw::recycle()
   MN.olympus.FocusStepNear = 0xffff;
   MN.olympus.FocusDistance = -999.0;
   for (int i = 0; i < 4; i++) MN.olympus.AspectFrame[i] = 0xffff;
+  MN.olympus.StackedImage[0] = 0xffffffff;
 
   MN.panasonic.LensManufacturer = 0xffffffff;
 
@@ -272,6 +288,7 @@ void LibRaw::recycle()
   MN.sony.Quality = 0xffffffff;
   MN.sony.HighISONoiseReduction = 0xffff;
   MN.sony.SonyRawFileType = 0xffff;
+  MN.sony.RawSizeType = 0xffff;
   MN.sony.AFMicroAdjValue = 0x7f;
   MN.sony.AFMicroAdjOn = -1;
   MN.sony.AFMicroAdjRegisteredLenses = 0xff;
@@ -285,6 +302,10 @@ void LibRaw::recycle()
     delete d;
   }
   _rawspeed_decoder = 0;
+#endif
+#ifdef USE_RAWSPEED3
+  if (_rawspeed3_handle)
+      rawspeed3_release(_rawspeed3_handle);
 #endif
 #ifdef USE_DNGSDK
   if (dngnegative)
@@ -310,9 +331,10 @@ void LibRaw::recycle()
   memmgr.cleanup();
 
   imgdata.thumbnail.tformat = LIBRAW_THUMBNAIL_UNKNOWN;
+  libraw_internal_data.unpacker_data.thumb_format = LIBRAW_INTERNAL_THUMBNAIL_UNKNOWN;
   imgdata.progress_flags = 0;
 
-  load_raw = thumb_load_raw = 0;
+  load_raw =  0;
 
   tls->init();
 }

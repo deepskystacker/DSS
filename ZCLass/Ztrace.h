@@ -42,6 +42,7 @@
 #if defined(_AIX) && defined(__IBMCPP__)
 #pragma info(restore)
 #endif
+class QString;
 
 
 class ZExceptionLocation;
@@ -160,8 +161,13 @@ public:
  */ 
 static void
   write                    ( const std::string& text ),
-//  write                    ( const char*    text ),
+  write                    ( const QString&     text ),
   write                    (const char*    format, ...);
+
+/**
+* The dumpHex() method does what it says on the tin!
+*/
+static void dumpHex(const void* p, size_t len);
 
 enum Destination           {
   standardError,
@@ -227,7 +233,7 @@ static unsigned long
 static void
   writeString              ( const char*    text   ),
   writeFormattedString     ( const std::string& string,
-                             char*          marker );
+                             const char*          marker );
 
 private:
 /*------------------------- Private ------------------------------------------*/

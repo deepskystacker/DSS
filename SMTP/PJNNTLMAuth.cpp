@@ -53,14 +53,6 @@ to maintain a single distribution point for the source code.
 
 //////////////// Macros / Locals //////////////////////////////////////////////
 
-#if (_MFC_VER < 0x700)
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-#endif
-
 #ifndef SEC_SUCCESS
 #define SEC_SUCCESS(Status) ((Status) >= 0)
 #endif
@@ -243,7 +235,9 @@ SECURITY_STATUS CNTLMClientAuth::GenClientContext(BYTE* pIn, DWORD cbIn, BYTE* p
         pvLogonID = &authInfo;
       }
 
-      ss = m_lpfnAcquireCredentialsHandle(NULL, _T("NTLM"), SECPKG_CRED_OUTBOUND, NULL, pvLogonID, NULL, NULL, &m_hCred, &Lifetime);
+      wchar_t ntlm[5] = _T("NTLM");
+      wchar_t* pntlm = &ntlm[0];
+      ss = m_lpfnAcquireCredentialsHandle(NULL, pntlm, SECPKG_CRED_OUTBOUND, NULL, pvLogonID, NULL, NULL, &m_hCred, &Lifetime);
       if (!SEC_SUCCESS(ss))
         return ss;
     }

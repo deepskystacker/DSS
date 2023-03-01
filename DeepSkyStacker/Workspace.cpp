@@ -1,487 +1,258 @@
 #include <stdafx.h>
+#include <algorithm>
+#include <deque>
+#include <memory>
+#include <QDebug>
+#include <QGlobalStatic>
+#include <QMutex>
+#include <QSettings>
+
+#include "resource.h"
 #include "Workspace.h"
-#include "Registry.h"
+
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "StackingTasks.h"
-#include <algorithm>
-#include <deque>
 
-
-/* ------------------------------------------------------------------- */
-
-void CWorkspaceSetting::ReadFromRegistry()
+class WorkspaceSettings
 {
-	CRegistry				reg;
-	DWORD					dwValue;
-	CString					strValue;
-	CRegVal					regval;
+public:
+	WORKSPACESETTINGVECTOR				m_vSettings;
 
-	if (reg.LoadKey(m_strPath, m_strName, regval))
+protected:
+	void	CopyFrom(const WorkspaceSettings & ws)
 	{
-		switch (regval.GetType())
-		{
-		case REG_SZ :
-			regval.GetValue(strValue);
-			SetValue(strValue);
-			break;
-		case REG_DWORD :
-			regval.GetValue(dwValue);
-			SetValue(dwValue);
-			break;
-		};
-
-		/*
-		switch (m_Type)
-		{
-		case DST_STRING :
-			reg.LoadKey(m_strPath, m_strName, m_strValue);
-			break;
-		case DST_BOOL :
-			dwValue = (DWORD)m_bValue;
-			reg.LoadKey(m_strPath, m_strName, dwValue);
-			m_bValue = dwValue ? true : false;
-			break;
-		case DST_DWORD :
-			reg.LoadKey(m_strPath, m_strName, m_dwValue);
-			break;
-		case DST_DOUBLE :
-			strValue.Format("%.2f", m_fValue);
-			reg.LoadKey(m_strPath, m_strName, strValue);
-			m_fValue = _ttof(strValue);
-			break;
-		};
-		*/
-		m_bDirty = FALSE;
+		m_vSettings = ws.m_vSettings;
 	};
+
+	void	InitToDefault(WORKSPACESETTINGVECTOR & vSettings);
+	void	Init();
+
+public:
+	WorkspaceSettings()
+	{
+		Init();
+	};
+	virtual ~WorkspaceSettings() {};
+
+	WorkspaceSettings & operator = (const WorkspaceSettings & ws)
+	{
+		CopyFrom(ws);
+		return (*this);
+	};
+
+	WorkspaceSettings(WorkspaceSettings const& other)
+	{
+		CopyFrom(other);
+	}
+
+	void	InitFrom(const WorkspaceSettings & ws)
+	{
+		CopyFrom(ws);
+	};
+
+	WORKSPACESETTINGITERATOR	findSetting(const QString& key);
+	bool	isDirty();
+	void	resetDirty();
+	WORKSPACESETTINGITERATOR	end()
+	{
+		return m_vSettings.end();
+	};
+
+	void	readSettings();
+	void	saveSettings();
+	void	ReadFromFile(FILE * hFile);
+	void	ReadFromFile(const fs::path& fileName);
+	void	SaveToFile(FILE * hFile);
+	void	SaveToFile(const fs::path& fileName);
+	bool	ReadFromString(LPCTSTR szString);
+	bool	ReadFromString(const QString& theString);
+	void	ResetToDefault();
 };
 
 /* ------------------------------------------------------------------- */
 
-void CWorkspaceSetting::SaveToRegistry() const
+WorkspaceSetting & WorkspaceSetting::readSetting()
 {
-	CRegistry				reg;
-	DWORD					dwValue;
-	CString					strValue;
+	QSettings settings;
 
-	switch (m_Type)
+	// If there wasn't a valid stored value in the settings, we will be returned 
+	// a null QVariant. We for sure don't want to use that!
+	QVariant temp = settings.value(keyName);
+	if (!temp.isNull())
 	{
-	case DST_STRING :
-		reg.SaveKey(m_strPath, m_strName, m_strValue);
-		break;
-	case DST_BOOL :
-		dwValue = (DWORD)m_bValue;
-		reg.SaveKey(m_strPath, m_strName, dwValue);
-		break;
-	case DST_DWORD :
-		reg.SaveKey(m_strPath, m_strName, m_dwValue);
-		break;
-	case DST_DOUBLE :
-		strValue.Format(_T("%.4f"), m_fValue);
-		reg.SaveKey(m_strPath, m_strName, strValue);
-		break;
-	};
-
-	//m_bDirty = FALSE;
+		Value = temp;
+		dirty = false;
+	}
+	return *this;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool	CWorkspaceSetting::SetValue(const CWorkspaceSetting & ws)
+WorkspaceSetting & WorkspaceSetting::saveSetting()
 {
-	bool				bResult = false;
-
-	// Assume that this is the same type
-	if (m_Type == ws.m_Type)
+	if (dirty)
 	{
-		switch (m_Type)
-		{
-		case DST_STRING :
-			if (m_strValue != ws.m_strValue)
-			{
-				m_bDirty = TRUE;
-				m_strValue = ws.m_strValue;
-			};
-			break;
-		case DST_BOOL :
-			if (m_bValue != ws.m_bValue)
-			{
-				m_bDirty = TRUE;
-				m_bValue = ws.m_bValue;
-			};
-			break;
-		case DST_DWORD :
-			if (m_dwValue != ws.m_dwValue)
-			{
-				m_bDirty = TRUE;
-				m_dwValue = ws.m_dwValue;
-			};
-			break;
-		case DST_DOUBLE :
-			if (m_fValue != ws.m_fValue)
-			{
-				m_bDirty = TRUE;
-				m_fValue = ws.m_fValue;
-			};
-			break;
-		};
-		bResult = true;
-	};
+		QSettings settings;
 
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::SetValue(LPCTSTR szValue)
-{
-	CString				strValue;
-	bool				bValue;
-	DWORD				dwValue;
-	double				fValue;
-
-	switch (m_Type)
-	{
-	case DST_STRING :
-		strValue = szValue;
-		if (strValue != m_strValue)
-			m_bDirty = TRUE;
-		m_strValue = strValue;
-		break;
-	case DST_BOOL :
-		bValue = _ttol(szValue) ? true : false;
-		if (bValue != m_bValue)
-			m_bDirty = TRUE;
-		m_bValue = bValue;
-		break;
-	case DST_DWORD :
-		dwValue = _ttol(szValue);
-		if (dwValue != m_dwValue)
-			m_bDirty = TRUE;
-		m_dwValue = dwValue;
-		break;
-	case DST_DOUBLE :
-		fValue = _ttof(szValue);
-		if (fValue != m_fValue)
-			m_bDirty = TRUE;
-		m_fValue = fValue;
-		break;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::SetValue(bool bNewValue)
-{
-	CString				strValue;
-	bool				bValue;
-	DWORD				dwValue;
-	double				fValue;
-
-	switch (m_Type)
-	{
-	case DST_STRING :
-		strValue = bNewValue ? "1" : "0";
-		if (strValue != m_strValue)
-			m_bDirty = TRUE;
-		m_strValue = strValue;
-		break;
-	case DST_BOOL :
-		bValue = bNewValue;
-		if (bValue != m_bValue)
-			m_bDirty = TRUE;
-		m_bValue = bValue;
-		break;
-	case DST_DWORD :
-		dwValue = bNewValue ? 1 : 0;
-		if (dwValue != m_dwValue)
-			m_bDirty = TRUE;
-		m_dwValue = dwValue;
-		break;
-	case DST_DOUBLE :
-		fValue = bNewValue ? 1 : 0;
-		if (fValue != m_fValue)
-			m_bDirty = TRUE;
-		m_fValue = fValue;
-		break;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::SetValue(DWORD dwNewValue)
-{
-	CString				strValue;
-	bool				bValue;
-	DWORD				dwValue;
-	double				fValue;
-
-	switch (m_Type)
-	{
-	case DST_STRING :
-		strValue.Format(_T("%ld"), dwNewValue);
-		if (strValue != m_strValue)
-			m_bDirty = TRUE;
-		m_strValue = strValue;
-		break;
-	case DST_BOOL :
-		bValue = dwNewValue ? true : false;
-		if (bValue != m_bValue)
-			m_bDirty = TRUE;
-		m_bValue = bValue;
-		break;
-	case DST_DWORD :
-		dwValue = dwNewValue;
-		if (dwValue != m_dwValue)
-			m_bDirty = TRUE;
-		m_dwValue = dwValue;
-		break;
-	case DST_DOUBLE :
-		fValue = dwNewValue;
-		if (fValue != m_fValue)
-			m_bDirty = TRUE;
-		m_fValue = fValue;
-		break;
-	};
+		settings.setValue(keyName, Value);
+		//dirty = false;		DO NOT RESET DIRTY BIT - that is done by resetDirty()
+	}
+	return *this;
 };
 
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSetting::SetValue(double fNewValue)
+WorkspaceSetting & WorkspaceSetting::setValue(const WorkspaceSetting & ws)
 {
-	CString				strValue;
-	bool				bValue;
-	DWORD				dwValue;
-	double				fValue;
 
-	switch (m_Type)
+	if (Value != ws.Value)
 	{
-	case DST_STRING :
-		strValue.Format(_T("%.4f"), fNewValue);
-		if (strValue != m_strValue)
-			m_bDirty = TRUE;
-		m_strValue = strValue;
-		break;
-	case DST_BOOL :
-		bValue = fNewValue ? true : false;
-		if (bValue != m_bValue)
-			m_bDirty = TRUE;
-		m_bValue = bValue;
-		break;
-	case DST_DWORD :
-		dwValue = fNewValue;
-		if (dwValue != m_dwValue)
-			m_bDirty = TRUE;
-		m_dwValue = dwValue;
-		break;
-	case DST_DOUBLE :
-		fValue = fNewValue;
-		if (fValue != m_fValue)
-			m_bDirty = TRUE;
-		m_fValue = fValue;
-		break;
+		dirty = true;
+		Value = ws.Value;
 	};
+	return *this;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSetting::GetValue(CString & strValue) const
+WorkspaceSetting & WorkspaceSetting::setValue(const QVariant& value)
 {
-	switch (m_Type)
+	if (Value != value)
 	{
-	case DST_STRING :
-		strValue = m_strValue;
-		break;
-	case DST_BOOL :
-		strValue = m_bValue ? "1" : "0";
-		break;
-	case DST_DWORD :
-		strValue.Format(_T("%ld"), m_dwValue);
-		break;
-	case DST_DOUBLE :
-		strValue.Format(_T("%.4f"), m_fValue);
-		break;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::GetValue(bool & bValue) const
-{
-	switch (m_Type)
-	{
-	case DST_STRING :
-		bValue = _ttol(m_strValue) ? true : false;
-		break;
-	case DST_BOOL :
-		bValue = m_bValue;
-		break;
-	case DST_DWORD :
-		bValue = m_dwValue ? true : false;
-		break;
-	case DST_DOUBLE :
-		bValue = m_fValue ? true : false;
-		break;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::GetValue(DWORD & dwValue) const
-{
-	switch (m_Type)
-	{
-	case DST_STRING :
-		dwValue = _ttol(m_strValue);
-		break;
-	case DST_BOOL :
-		dwValue = m_bValue ? 1 : 0;
-		break;
-	case DST_DWORD :
-		dwValue = m_dwValue;
-		break;
-	case DST_DOUBLE :
-		dwValue = m_fValue;
-		break;
-	};
-};
-
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspaceSetting::GetValue(double & fValue) const
-{
-	switch (m_Type)
-	{
-	case DST_STRING :
-		fValue = _ttof(m_strValue);
-		break;
-	case DST_BOOL :
-		fValue = m_bValue ? 1 : 0;
-		break;
-	case DST_DWORD :
-		fValue = m_dwValue;
-		break;
-	case DST_DOUBLE :
-		fValue = m_fValue;
-		break;
-	};
+		dirty = true;
+		Value = value;
+	}
+	return *this;
 };
 
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
+void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 {
 	vSettings.clear();
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_AVERAGE));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), (DWORD)5));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Iteration", (uint)5));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Debloom"), false));
+	vSettings.push_back(WorkspaceSetting("Stacking/Debloom", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), (DWORD)5));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), (DWORD)5));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), (DWORD)5));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), true));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibration", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibrationInterpolation"), (DWORD)BCI_RATIONAL));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("RGBBackgroundCalibrationMethod"), (DWORD)RBCM_MAXIMUM));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", (uint)BCI_RATIONAL));
+	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", (uint)RBCM_MAXIMUM));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkOptimization"), false));
+	vSettings.push_back(WorkspaceSetting("Stacking/DarkOptimization", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("UseDarkFactor"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkFactor"), 1.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/UseDarkFactor", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/DarkFactor", 1.0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("HotPixelsDetection"), true));
+	vSettings.push_back(WorkspaceSetting("Stacking/HotPixelsDetection", true));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BadLinesDetection"), false));
+	vSettings.push_back(WorkspaceSetting("Stacking/BadLinesDetection", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), (DWORD)0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Mosaic", (uint)0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CreateIntermediates"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibrated"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibratedDebayered"), false));
+	vSettings.push_back(WorkspaceSetting("Stacking/CreateIntermediates", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibrated", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibratedDebayered", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), (DWORD)0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("LockCorners"), true));
+	vSettings.push_back(WorkspaceSetting("Stacking/AlignmentTransformation", (uint)0));
+	vSettings.push_back(WorkspaceSetting("Stacking/LockCorners", true));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PixelSizeMultiplier"), (DWORD)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PixelSizeMultiplier", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignChannels"), false));
+	vSettings.push_back(WorkspaceSetting("Stacking/AlignChannels", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CometStackingMode"), (DWORD)0));
+	vSettings.push_back(WorkspaceSetting("Stacking/CometStackingMode", (uint)0));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCometImages"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("ApplyFilterToCometImages"), true));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCometImages", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/ApplyFilterToCometImages", true));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), (DWORD)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanHot"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotFilter"), (DWORD)1));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotDetection"), (DWORD)500));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanCold"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdFilter"), (DWORD)1));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdDetection"), (DWORD)500));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_SaveDeltaImage"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ReplaceMethod"), (DWORD)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanHot", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotDetection", (uint)500));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanCold", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdFilter", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdDetection", (uint)500));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_SaveDeltaImage", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ReplaceMethod", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("PercentStack"), (DWORD)80));
-  	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("StackAfter"), true));
-  	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectHotPixels"), true));
-  	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectionThreshold"), (DWORD)10));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), false));
+	vSettings.push_back(WorkspaceSetting("Register/PercentStack", (uint)80));
+  	vSettings.push_back(WorkspaceSetting("Register/StackAfter", true));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", true));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)10));
+	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear")));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/Brightness", 1.0));
+	vSettings.push_back(WorkspaceSetting("RawDDP/RedScale", 1.0));
+	vSettings.push_back(WorkspaceSetting("RawDDP/BlueScale", 1.0));
+	vSettings.push_back(WorkspaceSetting("RawDDP/NoWB", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/CameraWB", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/BlackPointTo0", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/Interpolation", "Bilinear"));
+	vSettings.push_back(WorkspaceSetting("RawDDP/SuperPixels", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/RawBayer", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/AHD", false));
 
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), _T("")));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), (DWORD)4));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("Bilinear")));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), false));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/FITSisRAW", false));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/Brightness", 1.0));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/RedScale", 1.0));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/BlueScale", 1.0));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", ""));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/Interpolation", "Bilinear"));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", false));
 
 	std::sort(vSettings.begin(), vSettings.end());
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::Init()
+void	WorkspaceSettings::Init()
 {
-	InitToDefault(m_vSettings);
-	ReadFromRegistry();
+	InitToDefault(m_vSettings);		// Set up default values for all the main settings, and mark all as dirty
+	//
+	// Now read all the settings that have previously been saved.
+	//
+	// NOTE WELL:
+	// When a non-null setting is read from wherever QSettings has saved it
+	// that setting value in the settings cache (this workspace) will have its
+	// dirty flag reset so saveSettings() won't store it again.
+	//
+	readSettings();		// Read all settings that were previously hardened to wherever by QSettings
+	//
+	// Now write out the settings whose dirty flag is still set
+	// IOW those that were NOT read by readSettings().
+	//
+	saveSettings();						// Save all dirty settings.
 };
 
 /* ------------------------------------------------------------------- */
 
-WORKSPACESETTINGITERATOR	CWorkspaceSettingsInternal::FindSetting(LPCTSTR szPath, LPCTSTR szName)
+WORKSPACESETTINGITERATOR	WorkspaceSettings::findSetting(const QString& key)
 {
 	WORKSPACESETTINGITERATOR	it;
-	CWorkspaceSetting					s(szPath, szName);
+	WorkspaceSetting					s(key);
 
 	it = lower_bound(m_vSettings.begin(), m_vSettings.end(), s);
 	if (it != m_vSettings.end())
@@ -495,43 +266,43 @@ WORKSPACESETTINGITERATOR	CWorkspaceSettingsInternal::FindSetting(LPCTSTR szPath,
 
 /* ------------------------------------------------------------------- */
 
-BOOL CWorkspaceSettingsInternal::IsDirty()
+bool WorkspaceSettings::isDirty()
 {
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 
-	for (LONG i = 0;i<m_vSettings.size() && !bResult;i++)
-		bResult = m_vSettings[i].IsDirty(FALSE);
+	for (size_t i = 0; i < m_vSettings.size() && !bResult; i++)
+		bResult = m_vSettings[i].isDirty(false);
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ResetDirty()
+void	WorkspaceSettings::resetDirty()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
-		m_vSettings[i].IsDirty(TRUE);
+	for (size_t i = 0; i < m_vSettings.size(); i++)
+		m_vSettings[i].isDirty(true);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ReadFromRegistry()
+void	WorkspaceSettings::readSettings()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
-		m_vSettings[i].ReadFromRegistry();
+	for (size_t i = 0; i < m_vSettings.size(); i++)
+		m_vSettings[i].readSetting();
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::SaveToRegistry()
+void	WorkspaceSettings::saveSettings()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
-		m_vSettings[i].SaveToRegistry();
+	for (size_t i = 0; i < m_vSettings.size(); i++)
+		m_vSettings[i].saveSetting();
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ReadFromFile(FILE * hFile)
+void	WorkspaceSettings::ReadFromFile(FILE * hFile)
 {
 	CHAR				szString[1000];
 
@@ -541,12 +312,15 @@ void	CWorkspaceSettingsInternal::ReadFromFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
+void	WorkspaceSettings::ReadFromFile(const fs::path& file)
 {
-	FILE *				hFile;
-
-	hFile = _tfopen(szFile, _T("rt"));
-	if (hFile)
+	if (std::FILE* hFile =
+#if defined _WINDOWS
+		_wfopen(file.c_str(), L"rt")
+#else
+		std::fopen(file.c_str(), "rt")
+#endif
+		)
 	{
 		ReadFromFile(hFile);
 		fclose(hFile);
@@ -555,30 +329,28 @@ void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
+void	WorkspaceSettings::SaveToFile(FILE * hFile)
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
+	for (size_t i = 0; i < m_vSettings.size(); i++)
 	{
-		CString				strPath;
-		CString				strName;
-		CString				strValue;
+		QVariant value = m_vSettings[i].value();
 
-		m_vSettings[i].GetPath(strPath);
-		m_vSettings[i].GetName(strName);
-		m_vSettings[i].GetValue(strValue);
-
-		fprintf(hFile, "#WS#%s|%s=%s\n", (LPCSTR)CT2CA(strPath, CP_UTF8), (LPCSTR)CT2CA(strName, CP_UTF8), (LPCSTR)CT2CA(strValue, CP_UTF8));
+		fprintf(hFile, "#V5WS#%s#%s\n", m_vSettings[i].key().toUtf8().constData(), value.toString().toUtf8().constData());
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
+void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
-	FILE *				hFile;
-
-	hFile = _tfopen(szFile, _T("wt"));
-	if (hFile)
+	const wchar_t* ptr = file.c_str();
+	if (std::FILE* hFile =
+#if defined _WINDOWS
+		_wfopen(file.c_str(), L"wt")
+#else
+		std::fopen(file.c_str(), "wt")
+#endif
+		)
 	{
 		SaveToFile(hFile);
 		fclose(hFile);
@@ -587,63 +359,103 @@ void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
+bool	WorkspaceSettings::ReadFromString(const QString& theString)
 {
-	BOOL				bResult = FALSE;
-	CString				strString = szString;
-	CString				strPrefix;
+	bool				bResult = false;
 
-	strString.TrimRight(_T("\n"));
-	strPrefix = strString.Left(4);
-	if (strPrefix == _T("#WS#"))
+	QString keyName, value;
+
+	static std::map<QString, QString> keyMap;
+	if (keyMap.empty())
 	{
-		// It seems that it is a workspace setting
-		// Decod the path, name and value
-		int				nSepPos;
-		int				nEqualPos;
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position", "Batch/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position", "Recommended/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\EditStars", "EditStars/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Folders", "Folders/");
+		keyMap.emplace("Software\\DeepSkyStacker\\FileLists", "FileLists/");
+		keyMap.emplace("Software\\DeepSkyStacker\\FitsDDP", "FitsDDP/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Live", "Live/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Output", "Output/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Position", "Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\RawDDP", "RawDDP/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Register", "Register/");
+		keyMap.emplace("Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/");
+		keyMap.emplace("Software\\DeepSkyStacker\\StarMask", "StarMask/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Stacking", "Stacking/");
+	}
 
-		nSepPos = strString.Find('|');
-		nEqualPos = strString.Find('=');
+	if (theString.startsWith("#WS#"))
+	{
+		QString temp = theString.section("#", 2);
+		QString regKey = temp.section("|", 0, 0);
+		QString nameAndValue = temp.section("|", 1);
+		QString name = nameAndValue.section("=", 0, 0);
 
-		if (nSepPos > 0 && nEqualPos > nSepPos)
-		{
-			CString		strPath;
-			CString		strName;
-			CString		strValue;
+		//
+		// Fix issue with changed spelling of "Brightness" - DSS4 and below spelt it "Brighness"
+		//
+		if ("Brighness" == name)
+			name = "Brightness";
 
-			// 012345678901234567890123456789
-			// #WS#HKCU\MYPATH|MYNAME=MYVALUE
-			// Length    = 30
-			// nSepPos   = 15
-			// nEqualPos = 22
-			// PathStartPos = 4
+		value = nameAndValue.section("=", 1);
 
-			// PathLength   = 11 = nSepPos-4
-			// NameStartPos = 16 = nSepPos+1
-			// NameLength   = 6  = nEqualPos-nSepPos-1
-			// ValueStartPos= 23 = nEqualPos+1
-			// ValueLength  = 7  = Length - nEqualPos -1
+		auto keyIter = keyMap.find(regKey);
+		ZASSERT(keyMap.end() != keyIter);
 
-			strPath  = strString.Mid(4, nSepPos-4);
-			strName  = strString.Mid(nSepPos+1, nEqualPos-nSepPos-1);
-			strValue = strString.Mid(nEqualPos+1, strString.GetLength()-nEqualPos-1);
+		//
+		// Get the root of our QSettings key name
+		//
+		keyName = (keyIter->second) + name;
+	}
+	else if (theString.startsWith("#V5WS#"))
+	{
+		keyName = theString.section("#", 2, 2);
+		value = theString.section("#", 3);
+	}
+	else
+	{
+		return false;
+	}
 
-			WORKSPACESETTINGITERATOR			it;
-
-			it = FindSetting(strPath, strName);
-			if (it != m_vSettings.end())
-				it->SetValue(strValue);
-
-			bResult = TRUE;
-		};
-	};
+	WORKSPACESETTINGITERATOR it = findSetting(keyName);
+	if (it != m_vSettings.end())
+	{
+		//
+		// In all cases when we enter here the variable "value" will be
+		// a QString.
+		// We need to convert it to the same type as is currently stored
+		//
+		QVariant variant(value);
+#if QT_VERSION < 0x060000
+		QVariant::Type type = it->value().type();
+#else
+		QMetaType type = it->value().metaType();
+#endif
+		ZASSERT(variant.canConvert(type));
+		variant.convert(type);
+		it->setValue(variant);
+		bResult = true;
+	}
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
+bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
+{
+	//
+	// Convert the line to a QString and strip leading and trailing white space
+	//
+	QString	theString = QString::fromWCharArray(szString).trimmed();
+	
+	return ReadFromString(theString);
 
-void	CWorkspaceSettingsInternal::ResetToDefault()
+};
+
+/* ------------------------------------------------------------------- */
+
+void	WorkspaceSettings::ResetToDefault()
 {
 	WORKSPACESETTINGVECTOR		vDefaults;
 
@@ -651,215 +463,146 @@ void	CWorkspaceSettingsInternal::ResetToDefault()
 
 	if (vDefaults.size() == m_vSettings.size())
 	{
-		for (LONG i = 0;i<m_vSettings.size();i++)
-			m_vSettings[i].SetValue(vDefaults[i]);
+		for (size_t i = 0; i < m_vSettings.size(); i++)
+			m_vSettings[i].setValue(vDefaults[i]);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
+Q_GLOBAL_STATIC(QMutex, theLock);
 
-static CSmartPtr<CWorkspaceSettings>			g_pSettings;
-static CComAutoCriticalSection					g_WSCriticalSection;
-static std::deque<CWorkspaceSettingsInternal>	g_WSStack;
-
-/* ------------------------------------------------------------------- */
-
-CWorkspace::CWorkspace()
-{
-	g_WSCriticalSection.Lock();
-	if (!g_pSettings)
-		g_pSettings.Create();
-	g_WSCriticalSection.Unlock();
-	m_pSettings = g_pSettings;
-};
+std::shared_ptr<WorkspaceSettings> g_pSettings;
+static std::deque<WorkspaceSettings> g_WSStack;
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, LPCTSTR szValue)
-{
-	WORKSPACESETTINGITERATOR				it;
+Workspace::Workspace()
+{ 
+	theLock->lock();
+	if (nullptr == g_pSettings)
+	{
+		g_pSettings = std::make_shared<WorkspaceSettings>();
+	}
+	theLock->unlock();
 
-	it = m_pSettings->FindSetting(szPath, szName);
+	pSettings = g_pSettings;
+}
 
-	if (it != m_pSettings->end())
-		it->SetValue(szValue);
-};
 
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, bool bValue)
+void Workspace::setValue(const QString& key, const QVariant& value)
 {
 	WORKSPACESETTINGITERATOR				it;
 
-	it = m_pSettings->FindSetting(szPath, szName);
+	it = pSettings->findSetting(key);
 
-	if (it != m_pSettings->end())
-		it->SetValue(bValue);
-};
+	if (it != pSettings->end())
+		it->setValue(value);
+}
+
+
+QVariant Workspace::value(const QString& key, const QVariant& value) const
+{
+	 WORKSPACESETTINGITERATOR it = pSettings->findSetting(key);
+
+	if (it != pSettings->end())
+		return it->value();
+	else
+		return value;
+}
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue)
+bool Workspace::isDirty()
 {
-	WORKSPACESETTINGITERATOR				it;
+	return pSettings->isDirty();
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
 
-	if (it != m_pSettings->end())
-		it->SetValue(dwValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, double fValue)
+void Workspace::resetDirty()
 {
-	WORKSPACESETTINGITERATOR				it;
+	pSettings->resetDirty();
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
 
-	if (it != m_pSettings->end())
-		it->SetValue(fValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, CString & strValue)
+void Workspace::readSettings()
 {
-	WORKSPACESETTINGITERATOR				it;
+	pSettings->readSettings();
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
 
-	if (it != m_pSettings->end())
-		it->GetValue(strValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, bool & bValue)
+void Workspace::saveSettings()
 {
-	WORKSPACESETTINGITERATOR				it;
+	pSettings->saveSettings();
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
 
-	if (it != m_pSettings->end())
-		it->GetValue(bValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, DWORD & dwValue)
+void Workspace::ReadFromFile(FILE * hFile)
 {
-	WORKSPACESETTINGITERATOR				it;
+	pSettings->ReadFromFile(hFile);
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
-
-	if (it != m_pSettings->end())
-		it->GetValue(dwValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, double & fValue)
+void Workspace::ReadFromFile(LPCTSTR name)
 {
-	WORKSPACESETTINGITERATOR				it;
+	fs::path file(name);
+	pSettings->ReadFromFile(file);
+}
 
-	it = m_pSettings->FindSetting(szPath, szName);
-
-	if (it != m_pSettings->end())
-		it->GetValue(fValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL	CWorkspace::IsDirty()
+void Workspace::ReadFromFile(const fs::path& file)
 {
-	return m_pSettings->IsDirty();
-};
+	pSettings->ReadFromFile(file);
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::ResetDirty()
+void Workspace::SaveToFile(FILE * hFile)
 {
-	m_pSettings->ResetDirty();
-};
+	pSettings->SaveToFile(hFile);
+}
 
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::ReadFromRegistry()
+void Workspace::SaveToFile(LPCTSTR name)
 {
-	m_pSettings->ReadFromRegistry();
-};
+	fs::path file(name);
+	pSettings->SaveToFile(file);
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::SaveToRegistry()
+void Workspace::SaveToFile(const fs::path& file)
 {
-	m_pSettings->SaveToRegistry();
-};
+	pSettings->SaveToFile(file);
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::ReadFromFile(FILE * hFile)
+bool Workspace::ReadFromString(LPCTSTR szString)
 {
-	m_pSettings->ReadFromFile(hFile);
-};
+	return pSettings->ReadFromString(szString);
+}
 
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::ReadFromFile(LPCTSTR szFile)
+bool Workspace::ReadFromString(const QString& string)
 {
-	m_pSettings->ReadFromFile(szFile);
-};
+	return pSettings->ReadFromString(string);
+}
 
-/* ------------------------------------------------------------------- */
-
-void	CWorkspace::SaveToFile(FILE * hFile)
+void Workspace::Push()
 {
-	m_pSettings->SaveToFile(hFile);
-};
+	g_WSStack.push_back(*(pSettings));
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::SaveToFile(LPCTSTR szFile)
+void Workspace::ResetToDefault()
 {
-	m_pSettings->SaveToFile(szFile);
-};
+	pSettings->ResetToDefault();
+}
 
-/* ------------------------------------------------------------------- */
 
-BOOL CWorkspace::ReadFromString(LPCTSTR szString)
+void Workspace::Pop(bool bRestore)
 {
-	return m_pSettings->ReadFromString(szString);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CWorkspace::Push()
-{
-	g_WSStack.push_back(*(m_pSettings));
-};
-
-/* ------------------------------------------------------------------- */
-
-void CWorkspace::ResetToDefault()
-{
-	m_pSettings->ResetToDefault();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CWorkspace::Pop(bool bRestore)
-{
-	CWorkspaceSettingsInternal		wsi;
+	WorkspaceSettings		ws;
 
 	if (g_WSStack.size())
 	{
-		wsi = *(g_WSStack.rbegin());
+		ws= *(g_WSStack.rbegin());
 		g_WSStack.pop_back();
 		if (bRestore)
-			m_pSettings->InitFrom(wsi);
-	};
-};
-
-/* ------------------------------------------------------------------- */
+			pSettings->InitFrom(ws);
+	}
+}

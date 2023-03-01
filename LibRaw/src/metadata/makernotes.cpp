@@ -18,7 +18,7 @@
 
 #include "../../internal/dcraw_defs.h"
 
-void LibRaw::parseSigmaMakernote (int base, int uptag, unsigned dng_writer) {
+void LibRaw::parseSigmaMakernote (int base, int /*uptag*/, unsigned /*dng_writer*/) {
 unsigned wb_table1 [] = {
   LIBRAW_WBI_Auto, LIBRAW_WBI_Daylight, LIBRAW_WBI_Shade, LIBRAW_WBI_Cloudy,
   LIBRAW_WBI_Tungsten, LIBRAW_WBI_Fluorescent, LIBRAW_WBI_Flash,
@@ -93,7 +93,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
 
   unsigned entries, tag, type, len, save, c;
 
-  uchar *CanonCameraInfo;
+  uchar *CanonCameraInfo = NULL;
   unsigned lenCanonCameraInfo = 0;
   unsigned typeCanonCameraInfo = 0;
 
@@ -116,7 +116,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
   uchar *table_buf_0x940e;
   ushort table_buf_0x940e_len = 0;
 
-  if (!strcmp(buf, "OLYMPUS") || !strcmp(buf, "PENTAX ") ||
+  if (!strcmp(buf, "OLYMPUS") || !strcmp(buf, "PENTAX ") || !strncmp(buf,"OM SYS",6)||
       (!strncmp(make, "SAMSUNG", 7) && (dng_writer == CameraDNG)))
   {
     base = ftell(ifp) - 10;
@@ -124,13 +124,14 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
     order = get2();
     if (buf[0] == 'O')
       get2();
+    else if (buf[0] == 'P')
+      is_PentaxRicohMakernotes = 1;
   }
   else if (is_PentaxRicohMakernotes && (dng_writer == CameraDNG))
   {
     base = ftell(ifp) - 10;
     fseek(ifp, -4, SEEK_CUR);
     order = get2();
-    is_PentaxRicohMakernotes = 1;
   }
   else if (!strncmp(buf, "SONY", 4) ||
            !strcmp(buf, "Panasonic"))
@@ -175,7 +176,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
     is_Sony = 1;
 
   if (!is_Olympus &&
-      (!strncmp(make, "OLYMPUS", 7) ||
+      (!strncmp(make, "OLYMPUS", 7) || !strncmp(make, "OM Digi", 7) ||
       (!strncasecmp(make, "CLAUSS", 6) && !strncasecmp(model, "piX 5oo", 7)))) {
     is_Olympus = 1;
     OlympusDNG_SubDirOffsetValid =
@@ -245,7 +246,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         imHassy.SensorCode = getint(type);
       } else if ((tag == 0x0015) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_ASCII)) {
         stmread (imHassy.SensorUnitConnector, len, ifp);
-        for (int i=0; i<len; i++) {
+        for (int i=0; i<(int)len; i++) {
           if(!isalnum(imHassy.SensorUnitConnector[i]) &&
              (imHassy.SensorUnitConnector[i]!=' ')    &&
              (imHassy.SensorUnitConnector[i]!='/')    &&
@@ -384,7 +385,7 @@ void LibRaw::parse_makernote(int base, int uptag)
   unsigned i, wb[4] = {0, 0, 0, 0};
   short morder, sorder = order;
 
-  uchar *CanonCameraInfo;
+  uchar *CanonCameraInfo = 0;;
   unsigned lenCanonCameraInfo = 0;
   unsigned typeCanonCameraInfo = 0;
   imCanon.wbi = 0;
@@ -424,6 +425,8 @@ void LibRaw::parse_makernote(int base, int uptag)
       wb[0] = wb[2];
       wb[2] = wb[1];
       wb[1] = wb[3];
+	  if (feof(ifp))
+		  break;
       wb[3] = get2();
       if (wb[1] == 256 && wb[3] == 256 && wb[0] > 256 && wb[0] < 640 &&
           wb[2] > 256 && wb[2] < 640)
@@ -432,11 +435,13 @@ void LibRaw::parse_makernote(int base, int uptag)
     goto quit;
   }
 
-  if (!strcmp(buf, "OLYMPUS") ||
+  if (!strcmp(buf, "OLYMPUS") || !strncmp(buf, "OM SYS",6) ||
       !strcmp(buf, "PENTAX "))
   {
     base = ftell(ifp) - 10;
     fseek(ifp, -2, SEEK_CUR);
+	if (buf[1] == 'M')
+		get4();
     order = get2();
     if (buf[0] == 'O')
       get2();
@@ -483,7 +488,7 @@ void LibRaw::parse_makernote(int base, int uptag)
   }
 
   if (!is_Olympus &&
-      (!strncasecmp(make, "Olympus", 7) ||
+      (!strncasecmp(make, "Olympus", 7) || !strncmp(make, "OM Digi", 7) ||
       (!strncasecmp(make, "CLAUSS", 6) && !strncasecmp(model, "piX 5oo", 7)))) {
     is_Olympus = 1;
   }
@@ -576,7 +581,8 @@ void LibRaw::parse_makernote(int base, int uptag)
         {
           processCanonCameraInfo(unique_id, CanonCameraInfo, lenCanonCameraInfo,
                                  typeCanonCameraInfo, nonDNG);
-          free(CanonCameraInfo);
+	  if(CanonCameraInfo)
+            free(CanonCameraInfo);
           CanonCameraInfo = 0;
           lenCanonCameraInfo = 0;
         }
@@ -661,8 +667,8 @@ void LibRaw::parse_makernote(int base, int uptag)
       else if ((tag == 0x002a) &&
                tagtypeIs(LIBRAW_EXIFTAG_TYPE_SRATIONAL) &&
                (len == 12)) {
-        FORC4 for (int i = 0; i < 3; i++)
-                imHassy.mnColorMatrix[c][i] = getreal(type);
+        FORC4 for (int ii = 0; ii < 3; ii++)
+                imHassy.mnColorMatrix[c][ii] = getreal(type);
 
       } else if (tag == 0x0031) {
         imHassy.RecommendedCrop[0] = getint(type);

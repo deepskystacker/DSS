@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+    <file>DSS.ca.qm</file>
+    <file>DSS.cs.qm</file>
+    <file>DSS.de.qm</file>
+    <file>DSS.en.qm</file>
+    <file>DSS.es.qm</file>
+    <file>DSS.fr.qm</file>
+    <file>DSS.it.qm</file>
+    <file>DSS.nl.qm</file>
+    <file>DSS.pt_BR.qm</file>
+    <file>DSS.ro.qm</file>
+    <file>DSS.ru.qm</file>
+    <file>DSS.tr.qm</file>
+    <file>DSS.zh_TW.qm</file>
+</qresource>
+</RCC>

@@ -1,6 +1,7 @@
 #ifndef __STARMASK_H__
 #define __STARMASK_H__
 
+#include <QSettings>
 #include "RegisterEngine.h"
 
 /* ------------------------------------------------------------------- */
@@ -155,9 +156,9 @@ public :
 
 class		CStarMaskFunction_Quadratic : public CStarMaskFunction
 {
-protected :
+protected:
 
-public :
+public:
 	CStarMaskFunction_Quadratic()
 	{
 	};
@@ -169,95 +170,76 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		fValue /= 3.0*m_fRadius;
-		return max(0.0, 1.0-fValue*fValue*fValue*fValue);
-	};
+		fValue /= 3.0 * m_fRadius;
+		return max(0.0, 1.0 - fValue * fValue * fValue * fValue);
+	}
 };
 
-/* ------------------------------------------------------------------- */
 
 class CStarMaskEngine
 {
 private :
 	double				m_fMinLuminancy;
-	BOOL				m_bRemoveHotPixels;
+	bool				m_bRemoveHotPixels;
 	double				m_fPercentIncrease;
 	double				m_fPixelIncrease;
 	double				m_fMinSize,
 						m_fMaxSize;
 	STARMASKSTYLE		m_StarShape;
 
-private :
-	void	GetShapeFunction(CStarMaskFunction ** ppStarMaskFunction)
+private:
+	std::unique_ptr<CStarMaskFunction> GetShapeFunction()
 	{
 		switch (m_StarShape)
 		{
-		case SMS_BELL :
-			*ppStarMaskFunction = new CStarMaskFunction_Bell;
-			break;
-		case SMS_TRUNCATEDBELL :
-			*ppStarMaskFunction = new CStarMaskFunction_BellTruncated;
-			break;
-		case SMS_LINEAR	:
-			*ppStarMaskFunction = new CStarMaskFunction_Linear;
-			break;
-		case SMS_TRUNCATEDLINEAR	:
-			*ppStarMaskFunction = new CStarMaskFunction_LinearTruncated;
-			break;
-		case SMS_CUBIC :
-			*ppStarMaskFunction = new CStarMaskFunction_Cubic;
-			break;
-		case SMS_QUADRATIC :
-			*ppStarMaskFunction = new CStarMaskFunction_Quadratic;
-			break;
-		};
-	};
+		case SMS_BELL: return std::make_unique<CStarMaskFunction_Bell>(); break;
+		case SMS_TRUNCATEDBELL: return std::make_unique<CStarMaskFunction_BellTruncated>(); break;
+		case SMS_LINEAR: return std::make_unique<CStarMaskFunction_Linear>(); break;
+		case SMS_TRUNCATEDLINEAR: return std::make_unique<CStarMaskFunction_LinearTruncated>(); break;
+		case SMS_CUBIC: return std::make_unique<CStarMaskFunction_Cubic>(); break;
+		case SMS_QUADRATIC: return std::make_unique<CStarMaskFunction_Quadratic>(); break;
+		}
+		return std::unique_ptr<CStarMaskFunction>{};
+	}
 
-public :
+public:
 	CStarMaskEngine()
 	{
-		CRegistry			reg;
-		DWORD				bHotPixels = 0;
-		DWORD				dwThreshold = 10;
-		DWORD				dwPercent = 100;
-		DWORD				dwPixel = 0;
-		DWORD				dwMinSize = 2;
-		DWORD				dwMaxSize = 25;
-		DWORD				dwStarShape = 1;
+		QSettings			settings;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectHotPixels"), bHotPixels);
+		bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 		m_bRemoveHotPixels = bHotPixels;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectionThreshold"), dwThreshold);
+		const auto dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
 		m_fMinLuminancy = (double)dwThreshold/100.0;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PercentRadius"), dwPercent);
+		const auto dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
 		m_fPercentIncrease = (double)dwPercent/100.0;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PixelIncrease"), dwPixel);
+		const auto dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
 		m_fPixelIncrease = (double)dwPixel;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MinSize"), dwMinSize);
+		const auto dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
 		m_fMinSize = (double)dwMinSize;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MaxSize"), dwMaxSize);
+		const auto dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
 		m_fMaxSize = (double)dwMaxSize;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("StarShape"), dwStarShape);
+		const auto dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
 		m_StarShape = (STARMASKSTYLE)dwStarShape;
-	};
+	}
 
-	virtual ~CStarMaskEngine() {};
+	virtual ~CStarMaskEngine() {}
 
 	void	SetDetectionThreshold(double fMinLuminancy)
 	{
 		m_fMinLuminancy = fMinLuminancy;
-	};
+	}
 
-	void	SetHotPixelRemoval(BOOL bHotPixels)
+	void	SetHotPixelRemoval(bool bHotPixels)
 	{
 		m_bRemoveHotPixels = bHotPixels;
-	};
+	}
 
-	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
-	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, ProgressBase * pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

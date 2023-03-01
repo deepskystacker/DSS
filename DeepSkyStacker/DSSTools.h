@@ -4,13 +4,18 @@
 #include <algorithm>
 #include <numeric>
 #include <float.h>
-#include <math.h>
+//#include <math.h>
+#include <cmath>
+#include <QPointF>
+
+#include "avx_median.h"
+
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
+inline bool	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	HANDLE			hFind;
 	WIN32_FIND_DATA	FindData;
 
@@ -19,7 +24,7 @@ inline BOOL	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
 	{
 		FileTime = FindData.ftLastWriteTime;
 		FindClose(hFind);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -34,34 +39,20 @@ private :
 						a0, b0,
 						a1, b1;
 
-	void	CopyFrom(const CLinearInterpolation & li)
-	{
-		xm = li.xm;
-		a0 = li.a0;
-		b0 = li.b0;
-		a1 = li.a1;
-		b1 = li.b1;
-	};
-
 public :
-	CLinearInterpolation()
+	CLinearInterpolation() noexcept
 	{
 		xm = 0;
 		a0 = b0 = a1 = b1 = 0;
 	};
 
-	CLinearInterpolation(const CLinearInterpolation & li)
-	{
-		CopyFrom(li);
-	};
+	CLinearInterpolation(const CLinearInterpolation&) = default;
 
-	CLinearInterpolation & operator = (const CLinearInterpolation & li)
-	{
-		CopyFrom(li);
-		return (*this);
-	};
+	CLinearInterpolation(CLinearInterpolation&&) = default;
 
-	double	Interpolate(double x)
+	CLinearInterpolation& operator = (const CLinearInterpolation&) = default;
+
+	double	Interpolate(double x) const noexcept
 	{
 		if (x<xm)
 			return a0*x+b0;
@@ -69,7 +60,7 @@ public :
 			return a1*x+b1;
 	};
 
-	void	Initialize(double x0, double x1, double x2, double y0, double y1, double y2)
+	void Initialize(double x0, double x1, double x2, double y0, double y1, double y2) noexcept
 	{
 		xm = x1;
 		if (x0<x1)
@@ -85,6 +76,12 @@ public :
 			a1 = 0;
 		b1 = y1 - a1*x1;
 	};
+
+	float getParameterXm() const noexcept { return static_cast<float>(this->xm); }
+	float getParameterA0() const noexcept { return static_cast<float>(this->a0); }
+	float getParameterA1() const noexcept { return static_cast<float>(this->a1); }
+	float getParameterB0() const noexcept { return static_cast<float>(this->b0); }
+	float getParameterB1() const noexcept { return static_cast<float>(this->b1); }
 };
 
 /*
@@ -113,14 +110,6 @@ private :
 	double					fMin, fMax;
 
 private :
-	void	CopyFrom(const CRationalInterpolation & ri)
-	{
-		a = ri.a;
-		b = ri.b;
-		c = ri.c;
-		fMin = ri.fMin;
-		fMax = ri.fMax;
-	};
 
 public :
 	CRationalInterpolation()
@@ -131,26 +120,19 @@ public :
         fMax = 0;
 	};
 
-	CRationalInterpolation(const CRationalInterpolation & ri)
-	{
-		CopyFrom(ri);
-	};
+	CRationalInterpolation(const CRationalInterpolation&) = default;
 
-	CRationalInterpolation & operator = (const CRationalInterpolation & ri)
-	{
-		CopyFrom(ri);
-		return (*this);
-	};
+	CRationalInterpolation& operator = (const CRationalInterpolation&) = default;
 
-	double	Interpolate(double x)
+	double	Interpolate(double x) const noexcept
 	{
 		if (b || c)
-			return max(min((x+a)/(b*x+c), fMax), fMin);
+			return std::max(std::min((x+a)/(b*x+c), fMax), fMin);
 		else
-			return max(min(x+a, fMax), fMin);
+			return std::max(std::min(x+a, fMax), fMin);
 	};
 
-	void	Initialize(double x0, double x1, double x2, double y0, double y1, double y2)
+	void Initialize(double x0, double x1, double x2, double y0, double y1, double y2) noexcept
 	{
 		double				t1 = ((x0*y0 - x1*y1)*(y0-y2) - (x0*y0 - x2*y2)*(y0-y1));
 		double				t2 = ((x0-x1)*(y0-y2) - (x0-x2)*(y0-y1));
@@ -166,9 +148,15 @@ public :
 			c = 0;
 		a = (b*x0 +c )*y0 - x0;
 
-		fMin = min(min(y0, y1), y2);
-		fMax = max(max(y0, y1), y2);
+		fMin = std::min(std::min(y0, y1), y2);
+		fMax = std::max(std::max(y0, y1), y2);
 	};
+
+	float getParameterA() const noexcept { return static_cast<float>(this->a); }
+	float getParameterB() const noexcept { return static_cast<float>(this->b); }
+	float getParameterC() const noexcept { return static_cast<float>(this->c); }
+	float getParameterMin() const noexcept { return static_cast<float>(this->fMin); }
+	float getParameterMax() const noexcept { return static_cast<float>(this->fMax); }
 };
 
 /*
@@ -187,115 +175,19 @@ a = (b x0 +c )  y0 - x0;
 */
 /* ------------------------------------------------------------------- */
 
-class CPointExt
-{
-public :
-	double			X;
-	double			Y;
-
-private :
-	void	CopyFrom(const CPointExt & pt)
-	{
-		X = pt.X;
-		Y = pt.Y;
-	};
-
-public :
-	CPointExt(double x = 0, double y = 0)
-	{
-		X = x;
-		Y = y;
-	};
-
-	CPointExt(const CPointExt & pt)
-	{
-		CopyFrom(pt);
-	};
-
-	CPointExt(const CPoint & pt)
-	{
-		X = pt.x;
-		Y = pt.y;
-	};
-
-	CPointExt(const CRect & rc)
-	{
-		X = (double)(rc.left+rc.right)/2.0;
-		Y = (double)(rc.top+rc.bottom)/2.0;
-	};
-
-	CPointExt & operator = (const CPointExt & pt)
-	{
-		CopyFrom(pt);
-		return (*this);
-	};
-
-	void	Offset(const CPointExt & pt)
-	{
-		X -= pt.X;
-		Y -= pt.Y;
-	};
-
-	void	CopyTo(CPoint & pt)
-	{
-		pt.x = X;
-		pt.y = Y;
-	};
-
-	bool operator != (const CPointExt & pt)
-	{
-		return (X != pt.X) || (Y!=pt.Y);
-	};
-
-	bool operator == (const CPointExt & pt)
-	{
-		return (X == pt.X) && (Y==pt.Y);
-	};
-
-	bool operator < (const CPointExt & pt)
-	{
-		return (X < pt.X);
-	};
-
-	BOOL	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
-	{
-		return (X>=fLeft) && (X <= fRight) && (Y>=fTop) && (Y<=fBottom);
-	};
-
-	BOOL	IsNear(const CPointExt & ptTest)
-	{
-		return (fabs(X-ptTest.X) <= 3) && (fabs(Y-ptTest.Y) <= 3);
-	};
-
-	void Rotate(double fAngle, const CPointExt & ptCenter)
-	{
-		CPointExt		ptResult;
-		double			fX, fY;
-
-		ptResult.X = X - ptCenter.X;
-		ptResult.Y = Y - ptCenter.Y;
-
-		fX = cos(fAngle) * ptResult.X - sin(fAngle) * ptResult.Y;
-		fY = sin(fAngle) * ptResult.X + cos(fAngle) * ptResult.Y;
-
-		X = fX + ptCenter.X;
-		Y = fY + ptCenter.Y;
-	};
-};
-
-typedef std::vector<CPointExt>		POINTEXTVECTOR;
-typedef POINTEXTVECTOR::iterator	POINTEXTITERATOR;
+typedef std::vector<QPointF>	POINTFVECTOR;
+typedef POINTFVECTOR::iterator	POINTFITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-inline double	Distance(const CPointExt & pt1, const CPointExt & pt2)
-{
-	return sqrt((pt1.X-pt2.X)*(pt1.X-pt2.X) + (pt1.Y-pt2.Y)*(pt1.Y-pt2.Y));
-};
-
-inline double	Distance(double fX1, double fY1, double fX2, double fY2)
+inline double	Distance(double fX1, double fY1, double fX2, double fY2) noexcept
 {
 	return sqrt((fX1-fX2)*(fX1-fX2) + (fY1-fY2)*(fY1-fY2));
+};
+
+inline double Distance(const QPointF& pt1, const QPointF& pt2) noexcept
+{
+	return Distance(pt1.x(), pt1.y(), pt2.x(), pt2.y());
 };
 
 /* ------------------------------------------------------------------- */
@@ -303,7 +195,7 @@ inline double	Distance(double fX1, double fY1, double fX2, double fY2)
 class	CDynamicStats
 {
 public :
-	LONG			m_lNrValues;
+	int			m_lNrValues;
 	double			m_fSum;
 	double			m_fPowSum;
 	double			m_fMin,
@@ -320,7 +212,7 @@ public :
 	};
 	virtual ~CDynamicStats() {};
 
-	void	AddValue(double fValue, LONG lNrValues = 1)
+	void AddValue(double fValue, int lNrValues = 1) noexcept
 	{
 		if (!m_lNrValues)
 		{
@@ -328,22 +220,22 @@ public :
 		}
 		else
 		{
-			m_fMin = min(m_fMin, fValue);
-			m_fMax = max(m_fMax, fValue);
+			m_fMin = std::min(m_fMin, fValue);
+			m_fMax = std::max(m_fMax, fValue);
 		};
 		m_lNrValues+=lNrValues;
 		m_fPowSum += (fValue*fValue)*lNrValues;
 		m_fSum	  += fValue*lNrValues;
 	};
 
-	void	RemoveValue(double fValue, LONG lNrValues = 1)
+	void RemoveValue(double fValue, int lNrValues = 1) noexcept
 	{
 		m_lNrValues-=lNrValues;
 		m_fPowSum -= (fValue*fValue)*lNrValues;
 		m_fSum	  -= fValue*lNrValues;
 	};
 
-	double	Average()
+	double	Average() noexcept
 	{
 		if (m_lNrValues)
 			return m_fSum/(double)m_lNrValues;
@@ -351,7 +243,7 @@ public :
 			return 0;
 	};
 
-	double	Sigma()
+	double Sigma() noexcept
 	{
 		if (m_lNrValues)
 			return sqrt(m_fPowSum/m_lNrValues - pow(m_fSum/m_lNrValues, 2));
@@ -359,12 +251,12 @@ public :
 			return 0;
 	};
 
-	double	Min()
+	double Min() noexcept
 	{
 		return m_fMin;
 	};
 
-	double	Max()
+	double Max() noexcept
 	{
 		return m_fMax;
 	};
@@ -372,7 +264,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline double Median(double v1, double v2, double v3)
+inline double Median(double v1, double v2, double v3) noexcept
 {
   if (v1 > v2)
   {
@@ -400,8 +292,10 @@ double Median(std::vector<T>& values)
     if (values.empty())
         return 0;
 
-    auto size = values.size();
+    const int size = static_cast<int>(values.size());
 
+	return qMedian(values.data(), size, size / 2);
+/*
     // benchmarked: at around 40 elements, partial sort stars becoming faster
     // O(N) or O(2*N) for even count vs O(N*log(N))
     if (size > 40)
@@ -435,6 +329,7 @@ double Median(std::vector<T>& values)
             return (values[n] + values[n - 1]) / 2;
         }
     }
+*/
 }
 
 /* ------------------------------------------------------------------- */
@@ -502,7 +397,7 @@ double CalculateSigmaFromAverage(const std::vector<T>& values, const double targ
 template <class T> inline
 void	FillDynamicStat(const std::vector<T> & vValues, CDynamicStats & DynStats)
 {
-	for (LONG i = 0;i<vValues.size();i++)
+	for (int i = 0;i<vValues.size();i++)
 		DynStats.AddValue(vValues[i]);
 };
 
@@ -511,24 +406,16 @@ void	FillDynamicStat(const std::vector<T> & vValues, CDynamicStats & DynStats)
 class CFlatPart
 {
 public :
-	LONG			m_lStart,
+	int			m_lStart,
 					m_lEnd;
 	double			m_fAverage;
 	double			m_fAverageVariation;
 	double			m_fAbsAverageVariation;
 
 private :
-	void	CopyFrom(const CFlatPart & fp)
-	{
-		m_lStart			= fp.m_lStart;
-		m_lEnd				= fp.m_lEnd;
-		m_fAverage			= fp.m_fAverage;
-		m_fAverageVariation = fp.m_fAverageVariation;
-		m_fAbsAverageVariation = fp.m_fAbsAverageVariation;
-	};
 
 public :
-	CFlatPart()
+	CFlatPart() noexcept
 	{
 		m_lStart = -1;
 		m_lEnd	 = -1;
@@ -537,23 +424,16 @@ public :
 		m_fAbsAverageVariation = 0;
 	};
 	~CFlatPart() {};
-	CFlatPart(const CFlatPart & fp)
-	{
-		CopyFrom(fp);
-	};
+	CFlatPart(const CFlatPart&) = default;
 
-	CFlatPart & operator = (const CFlatPart & fp)
-	{
-		CopyFrom(fp);
-		return (*this);
-	};
+	CFlatPart& operator = (const CFlatPart&) = default;
 
-	LONG	Length() const
+	int	Length() const noexcept
 	{
 		return m_lEnd-m_lStart+1;
 	};
 
-	double	Score() const
+	double Score() const noexcept
 	{
 		if (m_fAbsAverageVariation)
 			return (double)Length()/m_fAbsAverageVariation;//m_fAverageVariation;
@@ -561,7 +441,7 @@ public :
 			return 0;
 	};
 
-	bool operator < (const CFlatPart & fp) const
+	bool operator < (const CFlatPart & fp) const noexcept
 	{
 		return Score()>fp.Score();
 		/*
@@ -583,7 +463,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	double					fAverage = 0;
 	double					fTotalVariation = 0;
 
-	BOOL					bInFlatPart = FALSE;
+	bool					bInFlatPart = false;
 	CFlatPart				fp;
 	std::vector<double>		vVariations;
 	std::vector<double>		vAbsVariations;
@@ -593,7 +473,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	vVariations.reserve(vValues.size());
 	vAbsVariations.reserve(vValues.size());
 
-	for (LONG i = 0;i<vValues.size();i++)
+	for (int i = 0;i<vValues.size();i++)
 	{
 		if (!i)
 		{
@@ -602,7 +482,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		}
 		else
 		{
-			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)max(static_cast<T>(1), vValues[i-1])*sqrt(vValues[i]/fMaximum));
+			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)std::max(static_cast<T>(1), vValues[i-1])*sqrt(vValues[i]/fMaximum));
 			vAbsVariations.push_back((double)(vValues[i]-vValues[i-1])/fMaximum);
 		};
 		fTotalVariation += fabs(vAbsVariations[i]);
@@ -618,7 +498,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	for (double fThreshold = 0.05;fThreshold<=0.20;fThreshold+=0.05)
 	{
 		fSummedVariation = 0;
-		for (LONG i = 0;i<vValues.size();i++)
+		for (int i = 0;i<vValues.size();i++)
 		{
 			if (bInFlatPart)
 			{
@@ -637,7 +517,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 						// Start again - a little later
 						i = fp.m_lStart+1;
 					};
-					bInFlatPart = FALSE;
+					bInFlatPart = false;
 				}
 				else
 				{
@@ -655,7 +535,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 				fp.m_lStart = i;
 				fp.m_lEnd   = i;
 				fSummedVariation = 0;//vVariations[i];
-				bInFlatPart = TRUE;
+				bInFlatPart = true;
 				fp.m_fAverage			= vValues[i];
 				fp.m_fAverageVariation  = 0;//fabs(vVariations[i]);
 				fp.m_fAbsAverageVariation = 0;
@@ -668,7 +548,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 			fp.m_fAverageVariation /= fp.Length();
 			fp.m_fAbsAverageVariation /= fp.Length();
 			vFlatParts.push_back(fp);
-			bInFlatPart		 = FALSE;
+			bInFlatPart		 = false;
 			fSummedVariation = 0;
 		};
 	};
@@ -676,11 +556,11 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	if (vValues.size())
 	{
 		// Check that at least one flat part is below the average
-		BOOL				bFound = FALSE;
+		bool				bFound = false;
 
-		for (LONG i = 0;i<vFlatParts.size() && !bFound;i++)
+		for (int i = 0;i<vFlatParts.size() && !bFound;i++)
 			bFound = (vFlatParts[i].m_fAverage <= fAverage);
-		for (LONG i = 0;i<vFlatParts.size() && bFound;i++)
+		for (int i = 0;i<vFlatParts.size() && bFound;i++)
 		{
 			if (vFlatParts[i].m_fAverage > fAverage)
 			{
@@ -694,7 +574,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T Minimum(std::vector<T>& values, BOOL ignoreZeros)
+T Minimum(std::vector<T>& values, bool ignoreZeros)
 {
     T result = 0;
 
@@ -706,7 +586,7 @@ T Minimum(std::vector<T>& values, BOOL ignoreZeros)
 
     for (T const& val : values)
         if (val || !ignoreZeros)
-            result = min(result, val);
+            result = std::min(result, val);
 
 	return result;
 };
@@ -730,7 +610,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 
 		vAuxValues.reserve(vFlatParts[0].Length());
 
-		for (LONG i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
 			vAuxValues.push_back(vValues[i]);
 
 		vValues = vAuxValues;
@@ -741,12 +621,12 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 		// Use only the minimum value for each channel
 		T						fMinimum;
 
-		fMinimum = Minimum(vValues, TRUE);
+		fMinimum = Minimum(vValues, true);
 
 		vValues.resize(1);		vValues[0] = fMinimum;
 	};
 
-	fResult = min(1.0, max(0.0, (1.05 - fAverageVariation*10)));
+	fResult = std::min(1.0, std::max(0.0, (1.05 - fAverageVariation*10)));
 
 	return fResult;
 };
@@ -754,22 +634,22 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
+double Homogenize3(std::vector<T> & vValues, int lNrSubStacks)
 {
 	double						fResult = 1.0;
 	std::vector<double>			vStackValues;
 	std::vector<T>				vWork;
 	std::vector<T>				vSubStack;
-	LONG						lNrValues = vValues.size();
+	int						lNrValues = vValues.size();
 
 	vStackValues.reserve(lNrSubStacks);
 	vSubStack.reserve(lNrValues/lNrSubStacks+1);
 	vWork.reserve(lNrValues / lNrSubStacks + 1);
 
-	for (LONG j = 0;j<lNrSubStacks;j++)
+	for (int j = 0;j<lNrSubStacks;j++)
 	{
 		vSubStack.clear();
-		for (LONG i = j;i<lNrValues;i+=lNrSubStacks)
+		for (int i = j;i<lNrValues;i+=lNrSubStacks)
 			vSubStack.push_back(vValues[i]);
 
 		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3, vWork));
@@ -785,7 +665,7 @@ double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double Homogenize3(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vector<T> & v3Values, LONG lNrSubStacks)
+double Homogenize3(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vector<T> & v3Values, int lNrSubStacks)
 {
 	Homogenize3(v1Values, lNrSubStacks);
 	Homogenize3(v2Values, lNrSubStacks);
@@ -804,7 +684,7 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 
 	vValues.reserve(v1Values.size());
 
-	for (LONG i = 0;i<v1Values.size();i++)
+	for (int i = 0;i<v1Values.size();i++)
 		vValues.push_back(double(v1Values[i]+v2Values[i]+v3Values[i])/3.0);
 
 /*
@@ -823,9 +703,9 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 
 	vFlatParts.reserve(v1FlatParts.size()+v2FlatParts.size()+v3FlatParts.size());
 	vFlatParts = v1FlatParts;
-	for (LONG i = 0;i<v2FlatParts.size();i++)
+	for (int i = 0;i<v2FlatParts.size();i++)
 		vFlatParts.push_back(v2FlatParts[i]);
-	for (LONG i = 0;i<v3FlatParts.size();i++)
+	for (int i = 0;i<v3FlatParts.size();i++)
 		vFlatParts.push_back(v3FlatParts[i]);
 */
 	std::vector<CFlatPart> 		vFlatParts;
@@ -845,7 +725,7 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 		v2AuxValues.reserve(vFlatParts[0].Length());
 		v3AuxValues.reserve(vFlatParts[0].Length());
 
-		for (LONG i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
 		{
 			v1AuxValues.push_back(v1Values[i]);
 			v2AuxValues.push_back(v2Values[i]);
@@ -863,9 +743,9 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 								f2Minimum,
 								f3Minimum;
 
-		f1Minimum = Minimum(v1Values, TRUE);
-		f2Minimum = Minimum(v2Values, TRUE);
-		f3Minimum = Minimum(v3Values, TRUE);
+		f1Minimum = Minimum(v1Values, true);
+		f2Minimum = Minimum(v2Values, true);
+		f3Minimum = Minimum(v3Values, true);
 
 		v1Values.resize(1);		v1Values[0] = f1Minimum;
 		v2Values.resize(1);		v2Values[0] = f2Minimum;
@@ -882,8 +762,8 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 {
 	if (vValues.size()>3)
 	{
-		BOOL				bEnd = FALSE;
-		LONG				i;
+		bool				bEnd = false;
+		int				i;
 
 		std::sort(vValues.begin(), vValues.end());
 		// Compute the distance between the line and each point
@@ -893,7 +773,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 							fMax  = vValues[vValues.size()-1];
 			double			fSteep = (fMax-fMin)/vValues.size();
 			double			fMaxDistance = 0;
-			LONG			lIndice1;
+			int			lIndice1;
 
 			for (i = 0;i<vValues.size();i++)
 			{
@@ -911,7 +791,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 
 			// Compute the second indice based on the variation
 			// between the minimum and the current value
-			LONG			lIndice2 = -1;
+			int			lIndice2 = -1;
 			for (i = 0;i<vValues.size() && (lIndice2<0);i++)
 			{
 				double		fIncrease;
@@ -924,7 +804,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			if (lIndice1>=0 || lIndice2>=0)
 			{
 				// Cut at this position
-				LONG		lIndice = min(lIndice1==-1 ? 10000 : lIndice1,
+				int		lIndice = std::min(lIndice1==-1 ? 10000 : lIndice1,
 										  lIndice2==-1 ? 10000 : lIndice2);
 				vValues.resize(lIndice+1);
 			}
@@ -955,10 +835,10 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T> & vAuxValues)
+double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, int lIteration, std::vector<T> & vAuxValues)
 {
 	double			Result = 0;
-	BOOL			bEnd = FALSE;
+	bool			bEnd = false;
 	CDynamicStats	DynStats;
 
 	//
@@ -970,12 +850,12 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 
 	FillDynamicStat(vAuxValues, DynStats);
 
-	for (LONG i = 0;i<lIteration && !bEnd;i++)
+	for (int i = 0;i<lIteration && !bEnd;i++)
 	{
 		double			fAverage;
 		double			fSigma;
-		LONG			lCurrentIndice = 0;
-		LONG			j = 0;
+		int			lCurrentIndice = 0;
+		int			j = 0;
 		double			fMin,
 						fMax;
 
@@ -1003,7 +883,7 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 			j++;
 		};
 
-/*		for (LONG j = 0;j<vAuxValues.size();j++)
+/*		for (int j = 0;j<vAuxValues.size();j++)
 		{
 			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
 				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
@@ -1026,7 +906,7 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
+double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, int lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
 
@@ -1040,7 +920,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 	// Initial copy into the working set to start us off.
 	vWorkingBuffer1 = vValues;
-	for (LONG i = 0;i<lIteration;i++)
+	for (int i = 0;i<lIteration;i++)
 	{
 		double			fAverage;
 		double			fSigma;
@@ -1051,7 +931,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 		// Go through and populate the temp buffer according to the values.
 		vecTempBuffer.clear();
-		for (LONG j = 0;j< vecCurrentPass.size();j++)
+		for (int j = 0;j< vecCurrentPass.size();j++)
 		{
 			if (((double)vecCurrentPass[j]>= (fAverage - fKappa*fSigma)) &&
 				((double)vecCurrentPass[j]<= (fAverage + fKappa*fSigma)))
@@ -1075,7 +955,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 /* ------------------------------------------------------------------- */
 
 template <typename T>
-double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterations, std::vector<double> & vWeights)
+double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, int lIterations, std::vector<double> & vWeights)
 {
 	// Computes the auto-adaptive weighted average of a set of numbers
 	// (intended to be the values of the same pixel in different stacked images).
@@ -1124,7 +1004,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 		double		fMaximum = vValues[0];
 
 		for (i = 1; i < nElements; i++)
-			fMaximum = max(fMaximum, (double)vValues[i]);
+			fMaximum = std::max(fMaximum, (double)vValues[i]);
 
 		if (fMaximum > 0)
 		{
@@ -1193,11 +1073,11 @@ typedef enum TRANSFORMATIONTYPE
 	TT_BICUBIC		= 3,
 	TT_NONE			= 4,
 	TT_LAST			= 5
-}TRANSFORMATIONTYPE;
+} TRANSFORMATIONTYPE;
 
 class CBilinearParameters
 {
-public :
+public:
 	TRANSFORMATIONTYPE		Type;
 	double					a0, a1, a2, a3;
 	double					a4, a5, a6, a7, a8;
@@ -1206,69 +1086,26 @@ public :
 	double					b4, b5, b6, b7, b8;
 	double					b9, b10, b11, b12, b13, b14, b15;
 
-	double					fXWidth,
-							fYWidth;
+	double					fXWidth, fYWidth;
 
-private :
-	void	CopyFrom(const CBilinearParameters & bp)
+private:
+	bool GetNextParameter(CString& strParameters, double& fValue) const
 	{
-		Type    = bp.Type;
-		a0 = bp.a0;
-		a1 = bp.a1;
-		a2 = bp.a2;
-		a3 = bp.a3;
-		a4 = bp.a4;
-		a5 = bp.a5;
-		a6 = bp.a6;
-		a7 = bp.a7;
-		a8 = bp.a8;
-		a9 = bp.a9;
-		a10 = bp.a10;
-		a11 = bp.a11;
-		a12 = bp.a12;
-		a13 = bp.a13;
-		a14 = bp.a14;
-		a15 = bp.a15;
-
-		b0 = bp.b0;
-		b1 = bp.b1;
-		b2 = bp.b2;
-		b3 = bp.b3;
-		b4 = bp.b4;
-		b5 = bp.b5;
-		b6 = bp.b6;
-		b7 = bp.b7;
-		b8 = bp.b8;
-		b9 = bp.b9;
-		b10 = bp.b10;
-		b11 = bp.b11;
-		b12 = bp.b12;
-		b13 = bp.b13;
-		b14 = bp.b14;
-		b15 = bp.b15;
-
-		fXWidth = bp.fXWidth;
-		fYWidth = bp.fYWidth;
-	};
-
-private :
-	BOOL	GetNextParameter(CString & strParameters, double & fValue)
-	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		int				nPos;
 		CString			strValue;
 
 		if (strParameters.GetLength())
 		{
 			nPos = strParameters.Find(_T(","));
-			if (nPos>=0)
+			if (nPos >= 0)
 				strValue = strParameters.Left(nPos);
 			else
 				strValue = strParameters;
 
 			fValue = _ttof((LPCTSTR)strValue);	// Change _ttof to _ttof for Unicode
-			strParameters = strParameters.Right(max(0, strParameters.GetLength()-strValue.GetLength()-1));
-			bResult = TRUE;
+			strParameters = strParameters.Right(std::max(0, strParameters.GetLength() - strValue.GetLength() - 1));
+			bResult = true;
 		};
 
 		return bResult;
@@ -1278,20 +1115,13 @@ public :
 	CBilinearParameters()
 	{
 		Clear();
-	};
+	}
 
-	CBilinearParameters(const CBilinearParameters & bp)
-	{
-		CopyFrom(bp);
-	};
+	CBilinearParameters(const CBilinearParameters& bp) = default;
 
-	const CBilinearParameters & operator = (const CBilinearParameters & bp)
-	{
-		CopyFrom(bp);
-		return (*this);
-	};
+	CBilinearParameters& operator=(const CBilinearParameters& bp) = default;
 
-	void	Clear()
+	void Clear() noexcept
 	{
 		Type = TT_BILINEAR;
 		a0 = a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = 0.0;
@@ -1302,9 +1132,9 @@ public :
 		b2 = 1.0;	// to have y' = y
 
 		fXWidth = fYWidth = 1.0;
-	};
+	}
 
-	void	ToText(CString & strText)
+	void ToText(CString& strText) const
 	{
 		if (Type == TT_NONE)
 		{
@@ -1345,11 +1175,11 @@ public :
 										b0, b1, b2, b3,
 										fXWidth, fYWidth);
 		};
-	};
+	}
 
-	BOOL	FromText(LPCTSTR szText)
+	bool FromText(LPCTSTR szText)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		CString			strText = szText;
 		int				nPos1,
 						nPos2;
@@ -1449,11 +1279,12 @@ public :
 		};
 
 		return bResult;
-	};
+	}
 
-	CPointExt Transform(const CPointExt & pt) const
+#if (0)
+	CPointExt Transform(const CPointExt& pt) const
 	{
-		CPointExt	ptResult;
+		CPointExt ptResult;
 
 		if (Type == TT_BICUBIC)
 		{
@@ -1496,40 +1327,91 @@ public :
 		ptResult.Y *= fYWidth;
 
 		return ptResult;
-	};
+	}
+#endif
 
-	double	Angle(LONG lWidth) const
+	QPointF transform(const QPointF& pt) const noexcept
+	{
+		QPointF ptResult;
+		qreal& x = ptResult.rx();
+		qreal& y = ptResult.ry();
+
+
+		if (Type == TT_BICUBIC)
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			X2 = X * X;
+			qreal			X3 = X * X * X;
+			qreal			Y = pt.y() / fYWidth;
+			qreal			Y2 = Y * Y;
+			qreal			Y3 = Y * Y * Y;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y
+				+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2
+				+ a9 * X3 + a10 * Y3 + a11 * X3 * Y + a12 * X * Y3 + a13 * X3 * Y2 + a14 * X2 * Y3 + a15 * X3 * Y3;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y
+				+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2
+				+ b9 * X3 + b10 * Y3 + b11 * X3 * Y + b12 * X * Y3 + b13 * X3 * Y2 + b14 * X2 * Y3 + b15 * X3 * Y3;
+		}
+		else if (Type == TT_BISQUARED)
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			X2 = X * X;
+			qreal			Y = pt.y() / fYWidth;
+			qreal			Y2 = Y * Y;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y
+				+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y
+				+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2;
+		}
+		else
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			Y = pt.y() / fYWidth;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y;
+		};
+
+		x *= fXWidth;
+		y *= fYWidth;
+
+		return ptResult;
+	}
+
+	double Angle(int lWidth) const noexcept
 	{
 		double		fAngle;
-		CPointExt	pt1 (0, 0),
-					pt2 (lWidth, 0);
+		QPointF	pt1 (0, 0),
+				pt2 (lWidth, 0);
 
-		pt1 = Transform(pt1);
-		pt2 = Transform(pt2);
+		pt1 = transform(pt1);
+		pt2 = transform(pt2);
 
-		fAngle = atan2(pt2.Y - pt1.Y, pt2.X - pt1.X);
+		fAngle = atan2(pt2.y() - pt1.y(), pt2.x() - pt1.x());
 
 		return fAngle;
-	};
+	}
 
-	void	Offsets(double & dX, double & dY)
+	void Offsets(double& dX, double& dY) const noexcept
 	{
 		dX = a0 * fXWidth;
 		dY = b0 * fYWidth;
-	};
+	}
 
-	void	Footprint(CPointExt & pt1, CPointExt & pt2, CPointExt & pt3, CPointExt & pt4)
+	void Footprint(QPointF& pt1, QPointF& pt2, QPointF& pt3, QPointF& pt4) const noexcept
 	{
-		pt1.X = pt1.Y = 0;
-		pt2.X = fXWidth;	pt2.Y = 0;
-		pt3.X = fXWidth;	pt3.Y = fYWidth;
-		pt4.X = 0;			pt4.Y = fYWidth;
+		pt1.rx() = pt1.ry() = 0;
+		pt2.rx() = fXWidth;	pt2.ry() = 0;
+		pt3.rx() = fXWidth;	pt3.ry() = fYWidth;
+		pt4.rx() = 0;		pt4.ry() = fYWidth;
 
-		pt1 = Transform(pt1);
-		pt2 = Transform(pt2);
-		pt3 = Transform(pt3);
-		pt4 = Transform(pt4);
-	};
+		pt1 = transform(pt1);
+		pt2 = transform(pt2);
+		pt3 = transform(pt3);
+		pt4 = transform(pt4);
+	}
 };
 
 #endif // __DSSTOOLS_H__

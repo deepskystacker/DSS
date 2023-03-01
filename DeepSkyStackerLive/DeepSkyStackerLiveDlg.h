@@ -134,7 +134,7 @@ inline CDeepSkyStackerLiveDlg *	GetDSSLiveDlg(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline	void	AddToLog(LPCTSTR szString, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
+inline	void	AddToLog(QString szString, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 
@@ -148,7 +148,7 @@ inline	void	AddToLog(LPCTSTR szString, BOOL bAddDateTime = FALSE, BOOL bBold = F
 
 /* ------------------------------------------------------------------- */
 
-inline	void	SetLastImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName = nullptr)
+inline	void	SetLastImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName = nullptr)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 
@@ -162,7 +162,7 @@ inline	void	SetLastImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LP
 
 /* ------------------------------------------------------------------- */
 
-inline	void	SetStackedImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap)
+inline	void	SetStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 
@@ -246,7 +246,7 @@ inline	void	UpdateImageOffsetsInList(LPCTSTR szImage, double fdX, double fdY, do
 
 /* ------------------------------------------------------------------- */
 
-inline void		SetFootprintInStackedImage(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
+inline void		SetFootprintInStackedImage(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 

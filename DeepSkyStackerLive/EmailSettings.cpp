@@ -1,14 +1,10 @@
-// DeepSkyStackerLiveDlg.cpp : implementation file
+// EmailSettings.cpp : implementation file
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "EmailSettings.h"
 #include <..\SMTP\PJNSMTP.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 
 // CEmailSettings dialog
 
@@ -118,7 +114,8 @@ void CEmailSettings::OnBnClickedTest()
 		smtp.Connect(strSMTP);
 
 		CPJNSMTPMessage m;
-		m.m_To.Add(CPJNSMTPAddress(strEmail));
+		CPJNSMTPAddress emailAddress{ strEmail };
+		m.m_To.Add(emailAddress);
 		m.m_From = CPJNSMTPAddress(strAccount);
 		m.m_sSubject = strObject;
 		m.AddTextBody(strObject);

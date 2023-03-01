@@ -4,14 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "LuminanceTab.h"
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CLuminanceTab property page
@@ -25,7 +18,7 @@ CLuminanceTab::CLuminanceTab() : CChildPropertyPage(CLuminanceTab::IDD)
 	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 CLuminanceTab::~CLuminanceTab()
@@ -72,24 +65,26 @@ END_MESSAGE_MAP()
 
 BOOL CLuminanceTab::OnSetActive()
 {
+	constexpr auto IconNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
+
 	if (m_bFirstActivation)
 	{
-		m_Redo.DrawTransparent(TRUE);
-		m_Undo.DrawTransparent(TRUE);
-		m_Redo.SetFlat(TRUE);
-		m_Undo.SetFlat(TRUE);
-		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Redo.DrawTransparent(true);
+		m_Undo.DrawTransparent(true);
+		m_Redo.SetFlat(true);
+		m_Undo.SetFlat(true);
+		m_Redo.SetIcon(IDI_REDO, IconNumber);
+		m_Undo.SetIcon(IDI_UNDO, IconNumber);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
-		m_Settings.DrawTransparent(TRUE);
-		m_Settings.SetFlat(TRUE);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Settings.DrawTransparent(true);
+		m_Settings.SetFlat(true);
+		m_Settings.SetIcon(IDI_SETTINGS, IconNumber);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 
 		m_DarknessTitle.SetTextColor(RGB(0, 0, 0));
 		m_DarknessTitle.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
@@ -109,24 +104,24 @@ BOOL CLuminanceTab::OnSetActive()
 void CLuminanceTab::UpdateTexts()
 {
 	CString			strText;
-	LONG			lPos1, lPos2;
+	int			lPos1, lPos2;
 
 	lPos1 = m_DarkAngle.GetPos();
 	lPos2 = m_DarkPower.GetPos();
 
-	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Darkness.SetText(strText);
 
 	lPos1 = m_MidAngle.GetPos();
 	lPos2 = m_MidTone.GetPos();
 
-	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Midtone.SetText(strText);
 
 	lPos1 = m_HighAngle.GetPos();
 	lPos2 = m_HighPower.GetPos();
 
-	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Highlight.SetText(strText);
 };
 

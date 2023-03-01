@@ -1,7 +1,10 @@
 #include <stdafx.h>
 #include "SetUILanguage.h"
-#include "Registry.h"
+
 #include "DSS-VersionHelpers.h"
+#include <QCoreApplication>
+#include <QLocale>
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 
@@ -29,28 +32,29 @@ void	SetUILanguage(LANGID LangID)
 		if (SetThreadPreferredUILanguages)
 		{
 			// Set the preferred languages
-			WCHAR			szPrefLanguages[2000];
-			WCHAR *			szEnglish = L"en-US";
-			WCHAR *			szFrench  = L"fr-FR";
-			WCHAR *			szCzech   = L"cs-CZ";
-			WCHAR *			szSpanish = L"es-ES";
-			WCHAR *			szItalian = L"it-IT";
-			WCHAR *			szCatalan = L"ca-ES";	// Catalan - Espana
-			WCHAR *			szGerman  = L"de-DE";
-			WCHAR *			szDutch   = L"nl-NL";
-			WCHAR *			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
-			//WCHAR *			szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
-			WCHAR *			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
-			WCHAR *			szRomanian = L"ro-RO";	// Romanian
-			WCHAR *			szRussian = L"ru-RU";	// Russian
-			WCHAR *			szTurkish = L"tr-TR";	// Turkish
-			ULONG			lNumLang = 5;
+			const auto*			szEnglish = L"en-US";
+			const auto*			szFrench  = L"fr-FR";
+			const auto*			szCzech   = L"cs-CZ";
+			const auto*			szSpanish = L"es-ES";
+			const auto*			szItalian = L"it-IT";
+			const auto*			szCatalan = L"ca-ES";	// Catalan - Espana
+			const auto*			szGerman  = L"de-DE";
+			const auto*			szDutch   = L"nl-NL";
+			const auto*			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
+			//const auto*		szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
+			const auto*			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
+			const auto*			szRomanian = L"ro-RO";	// Romanian
+			const auto*			szRussian = L"ru-RU";	// Russian
+			const auto*			szTurkish = L"tr-TR";	// Turkish
 
-			WCHAR *			szLang1;
-			WCHAR *			szLang2;
-			WCHAR *			szLang3;
-			WCHAR *			szLang4;
-			WCHAR *			szLang5;
+			using char_type = std::remove_cv_t<std::remove_pointer_t<decltype(szEnglish)>>;
+
+			unsigned long lNumLang = 5;
+			const char_type* szLang1;
+			const char_type* szLang2;
+			const char_type* szLang3;
+			const char_type* szLang4;
+			const char_type* szLang5;
 
 			switch (PRIMARYLANGID(LangID))
 			{
@@ -148,16 +152,18 @@ void	SetUILanguage(LANGID LangID)
 					break;
 			};
 
-			WCHAR *			szPtr = szPrefLanguages;
-			memcpy(szPtr, szLang1, sizeof(WCHAR)*6);
+			char_type szPrefLanguages[2000];
+			auto* szPtr = szPrefLanguages;
+
+			memcpy(szPtr, szLang1, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang2, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang2, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang3, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang3, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang4, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang4, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang5, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang5, sizeof(char_type)*6);
 			szPtr += 6;
 			*szPtr = 0;
 
@@ -198,37 +204,54 @@ typedef enum tagDSSLANGUAGE
 void	SetUILanguage()
 {
 	DSSLANGUAGE			DSSLanguage = DSSL_DEFAULT;
-	CRegistry			reg;
-	CString				strLanguage;
+	QSettings settings;
+	QString				language;
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("Language"), strLanguage);
-	if (strLanguage.GetLength())
+	//
+	// Retrieve the Qt language name (e.g.) en_GB
+	//
+	language = settings.value("Language").toString();
+
+	//
+	// Language was not defined in our preferences, so select the system default
+	//
+	if (language == "")
 	{
-		if (!strLanguage.CompareNoCase(_T("FR")))
+		language = QLocale::system().name();
+	}
+
+	//
+	// What follows is for the older MFC stuff which will go one day!
+	//
+	// Convert the Qt language name to the DSSLANGUAGE enum values
+	//
+	if (language.length())
+	{
+		if (!language.compare("fr_FR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_FRENCH;
-		else if (!strLanguage.CompareNoCase(_T("EN")))
+		else if (!language.compare("en_GB", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ENGLISH;
-		else if (!strLanguage.CompareNoCase(_T("ES")))
+		else if (!language.compare("es_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_SPANISH;
-		else if (!strLanguage.CompareNoCase(_T("CZ")))
+		else if (!language.compare("cs_CZ", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CZECH;
-		else if (!strLanguage.CompareNoCase(_T("IT")))
+		else if (!language.compare("it_IT", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ITALIAN;
-		else if (!strLanguage.CompareNoCase(_T("CAT")))
+		else if (!language.compare("ca_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CATALAN;
-		else if (!strLanguage.CompareNoCase(_T("DE")))
+		else if (!language.compare("de_DE", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_GERMAN;
-		else if (!strLanguage.CompareNoCase(_T("NL")))
+		else if (!language.compare("nl_NL", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_DUTCH;
-		else if (!strLanguage.CompareNoCase(_T("CN")))
+		else if (!language.compare("zh_TW", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CHINESE;
-		else if (!strLanguage.CompareNoCase(_T("PTB")))
+		else if (!language.compare("pt_BR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_PORTUGUESE;
-		else if (!strLanguage.CompareNoCase(_T("RO")))
+		else if (!language.compare("ro_RO", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ROMANIAN;
-		else if (!strLanguage.CompareNoCase(_T("RU")))
+		else if (!language.compare("ru_RU", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_RUSSIAN;
-		else if (!strLanguage.CompareNoCase(_T("TR")))
+		else if (!language.compare("tr_TR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_TURKISH;
 	};
 

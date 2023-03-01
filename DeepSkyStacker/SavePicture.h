@@ -6,9 +6,9 @@
 class CSavePicture : public CFileDialog
 {
 private :
-	BOOL			m_bApplied;
-	BOOL			m_bEnableUseRect;
-	BOOL			m_bUseRect;
+	bool			m_bApplied;
+	bool			m_bEnableUseRect;
+	bool			m_bUseRect;
 	TIFFCOMPRESSION m_Compression;
 
 	DECLARE_DYNAMIC(CSavePicture)
@@ -23,31 +23,31 @@ private :
 	CString					m_strSaveEmbed;
 
 public:
-	CSavePicture(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
+	CSavePicture(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
-		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		std::uint32_t dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 		LPCTSTR lpszFilter = nullptr,
 		CWnd* pParentWnd = nullptr);
 	virtual ~CSavePicture();
 
-	void	SetApplied(BOOL bApplied)
+	void	SetApplied(bool bApplied)
 	{
 		m_bApplied = bApplied;
 	};
 
-	void	SetUseRect(BOOL bEnabled, BOOL bUseRect)
+	void	SetUseRect(bool bEnabled, bool bUseRect)
 	{
 		m_bEnableUseRect = bEnabled;
 		m_bUseRect = bUseRect;
 	};
 
-	BOOL	GetApplied()
+	bool	GetApplied()
 	{
 		return m_bApplied;
 	};
 
-	BOOL	GetUseRect()
+	bool	GetUseRect()
 	{
 		return m_bUseRect;
 	};

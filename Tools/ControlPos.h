@@ -26,14 +26,29 @@
 class CControlPos
 {
 public:
-	CControlPos(CWnd* pParent = nullptr);
+	CControlPos(HWND parent = NULL)
+	{
+		initialise(parent);
+	}
+	CControlPos(CWnd* pParent)
+	{
+		HWND parent = NULL;
+		if (pParent)
+			parent = pParent->GetSafeHwnd();
+
+		initialise(parent);
+	};
+
 	virtual ~CControlPos();
 
 public:
-	void SetParent(CWnd* pParent);
+	void SetParent(HWND parent = NULL);
+	void SetParent(CWnd* pParent = nullptr);
 
+	BOOL AddControl(HWND control, const DWORD& dwStyle = CP_MOVE_HORIZONTAL);
 	BOOL AddControl(CWnd* pControl, const DWORD& dwStyle = CP_MOVE_HORIZONTAL);
 	BOOL AddControl(const UINT& unId, const DWORD& dwStyle = CP_MOVE_HORIZONTAL);
+	BOOL RemoveControl(HWND control);
 	BOOL RemoveControl(CWnd* pControl);
 	BOOL RemoveControl(const UINT& unId);
 	void ResetControls(void);
@@ -51,9 +66,10 @@ public:
 
 protected:
 	virtual void UpdateParentSize(void);
+	void initialise(HWND control);
 
 private:
-	CWnd*  m_pParent;
+	HWND   m_parent;
 	int    m_nOldParentWidth;
 	int    m_nOldParentHeight;
 	int    m_nOriginalParentWidth;

@@ -1,30 +1,83 @@
 #ifndef __DSSCOMMON_H__
 #define __DSSCOMMON_H__
 
-#define REGENTRY_BASEKEY					_T("Software\\DeepSkyStacker")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER		_T("Software\\DeepSkyStacker\\DeepSkyStacker")
-#define REGENTRY_BASEKEY_EDITSTARS			_T("Software\\DeepSkyStacker\\EditStars")
-#define REGENTRY_BASEKEY_FOLDERS			_T("Software\\DeepSkyStacker\\Folders")
-#define REGENTRY_BASEKEY_REGISTERSETTINGS	_T("Software\\DeepSkyStacker\\Register")
-#define REGENTRY_BASEKEY_STACKINGSETTINGS	_T("Software\\DeepSkyStacker\\Stacking")
-#define REGENTRY_BASEKEY_RAWSETTINGS		_T("Software\\DeepSkyStacker\\RawDDP")
-#define REGENTRY_BASEKEY_FITSSETTINGS		_T("Software\\DeepSkyStacker\\FitsDDP")
-#define REGENTRY_BASEKEY_STARMASK			_T("Software\\DeepSkyStacker\\StarMask")
-#define REGENTRY_BASEKEY_FILELISTS			_T("Software\\DeepSkyStacker\\FileLists")
-#define REGENTRY_BASEKEY_SETTINGFILES		_T("Software\\DeepSkyStacker\\SettingsFiles")
-#define REGENTRY_BASEKEY_LIVE				_T("Software\\DeepSkyStacker\\Live")
-#define REGENTRY_BASEKEY_OUTPUT				_T("Software\\DeepSkyStacker\\Output")
+constexpr auto PI = 3.14159265358979323846;
 
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION		_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_STEPS_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_RECO_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_BATCH_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position")
-#define REGENTRY_BASEKEY_LIVE_POSITION					_T("Software\\DeepSkyStacker\\DeepSkyStackerLive\\Position")
+#define REGENTRY_BASEKEY_LIVE				_T("Software\\DeepSkyStacker5\\Live")
+#define REGENTRY_BASEKEY_LIVE_POSITION _T("Software\\DeepSkyStacker5\\DeepSkyStackerLive\\Position")
 
-constexpr unsigned int	STARMAXSIZE = 50;
-constexpr unsigned int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
+constexpr int	STARMAXSIZE = 50;
+constexpr int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
 
-typedef enum PICTURETYPE
+typedef enum tagSTACKINGMODE
+{
+	SM_NORMAL = 0,
+	SM_MOSAIC = 1,
+	SM_CUSTOM = 2,
+	SM_INTERSECTION = 3
+}STACKINGMODE;
+
+typedef enum INTERMEDIATEFILEFORMAT
+{
+	IFF_TIFF = 1,
+	IFF_FITS = 2
+}INTERMEDIATEFILEFORMAT;
+
+typedef enum tagCOMETSTACKINGMODE
+{
+	CSM_STANDARD = 0,
+	CSM_COMETONLY = 1,
+	CSM_COMETSTAR = 2
+}COMETSTACKINGMODE;
+
+enum BACKGROUNDCALIBRATIONMODE : short
+{
+	BCM_NONE = 0,
+	BCM_PERCHANNEL = 1,
+	BCM_RGB = 2
+};
+
+enum BACKGROUNDCALIBRATIONINTERPOLATION : short
+{
+	BCI_LINEAR = 0,
+	BCI_RATIONAL = 1
+};
+
+enum ALIGNMENT_VALUES : short
+{
+	ALIGN_AUTO = 0,
+	ALIGN_BILINEAR = 2,
+	ALIGN_BISQUARED = 3,
+	ALIGN_BICUBIC = 4,
+	ALIGN_NONE = 5
+};
+
+enum RGBBACKGROUNDCALIBRATIONMETHOD : short
+{
+	RBCM_MINIMUM = 0,
+	RBCM_MIDDLE = 1,
+	RBCM_MAXIMUM = 2
+};
+
+enum MULTIBITMAPPROCESSMETHOD : short
+{
+	MBP_AVERAGE = 1,
+	MBP_MEDIAN = 2,
+	MBP_MAXIMUM = 3,
+	MBP_SIGMACLIP = 4,
+	MBP_ENTROPYAVERAGE = 5,
+	MBP_AUTOADAPTIVE = 6,
+	MBP_MEDIANSIGMACLIP = 7,
+	MBP_FASTAVERAGE = 8
+};
+
+typedef enum tagCOSMETICREPLACE
+{
+	CR_MEDIAN = 1,
+	CR_GAUSSIAN = 2
+}COSMETICREPLACE;
+
+enum PICTURETYPE : short
 {
 	PICTURETYPE_UNKNOWN		= 0,
 	PICTURETYPE_LIGHTFRAME	= 1,
@@ -33,7 +86,7 @@ typedef enum PICTURETYPE
 	PICTURETYPE_OFFSETFRAME = 4,
 	PICTURETYPE_REFLIGHTFRAME = 5,
 	PICTURETYPE_DARKFLATFRAME = 6
-}PICTURETYPE;
+};
 
 typedef enum TIFFFORMAT
 {
@@ -48,14 +101,19 @@ typedef enum TIFFFORMAT
 	TF_32BITGRAYFLOAT	= 8
 }TIFFFORMAT;
 
-
-
 typedef enum TIFFCOMPRESSION
 {
 	TC_NONE				= 0,
 	TC_LZW				= 1,
 	TC_DEFLATE			= 2
 }TIFFCOMPRESSION;
+
+enum class TERMINAL_OUTPUT_MODE
+{
+	BASIC = 0,
+	COLOURED = 1,
+	FORMATTED = 2,
+};
 
 typedef enum FITSFORMAT
 {
@@ -70,13 +128,19 @@ typedef enum FITSFORMAT
 	FF_32BITGRAYFLOAT	= 8
 }FITSFORMAT;
 
+enum class Column
+{
+	Path = 0, File, Type, Filter, Score,
+	dX, dY, Angle, FileTime, Size, CFA, Depth,
+	Info, ISO, Exposure, Aperture, FWHM, Stars,
+	Background, MAX_COLS
+};
 // TODO: reference additional headers your program requires here
 
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4018 )
 
 #include "DSSVersion.h"
-#define VERSION_DCRAW						"0.20"
 #define VERSION_LIBTIFF						"4.0.9"
 #define VERSION_CFITSIO						"3.43"
 
@@ -85,7 +149,5 @@ typedef enum FITSFORMAT
 #ifndef PCL_PROJECT
 #define DSSFILEDECODING 1
 #endif
-
-#include "SmartPtr.h"
 
 #endif

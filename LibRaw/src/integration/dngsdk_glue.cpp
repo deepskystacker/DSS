@@ -83,6 +83,10 @@ int LibRaw::valid_for_dngsdk()
   if (!imgdata.idata.dng_version)
     return 0;
 
+  // All DNG larger than 2GB - to DNG SDK
+  if (libraw_internal_data.internal_data.input->size() > 2147483647ULL)
+      return 1;
+
   if (!strcasecmp(imgdata.idata.make, "Blackmagic") 
       && (libraw_internal_data.unpacker_data.tiff_compress == 7)
       && (libraw_internal_data.unpacker_data.tiff_bps > 8)
@@ -188,8 +192,11 @@ int LibRaw::try_dngsdk()
     if (((libraw_internal_data.unpacker_data.tiff_compress == 34892 
         && libraw_internal_data.unpacker_data.tiff_bps == 8
         && libraw_internal_data.unpacker_data.tiff_samples == 3
-        && load_raw == &LibRaw::lossy_dng_load_raw) || 
-		(imgdata.rawparams.options & (LIBRAW_RAWOPTIONS_DNG_STAGE2| LIBRAW_RAWOPTIONS_DNG_STAGE3)))
+        && load_raw == &LibRaw::lossy_dng_load_raw) 
+        || (imgdata.rawparams.options & (LIBRAW_RAWOPTIONS_DNG_STAGE2| LIBRAW_RAWOPTIONS_DNG_STAGE3))
+        || ((tiff_ifd[ifdindex].dng_levels.parsedfields & (LIBRAW_DNGFM_OPCODE2| LIBRAW_DNGFM_OPCODE3))
+            && (imgdata.rawparams.options & (LIBRAW_RAWOPTIONS_DNG_STAGE2_IFPRESENT | LIBRAW_RAWOPTIONS_DNG_STAGE3_IFPRESENT)))
+        )
         && ifdindex >= 0)
     {
         if (info.fMainIndex != ifdindex)
@@ -198,7 +205,10 @@ int LibRaw::try_dngsdk()
         negative->ReadStage1Image(*host, stream, info);
         negative->BuildStage2Image(*host);
 		imgdata.process_warnings |= LIBRAW_WARN_DNG_STAGE2_APPLIED;
-		if (imgdata.rawparams.options & LIBRAW_RAWOPTIONS_DNG_STAGE3)
+		if (  (imgdata.rawparams.options & LIBRAW_RAWOPTIONS_DNG_STAGE3) ||
+            ((tiff_ifd[ifdindex].dng_levels.parsedfields & LIBRAW_DNGFM_OPCODE3) &&
+             (imgdata.rawparams.options & LIBRAW_RAWOPTIONS_DNG_STAGE3_IFPRESENT))
+            )
 		{
 			negative->BuildStage3Image(*host);
 			stage2.Reset((dng_simple_image*)negative->Stage3Image());
@@ -313,6 +323,9 @@ int LibRaw::try_dngsdk()
     if (stage23used)
         stage2.Release();
 
+    if ((ptype == ttFloat) && (imgdata.rawparams.options & LIBRAW_RAWOPTIONS_CONVERTFLOAT_TO_INT))
+        zerocopy = true;
+
     if (zerocopy)
     {
       switch (ptype)
@@ -368,6 +381,13 @@ int LibRaw::try_dngsdk()
         break;
       }
     }
+
+    if ((ptype == ttFloat) && (imgdata.rawparams.options & LIBRAW_RAWOPTIONS_CONVERTFLOAT_TO_INT))
+    {
+        convertFloatToInt();
+        zerocopy = false;
+    }
+
     if (zerocopy)
     {
       dng_negative *stolen = negative.Release();

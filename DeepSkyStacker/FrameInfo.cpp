@@ -1,23 +1,23 @@
 #include <stdafx.h>
 
+#include "resource.h"
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "FrameInfo.h"
-#include "Registry.h"
+
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
+bool	CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 {
-	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (Type == PICTURETYPE_REFLIGHTFRAME)
 		m_PictureType  = PICTURETYPE_LIGHTFRAME;
 	else
 		m_PictureType  = Type;
-	m_strFileName  = szFile;
+	filePath = file;
 
 	/*
 	FILETIME		FileTime;
@@ -38,7 +38,7 @@ BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 
 	CBitmapInfo			bmpInfo;
 
-	bResult = GetPictureInfo(szFile ,bmpInfo);
+	bResult = GetPictureInfo(file.c_str() ,bmpInfo);
 
 	if (bResult)
 	{

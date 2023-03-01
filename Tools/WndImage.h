@@ -52,11 +52,11 @@ public :
 		m_pImage = pImage;
 	};
 
-	virtual BOOL	Image_OnMouseLeave() { return FALSE; };
-	virtual BOOL	Image_OnMouseMove(LONG lX, LONG lY) { return FALSE; };
-	virtual BOOL	Image_OnLButtonDown(LONG lX, LONG lY) { return FALSE; };
-	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY) { return FALSE; };
-	virtual BOOL	Image_OnRButtonDown(LONG lX, LONG lY) { return FALSE; };
+	virtual bool	Image_OnMouseLeave() { return false; };
+	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) { return false; };
+	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) { return false; };
+	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY) { return false; };
+	virtual bool	Image_OnRButtonDown(LONG lX, LONG lY) { return false; };
 
 	virtual Image *	GetOverlayImage(CRect & rcClient) { return nullptr; };
 };
@@ -246,6 +246,7 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
  	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnDestroy();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);

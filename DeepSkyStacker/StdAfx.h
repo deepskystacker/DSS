@@ -3,12 +3,7 @@
 //      are changed infrequently
 //
 
-#if !defined(AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_)
-#define AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #if defined(USE_HOARD)
 #pragma comment(lib, "lib\\winhoard.lib")
@@ -16,13 +11,15 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 //
-// Want to support windows XP and up
+// Want to support windows 7 and up
 //
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
 
 // Visual Leak Detector
 //
-//#include <vld.h>
+#include <vld.h>
+
+#include <QRectF>
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -37,7 +34,7 @@
 
 #include <stdlib.h>
 #ifndef NDEBUG
-#include <crtdbg.h>
+//#include <crtdbg.h>
 #endif
 
 #include <windows.h>
@@ -54,15 +51,12 @@ using std::max;
 #include "DSSMemory.h"
 #include "Ztrace.h"
 
-extern CString INPUTFILE_FILTERS;
 extern CString OUTPUTFILE_FILTERS;
 extern CString OUTPUTLIST_FILTERS;
 extern CString SETTINGFILE_FILTERS;
 extern CString STARMASKFILE_FILTERS;
 
-extern BOOL		g_bShowRefStars;
-
-BOOL CheckVersion(CString & strVersion);
+extern bool		g_bShowRefStars;
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
@@ -70,9 +64,5 @@ BOOL CheckVersion(CString & strVersion);
 #include "resource.h"
 #include "commonresource.h"
 #include <afxdlgs.h>
-#include "..\QHTML_Static\QHTM\QHTM.h"
 
 #include "BitmapExt.h"
-#include "DeepStackerDlg.h"
-
-#endif // !defined(AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_)

@@ -31,8 +31,8 @@ private :
 	CWndImage					m_Picture;
 	CButtonST					m_4Corners;
 	BOOL						m_bStackedImage;
-	CSmartPtr<C32BitsBitmap>	m_pWndImage;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
+	std::shared_ptr<C32BitsBitmap>	m_pWndImage;
+	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	CGammaTransformation		m_GammaTransformation;
 	bool						m_bDarkMode;
 
@@ -68,9 +68,9 @@ protected :
 //	afx_msg void OnHelp( NMHDR * pNotifyStruct, LRESULT * result );
 
 public :
-	void	SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
+	void	SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName);
 	void	OnStackedImageSaved();
-	void	OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
+	void	OnSetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
 
 };
 

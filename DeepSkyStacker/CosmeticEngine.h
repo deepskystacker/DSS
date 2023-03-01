@@ -6,9 +6,9 @@
 class CCosmeticStats
 {
 public :
-	LONG			m_lNrTotalPixels;
-	LONG			m_lNrDetectedHotPixels;
-	LONG			m_lNrDetectedColdPixels;
+	int			m_lNrTotalPixels;
+	int			m_lNrDetectedHotPixels;
+	int			m_lNrDetectedColdPixels;
 
 private :
 	void		CopyFrom(const CCosmeticStats & cs)
@@ -39,7 +39,7 @@ public :
 	};
 };
 
-BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** pDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress);
-BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress);
+std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress);
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress);
 
 #endif

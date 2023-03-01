@@ -12,11 +12,15 @@
 #include <WndImage.h>
 #include "DeepStack.h"
 #include <GradientCtrl.h>
+#include "ImageSinks.h"
 #include <algorithm>
 #include <list>
 #include "Label.h"
 
+#include "commonresource.h"
+
 #include "ProcessSettingsSheet.h"
+#include "dss_settings.h"
 
 #include <gdiplus.h>
 
@@ -65,18 +69,18 @@ public :
 class CProcessRect
 {
 private :
-	LONG						m_lWidth;
-	LONG						m_lHeight;
-	LONG						m_lSize;
+	int						m_lWidth;
+	int						m_lHeight;
+	int						m_lSize;
 	std::vector<CValuedRect>	m_vRects;
-	std::vector<BOOL>			m_vProcessed;
-	BOOL						m_bToProcess;
+	std::vector<bool>			m_vProcessed;
+	bool						m_bToProcess;
 	CRect						m_rcToProcess;
 
 private :
-	BOOL IsProcessRectOk()
+	bool IsProcessRectOk()
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		bResult = (m_rcToProcess.left >= 0) && (m_rcToProcess.left < m_lWidth) &&
 				  (m_rcToProcess.right >= 0) && (m_rcToProcess.right < m_lWidth) &&
@@ -91,7 +95,7 @@ private :
 public :
 	CProcessRect()
 	{
-		m_bToProcess = FALSE;
+		m_bToProcess = false;
 		m_rcToProcess.left = 0;
 		m_rcToProcess.top = 0;
 		m_rcToProcess.right = 0;
@@ -103,9 +107,9 @@ public :
 	};
 	virtual ~CProcessRect() {};
 
-	void	Init(LONG lWidth, LONG lHeight, LONG lRectSize)
+	void	Init(int lWidth, int lHeight, int lRectSize)
 	{
-		LONG			i, j;
+		int			i, j;
 
 		m_lWidth	= lWidth;
 		m_lHeight	= lHeight;
@@ -127,7 +131,7 @@ public :
 				rcCell.m_fScore = fabs(((i+m_lSize/2.0) - m_lWidth/2.0)/(double)m_lWidth) + fabs(((j + m_lSize/2) - m_lHeight/2.0)/(double)m_lHeight);
 
 				m_vRects.push_back(rcCell);
-				m_vProcessed.push_back(FALSE);
+				m_vProcessed.push_back(false);
 			};
 		};
 		std::sort(m_vRects.begin(), m_vRects.end());
@@ -140,14 +144,14 @@ public :
 
 	void	Reset()
 	{
-		for (LONG i = 0;i<m_vProcessed.size();i++)
-			m_vProcessed[i] = FALSE;
-		m_bToProcess = TRUE;
+		for (int i = 0;i<m_vProcessed.size();i++)
+			m_vProcessed[i] = false;
+		m_bToProcess = true;
 	};
 
-	BOOL	GetNextUnProcessedRect(CRect & rcCell)
+	bool	GetNextUnProcessedRect(CRect & rcCell)
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 
 		if (m_bToProcess)
 		{
@@ -156,19 +160,19 @@ public :
 				if (!m_vProcessed[0])
 				{
 					rcCell = m_rcToProcess;
-					m_vProcessed[0] = TRUE;
-					bResult = TRUE;
+					m_vProcessed[0] = true;
+					bResult = true;
 				};
 			}
 			else
 			{
-				for (LONG i = 0;i<m_vProcessed.size() && !bResult;i++)
+				for (int i = 0;i<m_vProcessed.size() && !bResult;i++)
 				{
 					if (!m_vProcessed[i])
 					{
-						bResult = TRUE;
+						bResult = true;
 						rcCell  = m_vRects[i].m_rc;
-						m_vProcessed[i] = TRUE;
+						m_vProcessed[i] = true;
 					};
 				};
 			};
@@ -189,7 +193,7 @@ public :
 
 		// The iteration loop here could be corrupted by a call to Init() on a different thread.
 		// To make totally thread safe this should really have a mutex lock associated with it.
-		for (BOOL bState : m_vProcessed)
+		for (bool bState : m_vProcessed)
 			fPercentage += bState ? fDelta : 0.0f;
 
 		return fPercentage;
@@ -205,7 +209,7 @@ class CProcessParamsList
 {
 public :
 	PROCESSPARAMLIST		m_lParams;
-	LONG					m_lCurrent;
+	int					m_lCurrent;
 
 public :
 	CProcessParamsList()
@@ -216,12 +220,12 @@ public :
 	{
 	};
 
-	LONG size()
+	int size()
 	{
-		return (LONG)m_lParams.size();
+		return (int)m_lParams.size();
 	};
 
-	LONG current()
+	int current()
 	{
 		return m_lCurrent;
 	};
@@ -232,72 +236,72 @@ public :
 		m_lCurrent = -1;
 	};
 
-	BOOL	MoveForward()
+	bool	MoveForward()
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (m_lCurrent+1<size())
 		{
 			m_lCurrent++;
-			bResult = TRUE;
+			bResult = true;
 		};
 		return bResult;
 	};
-	BOOL	MoveBackward()
+	bool	MoveBackward()
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if ((m_lCurrent-1 >= 0) && (size() > 0))
 		{
 			m_lCurrent--;
-			bResult = TRUE;
+			bResult = true;
 		};
 		return bResult;
 	};
 
-	BOOL IsBackwardAvailable()
+	bool IsBackwardAvailable()
 	{
 		return (m_lCurrent-1>=0);
 	};
 
-	BOOL IsForwardAvailable()
+	bool IsForwardAvailable()
 	{
 		return (m_lCurrent+1<size());
 	};
-	BOOL	GetCurrentParams(CDSSSetting & pp)
+	bool	GetCurrentParams(CDSSSetting & pp)
 	{
 		return GetParams(m_lCurrent, pp);
 	};
 
-	BOOL	GetParams(LONG lIndice, CDSSSetting & pp)
+	bool	GetParams(int lIndice, CDSSSetting & pp)
 	{
-		BOOL					bResult = FALSE;
+		bool					bResult = false;
 		PROCESSPARAMITERATOR    it;
-		BOOL					bFound = FALSE;
+		bool					bFound = false;
 
 		if (!(lIndice >= 0) && (lIndice < size()))
-			return FALSE;
+			return false;
 
 		for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
 		if (it != m_lParams.end())
 		{
 			pp = (*it);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	AddParams(const CDSSSetting & pp)
+	bool	AddParams(const CDSSSetting & pp)
 	{
-		BOOL						bResult = FALSE;
+		bool						bResult = false;
 
 		if ((m_lCurrent >=0) && (m_lCurrent < size()-1))
 		{
 			PROCESSPARAMITERATOR	it;
-			LONG					lIndice = m_lCurrent+1;
+			int					lIndice = m_lCurrent+1;
 
-			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice > 0; it++, lIndice--);
+			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
 			
 			m_lParams.erase(it, m_lParams.end());
 		}
@@ -308,7 +312,7 @@ public :
 
 		m_lCurrent = size()-1;
 
-		bResult = TRUE;
+		bResult = true;
 
 		return bResult;
 	};
@@ -332,7 +336,7 @@ private :
 	CLuminanceTab			m_tabLuminance;
 	CSaturationTab			m_tabSaturation;
 	CProcessParamsList		m_lProcessParams;
-	BOOL					m_bDirty;
+	bool					m_bDirty;
 
 	CSelectRectSink			m_SelectRectSink;
 
@@ -340,7 +344,7 @@ private :
 public:
 	CProcessingDlg(CWnd* pParent = nullptr);   // standard constructor
 
-	BOOL	SaveOnClose();
+	bool	SaveOnClose();
 
 // Dialog Data
 	//{{AFX_DATA(CProcessingDlg)
@@ -366,19 +370,19 @@ public:
 	//}}AFX_VIRTUAL
 
 private :
-	BOOL	AskToSave();
+	bool	AskToSave();
 	void	SaveDSImage();
-	void	ProcessAndShow(BOOL bSaveUndo = TRUE);
+	void	ProcessAndShow(bool bSaveUndo = true);
 
 	void	ResetSliders();
-	void	DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGreens, LONG lNrBlues, LONG X, LONG lHeight);
-	void	ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogram, BOOL bLog = FALSE);
-	void	ShowOriginalHistogram(BOOL bLog = FALSE);
+	void	DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
+	void	ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogram, bool bLog = false);
+	void	ShowOriginalHistogram(bool bLog = false);
 
-	void	DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, LONG lWidth, LONG lHeight);
+	void	DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, int lWidth, int lHeight);
 
 	void	UpdateHistogramAdjust();
-	void	DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHeight);
+	void	DrawBezierCurve(Graphics * pGraphics, int lWidth, int lHeight);
 
 	void	UpdateControls();
 	void	UpdateControlsFromParams();
@@ -394,7 +398,7 @@ public:
 	void	OnSettings();
 
 	void	CopyPictureToClipboard();
-	BOOL	SavePictureToFile();
+	bool	SavePictureToFile();
 	void	CreateStarMask();
 
 	void	LoadFile(LPCTSTR szFileName);

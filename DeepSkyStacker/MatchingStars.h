@@ -2,6 +2,10 @@
 #define __MATCHINGSTARS_H__
 
 #include "DSSTools.h"
+#if !defined(NDEBUG)
+#include <boost/container/vector.hpp>
+namespace bc = boost::container;
+#endif
 
 #pragma pack(push, STARTRIANGLE, 1)
 
@@ -12,9 +16,9 @@ class CStarTriangle
 public :
 	float			m_fX,
 					m_fY;
-	BYTE			m_Star1,
-					m_Star2,
-					m_Star3;
+	std::uint8_t	m_Star1;
+	std::uint8_t	m_Star2;
+	std::uint8_t	m_Star3;
 
 private :
 	void	CopyFrom(const CStarTriangle & st)
@@ -36,7 +40,7 @@ public :
         m_Star3 = 0;
     }
 
-	CStarTriangle(BYTE Star1, BYTE Star2, BYTE Star3, float fX, float fY)
+	CStarTriangle(std::uint8_t Star1, std::uint8_t Star2, std::uint8_t Star3, float fX, float fY)
 	{
 		m_Star1 = Star1;
 		m_Star2 = Star2;
@@ -86,7 +90,7 @@ typedef enum BITMAPCORNER
 class CStarCornerDist
 {
 public :
-	BYTE			m_Star;
+	std::uint8_t	m_Star;
 	float			m_fCornerDist;
 	BITMAPCORNER	m_Corner;
 
@@ -130,8 +134,8 @@ typedef std::vector<CStarCornerDist>			STARCORNERDISTVECTOR;
 class CStarDist
 {
 public :
-	BYTE			m_Star1,
-					m_Star2;
+	std::uint8_t	m_Star1;
+	std::uint8_t	m_Star2;
 	float			m_fDistance;
 
 private :
@@ -143,7 +147,7 @@ private :
 	};
 
 public :
-	CStarDist(BYTE Star1, BYTE Star2, float fDistance = 0.0)
+	CStarDist(std::uint8_t Star1, std::uint8_t Star2, float fDistance = 0.0)
 	{
 		if (Star1 < Star2)
 		{
@@ -185,28 +189,32 @@ public :
 	};
 };
 
+#if !defined(NDEBUG)
+typedef bc::vector<CStarDist>			STARDISTVECTOR;
+#else
 typedef std::vector<CStarDist>			STARDISTVECTOR;
+#endif
 typedef STARDISTVECTOR::iterator		STARDISTITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-const	LONG			VPFLAG_ACTIVE			  = 0x00000001;
-const	LONG			VPFLAG_CORNER_TOPLEFT	  = 0x00000010;
-const	LONG			VPFLAG_CORNER_TOPRIGHT    = 0x00000020;
-const	LONG			VPFLAG_CORNER_BOTTOMLEFT  = 0x00000040;
-const	LONG			VPFLAG_CORNER_BOTTOMRIGHT = 0x00000080;
-const	LONG			VPFLAG_CORNER_MASK		  = 0x000000F0;
-const	LONG			VPFLAG_USED				  = 0x00000100;
-const	LONG			VPFLAG_LOCKED			  = 0x00000200;
-const	LONG			VPFLAG_POSSIBLE			  = 0x00000400;
+constexpr int VPFLAG_ACTIVE				= 0x00000001;
+constexpr int VPFLAG_CORNER_TOPLEFT		= 0x00000010;
+constexpr int VPFLAG_CORNER_TOPRIGHT	= 0x00000020;
+constexpr int VPFLAG_CORNER_BOTTOMLEFT  = 0x00000040;
+constexpr int VPFLAG_CORNER_BOTTOMRIGHT	= 0x00000080;
+constexpr int VPFLAG_CORNER_MASK		= 0x000000F0;
+constexpr int VPFLAG_USED				= 0x00000100;
+constexpr int VPFLAG_LOCKED				= 0x00000200;
+constexpr int VPFLAG_POSSIBLE			= 0x00000400;
 
 class CVotingPair
 {
 public :
 	__int8					m_RefStar,
 							m_TgtStar;
-	LONG					m_lNrVotes;
-	LONG					m_Flags;
+	int					m_lNrVotes;
+	int					m_Flags;
 
 private :
 	void	CopyFrom(const CVotingPair & vp)
@@ -218,7 +226,7 @@ private :
 	};
 
 public :
-	CVotingPair(BYTE RefStar = 0, BYTE TgtStar = 0)
+	CVotingPair(std::uint8_t RefStar = 0, std::uint8_t TgtStar = 0)
 	{
 		m_RefStar	= RefStar;
 		m_TgtStar	= TgtStar;
@@ -231,12 +239,12 @@ public :
 		CopyFrom(vp);
 	};
 
-	BOOL	IsActive() const
+	bool	IsActive() const
 	{
 		return (m_Flags & VPFLAG_ACTIVE);
 	};
 
-	void	SetActive(BOOL bActive)
+	void	SetActive(bool bActive)
 	{
 		if (bActive)
 			m_Flags |= VPFLAG_ACTIVE;
@@ -244,17 +252,17 @@ public :
 			m_Flags &=~VPFLAG_ACTIVE;
 	};
 
-	BOOL	IsCorner() const
+	bool	IsCorner() const
 	{
 		return (m_Flags & VPFLAG_CORNER_MASK);
 	};
 
-	BOOL	IsUsed() const
+	bool	IsUsed() const
 	{
 		return (m_Flags & VPFLAG_USED);
 	};
 
-	void	SetUsed(BOOL bUsed)
+	void	SetUsed(bool bUsed)
 	{
 		if (bUsed)
 			m_Flags |= VPFLAG_USED;
@@ -262,12 +270,12 @@ public :
 			m_Flags &=~VPFLAG_USED;
 	};
 
-	BOOL	IsLocked() const
+	bool	IsLocked() const
 	{
 		return (m_Flags & VPFLAG_LOCKED);
 	};
 
-	void	SetLocked(BOOL bLocked)
+	void	SetLocked(bool bLocked)
 	{
 		if (bLocked)
 			m_Flags |= VPFLAG_LOCKED;
@@ -275,12 +283,12 @@ public :
 			m_Flags &=~VPFLAG_LOCKED;
 	};
 
-	BOOL	IsPossible() const
+	bool	IsPossible() const
 	{
 		return (m_Flags & VPFLAG_POSSIBLE);
 	};
 
-	void	SetPossible(BOOL bPossible)
+	void	SetPossible(bool bPossible)
 	{
 		if (bPossible)
 			m_Flags |= VPFLAG_POSSIBLE;
@@ -311,114 +319,95 @@ typedef VOTINGPAIRVECTOR::iterator		VOTINGPAIRITERATOR;
 
 class CMatchingStars
 {
-private :
-	POINTEXTVECTOR			m_vRefStars;
-	POINTEXTVECTOR			m_vTgtStars;
+private:
+	POINTFVECTOR m_vRefStars;
+	POINTFVECTOR m_vTgtStars;
+	POINTFVECTOR m_vRefCorners;
+	POINTFVECTOR m_vTgtCorners;
+	STARTRIANGLEVECTOR m_vRefTriangles;
+	STARTRIANGLEVECTOR m_vTgtTriangles;
+	std::vector<int> m_vRefStarIndices;
+	std::vector<int> m_vTgtStarIndices;
+	STARDISTVECTOR m_vRefStarDistances;
+	STARDISTVECTOR m_vTgtStarDistances;
+	VOTINGPAIRVECTOR m_vVotedPairs;
+	int m_lWidth;
+	int m_lHeight;
 
-	STARTRIANGLEVECTOR		m_vRefTriangles;
-	STARTRIANGLEVECTOR		m_vTgtTriangles;
-
-	std::vector<LONG>		m_vRefStarIndices;
-	std::vector<LONG>		m_vTgtStarIndices;
-
-	STARDISTVECTOR			m_vRefStarDistances;
-	STARDISTVECTOR			m_vTgtStarDistances;
-
-	VOTINGPAIRVECTOR		m_vVotedPairs;
-	LONG					m_lWidth;
-	LONG					m_lHeight;
-
-	POINTEXTVECTOR			m_vRefCorners;
-	POINTEXTVECTOR			m_vTgtCorners;
-
-private :
-	CPointExt & RefStar(const CVotingPair & vp)
+private:
+	QPointF& RefStar(const CVotingPair& vp)
 	{
-		if (vp.IsCorner())
-			return m_vRefCorners[vp.m_RefStar];
-		else
-			return m_vRefStars[vp.m_RefStar];
+		return vp.IsCorner() ? m_vRefCorners[vp.m_RefStar] : m_vRefStars[vp.m_RefStar];
 	}
 
-	CPointExt & TgtStar(const CVotingPair & vp)
+	QPointF& TgtStar(const CVotingPair& vp)
 	{
-		if (vp.IsCorner())
-			return m_vTgtCorners[vp.m_TgtStar];
-		else
-			return m_vTgtStars[vp.m_TgtStar];
-	};
+		return vp.IsCorner() ? m_vTgtCorners[vp.m_TgtStar] : m_vTgtStars[vp.m_TgtStar];
+	}
 
-	void	InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs);
-	void	AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, LONG lNrTgtStars);
-	void	ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDISTVECTOR & vStarDist);
-	void	ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles);
+	void InitVotingGrid(VOTINGPAIRVECTOR& vVotingPairs);
+	void AdjustVoting(const VOTINGPAIRVECTOR& vInVotingPairs, VOTINGPAIRVECTOR& vOutVotingPairs, int lNrTgtStars);
+	void ComputeStarDistances(const POINTFVECTOR& vStars, STARDISTVECTOR& vStarDist);
+	void ComputeTriangles(const POINTFVECTOR& vStars, STARTRIANGLEVECTOR& vTriangles);
+	double ValidateTransformation(const VOTINGPAIRVECTOR& vVotingPairs, const CBilinearParameters& BilinearParameters);
+	bool ComputeCoordinatesTransformation(VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool ComputeTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool ComputeMedianTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool ComputeMatchingTriangleTransformation(CBilinearParameters& BilinearParameters);
+	bool ComputeLargeTriangleTransformation(CBilinearParameters& BilinearParameters);
+	void AdjustSize();
 
-	double	ValidateTransformation(const VOTINGPAIRVECTOR & vVotingPairs, const CBilinearParameters & BilinearParameters);
-	BOOL	ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
+public:
+	CMatchingStars() : m_lHeight{ 0 }, m_lWidth{ 0 }
+	{}
 
-	BOOL	ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters);
-	BOOL	ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters);
+	virtual ~CMatchingStars() = default;
 
-	void	AdjustSize();
-
-public :
-	CMatchingStars()
-	{
-		m_lWidth = 0;
-		m_lHeight = 0;
-	};
-
-	virtual ~CMatchingStars()
-	{
-	};
-
-	void	AddReferenceStar(double fX, double fY)
+	void AddReferenceStar(double fX, double fY)
 	{
 		m_vRefStars.emplace_back(fX, fY);
-	};
+	}
 
-	void	AddTargetedStar(double fX, double fY)
+	void AddTargetedStar(double fX, double fY)
 	{
 		m_vTgtStars.emplace_back(fX, fY);
-	};
+	}
 
-	BOOL	IsReferenceSet()
+	bool IsReferenceSet()
 	{
 		return (m_vRefStars.size() > 0);
-	};
+	}
 
-	void	ClearReference()
+	void ClearReference()
 	{
 		m_vRefStars.clear();
 		m_vRefTriangles.clear();
 		m_vRefCorners.clear();
 		m_vRefStarDistances.clear();
 		m_vRefStarIndices.clear();
-	};
+	}
 
-	void	ClearTarget()
+	void ClearTarget()
 	{
 		m_vTgtStars.clear();
 		m_vTgtTriangles.clear();
 		m_vTgtCorners.clear();
 		m_vTgtStarDistances.clear();
 		m_vTgtStarIndices.clear();
-	};
+	}
 
-	void	SetSizes(LONG lWidth, LONG lHeight)
+	void SetSizes(int lWidth, int lHeight)
 	{
 		m_lWidth	= lWidth;
 		m_lHeight	= lHeight;
-	};
+	}
 
-	BOOL	ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters);
-	void	GetVotedPairs(VOTINGPAIRVECTOR & vPairs)
+	bool ComputeCoordinateTransformation(CBilinearParameters& BilinearParameters);
+	void GetVotedPairs(VOTINGPAIRVECTOR& vPairs)
 	{
 		vPairs = m_vVotedPairs;
-	};
+	}
 };
 
 #endif // __MATCHINGSTARS_H__

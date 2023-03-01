@@ -99,7 +99,11 @@ void LibRaw::GetNormalizedModel()
       { CanonID_EOS_850D,          "EOS 850D"},  // EOS Rebel T8i / X10i
       { CanonID_EOS_250D,          "EOS 250D"}, // Rebel SL3 / 200D II / Kiss X10
       { CanonID_EOS_90D,           "EOS 90D"},
+      { CanonID_EOS_R3,            "EOS R3"},
       { CanonID_EOS_R6,            "EOS R6"},
+      { CanonID_EOS_R7,            "EOS R7"},
+      { CanonID_EOS_R10,           "EOS R10"},
+      { CanonID_EOS_M50_Mark_II,   "EOS M50 Mark II"}, // M50m2, Kiss M2
     },
 #if 0
     olyque[] = {
@@ -184,6 +188,7 @@ void LibRaw::GetNormalizedModel()
       { OlyID_E_M1_Mark_III,   "E-M1 Mark III"},
       { OlyID_E_M1_Mark_III,   "E-M1MarkIII"},
       { OlyID_E_M1_Mark_III,   "E-M1_M3"},
+      { OlyID_E_P7             "E-P7"},
       { OlyID_C_3030Z,         "C-3030Z"},
       { OlyID_C_3030Z,         "C3030Z"},
       { OlyID_C_5050Z,         "C-5050Z"},
@@ -226,19 +231,19 @@ void LibRaw::GetNormalizedModel()
       { PentaxID_staristDL,    "*ist DL"},
       { PentaxID_staristDS2,   "*istDS2"},
       { PentaxID_staristDS2,   "*ist DS2"},
-      { PentaxID_GX_1S,        "GX-1S"},       // Samsung
+      { PentaxID_GX_1S,        "GX-1S"},        // Samsung
       { PentaxID_staristDL2,   "*istDL2"},
       { PentaxID_staristDL2,   "*ist DL2"},
-      { PentaxID_GX_1L,        "GX-1L"},       // Samsung
+      { PentaxID_GX_1L,        "GX-1L"},        // Samsung
       { PentaxID_K100D,        "K100D"},
       { PentaxID_K110D,        "K110D"},
       { PentaxID_K100D_Super,  "K100D Super"},
       { PentaxID_K10D,         "K10D"},
-      { PentaxID_GX10,         "GX10"},        // Samsung
-      { PentaxID_GX10,         "GX-10"},       // Samsung
+      { PentaxID_GX10,         "GX10"},         // Samsung
+      { PentaxID_GX10,         "GX-10"},        // Samsung
       { PentaxID_K20D,         "K20D"},
-      { PentaxID_GX20,         "GX20"},        // Samsung
-      { PentaxID_GX20,         "GX-20"},       // Samsung
+      { PentaxID_GX20,         "GX20"},         // Samsung
+      { PentaxID_GX20,         "GX-20"},        // Samsung
       { PentaxID_K200D,        "K200D"},
       { PentaxID_K2000,        "K2000"},
       { PentaxID_K_m,          "K-m"},
@@ -260,14 +265,16 @@ void LibRaw::GetNormalizedModel()
       { PentaxID_K_500,        "K-500"},
       { PentaxID_645Z,         "645Z"},
       { PentaxID_K_S1,         "K-S1"},
-      { PentaxID_K_S2,         "K-S2"},        // Ricoh
+      { PentaxID_K_S2,         "K-S2"},         // Ricoh
       { PentaxID_Q_S1,         "Q-S1"},
-      { PentaxID_K_1,          "K-1"},         // Ricoh
-      { PentaxID_K_3_II,       "K-3 II"},      // Ricoh
-      { PentaxID_GR_III,       "GR III"},      // Ricoh
-      { PentaxID_K_70,         "K-70"},        // Ricoh
-      { PentaxID_KP,           "KP"},          // Ricoh
-      { PentaxID_K_1_Mark_II,  "K-1 Mark II"}, // Ricoh
+      { PentaxID_K_1,          "K-1"},          // Ricoh
+      { PentaxID_K_3_II,       "K-3 II"},       // Ricoh
+      { PentaxID_GR_III,       "GR III"},       // Ricoh
+      { PentaxID_K_70,         "K-70"},         // Ricoh
+      { PentaxID_KP,           "KP"},           // Ricoh
+      { PentaxID_K_1_Mark_II,  "K-1 Mark II"},  // Ricoh
+      { PentaxID_K_3_III,      "K-3 Mark III"}, // Ricoh
+      { PentaxID_GR_IIIx,      "GR IIIx"},
     },
 #endif
     sonique[] = {
@@ -356,7 +363,13 @@ void LibRaw::GetNormalizedModel()
       { SonyID_ILCE_6100,      "ILCE-6100"},
       { SonyID_ZV_1,           "ZV-1"},
       { SonyID_ILCE_7C,        "ILCE-7C"},
+      { SonyID_ZV_E10,         "ZV-E10"},
       { SonyID_ILCE_7SM3,      "ILCE-7SM3"},
+      { SonyID_ILCE_1,         "ILCE-1"},
+      { SonyID_ILME_FX3,       "ILME-FX3"},
+      { SonyID_ILCE_7RM3A,     "ILCE-7RM3A"},
+      { SonyID_ILCE_7RM4A,     "ILCE-7RM4A"},
+      { SonyID_ILCE_7M4,       "ILCE-7M4"},
     };
 
   static const char *orig;
@@ -376,6 +389,8 @@ void LibRaw::GetNormalizedModel()
     "@S9100", "S9600",
     "@S200EXR", "S205EXR",
     "@X-T1 IR", "X-T1IR",
+    "@GFX 100S", "GFX100S",
+    "@GFX 50S II", "GFX50S II"
   };
 
   static const char kodakalias[][16] = {
@@ -581,17 +596,20 @@ void LibRaw::GetNormalizedModel()
     }
 #ifdef USE_6BY9RPI
 	else if(strcasestr(make,"RaspberryPi"))
-		setMakeFromIndex(LIBRAW_CAMERAMAKER_Broadcom);
+		setMakeFromIndex(LIBRAW_CAMERAMAKER_RaspberryPi);
 #endif
   }
   else if (makeIs(LIBRAW_CAMERAMAKER_Hasselblad) && is_Sony)
   {
 	  setMakeFromIndex(LIBRAW_CAMERAMAKER_Sony);
   }
+  else if (makeIs(LIBRAW_CAMERAMAKER_OmDigital))
+  {
+	  setMakeFromIndex(LIBRAW_CAMERAMAKER_Olympus);
+  }
   else if (makeIs(LIBRAW_CAMERAMAKER_Clauss) && (OlyID == OlyID_E_M10_Mark_II))
   {
 	  setMakeFromIndex(LIBRAW_CAMERAMAKER_Olympus);
-
   } else if (makeIs(LIBRAW_CAMERAMAKER_Canon) &&
              (!strncmp(model, "EOS D2000", 9) || // don't use unique_id here
               !strncmp(model, "EOS D6000", 9) || // because ids for Monochrome models are unknown
@@ -889,7 +907,6 @@ void LibRaw::GetNormalizedModel()
       }
     }
   } else if (makeIs(LIBRAW_CAMERAMAKER_Pentax)) {
-
     if (!unique_id) {
       if (!strcmp(model, "Optio S")) {
         ilm.CamID = unique_id = PentaxID_Optio_S;
@@ -935,6 +952,11 @@ void LibRaw::GetNormalizedModel()
         break;
       }
     }
+	if (strstr(imPhaseOne.FirmwareString, "Achromatic"))
+	{
+		colors = 1;
+		filters = 0;
+	}
   }
   else if (makeIs(LIBRAW_CAMERAMAKER_Samsung))
   {
@@ -1404,12 +1426,12 @@ void LibRaw::GetNormalizedModel()
     }
 }
 
-void LibRaw::SetStandardIlluminants (unsigned makerIdx, const char* normModel) {
+void LibRaw::SetStandardIlluminants (unsigned makerIdx, const char* /*normModel*/) {
   int i = -1;
   int c;
   if (!icWBC[LIBRAW_WBI_Ill_A][0] &&
       !icWBC[LIBRAW_WBI_D65][0]) {
-    if (makerIdx == LIBRAW_CAMERAMAKER_Olympus) {
+    if (makerIdx == LIBRAW_CAMERAMAKER_Olympus ) {
       while (++i, icWBCCTC[i][0]) {
         if (icWBCCTC[i][0] == 3000)
           FORC4 icWBC[LIBRAW_WBI_Ill_A][c] = icWBCCTC[i][c+1];

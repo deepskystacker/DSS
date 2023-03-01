@@ -75,7 +75,8 @@ void usage(const char *prog)
          "-n <num>  Set threshold for wavelet denoising\n"
          "-H [0-9]  Highlight mode (0=clip, 1=unclip, 2=blend, 3+=rebuild)\n"
          "-t [0-7]  Flip image (0=none, 3=180, 5=90CCW, 6=90CW)\n"
-         "-o [0-6]  Output colorspace (raw,sRGB,Adobe,Wide,ProPhoto,XYZ,ACES)\n"
+         "-o [0-8]  Output colorspace (raw,sRGB,Adobe,Wide,ProPhoto,XYZ,ACES,\n"
+         "          DCI-P3,Rec2020)\n"
 #ifndef NO_LCMS
          "-o file   Output ICC profile\n"
          "-p file   Camera input profile (use \'embed\' for embedded profile)\n"
@@ -112,6 +113,9 @@ void usage(const char *prog)
          "-aexpo <e p> exposure correction\n"
          "-apentax4shot enables merge of 4-shot pentax files\n"
          "-apentax4shotorder 3102 sets pentax 4-shot alignment order\n"
+#ifdef USE_RAWSPEED_BITS
+         "-arsbits V Set use_rawspeed to V\n"
+#endif
          "-mmap     Use memory mmaped buffer instead of plain FILE I/O\n"
          "-mem	   Use memory buffer instead of FILE I/O\n"
          "-disars   Do not use RawSpeed library\n"
@@ -347,7 +351,7 @@ int main(int argc, char *argv[])
       OUT.highlight = atoi(argv[arg++]);
       break;
     case 's':
-      OUT.shot_select = abs(atoi(argv[arg++]));
+      OUTR.shot_select = abs(atoi(argv[arg++]));
       break;
     case 'o':
       if (isdigit(argv[arg][0]) && !isdigit(argv[arg][1]))
@@ -389,6 +393,12 @@ int main(int argc, char *argv[])
         OUT.exp_shift = (float)atof(argv[arg++]);
         OUT.exp_preser = (float)atof(argv[arg++]);
       }
+#ifdef USE_RAWSPEED_BITS
+      else if (!strcmp(optstr, "-arsbits"))
+      {
+	OUTR.use_rawspeed = atoi(argv[arg++]);
+      }
+#endif
       else if (!strcmp(optstr, "-apentax4shot"))
       {
         OUTR.options |= LIBRAW_RAWOPTIONS_PENTAX_PS_ALLFRAMES;
@@ -587,7 +597,7 @@ int main(int argc, char *argv[])
     timerstart();
     if (LIBRAW_SUCCESS != (ret = RawProcessor.dcraw_process()))
     {
-      fprintf(stderr, "Cannot do postpocessing on %s: %s\n", argv[arg],
+      fprintf(stderr, "Cannot do postprocessing on %s: %s\n", argv[arg],
               libraw_strerror(ret));
       if (LIBRAW_FATAL_ERROR(ret))
         continue;

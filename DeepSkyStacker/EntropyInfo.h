@@ -1,8 +1,9 @@
 #ifndef __ENTROPYINFO_H__
 #define __ENTROPYINFO_H__
 
+#include <memory>
 #include "DSSTools.h"
-#include "BitmapExt.h"
+#include "BitmapBase.h"
 #include "zexcept.h"
 
 /* ------------------------------------------------------------------- */
@@ -10,7 +11,7 @@
 class CEntropySquare
 {
 public :
-	CPointExt					m_ptCenter;
+	QPointF						m_ptCenter;
 	double						m_fRedEntropy;
 	double						m_fGreenEntropy;
 	double						m_fBlueEntropy;
@@ -32,7 +33,7 @@ public :
         m_fBlueEntropy = 0;
 	};
 
-	CEntropySquare(const CPointExt & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
+	CEntropySquare(const QPointF & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
 	{
 		m_ptCenter = pt;
 		m_fRedEntropy	= fRedEntropy;
@@ -58,89 +59,93 @@ public :
 
 class CEntropyInfo
 {
-private :
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	LONG						m_lWindowSize;
-	LONG						m_lNrPixels;
-	LONG						m_lNrSquaresX,
-								m_lNrSquaresY;
-	std::vector<float>			m_vRedEntropies;
-	std::vector<float>			m_vGreenEntropies;
-	std::vector<float>			m_vBlueEntropies;
-	CDSSProgress *				m_pProgress;
+private:
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	int m_lWindowSize;
+	int m_lNrPixels;
+	int m_lNrSquaresX;
+	int m_lNrSquaresY;
+	std::vector<float> m_vRedEntropies;
+	std::vector<float> m_vGreenEntropies;
+	std::vector<float> m_vBlueEntropies;
+	ProgressBase* m_pProgress;
 
-private :
-	void	InitSquareEntropies();
-	void	ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
-	void	GetSquareCenter(LONG lX, LONG lY, CPointExt & ptCenter)
+private:
+	void InitSquareEntropies();
+	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
+	void GetSquareCenter(int lX, int lY, QPointF & ptCenter)
 	{
-		ptCenter.X = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
-		ptCenter.Y = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
-	};
+		ptCenter.rx() = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
+		ptCenter.ry() = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
+	}
 
-	void	AddSquare(CEntropySquare &Square, LONG lX, LONG lY)
+	void AddSquare(CEntropySquare& Square, int lX, int lY)
 	{
 		GetSquareCenter(lX, lY, Square.m_ptCenter);
 		Square.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
 		Square.m_fGreenEntropy	= m_vGreenEntropies[lX + lY * m_lNrSquaresX];
 		Square.m_fBlueEntropy	= m_vBlueEntropies[lX + lY * m_lNrSquaresX];
-	};
+	}
 
-public :
-    CEntropyInfo()
-    {
-	m_pProgress = nullptr;
-        m_lWindowSize = 0;
-        m_lNrPixels = 0;
-        m_lNrSquaresX = 0;
-        m_lNrSquaresY = 0;
-    }
+public:
+    CEntropyInfo() :
+		m_pProgress{ nullptr },
+		m_lWindowSize{ 0 },
+		m_lNrPixels{ 0 },
+		m_lNrSquaresX{ 0 },
+		m_lNrSquaresY{ 0 }
+	{}
 
 	virtual ~CEntropyInfo()
-	{
-	};
+	{}
 
-	void	Init(CMemoryBitmap * pBitmap, LONG lWindowSize = 10, CDSSProgress * pProgress = nullptr)
+	const float* redEntropyData() const { return m_vRedEntropies.data(); }
+	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }
+	const float* blueEntropyData() const { return m_vBlueEntropies.data(); }
+	const int nrSquaresX() const { return m_lNrSquaresX; }
+	const int nrSquaresY() const { return m_lNrSquaresY; }
+	const int windowSize() const { return m_lWindowSize; }
+
+	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, ProgressBase* pProgress = nullptr)
 	{
-		m_pBitmap.Attach(pBitmap);
+		m_pBitmap = pBitmap;
 		m_lWindowSize = lWindowSize;
 		m_pProgress   = pProgress;
 		InitSquareEntropies();
-	};
+	}
 
-	void	GetPixel(LONG x, LONG y, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy, COLORREF16 & crResult)
+	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult)
 	{
-		LONG			lSquareX,
-						lSquareY;
+		int lSquareX, lSquareY;
 
 		m_pBitmap->GetPixel16(x, y, crResult);
 
 		lSquareX = x / (m_lWindowSize * 2 + 1);
 		lSquareY = y / (m_lWindowSize * 2 + 1);
 
-		CPointExt			ptCenter;
+		QPointF				ptCenter;
 		CEntropySquare		Squares[3];
 		size_t				sizeSquares = 0;
 
 		GetSquareCenter(lSquareX, lSquareY, ptCenter);
 		AddSquare(Squares[sizeSquares++], lSquareX, lSquareY);
-		if (ptCenter.X > x)
+		if (ptCenter.x() > x)
 		{
 			if (lSquareX > 0)
 				AddSquare(Squares[sizeSquares++], lSquareX-1, lSquareY);
 		}
-		else if (ptCenter.X < x)
+		else if (ptCenter.x() < x)
 		{
 			if (lSquareX < m_lNrSquaresX - 1)
 				AddSquare(Squares[sizeSquares++], lSquareX+1, lSquareY);
 		};
 
-		if (ptCenter.Y > y)
+		if (ptCenter.y() > y)
 		{
 			if (lSquareY > 0)
 				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY-1);
 		}
-		else if (ptCenter.Y < y)
+		else if (ptCenter.y() < y)
 		{
 			if (lSquareY < m_lNrSquaresY - 1)
 				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY+1);
@@ -150,7 +155,7 @@ public :
 		fRedEntropy		= 0.0;
 		fGreenEntropy	= 0.0;
 		fBlueEntropy	= 0.0;
-		CPointExt			ptPixel(x, y);
+		QPointF			ptPixel(x, y);
 		double				fTotalWeight = 0.0;
 
 		for (size_t i = 0; i < sizeSquares; i++)
@@ -167,12 +172,12 @@ public :
 			fBlueEntropy	+= fWeight * Squares[i].m_fBlueEntropy;
 
 			fTotalWeight += fWeight;
-		};
+		}
 
 		fRedEntropy		/= fTotalWeight;
 		fGreenEntropy	/= fTotalWeight;
 		fBlueEntropy	/= fTotalWeight;
-	};
+	}
 };
 
-#endif // __ENTROPYINFO_H__
+#endif

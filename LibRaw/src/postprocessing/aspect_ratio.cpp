@@ -32,8 +32,13 @@ void LibRaw::fuji_rotate()
   step = sqrt(0.5);
   wide = fuji_width / step;
   high = (height - fuji_width) / step;
+
+  // All real fuji/rotated images are small, so check against max_raw_memory_mb here is safe
+  if (INT64(wide) * INT64(high) * INT64(sizeof(*img))    >
+      INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
+    throw LIBRAW_EXCEPTION_TOOBIG;
+
   img = (ushort(*)[4])calloc(high, wide * sizeof *img);
-  merror(img, "fuji_rotate()");
 
   RUN_CALLBACK(LIBRAW_PROGRESS_FUJI_ROTATE, 0, 2);
 
@@ -74,7 +79,6 @@ void LibRaw::stretch()
   {
     newdim = height / pixel_aspect + 0.5;
     img = (ushort(*)[4])calloc(width, newdim * sizeof *img);
-    merror(img, "stretch()");
     for (rc = row = 0; row < newdim; row++, rc += pixel_aspect)
     {
       frac = rc - (c = rc);
@@ -91,7 +95,6 @@ void LibRaw::stretch()
   {
     newdim = width * pixel_aspect + 0.5;
     img = (ushort(*)[4])calloc(height, newdim * sizeof *img);
-    merror(img, "stretch()");
     for (rc = col = 0; col < newdim; col++, rc += 1 / pixel_aspect)
     {
       frac = rc - (c = rc);

@@ -13,6 +13,7 @@ $Log$
 ******************************************************************************/
 
 #include "stdafx.h"
+#include "commonresource.h"
 #include "ListViewCtrlEx.h"
 
 /*** Definition of class "CListCtrlEx" ***************************************/
@@ -789,7 +790,7 @@ BOOL CLabelTipCtrl::Create(CWnd* pParentWnd)
 
   BOOL bResult =
     CWnd::CreateEx(
-      0, m_strClassName.IsEmpty() ? TOOLTIPS_CLASS : m_strClassName, 0,
+      0, m_strClassName.IsEmpty() ? TOOLTIPS_CLASS : m_strClassName.GetString(), 0,
       WS_POPUP, CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, pParentWnd->GetSafeHwnd(),
       0);
 

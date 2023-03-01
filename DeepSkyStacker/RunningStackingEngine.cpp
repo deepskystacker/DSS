@@ -1,214 +1,191 @@
 #include <stdafx.h>
-#include "RunningStackingEngine.h"
-#include "Registry.h"
-#include "MatchingStars.h"
-#include "PixelTransform.h"
-#include <math.h>
 
+#include <math.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-/* ------------------------------------------------------------------- */
+#include <QPoint>
+#include <QPointF>
+#include "resource.h"
 
-CRunningStackingEngine::CRunningStackingEngine()
-{
-	m_lNrStacked = 0;
-	m_fTotalExposure = 0;
-};
+#include "dssrect.h"
 
-/* ------------------------------------------------------------------- */
+#include "RunningStackingEngine.h"
 
-CRunningStackingEngine::~CRunningStackingEngine()
-{
-};
+#include "MatchingStars.h"
+#include "PixelTransform.h"
+#include "BitmapIterator.h"
 
-/* ------------------------------------------------------------------- */
 
-void	CRunningStackingEngine::CreatePublicBitmap()
+
+
+
+CRunningStackingEngine::CRunningStackingEngine() :
+	m_lNrStacked{ 0 },
+	m_fTotalExposure{ 0 }
+{}
+
+
+void CRunningStackingEngine::CreatePublicBitmap()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bMonochrome;
-	LONG					lWidth,
-							lHeight;
 
-	if (m_pStackedBitmap && m_lNrStacked)
+	if (static_cast<bool>(m_pStackedBitmap) && m_lNrStacked != 0)
 	{
-		bMonochrome = m_pStackedBitmap->IsMonochrome();
-		lWidth		= m_pStackedBitmap->Width();
-		lHeight		= m_pStackedBitmap->Height();
+		const bool bMonochrome = m_pStackedBitmap->IsMonochrome();
+		const int lWidth = m_pStackedBitmap->Width();
+		const int lHeight = m_pStackedBitmap->Height();
 
-		if (!m_pPublicBitmap)
+		if (!static_cast<bool>(m_pPublicBitmap))
 		{
 			if (bMonochrome)
-				m_pPublicBitmap.Attach(new C16BitGrayBitmap);
+				m_pPublicBitmap = std::make_shared<C16BitGrayBitmap>();
 			else
-				m_pPublicBitmap.Attach(new C48BitColorBitmap);
-
+				m_pPublicBitmap = std::make_shared<C48BitColorBitmap>();
 			m_pPublicBitmap->Init(lWidth, lHeight);
-		};
+		}
 
-		PixelIterator			itIn;
-		PixelIterator			itOut;
+		BitmapIteratorConst<std::shared_ptr<const CMemoryBitmap>> itIn{ m_pStackedBitmap };
+		BitmapIterator<std::shared_ptr<CMemoryBitmap>> itOut{ m_pPublicBitmap };
 
-		m_pPublicBitmap->GetIterator(&itOut);
-		m_pStackedBitmap->GetIterator(&itIn);
-
-		for (LONG j = 0;j<lHeight;j++)
-			for (LONG i = 0;i<lWidth;i++)
+		for (int j = 0; j < lHeight; j++)
+		{
+			for (int i = 0; i < lWidth; i++)
 			{
 				if (bMonochrome)
 				{
-					double			fGray;
-
-					itIn->GetPixel(fGray);
-					fGray /= m_lNrStacked;
-					itOut->SetPixel(min(fGray, 255.0));
+					const double gray = itIn.GetPixel() / m_lNrStacked;
+					itOut.SetPixel(std::min(gray, 255.0));
 				}
 				else
 				{
-					double			fRed, fGreen, fBlue;
+					double fRed, fGreen, fBlue;
+					itIn.GetPixel(fRed, fGreen, fBlue);
+					itOut.SetPixel(std::min(fRed / m_lNrStacked, 255.0), std::min(fGreen / m_lNrStacked, 255.0), std::min(fBlue / m_lNrStacked, 255.0));
+				}
+				++itIn;
+				++itOut;
+			}
+		}
+	}
+}
 
-					itIn->GetPixel(fRed, fGreen, fBlue);
-					fRed	/= m_lNrStacked;
-					fGreen	/= m_lNrStacked;
-					fBlue	/= m_lNrStacked;
-					itOut->SetPixel(min(fRed, 255.0), min(fGreen, 255.0), min(fBlue, 255.0));
-				};
-				(*itIn)++;
-				(*itOut)++;
-			};
-	};
-};
 
-/* ------------------------------------------------------------------- */
-
-BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress)
+bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
-	LONG				lWidth,
-						lHeight;
-	BOOL				bColor;
+	bool bResult = false;
 
 	// First load the input bitmap
-	CSmartPtr<CMemoryBitmap>		pBitmap;
-	if (::LoadFrame(lfi.m_strFileName,PICTURETYPE_LIGHTFRAME, pProgress, &pBitmap))
+	std::shared_ptr<CMemoryBitmap> pBitmap;
+	if (::LoadFrame(lfi.filePath,PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
 	{
-		CString			strText;
-
+		QString strText;
 		pBitmap->RemoveHotPixels(pProgress);
-		lWidth = pBitmap->Width();
-		lHeight = pBitmap->Height();
-		bColor = !pBitmap->IsMonochrome() || pBitmap->IsCFA();
+		const int lWidth = pBitmap->Width();
+		const int lHeight = pBitmap->Height();
+		const bool bColor = !pBitmap->IsMonochrome() || pBitmap->IsCFA();
 
 		// Create the output bitmap
-		if (!m_lNrStacked)
+		if (m_lNrStacked == 0)
 		{
 			if (bColor)
-				m_pStackedBitmap.Attach(new C96BitFloatColorBitmap);
+				m_pStackedBitmap = std::make_shared<C96BitFloatColorBitmap>();
 			else
-				m_pStackedBitmap.Attach(new C32BitFloatGrayBitmap);
+				m_pStackedBitmap = std::make_shared<C32BitFloatGrayBitmap>();
 			m_pStackedBitmap->Init(lWidth, lHeight);
-		};
+		}
 
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_COMPUTINGBACKGROUNDCALIBRATION);
+				strText = QCoreApplication::translate("RunningStackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				pProgress->Start2(strText, 0);
 			};
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, !m_lNrStacked, pProgress);
+			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
 		};
 
 		// Stack it (average)
-		CPixelTransform		PixTransform(lfi.m_BilinearParameters);
-		CString				strDescription;
-		PIXELDISPATCHVECTOR	vPixels;
+		CPixelTransform PixTransform(lfi.m_BilinearParameters);
+		QString strDescription;
+		PIXELDISPATCHVECTOR vPixels;
 
 		vPixels.reserve(16);
 
-		strDescription = lfi.m_strInfos;
-		if (lfi.m_lNrChannels==3)
-			strText.Format(IDS_STACKRGBLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
+		strDescription = QString::fromWCharArray(lfi.m_strInfos.GetString());
+		if (lfi.m_lNrChannels == 3)
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
 		else
-			strText.Format(IDS_STACKGRAYLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
-
-		if (pProgress)
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+		
+		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);
-		for (LONG j = 0;j<lHeight;j++)
-		{
-			for (LONG i = 0;i<lWidth;i++)
-			{
-				double		fRed, fGreen, fBlue;
-				CPointExt	pt(i, j);
-				CPointExt	ptOut;
 
-				ptOut = PixTransform.Transform(pt);
+		for (int j = 0; j < lHeight; j++)
+		{
+			for (int i = 0; i < lWidth; i++)
+			{
+				double fRed, fGreen, fBlue;
+
+				const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
 				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
-				if ((fRed || fGreen || fBlue) && ptOut.IsInRect(0, 0, lWidth-1, lHeight-1))
+				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && 
+					DSSRect { 0, 0, lWidth, lHeight }.contains(ptOut))
 				{
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);
 
-					for (LONG k = 0;k<vPixels.size();k++)
+					for (const CPixelDispatch& Pixel : vPixels)
 					{
-						CPixelDispatch &		Pixel = vPixels[k];
-
 						// For each plane adjust the values
-						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth &&
-							Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
+						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth && Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
 						{
-							double		fPreviousRed,
-										fPreviousGreen,
-										fPreviousBlue;
-
+							double fPreviousRed, fPreviousGreen, fPreviousBlue;
 							m_pStackedBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-							fPreviousRed   += (double)fRed * Pixel.m_fPercentage;
-							fPreviousGreen += (double)fGreen * Pixel.m_fPercentage;
-							fPreviousBlue  += (double)fBlue * Pixel.m_fPercentage;
+							fPreviousRed += fRed * Pixel.m_fPercentage;
+							fPreviousGreen += fGreen * Pixel.m_fPercentage;
+							fPreviousBlue += fBlue * Pixel.m_fPercentage;
 							m_pStackedBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-						};
-					};
-				};
-			};
-			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
-		};
+						}
+					}
+				}
+			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(j+1);
+		}
 
-		if (pProgress)
+		if (pProgress != nullptr)
 			pProgress->End2();
 		m_lNrStacked++;
 		m_fTotalExposure += lfi.m_fExposure;
-		bResult = TRUE;
-	};
+		bResult = true;
+	}
 
 	if (bResult && !m_MatchingStars.IsReferenceSet())
 	{
-		STARVECTOR &		vStarsOrg = lfi.m_vStars;
+		std::sort(lfi.m_vStars.begin(), lfi.m_vStars.end(), CompareStarLuminancy);
 
-		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-		for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
-			m_MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-	};
+		for (size_t i = 0; i < std::min(lfi.m_vStars.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+			m_MatchingStars.AddReferenceStar(lfi.m_vStars[i].m_fX, lfi.m_vStars[i].m_fY);
+	}
 
 	if (bResult)
 		CreatePublicBitmap();
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
+bool	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_lNrStacked)
 	{
@@ -218,7 +195,7 @@ BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 
 		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100));i++)
+		for (int i = 0;i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100));i++)
 			m_MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		m_MatchingStars.SetSizes(lfi.RenderedWidth(), lfi.RenderedHeight());
@@ -228,7 +205,7 @@ BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 	{
 		m_MatchingStars.ClearReference();
 		lfi.m_BilinearParameters.Clear();
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;

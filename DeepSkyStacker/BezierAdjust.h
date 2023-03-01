@@ -1,11 +1,7 @@
 #ifndef _BEZIERADJUST_H__
 #define _BEZIERADJUST_H__
-
 /* ------------------------------------------------------------------- */
-
-#ifndef PI
-#define PI 3.141592654
-#endif
+#undef PI
 
 class CBezierCurvePoint
 {
@@ -169,7 +165,7 @@ public :
 	};
 
 
-	void	Reset(BOOL bNeutral = FALSE)
+	void	Reset(bool bNeutral = false)
 	{
 		if (bNeutral)
 		{
@@ -228,7 +224,7 @@ public :
 		return fResult;
 	};
 
-	BOOL	Load(FILE * hFile)
+	bool	Load(FILE * hFile)
 	{
 		fread(&m_fDarknessAngle, sizeof(m_fDarknessAngle), 1, hFile);
 		fread(&m_fDarknessPower, sizeof(m_fDarknessPower), 1, hFile);
@@ -239,10 +235,10 @@ public :
 		fread(&m_fSaturationShift, sizeof(m_fSaturationShift), 1, hFile);
 
 		Init();
-		return TRUE;
+		return true;
 	};
 
-	BOOL	Save(FILE * hFile)
+	bool	Save(FILE * hFile)
 	{
 		fwrite(&m_fDarknessAngle, sizeof(m_fDarknessAngle), 1, hFile);
 		fwrite(&m_fDarknessPower, sizeof(m_fDarknessPower), 1, hFile);
@@ -252,7 +248,7 @@ public :
 		fwrite(&m_fHighlightPower, sizeof(m_fHighlightPower), 1, hFile);
 		fwrite(&m_fSaturationShift, sizeof(m_fSaturationShift), 1, hFile);
 
-		return TRUE;
+		return true;
 	};
 
 	void	ToText(CString & strParameters)

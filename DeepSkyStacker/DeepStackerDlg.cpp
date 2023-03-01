@@ -5,23 +5,30 @@
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "DSS-versionhelpers.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QWidget>
+#include <QRect>
+#include <QScreen>
+#include <QSettings>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include "ExplorerBar.h"
+#include "StackingDlg.h"
+
+
 
 /* ------------------------------------------------------------------- */
 
-static BOOL	GetDefaultSettingsFileName(CString & strFile)
+static bool	GetDefaultSettingsFileName(CString & strFile)
 {
 	CString			strBase;
 	TCHAR			szFileName[1+_MAX_PATH];
 	TCHAR			szDrive[1+_MAX_DRIVE];
 	TCHAR			szDir[1+_MAX_DIR];
 
-	GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
+	GetModuleFileName(nullptr, szFileName, sizeof(szFileName)/sizeof(TCHAR));
 	strBase = szFileName;
 	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
@@ -29,31 +36,31 @@ static BOOL	GetDefaultSettingsFileName(CString & strFile)
 	strFile += szDir;
 	strFile += "DSSSettings.DSSSettings";
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
 #pragma pack(push, HDSETTINGS, 2)
 
-const DWORD			HDSSETTINGS_MAGIC = 0x7ABC6F10L;
+constexpr std::uint32_t HDSSETTINGS_MAGIC = 0x7ABC6F10U;
 
 typedef struct tagHDSETTINGSHEADER
 {
-	DWORD			dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
-	DWORD			dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
-	LONG			lNrSettings;	// Number of settings
-	DWORD			dwFlags;		// Flags
+	std::uint32_t	dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
+	std::uint32_t	dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
+	int				lNrSettings;	// Number of settings
+	std::uint32_t	dwFlags;		// Flags
 	char			Reserved[32];	// Reserved (set to 0)
-}HDSETTINGSHEADER;
+} HDSETTINGSHEADER;
 
 #pragma pack(pop, HDSETTINGS)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CDSSSettings::Load(LPCTSTR szFile)
+bool	CDSSSettings::Load(LPCTSTR szFile)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	CString			strFile = szFile;
 	FILE *			hFile = nullptr;
 
@@ -64,38 +71,35 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 	if (hFile)
 	{
 		HDSETTINGSHEADER		Header;
-		LONG					i;
 
 		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSSETTINGS_MAGIC) &&
-			(Header.dwHeaderSize == sizeof(Header)))
+		if ((Header.dwMagic == HDSSETTINGS_MAGIC) && (Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lSettings.clear();
-			for (i = 0;i<Header.lNrSettings;i++)
+			for (int i = 0; i < Header.lNrSettings; i++)
 			{
-				CDSSSetting		cds;
-
+				CDSSSetting cds;
 				cds.Load(hFile);
 				m_lSettings.push_back(cds);
 			};
 
-			bResult = TRUE;
+			bResult = true;
 			m_lSettings.sort();
 		};
 
 		fclose(hFile);
 	};
 
-	m_bLoaded = TRUE;
+	m_bLoaded = true;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CDSSSettings::Save(LPCTSTR szFile)
+bool	CDSSSettings::Save(LPCTSTR szFile)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	CString			strFile = szFile;
 	FILE *			hFile = nullptr;
 
@@ -108,20 +112,19 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 		m_lSettings.sort();
 
 		HDSETTINGSHEADER		Header;
-		DSSSETTINGITERATOR		it;
 
 		memset(&Header, 0, sizeof(Header));
 
 		Header.dwMagic = HDSSETTINGS_MAGIC;
 		Header.dwHeaderSize = sizeof(Header);
-		Header.lNrSettings  = (LONG)m_lSettings.size();
+		Header.lNrSettings  = static_cast<int>(m_lSettings.size());
 
 		fwrite(&Header, sizeof(Header), 1, hFile);
-		for (it = m_lSettings.begin(); it != m_lSettings.end();it++)
-			(*it).Save(hFile);
+		for (auto it = m_lSettings.begin(); it != m_lSettings.end(); ++it)
+			it->Save(hFile);
 
 		fclose(hFile);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -137,16 +140,20 @@ UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage(_T("TaskbarButtonCreate
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),
-	m_dlgStacking(this),
-	m_dlgProcessing(this),
-	m_dlgLibrary(this),
-	m_ExplorerBar(this)
+	CurrentTab{ 0 },
+	widget{ nullptr },
+	splitter{ nullptr },
+	explorerBar{ nullptr },
+	stackedWidget{ nullptr },
+	stackingDlg{ nullptr },
+	winHost{ nullptr },
+	processingDlg{ CProcessingDlg(this) },
+	m_taskbarList{ nullptr }
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	m_dwCurrentTab = 0;
-    m_taskbarList = nullptr;
+	Create(CDeepStackerDlg::IDD, pParent);
     m_progress = false;
 }
 
@@ -181,26 +188,34 @@ END_MESSAGE_MAP()
 
 void CDeepStackerDlg::UpdateTab()
 {
-	switch (m_dwCurrentTab)
+	switch (CurrentTab)
 	{
 	case IDD_REGISTERING :
 	case IDD_STACKING :
-		m_dlgStacking.ShowWindow(SW_SHOW);
-		m_dlgProcessing.ShowWindow(SW_HIDE);
-		m_dlgLibrary.ShowWindow(SW_HIDE);
+		//stackedWidget->setVisible(true);
+		//stackedWidget->setCurrentIndex(0);
+		processingDlg.ShowWindow(SW_HIDE);
+		stackingDlg->setVisible(true);
+		stackingDlg->update();
+//		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
-	case IDD_LIBRARY :
-		m_dlgStacking.ShowWindow(SW_HIDE);
-		m_dlgProcessing.ShowWindow(SW_HIDE);
-		m_dlgLibrary.ShowWindow(SW_SHOW);
-		break;
+	//case IDD_LIBRARY :
+	//	stackingDlg.ShowWindow(SW_HIDE);
+	//	processingDlg.ShowWindow(SW_HIDE);
+	//	m_dlgLibrary.ShowWindow(SW_SHOW);
+	//	break;
 	case IDD_PROCESSING :
-		m_dlgStacking.ShowWindow(SW_HIDE);
-		m_dlgProcessing.ShowWindow(SW_SHOW);
-		m_dlgLibrary.ShowWindow(SW_HIDE);
+		//stackedWidget->setCurrentIndex(1);
+		//stackingDlg->setVisible(false);
+		//winHost->update();
+		//stackedWidget->setVisible(false);
+		stackingDlg->setVisible(false);
+		processingDlg.ShowWindow(SW_SHOW);
+//		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
 	};
-	m_ExplorerBar.InvalidateRect(nullptr);
+	explorerBar->update();
+	
 };
 
 /* ------------------------------------------------------------------- */
@@ -216,40 +231,74 @@ void CDeepStackerDlg::UpdateSizes()
 {
 	// Resize the tab control
 	CRect			rcDlg;
-	CRect			rcExplorerBar;
+	QRect			rect;
 
 	GetClientRect(&rcDlg);
 
-	if (m_dlgStacking.m_hWnd)
+	if (stackingDlg && explorerBar)
 	{
-		rcExplorerBar = rcDlg;
-		rcDlg.left += 220;
-		rcExplorerBar.right = rcDlg.left;
+		//auto screen = QGuiApplication::screenAt(QPoint(rcDlg.left, rcDlg.top));
+		//auto devicePixelRatio = screen->devicePixelRatio();
+		int width = explorerBar->width();
+		
+		rect = QRect(rcDlg.left, rcDlg.top, rcDlg.Width(), rcDlg.Height());
+		if (IDD_PROCESSING == CurrentTab)
+		{
+			rect.setWidth(width);
+		}
+		widget->setGeometry(rect);
 
-		if (m_dlgStacking.m_hWnd)
-			m_dlgStacking.MoveWindow(&rcDlg);
-		if (m_dlgProcessing.m_hWnd)
-			m_dlgProcessing.MoveWindow(&rcDlg);
-		if (m_dlgLibrary.m_hWnd)
-			m_dlgLibrary.MoveWindow(&rcDlg);
-		if (m_ExplorerBar.m_hWnd)
-			m_ExplorerBar.MoveWindow(&rcExplorerBar);
+		rect.setWidth(width);
+		explorerBar->setGeometry(rect);
+
+		width += 5;
+		rect.setLeft(width);
+		rect.setWidth(rcDlg.Width() - width);
+		rect.setHeight(rcDlg.Height());
+		stackingDlg->setGeometry(rect);
+
+		//rect = stackedWidget->rect();
+		//QPoint pos = stackedWidget->pos();
+
+		//CRect rcProcessing = CRect(rect.x(), rect.y(), rect.width(), rect.height());
+		
+		//if (stackingDlg.m_hWnd)
+		//	stackingDlg.MoveWindow(&rcDlg);
+		if (IDD_PROCESSING == CurrentTab &&
+			processingDlg.m_hWnd)
+		{
+
+			//	processingDlg.MoveWindow(&rcProcessing);
+			processingDlg.SetWindowPos(&CWnd::wndTopMost, rect.x(), rect.y(), rect.width(), rect.height(),
+				SWP_SHOWWINDOW);
+		}
+		else
+		{
+			processingDlg.SetWindowPos(&CWnd::wndTopMost, rect.x(), rect.y(), rect.width(), rect.height(),
+				SWP_HIDEWINDOW);
+		}
+		//if (m_dlgLibrary.m_hWnd)
+		//	m_dlgLibrary.MoveWindow(&rcDlg);
+		//if (m_ExplorerBar.m_hWnd)
+		//	m_ExplorerBar.MoveWindow(&rcExplorerBar);
+		//widget->setGeometry(rcDlg);
 	};
 };
+
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg message handlers
 
-void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
+void CDeepStackerDlg::ChangeTab(std::uint32_t dwTabID)
 {
 	if (dwTabID == IDD_REGISTERING)
 		dwTabID = IDD_STACKING;
-#ifdef DSSBETA
-	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
-		dwTabID = IDD_LIBRARY;
-#endif
-	m_dwCurrentTab = dwTabID;
+//#ifdef DSSBETA
+//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
+//		dwTabID = IDD_LIBRARY;
+//#endif
+	CurrentTab = dwTabID;
 	UpdateTab();
 };
 
@@ -262,40 +311,83 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
+	ZTRACE_RUNTIME("Restoring Window Position");
+	RestoreWindowPosition(this, "Position");
+	ZTRACE_RUNTIME("Restoring Window Position - ok");
+
+	CRect rect;
+	GetWindowRect(&rect);
+
+	widget = new QWinWidget(this);
+	widget->setObjectName("winWidget");
+
+	QHBoxLayout* horizontalLayout { new QHBoxLayout(widget) };
+	horizontalLayout->setObjectName("horizontalLayout");
+	//widget->setLayout(horizontalLayout);
+	//ZTRACE_RUNTIME("Creating Horizontal Splitter");
+	//splitter = new QSplitter(Qt::Horizontal, widget);
+	//splitter->setObjectName("splitter");
+
+	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
+	explorerBar = new ExplorerBar(widget);
+	explorerBar->setObjectName("explorerBar");
+	//horizontalLayout->addWidget(explorerBar);
+
+	//ZTRACE_RUNTIME("Creating stackedWidget");
+	//stackedWidget = new QStackedWidget(splitter);
+	//stackedWidget->setObjectName("stackedWidget");
+	//splitter->addWidget(stackedWidget);
+
+	ZTRACE_RUNTIME("Creating Stacking Panel");
+	stackingDlg = new DSS::StackingDlg(widget);
+	stackingDlg->setObjectName("stackingDlg");
+	//horizontalLayout->addWidget(stackingDlg);
+
+	//ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget"); 
+	//stackedWidget->addWidget(stackingDlg);
+
+	//winHost = new QWinHost(stackedWidget);
+	//winHost->setObjectName("winHost");
+	//stackedWidget->addWidget(winHost);
+
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	processingDlg.Create(IDD_PROCESSING, this);
+
+	//winHost->setWindow(processingDlg.m_hWnd);
+
+	//splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
+
+	//horizontalLayout->addWidget(splitter);
+	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	//stackedWidget->show();
+	//splitter->show();
+	widget->show();
 
 	CString			strMask;
 	CString			strTitle;
 
 	//
 	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
-	// the HWND for the dialog is valid (not nullptr).  This is only true once CDialog::OnInitDialog() above has been called.
+	// the HWND for the dialog is valid (not nullptr).
 	//
-	this->DragAcceptFiles(TRUE);
+	// This HWND is only valid once CDialog::OnInitDialog() above has been called.
+	//
+	this->DragAcceptFiles(true);
 
 	GetWindowText(strMask);
 	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
 	SetWindowText(strTitle);
 	m_strBaseTitle = strTitle;
 
-	ZTRACE_RUNTIME("Creating Left Panel");
-	m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
-	ZTRACE_RUNTIME("Creating Left Panel - ok");
+	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
+	stackingDlg->setStartingFileList(m_strStartFileList);
 
-	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), TRUE);
-	m_dlgStacking.SetStartingFileList(m_strStartFileList);
-	ZTRACE_RUNTIME("Creating Stacking Panel");
-	m_dlgStacking.Create(IDD_STACKING, this);
-	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	m_dlgProcessing.Create(IDD_PROCESSING, this);
-	ZTRACE_RUNTIME("Creating Processing Panel - ok");
-	m_dlgLibrary.Create(IDD_LIBRARY, this);
 
-	ZTRACE_RUNTIME("Restoring Window Position");
-	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION);
-	ZTRACE_RUNTIME("Restoring Window Position - ok");
+	//m_dlgLibrary.Create(IDD_LIBRARY, this);
 
-	m_dwCurrentTab = IDD_REGISTERING;
+
+	CurrentTab = IDD_REGISTERING;
 	ZTRACE_RUNTIME("Updating All Panels");
 	UpdateTab();
 	ZTRACE_RUNTIME("Updating All Panels - ok");
@@ -303,8 +395,9 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	UpdateSizes();
 	ZTRACE_RUNTIME("Updating Sizes - ok");
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	ShowWindow(true);
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -333,13 +426,13 @@ void CDeepStackerDlg::SetCurrentFileInTitle(LPCTSTR szFile)
 
 void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 {
-	if (hDropInfo && m_dlgStacking.m_hWnd)
-	{
-		SetForegroundWindow();
-		BringWindowToTop();
-		SetActiveWindow();
-		m_dlgStacking.DropFiles(hDropInfo);
-	};
+	//if (hDropInfo && stackingDlg.m_hWnd)
+	//{
+	//	SetForegroundWindow();
+	//	BringWindowToTop();
+	//	SetActiveWindow();
+	//	stackingDlg.DropFiles(hDropInfo);
+	//};
 };
 
 LRESULT CDeepStackerDlg::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -409,10 +502,10 @@ void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy)
 
 void CDeepStackerDlg::OnClose()
 {
-	if (m_dlgStacking.SaveOnClose() &&
-		m_dlgProcessing.SaveOnClose())
+	if (// stackingDlg.SaveOnClose() &&
+		processingDlg.SaveOnClose())
 	{
-		SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION);
+		SaveWindowPosition(this, "Position");
 
 		CDialog::OnClose();
 	};
@@ -445,22 +538,23 @@ LRESULT CDeepStackerDlg::OnHTMLHelp(WPARAM, LPARAM)
 
 void CDeepStackerDlg::OnHelp()
 {
-	if (m_ExplorerBar.m_hWnd)
-		m_ExplorerBar.CallHelp();
+	//if (m_ExplorerBar.m_hWnd)
+		explorerBar->onHelp();
 };
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath)
+void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 {
-	DWORD		dwMaximized = 0;
-	CString		strTop = "";
-	CString		strLeft = "";
-	DWORD		dwWidth = 0;
-	DWORD		dwHeight = 0;
+	ZFUNCTRACE_RUNTIME();
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
 
-	CRegistry	reg;
+	QSettings	settings;
 
 	WINDOWPLACEMENT		wp;
 
@@ -469,38 +563,63 @@ void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath)
 
 	pWnd->GetWindowPlacement(&wp);
 	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-	strLeft.Format(_T("%ld"), wp.rcNormalPosition.left);
-	strTop.Format(_T("%ld"), wp.rcNormalPosition.top);
+	dwLeft = wp.rcNormalPosition.left;
+	dwTop = wp.rcNormalPosition.top;
 
 	dwWidth  = wp.rcNormalPosition.right-wp.rcNormalPosition.left;
 	dwHeight = wp.rcNormalPosition.bottom-wp.rcNormalPosition.top;
+	
+	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
+	QString regBase(szRegistryPath);
+	QString key = regBase + "/Maximized";
+	settings.setValue(key, (uint)dwMaximized);
 
-	reg.SaveKey(szRegistryPath, _T("Maximized"), dwMaximized);
-	reg.SaveKey(szRegistryPath, _T("Top"), strTop);
-	reg.SaveKey(szRegistryPath, _T("Left"), strLeft);
-	reg.SaveKey(szRegistryPath, _T("Width"), dwWidth);
-	reg.SaveKey(szRegistryPath, _T("Height"), dwHeight);
+	key = regBase + "/Top";
+	settings.setValue(key, (uint)dwTop);
+
+	key = regBase + "/Left";
+	settings.setValue(key, (uint)dwLeft);
+
+	key = regBase + "/Width";
+	settings.setValue(key, (uint)dwWidth);
+
+	key = regBase + "/Height";
+	settings.setValue(key, (uint)dwHeight);
+
 };
 
 /* ------------------------------------------------------------------- */
 
-void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
+void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter)
 {
-	DWORD		dwMaximized = 0;
-	CString		strTop = "";
-	CString		strLeft = "";
-	DWORD		dwWidth = 0;
-	DWORD		dwHeight = 0;
+	ZFUNCTRACE_RUNTIME();
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
 
-	CRegistry	reg;
+	QSettings   settings;
 
-	reg.LoadKey(szRegistryPath, _T("Maximized"), dwMaximized);
-	reg.LoadKey(szRegistryPath, _T("Top"), strTop);
-	reg.LoadKey(szRegistryPath, _T("Left"), strLeft);
-	reg.LoadKey(szRegistryPath, _T("Width"), dwWidth);
-	reg.LoadKey(szRegistryPath, _T("Height"), dwHeight);
+	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
 
-	if (strTop.GetLength() && strLeft.GetLength() && dwWidth && dwHeight)
+	QString regBase(szRegistryPath);
+	QString key = regBase + "/Maximized";
+	dwMaximized = settings.value(key).toUInt();
+
+	key = regBase + "/Top";
+	dwTop = settings.value(key).toUInt();
+
+	key = regBase + "/Left";
+	dwLeft = settings.value(key).toUInt();
+
+	key = regBase + "/Width";
+	dwWidth = settings.value(key).toUInt();
+
+	key = regBase += "/Height";
+	dwHeight = settings.value(key).toUInt();
+
+	if (dwTop && dwLeft && dwWidth && dwHeight)
 	{
 		WINDOWPLACEMENT		wp;
 
@@ -508,8 +627,8 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
 		wp.length  = sizeof(wp);
 		wp.flags   = 0;
 		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-		wp.rcNormalPosition.left   = _ttol(strLeft);
-		wp.rcNormalPosition.top    = _ttol(strTop);
+		wp.rcNormalPosition.left   = dwLeft;
+		wp.rcNormalPosition.top    = dwTop;
 		wp.rcNormalPosition.right  = wp.rcNormalPosition.left+dwWidth;
 		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top+dwHeight;
 

@@ -12,12 +12,8 @@
 #include "DSSProgress.h"
 #include "RegisterEngine.h"
 
-#ifndef PI
-#define PI 3.141592654
-#endif
+#undef PI
 
-
-/* ------------------------------------------------------------------- */
 
 class CDeepStack
 {
@@ -25,13 +21,13 @@ private :
 	CStackedBitmap			m_StackedBitmap;
 	CRGBHistogram			m_OriginalHisto;
 	C32BitsBitmap			m_Bitmap;
-	BOOL					m_bNewStackedBitmap;
-	CDSSProgress *			m_pProgress;
+	bool					m_bNewStackedBitmap;
+	ProgressBase *			m_pProgress;
 
 public :
 	CDeepStack()
 	{
-		m_bNewStackedBitmap = FALSE;
+		m_bNewStackedBitmap = false;
 		m_pProgress			= nullptr;
 	};
 	virtual ~CDeepStack() {};
@@ -41,15 +37,15 @@ public :
 		m_StackedBitmap.Clear();
 		m_Bitmap.Free();
 		m_OriginalHisto.Clear();
-		m_bNewStackedBitmap = FALSE;
+		m_bNewStackedBitmap = false;
 	};
 
-	LONG	GetWidth()
+	int	GetWidth()
 	{
 		return m_StackedBitmap.GetWidth();
 	};
 
-	LONG	GetHeight()
+	int	GetHeight()
 	{
 		return m_StackedBitmap.GetHeight();
 	};
@@ -59,23 +55,23 @@ private :
 	void	AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust);
 
 public :
-	void	SetProgress(CDSSProgress *	pProgress)
+	void	SetProgress(ProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
 	};
 
-	BOOL	IsNewStackedBitmap(BOOL bReset = FALSE)
+	bool	IsNewStackedBitmap(bool bReset = false)
 	{
-		BOOL			bResult = m_bNewStackedBitmap;
+		bool			bResult = m_bNewStackedBitmap;
 
 		if (bReset)
-			m_bNewStackedBitmap = FALSE;
+			m_bNewStackedBitmap = false;
 
 		return bResult;
 	};
 
 	void	SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect = nullptr);
-	BOOL	LoadStackedInfo(LPCTSTR szStackedInfoFile);
+	bool	LoadStackedInfo(LPCTSTR szStackedInfoFile);
 
 	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)
 	{
@@ -87,15 +83,15 @@ public :
 		return m_StackedBitmap.GetBitmap(m_Bitmap, &rcProcess);
 	};
 
-	CStackedBitmap & GetStackedBitmap()
+	CStackedBitmap& GetStackedBitmap()
 	{
 		return m_StackedBitmap;
-	};
+	}
 
-	C32BitsBitmap & GetBitmap()
+	C32BitsBitmap& GetBitmap()
 	{
 		return m_Bitmap;
-	};
+	}
 
 	void AdjustOriginalHistogram(CRGBHistogram & Histo, const CRGBHistogramAdjust & HistogramAdjust)
 	{
@@ -113,17 +109,10 @@ public :
 		return m_OriginalHisto;
 	};
 
-	BOOL	IsLoaded()
+	bool	IsLoaded()
 	{
 		return GetWidth() && GetHeight();
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-HBITMAP		LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap);
-void		CopyBitmapToClipboard(HBITMAP hBitmap);
-
-/* ------------------------------------------------------------------- */
 
 #endif // _DEEPSTACK_H__

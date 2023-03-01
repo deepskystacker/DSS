@@ -204,7 +204,7 @@ void ZBaseErrorInfo :: throwError ( const ZExceptionLocation&  location,
 ------------------------------------------------------------------------------*/
 ZGUIErrorInfo::ZGUIErrorInfo ( const char *pGUIFunctionName )
 {
-  char* pErrText = "No error text is available.";
+  const char* pErrText = "No error text is available.";
 #if defined(_WIN32)
   this->ulClErrorId = GetLastError();
   char szText[512];

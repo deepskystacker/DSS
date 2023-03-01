@@ -2,41 +2,22 @@
 // or project specific include files that are used frequently, but
 // are changed infrequently
 //
-
 #pragma once
-#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#include <stdio.h>
-#include <tchar.h>
-
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-
-//
-// Want to support Windows XP and up
-//
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
-
-#include <algorithm>
+#include <QFileInfo>
+#include <QDir>
+#include <QTimer>
+#include <type_traits>
 using std::min;
 using std::max;
 
-#include <windows.h>
-
-#include <vector>
-#include <math.h>
-#include <atlbase.h>
+// This is for CString's in BitmapExt.h :(
 #include <atlstr.h>
 
-#include <Common.h>
-#include <DSSCommon.h>
 #include <resource.h>
 #include <ztrace.h>
-
-#include <StdString.h>
-#define CString			CStdString
-
-#define TRACE0(x)
-#define TRACE1(x, y)
-
-// TODO: reference additional headers your program requires here
-
 #include "BitmapExt.h"
+
+// Need to get rid of these soon!
+#include <gdiplus.h>
+using namespace Gdiplus;
+#pragma comment(lib, "gdiplus.lib")

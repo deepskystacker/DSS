@@ -4,14 +4,14 @@
 //#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 2
-constexpr long DSSBETAEXPIREYEAR = 2021L;
-constexpr long DSSBETAEXPIREMONTH = 10L;
+#define DSSBETARELEASE 3
+constexpr int DSSBETAEXPIREYEAR = 2023;
+constexpr int DSSBETAEXPIREMONTH = 5;
 #endif
 
-#define DSSVER_MAJOR			4
-#define DSSVER_MINOR			2
-#define DSSVER_SUB				6
+#define DSSVER_MAJOR			5
+#define DSSVER_MINOR			1
+#define DSSVER_SUB				0
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
@@ -22,7 +22,7 @@ constexpr long DSSBETAEXPIREMONTH = 10L;
 #define FB(arg)					#arg
 
 #ifdef DSSBETA
-#define VERSTRING(M, m, s, b)	FB(M)"."FB(m)"."FB(s)" Beta "FB(b)
+#define VERSTRING(M, m, s, b)	FB(M) "." FB(m) "." FB(s) " Beta " FB(b)
 #define VERSION_DEEPSKYSTACKER	VERSTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #else
 #define VERSTRING(M, m, s)		FB(M)"."FB(m)"."FB(s)
@@ -40,8 +40,9 @@ constexpr long DSSBETAEXPIREMONTH = 10L;
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT "Copyright © 2006-2019 Luc Coiffier;\n\
-	Copyright © 2018-2021 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara";
+#define DSSVER_COPYRIGHT "Copyright \xc2\xa9 2006-2019 Luc Coiffier;\n\
+	Copyright \xc2\xa9 2018-2023 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara, Michal Schulz, Martin Toeltsch,\
+	Iustin Amihaesei"
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

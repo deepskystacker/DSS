@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "ImageView.h"
@@ -211,7 +212,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 
 		if (m_pWndImage)
 		{
-			ApplyGammaTransformation(m_pWndImage, m_pBitmap, m_GammaTransformation);
+			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 			// Refresh
 			m_Picture.Invalidate(TRUE);
 		};
@@ -220,7 +221,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName)
+void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName)
 {
 	CString						strText;
 
@@ -236,7 +237,7 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 		m_pWndImage = pWndBitmap;
 		m_pBitmap	= pBitmap;
 		if (m_GammaTransformation.IsInitialized())
-			ApplyGammaTransformation(m_pWndImage, m_pBitmap, m_GammaTransformation);
+			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 
 		m_Picture.Invalidate(TRUE);
 		if (m_bStackedImage)
@@ -262,8 +263,8 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 		m_StackedSink.ClearFootprint();
 		m_Picture.SetImg((HBITMAP)nullptr);
 		m_FileName.SetText(strText);
-		m_pWndImage.Release();
-		m_pBitmap.Release();
+		m_pWndImage.reset();
+		m_pBitmap.reset();
 	};
 };
 
@@ -320,13 +321,13 @@ void CImageViewTab::OnStackedImageSaved()
 
 void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	if (m_pWndImage.m_p)
+	if (m_pWndImage.get())
 		m_pWndImage->CopyToClipboard();
 };
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
+void CImageViewTab::OnSetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
 {
 	m_StackedSink.SetFootprint(pt1, pt2, pt3, pt4);
 	m_Picture.Invalidate();

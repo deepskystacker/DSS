@@ -109,7 +109,7 @@ static void lr_skip_input_data(j_decompress_ptr cinfo, long num_bytes)
     }
 }
 
-static void lr_term_source(j_decompress_ptr cinfo) {}
+static void lr_term_source(j_decompress_ptr /*cinfo*/) {}
 
 static void lr_jpeg_src(j_decompress_ptr cinfo, LibRaw_abstract_datastream *inf)
 {
@@ -287,6 +287,7 @@ INT64 LibRaw_file_datastream::tell()
 
 char *LibRaw_file_datastream::gets(char *str, int sz)
 {
+  if(sz<1) return NULL;
   LR_STREAM_CHK();
   std::istream is(f.get());
   is.getline(str, sz);
@@ -421,6 +422,7 @@ INT64 LibRaw_buffer_datastream::tell()
 
 char *LibRaw_buffer_datastream::gets(char *s, int sz)
 {
+  if(sz<1) return NULL;
   unsigned char *psrc, *pdest, *str;
   str = (unsigned char *)s;
   psrc = buf + streampos;
@@ -493,7 +495,7 @@ int LibRaw_buffer_datastream::jpeg_src(void *jpegdata)
   return -1;
 #else
   j_decompress_ptr cinfo = (j_decompress_ptr)jpegdata;
-  jpeg_mem_src(cinfo, (unsigned char *)buf + streampos, streamsize - streampos);
+  jpeg_mem_src(cinfo, (unsigned char *)buf + streampos,(unsigned long)(streamsize - streampos));
   return 0;
 #endif
 }
@@ -618,6 +620,7 @@ INT64 LibRaw_bigfile_datastream::tell()
 
 char *LibRaw_bigfile_datastream::gets(char *str, int sz)
 {
+  if(sz<1) return NULL;
   LR_BF_CHK();
   return fgets(str, sz, f);
 }
@@ -784,12 +787,9 @@ LibRaw_bigfile_buffered_datastream::LibRaw_bigfile_buffered_datastream(const wch
             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0)) != INVALID_HANDLE_VALUE)
 #endif
         {
-            if (fhandle > 0)
-            {
-                LARGE_INTEGER fs;
-                if (GetFileSizeEx(fhandle, &fs))
-                    _fsize = fs.QuadPart;
-            }
+            LARGE_INTEGER fs;
+            if (GetFileSizeEx(fhandle, &fs))
+                _fsize = fs.QuadPart;
         }
 
     }
@@ -808,11 +808,11 @@ const wchar_t *LibRaw_bigfile_buffered_datastream::wfname()
 
 LibRaw_bigfile_buffered_datastream::~LibRaw_bigfile_buffered_datastream()
 {
-    if (fhandle > 0)
+    if (valid())
         CloseHandle(fhandle);
 }
 int LibRaw_bigfile_buffered_datastream::valid() {
-    return fhandle > 0 && fhandle != INVALID_HANDLE_VALUE;
+    return (fhandle != NULL) && (fhandle != INVALID_HANDLE_VALUE);
 }
 
 const char *LibRaw_bigfile_buffered_datastream::fname()
@@ -835,7 +835,7 @@ INT64 LibRaw_bigfile_buffered_datastream::readAt(void *ptr, size_t size, INT64 o
 {
     LR_BF_CHK();
     DWORD NumberOfBytesRead;
-    DWORD nNumberOfBytesToRead = size;
+    DWORD nNumberOfBytesToRead = (DWORD)size;
     struct _OVERLAPPED olap;
     memset(&olap, 0, sizeof(olap));
     olap.Offset = off & 0xffffffff;
@@ -864,7 +864,7 @@ int LibRaw_bigfile_buffered_datastream::read(void *data, size_t size, size_t nme
     {
         INT64 r = readAt(data, count, _fpos);
         _fpos += r;
-        return r / size;
+        return int(r / size);
     }
 
     unsigned char *fBuffer = (unsigned char*)iobuffers[0].data();
@@ -878,7 +878,7 @@ int LibRaw_bigfile_buffered_datastream::read(void *data, size_t size, size_t nme
             {
                 memcpy(data, fBuffer + (unsigned)(_fpos - iobuffers[0]._bstart), count);
                 _fpos += count;
-                return (count + partbytes) / size;
+                return int((count + partbytes) / size);
             }
             memcpy(data, fBuffer + (_fpos - iobuffers[0]._bstart), inbuffer);
             partbytes += inbuffer;
@@ -886,7 +886,7 @@ int LibRaw_bigfile_buffered_datastream::read(void *data, size_t size, size_t nme
             data = (void *)(((char *)data) + inbuffer);
             _fpos += inbuffer;
         }
-        if (count > iobuffers[0].size())
+        if (count > (INT64) iobuffers[0].size())
         {
         fallback:
             if (_fpos + count > _fsize)
@@ -895,7 +895,7 @@ int LibRaw_bigfile_buffered_datastream::read(void *data, size_t size, size_t nme
             {
                 INT64 r = readAt(data, count, _fpos);
                 _fpos += r;
-                return (r + partbytes) / size;
+                return int((r + partbytes) / size);
             }
             else
                 return 0;
@@ -909,11 +909,12 @@ int LibRaw_bigfile_buffered_datastream::read(void *data, size_t size, size_t nme
 
 bool LibRaw_bigfile_buffered_datastream::fillBufferAt(int bi, INT64 off)
 {
+    if (off < 0LL) return false;
     iobuffers[bi]._bstart = off;
     if (iobuffers[bi].size() >= LIBRAW_BUFFER_ALIGN * 2)// Align to a file block.
         iobuffers[bi]._bstart &= (INT64)~((INT64)(LIBRAW_BUFFER_ALIGN - 1));
 
-    iobuffers[bi]._bend = MIN(iobuffers[bi]._bstart + iobuffers[bi].size(), _fsize);
+    iobuffers[bi]._bend = MIN(iobuffers[bi]._bstart + (INT64)iobuffers[bi].size(), _fsize);
     if (iobuffers[bi]._bend <= off) // Buffer alignment problem, fallback
         return false;
     INT64 rr = readAt(iobuffers[bi].data(), (uint32_t)(iobuffers[bi]._bend - iobuffers[bi]._bstart), iobuffers[bi]._bstart);
@@ -938,7 +939,6 @@ int LibRaw_bigfile_buffered_datastream::seek(INT64 o, int whence)
     if (whence == SEEK_SET) _fpos = o;
     else if (whence == SEEK_END) _fpos = o > 0 ? _fsize : _fsize + o;
     else if (whence == SEEK_CUR) _fpos += o;
-
     return 0;
 }
 

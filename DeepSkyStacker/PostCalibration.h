@@ -1,89 +1,63 @@
-#pragma once
+#ifndef POSTCALIBRATION_H
+#define POSTCALIBRATION_H
 
+class Workspace;
+class StackSettings;
+class CAllStackingTasks;
+class QAction;
+class QString;
+class QMenu;
 
-// CPostCalibration dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
+#include <QWidget>
+
+#include "DSSCommon.h"
 #include "StackingTasks.h"
 
+namespace Ui {
+class PostCalibration;
+}
 
-class CPostCalibration : public CChildPropertyPage
+class PostCalibration : public QWidget
 {
-	DECLARE_DYNAMIC(CPostCalibration)
+    Q_OBJECT
 
+typedef QWidget
+		Inherited;
 public:
-	CPostCalibration();
-	virtual ~CPostCalibration();
+    explicit PostCalibration(QWidget *parent = nullptr);
+    ~PostCalibration();
 
-// Dialog Data
-	enum { IDD = IDD_POSTCALIBRATION };
+public slots:
+	void onSetActive();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnTest( NMHDR * pNotifyStruct, LRESULT * result );
-	afx_msg void OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result );
-
-public:
-	virtual BOOL OnSetActive();
-
-	void	SetPostCalibration(const CPostCalibrationSettings & Settings)
-	{
-		m_Settings	= Settings;
-	};
-
-	void	GetPostCalibration(CPostCalibrationSettings & Settings)
-	{
-		Settings	= m_Settings;
-	};
-
-	void	SetStackingTasks(CAllStackingTasks * pStackingTasks)
-	{
-		m_pStackingTasks = pStackingTasks;
-	};
+private:
+    Ui::PostCalibration *ui;
+	std::unique_ptr<Workspace> workspace;
+	StackSettings *		pStackSettings;
+	CPostCalibrationSettings pcs;
+	CAllStackingTasks *	pStackingTasks;
+	QAction * onMedian;
+	QAction * onGaussian;
+	QMenu   * replacementMenu;
+	QString medianString;
+	QString gaussianString;
+	PostCalibration & createActions();
+	PostCalibration & createMenus();
+	PostCalibration & setReplacementMethod(int);
 
 
-	DECLARE_MESSAGE_MAP()
+private slots:
+	void on_cleanHotPixels_toggled(bool);
+	void on_hotFilter_valueChanged(int);
+	void on_hotThreshold_valueChanged(int);
 
-private :
-	BOOL				m_bFirstActivation;
+	void on_cleanColdPixels_toggled(bool);
+	void on_coldFilter_valueChanged(int);
+	void on_coldThreshold_valueChanged(int);
 
-	void				UpdateSettingsTexts();
-	void				UpdateControlsFromSettings();
-	void				UpdateSettingsFromControls();
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedDetectCleanHotCold();
-
-public :
-	CLabel				m_Title;
-	CButton				m_DetectCleanHot;
-	CStatic				m_HotFilterText;
-	CSliderCtrl			m_HotFilter;
-	CStatic				m_HotDetectionText;
-	CSliderCtrl			m_HotDetection;
-
-	CButton				m_DetectCleanCold;
-	CStatic				m_ColdFilterText;
-	CSliderCtrl			m_ColdFilter;
-	CStatic				m_ColdDetectionText;
-	CSliderCtrl			m_ColdDetection;
-
-	CButton				m_SaveDelta;
-
-	CString				m_strPixelMask;
-	CString				m_strPercentMask;
-
-	CLabel				m_Strong1;
-	CLabel				m_Strong2;
-	CLabel				m_Weak1;
-	CLabel				m_Weak2;
-
-	CLabel				m_ReplaceText;
-	CLabel				m_ReplaceMethod;
-	CLabel				m_Test;
-
-	CAllStackingTasks *			m_pStackingTasks;
-	CPostCalibrationSettings	m_Settings;
+	void on_replacementMethod_clicked();
+	void on_saveDeltaImage_toggled(bool);
+	void on_testCosmetic_clicked();
 };
+
+#endif // POSTCALIBRATION_H

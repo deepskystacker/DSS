@@ -2,12 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "RestartMonitoring.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 
 // CRestartMonitoring dialog
 

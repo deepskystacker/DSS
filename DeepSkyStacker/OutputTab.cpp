@@ -1,233 +1,165 @@
-// ResultParameters.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
+#include <algorithm>
+using std::min;
+using std::max;
+
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#include <afx.h>
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include <QString>
+#include <QFileDialog>
+#include <QSettings>
+#include <QStandardPaths>
+
 #include "OutputTab.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-#include "ProgressDlg.h"
-#include "MasterFrames.h"
-#include "FolderDlg.h"
+#include "ui/ui_OutputTab.h"
 
-// COutputTab dialog
+#include "Workspace.h"
 
-IMPLEMENT_DYNAMIC(COutputTab, CChildPropertyPage)
-
-/* ------------------------------------------------------------------- */
-
-COutputTab::COutputTab()
-	: CChildPropertyPage(COutputTab::IDD)
+OutputTab::OutputTab(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::OutputTab)
 {
-	m_bFirstActivation = TRUE;
+    ui->setupUi(this);
+
+	//
+	// Set the text colour as for a Hyper-Link
+	// 
+	ui->outputFolder->setForegroundRole(QPalette::Link);
 }
 
-/* ------------------------------------------------------------------- */
-
-COutputTab::~COutputTab()
+OutputTab::~OutputTab()
 {
+    delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-void COutputTab::DoDataExchange(CDataExchange* pDX)
+void OutputTab::onSetActive()
 {
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
+	CAllStackingTasks::GetOutputSettings(os);
 
-	DDX_Control(pDX, IDC_CREATEOUTPUT, m_OutputFile);
-	DDX_Control(pDX, IDC_CREATEHTML, m_OutputHTML);
-	DDX_Control(pDX, IDC_AUTOSAVE, m_Autosave);
-	DDX_Control(pDX, IDC_FILELIST, m_FileListName);
-	DDX_Control(pDX, IDC_USEREFERENCEFRAMEFOLDER, m_RefFrameFolder);
-	DDX_Control(pDX, IDC_USEFILELISTFOLDER, m_FileListFolder);
-	DDX_Control(pDX, IDC_USEANOTHERFOLDER, m_OtherFolder);
-	DDX_Control(pDX, IDC_APPENDNUMBER, m_AppendNumber);
-	DDX_Control(pDX, IDC_OUTPUTFOLDER, m_OutputFolder);
-}
+	bool enable = os.m_bOutput;
+	bool temp = false;
 
-/* ------------------------------------------------------------------- */
+	ui->createOutput->setChecked(enable);
+	ui->createHTML->setEnabled(enable);
+	ui->autoSave->setEnabled(enable);
+	ui->fileListName->setEnabled(enable);
+	ui->appendNumber->setEnabled(enable);
+	ui->refFrameFolder->setEnabled(enable);
+	ui->fileListFolder->setEnabled(enable);
+	ui->otherFolder->setEnabled(enable);
 
-BEGIN_MESSAGE_MAP(COutputTab, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_AUTOSAVE, &COutputTab::OnBnClickedAutosave)
-	ON_BN_CLICKED(IDC_FILELIST, &COutputTab::OnBnClickedFilelist)
-	ON_BN_CLICKED(IDC_USEREFERENCEFRAMEFOLDER, &COutputTab::OnBnClickedUsereferenceframefolder)
-	ON_BN_CLICKED(IDC_USEFILELISTFOLDER, &COutputTab::OnBnClickedUsefilelistfolder)
-	ON_BN_CLICKED(IDC_USEANOTHERFOLDER, &COutputTab::OnBnClickedUseanotherfolder)
-	ON_BN_CLICKED(IDC_CREATEHTML, &COutputTab::OnBnClickedCreatehtml)
-	ON_BN_CLICKED(IDC_CREATEOUTPUT, &COutputTab::OnBnClickedCreateoutput)
-	ON_BN_CLICKED(IDC_APPENDNUMBER, &COutputTab::OnBnClickedAppendnumber)
-	ON_NOTIFY(NM_LINKCLICK, IDC_OUTPUTFOLDER, OnOutputFolder)
-END_MESSAGE_MAP()
+	ui->createHTML->setChecked(os.m_bOutputHTML);
 
-/* ------------------------------------------------------------------- */
+	ui->autoSave->setChecked(os.m_bAutosave);		
+	ui->fileListName->setChecked(os.m_bFileList);
 
-void COutputTab::UpdateControls()
-{
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnable = m_OutputFile.GetCheck();
+	ui->appendNumber->setChecked(os.m_bAppend);
 
-	m_OutputHTML.EnableWindow(bEnable);
-	m_Autosave.EnableWindow(bEnable);
-	m_FileListName.EnableWindow(bEnable);
-	m_AppendNumber.EnableWindow(bEnable);
-	m_RefFrameFolder.EnableWindow(bEnable);
-	m_FileListFolder.EnableWindow(bEnable);
-	m_OtherFolder.EnableWindow(bEnable);
-	m_OutputFolder.EnableWindow(bEnable);
+	ui->refFrameFolder->setChecked(os.m_bRefFrameFolder);
+	ui->fileListFolder->setChecked(os.m_bFileListFolder);
+	ui->otherFolder->setChecked(os.m_bOtherFolder);
 
-	if (pDialog)
-		pDialog->UpdateControls();
-};
+	ui->outputFolder->setEnabled(os.m_bOtherFolder);
 
-/* ------------------------------------------------------------------- */
-
-BOOL COutputTab::OnSetActive()
-{
-	if (m_bFirstActivation)
+	if (os.m_strFolder.length() > 0)
 	{
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		ui->outputFolder->setText(os.m_strFolder);
+	}
+}
 
-		m_OutputFolder.SetTransparent(TRUE);
-		m_OutputFolder.SetLink(TRUE, TRUE);
-		m_OutputFolder.SetTextColor(RGB(0, 0, 128));
-
-		m_OutputFolder.GetWindowText(m_strNoFolder);
-
-		m_OutputFile.SetCheck(m_OutputSettings.m_bOutput);
-		m_OutputHTML.SetCheck(m_OutputSettings.m_bOutputHTML);
-		m_Autosave.SetCheck(m_OutputSettings.m_bAutosave);
-		m_FileListName.SetCheck(m_OutputSettings.m_bFileList);
-		m_AppendNumber.SetCheck(m_OutputSettings.m_bAppend);
-		m_RefFrameFolder.SetCheck(m_OutputSettings.m_bRefFrameFolder);
-		m_FileListFolder.SetCheck(m_OutputSettings.m_bFileListFolder);
-		m_OtherFolder.SetCheck(m_OutputSettings.m_bOtherFolder);
-
-		if (m_OutputSettings.m_strFolder.GetLength())
-			m_OutputFolder.SetWindowText((LPCTSTR)m_OutputSettings.m_strFolder);
-
-		UpdateControls();
-		m_bFirstActivation = FALSE;
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-// COutputTab message handlers
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedAutosave()
+void  OutputTab::on_createOutput_stateChanged(int newState)
 {
-	if (m_Autosave.GetCheck())
+	bool enable(newState == Qt::Checked);
+
+	ui->createHTML->setEnabled(enable);
+	ui->autoSave->setEnabled(enable);
+	ui->fileListName->setEnabled(enable);
+	ui->appendNumber->setEnabled(enable);
+	ui->refFrameFolder->setEnabled(enable);
+	ui->fileListFolder->setEnabled(enable);
+	ui->otherFolder->setEnabled(enable);
+
+
+	if (ui->otherFolder->isChecked() && enable)
+		ui->outputFolder->setEnabled(enable);
+	else
+		ui->outputFolder->setEnabled(false);
+
+	os.m_bOutput = enable;
+}
+
+void  OutputTab::on_createHTML_stateChanged(int newState)
+{
+	bool enable(newState == Qt::Checked);
+
+	os.m_bOutputHTML = enable;
+}
+
+void OutputTab::on_autoSave_clicked()
+{
+	//
+	// If Autosave is selected then FileListName cannot be and
+	// vice-versa
+	//
+	on_fileListName_clicked();
+}
+
+void OutputTab::on_fileListName_clicked()
+{
+	bool checked = ui->fileListName->isChecked();
+	os.m_bFileList = checked;
+	os.m_bAutosave = !checked;
+}
+
+void OutputTab::on_appendNumber_stateChanged(int newState)
+{
+	bool checked(newState == Qt::Checked);
+
+	os.m_bAppend = checked;
+}
+
+void OutputTab::on_refFrameFolder_clicked()
+{
+	os.m_bRefFrameFolder = true;
+	os.m_bFileListFolder = false;
+	os.m_bOtherFolder = false;
+	ui->outputFolder->setEnabled(false);
+}
+void OutputTab::on_fileListFolder_clicked()
+{
+	os.m_bRefFrameFolder = false;
+	os.m_bFileListFolder = true;
+	os.m_bOtherFolder = false;
+	ui->outputFolder->setEnabled(false);
+}
+void OutputTab::on_otherFolder_clicked()
+{
+	os.m_bRefFrameFolder = false;
+	os.m_bFileListFolder = false;
+	os.m_bOtherFolder = true;
+	ui->outputFolder->setEnabled(true);
+}
+
+void OutputTab::on_outputFolder_pressed()
+{
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder", "IDS_SELECTOUTPUTFOLDER"),
+		QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
+		QFileDialog::ShowDirsOnly
+		| QFileDialog::DontResolveSymlinks);
+
+	if (dir.length() > 0)
 	{
-		m_FileListName.SetCheck(FALSE);
-		m_OutputSettings.m_bAutosave = true;
-		m_OutputSettings.m_bFileList = false;
-	};
+		ui->outputFolder->setText(dir);
+		os.m_strFolder = dir;
+	}
 }
 
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedFilelist()
+void OutputTab::saveOutputSettings()
 {
-	if (m_FileListName.GetCheck())
-	{
-		m_Autosave.SetCheck(FALSE);
-		m_OutputSettings.m_bAutosave = false;
-		m_OutputSettings.m_bFileList = true;
-	};
+	CAllStackingTasks::SetOutputSettings(os);
 }
 
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedUsereferenceframefolder()
-{
-	if (m_RefFrameFolder.GetCheck())
-	{
-		m_FileListFolder.SetCheck(FALSE);
-		m_OtherFolder.SetCheck(FALSE);
-		m_OutputSettings.m_bRefFrameFolder = true;
-		m_OutputSettings.m_bFileListFolder = false;
-		m_OutputSettings.m_bOtherFolder    = false;
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedUsefilelistfolder()
-{
-	if (m_FileListFolder.GetCheck())
-	{
-		m_RefFrameFolder.SetCheck(FALSE);
-		m_OtherFolder.SetCheck(FALSE);
-		m_OutputSettings.m_bRefFrameFolder = false;
-		m_OutputSettings.m_bFileListFolder = true;
-		m_OutputSettings.m_bOtherFolder    = false;
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedUseanotherfolder()
-{
-	if (m_OtherFolder.GetCheck())
-	{
-		m_FileListFolder.SetCheck(FALSE);
-		m_RefFrameFolder.SetCheck(FALSE);
-		m_OutputSettings.m_bRefFrameFolder = false;
-		m_OutputSettings.m_bFileListFolder = false;
-		m_OutputSettings.m_bOtherFolder    = true;
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedCreatehtml()
-{
-	m_OutputSettings.m_bOutputHTML = m_OutputHTML.GetCheck() ? true : false;
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedCreateoutput()
-{
-	m_OutputSettings.m_bOutput = m_OutputFile.GetCheck() ? true : false;
-	UpdateControls();
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnBnClickedAppendnumber()
-{
-	m_OutputSettings.m_bAppend = m_AppendNumber.GetCheck() ? true : false;
-}
-
-/* ------------------------------------------------------------------- */
-
-void COutputTab::OnOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
-{
-	CString					strFolder;
-	CString					strTitle;
-
-	m_OutputFolder.GetWindowText(strFolder);
-
-	CFolderDlg				dlg(FALSE, strFolder, this);
-
-	strTitle.LoadString(IDS_SELECTOUTPUTFOLDER);
-	dlg.SetTitle(strTitle);
-
-	if (dlg.DoModal() == IDOK)
-	{
-		strFolder = dlg.GetFolderName();
-		m_OutputFolder.SetWindowText(strFolder);
-		m_OutputSettings.m_strFolder = strFolder;
-		m_OtherFolder.SetCheck(TRUE);
-		OnBnClickedUseanotherfolder();
-	};
-};
-
-/* ------------------------------------------------------------------- */

@@ -1,136 +1,99 @@
-// ResultParameters.cpp : implementation file
-//
+#include <algorithm>
+using std::min;
+using std::max;
+#include <atomic>
 
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#include <afx.h>
+
 #include "CometStacking.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+#include "ui/ui_CometStacking.h"
 
-// CCometStacking dialog
+#include "DSSCommon.h"
+#include "Workspace.h"
 
-IMPLEMENT_DYNAMIC(CCometStacking, CChildPropertyPage)
-
-/* ------------------------------------------------------------------- */
-
-CCometStacking::CCometStacking()
-	: CChildPropertyPage(CCometStacking::IDD)
+CometStacking::CometStacking(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::CometStacking),
+	workspace(new Workspace())
 {
-	m_bFirstActivation = TRUE;
-	m_CometStackingMode = CSM_STANDARD;
+    ui->setupUi(this);
 }
 
-/* ------------------------------------------------------------------- */
-
-CCometStacking::~CCometStacking()
+CometStacking::~CometStacking()
 {
+    delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-void CCometStacking::DoDataExchange(CDataExchange* pDX)
+void CometStacking::onSetActive()
 {
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_STANDARDSTACKING, m_StandardStacking);
-	DDX_Control(pDX, IDC_COMETSTACKING, m_CometStacking);
-	DDX_Control(pDX, IDC_ADVANCEDSTACKING, m_AdvancedStacking);
-	DDX_Control(pDX, IDC_COMETSAMPLE, m_Preview);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CCometStacking, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_STANDARDSTACKING, &CCometStacking::OnBnClickedStandardStacking)
-	ON_BN_CLICKED(IDC_COMETSTACKING, &CCometStacking::OnBnClickedCometStacking)
-	ON_BN_CLICKED(IDC_ADVANCEDSTACKING, &CCometStacking::OnBnClickedAdvancedStacking)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-void CCometStacking::UpdateControls()
-{
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-
-	/*
-	if (m_bUseCustom)
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_CUSTOMMODE)));
-	else if (!m_bMosaic)
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_NORMALMODE)));
-	else
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_MOSAICMODE)));
-	*/
-
-	m_StandardStacking.SetCheck(m_CometStackingMode == CSM_STANDARD);
-	m_CometStacking.SetCheck(m_CometStackingMode == CSM_COMETONLY);
-	m_AdvancedStacking.SetCheck(m_CometStackingMode == CSM_COMETSTAR);
+	m_CometStackingMode = static_cast<COMETSTACKINGMODE>
+		(workspace->value("Stacking/CometStackingMode", (uint)CSM_STANDARD).toUInt());
 
 	switch (m_CometStackingMode)
 	{
 	case CSM_STANDARD:
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_COMETNORMAL)));
+		ui->modeStandard->setChecked(true);
 		break;
 	case CSM_COMETONLY:
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_COMETTRAILS)));
+		ui->modeComet->setChecked(true);
 		break;
 	case CSM_COMETSTAR:
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_COMETFREEZE)));
+		ui->modeAdvanced->setChecked(true);
 		break;
-	};
-
-	if (pDialog)
-		pDialog->UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CCometStacking::OnSetActive()
-{
-	if (m_bFirstActivation)
-	{
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-
-		UpdateControls();
-		m_bFirstActivation = FALSE;
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-// CCometStacking message handlers
-
-void CCometStacking::OnBnClickedStandardStacking()
-{
-	if (m_StandardStacking.GetCheck())
-	{
-		m_CometStackingMode = CSM_STANDARD;
-		UpdateControls();
-	};
+	}
+	updateImage();
 }
 
-/* ------------------------------------------------------------------- */
-
-void CCometStacking::OnBnClickedCometStacking()
+void CometStacking::setCometStackingMode(COMETSTACKINGMODE mode)
 {
-	if (m_CometStacking.GetCheck())
+	if (mode != m_CometStackingMode)
 	{
-		m_CometStackingMode = CSM_COMETONLY;
-		UpdateControls();
-	};
+		m_CometStackingMode = mode;
+		workspace->setValue("Stacking/CometStackingMode", static_cast<uint>(mode));
+		updateImage();
+	}
 }
 
-/* ------------------------------------------------------------------- */
-
-void CCometStacking::OnBnClickedAdvancedStacking()
+void CometStacking::on_modeStandard_clicked()
 {
-	if (m_AdvancedStacking.GetCheck())
-	{
-		m_CometStackingMode = CSM_COMETSTAR;
-		UpdateControls();
-	};
+	setCometStackingMode(CSM_STANDARD);
 }
 
-/* ------------------------------------------------------------------- */
+void CometStacking::on_modeComet_clicked()
+{
+	setCometStackingMode(CSM_COMETONLY);
+}
+
+void CometStacking::on_modeAdvanced_clicked()
+{
+	setCometStackingMode(CSM_COMETSTAR);
+}
+
+void CometStacking::updateImage()
+{
+    if (m_CometStackingMode == CSM_STANDARD)
+    {
+		if (standardPix.isNull())
+		{
+			standardPix.load(":/comet/normal.bmp");
+		}
+		ui->laComet->setPixmap(standardPix);
+	}
+    else if (m_CometStackingMode == CSM_COMETONLY)
+    {
+		if (cometPix.isNull())
+		{
+			cometPix.load(":/comet/trails.bmp");
+		}
+		ui->laComet->setPixmap(cometPix);
+	}
+    else 
+    {
+		if (advancedPix.isNull())
+		{
+			advancedPix.load(":/comet/freeze.bmp");
+		}
+		ui->laComet->setPixmap(advancedPix);
+	}
+}

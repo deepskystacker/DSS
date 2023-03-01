@@ -1,41 +1,55 @@
 #ifndef __FRAMEINFO_H__
 #define __FRAMEINFO_H__
+#include <filesystem>
+#include "MatchingStars.h"
+#include "SkyBackground.h"
+
+//#include "RAWUtils.h"
 
 // From FITSUtils.h/.cpp
 CFATYPE GetFITSCFATYPE();
 
+bool IsSuperPixels();
+bool IsRawBayer();
+bool IsFITSRawBayer();
+bool IsFITSSuperPixels();
+
+namespace fs = std::filesystem;	
+
 class CFrameInfo
 {
 public :
-	CString				m_strFileName;
-	LONG				m_lWidth,
+	fs::path filePath; 
+	int				m_lWidth,
 						m_lHeight;
-	LONG				m_lISOSpeed;
-	LONG				m_lGain;
+	int				m_lISOSpeed;
+	int				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
-	LONG				m_lBitPerChannels;
-	LONG				m_lNrChannels;
+	int				m_lBitPerChannels;
+	int				m_lNrChannels;
 	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
 	SYSTEMTIME			m_DateTime;
-	BOOL				m_bMaster;
+	bool				m_bMaster;
 	CString				m_strInfos;
-	BOOL				m_bFITS16bit;
+	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
-	CString				m_filterName;
+	QString				m_filterName;
+    mutable	QString	incompatibilityReason;
+
 
 private :
 	mutable CFATYPE			m_CFAType;
-	mutable BOOL			m_bSuperPixel;
+	mutable bool			m_bSuperPixel;
 
 protected :
 	void CopyFrom(const CFrameInfo & cfi)
 	{
 		m_lWidth		  = cfi.m_lWidth;
 		m_lHeight		  = cfi.m_lHeight;
-		m_strFileName	  = cfi.m_strFileName;
+		filePath  = cfi.filePath;
 		m_lISOSpeed		  = cfi.m_lISOSpeed;
 		m_lGain			  = cfi.m_lGain;
 		m_fExposure		  = cfi.m_fExposure;
@@ -65,10 +79,11 @@ protected :
 		m_CFAType		  = CFATYPE_NONE;
 		m_lNrChannels	  = 3;
 		m_lBitPerChannels = 16;
-		m_bMaster		  = FALSE;
-		m_bFITS16bit	  = FALSE;
-		m_bSuperPixel	  = FALSE;
-		m_DateTime.wYear  = 0;
+		m_bMaster		  = false;
+		m_bFITS16bit	  = false;
+		m_bSuperPixel	  = false;
+		m_DateTime = { 0 };
+		m_FileTime = { 0 };
 		m_ExtraInfo.Clear();
         m_lWidth = 0;
         m_lHeight = 0;
@@ -90,58 +105,70 @@ public :
 		return (*this);
 	};
 
-	BOOL	IsLightFrame() const
+	bool	IsLightFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_LIGHTFRAME);
 	};
 
-	BOOL	IsDarkFrame() const
+	bool	IsDarkFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFRAME);
 	};
 
-	BOOL	IsDarkFlatFrame() const
+	bool	IsDarkFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFLATFRAME);
 	};
 
-	BOOL	IsFlatFrame() const
+	bool	IsFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_FLATFRAME);
 	};
 
-	BOOL	IsOffsetFrame() const
+	bool	IsOffsetFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_OFFSETFRAME);
 	};
 
-	BOOL	IsMasterFrame() const
+	bool	IsMasterFrame() const
 	{
 		return m_bMaster;
 	};
 
-	LONG	RenderedWidth()
+	int	RenderedWidth()
 	{
 		return m_lWidth/(m_bSuperPixel ? 2 : 1);
 	};
 
-	LONG	RenderedHeight()
+	int	RenderedHeight()
 	{
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	BOOL	IsCompatible(LONG lWidth, LONG lHeight, LONG lBitPerChannels, LONG lNrChannels, CFATYPE CFAType)
+	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType) const
 	{
-		BOOL			bResult;
+		bool			result = true;
 
-		bResult = (m_lWidth == lWidth) &&
-				  (m_lHeight == lHeight) &&
-				  (m_lBitPerChannels == lBitPerChannels);
-
-		if (bResult)
+		if (m_lWidth != lWidth)
 		{
-			bResult = (m_lNrChannels == lNrChannels) && (m_CFAType == CFAType);
-			if (!bResult)
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Width mismatch");
+			return false;
+		}
+		if (m_lHeight != lHeight)
+		{
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Height mismatch");
+			return false;
+		}
+		if (m_lBitPerChannels != lBitPerChannels)
+		{
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Colour depth mismatch");
+			return false;
+		}
+
+		if (result)
+		{
+			result = (m_lNrChannels == lNrChannels) && (m_CFAType == CFAType);
+			if (!result)
 			{
 				// Check that if CFA if Off then the number of channels may be
 				// 3 instead of 1 if BayerDrizzle and SuperPixels are off
@@ -150,23 +177,25 @@ public :
 					if (m_CFAType != CFAType)
 					{
 						if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels==1))
-							bResult = (CFAType != CFATYPE_NONE) && (lNrChannels == 3);
+							result = (CFAType != CFATYPE_NONE) && (lNrChannels == 3);
 						else if ((CFAType == CFATYPE_NONE) && (lNrChannels == 1))
-							bResult = (m_CFAType == CFATYPE_NONE) && (m_lNrChannels == 3);
+							result = (m_CFAType == CFATYPE_NONE) && (m_lNrChannels == 3);
 					};
+					if (false == result)
+						incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Number of channels mismatch");
 				};
 			};
 		};
 
-		return  bResult;
+		return  result;
 	};
 
-	BOOL	IsCompatible(const CFrameInfo & cfi)
+	bool	IsCompatible(const CFrameInfo & cfi) const
 	{
 		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
 	};
 
-	BOOL	InitFromFile(LPCTSTR szFile, PICTURETYPE Type);
+	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);
 
 	CFATYPE	GetCFAType() const
 	{
@@ -176,7 +205,7 @@ public :
 			// On the old days this was always determined by the values read from the 
 			// workspace by GetFITSCFATYPE().  Now however GetFITSInfo() may auto-detect
 			// the CFA pattern and pre-populate CFAType, which we should now use.  If it's
-			// not set the do it the old way.
+			// not set then do it the old way.
 			//
 			if (m_CFAType != CFATYPE_NONE)
 				return m_CFAType;
@@ -187,7 +216,7 @@ public :
 			return m_CFAType;
 	};
 
-	BOOL	IsSuperPixel() const
+	bool	IsSuperPixel() const
 	{
 		if (m_bFITS16bit)
 			m_bSuperPixel = IsFITSSuperPixels() && (GetCFAType() != CFATYPE_NONE);
@@ -197,7 +226,7 @@ public :
 
 	void	RefreshSuperPixel()
 	{
-		m_bSuperPixel = FALSE;
+		m_bSuperPixel = false;
 		if (m_bFITS16bit)
 			m_bSuperPixel = IsFITSSuperPixels() && (GetCFAType() != CFATYPE_NONE);
 		else if (m_CFAType != CFATYPE_NONE)
@@ -205,67 +234,127 @@ public :
 	};
 };
 
-typedef std::vector<CFrameInfo>				FRAMEINFOVECTOR;
-typedef std::vector<CFrameInfo *>			PFRAMEINFOVECTOR;
+using FRAMEINFOVECTOR = std::vector<CFrameInfo>;
 
-/* ------------------------------------------------------------------- */
 
-inline void	ExposureToString(double fExposure, CString & strText)
+class ListBitMap : public CFrameInfo
 {
-	if (fExposure)
+public:
+	uint16_t				m_groupId;
+	bool					m_bUseAsStarting;
+	QString					m_strType;
+	QString					m_strPath;
+	QString					m_strFile;
+	bool					m_bRegistered;
+	Qt::CheckState			m_bChecked;
+	double					m_fOverallQuality;
+	double					m_fFWHM;
+	double					m_dX;
+	double					m_dY;
+	double					m_fAngle;
+	CSkyBackground			m_SkyBackground;
+	bool					m_bDeltaComputed;
+	QString					m_strCFA;
+	QString					m_strSizes;
+	QString					m_strDepth;
+	bool					m_bCompatible;
+	CBilinearParameters		m_Transformation;
+	VOTINGPAIRVECTOR		m_vVotedPairs;
+	int					m_lNrStars;
+	bool					m_bComet;
+
+
+protected:
+	void	CopyFrom(const ListBitMap& lb)
 	{
-		LONG			lExposure;
+		CFrameInfo::CopyFrom(lb);
 
-		if (fExposure >= 1)
-		{
-			lExposure = fExposure;
-			DWORD			dwRemainingTime = lExposure;
-			DWORD			dwHour,
-							dwMin,
-							dwSec;
+		m_groupId = lb.m_groupId;
+		m_bUseAsStarting = lb.m_bUseAsStarting;
+		m_strType = lb.m_strType;
+		m_strPath = lb.m_strPath;
+		m_strFile = lb.m_strFile;
+		m_bRegistered = lb.m_bRegistered;
+		m_bChecked = lb.m_bChecked;
+		m_fOverallQuality = lb.m_fOverallQuality;
+		m_fFWHM = lb.m_fFWHM;
+		m_dX = lb.m_dX;
+		m_dY = lb.m_dY;
+		m_fAngle = lb.m_fAngle;
+		m_bDeltaComputed = lb.m_bDeltaComputed;
+		m_strCFA = lb.m_strCFA;
+		m_strSizes = lb.m_strSizes;
+		m_strDepth = lb.m_strDepth;
+		m_bCompatible = lb.m_bCompatible;
+		m_Transformation = lb.m_Transformation;
+		m_vVotedPairs = lb.m_vVotedPairs;
+		m_lNrStars = lb.m_lNrStars;
+		m_bComet = lb.m_bComet;
+		m_SkyBackground = lb.m_SkyBackground;
+	};
 
-			dwHour = dwRemainingTime / 3600;
-			dwRemainingTime -= dwHour * 3600;
-			dwMin = dwRemainingTime / 60;
-			dwRemainingTime -= dwMin * 60;
-			dwSec = dwRemainingTime;
+public:
+	ListBitMap()
+	{
+		m_groupId = 0;
+		m_bUseAsStarting = false;
+		m_bRegistered = false;
+		m_bChecked = Qt::Unchecked;
+		m_fOverallQuality = 0;
+		m_fFWHM = 0;
+		m_dX = 0;
+		m_dY = 0;
+		m_fAngle = 0;
+		m_bDeltaComputed = false;
+		m_bCompatible = true;
+		m_lNrStars = 0;
+		m_bComet = 0;
+	};
 
-			if (dwHour)
-				strText.Format(IDS_EXPOSURETIME3, dwHour, dwMin, dwSec);
-			else if (dwMin)
-				strText.Format(IDS_EXPOSURETIME2, dwMin, dwSec);
-			else
-				strText.Format(IDS_EXPOSURETIME1, dwSec);
-		}
-		else
-		{
-			lExposure = 1.0/fExposure+0.5;
-			strText.Format(IDS_EXPOSUREFORMAT_INF, lExposure);
-		};
+	ListBitMap(const ListBitMap& lb)
+	{
+		CopyFrom(lb);
+	};
+
+	ListBitMap& operator = (const ListBitMap& lb)
+	{
+		CopyFrom(lb);
+		return (*this);
+	};
+
+	bool	IsUseAsStarting()
+	{
+		return m_bUseAsStarting;
+	};
+
+	bool	IsDeltaComputed()
+	{
+		return m_bDeltaComputed;
+	};
+
+	inline bool operator ==(const ListBitMap& rhs) const
+	{
+		return (m_strPath == rhs.m_strPath && m_strFile == rhs.m_strFile);
 	}
-	else
-		strText = "-";
+
+	inline bool operator !=(const ListBitMap& rhs) const
+	{
+		return !(*this == rhs);
+	}
+
+	void	EraseFile()
+	{
+		fs::path path{ filePath };
+		fs::remove(path);
+		if (IsLightFrame())
+		{
+			path.replace_extension("Info.txt");
+			fs::remove(path);
+		};
+	};
 };
 
-/* ------------------------------------------------------------------- */
-
-inline void	ISOToString(LONG lISOSpeed, CString & strText)
-{
-	if (lISOSpeed)
-		strText.Format(_T("%ld"), lISOSpeed);
-	else
-		strText = "-";
-};
-
-/* ------------------------------------------------------------------- */
-
-inline void	GainToString(LONG lGain, CString & strText)
-{
-	if (lGain >= 0)
-		strText.Format(_T("%ld"), lGain);
-	else
-		strText = "-";
-};
+typedef std::vector<ListBitMap>		LISTBITMAPVECTOR;
 
 /* ------------------------------------------------------------------- */
 

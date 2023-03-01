@@ -25,6 +25,12 @@
     <Filter Include="Tools\SMTP">
       <UniqueIdentifier>{49f47abc-e9dd-4995-a63b-affee1bed0c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Qt">
+      <UniqueIdentifier>{c5a27a9c-3aa3-4e06-85fa-10899ddf8ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\i18n">
+      <UniqueIdentifier>{35296fcd-9a3b-4ce5-b85c-721aa046fc66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStackerLive.cpp">
@@ -129,9 +135,6 @@
     <ClCompile Include="..\DeepSkyStacker\RunningStackingEngine.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\Settings.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -166,12 +169,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Registry.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\RegMFC.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
@@ -222,6 +219,54 @@
     <ClCompile Include="..\SMTP\SocMFC.cpp">
       <Filter>Tools\SMTP</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_output.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
@@ -266,9 +311,6 @@
     <ClInclude Include="DeepSkyStackerLive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -282,9 +324,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\Common.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h">
@@ -401,9 +440,6 @@
     <ClInclude Include="..\Tools\memdc.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\Registry.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\SmartPtr.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -460,6 +496,48 @@
     </ClInclude>
     <ClInclude Include="..\SMTP\SocMFC.h">
       <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_avg.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_output.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_luminance.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_cfa.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_histogram.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitmapBase.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_entropy.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_support.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_filter.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -518,6 +596,54 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resource." />
+    <QtMoc Include="..\DeepSkyStacker\ImageListModel.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\DSSLive.ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.de.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.en.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.es.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.it.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.pt_BR.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.tr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

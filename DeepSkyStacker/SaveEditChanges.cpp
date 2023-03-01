@@ -1,190 +1,137 @@
-// RegisterSettings.cpp : implementation file
+/****************************************************************************
+**
+** Copyright (C) 2020, 2022 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+// SaveEditChanges.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "SaveEditChanges.h"
-#include "Registry.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CSaveEditChanges dialog
-
-
-CSaveEditChanges::CSaveEditChanges(CWnd* pParent /*=nullptr*/)
-	: CDialog(CSaveEditChanges::IDD, pParent)
+#include <QSettings>
+namespace DSS
 {
-	//{{AFX_DATA_INIT(CSaveEditChanges)
-	//}}AFX_DATA_INIT
-
-}
-
-/* ------------------------------------------------------------------- */
-
-void CSaveEditChanges::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CSaveEditChanges)
-	DDX_Control(pDX, IDC_ASKAGAIN, m_AskAlways);
-	DDX_Control(pDX, IDC_SAVEWITHOUTASKING, m_SaveDontAsk);
-	DDX_Control(pDX, IDC_DONTSAVEWITHOUTASKING, m_DontSaveDontAsk);
-	//}}AFX_DATA_MAP
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CSaveEditChanges, CDialog)
-	//{{AFX_MSG_MAP(CSaveEditChanges)
-	ON_BN_CLICKED(IDC_ASKAGAIN, OnAskAlways)
-	ON_BN_CLICKED(IDC_SAVEWITHOUTASKING, OnSaveDontAsk)
-	ON_BN_CLICKED(IDC_DONTSAVEWITHOUTASKING, OnDontSaveDontAsk)
-	ON_BN_CLICKED(IDYES, OnYes)
-	ON_BN_CLICKED(IDNO, OnNo)
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CSaveEditChanges message handlers
-
-BOOL CSaveEditChanges::OnInitDialog()
-{
-	CRegistry			reg;
-
-	CDialog::OnInitDialog();
-
-	switch (GetSaveEditMode())
+	SaveEditChanges::SaveEditChanges(QWidget* parent) :
+		QDialog(parent)
 	{
-	case SECM_SAVEDONTASK :
-		m_SaveDontAsk.SetCheck(TRUE);
-		break;
-	case SECM_DONTSAVEDONTASK :
-		m_DontSaveDontAsk.SetCheck(TRUE);
-		break;
-	case SECM_ASKALWAYS :
-		m_AskAlways.SetCheck(TRUE);
-		break;
+		setupUi(this);
+		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton*)));
+
+		switch (getSaveEditMode())
+		{
+		case EditSaveMode::SaveDontAsk:
+			saveDontAsk->setChecked(true);
+			break;
+		case EditSaveMode::DiscardDontAsk:
+			discardDontAsk->setChecked(true);
+			break;
+		case EditSaveMode::AskAlways:
+			askAlways->setChecked(true);
+			break;
+		};
+
+	}
+
+	void SaveEditChanges::buttonClicked(QAbstractButton* button)
+	{
+		result = buttonBox->buttonRole(button);
+		if (QDialogButtonBox::RejectRole == result)
+			reject();
+		else
+		{
+			saveSettings();
+			accept();
+		}
+	}
+
+	void SaveEditChanges::saveSettings()
+	{
+		EditSaveMode	Mode = EditSaveMode::AskAlways;
+
+		if (saveDontAsk->isChecked())
+			Mode = EditSaveMode::SaveDontAsk;
+		else if (discardDontAsk->isChecked())
+			Mode = EditSaveMode::DiscardDontAsk;
+
+		setSaveEditMode(Mode);
 	};
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	EditSaveMode SaveEditChanges::getSaveEditMode()
+	{
+		QSettings settings;
+
+		uint value = settings.value("EditStars/AutoSave", (uint)0).toUInt();
+
+		return static_cast<EditSaveMode>(value);
+	};
+
+
+
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::SaveSettings()
+void	setSaveEditMode(EditSaveMode mode)
 {
-	SAVEEDITCHANGESMODE	Mode = SECM_ASKALWAYS;
+	QSettings settings;
+	uint	value = static_cast<uint>(mode);
 
-	if (m_SaveDontAsk.GetCheck())
-		Mode = SECM_SAVEDONTASK;
-	else if (m_DontSaveDontAsk.GetCheck())
-		Mode = SECM_DONTSAVEDONTASK;
-
-	SetSaveEditMode(Mode);
+	settings.setValue("EditStars/AutoSave", value);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnYes()
-{
-	SaveSettings();
-	EndDialog(IDYES);
-}
-
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnNo()
+QDialogButtonBox::ButtonRole askToSaveEditChangeMode()
 {
-	SaveSettings();
-	EndDialog(IDNO);
-}
+	QSettings settings;
 
-/* ------------------------------------------------------------------- */
+	int value = settings.value("EditStars/AutoSave", 0).toInt();
 
-void CSaveEditChanges::OnCancel()
-{
-	CDialog::OnCancel();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CSaveEditChanges::OnAskAlways()
-{
-	if (m_AskAlways.GetCheck())
-	{
-		m_SaveDontAsk.SetCheck(FALSE);
-		m_DontSaveDontAsk.SetCheck(FALSE);
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CSaveEditChanges::OnSaveDontAsk()
-{
-	if (m_SaveDontAsk.GetCheck())
-	{
-		m_AskAlways.SetCheck(FALSE);
-		m_DontSaveDontAsk.SetCheck(FALSE);
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CSaveEditChanges::OnDontSaveDontAsk()
-{
-	if (m_DontSaveDontAsk.GetCheck())
-	{
-		m_AskAlways.SetCheck(FALSE);
-		m_SaveDontAsk.SetCheck(FALSE);
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode)
-{
-	CRegistry			reg;
-	LONG				lValue = Mode;
-
-	reg.SaveKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), lValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-SAVEEDITCHANGESMODE	GetSaveEditMode()
-{
-	CRegistry			reg;
-	DWORD				dwValue = 0;
-
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
-
-	return (SAVEEDITCHANGESMODE)dwValue;
-};
-
-/* ------------------------------------------------------------------- */
-
-LONG	AskSaveEditChangesMode()
-{
-	CRegistry			reg;
-	DWORD				dwValue = 0;
-
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
-
-	if (dwValue == SECM_SAVEDONTASK)
-		return IDYES;
-	else if (dwValue == SECM_DONTSAVEDONTASK)
-		return IDNO;
+	if (value == static_cast<int>(EditSaveMode::SaveDontAsk))
+		return QDialogButtonBox::AcceptRole;
+	else if (value == static_cast<int>(EditSaveMode::DiscardDontAsk))
+		return QDialogButtonBox::DestructiveRole;
 	else
 	{
-		CSaveEditChanges	dlg;
+		DSS::SaveEditChanges dlg;
 
-		return dlg.DoModal();
+		dlg.exec();
+
+		return dlg.result;
+
 	};
 };
 

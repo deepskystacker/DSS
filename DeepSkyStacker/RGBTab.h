@@ -21,10 +21,12 @@ class CRGBTab : public CChildPropertyPage
 	DECLARE_DYNCREATE(CRGBTab)
 
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 	HISTOADJUSTTYPE		m_RedAdjustMethod;
 	HISTOADJUSTTYPE		m_GreenAdjustMethod;
 	HISTOADJUSTTYPE		m_BlueAdjustMethod;
+
+	static constexpr inline int BitmapNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
 
 
 	int	GetHATBitmap(HISTOADJUSTTYPE hat)
@@ -94,22 +96,22 @@ public:
 	void	SetRedAdjustMethod(HISTOADJUSTTYPE hat)
 	{
 		m_RedAdjustMethod = hat;
-		m_RedHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), (INT)(size_t)BTNST_AUTO_GRAY);
-		m_RedHAT.Invalidate(TRUE);
+		m_RedHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), BitmapNumber);
+		m_RedHAT.Invalidate(true);
 	};
 
 	void	SetGreenAdjustMethod(HISTOADJUSTTYPE hat)
 	{
 		m_GreenAdjustMethod = hat;
-		m_GreenHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), (INT)(size_t)BTNST_AUTO_GRAY);
-		m_GreenHAT.Invalidate(TRUE);
+		m_GreenHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), BitmapNumber);
+		m_GreenHAT.Invalidate(true);
 	};
 
 	void	SetBlueAdjustMethod(HISTOADJUSTTYPE hat)
 	{
 		m_BlueAdjustMethod = hat;
-		m_BlueHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), (INT)(size_t)BTNST_AUTO_GRAY);
-		m_BlueHAT.Invalidate(TRUE);
+		m_BlueHAT.SetBitmaps(GetHATBitmap(hat), RGB(255, 0, 255), BitmapNumber);
+		m_BlueHAT.Invalidate(true);
 	};
 
 // Overrides

@@ -2,25 +2,25 @@
 #define _RAWUTILS_H__
 
 #if DSSFILEDECODING==1
-BOOL	IsSuperPixels();
-BOOL	IsRawBayer();
-BOOL	IsRawAHD();
-BOOL	IsRawBilinear();
+bool IsSuperPixels();
+bool IsRawBayer();
+bool IsRawAHD();
+bool IsRawBilinear();
 
-void	PushRAWSettings(BOOL bSuperPixel, BOOL bRawBayer);
-void	PopRAWSettings();
+void PushRAWSettings(bool bSuperPixel, bool bRawBayer);
+void PopRAWSettings();
 
-BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel);
-BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+bool IsRAWPicture(LPCTSTR szFileName, CString& strModel);
+bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress);
 
 #else
-inline BOOL	IsSuperPixels()		{ return FALSE; };
-inline BOOL	IsRawBayer()		{ return FALSE; };
-inline BOOL	IsRawAHD()			{ return FALSE; };
-inline BOOL	IsRawBilinear()		{ return FALSE; };
+inline bool	IsSuperPixels()		{ return false; };
+inline bool	IsRawBayer()		{ return false; };
+inline bool	IsRawAHD()			{ return false; };
+inline bool	IsRawBilinear()		{ return false; };
 
-inline void	PushRAWSettings(BOOL bSuperPixel, BOOL bRawBayer) {};
+inline void	PushRAWSettings(bool bSuperPixel, bool bRawBayer) {};
 inline void	PopRAWSettings() {};
 
 #endif // !DSSFILEDECODING

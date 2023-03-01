@@ -1,179 +1,52 @@
 #include <stdafx.h>
-
 #include "Multitask.h"
-#include "Registry.h"
+#include <QSettings>
+#include <omp.h>
 
-/* ------------------------------------------------------------------- */
-
-LONG	CMultitask::GetNrProcessors(BOOL bReal)
+int CMultitask::GetNrCurrentOmpThreads()
 {
-	LONG				lResult = 1;
-	CRegistry			reg;
-	SYSTEM_INFO			SysInfo;
-	DWORD				dwMaxProcessors  =0;
+	return omp_get_num_threads();	// Returns 1 if outside parallel region, else will return threads/cores used!
+}
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("MaxProcessors"), dwMaxProcessors);
-
-	GetSystemInfo(&SysInfo);
-	lResult		= SysInfo.dwNumberOfProcessors;
-	if (!bReal && dwMaxProcessors)
-		lResult = min(static_cast<long>(dwMaxProcessors), lResult);
-
-	return lResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMultitask::SetUseAllProcessors(BOOL bUseAll)
+int CMultitask::GetNrProcessors(bool bReal)
 {
-	CRegistry			reg;
+	const auto nrProcessorsSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
 
+	//SYSTEM_INFO SysInfo;
+	//GetSystemInfo(&SysInfo);
+	//int lResult = SysInfo.dwNumberOfProcessors;
+	const int nrProcessors = std::max(omp_get_num_procs(), 1);
+	if (!bReal && nrProcessorsSetting != 0)
+		return std::min(static_cast<int>(nrProcessorsSetting), nrProcessors);
+	else
+		return nrProcessors;
+}
+
+void CMultitask::SetUseAllProcessors(bool bUseAll)
+{
+	QSettings settings;
 	if (bUseAll)
-		reg.SaveKey(REGENTRY_BASEKEY, _T("MaxProcessors"), (DWORD)0);
+		settings.setValue("MaxProcessors", uint{ 0 });
 	else
-		reg.SaveKey(REGENTRY_BASEKEY, _T("MaxProcessors"), (DWORD)1);
-};
+		settings.setValue("MaxProcessors", uint{ 1 });
+}
 
-/* ------------------------------------------------------------------- */
-
-BOOL	CMultitask::GetReducedThreadsPriority()
+bool CMultitask::GetReducedThreadsPriority()
 {
-	CRegistry			reg;
-	DWORD				dwReduced  =0;
+	return QSettings{}.value("ReducedThreadPriority", true).toBool();
+}
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), dwReduced);
-
-	return dwReduced;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMultitask::SetReducedThreadsPriority(BOOL bReduced)
+void CMultitask::SetReducedThreadsPriority(bool bReduced)
 {
-	CRegistry			reg;
+	QSettings{}.setValue("ReducedThreadPriority", bReduced);
+}
 
-	if (bReduced)
-		reg.SaveKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), (DWORD)1);
-	else
-		reg.SaveKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), (DWORD)0);
-};
-
-/* ------------------------------------------------------------------- */
-
-DWORD	WINAPI	StartThreadProc(LPVOID lpParameter)
+bool CMultitask::GetUseSimd()
 {
-	DWORD				dwResult = 0;
-	CMultitask *		pMultitask = reinterpret_cast<CMultitask *>(lpParameter);
+	return QSettings{}.value("UseSimd", true).toBool();
+}
 
-	if (pMultitask)
-		pMultitask->DoTask(pMultitask->GetThreadEvent(GetCurrentThreadId()));
-
-	return dwResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-HANDLE	CMultitask::GetAvailableThread()
+void CMultitask::SetUseSimd(const bool bUseSimd)
 {
-	HANDLE				hResult = nullptr;
-	DWORD				dwResult;
-
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
-	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+(DWORD)m_vEvents.size()))
-	{
-		// An event was triggered
-		LONG			lIndice = dwResult-WAIT_OBJECT_0;
-
-		ResetEvent(m_vEvents[lIndice]);
-		hResult = m_vThreads[lIndice];
-	};
-
-	return hResult;
-};
-/* ------------------------------------------------------------------- */
-
-DWORD	CMultitask::GetAvailableThreadId()
-{
-	DWORD				hResult = 0;
-	DWORD				dwResult;
-
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
-	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+m_vEvents.size()))
-	{
-		// An event was triggered
-		LONG			lIndice = dwResult-WAIT_OBJECT_0;
-
-		ResetEvent(m_vEvents[lIndice]);
-		hResult = m_vThreadIds[lIndice];
-	};
-
-	return hResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMultitask::StartThreads(LONG lNrThreads)
-{
-	LONG				i;
-
-	if (!lNrThreads)
-		lNrThreads = GetNrProcessors();
-
-	for (i = 0;i<lNrThreads;i++)
-	{
-		// Create a thread for each task
-		DWORD			dwThreadID;
-		HANDLE			hEvent;
-		HANDLE			hThread;
-
-		hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
-		if (hEvent)
-		{
-			m_vEvents.push_back(hEvent);
-			hThread = CreateThread(nullptr, 0, StartThreadProc, (LPVOID)this, CREATE_SUSPENDED, &dwThreadID);
-			if (hThread)
-			{
-				m_vThreads.push_back(hThread);
-				m_vThreadIds.push_back(dwThreadID);
-			};
-		};
-	};
-
-	if (GetReducedThreadsPriority())
-	{
-		for (i = 0;i<lNrThreads;i++)
-			SetThreadPriority(m_vThreads[i], THREAD_PRIORITY_BELOW_NORMAL);
-	};
-
-	for (i = 0;i<lNrThreads;i++)
-		ResumeThread(m_vThreads[i]);
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMultitask::CloseAllThreads()
-{
-	if (m_vThreads.size())
-	{
-		WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), TRUE, INFINITE);
-
-		for (LONG i = 0;i<m_vThreads.size();i++)
-		{
-			PostThreadMessage(m_vThreadIds[i], WM_MT_STOP, 0, 0);
-		};
-
-		WaitForMultipleObjects((DWORD)m_vThreads.size(), &(m_vThreads[0]), TRUE, INFINITE);
-
-		for (LONG i = 0;i<m_vThreads.size();i++)
-		{
-			CloseHandle(m_vThreads[i]);
-			CloseHandle(m_vEvents[i]);
-		};
-
-		m_vThreads.clear();
-		m_vThreadIds.clear();
-		m_vEvents.clear();
-	};
-};
-
-/* ------------------------------------------------------------------- */
+	QSettings{}.setValue("UseSimd", bUseSimd);
+}

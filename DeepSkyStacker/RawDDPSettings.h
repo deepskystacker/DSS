@@ -1,60 +1,78 @@
-#include "afxwin.h"
-#if !defined(AFX_RAWDDPSETTINGS_H__ABCA7A4A_5016_4D90_BE60_7053D5D10AF5__INCLUDED_)
-#define AFX_RAWDDPSETTINGS_H__ABCA7A4A_5016_4D90_BE60_7053D5D10AF5__INCLUDED_
+#ifndef RAWDDPSETTINGS_H
+#define RAWDDPSETTINGS_H
+#include <memory>
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// RawDDPSettings.h : header file
-//
+class Workspace;
+class QAbstractButton;
+class QValidator;
+class CDSLR;
+enum CFATYPE : unsigned int;
 
-#include "RawFilesTab.h"
-#include "FitsFilesTab.h"
+#include "DSSCommon.h"
+#include <QDialog>
 
-/////////////////////////////////////////////////////////////////////////////
-// CRawDDPSettings dialog
+namespace Ui {
+	class RawDDPSettings;
+}
 
-class CRawDDPSettings : public CDialog
+class RawDDPSettings : public QDialog
 {
-// Construction
+	Q_OBJECT
+
+typedef QDialog
+		Inherited;
 public:
-	CRawDDPSettings(CWnd* pParent = nullptr);   // standard constructor
+	explicit RawDDPSettings(QWidget *parent = nullptr);
+	~RawDDPSettings();
 
-// Dialog Data
-	//{{AFX_DATA(CRawDDPSettings)
-	enum { IDD = IDD_RAWSETTINGS };
-	CButton	m_OK;
-	//}}AFX_DATA
+private slots:
+	void accept() override;
+	void apply();
+	void reject() override;
+	void on_buttonBox_clicked(QAbstractButton *button);
+
+	// Slots for RAW Files tab
+	void on_brightness_textEdited(const QString&);
+	void on_redScale_textEdited(const QString&);
+	void on_blueScale_textEdited(const QString&);
+	void on_noWB_stateChanged();
+	void on_cameraWB_stateChanged();
+	void on_bilinear_clicked();
+	void on_AHD_clicked();
+	void on_rawBayer_clicked();
+	void on_superPixels_clicked();
+
+	// Slots for FITS Files tab
+	void on_isFITSRaw_clicked(bool);
+	void on_DSLRs_currentIndexChanged(int);
+	void on_brightness_2_textEdited(const QString&);
+	void on_redScale_2_textEdited(const QString&);
+	void on_blueScale_2_textEdited(const QString&);
+	void on_bilinear_2_toggled(bool);
+	void on_AHD_2_toggled(bool);
+	void on_rawBayer_2_toggled(bool);
+	void on_superPixels_2_toggled(bool);
+private:
+	Ui::RawDDPSettings *ui;
+	std::unique_ptr<Workspace> workspace;
+	std::vector<CDSLR> vector_DSLRs;
+	bool		initialised;
+	QValidator *	scaleValidator;
+	QPixmap bggrPix;
+	QPixmap gbrgPix;
+	QPixmap grbgPix;
+	QPixmap rggbPix;
+	QPixmap cygmcymgPix;
 
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CRawDDPSettings)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+	static void fillDSLRList(std::vector<CDSLR> & vDSLRs);
+	RawDDPSettings & updateBayerPattern();
+	RawDDPSettings & updateControls();
 
-// Implementation
-private :
-	CStatic					m_SheetStatic;
-	CPropertySheet			m_Sheet;
-	CRawFilesTab			m_tabRAWFiles;
-	CFitsFilesTab			m_tabFITSFiles;
 
-	void	UpdateControls();
 
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(CRawDDPSettings)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
-	afx_msg void OnApply();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+	void showEvent(QShowEvent *event) override;
+	void onInitDialog();
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_RAWDDPSETTINGS_H__ABCA7A4A_5016_4D90_BE60_7053D5D10AF5__INCLUDED_)
+#endif // RAWDDPSETTINGS_H

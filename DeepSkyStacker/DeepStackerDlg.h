@@ -1,9 +1,7 @@
-#if !defined(AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_)
-#define AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_
 
-#if _MSC_VER > 1000
+
 #pragma once
-#endif // _MSC_VER > 1000
+
 // DeepStackerDlg.h : header file
 //
 
@@ -52,10 +50,10 @@ public :
 			return false;
 	};
 
-	BOOL	Load(FILE * hFile)
+	bool	Load(FILE * hFile)
 	{
-		LONG		lNameSize;
-		TCHAR		szName[2000];
+		int		lNameSize;
+		TCHAR	szName[2000] = { _T('\0') };
 
 		fread(&lNameSize, sizeof(lNameSize), 1, hFile);
 		fread(szName, sizeof(TCHAR), lNameSize, hFile);
@@ -63,9 +61,9 @@ public :
 		return m_BezierAdjust.Load(hFile) && m_HistoAdjust.Load(hFile);
 	};
 
-	BOOL	Save(FILE * hFile)
+	bool	Save(FILE * hFile)
 	{
-		LONG		lNameSize = m_strName.GetLength()+1;
+		int lNameSize = m_strName.GetLength() + 1;
 		fwrite(&lNameSize, sizeof(lNameSize), 1, hFile);
 		fwrite((LPCTSTR)m_strName, sizeof(TCHAR), lNameSize, hFile);
 
@@ -80,30 +78,30 @@ class CDSSSettings
 {
 private :
 	std::list<CDSSSetting>	m_lSettings;
-	BOOL					m_bLoaded;
+	bool					m_bLoaded;
 
 public :
 	CDSSSettings()
 	{
-		m_bLoaded = FALSE;
+		m_bLoaded = false;
 	};
 	virtual ~CDSSSettings() {};
 
-	BOOL	IsLoaded()
+	bool	IsLoaded()
 	{
 		return m_bLoaded;
 	};
-	BOOL	Load(LPCTSTR szFile = nullptr);
-	BOOL	Save(LPCTSTR szFile = nullptr);
+	bool	Load(LPCTSTR szFile = nullptr);
+	bool	Save(LPCTSTR szFile = nullptr);
 
-	LONG	Count()
+	int Count()
 	{
-		return (LONG)m_lSettings.size();
+		return static_cast<int>(m_lSettings.size());
 	};
 
-	BOOL	GetItem(LONG lIndice, CDSSSetting & cds)
+	bool	GetItem(int lIndice, CDSSSetting & cds)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (lIndice < m_lSettings.size())
 		{
@@ -117,21 +115,21 @@ public :
 			};
 
 			cds = (*it);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	Add(const CDSSSetting & cds)
+	bool	Add(const CDSSSetting & cds)
 	{
 		m_lSettings.push_back(cds);
-		return TRUE;
+		return true;
 	};
 
-	BOOL	Remove(LONG lIndice)
+	bool	Remove(int lIndice)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (lIndice < m_lSettings.size())
 		{
@@ -145,18 +143,28 @@ public :
 			};
 
 			m_lSettings.erase(it);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 };
+class QSplitter;
+class QStackedWidget;
 
-#include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "LibraryDlg.h"
+
 #include "ExplorerBar.h"
+#include "StackingDlg.h"
+
+#include "ProcessingDlg.h"
+//#include "LibraryDlg.h"
+
 #include "afxwin.h"
+
+#include "qwinwidget.h"
+#include "qwinhost.h"
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
@@ -171,14 +179,19 @@ enum DeepStackerDlgMessages
 class CDeepStackerDlg : public CDialog
 {
 private :
-	CStackingDlg			m_dlgStacking;
-	CProcessingDlg			m_dlgProcessing;
-	CLibraryDlg				m_dlgLibrary;
+	QWinWidget*		widget;
+	QSplitter*		splitter;
+	ExplorerBar*	explorerBar;
+	QStackedWidget* stackedWidget;
+	DSS::StackingDlg*	stackingDlg;
+	QWinHost* winHost;
+
+	CProcessingDlg	processingDlg;
+	//CLibraryDlg				m_dlgLibrary;
 
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
-	CExplorerBar			m_ExplorerBar;
-	DWORD					m_dwCurrentTab;
+	std::uint32_t			CurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
     ITaskbarList3*          m_taskbarList;
@@ -187,10 +200,21 @@ private :
 // Construction
 public:
 	CDeepStackerDlg(CWnd* pParent = nullptr);   // standard constructor
-	void	ChangeTab(DWORD dwTabID);
-	DWORD	GetCurrentTab()
+
+	~CDeepStackerDlg()
 	{
-		return m_dwCurrentTab;
+		if (explorerBar)
+			delete explorerBar;
+		if (stackingDlg)
+			delete stackingDlg;
+		if (widget)
+			delete widget;
+	};
+
+	void	ChangeTab(std::uint32_t dwTabID);
+	std::uint32_t GetCurrentTab()
+	{
+		return CurrentTab;
 	};
 
 	void	SetStartingFileList(LPCTSTR szStartFileList)
@@ -198,20 +222,20 @@ public:
 		m_strStartFileList = szStartFileList;
 	};
 
-	void disableSubDialogs()
+	inline void disableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(false);
-		m_dlgProcessing.EnableWindow(false);
-		m_dlgLibrary.EnableWindow(false);
-		m_ExplorerBar.EnableWindow(false);
+		stackingDlg->setEnabled(false);
+		processingDlg.EnableWindow(false);
+		//m_dlgLibrary.EnableWindow(false);
+		explorerBar->setEnabled(false);
 	};
 
-	void enableSubDialogs()
+	inline void enableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(true);
-		m_dlgProcessing.EnableWindow(true);
-		m_dlgLibrary.EnableWindow(true);
-		m_ExplorerBar.EnableWindow(true);
+		stackingDlg->setEnabled(true);
+		processingDlg.EnableWindow(true);
+		//m_dlgLibrary.EnableWindow(true);
+		explorerBar->setEnabled(true);
 	};
 
 // Dialog Data
@@ -233,20 +257,20 @@ public:
 		return m_Settings;
 	};
 
-	CStackingDlg & GetStackingDlg()
+	DSS::StackingDlg & GetStackingDlg()
 	{
-		return m_dlgStacking;
+		return *stackingDlg;
 	};
 
 	CProcessingDlg & GetProcessingDlg()
 	{
-		return m_dlgProcessing;
+		return processingDlg;
 	};
 
 
-	CExplorerBar & GetExplorerBar()
+	ExplorerBar & GetExplorerBar()
 	{
-		return m_ExplorerBar;
+		return *explorerBar;
 	};
 
 	void	SetCurrentFileInTitle(LPCTSTR szFileName);
@@ -330,7 +354,7 @@ inline CDSSSettings & GetDSSSettings(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline CStackingDlg & GetStackingDlg(CWnd * pDialog)
+inline DSS::StackingDlg & GetStackingDlg(CWnd * pDialog)
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(pDialog);
 
@@ -359,11 +383,8 @@ inline void	SetCurrentFileInTitle(LPCTSTR szFileName)
 
 /* ------------------------------------------------------------------- */
 
-void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath);
-void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter = false);
+void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath);
+void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter = false);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-
-#endif // !defined(AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_)

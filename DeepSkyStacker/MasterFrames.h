@@ -6,37 +6,36 @@
 #include "DarkFrame.h"
 #include "StackingTasks.h"
 #include "Stars.h"
-#include "Registry.h"
+
 #include "Workspace.h"
 
 class CMasterFrames
 {
 private :
-	CSmartPtr<CMemoryBitmap>	m_pMasterOffset;
+	std::shared_ptr<CMemoryBitmap> m_pMasterOffset;
 	CDarkFrame					m_MasterDark;
 	CFlatFrame					m_MasterFlat;
-	DWORD						m_dwDebloom;
+	bool						m_fDebloom;
 
 public :
 	CMasterFrames()
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 
-		m_dwDebloom = 0;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Debloom"), m_dwDebloom);
+		m_fDebloom = workspace.value("Stacking/Debloom", false).toBool();
 	};
 
 	virtual ~CMasterFrames()
 	{
 	};
 
-	void	ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
-	void	ApplyMasterDark(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress);
-	void	ApplyMasterFlat(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
-	void	ApplyHotPixelInterpolation(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
-	void	ApplyAllMasters(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress);
+	void ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, ProgressBase * pProgress);
+	void ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress);
+	void ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, ProgressBase * pProgress);
 
-	BOOL	LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress);
+	bool	LoadMasters(const CStackingInfo* pStackingInfo, ProgressBase* pProgress);
 };
 
 #endif // __MASTERFRAMES_H__

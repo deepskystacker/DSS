@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ExplorerBar</class>
+ <widget class="QDockWidget" name="ExplorerBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>275</width>
+    <height>763</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>260</width>
+    <height>454</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>275</width>
+    <height>524287</height>
+   </size>
+  </property>
+  <property name="styleSheet">
+   <string/>
+  </property>
+  <property name="features">
+   <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+  </property>
+  <property name="allowedAreas">
+   <set>Qt::LeftDockWidgetArea</set>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">DeepSkyStacker</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>260</width>
+     <height>430</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>350</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string/>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+    <property name="spacing">
+     <number>24</number>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>263</width>
+         <height>727</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>230</width>
+         <height>700</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QGroupBox" name="registerAndStack">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: lightcyan</string>
+          </property>
+          <property name="title">
+           <string comment="IDC_STACKING_TITLE">Registering and Stacking</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="7,3,4">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="leftMargin">
+            <number>5</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>5</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QFrame" name="frame_1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="openLights">
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKING_OPENFILES">Open picture files...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="openDarks">
+                <property name="styleSheet">
+                 <string notr="true">margin-left: 30</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKING_OPENDARKS">dark files...</string>
+                </property>
+                <property name="margin">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="openFlats">
+                <property name="styleSheet">
+                 <string notr="true">margin-left: 30</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKING_OPENFLATS">flat files...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="openDarkFlats">
+                <property name="styleSheet">
+                 <string notr="true">margin-left: 30</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKING_OPENDARKFLATS">dark flat files...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="openBias">
+                <property name="styleSheet">
+                 <string notr="true">margin-left: 30</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKING_OPENOFFSETS">offset/bias files...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>5</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="openFilelist">
+                <property name="text">
+                 <string comment="IDC_STACKING_LOADLIST">Open a File List...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="saveFilelist">
+                <property name="text">
+                 <string comment="IDC_STACKING_SAVELIST">Save the File List...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>10</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="clearList">
+                <property name="text">
+                 <string comment="IDC_STACKING_CLEARLIST">Clear List</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="checkAll">
+                <property name="text">
+                 <string comment="IDC_STACKING_CHECKALL">Check all</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="checkAbove">
+                <property name="text">
+                 <string comment="IDC_STACKING_CHECKABOVE">Check above a threshold...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="unCheckAll">
+                <property name="text">
+                 <string comment="IDC_STACKING_UNCHECKALL">Uncheck all</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="frame_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="registerChecked">
+                <property name="text">
+                 <string comment="IDC_REGISTERING_REGISTERCHECKED">Register checked pictures...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="computeOffsets">
+                <property name="text">
+                 <string comment="IDC_STACKING_COMPUTEOFFSETS">Compute offsets...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="stackChecked">
+                <property name="text">
+                 <string comment="IDC_STACKING_STACKCHECKED">Stack checked pictures...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="batchStacking">
+                <property name="text">
+                 <string comment="IDC_STACKING_BATCHSTACK">Batch stacking...</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="processing">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(240, 240, 240)</string>
+          </property>
+          <property name="title">
+           <string comment="IDC_PROCESSING_TITLE">Processing</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="leftMargin">
+            <number>11</number>
+           </property>
+           <property name="topMargin">
+            <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>11</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="openPicture">
+             <property name="text">
+              <string comment="IDC_PROCESSING_OPENFILE">Open picture file...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="copyPicture">
+             <property name="text">
+              <string comment="IDC_PROCESSING_COPYTOCLIPBOARD">Copy current picture to clipboard</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="doStarMask">
+             <property name="text">
+              <string comment="IDC_PROCESSING_CREATESTARMASK">Create a Star Mask...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="savePicture">
+             <property name="text">
+              <string comment="IDC_PROCESSING_SAVEFILE">Save picture to file...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="options">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: lightcyan</string>
+          </property>
+          <property name="title">
+           <string comment="IDC_OPTIONS_TITLE">Options</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="leftMargin">
+            <number>11</number>
+           </property>
+           <property name="topMargin">
+            <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>11</number>
+           </property>
+           <property name="bottomMargin">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="settings">
+             <property name="text">
+              <string comment="IDC_OPTIONS_SETTINGS">Settings...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="ddpSettings">
+             <property name="styleSheet">
+              <string notr="true">margin-left: 30</string>
+             </property>
+             <property name="text">
+              <string comment="IDC_OPTIONS_RAWDDPSETTINGS">Raw/FITS DDP Settings...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="loadSettings">
+             <property name="styleSheet">
+              <string notr="true">margin-left: 30</string>
+             </property>
+             <property name="text">
+              <string comment="IDC_OPTIONS_LOADSETTINGS">Load...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="saveSettings">
+             <property name="styleSheet">
+              <string notr="true">margin-left: 30</string>
+             </property>
+             <property name="text">
+              <string comment="IDC_OPTIONS_SAVESETTINGS">Save...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="recommendedSettings">
+             <property name="styleSheet">
+              <string notr="true">margin-left: 30</string>
+             </property>
+             <property name="text">
+              <string comment="IDC_OPTIONS_RECOMMANDEDSETTINGS">Recommended...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>10</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="about">
+             <property name="text">
+              <string comment="IDC_ABOUT">About DeepSkyStacker...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="help">
+             <property name="text">
+              <string comment="IDC_CONTEXTHELP">DeepSkyStacker's Help...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>openLights</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenLights()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openDarks</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenDarks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openFlats</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenFlats()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openDarkFlats</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenDarkFlats()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>97</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openBias</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenBias()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openFilelist</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenFilelist()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveFilelist</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onSaveFilelist()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearList</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onClearList()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkAll</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onCheckAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkAbove</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onCheckAbove()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>235</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>unCheckAll</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onUncheckAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>registerChecked</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onRegisterChecked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>computeOffsets</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onComputeOffsets()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stackChecked</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onStackChecked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>316</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>batchStacking</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onBatchStacking()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>333</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>openPicture</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onOpenPicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copyPicture</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onCopyPicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doStarMask</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onDoStarMask()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>418</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>savePicture</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onSavePicture()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>settings</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ddpSettings</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onDDPSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>loadSettings</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onLoadSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>515</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saveSettings</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onSaveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>532</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>recommendedSettings</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onRecommendedSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>about</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>566</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>help</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onHelp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>122</x>
+     <y>583</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>320</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>linkActivated()</slot>
+  <slot>onAbout()</slot>
+  <slot>onSettings()</slot>
+  <slot>onDDPSettings()</slot>
+  <slot>onLoadSettings()</slot>
+  <slot>onSaveSettings()</slot>
+  <slot>onHelp()</slot>
+  <slot>onRecommendedSettings()</slot>
+  <slot>onOpenPicture()</slot>
+  <slot>onCopyPicture()</slot>
+  <slot>onDoStarMask()</slot>
+  <slot>onSavePicture()</slot>
+  <slot>onStackChecked()</slot>
+  <slot>onBatchStacking()</slot>
+  <slot>onComputeOffsets()</slot>
+  <slot>onRegisterChecked()</slot>
+  <slot>onUncheckAll()</slot>
+  <slot>onCheckAbove()</slot>
+  <slot>onCheckAll()</slot>
+  <slot>onClearList()</slot>
+  <slot>onSaveFilelist()</slot>
+  <slot>onOpenFilelist()</slot>
+  <slot>onOpenLights()</slot>
+  <slot>onOpenDarks()</slot>
+  <slot>onOpenFlats()</slot>
+  <slot>onOpenBias()</slot>
+  <slot>onOpenDarkFlats()</slot>
+ </slots>
+</ui>

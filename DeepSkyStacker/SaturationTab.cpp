@@ -4,14 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "SaturationTab.h"
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CSaturationTab property page
@@ -26,7 +19,7 @@ CSaturationTab::CSaturationTab() : CChildPropertyPage(CSaturationTab::IDD)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 CSaturationTab::~CSaturationTab()
@@ -102,28 +95,30 @@ void CSaturationTab::OnUndo()
 
 BOOL CSaturationTab::OnSetActive()
 {
+	constexpr auto IconNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
+
 	if (m_bFirstActivation)
 	{
-		m_Redo.DrawTransparent(TRUE);
-		m_Undo.DrawTransparent(TRUE);
-		m_Redo.SetFlat(TRUE);
-		m_Undo.SetFlat(TRUE);
-		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Redo.DrawTransparent(true);
+		m_Undo.DrawTransparent(true);
+		m_Redo.SetFlat(true);
+		m_Undo.SetFlat(true);
+		m_Redo.SetIcon(IDI_REDO, IconNumber);
+		m_Undo.SetIcon(IDI_UNDO, IconNumber);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
-		m_Settings.DrawTransparent(TRUE);
-		m_Settings.SetFlat(TRUE);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Settings.DrawTransparent(true);
+		m_Settings.SetFlat(true);
+		m_Settings.SetIcon(IDI_SETTINGS, IconNumber);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
-//		m_ST_Saturation.SetBorder(TRUE);
+//		m_ST_Saturation.SetBorder(true);
 		m_SaturationTitle.SetTextColor(RGB(0, 0, 0));
 		m_SaturationTitle.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
 	return CChildPropertyPage::OnSetActive();
@@ -134,9 +129,8 @@ BOOL CSaturationTab::OnSetActive()
 void CSaturationTab::UpdateTexts()
 {
 	CString				strText;
-	LONG				lPos;
 
-	lPos = m_Saturation.GetPos();
+	auto lPos = m_Saturation.GetPos();
 	strText.Format(_T("%ld %%"), lPos-50);
 
 	m_ST_Saturation.SetText(strText);

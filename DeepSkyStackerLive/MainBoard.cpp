@@ -2,10 +2,12 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
+#include <QSettings>
+
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "MainBoard.h"
-#include "Registry.h"
 #include <gdiplus.h>
 #include "FolderDlg.h"
 #include "RestartMonitoring.h"
@@ -13,6 +15,7 @@
 #include <algorithm>
 #include <FrameInfo.h>
 #include <..\SMTP\PJNSMTP.h>
+#include "FrameInfoSupport.h"
 
 const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
@@ -409,7 +412,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pGraphics->DrawPath(pPen, pOutlinePath);
 		delete pOutlinePath;
 
-		if (m_strProgress.GetLength())
+		if (!m_strProgress.isEmpty())
 		{
 			Font *				pFont;
 			StringFormat		format;
@@ -420,7 +423,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 			format.SetAlignment(StringAlignmentCenter);
 			format.SetLineAlignment(StringAlignmentCenter);
 
-			pGraphics->DrawString(CComBSTR(m_strProgress), -1, pFont, pf, &format, &brush);
+			pGraphics->DrawString(m_strProgress.toStdWString().c_str(), -1, pFont, pf, &format, &brush);
 
 			delete pFont;
 		};
@@ -911,10 +914,11 @@ BOOL	CMainBoard::CheckRestartMonitoring()
 BOOL	CMainBoard::IsMonitoredFolderOk()
 {
 	BOOL					bResult = FALSE;
-	CString					strFolder;
-	CRegistry				reg;
 
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+	settings.endGroup();
 
 	if (strFolder.GetLength())
 	{
@@ -969,9 +973,12 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 			m_MonitoredFolder.SetWindowText(strFolder);
 			InvalidateRect(nullptr);
 
-			CRegistry			reg;
+			QSettings settings; 
 
-			reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+			settings.beginGroup("DeepSkyStackerLive");
+			settings.setValue("MonitoredFolder", QString::fromStdWString(strFolder.GetString()));
+			settings.endGroup();
+
 			bResult = TRUE;
 		};	};
 
@@ -991,15 +998,16 @@ BOOL CMainBoard::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CRegistry			reg;
-	CString				strFolder;
-
 	m_Stats.GetWindowText(m_strStatsMask);
 	m_LiveEngine.SetWindow(m_hWnd);
 
 	if (IsMonitoredFolderOk())
 	{
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+		settings.endGroup();
+
 		m_MonitoredFolder.SetWindowText(strFolder);
 	};
 
@@ -1028,19 +1036,23 @@ void CMainBoard::OnSize(UINT nType, int cx, int cy)
 
 void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 {
-	CString					strFolder;
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
 	HANDLE					hFindFiles;
-	CRegistry				reg;
 	std::vector<CString>	vDelayedFiles;
-	CString					strExcluded;
 
 	vFiles.clear();
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-	if (!reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Excluded"), strExcluded))
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+	CString strExcluded{ settings.value("Excluded", "").toString().toStdWString().c_str() };
+	// setting.endGroup(); is at end of function
+
+	if (strExcluded.IsEmpty())
+	{
 		strExcluded = _T(".TMP;.BAK;.TEMP;.TXT");
-	strExcluded.MakeUpper();
+		strExcluded.MakeUpper();
+	}
 
 	strFolder += _T("\\");
 	strFileMask = strFolder;
@@ -1108,14 +1120,14 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 
 		if (vDelayedFiles.size() && m_ulSHRegister)
 		{
-			// Use and alternate method
-			DWORD			dwPollingTime = 10;
-
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
+			// Use an alternate method
+			std::uint32_t dwPollingTime{ settings.value("PollingTime", 10U).toUInt() };
 
 			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
 	};
+	settings.endGroup();
+
 };
 
 /* ------------------------------------------------------------------- */
@@ -1144,7 +1156,7 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 
 	if (vNewFiles.size())
 	{
-		CString						strNewFiles;
+		QString strNewFiles;
 		std::vector<CBitmapInfo>	vBitmapInfos;
 
 		// Sort the new files by date/time
@@ -1166,11 +1178,11 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 			m_vAllFiles.push_back(vNewFiles[i]);
 		std::sort(m_vAllFiles.begin(), m_vAllFiles.end());
 
-		strNewFiles.Format(IDS_LOG_NEWFILESFOUND, vNewFiles.size());
+		strNewFiles = QCoreApplication::translate("MainBoard", "%1 new file(s) found\n", "IDS_LOG_NEWFILESFOUND").arg(vNewFiles.size());
 		AddToLog(strNewFiles, TRUE, FALSE, FALSE, LOG_GREEN_TEXT);
 		for (LONG i = 0;i<vNewFiles.size();i++)
 		{
-			strNewFiles.Format(IDS_LOG_NEWFILE, (LPCTSTR)vNewFiles[i]);
+			strNewFiles = QCoreApplication::translate("MainBoard", "-> New file: %1\n", "IDS_LOG_NEWFILE").arg(vNewFiles[i].GetString());
 			AddToLog(strNewFiles, FALSE, FALSE, FALSE, LOG_GREEN_TEXT);
 			m_LiveEngine.AddFileToProcess(vNewFiles[i]);
 		};
@@ -1210,11 +1222,13 @@ void CMainBoard::OnMonitor()
 	KillTimer(1);
 	try
 	{
-		CRegistry				reg;
-		CString					strFolder;
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+		settings.endGroup();
+
 		std::vector<CString>	vNewFiles;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		m_vAllFiles.clear();
 		GetNewFilesInMonitoredFolder(vNewFiles);
@@ -1254,19 +1268,17 @@ void CMainBoard::OnMonitor()
 
 		if (!m_ulSHRegister)
 		{
-			// Use and alternate method
-			DWORD			dwPollingTime = 10;
-
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
+			// Use an alternate method
+			settings.beginGroup("DeepSkyStackerLive");
+			std::uint32_t dwPollingTime{ settings.value("PollingTime", 10U).toUInt() };
+			settings.endGroup();
 
 			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
 
 		//if (m_ulSHRegister)
 		{
-			CString			strText;
-
-			strText.Format(IDS_LOG_STARTMONITORING, (LPCTSTR)strFolder);
+			const QString strText(QCoreApplication::translate("MainBoard", "Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(strFolder.GetString()));
 			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
 		}
 		/*else
@@ -1292,13 +1304,12 @@ void CMainBoard::OnStop()
 	KillTimer(1);
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
-		CRegistry			reg;
-		CString				strFolder;
-		CString				strText;
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		QString strFolder{ settings.value("MonitoredFolder", "").toString() };
+		settings.endGroup();
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-
-		strText.Format(IDS_LOG_STOPMONITORING, (LPCTSTR)strFolder);
+		const QString strText(QCoreApplication::translate("MainBoard", "Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
@@ -1313,16 +1324,9 @@ void CMainBoard::OnStack()
 {
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
-		CRegistry			reg;
-		CString				strFolder;
-		CString				strText;
-
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-
-		if (m_bStacking)
-			strText.Format(IDS_LOG_STARTSTACKING, (LPCTSTR)strFolder);
-		else
-			strText.Format(IDS_LOG_STOPSTACKING, (LPCTSTR)strFolder);
+		const QString strText(m_bStacking ? 
+			QCoreApplication::translate("MainBoard", "Start Stacking files\n", "IDS_LOG_STARTSTACKING") :
+			QCoreApplication::translate("MainBoard", "Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
 
 	};
@@ -1382,16 +1386,15 @@ void	CMainBoard::InvalidateStats()
 
 LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
-
-	if (m_LiveEngine.GetMessage(&pMsg))
+	std::shared_ptr<CLiveEngineMsg>		pMsg;
+	if (m_LiveEngine.GetMessage(pMsg))
 	{
 		switch (pMsg->GetMessage())
 		{
 		case LEM_ADDTOLOG:
 			{
-				CString				strText;
-				BOOL				bDateTime,
+				QString strText;
+				bool				bDateTime,
 									bBold,
 									bItalic;
 				COLORREF			crColor;
@@ -1403,13 +1406,13 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 		case LEM_STARTPROGRESS :
 		case LEM_PROGRESSING :
 			{
-				CString				strProgress;
+				QString strProgress;
 				LONG				lAchieved,
 									lTotal;
 
 				if (pMsg->GetProgress(strProgress, lAchieved, lTotal))
 				{
-					if (strProgress.GetLength())
+					if (!strProgress.isEmpty())
 						m_strProgress = strProgress;
 					if (lTotal)
 						m_lProgressTotal = lTotal;
@@ -1431,22 +1434,22 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			break;
 		case LEM_FILELOADED :
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
-				CSmartPtr<C32BitsBitmap>	pWndBitmap;
+				std::shared_ptr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<C32BitsBitmap>	pWndBitmap;
 				CString						strFileName;
 
-				if (pMsg->GetImage(&pBitmap, &pWndBitmap, strFileName))
+				if (pMsg->GetImage(pBitmap, pWndBitmap, strFileName))
 					SetLastImage(pBitmap, pWndBitmap, strFileName);
 			}
 			break;
 		case LEM_SETSTACKEDIMAGE :
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
-				CSmartPtr<C32BitsBitmap>	pWndBitmap;
+				std::shared_ptr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<C32BitsBitmap>	pWndBitmap;
 				LONG						lNrStacked;
 				double						fExposure;
 
-				if (pMsg->GetStackedImage(&pBitmap, &pWndBitmap, lNrStacked, fExposure))
+				if (pMsg->GetStackedImage(pBitmap, pWndBitmap, lNrStacked, fExposure))
 				{
 					SetStackedImage(pBitmap, pWndBitmap);
 					m_lNrStacked = lNrStacked;
@@ -1457,7 +1460,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			break;
 		case LEM_SETFOOTPRINT :
 			{
-				CPointExt					pt1, pt2, pt3, pt4;
+				QPointF					pt1, pt2, pt3, pt4;
 
 				if (pMsg->GetFootprint(pt1, pt2, pt3, pt4))
 					SetFootprintInStackedImage(pt1, pt2, pt3, pt4);
@@ -1510,8 +1513,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			};
 		case LEM_WARNING :
 			{
-				CString						strWarning;
-
+				QString strWarning;
 				if (pMsg->GetWarning(strWarning))
 				{
 
@@ -1532,7 +1534,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 						hFile = _tfopen(strFile, _T("at"));
 						if (hFile)
 						{
-							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning, CP_UTF8));
+							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning.toStdWString().c_str(), CP_UTF8));
 							fclose(hFile);
 						};
 					};
@@ -1560,10 +1562,11 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 								smtp.Connect(strSMTP);
 
 								CPJNSMTPMessage m;
-								m.m_To.Add(CPJNSMTPAddress(strEmail));
+								CPJNSMTPAddress emailAddress{ strEmail };
+								m.m_To.Add(emailAddress);
 								m.m_From = CPJNSMTPAddress(strAccount);
 								m.m_sSubject = strObject;
-								m.AddTextBody(strWarning);
+								m.AddTextBody(strWarning.toStdWString().c_str());
 								smtp.SendMessage(m);
 
 								m_lNrEmails++;
@@ -1571,10 +1574,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 							}
 							catch (...)
 							{
-								CString		strError;
-
-								strError.LoadString(IDS_ERRORSENDINGEMAIL);
-								strError+="\n";
+								const QString strError(QCoreApplication::translate("MainBoard", "An error occurred while sending the email!\n", "IDS_ERRORSENDINGEMAIL"));
 								AddToLog(strError, TRUE, TRUE, FALSE, RGB(255, 0, 0));
 							};
 						};

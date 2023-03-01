@@ -1,16 +1,15 @@
 #ifndef _MULTIBITMAPPROCESS_H__
 #define _MULTIBITMAPPROCESS_H__
 
-#include "BitmapExt.h"
 
 class CBitmapPart
 {
 public :
 	CString						m_strFile;
-	LONG						m_lStartRow;
-	LONG						m_lEndRow;
-	LONG						m_lWidth;
-	LONG						m_lNrBitmaps;
+	int						m_lStartRow;
+	int						m_lEndRow;
+	int						m_lWidth;
+	int						m_lNrBitmaps;
 
 private :
 	void	CopyFrom(const CBitmapPart & bp)
@@ -23,7 +22,7 @@ private :
 	};
 
 public :
-	CBitmapPart(LPCTSTR szFile, LONG lStartRow, LONG lEndRow)
+	CBitmapPart(LPCTSTR szFile, int lStartRow, int lEndRow)
 	{
 		m_strFile	= szFile;
 		m_lStartRow = lStartRow;

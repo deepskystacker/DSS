@@ -1,26 +1,26 @@
-#ifndef __BACKGROUNDOPTIONS_H__
-#define __BACKGROUNDOPTIONS_H__
+#ifndef BACKGROUNDOPTIONS_H
+#define BACKGROUNDOPTIONS_H
 
-class CBackgroundOptions : public CDialog
+#include <QDialog>
+
+enum BACKGROUNDCALIBRATIONMODE : short;
+enum BACKGROUNDCALIBRATIONINTERPOLATION : short;
+enum RGBBACKGROUNDCALIBRATIONMETHOD : short;
+
+namespace Ui {
+class BackgroundOptions;
+}
+
+class BackgroundOptions : public QDialog
 {
-private :
-	CButton				m_Linear;
-	CButton				m_Rational;
-	CStatic				m_CalibrationPreview;
+    Q_OBJECT
 
-	CButton				m_None;
-	CButton				m_Minimum;
-	CButton				m_Middle;
-	CButton				m_Maximum;
-	CStatic				m_RGBCalibrationPreview;
+typedef QDialog
+		Inherited;
 
-	BACKGROUNDCALIBRATIONMODE			m_CalibrationMode;
-	BACKGROUNDCALIBRATIONINTERPOLATION	m_CalibrationInterpolation;
-	RGBBACKGROUNDCALIBRATIONMETHOD		m_RGBCalibrationMethod;
-
-// Construction
 public:
-	CBackgroundOptions(CWnd* pParent = nullptr);   // standard constructor
+    explicit BackgroundOptions(QWidget *parent = 0);
+    ~BackgroundOptions();
 
 	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
 	{
@@ -32,40 +32,30 @@ public:
 		return m_CalibrationMode;
 	};
 
-// Dialog Data
-	//{{AFX_DATA(CBackgroundOptions)
-	enum { IDD = IDD_BACKGROUNDOPTIONS };
-	//}}AFX_DATA
+private slots:
+    void on_rbLinear_clicked();
+    void on_rbRational_clicked();
+	void on_rbNone_clicked();
+	void on_rbMinimum_clicked();
+	void on_rbMiddle_clicked();
+	void on_rbMaximum_clicked();
 
+	void accept() override;
+	void reject() override;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CBackgroundOptions)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	//}}AFX_VIRTUAL
+private:
+    Ui::BackgroundOptions *ui;
+    BACKGROUNDCALIBRATIONMODE m_CalibrationMode;
+    BACKGROUNDCALIBRATIONINTERPOLATION m_CalibrationInterpolation;
+    RGBBACKGROUNDCALIBRATIONMETHOD m_RGBCalibrationMethod;
+	QPixmap pxNone;
+	QPixmap pxMin;
+	QPixmap pxMid;
+	QPixmap pxMax;
+	QPixmap pxLinear;
+	QPixmap pxRational;
 
-// Implementation
-private :
-	void		UpdateCalibrationPreview();
-	void		UpdateRGBCalibrationPreview();
-
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(CBackgroundOptions)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedLinear();
-	afx_msg void OnBnClickedRational();
-	afx_msg void OnBnClickedNone();
-	afx_msg void OnBnClickedMinimum();
-	afx_msg void OnBnClickedMiddle();
-	afx_msg void OnBnClickedMaximum();
+    void updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation);
 };
 
-
-#endif
+#endif // BACKGROUNDOPTIONS_H

@@ -2,6 +2,7 @@
 #define __IMAGESINKS_H__
 
 /* ------------------------------------------------------------------- */
+extern bool     g_bShowRefStars;
 
 typedef enum tagSELECTRECTMODE
 {
@@ -24,25 +25,25 @@ private :
 	SELECTRECTMODE	m_Mode;
 	CRect			m_rcSelect;
 	CRect			m_rcStart;
-	BOOL			m_bInSelecting;
+	bool			m_bInSelecting;
 	double			m_fXStart, m_fYStart;
 	double			m_fXEnd, m_fYEnd;
-	BOOL			m_bShowDrizzle;
+	bool			m_bShowDrizzle;
 
 private :
 	void	UpdateSelectRect();
 
 	HCURSOR			GetCursorFromMode(SELECTRECTMODE Mode);
-	SELECTRECTMODE	GetModeFromPosition(LONG lX, LONG lY);
+	SELECTRECTMODE	GetModeFromPosition(long lX, long lY);
 	void			GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDrizzle);
 
 public :
 	CSelectRectSink()
 	{
 		m_rcSelect.SetRectEmpty();
-		m_bInSelecting	= FALSE;
+		m_bInSelecting	= false;
 		m_Mode			= SRM_NONE;
-		m_bShowDrizzle	= FALSE;
+		m_bShowDrizzle	= false;
         m_fXStart       = 0;
         m_fYStart       = 0;
         m_fXEnd         = 0;
@@ -50,18 +51,18 @@ public :
 	};
 	virtual ~CSelectRectSink() {};
 
-	void	ShowDrizzleRectangles(BOOL bShow = TRUE)
+	void	ShowDrizzleRectangles(bool bShow = true)
 	{
 		m_bShowDrizzle = bShow;
 	};
 
-	virtual BOOL	Image_OnMouseMove(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonDown(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY);
+	virtual bool	Image_OnMouseMove(long lX, long lY) override;
+	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
+	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
-	BOOL	GetSelectRect(CRect & rcSelect)
+	bool	GetSelectRect(CRect & rcSelect)
 	{
 		rcSelect = m_rcSelect;
 
@@ -131,7 +132,7 @@ public :
 		m_fStdDev	= 0.0;
 	};
 
-	void	InitGrid(STARVECTOR & vStars, LONG lWidth, LONG lHeight);
+	void	InitGrid(STARVECTOR & vStars);
 	void	Clear()
 	{
 		m_vTriangles.clear();
@@ -154,89 +155,126 @@ typedef enum tagEDITSTARACTION
 	ESA_RESETCOMET		= 4
 }EDITSTARACTION;
 
+class CMemoryBitmap;
+
 class CEditStarsSink : public CWndImageSink
 {
-private :
+private:
 	CString						m_strFileName;
 	STARVECTOR					m_vStars;
 	STARVECTOR					m_vRefStars;
 	CBilinearParameters			m_Transformation;
 	VOTINGPAIRVECTOR			m_vVotedPairs;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CPointExt					m_ptCursor;
-	CGrayBitmap					m_GrayBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	QPointF					m_ptCursor;
+	CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
-	LONG						m_lRemovedIndice;
-	BOOL						m_bRemoveComet;
-	BOOL						m_bCometMode;
+	int							m_lRemovedIndice;
+	bool						m_bRemoveComet;
+	bool						m_bCometMode;
 	double						m_fXComet, m_fYComet;
-	BOOL						m_bComet;
+	bool						m_bComet;
 	double						m_fLightBkgd;
-	BOOL						m_bDirty;
+	bool						m_bDirty;
 	double						m_fScore;
-	LONG						m_lNrStars;
+	int							m_lNrStars;
 	double						m_fFWHM;
 	double						m_fBackground;
 	CQualityGrid				m_QualityGrid;
 
-private :
-
-	BOOL	IsRefStarVoted(LONG lStar)
+private:
+	template <bool Refstar>
+	bool isStarVoted(const int star)
 	{
-		BOOL			bResult = FALSE;
+		bool bResult = false;
+		if (g_bShowRefStars)
+		{
+			if (!m_vVotedPairs.empty())
+			{
+				//for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
+				for (const auto& votedPair : m_vVotedPairs)
+				{
+					if constexpr (Refstar)
+						if (star == votedPair.m_RefStar)
+						{
+							bResult = true;
+							break;
+						}
+					else
+						if (star == votedPair.m_TgtStar)
+						{
+							bResult = true;
+							break;
+						}
+				}
+			}
+			else
+				bResult = true;
+		}
+		else
+			bResult = true;
+
+		return bResult;
+	}
+
+	bool IsRefStarVoted(const int lStar)
+	{
+		return this->isStarVoted<true>(lStar);
+/*		bool bResult = false;
 
 		if (g_bShowRefStars)
 		{
-			if (m_vVotedPairs.size())
+			if (!m_vVotedPairs.empty())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_RefStar)
-						bResult = TRUE;
-				};
+						bResult = true;
+				}
 			}
 			else
-				bResult = TRUE;
+				bResult = true;
 		}
 		else
-			bResult = TRUE;
+			bResult = true;
 
-		return bResult;
-	};
+		return bResult;*/
+	}
 
-	BOOL	IsTgtStarVoted(LONG lStar)
+	bool IsTgtStarVoted(const int lStar)
 	{
-		BOOL			bResult = FALSE;
+		return this->isStarVoted<false>(lStar);
+/*		bool bResult = false;
 
 		if (g_bShowRefStars)
 		{
-			if (m_vVotedPairs.size())
+			if (!m_vVotedPairs.empty())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_TgtStar)
-						bResult = TRUE;
-				};
+						bResult = true;
+				}
 			}
 			else
-				bResult = TRUE;
+				bResult = true;
 		}
 		else
-			bResult = TRUE;
+			bResult = true;
 
-		return bResult;
-	};
+		return bResult;*/
+	}
 
 	void	InitGrayBitmap(CRect & rc);
-	void	DetectStars(const CPointExt & pt, CRect & rc, STARVECTOR & vStars);
+	void	DetectStars(const QPointF & pt, CRect & rc, STARVECTOR & vStars);
 
 	void	ComputeOverallQuality()
 	{
 		m_fScore	= 0.0;
 		m_lNrStars	= 0;
 		m_fFWHM		= 0;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (size_t i = 0; i < m_vStars.size(); i++)
 		{
 			if (!m_vStars[i].m_bRemoved)
 			{
@@ -256,9 +294,9 @@ public :
 	CEditStarsSink()
 	{
 		m_Action		= ESA_NONE;
-		m_bDirty		= FALSE;
-		m_bCometMode	= FALSE;
-		m_bComet		= FALSE;
+		m_bDirty		= false;
+		m_bCometMode	= false;
+		m_bComet		= false;
 		m_fLightBkgd	= 0;
 		m_fScore		= 0;
 		m_lNrStars		= 0;
@@ -271,15 +309,15 @@ public :
 	};
 	virtual ~CEditStarsSink() {};
 
-	void	SetBitmap(CMemoryBitmap * pBitmap)
+	void SetBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 	{
 		m_pBitmap = pBitmap;
 		m_GrayBitmap.Init(RCCHECKSIZE+1, RCCHECKSIZE+1);
-		m_bDirty = FALSE;
+		m_bDirty = false;
 		m_fBackground = 0;
-		if (m_pBitmap)
+		if (static_cast<bool>(m_pBitmap))
 			ComputeBackgroundValue();
-	};
+	}
 
 	void	SetRefStars(STARVECTOR const& Stars)
 	{
@@ -308,21 +346,21 @@ public :
 		};
 	};
 
-	void	SetCometMode(BOOL bCometMode)
+	void	SetCometMode(bool bCometMode)
 	{
 		m_bCometMode = bCometMode;
 	};
 
-	BOOL	IsDirty()
+	bool	IsDirty()
 	{
 		return m_bDirty;
 	};
 
 	// Message handling
-	virtual BOOL	Image_OnMouseLeave();
-	virtual BOOL	Image_OnMouseMove(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonDown(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY);
+	virtual bool	Image_OnMouseLeave() override;
+	virtual bool	Image_OnMouseMove(long lX, long lY) override;
+	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
+	virtual bool	Image_OnLButtonUp(long lX, long lY);
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };

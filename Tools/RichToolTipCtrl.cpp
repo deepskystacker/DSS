@@ -38,12 +38,6 @@
 #include "stdafx.h"
 #include "RichToolTipCtrl.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #ifndef __AFXDISP_H__
 #error You need to #include <afxdisp.h> here or in your stdafx.h
 #endif

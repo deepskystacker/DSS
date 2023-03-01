@@ -138,9 +138,6 @@ typedef unsigned long long UINT64;
                                        int len, unsigned int ord, void *ifp,
                                        INT64 base);
 
-  DllDef void default_memory_callback(void *data, const char *file,
-                                      const char *where);
-
   typedef void (*data_callback)(void *data, const char *file, const int offset);
 
   DllDef void default_data_callback(void *data, const char *file,
@@ -154,9 +151,6 @@ typedef unsigned long long UINT64;
 
   typedef struct
   {
-    memory_callback mem_cb;
-    void *memcb_data;
-
     data_callback data_cb;
     void *datacb_data;
 
@@ -205,7 +199,7 @@ typedef unsigned long long UINT64;
 
   typedef struct
   {
-    ushort cleft, ctop, cwidth, cheight, aspect;
+    ushort cleft, ctop, cwidth, cheight;
   } libraw_raw_inset_crop_t;
 
   typedef struct
@@ -216,8 +210,14 @@ typedef unsigned long long UINT64;
     double pixel_aspect;
     int flip;
     int mask[8][4];
-    libraw_raw_inset_crop_t raw_inset_crop;
+    ushort raw_aspect;
+    libraw_raw_inset_crop_t raw_inset_crops[2];
   } libraw_image_sizes_t;
+
+ typedef struct
+  {
+    short t,l,b,r; // top, left, bottom, right pixel coordinates, (0,0) is top left pixel;
+  } libraw_area_t; 
 
   struct ph1_t
   {
@@ -243,7 +243,8 @@ typedef unsigned long long UINT64;
     float dng_fcblack[LIBRAW_CBLACK_SIZE];
     float dng_fblack;
     unsigned dng_whitelevel[4];
-    unsigned default_crop[4]; /* Origin and size */
+    ushort default_crop[4]; /* Origin and size */
+    float    user_crop[4]; // top-left-bottom-right relative to default_crop
     unsigned preview_colorspace;
     float analogbalance[4];
     float asshotneutral[4];
@@ -287,14 +288,7 @@ typedef unsigned long long UINT64;
     /* sensor */
     short SensorWidth;
     short SensorHeight;
-    short SensorLeftBorder;
-    short SensorTopBorder;
-    short SensorRightBorder;
-    short SensorBottomBorder;
-    short BlackMaskLeftBorder;
-    short BlackMaskTopBorder;
-    short BlackMaskRightBorder;
-    short BlackMaskBottomBorder;
+
     int   AFMicroAdjMode;
     float AFMicroAdjValue;
     short MakernotesFlip;
@@ -304,9 +298,23 @@ typedef unsigned long long UINT64;
     short RF_lensID;
     int AutoLightingOptimizer;
     int HighlightTonePriority;
-    short LeftOpticalBlack[4]; // use this, when present, to estimate black levels?
-    short UpperOpticalBlack[4];
-    short ActiveArea[4];
+
+    /* -1 = n/a            1 = Economy
+        2 = Normal         3 = Fine
+        4 = RAW            5 = Superfine
+        7 = CRAW         130 = Normal Movie, CRM LightRaw
+      131 = CRM  StandardRaw */
+    short Quality;
+    /* data compression curve
+        0 = OFF  1 = CLogV1 2 = CLogV2? 3 = CLogV3 */
+    int CanonLog;
+
+   libraw_area_t DefaultCropAbsolute;
+   libraw_area_t RecommendedImageArea;   // contains the image in proper aspect ratio?
+   libraw_area_t LeftOpticalBlack;       // use this, when present, to estimate black levels?
+   libraw_area_t UpperOpticalBlack;
+   libraw_area_t ActiveArea;
+    
     short ISOgain[2]; // AutoISO & BaseISO per ExifTool
   } libraw_canon_makernotes_t;
 
@@ -423,6 +431,11 @@ typedef unsigned long long UINT64;
     */
     ushort BlackLevel[9];
     unsigned RAFData_ImageSizeTable[32];
+    int AutoBracketing;
+    int SequenceNumber;
+    int SeriesLength;
+    float PixelShiftOffset[2];
+    int ImageCount;
   } libraw_fuji_info_t;
 
   typedef struct
@@ -471,6 +484,8 @@ typedef unsigned long long UINT64;
 	 8: Small raw
 	 9: Packed 12-bit
 	10: Packed 14-bit
+	13: High Efficiency  (HE)
+	14: High Efficiency* (HE*)
 */
     ushort NEFCompression;
 
@@ -494,6 +509,11 @@ typedef unsigned long long UINT64;
     ushort SensorWidth;
     ushort SensorHeight;
     ushort Active_D_Lighting;
+    unsigned ShotInfoVersion;
+    short MakernotesFlip;
+    double RollAngle;  // positive is clockwise, CW
+    double PitchAngle; // positive is upwords
+    double YawAngle;   // positive is to the right
   } libraw_nikon_makernotes_t;
 
   typedef struct
@@ -518,6 +538,11 @@ typedef unsigned long long UINT64;
     ushort   FocusStepNear;
     double   FocusDistance;
     ushort   AspectFrame[4]; // left, top, width, height
+    unsigned StackedImage[2];
+    uchar    isLiveND;
+    unsigned LiveNDfactor;
+    ushort   Panorama_mode;
+    ushort   Panorama_frameNum;
   } libraw_olympus_makernotes_t;
 
   typedef struct
@@ -649,6 +674,7 @@ typedef unsigned long long UINT64;
     ushort   HighISONoiseReduction;           // init in 0xffff
     ushort   HDR[2];
     ushort   group2010;
+    ushort   group9050;
     ushort   real_iso_offset;                 // init in 0xffff
     ushort   MeteringMode_offset;
     ushort   ExposureProgram_offset;
@@ -673,16 +699,24 @@ typedef unsigned long long UINT64;
     ushort   prd_BayerPattern;  /* 0 -> not valid; 1 -> RGGB; 4 -> GBRG */
 
     ushort   SonyRawFileType; /* init in 0xffff
+                               valid for ARW 2.0 and up (FileFormat >= 3000)
                                takes precedence over RAWFileType and Quality:
                                0  for uncompressed 14-bit raw
                                1  for uncompressed 12-bit raw
-                               2  for compressed raw
+                               2  for compressed raw (lossy)
                                3  for lossless compressed raw
+                               4  for lossless compressed raw v.2 (ILCE-1)
                             */
     ushort RAWFileType;     /* init in 0xffff
                                takes precedence over Quality
                                0 for compressed raw,
                                1 for uncompressed;
+                               2 lossless compressed raw v.2
+                            */
+    ushort RawSizeType;     /* init in 0xffff
+                               1 - large,
+                               2 - small,
+                               3 - medium
                             */
     unsigned Quality;       /* init in 0xffffffff
                                0 or 6 for raw, 7 or 8 for compressed raw */
@@ -752,17 +786,17 @@ typedef unsigned long long UINT64;
     float WBCT_Coeffs[64][5]; /* CCT, than R, G1, B, G2 coeffs */
     int as_shot_wb_applied;
     libraw_P1_color_t P1_color[2];
-    unsigned raw_bps; /* for Phase One, raw format */
+    unsigned raw_bps; /* for Phase One: raw format; For other cameras: bits per pixel (copy of tiff_bps in most cases) */
                       /* Phase One raw format values, makernotes tag 0x010e:
                       0    Name unknown
                       1    "RAW 1"
                       2    "RAW 2"
-                      3    "IIQ L"
+                      3    "IIQ L" (IIQ L14)
                       4    Never seen
                       5    "IIQ S"
-                      6    "IIQ S v.2"
+                      6    "IIQ Sv2" (S14 / S14+)
                       7    Never seen
-                      8    Name unknown
+                      8    "IIQ L16" (IIQ L16EX / IIQ L16)
                       */
 	int ExifColorSpace;
   } libraw_colordata_t;
@@ -775,6 +809,21 @@ typedef unsigned long long UINT64;
     int tcolors;
     char *thumb;
   } libraw_thumbnail_t;
+
+  typedef struct
+  {
+	enum LibRaw_internal_thumbnail_formats tformat;
+    ushort twidth, theight, tflip;
+    unsigned tlength;
+	unsigned tmisc;
+	INT64 toffset;
+  }libraw_thumbnail_item_t;
+
+  typedef struct
+  {
+	  int thumbcount;
+	  libraw_thumbnail_item_t thumblist[LIBRAW_THUMBNAIL_MAXCOUNT];
+  } libraw_thumbnail_list_t;
 
   typedef struct
   {
@@ -840,7 +889,6 @@ typedef unsigned long long UINT64;
     double aber[4];        /* -C */
     double gamm[6];        /* -g */
     float user_mul[4];     /* -r mul0 mul1 mul2 mul3 */
-    unsigned shot_select;  /* -s */
     float bright;          /* -b */
     float threshold;       /* -n */
     int half_size;         /* -h */
@@ -888,6 +936,7 @@ typedef unsigned long long UINT64;
       /* DNG SDK */
       int use_dngsdk;
       unsigned options;
+      unsigned shot_select;  /* -s */
       unsigned specials;
       unsigned max_raw_memory_mb;
       int sony_arw2_posterization_thr;
@@ -1033,6 +1082,7 @@ typedef unsigned long long UINT64;
     libraw_colordata_t color;
     libraw_imgother_t other;
     libraw_thumbnail_t thumbnail;
+	libraw_thumbnail_list_t thumbs_list;
     libraw_rawdata_t rawdata;
     void *parent_class;
   } libraw_data_t;

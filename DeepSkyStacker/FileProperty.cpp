@@ -3,13 +3,14 @@
 
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
-#include "PictureListCtrl.h"
+#include "FrameList.h"
 #include "FileProperty.h"
 
-const LONG				MINISOSPEED = 25;
-const LONG				MINEXPOSURE = 1;
-const LONG				MAXISOSPEED = 10000;
-const LONG				MAXEXPOSURE = 5000;
+
+constexpr int				MINISOSPEED = 25;
+constexpr int				MINEXPOSURE = 1;
+constexpr int				MAXISOSPEED = 10000;
+constexpr int				MAXEXPOSURE = 5000;
 
 /* ------------------------------------------------------------------- */
 // CFileProperty dialog
@@ -68,21 +69,21 @@ BOOL CFileProperty::OnInitDialog()
 
 	InitControls();
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
 void CFileProperty::InitControls()
 {
-	BOOL				bFirst = TRUE;
+	bool				bFirst = true;
 	CString				strFileName;
 	CString				strDateTime;
 	CString				strSizes;
 	CString				strDepth;
 	CString				strInfo;
 	CString				strCFA;
-	LONG				lISOSpeed = -1;
+	int				lISOSpeed = -1;
 	CString				strISOSpeed;
 	double				fExposure = -1;
 	CString				strExposure;
@@ -90,36 +91,36 @@ void CFileProperty::InitControls()
 
 	for (auto const& pair : m_bitmaps)
 	{
-		if (CListBitmap* bitmap = pair.second)
+		if (ListBitMap* bitmap = pair.second)
 		{
 			if (bFirst)
 			{
-				strFileName = bitmap->m_strFileName;
+				strFileName = CString(bitmap->filePath.generic_wstring().c_str());
 				PictureType = bitmap->m_PictureType;
 				strDateTime = bitmap->m_strDateTime;
-				strSizes    = bitmap->m_strSizes;
-				strDepth    = bitmap->m_strDepth;
+				strSizes    = bitmap->m_strSizes.toStdWString().c_str();
+				strDepth    = bitmap->m_strDepth.toStdWString().c_str();
 				strInfo		= bitmap->m_strInfos;
-				strCFA		= bitmap->m_strCFA;
+				strCFA		= bitmap->m_strCFA.toStdWString().c_str();
 				lISOSpeed	= bitmap->m_lISOSpeed;
 				fExposure	= bitmap->m_fExposure;
-				bFirst = FALSE;
+				bFirst = false;
 			}
 			else
 			{
-				if (strFileName != bitmap->m_strFileName)
+				if (strFileName != CString(bitmap->filePath.generic_wstring().c_str()))
 					strFileName.Format(IDS_MULTIPLEFILESELECTED, m_bitmaps.size());
 				if (PictureType != bitmap->m_PictureType)
 					PictureType = PICTURETYPE_UNKNOWN;
 				if (strDateTime != bitmap->m_strDateTime)
 					strDateTime = "-";
-				if (strSizes != bitmap->m_strSizes)
+				if (strSizes != bitmap->m_strSizes.toStdWString().c_str())
 					strSizes = "-";
-				if (strDepth != bitmap->m_strDepth)
+				if (strDepth != bitmap->m_strDepth.toStdWString().c_str())
 					strDepth = "-";
 				if (strInfo != bitmap->m_strInfos)
 					strInfo = "-";
-				if (strCFA != bitmap->m_strCFA)
+				if (strCFA != bitmap->m_strCFA.toStdWString().c_str())
 					strCFA = "-";
 				if (lISOSpeed != bitmap->m_lISOSpeed)
 					lISOSpeed = 0;
@@ -164,14 +165,14 @@ void CFileProperty::InitControls()
 
 	if (fExposure>=1)
 	{
-		LONG			lExposure = fExposure;
+		auto lExposure = static_cast<int>(fExposure);
 		strExposure.Format(_T("%ld"), lExposure);
 		m_Exposure.SetWindowText(strExposure);
 	};
 
-	m_bChangeType	  = FALSE;
-	m_bChangeISOSpeed = FALSE;
-	m_bChangeExposure = FALSE;
+	m_bChangeType	  = false;
+	m_bChangeISOSpeed = false;
+	m_bChangeExposure = false;
 };
 
 /* ------------------------------------------------------------------- */
@@ -179,7 +180,7 @@ void CFileProperty::InitControls()
 
 void CFileProperty::OnCbnSelchangeType()
 {
-	m_bChangeType	  = TRUE;
+	m_bChangeType	  = true;
 	UpdateControls();
 }
 
@@ -187,7 +188,7 @@ void CFileProperty::OnCbnSelchangeType()
 
 void CFileProperty::OnCbnSelchangeIsospeed()
 {
-	m_bChangeISOSpeed = TRUE;
+	m_bChangeISOSpeed = true;
 	UpdateControls();
 }
 
@@ -195,7 +196,7 @@ void CFileProperty::OnCbnSelchangeIsospeed()
 
 void CFileProperty::OnCbnEditupdateIsospeed()
 {
-	m_bChangeISOSpeed = TRUE;
+	m_bChangeISOSpeed = true;
 	UpdateControls();
 }
 
@@ -203,7 +204,7 @@ void CFileProperty::OnCbnEditupdateIsospeed()
 
 void CFileProperty::OnEnChangeExposure()
 {
-	m_bChangeExposure = TRUE;
+	m_bChangeExposure = true;
 	UpdateControls();
 }
 
@@ -211,7 +212,7 @@ void CFileProperty::OnEnChangeExposure()
 
 void CFileProperty::UpdateControls()
 {
-	BOOL			bOk = TRUE;
+	bool			bOk = true;
 
 	if (m_bChangeISOSpeed)
 	{
@@ -220,10 +221,10 @@ void CFileProperty::UpdateControls()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = _ttol(strISOSpeed);
+			auto	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed < MINISOSPEED) || (lISOSpeed > MAXISOSPEED))
-				bOk = FALSE;
+				bOk = false;
 		};
 	};
 
@@ -234,10 +235,10 @@ void CFileProperty::UpdateControls()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = _ttol(strExposure);
+			auto		lExposure = _ttol(strExposure);
 
-			if ((lExposure <MINEXPOSURE) || (lExposure > MAXEXPOSURE))
-				bOk = FALSE;
+			if ((lExposure < MINEXPOSURE) || (lExposure > MAXEXPOSURE))
+				bOk = false;
 		};
 	};
 
@@ -274,7 +275,7 @@ void CFileProperty::ApplyChanges()
 		if (PictureType != PICTURETYPE_UNKNOWN)
 		{
             for (auto const& pair : m_bitmaps)
-                m_imageList->ChangePictureType(pair.first, PictureType);
+                m_imageList->changePictureType(pair.first, PictureType);
 		};
 	};
 
@@ -285,7 +286,7 @@ void CFileProperty::ApplyChanges()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = _ttol(strISOSpeed);
+			auto	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed >= MINISOSPEED) && (lISOSpeed <= MAXISOSPEED))
 			{
@@ -302,7 +303,7 @@ void CFileProperty::ApplyChanges()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = _ttol(strExposure);
+			auto		lExposure = _ttol(strExposure);
 
 			if ((lExposure >= MINEXPOSURE) && (lExposure <= MAXEXPOSURE))
 			{

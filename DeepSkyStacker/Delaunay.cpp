@@ -29,21 +29,21 @@
 #include "StdAfx.h"
 #include "Delaunay.h"
 
-const REAL sqrt3 = 1.732050808F;
+const float sqrt3 = 1.732050808F;
 
 void triangle::SetCircumCircle()
 {
-	REAL x0 = m_Vertices[0]->GetX();
-	REAL y0 = m_Vertices[0]->GetY();
+	float x0 = m_Vertices[0]->GetX();
+	float y0 = m_Vertices[0]->GetY();
 
-	REAL x1 = m_Vertices[1]->GetX();
-	REAL y1 = m_Vertices[1]->GetY();
+	float x1 = m_Vertices[1]->GetX();
+	float y1 = m_Vertices[1]->GetY();
 
-	REAL x2 = m_Vertices[2]->GetX();
-	REAL y2 = m_Vertices[2]->GetY();
+	float x2 = m_Vertices[2]->GetX();
+	float y2 = m_Vertices[2]->GetY();
 
-	REAL y10 = y1 - y0;
-	REAL y21 = y2 - y1;
+	float y10 = y1 - y0;
+	float y21 = y2 - y1;
 
 	bool b21zero = y21 > -REAL_EPSILON && y21 < REAL_EPSILON;
 
@@ -59,50 +59,50 @@ void triangle::SetCircumCircle()
 			{
 				if (x2 < x0) x0 = x2;
 			}
-			m_Center.X = (x0 + x1) * .5F;
-			m_Center.Y = y0;
+			m_Center.setX((x0 + x1) * .5F);
+			m_Center.setY(y0);
 		}
 		else	// m_Vertices[0] and m_Vertices[1] are on one horizontal line.
 		{
-			REAL m1 = - (x2 - x1) / y21;
+			float m1 = - (x2 - x1) / y21;
 
-			REAL mx1 = (x1 + x2) * .5F;
-			REAL my1 = (y1 + y2) * .5F;
+			float mx1 = (x1 + x2) * .5F;
+			float my1 = (y1 + y2) * .5F;
 
-			m_Center.X = (x0 + x1) * .5F;
-			m_Center.Y = m1 * (m_Center.X - mx1) + my1;
+			m_Center.setX ((x0 + x1) * .5F);
+			m_Center.setY( m1 * (m_Center.x() - mx1) + my1);
 		}
 	}
 	else if (b21zero)	// m_Vertices[1] and m_Vertices[2] are on one horizontal line.
 	{
-		REAL m0 = - (x1 - x0) / y10;
+		float m0 = - (x1 - x0) / y10;
 
-		REAL mx0 = (x0 + x1) * .5F;
-		REAL my0 = (y0 + y1) * .5F;
+		float mx0 = (x0 + x1) * .5F;
+		float my0 = (y0 + y1) * .5F;
 
-		m_Center.X = (x1 + x2) * .5F;
-		m_Center.Y = m0 * (m_Center.X - mx0) + my0;
+		m_Center.setX((x1 + x2) * .5F);
+		m_Center.setY(m0 * (m_Center.x() - mx0) + my0);
 	}
 	else	// 'Common' cases, no multiple vertices are on one horizontal line.
 	{
-		REAL m0 = - (x1 - x0) / y10;
-		REAL m1 = - (x2 - x1) / y21;
+		float m0 = - (x1 - x0) / y10;
+		float m1 = - (x2 - x1) / y21;
 
-		REAL mx0 = (x0 + x1) * .5F;
-		REAL my0 = (y0 + y1) * .5F;
+		float mx0 = (x0 + x1) * .5F;
+		float my0 = (y0 + y1) * .5F;
 
-		REAL mx1 = (x1 + x2) * .5F;
-		REAL my1 = (y1 + y2) * .5F;
+		float mx1 = (x1 + x2) * .5F;
+		float my1 = (y1 + y2) * .5F;
 
-		m_Center.X = (m0 * mx0 - m1 * mx1 + my1 - my0) / (m0 - m1);
-		m_Center.Y = m0 * (m_Center.X - mx0) + my0;
+		m_Center.setX((m0 * mx0 - m1 * mx1 + my1 - my0) / (m0 - m1));
+		m_Center.setY(m0 * (m_Center.x() - mx0) + my0);
 	}
 
-	REAL dx = x0 - m_Center.X;
-	REAL dy = y0 - m_Center.Y;
+	float dx = x0 - m_Center.x();
+	float dy = y0 - m_Center.y();
 
 	m_R2 = dx * dx + dy * dy;	// the radius of the circumcircle, squared
-	m_R = (REAL) sqrt(m_R2);	// the proper radius
+	m_R = (float) sqrt(m_R2);	// the proper radius
 
 	// Version 1.1: make m_R2 slightly higher to ensure that all edges
 	// of co-circular vertices will be caught.
@@ -219,26 +219,26 @@ void Delaunay::Triangulate(const vertexSet& vertices, triangleSet& output)
 	// Determine the bounding box.
 	cvIterator itVertex = vertices.begin();
 
-	REAL xMin = itVertex->GetX();
-	REAL yMin = itVertex->GetY();
-	REAL xMax = xMin;
-	REAL yMax = yMin;
+	float xMin = itVertex->GetX();
+	float yMin = itVertex->GetY();
+	float xMax = xMin;
+	float yMax = yMin;
 
 	++itVertex;		// If we're here, we know that vertices is not empty.
 	for (; itVertex != vertices.end(); itVertex++)
 	{
 		xMax = itVertex->GetX();	// Vertices are sorted along the x-axis, so the last one stored will be the biggest.
-		REAL y = itVertex->GetY();
+		float y = itVertex->GetY();
 		if (y < yMin) yMin = y;
 		if (y > yMax) yMax = y;
 	}
 
-	REAL dx = xMax - xMin;
-	REAL dy = yMax - yMin;
+	float dx = xMax - xMin;
+	float dy = yMax - yMin;
 
 	// Make the bounding box slightly bigger, just to feel safe.
-	REAL ddx = dx * 0.01F;
-	REAL ddy = dy * 0.01F;
+	float ddx = dx * 0.01F;
+	float ddy = dy * 0.01F;
 
 	xMin -= ddx;
 	xMax += ddx;

@@ -1,68 +1,32 @@
 #ifndef _STACKINGTASKS_H__
 #define _STACKINGTASKS_H__
 
+#include <QString>
+#include "dssrect.h"
 #include "BitmapExt.h"
 #include "FrameInfo.h"
-//#include "FrameList.h"
+#include "TaskInfo.h"
 
-typedef enum INTERMEDIATEFILEFORMAT
-{
-	IFF_TIFF = 1,
-	IFF_FITS = 2
-}INTERMEDIATEFILEFORMAT;
-
-typedef enum tagCOMETSTACKINGMODE
-{
-	CSM_STANDARD	= 0,
-	CSM_COMETONLY	= 1,
-	CSM_COMETSTAR	= 2
-}COMETSTACKINGMODE;
-
-typedef enum tagBACKGROUNDCALIBRATIONMODE
-{
-	BCM_NONE		= 0,
-	BCM_PERCHANNEL	= 1,
-	BCM_RGB			= 2
-}BACKGROUNDCALIBRATIONMODE;
-
-typedef enum tagBACKGROUNDCALIBRATIONINTERPOLATION
-{
-	BCI_LINEAR		= 0,
-	BCI_RATIONAL	= 1
-}BACKGROUNDCALIBRATIONINTERPOLATION;
-
-typedef enum tagRGBBACKGROUNDCALIBRATIONMETHOD
-{
-	RBCM_MINIMUM		= 0,
-	RBCM_MIDDLE			= 1,
-	RBCM_MAXIMUM		= 2
-}RGBBACKGROUNDCALIBRATIONMETHOD;
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
-BOOL	AreExposureEquals(double fExposure1, double fExposure2);
+bool LoadFrame(const fs::path filePath, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
-
-typedef enum tagCOSMETICREPLACE
-{
-	CR_MEDIAN			= 1,
-	CR_GAUSSIAN			= 2
-}COSMETICREPLACE;
 
 class	CPostCalibrationSettings
 {
 public :
-	BOOL				m_bHot;
-	LONG				m_lHotFilter;
+	bool				m_bHot;
+	int				m_lHotFilter;
 	double				m_fHotDetection;
 
-	BOOL				m_bCold;
-	LONG				m_lColdFilter;
+	bool				m_bCold;
+	int				m_lColdFilter;
 	double				m_fColdDetection;
 
-	BOOL				m_bSaveDeltaImage;
+	bool				m_bSaveDeltaImage;
 	COSMETICREPLACE		m_Replace;
 
 private :
@@ -83,13 +47,13 @@ private :
 public :
 	CPostCalibrationSettings()
 	{
-		m_bHot			= FALSE;
+		m_bHot			= false;
 		m_lHotFilter	= 1;
 		m_fHotDetection = 50.0;
-		m_bCold			= FALSE;
+		m_bCold			= false;
 		m_lColdFilter	= 1;
 		m_fColdDetection= 50.0;
-		m_bSaveDeltaImage = FALSE;
+		m_bSaveDeltaImage = false;
 		m_Replace		  = CR_MEDIAN;
 	};
 	virtual ~CPostCalibrationSettings() {};
@@ -119,7 +83,7 @@ public :
 	bool				m_bRefFrameFolder;
 	bool				m_bFileListFolder;
 	bool				m_bOtherFolder;
-	CString				m_strFolder;
+	QString				m_strFolder;
 
 private:
 	void	CopyFrom(const COutputSettings & right)
@@ -166,135 +130,15 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-class CTaskInfo
-{
-public :
-	DWORD						m_dwTaskID;
-	DWORD						m_dwGroupID;
-	PICTURETYPE					m_TaskType;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
-	double						m_fExposure;
-	double						m_fAperture;
-	BOOL						m_bUnmodified;
-	BOOL						m_bDone;
-	CString						m_strOutputFile;
-	FRAMEINFOVECTOR				m_vBitmaps;
-	MULTIBITMAPPROCESSMETHOD	m_Method;
-	double						m_fKappa;
-	LONG						m_lNrIterations;
-	CSmartPtr<CMultiBitmap>		m_pMaster;
-
-private :
-	void	CopyFrom(const CTaskInfo & ti)
-	{
-		m_dwTaskID		= ti.m_dwTaskID;
-		m_dwGroupID		= ti.m_dwGroupID;
-		m_TaskType		= ti.m_TaskType;
-		m_lISOSpeed		= ti.m_lISOSpeed;
-		m_lGain			= ti.m_lGain;
-		m_fExposure		= ti.m_fExposure;
-		m_fAperture     = ti.m_fAperture;
-		m_vBitmaps		= ti.m_vBitmaps;
-		m_bDone			= ti.m_bDone;
-		m_bUnmodified	= ti.m_bUnmodified;
-		m_strOutputFile	= ti.m_strOutputFile;
-		m_Method		= ti.m_Method;
-		m_fKappa		= ti.m_fKappa;
-		m_lNrIterations	= ti.m_lNrIterations;
-		m_pMaster		= ti.m_pMaster;
-	};
-
-public :
-	CTaskInfo()
-	{
-		m_dwTaskID  = 0;
-		m_dwGroupID = 0;
-		m_lISOSpeed = 0;
-		m_lGain     = -1;
-		m_fExposure = 0.0;
-		m_fAperture = 0.0;
-		m_bDone	    = FALSE;
-		m_Method	= MBP_MEDIAN;
-		m_fKappa	= 2.0;
-		m_lNrIterations = 5;
-		m_bUnmodified = FALSE;
-        m_TaskType = PICTURETYPE(0);
-	};
-
-	CTaskInfo(const CTaskInfo & ti)
-	{
-		CopyFrom(ti);
-	};
-
-	const CTaskInfo & operator = (const CTaskInfo & ti)
-	{
-		CopyFrom(ti);
-		return (*this);
-	};
-
-	virtual ~CTaskInfo()
-	{
-	};
-
-	void	SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
-	{
-		m_Method	= Method;
-		m_fKappa	= fKappa;
-		m_lNrIterations = lNrIterations;
-	};
-
-	void	CreateEmptyMaster(CMemoryBitmap * pBitmap)
-	{
-		m_pMaster.Attach(pBitmap->CreateEmptyMultiBitmap());
-		m_pMaster->SetNrBitmaps((LONG)m_vBitmaps.size());
-		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
-	};
-
-	void	AddToMaster(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
-	{
-		if (m_pMaster)
-			m_pMaster->AddBitmap(pBitmap, pProgress);
-	};
-
-	BOOL	GetMaster(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
-	{
-		BOOL			bResult = FALSE;
-
-		if (ppBitmap)
-		{
-			CSmartPtr<CMemoryBitmap>	pBitmap;
-
-			*ppBitmap = nullptr;
-			if (m_pMaster && m_pMaster->GetNrBitmaps() > 1)
-			{
-				bResult = m_pMaster->GetResult(&pBitmap, pProgress);
-				if (pBitmap)
-					pBitmap->SetMaster(TRUE);
-			};
-			m_pMaster.Release();;
-			bResult = pBitmap.CopyTo(ppBitmap);
-		};
-
-		return bResult;
-	};
-
-	BOOL 	HasISOSpeed() const
-	{
-		// Has valid ISOSpeed value or no valid Gain value.
-		return m_lISOSpeed != 0 || m_lGain < 0;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
-void	ClearTaskCache();
+bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
 
 class CStackingInfo
 {
+	Q_DECLARE_TR_FUNCTIONS(StackingTasks)
+
 public :
 	CTaskInfo *			m_pOffsetTask;
 	CTaskInfo *			m_pDarkTask;
@@ -313,10 +157,10 @@ private :
 	};
 
 private :
-	BOOL	CheckForExistingOffset(CString & strMasterFile);
-	BOOL	CheckForExistingDark(CString & strMasterFile);
-	BOOL	CheckForExistingDarkFlat(CString & strMasterFile);
-	BOOL	CheckForExistingFlat(CString & strMasterFile);
+	bool	CheckForExistingOffset(CString & strMasterFile);
+	bool	CheckForExistingDark(CString & strMasterFile);
+	bool	CheckForExistingDarkFlat(CString & strMasterFile);
+	bool	CheckForExistingFlat(CString & strMasterFile);
 
 public :
 	CStackingInfo()
@@ -343,126 +187,76 @@ public :
 		return (*this);
 	};
 
-	BOOL	DoOffsetTask(CDSSProgress * pProgress);
-	BOOL	DoDarkTask(CDSSProgress * pProgress);
-	BOOL	DoFlatTask(CDSSProgress * pProgress);
-	BOOL	DoDarkFlatTask(CDSSProgress * pProgress);
+	bool	DoOffsetTask(ProgressBase* const pProgress);
+	bool	DoDarkTask(ProgressBase* const pProgress);
+	bool	DoFlatTask(ProgressBase* const pProgress);
+	bool	DoDarkFlatTask(ProgressBase* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
-typedef enum tagSTACKINGMODE
-{
-	SM_NORMAL		= 0,
-	SM_MOSAIC		= 1,
-	SM_CUSTOM		= 2,
-	SM_INTERSECTION = 3
-}STACKINGMODE;
-
 class CAllStackingTasks
 {
 private :
-	BOOL						m_bCalibrating;
-	BOOL						m_bUsingJPEG;
-	BOOL						m_bUsingFITS;
-	BOOL						m_bUseCustomRectangle;
-	BOOL						m_bCometAvailable;
-	CRect						m_rcCustom;
-	BOOL						m_bDarkUsed;
-	BOOL						m_bBiasUsed;
-	BOOL						m_bFlatUsed;
-	BOOL						m_bUsingBayer;
-	BOOL						m_bUsingColorImages;
-	LONG						m_lNrLightFrames;
-	LONG						m_lNrBiasFrames;
-	LONG						m_lNrDarkFrames;
-	LONG						m_lNrDarkFlatFrames;
-	LONG						m_lNrFlatFrames;
+	bool						m_bCalibrating;
+	bool						m_bUsingJPEG;
+	bool						m_bUsingFITS;
+	bool						m_bUseCustomRectangle;
+	bool						m_bCometAvailable;
+	DSSRect						m_rcCustom;
+	bool						m_bDarkUsed;
+	bool						m_bBiasUsed;
+	bool						m_bFlatUsed;
+	bool						m_bUsingBayer;
+	bool						m_bUsingColorImages;
+	int							m_lNrLightFrames;
+	int							m_lNrBiasFrames;
+	int							m_lNrDarkFrames;
+	int							m_lNrDarkFlatFrames;
+	int							m_lNrFlatFrames;
 	double						m_fMaxExposureTime;
 
 public :
 	std::vector<CTaskInfo>		m_vTasks;
 	std::vector<CStackingInfo>	m_vStacks;
-	GUID						m_dwJobID;
-	CString						m_strJob;
 
 private :
-	CTaskInfo *	FindBestMatchingTask(const CTaskInfo & ti, PICTURETYPE TaskType);
-	void		CopyFrom(const CAllStackingTasks & tasks)
-	{
-		m_bCalibrating		= tasks.m_bCalibrating;
-		m_bUsingJPEG		= tasks.m_bUsingJPEG;
-		m_bUsingFITS		= tasks.m_bUsingFITS;
-		m_bUseCustomRectangle = tasks.m_bUseCustomRectangle;
-		m_bCometAvailable	= tasks.m_bCometAvailable;
-		m_rcCustom			= tasks.m_rcCustom;
-		m_vTasks			= tasks.m_vTasks;
-		m_vStacks			= tasks.m_vStacks;
-		m_dwJobID			= tasks.m_dwJobID;
-		m_strJob			= tasks.m_strJob;
-		m_bUsingBayer		= tasks.m_bUsingBayer;
-		m_bUsingColorImages = tasks.m_bUsingColorImages;
-
-		m_lNrLightFrames	= tasks.m_lNrLightFrames;
-		m_lNrBiasFrames		= tasks.m_lNrBiasFrames;
-		m_lNrDarkFrames		= tasks.m_lNrDarkFrames;
-		m_lNrDarkFlatFrames	= tasks.m_lNrDarkFlatFrames;
-		m_lNrFlatFrames		= tasks.m_lNrFlatFrames;
-		m_fMaxExposureTime	= tasks.m_fMaxExposureTime;
-
-        m_bDarkUsed         = tasks.m_bDarkUsed;
-        m_bBiasUsed         = tasks.m_bBiasUsed;
-        m_bFlatUsed         = tasks.m_bFlatUsed;
-	};
+	CTaskInfo*	FindBestMatchingTask(const CTaskInfo& ti, PICTURETYPE TaskType);
 
 public :
-	CAllStackingTasks()
-	{
-		m_bCalibrating = FALSE;
-		m_bUsingJPEG   = FALSE;
-		m_bUsingFITS   = FALSE;
-		m_bUseCustomRectangle = FALSE;
-		m_bCometAvailable	  = FALSE;
-		m_dwJobID		= GUID_NULL;
-		m_bDarkUsed		= FALSE;
-		m_bBiasUsed		= FALSE;
-		m_bFlatUsed		= FALSE;
-		m_bUsingBayer	= FALSE;
-		m_bUsingColorImages = FALSE;
+	CAllStackingTasks() :
+		m_bCalibrating{ false },
+		m_bUsingJPEG{ false },
+		m_bUsingFITS{ false },
+		m_bUseCustomRectangle{ false },
+		m_bCometAvailable{ false },
+		m_bDarkUsed{ false },
+		m_bBiasUsed{ false },
+		m_bFlatUsed{ false },
+		m_bUsingBayer{ false },
+		m_bUsingColorImages{ false },
+		m_lNrLightFrames{ 0 },
+		m_lNrBiasFrames{ 0 },
+		m_lNrDarkFrames{ 0 },
+		m_lNrDarkFlatFrames{ 0 },
+		m_lNrFlatFrames{ 0 },
+		m_fMaxExposureTime{ 0 }
+	{}
 
-		m_lNrLightFrames	= 0;
-		m_lNrBiasFrames		= 0;
-		m_lNrDarkFrames		= 0;
-		m_lNrDarkFlatFrames	= 0;
-		m_lNrFlatFrames		= 0;
-		m_fMaxExposureTime  = 0;
-	};
-
-	CAllStackingTasks(const CAllStackingTasks & tasks)
-	{
-		CopyFrom(tasks);
-	};
-
-	CAllStackingTasks & operator = (const CAllStackingTasks & tasks)
-	{
-		CopyFrom(tasks);
-		return (*this);
-	};
-
-	~CAllStackingTasks()
-	{
-	};
+	CAllStackingTasks(const CAllStackingTasks&) = default;
+	CAllStackingTasks& operator=(const CAllStackingTasks&) = default;
+	~CAllStackingTasks() = default;
 
 	void	Clear()
 	{
 		m_vTasks.clear();
 		m_vStacks.clear();
-		m_bDarkUsed		= FALSE;
-		m_bBiasUsed		= FALSE;
-		m_bFlatUsed		= FALSE;
-		m_bUsingBayer	= FALSE;
-		m_bUsingFITS	= FALSE;
-		m_bUsingJPEG    = FALSE;
+		m_bDarkUsed		= false;
+		m_bBiasUsed		= false;
+		m_bFlatUsed		= false;
+		m_bUsingBayer	= false;
+		m_bUsingFITS	= false;
+		m_bUsingJPEG    = false;
 
 		m_lNrLightFrames	= 0;
 		m_lNrBiasFrames		= 0;
@@ -470,148 +264,139 @@ public :
 		m_lNrDarkFlatFrames	= 0;
 		m_lNrFlatFrames		= 0;
 		m_fMaxExposureTime	= 0;
-	};
+	}
 
-	BOOL	AreCalibratingJPEGFiles()
+	bool AreCalibratingJPEGFiles() const
 	{
 		return m_bCalibrating && m_bUsingJPEG;
-	};
+	}
 
-	BOOL	AreBayerImageUsed()
+	bool AreBayerImageUsed() const
 	{
 		return m_bUsingBayer;
-	};
+	}
 
-	BOOL	AreFITSImageUsed()
+	bool AreFITSImageUsed() const
 	{
 		return m_bUsingFITS;
-	};
+	}
 
-	BOOL	AreColorImageUsed()
+	bool AreColorImageUsed() const
 	{
 		return m_bUsingColorImages;
-	};
+	}
 
-	void	SetCometAvailable(BOOL bSet)
+	void SetCometAvailable(bool bSet)
 	{
 		m_bCometAvailable = bSet;
-	};
+	}
 
-	BOOL	IsCometAvailable()
+	bool IsCometAvailable() const
 	{
 		return m_bCometAvailable;
-	};
+	}
 
-	BOOL	AreDarkUsed()
+	bool AreDarkUsed() const
 	{
 		return m_bDarkUsed;
-	};
+	}
 
-	BOOL	AreFlatUsed()
+	bool AreFlatUsed() const
 	{
 		return m_bFlatUsed;
-	};
+	}
 
-	BOOL	AreBiasUsed()
+	bool AreBiasUsed() const
 	{
 		return m_bBiasUsed;
-	};
+	}
 
-	LONG	GetNrLightFrames()
+	int GetNrLightFrames() const
 	{
 		return m_lNrLightFrames;
-	};
-	LONG	GetNrBiasFrames()
+	}
+	int GetNrBiasFrames() const
 	{
 		return m_lNrBiasFrames;
-	};
-	LONG	GetNrDarkFrames()
+	}
+	int GetNrDarkFrames() const
 	{
 		return m_lNrDarkFrames;
-	};
-	LONG	GetNrFlatFrames()
+	}
+	int GetNrFlatFrames() const
 	{
 		return m_lNrFlatFrames;
-	};
-	LONG	GetNrDarkFlatFrames()
+	}
+	int GetNrDarkFlatFrames() const
 	{
 		return m_lNrDarkFlatFrames;
-	};
-	double	GetMaxExposureTime()
+	}
+	double GetMaxExposureTime() const
 	{
 		return m_fMaxExposureTime;
-	};
+	}
 
-	void	AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGroupID = 0);
-	void	SetCustomRectangle(const CRect & rcCustom)
+	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
+	void SetCustomRectangle(const DSSRect& rcCustom)
 	{
-		if (rcCustom.IsRectEmpty())
+		if (rcCustom.isEmpty())
 		{
-			m_bUseCustomRectangle = FALSE;
+			m_bUseCustomRectangle = false;
 		}
 		else
 		{
-			m_bUseCustomRectangle = TRUE;
+			m_bUseCustomRectangle = true;
 			m_rcCustom = rcCustom;
-		};
-	};
+		}
+	}
 
-	void	UseCustomRectangle(BOOL bUse)
+	void UseCustomRectangle(bool bUse)
 	{
-		if (!m_rcCustom.IsRectEmpty())
+		if (!m_rcCustom.isEmpty())
 			m_bUseCustomRectangle = bUse;
 		else
-			m_bUseCustomRectangle = FALSE;
-	};
+			m_bUseCustomRectangle = false;
+	}
 
-	BOOL	GetCustomRectangle(CRect & rcCustom)
+	bool GetCustomRectangle(DSSRect& rcCustom) const
 	{
-		BOOL			bResult = !m_rcCustom.IsRectEmpty();
-
 		rcCustom = m_rcCustom;
+		return !m_rcCustom.isEmpty();
+	}
 
-		return bResult;
-	};
-
-	BOOL	IsCustomRectangleUsed()
+	bool IsCustomRectangleUsed() const
 	{
 		return m_bUseCustomRectangle;
-	};
+	}
 
-	void	ResolveTasks();
-	void	ResetTasksStatus();
-	void	UpdateTasksMethods();
+	void ResolveTasks();
+	void ResetTasksStatus();
+	void UpdateTasksMethods();
 
-	LONG	FindStackID(LPCTSTR szLightFrame);
+	int FindStackID(LPCTSTR szLightFrame);
 
-	STACKINGMODE	GetStackingMode()
+	STACKINGMODE GetStackingMode() const
 	{
 		if (m_bUseCustomRectangle)
 			return SM_CUSTOM;
 		else
 			return GetResultMode();
-	};
+	}
 
-	BOOL	DoOffsetTasks(CDSSProgress * pProgress);
-	BOOL	DoDarkTasks(CDSSProgress * pProgress);
-	BOOL	DoFlatTasks(CDSSProgress * pProgress);
-	BOOL	DoDarkFlatTasks(CDSSProgress * pProgress);
-	BOOL	DoAllPreTasks(CDSSProgress * pProgress)
-	{
-		return DoOffsetTasks(pProgress) &&
-			   DoDarkTasks(pProgress) &&
-			   DoDarkFlatTasks(pProgress) &&
-			   DoFlatTasks(pProgress);
-	};
+	bool DoOffsetTasks(ProgressBase* pProgress);
+	bool DoDarkTasks(ProgressBase* pProgress);
+	bool DoFlatTasks(ProgressBase* pProgress);
+	bool DoDarkFlatTasks(ProgressBase* pProgress);
+	bool DoAllPreTasks(ProgressBase* pProgress);
 
-	__int64	ComputeNecessaryDiskSpace(CRect & rcOutput);
-	__int64	ComputeNecessaryDiskSpace();
-	__int64	AvailableDiskSpace(CString & strDrive);
+	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
+	std::int64_t computeNecessaryDiskSpace();
+	std::int64_t AvailableDiskSpace(CString & strDrive);
 
-	BOOL	CheckReadOnlyStatus(std::vector<CString> & vFolders);
+	bool	checkReadOnlyStatus(QStringList & folders);
 
-	static	void GetTemporaryFilesFolder(CString & strFolder);
-	static	void SetTemporaryFilesFolder(LPCTSTR szFolder);
+	static	QString GetTemporaryFilesFolder();
+	static	void SetTemporaryFilesFolder(QString strFolder);
 
 	static	void GetPostCalibrationSettings(CPostCalibrationSettings & pcs);
 	static	void SetPostCalibrationSettings(const CPostCalibrationSettings & pcs);
@@ -622,20 +407,20 @@ public :
 	static  BACKGROUNDCALIBRATIONMODE	GetBackgroundCalibrationMode();
 	static  BACKGROUNDCALIBRATIONINTERPOLATION	GetBackgroundCalibrationInterpolation();
 	static  RGBBACKGROUNDCALIBRATIONMETHOD	GetRGBBackgroundCalibrationMethod();
-	static	BOOL	GetDarkOptimization();
+	static	bool	GetDarkOptimization();
 	static  double	GetDarkFactor();
-	static	BOOL	GetHotPixelsDetection();
-	static	BOOL	GetBadLinesDetection();
+	static	bool	GetHotPixelsDetection();
+	static	bool	GetBadLinesDetection();
 	static  STACKINGMODE	GetResultMode();
-	static  BOOL	GetCreateIntermediates();
-	static  BOOL	GetSaveCalibrated();
-	static  BOOL	GetSaveCalibratedDebayered();
+	static  bool	GetCreateIntermediates();
+	static  bool	GetSaveCalibrated();
+	static  bool	GetSaveCalibratedDebayered();
 	static	void	ClearCache();
-	static  WORD	GetAlignmentMethod();
-	static  LONG	GetPixelSizeMultiplier();
-	static  BOOL	GetChannelAlign();
-	static  BOOL	GetSaveIntermediateCometImages();
-	static  BOOL	GetApplyMedianFilterToCometImage();
+	static std::uint16_t GetAlignmentMethod();
+	static  int	GetPixelSizeMultiplier();
+	static  bool	GetChannelAlign();
+	static  bool	GetSaveIntermediateCometImages();
+	static  bool	GetApplyMedianFilterToCometImage();
 	static  INTERMEDIATEFILEFORMAT GetIntermediateFileFormat();
 	static	COMETSTACKINGMODE GetCometStackingMode();
 };
@@ -675,6 +460,23 @@ inline void	SpaceToString(__int64 ulSpace, CString & strSpace)
 		strSpace.Format(IDS_RECAP_MEGABYTES, fMb);
 	else
 		strSpace.Format(IDS_RECAP_GIGABYTES, fGb);
+};
+
+inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
+{
+	double fKb(ulSpace / 1024.0);
+	double fMb(fKb / 1024.0);
+	double fGb(fMb / 1024.0);
+
+	if (fKb < 900)
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES")
+		.arg(fKb, 0, 'f', 1);
+	else if (fMb < 900)
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES")
+		.arg(fMb, 0, 'f', 1);
+	else
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES")
+		.arg(fGb, 0, 'f', 1);
 };
 
 /* ------------------------------------------------------------------- */

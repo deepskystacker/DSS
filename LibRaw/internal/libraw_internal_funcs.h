@@ -51,11 +51,16 @@ it under the terms of the one of two licenses as you choose:
 	static libraw_static_table_t Sony_SR2_wb_list;
 	static libraw_static_table_t Sony_SR2_wb_list1;
 /*  */
-	int     find_ifd_by_offset(int );
+	int	find_ifd_by_offset(int );
+	void 	libraw_swab(void *arr, size_t len);
 	ushort	sget2 (uchar *s);
 	ushort	sget2Rev(uchar *s);
-	int 	parseCR3(unsigned long long oAtomList, unsigned long long szAtomList, short &nesting, char *AtomNameStack, short& nTrack, short &TrackType);
-	void	selectCRXTrack(short maxTrack);
+	libraw_area_t	get_CanonArea();
+	int	parseCR3(INT64 oAtomList, INT64 szAtomList, short &nesting, char *AtomNameStack, short& nTrack, short &TrackType);
+	void 	selectCRXTrack();
+	void    parseCR3_Free();
+	int     parseCR3_CTMD(short trackNum);
+	int     selectCRXFrame(short trackNum, unsigned frameIndex);
 	void	setCanonBodyFeatures (unsigned long long id);
 	void	processCanonCameraInfo (unsigned long long id, uchar *CameraInfo, unsigned maxlen, unsigned type, unsigned dng_writer);
 	static float _CanonConvertAperture(ushort in);
@@ -127,7 +132,7 @@ it under the terms of the one of two licenses as you choose:
 
 	ushort      get2();
 	unsigned    sget4 (uchar *s);
-    unsigned    getint(int type);
+	unsigned    getint(int type);
 	float       int_to_float (int i);
 	double      getreal (int type);
 	double      sgetreal(int type, uchar *s);
@@ -168,6 +173,7 @@ it under the terms of the one of two licenses as you choose:
 	void        lossless_dng_load_raw();
 	void        deflate_dng_load_raw();
 	void        packed_dng_load_raw();
+    void        packed_tiled_dng_load_raw();
     void        uncompressed_fp_dng_load_raw();
 	void        lossy_dng_load_raw();
 //void        adobe_dng_load_raw_nc();
@@ -180,6 +186,7 @@ it under the terms of the one of two licenses as you choose:
 
 // Nikon (and Minolta Z2)
 	void        nikon_load_raw();
+    void        nikon_he_load_raw_placeholder();
 	void        nikon_read_curve();
 	void        nikon_load_striped_packed_raw();
 	void        nikon_load_padded_packed_raw();
@@ -196,6 +203,7 @@ it under the terms of the one of two licenses as you choose:
 //	void        fuji_load_raw();
 	int         guess_RAFDataGeneration (uchar *RAFData_start);
 	void        parse_fuji (int offset);
+    void        parse_fuji_thumbnail(int offset);
 #ifdef LIBRAW_OLD_VIDEO_SUPPORT
 // RedCine
 	void        parse_redcine();
@@ -213,9 +221,13 @@ it under the terms of the one of two licenses as you choose:
 //int         bayer (unsigned row, unsigned col);
 	int         p1raw(unsigned,unsigned);
 	void        phase_one_flat_field (int is_float, int nc);
+	int 	    p1rawc(unsigned row, unsigned col, unsigned& count);
+	void 	    phase_one_fix_col_pixel_avg(unsigned row, unsigned col);
+	void 	    phase_one_fix_pixel_grad(unsigned row, unsigned col);
 	void        phase_one_load_raw();
 	unsigned    ph1_bits (int nbits);
 	void        phase_one_load_raw_c();
+    void		phase_one_load_raw_s();
 	void        hasselblad_load_raw();
 	void        leaf_hdr_load_raw();
 	void        sinar_4shot_load_raw();
@@ -257,7 +269,7 @@ it under the terms of the one of two licenses as you choose:
 	int         median4 (int *p);
 	void        fill_holes (int holes);
 	void        smal_v9_load_raw();
-	void        parse_riff();
+	void        parse_riff(int maxdepth);
 	void        parse_cine();
 	void        parse_smal (int offset, int fsize);
 	int         parse_jpeg (int offset);
@@ -280,6 +292,7 @@ it under the terms of the one of two licenses as you choose:
 	void        sony_arw_load_raw();
 	void        sony_arw2_load_raw();
 	void        sony_arq_load_raw();
+	void        sony_ljpeg_load_raw();
 	void        samsung_load_raw();
 	void        samsung2_load_raw();
 	void        samsung3_load_raw();
@@ -309,6 +322,10 @@ it under the terms of the one of two licenses as you choose:
 	void        pseudoinverse (double (*in)[3], double (*out)[3], int size);
 	void        simple_coeff (int index);
 
+// Openp
+	char** malloc_omp_buffers(int buffer_count, size_t buffer_size);
+	void free_omp_buffers(char** buffers, int buffer_count);
+
 
 // Tiff/Exif parsers
 	void        tiff_get (unsigned base,unsigned *tag, unsigned *type, unsigned *len, unsigned *save);
@@ -332,7 +349,7 @@ it under the terms of the one of two licenses as you choose:
 	void        parse_gps_libraw(int base);
 	void        aRGB_coeff(double aRGB_cam[3][3]);
 	void        romm_coeff(float romm_cam[3][3]);
-	void        parse_mos (int offset);
+	void        parse_mos (INT64 offset);
 	void        parse_qt (int end);
 	void        get_timestamp (int reversed);
 
@@ -363,7 +380,7 @@ it under the terms of the one of two licenses as you choose:
 	void fuji_14bit_load_raw();
 	void parse_fuji_compressed_header();
 	void crxLoadRaw();
-	int  crxParseImageHeader(uchar *cmp1TagData, int nTrack);
+	int  crxParseImageHeader(uchar *cmp1TagData, int nTrack, int size);
 	void panasonicC6_load_raw();
 	void panasonicC7_load_raw();
 

@@ -36,8 +36,9 @@ void LibRaw::wavelet_denoise()
   float *fimg = 0, *temp, thold, mul[2], avg, diff;
   int scale = 1, size, lev, hpass, lpass, row, col, nc, c, i, wlast, blk[2];
   ushort *window[4];
-  static const float noise[] = {0.8002, 0.2735, 0.1202, 0.0585,
-                                0.0291, 0.0152, 0.0080, 0.0044};
+  static const float noise[] = {0.8002f, 0.2735f, 0.1202f, 0.0585f,
+                                0.0291f, 0.0152f, 0.0080f, 0.0044f};
+
 
   while (maximum << scale < 0x10000)
     scale++;
@@ -45,8 +46,7 @@ void LibRaw::wavelet_denoise()
   black <<= scale;
   FORC4 cblack[c] <<= scale;
   if ((size = iheight * iwidth) < 0x15550000)
-    fimg = (float *)malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
-  merror(fimg, "wavelet_denoise()");
+    fimg = (float *)malloc((size * 3 + iheight + iwidth + 128) * sizeof *fimg);
   temp = fimg + size * 3;
   if ((nc = colors) == 3 && filters)
     nc++;
@@ -142,14 +142,12 @@ void LibRaw::wavelet_denoise()
   FORC4 cblack[c] <<= scale;
   if ((size = iheight * iwidth) < 0x15550000)
     fimg = (float *)malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
-  merror(fimg, "wavelet_denoise()");
   temp = fimg + size * 3;
   if ((nc = colors) == 3 && filters)
     nc++;
 #pragma omp parallel default(shared) private(                                  \
     i, col, row, thold, lev, lpass, hpass, temp, c) firstprivate(scale, size)
   {
-#pragma omp critical /* LibRaw's malloc is not local thread-safe */
     temp = (float *)malloc((iheight + iwidth) * sizeof *fimg);
     FORC(nc)
     { /* denoise R,G1,B,G3 individually */
@@ -193,12 +191,11 @@ void LibRaw::wavelet_denoise()
       for (i = 0; i < size; i++)
         image[i][c] = CLIP(SQR(fimg[i] + fimg[lpass + i]) / 0x10000);
     }
-#pragma omp critical
     free(temp);
   } /* end omp parallel */
-  /* the following loops are hard to parallize, no idea yes,
+  /* the following loops are hard to parallelize, no idea yes,
    * problem is wlast which is carrying dependency
-   * second part should be easyer, but did not yet get it right.
+   * second part should be easier, but did not yet get it right.
    */
   if (filters && colors == 3)
   { /* pull G1 and G3 closer together */
@@ -276,10 +273,10 @@ void LibRaw::blend_highlights()
 {
   int clip = INT_MAX, row, col, c, i, j;
   static const float trans[2][4][4] = {
-      {{1, 1, 1}, {1.7320508, -1.7320508, 0}, {-1, -1, 2}},
+      {{1, 1, 1}, {1.7320508f, -1.7320508f, 0}, {-1, -1, 2}},
       {{1, 1, 1, 1}, {1, -1, 1, -1}, {1, 1, -1, -1}, {1, -1, -1, 1}}};
   static const float itrans[2][4][4] = {
-      {{1, 0.8660254, -0.5}, {1, -0.8660254, -0.5}, {1, 0, 1}},
+      {{1, 0.8660254f, -0.5}, {1, -0.8660254f, -0.5}, {1, 0, 1}},
       {{1, 1, 1, 1}, {1, -1, 1, -1}, {1, 1, -1, -1}, {1, -1, -1, 1}}};
   float cam[2][4], lab[2][4], sum[2], chratio;
 
@@ -333,7 +330,6 @@ void LibRaw::recover_highlights()
   high = height / SCALE;
   wide = width / SCALE;
   map = (float *)calloc(high, wide * sizeof *map);
-  merror(map, "recover_highlights()");
   FORC(unsigned(colors)) if (c != kc)
   {
     RUN_CALLBACK(LIBRAW_PROGRESS_HIGHLIGHTS, c - 1, colors - 1);

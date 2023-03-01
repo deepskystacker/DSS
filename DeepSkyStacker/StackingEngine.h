@@ -12,7 +12,7 @@ class CComputeOffsetTask;
 class	CImageCometShift
 {
 public :
-	LONG						m_lImageIndex;
+	int						m_lImageIndex;
 	double						m_fXShift,
 								m_fYShift;
 
@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0)
+	CImageCometShift(int lIndex = 0, double fXShift = 0, double fYShift = 0)
 	{
 		m_lImageIndex	= lIndex;
 		m_fXShift		= fXShift;
@@ -120,7 +120,7 @@ public :
 
 	void	SetReferenceFrame(LPCTSTR szReferenceFrame);
 	void	AddLightFrame(LPCTSTR szLightFrame, const CBilinearParameters & bp);
-	BOOL	GetParameters(LPCTSTR szLightFrame, CBilinearParameters & bp);
+	bool	GetParameters(LPCTSTR szLightFrame, CBilinearParameters & bp);
 	void	Save();
 	void	Clear()
 	{
@@ -132,147 +132,154 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-class CStackingEngine
+class CStackingEngine final
 {
-friend CComputeOffsetTask;
-
-private :
+private:
 	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
 	CLightFramesStackingInfo	m_StackingInfo;
-	CDSSProgress *				m_pProgress;
-	BOOL						m_bOffsetComputed;
+	ProgressBase *				m_pProgress;
 	CString						m_strReferenceFrame;
-	LONG						m_lNrCurrentStackable;
-	LONG						m_lNrStackable;
-	LONG						m_lNrCometStackable;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
+	int						m_lNrCurrentStackable;
+	std::atomic<int>		m_lNrStackable;
+	std::atomic<int>		m_lNrCometStackable;
+	int						m_lISOSpeed;
+	int						m_lGain;
 	SYSTEMTIME					m_DateTime;
 	CBitmapExtraInfo			m_ExtraInfo;
-	CRect						m_rcResult;
+	DSSRect						m_rcResult;
 	double						m_fTotalExposure;
-	CSmartPtr<CMemoryBitmap>	m_pOutput;
-	CSmartPtr<CMemoryBitmap>	m_pEntropyCoverage;
-	CSmartPtr<CMemoryBitmap>	m_pComet;
+	std::shared_ptr<CMemoryBitmap> m_pOutput;
+	std::shared_ptr<CMemoryBitmap> m_pEntropyCoverage;
+	std::shared_ptr<CMemoryBitmap> m_pComet;
 	IMAGECOMETSHIFTVECTOR		m_vCometShifts;
 	double						m_fStarTrailsAngle;
 	PIXELTRANSFORMVECTOR		m_vPixelTransforms;
 	CBackgroundCalibration		m_BackgroundCalibration;
-	CSmartPtr<CMultiBitmap>		m_pMasterLight;
+	std::shared_ptr<CMultiBitmap> m_pMasterLight;
 	CTaskInfo *					m_pLightTask;
-	LONG						m_lNrStacked;
+	int						m_lNrStacked;
 	double						m_fKeptPercentage;
-	BOOL						m_bSaveCalibrated;
-	BOOL						m_bSaveIntermediate;
-	BOOL						m_bSaveCalibratedDebayered;
+	bool						m_bSaveCalibrated;
+	bool						m_bSaveIntermediate;
+	bool						m_bSaveCalibratedDebayered;
 	CString						m_strCurrentLightFrame;
 	CFATYPE						m_InputCFAType;
-	LONG						m_lPixelSizeMultiplier;
+	int						m_lPixelSizeMultiplier;
 	INTERMEDIATEFILEFORMAT		m_IntermediateFileFormat;
-	BOOL						m_bCometStacking;
-	BOOL						m_bCometInterpolating;
-	BOOL						m_bCreateCometImage;
-	BOOL						m_bSaveIntermediateCometImages;
-	BOOL						m_bApplyFilterToCometImage;
+	bool						m_bCometStacking;
+	bool						m_bCometInterpolating;
+	bool						m_bCreateCometImage;
+	bool						m_bSaveIntermediateCometImages;
+	bool						m_bApplyFilterToCometImage;
 	CPostCalibrationSettings	m_PostCalibrationSettings;
-	BOOL						m_bChannelAlign;
+	bool						m_bChannelAlign;
 
 	CComAutoCriticalSection		m_CriticalSection;
 
-private :
-	BOOL	AddLightFramesToList(CAllStackingTasks & tasks);
-	BOOL	ComputeLightFrameOffset(LONG lBitmapIndice, CMatchingStars & MatchingStars);
-	BOOL	ComputeMissingCometPositions();
-	BOOL	ComputeOffsets();
-	BOOL	IsLightFrameStackable(LPCTSTR szFile);
-	BOOL	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
+public:
+	CStackingEngine() :
+		m_lNrStackable{ 0 },
+		m_lNrCometStackable{ 0 },
+		m_lISOSpeed{ 0 },
+		m_lGain{ -1 },
+		m_pLightTask{ nullptr },
+		m_lNrStacked{ 0 },
+		m_fTotalExposure{ 0 },
+		m_fKeptPercentage{ 100.0 },
+		m_bSaveCalibrated{ CAllStackingTasks::GetSaveCalibrated() },
+		m_bSaveCalibratedDebayered{ CAllStackingTasks::GetSaveCalibratedDebayered() },
+		m_bSaveIntermediate{ CAllStackingTasks::GetCreateIntermediates() },
+		m_InputCFAType{ CFATYPE_NONE },
+		m_lPixelSizeMultiplier{ CAllStackingTasks::GetPixelSizeMultiplier() },
+		m_IntermediateFileFormat{ CAllStackingTasks::GetIntermediateFileFormat() },
+		m_bCometStacking{ false },
+		m_bCreateCometImage{ false },
+		m_bSaveIntermediateCometImages{ CAllStackingTasks::GetSaveIntermediateCometImages() },
+		m_bApplyFilterToCometImage{ CAllStackingTasks::GetApplyMedianFilterToCometImage() },
+		m_bChannelAlign{ CAllStackingTasks::GetChannelAlign() },
+		m_bCometInterpolating{ false }
+
+	{
+		m_DateTime.wYear = 0;
+		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
+	}
+
+	~CStackingEngine() = default;
+
+	bool ComputeLightFrameOffset(int lBitmapIndice);
+	inline void incStackable() { ++m_lNrStackable; }
+	inline void incCometStackableIfBitmapHasComet(const int n) {
+		if (this->m_vBitmaps[n].m_bComet)
+			++m_lNrCometStackable;
+	}
+
+private:
+	bool	AddLightFramesToList(CAllStackingTasks & tasks);
+	void	ComputeMissingCometPositions();
+	void	ComputeOffsets();
+	bool	IsLightFrameStackable(LPCTSTR szFile);
+	bool	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
 	void	GetResultISOSpeed();
 	void	GetResultGain();
 	void	GetResultDateTime();
 	void	GetResultExtraInfo();
-	void	ComputeLargestRectangle(CRect & rc);
-	bool	ComputeSmallestRectangle(CRect & rc);
-	LONG	FindBitmapIndice(LPCTSTR szFile);
-	BOOL	ComputeBitmap();
-	BOOL	CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bool bColor, CMultiBitmap ** ppMultiBitmap);
-	BOOL	StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBitmap);
-	BOOL	StackLightFrame(CMemoryBitmap * pBitmap, CPixelTransform & PixTransform, double fExposure, BOOL bComet);
-	BOOL	AdjustEntropyCoverage();
-	BOOL	AdjustBayerDrizzleCoverage();
-	BOOL	SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap);
-	BOOL	SaveCalibratedLightFrame(CMemoryBitmap * pBitmap);
-	BOOL	SaveDeltaImage(CMemoryBitmap * pBitmap);
-	BOOL	SaveCometImage(CMemoryBitmap * pBitmap);
-	BOOL	SaveCometlessImage(CMemoryBitmap * pBitmap);
+	DSSRect	computeLargestRectangle();
+	bool	computeSmallestRectangle(DSSRect & rc);
+	int	FindBitmapIndex(LPCTSTR szFile);
+	void	ComputeBitmap();
+	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
+	bool StackAll(CAllStackingTasks & tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+	bool	StackLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet);
+	bool	AdjustEntropyCoverage();
+	bool	AdjustBayerDrizzleCoverage();
+	bool	SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap) const;
+	bool	SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap) const;
+	bool	SaveDeltaImage(CMemoryBitmap* pBitmap) const;
+	bool	SaveCometImage(CMemoryBitmap* pBitmap) const;
+	bool	SaveCometlessImage(CMemoryBitmap* pBitmap) const;
 	TRANSFORMATIONTYPE GetTransformationType();
 
-public :
-	CStackingEngine()
+public:
+	CLightFrameInfo& getBitmap(const int n)
 	{
-		m_lNrStackable			= 0;
-		m_lNrCometStackable		= 0;
-		m_lISOSpeed				= 0;
-		m_lGain				= -1;
-		m_DateTime.wYear		= 0;
-		m_pLightTask			= nullptr;
-		m_lNrStacked			= 0;
-		m_fTotalExposure		= 0;
-		m_fKeptPercentage		= 100.0;
+		return this->m_vBitmaps[n];
+	}
 
-		m_bSaveCalibrated		= CAllStackingTasks::GetSaveCalibrated();
-		m_bSaveCalibratedDebayered = CAllStackingTasks::GetSaveCalibratedDebayered();
-		m_bSaveIntermediate		= CAllStackingTasks::GetCreateIntermediates();
-		m_InputCFAType			= CFATYPE_NONE;
-		m_lPixelSizeMultiplier	= CAllStackingTasks::GetPixelSizeMultiplier();
-		m_IntermediateFileFormat= CAllStackingTasks::GetIntermediateFileFormat();
-		m_bCometStacking		= FALSE;
-		m_bCreateCometImage		= FALSE;
-		m_bSaveIntermediateCometImages	= CAllStackingTasks::GetSaveIntermediateCometImages();
-		m_bApplyFilterToCometImage		= CAllStackingTasks::GetApplyMedianFilterToCometImage();
-		m_bChannelAlign			= CAllStackingTasks::GetChannelAlign();
-		m_bCometInterpolating	= FALSE;
-
-		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
-	};
-
-	virtual ~CStackingEngine()
-	{
-	};
-
-	void	SetReferenceFrame(LPCTSTR szRefFrame)
+	void SetReferenceFrame(LPCTSTR szRefFrame)
 	{
 		m_strReferenceFrame = szRefFrame;
-	};
+	}
 
-	void	SetSaveIntermediate(BOOL bSaveIntermediate)
+	void SetSaveIntermediate(bool bSaveIntermediate)
 	{
 		m_bSaveIntermediate = bSaveIntermediate;
-	};
+	}
 
-	void	SetSaveCalibrated(BOOL bSaveCalibrated)
+	void SetSaveCalibrated(bool bSaveCalibrated)
 	{
 		m_bSaveCalibrated= bSaveCalibrated;
-	};
+	}
 
-	void	SetKeptPercentage(double fPercent)
+	void SetKeptPercentage(double fPercent)
 	{
 		m_fKeptPercentage = fPercent;
-	};
-	BOOL	ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * pProgress);
-	BOOL	StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap, LPCTSTR szFileList);
+	}
 
-	LIGHTFRAMEINFOVECTOR & LightFrames()
+	void ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pProgress);
+	bool StackLightFrames(CAllStackingTasks& tasks, ProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+
+	LIGHTFRAMEINFOVECTOR& LightFrames()
 	{
 		return m_vBitmaps;
-	};
+	}
 
-	void	SetCometInterpolating(BOOL bSet)
+	void SetCometInterpolating(bool bSet)
 	{
 		m_bCometInterpolating = bSet;
-	};
+	}
 
-	bool	GetDefaultOutputFileName(CString & strFileName, LPCTSTR szFileList, bool bTIFF = true);
-	void	WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutputFile);
+	bool GetDefaultOutputFileName(CString& strFileName, LPCTSTR szFileList, bool bTIFF = true);
+	void WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile);
 };
 
 

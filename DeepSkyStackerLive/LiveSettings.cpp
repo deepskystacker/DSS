@@ -1,75 +1,88 @@
 #include <stdafx.h>
+#include <QSettings>
 #include "LiveSettings.h"
-#include "Registry.h"
 
 /* ------------------------------------------------------------------- */
 
 void	CLiveSettings::LoadFromRegistry()
 {
-	CRegistry			reg;
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
 
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("StackingFlags"), m_dwStackingFlags);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("WarningFlags"), m_dwWarningFlags);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("WarningActions"), m_dwWarningActions);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("ProcessFlags"), m_dwProcessFlags);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MinImages"), m_dwMinImages);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Score"), m_dwScore);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Stars"), m_dwStars);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("FWHM"), m_dwFWHM);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Offset"), m_dwOffset);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Angle"), m_dwAngle);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("SkyBackground"), m_dwSkyBackground);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("SaveCount"), m_dwSaveCount);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("FileFolder"), m_strFileFolder);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Email"), m_strEmail);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("WarningFileFolder"), m_strWarnFileFolder);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("StackedOutputFolder"), m_strStackedOutputFolder);
 
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Email"), m_strEmail);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("SMTP"), m_strSMTP);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Account"), m_strAccount);
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Object"), m_strObject);
-	DWORD dwDarkMode = 1;
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("DarkMode"), dwDarkMode);
-	m_bDarkMode = (dwDarkMode > 0);
+	m_dwStackingFlags = settings.value("StackingFlags", 0U).toUInt();
+	m_dwWarningFlags = settings.value("WarningFlags", 0U).toUInt();
+	m_dwWarningActions = settings.value("WarningActions", 0U).toUInt();
+	m_dwProcessFlags = settings.value("ProcessFlags", 0U).toUInt();
+	m_dwMinImages = settings.value("MinImages", 0U).toUInt();
+	m_dwScore = settings.value("Score", 0U).toUInt();
+	m_dwStars = settings.value("Stars", 0U).toUInt();
+	m_dwFWHM = settings.value("FWHM", 0U).toUInt();
+	m_dwOffset = settings.value("Offset", 0U).toUInt();
+	m_dwAngle = settings.value("Angle", 0U).toUInt();
+	m_dwSkyBackground = settings.value("SkyBackground", 0U).toUInt();
+	m_dwSaveCount = settings.value("SaveCount", 0U).toUInt();
 
+	m_bDarkMode = settings.value("DarkMode", false).toBool();
+
+	m_strFileFolder = settings.value("FileFolder", "").toString().toStdWString().c_str();
+	m_strEmail = settings.value("Email", "").toString().toStdWString().c_str();
+	m_strWarnFileFolder = settings.value("WarningFileFolder", "").toString().toStdWString().c_str();
+	m_strStackedOutputFolder = settings.value("StackedOutputFolder", "").toString().toStdWString().c_str();
+
+	m_strSMTP = settings.value("SMTP", "").toString().toStdWString().c_str();
+	m_strAccount = settings.value("Account", "").toString().toStdWString().c_str();
+	m_strObject = settings.value("Object", "").toString().toStdWString().c_str();
+	settings.endGroup();
+
+#if defined (Q_OS_WIN)
 	if (!m_strSMTP.GetLength() && !m_strAccount.GetLength())
 	{
-		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Server"), m_strSMTP);
-		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Email Address"), m_strAccount);
+		QSettings sysSettings("HKEY_CURRENT_USER\\Software\\Microsoft",
+			QSettings::NativeFormat);
+		sysSettings.beginGroup("Internet Account Manager/Accounts/00000001");
+		m_strSMTP = sysSettings.value("SMTP Server", "").toString().toStdWString().c_str();
+		m_strAccount = sysSettings.value("SMTP Email Address", "").toString().toStdWString().c_str();
+
+		sysSettings.endGroup();
 	};
+#endif
 };
 
 /* ------------------------------------------------------------------- */
 
 void	CLiveSettings::SaveToRegistry()
 {
-	CRegistry			reg;
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
 
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("StackingFlags"), m_dwStackingFlags);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("WarningFlags"), m_dwWarningFlags);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("WarningActions"), m_dwWarningActions);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("ProcessFlags"), m_dwProcessFlags);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("MinImages"), m_dwMinImages);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Score"), m_dwScore);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Stars"), m_dwStars);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("FWHM"), m_dwFWHM);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Offset"), m_dwOffset);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Angle"), m_dwAngle);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("SkyBackground"), m_dwSkyBackground);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("SaveCount"), m_dwSaveCount);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("FileFolder"), m_strFileFolder);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Email"), m_strEmail);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("WarningFileFolder"), m_strWarnFileFolder);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("StackedOutputFolder"), m_strStackedOutputFolder);
 
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Email"), m_strEmail);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("SMTP"), m_strSMTP);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Account"), m_strAccount);
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Object"), m_strObject);
-	DWORD dwDarkMode = m_bDarkMode ? 1 : 0;
-	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("DarkMode"), dwDarkMode);
-	m_bDarkMode = (dwDarkMode > 0);
+	settings.setValue("StackingFlags", m_dwStackingFlags);
+	settings.setValue("WarningFlags", m_dwWarningFlags);
+	settings.setValue("WarningActions", m_dwWarningActions);
+	settings.setValue("ProcessFlags", m_dwProcessFlags);
+	settings.setValue("MinImages", m_dwMinImages);
+	settings.setValue("Score", m_dwScore);
+	settings.setValue("Stars", m_dwStars);
+	settings.setValue("FWHM", m_dwFWHM);
+	settings.setValue("Offset", m_dwOffset);
+	settings.setValue("Angle", m_dwAngle);
+	settings.setValue("SkyBackground", m_dwSkyBackground);
+	settings.setValue("SaveCount", m_dwSaveCount);
+
+	settings.setValue("DarkMode", m_bDarkMode);
+
+	settings.setValue("FileFolder", QString::fromStdWString(m_strFileFolder.GetString()));
+	settings.setValue("WarningFileFolder", QString::fromStdWString(m_strWarnFileFolder.GetString()));
+	settings.setValue("StackedOutputFolder", QString::fromStdWString(m_strStackedOutputFolder.GetString()));
+
+	settings.setValue("Email", QString::fromStdWString(m_strEmail.GetString()));
+	settings.setValue("SMTP", QString::fromStdWString(m_strSMTP.GetString()));
+	settings.setValue("Account", QString::fromStdWString(m_strAccount.GetString()));
+	settings.setValue("Object", QString::fromStdWString(m_strObject.GetString()));
+
+	settings.endGroup();
+
 };
 
 /* ------------------------------------------------------------------- */

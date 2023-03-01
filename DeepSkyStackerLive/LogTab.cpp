@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "resource.h"
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "LogTab.h"
@@ -64,7 +65,7 @@ BOOL CLogTab::OnInitDialog()
 
 /* ------------------------------------------------------------------- */
 
-void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItalic, COLORREF crColor)
+void CLogTab::AddToLog(QString szText, BOOL bAddDateTime, BOOL bBold, BOOL bItalic, COLORREF crColor)
 {
 	CHARFORMAT			cf;
 	CString				strTime;
@@ -105,5 +106,5 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 
 	m_Log.SetSel(m_Log.GetTextLength(), -1);
 	m_Log.SetSelectionCharFormat(cf);
-	m_Log.ReplaceSel(szText);
+	m_Log.ReplaceSel(szText.toStdWString().c_str());
 };

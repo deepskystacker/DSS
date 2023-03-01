@@ -5,14 +5,7 @@
 #include "DeepSkyStacker.h"
 #include "RGBTab.h"
 #include <BtnST.h>
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CRGBTab property page
@@ -25,7 +18,7 @@ CRGBTab::CRGBTab() : CChildPropertyPage(CRGBTab::IDD)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
     m_RedAdjustMethod = HISTOADJUSTTYPE(0);
     m_GreenAdjustMethod = HISTOADJUSTTYPE(0);
     m_BlueAdjustMethod = HISTOADJUSTTYPE(0);
@@ -82,19 +75,21 @@ END_MESSAGE_MAP()
 
 BOOL CRGBTab::OnSetActive()
 {
+	constexpr auto IconNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
+
 	if (m_bFirstActivation)
 	{
 		m_RedGradient.ShowTooltips(false);
 		m_GreenGradient.ShowTooltips(false);
 		m_BlueGradient.ShowTooltips(false);
 
-		m_RedHAT.SetFlat(TRUE);
-		m_GreenHAT.SetFlat(TRUE);
-		m_BlueHAT.SetFlat(TRUE);
+		m_RedHAT.SetFlat(true);
+		m_GreenHAT.SetFlat(true);
+		m_BlueHAT.SetFlat(true);
 
-		m_RedHAT.DrawTransparent(TRUE);
-		m_GreenHAT.DrawTransparent(TRUE);
-		m_BlueHAT.DrawTransparent(TRUE);
+		m_RedHAT.DrawTransparent(true);
+		m_GreenHAT.DrawTransparent(true);
+		m_BlueHAT.DrawTransparent(true);
 
 		m_RedHAT.SetTooltipText(IDS_TT_REDADJUST);
 		m_GreenHAT.SetTooltipText(IDS_TT_GREENADJUST);
@@ -104,22 +99,22 @@ BOOL CRGBTab::OnSetActive()
 		SetGreenAdjustMethod(HAT_LINEAR);
 		SetBlueAdjustMethod(HAT_LINEAR);
 
-		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Redo.SetFlat(TRUE);
-		m_Undo.SetFlat(TRUE);
-		m_Redo.DrawTransparent(TRUE);
-		m_Undo.DrawTransparent(TRUE);
+		m_Redo.SetIcon(IDI_REDO, IconNumber);
+		m_Undo.SetIcon(IDI_UNDO, IconNumber);
+		m_Redo.SetFlat(true);
+		m_Undo.SetFlat(true);
+		m_Redo.DrawTransparent(true);
+		m_Undo.DrawTransparent(true);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
-		m_Settings.DrawTransparent(TRUE);
-		m_Settings.SetFlat(TRUE);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Settings.DrawTransparent(true);
+		m_Settings.SetFlat(true);
+		m_Settings.SetIcon(IDI_SETTINGS, IconNumber);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
 	return CChildPropertyPage::OnSetActive();
@@ -152,11 +147,11 @@ void CRGBTab::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
 
 		CGradient &			GreenGradient = m_GreenGradient.GetGradient();
 		GreenGradient.SetPeg(GreenGradient.IndexFromId(nID), Position);
-		m_GreenGradient.Invalidate(TRUE);
+		m_GreenGradient.Invalidate(true);
 
 		CGradient &			BlueGradient = m_BlueGradient.GetGradient();
 		BlueGradient.SetPeg(BlueGradient.IndexFromId(nID), Position);
-		m_BlueGradient.Invalidate(TRUE);
+		m_BlueGradient.Invalidate(true);
 	};
 	GetParentProcessingDlg(this)->UpdateBezierCurve();
 };
@@ -184,11 +179,11 @@ void CRGBTab::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
 
 		CGradient &			RedGradient = m_RedGradient.GetGradient();
 		RedGradient.SetPeg(RedGradient.IndexFromId(nID), Position);
-		m_RedGradient.Invalidate(TRUE);
+		m_RedGradient.Invalidate(true);
 
 		CGradient &			BlueGradient = m_BlueGradient.GetGradient();
 		BlueGradient.SetPeg(BlueGradient.IndexFromId(nID), Position);
-		m_BlueGradient.Invalidate(TRUE);
+		m_BlueGradient.Invalidate(true);
 	};
 
 	GetParentProcessingDlg(this)->UpdateBezierCurve();
@@ -217,11 +212,11 @@ void CRGBTab::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
 
 		CGradient &			RedGradient = m_RedGradient.GetGradient();
 		RedGradient.SetPeg(RedGradient.IndexFromId(nID), Position);
-		m_RedGradient.Invalidate(TRUE);
+		m_RedGradient.Invalidate(true);
 
 		CGradient &			GreenGradient = m_GreenGradient.GetGradient();
 		GreenGradient.SetPeg(GreenGradient.IndexFromId(nID), Position);
-		m_GreenGradient.Invalidate(TRUE);
+		m_GreenGradient.Invalidate(true);
 	};
 
 	GetParentProcessingDlg(this)->UpdateBezierCurve();

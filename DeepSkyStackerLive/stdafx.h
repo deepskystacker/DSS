@@ -5,11 +5,6 @@
 #if !defined(AFX_STDAFX_H_)
 #define AFX_STDAFX_H_
 
-#ifndef _SECURE_ATL
-#define _SECURE_ATL 1
-#endif
-
-
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -23,7 +18,12 @@ using std::max;
 //
 // Want to support Windows XP and up
 //
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+
+//
+// Visual Leak Detector
+//
+#include <vld.h>
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -53,9 +53,6 @@ using std::max;
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#include "resource.h"
 #include <afxdlgs.h>
-
-#include "BitmapExt.h"
 
 #endif // !defined(AFX_STDAFX_H_)

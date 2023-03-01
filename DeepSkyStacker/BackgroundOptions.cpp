@@ -1,224 +1,162 @@
-// CheckAbove.cpp : implementation file
-//
 #include "stdafx.h"
-#include "deepskystacker.h"
-#include "Registry.h"
-#include "FrameList.h"
+#include <algorithm>
+using std::min;
+using std::max;
+
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#include <afx.h>
+
 #include "BackgroundOptions.h"
+#include "ui/ui_BackgroundOptions.h"
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include "DSSCommon.h"
+#include "StackingTasks.h"
 #include "Workspace.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CBackgroundOptions dialog
-
-
-CBackgroundOptions::CBackgroundOptions(CWnd* pParent /*=nullptr*/)
-	: CDialog(CBackgroundOptions::IDD, pParent)
+BackgroundOptions::BackgroundOptions(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::BackgroundOptions)
 {
-	//{{AFX_DATA_INIT(CBackgroundOptions)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
+    ui->setupUi(this);
 
-	m_CalibrationMode		   = CAllStackingTasks::GetBackgroundCalibrationMode();
-	m_CalibrationInterpolation = CAllStackingTasks::GetBackgroundCalibrationInterpolation();
-	m_RGBCalibrationMethod	   = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CBackgroundOptions)
-	DDX_Control(pDX, IDC_LINEAR, m_Linear);
-	DDX_Control(pDX, IDC_RATIONAL, m_Rational);
-	DDX_Control(pDX, IDC_CALIBRATIONPREVIEW, m_CalibrationPreview);
-	DDX_Control(pDX, IDC_NONE, m_None);
-	DDX_Control(pDX, IDC_MINIMUM, m_Minimum);
-	DDX_Control(pDX, IDC_MAXIMUM, m_Maximum);
-	DDX_Control(pDX, IDC_MIDDLE, m_Middle);
-	DDX_Control(pDX, IDC_RGBCALIBRATIONPREVIEW, m_RGBCalibrationPreview);
-	//}}AFX_DATA_MAP
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CBackgroundOptions, CDialog)
-	//{{AFX_MSG_MAP(CBackgroundOptions)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_LINEAR, &CBackgroundOptions::OnBnClickedLinear)
-	ON_BN_CLICKED(IDC_RATIONAL, &CBackgroundOptions::OnBnClickedRational)
-	ON_BN_CLICKED(IDC_NONE, &CBackgroundOptions::OnBnClickedNone)
-	ON_BN_CLICKED(IDC_MINIMUM, &CBackgroundOptions::OnBnClickedMinimum)
-	ON_BN_CLICKED(IDC_MIDDLE, &CBackgroundOptions::OnBnClickedMiddle)
-	ON_BN_CLICKED(IDC_MAXIMUM, &CBackgroundOptions::OnBnClickedMaximum)
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// CBackgroundOptions message handlers
-
-/* ------------------------------------------------------------------- */
-
-BOOL CBackgroundOptions::OnInitDialog()
-{
-	CDialog::OnInitDialog();
+	m_CalibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
+	m_RGBCalibrationMethod = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
 
 	if ((m_CalibrationMode == BCM_NONE) || (m_CalibrationMode == BCM_PERCHANNEL))
-		m_None.SetCheck(TRUE);
+	{
+		ui->rbNone->setChecked(true);
+		on_rbNone_clicked();
+	}
 	else if (m_RGBCalibrationMethod == RBCM_MINIMUM)
-		m_Minimum.SetCheck(TRUE);
+	{
+		ui->rbMinimum->setChecked(true);
+		on_rbMinimum_clicked();
+	}
 	else if (m_RGBCalibrationMethod == RBCM_MIDDLE)
-		m_Middle.SetCheck(TRUE);
+	{
+		ui->rbMiddle->setChecked(true);
+		on_rbMiddle_clicked();
+	}
 	else
-		m_Maximum.SetCheck(TRUE);
+	{
+		ui->rbMaximum->setChecked(true);
+		on_rbMaximum_clicked();
+	}
 
-	if (m_CalibrationInterpolation == BCI_LINEAR)
-		m_Linear.SetCheck(TRUE);
-	else
-		m_Rational.SetCheck(TRUE);
+	updateInterpolation(CAllStackingTasks::GetBackgroundCalibrationInterpolation());
+}
 
-	UpdateCalibrationPreview();
-	UpdateRGBCalibrationPreview();
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnOK()
+BackgroundOptions::~BackgroundOptions()
 {
-	CWorkspace			workspace;
+    delete ui;
+}
 
-	if (m_Linear.GetCheck())
+void BackgroundOptions::updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation)
+{
+	m_CalibrationInterpolation = interpolation;
+    if (m_CalibrationInterpolation == BCI_LINEAR)
+    {
+		if (pxLinear.isNull())
+		{
+			pxLinear.load(":/calibration/linear.bmp");
+		}
+        ui->laCalibration->setPixmap(pxLinear);
+        ui->rbLinear->setChecked(true);
+    }
+    else
+    {
+		if (pxRational.isNull())
+		{
+			pxRational.load(":/calibration/rational.bmp");
+		}
+        ui->laCalibration->setPixmap(pxRational);
+        ui->rbRational->setChecked(true);
+    }
+}
+
+void BackgroundOptions::on_rbLinear_clicked()
+{
+	updateInterpolation(BCI_LINEAR);
+}
+
+void BackgroundOptions::on_rbRational_clicked()
+{
+	updateInterpolation(BCI_RATIONAL);
+}
+
+void BackgroundOptions::on_rbNone_clicked()
+{
+	if (pxNone.isNull())
+	{
+		pxNone.load(":/rgbcalibration/none.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxNone);
+}
+
+void BackgroundOptions::on_rbMinimum_clicked()
+{
+	if (pxMin.isNull())
+	{
+		pxMin.load(":/rgbcalibration/minimum.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMin);
+}
+
+void BackgroundOptions::on_rbMiddle_clicked()
+{
+	if (pxMid.isNull())
+	{
+		pxMid.load(":/rgbcalibration/middle.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMid);
+}
+
+void BackgroundOptions::on_rbMaximum_clicked()
+{
+	if (pxMax.isNull())
+	{
+		pxMax.load(":/rgbcalibration/maximum.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMax);
+}
+
+void BackgroundOptions::accept()
+{
+	Workspace			workspace;
+
+	if (ui->rbLinear->isChecked())
 		m_CalibrationInterpolation = BCI_LINEAR;
 	else
 		m_CalibrationInterpolation = BCI_RATIONAL;
 
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibrationInterpolation"), (DWORD)m_CalibrationInterpolation);
+	workspace.setValue("Stacking/BackgroundCalibrationInterpolation", (uint)m_CalibrationInterpolation);
 
-	if (!m_None.GetCheck())
+	if (!ui->rbNone->isChecked())
 	{
 		m_CalibrationMode = BCM_RGB;
-		if (m_Minimum.GetCheck())
+		if (ui->rbMinimum->isChecked())
 			m_RGBCalibrationMethod = RBCM_MINIMUM;
-		else if (m_Middle.GetCheck())
+		else if (ui->rbMiddle->isChecked())
 			m_RGBCalibrationMethod = RBCM_MIDDLE;
 		else
 			m_RGBCalibrationMethod = RBCM_MAXIMUM;
 
 
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("RGBBackgroundCalibrationMethod"), (DWORD)m_RGBCalibrationMethod);
+		workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", (uint)m_RGBCalibrationMethod);
 	}
 	else if (m_CalibrationMode == BCM_RGB)
 	{
 		m_CalibrationMode = BCM_PERCHANNEL;
 	};
 
-	CDialog::OnOK();
+	Inherited::accept();
 }
 
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::UpdateCalibrationPreview()
+void BackgroundOptions::reject()
 {
-	if (m_Linear.GetCheck())
-		m_CalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_CALIBRATION_LINEAR)));
-	else
-		m_CalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_CALIBRATION_RATIONAL)));
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::UpdateRGBCalibrationPreview()
-{
-	if (m_None.GetCheck())
-		m_RGBCalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_RGBCALIBRATION_NONE)));
-	else if (m_Minimum.GetCheck())
-		m_RGBCalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_RGBCALIBRATION_MINIMUM)));
-	else if (m_Middle.GetCheck())
-		m_RGBCalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_RGBCALIBRATION_MIDDLE)));
-	else if (m_Maximum.GetCheck())
-		m_RGBCalibrationPreview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_RGBCALIBRATION_MAXIMUM)));
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedLinear()
-{
-	if (m_Linear.GetCheck())
-	{
-		m_Rational.SetCheck(FALSE);
-		UpdateCalibrationPreview();
-	};
+	Inherited::reject();
 }
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedRational()
-{
-	if (m_Rational.GetCheck())
-	{
-		m_Linear.SetCheck(FALSE);
-		UpdateCalibrationPreview();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedNone()
-{
-	if (m_None.GetCheck())
-	{
-		m_Minimum.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		UpdateRGBCalibrationPreview();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedMinimum()
-{
-	if (m_Minimum.GetCheck())
-	{
-		m_None.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		UpdateRGBCalibrationPreview();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedMiddle()
-{
-	if (m_Middle.GetCheck())
-	{
-		m_None.SetCheck(FALSE);
-		m_Minimum.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		UpdateRGBCalibrationPreview();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBackgroundOptions::OnBnClickedMaximum()
-{
-	if (m_Maximum.GetCheck())
-	{
-		m_None.SetCheck(FALSE);
-		m_Minimum.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
-		UpdateRGBCalibrationPreview();
-	};
-}
-
-/* ------------------------------------------------------------------- */

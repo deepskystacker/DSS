@@ -7,27 +7,27 @@
 #include "DSSProgress.h"
 #include <tiffio.h>
 
-const LONG	TIFFTAG_DSS_BASE			= 50000;
-const LONG	TIFFTAG_DSS_NRFRAMES		= (TIFFTAG_DSS_BASE + 0);
-const LONG	TIFFTAG_DSS_TOTALEXPOSUREOLD= (TIFFTAG_DSS_BASE + 1);
-const LONG	TIFFTAG_DSS_ISO				= (TIFFTAG_DSS_BASE + 2);
-const LONG	TIFFTAG_DSS_SETTINGSAPPLIED	= (TIFFTAG_DSS_BASE + 3);
-const LONG	TIFFTAG_DSS_BEZIERSETTINGS	= (TIFFTAG_DSS_BASE + 4);
-const LONG	TIFFTAG_DSS_ADJUSTSETTINGS	= (TIFFTAG_DSS_BASE + 5);
-const LONG	TIFFTAG_DSS_CFA				= (TIFFTAG_DSS_BASE + 6);
-const LONG	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
-const LONG	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
-const LONG	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
-const LONG  TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
-const LONG	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
+const int	TIFFTAG_DSS_BASE			= 50000;
+const int	TIFFTAG_DSS_NRFRAMES		= (TIFFTAG_DSS_BASE + 0);
+const int	TIFFTAG_DSS_TOTALEXPOSUREOLD= (TIFFTAG_DSS_BASE + 1);
+const int	TIFFTAG_DSS_ISO				= (TIFFTAG_DSS_BASE + 2);
+const int	TIFFTAG_DSS_SETTINGSAPPLIED	= (TIFFTAG_DSS_BASE + 3);
+const int	TIFFTAG_DSS_BEZIERSETTINGS	= (TIFFTAG_DSS_BASE + 4);
+const int	TIFFTAG_DSS_ADJUSTSETTINGS	= (TIFFTAG_DSS_BASE + 5);
+const int	TIFFTAG_DSS_CFA				= (TIFFTAG_DSS_BASE + 6);
+const int	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
+const int	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
+const int	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
+const int  TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
+const int	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
 
 void DSSTIFFInitialize();
 
 class CTIFFHeader
 {
-protected :
+protected:
 	int					w, h;
-    uint16				spp,
+    std::uint16_t		spp,
 						bps,
 						photo,
 						compression,
@@ -41,9 +41,9 @@ protected :
 						samplemax;
 	float				exposureTime;
 	float				aperture;
-	LONG				isospeed;
-	LONG				gain;
-	LONG				nrframes;
+	int				isospeed;
+	int				gain;
+	int				nrframes;
 	SYSTEMTIME			m_DateTime;
 
 public :
@@ -77,47 +77,47 @@ public :
 	virtual ~CTIFFHeader() {};
 
 public :
-	BOOL	IsCFA()
+	bool	IsCFA()
 	{
 		return cfa;
 	};
 
 	CFATYPE GetCFAType()
 	{
-		return (CFATYPE)cfatype;
+		return static_cast<CFATYPE>(cfatype);
 	};
 
-	BOOL	IsMaster()
+	bool	IsMaster()
 	{
 		return master;
 	};
 
-	BOOL	IsFloat()
+	bool	IsFloat()
 	{
 		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
 	};
 
-	LONG	Height()
+	int	Height()
 	{
 		return h;
 	};
 
-	LONG	GetISOSpeed()
+	int	GetISOSpeed()
 	{
 		return isospeed;
 	};
 
-	void	SetISOSpeed(LONG lISOSpeed)
+	void	SetISOSpeed(int lISOSpeed)
 	{
 		isospeed = lISOSpeed;
 	};
 
-	LONG	GetGain()
+	int	GetGain()
 	{
 		return gain;
 	};
 
-	void	SetGain(LONG lGain)
+	void	SetGain(int lGain)
 	{
 		gain = lGain;
 	};
@@ -142,42 +142,42 @@ public :
 		aperture = fAperture;
 	};
 
-	void	SetNrFrames(LONG lNrFrames)
+	void	SetNrFrames(int lNrFrames)
 	{
 		nrframes = lNrFrames;
 	};
 
-	LONG	Width()
+	int	Width()
 	{
 		return w;
 	};
 
-	BOOL	IsGray()
+	bool	IsGray()
 	{
 		return (spp == 1);
 	};
 
-	BOOL	Is8Bits()
+	bool	Is8Bits()
 	{
 		return (bps == 8);
 	};
 
-	BOOL	Is16Bits()
+	bool	Is16Bits()
 	{
 		return (bps == 16);
 	};
 
-	BOOL	Is32Bits()
+	bool	Is32Bits()
 	{
 		return (bps == 32);
 	};
 
-	LONG	BitPerChannels()
+	int	BitPerChannels()
 	{
 		return bps;
 	};
 
-	LONG	NrChannels()
+	int	NrChannels()
 	{
 		if (spp==1)
 			return spp;
@@ -201,10 +201,10 @@ class CTIFFReader : public CTIFFHeader
 public :
 	TIFF *					m_tiff;
 	CString					m_strFileName;
-	CDSSProgress *			m_pProgress;
+	ProgressBase *			m_pProgress;
 
 public :
-	CTIFFReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
+	CTIFFReader(LPCTSTR szFileName, ProgressBase *	pProgress)
 	{
 		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
@@ -216,31 +216,31 @@ public :
 		Close();
 	};
 
-	BOOL	Open();
-	BOOL	Read();
-	BOOL	Close();
+	bool	Open();
+	bool	Read();
+	bool	Close();
 
 	// bool getInfo();
 
-	virtual BOOL	OnOpen() { return TRUE; };
-	virtual void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return;};
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool	OnOpen() { return true; };
+	virtual void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return;};
+	virtual bool	OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
 
 class CTIFFWriter : public CTIFFHeader
 {
-public :
+public:
 	TIFF *					m_tiff;
 	CString					m_strFileName;
-	CDSSProgress *			m_pProgress;
+	ProgressBase *			m_pProgress;
 	CString					m_strDescription;
 	TIFFFORMAT				m_Format;
 
-protected :
-	void	SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, BOOL bMaster);
-	void	SetCompression(TIFFCOMPRESSION tiffcomp)
+protected:
+	void SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster);
+	void SetCompression(TIFFCOMPRESSION tiffcomp)
 	{
 		compression = COMPRESSION_NONE;
 		switch (tiffcomp)
@@ -254,56 +254,53 @@ protected :
 		};
 	};
 
-public :
-	CTIFFWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
+public:
+	CTIFFWriter(LPCTSTR szFileName, ProgressBase* pProgress) :
+		m_tiff{ nullptr },
+		m_strFileName{ szFileName },
+		m_pProgress{ pProgress },
+		m_Format{ TF_UNKNOWN }
 	{
-		m_tiff		  = nullptr;
-		m_strFileName = szFileName;
-		m_pProgress   = pProgress;
-		compression   = COMPRESSION_NONE;
-		m_Format	  = TF_UNKNOWN;
-	};
+		compression = COMPRESSION_NONE;
+	}
 
 	virtual ~CTIFFWriter()
 	{
 		Close();
-	};
+	}
 
-	void	SetDescription(LPCTSTR szDescription)
+	void SetDescription(LPCTSTR szDescription)
 	{
 		m_strDescription = szDescription;
-	};
+	}
 
-	void	SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
+	void SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
 	{
 		m_Format = TIFFFormat;
 		SetCompression(TIFFCompression);
-	};
+	}
 
-	BOOL	Open();
-	BOOL	Write();
-	BOOL	Close();
+	bool Open();
+	bool Write();
+	bool Close();
 
-	virtual BOOL	OnOpen() { return TRUE; };
-	virtual void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool OnOpen() { return true; };
+	virtual void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) = 0;
+	virtual bool OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
-			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
-			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
+bool GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress);
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, LPCTSTR szDescription);
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, TIFFFORMAT TIFFFormat,
+	TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
-BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-int		LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+bool IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress);
 
 /* ------------------------------------------------------------------- */
 

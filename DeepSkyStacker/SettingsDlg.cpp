@@ -4,12 +4,7 @@
 #include "stdafx.h"
 #include "deepskystacker.h"
 #include "SettingsDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include "dss_settings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSettingsDlg dialog
@@ -20,7 +15,7 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=nullptr*/)
 {
 	//{{AFX_DATA_INIT(CSettingsDlg)
 	//}}AFX_DATA_INIT
-	m_bLoadSettings = FALSE;
+	m_bLoadSettings = false;
     m_pSettings = NULL;
 }
 
@@ -56,34 +51,30 @@ END_MESSAGE_MAP()
 void CSettingsDlg::UpdateControls()
 {
 	CString				strText;
-	BOOL				bAdd = FALSE;
-	BOOL				bLoad = FALSE;
+	bool				bAdd = false;
+	bool				bLoad = false;
 
 	m_Name.GetWindowText(strText);
 
 	if (strText.GetLength())
 	{
 		// Check that the name is not already in the list
-		LONG			lNrSettings;
-		LONG			i;
+		const int lNrSettings = m_pSettings->Count();
 
-		lNrSettings = m_pSettings->Count();
+		bAdd = true;
 
-		bAdd = TRUE;
-
-		for (i = 0;i<lNrSettings && bAdd;i++)
+		for (int i = 0; i < lNrSettings && bAdd; i++)
 		{
-			CDSSSetting		cds;
-
+			CDSSSetting cds;
 			m_pSettings->GetItem(i, cds);
 
 			if (!cds.m_strName.CompareNoCase(strText))
-				bAdd = FALSE;
-		};
-	};
+				bAdd = false;
+		}
+	}
 
 	if (m_List.GetCurSel() >= 0)
-		bLoad = TRUE;
+		bLoad = true;
 
 	m_Load.EnableWindow(bLoad);
 	m_Delete.EnableWindow(bLoad);
@@ -109,9 +100,7 @@ void CSettingsDlg::OnAdd()
 
 void CSettingsDlg::OnDelete()
 {
-	LONG				lCurSel;
-
-	lCurSel = m_List.GetCurSel();
+	const int lCurSel = m_List.GetCurSel();
 	if (lCurSel >= 0)
 	{
 		CString			strText;
@@ -134,13 +123,11 @@ void CSettingsDlg::OnDelete()
 
 void CSettingsDlg::OnLoad()
 {
-	LONG				lCurSel;
-
-	lCurSel = m_List.GetCurSel();
+	const int lCurSel = m_List.GetCurSel();
 	if (lCurSel >= 0)
 	{
 		m_pSettings->GetItem(lCurSel, m_CurrentSetting);
-		m_bLoadSettings = TRUE;
+		m_bLoadSettings = true;
 	};
 
 	OnOK();
@@ -173,26 +160,22 @@ BOOL CSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	if (m_pSettings)
+	if (m_pSettings != nullptr)
 	{
-		LONG			lNrSettings;
-		LONG			i;
+		const int lNrSettings = m_pSettings->Count();
 
-		lNrSettings = m_pSettings->Count();
-
-		for (i = 0;i<lNrSettings;i++)
+		for (int i = 0; i < lNrSettings; i++)
 		{
-			CDSSSetting		cds;
-
+			CDSSSetting cds;
 			if (m_pSettings->GetItem(i, cds))
 				m_List.AddString(cds.m_strName);
-		};
-	};
+		}
+	}
 
 	UpdateControls();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */

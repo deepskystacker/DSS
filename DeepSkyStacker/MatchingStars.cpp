@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <ZExcept.h>
 #include "MatchingStars.h"
 #include <algorithm>
 #include "Workspace.h"
@@ -8,18 +9,18 @@
 //#include <stdexcept>
 #include "Matrix.h"
 
-const LONG		MINPAIRSTOBISQUARED = 25;
-const LONG		MINPAIRSTOBICUBIC	= 40;
+constexpr int		MINPAIRSTOBISQUARED = 25;
+constexpr int		MINPAIRSTOBICUBIC	= 40;
 
 /* ------------------------------------------------------------------- */
 
-static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
+static TRANSFORMATIONTYPE	GetTransformationType(int lNrVotingPairs = 2000)
 {
+	std::uint32_t dwAlignmentTransformation = 2;
 	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
-	DWORD					dwAlignmentTransformation = 2;
-	CWorkspace				workspace;
+	Workspace				workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwAlignmentTransformation);
+	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
 	if (dwAlignmentTransformation > TT_LAST)
 		dwAlignmentTransformation = 0;
@@ -54,21 +55,18 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 
 /* ------------------------------------------------------------------- */
 
-static BOOL AreCornersLocked()
+static bool AreCornersLocked()
 {
-	DWORD					dwLockCorners = 1;
-	CWorkspace				workspace;
+	Workspace				workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("LockCorners"), dwLockCorners);
-
-	return dwLockCorners;
+	return workspace.value("Stacking/LockCorners", true).toBool();
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDISTVECTOR & vStarDist)
+void	CMatchingStars::ComputeStarDistances(const POINTFVECTOR & vStars, STARDISTVECTOR & vStarDist)
 {
-	LONG				i, j;
+	int				i, j;
 
 	double				fMaxDistance = 0;
 
@@ -76,14 +74,11 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 
 	for (i = 0;i<vStars.size();i++)
 	{
-		CPointExt		pt1(vStars[i].X, vStars[i].Y);
-
 		for (j = i+1;j<vStars.size();j++)
 		{
-			CPointExt		pt2(vStars[j].X, vStars[j].Y);
 			double			fDistance;
 
-			fDistance = Distance(pt1, pt2);
+			fDistance = Distance(vStars[i].x(), vStars[i].y(), vStars[j].x(), vStars[j].y());
 			fMaxDistance = max(fDistance, fMaxDistance);
 
 			vStarDist.emplace_back(i, j, fDistance);
@@ -95,11 +90,11 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 
 /* ------------------------------------------------------------------- */
 
-void	CMatchingStars::ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
+void	CMatchingStars::ComputeTriangles(const POINTFVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
 {
 	ZFUNCTRACE_RUNTIME();
 	STARDISTVECTOR			vStarDist;
-	LONG					i, j, k;
+	int					i, j, k;
 	STARDISTITERATOR		it;
 	std::vector<float>		vDistances;
 
@@ -150,9 +145,9 @@ void	CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs)
 	vVotingPairs.clear();
 	vVotingPairs.reserve(m_vRefStars.size() * m_vTgtStars.size());
 
-	for (LONG i = 0;i<m_vRefStars.size();i++)
+	for (int i = 0;i<m_vRefStars.size();i++)
 	{
-		for (LONG j = 0;j<m_vTgtStars.size();j++)
+		for (int j = 0;j<m_vTgtStars.size();j++)
 		{
 			vVotingPairs.push_back(CVotingPair(i, j));
 		};
@@ -161,28 +156,28 @@ void	CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs)
 
 /* ------------------------------------------------------------------- */
 
-inline void	AddVote(BYTE RefStar, BYTE TgtStar, VOTINGPAIRVECTOR & vVotingPairs, LONG lNrTgtStars)
+inline void	AddVote(std::uint8_t RefStar, std::uint8_t TgtStar, VOTINGPAIRVECTOR & vVotingPairs, int lNrTgtStars)
 {
-	LONG				lOffset = RefStar * lNrTgtStars + TgtStar;
+	int				lOffset = RefStar * lNrTgtStars + TgtStar;
 
 	vVotingPairs[lOffset].m_lNrVotes++;
 };
 
 /* ------------------------------------------------------------------- */
 
-void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, LONG lNrTgtStars)
+void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, int lNrTgtStars)
 {
-	LONG			i, j;
+	int			i, j;
 
 	for (i = 0;i<vInVotingPairs.size();i++)
 	{
-		LONG		lMaxVotes1 = 0,
+		int		lMaxVotes1 = 0,
 					lMaxVotes2 = 0;
 
 		// compute max votes for the same reference star
 		for (j = (vInVotingPairs[i].m_RefStar)*lNrTgtStars;j<(vInVotingPairs[i].m_RefStar+1)*lNrTgtStars;j++)
 		{
-			ASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
+			ZASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
 			if (vInVotingPairs[j].m_TgtStar != vInVotingPairs[i].m_TgtStar)
 				lMaxVotes1 = max(lMaxVotes1, vInVotingPairs[j].m_lNrVotes);
 		};
@@ -190,7 +185,7 @@ void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTIN
 		// compute max votes for the same target star
 		for (j = vInVotingPairs[i].m_TgtStar;j<vInVotingPairs.size();j+=lNrTgtStars)
 		{
-			ASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
+			ZASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
 			if (vInVotingPairs[j].m_RefStar != vInVotingPairs[i].m_RefStar)
 				lMaxVotes2 = max(lMaxVotes2, vInVotingPairs[j].m_lNrVotes);
 		};
@@ -205,10 +200,10 @@ void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTIN
 
 typedef math::matrix<double>		DMATRIX;
 
-BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL				bResult = FALSE;
-	LONG				i;
+	bool				bResult = false;
+	int				i;
 	double				fXWidth = m_lWidth,
 						fYWidth = m_lHeight;
 
@@ -217,24 +212,24 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 	if (TType == TT_BICUBIC)
 	{
-		DMATRIX				M((LONG)vVotingPairs.size(), 16);
-		DMATRIX				X((LONG)vVotingPairs.size(), 1);
-		DMATRIX				Y((LONG)vVotingPairs.size(), 1);
+		DMATRIX				M((int)vVotingPairs.size(), 16);
+		DMATRIX				X((int)vVotingPairs.size(), 1);
+		DMATRIX				Y((int)vVotingPairs.size(), 1);
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			QPointF &		Star = RefStar(vVotingPairs[i]);
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
-			double			X = Star.X/fXWidth;
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
+			double			X = Star.x()/fXWidth;
 			double			X2 = X * X;
 			double			X3 = X * X * X;
-			double			Y = Star.Y/fYWidth;
+			double			Y = Star.y()/fYWidth;
 			double			Y2 = Y * Y;
 			double			Y3 = Y * Y * Y;
 
@@ -301,12 +296,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b14 = B(14, 0);
 				BilinearParameters.b15 = B(15, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	}
 	else if (TType == TT_BISQUARED)
@@ -317,19 +312,19 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
+			QPointF &		Star = RefStar(vVotingPairs[i]);
 
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
 
-			double		X = Star.X/fXWidth;
+			double		X = Star.x()/fXWidth;
 			double		X2 = X * X;
-			double		Y = Star.Y/fYWidth;
+			double		Y = Star.y()/fYWidth;
 			double		Y2 = Y * Y;
 
 			M(i, 0) = 1;
@@ -374,12 +369,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b7 = B(7, 0);
 				BilinearParameters.b8 = B(8, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	}
 	else
@@ -390,18 +385,18 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
+			QPointF &		Star = RefStar(vVotingPairs[i]);
 
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
 
-			double		X = Star.X/fXWidth;
-			double		Y = Star.Y/fYWidth;
+			double		X = Star.x()/fXWidth;
+			double		Y = Star.y()/fYWidth;
 
 			M(i, 0) = 1;
 			M(i, 1) = X;
@@ -428,12 +423,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b2 = B(2, 0);
 				BilinearParameters.b3 = B(3, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	};
 
@@ -444,51 +439,43 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 double CMatchingStars::ValidateTransformation(const VOTINGPAIRVECTOR & vTestedPairs, const CBilinearParameters & transform)
 {
-	double			fResult = 0.0;
+	double fResult = 0.0;
 
 	// Compute the distance between the stars
-	for (LONG i = 0;i<vTestedPairs.size();i++)
+	for (const auto& testedPair : vTestedPairs)
 	{
-		CPointExt				ptExpected;
-		CPointExt				ptProjected;
-		double					fDistance;
+		const QPointF ptProjected = transform.transform(TgtStar(testedPair));
+		const double fDistance = Distance(ptProjected, RefStar(testedPair));
 
-		ptExpected = RefStar(vTestedPairs[i]);
-		ptProjected = TgtStar(vTestedPairs[i]);
-
-		ptProjected = transform.Transform(ptProjected);
-		fDistance = Distance(ptProjected, ptExpected);
-
-		if (!vTestedPairs[i].IsCorner())
+		if (!testedPair.IsCorner())
 		{
 			if (fDistance > fResult)
 				fResult = fDistance;
-		};
-	};
+		}
+	}
 
 	return fResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE MaxTType)
+bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE MaxTType)
 {
-	BOOL								bResult = FALSE;
-	BOOL								bEnd = FALSE;
+	bool								bResult = false;
+	bool								bEnd = false;
 	VOTINGPAIRVECTOR					vPairs;
-	LONG								i;
-	LONG								lNrExtraPairs = 0;
 	TRANSFORMATIONTYPE					TType = TT_BILINEAR;
 
-	LONG								lNrPairs;
-	std::vector<LONG>					vAddedPairs;
+	size_t								nrPairs;
+	size_t								lNrExtraPairs = 0;
+	std::vector<int>					vAddedPairs;
 	VOTINGPAIRVECTOR					vTestedPairs;
 	VOTINGPAIRVECTOR					vOkPairs;
-	std::vector<LONG>					vOkAddedPairs;
+	std::vector<int>					vOkAddedPairs;
 	CBilinearParameters					OkTransformation;
 	TRANSFORMATIONTYPE					OkTType;
 
-	if (vVotingPairs.size() && vVotingPairs[0].IsCorner())
+	if (!vVotingPairs.empty() && vVotingPairs[0].IsCorner())
 		lNrExtraPairs = 4;
 
 	vPairs = vVotingPairs;
@@ -496,58 +483,51 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 	while (!bEnd && !bResult)
 	{
 		if (TType == TT_BICUBIC)
-			lNrPairs = 32+lNrExtraPairs;
+			nrPairs = 32 + lNrExtraPairs;
 		else if (TType == TT_BISQUARED)
-			lNrPairs = 18+lNrExtraPairs;
+			nrPairs = 18 + lNrExtraPairs;
 		else
-			lNrPairs = 8+lNrExtraPairs;
+			nrPairs = 8 + lNrExtraPairs;
 
 		// Get the top pairs
 		vAddedPairs.clear();
 		vTestedPairs.clear();
 		// First add the locked pairs
-		for (i = 0;i<vPairs.size();i++)
+		for (size_t i = 0; i < vPairs.size(); i++)
 		{
 			if (vPairs[i].IsActive() && vPairs[i].IsLocked())
 			{
 				vTestedPairs.push_back(vPairs[i]);
-				vAddedPairs.push_back(i);
-			};
-		};
+				vAddedPairs.push_back(static_cast<int>(i));
+			}
+		}
 
 		// Then add the other pairs up to the limit
-		for (i = 0;i<vPairs.size() && vTestedPairs.size() < lNrPairs;i++)
+		for (size_t i = 0; i < vPairs.size() && vTestedPairs.size() < nrPairs; i++)
 		{
 			if (vPairs[i].IsActive() && !vPairs[i].IsLocked())
 			{
 				vTestedPairs.push_back(vPairs[i]);
-				vAddedPairs.push_back(i);
-			};
-		};
+				vAddedPairs.push_back(static_cast<int>(i));
+			}
+		}
 
-		if (vTestedPairs.size() == lNrPairs)
+		if (vTestedPairs.size() == nrPairs)
 		{
 			// Compute the transformation
 			CBilinearParameters				transform;
 
 			if (ComputeTransformation(vTestedPairs, transform, TType))
 			{
-				std::vector<double>			vDistances;
-				double						fMaxDistance = 0.0;
-				LONG						lMaxDistanceIndice = 0;
+				std::vector<double> vDistances;
+				double fMaxDistance = 0.0;
+				size_t maxDistanceIndex = 0;
 
 				// Compute the distance between the stars
-				for (i = 0;i<vTestedPairs.size();i++)
+				for (size_t i = 0; i < vTestedPairs.size(); i++)
 				{
-					CPointExt				ptExpected;
-					CPointExt				ptProjected;
-					double					fDistance;
-
-					ptExpected = RefStar(vTestedPairs[i]);
-					ptProjected = TgtStar(vTestedPairs[i]);
-
-					ptProjected = transform.Transform(ptProjected);
-					fDistance = Distance(ptProjected, ptExpected);
+					const QPointF ptProjected = transform.transform(TgtStar(vTestedPairs[i]));
+					const double fDistance = Distance(ptProjected, RefStar(vTestedPairs[i]));
 
 					if (!vTestedPairs[i].IsCorner())
 					{
@@ -555,25 +535,25 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						if (fDistance > fMaxDistance)
 						{
 							fMaxDistance = fDistance;
-							lMaxDistanceIndice = i;
-						};
-					};
-				};
+							maxDistanceIndex = i;
+						}
+					}
+				}
 
 				// If one star is far from the spot - deactivate the pair
 				if (fMaxDistance > 3)
 				{
-					LONG						lDeactivatedIndice;
+					int						lDeactivatedIndice;
 					double						fAverage;
 					double						fSigma;
-					BOOL						bOneDeactivated = FALSE;
+					bool						bOneDeactivated = false;
 
 					fAverage = Average(vDistances);
 					fSigma = Sigma(vDistances);
 
-					for (i = 0;i<vDistances.size();i++)
+					for (size_t i = 0; i < vDistances.size(); i++)
 					{
-						if (fabs(vDistances[i]-fAverage) > 2 * fSigma)
+						if (fabs(vDistances[i] - fAverage) > 2 * fSigma)
 						{
 							lDeactivatedIndice = vAddedPairs[i];
 							if (vPairs[lDeactivatedIndice].IsCorner())
@@ -582,19 +562,19 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 							}
 							else
 							{
-								vPairs[lDeactivatedIndice].SetActive(FALSE);
+								vPairs[lDeactivatedIndice].SetActive(false);
 								if (vDistances[i] < 7)
-									vPairs[lDeactivatedIndice].SetPossible(TRUE);
-								bOneDeactivated = TRUE;
-							};
-						};
-					};
+									vPairs[lDeactivatedIndice].SetPossible(true);
+								bOneDeactivated = true;
+							}
+						}
+					}
 
 					if (!bOneDeactivated)
 					{
-						for (i = 0;i<vDistances.size();i++)
+						for (size_t i = 0; i < vDistances.size(); i++)
 						{
-							if (fabs(vDistances[i]-fAverage) > fSigma)
+							if (fabs(vDistances[i] - fAverage) > fSigma)
 							{
 								lDeactivatedIndice = vAddedPairs[i];
 								if (vPairs[lDeactivatedIndice].IsCorner())
@@ -603,24 +583,24 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 								}
 								else
 								{
-									vPairs[lDeactivatedIndice].SetActive(FALSE);
-									bOneDeactivated = TRUE;
-								};
-							};
-						};
-					};
+									vPairs[lDeactivatedIndice].SetActive(false);
+									bOneDeactivated = true;
+								}
+							}
+						}
+					}
 					if (!bOneDeactivated)
 					{
-						lDeactivatedIndice = vAddedPairs[lMaxDistanceIndice];
+						lDeactivatedIndice = vAddedPairs[maxDistanceIndex];
 						if (vPairs[lDeactivatedIndice].IsCorner())
 						{
 							// Trouble here (corner no good)
 						}
 						else
 						{
-							vPairs[lDeactivatedIndice].SetActive(FALSE);
-						};
-					};
+							vPairs[lDeactivatedIndice].SetActive(false);
+						}
+					}
 				}
 				else
 				{
@@ -628,72 +608,72 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 					vOkPairs = vTestedPairs;
 					vOkAddedPairs = vAddedPairs;
 					OkTType = TType;
-					bResult = (TType==MaxTType);
+					bResult = (TType == MaxTType);
 					if (TType < MaxTType)
 					{
-						TType = (TRANSFORMATIONTYPE)(1+(LONG)TType);
+						TType = (TRANSFORMATIONTYPE)(1 + (int)TType);
 						// All the possible pairs are active again
-						for (i = 0;i<vPairs.size();i++)
+						for (auto& votingPair : vPairs)
 						{
-							if (vPairs[i].IsPossible())
+							if (votingPair.IsPossible())
 							{
-								vPairs[i].SetActive(TRUE);
-								vPairs[i].SetPossible(FALSE);
-							};
-						};
+								votingPair.SetActive(true);
+								votingPair.SetPossible(false);
+							}
+						}
 
 						// Lock the pairs
-						for (i = 0;i<vAddedPairs.size();i++)
-							vPairs[vAddedPairs[i]].SetLocked(TRUE);
-					};
-				};
+						for (size_t index : vAddedPairs)
+							vPairs[index].SetLocked(true);
+					}
+				}
 			}
 			else
 			{
 				// Remove the last pair of the selected pairs
-				vPairs[vAddedPairs[lNrPairs-1]].SetActive(FALSE);
-			};
+				vPairs[vAddedPairs[nrPairs - 1]].SetActive(false);
+			}
 		}
 		else
-			bEnd = TRUE;
-	};
+			bEnd = true;
+	}
 
 	if (vOkPairs.size())
-		bResult = TRUE;
+		bResult = true;
 
 	if (bResult)
 	{
 		// Try to add other pairs to refine the transformation
-		bEnd = FALSE;
+		bEnd = false;
 		CBilinearParameters		transform;
 		VOTINGPAIRVECTOR		vTempPairs;
-		LONG					lNrFails = 0;
+		int					lNrFails = 0;
 
 		BilinearParameters = OkTransformation;
 
 		vTestedPairs = vOkPairs;
-		vAddedPairs  = vOkAddedPairs;
-		TType		 = OkTType;
+		vAddedPairs = vOkAddedPairs;
+		TType = OkTType;
 
-		for (i = 0;i<vAddedPairs.size();i++)
-			vVotingPairs[vAddedPairs[i]].SetUsed(TRUE);
+		for (size_t index : vAddedPairs)
+			vVotingPairs[index].SetUsed(true);
 
 		while (!bEnd)
 		{
-			double				fMaxDistance;
-			BOOL				bTransformOk = FALSE;
-			LONG				lAddedPair = -1;
+			double			fMaxDistance;
+			bool			bTransformOk = false;
+			int				lAddedPair = -1;
 
 			vTempPairs = vTestedPairs;
-			for (i = 0;i<vVotingPairs.size() && lAddedPair<0;i++)
+			for (size_t i = 0; i < vVotingPairs.size() && lAddedPair < 0; i++)
 			{
 				if (vVotingPairs[i].IsActive() && !vVotingPairs[i].IsUsed())
 				{
-					lAddedPair = i;
+					lAddedPair = static_cast<int>(i);
 					vTempPairs.push_back(vVotingPairs[i]);
-					vVotingPairs[lAddedPair].SetUsed(TRUE);
-				};
-			};
+					vVotingPairs[lAddedPair].SetUsed(true);
+				}
+			}
 
 			if (lAddedPair >= 0)
 			{
@@ -705,21 +685,21 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						vTestedPairs = vTempPairs;
 						BilinearParameters = transform;
 						vAddedPairs.push_back(lAddedPair);
-						bTransformOk = TRUE;
+						bTransformOk = true;
 					}
 					else
-						vVotingPairs[lAddedPair].SetActive(FALSE);
+						vVotingPairs[lAddedPair].SetActive(false);
 				};
 
 				if (!bTransformOk)
 				{
 					lNrFails++;
 					if (lNrFails > 3)
-						bEnd = TRUE;
+						bEnd = true;
 				}
 			}
 			else
-				bEnd = TRUE;
+				bEnd = true;
 		};
 	};
 
@@ -731,9 +711,9 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL								bResult = FALSE;
+	bool								bResult = false;
 	VOTINGPAIRVECTOR					vPairs;
 
 	vPairs = vVotingPairs;
@@ -746,7 +726,7 @@ BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 		bResult = ComputeCoordinatesTransformation(vPairs, BaseTransformation, TT_BILINEAR);
 		if (bResult)
 		{
-			LONG					i;
+			int					i;
 
 			// Use the transformation as pure linear
 			// BaseTransformation.a3 = BaseTransformation.b3 = 0.0;
@@ -755,16 +735,16 @@ BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 			m_vRefCorners.clear();
 			m_vTgtCorners.clear();
 
-			m_vTgtCorners.push_back(CPointExt(0, 0));
-			m_vTgtCorners.push_back(CPointExt(m_lWidth-1, 0));
-			m_vTgtCorners.push_back(CPointExt(0, m_lHeight-1));
-			m_vTgtCorners.push_back(CPointExt(m_lWidth-1, m_lHeight-1));
+			m_vTgtCorners.push_back(QPointF(0, 0));
+			m_vTgtCorners.push_back(QPointF(m_lWidth-1, 0));
+			m_vTgtCorners.push_back(QPointF(0, m_lHeight-1));
+			m_vTgtCorners.push_back(QPointF(m_lWidth-1, m_lHeight-1));
 
 			for (i = 0;i<m_vTgtCorners.size();i++)
 			{
-				CPointExt			ptProjected;
+				QPointF			ptProjected;
 
-				ptProjected = BaseTransformation.Transform(m_vTgtCorners[i]);
+				ptProjected = BaseTransformation.transform(m_vTgtCorners[i]);
 				m_vRefCorners.push_back(ptProjected);
 			};
 
@@ -813,11 +793,11 @@ BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL								bResult = FALSE;
+	bool								bResult = false;
 	std::vector<CBilinearParameters>	vBilinears;
-	LONG								i, j, k, l;
+	int								i, j, k, l;
 
 	for (i = 0;i<vVotingPairs.size();i++)
 	{
@@ -935,7 +915,7 @@ BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 			BilinearParameters.b15 = Median(vB15);
 		};
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -945,9 +925,9 @@ BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 
 const	float					TRIANGLETOLERANCE = (float)0.002;
 
-BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	// First compute the triangles for reference and target
 	if (!m_vRefTriangles.size())
@@ -957,7 +937,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 
 	// Then match the triangle filling the voting grid in the process
 	// At this point the triangles vectors are sorted along the X axis
-	BOOL						bEnd = FALSE;
+	bool						bEnd = false;
 	STARTRIANGLEITERATOR		itRef,
 								itLastUsedRef,
 								itTgt;
@@ -975,7 +955,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 			   itLastUsedRef++;
 
 		if (itLastUsedRef == m_vRefTriangles.end())
-			bEnd = TRUE;
+			bEnd = true;
 		else
 		{
 			// At this point (*itLastUsedRef).m_fX is less than (*itTgt).m_fX
@@ -989,15 +969,15 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 				if (fDistance <= TRIANGLETOLERANCE)
 				{
 					// Vote for the all the pairs
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star1, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star2, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star3, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star1, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star2, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star3, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star1, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star2, vVotingPairs, (LONG)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star3, vVotingPairs, (LONG)m_vTgtStars.size());
+					AddVote((*itRef).m_Star1, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star1, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star1, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star2, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star2, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star2, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star3, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star3, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
+					AddVote((*itRef).m_Star3, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
 				};
 				itRef++;
 			};
@@ -1015,8 +995,8 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 	// Then eliminate false matches and get transformations parameters
 	if (vVotingPairs.size() >= m_vTgtStars.size())
 	{
-		LONG				lMinNrVotes;
-		LONG				lCut = 0;
+		int				lMinNrVotes;
+		int				lCut = 0;
 		TRANSFORMATIONTYPE	TType = TT_BILINEAR;
 
 		lMinNrVotes = vVotingPairs[m_vTgtStars.size()*2-1].m_lNrVotes;
@@ -1026,7 +1006,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 			lCut++;
 		vVotingPairs.resize(lCut);
 
-		TType = GetTransformationType((LONG)vVotingPairs.size());
+		TType = GetTransformationType((int)vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
 
@@ -1049,15 +1029,15 @@ const double			MAXSTARDISTANCEDELTA = 2.0;
 CComAutoCriticalSection	g_StarDistSection;
 STARDISTVECTOR *		g_pvDists = nullptr;
 
-inline bool CompareStarDistances (LONG lDist1, LONG lDist2)
+inline bool CompareStarDistances (int lDist1, int lDist2)
 {
 	return (*g_pvDists)[lDist1].m_fDistance > (*g_pvDists)[lDist2].m_fDistance;
 };
 
-BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL					bResult = FALSE;
-	LONG					i = 0,
+	bool					bResult = false;
+	int					i = 0,
 							j = 0;
 
 	// Compute patterns
@@ -1096,7 +1076,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 			// using the same stars in Target and check if the distances
 			// are the same in the reference.
 			// If it is the case, cast a vote for each potential pair
-			LONG				lRefStar1,
+			int				lRefStar1,
 								lRefStar2,
 								lTgtStar1,
 								lTgtStar2;
@@ -1112,7 +1092,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 			lTgtStar1 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star1;
 			lTgtStar2 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star2;
 
-			for (LONG lTgtStar3 = 0;lTgtStar3 < m_vTgtStars.size();lTgtStar3++)
+			for (int lTgtStar3 = 0;lTgtStar3 < m_vTgtStars.size();lTgtStar3++)
 			{
 				if ((lTgtStar3 != lTgtStar1) && (lTgtStar3 != lTgtStar2))
 				{
@@ -1137,7 +1117,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 						// Search a star from reference such as
 						// distance from 1 to 3 is near fTgtDistance13
 						// distance from 2 to 3 is near fTgtDistance23
-						for (LONG lRefStar3 = 0;lRefStar3 < m_vRefStars.size();lRefStar3++)
+						for (int lRefStar3 = 0;lRefStar3 < m_vRefStars.size();lRefStar3++)
 						{
 							if ((lRefStar3 != lRefStar1) && (lRefStar3 != lRefStar2))
 							{
@@ -1155,17 +1135,17 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 									(fabs(fRefDistance23 - fTgtDistance23) < MAXSTARDISTANCEDELTA))
 								{
 									// Cast votes for stars
-									AddVote(lRefStar1, lTgtStar1, vVotingPairs, (LONG)m_vTgtStars.size());
-									AddVote(lRefStar2, lTgtStar2, vVotingPairs, (LONG)m_vTgtStars.size());
-									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (LONG)m_vTgtStars.size());
+									AddVote(lRefStar1, lTgtStar1, vVotingPairs, (int)m_vTgtStars.size());
+									AddVote(lRefStar2, lTgtStar2, vVotingPairs, (int)m_vTgtStars.size());
+									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (int)m_vTgtStars.size());
 								}
 								else if ((fabs(fRefDistance23 - fTgtDistance13) < MAXSTARDISTANCEDELTA) &&
 										 (fabs(fRefDistance13 - fTgtDistance23) < MAXSTARDISTANCEDELTA))
 								{
 									// Cast votes for stars
-									AddVote(lRefStar1, lTgtStar2, vVotingPairs, (LONG)m_vTgtStars.size());
-									AddVote(lRefStar2, lTgtStar1, vVotingPairs, (LONG)m_vTgtStars.size());
-									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (LONG)m_vTgtStars.size());
+									AddVote(lRefStar1, lTgtStar2, vVotingPairs, (int)m_vTgtStars.size());
+									AddVote(lRefStar2, lTgtStar1, vVotingPairs, (int)m_vTgtStars.size());
+									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (int)m_vTgtStars.size());
 								};
 							};
 						};
@@ -1187,8 +1167,8 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	// Then eliminate false matches and get transformations parameters
 	if (vVotingPairs.size() >= m_vTgtStars.size())
 	{
-		LONG				lMinNrVotes;
-		LONG				lCut = 0;
+		int				lMinNrVotes;
+		int				lCut = 0;
 		TRANSFORMATIONTYPE	TType = TT_BILINEAR;
 
 		lMinNrVotes = vVotingPairs[m_vTgtStars.size()*2-1].m_lNrVotes;
@@ -1198,7 +1178,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 			lCut++;
 		vVotingPairs.resize(lCut+1);
 
-		TType = GetTransformationType((LONG)vVotingPairs.size());
+		TType = GetTransformationType((int)vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
 
@@ -1218,12 +1198,12 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 void	CMatchingStars::AdjustSize()
 {
 	// if all the stars are in the top/left corner divide the sizes by two
-	BOOL				bAllInTopLeft = TRUE;
+	bool				bAllInTopLeft = true;
 
-	for (LONG i = 0;(i<m_vTgtStars.size()) && bAllInTopLeft;i++)
+	for (int i = 0;(i<m_vTgtStars.size()) && bAllInTopLeft;i++)
 	{
-		if ((m_vTgtStars[i].X>m_lWidth/2) || (m_vTgtStars[i].Y>m_lHeight/2))
-			bAllInTopLeft = FALSE;
+		if ((m_vTgtStars[i].x() > m_lWidth/2) || (m_vTgtStars[i].y() > m_lHeight/2))
+			bAllInTopLeft = false;
 	};
 
 	if (bAllInTopLeft)
@@ -1234,11 +1214,11 @@ void	CMatchingStars::AdjustSize()
 	else
 	{
 		// Check that stars are not outside the given sizes
-		BOOL			bOutside = FALSE;
-		for (LONG i = 0;i<m_vTgtStars.size() && !bOutside;i++)
+		bool			bOutside = false;
+		for (int i = 0;i<m_vTgtStars.size() && !bOutside;i++)
 		{
-			if ((m_vTgtStars[i].X>m_lWidth) || (m_vTgtStars[i].Y>m_lHeight))
-				bOutside = TRUE;
+			if ((m_vTgtStars[i].x() > m_lWidth) || (m_vTgtStars[i].y() > m_lHeight))
+				bOutside = true;
 		};
 		if (bOutside)
 		{
@@ -1250,9 +1230,9 @@ void	CMatchingStars::AdjustSize()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 
 	if (GetTransformationType() != TT_NONE)
 	{
@@ -1266,7 +1246,7 @@ BOOL	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & Bilin
 	}
 	else
 	{
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
