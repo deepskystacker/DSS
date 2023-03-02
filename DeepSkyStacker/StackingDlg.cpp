@@ -1116,6 +1116,14 @@ namespace DSS
 
 			auto files{ dlg.getFiles() };
 			auto type{ dlg.dropType() };
+
+			//
+			// Make the dropped files act the same as using file open dialogue
+			// All except light frames should be checked, light frames not checked
+			//
+			bool checked{ true };		// Check all dropped files with the 
+			if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
+
 			//
 			// Before attempting to add the files prune out those that have already been loaded
 			// and issue an error message
@@ -1129,7 +1137,7 @@ namespace DSS
 				frameList.beginInsertRows(static_cast<int>(files.size()));
 				for (size_t i = 0; i != files.size(); ++i)
 				{
-					frameList.addFile(files[i], type, true);
+					frameList.addFile(files[i], type, checked);
 				}
 				frameList.endInsertRows();
 			}
