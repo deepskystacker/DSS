@@ -1140,6 +1140,7 @@ BEGIN
     IDS_ERROR_NOTLIGHTCHECKED2 "Bitte Lightframes zum Registrieren auswählen!"
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Die Erstellung der Masters (Dark, Flat, Offset) benötigt %ld KB.\nEs sind nur %ld KB auf dem Laufwerk verfügbar %s\nWollen Sie trotzdem fortfahren?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker kann keine Dateien in das Verzeichnis %s schreiben"
 END
 
 STRINGTABLE 
@@ -1558,7 +1559,7 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von LibRaw (Version %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von LibRaw (Version %s)\nCopyright © 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "TIFF Dateien Kodierung/Dekodierung von LibTIFF (Version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"

@@ -180,7 +180,7 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versió %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodificació d'arxius RAW amb LibRaw (versió %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "Decodificació d'arxius RAW amb LibRaw (versió %s)\nCopyright © 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "Codificació i Decodificació d'arcxius TIFF amb LibTIFF (versió %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
@@ -1233,6 +1233,8 @@ BEGIN
     IDS_ERROR_NOTLIGHTCHECKED2 "Vè. ha de seleccionar light frames per a registrar-los."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La creació dels Mestres (dark, flat, offset) necessita %ld Kb.\n Només %ld Kb hi ha disponibles en la seva unitat %s\n Desitja continuar de totes maneres?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker no pot escriure fitxers al directori %s" 
+
 END
 
 STRINGTABLE 

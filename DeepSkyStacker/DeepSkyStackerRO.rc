@@ -964,6 +964,7 @@ BEGIN
                             "Trebuie sa selectati cadre Light pentru a le inregistra."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Crearea masterurilor (Dark, Flat, offset) necesita %ld Kb.\nSunt disponibili doar %ld Kb pe discul %s\nDoriti sa continuati?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker nu poate scrie fisiere in directorul %s"
 END
 
 STRINGTABLE
@@ -1380,7 +1381,7 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodare fisire RAW de LibRaw (versiune %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "Decodare fisire RAW de LibRaw (versiune %s)\nCopyright © 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "Codare/decodare fisiere TIFF de LibTIFF (versiune %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"

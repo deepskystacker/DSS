@@ -553,6 +553,8 @@ namespace DSS
 		connect(pictureList->tabBar, SIGNAL(customContextMenuRequested(const QPoint&)),
 			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
 
+		retrieveLatestVersionInfo();
+
 	}
 
 	StackingDlg::~StackingDlg()
