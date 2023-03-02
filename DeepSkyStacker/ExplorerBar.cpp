@@ -162,23 +162,23 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	emit addPictures();
+	emit addImages(PICTURETYPE_LIGHTFRAME);
 }
 void ExplorerBar::onOpenDarks()
 {
-	emit addDarks();
+	emit addImages(PICTURETYPE_DARKFRAME);
 }
 void ExplorerBar::onOpenFlats()
 {
-	emit addFlats();
+	emit addImages(PICTURETYPE_FLATFRAME);
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	emit addDarkFlats();
+	emit addImages(PICTURETYPE_DARKFLATFRAME);
 }
 void ExplorerBar::onOpenBias()
 {
-	emit addOffsets();
+	emit addImages(PICTURETYPE_OFFSETFRAME);
 }
 
 /************************************************************************************/
