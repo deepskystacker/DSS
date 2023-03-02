@@ -523,7 +523,7 @@ namespace DSS
 										.arg(groupName(groupId)));
 
 #if defined(_CONSOLE)
-									std::cerr << errorMessage.toStdString();
+									std::cerr << errorMessage.toUtf8().constData();
 #else
 									int ret = QMessageBox::warning(nullptr, "DeepSkyStacker",
 										errorMessage,

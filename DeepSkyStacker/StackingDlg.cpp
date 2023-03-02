@@ -43,6 +43,7 @@
 #include <QClipboard>
 #include <QComboBox>
 #include <QDebug>
+#include <QErrorMessage>
 #include <QMenu>
 #include <QMessageBox>
 #include <QtNetwork/QNetworkAccessManager>
@@ -528,7 +529,8 @@ namespace DSS
 		erase{ nullptr },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
-		dockTitle{ new QLabel(this) }
+		dockTitle{ new QLabel(this) },
+		errorMessageDialog { new QErrorMessage(this) }
 	{
 		ui->setupUi(this);
 		retranslateUi();		// translate some of our stuff.
@@ -555,6 +557,7 @@ namespace DSS
 
 		retrieveLatestVersionInfo();
 
+		errorMessageDialog->setWindowTitle("DeepSkyStacker");
 	}
 
 	StackingDlg::~StackingDlg()
@@ -1364,18 +1367,16 @@ namespace DSS
 					.arg(frameList.groupName(groupId)));
 
 	#if defined(_CONSOLE)
-				std::wcerr << errorMessage;
+				std::cerr << errorMessage.toUtf8().constData();
 	#else
-				int ret = QMessageBox::warning(this, "DeepSkyStacker",
-					errorMessage,
-					QMessageBox::Ok);
+				errorMessageDialog->showMessage(errorMessage, "Already loaded");
 	#endif
 				return true;
 		}
 		return false;
 	}
 
-	void StackingDlg::onAddPictures()
+	void StackingDlg::onAddImages(PICTURETYPE type)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QFileDialog			fileDialog;
@@ -1385,15 +1386,51 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		directory = settings.value("Folders/AddPictureFolder").toString();
-		extension = settings.value("Folders/AddPictureExtension").toString();
+		bool				checked{ true };  // Automatically check all frames except lights
+		switch (type)
+		{
+		case PICTURETYPE_LIGHTFRAME:
+			fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
+			checked = false;			// Don't check light frames
+			break;
+		case PICTURETYPE_DARKFRAME:
+			fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
+			extension = settings.value("Folders/AddDarkExtension").toString();
+			directory = settings.value("Folders/AddDarkFolder").toString();
+			filterIndex = settings.value("Folders/AddDarkIndex", 0U).toUInt();
+			break;
+		case PICTURETYPE_FLATFRAME:
+			fileDialog.setWindowTitle(tr("Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
+			directory = settings.value("Folders/AddFlatFolder").toString();
+			extension = settings.value("Folders/AddFlatExtension").toString();
+			filterIndex = settings.value("Folders/AddFlatIndex", 0U).toUInt();
+			break;
+		case PICTURETYPE_OFFSETFRAME:
+			fileDialog.setWindowTitle(tr("Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
+			directory = settings.value("Folders/AddOffsetFolder").toString();
+			extension = settings.value("Folders/AddOffsetExtension").toString();
+			filterIndex = settings.value("Folders/AddOffsetIndex", 0U).toUInt();
+			break;
+		case PICTURETYPE_DARKFLATFRAME:
+			fileDialog.setWindowTitle(tr("Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
+			directory = settings.value("Folders/AddDarkFlatFolder").toString();
+			extension = settings.value("Folders/AddDarkFlatExtension").toString();
+			filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
+			break;
+		}
 
-		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+		if (directory.isEmpty())
+			directory = settings.value("Folders/AddPictureFolder").toString();
+
+		if (extension.isEmpty())
+			extension = settings.value("Folders/AddPictureExtension").toString();
+
+		if (!filterIndex)
+			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
 
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1412,7 +1449,7 @@ namespace DSS
 		if (0 == filterIndex) filterIndex = 1;
 		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
 		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-	
+
 		ZTRACE_RUNTIME("About to show file open dlg");
 		if (QDialog::Accepted == fileDialog.exec())
 		{
@@ -1424,11 +1461,7 @@ namespace DSS
 			// and issue an error message
 			//
 			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) {
-					std::u16string u16s{ s.toStdU16String() };
-					fs::path path(u16s);
-					return fileAlreadyLoaded(path);
-				});
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
 			files.erase(it, files.end());
 
 			//
@@ -1443,7 +1476,7 @@ namespace DSS
 				{
 					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-					frameList.addFile(file);
+					frameList.addFile(file, type, checked);
 
 					if (file.has_parent_path())
 						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
@@ -1454,7 +1487,7 @@ namespace DSS
 				}
 				frameList.endInsertRows();
 			}
-			
+
 			QGuiApplication::restoreOverrideCursor();
 			//frameList.RefreshList();
 
@@ -1464,428 +1497,41 @@ namespace DSS
 			// 
 			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
 			filterIndex++;
-			settings.setValue("Folders/AddPictureFolder", directory);
-			settings.setValue("Folders/AddPictureExtension", extension);
-			settings.setValue("Folders/AddPictureIndex", filterIndex);
+			switch (type)
+			{
+			case PICTURETYPE_LIGHTFRAME:
+				settings.setValue("Folders/AddPictureFolder", directory);
+				settings.setValue("Folders/AddPictureExtension", extension);
+				settings.setValue("Folders/AddPictureIndex", filterIndex);
+				break;
+			case PICTURETYPE_DARKFRAME:
+				settings.setValue("Folders/AddDarkFolder", directory);
+				settings.setValue("Folders/AddDarkExtension", extension);
+				settings.setValue("Folders/AddDarkIndex", filterIndex);
+				break;
+			case PICTURETYPE_FLATFRAME:
+				settings.setValue("Folders/AddFlatFolder", directory);
+				settings.setValue("Folders/AddFlatExtension", extension);
+				settings.setValue("Folders/AddFlatIndex", filterIndex);
+				break;
+			case PICTURETYPE_OFFSETFRAME:
+				settings.setValue("Folders/AddOffsetFolder", directory);
+				settings.setValue("Folders/AddOffsetExtension", extension);
+				settings.setValue("Folders/AddOffsetIndex", filterIndex);
+				break;
+			case PICTURETYPE_DARKFLATFRAME:
+				settings.setValue("Folders/AddDarkFlatFolder", directory);
+				settings.setValue("Folders/AddDarkFlatExtension", extension);
+				settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
+				break;
+			}
 
 			updateGroupTabs();
 		};
 		updateListInfo();
 	}
 
-	void StackingDlg::onAddDarks()
-	{
-		ZFUNCTRACE_RUNTIME();
-		QFileDialog			fileDialog;
-		QSettings			settings;
-		QString				directory;
-		QString				extension;
-		uint				filterIndex = 0;
-		QString				strTitle;
-
-		directory = settings.value("Folders/AddDarkFolder").toString();
-		if (directory.isEmpty())
-			directory = settings.value("Folders/AddPictureFolder").toString();
-
-		extension = settings.value("Folders/AddDarkExtension").toString();
-		if (extension.isEmpty())
-			extension = settings.value("Folders/AddPictureExtension").toString();
-
-		filterIndex = settings.value("Folders/AddDarkIndex", 0U).toUInt();
-		if (!filterIndex)
-			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-		if (extension.isEmpty())
-			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-		fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-		fileDialog.setNameFilters(INPUTFILE_FILTERS);
-		fileDialog.selectFile(QString());		// No file(s) selected
-		if (!directory.isEmpty())
-			fileDialog.setDirectory(directory);
-
-		//
-		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-		// In that case we'll choose to use the first one to start things off.
-		// 
-		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-		// This means that the index must be decremented to index into the list of name filters.
-		//
-		if (0 == filterIndex) filterIndex = 1;
-		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
-		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
-
-			//
-			// Before attempting to add the files prune out those that have already been loaded
-			// and issue an error message
-			//
-			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
-			files.erase(it, files.end());
-
-			//
-			// Now add the images to the end of the current group in the frame list remembering
-			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
-			// endInsertRows(), so the table model is informed of the new rows
-			//
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
-			{
-				frameList.beginInsertRows(files.size());
-				for (int i = 0; i < files.size(); i++)
-				{
-					fs::path file(files.at(i).toStdU16String());		// as UTF-16
-
-					frameList.addFile(file,
-						PICTURETYPE_DARKFRAME, true);
-
-					if (file.has_parent_path())
-						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-					else
-						directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-					extension = QString::fromStdU16String(file.extension().generic_u16string());
-				}
-				frameList.endInsertRows();
-			}
-
-			QGuiApplication::restoreOverrideCursor();
-
-			//
-			// What filter has the user actually selected, or has been auto-selected?
-			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
-			// 
-			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-			filterIndex++;
-			settings.setValue("Folders/AddDarkFolder", directory);
-			settings.setValue("Folders/AddDarkExtension", extension);
-			settings.setValue("Folders/AddDarkIndex", filterIndex);
-
-			updateGroupTabs();
-		}
-		updateListInfo();
-	}
-
-
 	/* ------------------------------------------------------------------- */
-
-	void StackingDlg::onAddDarkFlats()
-	{
-		ZFUNCTRACE_RUNTIME();
-		QFileDialog			fileDialog;
-		QSettings			settings;
-		QString				directory;
-		QString				extension;
-		uint				filterIndex = 0;
-		QString				strTitle;
-
-		directory = settings.value("Folders/AddDarkFlatFolder").toString();
-		if (directory.isEmpty())
-			directory = settings.value("Folders/AddPictureFolder").toString();
-
-		extension = settings.value("Folders/AddDarkFlatExtension").toString();
-		if (extension.isEmpty())
-			extension = settings.value("Folders/AddPictureExtension").toString();
-
-		filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
-		if (!filterIndex)
-			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-		if (extension.isEmpty())
-			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-		fileDialog.setWindowTitle(tr("Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-		fileDialog.setNameFilters(INPUTFILE_FILTERS);
-		fileDialog.selectFile(QString());		// No file(s) selected
-		if (!directory.isEmpty())
-			fileDialog.setDirectory(directory);
-
-		//
-		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-		// In that case we'll choose to use the first one to start things off.
-		// 
-		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-		// This means that the index must be decremented to index into the list of name filters.
-		//
-		if (0 == filterIndex) filterIndex = 1;
-		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
-		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
-
-			//
-			// Before attempting to add the files prune out those that have already been loaded
-			// and issue an error message
-			//
-			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
-			files.erase(it, files.end());
-
-			//
-			// Now add the images to the end of the current group in the frame list remembering
-			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
-			// endInsertRows(), so the table model is informed of the new rows
-			//
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
-			{
-				frameList.beginInsertRows(files.size());
-				for (int i = 0; i < files.size(); i++)
-				{
-					fs::path file(files.at(i).toStdU16String());		// as UTF-16
-
-					frameList.addFile(file,
-						PICTURETYPE_DARKFLATFRAME, true);
-
-					if (file.has_parent_path())
-						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-					else
-						directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-					extension = QString::fromStdU16String(file.extension().generic_u16string());
-				}
-				frameList.endInsertRows();
-			}
-
-			QGuiApplication::restoreOverrideCursor();
-			//frameList.RefreshList();
-
-			//
-			// What filter has the user actually selected, or has been auto-selected?
-			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
-			// 
-			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-			filterIndex++;
-			settings.setValue("Folders/AddDarkFlatFolder", directory);
-			settings.setValue("Folders/AddDarkFlatExtension", extension);
-			settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
-
-			updateGroupTabs();
-		}
-		updateListInfo();
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void StackingDlg::onAddFlats()
-	{
-		ZFUNCTRACE_RUNTIME();
-		QFileDialog			fileDialog;
-		QSettings			settings;
-		QString				directory;
-		QString				extension;
-		uint				filterIndex = 0;
-		QString				strTitle;
-
-		directory = settings.value("Folders/AddFlatFolder").toString();
-		if (directory.isEmpty())
-			directory = settings.value("Folders/AddPictureFolder").toString();
-
-		extension = settings.value("Folders/AddFlatExtension").toString();
-		if (extension.isEmpty())
-			extension = settings.value("Folders/AddPictureExtension").toString();
-
-		filterIndex = settings.value("Folders/AddFlatIndex", 0U).toUInt();
-		if (!filterIndex)
-			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-		if (extension.isEmpty())
-			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-		fileDialog.setWindowTitle(tr("Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-		fileDialog.setNameFilters(INPUTFILE_FILTERS);
-		fileDialog.selectFile(QString());		// No file(s) selected
-		if (!directory.isEmpty())
-			fileDialog.setDirectory(directory);
-
-		//
-		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-		// In that case we'll choose to use the first one to start things off.
-		// 
-		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-		// This means that the index must be decremented to index into the list of name filters.
-		//
-		if (0 == filterIndex) filterIndex = 1;
-		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
-		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
-
-			//
-			// Before attempting to add the files prune out those that have already been loaded
-			// and issue an error message
-			//
-			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
-			files.erase(it, files.end());
-
-			//
-			// Now add the images to the end of the current group in the frame list remembering
-			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
-			// endInsertRows(), so the table model is informed of the new rows
-			//
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
-			{
-				frameList.beginInsertRows(files.size());
-				for (int i = 0; i < files.size(); i++)
-				{
-					fs::path file(files.at(i).toStdU16String());		// as UTF-16
-
-					frameList.addFile(file,
-						PICTURETYPE_FLATFRAME, true);
-
-					if (file.has_parent_path())
-						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-					else
-						directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-					extension = QString::fromStdU16String(file.extension().generic_u16string());
-				}
-				frameList.endInsertRows();
-			}
-
-			QGuiApplication::restoreOverrideCursor();
-			//frameList.RefreshList();
-
-			//
-			// What filter has the user actually selected, or has been auto-selected?
-			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
-			// 
-			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-			filterIndex++;
-			settings.setValue("Folders/AddFlatFolder", directory);
-			settings.setValue("Folders/AddFlatExtension", extension);
-			settings.setValue("Folders/AddFlatIndex", filterIndex);
-
-			updateGroupTabs();
-		}
-		updateListInfo();
-	}
-
-
-	/* ------------------------------------------------------------------- */
-
-	void StackingDlg::onAddOffsets()
-	{
-		ZFUNCTRACE_RUNTIME();
-		QFileDialog			fileDialog;
-		QSettings			settings;
-		QString				directory;
-		QString				extension;
-		uint				filterIndex = 0;
-		QString				strTitle;
-
-		if (directory.isEmpty())
-			directory = settings.value("Folders/AddPictureFolder").toString();
-
-		extension = settings.value("Folders/AddOffsetExtension").toString();
-		if (extension.isEmpty())
-			extension = settings.value("Folders/AddPictureExtension").toString();
-
-		filterIndex = settings.value("Folders/AddOffsetIndex", 0U).toUInt();
-		if (!filterIndex)
-			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-		if (extension.isEmpty())
-			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-		fileDialog.setWindowTitle(tr("Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-		fileDialog.setNameFilters(INPUTFILE_FILTERS);
-		fileDialog.selectFile(QString());		// No file(s) selected
-		if (!directory.isEmpty())
-			fileDialog.setDirectory(directory);
-
-		//
-		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-		// In that case we'll choose to use the first one to start things off.
-		// 
-		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-		// This means that the index must be decremented to index into the list of name filters.
-		//
-		if (0 == filterIndex) filterIndex = 1;
-		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
-		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
-
-			//
-			// Before attempting to add the files prune out those that have already been loaded
-			// and issue an error message
-			//
-			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
-			files.erase(it, files.end());
-
-			//
-			// Now add the images to the end of the current group in the frame list remembering
-			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
-			// endInsertRows(), so the table model is informed of the new rows
-			//
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
-			{
-				frameList.beginInsertRows(files.size());
-				for (int i = 0; i < files.size(); i++)
-				{
-					fs::path file(files.at(i).toStdU16String());		// as UTF-16
-
-					frameList.addFile(file,
-						PICTURETYPE_OFFSETFRAME, true);
-
-					if (file.has_parent_path())
-						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-					else
-						directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-					extension = QString::fromStdU16String(file.extension().generic_u16string());
-				}
-				frameList.endInsertRows();
-			}
-
-			QGuiApplication::restoreOverrideCursor();
-			//frameList.RefreshList();
-
-			//
-			// What filter has the user actually selected, or has been auto-selected?
-			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
-			// 
-			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-			filterIndex++;
-			settings.setValue("Folders/AddOffsetFolder", directory);
-			settings.setValue("Folders/AddOffsetExtension", extension);
-			settings.setValue("Folders/AddOffsetIndex", filterIndex);
-
-			updateGroupTabs();
-		}
-		updateListInfo();
-	}
 
 	bool StackingDlg::checkEditChanges()
 	{
@@ -2740,7 +2386,7 @@ namespace DSS
 				.arg(e.what())
 			);
 #if defined(_CONSOLE)
-			std::wcerr << errorMessage.toStdWString().c_str();
+			std::cerr << errorMessage.toUtf8().constData();
 #else
 			int ret = QMessageBox::warning(this, "DeepSkyStacker",
 				errorMessage,

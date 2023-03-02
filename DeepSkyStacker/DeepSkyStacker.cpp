@@ -275,11 +275,7 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
-	connect(explorerBar, SIGNAL(addPictures()), stackingDlg, SLOT(onAddPictures()));
-	connect(explorerBar, SIGNAL(addDarks()), stackingDlg, SLOT(onAddDarks()));
-	connect(explorerBar, SIGNAL(addFlats()), stackingDlg, SLOT(onAddFlats()));
-	connect(explorerBar, SIGNAL(addDarkFlats()), stackingDlg, SLOT(onAddDarkFlats()));
-	connect(explorerBar, SIGNAL(addOffsets()), stackingDlg, SLOT(onAddOffsets()));
+	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
 
 	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
 	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
@@ -844,7 +840,7 @@ int main(int argc, char* argv[])
 	{
 		ZTRACE_RUNTIME("Fatal Error: MFC initialization failed");
 		QString errorMessage{ "Fatal Error: MFC initialization failed" };
-		wcerr << errorMessage.toStdWString().c_str() << endl;
+		cerr << errorMessage.toUtf8().constData() << endl;
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 		return 1;
 	}
@@ -933,8 +929,9 @@ int main(int argc, char* argv[])
 		deleteRemainingTempFiles();
 
 	//
-	// Register the QMessageBox::Icon enum as a meta type
+	// Register PICTURETYPE and QMessageBox::Icon enums as meta types
 	//
+	qRegisterMetaType<PICTURETYPE>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
@@ -952,7 +949,7 @@ int main(int argc, char* argv[])
 
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -991,7 +988,7 @@ int main(int argc, char* argv[])
 			.arg(text);
 
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -1003,7 +1000,7 @@ int main(int argc, char* argv[])
 
 		QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
