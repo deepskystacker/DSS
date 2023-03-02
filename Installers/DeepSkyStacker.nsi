@@ -147,14 +147,17 @@ Section
 	 
   File "..\x64\Release\Qt6Core.dll"
   File "..\x64\Release\Qt6Gui.dll"
+  File "..\x64\Release\Qt6Network.dll"
   File "..\x64\Release\Qt6Svg.dll"
   File "..\x64\Release\Qt6Widgets.dll"
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
+  File /r "..\x64\Release\imageformats"
   File /r "..\x64\Release\platforms"
   File /r "..\x64\Release\styles"
-   File /r "..\x64\Release\translations"
+  File /r "..\x64\Release\tls"
+  File /r "..\x64\Release\translations"
   
   File "..\Help\${DSS_HELP_FR}"
   File "..\Help\${DSS_HELP_ES}"
@@ -238,6 +241,7 @@ Section "Uninstall"
   
   Delete "$INSTDIR\Qt6Core.dll"
   Delete "$INSTDIR\Qt6Gui.dll"
+  Delete "$INSTDIR\Qt6Network.dll"
   Delete "$INSTDIR\Qt6Svg.dll"
   Delete "$INSTDIR\Qt6Widgets.dll"
   
@@ -250,8 +254,10 @@ Section "Uninstall"
   Delete "$INSTDIR\translations\*"  
   RmDir  "$INSTDIR\iconengines"
   RmDir  "$INSTDIR\imageformats" 
+  RmDir  "$INSTDIR\networkinformation"
   RmDir  "$INSTDIR\platforms"  
   RmDir  "$INSTDIR\styles"
+  RmDir  "$INSTDIR\tls"
   RmDir  "$INSTDIR\translations"
 
   RmDir  "$INSTDIR"
