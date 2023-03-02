@@ -558,6 +558,14 @@ namespace DSS
 		retrieveLatestVersionInfo();
 
 		errorMessageDialog->setWindowTitle("DeepSkyStacker");
+
+		//
+		// Hack to access the Icon displayed by QErrorMessage
+		//
+		if (QLabel * eMDI{ errorMessageDialog->findChild<QLabel*>() }; eMDI != nullptr)
+		{
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+		}
 	}
 
 	StackingDlg::~StackingDlg()
