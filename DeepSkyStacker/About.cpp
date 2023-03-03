@@ -19,6 +19,7 @@ using std::max;
 #include <QShowEvent>
 
 #include "commonresource.h"
+#include "DSSCommon.h"
 #include "About.h"
 #include "ui/ui_About.h"
 

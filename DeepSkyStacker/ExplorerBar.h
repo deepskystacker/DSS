@@ -21,11 +21,7 @@ public:
     ~ExplorerBar();
 
 signals:
-	void addPictures();
-	void addDarks();
-	void addDarkFlats();
-	void addFlats();
-	void addOffsets();
+	void addImages(PICTURETYPE type);
 
 	//
 	// dssfilelist operations
