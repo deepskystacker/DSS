@@ -558,6 +558,14 @@ namespace DSS
 		retrieveLatestVersionInfo();
 
 		errorMessageDialog->setWindowTitle("DeepSkyStacker");
+
+		//
+		// Hack to access the Icon displayed by QErrorMessage
+		//
+		if (QLabel * eMDI{ errorMessageDialog->findChild<QLabel*>() }; eMDI != nullptr)
+		{
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+		}
 	}
 
 	StackingDlg::~StackingDlg()
@@ -1108,6 +1116,14 @@ namespace DSS
 
 			auto files{ dlg.getFiles() };
 			auto type{ dlg.dropType() };
+
+			//
+			// Make the dropped files act the same as using file open dialogue
+			// All except light frames should be checked, light frames not checked
+			//
+			bool checked{ true };		// Check all dropped files with the 
+			if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
+
 			//
 			// Before attempting to add the files prune out those that have already been loaded
 			// and issue an error message
@@ -1121,7 +1137,7 @@ namespace DSS
 				frameList.beginInsertRows(static_cast<int>(files.size()));
 				for (size_t i = 0; i != files.size(); ++i)
 				{
-					frameList.addFile(files[i], type, true);
+					frameList.addFile(files[i], type, checked);
 				}
 				frameList.endInsertRows();
 			}
@@ -1361,10 +1377,10 @@ namespace DSS
 				//
 				// If the file has already been loaded complain
 				//
-				QString errorMessage(tr("File %1 has already been loaded in group %2 (%3)")
+			    QString errorMessage = QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
 					.arg(file.generic_string().c_str())
 					.arg(groupId)
-					.arg(frameList.groupName(groupId)));
+					.arg(frameList.groupName(groupId));
 
 	#if defined(_CONSOLE)
 				std::cerr << errorMessage.toUtf8().constData();

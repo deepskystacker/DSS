@@ -517,7 +517,7 @@ namespace DSS
 									// If the file has already been loaded complain
 									//
 									QString errorMessage(
-										QCoreApplication::translate("DSS::StackingDlg", "File %1 has already been loaded in group %2 (%3)")
+										QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
 										.arg(filePath.generic_string().c_str())
 										.arg(groupId)
 										.arg(groupName(groupId)));
@@ -647,14 +647,13 @@ namespace DSS
 
 	void FrameList::updateCheckedItemScores()
 	{
-		int row = 0;
-
 		// Iterate over all groups.
 		for (uint16_t group = 0; group != imageGroups.size(); ++group)
 		{
 			// and then over each image in the group
+			int row = 0;
 			for (auto it = imageGroups[group].pictures->begin();
-				it != imageGroups[group].pictures->end(); ++it)
+				it != imageGroups[group].pictures->end(); ++it, ++row)
 			{
 				if (it->m_bChecked == Qt::Checked &&
 					it->IsLightFrame())
@@ -689,7 +688,6 @@ namespace DSS
 						it->m_bRegistered = false;
 					}
 				}
-				++row;
 			}
 		}
 	}
