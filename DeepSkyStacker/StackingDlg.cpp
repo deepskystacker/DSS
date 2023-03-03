@@ -1377,10 +1377,10 @@ namespace DSS
 				//
 				// If the file has already been loaded complain
 				//
-			    QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
+			    QString errorMessage = QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
 					.arg(file.generic_string().c_str())
 					.arg(groupId)
-					.arg(frameList.groupName(groupId)));
+					.arg(frameList.groupName(groupId));
 
 	#if defined(_CONSOLE)
 				std::cerr << errorMessage.toUtf8().constData();
