@@ -83,7 +83,7 @@ void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 
 void ProgressDlg::cancelPressed()
 {
-	if (QMessageBox::question(this, tr("Are You Sure?"), tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_cancelInProgress = true;
 		m_ui->StopButton->setEnabled(false);
