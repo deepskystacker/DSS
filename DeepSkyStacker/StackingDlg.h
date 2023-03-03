@@ -76,6 +76,7 @@ namespace std::filesystem
 	class path;
 }
 
+class QErrorMessage;
 class QTextOption;
 class QSortFilterProxyModel;
 class QLabel;
@@ -167,11 +168,7 @@ namespace DSS
 		void gammaChanged(int peg);
 		void tabBar_currentChanged(int index);
 
-		void onAddPictures();
-		void onAddDarks();
-		void onAddDarkFlats();
-		void onAddFlats();
-		void onAddOffsets();
+		void onAddImages(PICTURETYPE type);
 
 		//
 		// dssfilelist operations
@@ -257,6 +254,8 @@ namespace DSS
 		std::unique_ptr<ItemEditDelegate> itemEditDelegate;
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
 		uint m_tipShowCount;
+
+		QErrorMessage* errorMessageDialog;
 
 		bool fileAlreadyLoaded(const fs::path& file);
 

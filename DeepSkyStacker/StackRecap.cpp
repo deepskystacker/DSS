@@ -24,6 +24,7 @@ using std::max;
 extern bool	g_bShowRefStars;
 
 #include "commonresource.h"
+#include "DSSCommon.h"
 #include "DeepSkyStacker.h"
 #include "StackRecap.h"
 #include "StackSettings.h"
@@ -32,6 +33,7 @@ extern bool	g_bShowRefStars;
 #include "DSSProgress.h"
 #include "RecommendedSettings.h"
 #include "FrameInfoSupport.h"
+
 
 constexpr int SSTAB_RESULT = 0;
 constexpr int SSTAB_COMET = 1;
