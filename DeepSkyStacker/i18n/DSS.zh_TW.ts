@@ -29,7 +29,7 @@
         <translation>關於&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="99"/>
+        <location filename="../About.cpp" line="100"/>
         <source>Default</source>
         <translation>預設</translation>
     </message>
@@ -40,14 +40,19 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="74"/>
+        <location filename="../About.cpp" line="65"/>
+        <source>(Now somewhat out of date)</source>
+        <translation>（現在有點過時了）</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="75"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="84"/>
+        <location filename="../About.cpp" line="85"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -55,83 +60,83 @@ Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="91"/>
+        <location filename="../About.cpp" line="92"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="114"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="118"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="122"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="125"/>
+        <location filename="../About.cpp" line="126"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="130"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="134"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="131"/>
-        <location filename="../About.cpp" line="135"/>
-        <location filename="../About.cpp" line="144"/>
-        <location filename="../About.cpp" line="148"/>
+        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="136"/>
+        <location filename="../About.cpp" line="145"/>
         <location filename="../About.cpp" line="149"/>
+        <location filename="../About.cpp" line="150"/>
         <source>and</source>
         <translation>以及</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="138"/>
+        <location filename="../About.cpp" line="139"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>繁体中文版本：</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="143"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="148"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="152"/>
+        <location filename="../About.cpp" line="153"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="156"/>
+        <location filename="../About.cpp" line="157"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation></translation>
