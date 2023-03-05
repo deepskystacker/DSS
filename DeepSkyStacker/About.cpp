@@ -61,7 +61,8 @@ About::About(QWidget *parent) :
     strText += copyright;
     strText = strText.replace("\n", "<br>");
     strHTML += "<b>" + strText + "</b><br>";
-    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
+    strText = QString("<a href=\"%1\">%1</a>&nbsp;").arg("http://deepskystacker.free.fr/");
+    strText += tr("(Now somewhat out of date)") += "<br><br>";
     strHTML += strText;
 
 	strText = "Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd.";
