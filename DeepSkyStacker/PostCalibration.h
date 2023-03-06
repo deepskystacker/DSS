@@ -1,5 +1,5 @@
-#ifndef POSTCALIBRATION_H
-#define POSTCALIBRATION_H
+#pragma once
+#include "StackingTasks.h"
 
 class Workspace;
 class StackSettings;
@@ -7,11 +7,6 @@ class CAllStackingTasks;
 class QAction;
 class QString;
 class QMenu;
-
-#include <QWidget>
-
-#include "DSSCommon.h"
-#include "StackingTasks.h"
 
 namespace Ui {
 class PostCalibration;
@@ -59,5 +54,3 @@ private slots:
 	void on_saveDeltaImage_toggled(bool);
 	void on_testCosmetic_clicked();
 };
-
-#endif // POSTCALIBRATION_H

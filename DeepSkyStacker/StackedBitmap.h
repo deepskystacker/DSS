@@ -1,13 +1,14 @@
 #ifndef _STACKEDBITMAP_H__
 #define _STACKEDBITMAP_H__
-
-#include <math.h>
-#include <vector>
-#include <algorithm>
-#include "BitmapExt.h"
 #include "BezierAdjust.h"
 #include "Histogram.h"
-#include "DSSTools.h"
+#include "ColorRef.h"
+
+#ifndef _CONSOLE
+#include "BitmapExt.h"
+#endif//_CONSOLE
+
+namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -158,9 +159,9 @@ private :
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	bool	LoadDSImage(LPCTSTR szStackedFile, ProgressBase * pProgress = nullptr);
-	bool	LoadTIFF(LPCTSTR szStackedFile, ProgressBase * pProgress = nullptr);
-	bool	LoadFITS(LPCTSTR szStackedFile, ProgressBase * pProgress = nullptr);
+	bool	LoadDSImage(LPCTSTR szStackedFile, DSS::ProgressBase * pProgress = nullptr);
+	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
+	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 
 	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
@@ -300,16 +301,16 @@ public :
 		return m_lNrBitmaps;
 	};
 
-	bool	Load(LPCTSTR szStackedFile, ProgressBase * pProgress = nullptr);
-	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, ProgressBase * pProgress = nullptr);
-	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, ProgressBase * pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, ProgressBase * pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, ProgressBase * pProgress = nullptr, bool bApplySettings = true);
-	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, ProgressBase * pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
-#if !defined(PCL_PROJECT) && !defined(_CONSOLE)
+	bool	Load(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
+	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr);
+	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
+	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
+#if !defined(_CONSOLE)
 	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
 #endif
-	std::shared_ptr<CMemoryBitmap> GetBitmap(ProgressBase* const pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
 
 	void Clear()
 	{

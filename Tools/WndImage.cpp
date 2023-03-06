@@ -140,9 +140,6 @@ END_MESSAGE_MAP()
 //  OnPaint
 // ------------------------------------------------------------------
 
-#include <gdiplus.h>
-using namespace Gdiplus;
-
 static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect & rcDst, BOOL bInterpolate, Bitmap * pInBitmap = nullptr, bool bDarkMode=false)
 {
 	Bitmap *		pBitmap = new Bitmap(hBitmap, nullptr);

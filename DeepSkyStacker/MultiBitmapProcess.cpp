@@ -1,15 +1,15 @@
 #include <stdafx.h>
-#include "resource.h"
-#include "BitmapBase.h"
-#include "DSSTools.h"
+#include <omp.h>
 #include "MultiBitmapProcess.h"
 #include "StackingTasks.h"
-#include "DSSProgress.h"
-#include <algorithm>
-#include <iostream>
+#include "MultiBitmap.h"
+#include "MemoryBitmap.h"
+#include "Ztrace.h"
 #include "Multitask.h"
 #include "avx_output.h"
-#include <omp.h>
+#include "ZExcBase.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -37,9 +37,9 @@ void CMultiBitmap::DestroyTempFiles()
 {
 	for (int i = 0;i<m_vFiles.size();i++)
 	{
-		if (m_vFiles[i].m_strFile.GetLength())
-			DeleteFile(m_vFiles[i].m_strFile);
-		m_vFiles[i].m_strFile.Empty();
+		if (m_vFiles[i].m_strFile.length())
+			DeleteFile(m_vFiles[i].m_strFile.toStdWString().c_str());
+		m_vFiles[i].m_strFile.clear();
 	};
 	m_vFiles.clear();
 };
@@ -91,7 +91,8 @@ void CMultiBitmap::InitParts()
 		};
 		lEndRow = std::min(lEndRow, m_lHeight-1);
 
-		CBitmapPartFile		bp(strFile, lStartRow, lEndRow);
+		QString strFilename(QString::fromWCharArray(strFile.GetString()));
+		CBitmapPartFile		bp(strFilename, lStartRow, lEndRow);
 
 		m_vFiles.push_back(bp);
 	};
@@ -133,7 +134,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 		{
 			FILE *				hFile;
 
-			hFile = _tfopen(m_vFiles[k].m_strFile, _T("a+b"));
+			hFile = _tfopen(m_vFiles[k].m_strFile.toStdWString().c_str(), _T("a+b"));
 			if (hFile)
 			{
 				bResult = true;
@@ -401,7 +402,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
 
-			FILE* hFile = _tfopen(file.m_strFile, _T("rb"));
+			FILE* hFile = _tfopen(file.m_strFile.toStdWString().c_str(), _T("rb"));
 			if (hFile != nullptr)
 			{
 				bResult = fread(buffer.data(), 1, fileSize, hFile) == fileSize;

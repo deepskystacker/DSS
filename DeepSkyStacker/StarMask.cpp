@@ -1,14 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "StarMask.h"
+#include "DSSProgress.h"
 #include "RegisterEngine.h"
+#include "GrayBitmap.h"
 
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
-
-#include <GdiPlus.h>
-using namespace Gdiplus;
+using namespace DSS;
 
 // Can't be const due to RegisterPicture(pBitmap).
 std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* pBitmap, ProgressBase* pProgress)

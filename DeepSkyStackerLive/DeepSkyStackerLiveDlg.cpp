@@ -2,10 +2,10 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
-#include <QSettings>
-#include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
+#include "resource.h"
+#include "DeepSkyStackerLive.h"
+#include "Workspace.h"
 
 // CDeepSkyStackerLiveDlg dialog
 
@@ -131,7 +131,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	m_ImageList.Create(IDD_IMAGELIST, this);
 	m_ImageList.SetToDarkMode(m_bUseDarkTheme);
 	m_Graphs.Create(IDD_GRAPHS, this);
-	m_Settings.Create(IDD_SETTINGS, this);
+	m_Settings.Create(IDD_SETTINGS_LIVE, this);
 
 	{
 		QSettings settings;
@@ -342,3 +342,239 @@ void CDeepSkyStackerLiveDlg::CallHelp()
 };
 
 /* ------------------------------------------------------------------- */
+
+
+CDeepSkyStackerLiveDlg* GetDSSLiveDlg(CWnd* pDialog)
+{
+	if (pDialog)
+	{
+		CWnd* pParent = pDialog->GetParent();
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pParent);
+
+		return pDlg;
+	}
+	else
+	{
+		CWnd* pWnd = GetDSSLiveApp()->m_pMainWnd;
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+
+		return pDlg;
+	};
+}
+void AddToLog(QString szString, BOOL bAddDateTime /* = FALSE */, BOOL bBold /* = FALSE */, BOOL bItalic /* = FALSE */, COLORREF crColor /* = RGB(0, 0, 0) */)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetLogTab().AddToLog(szString, bAddDateTime, bBold, bItalic, crColor);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void SetLastImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName /* = nullptr */)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetLastImageTab().SetImage(pBitmap, pWndBitmap, szFileName);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void SetStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetStackedImageTab().SetImage(pBitmap, pWndBitmap, nullptr);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void AdviseStackedImageSaved()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetStackedImageTab().OnStackedImageSaved();
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void AddImageToList(LPCTSTR szImage)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetImageListTab().AddImage(szImage);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void ChangeImageStatusInList(LPCTSTR szImage, IMAGESTATUS status)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetImageListTab().ChangeImageStatus(szImage, status);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void ChangeImageInfoInCharts(LPCTSTR szFileName, STACKIMAGEINFO info)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetGraphsTab().ChangeImageInfo(szFileName, info);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void UpdateImageOffsetsInList(LPCTSTR szImage, double fdX, double fdY, double fAngle)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetImageListTab().UpdateImageOffsets(szImage, fdX, fdY, fAngle);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void SetFootprintInStackedImage(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetStackedImageTab().OnSetFootprint(pt1, pt2, pt3, pt4);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void AddScoreFWHMStarsToGraph(LPCTSTR szFileName, double fScore, double fFWHM, double fStars, double fSkyBackground)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetGraphsTab().AddScoreFWHMStars(szFileName, fScore, fFWHM, fStars, fSkyBackground);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void AddOffsetsAngleToGraph(LPCTSTR szFileName, double fdX, double fdY, double fAngle)
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetGraphsTab().AddOffsetAngle(szFileName, fdX, fdY, fAngle);
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void UpdateLiveSettings()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetMainBoard().UpdateLiveSettings();
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void ResetEmailCount()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetMainBoard().ResetEmailCount();
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void PostSaveStackedImage()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetMainBoard().PostSaveStackedImage();
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void ShowResetEmailCountButton()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+	{
+		CDeepSkyStackerLiveDlg* pDlg = dynamic_cast<CDeepSkyStackerLiveDlg*>(pWnd);
+		if (pDlg)
+			pDlg->GetSettingsTab().ShowResetEmailCountButton();
+	};
+}
+
+/* ------------------------------------------------------------------- */
+
+void FlashMainWindow()
+{
+	CWnd* pWnd = AfxGetApp()->GetMainWnd();
+
+	if (pWnd)
+		pWnd->FlashWindowEx(FLASHW_ALL, 4, 0);
+}

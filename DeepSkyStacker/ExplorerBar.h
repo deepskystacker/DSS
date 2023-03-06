@@ -1,9 +1,6 @@
 #ifndef EXPLORERBAR_H
 #define EXPLORERBAR_H
-
-#include <QDockWidget>
 #include "mrupath.h"
-//#include "ClickLabel.h"
 
 namespace Ui {
 class ExplorerBar;

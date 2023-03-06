@@ -1,23 +1,10 @@
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
-#include <QSettings>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
 #include "ResultParameters.h"
 #include "ui/ui_ResultParameters.h"
-
+#include "Workspace.h"
+#include "ZExcept.h"
 #include "DSSCommon.h"
 #include "StackSettings.h"
-#include "Workspace.h"
-
 
 ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),

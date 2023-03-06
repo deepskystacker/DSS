@@ -1,4 +1,6 @@
 #pragma once
+#include "DSSCommon.h"
+class CMemoryBitmap;
 
 class StackingParams
 {

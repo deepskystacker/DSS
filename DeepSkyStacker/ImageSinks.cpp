@@ -1,16 +1,8 @@
 #include <stdafx.h>
-#include <WndImage.h>
-#include "dssrect.h"
-#include "BitmapExt.h"
 #include "ImageSinks.h"
 #include "RegisterEngine.h"
 #include "BackgroundCalibration.h"
-
-
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
+#include "commonresource.h"
 
 /* ------------------------------------------------------------------- */
 

@@ -1,16 +1,8 @@
-#if !defined(AFX_LUMINANCETAB_H__C143C1EE_81D8_44F1_B5FD_B66EA4028433__INCLUDED_)
-#define AFX_LUMINANCETAB_H__C143C1EE_81D8_44F1_B5FD_B66EA4028433__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// LuminanceTab.h : header file
-//
-
-#include <ChildProp.h>
-#include <BtnST.h>
-#include <Label.h>
-#include "afxwin.h"
+#include "childprop.h"
+#include "BtnST.h"
+#include "Label.h"
+#include "resourceCZ.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CLuminanceTab dialog
@@ -72,8 +64,3 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_LUMINANCETAB_H__C143C1EE_81D8_44F1_B5FD_B66EA4028433__INCLUDED_)

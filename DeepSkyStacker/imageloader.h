@@ -1,9 +1,4 @@
 #pragma once
-#include <memory>
-#include <mutex>
-#include <qobject.h>
-#include <QRunnable> 
-#include <qstring.h>
 
 class CMemoryBitmap;
 class C32BitsBitmap;

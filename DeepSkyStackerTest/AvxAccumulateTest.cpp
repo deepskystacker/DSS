@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <QCoreApplication>
 #include "catch.h"
 #include "../DeepSkyStacker/dssrect.h"
 
@@ -10,6 +9,9 @@
 #include "../DeepSkyStacker/avx_avg.h"
 
 #include "../DeepSkyStacker/TaskInfo.h"
+#include "../DeepSkyStacker/EntropyInfo.h"
+#include "../DeepSkyStacker/ColorBitmap.h"
+#include "../DeepSkyStacker/MedianFilterEngine.h"
 
 
 TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
@@ -393,4 +395,4 @@ BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }
 RGBBACKGROUNDCALIBRATIONMETHOD GetRGBBackgroundCalibrationMethod() { return RBCM_MIDDLE; }
 
-std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }
+//std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }

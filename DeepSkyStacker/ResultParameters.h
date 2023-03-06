@@ -1,10 +1,4 @@
-#ifndef RESULTPARAMETERS_H
-#define RESULTPARAMETERS_H
-#include <memory>
-
-#include <QWidget>
-#include <QPicture>
-
+#pragma once
 class Workspace;
 class StackSettings;
 
@@ -45,4 +39,3 @@ private slots:
 	void	on_alignRGB_clicked();
 
 };
-#endif // RESULTPARAMETERS_H

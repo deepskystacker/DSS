@@ -1,11 +1,8 @@
+#include "stdafx.h"
 #include "AlignmentParameters.h"
 #include "ui/ui_AlignmentParameters.h"
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include "DSSCommon.h"
 #include "Workspace.h"
+#include "DSSCommon.h"
 
 AlignmentParameters::AlignmentParameters(QWidget *parent) :
 	QWidget(parent),

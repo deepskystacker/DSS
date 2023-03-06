@@ -13,9 +13,9 @@ Bitmap *	GetBitmapFromIcon(int nBitmap, int nMask)
 	Bitmap				bmpMask(hMask, nullptr);
 
 	pResult = bmp.Clone(0, 0, BUTTONTOOLBARSIZE, BUTTONTOOLBARSIZE, PixelFormat32bppARGB);
-	for (LONG i = 0;i<bmp.GetWidth();i++)
+	for (UINT i = 0;i<bmp.GetWidth();i++)
 	{
-		for (LONG j = 0;j<bmp.GetHeight();j++)
+		for (UINT j = 0;j<bmp.GetHeight();j++)
 		{
 			Color		color,
 						tmpcolor;

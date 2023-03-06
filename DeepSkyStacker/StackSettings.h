@@ -2,19 +2,18 @@
 #define STACKSETTINGS_H
 
 
-#include <QDialog>
-#include "ResultParameters.h"
-#include "CometStacking.h"
-#include "PostCalibration.h"
-#include "OutputTab.h"
-#include "IntermediateFiles.h"
-#include "AlignmentParameters.h"
-#include "StackingParameters.h"
-#include "StackingTasks.h"
-
 namespace Ui {
 class StackSettings;
 }
+
+class ResultParameters;
+class CometStacking;
+class AlignmentParameters;
+class IntermediateFiles;
+class PostCalibration;
+class OutputTab;
+class StackingParameters;
+class CAllStackingTasks;
 
 class StackSettings : public QDialog
 {

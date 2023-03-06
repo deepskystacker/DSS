@@ -1,6 +1,87 @@
 #ifndef __MEDIANFILTERENGINE_H__
 #define __MEDIANFILTERENGINE_H__
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
+namespace DSS { class ProgressBase; }
+
+//////////////////////////////////////////////////////////////////////////
+// Perhaps these classes here (CMedianFilterEngine based) should be in their own headers.
+class CMedianFilterEngine
+{
+protected:
+	int m_lFilterSize;
+	DSS::ProgressBase* m_pProgress;
+
+public:
+	CMedianFilterEngine() :
+		m_lFilterSize{ 1 },
+		m_pProgress{ nullptr }
+	{}
+
+	virtual ~CMedianFilterEngine() {};
+
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const = 0;
+};
+
+template <typename TType>
+class CGrayMedianFilterEngineT : public CMedianFilterEngine
+{
+private:
+	const CGrayBitmapT<TType>* m_pInBitmap;
+
+public:
+	CGrayMedianFilterEngineT() : m_pInBitmap{ nullptr }
+	{};
+	virtual ~CGrayMedianFilterEngineT() {};
+
+	void SetInputBitmap(const CGrayBitmapT<TType>* pInBitmap)
+	{
+		m_pInBitmap = pInBitmap;
+	}
+
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, DSS::ProgressBase* pProgress) const override;
+};
+
+template <typename TType>
+class CColorMedianFilterEngineT : public CMedianFilterEngine
+{
+private:
+	const CColorBitmapT<TType>* m_pInBitmap;
+
+public:
+	CColorMedianFilterEngineT() {};
+	virtual ~CColorMedianFilterEngineT() {};
+
+	void SetInputBitmap(const CColorBitmapT<TType>* pInBitmap)
+	{
+		m_pInBitmap = pInBitmap;
+	}
+
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const override;
+};
+
+template <class T>
+class CopyableSmartPtr final
+{
+private:
+	std::unique_ptr<T> p;
+public:
+	template <class OTHER> CopyableSmartPtr(std::unique_ptr<OTHER>&) = delete;
+	CopyableSmartPtr() = delete;
+	CopyableSmartPtr& operator=(const CopyableSmartPtr&) = delete;
+
+	template <class OTHER>
+	CopyableSmartPtr(std::unique_ptr<OTHER>&& rhs) : p{ std::move(rhs) } {}
+
+	CopyableSmartPtr(const CopyableSmartPtr& rhs) : p{ rhs->clone() } {}
+
+	typename std::unique_ptr<T>::pointer get() const noexcept { return p.get(); }
+	typename std::unique_ptr<T>::pointer operator->() const noexcept { return this->get(); }
+};
+
+
+//////////////////////////////////////////////////////////////////////////
 
 template <typename TType>
 class CInternalMedianFilterEngineT
@@ -18,10 +99,10 @@ public :
 	{
 	private :
 		CInternalMedianFilterEngineT<TType>* m_pEngine = nullptr;
-		ProgressBase* m_pProgress = nullptr;
+		DSS::ProgressBase* m_pProgress = nullptr;
 
 	public :
-		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, ProgressBase* pprg) :
+		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, DSS::ProgressBase* pprg) :
 			m_pEngine{ peng },
 			m_pProgress{ pprg }
 		{}
@@ -45,12 +126,12 @@ public:
 
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	void ApplyFilter(ProgressBase* pProgress);
+	void ApplyFilter(DSS::ProgressBase* pProgress);
 };
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, ProgressBase* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, DSS::ProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};
@@ -64,9 +145,9 @@ inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilter
 
 		InternalFilter.m_pvInValues  = m_pInBitmap->m_vPixels.data();
 		InternalFilter.m_pvOutValues = pOutBitmap->m_vPixels.data();
-		InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
-		InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
-		InternalFilter.m_CFAType	 = m_pInBitmap->m_CFAType;
+		InternalFilter.m_lWidth      = m_pInBitmap->RealWidth();
+		InternalFilter.m_lHeight	 = m_pInBitmap->RealHeight();
+		InternalFilter.m_CFAType	 = m_pInBitmap->GetCFAType();
 		InternalFilter.m_lFilterSize = InternalFilter.m_CFAType != CFATYPE_NONE ? lFilterSize * 2 : lFilterSize;
 
 		InternalFilter.ApplyFilter(pProgress);
@@ -79,7 +160,7 @@ inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilter
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};
@@ -91,8 +172,8 @@ inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilte
 	{
 		CInternalMedianFilterEngineT<TType>	InternalFilter;
 
-		InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
-		InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
+		InternalFilter.m_lWidth      = m_pInBitmap->RealWidth();
+		InternalFilter.m_lHeight	 = m_pInBitmap->RealHeight();
 		InternalFilter.m_lFilterSize = lFilterSize;
 		InternalFilter.m_CFAType	 = CFATYPE_NONE;
 

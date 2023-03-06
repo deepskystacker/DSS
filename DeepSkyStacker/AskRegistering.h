@@ -1,5 +1,6 @@
 #ifndef __ASKREGISTERING_H__
 #define __ASKREGISTERING_H__
+#include "commonresource.h"
 
 typedef enum tagASKREGISTERINGANSWER
 {

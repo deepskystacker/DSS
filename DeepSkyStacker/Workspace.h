@@ -2,9 +2,7 @@
 #define __WORKSPACE_H__
 
 #include <filesystem>
-#include <memory>
-#include <QString>
-#include <QVariant>
+#include <atlstr.h>
 namespace fs = std::filesystem;
 
 class WorkspaceSettings;

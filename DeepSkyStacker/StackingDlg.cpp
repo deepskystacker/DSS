@@ -37,67 +37,31 @@
 //
 
 #include "stdafx.h"
-
-#include <chrono>
-#include <QAction>
-#include <QClipboard>
-#include <QComboBox>
-#include <QDebug>
-#include <QMenu>
-#include <QMessageBox>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QTreeWidget>
-#include <QPainter>
-#include <QTextLayout>
-#include <QShowEvent>
-#include <QSettings>
-#include <QSortFilterProxyModel>
-#include <QStyledItemDelegate>
-#include <QStyleOptionViewItem>
-#include <QStyleOptionButton>
-#include <QTableWidgetItem>
-#include <QTimeEdit>
-#include <QTimer>
-#include <QToolTip>
-#include <QUrl>
-
-#include <filesystem>
-
-#include "mrupath.h"
-
-#include "DeepSkyStacker.h"
-#include "dssrect.h"
 #include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "DeepStack.h"
-#include "FileProperty.h"
-#include "FrameInfoSupport.h"
-#include "QtProgressDlg.h"
-#include "CheckAbove.h"
-#include "RegisterSettings.h"
-#include "StackRecap.h"
-#include "TIFFUtil.h"
-#include "RegisterEngine.h"
-#include "StackingEngine.h"
+#include "ui_StackingDlg.h"
+#include "picturelist.h"
+#include "Ztrace.h"
 #include "DropFilesDlg.h"
-#include "SaveEditChanges.h"
-#include "AskRegistering.h"
-#include "BatchStacking.h"
-#include "DSSVersion.h"
-#include "group.h"
+#include "RenameGroup.h"
+#include "toolbar.h"
 #include "editstars.h"
 #include "selectrect.h"
-#include "toolbar.h"
+#include "SaveEditChanges.h"
+#include "RegisterEngine.h"
+#include "StackingEngine.h"
+#include "DeepSkyStacker.h"
+#include "CheckAbove.h"
+#include "Workspace.h"
+#include "QtProgressDlg.h"
+#include "RegisterSettings.h"
 #include "avx_support.h"
-#include "ui/ui_StackingDlg.h"
-#include "picturelist.h"
-#include "RenameGroup.h"
-
-#include <ZExcept.h>
-
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "FrameInfoSupport.h"
+#include "AskRegistering.h"
+#include "FITSUtil.h"
+#include "TIFFUtil.h"
+#include "BatchStacking.h"
+#include "StackRecap.h"
+#include "ProcessingDlg.h"
 
 #define dssApp DeepSkyStacker::instance()
 

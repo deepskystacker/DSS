@@ -2,11 +2,14 @@
 #define __FITSUTIL_H__
 
 /* ------------------------------------------------------------------- */
-#include "BitmapExt.h"
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "..\CFitsio\fitsio.h"
 #include <filesystem>
+#include "cfa.h"
+#include "DSSCommon.h"
+#include "BitmapExtraInfo.h"
+#include "fitsio.h"
+
+// Want this out!
+#include <atlstr.h>
 
 namespace fs = std::filesystem;
 
@@ -109,7 +112,8 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
-
+namespace DSS { class ProgressBase; }
+using namespace DSS;
 class CFITSReader : public CFITSHeader
 {
 public:
@@ -212,6 +216,8 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
+class CBitmapInfo;
+class CMemoryBitmap;
 
 CFATYPE GetFITSCFATYPE();
 bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);

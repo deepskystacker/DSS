@@ -1,7 +1,6 @@
 #pragma once
-
+#include "commonresource.h"
 // CFileProperty dialog
-#include <unordered_map>
 
 namespace DSS
 {

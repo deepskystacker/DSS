@@ -1,5 +1,5 @@
 #pragma once
-
+#include "commonresource.h"
 inline void	ExposureToString(double fExposure, CString& strText)
 {
 	// DELETE THIS ONE DAY

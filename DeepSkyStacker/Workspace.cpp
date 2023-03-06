@@ -1,19 +1,7 @@
 #include <stdafx.h>
-#include <algorithm>
-#include <deque>
-#include <memory>
-#include <QDebug>
-#include <QGlobalStatic>
-#include <QMutex>
-#include <QSettings>
-
-#include "resource.h"
 #include "Workspace.h"
-
-#include "BitmapExt.h"
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "StackingTasks.h"
+#include "DSSCommon.h"
+#include "ZExcBase.h"
 
 class WorkspaceSettings
 {

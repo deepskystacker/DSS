@@ -4,6 +4,7 @@
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
 #include "BackgroundCalibration.h"
+#include "StackingTasks.h"
 
 class CComputeOffsetTask;
 
@@ -131,7 +132,7 @@ public :
 };
 
 /* ------------------------------------------------------------------- */
-
+class CTaskInfo;
 class CStackingEngine final
 {
 private:

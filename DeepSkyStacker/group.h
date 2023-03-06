@@ -34,12 +34,12 @@
 **
 **
 ****************************************************************************/
-
-#include <memory>
-
-#include <QCoreApplication>
-#include <QString>
+#include <filesystem>
+#include "DSSCommon.h"
 #include "ImageListModel.h"
+namespace fs = std::filesystem;
+
+class ListBitMap;
 
 namespace DSS
 {
@@ -60,22 +60,9 @@ namespace DSS
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		std::unique_ptr<ImageListModel>	pictures;
+		std::unique_ptr<ImageListModel> pictures;
 
-		explicit Group() :
-			pictures { std::make_unique<ImageListModel>() },
-			Index { nextIndex++ },		// First group is Main Group with Index of 0
-			Dirty{ false }		
-		{
-			if (0 == Index)
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
-			}
-			else
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
-			}
-		}
+		explicit Group();
 
 		//
 		// Don't intend this to be copied or assigned.
@@ -107,10 +94,7 @@ namespace DSS
 		//
 		// Accessors
 		//
-		inline size_t size() const noexcept
-		{
-			return pictures->rowCount();
-		}
+		size_t size() const noexcept;
 
 		inline QString name() const noexcept { return Name; };
 		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
@@ -127,11 +111,7 @@ namespace DSS
 		//
 		// Add an image (row) to the table
 		//
-		void addImage(const ListBitMap& image)
-		{
-			pictures->addImage(image);
-			Dirty = true;
-		}
+		void addImage(const ListBitMap& image);
 
 		static int16_t whichGroupContains(const fs::path& path)
 		{

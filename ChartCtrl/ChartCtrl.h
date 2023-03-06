@@ -18,28 +18,15 @@
  *
  *
  */
-
-
-#if !defined(AFX_CHARTCTRL_H__5DDBAE42_77C3_4344_A207_3F39B623343B__INCLUDED_)
-#define AFX_CHARTCTRL_H__5DDBAE42_77C3_4344_A207_3F39B623343B__INCLUDED_
-
-#if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
-
-#include "ChartSerie.h"
-#include "ChartAxis.h"
-#include "ChartGrid.h"
-#include "ChartLegend.h"
-#include "ChartTitle.h"
-	
-#include <vector>
-
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CChartCtrl window
-
+class CChartLegend;
+class CChartTitle;
+class CChartAxis;
+class CChartSerie;
 class CChartCtrl : public CWnd
 {
 
@@ -125,9 +112,3 @@ private:
 	CRect m_rectZoomArea;
 };
 
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_CHARTCTRL_H__5DDBAE42_77C3_4344_A207_3F39B623343B__INCLUDED_)

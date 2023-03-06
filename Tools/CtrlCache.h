@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <atltypes.h>
 
 class CWnd;
 class CCtrlCache

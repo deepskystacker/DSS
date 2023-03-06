@@ -1,15 +1,12 @@
 #pragma once 
 
-#include "BitmapBase.h" 
-#include "EntropyInfo.h"
-#include <vector>
-
 /*
 * Class for
 * 1. Calculation of the entropy data of the squares,
 * 2. Managing the entropy coverage (the coverage bitmap itself is calculated while stacking with the class AvxStacking).
 */
-
+class CMemoryBitmap;
+class CEntropyInfo;
 class AvxEntropy
 {
 private:

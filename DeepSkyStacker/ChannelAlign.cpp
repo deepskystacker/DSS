@@ -4,6 +4,8 @@
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
 #include "BitmapIterator.h"
+#include "Ztrace.h"
+#include "ColorBitmap.h"
 
 /* ------------------------------------------------------------------- */
 

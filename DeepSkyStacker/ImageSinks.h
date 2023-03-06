@@ -1,5 +1,11 @@
-#ifndef __IMAGESINKS_H__
-#define __IMAGESINKS_H__
+#pragma once
+
+#include "WndImage.h"
+#include "Stars.h"
+#include "BilinearParameters.h"
+#include "MatchingStars.h"
+#include "GrayBitmap.h"
+#include "DSSCommon.h"
 
 /* ------------------------------------------------------------------- */
 extern bool     g_bShowRefStars;
@@ -69,11 +75,6 @@ public :
 		return !rcSelect.IsRectEmpty();
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-#include "Stars.h"
-#include "MatchingStars.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -364,7 +365,3 @@ public :
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };
-
-/* ------------------------------------------------------------------- */
-
-#endif // __IMAGESINKS_H__

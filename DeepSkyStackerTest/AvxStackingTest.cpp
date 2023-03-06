@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <QCoreApplication>
 #include "catch.h"
 
 #define UNIT_TESTS
@@ -7,6 +6,12 @@
 #include "AvxAccumulateTest.h"
 #include "../DeepSkyStacker/avx.h"
 #include "../DeepSkyStacker/avx_median.h"
+#include "../DeepSkyStacker/GrayBitmap.h"
+#include "../DeepSkyStacker/EntropyInfo.h"
+#include "../DeepSkyStacker/TaskInfo.h"
+#include "../DeepSkyStacker/PixelTransform.h"
+#include "../DeepSkyStacker/avx_entropy.h"
+#include "../DeepSkyStacker/BackgroundCalibration.h"
 
 
 TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")

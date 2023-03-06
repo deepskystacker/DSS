@@ -1,8 +1,6 @@
 #pragma once
-
-#include "avx_support.h" 
 #include "avx_cfa.h"
-#include <vector>
+#include "avx_support.h"
 
 class AvxHistogram
 {

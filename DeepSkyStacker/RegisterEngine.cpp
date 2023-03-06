@@ -1,25 +1,25 @@
 
 #include <stdafx.h>
-#include <QPoint>
-
-#include "resource.h"
-#include "dssrect.h"
+#include <future>
+#include <math.h>
+#include <omp.h>
 #include "RegisterEngine.h"
-
-#include "MasterFrames.h"
-#include "BackgroundCalibration.h"
+#include "Workspace.h"
 #include "PixelTransform.h"
-#include "TIFFUtil.h"
-#include "FITSUtil.h"
-#include "Filters.h"
+#include "Ztrace.h"
+#include "BackgroundCalibration.h"
+#include "Multitask.h"
 #include "avx_luminance.h"
+#include "ColorHelpers.h"
+#include "Filters.h"
+#include "StackingTasks.h"
+#include "FITSUtil.h"
+#include "TIFFUtil.h"
+#include "MasterFrames.h"
 
 #if QT_VERSION < 0x060000
 #define _USE_MATH_DEFINES
 #endif
-#include <math.h>
-
-#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
@@ -71,6 +71,28 @@ inline	void NormalizeAngle(int & lAngle)
 };
 
 /* ------------------------------------------------------------------- */
+void CRegisteredFrame::Reset()
+{
+	Workspace			workspace;
+
+	m_vStars.clear();
+
+	m_fRoundnessTolerance = 2.0;
+	m_bInfoOk = false;
+
+	m_bComet = false;
+	m_fXComet = m_fYComet = -1;
+
+	m_fMinLuminancy = workspace.value("Register/DetectionThreshold").toDouble() / 100.0;
+
+	m_bApplyMedianFilter = workspace.value("Register/ApplyMedianFilter").toBool();
+	m_fBackground = 0.0;
+
+	m_SkyBackground.Reset();
+
+	m_fOverallQuality = 0;
+	m_fFWHM = 0;
+}
 
 bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 {
@@ -832,6 +854,24 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
+void CLightFrameInfo::Reset()
+{
+	CFrameInfo::Reset();
+	CRegisteredFrame::Reset();
+
+	m_fXOffset = 0;
+	m_fYOffset = 0;
+	m_fAngle = 0;
+	m_bDisabled = false;
+	m_pProgress = nullptr;
+	m_bStartingFrame = false;
+	m_vVotedPairs.clear();
+
+	m_bTransformedCometPosition = false;
+
+	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
+}
+
 double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 {
 	double					fResult = 0.0;
@@ -1218,18 +1258,18 @@ void CLightFrameInfo::RegisterPicture()
 
 	if (GetPictureInfo(filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
 	{
-		QString						strText;
-		CString						strDescription;
+		QString strText;
+		QString	strDescription;
 
 		bmpInfo.GetDescription(strDescription);
 
 		if (bmpInfo.m_lNrChannels == 3)
 			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE").arg(bmpInfo.m_lBitPerChannel)
-			.arg(QString::fromWCharArray(strDescription.GetString()))
+			.arg(strDescription)
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 		else
 			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE").arg(bmpInfo.m_lBitPerChannel)
-			.arg(QString::fromWCharArray(strDescription.GetString()))
+			.arg(strDescription)
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 
 		if (m_pProgress != nullptr)
@@ -1308,6 +1348,13 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 
 /* ------------------------------------------------------------------- */
 
+CRegisterEngine::CRegisterEngine()
+{
+	m_bSaveCalibrated = CAllStackingTasks::GetSaveCalibrated();
+	m_IntermediateFileFormat = CAllStackingTasks::GetIntermediateFileFormat();
+	m_bSaveCalibratedDebayered = CAllStackingTasks::GetSaveCalibratedDebayered();
+}
+
 bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, CString& strCalibratedFile)
 {
 	bool bResult = false;
@@ -1379,7 +1426,6 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 	return bResult;
 }
 
-#include <future>
 
 bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, ProgressBase* pProgress)
 {
@@ -1447,13 +1493,13 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			if (!success)
 				continue;
 
-			CString strDescription;
+			QString strDescription;
 			bmpInfo->GetDescription(strDescription);
 			QString strText2;
 			if (bmpInfo->m_lNrChannels == 3)
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
 			else
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
 			if (pProgress != nullptr)
 				pProgress->Start2(strText2, 0);
 

@@ -1,14 +1,12 @@
-#ifndef __LIVEENGINE_H__
-#define __LIVEENGINE_H__
-
-#include <queue>
-#include <list>
+#pragma once
 #include "DSSProgress.h"
-#include "DSSTools.h"
-#include "BitmapExt.h"
 #include "LiveSettings.h"
 #include "RegisterEngine.h"
 #include "RunningStackingEngine.h"
+
+class CMemoryBitmap;
+class C32BitsBitmap;
+using namespace DSS;
 
 /* ------------------------------------------------------------------- */
 
@@ -573,6 +571,3 @@ private:
 	QString m_strLastOut[OT_MAX];
 };
 
-/* ------------------------------------------------------------------- */
-
-#endif // __LIVEENGINE_H__

@@ -1,16 +1,4 @@
-#if !defined(AFX_CHILDPROP_H__INCLUDED_)
-#define AFX_CHILDPROP_H__INCLUDED_
-
-// childprop.h : header file
-//
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
-#include <afxtempl.h>
-#include <afxdlgs.h>
-#include <afxcmn.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // CChildPropertyPage
@@ -50,5 +38,3 @@ private:
 	UINT m_nIDGroup;
 	CArray<CPropertyPage*, CPropertyPage*> m_arrPages;
 };
-
-#endif // !defined(AFX_CHILDPROP_H__INCLUDED_)

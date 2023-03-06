@@ -1,11 +1,15 @@
 #include <stdafx.h>
-#include "resource.h"
-#include "BitmapExt.h"
-#include "AHDDemosaicing.h"
 #include <vector>
-#include "DSSProgress.h"
 #include <omp.h>
+#include "AHDDemosaicing.h"
+#include "ColorBitmap.h"
+#include "Ztrace.h"
+#include "DSSProgress.h"
+#include "Multitask.h"
+#include "ColorHelpers.h"
+#include "DSSTools.h"
 
+using namespace DSS;
 
 static std::vector<float> g_vLUT;
 

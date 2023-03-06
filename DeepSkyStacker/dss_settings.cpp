@@ -34,9 +34,6 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-
-#include "BezierAdjust.h"
-#include "Histogram.h"
 #include "dss_settings.h"
 #pragma pack(push, HDSETTINGS, 2)
 

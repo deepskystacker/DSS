@@ -34,18 +34,10 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <QDebug>
-#include <QMenu>
-#include <QMouseEvent>
-
-#include "FrameList.h"
-#include "StackingDlg.h"
-#include "editstars.h"
-#include "selectrect.h"
 #include "toolbar.h"
+#include "StackingDlg.h"
+#include "ZExcBase.h"
 #include "SaveEditChanges.h"
-
-#include "ZTrace.h"
 
 namespace DSS
 {

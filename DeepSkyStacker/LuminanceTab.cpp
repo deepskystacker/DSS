@@ -1,8 +1,6 @@
 // LuminanceTab.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "LuminanceTab.h"
 #include "ProcessingDlg.h"
 

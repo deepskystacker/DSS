@@ -26,7 +26,7 @@
 // mailto:sjaak@sjaakpriester.nl
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Delaunay.h"
 
 const float sqrt3 = 1.732050808F;

@@ -1,6 +1,8 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "avx_support.h"
-#include <immintrin.h>
+#include "BitmapCharacteristics.h"
+#include "Multitask.h"
+
 
 
 AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept :

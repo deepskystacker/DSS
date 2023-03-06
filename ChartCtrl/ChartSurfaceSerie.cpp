@@ -5,8 +5,7 @@
 #include "stdafx.h"
 #include "ChartSurfaceSerie.h"
 #include "ChartCtrl.h"
-
-#include <algorithm>
+#include "ChartAxis.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

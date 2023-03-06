@@ -36,8 +36,6 @@
 ****************************************************************************/
 // SaveEditChanges.h: definition file
 //
-#include <QDialog>
-#include <QDialogButtonBox>
 #include "ui/ui_SaveEditChanges.h"
 
 enum class EditSaveMode

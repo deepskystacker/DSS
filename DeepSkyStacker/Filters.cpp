@@ -1,6 +1,10 @@
 #include <stdafx.h>
-#include "resource.h"
 #include "Filters.h"
+#include "Ztrace.h"
+#include "MemoryBitmap.h"
+#include "DSSProgress.h"
+
+using namespace DSS;
 
 /* ------------------------------------------------------------------- */
 
@@ -438,4 +442,16 @@ std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitma
 		pProgress->End2();
 
 	return pOutBitmap;
+}
+
+void CMedianImageFilter::SetBitmap(CMemoryBitmap* pBitmap)
+{
+	m_pInBitmap = pBitmap;
+	if (pBitmap != nullptr)
+	{
+		m_bMonochrome = pBitmap->IsMonochrome();
+		m_bCFA = pBitmap->IsCFA();
+		m_lWidth = pBitmap->Width();
+		m_lHeight = pBitmap->Height();
+	}
 }

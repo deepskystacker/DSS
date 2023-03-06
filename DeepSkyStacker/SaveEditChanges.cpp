@@ -39,7 +39,6 @@
 #include "stdafx.h"
 #include "SaveEditChanges.h"
 
-#include <QSettings>
 namespace DSS
 {
 	SaveEditChanges::SaveEditChanges(QWidget* parent) :

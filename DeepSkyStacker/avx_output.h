@@ -3,7 +3,7 @@
 #include "BitmapBase.h"
 #include <vector>
 
-
+class CMultiBitmap;
 class AvxOutputComposition
 {
 private:

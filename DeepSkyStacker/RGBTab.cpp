@@ -1,10 +1,7 @@
 // RGBTab.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "RGBTab.h"
-#include <BtnST.h>
 #include "ProcessingDlg.h"
 
 /////////////////////////////////////////////////////////////////////////////

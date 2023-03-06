@@ -49,7 +49,7 @@ void	MRUList::readSettings()
 
 	count = settings.value(keyName, 0).toUInt();
 
-	for (int i = 0; i < count; i++)
+	for (uint32_t i = 0; i < count; i++)
 	{
 		QString keyName = QString("%1/MRU%2")
 			.arg(baseKeyName).arg(i);

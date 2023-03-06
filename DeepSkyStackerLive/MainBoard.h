@@ -1,17 +1,10 @@
-#ifndef __MAINBOARD_H__
-#define __MAINBOARD_H__
-
 #pragma once
-
-#include "afxwin.h"
-#include "label.h"
+#include "Resource.h"
+#include "ControlPos.h"
+#include "Label.h"
 #include "LiveEngine.h"
-#include "LiveSettings.h"
-#include <ControlPos.h>
-
 
 // CMainBoard dialog
-
 class CMainBoard : public CDialog
 {
 	DECLARE_DYNAMIC(CMainBoard)
@@ -124,6 +117,3 @@ public :
 		m_LiveEngine.PostSaveStackedImage();
 	};
 };
-
-
-#endif

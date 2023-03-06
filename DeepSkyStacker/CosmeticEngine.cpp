@@ -1,12 +1,16 @@
 #include <stdafx.h>
-#include "resource.h"
+#include <omp.h>
+#include "CosmeticEngine.h"
+#include "MemoryBitmap.h"
+#include "Ztrace.h"
+#include "Multitask.h"
+#include "DSSProgress.h"
+#include "GrayBitmap.h"
+#include "StackingTasks.h"
 #include "DSSTools.h"
 #include "BitmapExt.h"
-#include "DSSProgress.h"
-#include "CosmeticEngine.h"
-#include "Multitask.h"
-#include <omp.h>
 
+using namespace DSS;
 
 class CDetectCosmeticTask
 {
@@ -237,7 +241,7 @@ public:
 		m_lHeight{ pOut->RealHeight() },
 		m_lColdFilterSize{ pcs.m_lColdFilter },
 		m_lHotFilterSize{ pcs.m_lHotFilter },
-		m_CFAType{ GetCFAType(pOut.get()) },
+		m_CFAType{ pOut->GetCFAType() },
 		m_bMonochrome{ pOut->IsMonochrome() },
 		m_bCFA{ pOut->IsCFA() }
 	{

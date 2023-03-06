@@ -1,16 +1,18 @@
 #ifndef _STACKINGTASKS_H__
 #define _STACKINGTASKS_H__
 
-#include <QString>
+#include "DSSCommon.h"
+#include "DSSProgress.h"
 #include "dssrect.h"
-#include "BitmapExt.h"
-#include "FrameInfo.h"
 #include "TaskInfo.h"
 
+namespace DSS { class ProgressBase; }
 
+class CMemoryBitmap;
+class CFrameInfo;
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(const fs::path filePath, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, DSS::ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
@@ -129,8 +131,8 @@ public:
 
 
 /* ------------------------------------------------------------------- */
-
-bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+class CTaskInfo;
+bool GetTaskResult(const CTaskInfo* pTaskInfo, DSS::ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
@@ -187,10 +189,10 @@ public :
 		return (*this);
 	};
 
-	bool	DoOffsetTask(ProgressBase* const pProgress);
-	bool	DoDarkTask(ProgressBase* const pProgress);
-	bool	DoFlatTask(ProgressBase* const pProgress);
-	bool	DoDarkFlatTask(ProgressBase* const pProgress);
+	bool	DoOffsetTask(DSS::ProgressBase* const pProgress);
+	bool	DoDarkTask(DSS::ProgressBase* const pProgress);
+	bool	DoFlatTask(DSS::ProgressBase* const pProgress);
+	bool	DoDarkFlatTask(DSS::ProgressBase* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -383,11 +385,11 @@ public :
 			return GetResultMode();
 	}
 
-	bool DoOffsetTasks(ProgressBase* pProgress);
-	bool DoDarkTasks(ProgressBase* pProgress);
-	bool DoFlatTasks(ProgressBase* pProgress);
-	bool DoDarkFlatTasks(ProgressBase* pProgress);
-	bool DoAllPreTasks(ProgressBase* pProgress);
+	bool DoOffsetTasks(DSS::ProgressBase* pProgress);
+	bool DoDarkTasks(DSS::ProgressBase* pProgress);
+	bool DoFlatTasks(DSS::ProgressBase* pProgress);
+	bool DoDarkFlatTasks(DSS::ProgressBase* pProgress);
+	bool DoAllPreTasks(DSS::ProgressBase* pProgress);
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();
@@ -444,40 +446,8 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline void	SpaceToString(__int64 ulSpace, CString & strSpace)
-{
-	double					fKb,
-							fMb,
-							fGb;
-
-	fKb = ulSpace / 1024.0;
-	fMb	= fKb / 1024.0;
-	fGb = fMb / 1024.0;
-
-	if (fKb < 900)
-		strSpace.Format(IDS_RECAP_KILOBYTES, fKb);
-	else if (fMb < 900)
-		strSpace.Format(IDS_RECAP_MEGABYTES, fMb);
-	else
-		strSpace.Format(IDS_RECAP_GIGABYTES, fGb);
-};
-
-inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
-{
-	double fKb(ulSpace / 1024.0);
-	double fMb(fKb / 1024.0);
-	double fGb(fMb / 1024.0);
-
-	if (fKb < 900)
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES")
-		.arg(fKb, 0, 'f', 1);
-	else if (fMb < 900)
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES")
-		.arg(fMb, 0, 'f', 1);
-	else
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES")
-		.arg(fGb, 0, 'f', 1);
-};
+void SpaceToString(__int64 ulSpace, CString& strSpace);
+void SpaceToQString(__int64 ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 

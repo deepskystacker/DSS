@@ -1,38 +1,15 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-#include <QDir>
-#include <QLibraryInfo>
-#include <QSettings>
-#include <QString>
-#include <QDebug>
-#include <QTranslator>
-#include <QShowEvent>
-
-#include "commonresource.h"
+#include "stdafx.h"
 #include "About.h"
 #include "ui/ui_About.h"
+#include "DSSVersion.h"
+#include "libraw/libraw_version.h"
+#include "fitsio.h"
+#include "tiffio.h"
+#include "DeepSkyStacker.h"
 
 extern bool		g_bShowRefStars;
 extern QTranslator theAppTranslator;
 extern QTranslator theQtTranslator;
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "DSSVersion.h"
-#include <fitsio.h>
-#include <tiffio.h>
-#include <libraw/libraw_version.h>
 
 #define xstr(s) str(s)
 #define str(s) #s

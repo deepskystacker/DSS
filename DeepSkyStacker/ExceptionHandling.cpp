@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
+
 #if defined(_WINDOWS)
 
-#include <errhandlingapi.h>
-#include <ZExcept.h>
 #include <thread>
 #include <inttypes.h>
 #include "StackWalker.h"
+#include "Ztrace.h"
 
 extern std::unique_ptr<std::uint8_t[]> backPocket;
 

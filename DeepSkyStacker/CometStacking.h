@@ -1,6 +1,4 @@
-#ifndef COMETSTACKING_H
-#define COMETSTACKING_H
-#include <memory>
+#pragma once
 
 class QPixmap;
 
@@ -43,5 +41,3 @@ private:
 
     void updateImage();
 };
-
-#endif // COMETSTACKING_H

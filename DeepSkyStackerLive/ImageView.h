@@ -1,22 +1,16 @@
-#ifndef __IMAGEVIEWTAB_H__
-#define __IMAGEVIEWTAB_H__
-
 #pragma once
-
-#include "afxwin.h"
-#include "label.h"
-#include <BtnST.h>
-#include <ControlPos.h>
-#include <WndImage.h>
-#include "DSSProgress.h"
-#include "DSSTools.h"
+#include "StackedSink.h"
+#include "resource.h"
+#include "gradientctrl.h"
+#include "BtnST.h"
+#include "ControlPos.h"
+#include "Label.h"
 #include "BitmapExt.h"
-#include "GradientCtrl.h"
+
 
 // CImageViewTab dialog
-
-#include "StackedSink.h"
-
+class C32BitsBitmap;
+class CMemoryBitmap;
 class CImageViewTab : public CDialog
 {
 	DECLARE_DYNAMIC(CImageViewTab)
@@ -73,6 +67,3 @@ public :
 	void	OnSetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
 
 };
-
-
-#endif

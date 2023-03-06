@@ -1,19 +1,4 @@
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QString>
-#include <QFileDialog>
-#include <QSettings>
-#include <QStandardPaths>
-
 #include "OutputTab.h"
 #include "ui/ui_OutputTab.h"
 

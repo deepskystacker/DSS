@@ -6,6 +6,8 @@
 #include "DSSProgress.h"
 #include "StackingTasks.h"
 #include "avx_histogram.h"
+#include "Multitask.h"
+#include "Ztrace.h"
 
 CBackgroundCalibration::CBackgroundCalibration() :
 	m_bInitOk{ false },

@@ -5,11 +5,7 @@
 class Workspace;
 class QAbstractButton;
 class QUrl;
-
-#include "DSSCommon.h"
-#include "StackingTasks.h"
-#include <QDialog>
-
+class CAllStackingTasks;
 namespace Ui {
 	class StackRecap;
 }

@@ -34,10 +34,6 @@
 **
 **
 ****************************************************************************/
-#include <QToolBar>
-#include <QActionGroup>
-#include <QGraphicsOpacityEffect>
-
 class QMouseEvent;
 
 namespace DSS

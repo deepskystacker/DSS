@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "cdxCRotBevelLine.h"
-#include	"cdxCRot90DC.h"
+#include "cdxCRot90DC.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // cdxCRotBevelLine

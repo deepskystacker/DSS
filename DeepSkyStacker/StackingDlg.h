@@ -36,27 +36,17 @@
 ****************************************************************************/
 // StackingDlg.h : header file
 //
-
-#include "mrupath.h"
-#include <CtrlCache.h>
-#include <WndImage.h>
-#include <BtnST.h>
-#include "Label.h"
-#include "StackingTasks.h"
-#include "DeepStack.h"
-#include <BitmapSlider.h>
-#include <CustomTabCtrl.h>
-#include "StackingEngine.h"
-#include "imageloader.h"
+#include "DSSCommon.h"
+#include "BitmapExt.h"
 #include "FrameList.h"
+#include "dssrect.h"
+#include "mrupath.h"
+#include "imageloader.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
-
-#include <QDialog>
-#include <QFileDialog>
-#include <QMenu>
-#include <QStyledItemDelegate>
+class CAllStackingTasks;
+class CStackingEngine;
 
 namespace DSS
 {
@@ -79,6 +69,7 @@ namespace std::filesystem
 class QTextOption;
 class QSortFilterProxyModel;
 class QLabel;
+class Workspace;
 
 namespace fs = std::filesystem;
 
