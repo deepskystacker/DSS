@@ -9,7 +9,7 @@ assignees: ''
 ---
 
 **Check the Wiki**
-Before you report any issues it is worth checking the DeepSkyStacker Wiki at <https://groups.io/g/DeepSkyStacker/wiki>
+Before you report any issues it is worth checking the [DeepSkyStacker Wiki](https://groups.io/g/DeepSkyStacker/wiki)
 
 **Describe the bug**
 A clear and concise description of what the bug is.  Please specify the version of DeepSkyStacker and if relevant whether the problem is with DeepSkyStacker Live or DeepSkyStacker Command Line
