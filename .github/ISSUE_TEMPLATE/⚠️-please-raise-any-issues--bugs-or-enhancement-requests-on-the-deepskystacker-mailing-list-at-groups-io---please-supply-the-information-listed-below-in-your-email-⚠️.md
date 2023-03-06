@@ -1,6 +1,6 @@
 ---
 name: "⚠️ Please raise any issues, bugs or enhancement requests on the DeepSkyStacker
-  mailing list at groups.io.  Please supply the information listed below in your email:⚠️"
+  mailing list at groups.io.  Please supply the information requested in your email:⚠️"
 about: Create a report to help us improve
 title: ''
 labels: bug, enhancement, help wanted
