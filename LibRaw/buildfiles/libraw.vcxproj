@@ -79,6 +79,7 @@
       <WarningLevel>Level3</WarningLevel>
       <OpenMPSupport>true</OpenMPSupport>
       <DisableSpecificWarnings>4244;4305</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>debug-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -119,6 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <OpenMPSupport>true</OpenMPSupport>
       <DisableSpecificWarnings>4244;4305</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>release-x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
