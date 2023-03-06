@@ -34,7 +34,7 @@ private:
 	template <MethodSelection Method>
 	int processMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses);
 
-	template <class T, MethodSelection Method>
+	template <typename T, MethodSelection Method>
 	int doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses);
 
 	int processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses);

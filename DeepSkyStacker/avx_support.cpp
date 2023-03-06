@@ -1,11 +1,11 @@
-#include "stdafx.h"
-#include "avx_support.h"
-#include "BitmapCharacteristics.h"
-#include "Multitask.h"
-
-
-
-AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept :
+#include "stdafx.h" 
+#include "avx_support.h" 
+#include "BitmapCharacteristics.h" 
+#include "Multitask.h" 
+ 
+ 
+ 
+AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept : 
 	bitmap{ b }
 {};
 
@@ -119,6 +119,32 @@ bool AvxSupport::checkSimdAvailability()
 {
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
 	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
+}
+
+void AvxSupport::reportCpuType()
+{
+	int cpuid[4] = { -1 };
+	__cpuid(cpuid, 0x80000000);
+	const int nExtIds = cpuid[0];
+	char brand[64] = { '\0' };
+	if (nExtIds >= 0x80000004)
+	{
+		__cpuidex(cpuid, 0x80000002, 0);
+		memcpy(brand, cpuid, sizeof(cpuid));
+		__cpuidex(cpuid, 0x80000003, 0);
+		memcpy(brand + 16, cpuid, sizeof(cpuid));
+		__cpuidex(cpuid, 0x80000004, 0);
+		memcpy(brand + 32, cpuid, sizeof(cpuid));
+	}
+	else
+		memcpy(brand, "CPU brand not detected", 22);
+
+	ZTRACE_RUNTIME("CPU type: %s", brand);
+}
+
+void reportCpuType()
+{
+	AvxSupport::reportCpuType();
 }
 
 // Explicit template instantiation for the types we need.

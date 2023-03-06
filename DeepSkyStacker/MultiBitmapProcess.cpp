@@ -391,6 +391,10 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 		const size_t lScanLineSize = static_cast<size_t>(m_lWidth) * GetNrBytesPerChannel() * GetNrChannels();
 		std::vector<std::uint8_t> buffer;
 
+		// Note:
+		// Making the file reading concurrent (e.g. with std::async) is hardly a speed improvement,
+		// because only about 7% of the time is spent for reading the data from the files.
+
 		for (const auto& file : m_vFiles)
 		{
 			if (!bResult)
@@ -414,6 +418,8 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 			if (!bResult)
 				break;
 
+			// More than 90% of the time of GetResult() is spent in CombineTask::process().
+			// Only 7% for reading the data from files.
 			CCombineTask{ file.m_lStartRow, file.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap.get() }.process();
 
 			if (pProgress != nullptr)

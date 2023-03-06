@@ -564,14 +564,19 @@ FrameList& FrameList::loadFilesFromList(fs::path fileList)
 								//
 								// If the file has already been loaded complain
 								//
-								QString errorMessage(
-									QCoreApplication::translate("DSS::StackingDlg", "File %1 has already been loaded in group %2 (%3)")
-									.arg(filePath.generic_string().c_str())
-									.arg(groupId)
-									.arg(groupName(groupId)));
+								if (auto groupId = Group::whichGroupContains(filePath); groupId != -1)
+								{
+									//
+									// If the file has already been loaded complain
+									//
+									QString errorMessage(
+										QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
+										.arg(filePath.generic_string().c_str())
+										.arg(groupId)
+										.arg(groupName(groupId)));
 
 #if defined(_CONSOLE)
-								std::cerr << errorMessage.toStdString();
+									std::cerr << errorMessage.toUtf8().constData();
 #else
 								int ret = QMessageBox::warning(nullptr, "DeepSkyStacker",
 									errorMessage,
@@ -693,12 +698,54 @@ bool FrameList::areCheckedImagesCompatible(QString& reason)
 /* ------------------------------------------------------------------- */
 
 
-void FrameList::updateCheckedItemScores()
-{
-	int row = 0;
+	void FrameList::updateCheckedItemScores()
+	{
+		// Iterate over all groups.
+		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		{
+			// and then over each image in the group
+			int row = 0;
+			for (auto it = imageGroups[group].pictures->begin();
+				it != imageGroups[group].pictures->end(); ++it, ++row)
+			{
+				if (it->m_bChecked == Qt::Checked &&
+					it->IsLightFrame())
+				{
+					CLightFrameInfo		bmpInfo;
 
-	// Iterate over all groups.
-	for (uint16_t group = 0; group != imageGroups.size(); ++group)
+					bmpInfo.SetBitmap(it->filePath, false, false);
+
+					//
+					// Update list information, but beware that you must use setData() for any of the columns
+					// that are defined in the Column enumeration as they are used for the 
+					// QTableView.   If this isn't done, the image list view won't get updated.
+					//
+					// The "Sky Background" (Column::BackgroundCol) is a special case it's a class, not a primitive, so the model 
+					// class has a specific member function to set that.
+					//
+					// Other member of ListBitMap (e.g.) m_bRegistered and m_bComet can be updated directly.
+					//
+					if (bmpInfo.m_bInfoOk)
+					{
+						it->m_bRegistered = true;
+						imageGroups[group].pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
+						imageGroups[group].pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
+						imageGroups[group].pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
+						imageGroups[group].pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+						imageGroups[group].pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
+
+					}
+					else
+					{
+						it->m_bRegistered = false;
+					}
+				}
+			}
+		}
+	}
+
+	void FrameList::updateItemScores(const QString& fileName)
 	{
 		// and then over each image in the group
 		for (auto it = imageGroups[group].pictures->begin();

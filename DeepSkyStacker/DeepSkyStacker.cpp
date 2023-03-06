@@ -247,11 +247,7 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
-	connect(explorerBar, SIGNAL(addPictures()), stackingDlg, SLOT(onAddPictures()));
-	connect(explorerBar, SIGNAL(addDarks()), stackingDlg, SLOT(onAddDarks()));
-	connect(explorerBar, SIGNAL(addFlats()), stackingDlg, SLOT(onAddFlats()));
-	connect(explorerBar, SIGNAL(addDarkFlats()), stackingDlg, SLOT(onAddDarkFlats()));
-	connect(explorerBar, SIGNAL(addOffsets()), stackingDlg, SLOT(onAddOffsets()));
+	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
 
 	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
 	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
@@ -382,9 +378,18 @@ void DeepSkyStacker::onInitialise()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	processingDlg->SaveOnClose();
-	processingDlg->DestroyWindow();
-	stackingDlg->saveOnClose();
+	if (false == processingDlg.SaveOnClose())
+	{
+		e->ignore();
+		return;
+	}
+	processingDlg.DestroyWindow();
+	if (false == stackingDlg->saveOnClose())
+	{
+		e->ignore();
+		return;
+	}
+	e->accept();
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
@@ -813,6 +818,8 @@ static char const* global_program_name;
 //#endif
 //}
 
+void reportCpuType();
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -885,7 +892,7 @@ int main(int argc, char* argv[])
 	{
 		ZTRACE_RUNTIME("Fatal Error: MFC initialization failed");
 		QString errorMessage{ "Fatal Error: MFC initialization failed" };
-		wcerr << errorMessage.toStdWString().c_str() << endl;
+		cerr << errorMessage.toUtf8().constData() << endl;
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 		return 1;
 	}
@@ -957,6 +964,8 @@ int main(int argc, char* argv[])
 	//
 	SetUILanguage();
 
+	reportCpuType();
+
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStacker mainWindow;
 	DeepSkyStacker::setInstance(&mainWindow);
@@ -972,8 +981,9 @@ int main(int argc, char* argv[])
 		deleteRemainingTempFiles();
 
 	//
-	// Register the QMessageBox::Icon enum as a meta type
+	// Register PICTURETYPE and QMessageBox::Icon enums as meta types
 	//
+	qRegisterMetaType<PICTURETYPE>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
@@ -991,7 +1001,7 @@ int main(int argc, char* argv[])
 
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -1030,7 +1040,7 @@ int main(int argc, char* argv[])
 			.arg(text);
 
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -1042,7 +1052,7 @@ int main(int argc, char* argv[])
 
 		QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::cerr << errorMessage.toUtf8().constData();
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
