@@ -72,10 +72,10 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 	return 1;
 }
 
-template <class T, AvxOutputComposition::MethodSelection Method>
+template <typename T, AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
-	static_assert(!std::is_integral<T>::value || std::is_unsigned<T>::value);
+	static_assert(std::is_same_v<T, float> || (std::is_integral_v<T> && std::is_unsigned_v<T>));
 
 	// CMultiBitmap - template<TType, TTypeOutput>: Input must be of type T, and output type must be float.
 	if (bitmapColorOrGray<T, float>(inputBitmap) == false)
@@ -214,14 +214,12 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	};
 */
 
-	const auto initialUpperBound = []() -> float
+	constexpr const auto initialUpperBound = []() -> float
 	{
-		if constexpr (std::is_integral<T>::value)
-			return static_cast<float>(std::numeric_limits<std::uint16_t>::max()); // We use 65535 for int16 and int32.
-		else if constexpr (std::is_same<T, float>::value)
-			return std::numeric_limits<float>::max();
+		if constexpr (std::is_floating_point_v<T>)
+			return static_cast<float>(std::numeric_limits<T>::max());
 		else
-			static_assert(false);
+			return static_cast<float>(std::numeric_limits<std::uint16_t>::max()); // We use 65535 for all integers
 	};
 
 	// ************* Loops *************
@@ -435,7 +433,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 	const __m256 N = _mm256_set1_ps(static_cast<float>(lineAddresses.size()));
 	const size_t outputWidth = outputBitmap.Width();
 
-	const auto autoAdaptLoop = [&](float* pOut, const int colorOffset) -> void
+	const auto autoAdaptLoop = [line, &lineAddresses, nIterations, width, nrVectors, N, outputWidth](float* pOut, const int colorOffset) -> void
 	{
 		// Loop over the pixels of the row, process 16 at a time.
 		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16)
@@ -501,17 +499,17 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 		}
 
 		// Rest of line
-		const float N = static_cast<float>(lineAddresses.size());
+		const float nLineAddresses = static_cast<float>(lineAddresses.size());
 		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
 		{
-			float my{ 0.0f };
+			float my = 0.0f;
 			// Calculate initial (unweighted) mean.
 			for (auto frameAddress : lineAddresses)
 			{
 				const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
 				my += convertToFloat(*pColor);
 			}
-			my /= N;
+			my /= nLineAddresses;
 
 			for (int iteration = 0; iteration < nIterations; ++iteration)
 			{
@@ -524,7 +522,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 					const float d = convertToFloat(*pColor) - my;
 					S += (d * d);
 				}
-				const float sigmaSq = S / N;
+				const float sigmaSq = S / nLineAddresses;
 
 				// Calculate new � using current sigma�.
 				float W{ 0.0f };
