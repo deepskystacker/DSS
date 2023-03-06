@@ -1,12 +1,15 @@
 ---
 name: "⚠️ Please raise any issues, bugs or enhancement requests on the DeepSkyStacker
-  mailing list at groups.io.  Please click on Get Started to see the information wanted in your email:⚠️"
+  mailing list at groups.io.  Please click on Get Started for guidance and to see the information wanted in your email:⚠️"
 about: Create a report to help us improve
 title: ''
 labels: bug, enhancement, help wanted
 assignees: ''
 
 ---
+
+**Check the Wiki**
+Before you report any issues it is worth checking the DeepSkyStacker Wiki at https://groups.io/g/DeepSkyStacker/wiki
 
 **Describe the bug**
 A clear and concise description of what the bug is.  Please specify the version of DeepSkyStacker and if relevant whether the problem is with DeepSkyStacker Live or DeepSkyStacker Command Line
