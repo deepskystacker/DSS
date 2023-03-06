@@ -2605,6 +2605,7 @@ namespace DSS
 
 	void StackingDlg::updateGroupTabs()
 	{
+		volatile auto activeGroup = frameList.index;
 		//
 		// Remove all tabs
 		//
@@ -2630,7 +2631,11 @@ namespace DSS
 		{
 			pictureList->tabBar->addTab(frameList.groupName(i));
 		}
-
+		
+		//
+		// Set the active tab back to what it was
+		//
+		pictureList->tabBar->setCurrentIndex(activeGroup);
 	};
 
 	/* ------------------------------------------------------------------- */
