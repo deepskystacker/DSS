@@ -14,7 +14,7 @@ Before you report any issues it is worth checking the DeepSkyStacker Wiki: <http
 **Describe the bug**
 A clear and concise description of what the bug is.  Please specify the version of DeepSkyStacker and if relevant whether the problem is with DeepSkyStacker Live or DeepSkyStacker Command Line
 
-**Provide a set data to reproduce the problem**
+**Provide necessary data to reproduce the problem**
 Most problems with DeepSkyStacker will need you to upload a minimal set of files that allow the problem to be recreated including a dssfilelist to a file sharing site.  Obviously if the problem can be recreated with any (or no data) such as a UI problem then we don't need that.
 
 **To Reproduce**
