@@ -629,8 +629,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 {
 	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
-	FILE *				hFile;
+	bool bResult = false;
 
 	const auto unsuccessfulReturn = [this]() -> bool
 	{
@@ -638,9 +637,11 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		return false;
 	};
 
+	auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
+	std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(szInfoFileName, _T("rt")), dtor }; // Use unique_ptr for RAII. Destructor will close the file.
+
 	// Try to open the file as a text file
-	hFile = _tfopen(szInfoFileName, _T("rt"));
-	if (hFile != nullptr)
+	if (pFile.get() != nullptr)
 	{
 		CString strVariable;
 		CString strValue;
@@ -652,7 +653,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		// Read overall quality
 		while (!bEnd)
 		{
-			if (GetNextValue(hFile, strVariable, strValue) == false) // It did not even find "NrStars".
+			if (GetNextValue(pFile.get(), strVariable, strValue) == false) // It did not even find "NrStars".
 				return unsuccessfulReturn();
 
 			if (!strVariable.CompareNoCase(_T("OverallQuality")))
@@ -708,7 +709,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		};
 
 		// Jump to the first [Star#]
-		if (GetNextValue(hFile, strVariable, strValue) == false || strVariable.CompareNoCase(_T("Star#")) != 0) // Did not find "Star#".
+		if (GetNextValue(pFile.get(), strVariable, strValue) == false || strVariable.CompareNoCase(_T("Star#")) != 0) // Did not find "Star#".
 			return unsuccessfulReturn();
 		bEnd = false;
 		for (int i = 0; i < lNrStars && !bEnd; i++)
@@ -720,7 +721,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 
 			while (!bNextStar)
 			{
-				GetNextValue(hFile, strVariable, strValue);
+				GetNextValue(pFile.get(), strVariable, strValue);
 				if (!strVariable.CompareNoCase(_T("Intensity")))
 					ms.m_fIntensity = _ttof(strValue);
 				else if (!strVariable.CompareNoCase(_T("Quality")))
@@ -803,8 +804,6 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 				m_vStars.push_back(std::move(ms));
 		}
 
-		fclose(hFile);
-
 		ComputeFWHM();
 
 		m_bInfoOk = true;
@@ -814,7 +813,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		m_bInfoOk = false;
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
