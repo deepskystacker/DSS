@@ -5,8 +5,8 @@
 
 #include "afxwin.h"
 #include "label.h"
-#include <ControlPos.h>
-#include <WndImage.h>
+#include "ControlPos.h"
+#include "WndImage.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "BitmapExt.h"

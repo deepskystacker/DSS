@@ -37,7 +37,6 @@
 // RenameGroup.h  : header file
 //
 
-#include <QDialog>
 #include "ui/ui_RenameGroup.h"
 
 namespace DSS

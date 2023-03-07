@@ -3,8 +3,6 @@
 
 #if defined(_WINDOWS)
 
-#include <thread>
-#include <inttypes.h>
 #include "StackWalker.h"
 #include "Ztrace.h"
 

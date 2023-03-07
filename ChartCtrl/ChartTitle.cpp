@@ -21,7 +21,6 @@
 
 #include "stdafx.h"
 #include "ChartTitle.h"
-#include "Math.h"
 
 using namespace std;
 

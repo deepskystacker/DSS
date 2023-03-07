@@ -4,9 +4,6 @@
 #include "ColorRef.h"
 #include "Bayer.h"
 
-// Not nice :(
-#include <wtypesbase.h>
-
 class CMultiBitmap;
 class CMedianFilterEngine;
 class CBitmapCharacteristics;

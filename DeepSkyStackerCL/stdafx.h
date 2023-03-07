@@ -19,6 +19,13 @@
 #include <QIcon>
 #include <QElapsedTimer>
 
+// Standard Libraries
+#pragma warning( push )
+#pragma warning( disable: 4996 ) // Remove this as soon as having switched to c++20.
+#include <concurrent_unordered_set.h>
+#include <shared_mutex>
+#pragma warning( pop )
+
 #include <tchar.h>
 #include <vector>
 #include <tuple>
@@ -33,8 +40,13 @@
 #include <numeric>
 #include <float.h>
 #include <cmath>
+#include <inttypes.h>
+
 using std::min;
 using std::max;
+
+// Misc global headers.
+#include <omp.h>
 
 // This is for CString's in BitmapExt.h :(
 //#include <atlstr.h>

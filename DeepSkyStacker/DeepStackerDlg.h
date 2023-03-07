@@ -1,13 +1,9 @@
-
-
 #pragma once
-
 // DeepStackerDlg.h : header file
 //
 
 #include "DeepStack.h"
 #include "DeepSkyStacker.h"
-#include <list>
 
 class CDSSSetting
 {

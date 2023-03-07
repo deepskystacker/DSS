@@ -1,11 +1,4 @@
 #include <stdafx.h>
-#include <iostream>
-#include <QSettings>
-#include <omp.h>
-
-// Ouch :(
-#include <windows.h>
-
 #include "resource.h"
 #include "Workspace.h"
 #include "FITSUtil.h"

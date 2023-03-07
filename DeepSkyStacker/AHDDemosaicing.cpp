@@ -1,6 +1,4 @@
 #include <stdafx.h>
-#include <vector>
-#include <omp.h>
 #include "AHDDemosaicing.h"
 #include "ColorBitmap.h"
 #include "Ztrace.h"

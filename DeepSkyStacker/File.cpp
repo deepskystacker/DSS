@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <atlstr.h>
 #include "file.h"
 
 bool GetFileCreationDateTime(LPCTSTR szFileName, FILETIME& FileTime)

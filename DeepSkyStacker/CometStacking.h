@@ -3,7 +3,6 @@
 class QPixmap;
 
 #include "DSSCommon.h"
-#include <QWidget>
 
 namespace Ui {
 class CometStacking;

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <tuple>
 #include "avx_filter.h"
 #include "avx_support.h"
 #include "MedianFilterEngine.h"

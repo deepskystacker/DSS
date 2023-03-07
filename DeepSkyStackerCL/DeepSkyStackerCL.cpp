@@ -2,11 +2,6 @@
 //
 
 #include <stdafx.h>
-#include <windows.h>
-#include <Gdiplus.h>
-using namespace Gdiplus;
-//#pragma comment(lib, "gdiplus.lib")
-
 #include "DeepSkyStackerCL.h"
 #include "QtProgressConsole.h"
 #include "FrameList.h"

@@ -20,7 +20,7 @@
 using std::min;
 using std::max;
 
-// Other (should it be in here? Maybe!)
+// Misc global headers.
 #include <omp.h>
 
 #include "../ZCLass/zdefs.h"
@@ -32,3 +32,4 @@ using std::max;
 #include <WTypesbase.h>
 #include <atlstr.h>
 #include <cassert>
+#include <atltypes.h>

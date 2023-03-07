@@ -2,13 +2,6 @@
 #include "BitmapInfo.h"
 #include "Ztrace.h"
 
-
-// Don't want these really.
-#include <atlcomcli.h>
-#include <atlstr.h>
-#include <GdiPlus.h>
-using namespace Gdiplus;
-
 bool RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();

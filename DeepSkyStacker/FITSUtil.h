@@ -2,16 +2,10 @@
 #define __FITSUTIL_H__
 
 /* ------------------------------------------------------------------- */
-#include <filesystem>
 #include "cfa.h"
 #include "DSSCommon.h"
 #include "BitmapExtraInfo.h"
 #include "fitsio.h"
-
-// Want this out!
-#include <atlstr.h>
-
-namespace fs = std::filesystem;
 
 #pragma comment(lib, "cfitsio.lib")
 

@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include <omp.h>
 #include "DarkFrame.h"
 #include "Ztrace.h"
 #include "DSSProgress.h"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <atlstr.h>
-
 typedef enum TRANSFORMATIONTYPE
 {
 	TT_LINEAR = 0,

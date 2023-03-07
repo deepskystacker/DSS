@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include <omp.h>
 #include "CosmeticEngine.h"
 #include "MemoryBitmap.h"
 #include "Ztrace.h"

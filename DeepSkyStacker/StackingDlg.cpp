@@ -62,6 +62,7 @@
 #include "BatchStacking.h"
 #include "StackRecap.h"
 #include "ProcessingDlg.h"
+#include "ZExcept.h"
 
 #define dssApp DeepSkyStacker::instance()
 

@@ -1,7 +1,4 @@
 #include <stdafx.h>
-#include <omp.h>
-#include <atlstr.h>
-
 #include "FlatFrame.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
