@@ -8,8 +8,6 @@
 **
 **********************************************************************/
 
-#include <Afxtempl.h>
-#include <afxcmn.h>
 
 #include "themeutil.h"
 #include "RichToolTipCtrl.h"

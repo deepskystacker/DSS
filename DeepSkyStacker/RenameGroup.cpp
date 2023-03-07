@@ -36,8 +36,6 @@
 // RenameGroup.cpp : implementation file
 //
 #include "stdafx.h"
-#include <QPushButton>
-#include <QRegularExpressionValidator>
 #include "RenameGroup.h"
 
 namespace DSS

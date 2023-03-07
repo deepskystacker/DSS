@@ -12,7 +12,6 @@
 //
 #include "stdafx.h"
 #include "ControlPos.h"
-#include <vector>
 
 //------------------------------------------------------------------------------
 // CControlPos::initialise

@@ -1,6 +1,6 @@
 // QLinearGradientCtrl.cpp 
 //
-#include <stdafx.h>
+#include "stdafx.h"
 #include "QLinearGradientCtrl.h"
 
 #include "Ztrace.h"

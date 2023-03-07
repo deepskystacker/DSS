@@ -5,9 +5,6 @@
 #include "stdafx.h"
 #include "Gradient.h"
 
-#include <math.h>
-#include <algorithm>
-
 IMPLEMENT_SERIAL(CGradient, CObject, 0)
 
 UINT CPeg::uniqueID = 250000;

@@ -64,7 +64,7 @@
 #include <QNetworkReply>
 #include <QErrorMessage>
 #include <QDialog>
-//#include <QFlags>
+#include <QPushButton>
 
 // Standard Libraries
 #pragma warning( push )
@@ -97,5 +97,7 @@ using std::max;
 #include <afxcview.h>
 #include <afxcmn.h>			// MFC support for Windows Common Controls
 #include <commctrl.h>
+#include <afxole.h>
+#include <AFXPRIV.H>
 #include <gdiplus.h>
 using namespace Gdiplus;
