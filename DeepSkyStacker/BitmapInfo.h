@@ -2,9 +2,6 @@
 #include "BitmapExtraInfo.h"
 #include "cfa.h"
 
-// Don't want this :(
-#include <wtypesbase.h>
-
 class CBitmapInfo
 {
 public:

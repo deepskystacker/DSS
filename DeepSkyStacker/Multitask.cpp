@@ -1,7 +1,5 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "Multitask.h"
-#include <QSettings>
-#include <omp.h>
 
 int CMultitask::GetNrCurrentOmpThreads()
 {

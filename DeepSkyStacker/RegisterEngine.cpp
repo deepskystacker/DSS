@@ -1,8 +1,5 @@
 
 #include <stdafx.h>
-#include <future>
-#include <math.h>
-#include <omp.h>
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"

@@ -1,13 +1,6 @@
-#include <stdafx.h>
-#include <iostream>
-#include <QSettings>
-#include <limits>
-#include <zlib.h>
-#include <omp.h>
-#include <tiffio.h>
-
-#include "resource.h"
+#include "stdafx.h"
 #include "TIFFUtil.h"
+#include "resource.h"
 #include "Ztrace.h"
 #include "BitmapInfo.h"
 #include "DSSProgress.h"
@@ -16,6 +9,8 @@
 #include "ColorBitmap.h"
 #include "ZExcBase.h"
 #include "RAWUtils.h"
+#include "tiffio.h"
+#include "zlib.h"
 
 using namespace DSS;
 

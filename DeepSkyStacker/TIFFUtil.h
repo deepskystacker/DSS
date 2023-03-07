@@ -2,10 +2,6 @@
 #define _TIFFUTIL_H__
 
 /* ------------------------------------------------------------------- */
-// #include "DSSTools.h"
-// #include "BitmapExt.h"
-// #include "DSSProgress.h"
-#include <atlstr.h>
 #include "cfa.h"
 #include "DSSCommon.h"
 

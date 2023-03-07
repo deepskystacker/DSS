@@ -34,10 +34,8 @@
 **
 **
 ****************************************************************************/
-#include <filesystem>
 #include "DSSCommon.h"
 #include "ImageListModel.h"
-namespace fs = std::filesystem;
 
 class ListBitMap;
 

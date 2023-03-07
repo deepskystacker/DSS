@@ -72,8 +72,6 @@ class QSortFilterProxyModel;
 class QLabel;
 class Workspace;
 
-namespace fs = std::filesystem;
-
 namespace DSS
 {
 

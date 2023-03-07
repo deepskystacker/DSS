@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include <QSettings>
 
 #include "StackingTasks.h"
 #include "DSSProgress.h"
@@ -318,8 +317,6 @@ bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 
 	return bResult;
 }
-
-#include <future>
 
 bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 {

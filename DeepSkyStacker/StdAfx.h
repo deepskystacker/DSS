@@ -79,6 +79,7 @@
 #include <mutex>
 #include <deque>
 #include <set>
+#include <future>
 #include <inttypes.h>
 #include <filesystem>
 namespace fs = std::filesystem;

@@ -4,13 +4,6 @@
 
 #ifdef _DEBUG
 
-namespace Gdiplus
-{
-	namespace DllExports
-	{
-#include <GdiplusMem.h>
-};
-
 #ifndef _GDIPLUSBASE_H
 #define _GDIPLUSBASE_H
 	class GdiplusBase

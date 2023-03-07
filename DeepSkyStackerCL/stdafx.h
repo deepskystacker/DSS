@@ -40,7 +40,10 @@
 #include <numeric>
 #include <float.h>
 #include <cmath>
+#include <future>
 #include <inttypes.h>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 using std::min;
 using std::max;
@@ -67,4 +70,5 @@ using std::max;
 #include <afxsock.h>
 #include <commctrl.h>
 #include <gdiplus.h>
+#include <wtypesbase.h>
 using namespace Gdiplus;

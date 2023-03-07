@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include <omp.h>
 #include "StackingEngine.h"
 
 #include "MasterFrames.h"
@@ -2060,8 +2059,6 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 
 	return bResult;
 }
-
-#include <future>
 
 bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {

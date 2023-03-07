@@ -1,7 +1,6 @@
 #ifndef __FRAMEINFO_H__
 #define __FRAMEINFO_H__
 #include "cfa.h"
-#include <filesystem>
 #include "DSSCommon.h"
 #include "BitmapExtraInfo.h"
 #include "SkyBackground.h"
@@ -15,8 +14,6 @@ bool IsSuperPixels();
 bool IsRawBayer();
 bool IsFITSRawBayer();
 bool IsFITSSuperPixels();
-
-namespace fs = std::filesystem;	
 
 class CFrameInfo
 {

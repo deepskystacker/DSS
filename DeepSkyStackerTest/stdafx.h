@@ -16,6 +16,8 @@
 #include <numeric>
 #include <immintrin.h>
 #include <limits>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 using std::min;
 using std::max;

@@ -1,5 +1,4 @@
 #pragma once
-#include <atlstr.h>
 
 class CBitmapInfo;
 class CMemoryBitmap;

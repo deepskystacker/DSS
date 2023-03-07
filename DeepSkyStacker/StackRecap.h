@@ -1,6 +1,5 @@
 #ifndef STACKRECAP_H
 #define STACKRECAP_H
-#include <memory>
 
 class Workspace;
 class QAbstractButton;

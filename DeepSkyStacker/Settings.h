@@ -1,10 +1,7 @@
 #ifndef __SETTINGS_H__
 #define __SETTINGS_H__
 
-#include <set>
 #include "Workspace.h"
-#include <QChar>
-#include <QString>
 
 
 class CSetting

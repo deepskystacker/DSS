@@ -8,10 +8,6 @@
 #include "cfa.h"
 #include "BitmapInfo.h"
 
-// Don't want these!!!
-#include <wtypesbase.h>
-
-namespace fs = std::filesystem;
 namespace DSS { class ProgressBase; }
 class CMemoryBitmap;
 class CBitmapCharacteristics;

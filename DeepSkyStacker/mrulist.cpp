@@ -34,7 +34,6 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <QSettings>
 #include "mrulist.h"
 
 void	MRUList::readSettings()
