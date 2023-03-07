@@ -91,6 +91,12 @@ bool AvxSupport::bitmapHasCorrectType() const
 
 bool AvxSupport::checkAvx2CpuSupport()
 {
+#if defined(_WINDOWS)
+	SYSTEM_INFO info;
+	GetNativeSystemInfo(&info);
+	if (info.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_AMD64) // AVX instructions can only be supported on x64 CPUs.
+		return false;
+
 	int cpuid[4] = { -1 };
 
 	__cpuidex(cpuid, 1, 0);
@@ -112,6 +118,9 @@ bool AvxSupport::checkAvx2CpuSupport()
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
 	return (RequiredCpuFlags && AVXenabledOS);
+#else
+	return false;
+#endif
 };
 
 bool AvxSupport::checkSimdAvailability()
