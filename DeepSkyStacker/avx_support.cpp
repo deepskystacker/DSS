@@ -122,6 +122,65 @@ bool AvxSupport::checkSimdAvailability()
 
 void AvxSupport::reportCpuType()
 {
+#if defined(_WINDOWS)
+	char architecture[8]{ 0x00 };
+	SYSTEM_INFO info;
+
+	GetNativeSystemInfo(&info);
+	auto nativeArchitecture{ info.wProcessorArchitecture };
+	switch (nativeArchitecture)
+	{
+	case PROCESSOR_ARCHITECTURE_INTEL:
+		strcpy(architecture, "x86");
+		break;
+	case PROCESSOR_ARCHITECTURE_ARM:
+		strcpy(architecture, "ARM");
+		break;
+	case PROCESSOR_ARCHITECTURE_IA64:
+		strcpy(architecture, "IA64");
+		break;
+	case PROCESSOR_ARCHITECTURE_AMD64:
+		strcpy(architecture, "x64");
+		break;
+	case PROCESSOR_ARCHITECTURE_ARM64:
+		strcpy(architecture, "ARM64");
+		break;
+	default:
+		strcpy(architecture, "Unknown");
+	}
+
+	ZTRACE_RUNTIME("Native processor architecture: %s", &architecture[0]);
+	std::cerr << "Native processor architecture: " << &architecture[0] << std::endl;
+
+	GetSystemInfo(&info);
+	auto emulatedArchitecture = info.wProcessorArchitecture;
+	if (emulatedArchitecture != nativeArchitecture)
+	{
+		switch (emulatedArchitecture)
+		{
+		case PROCESSOR_ARCHITECTURE_INTEL:
+			strcpy(architecture, "x86");
+			break;
+		case PROCESSOR_ARCHITECTURE_ARM:
+			strcpy(architecture, "ARM");
+			break;
+		case PROCESSOR_ARCHITECTURE_IA64:
+			strcpy(architecture, "IA64");
+			break;
+		case PROCESSOR_ARCHITECTURE_AMD64:
+			strcpy(architecture, "x64");
+			break;
+		case PROCESSOR_ARCHITECTURE_ARM64:
+			strcpy(architecture, "ARM64");
+			break;
+		default:
+			strcpy(architecture, "Unknown");
+		}
+
+		ZTRACE_RUNTIME("Emulated processor architecture: %s", &architecture[0]);
+		std::cerr << "Emulated processor architecture: " << &architecture[0] << std::endl;
+	}
+#endif
 	int cpuid[4] = { -1 };
 	__cpuid(cpuid, 0x80000000);
 	const int nExtIds = cpuid[0];
