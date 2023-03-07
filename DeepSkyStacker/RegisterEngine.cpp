@@ -17,10 +17,6 @@
 #include "TIFFUtil.h"
 #include "MasterFrames.h"
 
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-
 /* ------------------------------------------------------------------- */
 
 class CStarAxisInfo

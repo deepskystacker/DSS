@@ -253,11 +253,7 @@ void About::storeSettings()
 	// 
     QString translatorFileName = QLatin1String("qt_");
     translatorFileName += language;
-#if QT_VERSION >= 0x060000
     if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-    if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
         qApp->installTranslator(&theQtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);

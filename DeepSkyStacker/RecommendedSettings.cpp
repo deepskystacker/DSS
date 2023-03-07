@@ -25,11 +25,7 @@ bool RecommendationItem::differsFromWorkspace()
 		currentValue = workspace.value(keyName);
 		value = setting.value();
 
-#if QT_VERSION >= 0x060000
 		switch (static_cast<QMetaType::Type>(value.typeId()))
-#else
-		switch (value.type())
-#endif
 		{
 		case QMetaType::Bool:
 			bResult = value.toBool() != currentValue.toBool();
