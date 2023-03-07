@@ -126,59 +126,44 @@ void AvxSupport::reportCpuType()
 	char architecture[8]{ 0x00 };
 	SYSTEM_INFO info;
 
-	GetNativeSystemInfo(&info);
-	auto nativeArchitecture{ info.wProcessorArchitecture };
-	switch (nativeArchitecture)
+	const auto getArchitectureString = [&architecture](const auto architectureId) -> void
 	{
-	case PROCESSOR_ARCHITECTURE_INTEL:
-		strcpy(architecture, "x86");
-		break;
-	case PROCESSOR_ARCHITECTURE_ARM:
-		strcpy(architecture, "ARM");
-		break;
-	case PROCESSOR_ARCHITECTURE_IA64:
-		strcpy(architecture, "IA64");
-		break;
-	case PROCESSOR_ARCHITECTURE_AMD64:
-		strcpy(architecture, "x64");
-		break;
-	case PROCESSOR_ARCHITECTURE_ARM64:
-		strcpy(architecture, "ARM64");
-		break;
-	default:
-		strcpy(architecture, "Unknown");
-	}
-
-	ZTRACE_RUNTIME("Native processor architecture: %s", &architecture[0]);
-	std::cerr << "Native processor architecture: " << &architecture[0] << std::endl;
-
-	GetSystemInfo(&info);
-	auto emulatedArchitecture = info.wProcessorArchitecture;
-	if (emulatedArchitecture != nativeArchitecture)
-	{
-		switch (emulatedArchitecture)
+		constexpr auto maxSize = sizeof(architecture);
+		switch (architectureId)
 		{
 		case PROCESSOR_ARCHITECTURE_INTEL:
-			strcpy(architecture, "x86");
+			strcpy_s(architecture, maxSize, "x86");
 			break;
 		case PROCESSOR_ARCHITECTURE_ARM:
-			strcpy(architecture, "ARM");
+			strcpy_s(architecture, maxSize, "ARM");
 			break;
 		case PROCESSOR_ARCHITECTURE_IA64:
-			strcpy(architecture, "IA64");
+			strcpy_s(architecture, maxSize, "IA64");
 			break;
 		case PROCESSOR_ARCHITECTURE_AMD64:
-			strcpy(architecture, "x64");
+			strcpy_s(architecture, maxSize, "x64");
 			break;
 		case PROCESSOR_ARCHITECTURE_ARM64:
-			strcpy(architecture, "ARM64");
+			strcpy_s(architecture, maxSize, "ARM64");
 			break;
 		default:
-			strcpy(architecture, "Unknown");
+			strcpy_s(architecture, maxSize, "Unknown");
 		}
+	};
 
-		ZTRACE_RUNTIME("Emulated processor architecture: %s", &architecture[0]);
-		std::cerr << "Emulated processor architecture: " << &architecture[0] << std::endl;
+	GetNativeSystemInfo(&info);
+	const auto nativeArchitecture = info.wProcessorArchitecture;
+	getArchitectureString(nativeArchitecture);
+
+	ZTRACE_RUNTIME("Native processor architecture: %s", architecture);
+	std::cerr << "Native processor architecture: " << architecture << std::endl;
+
+	GetSystemInfo(&info);
+	if (info.wProcessorArchitecture != nativeArchitecture)
+	{
+		getArchitectureString(info.wProcessorArchitecture);
+		ZTRACE_RUNTIME("Emulated processor architecture: %s", architecture);
+		std::cerr << "Emulated processor architecture: " << architecture << std::endl;
 	}
 #endif
 	int cpuid[4] = { -1 };
