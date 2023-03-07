@@ -378,12 +378,12 @@ void DeepSkyStacker::onInitialise()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (false == processingDlg.SaveOnClose())
+	if (false == processingDlg->SaveOnClose())
 	{
 		e->ignore();
 		return;
 	}
-	processingDlg.DestroyWindow();
+	processingDlg->DestroyWindow();
 	if (false == stackingDlg->saveOnClose())
 	{
 		e->ignore();

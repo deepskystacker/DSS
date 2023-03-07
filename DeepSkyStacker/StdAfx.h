@@ -62,6 +62,7 @@
 #include <QGraphicsOpacityEffect>
 #include <QActionGroup>
 #include <QNetworkReply>
+#include <QErrorMessage>
 
 // Standard Libraries
 #include <iostream>

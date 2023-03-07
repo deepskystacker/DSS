@@ -2,6 +2,7 @@
 #include "avx_support.h" 
 #include "BitmapCharacteristics.h" 
 #include "Multitask.h" 
+#include "Ztrace.h"
  
  
  

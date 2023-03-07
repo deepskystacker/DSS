@@ -1,6 +1,7 @@
 #ifndef EXPLORERBAR_H
 #define EXPLORERBAR_H
 #include "mrupath.h"
+#include "DSSCommon.h"
 
 namespace Ui {
 class ExplorerBar;

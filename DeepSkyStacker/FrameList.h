@@ -80,7 +80,10 @@ namespace DSS
 
 		size_t groupSize(uint16_t id) const;
 
-		size_t groupCount() const;
+		inline size_t groupCount() const
+		{
+			return imageGroups.size();
+		}
 
 		QString getFirstCheckedLightFrame();
 
