@@ -587,7 +587,8 @@ bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
-static bool GetNextValue(FILE * hFile, CString & strVariable, CString & strValue)
+namespace {
+bool GetNextValue(FILE* hFile, CString& strVariable, CString& strValue)
 {
 	bool				bResult = false;
 	CHAR				szText[2000];
@@ -602,8 +603,8 @@ static bool GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 		nPos = strText.Find(_T("="), 0); // Search = sign
 		if (nPos >= 0)
 		{
-			strVariable = strText.Left(nPos-1);
-			strValue = strText.Right(strText.GetLength()-nPos-1);
+			strVariable = strText.Left(nPos - 1);
+			strValue = strText.Right(strText.GetLength() - nPos - 1);
 			strVariable.TrimLeft();
 			strVariable.TrimRight();
 			strValue.TrimLeft();
@@ -619,7 +620,8 @@ static bool GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 	};
 
 	return bResult;
-};
+}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -630,21 +632,29 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 	bool				bResult = false;
 	FILE *				hFile;
 
+	const auto unsuccessfulReturn = [this]() -> bool
+	{
+		this->m_bInfoOk = false;
+		return false;
+	};
+
 	// Try to open the file as a text file
 	hFile = _tfopen(szInfoFileName, _T("rt"));
-	if (hFile)
+	if (hFile != nullptr)
 	{
-		CString			strVariable;
-		CString			strValue;
-		int			lNrStars = 0;
-		bool			bEnd = false;
+		CString strVariable;
+		CString strValue;
+		int lNrStars = 0;
+		bool bEnd = false;
 
 		m_bComet = false;
 
 		// Read overall quality
 		while (!bEnd)
 		{
-			GetNextValue(hFile, strVariable, strValue);
+			if (GetNextValue(hFile, strVariable, strValue) == false) // It did not even find "NrStars".
+				return unsuccessfulReturn();
+
 			if (!strVariable.CompareNoCase(_T("OverallQuality")))
 				m_fOverallQuality = _ttof(strValue);
 			if (!strVariable.CompareNoCase(_T("Comet")))
@@ -689,14 +699,22 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 			};
 		};
 
-		// Jump the first [Star#]
-		GetNextValue(hFile, strVariable, strValue);
-		bEnd = false;
-		for (int i = 0;i<lNrStars && !bEnd;i++)
+		const auto getValueString = [](const auto& string, const auto position) -> CString
 		{
-			bool			bNextStar = false;
-			CStar			ms;
+			auto valueString = string.Left(position);
+			valueString.TrimLeft();
+			valueString.TrimRight();
+			return valueString;
+		};
 
+		// Jump to the first [Star#]
+		if (GetNextValue(hFile, strVariable, strValue) == false || strVariable.CompareNoCase(_T("Star#")) != 0) // Did not find "Star#".
+			return unsuccessfulReturn();
+		bEnd = false;
+		for (int i = 0; i < lNrStars && !bEnd; i++)
+		{
+			bool bNextStar = false;
+			CStar ms;
 			ms.m_fPercentage  = 0;
 			ms.m_fDeltaRadius = 0;
 
@@ -712,34 +730,23 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 				else if (!strVariable.CompareNoCase(_T("Rect")))
 				{
 					// Parse value (left, top, right, bottom)
-					int			nPos;
-					CString		strCoord;
-
 					// get Left
-					nPos = strValue.Find(_T(","));
-					strCoord = strValue.Left(nPos);
-					strCoord.TrimLeft();
-					strCoord.TrimRight();
+					int nPos = strValue.Find(_T(","));
+					CString strCoord = getValueString(strValue, nPos);
 					const int left = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Top
 					nPos = strValue.Find(_T(","));
-					strCoord = strValue.Left(nPos);
-					strCoord.TrimLeft();
-					strCoord.TrimRight();
+					strCoord = getValueString(strValue, nPos);
 					const int top = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Right
 					nPos = strValue.Find(_T(","));
-					strCoord = strValue.Left(nPos);
-					strCoord.TrimLeft();
-					strCoord.TrimRight();
+					strCoord = getValueString(strValue, nPos);
 					const int right = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Bottom
-					strCoord = strValue;
-					strCoord.TrimLeft();
-					strCoord.TrimRight();
+					strCoord = getValueString(strValue, strValue.GetLength());
 					const int bottom = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 
@@ -748,73 +755,53 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 				else if (!strVariable.CompareNoCase(_T("Axises")))
 				{
 					// Parse value (left, top, right, bottom)
-					int			nPos;
-					CString		strParams;
-
 					// get Angle
-					nPos = strValue.Find(_T(","));
-					strParams = strValue.Left(nPos);
-					strParams.TrimLeft();
-					strParams.TrimRight();
+					int nPos = strValue.Find(_T(","));
+					CString strParams = getValueString(strValue, nPos);
 					ms.m_fMajorAxisAngle = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Large Major
 					nPos = strValue.Find(_T(","));
-					strParams = strValue.Left(nPos);
-					strParams.TrimLeft();
-					strParams.TrimRight();
+					strParams = getValueString(strValue, nPos);
 					ms.m_fLargeMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Small Major
 					nPos = strValue.Find(_T(","));
-					strParams = strValue.Left(nPos);
-					strParams.TrimLeft();
-					strParams.TrimRight();
+					strParams = getValueString(strValue, nPos);
 					ms.m_fSmallMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Large Minor Axis
 					nPos = strValue.Find(_T(","));
-					strParams = strValue.Left(nPos);
-					strParams.TrimLeft();
-					strParams.TrimRight();
+					strParams = getValueString(strValue, nPos);
 					ms.m_fLargeMinorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Small Minor Axis
-					strParams = strValue;
-					strParams.TrimLeft();
-					strParams.TrimRight();
+					strParams = getValueString(strValue, strValue.GetLength());
 					ms.m_fSmallMinorAxis = _ttof(strParams);
 				}
 				else if (!strVariable.CompareNoCase(_T("Center")))
 				{
 					// Parse value (X, Y)
-					int			nPos;
-					CString		strX, strY;
-
 					// Get X
-					nPos = strValue.Find(_T(","));
-					strX = strValue.Left(nPos);
-					strX.TrimLeft();
-					strX.TrimRight();
+					int nPos = strValue.Find(_T(","));
+					CString strX = getValueString(strValue, nPos);
 					ms.m_fX = _ttof(strX);
 
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// Get Y
-					strY = strValue;
-					strY.TrimLeft();
-					strY.TrimRight();
+					CString strY = getValueString(strValue, strValue.GetLength());
 					ms.m_fY = _ttof(strY);
 				}
 				else
 				{
-					bEnd = !strValue.GetLength();
+					bEnd = strValue.IsEmpty();
 					bNextStar = !strVariable.CompareNoCase(_T("Star#")) || bEnd;
-				};
-			};
+				}
+			}
 
 			if (ms.IsValid())
-				m_vStars.push_back(ms);
-		};
+				m_vStars.push_back(std::move(ms));
+		}
 
 		fclose(hFile);
 
