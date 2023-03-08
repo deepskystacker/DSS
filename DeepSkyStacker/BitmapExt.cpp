@@ -1152,13 +1152,8 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 
 /* ------------------------------------------------------------------- */
 
-#pragma warning( push )
-#pragma warning( disable: 4996 ) // Remove this as soon as having switched to c++20.
-
 #include <concurrent_unordered_set.h>
 #include <shared_mutex>
-
-#pragma warning( pop )
 
 namespace {
 	//
