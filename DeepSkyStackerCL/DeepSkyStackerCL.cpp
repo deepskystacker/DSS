@@ -324,7 +324,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 int main(int argc, char* argv[])
 {
 #if defined(_WINDOWS)
-	// Set console code page to UTF-8 so console known how to interpret string data
+	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
