@@ -293,6 +293,9 @@
     <ClInclude Include="..\DeepSkyStacker\dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\dssbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStacker.rc">

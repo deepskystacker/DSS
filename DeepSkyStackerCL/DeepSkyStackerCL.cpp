@@ -9,12 +9,13 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "SetUILanguage.h"
+#include <iostream>
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
 	m_consoleOut{ stdout }
 {
-
+	DSSBase::setInstance(this);
 }
 
 bool DeepSkyStackerCommandLine::Run()
@@ -33,6 +34,12 @@ bool DeepSkyStackerCommandLine::Run()
 
 	return true;
 }
+
+void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] DSSBase::Severity severity)
+{
+	std::cerr << message.toUtf8().constData() << std::endl;
+}
+
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {

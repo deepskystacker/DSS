@@ -787,6 +787,9 @@
     <ClInclude Include="DSSProgress.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="..\dssbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
