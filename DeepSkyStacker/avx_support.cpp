@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include <iostream>
 #include "avx_support.h"
 #include "Ztrace.h"
 #include <immintrin.h>
