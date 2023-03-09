@@ -56,12 +56,9 @@
 #include <QNetworkReply>
 
 // Standard Libraries
-#pragma warning( push )
-#pragma warning( disable: 4996 ) // Remove this as soon as having switched to c++20.
+#include <omp.h>
 #include <concurrent_unordered_set.h>
 #include <shared_mutex>
-#pragma warning( pop )
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -75,9 +72,6 @@ namespace fs = std::filesystem;
 
 using std::min;
 using std::max;
-
-// Misc global headers.
-#include <omp.h>
 
 // Windows Files (eventaully to go!)
 #include <afx.h>

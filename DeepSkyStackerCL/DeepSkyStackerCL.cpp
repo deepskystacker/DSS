@@ -14,7 +14,7 @@ DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
 	m_consoleOut{ stdout }
 {
-
+	DSSBase::setInstance(this);
 }
 
 bool DeepSkyStackerCommandLine::Run()
@@ -33,6 +33,12 @@ bool DeepSkyStackerCommandLine::Run()
 
 	return true;
 }
+
+void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] DSSBase::Severity severity)
+{
+	std::cerr << message.toUtf8().constData() << std::endl;
+}
+
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {
@@ -317,7 +323,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 int main(int argc, char* argv[])
 {
 #if defined(_WINDOWS)
-	// Set console code page to UTF-8 so console known how to interpret string data
+	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 

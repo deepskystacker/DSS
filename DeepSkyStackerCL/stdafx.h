@@ -20,12 +20,9 @@
 #include <QElapsedTimer>
 
 // Standard Libraries
-#pragma warning( push )
-#pragma warning( disable: 4996 ) // Remove this as soon as having switched to c++20.
 #include <concurrent_unordered_set.h>
 #include <shared_mutex>
-#pragma warning( pop )
-
+#include <omp.h>
 #include <tchar.h>
 #include <vector>
 #include <tuple>
@@ -47,16 +44,6 @@ namespace fs = std::filesystem;
 
 using std::min;
 using std::max;
-
-// Misc global headers.
-#include <omp.h>
-
-// This is for CString's in BitmapExt.h :(
-//#include <atlstr.h>
-
-// #include <resource.h>
-// #include <ztrace.h>
-// #include "BitmapExt.h"
 
 // Windows Files (eventaully to go!)
 #include <afx.h>

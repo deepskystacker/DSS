@@ -93,6 +93,12 @@ bool AvxSupport::bitmapHasCorrectType() const
 
 bool AvxSupport::checkAvx2CpuSupport()
 {
+#if defined(_WINDOWS)
+	SYSTEM_INFO info;
+	GetNativeSystemInfo(&info);
+	if (info.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_AMD64) // AVX instructions can only be supported on x64 CPUs.
+		return false;
+
 	int cpuid[4] = { -1 };
 
 	__cpuidex(cpuid, 1, 0);
@@ -114,6 +120,9 @@ bool AvxSupport::checkAvx2CpuSupport()
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
 	return (RequiredCpuFlags && AVXenabledOS);
+#else
+	return false;
+#endif
 };
 
 bool AvxSupport::checkSimdAvailability()
@@ -124,6 +133,50 @@ bool AvxSupport::checkSimdAvailability()
 
 void AvxSupport::reportCpuType()
 {
+#if defined(_WINDOWS)
+	char architecture[8]{ 0x00 };
+	SYSTEM_INFO info;
+
+	const auto getArchitectureString = [&architecture](const auto architectureId) -> void
+	{
+		constexpr auto maxSize = sizeof(architecture);
+		switch (architectureId)
+		{
+		case PROCESSOR_ARCHITECTURE_INTEL:
+			strcpy_s(architecture, maxSize, "x86");
+			break;
+		case PROCESSOR_ARCHITECTURE_ARM:
+			strcpy_s(architecture, maxSize, "ARM");
+			break;
+		case PROCESSOR_ARCHITECTURE_IA64:
+			strcpy_s(architecture, maxSize, "IA64");
+			break;
+		case PROCESSOR_ARCHITECTURE_AMD64:
+			strcpy_s(architecture, maxSize, "x64");
+			break;
+		case PROCESSOR_ARCHITECTURE_ARM64:
+			strcpy_s(architecture, maxSize, "ARM64");
+			break;
+		default:
+			strcpy_s(architecture, maxSize, "Unknown");
+		}
+	};
+
+	GetNativeSystemInfo(&info);
+	const auto nativeArchitecture = info.wProcessorArchitecture;
+	getArchitectureString(nativeArchitecture);
+
+	ZTRACE_RUNTIME("Native processor architecture: %s", architecture);
+	std::cerr << "Native processor architecture: " << architecture << std::endl;
+
+	GetSystemInfo(&info);
+	if (info.wProcessorArchitecture != nativeArchitecture)
+	{
+		getArchitectureString(info.wProcessorArchitecture);
+		ZTRACE_RUNTIME("Emulated processor architecture: %s", architecture);
+		std::cerr << "Emulated processor architecture: " << architecture << std::endl;
+	}
+#endif
 	int cpuid[4] = { -1 };
 	__cpuid(cpuid, 0x80000000);
 	const int nExtIds = cpuid[0];

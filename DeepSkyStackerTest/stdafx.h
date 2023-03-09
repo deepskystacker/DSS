@@ -16,6 +16,7 @@
 #include <numeric>
 #include <immintrin.h>
 #include <limits>
+#include <iostream>
 #include <filesystem>
 namespace fs = std::filesystem;
 

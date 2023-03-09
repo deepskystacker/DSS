@@ -209,9 +209,9 @@ void DeepSkyStacker::updateStatus(const QString& text)
 	statusBarText->setText(text);
 }
 
-void DeepSkyStacker::displayMessageBox(const QString& message, QMessageBox::Icon icon)
+void DeepSkyStacker::displayMessage(const QString& message, QMessageBox::Icon icon)
 {
-	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this};
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
 }
 
@@ -442,6 +442,10 @@ DeepSkyStacker::DeepSkyStacker() :
 	setAcceptDrops(true);
 }
 
+DeepSkyStacker::~DeepSkyStacker()
+{
+}
+
 void DeepSkyStacker::disableSubDialogs()
 {
 	stackingDlg->setEnabled(false);
@@ -484,12 +488,6 @@ CDeepStack& DeepSkyStacker::deepStack()
 QString DeepSkyStacker::statusMessage()
 {
 	return statusBarText->text();
-}
-
-void DeepSkyStacker::setInstance(DeepSkyStacker* instance)
-{
-	ZASSERT(nullptr == theMainWindow);
-	theMainWindow = instance;
 }
 
 void DeepSkyStacker::setTab(std::uint32_t dwTabID)
@@ -538,6 +536,12 @@ void DeepSkyStacker::updateTab()
 	explorerBar->update();
 };
 
+void DeepSkyStacker::reportError(const QString& message, DSSBase::Severity severity)
+{
+	bool result = QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
+		Q_ARG(const QString&, message),
+		Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
+}
 
 
 BOOL DeepSkyStackerApp::InitInstance()
@@ -956,7 +960,7 @@ int main(int argc, char* argv[])
 
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStacker mainWindow;
-	DeepSkyStacker::setInstance(&mainWindow);
+	DSSBase::setInstance(&mainWindow);
 
 	ZTRACE_RUNTIME("Checking Mutex");
 	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };

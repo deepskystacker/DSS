@@ -1,4 +1,6 @@
 #pragma once
+#include "dssbase.h"
+#include "dss_settings.h"
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2022 David C. Partridge
@@ -48,7 +50,8 @@ class CDSSSettings;
 class CDeepStack;
 
 class DeepSkyStacker :
-	public QMainWindow
+	public QMainWindow,
+	public DSSBase
 {
 	typedef QMainWindow
 		Inherited;
@@ -57,7 +60,7 @@ class DeepSkyStacker :
 
 protected slots:
 	void updateStatus(const QString& text);
-	void displayMessageBox(const QString& message, QMessageBox::Icon icon);
+	void displayMessage(const QString& message, QMessageBox::Icon icon);
 
 private:
 	bool initialised;
@@ -74,7 +77,7 @@ private:
 	QString baseTitle;
 	QString currentPathName;
 	bool m_progress;
-	QLabel*	statusBarText;
+	QLabel* statusBarText;
 
 	void createStatusBar();
 	void updateTab();
@@ -90,14 +93,16 @@ protected:
 	void onInitialise();
 
 public:
-	static void setInstance(DeepSkyStacker* instance);
+	inline static DeepSkyStacker* instance()
+	{
+		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
+	}
 
 	DeepSkyStacker();
-	~DeepSkyStacker() = default;
+	~DeepSkyStacker();
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 	inline std::uint32_t tab() { return currTab; }
-	inline static DeepSkyStacker* instance() { return theMainWindow; }
 
 	QString statusMessage();
 	CDeepStack& deepStack();
@@ -109,6 +114,7 @@ public:
 	CProcessingDlg& getProcessingDlg();
 	ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
+	virtual void reportError(const QString& message, DSSBase::Severity severity);
 };
 
 
