@@ -100,7 +100,7 @@ bool	IsFITSSuperPixels()
 	Workspace			workspace;
 	QString				interpolation;
 
-	workspace.value("FitsDDP/Interpolation").toString();
+	interpolation = workspace.value("FitsDDP/Interpolation").toString();
 
 	return (0 == interpolation.compare("SuperPixels", Qt::CaseInsensitive));
 };
