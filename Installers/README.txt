@@ -7,9 +7,13 @@ Changes since 5.1.0
 
 1. Bug fix - active tab jumped back to Main Group after drop of files when another group was active.
 
-2. Possible bug fix for DeepSkyStacker failing at startup when rinning on ARM version of WIndows 11 in x64 emulation mode.
+2. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
 
-3. Stacked FITS images in SuperPixel mode were displayed only in the top left corner.
+3. Bug fix - A corrupt info.txt file caused an infinite loop.
+
+4. Diagnostic added - Report processor architecture in trace file and to stderr at startup.
+
+4. Bug fix - Stacked FITS images in SuperPixel mode were displayed only in the top left corner.
 
 Welcome to DeepSkyStacker 5.1.0
 ===============================
