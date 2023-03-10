@@ -192,6 +192,11 @@ void AvxSupport::reportCpuType()
 	else
 		memcpy(brand, "CPU brand not detected", 22);
 
+	//
+	// Also report this on stderr so if we get a SIGILL the information 
+	// will be there along with the exception traceback. 
+	//
+	std::cerr << "CPU Type: " << brand << std::endl;
 	ZTRACE_RUNTIME("CPU type: %s", brand);
 }
 
