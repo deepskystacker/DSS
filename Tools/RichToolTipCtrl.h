@@ -45,7 +45,6 @@
 // RichToolTipCtrl.h : header file
 //
 
-#include <richole.h>  // for IRichEditOleCallback
 
 /////////////////////////////////////////////////////////////////////////////
 // CRichToolTipCtrl window

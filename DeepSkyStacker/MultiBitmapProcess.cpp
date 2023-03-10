@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include <omp.h>
 #include "MultiBitmapProcess.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"

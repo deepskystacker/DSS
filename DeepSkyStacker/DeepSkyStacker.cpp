@@ -36,13 +36,7 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
-
 #include "DeepSkyStacker.h"
-
-#include <boost/interprocess/sync/named_mutex.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
-namespace bip = boost::interprocess;
-
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
 #include "StackingTasks.h"

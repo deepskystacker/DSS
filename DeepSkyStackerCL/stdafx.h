@@ -40,6 +40,10 @@
 #include <future>
 #include <inttypes.h>
 #include <filesystem>
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+
+namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
 
 using std::min;
