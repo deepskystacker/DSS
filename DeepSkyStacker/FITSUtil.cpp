@@ -62,103 +62,60 @@ inline double AdjustColor(const double fColor)
 
 /* ------------------------------------------------------------------- */
 
-bool	IsFITSRaw()
+bool IsFITSRaw()
 {
-	Workspace			workspace;
-
-	return workspace.value("FitsDDP/FITSisRAW", false).toBool();
-};
-
-/* ------------------------------------------------------------------- */
+	return Workspace{}.value("FitsDDP/FITSisRAW", false).toBool();
+}
 
 CFATYPE GetFITSCFATYPE()
 {
-	Workspace			workspace;
+	Workspace workspace{};
 
-	bool isFitsRaw = workspace.value("FitsDDP/FITSisRAW", false).toBool();
-	CFATYPE pattern = (CFATYPE)workspace.value("FitsDDP/BayerPattern", (uint)CFATYPE_NONE).toUInt();
-
-
+	const bool isFitsRaw = workspace.value("FitsDDP/FITSisRAW", false).toBool();
+	const CFATYPE pattern = static_cast<CFATYPE>(workspace.value("FitsDDP/BayerPattern", (uint)CFATYPE_NONE).toUInt());
 	return isFitsRaw ? pattern : CFATYPE_NONE;
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool	IsFITSRawBayer()
+bool IsFITSRawBayer()
 {
-	Workspace			workspace;
-	QString				interpolation;
-
-	interpolation = workspace.value("FitsDDP/Interpolation").toString();
-
+	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
 	return (0 == interpolation.compare("RawBayer", Qt::CaseInsensitive));
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool	IsFITSSuperPixels()
+bool IsFITSSuperPixels()
 {
-	Workspace			workspace;
-	QString				interpolation;
-
-	workspace.value("FitsDDP/Interpolation").toString();
-
+	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
 	return (0 == interpolation.compare("SuperPixels", Qt::CaseInsensitive));
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool	IsFITSBilinear()
+bool IsFITSBilinear()
 {
-	Workspace			workspace;
-	QString				interpolation;
-
-	workspace.value("FitsDDP/Interpolation").toString();
-
+	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
 	return (0 == interpolation.compare("Bilinear", Qt::CaseInsensitive));
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool	IsFITSAHD()
+bool IsFITSAHD()
 {
-	Workspace			workspace;
-	QString				interpolation;
-
-	workspace.value("FitsDDP/Interpolation").toString();
-
+	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
 	return (0 == interpolation.compare("AHD", Qt::CaseInsensitive));
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-double	GetFITSBrightnessRatio()
+double GetFITSBrightnessRatio()
 {
-	Workspace			workspace;
+	return Workspace{}.value("FitsDDP/Brightness", 1.0).toDouble();
+}
 
-	return workspace.value("FitsDDP/Brightness", 1.0).toDouble();
-};
-
-/* ------------------------------------------------------------------- */
-
-void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
+void GetFITSRatio(double& fRed, double& fGreen, double& fBlue)
 {
-	Workspace			workspace;
+	Workspace workspace{};
 
 	fGreen = workspace.value("FitsDDP/Brightness", 1.0).toDouble();
+	fRed = fGreen * workspace.value("FitsDDP/RedScale", 1.0).toDouble();
+	fBlue = fGreen * workspace.value("FitsDDP/BlueScale", 1.0).toDouble();
+}
 
-	fRed = workspace.value("FitsDDP/RedScale", 1.0).toDouble();
-	fRed *= fGreen;
 
-	fBlue = workspace.value("FitsDDP/BlueScale", 1.0).toDouble();
-	fBlue *= fGreen;
-};
-
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue, CString & strComment)
+bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, CString& strComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
