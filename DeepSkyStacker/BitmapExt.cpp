@@ -7,6 +7,7 @@
 #include <omp.h>
 
 #include "resource.h"
+#include "dssbase.h"
 #ifndef _CONSOLE
 #include <QApplication>
 #include <QMainWindow>
@@ -1295,6 +1296,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
 	bool bResult = false;
 
 	const auto fileName = filePath.generic_wstring(); // Otherwise szFileName could be a dangling pointer.
@@ -1302,25 +1304,13 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
+		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
 		QString errorMessage{ QCoreApplication::translate(
 			"DSS::StackingDlg",
 			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
-#if defined(_CONSOLE)
-		std::cerr << errorMessage.toUtf8().constData();
-#else
-		DeepSkyStacker* dss = DeepSkyStacker::instance();
-		if (nullptr != dss)
-		{
-			bool result = QMetaObject::invokeMethod(dss, "displayMessageBox", Qt::QueuedConnection,
-				Q_ARG(const QString&, errorMessage),
-				Q_ARG(QMessageBox::Icon, QMessageBox::Warning));
-		}
-		else    // This is here for DeepSkyStackerLive which is not yet Qt 
-		{
-			AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONWARNING);
-		}
-		
-#endif
+
+		DSSBase::instance()->reportError(errorMessage, DSSBase::Severity::Warning);
+
 		return false;
 	}
 

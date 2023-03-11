@@ -1,6 +1,20 @@
-﻿Welcome to DeepSkyStacker 5.1.0
+﻿Welcome to DeepSkyStacker 5.1.1 Beta 1
+======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since 5.1.0
+
+1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
+
+2. Bug fix - A corrupt info.txt file caused an infinite loop.
+
+3. Diagnostic added - Report processor architecture in trace file and to stderr at startup.
+
+4. Bug fix - Stacked FITS images in SuperPixel mode were displayed only in the top left corner.
+
+Welcome to DeepSkyStacker 5.1.0
+===============================
 
 This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
 
@@ -55,3 +69,4 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 18. Update Libraw to 0.21.1
 
+19. Bug fix - active tab jumped back to Main Group after drop of files when another group was active.

@@ -40,6 +40,8 @@
 #include <QMessageBox>
 #include <QLabel>
 
+#include "dssbase.h"
+
 #include "ExplorerBar.h"
 class QSplitter;
 class QStackedWidget;
@@ -55,7 +57,8 @@ namespace DSS
 #include "dss_settings.h"
 
 class DeepSkyStacker :
-	public QMainWindow
+	public QMainWindow,
+	public DSSBase
 {
 	typedef QMainWindow
 		Inherited;
@@ -64,7 +67,7 @@ class DeepSkyStacker :
 
 protected slots:
 	void updateStatus(const QString& text);
-	void displayMessageBox(const QString& message, QMessageBox::Icon icon);
+	void displayMessage(const QString& message, QMessageBox::Icon icon);
 
 private:
 	bool initialised;
@@ -102,13 +105,7 @@ protected:
 public:
 	inline static DeepSkyStacker* instance()
 	{
-		return theMainWindow;
-	}
-
-	inline static void setInstance(DeepSkyStacker* instance)
-	{
-		ZASSERT(nullptr == theMainWindow);
-		theMainWindow = instance;
+		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
 	}
 
 	DeepSkyStacker();
@@ -197,6 +194,13 @@ public:
 			setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
 		else
 			setWindowTitle(baseTitle);
+	}
+
+	virtual inline void reportError(const QString& message, DSSBase::Severity severity)
+	{
+		bool result = QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
+			Q_ARG(const QString&, message),
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
 	}
 
 };
