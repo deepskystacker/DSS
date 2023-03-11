@@ -130,13 +130,9 @@ bool IsRawBilinear()
 
 bool IsRawAHD()
 {
-	Workspace	workspace;
-	QString		strInterpolation;
-
-	workspace.value("RawDDP/Interpolation", strInterpolation);
-
+	const QString strInterpolation = Workspace{}.value("RawDDP/Interpolation", {}).toString();
 	return (strInterpolation.isEmpty() || (strInterpolation == "AHD"));
-};
+}
 
 /* ------------------------------------------------------------------- */
 
