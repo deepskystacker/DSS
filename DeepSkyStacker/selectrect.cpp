@@ -49,6 +49,7 @@ using std::max;
 #include <afxcview.h>
 
 #include "ZTrace.h"
+#include "zexcept.h"
 
 extern bool		g_bShowRefStars;
 
