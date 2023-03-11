@@ -3,7 +3,7 @@ DeepSkyStacker
 
 This is the github repository for all the DeepSkyStacker source code.
 
-DeepSkyStacker is a freeware created in 2006 by Luc Coiffier
+DeepSkyStacker is freeware created in 2006 by Luc Coiffier
 
 It was open sourced in 2018 and is maintained by a small and dedicated team:
 
