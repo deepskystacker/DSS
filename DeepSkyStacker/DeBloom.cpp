@@ -37,7 +37,7 @@ inline bool IsEdge(const double pfGray[])
 	const double fGradient0 = std::abs(pfGray[1] - pfGray[0]) / 256.0;
 	const double fGradient1 = std::abs(pfGray[2] - pfGray[0]) / 256.0;
 	const double fGradient2 = std::abs(pfGray[3] - pfGray[1]) / 256.0;
-	const double fGradient3 = std::abs(pfGray[4] - pfGray[2]) / 256.0;
+	// const double fGradient3 = std::abs(pfGray[4] - pfGray[2]) / 256.0;
 
 	const double fEdge = (fGradient2 - fGradient0) / 2.0 / (fGradient0 - 2.0 * fGradient1 + fGradient2) + 2;
 
@@ -422,17 +422,11 @@ inline double NormalizeAngle(double fAngle)
 void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
 	double				fMinimum = NOEDGEANGLE;
-	double				fdX = 0,
-						fdY = 0,
-						fdYLeft = 0,
-						fdYRight = 0;
-	double				fndX = 0,
-						fndY = 0;
+	double fdX = 0;
+	double				fndX = 0;
+						// fndY = 0;
 	double				fX = bs.m_ptStar.x(),
 						fY = bs.m_ptStar.y();
-	bool				bFound = false;
-	double				fOffsetX = 0.0,
-						fOffsetY = 0.0;
 
 	// Check that 2 bloomed stars are not side by side
 	bool				bLeftBloomed = false,
@@ -537,10 +531,8 @@ void	CDeBloom::RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	bsg.ptStar = bs.m_ptStar;
 	bsgn = bsg;
 
-	double				fStep = 0.8;
 	double				fRadius = bs.m_fRadius;
 	double				fMinimum = -1.0;
-	bool				bEnd = true;
 
 	for (double fdX = -5.0;fdX<=5.0;fdX+=0.2)
 	{
@@ -581,7 +573,6 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	vValues.reserve(fRadius*2+1);
 
 
-	int				lNrColumns = 0;
 	std::vector<double>	vYCenters;
 
 	for (i = std::max(0.0, fX-fRadius-0.5);i<=std::min(static_cast<double>(m_lWidth-1), fX+fRadius+0.5);i++)

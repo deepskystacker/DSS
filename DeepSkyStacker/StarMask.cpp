@@ -47,8 +47,8 @@ std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* p
 
 			if (2 * fRadius >= m_fMinSize && 2 * fRadius <= m_fMaxSize)
 			{
-				double		fFactor1 = 1.0/exp(-0.5);
-				double		fFactor2 = 2*fRadius*fRadius;
+				//double		fFactor1 = 1.0/exp(-0.5);
+				//double		fFactor2 = 2*fRadius*fRadius;
 
 				fRadius *= m_fPercentIncrease;
 				if (m_fPixelIncrease)

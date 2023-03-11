@@ -741,7 +741,9 @@ void CCustomTabCtrl::OnPaint()
 	if(m_nButtonIDDown>=0 && (GetCursor()==m_hCursorMove || GetCursor()==m_hCursorCopy))
 	{
 		// Draw drag destination marker
+#pragma warning (push, 3)
 		CPen* pOldPen = dcMem.SelectObject(&blackPen);
+#pragma warning (pop)
 		int x;
 		if(m_nItemDragDest==m_aItems.GetSize())
 			x = m_aItems[m_nItemDragDest-1]->m_rectText.right + rCl.Height()/4-3;
@@ -761,7 +763,9 @@ void CCustomTabCtrl::OnPaint()
 	}
 	if(IsVertical())
 	{
+#pragma warning (push, 3)
 		POINT pts[3];
+#pragma warning (pop)
 		if(fRTL)
 		{
 			pts[0].x = -1;

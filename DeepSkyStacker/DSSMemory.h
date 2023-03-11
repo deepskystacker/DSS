@@ -36,12 +36,12 @@ namespace Gdiplus
 			return DllExports::GdipAlloc(in_size);
 		}
 
-		void * (operator new)(size_t nSize, LPCSTR lpszFileName, int nLine)
+		void * (operator new)(size_t nSize, [[maybe_unused]] LPCSTR lpszFileName, [[maybe_unused]] int nLine)
 		{
 			return DllExports::GdipAlloc(nSize);
 		}
 
-		void operator delete(void* p, LPCSTR lpszFileName, int nLine)
+		void operator delete(void* p, [[maybe_unused]] LPCSTR lpszFileName, [[maybe_unused]] int nLine)
 		{
 			DllExports::GdipFree(p);
 		}

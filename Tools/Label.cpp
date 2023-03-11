@@ -403,7 +403,7 @@ void CLabel::OnPaint()
 	Draw(&dc);
 }
 
-void CLabel::OnMouseMove(UINT nFlags, CPoint pt)
+void CLabel::OnMouseMove([[maybe_unused]] UINT nFlags, [[maybe_unused]] CPoint pt)
 {
 	if (m_bHover)
 	{
@@ -1289,7 +1289,7 @@ CLabel& CLabel::SetFont(LOGFONT lf)
 
 }
 
-BOOL CLabel::OnEraseBkgnd(CDC* pDC)
+BOOL CLabel::OnEraseBkgnd([[maybe_unused]]CDC* pDC)
 {
 	// TODO: Add your message handler code here and/or call default
 

@@ -104,7 +104,7 @@ namespace DSS
 			// If the group number passed in was -1 then want to count the number of
 			// checked images of the relevant type in ALL groups.  Otherwise only
 			// count checked images for the passed group number.
-			if (-1 == id || id == group.index())
+			if (-1 == id || id == static_cast<int>(group.index()))
 			{
 				for (auto it = group.pictures->cbegin();
 					it != group.pictures->cend(); ++it)
@@ -511,7 +511,7 @@ namespace DSS
 								//
 								// Check all groups to see if this file has already been loaded
 								//
-								if (auto groupId = Group::whichGroupContains(filePath); groupId != -1)
+								if (groupId = Group::whichGroupContains(filePath); groupId != -1)
 								{
 									//
 									// If the file has already been loaded complain
@@ -525,7 +525,7 @@ namespace DSS
 #if defined(_CONSOLE)
 									std::cerr << errorMessage.toUtf8().constData();
 #else
-									int ret = QMessageBox::warning(nullptr, "DeepSkyStacker",
+									QMessageBox::warning(nullptr, "DeepSkyStacker",
 										errorMessage,
 										QMessageBox::Ok);
 #endif
@@ -576,15 +576,7 @@ namespace DSS
 	{
 		bool				bResult = true;
 		bool				bFirst = true;
-		const ListBitMap*	lb;
-		int					lNrDarks = 0;
-		int					lNrDarkFlats = 0;
-		int					lNrFlats = 0;
-		int					lNrOffsets = 0;
-		bool				bMasterDark = false;
-		bool				bMasterFlat = false;
-		bool				bMasterDarkFlat = false;
-		bool				bMasterOffset = false;
+		const ListBitMap* lb{ nullptr };
 
 		// Iterate over all groups.
 		for (uint16_t group = 0; group != imageGroups.size() && true == bResult; ++group)
@@ -612,32 +604,6 @@ namespace DSS
 				}
 			}
 		}
-
-#if (0)
-		if (bResult)
-		{
-			if (bMasterDark && lNrDarks > 1)
-			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Dark must be the only Dark frame");
-				bResult = false;
-			}
-			if (bMasterDarkFlat && lNrDarkFlats > 1)
-			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Dark Flat must be the only Dark Flat frame");
-				bResult = false;
-			}
-			if (bMasterFlat && lNrFlats > 1)
-			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Flat must be the only Flat frame");
-				bResult = false;
-			}
-			if (bMasterOffset && lNrOffsets > 1)
-			{
-				reason = QCoreApplication::translate("DSS::StackingDlg", "A Master Offset must be the only Offset frame");
-				bResult = false;
-			}
-		};
-#endif
 
 		return bResult;
 	};
@@ -740,9 +706,9 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (check) file.m_bChecked = Qt::Checked;
 				else file.m_bChecked = Qt::Unchecked;
 			}
@@ -759,9 +725,9 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (file.IsDarkFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
@@ -783,9 +749,9 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (file.IsFlatFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
@@ -808,9 +774,9 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (file.IsOffsetFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
@@ -833,15 +799,15 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (file.IsLightFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(index, 0) };
-					QModelIndex end{ group.pictures->createIndex(index, 0) };
+					QModelIndex start{ group.pictures->createIndex(idx, 0) };
+					QModelIndex end{ group.pictures->createIndex(idx, 0) };
 					QVector<int> role{ Qt::CheckStateRole };
 					group.pictures->dataChanged(start, end, role);
 				}
@@ -855,16 +821,16 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int32_t index = 0; index < group.pictures->mydata.size(); ++index)
+			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (image == file.m_strFile && file.IsLightFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
 					group.setDirty();
-					QModelIndex start{ group.pictures->createIndex(index, 0) };
-					QModelIndex end{ group.pictures->createIndex(index, 0) };
+					QModelIndex start{ group.pictures->createIndex(idx, 0) };
+					QModelIndex end{ group.pictures->createIndex(idx, 0) };
 					QVector<int> role{ Qt::CheckStateRole };
 					group.pictures->dataChanged(start, end, role);
 					return;
@@ -880,15 +846,15 @@ namespace DSS
 		for (int id = 0; id != imageGroups.size(); ++id)
 		{
 			auto& group = imageGroups[id];
-			for (int index = 0; index != group.pictures->mydata.size(); ++index)
+			for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
 			{
-				auto& file = group.pictures->mydata[index];
+				auto& file = group.pictures->mydata[idx];
 				if (file.IsLightFrame())
 				{
 					file.m_bChecked = 
 						(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(index, 0) };
-					QModelIndex end{ group.pictures->createIndex(index, 0) };
+					QModelIndex start{ group.pictures->createIndex(idx, 0) };
+					QModelIndex end{ group.pictures->createIndex(idx, 0) };
 					QVector<int> role{ Qt::CheckStateRole };
 					group.pictures->dataChanged(start, end, role);
 				}
@@ -900,7 +866,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FrameList::changePictureType(int nItem, PICTURETYPE PictureType)
+	void FrameList::changePictureType([[maybe_unused]] int nItem, [[maybe_unused]]PICTURETYPE PictureType)
 	{
 		qDebug() << "In " <<
 #ifdef __FUNCSIG__
@@ -945,12 +911,12 @@ namespace DSS
 		for (size_t i = 0; i < lightFrames.size(); i++)
 		{
 			auto id = lightFrames[i].group;
-			auto index = lightFrames[i].index;
+			auto idx = lightFrames[i].index;
 
-			imageGroups[id].pictures->mydata[index].m_bChecked =
+			imageGroups[id].pictures->mydata[idx].m_bChecked =
 				(i <= last) ? Qt::Checked : Qt::Unchecked;
-			QModelIndex start	{ imageGroups[id].pictures->createIndex(index, 0) };
-			QModelIndex end		{ imageGroups[id].pictures->createIndex(index, 0) };
+			QModelIndex start	{ imageGroups[id].pictures->createIndex(idx, 0) };
+			QModelIndex end		{ imageGroups[id].pictures->createIndex(idx, 0) };
 			QVector<int> role{ Qt::CheckStateRole };
 			imageGroups[id].pictures->dataChanged(start, end, role);
 		}

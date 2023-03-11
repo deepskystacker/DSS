@@ -668,7 +668,7 @@ bool CTIFFWriter::Write()
 			auto* u32Buff = static_cast<std::uint32_t*>(buff);
 			float* floatBuff = static_cast<float*>(buff);
 
-			int	rowProgress = 0;
+			// int	rowProgress = 0;
 
 #pragma omp parallel for default(none)
 			for (int row = 0; row < h; row++)
@@ -962,11 +962,11 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			name.GetString(),
+			fileName.GetString(),
+			functionName.GetString(),
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			text.GetString());
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else
@@ -1206,11 +1206,11 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			name.GetString(),
+			fileName.GetString(),
+			functionName.GetString(),
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			text.GetString());
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else

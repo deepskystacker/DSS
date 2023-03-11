@@ -424,11 +424,11 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			name.GetString(),
+			fileName.GetString(),
+			functionName.GetString(),
 			ze.locationAtIndex(0)->lineNumber(),
-			text);
+			text.GetString());
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else

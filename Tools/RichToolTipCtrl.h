@@ -35,7 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // PLEASE LEAVE THIS HEADER INTACT
 ////////////////////////////////////////////////////////////////////////////
-
+#pragma warning (disable:4100)
 #if !defined(AFX_RICHTOOLTIPCTRL_H__EFAAE1BA_CDFD_4C7B_B778_146FAC4E3309__INCLUDED_)
 #define AFX_RICHTOOLTIPCTRL_H__EFAAE1BA_CDFD_4C7B_B778_146FAC4E3309__INCLUDED_
 

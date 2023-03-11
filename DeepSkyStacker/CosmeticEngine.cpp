@@ -267,7 +267,7 @@ void CCleanCosmeticTask::process()
 
 		for (int col = 0; col < m_lWidth; ++col)
 		{
-			bool changed = false;
+			// bool changed = false;
 			double delta;
 			m_pDelta->GetPixel(col, row, delta);
 			if (delta > 200)
@@ -295,12 +295,14 @@ void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fG
 		{
 			// Check that this is a normal pixel
 			bool				bAdd = true;
-			if (m_CFAType != CFAT_NONE)
+			if (m_CFAType != CFATYPE_NONE)
 				bAdd = (GetBayerColor(i, j, m_CFAType) == BayerColor);
 
 			if (bAdd)
 			{
+#pragma warning (push,3)
 				double					fGray;
+#pragma warning (pop)
 				double					fDelta;
 
 				m_pOrgBitmap->GetPixel(i, j, fGray);
@@ -339,7 +341,9 @@ void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fR
 	{
 		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
+#pragma warning (push,3)
 			double					fRed, fGreen, fBlue;
+#pragma warning (pop)
 			double					fDelta;
 
 			m_pOrgBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
@@ -390,12 +394,14 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 		{
 			// Check that this is a normal pixel
 			bool bAdd = true;
-			if (m_CFAType != CFAT_NONE)
+			if (m_CFAType != CFATYPE_NONE)
 				bAdd = GetBayerColor(i, j, m_CFAType) == BayerColor;
 
 			if (bAdd)
 			{
+#pragma warning (push, 3)
 				double fGray;
+#pragma warning (pop)
 				double fDelta;
 				double fDistance2 = std::pow((i-x) / static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
 				double fWeight = std::exp(-fDistance2/2);
@@ -440,7 +446,9 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			// Check that this is a normal pixel
+#pragma warning (push, 3)
 			double fRed, fGreen, fBlue;
+#pragma warning (pop)
 			double fDelta;
 			double fDistance2 = std::pow((i-x)/ static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
 			double fWeight = std::exp(-fDistance2/2);

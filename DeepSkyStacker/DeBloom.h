@@ -92,7 +92,7 @@ public:
 		return (*this);
 	};
 
-	bool operator < (const CBloomedStar & right) const
+	bool operator < ([[maybe_unused]] const CBloomedStar & right) const
 	{
 		return true;
 	};

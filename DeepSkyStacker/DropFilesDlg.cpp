@@ -77,7 +77,7 @@ void DropFilesDlg::onInitDialog()
 	QSettings settings;
 	QString string;
 	size_t fileCount{ 0 };
-	bool checked = false;
+	// bool checked = false;
 	std::vector<fs::path> masters;
 
 	//

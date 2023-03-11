@@ -223,7 +223,7 @@ public :
 	// bool getInfo();
 
 	virtual bool	OnOpen() { return true; };
-	virtual void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return;};
+	virtual void	OnRead([[maybe_unused]] int lX, [[maybe_unused]] int lY, [[maybe_unused]] double fRed, [[maybe_unused]] double fGreen, [[maybe_unused]] double fBlue) { return;};
 	virtual bool	OnClose() { return true; };
 };
 

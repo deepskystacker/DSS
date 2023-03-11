@@ -86,7 +86,7 @@ protected:
 DWORD _RichToolTipCtrlCookie::Read(LPSTR lpszBuffer, DWORD dwCount)
 {
   if (lpszBuffer == nullptr)
-    return -1;
+    return static_cast<DWORD>(- 1);
 
   // have we already had it all?
   DWORD dwLeft = m_dwLength - m_dwCount;

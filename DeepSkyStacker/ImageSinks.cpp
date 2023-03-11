@@ -715,7 +715,7 @@ bool	CEditStarsSink::Image_OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonDown(long lX, long lY)
+bool	CEditStarsSink::Image_OnLButtonDown([[maybe_unused]] long lX, [[maybe_unused]] long lY)
 {
 	bool			bResult = false;
 
@@ -769,7 +769,7 @@ bool	CEditStarsSink::Image_OnLButtonDown(long lX, long lY)
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonUp(long lX, long lY)
+bool	CEditStarsSink::Image_OnLButtonUp([[maybe_unused]] long lX, [[maybe_unused]] long lY)
 {
 	bool			bResult = true;
 
@@ -837,7 +837,9 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 			if (rc3.IntersectRect(&rc1, &rc2))
 			{
 				// Draw the triangle
+#pragma warning (push,3)
 				PointF		pt[3];
+#pragma warning (pop)
 
 				pt[0] = tr.pt1,
 				pt[1] = tr.pt2,
@@ -1209,7 +1211,9 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				{
 					CPoint		pt;
 					CRect		rc;
+#pragma warning (push,3)
 					CStar &		star = vStars[i];
+#pragma warning (pop)
 
 					double		fX, fY;
 
