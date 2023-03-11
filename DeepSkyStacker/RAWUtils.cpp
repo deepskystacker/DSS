@@ -118,25 +118,17 @@ bool IsRawBayer()
 
 bool IsRawBilinear()
 {
-	Workspace	workspace;
-	QString		strInterpolation;
-
-	strInterpolation = workspace.value("RawDDP/Interpolation", "").toString();
-
+	const QString strInterpolation = Workspace{}.value("RawDDP/Interpolation", {}).toString();
 	return strInterpolation.isEmpty() || (strInterpolation == "Bilinear");
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 bool IsRawAHD()
 {
-	Workspace	workspace;
-	QString		strInterpolation;
-
-	workspace.value("RawDDP/Interpolation", strInterpolation);
-
+	const QString strInterpolation = Workspace{}.value("RawDDP/Interpolation", {}).toString();
 	return (strInterpolation.isEmpty() || (strInterpolation == "AHD"));
-};
+}
 
 /* ------------------------------------------------------------------- */
 
