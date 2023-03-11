@@ -12,7 +12,7 @@ It was open sourced in 2018 and is maintained by a small and dedicated team:
 
 The code is open source under the terms of the BSD 3-Clause License (see LICENSE).
 
-Copyright (c) 2006-2019, LucCoiffier 
+Copyright (c) 2006-2019, Luc Coiffier 
 Copyright (c) 2018-2023, David C. Partridge, Tony Cook, Mat Draper,
 					Simon C. Smith, Vitali Pelenjow, Michal Schulz,
 					Martin Toeltsch, Iustin Amihaesei
