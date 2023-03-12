@@ -237,7 +237,8 @@ std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBi
 	ZFUNCTRACE_RUNTIME();
 	if (m_bUseRejectThreshold)
 		AnalyzeImage(pInBitmap, true);
-	AnalyzeImage(pInBitmap, false);
+	else
+		AnalyzeImage(pInBitmap, false);
 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pInBitmap->Clone() };
 	ApplyFilterInternal(pInBitmap, pOutBitmap.get(), pProgress);
