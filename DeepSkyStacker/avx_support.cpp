@@ -49,7 +49,7 @@ bool AvxSupport::isMonochromeBitmapOfType() const
 			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<std::uint16_t>());
 		return !p->IsCFA();
 	}
-	return false;
+	// return false;
 }
 
 template <class T>

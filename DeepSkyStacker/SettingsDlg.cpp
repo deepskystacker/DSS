@@ -108,7 +108,7 @@ void CSettingsDlg::OnDelete()
 
 		m_List.GetText(lCurSel, strSettings);
 
-		strText.Format(IDS_ASK_DELETESETTINGS, strSettings);
+		strText.Format(IDS_ASK_DELETESETTINGS, strSettings.GetString());
 		if (AfxMessageBox(strText, MB_YESNO | MB_DEFBUTTON2, 0)== IDYES)
 		{
 			m_pSettings->Remove(lCurSel);

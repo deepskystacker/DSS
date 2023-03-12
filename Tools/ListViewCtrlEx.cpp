@@ -847,7 +847,7 @@ void CLabelTipCtrl::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
     }
 
   ATLTRACE2(
-    ListCtrlEx, 1, _T("flags = %s (0x%08X)\n"), strFlags, lpwndpos->flags);
+    ListCtrlEx, 1, _T("flags = %s (0x%08X)\n"), (LPCTSTR)strFlags, lpwndpos->flags);
 #endif
 	__super::OnWindowPosChanging(lpwndpos);
 

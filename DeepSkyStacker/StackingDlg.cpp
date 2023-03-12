@@ -219,15 +219,15 @@ namespace DSS
 					elideLastVisibleLine = true;
 			}
 
-			QString text = textLayout.text().mid(start, length);
+			QString text1 = textLayout.text().mid(start, length);
 			if (drawElided || elideLastVisibleLine) {
 				if (elideLastVisibleLine) {
-					if (text.endsWith(QChar::LineSeparator))
-						text.chop(1);
-					text += QChar(0x2026);
+					if (text1.endsWith(QChar::LineSeparator))
+						text1.chop(1);
+					text1 += QChar(0x2026);
 				}
 				QFontMetrics fontMetrics(font);
-				ret += fontMetrics.elidedText(text, textElideMode, textRect.width());
+				ret += fontMetrics.elidedText(text1, textElideMode, textRect.width());
 
 				// no newline for the last line (last visible or real)
 				// sometimes drawElided is true but no eliding is done so the text ends
@@ -238,7 +238,7 @@ namespace DSS
 					ret += QChar::LineSeparator;
 			}
 			else {
-				ret += text;
+				ret += text1;
 			}
 
 			// below visible text, can stop
@@ -271,7 +271,7 @@ namespace DSS
 		//
 		QStyleOptionButton checkBoxStyle;
 		//constexpr int size = 17;
-		constexpr int space = 6;
+		//constexpr int space = 6;
 		checkBoxStyle.rect = checkRect;
 		
 		checkBoxStyle.state = (Qt::Checked == opt.checkState) ? QStyle::State_On : QStyle::State_Off;
@@ -419,8 +419,8 @@ namespace DSS
 				QString value{ index.model()->data(index, Qt::EditRole).toString() };
 				combo = qobject_cast<QComboBox*>(editor);
 				Q_ASSERT(combo);
-				if (int index = combo->findText(value))
-					combo->setCurrentIndex(index);
+				if (int idx = combo->findText(value))
+					combo->setCurrentIndex(idx);
 				else
 					combo->setCurrentText(value);
 			}
@@ -829,12 +829,11 @@ namespace DSS
 			ndx = proxyModel->mapToSource(ndx);
 
 		ImageListModel* imageModel = frameList.currentTableModel();
-		int row = ndx.row();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
 		{
-			if (imageModel->mydata[row].m_bUseAsStarting)
+			if (imageModel->mydata[ndx.row()].m_bUseAsStarting)
 				markAsReference->setChecked(true);
 			else
 				markAsReference->setChecked(false);
@@ -1699,7 +1698,7 @@ namespace DSS
 			if (mruPath.paths.size())
 			{
 				openAnother = false;
-				QMenu menu(this);
+				QMenu filelistMenu(this);
 
 				for (uint32_t i = 0; i < mruPath.paths.size(); i++)
 				{
@@ -1710,14 +1709,14 @@ namespace DSS
 
 					QString name{ QString::fromStdU16String(display.generic_u16string()) };
 
-					QAction* action = menu.addAction(name);
+					QAction* action = filelistMenu.addAction(name);
 					action->setData(i);		// Index into the list of files
 
 				};
-				menu.addSeparator();
-				QAction* loadAnother = menu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
+				filelistMenu.addSeparator();
+				QAction* loadAnother = filelistMenu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
-				QAction* a = menu.exec(pt);
+				QAction* a = filelistMenu.exec(pt);
 				if (a)
 				{
 					if (loadAnother == a)
@@ -1769,7 +1768,7 @@ namespace DSS
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file open dlg");
@@ -1834,7 +1833,7 @@ namespace DSS
 		fileDialog.setFileMode(QFileDialog::AnyFile);
 		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file save dlg");
@@ -1949,7 +1948,7 @@ namespace DSS
 		const auto start{ std::chrono::steady_clock::now() };
 
 
-		bool					bFound = false;
+		//bool					bFound = false;
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
 		{
@@ -2401,13 +2400,11 @@ namespace DSS
 				.arg(__LINE__)
 				.arg(e.what())
 			);
-#if defined(_CONSOLE)
-			std::cerr << errorMessage.toUtf8().constData();
-#else
-			int ret = QMessageBox::warning(this, "DeepSkyStacker",
+
+			QMessageBox::warning(this, "DeepSkyStacker",
 				errorMessage,
 				QMessageBox::Ok);
-#endif
+
 		}
 		QGuiApplication::restoreOverrideCursor();
 	};

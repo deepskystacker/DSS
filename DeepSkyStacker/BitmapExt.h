@@ -227,7 +227,7 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 
 /* ------------------------------------------------------------------- */
 
-inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
+inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, [[maybe_unused]] double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
 	double			fR, fG, fB;
 

@@ -277,7 +277,7 @@ public :
 	{
 		bool					bResult = false;
 		PROCESSPARAMITERATOR    it;
-		bool					bFound = false;
+		//bool					bFound = false;
 
 		if (!(lIndice >= 0) && (lIndice < size()))
 			return false;

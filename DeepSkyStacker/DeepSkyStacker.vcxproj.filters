@@ -240,9 +240,6 @@
     <ClCompile Include="FrameList.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="Library.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="MasterFrames.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -623,9 +620,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="Histogram.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Library.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="MasterFrames.h">

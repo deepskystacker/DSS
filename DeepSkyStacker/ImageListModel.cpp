@@ -470,8 +470,8 @@ namespace DSS
                     break;
                 case Column::Type:
                     {
-                        int index = value.toInt();
-                        switch (index)
+                        int idx = value.toInt();
+                        switch (idx)
                         {
                         case 0:
                             file.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");

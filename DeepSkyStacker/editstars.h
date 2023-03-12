@@ -241,6 +241,7 @@ namespace DSS
 			{
 				if (!vVotedPairs.empty())
 				{
+#pragma warning (suppress:4189)
 					for (const auto& votedPair : vVotedPairs)
 					{
 						if constexpr (Refstar)

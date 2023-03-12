@@ -157,7 +157,7 @@ void CChartCtrl::OnPaint()
 	}
 }
 
-BOOL CChartCtrl::OnEraseBkgnd(CDC* pDC) 
+BOOL CChartCtrl::OnEraseBkgnd([[maybe_unused]] CDC* pDC) 
 {
 	// To avoid flickering
 //	return CWnd::OnEraseBkgnd(pDC);
@@ -403,7 +403,7 @@ CDC* CChartCtrl::GetDC()
 	return &m_BackgroundDC;
 }
 
-void CChartCtrl::ReleaseDC(CDC* pDC)
+void CChartCtrl::ReleaseDC([[maybe_unused]]CDC* pDC)
 {
     //CWnd::ReleaseDC(pDC);
 //	delete pDC;

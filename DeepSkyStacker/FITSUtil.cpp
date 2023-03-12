@@ -241,9 +241,9 @@ bool CFITSReader::Open()
 		fits_get_errstatus(status, error_text);
 		CString errorMessage;
 		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			m_strFileName,
+			(LPCTSTR)m_strFileName,
 			status,
-			CString(error_text));
+			&error_text[0]);
 
 		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
 
@@ -260,7 +260,7 @@ bool CFITSReader::Open()
 	if (m_fits)
 	{
 		CStringA fileName(m_strFileName);
-		ZTRACE_RUNTIME("Opened %s", fileName);
+		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
 
 		// File ok - move to the first image HDU
 		CString			strSimple;
@@ -1022,11 +1022,11 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			(LPCTSTR)name,
+			(LPCTSTR)fileName,
+			(LPCTSTR)functionName,
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			(LPCTSTR)text);
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else
@@ -1215,9 +1215,10 @@ void	CFITSWriter::WriteAllKeys()
 				CString		strTemplate;
 
 				if (ei.m_strComment.GetLength())
-					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s / %s"),
+						ei.m_strName.GetString(), ei.m_strValue.GetString(), ei.m_strComment.GetString());
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue);
+					strTemplate.Format(_T("%s = %s"), ei.m_strName.GetString(), ei.m_strValue.GetString());
 
 				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
@@ -1648,10 +1649,10 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 	if (::IsCFA(m_pMemoryBitmap))
 		m_CFAType = ::GetCFAType(m_pMemoryBitmap);
 
-	if (m_Format == TF_UNKNOWN)
+	if (m_Format == FF_UNKNOWN)
 		m_Format = GetBestFITSFormat(m_pMemoryBitmap);
 
-	if (m_Format != TF_UNKNOWN)
+	if (m_Format != FF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, m_CFAType);
 		if (!m_lISOSpeed)
@@ -1695,11 +1696,11 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			(LPCTSTR)name,
+			(LPCTSTR)fileName,
+			(LPCTSTR)functionName,
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			(LPCTSTR)text);
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else

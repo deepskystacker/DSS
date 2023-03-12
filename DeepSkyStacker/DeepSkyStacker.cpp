@@ -492,7 +492,7 @@ void DeepSkyStacker::updateTab()
 BOOL DeepSkyStackerApp::InitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
-	auto result = CWinApp::InitInstance();
+	CWinApp::InitInstance();
 
 	EnableHtmlHelp();
 
@@ -789,7 +789,7 @@ int main(int argc, char* argv[])
 	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
 	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
 	{
-		*p = '\xff';
+		*p = static_cast<uint8_t>('\xff');
 	}
 
 	int result{ 0 };

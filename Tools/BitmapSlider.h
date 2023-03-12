@@ -134,7 +134,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	// This is CStatic method
-	void SetBitmap( HBITMAP hBitmap ) {};
+	void SetBitmap([[maybe_unused]] HBITMAP hBitmap ) {};
 };
 
 /////////////////////////////////////////////////////////////////////////////

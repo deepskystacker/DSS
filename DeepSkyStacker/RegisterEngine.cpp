@@ -183,7 +183,6 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 
 bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
 {
-	bool				bResult = false;
 	int				i, j;
 	double				fSumX = 0,
 						fSumY = 0;
@@ -380,7 +379,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 							bool bBrighterPixel = false;
 							bool bMainOk = true;
 							int	lMaxRadius = 0;
-							int	lNrBrighterPixels = 0;
+							// int	lNrBrighterPixels = 0;
 
 							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
 							{
@@ -840,7 +839,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	// Try to find star by studying the variation of luminosity
 	int lSubRectWidth;
 	int lSubRectHeight;
-	int lProgress = 0;
+	// int lProgress = 0;
 
 	// First computed median value
 	m_fBackground = ComputeMedianValue(Bitmap);
@@ -1377,8 +1376,11 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 		nrRegisteredPictures += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
 
 	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
+
 	if (pProgress != nullptr)
+	{
 		pProgress->Start1(strText, nrRegisteredPictures, true);
+	}
 
 	bResult = tasks.DoAllPreTasks(pProgress);
 
@@ -1426,8 +1428,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			if (pProgress != nullptr)
 			{
-				const QString strText = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(nrRegisteredPictures);
-				pProgress->Progress1(strText, static_cast<int>(j));
+				const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(nrRegisteredPictures);
+				pProgress->Progress1(strText1, static_cast<int>(j));
 			}
 
 			if (!success)

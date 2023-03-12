@@ -182,7 +182,7 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
+	const auto handleError = [](const auto& errorMessage,[[maybe_unused]] const auto flags) -> void
 	{
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;

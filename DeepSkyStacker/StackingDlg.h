@@ -244,7 +244,6 @@ namespace DSS
 	private:
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
-		std::unique_ptr<Workspace> workspace;
 		bool initialised;
 		QString			m_strShowFile;
 		CGammaTransformation	m_GammaTransformation;

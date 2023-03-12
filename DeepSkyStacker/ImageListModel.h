@@ -78,20 +78,20 @@ namespace DSS
 
         explicit ImageListModel(QObject* parent = nullptr);
  
-        inline int rowCount(const QModelIndex& parent = QModelIndex()) const override
+        inline [[nodiscard]] int rowCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const override
         {
             // Return number of images we know about
             return static_cast<int>(mydata.size());
         };
 
-        inline int columnCount(const QModelIndex& parent = QModelIndex()) const override
+        inline [[nodiscard]] int columnCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const override
         {
             // Pretty simple really
             return static_cast<int>(Column::MAX_COLS);
         };
 
 
-        inline Qt::ItemFlags flags(const QModelIndex& index) const override
+        inline [[nodiscard]] Qt::ItemFlags flags(const QModelIndex& index) const override
         {
             auto flags = Inherited::flags(index);
             switch (Column(index.column()))
