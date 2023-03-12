@@ -84,6 +84,7 @@
       <AdditionalOptions>/wd4828 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +108,7 @@
       <AdditionalOptions>/wd4828 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
