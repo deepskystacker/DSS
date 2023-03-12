@@ -75,7 +75,6 @@ void CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 			{
 				double				fRed, fGreen, fBlue;
 				double				fPositionRed, fPositionGreen, fPositionBlue;
-				double				fPosition;
 
 				pInBitmap->GetPixel(i-1, j-1, vReds[0], vGreens[0], vBlues[0]);
 				pInBitmap->GetPixel(i,   j-1, vReds[1], vGreens[1], vBlues[1]);
