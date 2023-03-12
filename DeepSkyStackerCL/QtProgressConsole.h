@@ -33,11 +33,11 @@ namespace DSS
 			if(m_total2>0)
 				PrintText(strText, OT_TEXT2); 
 		}
-		virtual void applyProgress1(int lAchieved) override
+		virtual void applyProgress1([[maybe_unused]] int lAchieved) override
 		{
 			PrintText(GetProgress1Text(), OT_PROGRESS1);
 		}
-		virtual void applyProgress2(int lAchieved) override
+		virtual void applyProgress2([[maybe_unused]] int lAchieved) override
 		{
 			PrintText(GetProgress2Text(), OT_PROGRESS2);
 		}
@@ -46,8 +46,8 @@ namespace DSS
 		virtual void endProgress2() override {}
 		virtual bool hasBeenCanceled() override { return false; }
 		virtual void closeProgress() { }
-		virtual bool doWarning(const QString& szText) override { return true; }
-		virtual void applyProcessorsUsed(int nCount) override {};
+		virtual bool doWarning([[maybe_unused]] const QString& szText) override { return true; }
+		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
 
 	private:
 		void PrintText(const QString& szText, eOutputType type)
@@ -105,7 +105,7 @@ namespace DSS
 			}
 			m_out.flush();
 		}
-		void PrintFormatted(const QString& szText, eOutputType type)
+		void PrintFormatted(const QString& szText, [[maybe_unused]] eOutputType type)
 		{
 			m_out << "\033[7;0H";
 			m_out << "\033[036m--------------------------------------------------------------------------------";
