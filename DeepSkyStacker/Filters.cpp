@@ -75,7 +75,6 @@ void CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 			{
 				double				fRed, fGreen, fBlue;
 				double				fPositionRed, fPositionGreen, fPositionBlue;
-				double				fPosition;
 
 				pInBitmap->GetPixel(i-1, j-1, vReds[0], vGreens[0], vBlues[0]);
 				pInBitmap->GetPixel(i,   j-1, vReds[1], vGreens[1], vBlues[1]);
@@ -238,7 +237,8 @@ std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBi
 	ZFUNCTRACE_RUNTIME();
 	if (m_bUseRejectThreshold)
 		AnalyzeImage(pInBitmap, true);
-	AnalyzeImage(pInBitmap, false);
+	else
+		AnalyzeImage(pInBitmap, false);
 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pInBitmap->Clone() };
 	ApplyFilterInternal(pInBitmap, pOutBitmap.get(), pProgress);

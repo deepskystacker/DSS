@@ -837,9 +837,8 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 			if (rc3.IntersectRect(&rc1, &rc2))
 			{
 				// Draw the triangle
-#pragma warning (push,3)
+#pragma warning (suppress:4456)
 				PointF		pt[3];
-#pragma warning (pop)
 
 				pt[0] = tr.pt1,
 				pt[1] = tr.pt2,
@@ -1211,9 +1210,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				{
 					CPoint		pt;
 					CRect		rc;
-#pragma warning (push,3)
+#pragma warning (suppress:4456)
 					CStar &		star = vStars[i];
-#pragma warning (pop)
 
 					double		fX, fY;
 
