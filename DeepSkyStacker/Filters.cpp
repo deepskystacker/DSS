@@ -235,10 +235,13 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Note that if m_bUseRejectThreshold is set it is INTENTIONAL that analyseImage is called TWICE.
+	// The first run sets m_fHotThreshold and m_fColdThreshold which are used in the second invocation.
+	//
 	if (m_bUseRejectThreshold)
 		AnalyzeImage(pInBitmap, true);
-	else
-		AnalyzeImage(pInBitmap, false);
+	AnalyzeImage(pInBitmap, false);
 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pInBitmap->Clone() };
 	ApplyFilterInternal(pInBitmap, pOutBitmap.get(), pProgress);
