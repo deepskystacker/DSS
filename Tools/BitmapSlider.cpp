@@ -446,9 +446,9 @@ BOOL CBitmapSlider::SetBitmapChannel(
 	// Compare size
 	if( m_bChannelActive ) {
 
-#pragma warning (push, 3)
+#pragma warning (suppress:4456)
 		BITMAP	bitmap;
-#pragma warning (pop)
+
 		m_bmChannelActive.GetBitmap( &bitmap );
 
 		ASSERT( m_nWidth == bitmap.bmWidth && m_nHeight == bitmap.bmHeight );
@@ -567,9 +567,9 @@ BOOL CBitmapSlider::SetBitmapThumb(
 	// Compare size
 	if( m_bThumbActive ) {
 
-#pragma warning (push, 3)
+#pragma warning (suppress:4456)
 		BITMAP	bitmap;
-#pragma warning (pop)
+
 		m_bmThumbActive.GetBitmap( &bitmap );
 
 		ASSERT(

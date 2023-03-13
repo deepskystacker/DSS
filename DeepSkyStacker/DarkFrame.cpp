@@ -1244,11 +1244,9 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 	else
 	{
 		// Check all the points
-#pragma warning (push, 3)
-		double			fMaxRed,
-						fMaxGreen,
-						fMaxBlue;
-#pragma warning (pop)
+#pragma warning (suppress:4456)
+		double			fMaxRed, fMaxGreen, fMaxBlue;
+
 		DSSRect			rcMaxRed,
 						rcMaxGreen,
 						rcMaxBlue;
