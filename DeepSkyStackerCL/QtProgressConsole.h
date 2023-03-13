@@ -105,7 +105,7 @@ namespace DSS
 			}
 			m_out.flush();
 		}
-		void PrintFormatted(const QString& szText, [[maybe_unused]] eOutputType type)
+		void PrintFormatted(const QString&, eOutputType)
 		{
 			m_out << "\033[7;0H";
 			m_out << "\033[036m--------------------------------------------------------------------------------";
