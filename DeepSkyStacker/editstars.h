@@ -241,21 +241,24 @@ namespace DSS
 			{
 				if (!vVotedPairs.empty())
 				{
-#pragma warning (suppress:4189)
 					for (const auto& votedPair : vVotedPairs)
 					{
 						if constexpr (Refstar)
+						{
 							if (star == votedPair.m_RefStar)
 							{
 								bResult = true;
 								break;
 							}
+						}
 						else
+						{
 							if (star == votedPair.m_TgtStar)
 							{
 								bResult = true;
 								break;
 							}
+						}
 					}
 				}
 				else
