@@ -43,13 +43,14 @@ bool AvxSupport::isMonochromeBitmapOfType() const
 	if (auto* const p = const_cast<AvxSupport*>(this)->getGrayPtr<T>())
 	{
 		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
-		if constexpr (std::is_same<T, float>::value)
+		if constexpr (std::is_same_v<T, float>)
 			return (p->IsFloat() && !p->IsCFA() && p->GetMultiplier() == 256.0);
-		if constexpr (std::is_same<T, std::uint16_t>::value)
+		if constexpr (std::is_same_v<T, std::uint16_t>)
 			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<std::uint16_t>());
 		return !p->IsCFA();
 	}
-	// return false;
+	else
+		return false;
 }
 
 template <class T>
