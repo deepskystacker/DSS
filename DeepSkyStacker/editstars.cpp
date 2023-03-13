@@ -472,12 +472,12 @@ namespace DSS
 		CRegisteredFrame regFrame;
 		DSSRect	rcReg{ STARMAXSIZE, STARMAXSIZE, 
 			rcCheck.width() - (STARMAXSIZE + 1), rcCheck.height() - (STARMAXSIZE + 1) };
-		STARSET stars;
+		STARSET starsInRect;
 
 		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
+		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, starsInRect);
 
-		vStars.assign(stars.cbegin(), stars.cend());
+		vStars.assign(starsInRect.cbegin(), starsInRect.cend());
 	}
 
 	void EditStars::drawOnPixmap()
@@ -792,18 +792,18 @@ namespace DSS
 			for (int i = 0; i < vStars.size(); i++)
 			{
 				QRect		rc;
-				CStar& star = vStars[i];
+				CStar& theStar = vStars[i];
 
 				double		fX, fY;
 
-				fX = star.m_fX - star.m_fMeanRadius + 0.5 + rcCheck.left();
-				fY = star.m_fY - star.m_fMeanRadius + 0.5 + rcCheck.top();
+				fX = theStar.m_fX - theStar.m_fMeanRadius + 0.5 + rcCheck.left();
+				fY = theStar.m_fY - theStar.m_fMeanRadius + 0.5 + rcCheck.top();
 				imageView->imageToScreen(fX, fY);
 				rc.setLeft(fX);
 				rc.setTop(fY);
 
-				fX = star.m_fX + star.m_fMeanRadius + 0.5 + rcCheck.left();
-				fY = star.m_fY + star.m_fMeanRadius + 0.5 + rcCheck.top();
+				fX = theStar.m_fX + theStar.m_fMeanRadius + 0.5 + rcCheck.left();
+				fY = theStar.m_fY + theStar.m_fMeanRadius + 0.5 + rcCheck.top();
 				imageView->imageToScreen(fX, fY);
 				rc.setRight(fX);
 				rc.setBottom(fY);
@@ -818,8 +818,8 @@ namespace DSS
 
 				if (rc.width() > 10 && rc.height() > 10)
 				{
-					fX = star.m_fX + 0.5 + rcCheck.left();
-					fY = star.m_fY + 0.5 + rcCheck.top();
+					fX = theStar.m_fX + 0.5 + rcCheck.left();
+					fY = theStar.m_fY + 0.5 + rcCheck.top();
 					imageView->imageToScreen(fX, fY);
 					painter.drawLine(QPointF(fX - 5, fY), QPointF(fX + 6, fY));
 					painter.drawLine(QPointF(fX, fY - 5), QPointF(fX, fY + 6));
