@@ -799,12 +799,11 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySett
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CFITSWriter * fitsWriter, [[maybe_unused]] bool bApplySettings)
+void CStackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
 {
 	if (fitsWriter)
-	{
-	};
-};
+	{}
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */

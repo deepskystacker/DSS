@@ -1492,7 +1492,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CDarkFrame::FindBadVerticalLines([[maybe_unused]] ProgressBase * pProgress)
+void CDarkFrame::FindBadVerticalLines(ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = m_pMasterDark->IsMonochrome();
@@ -1797,7 +1797,7 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, [[maybe_unused]] ProgressBase * pProgress)
+void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (static_cast<bool>(pBitmap) && !m_vHotPixels.empty())

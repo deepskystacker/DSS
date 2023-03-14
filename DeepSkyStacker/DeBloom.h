@@ -92,10 +92,10 @@ public:
 		return (*this);
 	};
 
-	bool operator < ([[maybe_unused]] const CBloomedStar & right) const
+	bool operator<(const CBloomedStar&) const
 	{
 		return true;
-	};
+	}
 };
 
 typedef std::vector<CBloomedStar>		BLOOMEDSTARVECTOR;

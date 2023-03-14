@@ -330,10 +330,10 @@ public:
 	virtual void	GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) = 0;
 	virtual void	GetPixel(size_t i, size_t j, double& fGray) = 0;
 
-	virtual void	SetValue([[maybe_unused]] size_t i, [[maybe_unused]] size_t j, [[maybe_unused]] double fRed, [[maybe_unused]] double fGreen, [[maybe_unused]] double fBlue) {};
-	virtual void	GetValue([[maybe_unused]] size_t i, [[maybe_unused]] size_t j, [[maybe_unused]] double& fRed, [[maybe_unused]] double& fGreen, [[maybe_unused]] double& fBlue) const {};
-	virtual void	SetValue([[maybe_unused]] size_t i, [[maybe_unused]] size_t j, [[maybe_unused]] double fGray) {};
-	virtual void	GetValue([[maybe_unused]] size_t i, [[maybe_unused]] size_t j, [[maybe_unused]] double& fGray) const {};
+	virtual void	SetValue(size_t, size_t, double, double, double) {}
+	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {}
+	virtual void	SetValue(size_t, size_t, double) {}
+	virtual void	GetValue(size_t, size_t, double&) const {}
 
 	virtual bool	GetScanLine(size_t j, void* pScanLine) = 0;
 	virtual bool	SetScanLine(size_t j, void* pScanLine) = 0;
@@ -398,7 +398,7 @@ public:
 		return m_bCFA;
 	}
 
-	virtual BAYERCOLOR GetBayerColor([[maybe_unused]] int x, [[maybe_unused]] int y)
+	virtual BAYERCOLOR GetBayerColor(int, int)
 	{
 		return BAYER_UNKNOWN;
 	}
@@ -411,7 +411,7 @@ public:
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const = 0;
 
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const = 0;
-	virtual void AverageBitmap([[maybe_unused]] CMemoryBitmap* pBitmap, [[maybe_unused]] ProgressBase* pProgress) {};
+	virtual void AverageBitmap(CMemoryBitmap*, ProgressBase*) {}
 	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) = 0;
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 

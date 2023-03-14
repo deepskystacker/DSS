@@ -146,7 +146,7 @@ inline void	CheckPixel(int X, int Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIX
 
 /* ------------------------------------------------------------------- */
 
-void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, [[maybe_unused]]ProgressBase* pProgress)
+void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR vExcluded = m_vExcludedPixels;

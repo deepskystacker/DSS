@@ -1147,8 +1147,7 @@ namespace DSS
 
 	}
 
-	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first,
-		[[maybe_unused]] const QModelIndex& last, [[maybe_unused]] const QList<int>&)
+	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex&, const QList<int>&)
 	{
 		//
 		// Only interested if the user has ticked the check box in column 0
@@ -1313,7 +1312,7 @@ namespace DSS
 				editStarsPtr->setBitmap(nullptr);
 			}
 		}
-		catch ([[maybe_unused]] ZAccessError& ze)
+		catch (ZAccessError&)
 		{
 			QApplication::beep();
 			QMessageBox::warning(this,

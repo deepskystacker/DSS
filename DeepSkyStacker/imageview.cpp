@@ -239,7 +239,7 @@ namespace DSS
         painter.end();
     }
 
-    void ImageView::paintEvent([[maybe_unused]] QPaintEvent* event)
+    void ImageView::paintEvent(QPaintEvent*)
     {
         QPainter painter(this);
 

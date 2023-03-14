@@ -305,7 +305,7 @@ namespace { // Only use in this .cpp file
 		};
 
 		bool IsRawFile() const;
-		bool LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr, bool bThumb = false);
+		bool LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr);
 
 		bool GetModel(CString& strModel)
 		{
@@ -475,7 +475,7 @@ namespace { // Only use in this .cpp file
 	/* ------------------------------------------------------------------- */
 
 
-	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress, [[maybe_unused]] bool bThumb)
+	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -1066,7 +1066,7 @@ bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap
       }                                                         \
   }while(0)
 
-int DSSLibRaw::dcraw_ppm_tiff_writer([[maybe_unused]] const char *filename)
+int DSSLibRaw::dcraw_ppm_tiff_writer(const char*)
 {
 	ZFUNCTRACE_RUNTIME();
 	CHECK_ORDER_LOW(LIBRAW_PROGRESS_LOAD_RAW);

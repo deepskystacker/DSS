@@ -715,7 +715,7 @@ bool	CEditStarsSink::Image_OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonDown([[maybe_unused]] long lX, [[maybe_unused]] long lY)
+bool CEditStarsSink::Image_OnLButtonDown(long, long)
 {
 	bool			bResult = false;
 
@@ -769,12 +769,10 @@ bool	CEditStarsSink::Image_OnLButtonDown([[maybe_unused]] long lX, [[maybe_unuse
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonUp([[maybe_unused]] long lX, [[maybe_unused]] long lY)
+bool CEditStarsSink::Image_OnLButtonUp(long, long)
 {
-	bool			bResult = true;
-
-	return bResult;
-};
+	return true;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1440,6 +1438,10 @@ void CQualityGrid::InitGrid(STARVECTOR& vStars)
 		Delaunay delaunay;
 		triangleSet sTriangles;
 
+		//
+		// ### To Do
+		// March 2023: Delaunay::Triangulate() does nothing. sTriangles will be empty.
+		//
 		delaunay.Triangulate(sVertices, sTriangles);
 
 		m_vTriangles.reserve(sTriangles.size());
