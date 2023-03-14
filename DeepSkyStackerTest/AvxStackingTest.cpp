@@ -204,12 +204,14 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 			for (int x = 0; x < W; ++x)
 			{
 				const int yn = y + 1;
-				const int xn = x - 4;
+				const float xf = x - 3.5f;
+				const int xn = static_cast<int>(std::floor(xf));
 				// a0 is -3.5, so 1/2 is added to (x-4), the other half is added to (x-3)
-				if (yn >= 0 && yn < H && xn >= 0 && xn < W)
+				if (yn >= 0 && yn <= (H - 1) && xf >= 0 && xf <= (W - 1))
+				{
 					expected[yn * W + xn] += 0.5f * pGray->m_vPixels[y * W + x];
-				if (yn >= 0 && yn < H && (xn + 1) >= 0 && (xn + 1) < W)
 					expected[yn * W + xn + 1] += 0.5f * pGray->m_vPixels[y * W + x];
+				}
 			}
 		REQUIRE(memcmp(expected.data(), pOut->m_vPixels.data(), W * H * sizeof(T)) == 0);
 	}
@@ -252,8 +254,11 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		{
 			const float xf = 1.0f - std::abs(xc - xn);
 			const float yf = 1.0f - std::abs(yc - yn);
-			if (yn >= 0 && yn < H && xn >= 0 && xn < W)
+			if (xc >= 0 && xc <= (W - 1) && yc >= 0 && yc <= (H - 1)
+				&& xn >= 0 && xn < W && yn >= 0 && yn < H)
+			{
 				expected[yn * W + xn] += xf * yf * pGray->m_vPixels[y * W + x];
+			}
 		};
 		for (int y = 0; y < H; ++y)
 			for (int x = 0; x < W; ++x)

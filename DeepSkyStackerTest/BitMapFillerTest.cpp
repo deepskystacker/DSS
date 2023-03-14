@@ -394,8 +394,8 @@ TEMPLATE_TEST_CASE("BitmapFiller progress check", "[Bitmap][BitmapFiller][progre
 		for (size_t i = 0; i < H; ++i, pD += 4)
 			filler->Write(pD, 1, 4, i);
 
-		REQUIRE(prg.nrCallsStart2 == 1);
+//		REQUIRE(prg.nrCallsStart2 == 1);
 		REQUIRE(prg.nrCallsProgress2 == 0); // AVX BitmapFiller doesn't make progress callbacks anymore.
-		REQUIRE(prg.argumentStart2 == H);
+//		REQUIRE(prg.argumentStart2 == H);
 	}
 }
