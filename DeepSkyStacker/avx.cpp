@@ -559,8 +559,6 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 
 		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
 	}
-
-	return 0;
 }
 
 #pragma warning( push )

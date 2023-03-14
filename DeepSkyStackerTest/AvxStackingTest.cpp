@@ -267,7 +267,6 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 				calcFrac(xc, yc, xn, yn + 1, x, y);
 				calcFrac(xc, yc, xn + 1, yn + 1, x, y);
 			}
-		bool OK = true;
 		for (int i = 0; i < W * H; ++i)
 		{
 			REQUIRE(pOut->m_vPixels[i] == Approx(expected[i]).epsilon(1e-5));

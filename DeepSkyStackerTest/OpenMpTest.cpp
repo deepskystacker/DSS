@@ -217,7 +217,8 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 #pragma omp parallel for firstprivate(tc) if(isThreadSafe)
 		for (int line = 0; line < 2; ++line)
 		{
-			std::uint8_t data[3] = { 17 + line, 29 + 2 * line, 51 + 3 * line };
+			using T = std::uint8_t;
+			T data[3] = { static_cast<T>(17 + line), static_cast<T>(29 + 2 * line), static_cast<T>(51 + 3 * line) };
 			REQUIRE(tc.process(line, data) == 3);
 		}
 	}
