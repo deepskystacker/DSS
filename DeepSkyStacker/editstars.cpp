@@ -493,7 +493,7 @@ namespace DSS
 		// scaling has to done here.
 		//
 		QRect rcClient{ rect() };
-		size_t	width = rcClient.width(), height = rcClient.height();
+		// size_t	width = rcClient.width(), height = rcClient.height();
 
 		//
 		// Fill the pixmap with transparency

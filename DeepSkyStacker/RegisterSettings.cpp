@@ -110,7 +110,7 @@ void RegisterSettings::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	bool checked = false;
+	// bool checked = false;
 
 	//
 	// Restore Window position etc..
