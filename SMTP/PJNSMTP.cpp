@@ -1389,7 +1389,7 @@ CStringA CPJNSMTPMessage::GetHeader()
   else
   {
     CString sReply;
-    sReply.Format(_T("Content-Type: %s;\r\n\tcharset=%s\r\n"), m_RootPart.GetContentType(), m_RootPart.GetCharset().operator LPCTSTR());
+    sReply.Format(_T("Content-Type: %s;\r\n\tcharset=%s\r\n"), m_RootPart.GetContentType().GetString(), m_RootPart.GetCharset().GetString());
     sHeader += sReply;
   }
   
@@ -2436,7 +2436,7 @@ CString CPJNSMTPConnection::FormMailFromCommand(const CString& sEmailAddress, DW
   CString sBuf;
   
   if (DSN == CPJNSMTPMessage::DSN_NOT_SPECIFIED)
-    sBuf.Format(_T("MAIL FROM:<%s>\r\n"), sEmailAddress);
+    sBuf.Format(_T("MAIL FROM:<%s>\r\n"), sEmailAddress.GetString());
   else
   {
     //Create an envelope ID if one has not been specified
@@ -2444,9 +2444,9 @@ CString CPJNSMTPConnection::FormMailFromCommand(const CString& sEmailAddress, DW
       sENVID = CreateNEWENVID();
   
     if (DSNReturnType == CPJNSMTPMessage::HEADERS_ONLY)
-      sBuf.Format(_T("MAIL FROM:<%s> RET=HDRS ENVID=%s\r\n"), sEmailAddress, sENVID);
+      sBuf.Format(_T("MAIL FROM:<%s> RET=HDRS ENVID=%s\r\n"), sEmailAddress.GetString(), sENVID.GetString());
     else
-      sBuf.Format(_T("MAIL FROM:<%s> RET=FULL ENVID=%s\r\n"), sEmailAddress, sENVID);
+      sBuf.Format(_T("MAIL FROM:<%s> RET=FULL ENVID=%s\r\n"), sEmailAddress.GetString(), sENVID.GetString());
   }
 
   return sBuf;  
@@ -2746,7 +2746,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
     }
     catch(CWSocketException* pEx)
     {
-      DWORD dwError = pEx->m_nError;
+      dwError = pEx->m_nError;
       pEx->Delete();
       ThrowPJNSMTPException(dwError, FACILITY_WIN32);
     }
@@ -2774,7 +2774,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
     }
     catch(CWSocketException* pEx)
     {
-      DWORD dwError = pEx->m_nError;
+      dwError = pEx->m_nError;
       pEx->Delete();
       ThrowPJNSMTPException(dwError, FACILITY_WIN32);
     }
@@ -2812,7 +2812,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
           }
           catch(CWSocketException* pEx)
           {
-            DWORD dwError = pEx->m_nError;
+            dwError = pEx->m_nError;
             pEx->Delete();
             ThrowPJNSMTPException(dwError, FACILITY_WIN32);
           }
@@ -2837,7 +2837,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
       }
       catch(CWSocketException* pEx)
       {
-        DWORD dwError = pEx->m_nError;
+        dwError = pEx->m_nError;
         pEx->Delete();
         ThrowPJNSMTPException(dwError, FACILITY_WIN32);
       }
@@ -2876,10 +2876,10 @@ void CPJNSMTPConnection::SendRCPTForRecipient(DWORD DSN, CPJNSMTPAddress& recipi
   //form the command to send
   CString sBuf;
   if (DSN == CPJNSMTPMessage::DSN_NOT_SPECIFIED)
-    sBuf.Format(_T("RCPT TO:<%s>\r\n"), recipient.m_sEmailAddress);
+    sBuf.Format(_T("RCPT TO:<%s>\r\n"), recipient.m_sEmailAddress.GetString());
   else
   {
-    sBuf.Format(_T("RCPT TO:<%s>\r\n"), recipient.m_sEmailAddress);
+    sBuf.Format(_T("RCPT TO:<%s>\r\n"), recipient.m_sEmailAddress.GetString());
     
     CString sNotificationTypes;
     if (DSN & CPJNSMTPMessage::DSN_SUCCESS)
@@ -2899,7 +2899,7 @@ void CPJNSMTPConnection::SendRCPTForRecipient(DWORD DSN, CPJNSMTPAddress& recipi
     if (sNotificationTypes.IsEmpty()) //Not setting DSN_SUCCESS, DSN_FAILURE or DSN_DELAY in m_DSNReturnType implies we do not want DSN's
       sNotificationTypes += _T("NEVER");
     
-    sBuf.Format(_T("RCPT TO:<%s> NOTIFY=%s\r\n"), recipient.m_sEmailAddress, sNotificationTypes);
+    sBuf.Format(_T("RCPT TO:<%s> NOTIFY=%s\r\n"), recipient.m_sEmailAddress.GetString(), sNotificationTypes.GetString());
   }
   CT2A szRCPT(sBuf);
 
