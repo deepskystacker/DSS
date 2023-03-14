@@ -465,7 +465,7 @@ void CWSocket::Connect(const SOCKADDR* lpSockAddr, int nSockAddrLen, DWORD dwCon
         if (nEvents == SOCKET_ERROR)
         {
           //Hive away the last error
-          DWORD dwLastError = GetLastError();
+          dwLastError = GetLastError();
 
           //Close the event before we return
           WSACloseEvent(hConnectedEvent);
@@ -831,9 +831,10 @@ void CWSocket::ConnectViaSocks5(LPCTSTR lpszHostAddress, UINT nHostPort, LPCTSTR
       Send(pUserRequest, static_cast<int>(nUserRequestLength));
 
       //Wait for the login reply
+#pragma warning (suppress:4456)
       WSOCKET_SOCKS5_USERNAME_AUTHENTICATION_REPLY reply;
       memset(&reply, 0, sizeof(reply));
-      int nDataReceived = 0;
+      nDataReceived = 0;
       while (nDataReceived < sizeof(reply))
       {
         if (IsReadible(dwConnectionTimeout))
