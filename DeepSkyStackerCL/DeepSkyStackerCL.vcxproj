@@ -92,7 +92,7 @@
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/openmp:experimental /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /wd4828 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
@@ -108,6 +108,7 @@
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalDependencies>zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\</QtMocDir>
@@ -139,6 +140,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -152,6 +154,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\</QtMocDir>
