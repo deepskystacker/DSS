@@ -43,7 +43,6 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 
 	AvxSupport avxOutputSupport{ outputBitmap };
 	const size_t width = inputBitmap.Width();
-	const size_t height = inputBitmap.Height();
 	constexpr size_t vectorLen = 16;
 	const size_t nrVectors = width / vectorLen;
 

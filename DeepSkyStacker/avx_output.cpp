@@ -313,10 +313,11 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		// Rest of line
 		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
 		{
-			float lowerBound{ 1.0f };
-			float upperBound{ static_cast<float>(std::numeric_limits<T>::max()) };
-			float my{ 0.0f };
-			float median{ 0.0f };
+			float lowerBound = 1.0f;
+			float upperBound = static_cast<float>(std::numeric_limits<T>::max());
+			float my = 0.0f;
+#pragma warning (suppress: 4189)
+			float median = 0.0f;
 
 			if constexpr (Method == MedianKappaSigma)
 				initMedianData(n + colorOffset, 1); // 1 = only 1 pixel.
