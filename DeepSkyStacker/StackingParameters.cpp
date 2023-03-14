@@ -531,12 +531,13 @@ void StackingParameters::on_iterations_textEdited(const QString &text)
 void StackingParameters::on_kappa_textEdited(const QString &text)
 {
 	bool convertedOK{ false };
-	double kappa{ 0.0 };
+	double temp{ 0.0 };
 	QLocale locale;
 
-	kappa = locale.toDouble(text, &convertedOK);
+	temp = locale.toDouble(text, &convertedOK);
 	if (convertedOK)
 	{
+		kappa = temp;
 		switch (type)
 		{
 		case PICTURETYPE_LIGHTFRAME:

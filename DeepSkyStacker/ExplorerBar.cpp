@@ -341,7 +341,7 @@ void ExplorerBar::onLoadSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Loading settings file: %s", a->text().toLocal8Bit());
+			ZTRACE_RUNTIME("Loading settings file: %s", a->text().toLocal8Bit().constData());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
@@ -399,7 +399,7 @@ void ExplorerBar::onSaveSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Saving settings to file: %s", a->text().toLocal8Bit());
+			ZTRACE_RUNTIME("Saving settings to file: %s", a->text().toLocal8Bit().constData());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
@@ -471,7 +471,7 @@ void ExplorerBar::LoadSettingFile()
 			fs::path fileName(files.at(0).toStdU16String());		// as UTF-16
 			if (status(fileName).type() == fs::file_type::regular)
 			{
-				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string());
+				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string().c_str());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 				workspace.ReadFromFile(fileName);
@@ -515,7 +515,7 @@ void ExplorerBar::SaveSettingFile()
 		if (!file.isEmpty())
 		{
 			fs::path fileName(file.toStdU16String());		// as UTF-16
-			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
+			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string().c_str());
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			workspace.SaveToFile(fileName);
