@@ -154,7 +154,7 @@ public:
 	virtual bool Close();
 
 	virtual bool OnOpen() { return true; }
-	virtual bool OnRead([[maybe_unused]] int lX, [[maybe_unused]] int lY, [[maybe_unused]] double fRed, [[maybe_unused]] double fGreen, [[maybe_unused]] double fBlue) { return false; }
+	virtual bool OnRead(int, int, double, double, double) { return false; }
 	virtual bool OnClose() { return true; }
 };
 

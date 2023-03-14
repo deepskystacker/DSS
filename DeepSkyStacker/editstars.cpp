@@ -133,6 +133,10 @@ namespace DSS
 			Delaunay delaunay;
 			triangleSet sTriangles;
 
+			//
+			// ### To Do
+			// March 2023: Delaunay::Triangulate() does nothing. sTriangles will be empty.
+			//
 			delaunay.Triangulate(sVertices, sTriangles);
 
 			triangles.reserve(sTriangles.size());
@@ -191,9 +195,10 @@ namespace DSS
 
 	}
 
-	void EditStars::leaveEvent([[maybe_unused]] QEvent* e)
+	void EditStars::leaveEvent(QEvent*)
 	{
-		m_ptCursor.setX(-1); m_ptCursor.setY(-1);
+		m_ptCursor.setX(-1);
+		m_ptCursor.setY(-1);
 	}
 
 	void EditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
