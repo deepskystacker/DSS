@@ -94,9 +94,10 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 	LONG i;
 	const QStringList vCommandLine = arguments();
 
-	// At least 2 arguments (registering and/or stacking + filename)
+	// At least 2 arguments are needed (registering and/or stacking + filename)
+	// The first is always the program name, so skip that and start at position 1.
 	bResult = (vCommandLine.size() >= 2);
-	for (i = 0; i < vCommandLine.size() && bResult; i++)
+	for (i = 1; i < vCommandLine.size() && bResult; i++)
 	{
 		if (!vCommandLine[i].compare("/s", Qt::CaseInsensitive))
 		{
@@ -182,15 +183,20 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 		{
 			QString fileList(vCommandLine[i]);
 			if (!fileList.isEmpty() && fileExists(fileList))
+			{
 				GetStackingParams().SetFileList(fileList);
+			}
 			else
+			{
 				bResult = false;
+				ConsoleOut() << "File list file does not exist [" << fileList << "]" << Qt::endl;
+			}
 		}
 	}
 
-	if (!(GetStackingParams().IsOptionSet(StackingParams::eStackingOption::STACKING) && 
-		  GetStackingParams().IsOptionSet(StackingParams::eStackingOption::REGISTER)
-		))
+	if (!GetStackingParams().IsOptionSet(StackingParams::eStackingOption::STACKING) && 
+		!GetStackingParams().IsOptionSet(StackingParams::eStackingOption::REGISTER)
+		)
 		bResult = false;
 
 	return bResult;
@@ -201,7 +207,7 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 
 	ConsoleOut() << "Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>" << Qt::endl;
 	ConsoleOut() << Qt::endl;
-	ConsoleOut() << " /r	         - Register frames (only the ones not already registered)" << Qt::endl;
+	ConsoleOut() << " /r	        - Register frames (only the ones not already registered)" << Qt::endl;
 	ConsoleOut() << " /R            - Register frames (even the ones already registered)" << Qt::endl;
 	ConsoleOut() << " /S            - Stack frames" << Qt::endl;
 	ConsoleOut() << " /SR           - Save each registered and calibrated light frame in" << Qt::endl;
