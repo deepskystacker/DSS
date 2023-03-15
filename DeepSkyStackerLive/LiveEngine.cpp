@@ -288,7 +288,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 		Start2(QString::fromStdWString(strText.GetString()), 0);
 		CAllDepthBitmap				adb;
-		adb.SetDontUseAHD(TRUE);
+		adb.SetDontUseAHD(true);
 
 		bResult = LoadPicture(szFileName, adb, this);
 		End2();
@@ -302,7 +302,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 			strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)szFileName);
 			Start2(QString::fromStdWString(strText.GetString()), 0);
-			lfi.SetBitmap(szFileName, FALSE, FALSE);
+			lfi.SetBitmap(szFileName, false, false);
 			lfi.SetProgress(this);
 			lfi.RegisterPicture(adb.m_pBitmap.get());
 			lfi.SaveRegisteringInfo();
