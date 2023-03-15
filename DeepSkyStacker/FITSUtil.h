@@ -141,7 +141,7 @@ public:
 		m_fRedRatio{ 1.0 },
 		m_fBlueRatio{ 1.0 },
 		m_bDSI{ false },
-		m_fBrightnessRatio{ 0 }
+		m_fBrightnessRatio{ 0.0 }
 	{}
 
 	virtual ~CFITSReader()
@@ -154,7 +154,7 @@ public:
 	virtual bool Close();
 
 	virtual bool OnOpen() { return true; }
-	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return false; }
+	virtual bool OnRead(int, int, double, double, double) { return false; }
 	virtual bool OnClose() { return true; }
 };
 
@@ -215,14 +215,14 @@ public:
 
 CFATYPE GetFITSCFATYPE();
 bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase*	pProgress);
+bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			   int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescriptionL, int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription);
 bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress);
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
 void GetFITSExtension(fs::path path, CString& strExtension);
 

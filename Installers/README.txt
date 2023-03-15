@@ -9,9 +9,13 @@ Changes since 5.1.0
 
 2. Bug fix - A corrupt info.txt file caused an infinite loop.
 
-3. Diagnostic added - Report processor architecture in trace file and to stderr at startup.
+3. Diagnostic added - Report processor architecture and processor type in trace file and to stderr at startup.
 
 4. Bug fix - Stacked FITS images in SuperPixel mode were displayed only in the top left corner.
+
+5. Bug fix - Resolve occasional odd problems when using edit stars mode.
+
+6. Bug fix - DeepSkyStackerCL was only displaying the help text regardless of command line input.
 
 Welcome to DeepSkyStacker 5.1.0
 ===============================

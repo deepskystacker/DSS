@@ -254,7 +254,7 @@ public:
 			_mm256_min_epi32(_mm256_cvttps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0000ffff))
 		};
 	}
-	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor)
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double*)
 	{
 		throw "read16PackedInt(const double*) is not implemented!";
 	}

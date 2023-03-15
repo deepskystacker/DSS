@@ -341,7 +341,7 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direc
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 {
 	int drawwidth = getDrawWidth() - 23;
-	bool vertical = isVertical();
+	//bool vertical = isVertical();
 
 	painter.save();
 	//
@@ -636,7 +636,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 		QPoint point(event->pos());
 		QRect pegrect;
 		bool edit = false;
-		int drawwidth = getDrawWidth();
+		//int drawwidth = getDrawWidth();
 
 		if (isVertical())
 			pos = posFromPoint(point.y());
@@ -962,7 +962,7 @@ int QLinearGradientCtrl::setSelected(int iSel)
 	return lastSelectedPeg;
 }
 
-int QLinearGradientCtrl::moveSelected(qreal newpos, bool bUpdate)
+int QLinearGradientCtrl::moveSelected(qreal newpos, bool)
 {
 	if (selectedPeg < 0)
 		return -1;
@@ -986,7 +986,7 @@ int QLinearGradientCtrl::moveSelected(qreal newpos, bool bUpdate)
 	return selectedPeg;
 }
 
-QColor QLinearGradientCtrl::setSelectedPegColour(QColor newColour, bool bUpdate)
+QColor QLinearGradientCtrl::setSelectedPegColour(QColor newColour, bool)
 {
 	QColor result(Qt::black);
 	if (selectedPeg < 0)
@@ -1004,7 +1004,7 @@ QColor QLinearGradientCtrl::setSelectedPegColour(QColor newColour, bool bUpdate)
 	return result;
 }
 
-void QLinearGradientCtrl::setShowToolTips(bool bShow)
+void QLinearGradientCtrl::setShowToolTips(bool)
 {
 	//m_bShowToolTip = bShow;
 	//if (m_Impl->m_ToolTipCtrl.GetSafeHwnd() != nullptr)
@@ -1153,9 +1153,9 @@ void QLinearGradientCtrl::getPegRect(int index, QRect *rect, bool right)
 		return;
 	}
 
-	auto position = stops[index].first;
-	int p = pointFromPos(position);
-	int indent = getPegIndent(index) * 11;
+	// auto position = stops[index].first;
+	// int p = pointFromPos(position);
+	// int indent = getPegIndent(index) * 11;
 
 	QRegion region{ getPegPoly(index) };
 	*rect = region.boundingRect();
@@ -1248,8 +1248,8 @@ QRegion QLinearGradientCtrl::getPegRegion()
 {
 	QRegion result;
 	QPoint pegpoint;
-	int drawwidth = getDrawWidth();
-	bool vertical = isVertical();
+	// int drawwidth = getDrawWidth();
+	// bool vertical = isVertical();
 	int colcount = (int)m_LeftDownSide + (int)m_RightUpSide;
 
 	if (colcount == 0)

@@ -234,7 +234,7 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 void CMainBoard::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 {
 	COLORREF		crColor1 = RGB(255, 255, 255);
-	COLORREF		crColor2 = RGB(200, 200, 200);
+	//COLORREF		crColor2 = RGB(200, 200, 200);
 	double			fAlpha = 0.8;
 
 	#ifndef NOGDIPLUS
@@ -699,7 +699,7 @@ BOOL CMainBoard::OnEraseBkgnd(CDC* pDC)
 	CBitmap *					pOldBitmap;
 	CString						strText;
 	CDeepSkyStackerLiveDlg *	pDlg = GetDSSLiveDlg(this);
-	DSSLIVETAB					TabID;
+	DSSLIVETAB					TabID{ DLT_NONE };
 
 	GetClientRect(&rc);
 	MemDC.CreateCompatibleDC(pDC);
@@ -987,7 +987,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 
 /* ------------------------------------------------------------------- */
 
-void CMainBoard::OnMonitoredFolder( NMHDR * pNotifyStruct, LRESULT * result )
+void CMainBoard::OnMonitoredFolder([[maybe_unused]] NMHDR * pNotifyStruct, [[maybe_unused]] LRESULT * result )
 {
 	ChangeMonitoredFolder();
 };
@@ -1140,7 +1140,7 @@ typedef struct
     DWORD dwItem2;    // dwItem2 contains the new PIDL or name of the folder.
 } SHNOTIFYSTRUCT;
 
-LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
+LRESULT CMainBoard::OnFolderChange([[maybe_unused]] WPARAM wParam, [[maybe_unused]] LPARAM lParam)
 {
 	std::vector<CString>		vFiles;
 	std::vector<CString>		vNewFiles;

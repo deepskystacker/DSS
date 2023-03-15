@@ -433,9 +433,9 @@ public :
 		m_BlueAdjust.ToText(strBlueParameters);
 
 		strParameters.Format(_T("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}"),
-					strRedParameters,
-					strGreenParameters,
-					strBlueParameters);
+			(LPCTSTR)strRedParameters,
+			(LPCTSTR)strGreenParameters,
+			(LPCTSTR)strBlueParameters);
 	};
 
 	void	FromText(LPCTSTR szParameters)

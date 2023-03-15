@@ -110,7 +110,7 @@ void RegisterSettings::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	bool checked = false;
+	// bool checked = false;
 
 	//
 	// Restore Window position etc..
@@ -270,7 +270,7 @@ void RegisterSettings::on_percentStack_textEdited(const QString &text)
 
 void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 {
-	if (detectionThreshold != newValue)
+	if (detectionThreshold != static_cast<uint>(newValue))
 	{
 		detectionThreshold = newValue;
 		// Display new value

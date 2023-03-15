@@ -433,7 +433,7 @@ void CSettingsTab::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsTab::OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result )
+void CSettingsTab::OnWarningFileFolder( NMHDR *, LRESULT *)
 {
 	BOOL					bResult = FALSE;
 	CString					strFolder;
@@ -459,7 +459,7 @@ void CSettingsTab::OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result 
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsTab::OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
+void CSettingsTab::OnStackedOutputFolder( NMHDR *, LRESULT *)
 {
 	BOOL					bResult = FALSE;
 	CString					strFolder;
@@ -485,7 +485,7 @@ void CSettingsTab::OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * resul
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsTab::OnEmailAddress( NMHDR * pNotifyStruct, LRESULT * result )
+void CSettingsTab::OnEmailAddress( NMHDR *, LRESULT *)
 {
 	CEmailSettings			dlg;
 

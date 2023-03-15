@@ -364,6 +364,7 @@ bool QWinWidget::focusNextPrevChild(bool next)
     if (!next) {
         if (!curFocus->isWindow()) {
             QWidget *nextFocus = curFocus->nextInFocusChain();
+#pragma warning (suppress:4458)
             QWidget *prevFocus = 0;
             QWidget *topLevel = 0;
             while (nextFocus != curFocus) {

@@ -74,33 +74,35 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 	{
 		if constexpr (std::is_same<T, double>::value) // color-double not supported.
 			return 1;
-
-		if (isCFA)
+		else
 		{
-			avxCfa.init(lineStart, lineEnd);
-			avxCfa.interpolate(lineStart, lineEnd, 1);
-		}
-
-		for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
-		{
-			const T* pRedPixels = isCFA ? avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
-			const T* pGreenPixels = isCFA ? avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
-			const T* pBluePixels = isCFA ? avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
-
-			for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
+			if (isCFA)
 			{
-				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), redHisto);
-				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), greenHisto);
-				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), blueHisto);
+				avxCfa.init(lineStart, lineEnd);
+				avxCfa.interpolate(lineStart, lineEnd, 1);
 			}
-			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
+
+			for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
 			{
-				addToHisto(redHisto, *pRedPixels);
-				addToHisto(greenHisto, *pGreenPixels);
-				addToHisto(blueHisto, *pBluePixels);
+				const T* pRedPixels = isCFA ? avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
+				const T* pGreenPixels = isCFA ? avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
+				const T* pBluePixels = isCFA ? avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
+
+				for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
+				{
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), redHisto);
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), greenHisto);
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), blueHisto);
+				}
+				for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
+				{
+					addToHisto(redHisto, *pRedPixels);
+					addToHisto(greenHisto, *pGreenPixels);
+					addToHisto(blueHisto, *pBluePixels);
+				}
 			}
+			return 0;
 		}
-		return 0;
 	}
 
 	// Note:

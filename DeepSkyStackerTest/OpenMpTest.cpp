@@ -179,6 +179,7 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 		pBitmap->Init(3, 2);
 		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap.get(), nullptr, 1.0, 1.0, 1.0);
 		filler->setGrey(true);
+#pragma warning (suppress: 4189)
 		const bool isThreadSafe = filler->isThreadSafe();
 //#pragma omp parallel firstprivate(filler) if(filler->isThreadSafe()) // Visual Studio 2019, V 16.10.4: Access violation here
 #pragma omp parallel for firstprivate(filler) if(isThreadSafe)
@@ -212,12 +213,14 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 	SECTION("Firstprivate with class")
 	{
 		OmpTest tc(3, 2);
+#pragma warning (suppress: 4189)
 		const bool isThreadSafe = tc.isThreadSafe();
 //#pragma omp parallel for firstprivate(tc) if(tc.isThreadSafe()) // Crashes in VS 2019 V 16.10.4
 #pragma omp parallel for firstprivate(tc) if(isThreadSafe)
 		for (int line = 0; line < 2; ++line)
 		{
-			std::uint8_t data[3] = { 17 + line, 29 + 2 * line, 51 + 3 * line };
+			using T = std::uint8_t;
+			T data[3] = { static_cast<T>(17 + line), static_cast<T>(29 + 2 * line), static_cast<T>(51 + 3 * line) };
 			REQUIRE(tc.process(line, data) == 3);
 		}
 	}

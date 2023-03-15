@@ -227,22 +227,22 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 
 /* ------------------------------------------------------------------- */
 
-inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
-{
-	double			fR, fG, fB;
-
-	fR   = (fMagenta+fYellow-fCyan)/2.0;
-	fG = (fYellow+fCyan-fMagenta)/2.0;
-	fB  = (fMagenta+fCyan-fYellow)/2.0;
-
-	fRed   = 2.088034662 * fR + -3.663103328 * fG + 3.069027325 * fB;
-	fGreen = -0.28607719 * fR +	1.706598409	* fG + 0.24881043 * fB;
-	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
-
-	fRed = max(0.0, min (255.0, fRed));
-	fGreen = max(0.0, min (255.0, fGreen));
-	fBlue = max(0.0, min (255.0, fBlue));
-};
+//inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
+//{
+//	double			fR, fG, fB;
+//
+//	fR   = (fMagenta+fYellow-fCyan)/2.0;
+//	fG = (fYellow+fCyan-fMagenta)/2.0;
+//	fB  = (fMagenta+fCyan-fYellow)/2.0;
+//
+//	fRed   = 2.088034662 * fR + -3.663103328 * fG + 3.069027325 * fB;
+//	fGreen = -0.28607719 * fR +	1.706598409	* fG + 0.24881043 * fB;
+//	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
+//
+//	fRed = max(0.0, min (255.0, fRed));
+//	fGreen = max(0.0, min (255.0, fGreen));
+//	fBlue = max(0.0, min (255.0, fBlue));
+//}
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
@@ -765,7 +765,7 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, ProgressB
 bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase * pProgress);
 
 #endif // DSSFILEDECODING
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress);
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* const pProgress);
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 

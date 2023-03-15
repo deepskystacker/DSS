@@ -558,7 +558,7 @@ private :
 	virtual bool hasBeenCanceled() override;
 	virtual void closeProgress() override;
 	virtual bool doWarning(const QString& szText) override;
-	virtual void applyProcessorsUsed(int nCount) override {};
+	virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
 
 private:
 	enum eOutputType

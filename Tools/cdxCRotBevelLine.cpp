@@ -247,7 +247,7 @@ void cdxCRotBevelLine::OnEnable(BOOL bEnable)
 	Invalidate();
 }
 
-BOOL cdxCRotBevelLine::OnEraseBkgnd(CDC* pDC)
+BOOL cdxCRotBevelLine::OnEraseBkgnd([[maybe_unused]] CDC* pDC)
 {
 	return TRUE;
 }

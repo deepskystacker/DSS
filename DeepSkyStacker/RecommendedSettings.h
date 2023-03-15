@@ -196,9 +196,9 @@ public:
 	explicit RecommendedSettings(QWidget *parent = nullptr);
 	~RecommendedSettings();
 
-	inline void setStackingTasks(CAllStackingTasks * stackingTasks) noexcept
+	inline void setStackingTasks(CAllStackingTasks * tasks) noexcept
 	{
-		pStackingTasks = stackingTasks;
+		pStackingTasks = tasks;
 	};
 
 

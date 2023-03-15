@@ -343,7 +343,6 @@ void	WorkspaceSettings::SaveToFile(FILE * hFile)
 
 void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
-	const wchar_t* ptr = file.c_str();
 	if (std::FILE* hFile =
 #if defined _WINDOWS
 		_wfopen(file.c_str(), L"wt")

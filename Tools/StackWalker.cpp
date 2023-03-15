@@ -1342,6 +1342,8 @@ BOOL __stdcall StackWalker::myReadProcMem(HANDLE  hProcess,
   }
 }
 
+#pragma warning (push)
+#pragma warning (disable:4100)
 void StackWalker::OnLoadModule(LPCSTR    img,
                                LPCSTR    mod,
                                DWORD64   baseAddr,
@@ -1375,6 +1377,7 @@ void StackWalker::OnLoadModule(LPCSTR    img,
   OnOutput(buffer);
 #endif
 }
+#pragma warning (pop)
 
 void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)
 {

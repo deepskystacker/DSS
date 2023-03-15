@@ -139,7 +139,7 @@ END_MESSAGE_MAP()
 // ==================================================================
 //  OnPaint
 // ------------------------------------------------------------------
-
+#pragma warning (disable:4389)
 #include <gdiplus.h>
 using namespace Gdiplus;
 
@@ -704,7 +704,9 @@ void CWndImage::SetImg(HBITMAP bmp, bool shared)
 
 		if (bmp != 0)
 		{
+#pragma warning (push, 3)
 			BITMAP bmp;
+#pragma warning (pop)
 			m_bmp.GetBitmap(&bmp);
 			m_bmpSize.cx = bmp.bmWidth;
 			m_bmpSize.cy = bmp.bmHeight;
@@ -990,7 +992,7 @@ void CWndImage::OnLButtonDown(UINT nFlags, CPoint point)
 	if (m_pButtonToolbar && m_bmp.m_hObject && !m_4Corners)
 	{
 		CRect			rcToolbar;
-		BOOL			bRefresh = FALSE;
+		// BOOL			bRefresh = FALSE;
 
 		GetToolbarRect(rcToolbar);
 		if (rcToolbar.PtInRect(point))
@@ -1101,12 +1103,12 @@ void CWndImage::OnMouseMove(UINT nFlags, CPoint point)
 
 void CWndImage::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	BOOL				bPass = TRUE;
+	//BOOL				bPass = TRUE;
 
 	if (m_pButtonToolbar && m_bmp.m_hObject && !m_4Corners)
 	{
 		CRect			rcToolbar;
-		BOOL			bRefresh = FALSE;
+		// BOOL			bRefresh = FALSE;
 
 		GetToolbarRect(rcToolbar);
 		if (rcToolbar.PtInRect(point))
@@ -1244,7 +1246,7 @@ void CWndImage::ReleaseZoom()
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnTimer(UINT_PTR nIDEvent)
+void CWndImage::OnTimer([[maybe_unused]] UINT_PTR nIDEvent)
 {
 	CRect			rcWindow;
 	CPoint			ptMouse;
@@ -1273,7 +1275,7 @@ void CWndImage::OnTimer(UINT_PTR nIDEvent)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+void CWndImage::OnKeyDown(UINT nChar, [[maybe_unused]] UINT nRepCnt, [[maybe_unused]] UINT nFlags)
 {
 	POINT				ptCursor;
 

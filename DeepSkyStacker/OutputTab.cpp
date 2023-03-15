@@ -41,7 +41,6 @@ void OutputTab::onSetActive()
 	CAllStackingTasks::GetOutputSettings(os);
 
 	bool enable = os.m_bOutput;
-	bool temp = false;
 
 	ui->createOutput->setChecked(enable);
 	ui->createHTML->setEnabled(enable);

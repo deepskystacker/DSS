@@ -799,12 +799,11 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySett
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CFITSWriter * fitsWriter, bool bApplySettings)
+void CStackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
 {
 	if (fitsWriter)
-	{
-	};
-};
+	{}
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -915,8 +914,6 @@ bool CTIFFWriterStacker::OnOpen()
 
 void CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
-	bool			bResult = true;
-
 	lX += m_lXStart;
 	lY += m_lYStart;
 
@@ -1266,8 +1263,6 @@ bool CTIFFReadStacker::OnOpen()
 
 void CTIFFReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
-	bool			bResult = true;
-
 	if (m_pStackedBitmap)
 		m_pStackedBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 

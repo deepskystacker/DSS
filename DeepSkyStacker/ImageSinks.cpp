@@ -715,7 +715,7 @@ bool	CEditStarsSink::Image_OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonDown(long lX, long lY)
+bool CEditStarsSink::Image_OnLButtonDown(long, long)
 {
 	bool			bResult = false;
 
@@ -769,12 +769,10 @@ bool	CEditStarsSink::Image_OnLButtonDown(long lX, long lY)
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonUp(long lX, long lY)
+bool CEditStarsSink::Image_OnLButtonUp(long, long)
 {
-	bool			bResult = true;
-
-	return bResult;
-};
+	return true;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -837,6 +835,7 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 			if (rc3.IntersectRect(&rc1, &rc2))
 			{
 				// Draw the triangle
+#pragma warning (suppress:4456)
 				PointF		pt[3];
 
 				pt[0] = tr.pt1,
@@ -1209,6 +1208,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				{
 					CPoint		pt;
 					CRect		rc;
+#pragma warning (suppress:4456)
 					CStar &		star = vStars[i];
 
 					double		fX, fY;
@@ -1438,6 +1438,10 @@ void CQualityGrid::InitGrid(STARVECTOR& vStars)
 		Delaunay delaunay;
 		triangleSet sTriangles;
 
+		//
+		// ### To Do
+		// March 2023: Delaunay::Triangulate() does nothing. sTriangles will be empty.
+		//
 		delaunay.Triangulate(sVertices, sTriangles);
 
 		m_vTriangles.reserve(sTriangles.size());

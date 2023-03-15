@@ -241,9 +241,9 @@ bool CFITSReader::Open()
 		fits_get_errstatus(status, error_text);
 		CString errorMessage;
 		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			m_strFileName,
+			(LPCTSTR)m_strFileName,
 			status,
-			CString(error_text));
+			&error_text[0]);
 
 		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
 
@@ -260,7 +260,7 @@ bool CFITSReader::Open()
 	if (m_fits)
 	{
 		CStringA fileName(m_strFileName);
-		ZTRACE_RUNTIME("Opened %s", fileName);
+		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
 
 		// File ok - move to the first image HDU
 		CString			strSimple;
@@ -809,11 +809,13 @@ class CFITSReadInMemoryBitmap : public CFITSReader
 private :
 	std::shared_ptr<CMemoryBitmap>& m_outBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	bool ignoreBrightness;
 
 public :
-	CFITSReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase*	pProgress):
-		CFITSReader(szFileName, pProgress),
-		m_outBitmap{ rpBitmap }
+	CFITSReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
+		CFITSReader{ szFileName, pProgress },
+		m_outBitmap{ rpBitmap },
+		ignoreBrightness{ ignoreBr }
 	{}
 
 	virtual ~CFITSReadInMemoryBitmap() { Close(); };
@@ -943,11 +945,12 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 					pCFABitmapInfo->UseAHD(true);
 
 				// Retrieve ratios
-				GetFITSRatio(m_fRedRatio, m_fGreenRatio, m_fBlueRatio);
+				if (!this->ignoreBrightness)
+					GetFITSRatio(m_fRedRatio, m_fGreenRatio, m_fBlueRatio);
 			}
 		}
 		else
-			m_fBrightnessRatio = GetFITSBrightnessRatio();
+			m_fBrightnessRatio = this->ignoreBrightness ? 1.0 : GetFITSBrightnessRatio();
 
 		m_pBitmap->SetMaster(false);
 		if (m_fExposureTime)
@@ -990,21 +993,21 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 					switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 					{
 					case BAYER_BLUE:
-						fRed = min(maxValue, fRed * m_fBlueRatio);
+						fRed = std::min(maxValue, fRed * m_fBlueRatio);
 						break;
 					case BAYER_GREEN:
-						fRed = min(maxValue, fRed * m_fGreenRatio);
+						fRed = std::min(maxValue, fRed * m_fGreenRatio);
 						break;
 					case BAYER_RED:
-						fRed = min(maxValue, fRed * m_fRedRatio);
+						fRed = std::min(maxValue, fRed * m_fRedRatio);
 						break;
 					}
 				}
 				else
 				{
-					fRed = min(maxValue, fRed * m_fBrightnessRatio);
-					fGreen = min(maxValue, fGreen * m_fBrightnessRatio);
-					fBlue = min(maxValue, fBlue * m_fBrightnessRatio);
+					fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
+					fGreen = std::min(maxValue, fGreen * m_fBrightnessRatio);
+					fBlue = std::min(maxValue, fBlue * m_fBrightnessRatio);
 				}
 				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
@@ -1022,11 +1025,11 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			(LPCTSTR)name,
+			(LPCTSTR)fileName,
+			(LPCTSTR)functionName,
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			(LPCTSTR)text);
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else
@@ -1054,11 +1057,11 @@ bool CFITSReadInMemoryBitmap::OnClose()
 }
 
 
-bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress)
+bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CFITSReadInMemoryBitmap	fits(szFileName, rpBitmap, pProgress);
-	return fits.Open() && fits.Read();
+	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, ignoreBrightness, pProgress };
+	return fitsReader.Open() && fitsReader.Read();
 }
 
 
@@ -1215,9 +1218,10 @@ void	CFITSWriter::WriteAllKeys()
 				CString		strTemplate;
 
 				if (ei.m_strComment.GetLength())
-					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s / %s"),
+						ei.m_strName.GetString(), ei.m_strValue.GetString(), ei.m_strComment.GetString());
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue);
+					strTemplate.Format(_T("%s = %s"), ei.m_strName.GetString(), ei.m_strValue.GetString());
 
 				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
@@ -1648,10 +1652,10 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 	if (::IsCFA(m_pMemoryBitmap))
 		m_CFAType = ::GetCFAType(m_pMemoryBitmap);
 
-	if (m_Format == TF_UNKNOWN)
+	if (m_Format == FF_UNKNOWN)
 		m_Format = GetBestFITSFormat(m_pMemoryBitmap);
 
-	if (m_Format != TF_UNKNOWN)
+	if (m_Format != FF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, m_CFAType);
 		if (!m_lISOSpeed)
@@ -1695,11 +1699,11 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
+			(LPCTSTR)name,
+			(LPCTSTR)fileName,
+			(LPCTSTR)functionName,
 			e.locationAtIndex(0)->lineNumber(),
-			text);
+			(LPCTSTR)text);
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
 #else
@@ -1804,14 +1808,14 @@ bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 };
 
 
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		if (ReadFITS(szFileName, rpBitmap, pProgress))
+		if (ReadFITS(szFileName, rpBitmap, ignoreBrightness, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{

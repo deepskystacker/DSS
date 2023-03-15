@@ -198,7 +198,7 @@ public:
 
 	virtual inline void reportError(const QString& message, DSSBase::Severity severity)
 	{
-		bool result = QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
 	}

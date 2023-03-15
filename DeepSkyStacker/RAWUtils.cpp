@@ -305,7 +305,7 @@ namespace { // Only use in this .cpp file
 		};
 
 		bool IsRawFile() const;
-		bool LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr, bool bThumb = false);
+		bool LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 
 		bool GetModel(CString& strModel)
 		{
@@ -462,7 +462,7 @@ namespace { // Only use in this .cpp file
 		if (false == result)
 		{
 			CString errorMessage;
-			errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, strModel);
+			errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, (LPCTSTR)strModel);
 #if defined(_CONSOLE)
 			std::wcerr << errorMessage;
 #else
@@ -475,7 +475,7 @@ namespace { // Only use in this .cpp file
 	/* ------------------------------------------------------------------- */
 
 
-	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress, bool bThumb)
+	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -502,24 +502,15 @@ namespace { // Only use in this .cpp file
 
 		pBitmap->SetDescription(strDescription);
 
-		const int maxargs = 50;
+		// const int maxargs = 50;
 		Workspace workspace;
-		double fBrightness = 1.0;
-		double fRedScale = 1.0;
-		double fBlueScale = 1.0;
-		double fGreenScale = 1.0;
+		const double fGreenScale = ignoreBrightness ? 1.0 : workspace.value("RawDDP/Brightness").toDouble();
+		const double fRedScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/RedScale").toDouble());
+		const double fBlueScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/BlueScale").toDouble());
 
 		do	// Do once!
 		{
 			const int numberOfProcessors = CMultitask::GetNrProcessors();
-
-			fBrightness = workspace.value("RawDDP/Brightness").toDouble();
-			fRedScale = workspace.value("RawDDP/RedScale").toDouble();
-			fBlueScale = workspace.value("RawDDP/BlueScale").toDouble();
-
-			fGreenScale = fBrightness;
-			fRedScale *= fBrightness;
-			fBlueScale *= fBrightness;
 
 			//bSuperPixels = IsSuperPixels();
 			//bRawBayer    = IsRawBayer();
@@ -571,7 +562,7 @@ namespace { // Only use in this .cpp file
 			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 			{
 				bResult = false;
-				ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName, libraw_strerror(ret));
+				ZTRACE_RUNTIME("Cannot unpack %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
 			}
 			if (!bResult)
 				break;
@@ -830,7 +821,7 @@ namespace { // Only use in this .cpp file
 				// than the saturation level).
 				//
 
-				const double dmax = *std::max_element(&pre_mul[0], &pre_mul[4]);
+				// const double dmax = *std::max_element(&pre_mul[0], &pre_mul[4]);
 				const double dmin = *std::min_element(&pre_mul[0], &pre_mul[4]);
 
 				float scale_mul[4];
@@ -887,7 +878,7 @@ namespace { // Only use in this .cpp file
 				//
 				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
 				{
-					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
+					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
 					if (LIBRAW_FATAL_ERROR(ret))
 						bResult = false;
 				}
@@ -994,7 +985,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1016,7 +1007,7 @@ bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap
             ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), szFileName);
         }
 
-        bResult = dcr.LoadRawFile(pBitmap.get(), pProgress);
+        bResult = dcr.LoadRawFile(pBitmap.get(), ignoreBrightness, pProgress);
 
         if (bResult)
         {
@@ -1066,7 +1057,7 @@ bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap
       }                                                         \
   }while(0)
 
-int DSSLibRaw::dcraw_ppm_tiff_writer(const char *filename)
+int DSSLibRaw::dcraw_ppm_tiff_writer(const char*)
 {
 	ZFUNCTRACE_RUNTIME();
 	CHECK_ORDER_LOW(LIBRAW_PROGRESS_LOAD_RAW);

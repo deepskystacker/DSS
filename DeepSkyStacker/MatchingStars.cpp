@@ -226,9 +226,11 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
 			QPointF &		Star = TgtStar(vVotingPairs[i]);
+#pragma warning (suppress:4456)
 			double			X = Star.x()/fXWidth;
 			double			X2 = X * X;
 			double			X3 = X * X * X;
+#pragma warning (suppress:4456)
 			double			Y = Star.y()/fYWidth;
 			double			Y2 = Y * Y;
 			double			Y3 = Y * Y * Y;
@@ -322,8 +324,10 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 		{
 			QPointF &		Star = TgtStar(vVotingPairs[i]);
 
+#pragma warning (suppress:4456)
 			double		X = Star.x()/fXWidth;
 			double		X2 = X * X;
+#pragma warning (suppress:4456)
 			double		Y = Star.y()/fYWidth;
 			double		Y2 = Y * Y;
 
@@ -394,8 +398,9 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
 			QPointF &		Star = TgtStar(vVotingPairs[i]);
-
+#pragma warning (suppress:4456)
 			double		X = Star.x()/fXWidth;
+#pragma warning (suppress:4456)
 			double		Y = Star.y()/fYWidth;
 
 			M(i, 0) = 1;
@@ -473,7 +478,7 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 	VOTINGPAIRVECTOR					vOkPairs;
 	std::vector<int>					vOkAddedPairs;
 	CBilinearParameters					OkTransformation;
-	TRANSFORMATIONTYPE					OkTType;
+	TRANSFORMATIONTYPE					OkTType{ TT_LINEAR };
 
 	if (!vVotingPairs.empty() && vVotingPairs[0].IsCorner())
 		lNrExtraPairs = 4;

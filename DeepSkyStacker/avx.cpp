@@ -559,9 +559,11 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 
 		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
 	}
-
-	return 0;
 }
+
+#pragma warning( push )
+#pragma warning( disable : 4324 ) // Structure was padded
+#pragma warning( disable : 4100 ) // Unreferenced variable
 
 template <bool ISRGB, bool ENTROPY, class T>
 int AvxStacking::pixelPartitioning()
@@ -627,7 +629,7 @@ int AvxStacking::pixelPartitioning()
 	const auto getColorPointer = [](const std::vector<__m256>& colorPixels, const size_t offset) -> const __m256*
 	{
 		if constexpr (ISRGB)
-			return &*colorPixels.begin() + offset;
+			return colorPixels.data() + offset;
 		else
 			return nullptr;
 	};
@@ -843,6 +845,8 @@ int AvxStacking::pixelPartitioning()
 
 	return 0;
 }
+
+#pragma warning( pop )
 
 template <bool ISRGB>
 inline void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row)

@@ -484,7 +484,7 @@ void CProcessingDlg::UpdateInfos()
 			strFrames.Format(IDS_NRFRAMES, lNrFrames);
 		};
 
-		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile, strISO, strGain, strTime, strFrames);
+		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
 	}
 	else
 		strText = m_strCurrentFile;
@@ -791,8 +791,6 @@ void CProcessingDlg::CopyPictureToClipboard()
 
 void CProcessingDlg::CreateStarMask()
 {
-	bool bResult = false;
-
 	if (dssApp->deepStack().IsLoaded())
 	{
 		KillTimer(1);
@@ -1061,7 +1059,6 @@ public :
 
 void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
 {
-	HPEN						hOldPen	= nullptr;
 	std::vector<CColorOrder>	vColors;
 	int						lLastHeight = 0;
 
