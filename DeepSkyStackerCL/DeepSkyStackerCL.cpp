@@ -171,21 +171,21 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 				bResult = false;
 			}
 		}
-		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
-		{
-			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
-			if (strOutputMode == "0")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
-			else if (strOutputMode == "1")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
-			else if (strOutputMode == "2")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::FORMATTED);
-			else
-			{
-				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
-				bResult = false;
-			}
-		}
+ 		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
+ 		{
+ 			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
+ 			if (strOutputMode == "0")
+ 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
+ 			else if (strOutputMode == "1")
+ 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
+ 			else if (strOutputMode == "2")
+ 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::FORMATTED);
+ 			else
+ 			{
+ 				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
+ 				bResult = false;
+ 			}
+ 		}
 		else
 		{
 			QString fileList(vCommandLine[i]);
@@ -232,10 +232,10 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 	ConsoleOut() << "                 0: no compression (default)" << Qt::endl;
 	ConsoleOut() << "                 1: LZW compression" << Qt::endl;
 	ConsoleOut() << "                 2: ZIP (Deflate) compression" << Qt::endl;
-	ConsoleOut() << " /OSx          - Output style" << Qt::endl;
-	ConsoleOut() << "                 0: simple" << Qt::endl;
+	ConsoleOut() << " /OSx          - Output style (if terminal supports it)" << Qt::endl;
+	ConsoleOut() << "                 0: simple (default)" << Qt::endl;
 	ConsoleOut() << "                 1: colored" << Qt::endl;
-	ConsoleOut() << "                 2: compact (default)" << Qt::endl;
+	ConsoleOut() << "                 2: compact" << Qt::endl;
 	ConsoleOut() << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
 	ConsoleOut() << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
 	ConsoleOut() << Qt::endl;
