@@ -339,7 +339,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, pProgress))
+		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, false, pProgress))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -1293,7 +1293,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress)
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
@@ -1324,7 +1324,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		int loadResult = 0;
 
 		if (IsRAWPicture(szFileName, BitmapInfo))
-			bResult = LoadRAWPicture(szFileName, rpBitmap, pProgress);
+			bResult = LoadRAWPicture(szFileName, rpBitmap, ignoreBrightness, pProgress);
 		if (bResult)
 			break;		// All done - file has been loaded 
 			
@@ -1348,7 +1348,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		// It wasn't a TIFF file, so try to load a FITS file
 		//
-		loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, pProgress);
+		loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 		if (0 == loadResult)
 		{
 			bResult = true;

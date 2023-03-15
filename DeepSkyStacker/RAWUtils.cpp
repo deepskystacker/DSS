@@ -305,7 +305,7 @@ namespace { // Only use in this .cpp file
 		};
 
 		bool IsRawFile() const;
-		bool LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr);
+		bool LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 
 		bool GetModel(CString& strModel)
 		{
@@ -475,7 +475,7 @@ namespace { // Only use in this .cpp file
 	/* ------------------------------------------------------------------- */
 
 
-	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -504,22 +504,13 @@ namespace { // Only use in this .cpp file
 
 		// const int maxargs = 50;
 		Workspace workspace;
-		double fBrightness = 1.0;
-		double fRedScale = 1.0;
-		double fBlueScale = 1.0;
-		double fGreenScale = 1.0;
+		const double fGreenScale = ignoreBrightness ? 1.0 : workspace.value("RawDDP/Brightness").toDouble();
+		const double fRedScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/RedScale").toDouble());
+		const double fBlueScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/BlueScale").toDouble());
 
 		do	// Do once!
 		{
 			const int numberOfProcessors = CMultitask::GetNrProcessors();
-
-			fBrightness = workspace.value("RawDDP/Brightness").toDouble();
-			fRedScale = workspace.value("RawDDP/RedScale").toDouble();
-			fBlueScale = workspace.value("RawDDP/BlueScale").toDouble();
-
-			fGreenScale = fBrightness;
-			fRedScale *= fBrightness;
-			fBlueScale *= fBrightness;
 
 			//bSuperPixels = IsSuperPixels();
 			//bRawBayer    = IsRawBayer();
@@ -994,7 +985,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1016,7 +1007,7 @@ bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap
             ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), szFileName);
         }
 
-        bResult = dcr.LoadRawFile(pBitmap.get(), pProgress);
+        bResult = dcr.LoadRawFile(pBitmap.get(), ignoreBrightness, pProgress);
 
         if (bResult)
         {

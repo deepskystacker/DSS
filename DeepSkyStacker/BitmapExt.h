@@ -765,7 +765,7 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, ProgressB
 bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase * pProgress);
 
 #endif // DSSFILEDECODING
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress);
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* const pProgress);
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
