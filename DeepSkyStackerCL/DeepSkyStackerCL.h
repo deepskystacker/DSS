@@ -7,7 +7,7 @@ public:
 		m_stackingOptions{ 0 },
 		m_tiffFormat{ TF_32BITRGBFLOAT },
 		m_tiffCompression{ TC_NONE },
-		m_terminalOutputMode{ TERMINAL_OUTPUT_MODE::FORMATTED }
+		m_terminalOutputMode{ TERMINAL_OUTPUT_MODE::BASIC }
 	{
 	}
 	virtual ~StackingParams() = default;
