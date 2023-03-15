@@ -384,7 +384,7 @@ void PostCalibration::on_testCosmetic_clicked()
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;
-					if (::FetchPicture(filePath, pBitmap, &dlg))
+					if (::FetchPicture(filePath, pBitmap, false, &dlg))
 					{
 						// Apply offset, dark and flat to lightframe
 						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
