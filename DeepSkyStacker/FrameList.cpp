@@ -41,7 +41,7 @@ namespace {
 		return result;
 	}
 
-	bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupName)
+	bool	isChangeGroupLine(QString line, int16_t& groupId, QString& groupName)
 	{
 		bool				bResult = false;
 
@@ -55,7 +55,7 @@ namespace {
 			// list = [ "groupId", "groupName"] 
 			//
 
-			groupId = list[0].toUInt();
+			groupId = list[0].toInt();
 			if (2 == list.size())
 				groupName = list[1];
 
@@ -371,7 +371,7 @@ namespace DSS
 
 	FrameList& FrameList::loadFilesFromList(fs::path fileList)
 	{
-		uint16_t groupId = 0;
+		int16_t groupId = 0;
 		std::error_code ec;
 
 		//
@@ -511,7 +511,7 @@ namespace DSS
 								//
 								// Check all groups to see if this file has already been loaded
 								//
-								if (auto grpId = Group::whichGroupContains(filePath); grpId >= 0)
+								if (groupId = Group::whichGroupContains(filePath); groupId >= 0)
 								{
 									//
 									// If the file has already been loaded complain
@@ -519,8 +519,8 @@ namespace DSS
 									QString errorMessage(
 										QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
 										.arg(filePath.generic_string().c_str())
-										.arg(grpId)
-										.arg(groupName(grpId)));
+										.arg(groupId)
+										.arg(groupName(groupId)));
 
 #if defined(_CONSOLE)
 									std::cerr << errorMessage.toUtf8().constData();
