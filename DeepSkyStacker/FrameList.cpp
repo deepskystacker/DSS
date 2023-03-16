@@ -511,7 +511,7 @@ namespace DSS
 								//
 								// Check all groups to see if this file has already been loaded
 								//
-								if (auto grpId = Group::whichGroupContains(filePath); grpId >= 0)
+								if (groupId = Group::whichGroupContains(filePath); groupId >= 0)
 								{
 									//
 									// If the file has already been loaded complain
@@ -520,7 +520,7 @@ namespace DSS
 										QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
 										.arg(filePath.generic_string().c_str())
 										.arg(grpId)
-										.arg(groupName(grpId)));
+										.arg(groupName(groupId)));
 
 #if defined(_CONSOLE)
 									std::cerr << errorMessage.toUtf8().constData();
