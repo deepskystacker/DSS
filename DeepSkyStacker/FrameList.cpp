@@ -41,7 +41,7 @@ namespace {
 		return result;
 	}
 
-	bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupName)
+	bool	isChangeGroupLine(QString line, int16_t& groupId, QString& groupName)
 	{
 		bool				bResult = false;
 
@@ -55,7 +55,7 @@ namespace {
 			// list = [ "groupId", "groupName"] 
 			//
 
-			groupId = list[0].toUInt();
+			groupId = list[0].toInt();
 			if (2 == list.size())
 				groupName = list[1];
 
@@ -371,7 +371,7 @@ namespace DSS
 
 	FrameList& FrameList::loadFilesFromList(fs::path fileList)
 	{
-		uint16_t groupId = 0;
+		int16_t groupId = 0;
 		std::error_code ec;
 
 		//
