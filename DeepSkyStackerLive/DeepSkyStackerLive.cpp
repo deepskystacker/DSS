@@ -103,10 +103,11 @@ bool	hasExpired()
 QTranslator theQtTranslator;
 QTranslator theAppTranslator;
 
-int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
-				   HINSTANCE hPrevInstance,  // handle to previous instance
-				   LPTSTR lpCmdLine,      // pointer to command line
-				   int nCmdShow          // show state of window
+int WINAPI _tWinMain(
+	[[maybe_unused]] HINSTANCE hInstance,  // handle to current instance
+	[[maybe_unused]] HINSTANCE hPrevInstance,  // handle to previous instance
+	[[maybe_unused]] LPTSTR lpCmdLine,      // pointer to command line
+	[[maybe_unused]] int nCmdShow          // show state of window
 				   )
 {
 	ZFUNCTRACE_RUNTIME();

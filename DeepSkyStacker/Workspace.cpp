@@ -331,7 +331,6 @@ void	WorkspaceSettings::SaveToFile(FILE * hFile)
 
 void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
-	const wchar_t* ptr = file.c_str();
 	if (std::FILE* hFile =
 #if defined _WINDOWS
 		_wfopen(file.c_str(), L"wt")
@@ -452,25 +451,22 @@ void	WorkspaceSettings::ResetToDefault()
 	};
 };
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-Q_GLOBAL_STATIC(QMutex, theLock);
 
-std::shared_ptr<WorkspaceSettings> g_pSettings;
-static std::deque<WorkspaceSettings> g_WSStack;
+namespace {
+	std::shared_ptr<WorkspaceSettings> g_pSettings;
+	std::mutex mutex;
+	std::deque<WorkspaceSettings> g_WSStack;
+}
 
-/* ------------------------------------------------------------------- */
 
-Workspace::Workspace()
-{ 
-	theLock->lock();
-	if (nullptr == g_pSettings)
-	{
+Workspace::Workspace() : pSettings{ g_pSettings }
+{
+	if (this->pSettings != nullptr) // If g_pSettings was already initialised -> all good and return.
+		return;
+	std::unique_lock lock{ mutex };
+	if (nullptr == g_pSettings) // After acquiring the lock, we need to check again, if another thread has already initialised g_pSettings.
 		g_pSettings = std::make_shared<WorkspaceSettings>();
-	}
-	theLock->unlock();
-
-	pSettings = g_pSettings;
+	this->pSettings = g_pSettings;
 }
 
 

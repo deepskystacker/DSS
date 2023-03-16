@@ -110,7 +110,7 @@ int CChartSurfaceSerie::DrawLegend(CDC* pDC, CPoint UpperLeft, int BitmapWidth) 
 		return 0;
 
 	//Draw Text
-	int TextHeigh = pDC->GetTextExtent(m_strSerieName.c_str()).cy;
+	// int TextHeigh = pDC->GetTextExtent(m_strSerieName.c_str()).cy;
 	pDC->ExtTextOut(UpperLeft.x+BitmapWidth+6,
 					UpperLeft.y+1,
 					ETO_CLIPPED,

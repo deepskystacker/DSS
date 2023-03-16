@@ -10,10 +10,9 @@ AvxImageFilter<double>::AvxImageFilter(CInternalMedianFilterEngineT<double>* fil
 }
 
 template <class T>
-AvxImageFilter<T>::AvxImageFilter(CInternalMedianFilterEngineT<T>* filEng) :
+AvxImageFilter<T>::AvxImageFilter(CInternalMedianFilterEngineT<T>*) :
 	filterEngine{ nullptr }
-{
-}
+{}
 
 template <class T>
 int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)

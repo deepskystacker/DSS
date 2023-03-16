@@ -72,7 +72,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CBitmapSlider message handlers
 
-BOOL CBitmapSlider::OnEraseBkgnd(CDC* pDC)
+BOOL CBitmapSlider::OnEraseBkgnd([[maybe_unused]] CDC* pDC)
 {
 	// Do not erase background for the transparency effect
 	return TRUE;
@@ -446,7 +446,9 @@ BOOL CBitmapSlider::SetBitmapChannel(
 	// Compare size
 	if( m_bChannelActive ) {
 
+#pragma warning (suppress:4456)
 		BITMAP	bitmap;
+
 		m_bmChannelActive.GetBitmap( &bitmap );
 
 		ASSERT( m_nWidth == bitmap.bmWidth && m_nHeight == bitmap.bmHeight );
@@ -565,7 +567,9 @@ BOOL CBitmapSlider::SetBitmapThumb(
 	// Compare size
 	if( m_bThumbActive ) {
 
+#pragma warning (suppress:4456)
 		BITMAP	bitmap;
+
 		m_bmThumbActive.GetBitmap( &bitmap );
 
 		ASSERT(

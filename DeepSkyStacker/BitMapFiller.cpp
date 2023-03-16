@@ -85,14 +85,14 @@ void BitmapFillerBase::setGrey(bool grey)
 	this->isGray = grey;
 }
 
-void BitmapFillerBase::setWidth(int width)
+void BitmapFillerBase::setWidth(int w)
 {
-	this->width = width;
+	this->width = w;
 }
 
-void BitmapFillerBase::setHeight(int height)
+void BitmapFillerBase::setHeight(int h)
 {
-	this->height = height;
+	this->height = h;
 	if (pProgress != nullptr)
 		pProgress->Start2(pBitmap->Height());
 }
@@ -128,7 +128,7 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 	if (this->isGray)
 	{
 		ZASSERTSTATE(bytesPerPixel == this->bytesPerChannel);
-		constexpr size_t vectorLen = 16;
+		// constexpr size_t vectorLen = 16;
 		redBuffer.resize(nrPixels);
 
 		if (this->bytesPerChannel == 1)

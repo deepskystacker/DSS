@@ -115,9 +115,9 @@ public :
 	CButtonToolbarSink() {};
 	virtual ~CButtonToolbarSink() {};
 
-	virtual void ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
-	virtual void ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
-	virtual void ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnCheck([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnClick([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnRClick([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
 };
 
 class CButtonToolbar

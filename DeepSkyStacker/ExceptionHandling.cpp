@@ -58,7 +58,7 @@ namespace {
 //		case STATUS_ASSERTION_FAILURE: return printExc("ASSERTION_FAILURE");
 		default: return nullptr;
 		}
-		return nullptr;
+		// return nullptr;
 	};
 
 	std::atomic<std::uint32_t> barrier{ 0 };

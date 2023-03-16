@@ -22,8 +22,6 @@ std::shared_ptr<CMemoryBitmap> CGrayMultiBitmapT<TType, TTypeOutput>::CreateNewM
 			return CreateBitmap(bc);
 		}
 	}
-	auto pNewBitmap = std::make_shared<CGrayBitmapT<TType>>();
-	return pNewBitmap;
 	return std::make_shared<CGrayBitmapT<TType>>();
 }
 
@@ -82,7 +80,7 @@ bool CGrayMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap,
 	for (int i = 0; i < lWidth; i++)
 	{
 		TType* pValue;
-		double fWeight = 1.0;
+		//double fWeight = 1.0;
 
 		vValues.resize(0);
 		for (size_t j = 0; j < vScanLines.size(); j++)

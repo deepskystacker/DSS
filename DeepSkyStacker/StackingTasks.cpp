@@ -269,8 +269,8 @@ static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, boo
 		strFileName.Format(_T("%s%s%s_%s%ld"),
 			pszDrive, pszDir, pszType, pszISOGain, lISOGain);
 
-	pstrMasterFile->Format(_T("%s.tif"), strFileName);
-	pstrMasterInfoFile->Format(_T("%s.Description.txt"), strFileName);
+	pstrMasterFile->Format(_T("%s.tif"), strFileName.GetString());
+	pstrMasterInfoFile->Format(_T("%s.Description.txt"), strFileName.GetString());
 };
 
 /* ------------------------------------------------------------------- */
@@ -539,7 +539,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					continue;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Dark frame %1 of %2", "IDS_ADDDARK").arg(static_cast<int>(i)).arg(m_pDarkTask->m_vBitmaps.size());
-				ZTRACE_RUNTIME(strText);
+				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
@@ -553,9 +553,8 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					QString strStart2;
 					if (pProgress != nullptr)
 					{
-						QString strText;
 						strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
-						ZTRACE_RUNTIME(strText);
+						ZTRACE_RUNTIME(strText.toUtf8().constData());
 						pProgress->Start2(strText, 0);
 					}
 					Subtract(pBitmap, pMasterOffset, pProgress);
@@ -646,7 +645,7 @@ bool CStackingInfo::CheckForExistingDarkFlat(CString& strMasterFile)
 			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDarkFlat;
 			CString			strMasterDarkFlatInfo;
-			int			lExposure = m_pDarkFlatTask->m_fExposure;
+			//int			lExposure = m_pDarkFlatTask->m_fExposure;
 
 			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
@@ -701,7 +700,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 			QString strText(QCoreApplication::translate("StackingTasks", "Create Master Dark Flat Frame", "IDS_CREATEMASTERDARKFLAT"));
 
-			ZTRACE_RUNTIME(strText);
+			ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 			if (pProgress)
 				pProgress->Start1(strText, (int)m_pDarkFlatTask->m_vBitmaps.size(), true);
@@ -716,7 +715,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Dark Flat frame %1 of %2", "IDS_ADDDARKFLAT").arg(static_cast<int>(i)).arg(m_pDarkFlatTask->m_vBitmaps.size());
-				ZTRACE_RUNTIME(strText);
+				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
@@ -731,9 +730,8 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					{
 						if (pProgress != nullptr)
 						{
-							QString strText;
 							strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
-							ZTRACE_RUNTIME(strText);
+							ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 							pProgress->Start2(strText, 0);
 						}
@@ -1152,7 +1150,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					continue;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Flat frame %1 of %2", "IDS_ADDFLAT").arg(static_cast<int>(i)).arg(m_pFlatTask->m_vBitmaps.size());
-				ZTRACE_RUNTIME(strText);
+				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
@@ -1163,10 +1161,8 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				// Subtract the offset frame from the dark frame
 				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 				{
-					QString strText;
-
 					strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
-					ZTRACE_RUNTIME(strText);
+					ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 					if (pProgress != nullptr)
 						pProgress->Start2(strText, 0);
@@ -1175,10 +1171,8 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 				if (static_cast<bool>(pMasterDarkFlat) && !pBitmap->IsMaster())
 				{
-					QString strText;
-
 					strText = QCoreApplication::translate("StackingTasks", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK");
-					ZTRACE_RUNTIME(strText);
+					ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 					if (pProgress != nullptr)
 						pProgress->Start2(strText, 0);
@@ -1758,7 +1752,7 @@ bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
-				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkTask;
+				// CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkTask;
 
 				bResult = m_vStacks[i].DoDarkTask(pProgress);
 				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkTask->m_strOutputFile,CP_ACP));
@@ -1791,7 +1785,7 @@ bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
-				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkFlatTask;
+				// CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkFlatTask;
 
 				bResult = m_vStacks[i].DoDarkFlatTask(pProgress);
 				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkFlatTask->m_strOutputFile, CP_ACP));
@@ -1836,7 +1830,7 @@ bool CAllStackingTasks::DoFlatTasks(ProgressBase * pProgress)
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
-				CTaskInfo* pTaskInfo = stack.m_pFlatTask;
+				// CTaskInfo* pTaskInfo = stack.m_pFlatTask;
 
 				bResult = stack.DoFlatTask(pProgress);
 				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(stack.m_pFlatTask->m_strOutputFile, CP_ACP));
@@ -1916,7 +1910,6 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 						ulDarkSpace = 0,
 						ulDarkFlatSpace = 0,
 						ulOffsetSpace = 0;
-	std::int64_t				ulNeededSpace = 0;
 	std::int64_t				ulPixelSize = 0;
 
 	ulPixelSize = GetPixelSizeMultiplier();
@@ -2228,9 +2221,9 @@ bool	CAllStackingTasks::GetSaveIntermediateCometImages()
 
 bool	CAllStackingTasks::GetApplyMedianFilterToCometImage()
 {
-	Workspace			workspace;
+	//Workspace			workspace;
 
-	bool value = workspace.value("Stacking/ApplyFilterToCometImages", true).toBool();
+	//bool value = workspace.value("Stacking/ApplyFilterToCometImages", true).toBool();
 
 	return false; //value;
 };

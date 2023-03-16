@@ -212,7 +212,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
+BOOL	CButtonToolbar::OnMouseEnter([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -288,7 +288,7 @@ BOOL	CButtonToolbar::OnMouseLeave()
 BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
-	BOOL				bFound = FALSE;
+	// BOOL				bFound = FALSE;
 	LONG				lIndice;
 
 	m_bButtonDown = TRUE;
@@ -316,7 +316,7 @@ BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
+BOOL	CButtonToolbar::OnLButtonUp([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY)
 {
 	BOOL				bResult = FALSE;
 

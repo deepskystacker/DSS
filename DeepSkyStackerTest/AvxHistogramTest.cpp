@@ -265,7 +265,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		std::uint32_t i = 0;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&i](auto& v) { v = i; i += 65536; });
 		for (size_t n = 100 * 271; n < 101 * 271; ++n) // One line has constant value 64000.
-			pGray->m_vPixels[n] = 64000 << 16;
+			pGray->m_vPixels[n] = static_cast<std::uint32_t>(64000 << 16);
 
 		REQUIRE(avxHistogram.calcHistogram(0, 200) == 0);
 		REQUIRE(avxHistogram.histogramSuccessful() == true);

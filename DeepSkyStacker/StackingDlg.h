@@ -94,7 +94,7 @@ namespace DSS
 
 		QString calculateElidedText(const QString& text, const QTextOption& textOption,
 			const QFont& font, const QRect& textRect, const Qt::Alignment valign,
-			Qt::TextElideMode textElideMode, int flags,
+			Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 			bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const;
 
 	};
@@ -233,7 +233,6 @@ namespace DSS
 	private:
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
-		std::unique_ptr<Workspace> workspace;
 		bool initialised;
 		QString			m_strShowFile;
 		CGammaTransformation	m_GammaTransformation;
@@ -293,7 +292,7 @@ namespace DSS
 
 		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
 
-		bool checkStacking(CAllStackingTasks& tasks);
+		bool checkStacking([[maybe_unused]] CAllStackingTasks& tasks);
 
 		bool showRecap(CAllStackingTasks& tasks);
 
@@ -311,9 +310,9 @@ namespace DSS
 
 		void switchGroup(int);
 
-		void loadList(MRUPath& MRUList, QString& strFileList);
+		void loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
 
-		void saveList(MRUPath& MRUList, QString& strFileList);
+		void saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
 
 		void retranslateUi();
 	};

@@ -50,10 +50,10 @@ void	MRUList::readSettings()
 
 	for (uint32_t i = 0; i < count; i++)
 	{
-		QString keyName = QString("%1/MRU%2")
+		QString keyName1 = QString("%1/MRU%2")
 			.arg(baseKeyName).arg(i);
 
-		QString value = settings.value(keyName).toString();
+		QString value = settings.value(keyName1).toString();
 
 		m_vLists.emplace_back(value);
 	};
@@ -75,11 +75,11 @@ void	MRUList::saveSettings()
 	settings.setValue(keyName, (uint)m_vLists.size());
 	for (int i = 0; i < m_vLists.size(); i++)
 	{
-		QString keyName = QString("%1/MRU%2")
+		QString keyName1 = QString("%1/MRU%2")
 			.arg(baseKeyName).arg(i);
 		QString value(m_vLists[i]);
 
-		settings.setValue(keyName, value);
+		settings.setValue(keyName1, value);
 	};
 };
 

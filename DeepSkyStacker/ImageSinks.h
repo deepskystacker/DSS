@@ -194,6 +194,7 @@ private:
 			if (!m_vVotedPairs.empty())
 			{
 				//for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
+#pragma warning (suppress:4189)
 				for (const auto& votedPair : m_vVotedPairs)
 				{
 					if constexpr (Refstar)

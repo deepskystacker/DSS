@@ -222,7 +222,7 @@ namespace DSS
         painter.end();
     }
 
-    void ImageView::paintEvent([[maybe_unused]] QPaintEvent* event)
+    void ImageView::paintEvent(QPaintEvent*)
     {
         QPainter painter(this);
 
@@ -376,8 +376,6 @@ namespace DSS
 
         auto pointOfInterest(screenToImage(mouseLocation));
 
-        const qreal width = pPixmap->width();
-        const qreal height = pPixmap->height();
         const qreal x = pointOfInterest.x();
         const qreal y = pointOfInterest.y();
         qreal xloc = x - (diameter / (m_scale * m_zoom * extraZoom) / 2.0);

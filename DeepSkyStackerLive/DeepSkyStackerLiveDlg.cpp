@@ -47,7 +47,7 @@ END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CDeepSkyStackerLiveDlg::OnEraseBkgnd(CDC * pDC)
+BOOL CDeepSkyStackerLiveDlg::OnEraseBkgnd([[maybe_unused]] CDC * pDC)
 {
 	return 1;
 };

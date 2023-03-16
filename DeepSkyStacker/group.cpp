@@ -68,7 +68,7 @@ size_t Group::size() const noexcept
 	return pictures->rowCount();
 }
 
-void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, [[maybe_unused]] int32_t nItem)
+void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
 {
 	ZFUNCTRACE_RUNTIME();
 

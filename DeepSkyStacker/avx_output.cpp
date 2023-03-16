@@ -74,6 +74,10 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 	return 1;
 }
 
+#pragma warning( push )
+#pragma warning( disable : 4324 ) // Structure was padded
+#pragma warning( disable : 4100 ) // Unreferenced variable
+
 template <typename T, AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
@@ -311,10 +315,11 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		// Rest of line
 		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
 		{
-			float lowerBound{ 1.0f };
-			float upperBound{ static_cast<float>(std::numeric_limits<T>::max()) };
-			float my{ 0.0f };
-			float median{ 0.0f };
+			float lowerBound = 1.0f;
+			float upperBound = static_cast<float>(std::numeric_limits<T>::max());
+			float my = 0.0f;
+#pragma warning (suppress: 4189)
+			float median = 0.0f;
 
 			if constexpr (Method == MedianKappaSigma)
 				initMedianData(n + colorOffset, 1); // 1 = only 1 pixel.
@@ -352,8 +357,8 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 				my = (N == 0.0f ? 0.0f : (sum / N));
 				if (N == 0.0f || N == static_cast<float>(nrLightframes))
 					break;
-				const float sigma = sqrtf(sumSq / N - my * my);
-				const float sigmakappa = sigma * static_cast<float>(std::get<0>(parameters));
+				const float sig = sqrtf(sumSq / N - my * my);
+				const float sigmakappa = sig * static_cast<float>(std::get<0>(parameters));
 				lowerBound = my - sigmakappa;
 				upperBound = my + sigmakappa;
 			}
@@ -421,6 +426,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 		return 0;
 	return 1;
 }
+
 
 template <class T>
 int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
@@ -562,3 +568,5 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 	// Neither gray (1 float) nor color (3 floats).
 	return 1;
 }
+
+#pragma warning( pop )

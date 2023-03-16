@@ -183,7 +183,7 @@ CString CFolderDlg::GetFolderName() const
  * @see
  * SHBrowseForFolder()
  */
-INT CALLBACK CFolderDlg::BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lp, LPARAM pData)
+INT CALLBACK CFolderDlg::BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lp,[[maybe_unused]] LPARAM pData)
 {
 	TCHAR szDir[MAX_PATH];
 

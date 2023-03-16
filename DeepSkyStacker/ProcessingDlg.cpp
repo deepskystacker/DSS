@@ -481,7 +481,7 @@ void CProcessingDlg::UpdateInfos()
 			strFrames.Format(IDS_NRFRAMES, lNrFrames);
 		};
 
-		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile, strISO, strGain, strTime, strFrames);
+		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
 	}
 	else
 		strText = m_strCurrentFile;
@@ -788,8 +788,6 @@ void CProcessingDlg::CopyPictureToClipboard()
 
 void CProcessingDlg::CreateStarMask()
 {
-	bool bResult = false;
-
 	if (dssApp->deepStack().IsLoaded())
 	{
 		KillTimer(1);
@@ -1058,7 +1056,6 @@ public :
 
 void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
 {
-	HPEN						hOldPen	= nullptr;
 	std::vector<CColorOrder>	vColors;
 	int						lLastHeight = 0;
 
@@ -1479,55 +1476,55 @@ void CProcessingDlg::OnReset()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR *, LRESULT *)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();

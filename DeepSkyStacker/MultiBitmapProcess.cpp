@@ -10,19 +10,17 @@
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 
-/* ------------------------------------------------------------------- */
+namespace {
 
-static void GetTempFileName(CString & strFile)
+QString GetTempFileName()
 {
-	TCHAR			szTempFileName[1+_MAX_PATH];
-	QString			strFolder(CAllStackingTasks::GetTemporaryFilesFolder());
+	TCHAR szTempFileName[1 + _MAX_PATH] = { '\0' };
+	::GetTempFileName(reinterpret_cast<LPCTSTR>(CAllStackingTasks::GetTemporaryFilesFolder().utf16()), _T("DSS"), 0, szTempFileName);
+	return QString::fromWCharArray(szTempFileName);
+}
 
-	GetTempFileName(CString((LPCTSTR)strFolder.utf16()), _T("DSS"), 0, szTempFileName);
+}
 
-	strFile = szTempFileName;
-};
-
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
@@ -34,132 +32,112 @@ void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
 
 void CMultiBitmap::DestroyTempFiles()
 {
-	for (int i = 0;i<m_vFiles.size();i++)
+	for (auto& bitmapPart : this->m_vFiles)
 	{
-		if (m_vFiles[i].m_strFile.length())
-			DeleteFile(m_vFiles[i].m_strFile.toStdWString().c_str());
-		m_vFiles[i].m_strFile.clear();
-	};
+		if (!bitmapPart.m_tempFileName.isEmpty())
+			DeleteFile(reinterpret_cast<LPCTSTR>(bitmapPart.m_tempFileName.utf16()));
+		bitmapPart.m_tempFileName.clear();
+	}
 	m_vFiles.clear();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 void CMultiBitmap::InitParts()
 {
 	ZFUNCTRACE_RUNTIME();
-	int				lNrLinesPerFile;
-	int				lNrLines;
-	int				lNrParts;
-	int				lLineSize;
-	int				lNrRemainingLines;
-	int				lNrOffsetLine = 0;
 
 	// make files a maximum of 50 Mb
 
-	lLineSize = (GetNrBytesPerChannel() * GetNrChannels() * m_lWidth);
+	const int lLineSize = (GetNrBytesPerChannel() * GetNrChannels() * m_lWidth);
 
-	lNrLinesPerFile = 50000000L / lLineSize;
-	lNrLines = lNrLinesPerFile / m_lNrBitmaps;
-	lNrRemainingLines = lNrLinesPerFile % m_lNrBitmaps;
+	const int lNrLinesPerFile = 50000000L / lLineSize;
+	int lNrLines = lNrLinesPerFile / m_lNrBitmaps;
+	int lNrRemainingLines = lNrLinesPerFile % m_lNrBitmaps;
 
-	if (!lNrLines)
+	if (lNrLines == 0)
 		lNrLines = 1;
 
-	lNrParts = m_lNrBitmaps * m_lHeight/lNrLinesPerFile;
+	int lNrParts = m_lNrBitmaps * m_lHeight / lNrLinesPerFile;
 	if ((m_lNrBitmaps * m_lHeight) % lNrLinesPerFile != 0)
 		lNrParts++;
 
 	m_vFiles.clear();
 
-	int			lStartRow = -1;
-	int			lEndRow	  = -1;
+	int lStartRow = -1;
+	int lEndRow = -1;
 
-	while (lEndRow <m_lHeight-1)
+	while (lEndRow < m_lHeight - 1)
 	{
-		CString			strFile;
-
-		GetTempFileName(strFile);
-
-		lStartRow = lEndRow+1;
-		lEndRow   = lStartRow + lNrLines;
-		if (lNrRemainingLines)
+		lStartRow = lEndRow + 1;
+		lEndRow = lStartRow + lNrLines;
+		if (lNrRemainingLines != 0)
 		{
 			lEndRow++;
 			lNrRemainingLines--;
-		};
-		lEndRow = std::min(lEndRow, m_lHeight-1);
+		}
+		lEndRow = std::min(lEndRow, m_lHeight - 1);
 
-		QString strFilename(QString::fromWCharArray(strFile.GetString()));
-		CBitmapPartFile		bp(strFilename, lStartRow, lEndRow);
+		m_vFiles.emplace_back(GetTempFileName(), lStartRow, lEndRow);
+	}
 
-		m_vFiles.push_back(bp);
-	};
+	m_bInitDone.store(true);
+}
 
-	m_bInitDone = true;
-};
 
-/* ------------------------------------------------------------------- */
-
+// Save the bitmap to the temporary file
 bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 {
+	static std::mutex initMutex{};
+
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
 
-	// Save the bitmap to the temporary file
-	if (!m_bInitDone)
+	if (m_bInitDone.load() == false)
 	{
-		m_lWidth = pBitmap->RealWidth();
-		m_lHeight = pBitmap->RealHeight();
-		InitParts();
-		m_lNrAddedBitmaps = 0;
-	};
-
-	{
-		// Save the bitmap to the file
-		void *				pScanLine = nullptr;
-		int				lScanLineSize;
-
-		lScanLineSize = (pBitmap->BitPerSample() * (pBitmap->IsMonochrome() ? 1 : 3) * m_lWidth/8);
-
-		pScanLine = (void*)malloc(lScanLineSize);
-
-		if (pScanLine)
-			bResult = true;
-		if (pProgress)
-			pProgress->Start2(m_lHeight);
-
-		for (int k = 0;k<m_vFiles.size() && bResult;k++)
+		auto lock = std::scoped_lock{ initMutex };
+		if (m_bInitDone.load() == false)
 		{
-			FILE *				hFile;
+			m_lWidth = pBitmap->RealWidth();
+			m_lHeight = pBitmap->RealHeight();
+			InitParts(); // Will set m_bInitDone to true
+			m_lNrAddedBitmaps = 0;
+		}
+	}
 
-			hFile = _tfopen(m_vFiles[k].m_strFile.toStdWString().c_str(), _T("a+b"));
-			if (hFile)
-			{
-				bResult = true;
-				fseek(hFile, 0, SEEK_END);
-			};
-			for (int j = m_vFiles[k].m_lStartRow;j<=m_vFiles[k].m_lEndRow && bResult;j++)
-			{
-				pBitmap->GetScanLine(j, pScanLine);
-				bResult = (fwrite(pScanLine, lScanLineSize, 1, hFile) == 1);
+	// Save the bitmap to the file
+	const size_t lScanLineSize = static_cast<size_t>(pBitmap->BitPerSample()) * (pBitmap->IsMonochrome() ? 1 : 3) * m_lWidth / 8;
+	std::vector<std::uint8_t> scanLineBuffer(lScanLineSize);
 
-				if (pProgress)
-					pProgress->Progress2(j+1);
-			};
-			if (hFile)
-				fclose(hFile);
-		};
+	if (pProgress)
+		pProgress->Start2(m_lHeight);
 
-		if (pProgress)
-			pProgress->End2();
-		if (pScanLine)
-			free(pScanLine);
-		m_lNrAddedBitmaps++;
-	};
+	for (const auto& file : m_vFiles)
+	{
+		auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
+		std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("a+b")), dtor };
+		if (pFile.get() == nullptr)
+			return false;
 
-	return bResult;
-};
+		fseek(pFile.get(), 0, SEEK_END);
+
+		for (int j = file.m_lStartRow; j <= file.m_lEndRow; j++)
+		{
+			pBitmap->GetScanLine(j, scanLineBuffer.data());
+			if (fwrite(scanLineBuffer.data(), lScanLineSize, 1, pFile.get()) != 1)
+				return false;
+
+			if (pProgress)
+				pProgress->Progress2(j + 1);
+		}
+	}
+
+	if (pProgress)
+		pProgress->End2();
+
+	m_lNrAddedBitmaps++;
+
+	return true;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -202,7 +180,7 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
+	const auto handleError = [](const auto& errorMessage,[[maybe_unused]] const auto flags) -> void
 	{
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;
@@ -405,7 +383,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
 
-			FILE* hFile = _tfopen(file.m_strFile.toStdWString().c_str(), _T("rb"));
+			FILE* hFile = _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("rb"));
 			if (hFile != nullptr)
 			{
 				bResult = fread(buffer.data(), 1, fileSize, hFile) == fileSize;

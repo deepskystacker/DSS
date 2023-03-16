@@ -104,9 +104,9 @@ namespace DSS
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		inline FrameList& beginInsertRows(int count);
-		inline FrameList& endInsertRows();
-		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
+		FrameList& beginInsertRows(int count);
+		FrameList& endInsertRows();
+		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]] int nItem = -1);
 
 		void blankCheckedItemScores();
 

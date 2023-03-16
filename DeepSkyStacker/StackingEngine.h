@@ -230,7 +230,8 @@ private:
 	void	ComputeBitmap();
 	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
 	bool StackAll(CAllStackingTasks & tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap);
-	bool	StackLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet);
+	template <class T>
+	std::pair<bool, T> StackLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, T futureForWrite);
 	bool	AdjustEntropyCoverage();
 	bool	AdjustBayerDrizzleCoverage();
 	bool	SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap) const;

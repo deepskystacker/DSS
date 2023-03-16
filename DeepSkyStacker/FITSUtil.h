@@ -152,7 +152,7 @@ public:
 	virtual bool Close();
 
 	virtual bool OnOpen() { return true; }
-	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return false; }
+	virtual bool OnRead(int, int, double, double, double) { return false; }
 	virtual bool OnClose() { return true; }
 };
 

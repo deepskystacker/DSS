@@ -10,15 +10,15 @@ class CMultiBitmap
 protected:
 	std::shared_ptr<CMemoryBitmap> m_pBitmapModel;
 	mutable std::shared_ptr<CMemoryBitmap> m_pHomBitmap;
-	MULTIBITMAPPROCESSMETHOD m_Method;
+	MULTIBITMAPPROCESSMETHOD  m_Method;
 	double m_fKappa;
 	int m_lNrIterations;
 	int m_lNrBitmaps;
 	int m_lNrAddedBitmaps;
-	BITMAPPARTFILEVECTOR m_vFiles;
+	std::vector<CBitmapPartFile> m_vFiles;
 	int m_lWidth;
 	int m_lHeight;
-	bool m_bInitDone;
+	std::atomic_bool m_bInitDone;
 	bool m_bHomogenization;
 	double m_fMaxWeight;
 	std::vector<int> m_vImageOrder;

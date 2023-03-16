@@ -79,7 +79,6 @@ void CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 			{
 				double				fRed, fGreen, fBlue;
 				double				fPositionRed, fPositionGreen, fPositionBlue;
-				double				fPosition;
 
 				pInBitmap->GetPixel(i-1, j-1, vReds[0], vGreens[0], vBlues[0]);
 				pInBitmap->GetPixel(i,   j-1, vReds[1], vGreens[1], vBlues[1]);
@@ -151,7 +150,7 @@ inline void	CheckPixel(int X, int Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIX
 
 /* ------------------------------------------------------------------- */
 
-void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase* pProgress)
+void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR vExcluded = m_vExcludedPixels;
@@ -167,7 +166,7 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 
 		for (size_t k = 0; k < vExcluded.size(); k++)
 		{
-			int lNrNeighbors = 0;
+			// int lNrNeighbors = 0;
 			CExcludedPixel& Pixel = vExcluded[k];
 			CExcludedPixel TestPixel;
 			EXCLUDEDPIXELVECTOR vOkPixels;
@@ -240,6 +239,10 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Note that if m_bUseRejectThreshold is set it is INTENTIONAL that analyseImage is called TWICE.
+	// The first run sets m_fHotThreshold and m_fColdThreshold which are used in the second invocation.
+	//
 	if (m_bUseRejectThreshold)
 		AnalyzeImage(pInBitmap, true);
 	AnalyzeImage(pInBitmap, false);

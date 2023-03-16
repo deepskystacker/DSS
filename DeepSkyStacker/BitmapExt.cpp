@@ -1397,7 +1397,7 @@ void FormatMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKap
 	return;
 }
 
-void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
+void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& fRed, double& fGreen, double& fBlue)
 {
 	double			fR, fG, fB;
 

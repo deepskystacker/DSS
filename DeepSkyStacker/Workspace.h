@@ -74,7 +74,7 @@ typedef WORKSPACESETTINGVECTOR::iterator WORKSPACESETTINGITERATOR;
 class Workspace
 {
 private:
-	std::shared_ptr<WorkspaceSettings > pSettings;
+	std::shared_ptr<WorkspaceSettings> pSettings;
 public:
 	Workspace();
 	~Workspace() = default;

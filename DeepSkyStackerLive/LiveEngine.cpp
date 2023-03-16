@@ -57,7 +57,7 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 		{
 			CString					strNewFileName;
 
-			strNewFileName.Format(_T("%s\\%s%s"), strSubFolder, szName, szExt);
+			strNewFileName.Format(_T("%s\\%s%s"), strSubFolder.GetString(), szName, szExt);
 			bResult = MoveFile(szFileName, strNewFileName);
 		};
 
@@ -65,14 +65,14 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 		{
 			CString				strMsg;
 
-			strMsg.Format(IDS_FILEMOVED, (LPCTSTR)strFileName, strSubFolder);
+			strMsg.Format(IDS_FILEMOVED, strFileName.GetString(), strSubFolder.GetString());
 			PostToLog(QString::fromStdWString(strMsg.GetString()), true, false, false, RGB(128, 0, 0));
 		}
 		else
 		{
 			CString				strMsg;
 
-			strMsg.Format(IDS_ERRORMOVINGFILE, (LPCTSTR)strFileName, strSubFolder);
+			strMsg.Format(IDS_ERRORMOVINGFILE, strFileName.GetString(), strSubFolder.GetString());
 			PostToLog(QString::fromStdWString(strMsg.GetString()), true, true, false, RGB(255, 0, 0));
 		};
 	};
@@ -276,7 +276,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 	{
 		QString strText;
 		QString strDescription;
-		BOOL bOverrideRAW = TRUE;
+		//BOOL bOverrideRAW = TRUE;
 
 		bmpInfo.GetDescription(strDescription);
 		if (bmpInfo.m_lNrChannels==3)
@@ -1086,7 +1086,7 @@ void CLiveEngine::closeProgress()
 {
 	PostEndProgress();
 }
-bool CLiveEngine::doWarning(const QString& szText)
+bool CLiveEngine::doWarning([[maybe_unused]] const QString& szText)
 {
 	return true;
 }

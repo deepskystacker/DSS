@@ -189,10 +189,8 @@ inline bool IsInStdDev(double fValue, double fMean, double fStdDev)
 static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
-	int				lSize = (int)sValuePairs.size();
 	double				fMinRMS = -1.0;
 	double				fSelectedk	= 0.0;
-	constexpr int			MINNEGATIVE = MAXWORD;
 	std::vector<double>	vValues;
 	std::vector<double>	vEntropies;
 	double				fDarkMean = 0.0;
@@ -411,7 +409,6 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
 	int i, j;
-	int lWidth = pBitmap->RealWidth();
 	int lHeight = pBitmap->RealHeight();
 
 	VALUEPAIRSET			sRedValuePairs;
@@ -516,9 +513,6 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 								GreenStats,
 								BlueStats;
 
-		int					lNrNegativeReds = 0;
-		int					lNrNegativeBlues = 0;
-		int					lNrNegativeGreens = 0;
 
 
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
@@ -532,13 +526,6 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
 				BlueStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
-
-		double					fSigmaRed	= RedStats.Sigma(),
-								fSigmaGreen = GreenStats.Sigma(),
-								fSigmaBlue  = BlueStats.Sigma();
-		double					fAvgRed		= RedStats.Max()-RedStats.Min(),
-								fAvgGreen	= RedStats.Average(),
-								fAvgBlue	= RedStats.Average();
 
 		fRatio -= 0.1;
 	}
@@ -1053,8 +1040,6 @@ void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXEL
 void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	int			lWidth	= pBitmap->RealWidth(),
-					lHeight = pBitmap->RealHeight();
 	double			m_fMedianColdest = -1;
 
 	m_fMedianHotest = computeMedianValueInRect(pBitmap, m_rcHotest);
@@ -1250,9 +1235,9 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 	else
 	{
 		// Check all the points
-		double			fMaxRed,
-						fMaxGreen,
-						fMaxBlue;
+#pragma warning (suppress:4456)
+		double			fMaxRed, fMaxGreen, fMaxBlue;
+
 		DSSRect			rcMaxRed,
 						rcMaxGreen,
 						rcMaxBlue;
@@ -1498,7 +1483,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CDarkFrame::FindBadVerticalLines(ProgressBase * pProgress)
+void CDarkFrame::FindBadVerticalLines(ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = m_pMasterDark->IsMonochrome();
@@ -1803,7 +1788,7 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress)
+void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (static_cast<bool>(pBitmap) && !m_vHotPixels.empty())
@@ -1896,9 +1881,6 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase* 
 
 	if (m_pMasterDark && m_pMasterDark->IsOk())
 	{
-		double fRedDarkFactor = 1.0;
-		double fGreenDarkFactor = 1.0;
-		double fBlueDarkFactor = 1.0;
 
 		if ((m_bHotPixelsDetection || m_bBadLinesDetection) && !m_bHotPixelDetected)
 		{

@@ -138,9 +138,9 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 		*pResult = 1;
 
 	PegNMHDR *			pPegNMHDR = (PegNMHDR*)pNMHDR;
-	double				fBlackPoint,
-						fGrayPoint,
-						fWhitePoint;
+	double				fBlackPoint { 0.0 },
+						fGrayPoint { 0.0 },
+						fWhitePoint{ 0.0 };
 
 	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
 		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
@@ -268,7 +268,7 @@ void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, cons
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnFileName(NMHDR* pNMHDR, LRESULT* pResult)
+void CImageViewTab::OnFileName([[maybe_unused]] NMHDR* pNMHDR, [[maybe_unused]] LRESULT* pResult)
 {
 	CLiveSettings		LiveSettings;
 	CString				strOutputFolder;
@@ -317,7 +317,7 @@ void CImageViewTab::OnStackedImageSaved()
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
+void CImageViewTab::OnCopyToClipboard([[maybe_unused]] NMHDR* pNMHDR, [[maybe_unused]] LRESULT* pResult)
 {
 	if (m_pWndImage.get())
 		m_pWndImage->CopyToClipboard();

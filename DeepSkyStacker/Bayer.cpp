@@ -129,7 +129,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 		};
 	};
 	};
-	return BAYER_UNKNOWN;
 }
 
 //

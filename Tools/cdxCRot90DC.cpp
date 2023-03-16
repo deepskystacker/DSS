@@ -338,7 +338,9 @@ void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDr
 		else
 		{
 			cdxCRot90DC	iconDC(this,CRect(pntIcon.x,pntIcon.y,pntIcon.x + sz.cx,pntIcon.y + sz.cy),-mkAngle(m_Angle),true);
+#pragma warning (suppress:4457)
 			CRect	rect	=	iconDC;
+
 			if(!rect.IsRectEmpty())
 				iconDC.DrawState(	rect.TopLeft(),
 										rect.Size(),
