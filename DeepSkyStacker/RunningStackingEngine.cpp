@@ -70,7 +70,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgr
 
 	// First load the input bitmap
 	std::shared_ptr<CMemoryBitmap> pBitmap;
-	if (::LoadFrame(lfi.filePath,PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
+	if (::LoadFrame(lfi.filePath, PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
 	{
 		QString strText;
 		pBitmap->RemoveHotPixels(pProgress);

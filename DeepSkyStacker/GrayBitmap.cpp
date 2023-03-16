@@ -513,6 +513,10 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc)
 	bc.m_lBitsPerPixel = BitPerSample();
 }
 
+
+#pragma warning( push )
+#pragma warning( disable : 4189 ) // unreachable code from initial constexpr if statement.
+
 template <typename T>
 void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 {
@@ -562,6 +566,8 @@ void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 	if (pProgress != nullptr)
 		pProgress->End2();
 }
+
+#pragma warning( pop )
 
 // Define these here so that we can simple headers. We only run with these types so this isn't too bad.
 template class CGrayBitmapT<std::uint8_t>;

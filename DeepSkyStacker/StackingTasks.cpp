@@ -133,7 +133,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 		if (bOverrideRAW)
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 
-		bResult = ::FetchPicture(filePath, rpBitmap, pProgress);
+		bResult = ::FetchPicture(filePath, rpBitmap, PictureType == PICTURETYPE_FLATFRAME, pProgress);
 
 		if (bOverrideRAW)
 			PopRAWSettings();

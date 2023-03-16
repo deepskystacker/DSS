@@ -14,4 +14,4 @@ void PopRAWSettings();
 
 bool IsRAWPicture(LPCTSTR szFileName, QString& strModel);
 bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::ProgressBase* pProgress);
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, DSS::ProgressBase* pProgress);

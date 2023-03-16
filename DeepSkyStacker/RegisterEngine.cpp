@@ -1254,7 +1254,7 @@ void CLightFrameInfo::RegisterPicture()
 			m_pProgress->Start2(strText, 0);
 
 		std::shared_ptr<CMemoryBitmap> pBitmap;
-		bLoaded = ::FetchPicture(filePath, pBitmap, m_pProgress);
+		bLoaded = ::FetchPicture(filePath, pBitmap, this->m_PictureType == PICTURETYPE_FLATFRAME, m_pProgress);
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
@@ -1452,7 +1452,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;
-			bool success = ::FetchPicture(lfInfo->filePath, pBitmap, pTaskProgress);
+			bool success = ::FetchPicture(lfInfo->filePath, pBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress);
 			return std::make_tuple(std::move(pBitmap), success, std::move(lfInfo), std::move(bmpInfo));
 		};
 

@@ -2,7 +2,6 @@
 #include "Workspace.h"
 #include "DSSCommon.h"
 #include "ZExcBase.h"
-
 class WorkspaceSettings
 {
 public:

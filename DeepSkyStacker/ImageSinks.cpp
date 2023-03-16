@@ -772,8 +772,8 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 {
 	// Find the first top/left point in the image
 	bool					bDraw = true;
-	decltype(tagPOINT::x)	x1, x2;
-	decltype(tagPOINT::y)	y1, y2;
+	decltype(tagPOINT::x)	x1{ 0 }, x2{ 0 };	// Initialise to zero as you get a warning in the CRect by the CDelaunayTriangle instance about
+	decltype(tagPOINT::y)	y1{ 0 }, y2{ 0 };	// some of these values potentially not being initialised. I'm not convinced that is the case though!
 
 	CPoint		pt(rcClient.left, rcClient.top);
 

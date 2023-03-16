@@ -40,124 +40,125 @@
 #include "FrameInfo.h"
 #include "RegisterEngine.h"
 
-using namespace DSS;
-
-Group::Group() :
-	pictures{ std::make_unique<ImageListModel>() },
-	Index{ nextIndex++ },		// First group is Main Group with Index of 0
-	Dirty{ false }
+namespace DSS
 {
-	if (0 == Index)
+	Group::Group() :
+		pictures{ std::make_unique<ImageListModel>() },
+		Index{ nextIndex++ },		// First group is Main Group with Index of 0
+		Dirty{ false }
 	{
-		Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
+		if (0 == Index)
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
+		}
+		else
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
+		}
 	}
-	else
-	{
-		Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
-	}
-}
 
-void Group::addImage(const ListBitMap& image)
-{
-	pictures->addImage(image);
-	Dirty = true;
-}
+	void Group::addImage(const ListBitMap& image)
+	{
+		pictures->addImage(image);
+		Dirty = true;
+	}
 	
-size_t Group::size() const noexcept
-{
-	return pictures->rowCount();
-}
-
-void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
-{
-	ZFUNCTRACE_RUNTIME();
-
-	ListBitMap			lb;
-
-	lb.m_groupId = Index;
-
-	if (lb.InitFromFile(file, PictureType))
+	size_t Group::size() const noexcept
 	{
-		if (PictureType == PICTURETYPE_DARKFRAME)
-		{
-			lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
-		}
-		else if (PictureType == PICTURETYPE_DARKFLATFRAME)
-		{
-			lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
-		}
-		else if (PictureType == PICTURETYPE_FLATFRAME)
-		{
-			lb.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
-		}
-		else if (PictureType == PICTURETYPE_OFFSETFRAME)
-		{
-			lb.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
-		}
-		else
-		{
-			lb.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
-		};
+		return pictures->rowCount();
+	}
 
+	void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
+	{
+		ZFUNCTRACE_RUNTIME();
 
-		if (bCheck)
-			lb.m_bChecked = Qt::Checked;
-		else
-			lb.m_bChecked = Qt::Unchecked;
+		ListBitMap			lb;
 
-		if (file.has_parent_path())
-			lb.m_strPath = QString::fromStdU16String(file.parent_path().generic_u16string());
-		else
-			lb.m_strPath = QString::fromStdU16String(file.root_path().generic_u16string());
+		lb.m_groupId = Index;
 
-		lb.m_strFile = QString::fromStdU16String(file.filename().generic_u16string());
-
-		if (lb.m_PictureType == PICTURETYPE_LIGHTFRAME)
-		{
-			CLightFrameInfo			bmpInfo;
-
-			bmpInfo.SetBitmap(file.c_str(), false);
-			if (bmpInfo.m_bInfoOk)
-			{
-				lb.m_bRegistered = true;
-				lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
-				lb.m_fFWHM = bmpInfo.m_fFWHM;
-				lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
-				lb.m_bComet = bmpInfo.m_bComet;
-				lb.m_SkyBackground = bmpInfo.m_SkyBackground;
-				lb.m_bUseAsStarting = (PictureType == PICTURETYPE_REFLIGHTFRAME);
-			}
-		};
-
-		lb.m_strSizes = QString("%1 x %2").arg(lb.m_lWidth).arg(lb.m_lHeight);
-
-		if (lb.m_lNrChannels == 3)
-			lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
-		else
-			lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
-
-		if (lb.IsMasterFrame())
+		if (lb.InitFromFile(file, PictureType))
 		{
 			if (PictureType == PICTURETYPE_DARKFRAME)
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK");
+			{
+				lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
+			}
 			else if (PictureType == PICTURETYPE_DARKFLATFRAME)
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT");
+			{
+				lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
+			}
 			else if (PictureType == PICTURETYPE_FLATFRAME)
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT");
+			{
+				lb.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
+			}
 			else if (PictureType == PICTURETYPE_OFFSETFRAME)
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET");
+			{
+				lb.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+			}
+			else
+			{
+				lb.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
+			};
+
+
+			if (bCheck)
+				lb.m_bChecked = Qt::Checked;
+			else
+				lb.m_bChecked = Qt::Unchecked;
+
+			if (file.has_parent_path())
+				lb.m_strPath = QString::fromStdU16String(file.parent_path().generic_u16string());
+			else
+				lb.m_strPath = QString::fromStdU16String(file.root_path().generic_u16string());
+
+			lb.m_strFile = QString::fromStdU16String(file.filename().generic_u16string());
+
+			if (lb.m_PictureType == PICTURETYPE_LIGHTFRAME)
+			{
+				CLightFrameInfo			bmpInfo;
+
+				bmpInfo.SetBitmap(file.c_str(), false);
+				if (bmpInfo.m_bInfoOk)
+				{
+					lb.m_bRegistered = true;
+					lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
+					lb.m_fFWHM = bmpInfo.m_fFWHM;
+					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
+					lb.m_bComet = bmpInfo.m_bComet;
+					lb.m_SkyBackground = bmpInfo.m_SkyBackground;
+					lb.m_bUseAsStarting = (PictureType == PICTURETYPE_REFLIGHTFRAME);
+				}
+			};
+
+			lb.m_strSizes = QString("%1 x %2").arg(lb.m_lWidth).arg(lb.m_lHeight);
+
+			if (lb.m_lNrChannels == 3)
+				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
+			else
+				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
+
+			if (lb.IsMasterFrame())
+			{
+				if (PictureType == PICTURETYPE_DARKFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK");
+				else if (PictureType == PICTURETYPE_DARKFLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT");
+				else if (PictureType == PICTURETYPE_FLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT");
+				else if (PictureType == PICTURETYPE_OFFSETFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET");
+			};
+
+			if (lb.GetCFAType() != CFATYPE_NONE)
+				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");
+			else
+				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "No", "IDS_NO");
+
 		};
 
-		if (lb.GetCFAType() != CFATYPE_NONE)
-			lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");
-		else
-			lb.m_strCFA = QCoreApplication::translate("DSS::Group", "No", "IDS_NO");
+		pathToGroup.emplace(file, Index);
+
+		pictures->addImage(lb);
+
 
 	};
-
-	pathToGroup.emplace(file, Index);
-
-	pictures->addImage(lb);
-
-
 }

@@ -286,7 +286,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 		Start2(strText, 0);
 		CAllDepthBitmap				adb;
-		adb.SetDontUseAHD(TRUE);
+		adb.SetDontUseAHD(true);
 
 		bResult = LoadPicture(szFileName, adb, this);
 		End2();

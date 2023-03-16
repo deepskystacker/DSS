@@ -81,7 +81,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;../;$(Boost_1_80_0)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/wd4828 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -105,7 +105,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;../;$(Boost_1_80_0)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalOptions>/wd4828 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatWarningAsError>true</TreatWarningAsError>
