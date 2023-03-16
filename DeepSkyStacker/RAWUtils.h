@@ -12,7 +12,7 @@ void PopRAWSettings();
 
 bool IsRAWPicture(LPCTSTR szFileName, CString& strModel);
 bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress);
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 
 #else
 inline bool	IsSuperPixels()		{ return false; };
