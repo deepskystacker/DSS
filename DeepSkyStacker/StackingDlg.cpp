@@ -1074,7 +1074,7 @@ namespace DSS
 					//
 					for (i = 0; i < rowCount; i++)
 					{
-						int row = selectedRows[i].row();
+						row = selectedRows[i].row();
 
 						imageModel->setData(row, Column::Type, typeIndex);
 						imageModel->setData(row, Column::ISO, iso.toInt());
