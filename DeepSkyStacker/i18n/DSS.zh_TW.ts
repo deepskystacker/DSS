@@ -2268,25 +2268,25 @@ You can probably get another one or download the final release from the web site
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="871"/>
+        <location filename="../RegisterEngine.cpp" line="857"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>偵測星點中 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="900"/>
+        <location filename="../RegisterEngine.cpp" line="886"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>偵測星點 %1 (%2 顆星)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1047"/>
+        <location filename="../RegisterEngine.cpp" line="1033"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>計算明度 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1227"/>
+        <location filename="../RegisterEngine.cpp" line="1213"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2294,7 +2294,7 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1231"/>
+        <location filename="../RegisterEngine.cpp" line="1217"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2302,25 +2302,25 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1349"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>將已校正之影像存於 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1393"/>
+        <location filename="../RegisterEngine.cpp" line="1379"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>偵測星點中</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1443"/>
+        <location filename="../RegisterEngine.cpp" line="1429"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>偵測星點 %1 並對齊於 %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1454"/>
+        <location filename="../RegisterEngine.cpp" line="1440"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2328,7 +2328,7 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1456"/>
+        <location filename="../RegisterEngine.cpp" line="1442"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3772,6 +3772,59 @@ compared to the standard deviation (%1).</source>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
         <translation>製作星點遮罩</translation>
+    </message>
+</context>
+<context>
+    <name>ImageProperties</name>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="14"/>
+        <source>DeepSkyStacker - Image Properties</source>
+        <translation type="unfinished">DeepSkyStacker - 圖像屬性</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="31"/>
+        <source>File</source>
+        <translation>檔案</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="38"/>
+        <source>CFA</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="45"/>
+        <source>Depth</source>
+        <translation>深度</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="52"/>
+        <source>Exposure</source>
+        <translation>曝光</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="59"/>
+        <source>ISO/Gain</source>
+        <translation>ISO/增益</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="66"/>
+        <source>Size</source>
+        <translation>大小</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="73"/>
+        <source>Date/Time</source>
+        <translation>日期/時間</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="96"/>
+        <source>Type</source>
+        <translation>類別</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="119"/>
+        <source>Information</source>
+        <translation>資訊</translation>
     </message>
 </context>
 </TS>
