@@ -72,7 +72,7 @@
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
 #include "DeepStack.h"
-#include "FileProperty.h"
+#include "imageproperties.h"
 #include "FrameInfoSupport.h"
 #include "QtProgressDlg.h"
 #include "CheckAbove.h"
@@ -131,6 +131,9 @@ namespace
 		textLayout.endLayout();
 		return QSizeF(widthUsed, height);
 	}
+
+	static QStringList types;	// Dark, Flat etc...
+	static QStringList isos;
 }
 
 enum class Menuitem
@@ -139,6 +142,7 @@ enum class Menuitem
 	check,
 	uncheck,
 	remove,
+	properties,
 	copy,
 	erase
 };
@@ -347,19 +351,18 @@ namespace DSS
 		const QStyleOptionViewItem& option,
 		const QModelIndex& index) const
 	{
-		static QStringList types;
-		if (types.isEmpty())
-			types << 
-				QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
-				QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
-				QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
-				QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
-				QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
-		static QStringList isos;
-		if (isos.isEmpty())
-			isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
-				"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
-				"6400" << "12800";
+		//if (types.isEmpty())
+		//	types << 
+		//		QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
+		//		QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
+		//		QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
+		//		QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
+		//		QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+
+		//if (isos.isEmpty())
+		//	isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
+		//		"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
+		//		"6400" << "12800";
 
 		switch (static_cast<Column>(index.column()))
 		{
@@ -533,6 +536,10 @@ namespace DSS
 		errorMessageDialog { new QErrorMessage(this) }
 	{
 		ui->setupUi(this);
+		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
+			"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
+			"6400" << "12800";
+
 		retranslateUi();		// translate some of our stuff.
 
 		mruPath.readSettings();
@@ -682,6 +689,40 @@ namespace DSS
 
 	void StackingDlg::retranslateUi()
 	{
+		// 
+		//
+		// Build the context menu for the tableview (list of images).
+		//
+		menu.clear();
+		markAsReference = menu.addAction(tr("Use as reference frame", "IDM_USEASSTARTING"));
+		markAsReference->setCheckable(true);
+		markAsReference->setData(int(Menuitem::markAsReference));
+		menu.addSeparator();
+		check = menu.addAction(tr("Check", "IDM_CHECK"));
+		check->setData(int(Menuitem::check));
+		uncheck = menu.addAction(tr("Uncheck", "IDM_UNCHECK"));
+		uncheck->setData(int(Menuitem::uncheck));
+		menu.addSeparator();
+		remove = menu.addAction(tr("Remove from list", "IDM_REMOVEFROMLIST"));
+		remove->setData(int(Menuitem::remove));
+		menu.addSeparator();
+		properties = menu.addAction(tr("Properties...", "IDM_PROPERTIES"));
+		properties->setData(int(Menuitem::properties));
+		menu.addSeparator();
+		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
+		copy->setData(int(Menuitem::copy));
+		menu.addSeparator();
+		erase = menu.addAction(tr("Erase from disk...", "IDM_ERASEFROMDISK"));
+		erase->setData(int(Menuitem::erase));
+
+		types.clear();
+		types <<
+			QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
+			QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
+			QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
+			QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
+			QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+
 		OUTPUTLIST_FILTERS.clear();
 		int i = 0;
 		int count = sizeof(OUTPUTLIST_FILTER_SOURCES) / sizeof(OUTPUTLIST_FILTER_SOURCES[0]);
@@ -710,7 +751,22 @@ namespace DSS
 
 		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 
-		pictureList->tabBar->setTabText(0, tr("Main Group", "IDS_MAINGROUP"));
+		//
+		// Now iterate over the groups and retranslate the group names and all strings in the table model
+		// for the image list.
+		// 
+		// ImageListModel::retranslateUi() will emit dataChanged signal for all rows so the table view
+		// will be updated.
+		//
+		frameList.retranslateUi();	// re-translate group names unless changed.
+
+		i = 0;
+		for (auto it = frameList.groups_cbegin(); it != frameList.groups_cend(); ++it)
+		{
+			pictureList->tabBar->setTabText(i, it->name());
+			it->pictures->retranslateUi();
+			++i;
+		}
 	}
 
 
@@ -802,7 +858,6 @@ namespace DSS
 			const QAction* a = tabMenu.exec(QCursor::pos());
 			if (a == rename)
 			{
-				qDebug() << "Rename requested";
 				RenameGroup dlg{ this, frameList.groupName(tab) };
 				if (dlg.exec())
 				{
@@ -842,6 +897,7 @@ namespace DSS
 			check->setEnabled(true);
 			uncheck->setEnabled(true);
 			remove->setEnabled(true);
+			properties->setEnabled(true);
 			erase->setEnabled(true);
 		}
 		else
@@ -850,6 +906,7 @@ namespace DSS
 			check->setEnabled(false);
 			uncheck->setEnabled(false);
 			remove->setEnabled(false);
+			properties->setEnabled(false);
 			erase->setEnabled(false);
 		}
 
@@ -953,33 +1010,84 @@ namespace DSS
 				//
 				updateListInfo();
 			}
+
+			if (Menuitem::properties == item)
+			{
+				int row = selectedRows[0].row();
+				ImageProperties dlg(pictureList->tableView);
+
+				if (1 == rowCount)
+				{
+					dlg.fileName->setText(QString::fromStdU16String(imageModel->mydata[row].filePath.generic_u16string()));
+				}
+				else
+				{
+					dlg.fileName->setText(tr("%n files selected", "IDS_MULTIPLEFILESELECTED", rowCount));
+				}
+
+				dlg.dateStamp->setText(imageModel->data(row, Column::FileTime, Qt::DisplayRole).toString());
+				dlg.imageSize->setText(imageModel->data(row, Column::Size, Qt::DisplayRole).toString());
+				dlg.imageCFA->setText(imageModel->data(row, Column::CFA, Qt::DisplayRole).toString());
+				dlg.colourDepth->setText(imageModel->data(row, Column::Depth, Qt::DisplayRole).toString());
+				dlg.information->setText(imageModel->data(row, Column::Info, Qt::DisplayRole).toString());
+
+				dlg.typeCombo->addItems(types);
+				{
+					QString type{ imageModel->data(row, Column::Type, Qt::EditRole).toString() };
+					dlg.typeCombo->setCurrentIndex(dlg.typeCombo->findText(type));
+				}
+
+				dlg.isoCombo->addItems(isos);
+				{
+					QString value{ imageModel->data(row, Column::ISO, Qt::DisplayRole).toString() };
+					if (int index = dlg.isoCombo->findText(value))
+						dlg.isoCombo->setCurrentIndex(index);
+					else
+						dlg.isoCombo->setCurrentText(value);
+				}
+
+				{
+					double secs{ imageModel->data(row, Column::Exposure, Qt::EditRole).toDouble() };
+					if (secs > 86399.999) secs = 86399.999;		// 24 hours less 1 ms
+					double msecs = secs * 1000.0;
+					QTime time{ QTime(0, 0) };
+					time = time.addMSecs(msecs);
+					dlg.timeEdit->setTime(time);
+				}
+
+				if (dlg.exec())
+				{
+					QTime time{ dlg.timeEdit->time() };
+					double secs = (static_cast<double>(time.hour()) * 3600) +
+						(static_cast<double>(time.minute()) * 60) +
+						(time.second() +
+							(static_cast<double>(time.msec()) / 1000.0));
+
+					int typeIndex = dlg.typeCombo->currentIndex();
+					QString iso = dlg.isoCombo->currentText();
+
+
+					//
+					// Iterate over the selected items setting the values from the 
+					// dialogue
+					//
+					for (i = 0; i < rowCount; i++)
+					{
+						row = selectedRows[i].row();
+
+						imageModel->setData(row, Column::Type, typeIndex);
+						imageModel->setData(row, Column::ISO, iso.toInt());
+						imageModel->setData(row, Column::Exposure, QVariant(secs));
+					}
+				}
+
+			}
 		}
 	}
 
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
-		// 
-		//
-		// Build the context menu for the tableview (list of images).
-		//
-		markAsReference = menu.addAction(tr("Use as reference frame", "IDM_USEASSTARTING"));
-		markAsReference->setCheckable(true);
-		markAsReference->setData(int(Menuitem::markAsReference));
-		menu.addSeparator();
-		check = menu.addAction(tr("Check", "IDM_CHECK"));
-		check->setData(int(Menuitem::check));
-		uncheck = menu.addAction(tr("Uncheck", "IDM_UNCHECK"));
-		uncheck->setData(int(Menuitem::uncheck));
-		menu.addSeparator();
-		remove = menu.addAction(tr("Remove from list", "IDM_REMOVEFROMLIST"));
-		remove->setData(int(Menuitem::remove));
-		menu.addSeparator();
-		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
-		copy->setData(int(Menuitem::copy));
-		menu.addSeparator();
-		erase = menu.addAction(tr("Erase from disk...", "IDM_ERASEFROMDISK"));
-		erase->setData(int(Menuitem::erase));
 
 		ui->picture->setVisible(true);
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);

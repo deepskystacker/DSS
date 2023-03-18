@@ -66,9 +66,6 @@
     <ClCompile Include="ExplorerBar.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="FileProperty.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="AlignmentParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -402,6 +399,12 @@
     <ClCompile Include="DSSProgress.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="QElidedLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProperties.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -471,9 +474,6 @@
     </ClInclude>
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FileProperty.h">
-      <Filter>Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
@@ -1223,6 +1223,9 @@
     <QtUic Include="ui\PictureList.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ImageProperties.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1326,6 +1329,12 @@
     </QtMoc>
     <QtMoc Include="QtProgressDlg.h">
       <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageProperties.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="QElidedLabel.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

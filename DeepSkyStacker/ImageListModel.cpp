@@ -93,8 +93,13 @@ namespace DSS
         }
     }
 
-	QVariant ImageListModel::data(const QModelIndex& index, int role) const
+    QVariant ImageListModel::data(const int row, const Column column, int role) const
+    {
+        QModelIndex index(createIndex(row, static_cast<int>(column)));
+        return data(index, role);
+    }
 
+	QVariant ImageListModel::data(const QModelIndex& index, int role) const
     {
         if (!index.isValid())
             return QVariant();
@@ -682,5 +687,52 @@ namespace DSS
         return strText;
     }
 
+    void ImageListModel::retranslateUi()
+    {
+        //
+        // Warning: This code is copied from Group::addFile - if one changes, the other needs
+        // to change as well.
+        //
+        for (auto& lb : mydata)
+        {
+            if (lb.IsMasterFrame())
+            {
+                if (lb.m_PictureType == PICTURETYPE_DARKFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK");
+                else if (lb.m_PictureType == PICTURETYPE_DARKFLATFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT");
+                else if (lb.m_PictureType == PICTURETYPE_FLATFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT");
+                else if (lb.m_PictureType == PICTURETYPE_OFFSETFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET");
+            }
+            else
+            {
+                if (lb.m_PictureType == PICTURETYPE_DARKFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
+                else if (lb.m_PictureType == PICTURETYPE_DARKFLATFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
+                else if (lb.m_PictureType == PICTURETYPE_FLATFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
+                else if (lb.m_PictureType == PICTURETYPE_OFFSETFRAME)
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+                else
+                    lb.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
+            }
 
+            if (lb.m_lNrChannels == 3)
+                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
+            else
+                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
+
+            if (lb.GetCFAType() != CFATYPE_NONE)
+                lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");
+            else
+                lb.m_strCFA = QCoreApplication::translate("DSS::Group", "No", "IDS_NO");
+        }
+        //
+        // Very important to tell the table view that the model has changed.
+        //
+        emitChanged(0, static_cast<int>(mydata.size() - 1));
+    }
 }

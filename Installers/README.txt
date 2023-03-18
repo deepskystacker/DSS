@@ -17,6 +17,10 @@ Changes since 5.1.0
 
 6. Bug fix - DeepSkyStackerCL was only displaying the help text regardless of command line input.
 
+7. Enhancement - Reinstate Image Properties as a Qt based dialogue to allow changing e.g. exposure for multiple images at once
+
+8. Bug fix - Fields in the image list and the group tabs were not updated when switching to another language.
+
 Welcome to DeepSkyStacker 5.1.0
 ===============================
 
