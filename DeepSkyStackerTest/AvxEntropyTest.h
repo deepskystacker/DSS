@@ -4,5 +4,5 @@
 class TestEntropyInfo : public CEntropyInfo
 {
 private:
-	virtual void InitSquareEntropies();
+	virtual void InitSquareEntropies() override;
 };
