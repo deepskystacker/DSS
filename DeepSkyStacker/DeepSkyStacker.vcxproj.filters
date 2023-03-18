@@ -399,11 +399,11 @@
     <ClCompile Include="DSSProgress.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProperties.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProperties.cpp">
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
