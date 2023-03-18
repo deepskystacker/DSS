@@ -933,7 +933,18 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void FrameList::retranslateUi()
+	{
+		int i = 0;
+		for (auto& group : imageGroups)
+		{
+			if (0 == i)
+				group.Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
+			else if (!group.nameChanged)
+				group.Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(i);
+
+			++i;
+		}
+	}
+
 }
-
-
-
