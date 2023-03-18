@@ -164,5 +164,8 @@
     <ClInclude Include="..\DeepSkyStacker\ColorHelpers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="AvxEntropyTest.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

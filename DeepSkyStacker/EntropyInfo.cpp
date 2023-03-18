@@ -7,14 +7,12 @@
 #include "DSSTools.h"
 
 using namespace DSS;
-/* ------------------------------------------------------------------- */
 
-void CEntropyInfo::InitSquareEntropies()
+void CEntropyInfo::InitSquareEntropies() // virtual
 {
 	ZFUNCTRACE_RUNTIME();
-	int		lSquareSize;
 
-	lSquareSize = m_lWindowSize * 2 + 1;
+	int lSquareSize = m_lWindowSize * 2 + 1;
 
 	m_lNrSquaresX = m_pBitmap->Width() / lSquareSize;
 	m_lNrSquaresY = m_pBitmap->Height() / lSquareSize;
@@ -27,7 +25,7 @@ void CEntropyInfo::InitSquareEntropies()
 	m_vGreenEntropies.resize(m_lNrSquaresX*m_lNrSquaresY);
 	m_vBlueEntropies.resize(m_lNrSquaresX*m_lNrSquaresY);
 
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 		m_pProgress->Start2(m_lNrSquaresX);
 
 	AvxEntropy avxEntropy(*m_pBitmap, *this, nullptr);
@@ -35,39 +33,33 @@ void CEntropyInfo::InitSquareEntropies()
 	{
 		for (int i = 0; i < m_lNrSquaresX; i++)
 		{
-			int			lMinX,
-				lMaxX;
-
-			lMinX = i * lSquareSize;
-			lMaxX = std::min((i + 1) * lSquareSize - 1, m_pBitmap->Width() - 1);
+			const int lMinX = i * lSquareSize;
+			const int lMaxX = std::min((i + 1) * lSquareSize - 1, m_pBitmap->Width() - 1);
 
 			for (int j = 0; j < m_lNrSquaresY; j++)
 			{
-				int		lMinY,
-					lMaxY;
-				double		fRedEntropy,
-					fGreenEntropy,
-					fBlueEntropy;
+				const int lMinY = j * lSquareSize;
+				const int lMaxY = std::min((j + 1) * lSquareSize - 1, m_pBitmap->Height() - 1);
 
-				lMinY = j * lSquareSize;
-				lMaxY = std::min((j + 1) * lSquareSize - 1, m_pBitmap->Height() - 1);
 				// Compute the entropy for this square
+				double fRedEntropy;
+				double fGreenEntropy;
+				double fBlueEntropy;
 				ComputeEntropies(lMinX, lMinY, lMaxX, lMaxY, fRedEntropy, fGreenEntropy, fBlueEntropy);
 
 				m_vRedEntropies[i + j * m_lNrSquaresX] = fRedEntropy;
 				m_vGreenEntropies[i + j * m_lNrSquaresX] = fGreenEntropy;
 				m_vBlueEntropies[i + j * m_lNrSquaresX] = fBlueEntropy;
-			};
+			}
 
-			if (m_pProgress)
-				if (0 == i % m_lWindowSize)
-					m_pProgress->Progress2(1 + i);
-		};
+			if (m_pProgress != nullptr && i % m_lWindowSize == 0)
+				m_pProgress->Progress2(1 + i);
+		}
 	}
 
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 		m_pProgress->End2();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -133,11 +125,10 @@ void CEntropyInfo::GetPixel(int x, int y, double& fRedEntropy, double& fGreenEnt
 	lSquareX = x / (m_lWindowSize * 2 + 1);
 	lSquareY = y / (m_lWindowSize * 2 + 1);
 
-	QPointF				ptCenter;
-	CEntropySquare		Squares[3];
-	size_t				sizeSquares = 0;
+	CEntropySquare Squares[3];
+	size_t sizeSquares = 0;
 
-	GetSquareCenter(lSquareX, lSquareY, ptCenter);
+	QPointF ptCenter = GetSquareCenter(lSquareX, lSquareY);
 	AddSquare(Squares[sizeSquares++], lSquareX, lSquareY);
 	if (ptCenter.x() > x)
 	{

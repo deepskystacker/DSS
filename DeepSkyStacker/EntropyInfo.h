@@ -58,45 +58,43 @@ public :
 class CMemoryBitmap;
 class CEntropyInfo
 {
-private:
-	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	int m_lWindowSize;
-	int m_lNrPixels;
-	int m_lNrSquaresX;
-	int m_lNrSquaresY;
-	std::vector<float> m_vRedEntropies;
-	std::vector<float> m_vGreenEntropies;
-	std::vector<float> m_vBlueEntropies;
-	DSS::ProgressBase* m_pProgress;
+protected:
+	std::shared_ptr<CMemoryBitmap> m_pBitmap{};
+	int m_lWindowSize{ 0 };
+	int m_lNrPixels{ 0 };
+	int m_lNrSquaresX{ 0 };
+	int m_lNrSquaresY{ 0 };
+	std::vector<float> m_vRedEntropies{};
+	std::vector<float> m_vGreenEntropies{};
+	std::vector<float> m_vBlueEntropies{};
+	DSS::ProgressBase* m_pProgress{ nullptr };
 
 private:
-	void InitSquareEntropies();
-	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
-	void GetSquareCenter(int lX, int lY, QPointF & ptCenter)
+	virtual void InitSquareEntropies();
+	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy);
+	QPointF GetSquareCenter(int lX, int lY)
 	{
-		ptCenter.rx() = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
-		ptCenter.ry() = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
+		return QPointF{
+			static_cast<qreal>(lX * (m_lWindowSize * 2 + 1) + m_lWindowSize),
+			static_cast<qreal>(lY * (m_lWindowSize * 2 + 1) + m_lWindowSize)
+		};
 	}
 
 	void AddSquare(CEntropySquare& Square, int lX, int lY)
 	{
-		GetSquareCenter(lX, lY, Square.m_ptCenter);
+		Square.m_ptCenter = GetSquareCenter(lX, lY);
 		Square.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
 		Square.m_fGreenEntropy	= m_vGreenEntropies[lX + lY * m_lNrSquaresX];
 		Square.m_fBlueEntropy	= m_vBlueEntropies[lX + lY * m_lNrSquaresX];
 	}
 
 public:
-    CEntropyInfo() :
-		m_pProgress{ nullptr },
-		m_lWindowSize{ 0 },
-		m_lNrPixels{ 0 },
-		m_lNrSquaresX{ 0 },
-		m_lNrSquaresY{ 0 }
-	{}
-
-	virtual ~CEntropyInfo()
-	{}
+	CEntropyInfo() = default;
+	CEntropyInfo(const CEntropyInfo&) = delete;
+	CEntropyInfo(CEntropyInfo&&) = delete;
+	CEntropyInfo& operator=(const CEntropyInfo&) = delete;
+	CEntropyInfo& operator=(CEntropyInfo&&) = delete;
+	~CEntropyInfo() = default;
 
 	const float* redEntropyData() const { return m_vRedEntropies.data(); }
 	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }

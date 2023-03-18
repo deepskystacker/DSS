@@ -173,6 +173,7 @@
     <ClInclude Include="..\DeepSkyStacker\MemoryBitmap.h" />
     <ClInclude Include="..\DeepSkyStacker\TaskInfo.h" />
     <ClInclude Include="AvxAccumulateTest.h" />
+    <ClInclude Include="AvxEntropyTest.h" />
     <ClInclude Include="catch.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
