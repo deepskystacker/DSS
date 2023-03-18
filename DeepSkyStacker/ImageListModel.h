@@ -109,6 +109,7 @@ namespace DSS
         }
 
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+        QVariant data(const int row, const Column column, int role = Qt::DisplayRole) const;
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
         virtual bool setData(const QModelIndex& index, const QVariant& value, int role);
@@ -186,7 +187,7 @@ namespace DSS
             return false;
         }
 
-        void emitChanged(int startRow, int endRow, int startColumn = 0, int endColumn = static_cast<int>(Column::MAX_COLS))
+        void emitChanged(int startRow, int endRow, int startColumn = 0, int endColumn = static_cast<int>(Column::MAX_COLS)-1)
         {
             QModelIndex start{ createIndex(startRow, startColumn) };
             QModelIndex end{ createIndex(endRow, endColumn) };
@@ -227,6 +228,9 @@ namespace DSS
         }
 
         QVariant rowIcon(const ListBitMap& file) const;
+
+protected:
+        void retranslateUi();
     };
 };
 

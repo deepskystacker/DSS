@@ -298,12 +298,14 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ImageProperties.cpp" />
     <ClCompile Include="ImageSinks.cpp" />
     <ClCompile Include="imageview.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="picturelist.cpp" />
+    <ClCompile Include="QElidedLabel.cpp" />
     <ClCompile Include="QtProgressDlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="selectrect.cpp">
@@ -318,7 +320,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="FileProperty.cpp" />
     <ClCompile Include="Filters.cpp" />
     <ClCompile Include="FITSUtil.cpp" />
     <ClCompile Include="FlatFrame.cpp" />
@@ -523,7 +524,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="EntropyInfo.h" />
     <QtMoc Include="ExplorerBar.h" />
     <ClInclude Include="ExceptionHandling.h" />
-    <ClInclude Include="FileProperty.h" />
     <ClInclude Include="Filters.h" />
     <ClInclude Include="FITSUtil.h" />
     <ClInclude Include="FlatFrame.h" />
@@ -537,6 +537,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="imageloader.h" />
+    <QtMoc Include="ImageProperties.h" />
     <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="LuminanceTab.h" />
@@ -559,6 +560,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
+    <QtMoc Include="QElidedLabel.h" />
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="QtProgressDlg.h" />
     <ClInclude Include="RAWUtils.h" />
@@ -744,6 +746,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\CometStacking.ui" />
     <QtUic Include="ui\DropFilesDlg.ui" />
     <QtUic Include="ui\ExplorerBar.ui" />
+    <QtUic Include="ui\ImageProperties.ui" />
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PictureList.ui" />

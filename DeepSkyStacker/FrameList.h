@@ -37,8 +37,8 @@ namespace DSS
 		{
 		};
 
-		const_group_iterator groups_cbegin()const { return imageGroups.begin(); }
-		const_group_iterator groups_cend()const { return imageGroups.end(); }
+		const_group_iterator groups_cbegin() const { return imageGroups.begin(); }
+		const_group_iterator groups_cend() const { return imageGroups.end(); }
 
 		void changePictureType(int nItem, PICTURETYPE PictureType);
 
@@ -212,6 +212,12 @@ namespace DSS
 
 		// Change the name of the specified group
 		void setGroupName(std::uint16_t id, const QString& name);
+
+		//
+		// retranslate group names unless changed
+		//
+		void retranslateUi();
+
 	};
 };
 
