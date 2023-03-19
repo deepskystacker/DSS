@@ -94,7 +94,7 @@ private slots:
 	void on_forceRegister_stateChanged(int);
 	void on_hotPixels_stateChanged(int);
 	void on_stackAfter_clicked();
-	void on_percentStack_textEdited(const QString &text);
+	void on_percentStack_editingFinished(const QString &text);
 
 	void on_luminanceThreshold_valueChanged(int);
 	void on_computeDetectedStars_clicked();
