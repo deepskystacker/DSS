@@ -540,13 +540,14 @@ void StackingParameters::on_kappa_editingFinished()
 	QLocale locale;
 	QString string{ ui->kappa->text() };
 	int unused{ 0 };
-	double kappa{ 0.0 };
+	double temp{ 0.0 };
 	bool OK = false;
 	if (QValidator::Acceptable == kappaValidator->validate(string, unused))
 	{
-		kappa = locale.toDouble(string, &OK);
+		temp = locale.toDouble(string, &OK);
 		if (OK)
 		{
+			kappa = temp;
 			switch (type)
 			{
 			case PICTURETYPE_LIGHTFRAME:
