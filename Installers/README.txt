@@ -21,6 +21,8 @@ Changes since 5.1.0
 
 8. Bug fix - Fields in the image list and the group tabs were not updated when switching to another language.
 
+9. Bug fix - remove all "Set Black Point to Zero" recommendations from "Recommended Settings"
+
 Welcome to DeepSkyStacker 5.1.0
 ===============================
 
