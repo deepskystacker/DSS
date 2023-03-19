@@ -23,6 +23,8 @@ Changes since 5.1.0
 
 9. Bug fix - remove all "Set Black Point to Zero" recommendations from "Recommended Settings"
 
+10. Bug fix - Invalid input in RAW/DDP settings for scale factors caused an assertion failure
+
 Welcome to DeepSkyStacker 5.1.0
 ===============================
 
