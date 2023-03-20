@@ -1,9 +1,9 @@
-﻿Welcome to DeepSkyStacker 5.1.1 Beta 1
-======================================
+﻿Welcome to DeepSkyStacker 5.1.1
+===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-Changes since 5.1.0
+This is a bug fix release for problems reported against 5.1.0
 
 1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
 
@@ -16,6 +16,14 @@ Changes since 5.1.0
 5. Bug fix - Resolve occasional odd problems when using edit stars mode.
 
 6. Bug fix - DeepSkyStackerCL was only displaying the help text regardless of command line input.
+
+7. Enhancement - Reinstate Image Properties as a Qt based dialogue to allow changing e.g. exposure for multiple images at once
+
+8. Bug fix - Fields in the image list and the group tabs were not updated when switching to another language.
+
+9. Bug fix - remove all "Set Black Point to Zero" recommendations from "Recommended Settings"
+
+10. Bug fix - Invalid input in RAW/DDP settings for scale factors caused an assertion failure
 
 Welcome to DeepSkyStacker 5.1.0
 ===============================

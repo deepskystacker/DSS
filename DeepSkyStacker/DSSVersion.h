@@ -1,17 +1,17 @@
 #ifndef __DSSVERSION_H_
 #define __DSSVERSION_H_
 
-//#define DSSBETA
+#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 3
+#define DSSBETARELEASE 1
 constexpr int DSSBETAEXPIREYEAR = 2023;
-constexpr int DSSBETAEXPIREMONTH = 5;
+constexpr int DSSBETAEXPIREMONTH = 6;
 #endif
 
 #define DSSVER_MAJOR			5
 #define DSSVER_MINOR			1
-#define DSSVER_SUB				0
+#define DSSVER_SUB				2
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE

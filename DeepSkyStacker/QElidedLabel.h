@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2022 David C. Partridge
+** Copyright (C) 2023 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,88 +34,45 @@
 **
 **
 ****************************************************************************/
-
-class Workspace;
-class CAllStackingTasks;
-class QValidator;
-
-namespace Ui {
-	class RegisterSettings;
-}
-
-class Workspace;
-
-class RegisterSettings : public QDialog
+class QElidedLabel :
+    public QFrame
 {
-	Q_OBJECT
+    typedef QFrame
+        Inherited;
 
-typedef QDialog
-		Inherited;
+    Q_OBJECT
+    Q_PROPERTY(QString text READ text WRITE setText)
+    Q_PROPERTY(bool isElided READ isElided)
+
 public:
-	explicit RegisterSettings(QWidget *parent = nullptr);
-	~RegisterSettings();
+    explicit QElidedLabel(const QString& text, QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
-	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
-	{
-		settingsOnly = bSettingsOnly;
-	};
+    explicit QElidedLabel(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
-	inline bool	isForceRegister() noexcept
-	{
-		return forceRegister;
-	};
+    Qt::TextElideMode elisionMode() const { return elideMode; }
+    const QString text() const { return content; }
+    bool isElided() const { return elided; }
 
-	inline bool	isStackAfter(double & fPercent) noexcept
-	{
-		fPercent = (double)percentStack;
+public slots:
+    void setText(const QString& text)
+    {
+        content = text;
+        Inherited::update();
+    }
+    void setElisionMode(const Qt::TextElideMode m)
+    {
+        elideMode = m;
+    }
 
-		return stackAfter;
-	};
+protected:
+    void paintEvent(QPaintEvent* event) override;
 
-	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
-	{
-		pStackingTasks = ptr;
-		return *this;
-	};
-	   
-private slots:
-
-	void on_recommendedSettings_clicked();
-	void on_stackingSettings_clicked();
-
-	void accept() override;
-	void reject() override;
-
-	void on_forceRegister_stateChanged(int);
-	void on_hotPixels_stateChanged(int);
-	void on_stackAfter_clicked();
-	void on_percentStack_editingFinished(const QString &text);
-
-	void on_luminanceThreshold_valueChanged(int);
-	void on_computeDetectedStars_clicked();
-	void on_medianFilter_stateChanged(int);
-
-
+signals:
+    void elisionChanged(bool elided);
 
 private:
-	Ui::RegisterSettings *ui;
-	std::unique_ptr<Workspace> workspace;
-
-	bool					initialised;
-	bool					forceRegister;
-	bool					stackAfter;
-	uint 					percentStack;
-	bool					noDarks;
-	bool					noFlats;
-	bool					noOffsets;
-	uint					detectionThreshold;
-	bool					medianFilter;
-	QString					firstLightFrame;
-	CAllStackingTasks *		pStackingTasks;
-	bool					settingsOnly;
-	QValidator *			perCentValidator;
-
-	void showEvent(QShowEvent *event) override;
-
-	void onInitDialog();
+    Qt::TextElideMode elideMode;
+    bool elided;
+    QString content;
 };
+

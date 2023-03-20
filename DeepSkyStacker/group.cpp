@@ -45,7 +45,8 @@ namespace DSS
 	Group::Group() :
 		pictures{ std::make_unique<ImageListModel>() },
 		Index{ nextIndex++ },		// First group is Main Group with Index of 0
-		Dirty{ false }
+		Dirty{ false },
+		nameChanged { false }
 	{
 		if (0 == Index)
 		{
@@ -76,28 +77,35 @@ namespace DSS
 
 		lb.m_groupId = Index;
 
+		//
+		// Warning: If this code is changed, matching changes must also be made to ImageListModel::retranslateUi()
+		//
 		if (lb.InitFromFile(file, PictureType))
 		{
-			if (PictureType == PICTURETYPE_DARKFRAME)
+			if (lb.IsMasterFrame())
 			{
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
-			}
-			else if (PictureType == PICTURETYPE_DARKFLATFRAME)
-			{
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
-			}
-			else if (PictureType == PICTURETYPE_FLATFRAME)
-			{
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
-			}
-			else if (PictureType == PICTURETYPE_OFFSETFRAME)
-			{
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+				if (lb.m_PictureType == PICTURETYPE_DARKFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK");
+				else if (lb.m_PictureType == PICTURETYPE_DARKFLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT");
+				else if (lb.m_PictureType == PICTURETYPE_FLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT");
+				else if (lb.m_PictureType == PICTURETYPE_OFFSETFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET");
 			}
 			else
 			{
-				lb.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
-			};
+				if (lb.m_PictureType == PICTURETYPE_DARKFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
+				else if (lb.m_PictureType == PICTURETYPE_DARKFLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
+				else if (lb.m_PictureType == PICTURETYPE_FLATFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
+				else if (lb.m_PictureType == PICTURETYPE_OFFSETFRAME)
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+				else
+					lb.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
+			}
 
 
 			if (bCheck)
@@ -125,7 +133,7 @@ namespace DSS
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet = bmpInfo.m_bComet;
 					lb.m_SkyBackground = bmpInfo.m_SkyBackground;
-					lb.m_bUseAsStarting = (PictureType == PICTURETYPE_REFLIGHTFRAME);
+					lb.m_bUseAsStarting = (lb.m_PictureType == PICTURETYPE_REFLIGHTFRAME);
 				}
 			};
 
@@ -135,18 +143,6 @@ namespace DSS
 				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
 			else
 				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
-
-			if (lb.IsMasterFrame())
-			{
-				if (PictureType == PICTURETYPE_DARKFRAME)
-					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK");
-				else if (PictureType == PICTURETYPE_DARKFLATFRAME)
-					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT");
-				else if (PictureType == PICTURETYPE_FLATFRAME)
-					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT");
-				else if (PictureType == PICTURETYPE_OFFSETFRAME)
-					lb.m_strType = QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET");
-			};
 
 			if (lb.GetCFAType() != CFATYPE_NONE)
 				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");

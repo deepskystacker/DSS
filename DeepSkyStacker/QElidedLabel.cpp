@@ -1,7 +1,6 @@
-#pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2022 David C. Partridge
+** Copyright (C) 2023 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,88 +33,69 @@
 **
 **
 ****************************************************************************/
+#include "stdafx.h"
+#include "qelidedlabel.h"
 
-class Workspace;
-class CAllStackingTasks;
-class QValidator;
-
-namespace Ui {
-	class RegisterSettings;
-}
-
-class Workspace;
-
-class RegisterSettings : public QDialog
+QElidedLabel::QElidedLabel(const QString& text, QWidget* parent, Qt::WindowFlags f) :
+    QFrame(parent, f),
+    elideMode{ Qt::ElideMiddle },
+    elided{ false },
+    content{ text }
 {
-	Q_OBJECT
-
-typedef QDialog
-		Inherited;
-public:
-	explicit RegisterSettings(QWidget *parent = nullptr);
-	~RegisterSettings();
-
-	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
-	{
-		settingsOnly = bSettingsOnly;
-	};
-
-	inline bool	isForceRegister() noexcept
-	{
-		return forceRegister;
-	};
-
-	inline bool	isStackAfter(double & fPercent) noexcept
-	{
-		fPercent = (double)percentStack;
-
-		return stackAfter;
-	};
-
-	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
-	{
-		pStackingTasks = ptr;
-		return *this;
-	};
-	   
-private slots:
-
-	void on_recommendedSettings_clicked();
-	void on_stackingSettings_clicked();
-
-	void accept() override;
-	void reject() override;
-
-	void on_forceRegister_stateChanged(int);
-	void on_hotPixels_stateChanged(int);
-	void on_stackAfter_clicked();
-	void on_percentStack_editingFinished(const QString &text);
-
-	void on_luminanceThreshold_valueChanged(int);
-	void on_computeDetectedStars_clicked();
-	void on_medianFilter_stateChanged(int);
-
-
-
-private:
-	Ui::RegisterSettings *ui;
-	std::unique_ptr<Workspace> workspace;
-
-	bool					initialised;
-	bool					forceRegister;
-	bool					stackAfter;
-	uint 					percentStack;
-	bool					noDarks;
-	bool					noFlats;
-	bool					noOffsets;
-	uint					detectionThreshold;
-	bool					medianFilter;
-	QString					firstLightFrame;
-	CAllStackingTasks *		pStackingTasks;
-	bool					settingsOnly;
-	QValidator *			perCentValidator;
-
-	void showEvent(QShowEvent *event) override;
-
-	void onInitDialog();
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 };
+
+QElidedLabel::QElidedLabel(QWidget* parent, Qt::WindowFlags f) :
+    QFrame(parent, f),
+    elideMode{ Qt::ElideMiddle },
+    elided{ false }
+{
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+};
+
+void QElidedLabel::paintEvent(QPaintEvent* event)
+{
+    QFrame::paintEvent(event);
+
+    QPainter painter(this);
+    QFontMetrics fontMetrics = painter.fontMetrics();
+
+    bool didElide = false;
+    int lineSpacing = fontMetrics.lineSpacing();
+    int y = 0;
+
+    QTextLayout textLayout(content, painter.font());
+    textLayout.beginLayout();
+    forever
+    {
+        QTextLine line = textLayout.createLine();
+
+        if (!line.isValid())
+            break;
+
+        line.setLineWidth(width());
+        int nextLineY = y + lineSpacing;
+
+        if (height() >= nextLineY + lineSpacing)
+        {
+            line.draw(&painter, QPoint(0, y));
+            y = nextLineY;
+        }
+        else
+        {
+            QString lastLine = content.mid(line.textStart());
+            QString elidedLastLine = fontMetrics.elidedText(lastLine, elideMode, width());
+            painter.drawText(QPoint(0, y + fontMetrics.ascent()), elidedLastLine);
+            line = textLayout.createLine();
+            didElide = line.isValid();
+            break;
+        }
+    }
+    textLayout.endLayout();
+
+    if (didElide != elided) 
+    {
+        elided = didElide;
+        emit elisionChanged(didElide);
+    }
+}
