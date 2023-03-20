@@ -234,7 +234,7 @@ void RegisterSettings::on_stackAfter_clicked()
 
 }
 
-void RegisterSettings::on_percentStack_textEdited(const QString &text)
+void RegisterSettings::on_percentStack_editingFinished(const QString &text)
 {
 	percentStack = text.toUInt();
 	workspace->setValue("Register/PercentStack", text);

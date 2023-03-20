@@ -43,6 +43,8 @@ namespace DSS
 {
 	class Group
 	{
+		friend class FrameList;
+
 	private:
 		//
 		// Initial group id is zero
@@ -72,7 +74,8 @@ namespace DSS
 			pictures { std::move(rhs.pictures) },
 			Index { std::exchange(rhs.Index, 0) },
 			Name { std::move(rhs.Name) },
-			Dirty { std::exchange(rhs.Dirty, false) }
+			Dirty { std::exchange(rhs.Dirty, false) },
+			nameChanged { std::exchange(rhs.nameChanged, false) }
 		{
 		}
 
@@ -84,6 +87,7 @@ namespace DSS
 				Index = std::exchange(rhs.Index, 0);
 				Name = std::move(rhs.Name);
 				Dirty = std::exchange(rhs.Dirty, false);
+				nameChanged = std::exchange(rhs.nameChanged, false);
 			}
 			return *this;
 		}
@@ -95,7 +99,7 @@ namespace DSS
 		size_t size() const noexcept;
 
 		inline QString name() const noexcept { return Name; };
-		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
+		inline Group& setName(QString const& name) noexcept { Name = name; nameChanged = true; return *this; };
 		inline bool dirty() const noexcept { return Dirty; };
 		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
 
@@ -146,8 +150,6 @@ namespace DSS
 		//
 		QString Name;
 		bool Dirty;
-
-
-
+		bool nameChanged;		// set if user has renamed the group
 	};
 }

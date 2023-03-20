@@ -1160,7 +1160,7 @@ Değişiklikler kaydedilsin mi?</translation>
         <location filename="../group.h" line="76"/>
         <source>Group %1</source>
         <comment>IDS_GROUPIDMASK</comment>
-        <translation>Grup %ld</translation>
+        <translation>Grup %1</translation>
     </message>
     <message>
         <location filename="../FrameInfo.h" line="154"/>
@@ -2279,25 +2279,25 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="871"/>
+        <location filename="../RegisterEngine.cpp" line="857"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Hizalanıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="900"/>
+        <location filename="../RegisterEngine.cpp" line="886"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Hizalanıyor %1 (%2 yıldız)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1047"/>
+        <location filename="../RegisterEngine.cpp" line="1033"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Parlaklığı hesaplıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1227"/>
+        <location filename="../RegisterEngine.cpp" line="1213"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2305,7 +2305,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1231"/>
+        <location filename="../RegisterEngine.cpp" line="1217"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2313,25 +2313,25 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1349"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>%1 deki Kalibre edilen resim kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1393"/>
+        <location filename="../RegisterEngine.cpp" line="1379"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Görüntüleri hizalıyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1443"/>
+        <location filename="../RegisterEngine.cpp" line="1429"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Hizalanıyor %1&apos;si (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1454"/>
+        <location filename="../RegisterEngine.cpp" line="1440"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2339,7 +2339,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1456"/>
+        <location filename="../RegisterEngine.cpp" line="1442"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3786,6 +3786,59 @@ nispeten standart sapmadan (%1).</translation>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>ImageProperties</name>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="14"/>
+        <source>DeepSkyStacker - Image Properties</source>
+        <translation>DeepSkyStacker - Görüntü Özellikleri</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="31"/>
+        <source>File</source>
+        <translation>Dosya</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="38"/>
+        <source>CFA</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="45"/>
+        <source>Depth</source>
+        <translation>Derinlik</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="52"/>
+        <source>Exposure</source>
+        <translation>Poz süresi</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="59"/>
+        <source>ISO/Gain</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="66"/>
+        <source>Size</source>
+        <translation>Boyut</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="73"/>
+        <source>Date/Time</source>
+        <translation>Tarih/Saat</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="96"/>
+        <source>Type</source>
+        <translation>Tür</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="119"/>
+        <source>Information</source>
+        <translation>Bilgiler</translation>
     </message>
 </context>
 </TS>

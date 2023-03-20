@@ -72,15 +72,15 @@ private slots:
 	void on_backgroundCalibration_clicked();
 	void backgroundCalibrationOptions();
 
-	void on_iterations_textEdited(const QString &text);
-	void on_kappa_textEdited(const QString &text);
+	void on_iterations_editingFinished();
+	void on_kappa_editingFinished();
 
 	void on_debloom_stateChanged(int);
 	void on_hotPixels_stateChanged(int);
 	void on_badColumns_stateChanged(int);
 	void on_darkOptimisation_stateChanged(int);
 	void on_useDarkFactor_stateChanged(int);
-	void on_darkMultiplicationFactor_textEdited(const QString &text);
+	void on_darkMultiplicationFactor_editingFinished();
 
 	void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
 

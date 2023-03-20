@@ -25,9 +25,9 @@ private slots:
 	void on_buttonBox_clicked(QAbstractButton *button);
 
 	// Slots for RAW Files tab
-	void on_brightness_textEdited(const QString&);
-	void on_redScale_textEdited(const QString&);
-	void on_blueScale_textEdited(const QString&);
+	void brightness_editingFinished();
+	void redScale_editingFinished();
+	void blueScale_editingFinished();
 	void on_noWB_stateChanged();
 	void on_cameraWB_stateChanged();
 	void on_bilinear_clicked();
@@ -38,9 +38,9 @@ private slots:
 	// Slots for FITS Files tab
 	void on_isFITSRaw_clicked(bool);
 	void on_DSLRs_currentIndexChanged(int);
-	void on_brightness_2_textEdited(const QString&);
-	void on_redScale_2_textEdited(const QString&);
-	void on_blueScale_2_textEdited(const QString&);
+	void brightness_2_editingFinished();
+	void redScale_2_editingFinished();
+	void blueScale_2_editingFinished();
 	void on_bilinear_2_toggled(bool);
 	void on_AHD_2_toggled(bool);
 	void on_rawBayer_2_toggled(bool);

@@ -2283,25 +2283,25 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="871"/>
+        <location filename="../RegisterEngine.cpp" line="857"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registando %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="900"/>
+        <location filename="../RegisterEngine.cpp" line="886"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Registando %1 (%2 estrelas)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1047"/>
+        <location filename="../RegisterEngine.cpp" line="1033"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calculando a luminancia %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1227"/>
+        <location filename="../RegisterEngine.cpp" line="1213"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2309,7 +2309,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1231"/>
+        <location filename="../RegisterEngine.cpp" line="1217"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2317,25 +2317,25 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1349"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Guardando imagem calibrada em %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1393"/>
+        <location filename="../RegisterEngine.cpp" line="1379"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Registando as fotos</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1443"/>
+        <location filename="../RegisterEngine.cpp" line="1429"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Registando %ld of %ld</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1454"/>
+        <location filename="../RegisterEngine.cpp" line="1440"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2343,7 +2343,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1456"/>
+        <location filename="../RegisterEngine.cpp" line="1442"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3793,6 +3793,59 @@ comparativamente ao desvio normalizado (%1).</translation>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
         <translation>Criando mascara de estrela...</translation>
+    </message>
+</context>
+<context>
+    <name>ImageProperties</name>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="14"/>
+        <source>DeepSkyStacker - Image Properties</source>
+        <translation>DeepSkyStacker - Propriedades da Imagem</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="31"/>
+        <source>File</source>
+        <translation>Ficheiro</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="38"/>
+        <source>CFA</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="45"/>
+        <source>Depth</source>
+        <translation>Profundidade</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="52"/>
+        <source>Exposure</source>
+        <translation>Exposicao</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="59"/>
+        <source>ISO/Gain</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="66"/>
+        <source>Size</source>
+        <translation>Tamanho</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="73"/>
+        <source>Date/Time</source>
+        <translation>Data/Tempo</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="96"/>
+        <source>Type</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <location filename="../ui/imageProperties.ui" line="119"/>
+        <source>Information</source>
+        <translation>Informação</translation>
     </message>
 </context>
 </TS>
