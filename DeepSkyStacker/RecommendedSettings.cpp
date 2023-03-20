@@ -336,6 +336,7 @@ static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fEx
 
 /* ------------------------------------------------------------------- */
 
+#if (0)
 static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
 {
 	RecommendationItem			ri;
@@ -367,6 +368,7 @@ static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat
 	};
 
 };
+#endif
 
 /* ------------------------------------------------------------------- */
 
@@ -713,8 +715,8 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime(), pStackingTasks->AreFITSImageUsed());
 			AddModdedDSLR(vRecommendations, pStackingTasks->AreFITSImageUsed());
 			AddRAWNarrowBandRecommendation(vRecommendations, pStackingTasks->AreFITSImageUsed());
-			if (!pStackingTasks->AreFITSImageUsed())
-				AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
+			// if (!pStackingTasks->AreFITSImageUsed())
+			//	AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
 		};
 
 		if (pStackingTasks->AreColorImageUsed())

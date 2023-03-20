@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include <algorithm>
 using std::min;
 using std::max;
@@ -65,11 +65,9 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	// Set up the validators for the input fields
 	//
 	darkFactorValidator = new QDoubleValidator(0.0, 5.0, 4, this);
-	ui->darkMultiplicationFactor->setValidator(darkFactorValidator);
 	iterationValidator = new QRegularExpressionValidator(QRegularExpression("([1-9]|1[0-9]|2[0])"), ui->iterations);
 	ui->iterations->setValidator(iterationValidator);
 	kappaValidator = new QDoubleValidator(0.0, 5.0, 2, this);
-	ui->kappa->setValidator(kappaValidator);
 
 	//
 	// Set the tooltip text
@@ -275,7 +273,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/FlatOffset_Kappa", 2.0).toDouble();
+		kappa = workspace->value("Stacking/Offset_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -493,20 +491,29 @@ void StackingParameters::on_useDarkFactor_stateChanged(int state)
 	workspace->setValue("Stacking/UseDarkFactor", (Qt::Checked == state) ? true : false);
 }
 
-void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
+void StackingParameters::on_darkMultiplicationFactor_editingFinished()
 {
-	bool convertedOK { false };
-	double factor(0.0);
 	QLocale locale;
-
-	factor = locale.toDouble(text, &convertedOK);
-	if (convertedOK) workspace->setValue("Stacking/DarkFactor", text);
+	QString string{ ui->darkMultiplicationFactor->text() };
+	int unused{ 0 };
+	bool OK = false;
+	if (QValidator::Acceptable == darkFactorValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("Stacking/DarkFactor", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("Stacking/DarkFactor", 1.0).toDouble();
+		ui->darkMultiplicationFactor->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
-void StackingParameters::on_iterations_textEdited(const QString &text)
+void StackingParameters::on_iterations_editingFinished()
 {
 	bool convertedOK { false };
-	uint value = text.toUInt(&convertedOK);
+	uint value = ui->iterations->text().toUInt(&convertedOK);
 
 	if (convertedOK)
 	{
@@ -528,30 +535,53 @@ void StackingParameters::on_iterations_textEdited(const QString &text)
 	}
 }
 
-void StackingParameters::on_kappa_textEdited(const QString &text)
+void StackingParameters::on_kappa_editingFinished()
 {
-	bool convertedOK{ false };
-	double temp{ 0.0 };
 	QLocale locale;
-
-	temp = locale.toDouble(text, &convertedOK);
-	if (convertedOK)
+	QString string{ ui->kappa->text() };
+	int unused{ 0 };
+	double temp{ 0.0 };
+	bool OK = false;
+	if (QValidator::Acceptable == kappaValidator->validate(string, unused))
 	{
-		kappa = temp;
+		temp = locale.toDouble(string, &OK);
+		if (OK)
+		{
+			kappa = temp;
+			switch (type)
+			{
+			case PICTURETYPE_LIGHTFRAME:
+				workspace->setValue("Stacking/Light_Kappa", kappa);
+				break;
+			case PICTURETYPE_DARKFRAME:
+				workspace->setValue("Stacking/Dark_Kappa", kappa);
+				break;
+			case PICTURETYPE_FLATFRAME:
+				workspace->setValue("Stacking/Flat_Kappa", kappa);
+				break;
+			case PICTURETYPE_OFFSETFRAME:
+				workspace->setValue("Stacking/Offset_Kappa", kappa);
+				break;
+			}
+		}
+	}
+	else
+	{
+		QApplication::beep();
 		switch (type)
 		{
 		case PICTURETYPE_LIGHTFRAME:
-			workspace->setValue("Stacking/Light_Kappa", kappa);
+			kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 			break;
 		case PICTURETYPE_DARKFRAME:
-			workspace->setValue("Stacking/Dark_Kappa", kappa);
+			kappa = workspace->value("Stacking/Dark_Kappa", 2.0).toDouble();
 			break;
 		case PICTURETYPE_FLATFRAME:
-			workspace->setValue("Stacking/Flat_Kappa", kappa);
+			kappa = workspace->value("Stacking/Flat_Kappa", 2.0).toDouble();
 			break;
 		case PICTURETYPE_OFFSETFRAME:
-			workspace->setValue("Stacking/Offset_Kappa", kappa);
-			break;
+			kappa = workspace->value("Stacking/Offset_Kappa", 2.0).toDouble();
 		}
+		ui->kappa->setText(QString("%L1").arg(kappa, 0, 'f', 2));
 	}
 }
