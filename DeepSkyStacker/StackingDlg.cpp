@@ -2170,7 +2170,7 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
+			// Set the selection rectangle if needed.   It is set by Qt signal from selectrect.cpp
 			if (!selectRect.isEmpty())
 			{
 				tasks.SetCustomRectangle(selectRect);
