@@ -211,20 +211,22 @@ namespace DSS
     */
     void SelectRect::showEvent(QShowEvent* e)
     {
-        raise();
-        e->ignore();
+        raise(); show();
+        Inherited::showEvent(e);
     }
 
     void SelectRect::mousePressEvent(QMouseEvent* e)
     {
         if (Qt::LeftButton == e->button())
         {
+            qDebug() << "LMB pressed";
             //
             // Determine what we're doing based on pointer location
             //
             mode = modeFromPosition(e->pos());
             if (mode == SelectionMode::None) mode = SelectionMode::Create;
 
+            qDebug() << "Selection mode " << (uint)mode;
             //
             // Remember the location at which the mouse button was pressed.
             //
@@ -236,9 +238,9 @@ namespace DSS
             startRect = selectRect;
 
             updateSelection();
-
-            update();
             selecting = true;
+            update();
+
         }
         show();
     }
@@ -278,6 +280,7 @@ namespace DSS
         {
             QGuiApplication::setOverrideCursor(cursorShape);
         }
+        raise();
         update();
     }
 
@@ -306,6 +309,7 @@ namespace DSS
             selecting = false;
             mode = SelectionMode::None;
         }
+        raise();
         update();
     }
 
@@ -316,10 +320,16 @@ namespace DSS
 
     void SelectRect::rectButtonPressed()
     {
+        qDebug() << __FUNCTION__;
+
         connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+        raise();
+        show();
+        update();
+
     }
 
     void SelectRect::starsButtonPressed()
@@ -328,6 +338,7 @@ namespace DSS
         // No longer interested in signals from the imageView object
         //
         imageView->disconnect(this, nullptr);
+        hide();
     }
 
     void SelectRect::cometButtonPressed()
@@ -336,6 +347,7 @@ namespace DSS
         // No longer interested in signals from the imageView object
         //
         imageView->disconnect(this, nullptr);
+        hide();
     }
 
     void SelectRect::saveButtonPressed()
