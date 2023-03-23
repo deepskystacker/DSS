@@ -178,8 +178,6 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
  				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
  			else if (strOutputMode == "1")
  				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
- 			else if (strOutputMode == "2")
- 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::FORMATTED);
  			else
  			{
  				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
@@ -212,6 +210,8 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 {
 
+	ConsoleOut() << Qt::endl;
+	ConsoleOut() << Qt::endl;
 	ConsoleOut() << "Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>" << Qt::endl;
 	ConsoleOut() << Qt::endl;
 	ConsoleOut() << " /r	        - Register frames (only the ones not already registered)" << Qt::endl;
@@ -235,7 +235,6 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 	ConsoleOut() << " /OSx          - Output style (if terminal supports it)" << Qt::endl;
 	ConsoleOut() << "                 0: simple (default)" << Qt::endl;
 	ConsoleOut() << "                 1: colored" << Qt::endl;
-	ConsoleOut() << "                 2: compact" << Qt::endl;
 	ConsoleOut() << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
 	ConsoleOut() << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
 	ConsoleOut() << Qt::endl;

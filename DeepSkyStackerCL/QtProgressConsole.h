@@ -23,6 +23,8 @@ namespace DSS
 		}
 		virtual ~ProgressConsole()
 		{
+			if(m_style == TERMINAL_OUTPUT_MODE::COLOURED)
+				m_out << "\033[0m";
 			Close();
 		}
 
@@ -63,9 +65,6 @@ namespace DSS
 			case TERMINAL_OUTPUT_MODE::COLOURED:
 				PrintBasic(singleLineText, type, true);
 				break;
-			case TERMINAL_OUTPUT_MODE::FORMATTED:
-				PrintFormatted(singleLineText, type);
-				break;
 			}
 		}
 		void PrintBasic(const QString& szText, eOutputType type, bool bColour)
@@ -103,33 +102,6 @@ namespace DSS
 				m_out << (bColour ? "\033[32m" : "") << szText << "\r";
 				break;
 			}
-			m_out.flush();
-		}
-		void PrintFormatted(const QString&, eOutputType)
-		{
-			m_out << "\033[7;0H";
-			m_out << "\033[036m--------------------------------------------------------------------------------";
-			m_out << "\033[8;0H";
-			m_out << "\033[2K";
-			m_out << "\033[036m" << GetTitleText();
-			m_out << "\033[9;0H";
-			m_out << "\033[036m--------------------------------------------------------------------------------";
-			m_out << "\033[10;0H";
-			m_out << "\033[2K";
-			m_out << "\033[1;33m" << GetStart1Text();
-			m_out << "\033[11;0H";
-			m_out << "\033[2K";
-			m_out << "\033[1;33m" << GetProgress1Text();
-			m_out << "\033[12;0H";
-			m_out << "\033[2K";
-			m_out << "\033[32m" << (m_jointProgress ? "" : GetStart2Text());
-			m_out << "\033[13;0H";
-			m_out << "\033[2K";
-			m_out << "\033[32m" << (m_jointProgress ? "" : GetProgress2Text());
-			m_out << "\033[14;0H";
-			m_out << "\033[036m--------------------------------------------------------------------------------";
-			m_out << "\033[15;0H";
-			//m_out << "\033[2K";
 			m_out.flush();
 		}
 	};
