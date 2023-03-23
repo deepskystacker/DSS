@@ -227,13 +227,13 @@ void StackSettings::accept()
 	//
 	workspace.saveSettings();
 
-	// Save whether allowed to use all processors ane whether to run threads
+	// Save whether allowed to use all processors and whether to run threads
 	// at reduced priority
 	if (CMultitask::GetNrProcessors(true) > 1)
 		CMultitask::SetUseAllProcessors(ui->useAllProcessors->isChecked());
 	CMultitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
 
-	// Save wether to use SIMD vectorized code.
+	// Save whether to use SIMD vectorized code.
 	CMultitask::SetUseSimd(ui->useSimd->isChecked());
 
 	//
