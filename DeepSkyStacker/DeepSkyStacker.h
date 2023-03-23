@@ -196,7 +196,7 @@ public:
 			setWindowTitle(baseTitle);
 	}
 
-	virtual inline void reportError(const QString& message, DSSBase::Severity severity)
+	virtual inline void reportError(const QString& message, DSSBase::Severity severity) override
 	{
 		QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
 			Q_ARG(const QString&, message),
