@@ -410,7 +410,8 @@ public :
 	{
 	};
 
-	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, ProgressBase * pProgress);
+	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
+	bool RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, ProgressBase * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
