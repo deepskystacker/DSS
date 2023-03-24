@@ -1,7 +1,20 @@
-﻿Welcome to DeepSkyStacker 5.1.1
+﻿Welcome to DeepSkyStacker 5.1.2
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
+
+This is a bug fix release for problems reported against 5.1.0 and 5.1.1
+
+1. Bug fix - correct handling of file types (TIFF/FITS) for intermediate and final files
+
+2. Bug fix - correct handling of Stacking Mode (Standard/Mosaic/Intersection/Custom
+
+3. Bug fix - Selection rectangle mode not active immediately after opening image file
+
+4. Bug fix - fileids in filelist files were being incorrectly written as ANSI not UTF8
+
+Welcome to DeepSkyStacker 5.1.1
+===============================
 
 This is a bug fix release for problems reported against 5.1.0
 
