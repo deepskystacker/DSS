@@ -5,7 +5,7 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 This is a bug fix release for problems reported against 5.1.0 and 5.1.1
 
-1. Bug fix - correct handling of file types (TIFF/FITS) for intermediate and final files
+1. Bug fix - correct handling of file types (TIFF/FITS) in DeepSkyStackerCL for intermediate and final files
 
 2. Bug fix - correct handling of Stacking Mode (Standard/Mosaic/Intersection/Custom
 
