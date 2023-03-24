@@ -360,6 +360,7 @@ public :
 	CRegisterEngine();
 	virtual ~CRegisterEngine() = default;
 
+	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
 	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, DSS::ProgressBase* pProgress);
 };
 

@@ -111,7 +111,6 @@ enum class TERMINAL_OUTPUT_MODE
 {
 	BASIC = 0,
 	COLOURED = 1,
-	FORMATTED = 2,
 };
 
 typedef enum FITSFORMAT
