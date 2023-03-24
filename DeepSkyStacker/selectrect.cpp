@@ -81,6 +81,8 @@ namespace DSS
         mode(SelectionMode::None),
         selecting(false)
     {
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
+
         imageView = dynamic_cast<ImageView*>(parent);
         Q_ASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -97,6 +99,8 @@ namespace DSS
     */
     void SelectRect::paintEvent(QPaintEvent*)
     {
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
+
         QPainter painter(this);
         QPen pen(Qt::red, 1.0);
         QPen drizzlePen(QColor(255, 0, 0, 128), 1.0);
@@ -185,6 +189,8 @@ namespace DSS
     */
     void SelectRect::changeEvent(QEvent* e)
     {
+        qDebug() << "+ " << __FUNCTION__ << " visible " << isVisible();
+
         QWidget::changeEvent(e);
         switch (e->type())
         {
@@ -204,6 +210,8 @@ namespace DSS
 
         if (e->type() == QEvent::ZOrderChange)
             raise();
+        qDebug() << "- " << __FUNCTION__ << " visible " << isVisible();
+
     }
 
     /*!
@@ -212,11 +220,17 @@ namespace DSS
     void SelectRect::showEvent(QShowEvent* e)
     {
         raise(); show();
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
+
         Inherited::showEvent(e);
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
+
     }
 
     void SelectRect::mousePressEvent(QMouseEvent* e)
     {
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
+
         if (Qt::LeftButton == e->button())
         {
             qDebug() << "LMB pressed";
@@ -357,6 +371,7 @@ namespace DSS
 
     SelectionMode SelectRect::modeFromPosition(const QPointF& pos)
     {
+        qDebug() << __FUNCTION__ << " visible " << isVisible();
         SelectionMode result(SelectionMode::None);
 
         QRectF  cornerRect;
