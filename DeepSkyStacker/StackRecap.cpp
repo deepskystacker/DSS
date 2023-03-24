@@ -50,7 +50,8 @@ constexpr int SSTAB_OUTPUT = 10;
 
 StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::StackRecap),
+	ui{ new Ui::StackRecap() },
+	workspace { std::make_unique<Workspace>() },
 	pStackingTasks(nullptr),
 	initialised(false)
 {
