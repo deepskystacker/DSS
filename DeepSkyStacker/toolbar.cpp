@@ -143,7 +143,6 @@ namespace DSS
         selectionGroup.addAction(cometAction);
         selectionGroup.setExclusive(true);
         rectAction->setChecked(true);
-        rectAction->activate(QAction::Trigger);
         saveAction->setEnabled(false);
 
         setIconSize(iconSize);

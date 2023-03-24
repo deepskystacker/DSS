@@ -262,10 +262,10 @@ void RegisterSettings::on_stackAfter_clicked()
 
 }
 
-void RegisterSettings::on_percentStack_textEdited(const QString &text)
+void RegisterSettings::on_percentStack_editingFinished()
 {
-	percentStack = text.toUInt();
-	workspace->setValue("Register/PercentStack", text);
+	percentStack = ui->percentStack->text().toUInt();
+	workspace->setValue("Register/PercentStack", percentStack);
 }
 
 void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
@@ -328,16 +328,6 @@ void RegisterSettings::on_stackingSettings_clicked()
 
 	if (pStackingTasks)
 	{
-		if (pStackingTasks->GetCustomRectangle(rcCustom))
-		{
-			dlg.enableCustomRectangle(true);
-			dlg.selectCustomRectangle(pStackingTasks->IsCustomRectangleUsed());
-		}
-		else
-		{
-			dlg.enableCustomRectangle(false);
-			dlg.selectCustomRectangle(false);
-		}
 		dlg.setTabVisibility(pStackingTasks->AreDarkUsed(),
 			pStackingTasks->AreFlatUsed(),
 			pStackingTasks->AreBiasUsed());
@@ -347,11 +337,6 @@ void RegisterSettings::on_stackingSettings_clicked()
 		//
 		if (pStackingTasks->IsCometAvailable())
 			dlg.enableCometStacking(true);
-	}
-	else
-	{
-		dlg.enableCustomRectangle(false);
-		dlg.selectCustomRectangle(false);
 	}
 
 	if (!ui->stackAfter->isChecked())

@@ -357,15 +357,14 @@ RawDDPSettings::RawDDPSettings(QWidget *parent) :
 	//
 	// Create a validator for the scale values
 	//
-	scaleValidator = new QDoubleValidator(0, 5, 4, this);
-	// Apply it to the RAW Files tab
-	ui->brightness->setValidator(scaleValidator);
-	ui->redScale->setValidator(scaleValidator);
-	ui->blueScale->setValidator(scaleValidator);
-	// Apply it to the FITS Files tab
-	ui->brightness_2->setValidator(scaleValidator);
-	ui->redScale_2->setValidator(scaleValidator);
-	ui->blueScale_2->setValidator(scaleValidator);
+	scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+
+	connect(ui->brightness, SIGNAL(editingFinished()), this, SLOT(brightness_editingFinished()));
+	connect(ui->redScale, SIGNAL(editingFinished()), this, SLOT(redScale_editingFinished()));
+	connect(ui->blueScale, SIGNAL(editingFinished()), this, SLOT(blueScale_editingFinished()));
+	connect(ui->brightness_2, SIGNAL(editingFinished()), this, SLOT(brightness_2_editingFinished()));
+	connect(ui->redScale_2, SIGNAL(editingFinished()), this, SLOT(redScale_2_editingFinished()));
+	connect(ui->blueScale_2, SIGNAL(editingFinished()), this, SLOT(blueScale_2_editingFinished()));
 
 	//
 	// forceUnsigned is no longer used
@@ -608,28 +607,61 @@ RawDDPSettings & RawDDPSettings::updateControls()
 
 
 // Slots for RAW Files tab
-void RawDDPSettings::on_brightness_textEdited(const QString& string)
+void RawDDPSettings::brightness_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->brightness->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("RawDDP/Brightness", value);
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("RawDDP/Brightness", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("RawDDP/Brightness", "1.0").toDouble();
+		ui->brightness->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
-void RawDDPSettings::on_redScale_textEdited(const QString& string)
+void RawDDPSettings::redScale_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->redScale->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("RawDDP/RedScale", value);
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("RawDDP/RedScale", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("RawDDP/RedScale", "1.0").toDouble();
+		ui->redScale->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
-void RawDDPSettings::on_blueScale_textEdited(const QString& string)
+void RawDDPSettings::blueScale_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->blueScale->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("RawDDP/BlueScale", value);
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("RawDDP/BlueScale", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("RawDDP/BlueScale", "1.0").toDouble();
+		ui->blueScale->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
 void RawDDPSettings::on_noWB_stateChanged()
@@ -697,29 +729,61 @@ void RawDDPSettings::on_DSLRs_currentIndexChanged(int)
 	updateBayerPattern().updateControls();
 }
 
-void RawDDPSettings::on_brightness_2_textEdited(const QString& string)
+void RawDDPSettings::brightness_2_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->brightness_2->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("FitsDDP/Brightness", value);
-
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("FitsDDP/Brightness", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("FitsDDP/Brightness", "1.0").toDouble();
+		ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
-void RawDDPSettings::on_redScale_2_textEdited(const QString& string)
+void RawDDPSettings::redScale_2_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->redScale_2->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("FitsDDP/RedScale", value);
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("FitsDDP/RedScale", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("FitsDDP/RedScale", "1.0").toDouble();
+		ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
-void RawDDPSettings::on_blueScale_2_textEdited(const QString& string)
+void RawDDPSettings::blueScale_2_editingFinished()
 {
+	QLocale locale;
+	QString string{ ui->blueScale_2->text() };
+	int unused{ 0 };
 	bool OK = false;
-	const double value{ string.toDouble(&OK) };
-	ZASSERTSTATE(OK);
-	workspace->setValue("FitsDDP/BlueScale", value);
+	if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+	{
+		const double value{ locale.toDouble(string, &OK) };
+		if (OK) workspace->setValue("FitsDDP/BlueScale", value);
+	}
+	else
+	{
+		QApplication::beep();
+		const double value = workspace->value("FitsDDP/BlueScale", "1.0").toDouble();
+		ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+	}
 }
 
 /**********************************************************************************/

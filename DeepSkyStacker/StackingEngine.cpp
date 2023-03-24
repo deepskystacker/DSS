@@ -2074,7 +2074,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	m_vCometShifts.clear();
 	try
 	{
-		switch (tasks.GetStackingMode())
+		STACKINGMODE stackingMode = static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt());
+
+		switch (stackingMode)
 		{
 		case SM_MOSAIC:
 		{
@@ -2679,7 +2681,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			// Stacking Mode
 			strText.Format(IDS_RECAP_STACKINGMODE);
 			fprintf(hFile, "%s", (LPCSTR)CT2CA(strText, CP_UTF8));
-			switch (tasks.GetStackingMode())
+			switch (STACKINGMODE stackingMode = static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt()))
 			{
 			case SM_NORMAL :
 				strText.Format(IDS_RECAP_STACKINGMODE_NORMAL);

@@ -255,7 +255,6 @@ namespace DSS
 
 	void EditStars::rectButtonPressed()
 	{
-		qDebug() << __FUNCTION__;
 		//
 		// No longer interested in signals from the imageView object
 		//
@@ -273,6 +272,7 @@ namespace DSS
 		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
 		m_bCometMode = false;
+		raise();
 		show();
 		update();
 
@@ -287,6 +287,7 @@ namespace DSS
 		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
 		m_bCometMode = true;
+		raise();
 		show();
 		update();
 

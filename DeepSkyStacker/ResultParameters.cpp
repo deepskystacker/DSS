@@ -17,22 +17,16 @@ using std::max;
 #include "DSSCommon.h"
 #include "StackSettings.h"
 #include "Workspace.h"
+#include "DeepSkyStacker.h"
 
 
 ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ResultParameters),
-	workspace(new Workspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent))
+	workspace{ std::make_unique<Workspace>() },
+	validCustomRectangle { DeepSkyStacker::instance()->getStackingDlg().customRectangleIsValid() }
 {
-	if (nullptr == pStackSettings)
-	{
-		delete ui;
-		ZASSERTSTATE(nullptr != pStackSettings);
-	}
-	
     ui->setupUi(this);
-
 }
 
 ResultParameters::~ResultParameters()
@@ -42,59 +36,54 @@ ResultParameters::~ResultParameters()
 
 void ResultParameters::onSetActive()
 {
+	STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
+
 	//
 	// Initially set the Custom Rectangle radio buttion to disabled - it should only be enabled if
-	// a custom rectangle has been defined and we are going to stack after registering.
+	// a custom rectangle has been defined.
 	//
 	ui->customMode->setEnabled(false);
 
 	//
+	// Custom rectangle mode is actually Normal Mode but with a custom rectangle
+	// selected in this dialog.
+	//
+	// It is only possible to do this if a custom rectangle has been defined.
+	//
+	// If this has been done,select and enable the custom rectangle stacking mode
+	//
+	if (validCustomRectangle)
+	{
+		ui->customMode->setEnabled(true);
+		if (SM_CUSTOM != stackingMode)
+		{
+			stackingMode = SM_CUSTOM;
+			workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
+		}
+	}
+	else
+	{
+		if (SM_CUSTOM == stackingMode)
+		{
+			stackingMode = SM_INTERSECTION;
+			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+		}
+	}
+
+	//
 	// select the appropriate check box for stacking mode
 	//
-	STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
-
 	switch (stackingMode)
 	{
 	case SM_NORMAL:
-		//
-		// Custom rectangle mode is actually Normal Mode but with a custom rectangle
-		// selected in this dialog.
-		//
-		// Its is only possible to do this if a custom rectangle has been defined which
-		// should set customRectangleEnabled in the StackSettings class.
-		//
-		// If this has been done it is valid to select the custom rectangle stacking mode
-		// so the radio button to select it can be enabled.
-		//
-		// If the user has previously selected to actually use custom rectangle mode by
-		// clicking on the custom mode radio button in this dialog, we will make sure we 
-		// select the button as we initialise and choose the appropiate picture and text.
-		//
-		if (pStackSettings->isCustomRectangleEnabled())
+		ui->normalMode->setChecked(true);
+		if (normalPix.isNull())
 		{
-			ui->customMode->setEnabled(true);
-			if (pStackSettings->isCustomRectangleSelected())
-			{
-				ui->customMode->setChecked(true);
-				if (customPix.isNull())
-				{
-					customPix.load(":/stacking/custommode.bmp");
-				}
-				ui->previewImage->setPixmap(customPix);
-				ui->modeText->setText("");
-			}
+			normalPix.load(":/stacking/normalmode.bmp");
 		}
-		else
-		{
-			ui->normalMode->setChecked(true);
-			if (normalPix.isNull())
-			{
-				normalPix.load(":/stacking/normalmode.bmp");
-			}
-			ui->previewImage->setPixmap(normalPix);
-			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame.",
-				"IDS_STACKINGMODE_NORMAL"));
-		}
+		ui->previewImage->setPixmap(normalPix);
+		ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame.",
+			"IDS_STACKINGMODE_NORMAL"));
 		break;
 	case SM_MOSAIC:
 		ui->mosaicMode->setChecked(true);
@@ -106,7 +95,6 @@ void ResultParameters::onSetActive()
 		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack.",
 			"IDS_STACKINGMODE_MOSAIC"));
 		break;
-	case SM_CUSTOM:
 	case SM_INTERSECTION:
 		ui->intersectionMode->setChecked(true);
 		if (intersectionPix.isNull())
@@ -116,6 +104,15 @@ void ResultParameters::onSetActive()
 		ui->previewImage->setPixmap(intersectionPix);
 		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames.",
 			"IDS_STACKINGMODE_INTERSECTION"));
+		break;
+	case SM_CUSTOM:
+		ui->customMode->setChecked(true);
+		if (customPix.isNull())
+		{
+			customPix.load(":/stacking/custommode.bmp");
+		}
+		ui->previewImage->setPixmap(customPix);
+		ui->modeText->setText("");
 		break;
 	default:
 		break;
@@ -141,7 +138,6 @@ void ResultParameters::onSetActive()
 void	ResultParameters::on_normalMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
-	pStackSettings->selectCustomRectangle(false);
 	if (normalPix.isNull())
 	{
 		normalPix.load(":/stacking/normalmode.bmp");
@@ -154,7 +150,6 @@ void	ResultParameters::on_normalMode_clicked()
 void	ResultParameters::on_mosaicMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
-	pStackSettings->selectCustomRectangle(false);
 	if (mosaicPix.isNull())
 	{
 		mosaicPix.load(":/stacking/mosaicmode.bmp");
@@ -168,7 +163,6 @@ void	ResultParameters::on_mosaicMode_clicked()
 void	ResultParameters::on_intersectionMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-	pStackSettings->selectCustomRectangle(false);
 	if (intersectionPix.isNull())
 	{
 		intersectionPix.load(":/stacking/intersectionmode.bmp");
@@ -180,13 +174,7 @@ void	ResultParameters::on_intersectionMode_clicked()
 
 void	ResultParameters::on_customMode_clicked()
 {
-	//
-	// SM_CUSTOM isn't used - instead we use normal stacking mode
-	// and record the fact that a custom rectangle is being used
-	// by calling a method on our parent dialog
-	//
-	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
-	pStackSettings->selectCustomRectangle(true);
+	workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
 	if (customPix.isNull())
 	{
 		customPix.load(":/stacking/custommode.bmp");
