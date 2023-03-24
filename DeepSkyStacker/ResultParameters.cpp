@@ -71,6 +71,21 @@ void ResultParameters::onSetActive()
 	}
 
 	//
+	// If using custom rectangle mode and StackSettings was opened from the Explorer Bar,
+	// then disable all the radio buttons except custom mode
+	//
+	QObject* parent{ this->parent() };	// QTabWidget tab ui->tabWidget tab in StackSettings
+	parent = parent->parent();			// ui->tabWidget in StackSettings
+	parent = parent->parent();			// StackSettings we hope
+	parent = parent->parent();			// Parent of StackSettings (ExplorerBar, Register Settings, or StackingDlg)
+	if (SM_CUSTOM == stackingMode && &(dynamic_cast<QObject&>(DeepSkyStacker::instance()->GetExplorerBar())) == parent)
+	{
+		ui->normalMode->setEnabled(false);
+		ui->mosaicMode->setEnabled(false);
+		ui->intersectionMode->setEnabled(false);
+	}
+
+	//
 	// select the appropriate check box for stacking mode
 	//
 	switch (stackingMode)
