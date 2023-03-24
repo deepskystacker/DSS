@@ -2096,6 +2096,15 @@ namespace DSS
 				workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);    
 				tasks.SetCustomRectangle(selectRect);
 			}
+			else
+			{
+				//
+				// If SM_CUSTOM is set and no rectangle is marked
+				// switch to SM_INTERSECTION
+				//
+				if (SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
+					workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+			}
 
 			dlgSettings.setStackingTasks(&tasks);
 
@@ -2196,6 +2205,15 @@ namespace DSS
 				//
 				workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
 				tasks.SetCustomRectangle(selectRect);
+			}
+			else
+			{
+				//
+				// If SM_CUSTOM is set and no rectangle is marked
+				// switch to SM_INTERSECTION
+				//
+				if (SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
+					workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 			}
 
 			if (checkReadOnlyFolders(tasks))
