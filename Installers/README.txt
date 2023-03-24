@@ -9,7 +9,7 @@ This is a bug fix release for problems reported against 5.1.0 and 5.1.1
 
 2. Bug fix - correct handling of Stacking Mode (Standard/Mosaic/Intersection/Custom
 
-3. Bug fix - Selection rectangle mode not active immediately after opening image file
+3. Bug fix - unable to select a custom rectangle immediately after opening image file
 
 4. Bug fix - fileids in filelist files were being incorrectly written as ANSI not UTF8
 
