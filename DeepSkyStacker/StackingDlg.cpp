@@ -531,6 +531,7 @@ namespace DSS
 		properties{ nullptr },
 		copy{ nullptr },
 		erase{ nullptr },
+		initialStackingMode { static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
 		dockTitle{ new QLabel(this) },
@@ -584,6 +585,14 @@ namespace DSS
 	void StackingDlg::setSelectionRect(const QRectF& rect)
 	{
 		selectRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+		if (!selectRect.isEmpty())
+		{
+			workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
+		}
+		else
+		{
+			workspace->setValue("Stacking/Mosaic", (uint)initialStackingMode);
+		}
 	}
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
@@ -1451,7 +1460,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: rectButtonPressed";
 		editStarsPtr->rectButtonPressed();
 		selectRectPtr->rectButtonPressed();
 	}
@@ -2086,25 +2094,12 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
-			if (!selectRect.isEmpty())
-			{
-				//
-				// Default to Custom Rectangle stacking unless overridden by 
-				// a Stacking Settings dialogue
-				//
-				workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);    
-				tasks.SetCustomRectangle(selectRect);
-			}
-			else
-			{
-				//
-				// If SM_CUSTOM is set and no rectangle is marked
-				// switch to SM_INTERSECTION
-				//
-				if (SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
-					workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-			}
+			//
+			// If SM_CUSTOM is set and no rectangle is marked
+			// switch to SM_INTERSECTION (belt and braces)
+			//
+			if (selectRect.isEmpty() && SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
+				workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 
 			dlgSettings.setStackingTasks(&tasks);
 
@@ -2195,26 +2190,6 @@ namespace DSS
 			emit statusMessage("");
 
 			frameList.fillTasks(tasks);
-
-			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
-			if (!selectRect.isEmpty())
-			{
-				//
-				// Default to Custom Rectangle stacking unless overridden by 
-				// a Stacking Settings dialogue
-				//
-				workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
-				tasks.SetCustomRectangle(selectRect);
-			}
-			else
-			{
-				//
-				// If SM_CUSTOM is set and no rectangle is marked
-				// switch to SM_INTERSECTION
-				//
-				if (SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
-					workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-			}
 
 			if (checkReadOnlyFolders(tasks))
 			{

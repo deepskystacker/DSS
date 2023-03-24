@@ -48,41 +48,19 @@ void ResultParameters::onSetActive()
 	// Custom rectangle mode is actually Normal Mode but with a custom rectangle
 	// selected in this dialog.
 	//
-	// It is only possible to do this if a custom rectangle has been defined.
-	//
-	// If this has been done,select and enable the custom rectangle stacking mode
+	// If this has been done, enable the custom rectangle stacking mode
 	//
 	if (validCustomRectangle)
 	{
 		ui->customMode->setEnabled(true);
-		if (SM_CUSTOM != stackingMode)
-		{
-			stackingMode = SM_CUSTOM;
-			workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
-		}
 	}
-	else
+	else    // Just in case of a stupid error
 	{
 		if (SM_CUSTOM == stackingMode)
 		{
 			stackingMode = SM_INTERSECTION;
 			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 		}
-	}
-
-	//
-	// If using custom rectangle mode and StackSettings was opened from the Explorer Bar,
-	// then disable all the radio buttons except custom mode
-	//
-	QObject* parent{ this->parent() };	// QStackedWidget tab of ui->tabWidget in StackSettings
-	parent = parent->parent();			// QTabWidget ui->tabWidget in StackSettings
-	parent = parent->parent();			// StackSettings
-	parent = parent->parent();			// Parent of StackSettings (ExplorerBar, Register Settings, or StackingDlg)
-	if (SM_CUSTOM == stackingMode && &(dynamic_cast<QObject&>(DeepSkyStacker::instance()->GetExplorerBar())) == parent)
-	{
-		ui->normalMode->setEnabled(false);
-		ui->mosaicMode->setEnabled(false);
-		ui->intersectionMode->setEnabled(false);
 	}
 
 	//

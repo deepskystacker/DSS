@@ -269,6 +269,7 @@ namespace DSS
 		ToolBar* pToolBar;
 
 		DSSRect	selectRect;
+		STACKINGMODE initialStackingMode;
 
 		//QFileDialog			fileDialog;
 
