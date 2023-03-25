@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>618</width>
-    <height>255</height>
+    <height>156</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>618</width>
-    <height>253</height>
+    <height>156</height>
    </size>
   </property>
   <property name="styleSheet">
@@ -41,34 +41,9 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <property name="spacing">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>2</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTableView" name="tableView">
-      <property name="minimumSize">
-       <size>
-        <width>600</width>
-        <height>175</height>
-       </size>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::ExtendedSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="sortingEnabled">
-       <bool>true</bool>
-      </property>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-     </widget>
+     <widget class="QTableView" name="tableView"/>
     </item>
     <item>
      <widget class="QTabBar" name="tabBar" native="true">

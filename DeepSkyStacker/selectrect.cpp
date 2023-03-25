@@ -212,8 +212,9 @@ namespace DSS
     */
     void SelectRect::showEvent(QShowEvent* e)
     {
+        resize(imageView->size());
         raise();
-        e->ignore();
+        Inherited::showEvent(e);
     }
 
     void SelectRect::mousePressEvent(QMouseEvent* e)
@@ -237,11 +238,10 @@ namespace DSS
             startRect = selectRect;
 
             updateSelection();
-
-            update();
             selecting = true;
+            update();
+
         }
-        show();
     }
 
     void SelectRect::mouseMoveEvent(QMouseEvent* e)
@@ -321,7 +321,10 @@ namespace DSS
         connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
-    }
+        show();
+        raise();
+        activateWindow();
+   }
 
     void SelectRect::starsButtonPressed()
     {
@@ -329,6 +332,7 @@ namespace DSS
         // No longer interested in signals from the imageView object
         //
         imageView->disconnect(this, nullptr);
+        hide();
     }
 
     void SelectRect::cometButtonPressed()
@@ -337,11 +341,11 @@ namespace DSS
         // No longer interested in signals from the imageView object
         //
         imageView->disconnect(this, nullptr);
+        hide();
     }
 
     void SelectRect::saveButtonPressed()
     {
-        qDebug() << "save pressed";
     }
 
     SelectionMode SelectRect::modeFromPosition(const QPointF& pos)
