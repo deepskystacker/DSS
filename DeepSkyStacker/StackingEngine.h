@@ -207,6 +207,7 @@ public:
 	~CStackingEngine() = default;
 
 	bool ComputeLightFrameOffset(int lBitmapIndice);
+	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
 	inline void incStackable() { ++m_lNrStackable; }
 	inline void incCometStackableIfBitmapHasComet(const int n) {
 		if (this->m_vBitmaps[n].m_bComet)

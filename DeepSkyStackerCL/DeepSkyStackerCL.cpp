@@ -39,6 +39,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
 	DSS::FrameList frameList;
 	bool bContinue = true;
+	bool bUseFits = stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT);
 
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER) && stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING))
 		consoleOut << "Registering and stacking from file list: ";
@@ -63,6 +64,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 	{
 		// Register checked light frames
 		CRegisterEngine	RegisterEngine;
+		RegisterEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
 		bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
 	}
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING) && bContinue)
@@ -73,11 +75,12 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 
 		StackingEngine.SetSaveIntermediate(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_INTERMEDIATE));
 		StackingEngine.SetSaveCalibrated(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_CALIBRATED));
+		StackingEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
 		bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
 		if (bContinue)
 		{
 			CString cstrOutputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
-			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT)))
+			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !bUseFits))
 			{
 				stackingParams.SetOutputFile(QString::fromStdWString(cstrOutputPath.GetString()));
 				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
@@ -211,9 +214,9 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 	ConsoleOut() << " /R            - Register frames (even the ones already registered)" << Qt::endl;
 	ConsoleOut() << " /S            - Stack frames" << Qt::endl;
 	ConsoleOut() << " /SR           - Save each registered and calibrated light frame in" << Qt::endl;
-	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << "                 output file format (implies /S)" << Qt::endl;
 	ConsoleOut() << " /SC           - Save each calibrated light frame in" << Qt::endl;
-	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << "                 output file format (implies /S)" << Qt::endl;
 	ConsoleOut() << " /O:<filename> - Output file name (full path)" << Qt::endl;
 	ConsoleOut() << "                 Default is Autosave.tif in the folder of the first light frame" << Qt::endl;
 	ConsoleOut() << "                 (implies /S or /SC)" << Qt::endl;
@@ -228,7 +231,7 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 	ConsoleOut() << " /OSx          - Output style (if terminal supports it)" << Qt::endl;
 	ConsoleOut() << "                 0: simple (default)" << Qt::endl;
 	ConsoleOut() << "                 1: colored" << Qt::endl;
-	ConsoleOut() << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
+	ConsoleOut() << " /FITS         - Override format of output files to be FITS (default is TIFF)" << Qt::endl;
 	ConsoleOut() << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
 	ConsoleOut() << Qt::endl;
 	ConsoleOut() << "Examples:" << Qt::endl;

@@ -352,7 +352,7 @@ namespace DSS
 					fs::path path{ it->filePath.lexically_proximate(directory) };
 					fprintf(hFile, "%ld\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
-						path.generic_string().c_str());
+						path.generic_u8string().c_str());
 				}
 				g.setDirty(false);
 			};
