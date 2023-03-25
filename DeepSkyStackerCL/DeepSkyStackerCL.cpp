@@ -46,6 +46,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
 	DSS::FrameList frameList;
 	bool bContinue = true;
+	bool bUseFits = stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT);
 
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::REGISTER) && stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING))
 		consoleOut << "Registering and stacking from file list: ";
@@ -70,6 +71,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 	{
 		// Register checked light frames
 		CRegisterEngine	RegisterEngine;
+		RegisterEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
 		bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
 	}
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING) && bContinue)
@@ -80,11 +82,12 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 
 		StackingEngine.SetSaveIntermediate(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_INTERMEDIATE));
 		StackingEngine.SetSaveCalibrated(stackingParams.IsOptionSet(StackingParams::eStackingOption::SAVE_CALIBRATED));
+		StackingEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
 		bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
 		if (bContinue)
 		{
 			CString cstrOutputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
-			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT)))
+			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !bUseFits))
 			{
 				stackingParams.SetOutputFile(QString::fromStdWString(cstrOutputPath.GetString()));
 				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
@@ -101,9 +104,10 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 	LONG i;
 	const QStringList vCommandLine = arguments();
 
-	// At least 2 arguments (registering and/or stacking + filename)
+	// At least 2 arguments are needed (registering and/or stacking + filename)
+	// The first is always the program name, so skip that and start at position 1.
 	bResult = (vCommandLine.size() >= 2);
-	for (i = 0; i < vCommandLine.size() && bResult; i++)
+	for (i = 1; i < vCommandLine.size() && bResult; i++)
 	{
 		if (!vCommandLine[i].compare("/s", Qt::CaseInsensitive))
 		{
@@ -170,34 +174,37 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 				bResult = false;
 			}
 		}
-		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
-		{
-			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
-			if (strOutputMode == "0")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
-			else if (strOutputMode == "1")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
-			else if (strOutputMode == "2")
-				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::FORMATTED);
-			else
-			{
-				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
-				bResult = false;
-			}
-		}
+ 		else if (!vCommandLine[i].left(3).compare("/OS", Qt::CaseInsensitive))
+ 		{
+ 			QString strOutputMode(vCommandLine[i].right(vCommandLine[i].length() - 3));
+ 			if (strOutputMode == "0")
+ 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::BASIC);
+ 			else if (strOutputMode == "1")
+ 				GetStackingParams().SetOutputStyle(TERMINAL_OUTPUT_MODE::COLOURED);
+ 			else
+ 			{
+ 				ConsoleOut() << "Unrecognized or unsupported output format " << strOutputMode << Qt::endl;
+ 				bResult = false;
+ 			}
+ 		}
 		else
 		{
 			QString fileList(vCommandLine[i]);
 			if (!fileList.isEmpty() && fileExists(fileList))
+			{
 				GetStackingParams().SetFileList(fileList);
+			}
 			else
+			{
 				bResult = false;
+				ConsoleOut() << "File list file does not exist [" << fileList << "]" << Qt::endl;
+			}
 		}
 	}
 
-	if (!(GetStackingParams().IsOptionSet(StackingParams::eStackingOption::STACKING) && 
-		  GetStackingParams().IsOptionSet(StackingParams::eStackingOption::REGISTER)
-		))
+	if (!GetStackingParams().IsOptionSet(StackingParams::eStackingOption::STACKING) && 
+		!GetStackingParams().IsOptionSet(StackingParams::eStackingOption::REGISTER)
+		)
 		bResult = false;
 
 	return bResult;
@@ -206,15 +213,17 @@ bool DeepSkyStackerCommandLine::DecodeCommandLine()
 void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 {
 
+	ConsoleOut() << Qt::endl;
+	ConsoleOut() << Qt::endl;
 	ConsoleOut() << "Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>" << Qt::endl;
 	ConsoleOut() << Qt::endl;
-	ConsoleOut() << " /r	         - Register frames (only the ones not already registered)" << Qt::endl;
+	ConsoleOut() << " /r	        - Register frames (only the ones not already registered)" << Qt::endl;
 	ConsoleOut() << " /R            - Register frames (even the ones already registered)" << Qt::endl;
 	ConsoleOut() << " /S            - Stack frames" << Qt::endl;
 	ConsoleOut() << " /SR           - Save each registered and calibrated light frame in" << Qt::endl;
-	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << "                 output file format (implies /S)" << Qt::endl;
 	ConsoleOut() << " /SC           - Save each calibrated light frame in" << Qt::endl;
-	ConsoleOut() << "                 a TIFF files (implies /S)" << Qt::endl;
+	ConsoleOut() << "                 output file format (implies /S)" << Qt::endl;
 	ConsoleOut() << " /O:<filename> - Output file name (full path)" << Qt::endl;
 	ConsoleOut() << "                 Default is Autosave.tif in the folder of the first light frame" << Qt::endl;
 	ConsoleOut() << "                 (implies /S or /SC)" << Qt::endl;
@@ -226,11 +235,10 @@ void DeepSkyStackerCommandLine::OutputCommandLineHelp()
 	ConsoleOut() << "                 0: no compression (default)" << Qt::endl;
 	ConsoleOut() << "                 1: LZW compression" << Qt::endl;
 	ConsoleOut() << "                 2: ZIP (Deflate) compression" << Qt::endl;
-	ConsoleOut() << " /OSx          - Output style" << Qt::endl;
-	ConsoleOut() << "                 0: simple" << Qt::endl;
+	ConsoleOut() << " /OSx          - Output style (if terminal supports it)" << Qt::endl;
+	ConsoleOut() << "                 0: simple (default)" << Qt::endl;
 	ConsoleOut() << "                 1: colored" << Qt::endl;
-	ConsoleOut() << "                 2: compact (default)" << Qt::endl;
-	ConsoleOut() << " /FITS         - Output file format is FITS (default is TIFF)" << Qt::endl;
+	ConsoleOut() << " /FITS         - Override format of output files to be FITS (default is TIFF)" << Qt::endl;
 	ConsoleOut() << "<ListFileName> - Name of a file list saved by DeepSkyStacker" << Qt::endl;
 	ConsoleOut() << Qt::endl;
 	ConsoleOut() << "Examples:" << Qt::endl;

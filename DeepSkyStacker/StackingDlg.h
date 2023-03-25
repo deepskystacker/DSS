@@ -236,6 +236,11 @@ namespace DSS
 
 		bool saveOnClose();
 
+		inline bool customRectangleIsValid() const
+		{
+			return !selectRect.isEmpty();
+		}
+
 	protected:
 		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
@@ -249,20 +254,21 @@ namespace DSS
 		CGammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
-		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
-		std::unique_ptr<ItemEditDelegate> itemEditDelegate;
-		std::unique_ptr<QSortFilterProxyModel> proxyModel;
+		IconSizeDelegate* iconSizeDelegate;
+		ItemEditDelegate* itemEditDelegate;
+		QSortFilterProxyModel* proxyModel;
 		uint m_tipShowCount;
 
 		QErrorMessage* errorMessageDialog;
 
 		bool fileAlreadyLoaded(const fs::path& file);
 
-		std::unique_ptr<EditStars> editStarsPtr;
-		std::unique_ptr<SelectRect> selectRectPtr;
-		std::unique_ptr<ToolBar> pToolBar;
+		EditStars* editStarsPtr;
+		SelectRect* selectRectPtr;
+		ToolBar* pToolBar;
 
 		DSSRect	selectRect;
+		STACKINGMODE initialStackingMode;
 
 		//QFileDialog			fileDialog;
 

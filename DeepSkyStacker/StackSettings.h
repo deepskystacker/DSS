@@ -75,33 +75,6 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & enableCustomRectangle(bool value) noexcept
-	{
-		customRectangleEnabled = value;
-		return *this;
-	}
-
-	inline StackSettings & selectCustomRectangle(bool value) noexcept
-	{
-		customRectangleSelected = value;
-		return *this;
-	}
-
-	inline bool isCustomRectangleEnabled() noexcept
-	{
-		return customRectangleEnabled;
-	}
-
-	inline bool isCustomRectangleSelected() noexcept
-	{
-		return customRectangleSelected;
-	}
-
-	inline bool	useCustomRectangle() noexcept
-	{
-		return (customRectangleEnabled && customRectangleSelected);
-	};
-
 private:
     Ui::StackSettings *ui;
 	bool initialised;

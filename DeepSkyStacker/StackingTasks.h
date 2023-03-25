@@ -375,14 +375,6 @@ public :
 
 	int FindStackID(LPCTSTR szLightFrame);
 
-	STACKINGMODE GetStackingMode() const
-	{
-		if (m_bUseCustomRectangle)
-			return SM_CUSTOM;
-		else
-			return GetResultMode();
-	}
-
 	bool DoOffsetTasks(ProgressBase* pProgress);
 	bool DoDarkTasks(ProgressBase* pProgress);
 	bool DoFlatTasks(ProgressBase* pProgress);
