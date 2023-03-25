@@ -2200,6 +2200,9 @@ namespace DSS
 			emit statusMessage("");
 
 			frameList.fillTasks(tasks);
+			tasks.ResolveTasks();
+			if (!selectRect.isEmpty())
+				tasks.SetCustomRectangle(selectRect);
 
 			if (checkReadOnlyFolders(tasks))
 			{
