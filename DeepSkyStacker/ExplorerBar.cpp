@@ -430,6 +430,7 @@ void ExplorerBar::onSaveSettings()
 			{
 				workspace.setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
 			}
+
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
 		}
