@@ -36,7 +36,7 @@ ResultParameters::~ResultParameters()
 
 void ResultParameters::onSetActive()
 {
-	STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
+	STACKINGMODE stackingMode{ static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) };
 
 	//
 	// Initially set the Custom Rectangle radio buttion to disabled - it should only be enabled if

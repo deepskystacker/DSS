@@ -531,7 +531,7 @@ namespace DSS
 		properties{ nullptr },
 		copy{ nullptr },
 		erase{ nullptr },
-		initialStackingMode { static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) },
+		initialStackMode { static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
 		dockTitle{ new QLabel(this) },
@@ -548,9 +548,9 @@ namespace DSS
 		// Did DeepSkyStacker start in Custom Rectangle mode?
 		// If so force Intersection mode.
 		//
-		if (SM_CUSTOM == initialStackingMode)
+		if (SM_CUSTOM == initialStackMode)
 		{
-			initialStackingMode = SM_INTERSECTION;
+			initialStackMode = SM_INTERSECTION;
 			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 		}
 
@@ -601,7 +601,7 @@ namespace DSS
 		}
 		else
 		{
-			workspace->setValue("Stacking/Mosaic", (uint)initialStackingMode);
+			workspace->setValue("Stacking/Mosaic", (uint)initialStackMode);
 		}
 	}
 

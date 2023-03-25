@@ -7,13 +7,15 @@
 #else
 #include <QMessageBox>
 #endif
+#include <QSettings>
 #include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
+#include "DeepSkyStacker.h"
 #include <direct.h>
-#include <QSettings>
+
 #include "ZExcept.h"
 
 namespace {
@@ -359,7 +361,32 @@ namespace DSS
 
 			Workspace				workspace;
 
+			//
+			// If the user has set Custom Rectangle stacking mode we don't want to put that in the filelist.
+			// so set the stacking mode back to the intial value
+			//
+			bool changedStackingMode{ false };
+			if (STACKINGMODE mode{ static_cast<STACKINGMODE>(workspace.value("Stacking/Mosaic", uint(0)).toUInt()) };
+				SM_CUSTOM == mode)
+			{
+				changedStackingMode = true;
+				workspace.setValue("Stacking/Mosaic", (uint)DeepSkyStacker::instance()->getStackingDlg().initialStackingMode());
+			}
+
+			//
+			// Save workspace settings
+			//
 			workspace.SaveToFile(hFile);
+
+			//
+			// If we changed the stacking mode from SM_CUSTOM, revert it 
+			//
+			if (changedStackingMode)
+			{
+				workspace.setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
+			}
+
+
 			workspace.resetDirty();
 
 			fclose(hFile);
