@@ -6,7 +6,6 @@
 #include <QPicture>
 
 class Workspace;
-class StackSettings;
 
 namespace Ui {
 class ResultParameters;
@@ -29,11 +28,11 @@ public slots:
 private:
 	Ui::ResultParameters *ui;
 	std::unique_ptr<Workspace> workspace;
-	StackSettings * pStackSettings;
 	QPixmap normalPix;
 	QPixmap mosaicPix;
 	QPixmap intersectionPix;
 	QPixmap customPix;
+	bool validCustomRectangle;
 
 private slots:
 	void	on_normalMode_clicked();

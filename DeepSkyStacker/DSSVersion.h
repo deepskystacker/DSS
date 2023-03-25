@@ -54,10 +54,6 @@ constexpr int DSSBETAEXPIREMONTH = 6;
 #define DSSVER_FILEDESCRIPTION	"DeepSkyStacker Command line"
 #define DSSVER_INTERNALNAME		"DeepSkyStackerCL"
 #define DSSVER_ORIGINALFILENAME	"DeepSkyStackerCL.exe"
-#elif defined(DSS_PM32)
-#define DSSVER_FILEDESCRIPTION	"DeepSkyStacker PixInsight Plug-In"
-#define DSSVER_INTERNALNAME		"DeepSkyStacker32"
-#define DSSVER_ORIGINALFILENAME	"DeepSkyStacker-pm32.dll"
 #else
 #define DSSVER_FILEDESCRIPTION	"DeepSkyStacker"
 #define DSSVER_INTERNALNAME		"DeepSkyStacker"

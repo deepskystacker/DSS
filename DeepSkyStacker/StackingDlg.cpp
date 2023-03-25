@@ -517,6 +517,7 @@ namespace DSS
 		QWidget(parent),
 		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
+		workspace { std::make_unique<Workspace>() },
 		initialised(false),
 		markAsReference{ nullptr },
 		check{ nullptr },
@@ -530,6 +531,7 @@ namespace DSS
 		properties{ nullptr },
 		copy{ nullptr },
 		erase{ nullptr },
+		initialStackingMode { static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
 		dockTitle{ new QLabel(this) },
@@ -541,6 +543,16 @@ namespace DSS
 			"6400" << "12800";
 
 		retranslateUi();		// translate some of our stuff.
+
+		//
+		// Did DeepSkyStacker start in Custom Rectangle mode?
+		// If so force Intersection mode.
+		//
+		if (SM_CUSTOM == initialStackingMode)
+		{
+			initialStackingMode = SM_INTERSECTION;
+			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+		}
 
 		mruPath.readSettings();
 
@@ -583,6 +595,14 @@ namespace DSS
 	void StackingDlg::setSelectionRect(const QRectF& rect)
 	{
 		selectRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+		if (!selectRect.isEmpty())
+		{
+			workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
+		}
+		else
+		{
+			workspace->setValue("Stacking/Mosaic", (uint)initialStackingMode);
+		}
 	}
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
@@ -610,7 +630,7 @@ namespace DSS
 					// If the QSortFilterProxyModel is being used, need to map 
 					// to the imageModel index in the base imageModel (our ImageListModel)
 					//
-					if (pictureList->tableView->model() == proxyModel.get())
+					if (pictureList->tableView->model() == proxyModel)
 					{
 						for (i = 0; i < rowCount; i++)
 						{
@@ -645,7 +665,7 @@ namespace DSS
 					// If the QSortFilterProxyModel is being used, need to map 
 					// to the imageModel index in the base imageModel (our ImageListModel)
 					//
-					if (pictureList->tableView->model() == proxyModel.get())
+					if (pictureList->tableView->model() == proxyModel)
 					{
 						for (i = 0; i < rowCount; i++)
 						{
@@ -836,7 +856,7 @@ namespace DSS
 					str += "\t";
 				QModelIndex ndx{ model->createIndex(i, j) };
 
-				if (pictureList->tableView->model() == proxyModel.get())
+				if (pictureList->tableView->model() == proxyModel)
 					ndx = proxyModel->mapFromSource(ndx);
 				str += model->data(ndx, Qt::DisplayRole).toString();
 			}
@@ -880,7 +900,7 @@ namespace DSS
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
 		//
-		if (pictureList->tableView->model() == proxyModel.get())
+		if (pictureList->tableView->model() == proxyModel)
 			ndx = proxyModel->mapToSource(ndx);
 
 		ImageListModel* imageModel = frameList.currentTableModel();
@@ -925,7 +945,7 @@ namespace DSS
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
 		//
-		if (pictureList->tableView->model() == proxyModel.get())
+		if (pictureList->tableView->model() == proxyModel)
 		{
 			for (i = 0; i < rowCount; i++)
 			{
@@ -1090,13 +1110,13 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		ui->picture->setVisible(true);
-		editStarsPtr = std::make_unique<EditStars>(ui->picture);
-		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
-		pToolBar = std::make_unique<ToolBar>(this);
+		editStarsPtr = new EditStars(ui->picture);
+		selectRectPtr = new SelectRect(ui->picture);
+		pToolBar = new ToolBar(this);
 		pToolBar->setObjectName(QString::fromUtf8("toolBar"));
 		pToolBar->setVisible(false);
 
-		ui->picture->setToolBar(pToolBar.get());
+		ui->picture->setToolBar(pToolBar);
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
 		//
@@ -1116,11 +1136,11 @@ namespace DSS
 		// (it sits between the actual model and the view to provide sorting
 		// capability)
 		//
-		proxyModel = std::make_unique<QSortFilterProxyModel>(this);
+		proxyModel = new QSortFilterProxyModel(this);
 		proxyModel->setSourceModel(frameList.currentTableModel());
 		proxyModel->setSortRole(Qt::EditRole);
 
-		pictureList->tableView->setModel(proxyModel.get());
+		pictureList->tableView->setModel(proxyModel);
 		pictureList->tableView->setSortingEnabled(true);
 
 		//
@@ -1128,17 +1148,17 @@ namespace DSS
 		// of QStyledItemDelegate to handle the rendering for column zero of 
 		// the table with the icon size increased by 2.5 times.
 		//
-		iconSizeDelegate = std::make_unique<IconSizeDelegate>();
+		iconSizeDelegate = new IconSizeDelegate(this);
 
-		pictureList->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
+		pictureList->tableView->setItemDelegateForColumn(0, iconSizeDelegate);
 
 		//
 		// Create an edit
 		//
-		itemEditDelegate = std::make_unique<ItemEditDelegate>();
-		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Type), itemEditDelegate.get());
-		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::ISO), itemEditDelegate.get());
-		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Exposure), itemEditDelegate.get());
+		itemEditDelegate = new ItemEditDelegate(this);
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Type), itemEditDelegate);
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::ISO), itemEditDelegate);
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Exposure), itemEditDelegate);
 
 		//
 		// Reduce font size and increase weight
@@ -1282,7 +1302,7 @@ namespace DSS
 			// If the QSortFilterProxyModel is being used, need to map 
 			// to the model index in the base model (our ImageListModel)
 			//
-			if (pictureList->tableView->model() == proxyModel.get())
+			if (pictureList->tableView->model() == proxyModel)
 				ndx = proxyModel->mapToSource(ndx);
 
 			if (ndx.isValid())
@@ -1357,11 +1377,20 @@ namespace DSS
 					editStarsPtr->setLightFrame(m_strShowFile);
 					editStarsPtr->setBitmap(pBitmap);
 					if (pToolBar->rectAction->isChecked())
+					{
 						editStarsPtr->rectButtonPressed();
+						selectRectPtr->rectButtonPressed();
+					}
 					else if (pToolBar->starsAction->isChecked())
+					{
 						editStarsPtr->starsButtonPressed();
+						selectRectPtr->starsButtonPressed();
+					}
 					else if (pToolBar->cometAction->isChecked())
+					{
 						editStarsPtr->cometButtonPressed();
+						selectRectPtr->cometButtonPressed();
+					}
 
 					pToolBar->setVisible(true); pToolBar->setEnabled(true);
 				}
@@ -1395,8 +1424,8 @@ namespace DSS
 				//
 				// No longer interested in signals from the imageView object
 				//
-				ui->picture->disconnect(editStarsPtr.get(), nullptr);
-				ui->picture->disconnect(selectRectPtr.get(), nullptr);
+				ui->picture->disconnect(editStarsPtr, nullptr);
+				ui->picture->disconnect(selectRectPtr, nullptr);
 
 				pToolBar->setVisible(false); pToolBar->setEnabled(false);
 				editStarsPtr->setBitmap(nullptr);
@@ -1413,8 +1442,8 @@ namespace DSS
 				//
 				// No longer interested in signals from the imageView object
 				//
-				ui->picture->disconnect(editStarsPtr.get(), nullptr);
-				ui->picture->disconnect(selectRectPtr.get(), nullptr);
+				ui->picture->disconnect(editStarsPtr, nullptr);
+				ui->picture->disconnect(selectRectPtr, nullptr);
 
 				pToolBar->setVisible(false); pToolBar->setEnabled(false);
 				editStarsPtr->setBitmap(nullptr);
@@ -1439,7 +1468,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: rectButtonPressed";
 		editStarsPtr->rectButtonPressed();
 		selectRectPtr->rectButtonPressed();
 	}
@@ -2074,11 +2102,12 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
-			if (!selectRect.isEmpty())
-			{
-				tasks.SetCustomRectangle(selectRect);
-			}
+			//
+			// If SM_CUSTOM is set and no rectangle is marked
+			// switch to SM_INTERSECTION (belt and braces)
+			//
+			if (selectRect.isEmpty() && SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
+				workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 
 			dlgSettings.setStackingTasks(&tasks);
 
@@ -2169,12 +2198,9 @@ namespace DSS
 			emit statusMessage("");
 
 			frameList.fillTasks(tasks);
-
-			// Set the selection rectangle if needed.   It is set by Qt signal from selectrect.cpp
+			tasks.ResolveTasks();
 			if (!selectRect.isEmpty())
-			{
 				tasks.SetCustomRectangle(selectRect);
-			}
 
 			if (checkReadOnlyFolders(tasks))
 			{

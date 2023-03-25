@@ -50,7 +50,8 @@ constexpr int SSTAB_OUTPUT = 10;
 
 StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::StackRecap),
+	ui{ new Ui::StackRecap() },
+	workspace { std::make_unique<Workspace>() },
 	pStackingTasks(nullptr),
 	initialised(false)
 {
@@ -202,14 +203,13 @@ void StackRecap::fillWithAllTasks()
 		QString				strDrive;
 		QString				strFreeSpace;
 		QString				strNeededSpace;
-		STACKINGMODE		ResultMode;
+		STACKINGMODE		ResultMode{ static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt()) };
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
 		CString				strDriveCString;
 		strDriveCString = CString((wchar_t*)strDrive.utf16());
 		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
-		ResultMode = pStackingTasks->GetStackingMode();
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
 		SpaceToQString(ulFreeSpace, strFreeSpace);
@@ -289,7 +289,7 @@ void StackRecap::fillWithAllTasks()
 		strHTML += "<td width='48%'>";
 		strText = tr("Stacking mode: ", "IDS_RECAP_STACKINGMODE");
 		insertHTML(strHTML, strText, QColor(Qt::black), true);
-		switch (pStackingTasks->GetStackingMode())
+		switch (ResultMode)
 		{
 		case SM_NORMAL :
 			strText = tr("Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
@@ -776,17 +776,6 @@ void StackRecap::CallStackingSettings(int tab)
 	StackSettings			dlg(this);
 	DSSRect					rcCustom;
 
-	if (pStackingTasks->GetCustomRectangle(rcCustom))
-	{
-		dlg.enableCustomRectangle(true);
-		dlg.selectCustomRectangle(pStackingTasks->IsCustomRectangleUsed());
-	}
-	else
-	{
-		dlg.enableCustomRectangle(false);
-		dlg.selectCustomRectangle(false);
-	}
-
 	if (pStackingTasks->IsCometAvailable())
 		dlg.enableCometStacking(true);
 
@@ -800,8 +789,8 @@ void StackRecap::CallStackingSettings(int tab)
 
 	if (dlg.exec())
 	{
-		pStackingTasks->UseCustomRectangle(dlg.useCustomRectangle());
-
+		STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
+		pStackingTasks->UseCustomRectangle(SM_CUSTOM == stackingMode);
 		pStackingTasks->UpdateTasksMethods();
 		fillWithAllTasks();
 	};
