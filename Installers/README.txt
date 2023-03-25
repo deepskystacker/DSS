@@ -15,6 +15,8 @@ This is a bug fix release for problems reported against 5.1.0 and 5.1.1
 
 5. Bug fix - the selection for a custom rectangle was not always visible
 
+6. Enhancement - reduce the minium size for the image list to be two rows
+
 Welcome to DeepSkyStacker 5.1.1
 ===============================
 
