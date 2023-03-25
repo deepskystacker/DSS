@@ -553,6 +553,7 @@ namespace DSS
 			initialStackMode = SM_INTERSECTION;
 			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 		}
+		frameList.setInitialStackingMode(initialStackMode);
 
 		mruPath.readSettings();
 

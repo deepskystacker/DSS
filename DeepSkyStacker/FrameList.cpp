@@ -13,7 +13,6 @@
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
-#include "DeepSkyStacker.h"
 #include <direct.h>
 
 #include "ZExcept.h"
@@ -370,7 +369,7 @@ namespace DSS
 				SM_CUSTOM == mode)
 			{
 				changedStackingMode = true;
-				workspace.setValue("Stacking/Mosaic", (uint)DeepSkyStacker::instance()->getStackingDlg().initialStackingMode());
+				workspace.setValue("Stacking/Mosaic", (uint)initialStackMode);
 			}
 
 			//

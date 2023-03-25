@@ -25,10 +25,14 @@ namespace DSS
 	private:
 		std::vector<Group>	imageGroups;
 		std::uint16_t lastGroup;
+		STACKINGMODE initialStackMode;
 
 	public:
 		FrameList() :
-			index(0)
+			index{ 0 },
+			lastGroup{ 0 },
+			initialStackMode{ SM_NORMAL }
+
 		{
 			imageGroups.emplace_back();
 		};
@@ -36,6 +40,11 @@ namespace DSS
 		virtual ~FrameList()
 		{
 		};
+
+		void setInitialStackingMode(STACKINGMODE m)
+		{
+			initialStackMode = m;
+		}
 
 		const_group_iterator groups_cbegin() const { return imageGroups.begin(); }
 		const_group_iterator groups_cend() const { return imageGroups.end(); }
