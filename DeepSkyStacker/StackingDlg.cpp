@@ -2103,6 +2103,9 @@ namespace DSS
 			CAllStackingTasks	tasks;
 
 			frameList.fillTasks(tasks);
+			tasks.ResolveTasks();
+			if (!selectRect.isEmpty())
+				tasks.SetCustomRectangle(selectRect);
 
 			//
 			// If SM_CUSTOM is set and no rectangle is marked
