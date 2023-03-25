@@ -544,6 +544,16 @@ namespace DSS
 
 		retranslateUi();		// translate some of our stuff.
 
+		//
+		// Did DeepSkyStacker start in Custom Rectangle mode?
+		// If so force Intersection mode.
+		//
+		if (SM_CUSTOM == initialStackingMode)
+		{
+			initialStackingMode = SM_INTERSECTION;
+			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+		}
+
 		mruPath.readSettings();
 
 		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
