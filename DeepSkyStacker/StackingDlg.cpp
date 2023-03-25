@@ -1790,6 +1790,7 @@ namespace DSS
 			// Select the main group tab which will in turn select group 0
 			pictureList->tabBar->setCurrentIndex(0);
 			frameList.clear();
+			selectRectPtr->reset();
 			editStarsPtr->setBitmap(nullptr);
 			m_strShowFile.clear();
 			ui->information->setText(m_strShowFile);
