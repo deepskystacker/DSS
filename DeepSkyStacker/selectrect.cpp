@@ -81,8 +81,6 @@ namespace DSS
         mode(SelectionMode::None),
         selecting(false)
     {
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
-
         imageView = dynamic_cast<ImageView*>(parent);
         Q_ASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -99,8 +97,6 @@ namespace DSS
     */
     void SelectRect::paintEvent(QPaintEvent*)
     {
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
-
         QPainter painter(this);
         QPen pen(Qt::red, 1.0);
         QPen drizzlePen(QColor(255, 0, 0, 128), 1.0);
@@ -189,8 +185,6 @@ namespace DSS
     */
     void SelectRect::changeEvent(QEvent* e)
     {
-        qDebug() << "+ " << __FUNCTION__ << " visible " << isVisible();
-
         QWidget::changeEvent(e);
         switch (e->type())
         {
@@ -210,8 +204,6 @@ namespace DSS
 
         if (e->type() == QEvent::ZOrderChange)
             raise();
-        qDebug() << "- " << __FUNCTION__ << " visible " << isVisible();
-
     }
 
     /*!
@@ -219,28 +211,21 @@ namespace DSS
     */
     void SelectRect::showEvent(QShowEvent* e)
     {
-        raise(); show();
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
-
+        resize(imageView->size());
+        raise();
         Inherited::showEvent(e);
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
-
     }
 
     void SelectRect::mousePressEvent(QMouseEvent* e)
     {
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
-
         if (Qt::LeftButton == e->button())
         {
-            qDebug() << "LMB pressed";
             //
             // Determine what we're doing based on pointer location
             //
             mode = modeFromPosition(e->pos());
             if (mode == SelectionMode::None) mode = SelectionMode::Create;
 
-            qDebug() << "Selection mode " << (uint)mode;
             //
             // Remember the location at which the mouse button was pressed.
             //
@@ -256,7 +241,6 @@ namespace DSS
             update();
 
         }
-        show();
     }
 
     void SelectRect::mouseMoveEvent(QMouseEvent* e)
@@ -294,7 +278,6 @@ namespace DSS
         {
             QGuiApplication::setOverrideCursor(cursorShape);
         }
-        raise();
         update();
     }
 
@@ -323,7 +306,6 @@ namespace DSS
             selecting = false;
             mode = SelectionMode::None;
         }
-        raise();
         update();
     }
 
@@ -334,17 +316,14 @@ namespace DSS
 
     void SelectRect::rectButtonPressed()
     {
-        qDebug() << __FUNCTION__;
-
         connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
-        raise();
         show();
-        update();
-
-    }
+        raise();
+        activateWindow();
+   }
 
     void SelectRect::starsButtonPressed()
     {
@@ -366,12 +345,10 @@ namespace DSS
 
     void SelectRect::saveButtonPressed()
     {
-        qDebug() << "save pressed";
     }
 
     SelectionMode SelectRect::modeFromPosition(const QPointF& pos)
     {
-        qDebug() << __FUNCTION__ << " visible " << isVisible();
         SelectionMode result(SelectionMode::None);
 
         QRectF  cornerRect;
