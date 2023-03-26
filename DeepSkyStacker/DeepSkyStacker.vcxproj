@@ -225,9 +225,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tools\BitmapSlider.cpp">
-      <WholeProgramOptimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</WholeProgramOptimization>
-    </ClCompile>
+    <ClCompile Include="..\Tools\BitmapSlider.cpp" />
     <ClCompile Include="..\Tools\BtnST.cpp" />
     <ClCompile Include="..\Tools\ButtonToolbar.cpp" />
     <ClCompile Include="..\Tools\cdxCRot90DC.cpp" />
