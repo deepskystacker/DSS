@@ -56,6 +56,7 @@ public:
 	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
 	{
 		pStackingTasks = tasks;
+		m_resultParameters->setStackingTasks(pStackingTasks);
 		return *this;
 	};
 
@@ -109,14 +110,18 @@ private:
 	bool					enableFlat;
 	bool					enableBias;
 	bool					enableAll;
-	bool					customRectangleSelected;
-	bool					customRectangleEnabled;
+	bool					customRectEnabled;
+	DSSRect					customRect;
 	CAllStackingTasks *		pStackingTasks;
 
 	void showEvent(QShowEvent *event) override;
 	void changeEvent(QEvent *event) override;
 
 	void onInitDialog();
+	void setCustomRectEnabled(bool value)
+	{
+		customRectEnabled = value;
+	}
 
 private slots:
 	void tabChanged(int tab);

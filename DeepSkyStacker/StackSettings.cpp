@@ -39,8 +39,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	enableFlat(false),
 	enableBias(false),
 	enableAll(false),
-	customRectangleSelected(false),
-	customRectangleEnabled(false),
+	customRectEnabled{ false },
 	startingTab(-1)
 {
     ui->setupUi(this);

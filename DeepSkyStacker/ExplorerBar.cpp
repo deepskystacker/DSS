@@ -405,7 +405,12 @@ void ExplorerBar::onSaveSettings()
 			// In which case the action's text string is the fully qualified name of the file to load
 			//
 			fs::path fileName(a->text().toStdU16String());
+
+			//
+			// Save workspace settings
+			//
 			workspace.SaveToFile(fileName);
+
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
 		}
