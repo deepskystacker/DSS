@@ -240,7 +240,7 @@ bool CFITSReader::Open()
 	{
 		fits_get_errstatus(status, error_text);
 		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
+		errorMessage.Format(_T("fits_open_diskfile %S\nreturned a status of %d, error text is:\n\"%s\""),
 			(LPCTSTR)m_strFileName,
 			status,
 			&error_text[0]);
