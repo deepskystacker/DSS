@@ -517,7 +517,6 @@ namespace DSS
 		QWidget(parent),
 		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
-		workspace { std::make_unique<Workspace>() },
 		initialised(false),
 		markAsReference{ nullptr },
 		check{ nullptr },
@@ -1873,7 +1872,6 @@ namespace DSS
 		QString	extension;
 
 		QFileDialog			fileDialog;
-		Workspace			workspace;
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
@@ -1937,7 +1935,6 @@ namespace DSS
 		QString	extension;
 
 		QFileDialog			fileDialog;
-		Workspace			workspace;
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
@@ -2288,7 +2285,7 @@ namespace DSS
 
 		if (!fileList.empty() || Group::fileCount())
 		{
-			Workspace				workspace;
+			Workspace workspace;
 
 			if (frameList.dirty() || workspace.isDirty())
 			{
