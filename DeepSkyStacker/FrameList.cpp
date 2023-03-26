@@ -228,7 +228,9 @@ namespace DSS
 					it->m_bUseAsStarting
 					)
 				{
+					result = true;
 					string = it->filePath.generic_wstring().c_str();
+					return result;
 				}
 			}
 		}
@@ -361,30 +363,9 @@ namespace DSS
 			Workspace				workspace;
 
 			//
-			// If the user has set Custom Rectangle stacking mode we don't want to put that in the filelist.
-			// so set the stacking mode back to the intial value
-			//
-			bool changedStackingMode{ false };
-			if (STACKINGMODE mode{ static_cast<STACKINGMODE>(workspace.value("Stacking/Mosaic", uint(0)).toUInt()) };
-				SM_CUSTOM == mode)
-			{
-				changedStackingMode = true;
-				workspace.setValue("Stacking/Mosaic", (uint)initialStackMode);
-			}
-
-			//
 			// Save workspace settings
 			//
 			workspace.SaveToFile(hFile);
-
-			//
-			// If we changed the stacking mode from SM_CUSTOM, revert it 
-			//
-			if (changedStackingMode)
-			{
-				workspace.setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
-			}
-
 
 			workspace.resetDirty();
 

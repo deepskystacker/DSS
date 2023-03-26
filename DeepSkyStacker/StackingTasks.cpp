@@ -1941,12 +1941,24 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 
 /* ------------------------------------------------------------------- */
 
+STACKINGMODE CAllStackingTasks::getStackingMode() const
+{
+	Workspace workspace;
+	//
+	// If a custom rectangle is enabled and available return Custom Rectangle Mode
+	//
+	if (customRectEnabled && !customRect.isEmpty())
+		return SM_CUSTOM;
+	else
+		return static_cast<STACKINGMODE>(workspace.value("Stacking/Mosaic", uint(0)).toUInt());
+}
+
 std::int64_t CAllStackingTasks::computeNecessaryDiskSpace()
 {
 	DSSRect rcOutput;
 
-	if (m_bUseCustomRectangle)
-		rcOutput = m_rcCustom;
+	if (customRectEnabled)
+		rcOutput = customRect;
 
 	return computeNecessaryDiskSpace(rcOutput);
 };
@@ -2101,20 +2113,6 @@ bool CAllStackingTasks::GetBadLinesDetection()
 };
 
 /* ------------------------------------------------------------------- */
-
-STACKINGMODE	CAllStackingTasks::GetResultMode()
-{
-	STACKINGMODE		Result = SM_NORMAL;
-	Workspace			workspace;
-
-	int value = workspace.value("Stacking/Mosaic", 0).toUInt();
-	if (value==2)
-		Result = SM_INTERSECTION;
-	else if (value==1)
-		Result = SM_MOSAIC;
-
-	return Result;
-};
 
 /* ------------------------------------------------------------------- */
 

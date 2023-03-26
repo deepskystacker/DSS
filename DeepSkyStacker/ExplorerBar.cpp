@@ -407,29 +407,9 @@ void ExplorerBar::onSaveSettings()
 			fs::path fileName(a->text().toStdU16String());
 
 			//
-			// If the user has set Custom Rectangle stacking mode we don't want to put that in the
-			// saved settings, so set the stacking mode back to the intial value
-			//
-			bool changedStackingMode{ false };
-			if (STACKINGMODE mode{ static_cast<STACKINGMODE>(workspace.value("Stacking/Mosaic", uint(0)).toUInt()) };
-				SM_CUSTOM == mode)
-			{
-				changedStackingMode = true;
-				workspace.setValue("Stacking/Mosaic", (uint)dssApp->getStackingDlg().initialStackingMode());
-			}
-
-			//
 			// Save workspace settings
 			//
 			workspace.SaveToFile(fileName);
-
-			//
-			// If we changed the stacking mode from SM_CUSTOM, revert it 
-			//
-			if (changedStackingMode)
-			{
-				workspace.setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
-			}
 
 			mruPath.Add(fileName);
 			mruPath.saveSettings();

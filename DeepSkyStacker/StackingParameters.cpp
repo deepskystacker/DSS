@@ -6,7 +6,6 @@ using std::max;
 #define _WIN32_WINNT _WIN32_WINNT_WIN7
 #include <afx.h>
 
-#include "StackingParameters.h"
 #include "ui/ui_StackingParameters.h"
 
 #include <QAction>

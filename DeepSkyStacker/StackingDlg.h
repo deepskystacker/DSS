@@ -241,11 +241,6 @@ namespace DSS
 			return !selectRect.isEmpty();
 		}
 
-		STACKINGMODE initialStackingMode() const
-		{
-			return initialStackMode;
-		}
-
 	protected:
 		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
@@ -274,7 +269,6 @@ namespace DSS
 		ToolBar* pToolBar;
 
 		DSSRect	selectRect;
-		STACKINGMODE initialStackMode;
 
 		//QFileDialog			fileDialog;
 

@@ -531,7 +531,6 @@ namespace DSS
 		properties{ nullptr },
 		copy{ nullptr },
 		erase{ nullptr },
-		initialStackMode { static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()) },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
 		dockTitle{ new QLabel(this) },
@@ -543,17 +542,6 @@ namespace DSS
 			"6400" << "12800";
 
 		retranslateUi();		// translate some of our stuff.
-
-		//
-		// Did DeepSkyStacker start in Custom Rectangle mode?
-		// If so force Intersection mode.
-		//
-		if (SM_CUSTOM == initialStackMode)
-		{
-			initialStackMode = SM_INTERSECTION;
-			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-		}
-		frameList.setInitialStackingMode(initialStackMode);
 
 		mruPath.readSettings();
 
@@ -596,14 +584,6 @@ namespace DSS
 	void StackingDlg::setSelectionRect(const QRectF& rect)
 	{
 		selectRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
-		if (!selectRect.isEmpty())
-		{
-			workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
-		}
-		else
-		{
-			workspace->setValue("Stacking/Mosaic", (uint)initialStackMode);
-		}
 	}
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
@@ -2107,14 +2087,7 @@ namespace DSS
 			frameList.fillTasks(tasks);
 			tasks.ResolveTasks();
 			if (!selectRect.isEmpty())
-				tasks.SetCustomRectangle(selectRect);
-
-			//
-			// If SM_CUSTOM is set and no rectangle is marked
-			// switch to SM_INTERSECTION (belt and braces)
-			//
-			if (selectRect.isEmpty() && SM_CUSTOM == static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt()))
-				workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+				tasks.setCustomRectangle(selectRect);
 
 			dlgSettings.setStackingTasks(&tasks);
 
@@ -2207,7 +2180,7 @@ namespace DSS
 			frameList.fillTasks(tasks);
 			tasks.ResolveTasks();
 			if (!selectRect.isEmpty())
-				tasks.SetCustomRectangle(selectRect);
+				tasks.setCustomRectangle(selectRect);
 
 			if (checkReadOnlyFolders(tasks))
 			{

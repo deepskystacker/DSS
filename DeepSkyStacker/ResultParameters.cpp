@@ -11,20 +11,20 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 
+#include "StackingTasks.h"
 #include "ResultParameters.h"
 #include "ui/ui_ResultParameters.h"
 
 #include "DSSCommon.h"
 #include "StackSettings.h"
 #include "Workspace.h"
-#include "DeepSkyStacker.h"
-
 
 ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ResultParameters),
 	workspace{ std::make_unique<Workspace>() },
-	validCustomRectangle { DeepSkyStacker::instance()->getStackingDlg().customRectangleIsValid() }
+	pStackingTasks{ nullptr },
+	customRectEnabled{ false }
 {
     ui->setupUi(this);
 }
@@ -46,22 +46,18 @@ void ResultParameters::onSetActive()
 
 	//
 	// Custom rectangle mode is actually Normal Mode but with a custom rectangle
-	// selected in this dialog.
+	// selected.
 	//
 	// If this has been done, enable the custom rectangle stacking mode
+	// If the custom rectangle is also enabled (as it will be initially)
+	// then set stacking mode to Custom Rectangle
 	//
-	if (validCustomRectangle)
+	if (!customRect.isEmpty())
 	{
 		ui->customMode->setEnabled(true);
+		if (customRectEnabled) stackingMode = SM_CUSTOM;
 	}
-	else    // Just in case of a stupid error
-	{
-		if (SM_CUSTOM == stackingMode)
-		{
-			stackingMode = SM_INTERSECTION;
-			workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-		}
-	}
+
 
 	//
 	// select the appropriate check box for stacking mode
@@ -130,6 +126,7 @@ void ResultParameters::onSetActive()
 
 void	ResultParameters::on_normalMode_clicked()
 {
+	if (pStackingTasks) pStackingTasks->enableCustomRect(false);
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
 	if (normalPix.isNull())
 	{
@@ -142,6 +139,7 @@ void	ResultParameters::on_normalMode_clicked()
 
 void	ResultParameters::on_mosaicMode_clicked()
 {
+	if (pStackingTasks) pStackingTasks->enableCustomRect(false);
 	workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
 	if (mosaicPix.isNull())
 	{
@@ -155,6 +153,7 @@ void	ResultParameters::on_mosaicMode_clicked()
 
 void	ResultParameters::on_intersectionMode_clicked()
 {
+	if (pStackingTasks) pStackingTasks->enableCustomRect(false);
 	workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 	if (intersectionPix.isNull())
 	{
@@ -167,7 +166,9 @@ void	ResultParameters::on_intersectionMode_clicked()
 
 void	ResultParameters::on_customMode_clicked()
 {
-	workspace->setValue("Stacking/Mosaic", (uint)SM_CUSTOM);
+	ZASSERT(nullptr != pStackingTasks);
+	pStackingTasks->enableCustomRect();
+	// Note well: DO NOT set workspace value "Stacking/Mosaic" to SM_CUSTOM
 	if (customPix.isNull())
 	{
 		customPix.load(":/stacking/custommode.bmp");
