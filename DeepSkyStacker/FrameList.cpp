@@ -353,6 +353,7 @@ namespace DSS
 					// If not just leave it as the absolute path.
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
+#pragma warning (suppress:4477)
 					fprintf(hFile, "%ld\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
 						path.generic_u8string().c_str());
