@@ -203,7 +203,7 @@ void StackRecap::fillWithAllTasks()
 		QString				strDrive;
 		QString				strFreeSpace;
 		QString				strNeededSpace;
-		STACKINGMODE		ResultMode{ static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt()) };
+		STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
@@ -773,6 +773,9 @@ void StackRecap::CallStackingSettings(int tab)
 
 	ZASSERT(nullptr != pStackingTasks);
 
+	STACKINGMODE stackingMode{ pStackingTasks->getStackingMode() };
+
+
 	StackSettings			dlg(this);
 	DSSRect					rcCustom;
 
@@ -789,8 +792,7 @@ void StackRecap::CallStackingSettings(int tab)
 
 	if (dlg.exec())
 	{
-		STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
-		pStackingTasks->UseCustomRectangle(SM_CUSTOM == stackingMode);
+		stackingMode = pStackingTasks->getStackingMode();
 		pStackingTasks->UpdateTasksMethods();
 		fillWithAllTasks();
 	};

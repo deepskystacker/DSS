@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QPicture>
 
+#include "StackingTasks.h"
+
 class Workspace;
 
 namespace Ui {
@@ -22,6 +24,12 @@ public:
 	explicit ResultParameters(QWidget *parent = nullptr);
 	~ResultParameters();
 
+	inline void setStackingTasks(CAllStackingTasks * pTasks)
+	{
+		pStackingTasks = pTasks;
+		customRectEnabled = pTasks->getCustomRectangle(customRect);
+	}
+
 public slots:
 	void onSetActive();
 
@@ -32,7 +40,9 @@ private:
 	QPixmap mosaicPix;
 	QPixmap intersectionPix;
 	QPixmap customPix;
-	bool validCustomRectangle;
+	CAllStackingTasks* pStackingTasks;
+	bool customRectEnabled;
+	DSSRect customRect;
 
 private slots:
 	void	on_normalMode_clicked();

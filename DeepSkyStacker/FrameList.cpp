@@ -7,13 +7,14 @@
 #else
 #include <QMessageBox>
 #endif
+#include <QSettings>
 #include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include <direct.h>
-#include <QSettings>
+
 #include "ZExcept.h"
 
 namespace {
@@ -227,7 +228,9 @@ namespace DSS
 					it->m_bUseAsStarting
 					)
 				{
+					result = true;
 					string = it->filePath.generic_wstring().c_str();
+					return result;
 				}
 			}
 		}
@@ -359,7 +362,11 @@ namespace DSS
 
 			Workspace				workspace;
 
+			//
+			// Save workspace settings
+			//
 			workspace.SaveToFile(hFile);
+
 			workspace.resetDirty();
 
 			fclose(hFile);
