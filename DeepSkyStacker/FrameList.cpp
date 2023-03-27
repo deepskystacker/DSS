@@ -153,7 +153,7 @@ namespace DSS
 
 	void FrameList::clearOffset(fs::path file)
 	{
-		int group = Group::whichGroupContains(file);
+		const int group = Group::whichGroupContains(file);
 
 		ZASSERTSTATE(-1 != group);
 		int row = 0;
@@ -179,7 +179,7 @@ namespace DSS
 
 	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR& vVotedPairs)
 	{
-		int group = Group::whichGroupContains(file);
+		const int group = Group::whichGroupContains(file);
 
 		ZASSERTSTATE(-1 != group);
 		int row = 0;
@@ -200,7 +200,7 @@ namespace DSS
 		}
 	};
 
-	QString FrameList::getReferenceFrame()
+	QString FrameList::getReferenceFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
@@ -218,7 +218,7 @@ namespace DSS
 		return QString();
 	}
 	
-	bool FrameList::getReferenceFrame(CString& string)
+	bool FrameList::getReferenceFrame(CString& string) const
 	{
 		bool result = false;
 		for (const auto& group : imageGroups)
@@ -239,7 +239,7 @@ namespace DSS
 		return result;
 	}
 
-	QString FrameList::getFirstCheckedLightFrame()
+	QString FrameList::getFirstCheckedLightFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
@@ -305,12 +305,7 @@ namespace DSS
 #endif
 			)
 		{
-			fs::path directory;
-		
-			if (file.has_parent_path())
-				directory = file.parent_path();
-			else
-				directory = file.root_path();
+			const fs::path directory = file.has_parent_path() ? file.parent_path() : file.root_path();
 
 			fprintf(hFile, "DSS file list\n");
 			fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
@@ -386,14 +381,8 @@ namespace DSS
 		//
 		// Remember current directory and extract directory containing filelist
 		//
-		fs::path directory;
-
-		if (fileList.has_parent_path())
-			directory = fileList.parent_path();
-		else
-			directory = fileList.root_path();
-
-		fs::path oldCWD{ fs::current_path(ec) };		// Save CWD
+		const fs::path directory = fileList.has_parent_path() ? fileList.parent_path() : fileList.root_path();
+		const fs::path oldCWD = fs::current_path(ec); // Save CWD
 
 		if (ec)
 		{
@@ -563,7 +552,7 @@ namespace DSS
 		return *this;
 	}
 
-	void FrameList::blankCheckedItemScores()
+	void FrameList::blankCheckedItemScores() const
 	{
 		// Iterate over all groups.
 		for (uint16_t group = 0; group != imageGroups.size(); ++group)
@@ -579,9 +568,7 @@ namespace DSS
 			}
 		}
 
-	};
-
-	bool FrameList::areCheckedImagesCompatible(QString& reason)
+	bool FrameList::areCheckedImagesCompatible(QString& reason) const
 	{
 		bool				bResult = true;
 		bool				bFirst = true;
@@ -925,8 +912,8 @@ namespace DSS
 
 		for (size_t i = 0; i < lightFrames.size(); i++)
 		{
-			auto id = lightFrames[i].group;
-			auto idx = lightFrames[i].index;
+			const auto id = lightFrames[i].group;
+			const auto idx = lightFrames[i].index;
 
 			imageGroups[id].pictures->mydata[idx].m_bChecked =
 				(i <= last) ? Qt::Checked : Qt::Unchecked;

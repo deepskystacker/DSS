@@ -94,7 +94,7 @@ namespace DSS
 			return imageGroups.size();
 		}
 
-		QString getFirstCheckedLightFrame();
+		QString getFirstCheckedLightFrame() const;
 
 		inline QString groupName(const int id) const
 		{
@@ -107,17 +107,17 @@ namespace DSS
 
 		void fillTasks(CAllStackingTasks& tasks);
 
-		inline bool isLightFrame(QString name) const
+		inline bool isLightFrame(const QString name) const
 		{
 			return imageGroups[index].pictures->isLightFrame(name);
 		};
 
-		inline bool isChecked(QString name) const
+		inline bool isChecked(const QString name) const
 		{
 			return imageGroups[index].pictures->isChecked(name);
 		}
 
-		inline bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
+		inline bool getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
 		{
 			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
 		}
@@ -125,7 +125,7 @@ namespace DSS
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		inline FrameList& beginInsertRows(int count)
+		inline FrameList& beginInsertRows(const int count)
 		{
 			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
 			auto last{ first + count - 1 };
@@ -145,16 +145,16 @@ namespace DSS
 			return true;
 		}
 
-		void blankCheckedItemScores();
+		void blankCheckedItemScores() const;
 
-		bool areCheckedImagesCompatible(QString& reason);
+		bool areCheckedImagesCompatible(QString& reason) const;
 
 		void updateCheckedItemScores();
 
 		void updateItemScores(const QString& fileName);
 
-		QString getReferenceFrame();
-		bool getReferenceFrame(CString& string);
+		QString getReferenceFrame() const;
+		bool getReferenceFrame(CString& string) const;
 
 		void clearOffsets();
 
@@ -174,7 +174,7 @@ namespace DSS
 			return false;
 		};
 
-		inline FrameList& setDirty(bool value = false) noexcept
+		inline FrameList& setDirty(const bool value = false) noexcept
 		{
 			for (auto& g : imageGroups)
 			{
