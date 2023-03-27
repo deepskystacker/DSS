@@ -122,15 +122,15 @@ namespace DSS
 			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
 		}
 
-		FrameList& saveListToFile(fs::path file);
-		FrameList& loadFilesFromList(fs::path fileList);
+		void saveListToFile(fs::path file);
+		void loadFilesFromList(fs::path fileList);
 
 		inline FrameList& beginInsertRows(const int count)
 		{
 			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
 			auto last{ first + count - 1 };
 			imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
-			return (*this);
+			return *this;
 		}
 
 		inline FrameList& endInsertRows()
@@ -203,4 +203,3 @@ namespace DSS
 
 	};
 }
-

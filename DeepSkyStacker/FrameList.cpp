@@ -286,7 +286,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	FrameList& FrameList::saveListToFile(fs::path file)
+	void FrameList::saveListToFile(fs::path file)
 	{
 		if (std::FILE* hFile =
 #if defined(_WINDOWS)
@@ -356,12 +356,11 @@ namespace DSS
 
 			fclose(hFile);
 		}
-		return *this;
 	}
 
 	/* ------------------------------------------------------------------- */
 
-	FrameList& FrameList::loadFilesFromList(fs::path fileList)
+	void FrameList::loadFilesFromList(fs::path fileList)
 	{
 		int groupId = 0;
 		std::error_code ec;
@@ -417,7 +416,7 @@ namespace DSS
 					if (!strValue.compare("CHECKED\tTYPE\tFILE\n", Qt::CaseInsensitive))
 						bContinue = true;
 				}
-			};
+			}
 
 			if (bContinue)
 			{
@@ -513,7 +512,7 @@ namespace DSS
 #else
 									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
 #endif
-									return *this;
+									return;
 								}
 								else
 								{
@@ -532,7 +531,6 @@ namespace DSS
 
 		fs::current_path(oldCWD);
 		setDirty(false);
-		return *this;
 	}
 
 	void FrameList::blankCheckedItemScores() const
