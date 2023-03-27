@@ -19,7 +19,7 @@
 
 namespace {
 
-	bool parseLine(QString line, std::int32_t& lChecked, QString& strType, QString& strFile)
+	bool parseLine(QString line, int& lChecked, QString& strType, QString& strFile)
 	{
 		bool result = false;
 
@@ -42,7 +42,7 @@ namespace {
 		return result;
 	}
 
-	bool	isChangeGroupLine(QString line, int16_t& groupId, QString& groupName)
+	bool isChangeGroupLine(QString line, int& groupId, QString& groupName)
 	{
 		bool				bResult = false;
 
@@ -72,12 +72,12 @@ namespace {
 
 namespace DSS
 {
-	size_t FrameList::checkedImageCount(const PICTURETYPE type, const int16_t id) const
+	size_t FrameList::checkedImageCount(const PICTURETYPE type, const int id) const
 	{
 		size_t result = 0;
 
 		// Iterate over all groups.
-		for (auto i = 0; i != imageGroups.size(); ++i)
+		for (int i = 0; i != imageGroups.size(); ++i)
 		{
 			// If the group number passed in was -1 then want to count the number of
 			// checked images of the relevant type in ALL groups.  Otherwise only
@@ -95,7 +95,7 @@ namespace DSS
 		return result;
 	}
 
-	size_t FrameList::countUnregisteredCheckedLightFrames(int id) const
+	size_t FrameList::countUnregisteredCheckedLightFrames(const int id) const
 	{
 		size_t result = 0;
 
@@ -105,7 +105,7 @@ namespace DSS
 			// If the group number passed in was -1 then want to count the number of
 			// checked images of the relevant type in ALL groups.  Otherwise only
 			// count checked images for the passed group number.
-			if (-1 == id || id == static_cast<int>(group.index()))
+			if (-1 == id || id == group.index())
 			{
 				for (auto it = group.pictures->cbegin();
 					it != group.pictures->cend(); ++it)
@@ -166,16 +166,18 @@ namespace DSS
 				// Ask the Table Model to tell the table view which rows/columns have changed
 				//
 				if (index == group)
+				{
 					imageGroups[group].pictures->emitChanged(row, row,
 						static_cast<int>(Column::dX),
 						static_cast<int>(Column::Angle));
+				}
 				return;
 			}
 			++row;
 		}
 	};
 
-	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR vVotedPairs)
+	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR& vVotedPairs)
 	{
 		int group = Group::whichGroupContains(file);
 
@@ -261,7 +263,7 @@ namespace DSS
 		double				fMaxScore = -1.0;
 
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
 		{
 			// and then over each image in the group
 			for (auto it = imageGroups[group].pictures->cbegin();
@@ -313,7 +315,7 @@ namespace DSS
 			fprintf(hFile, "DSS file list\n");
 			fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
 
-			uint16_t groupId = 0;
+			decltype(ListBitMap::m_groupId) groupId = 0;
 
 			for (auto &g : imageGroups)
 			{
@@ -321,16 +323,15 @@ namespace DSS
 				for (auto it = g.pictures->cbegin();
 					it != g.pictures->cend(); ++it) 
 				{
-
-					long	checked{ 0 };
+					int checked = 0;
 					QString type;
 
 					if (groupId != it->m_groupId)
 					{
 						groupId = it->m_groupId;
 						fprintf(hFile, "#GROUPID#%hu\t%s\n", groupId, g.name().toUtf8().constData());
-					};
-					checked = it->m_bChecked == Qt::Checked ? 1L : 0L;
+					}
+					checked = it->m_bChecked == Qt::Checked ? 1 : 0;
 					if (it->IsLightFrame())
 					{
 						if (it->m_bUseAsStarting)
@@ -353,6 +354,7 @@ namespace DSS
 					// If not just leave it as the absolute path.
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
+#pragma warning (suppress:4477)
 					fprintf(hFile, "%ld\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
 						path.generic_u8string().c_str());
@@ -378,7 +380,7 @@ namespace DSS
 
 	FrameList& FrameList::loadFilesFromList(fs::path fileList)
 	{
-		int16_t groupId = 0;
+		int groupId = 0;
 		std::error_code ec;
 
 		//
@@ -448,7 +450,7 @@ namespace DSS
 
 				while (fgets(szLine, sizeof(szLine), hFile))
 				{
-					std::int32_t checkState(Qt::Unchecked);
+					int checkState = Qt::Unchecked;
 					QString			strType;
 					QString			strFile;
 					QString			strGroupName;
@@ -895,6 +897,8 @@ namespace DSS
 
 	void FrameList::checkBest(double fPercent)
 	{
+		ZASSERTSTATE(fPercent >= 0.0);
+
 		std::vector<ScoredLightFrame> lightFrames;
 
 		for (auto & group : imageGroups)
@@ -903,14 +907,18 @@ namespace DSS
 			{
 				const auto& file = group.pictures->mydata[i];
 				if (file.IsLightFrame())
-					lightFrames.emplace_back(group.index(),
+				{
+					lightFrames.emplace_back(
+						static_cast<decltype(ScoredLightFrame::group)>(group.index()),
 						static_cast<decltype(ScoredLightFrame::index)>(i),
-						file.m_fOverallQuality);
+						file.m_fOverallQuality
+					);
+				}
 			}
 			group.setDirty();
 		}
 
-		const int last = static_cast<int>(fPercent * lightFrames.size() / 100.0);
+		const size_t last = static_cast<size_t>(fPercent * lightFrames.size() / 100.0);
 		//
 		// Sort in *descending* order (see operator < in class definition)
 		std::sort(lightFrames.begin(), lightFrames.end());
@@ -930,7 +938,7 @@ namespace DSS
 	};
 
 	// Change the name of the specified group
-	void FrameList::setGroupName(std::uint16_t id, const QString& name)
+	void FrameList::setGroupName(int id, const QString& name)
 	{
 		ZASSERTSTATE(id > -1 && id < imageGroups.size());
 		if (-1 == id) id = index;	// set to current group

@@ -850,7 +850,7 @@ namespace DSS
 	void StackingDlg::tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		auto tab = pictureList->tabBar->tabAt(pos);
+		int tab = pictureList->tabBar->tabAt(pos);
 		if (tab > 0)
 		{
 			QMenu tabMenu;

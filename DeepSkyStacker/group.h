@@ -51,11 +51,11 @@ namespace DSS
 		//
 		// Initial group id is zero
 		//
-		inline static std::uint16_t nextIndex{ 0 };
+		inline static int nextIndex{ 0 };
 		//
 		// Map of files to group id - used to check which group refers to a file (maybe none)
 		//
-		inline static std::map<fs::path, uint16_t> pathToGroup{};
+		inline static std::map<fs::path, int> pathToGroup{};
 
 	public:
 
@@ -122,12 +122,12 @@ namespace DSS
 		inline bool dirty() const noexcept { return Dirty; };
 		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
 
-		uint index() const noexcept { return Index; };
+		int index() const noexcept { return Index; };
 
 		//
 		// Will call addImage() internally
 		//
- 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int32_t nItem = -1);
+ 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
 
 		//
 		// Add an image (row) to the table
@@ -138,13 +138,12 @@ namespace DSS
 			Dirty = true;
 		}
 
-		static int16_t whichGroupContains(const fs::path& path)
+		static int whichGroupContains(const fs::path& path)
 		{
-			int16_t result = -1;	// no group
 			if (auto iter = pathToGroup.find(path); iter != pathToGroup.end())
-				result = iter->second;
-
-			return result;
+				return iter->second;
+			else
+				return -1; // no group
 		}
 
 		static int32_t fileCount()
@@ -167,7 +166,7 @@ namespace DSS
 		}
 
 	protected:
-		uint16_t Index;		// This group's number
+		int Index;		// This group's number
 		//
 		// Every group has a name - initially "Main Group" or Group n"
 		//

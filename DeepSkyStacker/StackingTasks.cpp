@@ -1253,7 +1253,7 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID)
+void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, const std::uint32_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 

@@ -54,7 +54,7 @@ namespace DSS
 
 		ListBitMap			lb;
 
-		lb.m_groupId = Index;
+		lb.m_groupId = static_cast<decltype(ListBitMap::m_groupId)>(Index);
 
 		//
 		// Warning: If this code is changed, matching changes must also be made to ImageListModel::retranslateUi()
