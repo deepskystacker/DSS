@@ -2064,7 +2064,7 @@ namespace DSS
 
 		//bool					bFound = false;
 
-		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
 		{
 			emit statusMessage("");
 			//CString				strFirstLightFrame;
@@ -2187,7 +2187,7 @@ namespace DSS
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 					imageLoader.clearCache();
-					if (frameList.countUnregisteredCheckedLightFrames())
+					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
 						DSS::ProgressDlg	dlg;
@@ -2239,7 +2239,7 @@ namespace DSS
 			QMessageBox::critical(this, "DeepSkyStacker",
 				tr("The checked pictures are not compatible: %1.",
 					"IDS_ERROR_NOTCOMPATIBLE").arg(reason));
-		else if (!frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+		else if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) == 0)
 			QMessageBox::critical(this, "DeepSkyStacker",
 				tr("You must check light frames to stack them.",
 					"IDS_ERROR_NOTLIGHTCHECKED"));
@@ -2529,7 +2529,7 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			if (frameList.countUnregisteredCheckedLightFrames())
+			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
 				DSS::ProgressDlg	dlg;
@@ -2725,7 +2725,7 @@ namespace DSS
 		//
 		if (frameList.groupSize(frameList.lastGroupId()) != 0)
 		{
-			static_cast<void>(frameList.addGroup());
+			frameList.addGroup();
 		}
 
 		//
