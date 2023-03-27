@@ -81,6 +81,7 @@ using namespace Gdiplus;
 #endif
 #include "ExceptionHandling.h"
 #include "DSSVersion.h"
+#include "tracecontrol.h"
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -94,18 +95,7 @@ bool	g_bShowRefStars = false;
 #include <string.h>
 #include <stdio.h>
 
-//class DSSStackWalker : public StackWalker
-//{
-//public:
-//	DSSStackWalker() : StackWalker() {}
-//protected:
-//	virtual void OnOutput(LPCSTR text)
-//	{
-//		fprintf(stderr, text);
-//		ZTRACE_RUNTIME(text);
-//		StackWalker::OnOutput(text);
-//	};
-//};
+TraceControl traceControl;
 
 bool	hasExpired()
 {

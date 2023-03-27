@@ -83,6 +83,8 @@ private slots:
     void onAbout();
 	void onHelp();
 
+	void onToggleDeletion();
+
 
 private:
     Ui::ExplorerBar *ui;
