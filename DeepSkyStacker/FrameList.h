@@ -54,15 +54,6 @@ namespace DSS
 
 		void checkImage(const QString& image, bool check);
 
-		ListBitMap* getListBitMap(int row)
-		{
-			//
-			// return address of the relevant ListBitMap in the current
-			// group
-			//
-			return &imageGroups[index].pictures->mydata[row];
-		}
-
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
 		//
