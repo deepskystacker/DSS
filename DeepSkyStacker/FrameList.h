@@ -110,7 +110,7 @@ namespace DSS
 		inline bool isLightFrame(const QString name) const
 		{
 			return imageGroups[index].pictures->isLightFrame(name);
-		};
+		}
 
 		inline bool isChecked(const QString name) const
 		{
@@ -172,16 +172,16 @@ namespace DSS
 				if (g.dirty()) return true;
 			}
 			return false;
-		};
+		}
 
 		inline FrameList& setDirty(const bool value = false) noexcept
 		{
 			for (auto& g : imageGroups)
 			{
 				g.setDirty(value);
-			};
+			}
 			return *this;
-		};
+		}
 
 		inline ImageListModel* currentTableModel()
 		{
@@ -191,7 +191,7 @@ namespace DSS
 		inline void removeFromMap(fs::path file)
 		{
 			Group::removeFromMap(file);
-		};
+		}
 
 		// Change the name of the specified group
 		void setGroupName(int id, const QString& name);
@@ -202,5 +202,5 @@ namespace DSS
 		void retranslateUi();
 
 	};
-};
+}
 

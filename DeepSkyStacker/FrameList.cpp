@@ -44,7 +44,7 @@ namespace {
 
 	bool isChangeGroupLine(QString line, int& groupId, QString& groupName)
 	{
-		bool				bResult = false;
+		bool bResult = false;
 
 		if (line.left(9) == "#GROUPID#")
 		{
@@ -84,10 +84,10 @@ namespace DSS
 			// count checked images for the passed group number.
 			if (-1 == id || id == i)
 			{
-				for (auto it = imageGroups[i].pictures->cbegin();
-					it != imageGroups[i].pictures->cend(); ++it)
+				for (auto it = imageGroups[i].pictures->cbegin(); it != imageGroups[i].pictures->cend(); ++it)
 				{
-					if (it->m_PictureType == type && it->m_bChecked == Qt::Checked) ++result;
+					if (it->m_PictureType == type && it->m_bChecked == Qt::Checked)
+						++result;
 				}
 			}
 		}
@@ -107,17 +107,15 @@ namespace DSS
 			// count checked images for the passed group number.
 			if (-1 == id || id == group.index())
 			{
-				for (auto it = group.pictures->cbegin();
-					it != group.pictures->cend(); ++it)
+				for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 				{
-					if (it->IsLightFrame() &&
-						it->m_bChecked == Qt::Checked &&
-						!it->m_bRegistered)	++result;
-				};
+					if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && !it->m_bRegistered)
+						++result;
+				}
 			}
 		}
 		return result;
-	};
+	}
 
 
 
@@ -125,13 +123,13 @@ namespace DSS
 	{
 		for (auto& group : imageGroups)
 		{
-			int row = 0; int groupIndex = group.index();
-			for (auto it = group.pictures->begin();
-				it != group.pictures->end(); ++it)
+			int row = 0;
+
+			for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it)
 			{
 				if (it->IsLightFrame())
 					it->m_bDeltaComputed = false;
-				if (index == groupIndex)
+				if (index == group.index())
 				{
 					//
 					// Tell the table view which columns have been impacted
@@ -149,7 +147,7 @@ namespace DSS
 		imageGroups[index].pictures->emitChanged(0, imageGroups[index].pictures->rowCount(),
 			static_cast<int>(Column::dX),
 			static_cast<int>(Column::Angle));
-	};
+	}
 
 	void FrameList::clearOffset(fs::path file)
 	{
@@ -175,7 +173,7 @@ namespace DSS
 			}
 			++row;
 		}
-	};
+	}
 
 	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR& vVotedPairs)
 	{
@@ -198,7 +196,7 @@ namespace DSS
 			}
 			++row;
 		}
-	};
+	}
 
 	QString FrameList::getReferenceFrame() const
 	{
@@ -206,10 +204,7 @@ namespace DSS
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() && 
-					it->m_bChecked == Qt::Checked &&
-					it->m_bUseAsStarting
-					)
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
 				}
@@ -225,10 +220,7 @@ namespace DSS
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() &&
-					it->m_bChecked == Qt::Checked &&
-					it->m_bUseAsStarting
-					)
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
 				{
 					result = true;
 					string = it->filePath.generic_wstring().c_str();
@@ -248,12 +240,12 @@ namespace DSS
 				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
-				};
-			};
+				}
+			}
 		}
 
 		return QString();
-	};
+	}
 
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
 	{
@@ -266,8 +258,7 @@ namespace DSS
 		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
 		{
 			// and then over each image in the group
-			for (auto it = imageGroups[group].pictures->cbegin();
-				it != imageGroups[group].pictures->cend(); ++it)
+			for (auto it = imageGroups[group].pictures->cbegin(); it != imageGroups[group].pictures->cend(); ++it)
 			{
 				if (it->m_bChecked == Qt::Checked)
 				{
@@ -291,7 +282,7 @@ namespace DSS
 		if (comets > 1 && bReferenceFrameHasComet)
 			tasks.SetCometAvailable(true);
 		tasks.ResolveTasks();
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -315,8 +306,7 @@ namespace DSS
 			for (auto &g : imageGroups)
 			{
 				// and then over each image in the group
-				for (auto it = g.pictures->cbegin();
-					it != g.pictures->cend(); ++it) 
+				for (auto it = g.pictures->cbegin(); it != g.pictures->cend(); ++it) 
 				{
 					int checked = 0;
 					QString type;
@@ -355,15 +345,13 @@ namespace DSS
 						path.generic_u8string().c_str());
 				}
 				g.setDirty(false);
-			};
-
-			Workspace				workspace;
+			}
 
 			//
 			// Save workspace settings
 			//
+			Workspace workspace;
 			workspace.SaveToFile(hFile);
-
 			workspace.resetDirty();
 
 			fclose(hFile);
@@ -457,7 +445,7 @@ namespace DSS
 						// a group
 						//
 						if (groupId == imageGroups.size())
-							static_cast<void>(addGroup());
+							addGroup();
 						ZASSERTSTATE(groupId < (1 + imageGroups.size()));
 
 						setGroup(groupId);	// Select the group in question
@@ -482,7 +470,7 @@ namespace DSS
 						{
 							Type = PICTURETYPE_REFLIGHTFRAME;
 							bUseAsStarting = true;
-						};
+						}
 
 						if (Type != PICTURETYPE_UNKNOWN)
 						{
@@ -523,9 +511,7 @@ namespace DSS
 #if defined(_CONSOLE)
 									std::cerr << errorMessage.toUtf8().constData();
 #else
-									QMessageBox::warning(nullptr, "DeepSkyStacker",
-										errorMessage,
-										QMessageBox::Ok);
+									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
 #endif
 									return *this;
 								}
@@ -537,13 +523,10 @@ namespace DSS
 								}
 							}
 						}
-								
-					};
-				};
-
+					}
+				}
 				workspace.resetDirty();
-			};
-
+			}
 			fclose(hFile);
 		}
 
@@ -567,6 +550,7 @@ namespace DSS
 				}
 			}
 		}
+	}
 
 	bool FrameList::areCheckedImagesCompatible(QString& reason) const
 	{
@@ -602,7 +586,7 @@ namespace DSS
 		}
 
 		return bResult;
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -833,7 +817,7 @@ namespace DSS
 				}
 			}
 		}
-	};
+	}
 	/* ------------------------------------------------------------------- */
 
 
@@ -856,9 +840,8 @@ namespace DSS
 				}
 			}
 			group.setDirty();
-		};
-
-	};
+		}
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -878,7 +861,7 @@ namespace DSS
 		//strFileName = m_vFiles[mItem].m_strFileName;
 		//virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1)
 		//addFile(strFileName, m_dwCurrentGroupID, m_dwCurrentJobID, PictureType, FALSE, nItem);
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -922,7 +905,7 @@ namespace DSS
 			QVector<int> role{ Qt::CheckStateRole };
 			imageGroups[id].pictures->dataChanged(start, end, role);
 		}
-	};
+	}
 
 	// Change the name of the specified group
 	void FrameList::setGroupName(int id, const QString& name)
