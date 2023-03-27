@@ -139,7 +139,7 @@ namespace DSS
 			return *this;
 		}
 
-		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]]int nItem = -1)
+		bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]]int nItem = -1)
 		{
 			imageGroups[index].addFile(file, PictureType, bCheck);
 			return true;
