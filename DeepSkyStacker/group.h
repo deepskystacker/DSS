@@ -64,7 +64,7 @@ namespace DSS
 		//
 		std::unique_ptr<ImageListModel>	pictures;
 
-		explicit Group() :
+		Group() :
 			pictures { std::make_unique<ImageListModel>() },
 			Index { nextIndex++ },		// First group is Main Group with Index of 0
 			Dirty{ false },
@@ -84,7 +84,7 @@ namespace DSS
 		// Don't intend this to be copied or assigned.
 		//
 		Group(const Group&) = delete;
-		Group& operator = (const Group&) = delete;
+		Group& operator=(const Group&) = delete;
 
 		Group(Group&& rhs) noexcept :
 			pictures { std::move(rhs.pictures) },
@@ -95,7 +95,7 @@ namespace DSS
 		{
 		}
 
-		Group& operator = (Group&& rhs ) noexcept
+		Group& operator=(Group&& rhs) noexcept
 		{
 			if (this != &rhs)
 			{
