@@ -54,6 +54,11 @@ namespace DSS
         explicit SelectRect(QWidget* parent);
 
         void setGeometry(const QRect& r);
+        inline void reset()
+        {
+            selectRect = QRectF();
+            emit selectRectChanged(selectRect);
+        }
 
     protected:
         void paintEvent(QPaintEvent*) override;

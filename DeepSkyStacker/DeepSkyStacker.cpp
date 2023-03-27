@@ -415,8 +415,9 @@ ULONG_PTR gdiplusToken{ 0ULL };
 ULONG_PTR gdiHookToken{ 0ULL };
 
 DeepSkyStacker::DeepSkyStacker() :
-	initialised{ false },
 	QMainWindow(),
+	initialised{ false },
+	pictureList{ nullptr },
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },

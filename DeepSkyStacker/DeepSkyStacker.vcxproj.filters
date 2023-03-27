@@ -438,6 +438,9 @@
     <ClCompile Include="ImageProperties.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="QElidedLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">

@@ -218,7 +218,9 @@ namespace DSS
 					it->m_bUseAsStarting
 					)
 				{
+					result = true;
 					string = it->filePath.generic_wstring().c_str();
+					return result;
 				}
 			}
 		}
@@ -341,16 +343,21 @@ namespace DSS
 					// If not just leave it as the absolute path.
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
+#pragma warning (suppress:4477)
 					fprintf(hFile, "%ld\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
-						path.generic_string().c_str());
+						path.generic_u8string().c_str());
 				}
 				g.setDirty(false);
 			};
 
 			Workspace				workspace;
 
+			//
+			// Save workspace settings
+			//
 			workspace.SaveToFile(hFile);
+
 			workspace.resetDirty();
 
 			fclose(hFile);

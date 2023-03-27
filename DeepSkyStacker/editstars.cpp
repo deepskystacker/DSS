@@ -277,7 +277,6 @@ namespace DSS
 
 	void EditStars::rectButtonPressed()
 	{
-		qDebug() << __FUNCTION__;
 		//
 		// No longer interested in signals from the imageView object
 		//
@@ -288,7 +287,6 @@ namespace DSS
 
 	void EditStars::starsButtonPressed()
 	{
-		qDebug() << __FUNCTION__;
 		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
@@ -296,13 +294,12 @@ namespace DSS
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
 		m_bCometMode = false;
 		show();
-		update();
-
+		raise();
+		activateWindow();
 	}
 
 	void EditStars::cometButtonPressed()
 	{
-		qDebug() << __FUNCTION__;
 		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
@@ -310,19 +307,17 @@ namespace DSS
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
 		m_bCometMode = true;
 		show();
-		update();
-
+		raise();
+		activateWindow();
 	}
 
 	void EditStars::saveButtonPressed()
 	{
-		qDebug() << __FUNCTION__;
 		saveRegisterSettings();
 	}
 
 	void EditStars::resizeMe(QResizeEvent* e)
 	{
-		qDebug() << "In EditStars: resizeMe " << e->size();
 		pixmap = QPixmap(e->size());
 		resize(e->size());
 	}

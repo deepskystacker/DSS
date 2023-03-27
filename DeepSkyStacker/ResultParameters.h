@@ -1,11 +1,12 @@
 #pragma once
+#include "dssrect.h"
 class Workspace;
-class StackSettings;
 
 namespace Ui {
 class ResultParameters;
 }
 
+class CAllStackingTasks;
 class ResultParameters : public QWidget
 {
 	Q_OBJECT
@@ -17,17 +18,21 @@ public:
 	explicit ResultParameters(QWidget *parent = nullptr);
 	~ResultParameters();
 
+	void setStackingTasks(CAllStackingTasks* pTasks);
+
 public slots:
 	void onSetActive();
 
 private:
 	Ui::ResultParameters *ui;
 	std::unique_ptr<Workspace> workspace;
-	StackSettings * pStackSettings;
 	QPixmap normalPix;
 	QPixmap mosaicPix;
 	QPixmap intersectionPix;
 	QPixmap customPix;
+	CAllStackingTasks* pStackingTasks;
+	bool customRectEnabled;
+	DSSRect customRect;
 
 private slots:
 	void	on_normalMode_clicked();

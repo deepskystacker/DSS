@@ -203,9 +203,9 @@ private :
 	bool						m_bCalibrating;
 	bool						m_bUsingJPEG;
 	bool						m_bUsingFITS;
-	bool						m_bUseCustomRectangle;
+	bool						customRectEnabled;
 	bool						m_bCometAvailable;
-	DSSRect						m_rcCustom;
+	DSSRect						customRect;
 	bool						m_bDarkUsed;
 	bool						m_bBiasUsed;
 	bool						m_bFlatUsed;
@@ -230,7 +230,7 @@ public :
 		m_bCalibrating{ false },
 		m_bUsingJPEG{ false },
 		m_bUsingFITS{ false },
-		m_bUseCustomRectangle{ false },
+		customRectEnabled{ false },
 		m_bCometAvailable{ false },
 		m_bDarkUsed{ false },
 		m_bBiasUsed{ false },
@@ -339,36 +339,28 @@ public :
 	}
 
 	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
-	void SetCustomRectangle(const DSSRect& rcCustom)
+	void setCustomRectangle(const DSSRect& rcCustom)
 	{
 		if (rcCustom.isEmpty())
 		{
-			m_bUseCustomRectangle = false;
+			customRectEnabled = false;
 		}
 		else
 		{
-			m_bUseCustomRectangle = true;
-			m_rcCustom = rcCustom;
+			customRectEnabled = true;
+			customRect = rcCustom;
 		}
 	}
 
-	void UseCustomRectangle(bool bUse)
+	bool getCustomRectangle(DSSRect& rcCustom) const
 	{
-		if (!m_rcCustom.isEmpty())
-			m_bUseCustomRectangle = bUse;
-		else
-			m_bUseCustomRectangle = false;
+		rcCustom = customRect;
+		return !customRect.isEmpty();
 	}
 
-	bool GetCustomRectangle(DSSRect& rcCustom) const
+	void enableCustomRect(bool v = true)
 	{
-		rcCustom = m_rcCustom;
-		return !m_rcCustom.isEmpty();
-	}
-
-	bool IsCustomRectangleUsed() const
-	{
-		return m_bUseCustomRectangle;
+		customRectEnabled = v;
 	}
 
 	void ResolveTasks();
@@ -377,13 +369,7 @@ public :
 
 	int FindStackID(LPCTSTR szLightFrame);
 
-	STACKINGMODE GetStackingMode() const
-	{
-		if (m_bUseCustomRectangle)
-			return SM_CUSTOM;
-		else
-			return GetResultMode();
-	}
+	STACKINGMODE getStackingMode() const;
 
 	bool DoOffsetTasks(DSS::ProgressBase* pProgress);
 	bool DoDarkTasks(DSS::ProgressBase* pProgress);
@@ -413,7 +399,6 @@ public :
 	static  double	GetDarkFactor();
 	static	bool	GetHotPixelsDetection();
 	static	bool	GetBadLinesDetection();
-	static  STACKINGMODE	GetResultMode();
 	static  bool	GetCreateIntermediates();
 	static  bool	GetSaveCalibrated();
 	static  bool	GetSaveCalibratedDebayered();

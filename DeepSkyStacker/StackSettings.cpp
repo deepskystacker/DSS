@@ -25,8 +25,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	enableFlat(false),
 	enableBias(false),
 	enableAll(false),
-	customRectangleSelected(false),
-	customRectangleEnabled(false),
+	customRectEnabled{ false },
 	startingTab(-1)
 {
     ui->setupUi(this);
@@ -213,13 +212,13 @@ void StackSettings::accept()
 	//
 	workspace.saveSettings();
 
-	// Save whether allowed to use all processors ane whether to run threads
+	// Save whether allowed to use all processors and whether to run threads
 	// at reduced priority
 	if (CMultitask::GetNrProcessors(true) > 1)
 		CMultitask::SetUseAllProcessors(ui->useAllProcessors->isChecked());
 	CMultitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
 
-	// Save wether to use SIMD vectorized code.
+	// Save whether to use SIMD vectorized code.
 	CMultitask::SetUseSimd(ui->useSimd->isChecked());
 
 	//
@@ -271,4 +270,11 @@ void StackSettings::changeEvent(QEvent *event)
 		ui->retranslateUi(this);
 	}
 	Inherited::changeEvent(event);
+}
+
+StackSettings& StackSettings::setStackingTasks(CAllStackingTasks* tasks) noexcept
+{
+	pStackingTasks = tasks;
+	m_resultParameters->setStackingTasks(pStackingTasks);
+	return *this;
 }

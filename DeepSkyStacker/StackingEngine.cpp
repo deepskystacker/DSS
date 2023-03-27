@@ -2082,7 +2082,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	m_vCometShifts.clear();
 	try
 	{
-		switch (tasks.GetStackingMode())
+		STACKINGMODE stackingMode = tasks.getStackingMode();
+
+		switch (stackingMode)
 		{
 		case SM_MOSAIC:
 		{
@@ -2132,7 +2134,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 		case SM_CUSTOM:
 		{
-			tasks.GetCustomRectangle(m_rcResult);
+			tasks.getCustomRectangle(m_rcResult);
 			m_rcResult.left *= m_lPixelSizeMultiplier;
 			m_rcResult.right *= m_lPixelSizeMultiplier;
 			m_rcResult.top *= m_lPixelSizeMultiplier;
@@ -2693,7 +2695,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			// Stacking Mode
 			strText.Format(IDS_RECAP_STACKINGMODE);
 			fprintf(hFile, "%s", (LPCSTR)CT2CA(strText, CP_UTF8));
-			switch (tasks.GetStackingMode())
+			switch (tasks.getStackingMode())
 			{
 			case SM_NORMAL :
 				strText.Format(IDS_RECAP_STACKINGMODE_NORMAL);

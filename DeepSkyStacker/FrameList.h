@@ -20,7 +20,8 @@ namespace DSS
 
 	public:
 		FrameList() :
-			index(0)
+			index{ 0 },
+			lastGroup{ 0 }
 		{
 			imageGroups.emplace_back();
 		};

@@ -29,7 +29,8 @@ constexpr int SSTAB_OUTPUT = 10;
 
 StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
-	ui(new Ui::StackRecap),
+	ui{ new Ui::StackRecap() },
+	workspace { std::make_unique<Workspace>() },
 	pStackingTasks(nullptr),
 	initialised(false)
 {
@@ -181,14 +182,13 @@ void StackRecap::fillWithAllTasks()
 		QString				strDrive;
 		QString				strFreeSpace;
 		QString				strNeededSpace;
-		STACKINGMODE		ResultMode;
+		STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
 		CString				strDriveCString;
 		strDriveCString = CString((wchar_t*)strDrive.utf16());
 		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
-		ResultMode = pStackingTasks->GetStackingMode();
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
 		SpaceToQString(ulFreeSpace, strFreeSpace);
@@ -268,7 +268,7 @@ void StackRecap::fillWithAllTasks()
 		strHTML += "<td width='48%'>";
 		strText = tr("Stacking mode: ", "IDS_RECAP_STACKINGMODE");
 		insertHTML(strHTML, strText, QColor(Qt::black), true);
-		switch (pStackingTasks->GetStackingMode())
+		switch (ResultMode)
 		{
 		case SM_NORMAL :
 			strText = tr("Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
@@ -752,19 +752,11 @@ void StackRecap::CallStackingSettings(int tab)
 
 	ZASSERT(nullptr != pStackingTasks);
 
+	STACKINGMODE stackingMode{ pStackingTasks->getStackingMode() };
+
+
 	StackSettings			dlg(this);
 	DSSRect					rcCustom;
-
-	if (pStackingTasks->GetCustomRectangle(rcCustom))
-	{
-		dlg.enableCustomRectangle(true);
-		dlg.selectCustomRectangle(pStackingTasks->IsCustomRectangleUsed());
-	}
-	else
-	{
-		dlg.enableCustomRectangle(false);
-		dlg.selectCustomRectangle(false);
-	}
 
 	if (pStackingTasks->IsCometAvailable())
 		dlg.enableCometStacking(true);
@@ -779,8 +771,7 @@ void StackRecap::CallStackingSettings(int tab)
 
 	if (dlg.exec())
 	{
-		pStackingTasks->UseCustomRectangle(dlg.useCustomRectangle());
-
+		stackingMode = pStackingTasks->getStackingMode();
 		pStackingTasks->UpdateTasksMethods();
 		fillWithAllTasks();
 	};

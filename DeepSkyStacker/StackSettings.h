@@ -1,6 +1,6 @@
 #ifndef STACKSETTINGS_H
 #define STACKSETTINGS_H
-
+#include "dssrect.h"
 
 namespace Ui {
 class StackSettings;
@@ -52,11 +52,7 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
-	{
-		pStackingTasks = tasks;
-		return *this;
-	};
+	StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept;
 
 	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias)
 	{
@@ -72,33 +68,6 @@ public:
 		enableAll = value;
 		updateControls();
 		return *this;
-	};
-
-	inline StackSettings & enableCustomRectangle(bool value) noexcept
-	{
-		customRectangleEnabled = value;
-		return *this;
-	}
-
-	inline StackSettings & selectCustomRectangle(bool value) noexcept
-	{
-		customRectangleSelected = value;
-		return *this;
-	}
-
-	inline bool isCustomRectangleEnabled() noexcept
-	{
-		return customRectangleEnabled;
-	}
-
-	inline bool isCustomRectangleSelected() noexcept
-	{
-		return customRectangleSelected;
-	}
-
-	inline bool	useCustomRectangle() noexcept
-	{
-		return (customRectangleEnabled && customRectangleSelected);
 	};
 
 private:
@@ -135,14 +104,18 @@ private:
 	bool					enableFlat;
 	bool					enableBias;
 	bool					enableAll;
-	bool					customRectangleSelected;
-	bool					customRectangleEnabled;
+	bool					customRectEnabled;
+	DSSRect					customRect;
 	CAllStackingTasks *		pStackingTasks;
 
 	void showEvent(QShowEvent *event) override;
 	void changeEvent(QEvent *event) override;
 
 	void onInitDialog();
+	void setCustomRectEnabled(bool value)
+	{
+		customRectEnabled = value;
+	}
 
 private slots:
 	void tabChanged(int tab);
