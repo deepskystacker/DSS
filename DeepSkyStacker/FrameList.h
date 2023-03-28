@@ -55,6 +55,14 @@ namespace DSS
 		void checkImage(const QString& image, bool check);
 
 		//
+		// Return address of the relevant ListBitMap in the current group
+		//
+		ListBitMap* getListBitMap(const int row)
+		{
+			return &imageGroups[index].pictures->mydata[row];
+		}
+
+		//
 		// Remove everything from all groups, and clear the mapping from path to group number
 		//
 		void clear()
@@ -122,8 +130,8 @@ namespace DSS
 			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
 		}
 
-		void saveListToFile(fs::path file);
-		void loadFilesFromList(fs::path fileList);
+		FrameList& saveListToFile(fs::path file);
+		FrameList& loadFilesFromList(fs::path fileList);
 
 		inline FrameList& beginInsertRows(const int count)
 		{

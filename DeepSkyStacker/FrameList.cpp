@@ -288,7 +288,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FrameList::saveListToFile(fs::path file)
+	FrameList& FrameList::saveListToFile(fs::path file)
 	{
 		if (std::FILE* hFile =
 #if defined(_WINDOWS)
@@ -358,11 +358,12 @@ namespace DSS
 
 			fclose(hFile);
 		}
+		return *this;
 	}
 
 	/* ------------------------------------------------------------------- */
 
-	void FrameList::loadFilesFromList(fs::path fileList)
+	FrameList& FrameList::loadFilesFromList(fs::path fileList)
 	{
 		int groupId = 0;
 		std::error_code ec;
@@ -513,7 +514,7 @@ namespace DSS
 #else
 									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
 #endif
-									return;
+									return *this;
 								}
 								else
 								{
@@ -532,6 +533,7 @@ namespace DSS
 
 		fs::current_path(oldCWD);
 		setDirty(false);
+		return *this;
 	}
 
 	void FrameList::blankCheckedItemScores() const
