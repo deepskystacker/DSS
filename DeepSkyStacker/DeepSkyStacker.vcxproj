@@ -481,6 +481,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TIFFUtil.cpp" />
+    <ClCompile Include="tracecontrol.cpp" />
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -671,6 +672,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TaskInfo.h" />
     <ClInclude Include="TIFFUtil.h" />
+    <ClInclude Include="tracecontrol.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>

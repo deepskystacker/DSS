@@ -12,8 +12,10 @@
 #include "RawDDPSettings.h"
 #include "RecommendedSettings.h"
 #include "About.h"
+#include "tracecontrol.h"
 
 extern bool		g_bShowRefStars;
+extern DSS::TraceControl traceControl;
 
 
 #define dssApp DeepSkyStacker::instance()
@@ -35,6 +37,15 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 {
 	ZTRACE_RUNTIME("Creating Left Panel");
 	ui->setupUi(this);
+	bool value{ traceControl.deleteOnExit() };
+	QString disposition;
+	if (value)
+		disposition = tr("deleted");
+	else
+		disposition = tr("kept");
+
+	ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
+
 	makeLinks();
 
 	raise();
@@ -57,30 +68,10 @@ void ExplorerBar::onInitDialog()
 
 	ui->registerAndStack->setFont(bold);
 	ui->frame_1->setFont(font);
-	/*
-	ui->openLights->setFont(font);
-	ui->openDarks->setFont(font);
-	ui->openFlats->setFont(font);
-	ui->openDarkFlats->setFont(font);
-	ui->openBias->setFont(font);
-	ui->openFilelist->setFont(font);
-	ui->saveFilelist->setFont(font);
-	ui->clearList->setFont(font);
-	*/
 
 	ui->frame_2->setFont(font);
-	/*
-	ui->checkAll->setFont(font);
-	ui->checkAbove->setFont(font);
-	ui->unCheckAll->setFont(font);
-	*/
 
 	ui->frame_3->setFont(font);
-	/*ui->registerChecked->setFont(font);
-	ui->computeOffsets->setFont(font);
-	ui->stackChecked->setFont(font);
-	ui->batchStacking->setFont(font);
-	*/
 
 	ui->processing->setFont(bold);
 	ui->openPicture->setFont(font);
@@ -97,12 +88,15 @@ void ExplorerBar::onInitDialog()
 
 	ui->about->setFont(font);
 	ui->help->setFont(font);
+	ui->traceFileDisposition->setFont(font);
 }
 
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
 	QString redColour = QColor(Qt::red).name();
+	QString blueColour = QColor(Qt::blue).name();
+
 
 	makeLink(ui->openLights, redColour);
 	makeLink(ui->openDarks, defColour);
@@ -136,6 +130,7 @@ void ExplorerBar::makeLinks()
 	makeLink(ui->recommendedSettings, redColour);
 	makeLink(ui->about, defColour);
 	makeLink(ui->help, defColour);
+	makeLink(ui->traceFileDisposition, blueColour);
 }
 
 //void ExplorerBar::linkActivated()
@@ -425,6 +420,26 @@ void ExplorerBar::onHelp()
 	//
 	::HtmlHelp(::GetDesktopWindow(), CString((wchar_t*)helpFile.utf16()), HH_DISPLAY_TOPIC, 0);
 }
+
+void ExplorerBar::onToggleDeletion()
+{
+	bool value{ !traceControl.deleteOnExit() };
+	traceControl.setDeleteOnExit(value);
+
+	QString disposition;
+	if (value)
+		disposition = tr("deleted");
+	else
+		disposition = tr("kept");
+
+	ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
+	QString blueColour = QColor(Qt::blue).name();
+	makeLink(ui->traceFileDisposition, blueColour);
+
+	update();
+}
+
+
 
 void ExplorerBar::LoadSettingFile()
 {
