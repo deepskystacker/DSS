@@ -81,6 +81,7 @@ using namespace Gdiplus;
 #endif
 #include "ExceptionHandling.h"
 #include "DSSVersion.h"
+#include "tracecontrol.h"
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -94,18 +95,7 @@ bool	g_bShowRefStars = false;
 #include <string.h>
 #include <stdio.h>
 
-//class DSSStackWalker : public StackWalker
-//{
-//public:
-//	DSSStackWalker() : StackWalker() {}
-//protected:
-//	virtual void OnOutput(LPCSTR text)
-//	{
-//		fprintf(stderr, text);
-//		ZTRACE_RUNTIME(text);
-//		StackWalker::OnOutput(text);
-//	};
-//};
+TraceControl traceControl;
 
 bool	hasExpired()
 {
@@ -947,7 +937,7 @@ int main(int argc, char* argv[])
 	catch (std::exception& e)
 	{
 		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
-
+		traceControl.setDeleteOnExit(false);
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
 		std::cerr << errorMessage.toUtf8().constData();
@@ -957,6 +947,7 @@ int main(int argc, char* argv[])
 	}
 	catch (CException& e)
 	{
+		traceControl.setDeleteOnExit(false);
 		constexpr unsigned int msglen{ 255 };
 		TCHAR message[msglen]{ 0x00 };
 		e.GetErrorMessage(&message[0], msglen);
@@ -967,6 +958,7 @@ int main(int argc, char* argv[])
 	}
 	catch (ZException& ze)
 	{
+		traceControl.setDeleteOnExit(false);
 
 		ZTRACE_RUNTIME("ZException %s thrown from: %s Function: %s() Line: %d\n\n%s",
 			ze.name(),
