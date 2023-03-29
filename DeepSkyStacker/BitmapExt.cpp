@@ -1202,7 +1202,10 @@ namespace {
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
+	QString name{ QString::fromWCharArray(szFileName) };
+	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
+
 
 #if DSSFILEDECODING==0
 	if (IsPCLPicture(szFileName, BitmapInfo))
