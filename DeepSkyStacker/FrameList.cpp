@@ -105,7 +105,7 @@ namespace DSS
 			// If the group number passed in was -1 then want to count the number of
 			// checked images of the relevant type in ALL groups.  Otherwise only
 			// count checked images for the passed group number.
-			if (-1 == id || id == group.index())
+			if (-1 == id || id == static_cast<int>(group.index()))
 			{
 				for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 				{
@@ -129,7 +129,7 @@ namespace DSS
 			{
 				if (it->IsLightFrame())
 					it->m_bDeltaComputed = false;
-				if (index == group.index())
+				if (index == static_cast<int>(group.index()))
 				{
 					//
 					// Tell the table view which columns have been impacted

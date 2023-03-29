@@ -128,12 +128,10 @@ namespace DSS
 			else
 				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "No", "IDS_NO");
 
-		};
+		}
 
 		pathToGroup.emplace(file, Index);
 
 		pictures->addImage(lb);
-
-
-	};
+	}
 }

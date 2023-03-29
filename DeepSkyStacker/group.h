@@ -43,19 +43,20 @@
 
 namespace DSS
 {
-	class Group
+	class Group final
 	{
-		friend class FrameList;
-
 	private:
+		friend class FrameList;
+		using IndexType = unsigned int;
+
 		//
 		// Initial group id is zero
 		//
-		inline static int nextIndex{ 0 };
+		inline static IndexType nextIndex{ 0 };
 		//
 		// Map of files to group id - used to check which group refers to a file (maybe none)
 		//
-		inline static std::map<fs::path, int> pathToGroup{};
+		inline static std::map<fs::path, IndexType> pathToGroup{};
 
 	public:
 
@@ -122,7 +123,7 @@ namespace DSS
 		inline bool dirty() const noexcept { return Dirty; };
 		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
 
-		int index() const noexcept { return Index; };
+		IndexType index() const noexcept { return Index; };
 
 		//
 		// Will call addImage() internally
@@ -141,7 +142,7 @@ namespace DSS
 		static int whichGroupContains(const fs::path& path)
 		{
 			if (auto iter = pathToGroup.find(path); iter != pathToGroup.end())
-				return iter->second;
+				return static_cast<int>(iter->second);
 			else
 				return -1; // no group
 		}
@@ -165,8 +166,8 @@ namespace DSS
 			pathToGroup.erase(pathToGroup.find(file));
 		}
 
-	protected:
-		int Index;		// This group's number
+	private:
+		IndexType Index;		// This group's number
 		//
 		// Every group has a name - initially "Main Group" or Group n"
 		//
