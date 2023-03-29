@@ -891,14 +891,11 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	ListBitMap* FrameList::getListBitMap(int row)
+	ListBitMap* FrameList::getListBitMap(const int row)
 	{
-		//
-		// return address of the relevant ListBitMap in the current
-		// group
-		//
 		return &imageGroups[index].pictures->mydata[row];
 	}
+
 	void FrameList::clear()
 	{
 		for (auto& group : imageGroups)
@@ -908,40 +905,49 @@ namespace DSS
 		imageGroups.resize(1);
 		Group::reset();
 	}
-	size_t FrameList::groupSize(uint16_t id) const
+
+	size_t FrameList::groupSize(const int id) const
 	{
 		ZASSERTSTATE(id < imageGroups.size());
+		ZASSERTSTATE(id >= 0);
 		return imageGroups[id].size();
 	}
-	bool FrameList::isLightFrame(QString name) const
+
+	bool FrameList::isLightFrame(const QString name) const
 	{
 		return imageGroups[index].pictures->isLightFrame(name);
 	}
-	bool FrameList::isChecked(QString name) const
+
+	bool FrameList::isChecked(const QString name) const
 	{
 		return imageGroups[index].pictures->isChecked(name);
 	}
-	bool FrameList::getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
+
+	bool FrameList::getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
 	{
 		return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
 	}
-	FrameList& FrameList::beginInsertRows(int count)
+
+	FrameList& FrameList::beginInsertRows(const int count)
 	{
 		auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
 		auto last{ first + count - 1 };
 		imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
-		return (*this);
+		return *this;
 	}
+
 	FrameList& FrameList::endInsertRows()
 	{
 		imageGroups[index].pictures->endInsertRows();
 		return *this;
 	}
-	bool FrameList::addFile(fs::path file, PICTURETYPE PictureType /* = PICTURETYPE_LIGHTFRAME */, bool bCheck /* = false */, int /*nItem = -1 */)
+
+	bool FrameList::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
 	{
 		imageGroups[index].addFile(file, PictureType, bCheck);
 		return true;
 	}
+
 	void FrameList::retranslateUi()
 	{
 		int i = 0;

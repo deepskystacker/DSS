@@ -49,10 +49,7 @@ namespace DSS
 		//
 		// Return address of the relevant ListBitMap in the current group
 		//
-		ListBitMap* getListBitMap(const int row)
-		{
-			return &imageGroups[index].pictures->mydata[row];
-		}
+		ListBitMap* getListBitMap(const int row);
 
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
@@ -74,12 +71,7 @@ namespace DSS
 			imageGroups.emplace_back();
 		}
 
-		inline size_t groupSize(const int id) const
-		{
-			ZASSERTSTATE(id < imageGroups.size());
-			ZASSERTSTATE(id >= 0);
-			return imageGroups[id].size();
-		}
+		size_t groupSize(const int id) const;
 
 		inline size_t groupCount() const
 		{
@@ -99,43 +91,19 @@ namespace DSS
 
 		void fillTasks(CAllStackingTasks& tasks);
 
-		inline bool isLightFrame(const QString name) const
-		{
-			return imageGroups[index].pictures->isLightFrame(name);
-		}
+		bool isLightFrame(const QString name) const;
 
-		inline bool isChecked(const QString name) const
-		{
-			return imageGroups[index].pictures->isChecked(name);
-		}
+		bool isChecked(const QString name) const;
 
-		inline bool getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
-		{
-			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
-		}
+		bool getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const;
 
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		inline FrameList& beginInsertRows(const int count)
-		{
-			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
-			auto last{ first + count - 1 };
-			imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
-			return *this;
-		}
+		FrameList& beginInsertRows(const int count);
+		FrameList& endInsertRows();
 
-		inline FrameList& endInsertRows()
-		{
-			imageGroups[index].pictures->endInsertRows();
-			return *this;
-		}
-
-		bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]]int nItem = -1)
-		{
-			imageGroups[index].addFile(file, PictureType, bCheck);
-			return true;
-		}
+		bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
 
 		void blankCheckedItemScores() const;
 

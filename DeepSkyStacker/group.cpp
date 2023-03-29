@@ -46,7 +46,7 @@ namespace DSS
 		pictures{ std::make_unique<ImageListModel>() },
 		Index{ nextIndex++ },		// First group is Main Group with Index of 0
 		Dirty{ false },
-		nameChanged { false }
+		nameChanged{ false }
 	{
 		if (0 == Index)
 		{
@@ -56,6 +56,27 @@ namespace DSS
 		{
 			Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
 		}
+	}
+
+	Group::Group(Group&& rhs) noexcept :
+		pictures{ std::move(rhs.pictures) },
+		Index{ std::exchange(rhs.Index, 0) },
+		Name{ std::move(rhs.Name) },
+		Dirty{ std::exchange(rhs.Dirty, false) },
+		nameChanged{ std::exchange(rhs.nameChanged, false) }
+	{}
+
+	Group& Group::operator=(Group&& rhs) noexcept
+	{
+		if (this != &rhs)
+		{
+			pictures = std::move(rhs.pictures);
+			Index = std::exchange(rhs.Index, 0);
+			Name = std::move(rhs.Name);
+			Dirty = std::exchange(rhs.Dirty, false);
+			nameChanged = std::exchange(rhs.nameChanged, false);
+		}
+		return *this;
 	}
 
 	void Group::addImage(const ListBitMap& image)

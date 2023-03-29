@@ -63,60 +63,39 @@ namespace DSS
 		//
 		std::unique_ptr<ImageListModel> pictures;
 
-		Group() :
-			pictures { std::make_unique<ImageListModel>() },
-			Index { nextIndex++ },		// First group is Main Group with Index of 0
-			Dirty{ false },
-			nameChanged { false }
-		{
-			if (0 == Index)
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
-			}
-			else
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
-			}
-		}
-
+		Group();
 		//
 		// Don't intend this to be copied or assigned.
 		//
 		Group(const Group&) = delete;
 		Group& operator=(const Group&) = delete;
-
-		Group(Group&& rhs) noexcept :
-			pictures { std::move(rhs.pictures) },
-			Index { std::exchange(rhs.Index, 0) },
-			Name { std::move(rhs.Name) },
-			Dirty { std::exchange(rhs.Dirty, false) },
-			nameChanged { std::exchange(rhs.nameChanged, false) }
-		{
-		}
-
-		Group& operator=(Group&& rhs) noexcept
-		{
-			if (this != &rhs)
-			{
-				pictures = std::move(rhs.pictures);
-				Index = std::exchange(rhs.Index, 0);
-				Name = std::move(rhs.Name);
-				Dirty = std::exchange(rhs.Dirty, false);
-				nameChanged = std::exchange(rhs.nameChanged, false);
-			}
-			return *this;
-		}
-
+		Group(Group&& rhs) noexcept;
+		Group& operator=(Group&& rhs) noexcept;
 
 		//
 		// Accessors
 		//
 		size_t size() const noexcept;
 
-		inline QString name() const noexcept { return Name; };
-		inline Group& setName(QString const& name) noexcept { Name = name; nameChanged = true; return *this; };
-		inline bool dirty() const noexcept { return Dirty; };
-		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
+		inline QString name() const noexcept
+		{
+			return Name;
+		}
+		inline Group& setName(QString const& name) noexcept
+		{
+			Name = name;
+			nameChanged = true;
+			return *this;
+		}
+		inline bool dirty() const noexcept
+		{
+			return Dirty;
+		}
+		inline Group& setDirty(bool value = true) noexcept
+		{
+			Dirty = value;
+			return *this;
+		}
 
 		IndexType index() const noexcept { return Index; };
 
