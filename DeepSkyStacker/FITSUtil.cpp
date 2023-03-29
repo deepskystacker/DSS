@@ -239,11 +239,12 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
+		CString errorText{ &error_text[0] };
 		CString errorMessage;
 		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			m_strFileName,
+			(LPCTSTR)m_strFileName, 
 			status,
-			CString(error_text));
+			(LPCTSTR)errorText);
 
 		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
 
@@ -1069,18 +1070,16 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	bool					bContinue = true;
 	CFITSReader				fits(szFileName, nullptr);
 
-	// Exclude JPEG, PNG or TIFF format
+	// Require a fits file extension
 	{
 		TCHAR szExt[1+_MAX_EXT];
 		CString strExt;
 		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 		strExt = szExt;
 
-		if (!strExt.CompareNoCase(_T(".JPG")) ||
-			!strExt.CompareNoCase(_T(".JPEG")) ||
-			!strExt.CompareNoCase(_T(".PNG")) ||
-			!strExt.CompareNoCase(_T(".TIF")) ||
-			!strExt.CompareNoCase(_T(".TIFF")))
+		if (!(0 == strExt.CompareNoCase(_T(".FIT")) ||
+			  0 == strExt.CompareNoCase(_T(".FITS")) ||
+			  0 == strExt.CompareNoCase(_T(".FTS"))))
 		{
 			bContinue = false;
 		}
