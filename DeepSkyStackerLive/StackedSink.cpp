@@ -1,12 +1,6 @@
 #include <stdafx.h>
-#include "resource.h"
-#include <WndImage.h>
-#include "BitmapExt.h"
 #include "StackedSink.h"
-
-#define _MATH_DEFINES_DEFINED
-#include <math.h>
-
+#include "resource.h"
 
 /* ------------------------------------------------------------------- */
 

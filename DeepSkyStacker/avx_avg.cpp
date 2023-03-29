@@ -1,12 +1,9 @@
-#include "StdAfx.h"
-#include <QCoreApplication>
-#include <QPoint>
-#include <QPointF>
-#include "dssrect.h"
+#include "stdafx.h"
 #include "avx_avg.h"
+#include "dssrect.h"
 #include "avx_support.h"
 #include "TaskInfo.h"
-#include <immintrin.h>
+#include "Ztrace.h"
 
 AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },

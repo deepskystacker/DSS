@@ -1,15 +1,4 @@
-#if !defined(AFX_PROCESSSETTINGSSHEET_H__E02AC601_555D_4F13_9260_01D84356A200__INCLUDED_)
-#define AFX_PROCESSSETTINGSSHEET_H__E02AC601_555D_4F13_9260_01D84356A200__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// ProcessSettingsSheet.h : header file
-//
-
-#include "RGBTab.h"
-#include "LuminanceTab.h"
-#include "SaturationTab.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CProcessSettingsSheet
@@ -46,9 +35,3 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-/////////////////////////////////////////////////////////////////////////////
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_PROCESSSETTINGSSHEET_H__E02AC601_555D_4F13_9260_01D84356A200__INCLUDED_)

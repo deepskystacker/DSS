@@ -1,19 +1,8 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
+#include "stdafx.h"
 #include "IntermediateFiles.h"
 #include "ui/ui_IntermediateFiles.h"
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include "DSSCommon.h"
 #include "Workspace.h"
-
+#include "DSSCommon.h"
 
 IntermediateFiles::IntermediateFiles(QWidget *parent, bool regOnly) :
 	QWidget(parent),

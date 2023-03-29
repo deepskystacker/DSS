@@ -1,21 +1,11 @@
 #include <stdafx.h>
-
-#include <QCoreApplication>
-#include <QDebug>
-#if defined (_CONSOLE)
-#include <iostream>
-#else
-#include <QMessageBox>
-#endif
-#include <QSettings>
-#include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
-#include "RegisterEngine.h"
-#include "Workspace.h"
-#include <direct.h>
-
 #include "ZExcept.h"
+#include "StackingTasks.h"
+#include "Workspace.h"
+#include "Ztrace.h"
+#include "RegisterEngine.h"
 
 namespace {
 
@@ -305,7 +295,7 @@ namespace DSS
 
 			decltype(ListBitMap::m_groupId) groupId = 0;
 
-			for (auto &g : imageGroups)
+			for (auto& g : imageGroups)
 			{
 				// and then over each image in the group
 				for (auto it = g.pictures->cbegin(); it != g.pictures->cend(); ++it) 
@@ -379,7 +369,7 @@ namespace DSS
 			ZTRACE_RUNTIME("fs::current_path() failed with error code %ld, %s",
 				ec.value(), ec.message().c_str());
 		}
-		
+
 		if (std::FILE* hFile =
 #if defined(_WINDOWS)
 			_wfopen(fileList.c_str(), L"rt")
@@ -780,7 +770,7 @@ namespace DSS
 		}
 	}
 
-	void FrameList::checkImage(const QString & image, bool check)
+	void FrameList::checkImage(const QString& image, bool check)
 	{
 		for (auto& group : imageGroups)
 		{
@@ -813,7 +803,7 @@ namespace DSS
 				auto& file = group.pictures->mydata[idx];
 				if (file.IsLightFrame())
 				{
-					file.m_bChecked = 
+					file.m_bChecked =
 						(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
 					QModelIndex start{ group.pictures->createIndex(idx, 0) };
 					QModelIndex end{ group.pictures->createIndex(idx, 0) };
@@ -901,6 +891,57 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	ListBitMap* FrameList::getListBitMap(int row)
+	{
+		//
+		// return address of the relevant ListBitMap in the current
+		// group
+		//
+		return &imageGroups[index].pictures->mydata[row];
+	}
+	void FrameList::clear()
+	{
+		for (auto& group : imageGroups)
+		{
+			group.pictures->clear();
+		}
+		imageGroups.resize(1);
+		Group::reset();
+	}
+	size_t FrameList::groupSize(uint16_t id) const
+	{
+		ZASSERTSTATE(id < imageGroups.size());
+		return imageGroups[id].size();
+	}
+	bool FrameList::isLightFrame(QString name) const
+	{
+		return imageGroups[index].pictures->isLightFrame(name);
+	}
+	bool FrameList::isChecked(QString name) const
+	{
+		return imageGroups[index].pictures->isChecked(name);
+	}
+	bool FrameList::getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
+	{
+		return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
+	}
+	FrameList& FrameList::beginInsertRows(int count)
+	{
+		auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
+		auto last{ first + count - 1 };
+		imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
+		return (*this);
+	}
+	FrameList& FrameList::endInsertRows()
+	{
+		imageGroups[index].pictures->endInsertRows();
+		return *this;
+	}
+	bool FrameList::addFile(fs::path file, PICTURETYPE PictureType /* = PICTURETYPE_LIGHTFRAME */, bool bCheck /* = false */, int /*nItem = -1 */)
+	{
+		imageGroups[index].addFile(file, PictureType, bCheck);
+		return true;
+	}
 	void FrameList::retranslateUi()
 	{
 		int i = 0;
@@ -914,5 +955,4 @@ namespace DSS
 			++i;
 		}
 	}
-
 }

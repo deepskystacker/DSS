@@ -1,14 +1,12 @@
 #include <stdafx.h>
-#include "resource.h"
 #include "DeBloom.h"
-#include "TIFFUtil.h"
-#include "Filters.h"
+#include "GrayBitmap.h"
+#include "DSSTools.h"
+#include "DSSProgress.h"
 #include "BackgroundCalibration.h"
+#include "Ztrace.h"
 
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
+using namespace DSS;
 
 #ifdef DSSBETA
 //#define DEBUGDEBLOOM

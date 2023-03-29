@@ -1,20 +1,21 @@
 #include <stdafx.h>
-
-#include <float.h>
-#include <cmath>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <map>
-
-#include <QSettings>
-#include <QString>
-#include <omp.h>
-
 #include "resource.h"
 #include "Workspace.h"
-
 #include "FITSUtil.h"
+#include "..\CFitsio\fitsio.h"
+#include "Ztrace.h"
+#include "DSSProgress.h"
+#include "ZExcBase.h"
+#include "Multitask.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
+#include "RAWUtils.h"
+#include "BitmapInfo.h"
+#include "ColorHelpers.h"
+
+using namespace DSS;
+
+
 
 /* ------------------------------------------------------------------- */
 
@@ -218,9 +219,9 @@ void CFITSReader::ReadAllKeys()
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
-					(LPCTSTR)CA2CT(szKeyName),
-					(LPCTSTR)CA2CT(szValue),
-					(LPCTSTR)CA2CT(szComment), bPropagate);
+					szKeyName,
+					szValue,
+					szComment, bPropagate);
 			};
 		};
 	};
@@ -239,11 +240,12 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
+		CString errorText{ &error_text[0] };
 		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %S\nreturned a status of %d, error text is:\n\"%s\""),
-			(LPCTSTR)m_strFileName,
+		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
+			(LPCTSTR)m_strFileName, 
 			status,
-			&error_text[0]);
+			(LPCTSTR)errorText);
 
 		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
 
@@ -1072,18 +1074,16 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	bool					bContinue = true;
 	CFITSReader				fits(szFileName, nullptr);
 
-	// Exclude JPEG, PNG or TIFF format
+	// Require a fits file extension
 	{
 		TCHAR szExt[1+_MAX_EXT];
 		CString strExt;
 		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 		strExt = szExt;
 
-		if (!strExt.CompareNoCase(_T(".JPG")) ||
-			!strExt.CompareNoCase(_T(".JPEG")) ||
-			!strExt.CompareNoCase(_T(".PNG")) ||
-			!strExt.CompareNoCase(_T(".TIF")) ||
-			!strExt.CompareNoCase(_T(".TIFF")))
+		if (!(0 == strExt.CompareNoCase(_T(".FIT")) ||
+			  0 == strExt.CompareNoCase(_T(".FITS")) ||
+			  0 == strExt.CompareNoCase(_T(".FTS"))))
 		{
 			bContinue = false;
 		}
@@ -1091,11 +1091,11 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	if (bContinue && fits.Open())
 	{
 		if (fits.m_strMake.GetLength() != 0) 
-			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), fits.m_strMake.GetString());
+			BitmapInfo.m_strFileType = QString("FITS (%1)").arg(QString::fromWCharArray(fits.m_strMake.GetString()));
 		else 
-			BitmapInfo.m_strFileType	= _T("FITS");
+			BitmapInfo.m_strFileType = "FITS";
 
-		BitmapInfo.m_strFileName	= szFileName;
+		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
 		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();
@@ -1179,7 +1179,7 @@ void	CFITSWriter::WriteAllKeys()
 	// Check if DATE-OBS is already in the list of Extra Info
 	for (const CExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
 	{
-		if (extraInfo.m_strName.CompareNoCase(_T("DATE-OBS")))
+		if (extraInfo.m_strName.compare("DATE-OBS", Qt::CaseInsensitive) == 0)
 		{
 			bFound = true;
 			break;
@@ -1195,7 +1195,7 @@ void	CFITSWriter::WriteAllKeys()
 						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
 						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
-		m_ExtraInfo.AddInfo(_T("DATE-OBS"), strDateTime);
+		m_ExtraInfo.AddInfo("DATE-OBS", QString::fromWCharArray(strDateTime.GetString()), "");
 	};
 
 	if (m_fits && m_ExtraInfo.m_vExtras.size())
@@ -1205,11 +1205,12 @@ void	CFITSWriter::WriteAllKeys()
 
 		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
-			CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-			CHAR			szValue[FLEN_VALUE];
+			const CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
+			CHAR szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
-			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, nullptr, &nStatus);
+			CString strName(ei.m_strName.toStdWString().c_str());
+			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(strName, CP_UTF8), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
@@ -1217,11 +1218,10 @@ void	CFITSWriter::WriteAllKeys()
 				int			nType;
 				CString		strTemplate;
 
-				if (ei.m_strComment.GetLength())
-					strTemplate.Format(_T("%s = %s / %s"),
-						ei.m_strName.GetString(), ei.m_strValue.GetString(), ei.m_strComment.GetString());
+				if (!ei.m_strComment.isEmpty())
+					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str(), ei.m_strComment.toStdWString().c_str());
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName.GetString(), ei.m_strValue.GetString());
+					strTemplate.Format(_T("%s = %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str());
 
 				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
@@ -1649,8 +1649,8 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 	m_lNrChannels   = m_pMemoryBitmap->IsMonochrome() ? 1 : 3;
 	m_bFloat		= m_pMemoryBitmap->IsFloat();
 	m_CFAType = CFATYPE_NONE;
-	if (::IsCFA(m_pMemoryBitmap))
-		m_CFAType = ::GetCFAType(m_pMemoryBitmap);
+	if (m_pMemoryBitmap && m_pMemoryBitmap->IsCFA())
+		m_CFAType = m_pMemoryBitmap->GetCFAType();
 
 	if (m_Format == FF_UNKNOWN)
 		m_Format = GetBestFITSFormat(m_pMemoryBitmap);

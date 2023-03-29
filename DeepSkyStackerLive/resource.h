@@ -13,11 +13,11 @@
 #define IDB_HDRDOWN                     131
 #define IDD_IMAGELIST                   131
 #define IDD_GRAPHS                      132
-#define IDD_SETTINGS                    133
+#define IDD_SETTINGS_LIVE               133
 #define IDD_RESTARTMONITORING           134
 #define IDD_EMAILSETTINGS               135
 #define IDD_MAINBOARDMINI               136
-#define IDB_BITMAP1                     136
+//#define IDB_BITMAP1                     136
 #define IDB_4CORNERS                    136
 #define IDS_COLUMN_PATH                 200
 #define IDS_COLUMN_FILE                 201
@@ -57,7 +57,7 @@
 #define IDC_BUTTON2                     1001
 #define IDC_LOG                         1001
 #define IDC_CANCELCHANGES               1001
-#define IDC_STACK                       1001
+#define IDC_STACK_DSSLIVE                       1001
 #define IDC_BUTTON3                     1002
 #define IDC_PAUSE                       1002
 #define IDC_PICTURE                     1002
@@ -72,7 +72,7 @@
 #define IDC_IMAGELIST                   1009
 #define IDC_LOGLIST                     1010
 #define IDC_WARNINGS                    1011
-#define IDC_FILENAME                    1012
+#define IDC_FILENAME_DSSLIVE                    1012
 #define IDC_GRAPH                       1014
 #define IDC_SCORE                       1015
 #define IDC_FWHM                        1016

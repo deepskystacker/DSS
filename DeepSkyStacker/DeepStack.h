@@ -1,28 +1,16 @@
-#ifndef _DEEPSTACK_H__
-#define _DEEPSTACK_H__
-
-#include <math.h>
-#include <vector>
-#include <algorithm>
-#include "BitmapExt.h"
-#include "StackingTasks.h"
-#include "BezierAdjust.h"
-#include "Histogram.h"
+#pragma once
 #include "StackedBitmap.h"
-#include "DSSProgress.h"
-#include "RegisterEngine.h"
+#include "BitmapExt.h"
 
-#undef PI
-
-
+namespace DSS { class ProgressBase; }
 class CDeepStack
 {
 private :
-	CStackedBitmap			m_StackedBitmap;
-	CRGBHistogram			m_OriginalHisto;
-	C32BitsBitmap			m_Bitmap;
-	bool					m_bNewStackedBitmap;
-	ProgressBase *			m_pProgress;
+	CStackedBitmap m_StackedBitmap;
+	CRGBHistogram m_OriginalHisto;
+	C32BitsBitmap m_Bitmap;
+	bool m_bNewStackedBitmap;
+	DSS::ProgressBase* m_pProgress;
 
 public :
 	CDeepStack()
@@ -55,7 +43,7 @@ private :
 	void	AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust);
 
 public :
-	void	SetProgress(ProgressBase *	pProgress)
+	void	SetProgress(DSS::ProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
 	};
@@ -114,5 +102,3 @@ public :
 		return GetWidth() && GetHeight();
 	};
 };
-
-#endif // _DEEPSTACK_H__

@@ -1,4 +1,6 @@
 #pragma once
+#include "BezierAdjust.h"
+#include "Histogram.h"
 /****************************************************************************
 **
 ** Copyright (C) 2022 David C. Partridge

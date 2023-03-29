@@ -1,8 +1,10 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "avx_output.h"
 #include "avx_support.h"
 #include "avx_median.h"
-#include <immintrin.h>
+#include "MultiBitmap.h"
+#include "ColorMultiBitmap.h"
+#include "GreyMultiBitmap.h"
 
 AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
 	inputBitmap{ mBitmap },

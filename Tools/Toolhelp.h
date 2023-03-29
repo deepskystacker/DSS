@@ -11,8 +11,8 @@ Notices: Copyright (c) 2008 Jeffrey Richter & Christophe Nasarre
 
 
 //#include "CmnHdr.h"     /* See Appendix A. */
-#include <tlhelp32.h>
-#include <tchar.h>
+//#include <tlhelp32.h>
+//#include <tchar.h>
 
 
 ///////////////////////////////////////////////////////////////////////////////

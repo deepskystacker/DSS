@@ -1,9 +1,4 @@
-#ifndef _DSSPROGRESS_H__
-#define _DSSPROGRESS_H__
-#include <QElapsedTimer>
-#include <QString>
-
-/* ------------------------------------------------------------------- */
+#pragma once
 
 namespace DSS
 {
@@ -85,6 +80,3 @@ namespace DSS
 		virtual void applyProcessorsUsed(int nCount) = 0;
 	};
 }
-/* ------------------------------------------------------------------- */
-
-#endif // _DSSPROGRESS_H__

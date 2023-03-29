@@ -34,12 +34,10 @@
 **
 **
 ****************************************************************************/
-
-#include <memory>
-
-#include <QCoreApplication>
-#include <QString>
+#include "DSSCommon.h"
 #include "ImageListModel.h"
+
+class ListBitMap;
 
 namespace DSS
 {
@@ -63,7 +61,7 @@ namespace DSS
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		std::unique_ptr<ImageListModel>	pictures;
+		std::unique_ptr<ImageListModel> pictures;
 
 		Group() :
 			pictures { std::make_unique<ImageListModel>() },
@@ -113,10 +111,7 @@ namespace DSS
 		//
 		// Accessors
 		//
-		inline size_t size() const noexcept
-		{
-			return pictures->rowCount();
-		}
+		size_t size() const noexcept;
 
 		inline QString name() const noexcept { return Name; };
 		inline Group& setName(QString const& name) noexcept { Name = name; nameChanged = true; return *this; };
@@ -133,11 +128,7 @@ namespace DSS
 		//
 		// Add an image (row) to the table
 		//
-		void addImage(const ListBitMap& image)
-		{
-			pictures->addImage(image);
-			Dirty = true;
-		}
+		void addImage(const ListBitMap& image);
 
 		static int whichGroupContains(const fs::path& path)
 		{

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "BitmapBase.h"
-
+#include "cfa.h"
+#include "ColorBitmap.h"
+#include "GrayBitmap.h"
 
 class AvxSupport
 {

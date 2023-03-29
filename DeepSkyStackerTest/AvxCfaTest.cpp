@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "catch.h"
 #include "../DeepSkyStacker/avx_cfa.h"
+#include "../DeepSkyStacker/GrayBitmap.h"
+#include "../DeepSkyStacker/Multitask.h"
+#include "../DeepSkyStacker/MultiBitmap.h"
+#include "../DeepSkyStacker/MedianFilterEngine.h"
 
 TEST_CASE("AVX CFA", "[AVX][CFA]")
 {
@@ -257,10 +261,10 @@ void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
 bool CMultiBitmap::AddBitmap(CMemoryBitmap*, ProgressBase*) { return true; }
 std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase*) { return std::shared_ptr<CMemoryBitmap>{}; }
 
-void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
+//void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
 std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics&) { return std::shared_ptr<CMemoryBitmap>{}; }
-std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
-
-std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
-
-void CGrayBitmapT<unsigned short>::RemoveHotPixels(class ProgressBase*) {}
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// void CGrayBitmapT<unsigned short>::RemoveHotPixels(class ProgressBase*) {}

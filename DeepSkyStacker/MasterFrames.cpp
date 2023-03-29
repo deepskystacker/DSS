@@ -3,8 +3,19 @@
 #include "MasterFrames.h"
 #include "DSSProgress.h"
 #include "DeBloom.h"
+#include "Workspace.h"
+#include "Ztrace.h"
+#include "StackingTasks.h"
+#include "BitmapExt.h"
+
+using namespace DSS;
 
 /* ------------------------------------------------------------------- */
+CMasterFrames::CMasterFrames()
+{
+	Workspace			workspace;
+	m_fDebloom = workspace.value("Stacking/Debloom", false).toBool();
+}
 
 bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, ProgressBase * pProgress)
 {

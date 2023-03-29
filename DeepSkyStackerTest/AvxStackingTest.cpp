@@ -1,12 +1,18 @@
 #include "stdafx.h"
-#include <QCoreApplication>
 #include "catch.h"
 
 #define UNIT_TESTS
 
 #include "AvxAccumulateTest.h"
+#include "AvxEntropyTest.h"
 #include "../DeepSkyStacker/avx.h"
 #include "../DeepSkyStacker/avx_median.h"
+#include "../DeepSkyStacker/GrayBitmap.h"
+#include "../DeepSkyStacker/EntropyInfo.h"
+#include "../DeepSkyStacker/TaskInfo.h"
+#include "../DeepSkyStacker/PixelTransform.h"
+#include "../DeepSkyStacker/avx_entropy.h"
+#include "../DeepSkyStacker/BackgroundCalibration.h"
 
 
 TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
@@ -392,7 +398,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		std::shared_ptr<CMemoryBitmap> pEntropyCoverage = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 
@@ -451,7 +457,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		CBackgroundCalibration backgroundCalib;
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 

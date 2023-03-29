@@ -1,13 +1,10 @@
 // ExplorerBar.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "resource.h"
-#include "DeepSkyStackerLive.h"
-#include "DeepSkyStackerLiveDlg.h"
 #include "Settings.h"
-#include "RegisterEngine.h"
-#include <FolderDlg.h>
+#include "resource.h"
+#include "DeepSkyStackerLiveDlg.h"
+#include "FolderDlg.h"
 #include "EmailSettings.h"
 
 /* ------------------------------------------------------------------- */

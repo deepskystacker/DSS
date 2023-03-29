@@ -1,10 +1,10 @@
 #ifndef __RUNNINGSTACKINGENGINE_H__
 #define __RUNNINGSTACKINGENGINE_H__
-
-#include "RegisterEngine.h"
-#include "PixelTransform.h"
 #include "BackgroundCalibration.h"
+#include "MatchingStars.h"
 
+class CMemoryBitmap;
+class CLightFrameInfo;
 class CRunningStackingEngine
 {
 private:

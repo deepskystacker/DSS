@@ -6,13 +6,15 @@
 #include "DSSTools.h"
 #include "DarkFrame.h"
 
+namespace DSS { class ProgressBase; }
+
 /* ------------------------------------------------------------------- */
 
 class CImageFilter
 {
 public :
 	virtual ~CImageFilter() = default;
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -83,19 +85,9 @@ public:
 		return m_bCFA;
 	}
 
-	void SetBitmap(CMemoryBitmap* pBitmap)
-	{
-		m_pInBitmap = pBitmap;
-		if (pBitmap != nullptr)
-		{
-			m_bMonochrome = pBitmap->IsMonochrome();
-			m_bCFA = pBitmap->IsCFA();
-			m_lWidth = pBitmap->Width();
-			m_lHeight = pBitmap->Height();
-		}
-	}
+	void SetBitmap(CMemoryBitmap* pBitmap);
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -115,7 +107,7 @@ private :
 
 private :
 	void AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
-	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase* pProgress = nullptr);
+	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, DSS::ProgressBase* pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
@@ -151,7 +143,7 @@ public :
 		m_bUseRejectThreshold  = false;
 	};
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -177,7 +169,7 @@ public :
 		m_lSize  = lSize;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
 };
 
 #endif

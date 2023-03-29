@@ -35,56 +35,23 @@
 ****************************************************************************/
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
-
-#include "stdafx.h"
-
-#include <csignal>
-#include <chrono>
-#include <boost/interprocess/sync/named_mutex.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
-namespace bip = boost::interprocess;
-#include <gdiplus.h>
-using namespace Gdiplus;
-#include <QApplication>
-#include <QLibraryInfo>
-#include <QDebug>
-#include <QDir>
-#include <QFileInfoList>
-#include <QMessageBox>
-#include <QtGui>
-#include <QSettings>
-#include <QStatusBar>
-#include <QStyleFactory>
-#include <QTranslator>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QWidget>
-
-//#include "QMfcApp"
-
-#include "qwinhost.h"
-
+#include <stdafx.h>
 #include "DeepSkyStacker.h"
-//#include "DeepStack.h"
-#include "picturelist.h"
-
-
-#include <afxinet.h>
-#include "StackingTasks.h"
 #include "ui_StackingDlg.h"
-#include "StackRecap.h"
-#include "SetUILanguage.h"
-//#include "StackWalker.h"
-#include <ZExcept.h>
-#if !defined(_WINDOWS)
-#include <execinfo.h>
-#endif
+#include "Ztrace.h"
+#include "StackingTasks.h"
+#include "StackingDlg.h"
+#include "ExplorerBar.h"
+#include "picturelist.h"
+#include "resource.h"
+#include "commonresource.h"
+#include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
-#include "DSSVersion.h"
+#include "SetUILanguage.h"
+#include "qwinhost.h"
+#include "DeepStack.h"
 #include "tracecontrol.h"
 
-#pragma comment(lib, "gdiplus.lib")
-#pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 CString OUTPUTFILE_FILTERS;
 CString	OUTPUTLIST_FILTERS;
@@ -92,10 +59,8 @@ CString SETTINGFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
 
-#include <string.h>
-#include <stdio.h>
 
-TraceControl traceControl;
+DSS::TraceControl traceControl;
 
 bool	hasExpired()
 {
@@ -317,14 +282,14 @@ void DeepSkyStacker::onInitialise()
 	stackedWidget->addWidget(winHost);
 
 	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg.Create(IDD_PROCESSING);
+	auto result = processingDlg->Create(IDD_PROCESSING);
 	if (FALSE == result)
 	{
 		int lastErr = GetLastError();
 		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
 	}
 
-	HWND hwnd{ processingDlg.GetSafeHwnd() };
+	HWND hwnd{ processingDlg->GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
 	
@@ -396,12 +361,12 @@ void DeepSkyStacker::onInitialise()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (false == processingDlg.SaveOnClose())
+	if (false == processingDlg->SaveOnClose())
 	{
 		e->ignore();
 		return;
 	}
-	processingDlg.DestroyWindow();
+	processingDlg->DestroyWindow();
 	if (false == stackingDlg->saveOnClose())
 	{
 		e->ignore();
@@ -455,8 +420,86 @@ DeepSkyStacker::DeepSkyStacker() :
 	statusBarText{ new QLabel("") }
 
 {
+	processingDlg = std::make_unique<CProcessingDlg>();
+	m_DeepStack = std::make_unique<CDeepStack>();
+	m_Settings = std::make_unique<CDSSSettings>();
 	ZFUNCTRACE_RUNTIME();
 	setAcceptDrops(true);
+}
+
+DeepSkyStacker::~DeepSkyStacker()
+{
+}
+
+void DeepSkyStacker::disableSubDialogs()
+{
+	stackingDlg->setEnabled(false);
+	processingDlg->EnableWindow(false);
+	//m_dlgLibrary.EnableWindow(false);
+	explorerBar->setEnabled(false);
+}
+
+void DeepSkyStacker::enableSubDialogs()
+{
+	stackingDlg->setEnabled(true);
+	processingDlg->EnableWindow(true);
+	//m_dlgLibrary.EnableWindow(true);
+	explorerBar->setEnabled(true);
+}
+
+CDSSSettings& DeepSkyStacker::settings()
+{
+	if (!m_Settings->IsLoaded())
+		m_Settings->Load();
+
+	return *m_Settings.get();
+}
+
+DSS::StackingDlg& DeepSkyStacker::getStackingDlg()
+{
+	return *stackingDlg;
+}
+
+CProcessingDlg& DeepSkyStacker::getProcessingDlg()
+{
+	return *processingDlg.get();
+}
+
+CDeepStack& DeepSkyStacker::deepStack()
+{
+	return *m_DeepStack.get();
+}
+
+QString DeepSkyStacker::statusMessage()
+{
+	return statusBarText->text();
+}
+
+void DeepSkyStacker::setTab(std::uint32_t dwTabID)
+{
+	if (dwTabID == IDD_REGISTERING)
+		dwTabID = IDD_STACKING;
+	//#ifdef DSSBETA
+	//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
+	//		dwTabID = IDD_LIBRARY;
+	//#endif
+	currTab = dwTabID;
+	updateTab();
+}
+
+ExplorerBar& DeepSkyStacker::GetExplorerBar()
+{
+	return *explorerBar;
+}
+
+void DeepSkyStacker::setWindowFilePath(const QString& name)
+{
+	if (currentPathName == name) return;
+	currentPathName = name;
+	if (!name.isEmpty())
+		setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
+	else
+		setWindowTitle(baseTitle);
 }
 
 void DeepSkyStacker::updateTab()
@@ -472,12 +515,18 @@ void DeepSkyStacker::updateTab()
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
 		stackingDlg->showImageList(false);
-		processingDlg.ShowWindow(SW_SHOW);
+		processingDlg->ShowWindow(SW_SHOW);
 		break;
 	};
 	explorerBar->update();
 };
 
+void DeepSkyStacker::reportError(const QString& message, DSSBase::Severity severity)
+{
+	QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
+		Q_ARG(const QString&, message),
+		Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
+}
 
 
 BOOL DeepSkyStackerApp::InitInstance()
@@ -813,12 +862,6 @@ int main(int argc, char* argv[])
 //	std::signal(SIGTERM, signalHandler);
 //#endif
 
-	// High DPI support
-#if QT_VERSION < 0x060000
-	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-
 	//QMfcApp app(&theApp, argc, argv);
 	QApplication app(argc, argv);
 
@@ -876,13 +919,8 @@ int main(int argc, char* argv[])
 	translatorFileName += language;
 	qDebug() << "qt translator filename: " << translatorFileName;
 	
-#if QT_VERSION >= 0x060000
 	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
 	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
 	{
 		app.installTranslator(&theQtTranslator);
 	}

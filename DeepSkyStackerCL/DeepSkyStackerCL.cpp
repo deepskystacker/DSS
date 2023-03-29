@@ -9,7 +9,6 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "SetUILanguage.h"
-#include <iostream>
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),

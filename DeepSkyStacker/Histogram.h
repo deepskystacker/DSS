@@ -1,7 +1,8 @@
 #ifndef _HISTOGRAM_H__
 #define _HISTOGRAM_H__
 
-#include <math.h>
+#include "ZExcBase.h"
+#include "resource.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -628,10 +629,10 @@ public :
 
 		if (m_lNrValues)
 		{
-			int		lCount = 0;
+			unsigned int		lCount = 0;
 			int		i = 0;
 
-			while ((lCount + m_vValues[i]) <= m_lNrValues/2)
+			while ((lCount + m_vValues[i]) <= (unsigned int)(m_lNrValues/2))
 			{
 				lCount += m_vValues[i];
 				i++;

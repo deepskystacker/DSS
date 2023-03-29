@@ -1,11 +1,8 @@
-#ifndef COMETSTACKING_H
-#define COMETSTACKING_H
-#include <memory>
+#pragma once
 
 class QPixmap;
 
 #include "DSSCommon.h"
-#include <QWidget>
 
 namespace Ui {
 class CometStacking;
@@ -43,5 +40,3 @@ private:
 
     void updateImage();
 };
-
-#endif // COMETSTACKING_H

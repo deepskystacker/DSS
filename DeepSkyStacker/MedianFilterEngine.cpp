@@ -1,9 +1,12 @@
 #include <stdafx.h>
-#include <omp.h>
 #include "BitmapBase.h"
 #include "MedianFilterEngine.h"
 #include "avx_filter.h"
+#include "Multitask.h"
+#include "DSSProgress.h"
+#include "DSSTools.h"
 
+using namespace DSS;
 
 template <typename T>
 void CInternalMedianFilterEngineT<T>::CFilterTask::process()
@@ -125,3 +128,4 @@ template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(Progress
 template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(ProgressBase*);
 template void CInternalMedianFilterEngineT<float>::ApplyFilter(ProgressBase*);
 template void CInternalMedianFilterEngineT<double>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(ProgressBase*);

@@ -1,26 +1,18 @@
 #ifndef RECOMMENDEDSETTINGS_H
 #define RECOMMENDEDSETTINGS_H
-#include <memory>
-#include <vector>
+#include "Workspace.h"
+#include "StackingTasks.h"
 
 class Workspace;
 class QAbstractButton;
 class QUrl;
 
-#include <QString>
-#include <QDialog>
-
-#include "DSSCommon.h"
-#include "StackingTasks.h"
-#include "Workspace.h"
-
-
 class RecommendationItem
 {
 public:
-	WORKSPACESETTINGVECTOR				vSettings;
-	int								linkID;
-	QString								recommendation;
+	WORKSPACESETTINGVECTOR vSettings;
+	int linkID;
+	QString recommendation;
 
 
 public:
@@ -54,63 +46,8 @@ public:
 		recommendation.clear();
 	};
 
-	bool	differsFromWorkspace()
-	{
-		bool					bResult = false;
-		Workspace				workspace;
-
-		// Check that the current values are (or not)
-		for (const auto setting : vSettings)
-		{
-			QString				keyName;
-			QVariant			value;
-			QVariant			currentValue;
-
-
-			keyName = setting.key();
-
-			currentValue = workspace.value(keyName);
-			value = setting.value();
-
-#if QT_VERSION >= 0x060000
-			switch (static_cast<QMetaType::Type>(value.typeId()))
-#else
-			switch (value.type())
-#endif
-			{
-			case QMetaType::Bool:
-				bResult = value.toBool() != currentValue.toBool();
-				break;
-			case QMetaType::Double:
-				bResult = value.toDouble() != currentValue.toDouble();
-				break;
-			default:
-				bResult = value.toString() != currentValue.toString();
-			}
-
-			//
-			// If different, no need to check any more
-			//
-			if (bResult) break;
-		};
-		return bResult;
-	};
-
-	void	applySettings()
-	{
-		Workspace				workspace;
-
-		for (size_t i = 0; i < vSettings.size(); i++)
-		{
-			QString				keyName;
-			QVariant			value;
-
-			keyName = vSettings[i].key();
-			value = vSettings[i].value();
-
-			workspace.setValue(keyName, value);
-		};
-	};
+	bool differsFromWorkspace();
+	void applySettings();
 
 	void	setRecommendation(QString text)
 	{

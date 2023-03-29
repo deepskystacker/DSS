@@ -1,6 +1,5 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "avx_histogram.h"
-#include <immintrin.h>
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
 	avxReady{ AvxSupport::checkSimdAvailability() },

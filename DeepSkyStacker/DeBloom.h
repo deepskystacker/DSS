@@ -1,9 +1,5 @@
-#ifndef __DEBLOOM_H__
-#define __DEBLOOM_H__
-
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "BitmapExt.h"
+#pragma once
+#include "GrayBitmap.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -159,7 +155,8 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
-
+namespace DSS { class ProgressBase; }
+class CMemoryBitmap;
 class CDeBloom
 {
 private:
@@ -168,7 +165,7 @@ private:
 	int m_lWidth;
 	int m_lHeight;
 	std::shared_ptr<C8BitGrayBitmap> m_pMask;
-	ProgressBase* m_pProgress;
+	DSS::ProgressBase* m_pProgress;
 	double m_fBackground;
 
 	bool	IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y);
@@ -205,8 +202,6 @@ public:
 
 	virtual ~CDeBloom() {};
 
-	void CreateBloomMask(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
-	void DeBloomImage(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
+	void CreateBloomMask(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
+	void DeBloomImage(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
 };
-
-#endif

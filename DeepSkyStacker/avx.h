@@ -1,16 +1,10 @@
 #pragma once
-
-#include <vector>
-#include <tuple>
-
 #include "avx_cfa.h"
-#include "avx_entropy.h"
-#include "PixelTransform.h"
-#include "TaskInfo.h"
-#include "BackgroundCalibration.h"
-#include "BitmapBase.h"
 
-
+class AvxEntropy;
+class CPixelTransform;
+class CTaskInfo;
+class CBackgroundCalibration;
 class AvxStacking
 {
 private:

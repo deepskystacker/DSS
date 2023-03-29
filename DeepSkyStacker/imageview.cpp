@@ -33,25 +33,8 @@
 **
 **
 ****************************************************************************/
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-
+#include "stdafx.h"
 #include "imageview.h"
-
-#include <QCursor>
-#include <QDebug>
-#include <QGuiApplication>
-#include <QPainter>
-#include <QKeyEvent>
-#include <QMouseEvent>
-#include <QToolBar>
-#include <QToolTip>
-#include <QResizeEvent>
-#include <QRubberBand>
-#if QT_CONFIG(wheelevent)
-#include <QWheelEvent>
-#endif
 #include "Ztrace.h"
 
 namespace DSS

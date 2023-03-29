@@ -1,41 +1,22 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <QMenu>
-#include <QAction>
-#include <QMouseEvent>
-#include <QStandardPaths>
-
-#include <Ztrace.h>
-#include <zexcept.h>
-
-extern bool		g_bShowRefStars;
-
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "About.h"
-#include "DSSVersion.h"
-#include "DeepSkyStacker.h"
-
-//#include "FrameList.h"
-#include "RawDDPSettings.h"
-#include "RecommendedSettings.h"
-#include "RegisterSettings.h"
-#include "StackSettings.h"
-#include "Workspace.h"
-
+#include "stdafx.h"
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
+
+#include "Ztrace.h"
+#include "zexcept.h"
+#include "DeepSkyStacker.h"
+#include "ProcessingDlg.h"
+#include "Workspace.h"
+#include "RegisterSettings.h"
+#include "StackSettings.h"
+#include "RawDDPSettings.h"
+#include "RecommendedSettings.h"
+#include "About.h"
 #include "tracecontrol.h"
 
-extern TraceControl traceControl;
+extern bool		g_bShowRefStars;
+extern DSS::TraceControl traceControl;
+
 
 #define dssApp DeepSkyStacker::instance()
 

@@ -1,12 +1,7 @@
-#ifndef OUTPUTTAB_H
-#define OUTPUTTAB_H
+#pragma once
+#include "StackingTasks.h"
 
 class QString;
-
-#include <QWidget>
-
-#include "DSSCommon.h"
-#include "StackingTasks.h"
 
 namespace Ui {
 class OutputTab;
@@ -43,5 +38,3 @@ private slots:
 	void on_otherFolder_clicked();
 	void on_outputFolder_pressed();
 };
-
-#endif // OUTPUTTAB_H

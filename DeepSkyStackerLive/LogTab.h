@@ -1,12 +1,6 @@
-#ifndef __LOGTAB_H__
-#define __LOGTAB_H__
-
 #pragma once
-
-#include "afxwin.h"
-#include "label.h"
-#include <ControlPos.h>
-
+#include "resource.h"
+#include "ControlPos.h"
 
 // CLogTab dialog
 
@@ -45,5 +39,3 @@ protected :
 public :
 
 };
-
-#endif

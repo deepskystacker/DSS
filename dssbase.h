@@ -66,7 +66,7 @@ public:
 
 	inline static void setInstance(DSSBase* instance)
 	{
-		ZASSERT(nullptr == theInstance);
+		//ZASSERT(nullptr == theInstance);	// Commented out whilst refactoring header as this is a big include.
 		theInstance = instance;
 	}
 

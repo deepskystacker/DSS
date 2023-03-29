@@ -1,8 +1,8 @@
 #pragma once
+#include "DSSCommon.h"
+#include "ToolTipButton.h"
 
 // CSavePicture
-#include <ToolTipButton.h>
-
 class CSavePicture : public CFileDialog
 {
 private :

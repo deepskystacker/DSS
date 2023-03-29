@@ -1,17 +1,9 @@
 #pragma once
-
-#include <QModelIndex>
-#include <QString>
-#include "DSSProgress.h"
-#include "BitmapExt.h"
-#include "FrameInfo.h"
-#include "DSSTools.h"
+#include "group.h"
 #include "MatchingStars.h"
 
-#include "StackingTasks.h"
-#include "RegisterEngine.h"
-#include "group.h"
-
+class CAllStackingTasks;
+class CBilinearParameters;
 namespace DSS
 {
 	class FrameList final
@@ -65,15 +57,7 @@ namespace DSS
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
 		//
-		void clear()
-		{
-			for (auto& group : imageGroups)
-			{
-				group.pictures->clear();
-			}
-			imageGroups.resize(1);
-			Group::reset();
-		}
+		void clear();
 
 		inline void setGroup(int id) noexcept
 		{

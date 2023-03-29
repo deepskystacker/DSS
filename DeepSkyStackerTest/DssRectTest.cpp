@@ -170,8 +170,6 @@ TEST_CASE("DSSRect", "[DSSRect]")
 	}
 }
 
-#include <atltypes.h>
-
 TEST_CASE("CRect", "[CRect]")
 {
 	SECTION("CRect")

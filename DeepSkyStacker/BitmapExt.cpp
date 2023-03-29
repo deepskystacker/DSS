@@ -1,138 +1,29 @@
 #include <stdafx.h>
-#include <tiffio.h>
-#include <list>
-#include <float.h>
-#include <iostream>
-#include <zexcept.h>
-#include <omp.h>
-
-#include "resource.h"
-#include "dssbase.h"
-#ifndef _CONSOLE
-#include <QApplication>
-#include <QMainWindow>
-#include <QMessageBox>
-#include "DeepSkyStacker.h"
-#endif
-#include <QImage>
-
 #include "BitmapExt.h"
-#include "DSSTools.h"
 #include "DSSProgress.h"
-
+#include "MemoryBitmap.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
+#include "BitmapIterator.h"
+#include "AHDDemosaicing.h"
+#include "Multitask.h"
+#include "Ztrace.h"
+#include "ZExcBase.h"
+#include "ZExcept.h"
+#include "RationalInterpolation.h"
+#include "RAWUtils.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "RAWUtils.h"
-#include "Multitask.h"
-#include "Workspace.h"
-#include "BitmapIterator.h"
+#include "File.h"
+#include "MedianFilterEngine.h"
+#include "omp.h"
+#include "dssbase.h"
 
+#ifndef _CONSOLE
+#include "DeepSkyStacker.h"
+#endif//_CONSOLE
 
-#include <GdiPlus.h>
-using namespace Gdiplus;
-
-#ifdef PCL_PROJECT
-#include <PCLTools.h>
-#endif
-
-/* ------------------------------------------------------------------- */
-
-void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
-{
-	double			Y, U, V;
-	double			R, G, B;
-
-	Y = (fCyan + fYellow + fMagenta + fGreen2) / 2.0;
-	U = -(fMagenta + fCyan - fYellow - fGreen2);//*0.492;
-	V = (fMagenta + fYellow - fCyan - fGreen2);//*0.877;
-
-	R = 1.164 * Y + 1.596 * (V - 128.0);
-	G = 1.164 * Y - 0.813 * (V - 128.0) - 0.391 * (U - 128);
-	B = 1.164 * Y + 2.018 * (U - 128.0);
-
-
-	fRed = R * 1.29948 + G * 0.0289296 - B * 0.934432;
-	fGreen = -0.409754 * R + 1.31042 * G - 0.523692 * B;
-	fBlue = 0.110277 * R - 0.339351 * G + 2.45812 * B;
-
-	//	fRed = (Y+1.13983*V)*255.0;
-	//	fGreen = (Y-0.39465*U-0.5806*V)*255.0;
-	//	fBlue  = (Y+2.03211*U)*255.0;
-
-	fRed = std::max(0.0, std::min(255.0, fRed));
-	fGreen = std::max(0.0, std::min(255.0, fGreen));
-	fBlue = std::max(0.0, std::min(255.0, fBlue));
-};
-
-
-void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
-{
-	fRed = fGreen = fBlue = 0;
-	// Basic formulae
-	// M = R + B
-	// Y = R + G
-	// C = B + G
-
-
-	// RGB from CYM
-	// R = (M+Y-C)/2
-	// G = (Y+C-M)/2
-	// B = (M+C-Y)/2
-	fRed = std::max(0.0, fMagenta + fYellow - fCyan) / 2.0;
-	fGreen = std::max(0.0, fYellow + fCyan - fMagenta) / 2.0;
-	fBlue = std::max(0.0, fMagenta + fCyan - fYellow) / 2.0;
-
-	/*	if (fGreen2)
-		{
-			fRed  *= fGreen2/fGreen;
-			fBlue *= fGreen2/fGreen;
-			fGreen = fGreen2;
-		};
-		fRed = std::min(fRed, 255);
-		fBlue = std::min(fBlue, 255);
-		fGreen = std::min(fGreen, 255);*/
-
-		// RGB from CYG
-		// G = G
-		// R = Y - G
-		// B = C - G
-	fGreen += fGreen2;
-	fRed += fYellow - fGreen2;
-	fBlue += fCyan - fGreen2;
-
-	// RGB from CMG
-	// G = G
-	// B = C - G
-	// R = M - B = M - C + G
-//	fGreen += fGreen2;
-	fBlue += fCyan - fGreen2;
-	fRed += fMagenta - fCyan + fGreen2;
-
-	// RGB from YMG
-	// G = G
-	// R = Y - G
-	// B = M - R = M - Y + G
-//	fGreen += fGreen2;
-	fRed += fYellow - fGreen2;
-	fBlue += fMagenta - fYellow + fGreen2;
-
-	// Average the results
-	fRed /= 4.0;
-	fBlue /= 4.0;
-	fGreen /= 2.0;
-
-	double	R = fRed;
-	double	B = fBlue;
-	double	G = fGreen;
-
-	fRed = R * 1.29948 + G * 0.0289296 - B * 0.934432;
-	fGreen = -0.409754 * R + 1.31042 * G - 0.523692 * B;
-	fBlue = 0.110277 * R - 0.339351 * G + 2.45812 * B;
-
-	fRed = std::max(0.0, std::min(255.0, fRed));
-	fGreen = std::max(0.0, std::min(255.0, fGreen));
-	fBlue = std::max(0.0, std::min(255.0, fBlue));
-};
+using namespace DSS;
 
 /* ------------------------------------------------------------------- */
 
@@ -181,8 +72,6 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 };
 
 /* ------------------------------------------------------------------- */
-#if DSSFILEDECODING==1
-
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -398,11 +287,11 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+		const QString errorMessage(e.what());
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toStdWString().c_str();
 #else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
 #endif
 		exit(1);
 	}
@@ -416,33 +305,31 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 #endif
 	catch (ZException & ze)
 	{
-		CString errorMessage;
-		CString name(CA2CT(ze.name()));
-		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(ze.text(0)));
+		const QString name(ze.name());
+		const QString fileName(ze.locationAtIndex(0)->fileName());
+		const QString functionName(ze.locationAtIndex(0)->functionName());
+		const QString text(ze.text(0));
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			ze.locationAtIndex(0)->lineNumber(),
-			text.GetString());
+		const QString errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
+			.arg(name)
+			.arg(fileName)
+			.arg(functionName)
+			.arg(ze.locationAtIndex(0)->lineNumber())
+			.arg(text);
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toStdWString().c_str();
 #else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
 #endif
 		exit(1);
 	}
 	catch (...)
 	{
-		CString errorMessage(_T("Unknown exception caught"));
+		const QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toStdWString().c_str();
 #else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
 #endif
 		exit(1);
 	}
@@ -517,208 +404,7 @@ bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 }
 
 
-bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
-	const auto getExifItem = [pBitmap, &bResult](const PROPID propertyId, const unsigned short type, auto& field) -> void
-	{
-		const auto dwPropertySize = pBitmap->GetPropertyItemSize(propertyId);
-		if (dwPropertySize != 0)
-		{
-			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
-			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
-
-			if (propertyItem->type == type && pBitmap->GetPropertyItem(propertyId, dwPropertySize, propertyItem) == Gdiplus::Status::Ok)
-			{
-				if (propertyItem->type == PropertyTagTypeRational)
-				{
-					const std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
-					const std::uint32_t dwNumerator = *pValues;
-					const std::uint32_t dwDenominator = *(pValues + 1);
-					if (dwDenominator != 0)
-					{
-						if constexpr (std::is_same_v<decltype(field), double&>)
-						{
-							field = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
-							bResult = true;
-						}
-					}
-				}
-				else if (propertyItem->type == PropertyTagTypeShort)
-				{
-					if constexpr (std::is_same_v<decltype(field), int&>)
-					{
-						const std::uint16_t* pValue = static_cast<std::uint16_t*>(propertyItem->value);
-						field = static_cast<int>(*pValue);
-						bResult = true;
-					}
-				}
-				else if (propertyItem->type == PropertyTagTypeASCII)
-				{
-					if constexpr (std::is_same_v<decltype(field), CString&>)
-					{
-						field = static_cast<char*>(propertyItem->value);
-						bResult = true;
-					}
-				}
-			}
-		}
-	};
-
-	if (pBitmap != nullptr)
-	{
-		getExifItem(PropertyTagExifExposureTime, PropertyTagTypeRational, BitmapInfo.m_fExposure);
-		getExifItem(PropertyTagExifFNumber, PropertyTagTypeRational, BitmapInfo.m_fAperture);
-		getExifItem(PropertyTagExifISOSpeed, PropertyTagTypeShort, BitmapInfo.m_lISOSpeed);
-
-		getExifItem(PropertyTagEquipModel, PropertyTagTypeASCII, BitmapInfo.m_strModel);
-		BitmapInfo.m_strModel.TrimRight();
-		BitmapInfo.m_strModel.TrimLeft();
-
-		CString strDateTime;
-		getExifItem(PropertyTagDateTime, PropertyTagTypeASCII, strDateTime);
-		// Parse the string : YYYY/MM/DD hh:mm:ss
-		//                    0123456789012345678
-		BitmapInfo.m_DateTime.wYear = _ttol(strDateTime.Left(4));
-		BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-		BitmapInfo.m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-		BitmapInfo.m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-		BitmapInfo.m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-		BitmapInfo.m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
-
-		//UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
-		//if (dwPropertySize != 0)
-		//{
-		//	auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
-		//	// PropertyTagTypeRational
-		//	Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifExposureTime, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeRational)
-		//		{
-		//			std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
-		//			std::uint32_t dwNumerator, dwDenominator;
-
-		//			dwNumerator = *pValues;
-		//			dwDenominator = *(pValues + 1);
-
-		//			if (dwDenominator != 0)
-		//			{
-		//				BitmapInfo.m_fExposure = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
-		//				bResult = true;
-		//			};
-		//		};
-		//	};
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeRational
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifFNumber, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if (propertyItem->type == PropertyTagTypeRational)
-		//		{
-		//			UINT *			pValues = (UINT*)propertyItem->value;
-		//			UINT			dwNumerator,
-		//				dwDenominator;
-
-		//			dwNumerator = *pValues;
-		//			pValues++;
-		//			dwDenominator = *pValues;
-
-		//			if (dwDenominator)
-		//			{
-		//				BitmapInfo.m_fAperture = (double)dwNumerator / (double)dwDenominator;
-		//				bResult = true;
-		//			};
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeShort
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifISOSpeed, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeShort)
-		//		{
-		//			BitmapInfo.m_lISOSpeed = *((WORD*)propertyItem->value);
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeASCII
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-		//	if (pBitmap->GetPropertyItem(PropertyTagEquipModel, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeASCII)
-		//		{
-		//			BitmapInfo.m_strModel = (char*)propertyItem->value;
-		//			BitmapInfo.m_strModel.TrimRight();
-		//			BitmapInfo.m_strModel.TrimLeft();
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeASCII
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-		//	if (pBitmap->GetPropertyItem(PropertyTagDateTime, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeASCII)
-		//		{
-		//			CString				strDateTime = (char*)propertyItem->value;
-
-		//			// Parse the string : YYYY/MM/DD hh:mm:ss
-		//			//                    0123456789012345678
-		//			BitmapInfo.m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-		//			BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-		//			BitmapInfo.m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-		//			BitmapInfo.m_DateTime.wHour	 = _ttol(strDateTime.Mid(11, 2));
-		//			BitmapInfo.m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-		//			BitmapInfo.m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
-
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-	};
-
-	return bResult;
-};
-
-
-bool RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
-{
-	ZFUNCTRACE_RUNTIME();
-	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
-	return RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-};
 
 
 bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
@@ -750,7 +436,7 @@ bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 			if (bResult)
 			{
-				BitmapInfo.m_strFileName	= szFileName;
+				BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
 				BitmapInfo.m_CFAType		= CFATYPE_NONE;
 				BitmapInfo.m_lWidth			= pBitmap->GetWidth();
 				BitmapInfo.m_lHeight		= pBitmap->GetHeight();
@@ -1148,13 +834,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 };
 
 /* ------------------------------------------------------------------- */
-
-#endif // DSSFILEDECODING
-
 /* ------------------------------------------------------------------- */
-
-#include <concurrent_unordered_set.h>
-#include <shared_mutex>
 
 namespace {
 	//
@@ -1181,7 +861,9 @@ namespace {
 		size_t operator()(const CBitmapInfo& other) const
 		{
 			const auto& str = other.m_strFileName;
-			return fnv1a_hash(reinterpret_cast<const unsigned char*>(static_cast<LPCWSTR>(str)), str.GetLength() * sizeof(CString::XCHAR));
+			const QByteArray data = str.toUtf8();
+			const void* pRawData = data.constData();
+			return fnv1a_hash(reinterpret_cast<const unsigned char*>(pRawData), data.length());
 		}
 	};
 
@@ -1198,12 +880,10 @@ namespace {
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
+	QString name{ QString::fromWCharArray(szFileName) };
+	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
 
-#if DSSFILEDECODING==0
-	if (IsPCLPicture(szFileName, BitmapInfo))
-		bResult = true;
-#else
 	// First try to find the info in the cache
 	if (!g_sBitmapInfoCache.empty())
 	{
@@ -1277,8 +957,9 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
 			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
-
-			BitmapInfo.m_strDateTime.Format(_T("%s %s"), szDate, szTime);
+			CString strDateTime;
+			strDateTime.Format(_T("%s %s"), szDate, szTime);
+			BitmapInfo.m_strDateTime = QString::fromWCharArray(strDateTime.GetString());
 
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
@@ -1286,8 +967,6 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			g_sBitmapInfoCache.insert(BitmapInfo);
 		}
 	}
-#endif
-
 	return bResult;
 }
 
@@ -1314,10 +993,6 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		return false;
 	}
 
-#if DSSFILEDECODING==0
-	if (IsPCLPicture(szFileName, BitmapInfo))
-		bResult = LoadPCLPicture(szFileName, &pBitmap, pProgress);
-#else
 	do  // do { ... } while (false); to be able to leave with break;
 	{
 		CBitmapInfo BitmapInfo;
@@ -1363,73 +1038,8 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		bResult = LoadOtherPicture(szFileName, rpBitmap, pProgress);
 
 	} while (false);
-
-#endif
-
 	return bResult;
 }
-
-
-std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics& bc)
-{
-	ZFUNCTRACE_RUNTIME();
-
-	if (bc.m_lNrChannels == 1)
-	{
-		if (bc.m_lBitsPerPixel == 8)
-		{
-			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap");
-			return std::make_shared<C8BitGrayBitmap>();
-		}
-		else if (bc.m_lBitsPerPixel == 16)
-		{
-			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap");
-			return std::make_shared<C16BitGrayBitmap>();
-		}
-		else if (bc.m_lBitsPerPixel == 32)
-		{
-			if (bc.m_bFloat)
-			{
-				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap");
-				return std::make_shared<C32BitFloatGrayBitmap>();
-			}
-			else
-			{
-				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap");
-				return std::make_shared<C32BitGrayBitmap>();
-			}
-		}
-	}
-	else if (bc.m_lNrChannels == 3)
-	{
-		if (bc.m_lBitsPerPixel == 8)
-		{
-			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap");
-			return std::make_shared<C24BitColorBitmap>();
-		}
-		else if (bc.m_lBitsPerPixel == 16)
-		{
-			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap");
-			return std::make_shared<C48BitColorBitmap>();
-		}
-		else if (bc.m_lBitsPerPixel == 32)
-		{
-			if (bc.m_bFloat)
-			{
-				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap");
-				return std::make_shared<C96BitFloatColorBitmap>();
-			}
-			else
-			{
-				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap");
-				return std::make_shared<C96BitColorBitmap>();
-			}
-		}
-	}
-
-	return std::shared_ptr<CMemoryBitmap>{};
-}
-
 
 class CSubtractTask
 {
@@ -1702,20 +1312,7 @@ bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBi
 }
 
 
-CFATYPE	GetCFAType(CMemoryBitmap* pBitmap)
-{
-	ZFUNCTRACE_RUNTIME();
-	CFATYPE Result = CFATYPE_NONE;
 
-	if (pBitmap != nullptr && pBitmap->IsCFA())
-	{
-		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pBitmap))
-		{
-			Result = pCFABitmapInfo->GetCFAType();
-		}
-	}
-	return Result;
-}
 
 
 std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, ProgressBase* pProgress)
@@ -1727,3 +1324,375 @@ std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, 
 	else
 		return pInBitmap->GetMedianFilterEngine()->GetFilteredImage(lFilterSize, pProgress);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Moved from headers
+
+void FormatFromMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
+{
+	strText = "";
+	switch (Method)
+	{
+	case MBP_FASTAVERAGE:
+	case MBP_AVERAGE:
+		strText = QCoreApplication::translate("BitmapExt", "Average", "IDS_RECAP_AVERAGE");
+		break;
+	case MBP_MEDIAN:
+		strText = QCoreApplication::translate("BitmapExt", "Median", "IDS_RECAP_MEDIAN");
+		break;
+	case MBP_MAXIMUM:
+		strText = QCoreApplication::translate("BitmapExt", "Maximum", "IDS_RECAP_MAXIMUM");
+		break;
+	case MBP_SIGMACLIP:
+		strText = QCoreApplication::translate("BitmapExt", "Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_KAPPASIGMA").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+		break;
+	case MBP_AUTOADAPTIVE:
+		strText = QCoreApplication::translate("BitmapExt", "Auto Adaptive Weighted Average (Iterations = %1)", "IDS_RECAP_AUTOADAPTIVE").arg(lNrIterations);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		strText = QCoreApplication::translate("BitmapExt", "Entropy Weighted Average", "IDS_RECAP_ENTROPYAVERAGE");
+		break;
+	case MBP_MEDIANSIGMACLIP:
+		strText = QCoreApplication::translate("BitmapExt", "Median Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_MEDIANSIGMACLIP").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+	};
+}
+
+void FormatMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
+{
+	strText = "";
+	switch (Method)
+	{
+	case MBP_FASTAVERAGE:
+	case MBP_AVERAGE:
+		strText = QCoreApplication::translate("StackRecap", "Average", "IDS_RECAP_AVERAGE");
+		break;
+	case MBP_MEDIAN:
+		strText = QCoreApplication::translate("StackRecap", "Median", "IDS_RECAP_MEDIAN");
+		break;
+	case MBP_MAXIMUM:
+		strText = QCoreApplication::translate("StackRecap", "Maximum", "IDS_RECAP_MAXIMUM");
+		break;
+	case MBP_SIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap", "Kappa-Sigma (Kappa = %1, Iterations = %2)",
+			"IDS_RECAP_KAPPASIGMA")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+		break;
+	case MBP_AUTOADAPTIVE:
+		strText = QCoreApplication::translate("StackRecap",
+			"Auto Adaptive Weighted Average (Iterations = %1)",
+			"IDS_RECAP_AUTOADAPTIVE")
+			.arg(lNrIterations);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		strText = QCoreApplication::translate("StackRecap",
+			"Entropy Weighted Average",
+			"IDS_RECAP_ENTROPYAVERAGE");
+		break;
+	case MBP_MEDIANSIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap",
+			"Median Kappa-Sigma (Kappa = %1, Iterations = %2)",
+			"IDS_RECAP_MEDIANSIGMACLIP")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+	};
+	return;
+}
+
+void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& fRed, double& fGreen, double& fBlue)
+{
+	double			fR, fG, fB;
+
+	fR = (fMagenta + fYellow - fCyan) / 2.0;
+	fG = (fYellow + fCyan - fMagenta) / 2.0;
+	fB = (fMagenta + fCyan - fYellow) / 2.0;
+
+	fRed = 2.088034662 * fR + -3.663103328 * fG + 3.069027325 * fB;
+	fGreen = -0.28607719 * fR + 1.706598409 * fG + 0.24881043 * fB;
+	fBlue = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
+
+	fRed = max(0.0, min(255.0, fRed));
+	fGreen = max(0.0, min(255.0, fGreen));
+	fBlue = max(0.0, min(255.0, fBlue));
+}
+
+
+
+bool CompareBitmapInfoDateTime(const CBitmapInfo& bi1, const CBitmapInfo& bi2)
+{
+	if (bi1.m_DateTime.wYear < bi2.m_DateTime.wYear)
+		return true;
+	else if (bi1.m_DateTime.wYear > bi2.m_DateTime.wYear)
+		return false;
+	else if (bi1.m_DateTime.wMonth < bi2.m_DateTime.wMonth)
+		return true;
+	else if (bi1.m_DateTime.wMonth > bi2.m_DateTime.wMonth)
+		return false;
+	else if (bi1.m_DateTime.wDay < bi2.m_DateTime.wDay)
+		return true;
+	else if (bi1.m_DateTime.wDay > bi2.m_DateTime.wDay)
+		return false;
+	else if (bi1.m_DateTime.wHour < bi2.m_DateTime.wHour)
+		return true;
+	else if (bi1.m_DateTime.wHour > bi2.m_DateTime.wHour)
+		return false;
+	else if (bi1.m_DateTime.wMinute < bi2.m_DateTime.wMinute)
+		return true;
+	else if (bi1.m_DateTime.wMinute > bi2.m_DateTime.wMinute)
+		return false;
+	else if (bi1.m_DateTime.wSecond < bi2.m_DateTime.wSecond)
+		return true;
+	else if (bi1.m_DateTime.wSecond > bi2.m_DateTime.wSecond)
+		return false;
+	else
+		return (bi1.m_DateTime.wMilliseconds < bi2.m_DateTime.wMilliseconds);
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+C32BitsBitmap::C32BitsBitmap()
+{
+	m_hBitmap = nullptr;
+	m_lpBits = nullptr;
+	m_lWidth = 0;
+	m_lHeight = 0;
+	m_pLine = nullptr;
+	m_dwByteWidth = 0;
+}
+C32BitsBitmap::~C32BitsBitmap()
+{
+	Free();
+}
+void C32BitsBitmap::InitInternals()
+{
+	if (m_pLine)
+		free(m_pLine);
+
+	m_pLine = static_cast<pByte*>(malloc(m_lHeight * sizeof(pByte)));
+	if (nullptr == m_pLine)
+	{
+		ZOutOfMemory e("Could not allocate storage for scanline pointers");
+		ZTHROW(e);
+	}
+
+	m_dwByteWidth = (((m_lWidth * 32 + 31) & ~31) >> 3);
+	int			y = m_lHeight - 1;
+
+	for (int i = 0; y >= 0; y--, i++)
+	{
+		m_pLine[i] = static_cast<pByte>(m_lpBits) + y * m_dwByteWidth;
+	}
+}
+void C32BitsBitmap::Init(int lWidth, int lHeight)
+{
+	Create(lWidth, lHeight);
+}
+HBITMAP	C32BitsBitmap::Create(int lWidth, int lHeight)
+{
+	Free();
+
+	HBITMAP			hBitmap;
+	BITMAPINFO		bmpInfo;
+	void* pBits;
+
+	memset(&bmpInfo, 0, sizeof(bmpInfo));
+	bmpInfo.bmiHeader.biSize = sizeof(bmpInfo.bmiHeader);
+	bmpInfo.bmiHeader.biWidth = lWidth;
+	bmpInfo.bmiHeader.biHeight = lHeight;
+	bmpInfo.bmiHeader.biPlanes = 1;;
+	bmpInfo.bmiHeader.biBitCount = 32;
+	bmpInfo.bmiHeader.biCompression = BI_RGB;
+	bmpInfo.bmiHeader.biSizeImage = 0;
+	bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96 * 100.0 / 2.54);
+	bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96 * 100.0 / 2.54);
+	bmpInfo.bmiHeader.biClrUsed = 0;
+	bmpInfo.bmiHeader.biClrImportant = 0;
+
+	HDC				hDC;
+	hDC = GetDC(nullptr);
+	hBitmap = CreateDIBSection(hDC, &bmpInfo, 0, &pBits, nullptr, 0);
+	ReleaseDC(nullptr, hDC);
+
+	if (hBitmap)
+	{
+		m_hBitmap = hBitmap;
+		m_lpBits = pBits;
+		m_lWidth = lWidth;
+		m_lHeight = lHeight;
+		InitInternals();
+	};
+
+	return hBitmap;
+}
+void C32BitsBitmap::Free()
+{
+	if (m_hBitmap)
+	{
+		DeleteObject(m_hBitmap);
+	};
+	m_hBitmap = nullptr;
+	m_lpBits = nullptr;
+	if (m_pLine)
+		free(m_pLine);
+	m_pLine = nullptr;
+}
+HBITMAP C32BitsBitmap::Detach()
+{
+	HBITMAP hResult = m_hBitmap;
+
+	m_hBitmap = nullptr;
+	Free();
+
+	return hResult;
+};
+
+COLORREF C32BitsBitmap::GetPixel(int x, int y)
+{
+	COLORREF crColor = RGB(0, 0, 0);
+
+	if ((x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
+	{
+		const pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+		const auto dwPixel = *reinterpret_cast<std::uint32_t*>(pPixel);
+		const RGBQUAD rgbq = *reinterpret_cast<const RGBQUAD*>(&dwPixel);
+
+		crColor = RGB(rgbq.rgbRed, rgbq.rgbGreen, rgbq.rgbBlue);
+	};
+
+	return crColor;
+}
+pByte C32BitsBitmap::GetPixelBase(int x, int y)
+{
+	return m_pLine[y] + x * 4;
+}
+void C32BitsBitmap::SetPixel(int x, int y, COLORREF crColor)
+{
+	if ((x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
+	{
+		pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+		RGBQUAD rgbq;
+
+		rgbq.rgbRed = GetRValue(crColor);
+		rgbq.rgbGreen = GetGValue(crColor);
+		rgbq.rgbBlue = GetBValue(crColor);
+		rgbq.rgbReserved = 0;
+
+		*reinterpret_cast<std::uint32_t*>(pPixel) = *reinterpret_cast<std::uint32_t*>(&rgbq);
+	};
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CAllDepthBitmap::Clear()
+{
+	m_pBitmap.reset();
+	m_pWndBitmap.reset();
+	m_Image.reset();
+}
+
+//////////////////////////////////////////////////////////////////////////
+CBitmapInfo::CBitmapInfo()
+{
+	Init();
+}
+
+CBitmapInfo::CBitmapInfo(const CBitmapInfo& bi)
+{
+	CopyFrom(bi);
+}
+
+CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
+{
+	Init();
+	m_strFileName = QString::fromStdWString(szFileName);
+}
+
+void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
+{
+	m_strFileName = bi.m_strFileName;
+	m_strFileType = bi.m_strFileType;
+	m_strModel = bi.m_strModel;
+	m_lISOSpeed = bi.m_lISOSpeed;
+	m_lGain = bi.m_lGain;
+	m_fExposure = bi.m_fExposure;
+	m_fAperture = bi.m_fAperture;
+	m_lWidth = bi.m_lWidth;
+	m_lHeight = bi.m_lHeight;
+	m_lBitPerChannel = bi.m_lBitPerChannel;
+	m_lNrChannels = bi.m_lNrChannels;
+	m_bCanLoad = bi.m_bCanLoad;
+	m_bFloat = bi.m_bFloat;
+	m_CFAType = bi.m_CFAType;
+	m_bMaster = bi.m_bMaster;
+	m_bFITS16bit = bi.m_bFITS16bit;
+	m_strDateTime = bi.m_strDateTime;
+	m_DateTime = bi.m_DateTime;
+	m_InfoTime = bi.m_InfoTime;
+	m_ExtraInfo = bi.m_ExtraInfo;
+	m_xBayerOffset = bi.m_xBayerOffset;
+	m_yBayerOffset = bi.m_yBayerOffset;
+	m_filterName = bi.m_filterName;
+}
+
+void CBitmapInfo::Init()
+{
+	m_lWidth = 0;
+	m_lHeight = 0;
+	m_lBitPerChannel = 0;
+	m_lNrChannels = 0;
+	m_bCanLoad = false;
+	m_CFAType = CFATYPE_NONE;
+	m_bMaster = false;
+	m_bFloat = false;
+	m_lISOSpeed = 0;
+	m_lGain = -1;
+	m_fExposure = 0.0;
+	m_fAperture = 0.0;
+	m_bFITS16bit = false;
+	m_DateTime = { 0 };
+	m_InfoTime = { 0 };
+	m_xBayerOffset = 0;
+	m_yBayerOffset = 0;
+}
+
+CBitmapInfo& CBitmapInfo::operator=(const CBitmapInfo& bi)
+{
+	CopyFrom(bi);
+	return (*this);
+}
+
+bool CBitmapInfo::operator<(const CBitmapInfo& other) const
+{
+	return (m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) < 0);
+}
+
+bool CBitmapInfo::operator==(const CBitmapInfo& other) const
+{
+	return this->m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) == 0;
+}
+bool CBitmapInfo::CanLoad() const
+{
+	return m_bCanLoad;
+}
+
+bool CBitmapInfo::IsCFA()
+{
+	return (m_CFAType != CFATYPE_NONE);
+};
+
+bool CBitmapInfo::IsMaster()
+{
+	return m_bMaster;
+};
+
+void CBitmapInfo::GetDescription(QString& strDescription)
+{
+	strDescription = m_strFileType;
+	if (m_strModel.length() > 0)
+		strDescription = m_strFileType + " " + m_strModel;
+};
+
+bool CBitmapInfo::IsInitialized()
+{
+	return m_lWidth && m_lHeight;
+};

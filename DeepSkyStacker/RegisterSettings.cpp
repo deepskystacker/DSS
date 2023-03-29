@@ -35,46 +35,18 @@
 ****************************************************************************/
 // RegisterSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxdlgs.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QDialog>
-#include <QFileInfo>
-#include <QIntValidator>
-#include <QSettings>
-#include <QShowEvent>
-#include <QString>
-
-#include "commonresource.h"
-
+#include "stdafx.h"
 #include "RegisterSettings.h"
 #include "ui/ui_RegisterSettings.h"
+#include "Workspace.h"
+#include "DeepSkyStacker.h"
+#include "StackingDlg.h"
+#include "QtProgressDlg.h"
+#include "RecommendedSettings.h"
+#include "StackSettings.h"
+#include "RegisterEngine.h"
 
 extern bool		g_bShowRefStars;
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "QtProgressDlg.h"
-#include "RegisterEngine.h"
-#include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "StackSettings.h"
-
-#include "Workspace.h"
-
-#include "RecommendedSettings.h"
 
 RegisterSettings::RegisterSettings(QWidget *parent) :
 	QDialog(parent),

@@ -1,6 +1,4 @@
-#ifndef _MULTIBITMAPPROCESS_H__
-#define _MULTIBITMAPPROCESS_H__
-
+#pragma once
 
 class CBitmapPart
 {
@@ -48,5 +46,3 @@ public :
 };
 
 typedef std::vector<CBitmapPart>	BITMAPPARTVECTOR;
-
-#endif // _MULTIBITMAPPROCESS_H__
