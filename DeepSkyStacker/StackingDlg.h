@@ -331,6 +331,8 @@ namespace DSS
 
 		void saveList(MRUPath& MRUList, QString& strFileList);
 
+		bool isValidImage(const fs::path& path);
+
 		void retranslateUi();
 	};
 }
