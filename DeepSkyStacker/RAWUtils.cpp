@@ -961,13 +961,17 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	// 
 	// .tiff .tif		TIFF files
 	// .jpg .jpeg .jpe	JPEG files
+	// .txt	.html
+	// .dssfilelist
 	//
 	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
 
 	if ((strExt != _T(".TIF")) && (strExt != _T(".TIFF")) && 
-		strExt != _T(".JPG") && strExt != _T(".JPEG") && strExt != _T(".JPE"))
+		strExt != _T(".JPG") && strExt != _T(".JPEG") && strExt != _T(".JPE") &&
+		strExt != _T(".TXT") && strExt != ".HTML" &&
+		strExt != _T(".DSSFILELIST"))
 	{
 		CRawDecod dcr(szFileName);
 		bResult = dcr.IsRawFile();
