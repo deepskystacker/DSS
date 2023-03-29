@@ -232,10 +232,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tools\BitmapSlider.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\BtnST.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
@@ -244,21 +240,8 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRot90DC.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
-    <ClCompile Include="..\Tools\CtrlCache.cpp" />
-    <ClCompile Include="..\Tools\CustomTabCtrl.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\FolderDlg.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
@@ -274,13 +257,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\Tools\RichToolTipCtrl.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ScrollDialog.cpp" />
     <ClCompile Include="..\Tools\StackWalker.cpp" />
-    <ClCompile Include="..\Tools\ThemeUtil.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
@@ -502,14 +479,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dssbase.h" />
-    <ClInclude Include="..\Tools\BitmapSlider.h" />
     <ClInclude Include="..\Tools\BtnST.h" />
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
-    <ClInclude Include="..\Tools\cdxCRot90DC.h" />
-    <ClInclude Include="..\Tools\cdxCRotBevelLine.h" />
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
-    <ClInclude Include="..\Tools\CustomTabCtrl.h" />
     <ClInclude Include="..\Tools\EasySize.h" />
     <ClInclude Include="..\Tools\FolderDlg.h" />
     <ClInclude Include="..\Tools\Gradient.h" />
@@ -517,14 +490,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
-    <ClInclude Include="..\Tools\memdc.h" />
-    <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
-    <ClInclude Include="..\Tools\Schemadef.h" />
-    <ClInclude Include="..\Tools\ScrollDialog.h" />
     <ClInclude Include="..\Tools\StackWalker.h" />
-    <ClInclude Include="..\Tools\ThemeUtil.h" />
-    <ClInclude Include="..\Tools\Tmschema.h" />
-    <ClInclude Include="..\Tools\Toolhelp.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
     <ClInclude Include="..\Tools\WndImage.h" />

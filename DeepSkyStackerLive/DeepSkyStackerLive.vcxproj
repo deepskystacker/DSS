@@ -367,8 +367,6 @@
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
-    <ClInclude Include="..\Tools\memdc.h" />
-    <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
     <ClInclude Include="DeepSkyStackerLive.h" />

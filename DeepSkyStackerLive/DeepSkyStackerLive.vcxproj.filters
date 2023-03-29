@@ -440,12 +440,6 @@
     <ClInclude Include="..\Tools\ListViewCtrlEx.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\memdc.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SmartPtr.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
       <Filter>Tools</Filter>
     </ClInclude>

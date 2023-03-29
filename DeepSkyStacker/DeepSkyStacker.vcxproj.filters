@@ -135,28 +135,16 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BitmapSlider.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\BtnST.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ButtonToolbar.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRot90DC.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ControlPos.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\CustomTabCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\FolderDlg.cpp">
@@ -175,15 +163,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\RichToolTipCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ScrollDialog.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ThemeUtil.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
@@ -277,9 +256,6 @@
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="Delaunay.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="qwinwidget.cpp">
@@ -541,28 +517,16 @@
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\BitmapSlider.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\BtnST.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ButtonToolbar.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\cdxCRot90DC.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\cdxCRotBevelLine.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\childprop.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ControlPos.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\CustomTabCtrl.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\EasySize.h">
@@ -584,21 +548,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ListViewCtrlEx.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\memdc.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Schemadef.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ThemeUtil.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Tmschema.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
@@ -806,9 +755,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\StackWalker.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Toolhelp.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="ExceptionHandling.h">
@@ -1242,11 +1188,6 @@
     <Image Include="res\ButtonStar_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
-      <Filter>Tools</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <None Include="QWinHost">
