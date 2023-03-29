@@ -1,4 +1,13 @@
-﻿Welcome to DeepSkyStacker 5.1.2
+﻿Welcome to DeepSkyStacker 5.1.3
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since the last release:
+
+1. Bug fix - correct problems with drag drop of a directory.
+
+Welcome to DeepSkyStacker 5.1.2
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
