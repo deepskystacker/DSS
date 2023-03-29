@@ -40,12 +40,15 @@
 
 #include <chrono>
 #include <QAction>
+#include <QDropEvent>
 #include <QClipboard>
 #include <QComboBox>
 #include <QDebug>
 #include <QErrorMessage>
+#include <QLocale>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QTreeWidget>
@@ -1212,46 +1215,107 @@ namespace DSS
 		pictureList->raise(); pictureList->show();
 	}
 
-	void StackingDlg::dropFiles(QDropEvent* e)
+	void StackingDlg::dropFiles(QDropEvent* dropEvent)
 	{
 		ZFUNCTRACE_RUNTIME();
-		DropFilesDlg dlg(this);
-		dlg.setDropInfo(e);
-		if (dlg.exec())
+		QLocale locale;
+		std::vector<fs::path> files;
+		std::vector<fs::path> masters;
+		const QStringList ignoreExtensions{ "txt", "html", "dssfilelist" };
+
+		size_t fileCount{ 0 };
+
+		CBitmapInfo	bitmapInfo;
+
+		const auto addFileIfValid = [&](const auto file) -> void
 		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-			auto files{ dlg.getFiles() };
-			auto type{ dlg.dropType() };
-
-			//
-			// Make the dropped files act the same as using file open dialogue
-			// All except light frames should be checked, light frames not checked
-			//
-			bool checked{ true };		// Check all dropped files with the 
-			if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
-
-			//
-			// Before attempting to add the files prune out those that have already been loaded
-			// and issue an error message
-			//
-			auto it = std::remove_if(files.begin(), files.end(),
-				[&](const fs::path& p) { return fileAlreadyLoaded(p.generic_u16string()); });
-			files.erase(it, files.end());
-
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
+			QString stem{ QString::fromUtf16(file.stem().u16string().c_str()) };
+			stem = locale.toLower(stem);
+			QString extension{ file.extension().string().c_str() };
+			extension = extension.toLower();
+			if (!ignoreExtensions.contains(extension) && !stem.startsWith("autosave"))
 			{
-				frameList.beginInsertRows(static_cast<int>(files.size()));
-				for (size_t i = 0; i != files.size(); ++i)
+				// Try to load image info to check it is a valid image
+				if (GetPictureInfo(file.generic_wstring().c_str(), bitmapInfo))
 				{
-					frameList.addFile(files[i], type, checked);
+					//
+					// It is a valid image
+					//
+					if (bitmapInfo.IsMaster())
+						masters.emplace_back(file);
+					else
+						files.emplace_back(file);
 				}
-				frameList.endInsertRows();
 			}
-			updateGroupTabs();
-			updateListInfo();
-			QGuiApplication::restoreOverrideCursor();
 		};
+
+		QList<QUrl> urls = dropEvent->mimeData()->urls();
+		for (int i = 0; i != urls.size(); ++i)
+		{
+			QString name{ urls[i].toLocalFile() };
+			fs::path path{ name.toStdU16String() };
+			switch (status(path).type())
+			{
+			case fs::file_type::regular:
+				addFileIfValid(path);
+				break;
+			case fs::file_type::directory:
+				for (const auto& e : fs::directory_iterator{ path })
+				{
+					auto& entry{ e.path() };
+					if (is_regular_file(entry))
+					{
+						addFileIfValid(entry);
+					}
+				}
+				break;
+			}
+		}
+
+		if (files.empty())
+			files = std::move(masters);
+
+		fileCount = files.size();
+
+		if (0 != fileCount)
+		{
+			DropFilesDlg dlg(this);
+			dlg.setFileCount(fileCount);
+			if (dlg.exec())
+			{
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+				auto type{ dlg.dropType() };
+
+				//
+				// Make the dropped files act the same as using the file open dialogue
+				// All except light frames should be checked
+				//
+				bool checked{ true };		// Check all dropped files with the 
+				if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
+
+				//
+				// Before attempting to add the files prune out those that have already been loaded
+				// and issue an error message
+				//
+				auto it = std::remove_if(files.begin(), files.end(),
+					[&](const fs::path& p) { return fileAlreadyLoaded(p.generic_u16string()); });
+				files.erase(it, files.end());
+
+				if (!files.empty())		// Never, ever attempt to add zero rows!!!
+				{
+					frameList.beginInsertRows(static_cast<int>(files.size()));
+					for (size_t i = 0; i != files.size(); ++i)
+					{
+						frameList.addFile(files[i], type, checked);
+					}
+					frameList.endInsertRows();
+				}
+				updateGroupTabs();
+				updateListInfo();
+				QGuiApplication::restoreOverrideCursor();
+			}
+		}
 
 	}
 
@@ -1593,6 +1657,14 @@ namespace DSS
 			auto it = std::remove_if(files.begin(), files.end(),
 				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
 			files.erase(it, files.end());
+
+			//
+			// Also prune out any that are not valid images
+			//
+			it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) { return isValidImage(s.toStdU16String()); });
+			files.erase(it, files.end());
+
 
 			//
 			// Now add the images to the end of the current group in the frame list remembering
@@ -2748,5 +2820,12 @@ namespace DSS
 	void StackingDlg::showImageList(bool visible)
 	{
 		pictureList->setVisible(visible);
+	}
+
+	bool StackingDlg::isValidImage(const fs::path& path)
+	{
+		CBitmapInfo			BitmapInfo;
+
+		return (GetPictureInfo(path.generic_wstring().c_str(), BitmapInfo));
 	}
 }
