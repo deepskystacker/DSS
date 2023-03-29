@@ -5,6 +5,15 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Changes since the last release:
 
+1. Bug fix - correct problems with drag drop of a directory.
+
+Welcome to DeepSkyStacker 5.1.2
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since the last release:
+
 1. Upgrade CFISTIO library to 4.2.0
 
 2. Always create a tracefile in DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
