@@ -53,20 +53,16 @@ public:
 	DropFilesDlg(const DropFilesDlg& rhs) = delete;
 	DropFilesDlg& operator = (const DropFilesDlg& rhs) = delete;
 
-	inline void	setDropInfo(QDropEvent* e)
-	{
-		dropEvent = e;
-	};
-
 	inline PICTURETYPE	dropType()
 	{
 		return type;
 	};
 
-	inline const std::vector<fs::path>& getFiles()
+	inline void setFileCount(size_t count)
 	{
-		return files;
-	};
+		fileCount = count;
+	}
+
 
 protected:
 	void showEvent(QShowEvent* event) override;
@@ -76,13 +72,9 @@ private slots:
 
 private:
 	Ui::DropFilesDlg* ui;
-
 	bool initialised;
-	QDropEvent* dropEvent;
+	size_t fileCount;
 	PICTURETYPE type;
-	std::vector<fs::path> files;
 
 	void onInitDialog();
-
-	bool isMasterFile(const fs::path& path);
 };

@@ -57,24 +57,10 @@ DropFilesDlg::~DropFilesDlg()
 	delete ui;
 }
 
-bool DropFilesDlg::isMasterFile(const fs::path& path)
-{
-	bool result = false;
-	CBitmapInfo			BitmapInfo;
-
-	if (GetPictureInfo(path.generic_wstring().c_str(), BitmapInfo))
-		result = BitmapInfo.IsMaster();
-
-	return result;
-}
-
 void DropFilesDlg::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	size_t fileCount{ 0 };
-	// bool checked = false;
-	std::vector<fs::path> masters;
 
 	//
 	// Restore Window position etc..
@@ -97,40 +83,6 @@ void DropFilesDlg::onInitDialog()
 		move(left, top);
 	}
 
-	QList<QUrl> urls = dropEvent->mimeData()->urls();
-	for (int i = 0; i != urls.size(); ++i)
-	{
-		QString name{ urls[i].toLocalFile() };
-		fs::path path{ name.toStdU16String() };
-		switch (status(path).type())
-		{
-		case fs::file_type::regular:
-			if (isMasterFile(path))
-				masters.emplace_back(path);
-			else
-				files.emplace_back(path);
-			break;
-		case fs::file_type::directory:
-			for (const auto& e : fs::directory_iterator{ path })
-			{
-				auto& entry{ e.path() };
-				if (is_regular_file(entry))
-				{
-					if (isMasterFile(path))
-						masters.emplace_back(path);
-					else
-						files.emplace_back(path);
-				}
-			}
-			break;
-		}
-	}
-
-	if (files.empty())
-		files = std::move(masters);
-
-	fileCount = files.size();
-
 	ui->dropFiles->setTitle(tr("Add %n file(s) as", "IDC_DROPFILESTEXT", static_cast<int>(fileCount)));
 	ui->lightFrames->setText(tr("Light Frames", "IDC_LIGHTFRAMES", static_cast<int>(fileCount)));
 	ui->darkFrames->setText(tr("Dark Frames", "IDC_DARKFRAMES", static_cast<int>(fileCount)));
@@ -139,8 +91,8 @@ void DropFilesDlg::onInitDialog()
 	ui->biasFrames->setText(tr("Offset/Bias Frames", "IDC_BIASFRAMES", static_cast<int>(fileCount)));
 
 	ui->lightFrames->setChecked(true);
-}
 
+}
 
 void DropFilesDlg::accept()
 {
