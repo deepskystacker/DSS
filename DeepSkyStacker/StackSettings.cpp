@@ -1,31 +1,17 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <QFileDialog>
-#include <QSettings>
-#include <QShowEvent>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-extern bool		g_bShowRefStars;
-
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "DSSVersion.h"
-#include "DeepSkyStacker.h"
-#include "Workspace.h"
-
+#include "stdafx.h"
 #include "StackSettings.h"
 #include "ui/ui_StackSettings.h"
+#include "Workspace.h"
+#include "DeepSkyStacker.h"
+#include "Multitask.h"
 #include "avx_support.h"
+#include "ResultParameters.h"
+#include "CometStacking.h"
+#include "AlignmentParameters.h"
+#include "IntermediateFiles.h"
+#include "PostCalibration.h"
+#include "OutputTab.h"
+#include "StackingParameters.h"
 
 
 StackSettings::StackSettings(QWidget *parent) :
@@ -284,4 +270,11 @@ void StackSettings::changeEvent(QEvent *event)
 		ui->retranslateUi(this);
 	}
 	Inherited::changeEvent(event);
+}
+
+StackSettings& StackSettings::setStackingTasks(CAllStackingTasks* tasks) noexcept
+{
+	pStackingTasks = tasks;
+	m_resultParameters->setStackingTasks(pStackingTasks);
+	return *this;
 }

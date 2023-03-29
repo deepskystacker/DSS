@@ -3,8 +3,7 @@
 
 /* ------------------------------------------------------------------- */
 
-#include "DSSProgress.h"
-#include "DSSTools.h"
+#include "WndImage.h"
 
 class CStackedSink : public CWndImageSink
 {

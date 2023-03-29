@@ -5,7 +5,6 @@
 #include "MatchingStars.h"
 #include "PixelTransform.h"
 #include "EntropyInfo.h"
-#include <math.h>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "Multitask.h"
@@ -13,17 +12,20 @@
 #include "Filters.h"
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
-#include <iostream>
 #include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
-#include <omp.h>
-#include <QRectF>
-#include <future>
+#include "Ztrace.h"
+#include "Workspace.h"
+#include "File.h"
+#include "MultiBitmap.h"
+#include "ColorBitmap.h"
+#include "ColorMultiBitmap.h"
+#include "GreyMultiBitmap.h"
+#include "AHDDemosaicing.h"
 
 
 #define _USE_MATH_DEFINES
-#include <cmath>
 
 #ifndef M_PI
 #define M_PI			3.14159265358979323846
@@ -2674,7 +2676,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 		hFile = _tfopen(strOutputFile, _T("wt"));
 		if (hFile)
 		{
-			CString			strText;
+			CString	strText;
+			QString strTempText;
 
 			_tsplitpath(strOutputFile, nullptr, nullptr, szName, nullptr);
 
@@ -2842,7 +2845,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						fprintf(hFile, "<ul>");
 						strText.Format(IDS_RECAP_METHOD);
 						fprintf(hFile, CT2CA(strText, CP_UTF8));
-						FormatFromMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
+						FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
+						strText = strTempText.toStdWString().c_str();
 						fprintf(hFile, CT2CA(strText, CP_UTF8));
 						fprintf(hFile, "</ul>");
 
@@ -2872,7 +2876,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
@@ -2915,7 +2920,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};
@@ -2973,7 +2979,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, (LPCSTR)CT2CA(strText+"<br>", CP_UTF8));
-							FormatFromMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
@@ -3015,7 +3022,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};

@@ -1,17 +1,9 @@
 #pragma once
-
-#include <QModelIndex>
-#include <QString>
-#include "DSSProgress.h"
-#include "BitmapExt.h"
-#include "FrameInfo.h"
-#include "DSSTools.h"
+#include "group.h"
 #include "MatchingStars.h"
 
-#include "StackingTasks.h"
-#include "RegisterEngine.h"
-#include "group.h"
-
+class CAllStackingTasks;
+class CBilinearParameters;
 namespace DSS
 {
 	class FrameList
@@ -59,27 +51,12 @@ namespace DSS
 
 		void checkImage(const QString& image, bool check);
 
-		ListBitMap* getListBitMap(int row)
-		{
-			//
-			// return address of the relevant ListBitMap in the current
-			// group
-			//
-			return &imageGroups[index].pictures->mydata[row];
-		}
+		ListBitMap* getListBitMap(int row);
 
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
 		//
-		void clear()
-		{
-			for (auto& group : imageGroups)
-			{
-				group.pictures->clear();
-			}
-			imageGroups.resize(1);
-			Group::reset();
-		}
+		void clear();
 
 		std::uint16_t groupId() const noexcept
 		{
@@ -102,11 +79,7 @@ namespace DSS
 			return static_cast<uint16_t>(imageGroups.size() - 1);
 		}
 
-		inline size_t groupSize(uint16_t id) const
-		{
-			ZASSERTSTATE(id < imageGroups.size());
-			return imageGroups[id].size();
-		}
+		size_t groupSize(uint16_t id) const;
 
 		inline size_t groupCount() const
 		{
@@ -125,43 +98,16 @@ namespace DSS
 
 		void fillTasks(CAllStackingTasks& tasks);
 
-		inline bool isLightFrame(QString name) const
-		{
-			return imageGroups[index].pictures->isLightFrame(name);
-		};
-
-		inline bool isChecked(QString name) const
-		{
-			return imageGroups[index].pictures->isChecked(name);
-		}
-
-		inline bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
-		{
-			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
-		}
+		bool isLightFrame(QString name) const;
+		bool isChecked(QString name) const;
+		bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const;
 
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		inline FrameList& beginInsertRows(int count)
-		{
-			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
-			auto last{ first + count - 1 };
-			imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
-			return (*this);
-		}
-
-		inline FrameList& endInsertRows()
-		{
-			imageGroups[index].pictures->endInsertRows();
-			return *this;
-		}
-
-		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]]int nItem = -1)
-		{
-			imageGroups[index].addFile(file, PictureType, bCheck);
-			return true;
-		}
+		FrameList& beginInsertRows(int count);
+		FrameList& endInsertRows();
+		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]] int nItem = -1);
 
 		void blankCheckedItemScores();
 

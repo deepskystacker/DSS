@@ -1,12 +1,18 @@
-#include <stdafx.h>
-#include <iostream>
-#include <QSettings>
-#include <limits>
-#include <zlib.h>
-#include <omp.h>
-
-#include "resource.h"
+#include "stdafx.h"
 #include "TIFFUtil.h"
+#include "resource.h"
+#include "Ztrace.h"
+#include "BitmapInfo.h"
+#include "DSSProgress.h"
+#include "Multitask.h"
+#include "ColorHelpers.h"
+#include "ColorBitmap.h"
+#include "ZExcBase.h"
+#include "RAWUtils.h"
+#include "tiffio.h"
+#include "zlib.h"
+
+using namespace DSS;
 
 #define NRCUSTOMTIFFTAGS		12
 
@@ -463,6 +469,15 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
+CTIFFWriter::CTIFFWriter(LPCTSTR szFileName, ProgressBase* pProgress) :
+	m_tiff{ nullptr },
+	m_strFileName{ szFileName },
+	m_pProgress{ pProgress },
+	m_Format{ TF_UNKNOWN }
+{
+	compression = COMPRESSION_NONE;
+}
+
 void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster)
 {
 	cfatype = CFAType;
@@ -517,6 +532,19 @@ void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFAT
 		sampleformat = SAMPLEFORMAT_IEEEFP;
 		samplemin    = 0;
 		samplemax    = 1.0;
+		break;
+	};
+}
+void CTIFFWriter::SetCompression(TIFFCOMPRESSION tiffcomp)
+{
+	compression = COMPRESSION_NONE;
+	switch (tiffcomp)
+	{
+	case TC_LZW:
+		compression = COMPRESSION_LZW;
+		break;
+	case TC_DEFLATE:
+		compression = COMPRESSION_DEFLATE;
 		break;
 	};
 };
@@ -907,8 +935,8 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 
 	lWidth  = m_pMemoryBitmap->Width();
 	lHeight = m_pMemoryBitmap->Height();
-	if (::IsCFA(m_pMemoryBitmap))
-		CFAType = ::GetCFAType(m_pMemoryBitmap);
+	if (m_pMemoryBitmap->IsCFA())
+		CFAType = m_pMemoryBitmap->GetCFAType();
 	bMaster = m_pMemoryBitmap->IsMaster();
 
 	if (m_Format == TF_UNKNOWN)
@@ -1257,15 +1285,15 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	if (tiff.Open())
 	{
-		BitmapInfo.m_strFileName	= szFileName;
+		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
 		CString				strMakeModel;
 
 		tiff.GetMakeModel(strMakeModel);
 
 		if (strMakeModel.GetLength())
-			BitmapInfo.m_strFileType.Format(_T("TIFF (%s)"), (LPCTSTR)strMakeModel);
+			BitmapInfo.m_strFileType = QString("TIFF (%1)").arg(QString::fromWCharArray(strMakeModel.GetString()));
 		else
-			BitmapInfo.m_strFileType	= _T("TIFF");
+			BitmapInfo.m_strFileType = "TIFF";
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
 		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();
@@ -1324,3 +1352,35 @@ int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 	}
 	return result;
 }
+
+CTIFFHeader::CTIFFHeader()
+{
+	TIFFSetWarningHandler(nullptr);
+	TIFFSetWarningHandlerExt(nullptr);
+	//TIFFSetErrorHandler(nullptr);
+	//TIFFSetErrorHandlerExt(nullptr);
+	DSSTIFFInitialize();
+	samplemax = 1.0;
+	samplemin = 0.0;
+	exposureTime = 0.0;
+	aperture = 0.0;
+	isospeed = 0;
+	gain = -1;
+	cfatype = 0;
+	cfa = 0;
+	nrframes = 0;
+	m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0 };
+	w = 0;
+	h = 0;
+	spp = 0;
+	bps = 0;
+	photo = 0;
+	compression = 0;
+	planarconfig = 0;
+	sampleformat = 0;
+	master = 0;
+}
+bool CTIFFHeader::IsFloat()
+{
+	return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
+};

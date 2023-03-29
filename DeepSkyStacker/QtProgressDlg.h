@@ -1,5 +1,5 @@
 #pragma once
-#include <QDialog>
+#include "DSSProgress.h"
 
 namespace Ui {
 	class ProgressDlg;

@@ -36,15 +36,6 @@
 ****************************************************************************/
 // QLinearGradientCtrl : header file
 //
-#include <zexcept.h>
-
-class QColor;
-class QString;
-
-#include <QWidget>
-#include <QGradient>
-
-
 #define GCW_AUTO -1
 
 #define GC_SELCHANGE			1

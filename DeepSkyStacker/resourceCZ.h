@@ -64,7 +64,7 @@
 #define IDB_IMAGELIST_CFA_RGB           157
 #define IDB_BITMAP4                     158
 #define IDB_IMAGELIST_COLOR             158
-#define IDB_BITMAP1                     160
+//#define IDB_BITMAP1                     160
 #define IDB_IMAGELIST_MASK              160
 #define IDD_DROPFILES                   162
 #define IDD_STACKINGINTERMEDIATE        163

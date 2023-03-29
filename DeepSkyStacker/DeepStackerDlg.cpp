@@ -1,23 +1,11 @@
 // DeepStackerDlg.cpp : implementation file
 //
-
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "DSS-versionhelpers.h"
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QSplitter>
-#include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QWidget>
-#include <QRect>
-#include <QScreen>
-#include <QSettings>
-
 #include "ExplorerBar.h"
 #include "StackingDlg.h"
-
-
 
 /* ------------------------------------------------------------------- */
 

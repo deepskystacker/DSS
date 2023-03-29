@@ -34,30 +34,10 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <stdlib.h>
-
-#include <algorithm>
-using std::min;
-using std::max;
-#include <Ztrace.h>
-
-#include <Qt>
-#include <QTime>
-
-#include <iostream>
-
-#include "DSSCommon.h"
-#include "DSSMemory.h"
-
-#include "resource.h"
-#include "FrameList.h"
 #include "ImageListModel.h"
 
 namespace DSS
 {
-#if QT_VERSION < 0x060000 
-    constexpr auto M_PI = 3.14159265358979323846;
-#endif
     //
     // Initial code based on https://meetingcpp.com/blog/items/an-introduction-into-qt-part-3.html
     //

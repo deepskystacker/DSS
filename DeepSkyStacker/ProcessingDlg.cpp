@@ -2,23 +2,20 @@
 //
 
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "QtProgressDlg.h"
-#include <algorithm>
+#include "DeepSkyStacker.h"
+#include "DeepStack.h"
 #include "SettingsDlg.h"
-
-#include "SavePicture.h"
+#include "Ztrace.h"
+#include "QtProgressDlg.h"
+#include "StarMaskDlg.h"
 #include "StarMask.h"
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
-#include "StarMaskDlg.h"
-
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "SavePicture.h"
 
 #define dssApp DeepSkyStacker::instance()
-
+extern CString OUTPUTFILE_FILTERS;
 constexpr unsigned int WM_INITNEWPICTURE = WM_USER + 1;
 
 /* ------------------------------------------------------------------- */
@@ -1479,55 +1476,55 @@ void CProcessingDlg::OnReset()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR *, LRESULT *)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();

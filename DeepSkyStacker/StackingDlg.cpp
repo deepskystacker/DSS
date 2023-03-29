@@ -37,71 +37,33 @@
 //
 
 #include "stdafx.h"
-
-#include <chrono>
-#include <QAction>
-#include <QDropEvent>
-#include <QClipboard>
-#include <QComboBox>
-#include <QDebug>
-#include <QErrorMessage>
-#include <QLocale>
-#include <QMenu>
-#include <QMessageBox>
-#include <QMimeData>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QTreeWidget>
-#include <QPainter>
-#include <QTextLayout>
-#include <QShowEvent>
-#include <QSettings>
-#include <QSortFilterProxyModel>
-#include <QStyledItemDelegate>
-#include <QStyleOptionViewItem>
-#include <QStyleOptionButton>
-#include <QTableWidgetItem>
-#include <QTimeEdit>
-#include <QTimer>
-#include <QToolTip>
-#include <QUrl>
-
-#include <filesystem>
-
-#include "mrupath.h"
-
-#include "DeepSkyStacker.h"
-#include "dssrect.h"
 #include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "DeepStack.h"
-#include "imageproperties.h"
-#include "FrameInfoSupport.h"
-#include "QtProgressDlg.h"
-#include "CheckAbove.h"
-#include "RegisterSettings.h"
-#include "StackRecap.h"
-#include "TIFFUtil.h"
-#include "RegisterEngine.h"
-#include "StackingEngine.h"
+#include "ui_StackingDlg.h"
+#include "picturelist.h"
+#include "Ztrace.h"
 #include "DropFilesDlg.h"
-#include "SaveEditChanges.h"
-#include "AskRegistering.h"
-#include "BatchStacking.h"
-#include "DSSVersion.h"
-#include "group.h"
+#include "RenameGroup.h"
+#include "toolbar.h"
 #include "editstars.h"
 #include "selectrect.h"
-#include "toolbar.h"
+#include "SaveEditChanges.h"
+#include "RegisterEngine.h"
+#include "StackingEngine.h"
+#include "DeepSkyStacker.h"
+#include "CheckAbove.h"
+#include "Workspace.h"
+#include "QtProgressDlg.h"
+#include "RegisterSettings.h"
 #include "avx_support.h"
-#include "ui/ui_StackingDlg.h"
-#include "picturelist.h"
-#include "RenameGroup.h"
-
-#include <ZExcept.h>
-
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "FrameInfoSupport.h"
+#include "AskRegistering.h"
+#include "FITSUtil.h"
+#include "TIFFUtil.h"
+#include "BatchStacking.h"
+#include "StackRecap.h"
+#include "ProcessingDlg.h"
+#include "ZExcept.h"
+#include "ImageProperties.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -178,7 +140,7 @@ namespace DSS
 
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
-		Qt::TextElideMode textElideMode, int flags,
+		Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 		bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const
 	{
 		QTextLayout textLayout(text, font);
@@ -1936,7 +1898,7 @@ namespace DSS
 		raise(); show();
 	}
 
-	void StackingDlg::loadList(MRUPath& MRUList, QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1999,7 +1961,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUPath& MRUList, QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings					settings;
@@ -2302,7 +2264,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	bool StackingDlg::checkStacking(CAllStackingTasks& tasks)
+	bool StackingDlg::checkStacking([[maybe_unused]] CAllStackingTasks& tasks)
 	{
 		bool result = false;
 		QString reason;

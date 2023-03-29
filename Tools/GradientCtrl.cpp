@@ -1,6 +1,5 @@
 // GradientCtrl.cpp : implementation file
 //
-
 #include "stdafx.h"
 #include "GradientCtrl.h"
 #include "GradientCtrlImpl.h"

@@ -27,8 +27,6 @@
 #include "ChartAxis.h"
 #include "ChartCtrl.h"
 
-#include "Math.h"
-
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

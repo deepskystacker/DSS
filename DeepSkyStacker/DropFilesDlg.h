@@ -34,9 +34,6 @@
 **
 **
 ****************************************************************************/
-#include <vector>
-
-#include <QDialog>
 #include "DSSCommon.h"
 
 namespace Ui {

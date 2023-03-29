@@ -1,17 +1,9 @@
-#ifndef __SETTINGSTAB_H__
-#define __SETTINGSTAB_H__
-
 #pragma once
-
-#include "afxwin.h"
-#include "label.h"
-#include <ControlPos.h>
-#include <WndImage.h>
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "BitmapExt.h"
-#include "ListViewCtrlEx.h"
+#include "ControlPos.h"
 #include "LiveSettings.h"
+#include "Resource.h"
+#include "Label.h"
+
 
 // CSettingsTab dialog
 
@@ -32,7 +24,7 @@ public:
 
 
 // Dialog Data
-	enum { IDD = IDD_SETTINGS };
+	enum { IDD = IDD_SETTINGS_LIVE };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -119,6 +111,3 @@ public :
 		m_Warn_ResetEmailCount.ShowWindow(SW_SHOW);
 	};
 };
-
-
-#endif

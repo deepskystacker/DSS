@@ -1,7 +1,6 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
-#include <immintrin.h>
 
 AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm) :
 	redPixels{},

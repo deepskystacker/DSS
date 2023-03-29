@@ -7,7 +7,6 @@
 **********************************************************************/
 
 #include "stdafx.h"
-#include <AFXPRIV.H>
 #include "CustomTabCtrl.h"
 
 // CCustomTabCtrlItem

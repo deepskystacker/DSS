@@ -1,20 +1,19 @@
 #ifndef STACKSETTINGS_H
 #define STACKSETTINGS_H
-
-
-#include <QDialog>
-#include "ResultParameters.h"
-#include "CometStacking.h"
-#include "PostCalibration.h"
-#include "OutputTab.h"
-#include "IntermediateFiles.h"
-#include "AlignmentParameters.h"
-#include "StackingParameters.h"
-#include "StackingTasks.h"
+#include "dssrect.h"
 
 namespace Ui {
 class StackSettings;
 }
+
+class ResultParameters;
+class CometStacking;
+class AlignmentParameters;
+class IntermediateFiles;
+class PostCalibration;
+class OutputTab;
+class StackingParameters;
+class CAllStackingTasks;
 
 class StackSettings : public QDialog
 {
@@ -53,12 +52,7 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
-	{
-		pStackingTasks = tasks;
-		m_resultParameters->setStackingTasks(pStackingTasks);
-		return *this;
-	};
+	StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept;
 
 	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias)
 	{

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -150,6 +150,42 @@
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ColorBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DSSTools.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BilinearParameters.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\GrayBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MemoryBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ColorHelpers.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ColorMultiBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\GreyMultiBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Bayer.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitmapInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\TaskInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\File.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
@@ -292,6 +328,36 @@
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\dssrect.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\ColorBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\GrayBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\MemoryBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\ColorHelpers.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\ColorMultiBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\GreyMultiBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Bayer.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitmapInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\TaskInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\File.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\dssbase.h">
       <Filter>Header Files</Filter>

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BitmapBase.h"
-#include <tuple>
 
 class AvxLuminance
 {

@@ -34,20 +34,41 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-#include <vector>
-
-#include "Ztrace.h"
-#include <QRectF>
-#include "dsscommon.h"
-#include "framelist.h"
-
 #include "group.h"
+#include "ImageListModel.h"
+#include "Ztrace.h"
+#include "FrameInfo.h"
+#include "RegisterEngine.h"
 
 namespace DSS
 {
+	Group::Group() :
+		pictures{ std::make_unique<ImageListModel>() },
+		Index{ nextIndex++ },		// First group is Main Group with Index of 0
+		Dirty{ false },
+		nameChanged { false }
+	{
+		if (0 == Index)
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
+		}
+		else
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
+		}
+	}
+
+	void Group::addImage(const ListBitMap& image)
+	{
+		pictures->addImage(image);
+		Dirty = true;
+	}
+	
+	size_t Group::size() const noexcept
+	{
+		return pictures->rowCount();
+	}
+
 	void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
 	{
 		ZFUNCTRACE_RUNTIME();

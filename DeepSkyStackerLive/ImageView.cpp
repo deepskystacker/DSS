@@ -2,11 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
-#include "DeepSkyStackerLive.h"
-#include "DeepSkyStackerLiveDlg.h"
 #include "ImageView.h"
 #include "LiveSettings.h"
+#include "DeepSkyStackerLiveDlg.h"
 
 /* ------------------------------------------------------------------- */
 // CImageViewTab dialog
@@ -32,7 +30,7 @@ CImageViewTab::~CImageViewTab()
 void CImageViewTab::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_FILENAME, m_FileName);
+	DDX_Control(pDX, IDC_FILENAME_DSSLIVE, m_FileName);
 	DDX_Control(pDX, IDC_COPYTOCLIPBOARD, m_CopyToClipboard);
 	DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
 	DDX_Control(pDX, IDC_GAMMA, m_Gamma);
@@ -46,7 +44,7 @@ BEGIN_MESSAGE_MAP(CImageViewTab, CDialog)
 	ON_WM_SIZE()
 	ON_NOTIFY(GC_PEGMOVE, IDC_GAMMA, OnChangeGamma)
 	ON_NOTIFY(GC_PEGMOVED, IDC_GAMMA, OnChangeGamma)
-	ON_NOTIFY(NM_LINKCLICK, IDC_FILENAME, OnFileName)
+	ON_NOTIFY(NM_LINKCLICK, IDC_FILENAME_DSSLIVE, OnFileName)
 	ON_NOTIFY(NM_LINKCLICK, IDC_COPYTOCLIPBOARD, OnCopyToClipboard)
 	ON_BN_CLICKED(IDC_4CORNERS, OnBnClicked4corners)
 	ON_WM_ERASEBKGND()
@@ -76,7 +74,7 @@ BOOL CImageViewTab::OnInitDialog()
 		m_Background.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
 	m_ControlPos.AddControl(IDC_BACKGROUND, CP_RESIZE_HORIZONTAL);
-	m_ControlPos.AddControl(IDC_FILENAME, CP_RESIZE_HORIZONTAL);
+	m_ControlPos.AddControl(IDC_FILENAME_DSSLIVE, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_PICTURE, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 	m_ControlPos.AddControl(IDC_GAMMA, CP_MOVE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_4CORNERS, CP_MOVE_HORIZONTAL);

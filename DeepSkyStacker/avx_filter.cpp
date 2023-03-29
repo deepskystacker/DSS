@@ -1,10 +1,7 @@
-#include "StdAfx.h"
-#include "resource.h"
-#include "BitmapBase.h"
-#include "BitmapExt.h"
+#include "stdafx.h"
 #include "avx_filter.h"
 #include "avx_support.h"
-#include <tuple>
+#include "MedianFilterEngine.h"
 
 template <>
 AvxImageFilter<double>::AvxImageFilter(CInternalMedianFilterEngineT<double>* filEng) :

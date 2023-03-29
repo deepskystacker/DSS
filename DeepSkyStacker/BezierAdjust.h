@@ -1,7 +1,8 @@
 #ifndef _BEZIERADJUST_H__
 #define _BEZIERADJUST_H__
 /* ------------------------------------------------------------------- */
-#undef PI
+//#undef PI
+#include "DSSCommon.h"
 
 class CBezierCurvePoint
 {

@@ -41,9 +41,9 @@
 #ifndef __AFXDISP_H__
 #error You need to #include <afxdisp.h> here or in your stdafx.h
 #endif
-#include "atlconv.h"    // for Unicode conversion - requires #include <afxdisp.h> // MFC OLE automation classes
+//#include "atlconv.h"    // for Unicode conversion - requires #include <afxdisp.h> // MFC OLE automation classes
 
-#include <afxole.h> // for COleClientItem
+//#include <afxole.h> // for COleClientItem
 // #define COMPILE_MULTIMON_STUBS	// for late-binding to multi-monitor functions
 // #include <multimon.h> // for multi-monitor support
 

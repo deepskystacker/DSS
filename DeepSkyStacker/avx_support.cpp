@@ -1,11 +1,12 @@
-#include "StdAfx.h"
-#include <iostream>
-#include "avx_support.h"
+#include "stdafx.h" 
+#include "avx_support.h" 
+#include "BitmapCharacteristics.h" 
+#include "Multitask.h" 
 #include "Ztrace.h"
-#include <immintrin.h>
-
-
-AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept :
+ 
+ 
+ 
+AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept : 
 	bitmap{ b }
 {};
 

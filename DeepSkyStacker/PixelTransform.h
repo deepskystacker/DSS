@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DSSTools.h"
+#include "BilinearParameters.h"
 
 class CPixelTransform
 {

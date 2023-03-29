@@ -28,10 +28,6 @@
 
 #include "ChartObject.h"
 
-#include <vector>
-#include <string>
-
-
 class CChartTitle : public CChartObject  
 {
 	friend CChartCtrl;

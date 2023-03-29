@@ -1,7 +1,4 @@
-#ifndef ALIGNMENTPARAMETERS_H
-#define ALIGNMENTPARAMETERS_H
-
-#include <QWidget>
+#pragma once
 
 class Workspace;
 
@@ -42,5 +39,3 @@ private slots:
 
 private:
 };
-
-#endif // ALIGNMENTPARAMETERS_H

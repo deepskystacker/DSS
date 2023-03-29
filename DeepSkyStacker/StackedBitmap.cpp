@@ -1,21 +1,17 @@
-#include <stdafx.h>
-
-#include <math.h>
-#include <tiffio.h>
-#include <algorithm>
-#include <set>
-#include <omp.h>
-
-#include "resource.h"
-#include "DeepStack.h"
-
+#include "stdafx.h"
+#include "StackedBitmap.h"
 #include "TIFFUtil.h"
+#include "ColorHelpers.h"
+#include "Ztrace.h"
+#include "DSSProgress.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
+#include "omp.h"
+#include "BitmapInfo.h"
+#include "tiffio.h"
 #include "FITSUtil.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
-
+using namespace DSS;
 /* ------------------------------------------------------------------- */
 
 CStackedBitmap::CStackedBitmap()
@@ -466,7 +462,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, ProgressBa
 
 /* ------------------------------------------------------------------- */
 
-#if !defined(PCL_PROJECT) && !defined(_CONSOLE)
+#if !defined(_CONSOLE)
 class CPixel
 {
 public :
@@ -604,7 +600,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 	return Bitmap.GetHBITMAP();
 };
 
-#endif // !defined(PCL_PROJECT) && !defined(_CONSOLE)
+#endif // !defined(_CONSOLE)
 
 /* ------------------------------------------------------------------- */
 
@@ -692,7 +688,7 @@ bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 
 	if (GetPictureInfo(szStackedFile, bmpInfo) && bmpInfo.CanLoad())
 	{
-		CString		strFileType = bmpInfo.m_strFileType.Left(4);
+		QString strFileType = bmpInfo.m_strFileType.left(4);
 
 		if (strFileType == "TIFF")
 			return LoadTIFF(szStackedFile, pProgress);
@@ -709,7 +705,7 @@ bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 
 void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 {
-	uint32				nrbitmaps = 1,
+	uint32_t				nrbitmaps = 1,
 						settingsapplied = 0;
 
 	if (tiffReader)

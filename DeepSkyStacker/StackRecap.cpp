@@ -1,39 +1,19 @@
 // StackRecap.cpp : implementation file
 //
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QColor>
-#include <QMessageBox>
-#include <QPalette>
-#include <QSettings>
-#include <QShowEvent>
-#include <Qt>
-#include <QUrl>
-#include <QWidget>
+#include "stdafx.h"
+#include "StackRecap.h"
+#include "ui/ui_StackRecap.h"
+#include "DeepSkyStacker.h"
+#include "Ztrace.h"
+#include "StackingTasks.h"
+#include "Multitask.h"
+#include "FrameInfoSupport.h"
+#include "BitmapExt.h"
+#include "ZExcBase.h"
+#include "StackSettings.h"
+#include "RecommendedSettings.h"
 
 extern bool	g_bShowRefStars;
-
-#include "commonresource.h"
-#include "DSSCommon.h"
-#include "DeepSkyStacker.h"
-#include "StackRecap.h"
-#include "StackSettings.h"
-#include "Multitask.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-#include "RecommendedSettings.h"
-#include "FrameInfoSupport.h"
-
 
 constexpr int SSTAB_RESULT = 0;
 constexpr int SSTAB_COMET = 1;
@@ -46,7 +26,6 @@ constexpr int SSTAB_INTERMEDIATE = 7;
 constexpr int SSTAB_POSTCALIBRATION = 9;
 constexpr int SSTAB_OUTPUT = 10;
 
-#include "ui/ui_StackRecap.h"
 
 StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
@@ -454,7 +433,7 @@ void StackRecap::fillWithAllTasks()
 					strHTML += "<li>";
 					strText = tr("Method: ", "IDS_RECAP_METHOD");
 					insertHTML(strHTML, strText);
-					strText = formatMethod(si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
+					FormatMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
 					insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
 					strHTML += "</li>";
 
@@ -498,7 +477,7 @@ void StackRecap::fillWithAllTasks()
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
-						strText = formatMethod(si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
+						FormatMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_OFFSET);
 						strHTML += "</li>";
 					};
@@ -553,7 +532,7 @@ void StackRecap::fillWithAllTasks()
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
-						strText = formatMethod(si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+						FormatMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
 						strHTML += "</li>";
 					};
@@ -630,7 +609,7 @@ void StackRecap::fillWithAllTasks()
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
 						strHTML += "</li>";
-						strText = formatMethod(si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+						FormatMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
 						strHTML += "</li>";
 					};
@@ -684,7 +663,7 @@ void StackRecap::fillWithAllTasks()
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
-						strText = formatMethod(si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+						FormatMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_FLAT);
 						strHTML +=  "</li>";
 					};

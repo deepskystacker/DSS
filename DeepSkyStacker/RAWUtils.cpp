@@ -1,26 +1,31 @@
 #include "stdafx.h"
-#include <chrono>
-#include <set>
-#include <list>
-#include <iostream>
-#include <locale>
-#include <map>
-#include <stdexcept>
-#include <utility>
-#include <float.h>
-#include <zexcept.h>
-#include <ztrace.h>
-
-#include "resource.h"
-#include "BitmapExt.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-
 #include "RAWUtils.h"
-#include "Multitask.h"
-#include "Workspace.h"
-
 #include "libraw/libraw.h"
+#include "Ztrace.h"
+#include "Workspace.h"
+#include "DSSProgress.h"
+#include "resource.h"
+#include "MemoryBitmap.h"
+#include "Multitask.h"
+#include "MedianFilterEngine.h"
+#include "ZExcBase.h"
+#include "BitmapInfo.h"
+
+// #include <zexcept.h>
+// #include <ztrace.h>
+// 
+// #include "resource.h"
+// #include "BitmapExt.h"
+// #include "DSSTools.h"
+// #include "DSSProgress.h"
+// 
+// #include "RAWUtils.h"
+// #include "Multitask.h"
+// #include "Workspace.h"
+// 
+// #include "libraw/libraw.h"
+
+using namespace DSS;
 
 namespace {
 	class Timer
@@ -153,12 +158,6 @@ void PopRAWSettings()
 };
 
 /* ------------------------------------------------------------------- */
-
-#include <stdio.h>
-#include <io.h>
-#include <fcntl.h>
-#include <share.h>
-#include <typeinfo>
 
 #include "BitMapFiller.h"
 
@@ -920,15 +919,19 @@ namespace { // Only use in this .cpp file
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(LPCTSTR szFileName, CString& strModel)
+bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
 {
 	ZFUNCTRACE_RUNTIME();
 
     CRawDecod dcr(szFileName);
     bool bResult = dcr.IsRawFile();
 
-    if (bResult)
-        dcr.GetModel(strModel);
+	CString cstrModel;
+	if (bResult)
+	{
+		dcr.GetModel(cstrModel);
+		strModel = QString::fromWCharArray(cstrModel.GetString());
+	}
 
 	return bResult;
 };
@@ -965,7 +968,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 		if (bResult)
 		{
-			BitmapInfo.m_strFileName	 = szFileName;
+			BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName);
 			BitmapInfo.m_strFileType	 = "RAW";
 			if (dcr.IsColorRAW())
 				BitmapInfo.m_CFAType	 = CFATYPE_NONE;
@@ -976,7 +979,9 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			BitmapInfo.m_lBitPerChannel  = 16;
 			BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
 			BitmapInfo.m_bCanLoad		 = true;
-			dcr.GetModel(BitmapInfo.m_strModel);
+			CString strModel;
+			dcr.GetModel(strModel);
+			BitmapInfo.m_strModel = QString::fromWCharArray(strModel.GetString());
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
 			BitmapInfo.m_fAperture       = dcr.getAperture();

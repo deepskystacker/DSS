@@ -9,6 +9,7 @@
 *                                                                 *
 ******************************************************************/
 #include <DSS-winapifamily.h>
+#include <windows.h>
 
 #ifdef _MSC_VER
 #pragma once

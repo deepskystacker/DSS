@@ -1,7 +1,4 @@
-#ifndef STACKINGPARAMETERS_H
-#define STACKINGPARAMETERS_H
-
-#include <QWidget>
+#pragma once
 
 class Workspace;
 class StackSettings;
@@ -88,5 +85,3 @@ private slots:
 	void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
 
 };
-
-#endif // STACKINGPARAMETERS_H

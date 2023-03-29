@@ -41,9 +41,6 @@ class QRubberBand;
 class QToolBar;
 class QWheelEvent;
 
-#include <QtWidgets/QWidget>
-#include <QDebug>
-
 namespace DSS
 {
     class EditStars;

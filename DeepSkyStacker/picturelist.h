@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QDockWidget>
 #include "ui/ui_PictureList.h"
 
 namespace DSS

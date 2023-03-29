@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <QSettings>
 #include "resource.h"
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
@@ -223,14 +222,14 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		strText.Format(_T("%.2f"), lfi.m_fFWHM);
 		m_ImageList.SetItemText(nItem, COLUMN_FWHM, (LPCTSTR)strText);
 
-		m_ImageList.SetItemText(nItem, COLUMN_FILETIME, bmpInfo.m_strDateTime);
+		m_ImageList.SetItemText(nItem, COLUMN_FILETIME, bmpInfo.m_strDateTime.toStdWString().c_str());
 
 		strText.Format(_T("%.2f %%"), lfi.m_SkyBackground.m_fLight*100.0);
 		m_ImageList.SetItemText(nItem, COLUMN_SKYBACKGROUND, (LPCTSTR)strText);
 
-		strText = bmpInfo.m_strFileType;
-		if (bmpInfo.m_strModel.GetLength())
-			strText += " "+bmpInfo.m_strModel;
+		strText = bmpInfo.m_strFileType.toStdWString().c_str();
+		if (bmpInfo.m_strModel.length())
+			strText += " " + CString(bmpInfo.m_strModel.toStdWString().c_str());
 		m_ImageList.SetItemText(nItem, COLUMN_INFO, strText);
 
 		if (bmpInfo.m_CFAType == CFATYPE_NONE)

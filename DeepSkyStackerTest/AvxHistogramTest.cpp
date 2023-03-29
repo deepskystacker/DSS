@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "catch.h"
 #include "../DeepSkyStacker/avx_histogram.h"
+#include "../DeepSkyStacker/MedianFilterEngine.h"
 
 TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 {
@@ -306,13 +307,20 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		REQUIRE(memcmp(blueHisto.data(), expected.data(), 65536 * sizeof(int)) == 0);
 	}
 }
-
-void CGrayBitmapT<float>::RemoveHotPixels(class ProgressBase*) {}
-std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<float>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
-std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<float>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
-
-void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(class ProgressBase*) {}
-std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<std::uint32_t>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
-
-void CGrayBitmapT<double>::RemoveHotPixels(class ProgressBase*) {}
-std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<double>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// namespace DSS { class ProgressBase; }
+// void CGrayBitmapT<float>::RemoveHotPixels(DSS::ProgressBase*) {}
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<float>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<float>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// void CGrayBitmapT<unsigned short>::RemoveHotPixels(DSS::ProgressBase*) {}
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(DSS::ProgressBase*) {}
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<std::uint32_t>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<std::uint32_t>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// 
+// void CGrayBitmapT<double>::RemoveHotPixels(DSS::ProgressBase*) {}
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<double>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<double>::GetFilteredImage(int, DSS::ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }

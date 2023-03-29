@@ -1,6 +1,4 @@
 #include <stdafx.h>
-#include <algorithm>
-#include <QPoint>
 
 #include "resource.h"
 #include "StackingTasks.h"

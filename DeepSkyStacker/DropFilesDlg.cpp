@@ -36,15 +36,11 @@
 // DropFilesDlg.cpp : implementation file
 //
 #include "stdafx.h"
-#include <QShowEvent>
-
-
-//#include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "DropFilesDlg.h"
 #include "ui/ui_DropFilesDlg.h"
-
-//#include "BitmapExt.h"
+#include "BitmapInfo.h"
+#include "BitmapExt.h"
+#include "DeepSkyStacker.h"
 
 DropFilesDlg::DropFilesDlg(QWidget* parent) :
 	QDialog(parent),
@@ -65,7 +61,6 @@ void DropFilesDlg::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	bool checked = false;
 
 	//
 	// Restore Window position etc..

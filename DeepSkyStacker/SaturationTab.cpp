@@ -1,8 +1,6 @@
 // SaturationTab.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "SaturationTab.h"
 #include "ProcessingDlg.h"
 

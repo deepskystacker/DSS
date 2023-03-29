@@ -1,18 +1,14 @@
 #ifndef __REGISTERENGINE_H__
 #define __REGISTERENGINE_H__
-
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "BitmapExt.h"
-#include "FrameInfo.h"
-
-#include "StackingTasks.h"
-#include "DSSTools.h"
-#include "MatchingStars.h"
-#include "SkyBackground.h"
-#include <set>
 #include "Stars.h"
-#include "Workspace.h"
+#include "SkyBackground.h"
+#include "FrameInfo.h"
+#include "BilinearParameters.h"
+#include "MatchingStars.h"
+#include "DSSProgress.h"
+#include "GrayBitmap.h"
+
+namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -100,29 +96,7 @@ protected :
 		m_SkyBackground			= rf.m_SkyBackground;
 	};
 
-	void	Reset()
-	{
-		Workspace			workspace;
-
-		m_vStars.clear();
-
-		m_fRoundnessTolerance = 2.0;
-		m_bInfoOk = false;
-
-		m_bComet = false;
-		m_fXComet = m_fYComet = -1;
-
-		m_fMinLuminancy = workspace.value("Register/DetectionThreshold").toDouble() / 100.0;
-
-		m_bApplyMedianFilter = workspace.value("Register/ApplyMedianFilter").toBool();
-		m_fBackground = 0.0;
-
-		m_SkyBackground.Reset();
-
-        m_fOverallQuality = 0;
-        m_fFWHM = 0;
-	};
-
+	void	Reset();
 	bool FindStarShape(CMemoryBitmap* pBitmap, CStar& star);
 
 	void	ComputeOverallQuality()
@@ -210,28 +184,12 @@ public:
 	double m_fAngle;
 
 	bool m_bDisabled;
-	ProgressBase* m_pProgress;
+	DSS::ProgressBase* m_pProgress;
 
 	bool m_bRemoveHotPixels;
 
 private:
-	void Reset()
-	{
-		CFrameInfo::Reset();
-		CRegisteredFrame::Reset();
-
-		m_fXOffset = 0;
-		m_fYOffset = 0;
-		m_fAngle   = 0;
-		m_bDisabled= false;
-		m_pProgress= nullptr;
-		m_bStartingFrame  = false;
-		m_vVotedPairs.clear();
-
-		m_bTransformedCometPosition = false;
-
-		m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
-	}
+	void Reset();
 
 public:
 	CLightFrameInfo()
@@ -247,7 +205,7 @@ public:
 		CFrameInfo::CopyFrom(cbi);
 	}
 
-	explicit CLightFrameInfo(ProgressBase* const pPrg)
+	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg)
 	{
 		Reset();
 		this->SetProgress(pPrg);
@@ -266,7 +224,7 @@ public:
 		m_bRemoveHotPixels = bHotPixels;
 	}
 
-	void SetProgress(ProgressBase* pProgress)
+	void SetProgress(DSS::ProgressBase* pProgress)
 	{
 		m_pProgress = pProgress;
 	}
@@ -286,7 +244,7 @@ public:
 	}
 
 	void RegisterPicture(CMemoryBitmap* pBitmap);
-	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, ProgressBase * pProgress = nullptr);
+	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, DSS::ProgressBase* pProgress = nullptr);
 	void SaveRegisteringInfo();
 
 private:
@@ -387,7 +345,7 @@ namespace DSS
 typedef std::vector<CLightFrameInfo>	LIGHTFRAMEINFOVECTOR;
 
 /* ------------------------------------------------------------------- */
-
+class CAllStackingTasks;
 class CRegisterEngine
 {
 private :
@@ -396,22 +354,14 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, CString& strCalibratedFile);
+	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress, CString& strCalibratedFile);
 
 public :
-	CRegisterEngine()
-	{
-		m_bSaveCalibrated			= CAllStackingTasks::GetSaveCalibrated();
-		m_IntermediateFileFormat	= CAllStackingTasks::GetIntermediateFileFormat();
-		m_bSaveCalibratedDebayered	= CAllStackingTasks::GetSaveCalibratedDebayered();
-	};
-
-	virtual ~CRegisterEngine()
-	{
-	};
+	CRegisterEngine();
+	virtual ~CRegisterEngine() = default;
 
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
-	bool RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, ProgressBase * pProgress);
+	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, DSS::ProgressBase* pProgress);
 };
 
 /* ------------------------------------------------------------------- */

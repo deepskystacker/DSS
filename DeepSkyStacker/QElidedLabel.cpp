@@ -34,11 +34,6 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-
-#include <QPainter>
-#include <QSizePolicy>
-#include <QTextLayout>
-
 #include "qelidedlabel.h"
 
 QElidedLabel::QElidedLabel(const QString& text, QWidget* parent, Qt::WindowFlags f) :

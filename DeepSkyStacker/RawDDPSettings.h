@@ -1,20 +1,13 @@
-#ifndef RAWDDPSETTINGS_H
-#define RAWDDPSETTINGS_H
-#include <memory>
-
-class Workspace;
-class QAbstractButton;
-class QValidator;
-class CDSLR;
-enum CFATYPE : unsigned int;
-
-#include "DSSCommon.h"
-#include <QDialog>
+#pragma once
+#include "dslr.h"
 
 namespace Ui {
 	class RawDDPSettings;
 }
 
+class Workspace;
+class QValidator;
+class QShowEvent;
 class RawDDPSettings : public QDialog
 {
 	Q_OBJECT
@@ -74,5 +67,3 @@ private:
 	void showEvent(QShowEvent *event) override;
 	void onInitDialog();
 };
-
-#endif // RAWDDPSETTINGS_H

@@ -1,6 +1,12 @@
 #ifndef __BACKGROUNDCALIBRATION_H__
 #define __BACKGROUNDCALIBRATION_H__
+#include "DSSCommon.h"
+#include "RationalInterpolation.h"
+#include "LinearInterpolationh.h"
 
+class CMemoryBitmap;
+namespace DSS { class ProgressBase; }
+using namespace DSS;
 
 class CBackgroundCalibration
 {

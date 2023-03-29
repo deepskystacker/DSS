@@ -1,42 +1,66 @@
 ﻿// RecommendedSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-#include <vector>
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QColor>
-#include <QMessageBox>
-#include <QPalette>
-#include <QSettings>
-#include <QShowEvent>
-#include <QTextBrowser>
-#include <Qt>
-#include <QUrl>
-#include <QWidget>
-
-extern bool	g_bShowRefStars;
-
-#include "commonresource.h"
-#include "DSSCommon.h"
-#include "DeepSkyStacker.h"
-#include "Multitask.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-
-/* ------------------------------------------------------------------- */
-
+#include "stdafx.h"
 #include "RecommendedSettings.h"
 #include "ui/ui_RecommendedSettings.h"
+#include "DeepSkyStacker.h"
+#include "StackingDlg.h"
+
+
+bool RecommendationItem::differsFromWorkspace()
+{
+	bool					bResult = false;
+	Workspace				workspace;
+
+	// Check that the current values are (or not)
+	for (const auto setting : vSettings)
+	{
+		QString				keyName;
+		QVariant			value;
+		QVariant			currentValue;
+
+
+		keyName = setting.key();
+
+		currentValue = workspace.value(keyName);
+		value = setting.value();
+
+		switch (static_cast<QMetaType::Type>(value.typeId()))
+		{
+		case QMetaType::Bool:
+			bResult = value.toBool() != currentValue.toBool();
+			break;
+		case QMetaType::Double:
+			bResult = value.toDouble() != currentValue.toDouble();
+			break;
+		default:
+			bResult = value.toString() != currentValue.toString();
+		}
+
+		//
+		// If different, no need to check any more
+		//
+		if (bResult) break;
+	};
+	return bResult;
+}
+
+void RecommendationItem::applySettings()
+{
+	Workspace				workspace;
+
+	for (size_t i = 0; i < vSettings.size(); i++)
+	{
+		QString				keyName;
+		QVariant			value;
+
+		keyName = vSettings[i].key();
+		value = vSettings[i].value();
+
+		workspace.setValue(keyName, value);
+	};
+}
+
 
 // RecommendedSettings dialog
 

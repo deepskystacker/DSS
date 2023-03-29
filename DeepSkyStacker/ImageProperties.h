@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QDialog>
 #include "ui/ui_ImageProperties.h"
 
 namespace DSS {
