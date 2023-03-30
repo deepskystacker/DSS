@@ -1,7 +1,4 @@
 #pragma once
-
-#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT _WIN32_WINNT_WIN7	// Want to support Windows XP and up
 //
 // Visual Leak Detector
 //
@@ -73,7 +70,10 @@ namespace fs = std::filesystem;
 using std::min;
 using std::max;
 
-// Windows Files (eventaully to go!)
+// Windows Files (eventually to go!)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#define _WIN32_WINNT _WIN32_WINNT_WIN7	// Want to support Windows XP and up
+
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
