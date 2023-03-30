@@ -253,19 +253,19 @@ public :
 
 	double		GetRedValue(int X, int Y)
 	{
-		return m_vRedPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
+		return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
 	};
 	double		GetGreenValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
-			return m_vGreenPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
+			return m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
 		else
 			return GetRedValue(X, Y);
 	};
 	double		GetBlueValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
-			return m_vBluePlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
+			return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
 		else
 			return GetRedValue(X, Y);
 	};
