@@ -1689,7 +1689,7 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
 		};
 	}
-	catch (ZException e)
+	catch (ZException& e)
 	{
 		CString errorMessage;
 		CString name(CA2CT(e.name()));
