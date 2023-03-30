@@ -848,11 +848,12 @@ namespace DSS
 				QBrush		brushAction;
 				QPen		penAction;
 
-				if (auto zoom = imageView->zoom() > 1)
+				auto zoom = imageView->zoom();
+				if (zoom > 1)
 				{
 					fRectSize *= zoom;
 					fDiameter *= zoom;
-				};
+				}
 
 				if (bAdd)
 				{
