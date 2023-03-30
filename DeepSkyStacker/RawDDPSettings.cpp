@@ -433,6 +433,8 @@ void RawDDPSettings::onInitDialog()
 		}
 	}
 
+	connect(ui->DSLRs, SIGNAL(currentIndexChanged(int)), this, SLOT(DSLRs_currentIndexChanged(int)));
+
 	updateBayerPattern().updateControls();
 
 	ui->tabWidget->setCurrentIndex(0);
@@ -654,7 +656,7 @@ void RawDDPSettings::on_isFITSRaw_clicked(bool checked)
 	updateControls();
 }
 
-void RawDDPSettings::on_DSLRs_currentIndexChanged(int)
+void RawDDPSettings::DSLRs_currentIndexChanged(int)
 {
 	workspace->setValue("FitsDDP/DSLR", ui->DSLRs->currentText());
 	workspace->setValue("FitsDDP/BayerPattern", ui->DSLRs->currentData().toUInt());
