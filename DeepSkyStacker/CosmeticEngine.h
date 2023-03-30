@@ -1,5 +1,4 @@
-#ifndef __COSMETICENGINE_H__
-#define __COSMETICENGINE_H__
+#pragma once
 
 class CCosmeticStats
 {
@@ -44,5 +43,3 @@ using namespace DSS;
 
 std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress);
 void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress);
-
-#endif

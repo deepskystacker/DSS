@@ -1,5 +1,4 @@
-#ifndef __CHANNELALIGN_H__
-#define __CHANNELALIGN_H__
+#pragma once
 
 #include "DSSProgress.h"
 #include "DSSTools.h"
@@ -23,4 +22,3 @@ public:
 	bool AlignChannels(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
 };
 
-#endif

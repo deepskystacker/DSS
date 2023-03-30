@@ -1,5 +1,4 @@
-#ifndef __DSSVERSION_H_
-#define __DSSVERSION_H_
+#pragma once
 
 #define DSSBETA
 
@@ -59,6 +58,3 @@ constexpr int DSSBETAEXPIREMONTH = 6;
 #define DSSVER_INTERNALNAME		"DeepSkyStacker"
 #define DSSVER_ORIGINALFILENAME	"DeepSkyStacker.exe"
 #endif
-
-#endif // __DSSVERSION_H_
-

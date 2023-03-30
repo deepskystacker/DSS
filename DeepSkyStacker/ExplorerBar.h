@@ -1,5 +1,4 @@
-#ifndef EXPLORERBAR_H
-#define EXPLORERBAR_H
+#pragma once
 #include "mrupath.h"
 #include "DSSCommon.h"
 
@@ -98,4 +97,3 @@ private:
 	void onInitDialog();
 };
 
-#endif // EXPLORERBAR_H

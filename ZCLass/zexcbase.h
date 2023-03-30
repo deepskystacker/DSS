@@ -1,5 +1,4 @@
-#ifndef ZEXCBASE_H
-#define ZEXCBASE_H
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -577,4 +576,3 @@ ZEXCLASSDECLARE(ZResourceExhausted,ZException);
 // -MH-
 #endif
 
-#endif // !ZEXCBASE_H

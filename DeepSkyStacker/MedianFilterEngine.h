@@ -1,5 +1,4 @@
-#ifndef __MEDIANFILTERENGINE_H__
-#define __MEDIANFILTERENGINE_H__
+#pragma once
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 
@@ -50,7 +49,9 @@ private:
 	const CColorBitmapT<TType>* m_pInBitmap;
 
 public:
-	CColorMedianFilterEngineT() {};
+	CColorMedianFilterEngineT() : 
+		m_pInBitmap{ nullptr }
+	{};
 	virtual ~CColorMedianFilterEngineT() {};
 
 	void SetInputBitmap(const CColorBitmapT<TType>* pInBitmap)
@@ -119,8 +120,11 @@ public :
 
 public:
 	CInternalMedianFilterEngineT() :
+		m_pvInValues { nullptr },
+		m_pvOutValues{ nullptr },
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
+		m_CFAType {CFAT_NONE},
 		m_lFilterSize{ 0 }
 	{}
 
@@ -195,4 +199,3 @@ inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilte
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
-#endif

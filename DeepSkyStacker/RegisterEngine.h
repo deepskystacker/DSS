@@ -1,5 +1,4 @@
-#ifndef __REGISTERENGINE_H__
-#define __REGISTERENGINE_H__
+#pragma once
 #include "Stars.h"
 #include "SkyBackground.h"
 #include "FrameInfo.h"
@@ -366,4 +365,3 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-#endif // __REGISTERENGINE_H__

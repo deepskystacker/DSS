@@ -10,8 +10,7 @@
 //		--------	----------	----	---------------------
 //		1.01  	07/11/2000	PRW	Original creation.
 //
-#ifndef CONTROLPOS_H_
-#define CONTROLPOS_H_
+#pragma once
 
 //----------------------------------------------
 // these #define's specify HOW the control
@@ -89,4 +88,3 @@ typedef struct tagCONTROLDATA
 	DWORD dwStyle;		// check the #define's above
 } CONTROLDATA, *LPCONTROLDATA;
 
-#endif

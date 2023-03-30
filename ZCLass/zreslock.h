@@ -1,5 +1,4 @@
-#ifndef ZRESLOCK_H
-#define ZRESLOCK_H
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -287,4 +286,3 @@ friend class ZResource;
 // -MH-
 #endif
 
-#endif // !ZRESLOCK_H

@@ -41,8 +41,7 @@
 
 // Declaration of the QWinWidget classes
 
-#ifndef QWINWIDGET_H
-#define QWINWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include "qmfcapp.h"
@@ -104,4 +103,3 @@ private:
     bool reenable_parent;
 };
 
-#endif // QWINWIDGET_H

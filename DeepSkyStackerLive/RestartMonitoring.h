@@ -1,6 +1,4 @@
-#ifndef __RESTARTMONITORING_H__
-#define __RESTARTMONITORING_H__
-
+#pragma once
 class CRestartMonitoring : public CDialog
 {
 // Construction
@@ -47,6 +45,3 @@ public:
 	afx_msg void OnBnClickedDroppendingimages();
 	afx_msg void OnBnClickedUsependingimages();
 };
-
-
-#endif // __RESTARTMONITORING_H__

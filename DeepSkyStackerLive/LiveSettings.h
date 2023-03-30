@@ -1,5 +1,4 @@
-#ifndef __LIVESETTINGS_H__
-#define __LIVESETTINGS_H__
+#pragma once
 
 const std::uint32_t 	LSWF_SCORE	= 0x00000001L;	// Warning Flags
 const std::uint32_t 	LSWF_STARS	= 0x00000002L;
@@ -257,5 +256,3 @@ public :
 		m_strFileFolder = szFileFolder;
 	};
 };
-
-#endif

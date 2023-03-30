@@ -1,6 +1,3 @@
-#ifndef __IMAGELISTTAB_H__
-#define __IMAGELISTTAB_H__
-
 #pragma once
 
 #include "afxwin.h"
@@ -49,6 +46,3 @@ public :
 	void	UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, double fAngle);
 	BOOL	Close();
 };
-
-
-#endif

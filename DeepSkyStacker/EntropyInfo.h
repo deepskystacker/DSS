@@ -1,5 +1,4 @@
-#ifndef __ENTROPYINFO_H__
-#define __ENTROPYINFO_H__
+#pragma once
 #include "ColorRef.h"
 
 namespace DSS { class ProgressBase; }
@@ -107,4 +106,3 @@ public:
 	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult);
 };
 
-#endif

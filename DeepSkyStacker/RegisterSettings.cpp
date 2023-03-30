@@ -100,8 +100,8 @@ void RegisterSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 	string = workspace->value("Register/PercentStack", "80").toString();

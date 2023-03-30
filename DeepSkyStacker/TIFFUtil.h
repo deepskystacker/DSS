@@ -1,5 +1,4 @@
-#ifndef _TIFFUTIL_H__
-#define _TIFFUTIL_H__
+#pragma once
 
 /* ------------------------------------------------------------------- */
 #include "cfa.h"
@@ -259,4 +258,3 @@ int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 
 /* ------------------------------------------------------------------- */
 
-#endif // _TIFFUTIL_H__

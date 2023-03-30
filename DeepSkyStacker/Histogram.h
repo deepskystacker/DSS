@@ -1,5 +1,4 @@
-#ifndef _HISTOGRAM_H__
-#define _HISTOGRAM_H__
+#pragma once
 
 #include "ZExcBase.h"
 #include "resource.h"
@@ -732,5 +731,3 @@ public :
 };
 
 /* ------------------------------------------------------------------- */
-
-#endif // _HISTOGRAM_H__

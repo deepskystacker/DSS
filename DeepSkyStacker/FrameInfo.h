@@ -1,5 +1,4 @@
-#ifndef __FRAMEINFO_H__
-#define __FRAMEINFO_H__
+#pragma once
 #include "cfa.h"
 #include "DSSCommon.h"
 #include "BitmapExtraInfo.h"
@@ -240,5 +239,3 @@ public:
 typedef std::vector<ListBitMap>		LISTBITMAPVECTOR;
 
 /* ------------------------------------------------------------------- */
-
-#endif // __FRAMEINFO_H__

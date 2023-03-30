@@ -1,5 +1,4 @@
-#ifndef RECOMMENDEDSETTINGS_H
-#define RECOMMENDEDSETTINGS_H
+#pragma once
 #include "Workspace.h"
 #include "StackingTasks.h"
 
@@ -164,5 +163,3 @@ private:
 	void showEvent(QShowEvent *event) override;
 	void onInitDialog();
 };
-/* ------------------------------------------------------------------- */
-#endif

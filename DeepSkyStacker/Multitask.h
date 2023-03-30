@@ -1,5 +1,4 @@
-#ifndef __MULTITASK_H__
-#define __MULTITASK_H__
+#pragma once
 
 class CMultitask
 {
@@ -14,5 +13,3 @@ public:
 	static bool GetUseSimd();
 	static void SetUseSimd(const bool bUseSimd);
 };
-
-#endif

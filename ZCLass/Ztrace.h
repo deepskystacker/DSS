@@ -26,8 +26,7 @@
 //   See history at end of file ...
 // ----------------------------------------------------------------------------
 
-#ifndef ZTRACE_INCLUDED
-#define ZTRACE_INCLUDED
+#pragma once
 
 #if !defined(ZDEFS_INCLUDED)
 #include <zdefs.h>
@@ -352,4 +351,3 @@ static size_t
 // -MH-
 #endif
 
-#endif
