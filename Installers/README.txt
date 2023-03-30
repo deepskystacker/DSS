@@ -20,6 +20,8 @@ Changes since the last release:
 
 1. Bug fix - correct problems with drag drop of a directory.
 
+2. Enhancement - if Custom Rectangle mode is read from a filelist or settings file, switch to Intersection mode
+
 Welcome to DeepSkyStacker 5.1.2
 ===============================
 
