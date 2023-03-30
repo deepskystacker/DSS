@@ -1,6 +1,4 @@
-#ifndef __EMAILSETTINGS_H__
-#define __EMAILSETTINGS_H__
-
+#pragma once
 #include "LiveSettings.h"
 
 class CEmailSettings : public CDialog
@@ -40,6 +38,3 @@ protected:
 public:
 	afx_msg void OnBnClickedTest();
 };
-
-
-#endif // __EMAILSETTINGS_H__

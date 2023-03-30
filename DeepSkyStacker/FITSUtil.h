@@ -1,5 +1,4 @@
-#ifndef __FITSUTIL_H__
-#define __FITSUTIL_H__
+#pragma once
 
 /* ------------------------------------------------------------------- */
 #include "cfa.h"
@@ -226,4 +225,3 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
 void GetFITSExtension(fs::path path, CString& strExtension);
 
-#endif

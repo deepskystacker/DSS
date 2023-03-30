@@ -1,5 +1,4 @@
-#ifndef __MEDIANFILTERENGINE_H__
-#define __MEDIANFILTERENGINE_H__
+#pragma once
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 
@@ -195,4 +194,3 @@ inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilte
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
-#endif

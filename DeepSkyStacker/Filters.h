@@ -1,5 +1,4 @@
-#ifndef __FILTERS_H__
-#define __FILTERS_H__
+#pragma once
 
 #include "BitmapExt.h"
 #include "DSSProgress.h"
@@ -172,4 +171,3 @@ public :
 	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
 };
 
-#endif

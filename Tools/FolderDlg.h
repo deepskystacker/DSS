@@ -12,8 +12,7 @@
 // -------------------
 // One-Definition-Rule
 // -------------------
-#ifndef FOLDERDLG_H_INCLUDE_NR1
-#define FOLDERDLG_H_INCLUDE_NR1
+#pragma once
 
 
 // ----------------------------------
@@ -95,4 +94,3 @@ private:
 };
 
 
-#endif	// FOLDERDLG_H_INCLUDE_NR1

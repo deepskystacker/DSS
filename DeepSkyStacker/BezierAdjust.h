@@ -1,5 +1,4 @@
-#ifndef _BEZIERADJUST_H__
-#define _BEZIERADJUST_H__
+#pragma once
 /* ------------------------------------------------------------------- */
 //#undef PI
 #include "DSSCommon.h"
@@ -270,7 +269,3 @@ public :
 		m_fSaturationShift	= ExtractValue(szParameters, _T("SS"));
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-#endif // _BEZIERADJUST_H__

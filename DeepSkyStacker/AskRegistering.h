@@ -1,5 +1,4 @@
-#ifndef __ASKREGISTERING_H__
-#define __ASKREGISTERING_H__
+#pragma once
 #include "commonresource.h"
 
 typedef enum tagASKREGISTERINGANSWER
@@ -58,7 +57,3 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-
-
-#endif // __ASKREGISTERING_H__

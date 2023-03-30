@@ -1,5 +1,4 @@
-#ifndef STACKSETTINGS_H
-#define STACKSETTINGS_H
+#pragma once
 #include "dssrect.h"
 
 namespace Ui {
@@ -121,4 +120,3 @@ private slots:
 	void tabChanged(int tab);
 	void on_chooseFolder_clicked(bool value);
 };
-#endif // STACKSETTINGS_H

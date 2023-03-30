@@ -1,5 +1,4 @@
-#ifndef __RUNNINGSTACKINGENGINE_H__
-#define __RUNNINGSTACKINGENGINE_H__
+#pragma once
 #include "BackgroundCalibration.h"
 #include "MatchingStars.h"
 
@@ -49,4 +48,3 @@ public:
 	}
 };
 
-#endif

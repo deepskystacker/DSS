@@ -1,5 +1,4 @@
-#ifndef ZPTR_H
-#define ZPTR_H
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -254,4 +253,3 @@ protected:
 // -MH-
 #endif
 
-#endif // !defined(ZPTR_H)

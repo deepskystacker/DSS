@@ -1,6 +1,4 @@
-#ifndef __SETUILANGUAGE_H__
-#define __SETUILANGUAGE_H__
+#pragma once
 
 void	SetUILanguage();
 
-#endif // __SETUILANGUAGE_H__

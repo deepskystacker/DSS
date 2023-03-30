@@ -1,5 +1,4 @@
-#ifndef _BITMAPEXT_H__
-#define _BITMAPEXT_H__
+#pragma once
 
 #include "BitmapConstants.h"
 #include "DSSCommon.h"
@@ -105,4 +104,3 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 bool	ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans);
 bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans);
 
-#endif // _BITMAPEXT_H__

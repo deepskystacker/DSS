@@ -1,5 +1,4 @@
-#ifndef _STACKEDBITMAP_H__
-#define _STACKEDBITMAP_H__
+#pragma once
 #include "BezierAdjust.h"
 #include "Histogram.h"
 #include "ColorRef.h"
@@ -342,6 +341,3 @@ public :
 		return m_bMonochrome;
 	};
 };
-
-/* ------------------------------------------------------------------- */
-#endif // _STACKEDBITMAP_H__
