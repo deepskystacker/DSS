@@ -25,22 +25,6 @@ Changes since the last release:
 Welcome to DeepSkyStacker 5.1.2
 ===============================
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-Changes since the last release:
-
-1. Upgrade CFISTIO library to 4.2.0
-
-2. Always create a tracefile in DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
-
-	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT time.
-
-The trace file will be deleted on normal application exit, but an option is provided to keep the file.
-
-
-Welcome to DeepSkyStacker 5.1.2
-===============================
-
 This is a bug fix release for problems reported against 5.1.0 and 5.1.1
 
 1. Bug fix - correct handling of file types (TIFF/FITS) in DeepSkyStackerCL for intermediate and final files
