@@ -1017,7 +1017,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
-	catch (ZException e)
+	catch (ZException& e)
 	{
 		CString errorMessage;
 		CString name(CA2CT(e.name()));
