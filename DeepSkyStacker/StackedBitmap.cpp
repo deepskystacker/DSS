@@ -817,14 +817,15 @@ private :
 
 public :
 	CTIFFWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
-	   CTIFFWriter(szFileName, pProgress)
+	   CTIFFWriter(szFileName, pProgress),
+		m_lprc { lprc },
+		m_pStackedBitmap{ nullptr },
+		m_bApplySettings { false },
+		m_TiffFormat{ TF_16BITRGB },
+		m_TiffComp { TC_NONE },
+		m_lXStart { 0 },
+		m_lYStart { 0 }
 	{
-		m_lprc = lprc;
-		m_bApplySettings = false;
-		m_TiffFormat	 = TF_16BITRGB;
-		m_lXStart = 0;
-		m_lYStart = 0;
-        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CTIFFWriterStacker()
