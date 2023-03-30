@@ -663,7 +663,15 @@ namespace DSS
 			++row;
 		}
 	}
-
+	//
+	// The function template 'checkSelective' is used as a common function for the below checkAll(), checkAllDarks(), etc.
+	// Selector is a non-type-template-parameter, it needs to be invocable (i.e. a function).
+	//          It is called to check, if the current file shall be checked or unchecked (i.e. file.m_bChecked set to checkState).
+	//          It must return a pair<bool, Qt::CheckState>.
+	// checkSelective() accepts a variable number of arguments, which are forwarded to the Selector.
+	//                  By that we can use Selectors with different arguments (used e.g. in checkImage() below).
+	// If the template parameter bool ImmediateReturn is true, the function will be escaped after the first found file.
+	//
 	template <auto Selector, bool ImmediateReturn, typename... Args>
 	void FrameList::checkSelective(const bool check, const Args&... args)
 	{
