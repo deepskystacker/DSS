@@ -9,6 +9,8 @@ Changes since the last release:
 
 2. Enhancement - if Custom Rectangle mode is read from a filelist or settings file, switch to Intersection mode
 
+3. Bug fix - correct handling of reference frame in filelist
+
 Welcome to DeepSkyStacker 5.1.2
 ===============================
 
