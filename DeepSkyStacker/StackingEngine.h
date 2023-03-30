@@ -178,7 +178,7 @@ private:
 
 public:
 	CStackingEngine() :
-		m_pProgess { nullptr },
+		m_pProgress { nullptr },
 		m_lNrCurrentStackable { 0 },
 		m_lNrStackable{ 0 },
 		m_lNrCometStackable{ 0 },
