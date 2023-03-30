@@ -49,7 +49,9 @@ private:
 	const CColorBitmapT<TType>* m_pInBitmap;
 
 public:
-	CColorMedianFilterEngineT() {};
+	CColorMedianFilterEngineT() : 
+		m_pInBitmap{ nullptr }
+	{};
 	virtual ~CColorMedianFilterEngineT() {};
 
 	void SetInputBitmap(const CColorBitmapT<TType>* pInBitmap)
@@ -118,8 +120,11 @@ public :
 
 public:
 	CInternalMedianFilterEngineT() :
+		m_pvInValues { nullptr },
+		m_pvOutValues{ nullptr },
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
+		m_CFATYPE {CFAT_NONE},
 		m_lFilterSize{ 0 }
 	{}
 

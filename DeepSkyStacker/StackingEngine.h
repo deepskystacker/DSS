@@ -178,10 +178,13 @@ private:
 
 public:
 	CStackingEngine() :
+		m_pProgess { nullptr },
+		m_lNrCurrentStackable { 0 },
 		m_lNrStackable{ 0 },
 		m_lNrCometStackable{ 0 },
 		m_lISOSpeed{ 0 },
 		m_lGain{ -1 },
+		m_fStarTrailsAngle {0.0},
 		m_pLightTask{ nullptr },
 		m_lNrStacked{ 0 },
 		m_fTotalExposure{ 0 },
