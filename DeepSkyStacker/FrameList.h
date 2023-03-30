@@ -30,6 +30,10 @@ namespace DSS
 
 		void changePictureType(int nItem, PICTURETYPE PictureType);
 
+	private:
+		template <auto Selector, bool ImmediateReturn, typename... Args>
+		void checkSelective(const bool check, const Args&... args);
+	public:
 		void checkAbove(double threshold);
 
 		void checkBest(double fPercent);

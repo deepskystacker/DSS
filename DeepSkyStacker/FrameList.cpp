@@ -664,155 +664,202 @@ namespace DSS
 		}
 	}
 
-	void FrameList::checkAll(bool check)
+	template <auto Selector, bool ImmediateReturn, typename... Args>
+	void FrameList::checkSelective(const bool check, const Args&... args)
 	{
-		const auto checkState = check ? Qt::Checked : Qt::Unchecked;
-
 		for (auto& group : imageGroups)
 		{
-			for (auto& file : group.pictures->mydata)
+			for (int fileIndex = 0; auto& file : group.pictures->mydata)
 			{
-				file.m_bChecked = checkState;
+				if (const auto [fileIncluded, checkState] = Selector(file, check, args...); fileIncluded == true)
+				{
+					file.m_bChecked = checkState;
+					const QModelIndex changedRow = group.pictures->createIndex(fileIndex, 0);
+					group.pictures->dataChanged(changedRow, changedRow, QList<int>{ Qt::CheckStateRole });
+					group.setDirty();
+					if constexpr (ImmediateReturn)
+						return;
+				}
+				++fileIndex;
 			}
-			QModelIndex start{ group.pictures->createIndex(0, 0) };
-			QModelIndex end{ group.pictures->createIndex(group.pictures->rowCount(), 0) };
-			const QVector<int> role{ Qt::CheckStateRole };
-			group.pictures->dataChanged(start, end, role);
-			group.setDirty();
 		}
+	}
+
+	void FrameList::checkAll(bool check)
+	{
+		constexpr auto Selector = [](const auto&, const bool check) { return std::make_pair(true, check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//const auto checkState = check ? Qt::Checked : Qt::Unchecked;
+
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		file.m_bChecked = checkState;
+		//	}
+		//	QModelIndex start{ group.pictures->createIndex(0, 0) };
+		//	QModelIndex end{ group.pictures->createIndex(group.pictures->rowCount(), 0) };
+		//	const QVector<int> role{ Qt::CheckStateRole };
+		//	group.pictures->dataChanged(start, end, role);
+		//	group.setDirty();
+		//}
 	}
 
 	void FrameList::checkAllDarks(bool check)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (auto& file : group.pictures->mydata)
-			{
-				if (file.IsDarkFrame())
-				{
-					if (check)
-						file.m_bChecked = Qt::Checked;
-					else
-						file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				const QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsDarkFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsDarkFrame())
+		//		{
+		//			if (check)
+		//				file.m_bChecked = Qt::Checked;
+		//			else
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllFlats(bool check)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (auto& file : group.pictures->mydata)
-			{
-				if (file.IsFlatFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				const QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsFlatFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsFlatFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllOffsets(bool check)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (auto& file : group.pictures->mydata)
-			{
-				if (file.IsOffsetFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				const QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsOffsetFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsOffsetFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllLights(bool check)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsLightFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					const QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-				}
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (file.IsLightFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//		}
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	void FrameList::checkImage(const QString& image, bool check)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (image == file.m_strFile && file.IsLightFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-					group.setDirty();
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					const QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-					return;
-				}
-			}
-		}
+		constexpr auto Selector = [](const auto& file, const bool check, const QString& image) {
+			return std::make_pair(image == file.m_strFile && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
+		};
+		checkSelective<Selector, true>(check, image);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (image == file.m_strFile && file.IsLightFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//			group.setDirty();
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//			return;
+		//		}
+		//	}
+		//}
 	}
 	/* ------------------------------------------------------------------- */
 
 
-	void FrameList::checkAbove(double threshold)
+	void FrameList::checkAbove(const double threshold)
 	{
-		for (auto& group : imageGroups)
-		{
-			for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsLightFrame())
-				{
-					file.m_bChecked =
-						(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					const QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-				}
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
+			return std::make_pair(file.IsLightFrame(), file.m_fOverallQuality >= threshold ? Qt::Checked : Qt::Unchecked);
+		};
+		checkSelective<Selector, false>(true, threshold);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (file.IsLightFrame())
+		//		{
+		//			file.m_bChecked =
+		//				(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//		}
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	/* ------------------------------------------------------------------- */
