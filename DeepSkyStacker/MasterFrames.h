@@ -1,5 +1,4 @@
-#ifndef __MASTERFRAMES_H__
-#define __MASTERFRAMES_H__
+#pragma once
 #include "DarkFrame.h"
 #include "FlatFrame.h"
 
@@ -26,5 +25,3 @@ public :
 
 	bool LoadMasters(const CStackingInfo* pStackingInfo, DSS::ProgressBase* pProgress);
 };
-
-#endif // __MASTERFRAMES_H__

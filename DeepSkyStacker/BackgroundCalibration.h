@@ -1,5 +1,4 @@
-#ifndef __BACKGROUNDCALIBRATION_H__
-#define __BACKGROUNDCALIBRATION_H__
+#pragma once
 #include "DSSCommon.h"
 #include "RationalInterpolation.h"
 #include "LinearInterpolationh.h"
@@ -84,5 +83,3 @@ private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 	void ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const;
 };
-
-#endif // __BACKGROUNDCALIBRATION_H__

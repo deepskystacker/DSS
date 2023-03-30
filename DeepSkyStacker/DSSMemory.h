@@ -1,6 +1,4 @@
 #pragma once
-#ifndef __DSSMEMORY_H__
-#define __DSSMEMORY_H__
 
 #ifdef _DEBUG
 
@@ -43,5 +41,3 @@
 #endif // #ifndef _GDIPLUSBASE_H
 		}
 #endif // #ifdef _DEBUG
-
-#endif // __DSSMEMORY_H__

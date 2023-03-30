@@ -1,5 +1,4 @@
-#ifndef __STACKINGENGINE_H__
-#define __STACKINGENGINE_H__
+#pragma once
 
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
@@ -285,5 +284,3 @@ public:
 	void WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile);
 };
 
-
-#endif // __STACKINGENGINE_H__

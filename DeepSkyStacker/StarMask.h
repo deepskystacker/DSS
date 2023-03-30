@@ -1,5 +1,4 @@
-#ifndef __STARMASK_H__
-#define __STARMASK_H__
+#pragma once
 
 class CMemoryBitmap;
 namespace DSS { class ProgressBase; }
@@ -242,4 +241,3 @@ public:
 	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress = nullptr);
 };
 
-#endif // __STARMASK_H__

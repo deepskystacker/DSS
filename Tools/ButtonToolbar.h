@@ -1,5 +1,4 @@
-#ifndef __BUTTONTOOLBAR_H__
-#define __BUTTONTOOLBAR_H__
+#pragma once
 
 const		LONG				BUTTONTOOLBARSIZE = 48;
 
@@ -326,4 +325,3 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-#endif

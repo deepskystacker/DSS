@@ -1,5 +1,4 @@
-#ifndef _STACKINGTASKS_H__
-#define _STACKINGTASKS_H__
+#pragma once
 
 #include "DSSCommon.h"
 #include "DSSProgress.h"
@@ -436,4 +435,3 @@ void SpaceToQString(__int64 ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 
-#endif // _STACKINGTASKS_H__

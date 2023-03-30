@@ -1,5 +1,4 @@
-#ifndef STACKRECAP_H
-#define STACKRECAP_H
+#pragma once
 
 class Workspace;
 class QAbstractButton;
@@ -51,4 +50,3 @@ private:
 };
 
 /* ------------------------------------------------------------------- */
-#endif

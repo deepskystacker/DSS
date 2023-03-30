@@ -1,5 +1,4 @@
-#ifndef __BATCHSTACKING_H__
-#define __BATCHSTACKING_H__
+#pragma once
 
 #include "BaseDialog.h"
 
@@ -42,5 +41,3 @@ namespace DSS
 	};
 }
 
-
-#endif
