@@ -44,7 +44,7 @@ private slots:
 
 	// Slots for FITS Files tab
 	void on_isFITSRaw_clicked(bool);
-	void on_DSLRs_currentIndexChanged(int);
+	void DSLRs_currentIndexChanged(int);
 	void brightness_2_editingFinished();
 	void redScale_2_editingFinished();
 	void blueScale_2_editingFinished();
