@@ -9,11 +9,16 @@ constexpr auto PI = 3.14159265358979323846;
 constexpr int	STARMAXSIZE = 50;
 constexpr int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
 
+//
+// The value of stacking mode is persisted in filelist files and in settings files
+// This means the NONE of these enums should ever be changed.  So SM_CUSTOM must 
+// always have a value of 2 (for example)
+//
 typedef enum tagSTACKINGMODE
 {
 	SM_NORMAL = 0,
 	SM_MOSAIC = 1,
-	SM_CUSTOM = 2,
+	SM_CUSTOM = 2,				// WARNING!! NEVER CHANGE THE VALUE OF SM_CUSTOM
 	SM_INTERSECTION = 3
 }STACKINGMODE;
 
