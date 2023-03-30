@@ -1665,7 +1665,7 @@ namespace DSS
 			// Also prune out any that are not valid images
 			//
 			it = std::remove_if(files.begin(), files.end(),
-				[&](const QString& s) { return isValidImage(s.toStdU16String()); });
+				[&](const QString& s) { return !isValidImage(s.toStdU16String()); });
 			files.erase(it, files.end());
 
 
