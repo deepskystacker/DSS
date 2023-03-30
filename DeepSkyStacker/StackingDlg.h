@@ -214,7 +214,7 @@ namespace DSS
 			return frameList.getFirstCheckedLightFrame();
 		}
 
-		inline size_t countUnregisteredCheckedLightFrames(int id = -1) const
+		inline size_t countUnregisteredCheckedLightFrames(const int id = -1) const
 		{
 			return frameList.countUnregisteredCheckedLightFrames(id);
 		}

@@ -131,10 +131,10 @@ void RegisterSettings::onInitDialog()
 	{
 		firstLightFrame = stackingDlg.getFirstCheckedLightFrame();
 
-		forceRegister = !stackingDlg.countUnregisteredCheckedLightFrames();
-		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
-		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
-		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;
+		forceRegister = stackingDlg.countUnregisteredCheckedLightFrames() == 0;
+		noDarks = stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME) == 0;
+		noFlats = stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME) == 0;
+		noOffsets = stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME) == 0;
 	}
 
 	// Enable the computeDetected Stars button if there's a stackable light frame

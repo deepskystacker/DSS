@@ -338,7 +338,7 @@ public :
 		return m_fMaxExposureTime;
 	}
 
-	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
+	void AddFileToTask(const CFrameInfo& FrameInfo, const std::uint32_t dwGroupID = 0);
 	void setCustomRectangle(const DSSRect& rcCustom)
 	{
 		if (rcCustom.isEmpty())

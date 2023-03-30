@@ -6,32 +6,27 @@ class CAllStackingTasks;
 class CBilinearParameters;
 namespace DSS
 {
-	class FrameList
+	class FrameList final
 	{
 	public:
-		std::uint16_t index;		// Initially zero - is the group we are currently working with
-
-	typedef std::vector<Group>::const_iterator const_group_iterator;
-
+		int index{ 0 };		// Initially zero - is the group we are currently working with
 
 	private:
-		std::vector<Group>	imageGroups;
-		std::uint16_t lastGroup;
+		std::vector<Group> imageGroups;
 
 	public:
-		FrameList() :
-			index{ 0 },
-			lastGroup{ 0 }
+		FrameList()
 		{
 			imageGroups.emplace_back();
 		};
+		FrameList(const FrameList&) = delete;
+		FrameList(FrameList&&) = delete;
+		FrameList& operator=(const FrameList&) = delete;
+		FrameList& operator=(FrameList&&) = delete;
+		~FrameList() = default;
 
-		virtual ~FrameList()
-		{
-		};
-
-		const_group_iterator groups_cbegin() const { return imageGroups.begin(); }
-		const_group_iterator groups_cend() const { return imageGroups.end(); }
+		auto groups_cbegin() const { return imageGroups.cbegin(); }
+		auto groups_cend() const { return imageGroups.cend(); }
 
 		void changePictureType(int nItem, PICTURETYPE PictureType);
 
@@ -51,80 +46,81 @@ namespace DSS
 
 		void checkImage(const QString& image, bool check);
 
-		ListBitMap* getListBitMap(int row);
+		//
+		// Return address of the relevant ListBitMap in the current group
+		//
+		ListBitMap* getListBitMap(const int row);
 
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
 		//
 		void clear();
 
-		std::uint16_t groupId() const noexcept
-		{
-			return index;
-		};
-		FrameList& setGroup(uint16_t id) noexcept
+		inline void setGroup(int id) noexcept
 		{
 			index = id;
-			return *this;
-		};
-
-		inline std::uint16_t lastGroupId() const noexcept
-		{
-			return static_cast<uint16_t>(imageGroups.size() - 1);
 		}
 
-		inline std::uint16_t addGroup()
+		inline int lastGroupId() const noexcept
+		{
+			return static_cast<int>(imageGroups.size()) - 1;
+		}
+
+		inline void addGroup()
 		{
 			imageGroups.emplace_back();
-			return static_cast<uint16_t>(imageGroups.size() - 1);
 		}
 
-		size_t groupSize(uint16_t id) const;
+		size_t groupSize(const int id) const;
 
 		inline size_t groupCount() const
 		{
 			return imageGroups.size();
 		}
 
-		QString getFirstCheckedLightFrame();
+		QString getFirstCheckedLightFrame() const;
 
-		inline QString groupName(std::uint16_t id) const noexcept
+		inline QString groupName(const int id) const
 		{
 			return imageGroups[id].name();
 		}
-		size_t checkedImageCount(const PICTURETYPE type, const int16_t id = -1) const;
 
-		size_t countUnregisteredCheckedLightFrames(int id = -1) const;
+		size_t checkedImageCount(const PICTURETYPE type, const int id = -1) const;
+
+		size_t countUnregisteredCheckedLightFrames(const int id = -1) const;
 
 		void fillTasks(CAllStackingTasks& tasks);
 
-		bool isLightFrame(QString name) const;
-		bool isChecked(QString name) const;
-		bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const;
+		bool isLightFrame(const QString name) const;
+
+		bool isChecked(const QString name) const;
+
+		bool getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const;
 
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		FrameList& beginInsertRows(int count);
+		FrameList& beginInsertRows(const int count);
 		FrameList& endInsertRows();
-		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, [[maybe_unused]] int nItem = -1);
 
-		void blankCheckedItemScores();
+		bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
 
-		bool areCheckedImagesCompatible(QString& reason);
+		void blankCheckedItemScores() const;
+
+		bool areCheckedImagesCompatible(QString& reason) const;
 
 		void updateCheckedItemScores();
 
 		void updateItemScores(const QString& fileName);
 
-		QString getReferenceFrame();
-		bool getReferenceFrame(CString& string);
+		QString getReferenceFrame() const;
+		bool getReferenceFrame(CString& string) const;
 
 		void clearOffsets();
 
 		void clearOffset(fs::path file);
 
-		void updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& bilinearParameters, const VOTINGPAIRVECTOR vVotedPairs);
+		void updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& bilinearParameters, const VOTINGPAIRVECTOR& vVotedPairs);
 
 		inline bool dirty() const
 		{
@@ -136,16 +132,16 @@ namespace DSS
 				if (g.dirty()) return true;
 			}
 			return false;
-		};
+		}
 
-		inline FrameList& setDirty(bool value = false) noexcept
+		inline FrameList& setDirty(const bool value = false) noexcept
 		{
 			for (auto& g : imageGroups)
 			{
 				g.setDirty(value);
-			};
+			}
 			return *this;
-		};
+		}
 
 		inline ImageListModel* currentTableModel()
 		{
@@ -155,10 +151,10 @@ namespace DSS
 		inline void removeFromMap(fs::path file)
 		{
 			Group::removeFromMap(file);
-		};
+		}
 
 		// Change the name of the specified group
-		void setGroupName(std::uint16_t id, const QString& name);
+		void setGroupName(int id, const QString& name);
 
 		//
 		// retranslate group names unless changed
@@ -166,5 +162,4 @@ namespace DSS
 		void retranslateUi();
 
 	};
-};
-
+}
