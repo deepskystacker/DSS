@@ -408,6 +408,13 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 	if (it != m_vSettings.end())
 	{
 		//
+		// Special Case for Stacking/Mosaic - don't allow Custom mode
+		// 
+		if ("Stacking/Mosaic" == keyName && "2" == value)
+		{
+			value.setNum(static_cast<int>(SM_INTERSECTION)); // Force Intersection mode
+		}
+		//
 		// In all cases when we enter here the variable "value" will be
 		// a QString.
 		// We need to convert it to the same type as is currently stored
