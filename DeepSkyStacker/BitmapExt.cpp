@@ -83,6 +83,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
 		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pInBitmap);
 
+		ZASSERTSTATE(nullptr != pCFABitmapInfo);
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 		{
 			// AHD Demosaicing of the image
@@ -234,6 +235,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 			CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(AllDepthBitmap.m_pBitmap.get());
 
+			ZASSERTSTATE(nullptr != pCFABitmapInfo);
 			if (pBitmap->IsCFA())
 			{
 				if (AllDepthBitmap.m_bDontUseAHD && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
@@ -1571,7 +1573,7 @@ void C32BitsBitmap::SetPixel(int x, int y, COLORREF crColor)
 	if ((x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
 	{
 		pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
-		RGBQUAD rgbq;
+		alignas(std::uint32_t) RGBQUAD rgbq;
 
 		rgbq.rgbRed = GetRValue(crColor);
 		rgbq.rgbGreen = GetGValue(crColor);

@@ -980,7 +980,7 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
 		};
 	}
-	catch (ZException e)
+	catch (ZException& e)
 	{
 		CString errorMessage;
 		CString name(CA2CT(e.name()));
@@ -1224,7 +1224,7 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
-	catch (ZException e)
+	catch (ZException& e)
 	{
 		CString errorMessage;
 		CString name(CA2CT(e.name()));

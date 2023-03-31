@@ -1644,8 +1644,16 @@ public:
 	CStackTask() = delete;
 	~CStackTask() = default;
 	CStackTask(CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+		m_pStackingEngine {nullptr},
+		m_pProgress{ pProgress },
+		m_vLockedPixels{},
+		m_EntropyWindow {},
 		m_pBitmap{ pBitmap },
-		m_pProgress{ pProgress }
+		m_PixTransform{},
+		m_pLightTask { nullptr },
+		m_BackgroundCalibration {},
+		m_rcResult{},
+		m_pAvxEntropy { nullptr }
 	{}
 
 	void process();

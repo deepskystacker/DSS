@@ -154,9 +154,9 @@ namespace DSS
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet = bmpInfo.m_bComet;
 					lb.m_SkyBackground = bmpInfo.m_SkyBackground;
-					lb.m_bUseAsStarting = (lb.m_PictureType == PICTURETYPE_REFLIGHTFRAME);
+					lb.m_bUseAsStarting = (PictureType == PICTURETYPE_REFLIGHTFRAME);
 				}
-			};
+			}
 
 			lb.m_strSizes = QString("%1 x %2").arg(lb.m_lWidth).arg(lb.m_lHeight);
 

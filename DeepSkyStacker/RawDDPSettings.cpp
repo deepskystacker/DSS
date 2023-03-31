@@ -351,8 +351,8 @@ void RawDDPSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 
@@ -432,6 +432,8 @@ void RawDDPSettings::onInitDialog()
 			ui->DSLRs->setCurrentIndex(row);
 		}
 	}
+
+	connect(ui->DSLRs, SIGNAL(currentIndexChanged(int)), this, SLOT(DSLRs_currentIndexChanged(int)));
 
 	updateBayerPattern().updateControls();
 
@@ -654,7 +656,7 @@ void RawDDPSettings::on_isFITSRaw_clicked(bool checked)
 	updateControls();
 }
 
-void RawDDPSettings::on_DSLRs_currentIndexChanged(int)
+void RawDDPSettings::DSLRs_currentIndexChanged(int)
 {
 	workspace->setValue("FitsDDP/DSLR", ui->DSLRs->currentText());
 	workspace->setValue("FitsDDP/BayerPattern", ui->DSLRs->currentData().toUInt());

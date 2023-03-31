@@ -957,6 +957,8 @@ namespace DSS
 						fs::remove(imageModel->mydata[row].filePath); // erase the file
 					}
 					break;
+				default:
+					break;
 				}
 			}
 
@@ -1573,6 +1575,8 @@ namespace DSS
 			extension = settings.value("Folders/AddDarkFlatExtension").toString();
 			filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
 			break;
+		default:
+			break;
 		}
 
 		if (directory.isEmpty())
@@ -1687,6 +1691,8 @@ namespace DSS
 				settings.setValue("Folders/AddDarkFlatFolder", directory);
 				settings.setValue("Folders/AddDarkFlatExtension", extension);
 				settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
+				break;
+			default:
 				break;
 			}
 

@@ -879,8 +879,8 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 	m_Gradient.setStops(stops);
 
 	//Select the previous peg
-	if (selectedPeg == STARTPEG) selectedPeg = STARTPEG;
-	else selectedPeg--;
+	if (!STARTPEG == selectedPeg)
+		selectedPeg--;
 	if (selectedPeg < 1) selectedPeg = STARTPEG;
 
 	if (bUpdate)
