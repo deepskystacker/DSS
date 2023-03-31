@@ -314,9 +314,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DeepSkyStackerLive.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -679,6 +676,9 @@
   <ItemGroup>
     <QtMoc Include="..\DeepSkyStacker\ImageListModel.h">
       <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="DeepSkyStackerLive.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

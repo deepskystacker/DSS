@@ -369,7 +369,7 @@
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
-    <ClInclude Include="DeepSkyStackerLive.h" />
+    <QtMoc Include="DeepSkyStackerLive.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <ClInclude Include="EmailSettings.h" />
     <ClInclude Include="GraphView.h" />
