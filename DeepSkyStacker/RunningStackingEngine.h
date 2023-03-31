@@ -1,10 +1,9 @@
-#ifndef __RUNNINGSTACKINGENGINE_H__
-#define __RUNNINGSTACKINGENGINE_H__
-
-#include "RegisterEngine.h"
-#include "PixelTransform.h"
+#pragma once
 #include "BackgroundCalibration.h"
+#include "MatchingStars.h"
 
+class CMemoryBitmap;
+class CLightFrameInfo;
 class CRunningStackingEngine
 {
 private:
@@ -49,4 +48,3 @@ public:
 	}
 };
 
-#endif

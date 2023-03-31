@@ -1,10 +1,9 @@
-#include "StdAfx.h" 
+#include "stdafx.h" 
 #include "avx_entropy.h" 
-#include "avx_support.h" 
-#include "avx_cfa.h" 
-#include "avx_histogram.h" 
-#include <immintrin.h> 
-#include <omp.h> 
+#include "avx_support.h"
+#include "avx_cfa.h"
+#include "avx_histogram.h"
+#include "Multitask.h"
 
 AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
 	inputBitmap{ inputbm },

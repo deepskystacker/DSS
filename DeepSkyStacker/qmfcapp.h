@@ -41,8 +41,7 @@
 
 // Declaration of the QMfcApp classes
 
-#ifndef QMFCAPP_H
-#define QMFCAPP_H
+#pragma once
 
 #include <QApplication>
 
@@ -107,4 +106,3 @@ private:
     bool doIdle;
 };
 
-#endif // QMFCAPP_H

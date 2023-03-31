@@ -1,14 +1,14 @@
 #include "stdafx.h"
 
+
 #if defined(_WINDOWS)
 
-#include <errhandlingapi.h>
-#include <ZExcept.h>
-#include <thread>
-#include <inttypes.h>
 #include "StackWalker.h"
+#include "Ztrace.h"
+#include "tracecontrol.h"
 
 extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
 
 namespace {
 
@@ -79,6 +79,7 @@ namespace {
 
 	long WINAPI DssCriticalExceptionHandler(EXCEPTION_POINTERS* pExc)
 	{
+		traceControl.setDeleteOnExit(false);
 		constexpr auto returnCode = EXCEPTION_CONTINUE_SEARCH; // should show the error pop-up message box
 		const EXCEPTION_RECORD* exc = pExc->ExceptionRecord;
 		const std::uint32_t excCode = exc->ExceptionCode;

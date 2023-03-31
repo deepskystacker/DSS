@@ -1,9 +1,6 @@
-#ifndef EXPLORERBAR_H
-#define EXPLORERBAR_H
-
-#include <QDockWidget>
+#pragma once
 #include "mrupath.h"
-//#include "ClickLabel.h"
+#include "DSSCommon.h"
 
 namespace Ui {
 class ExplorerBar;
@@ -83,6 +80,8 @@ private slots:
     void onAbout();
 	void onHelp();
 
+	void onToggleDeletion();
+
 
 private:
     Ui::ExplorerBar *ui;
@@ -98,4 +97,3 @@ private:
 	void onInitDialog();
 };
 
-#endif // EXPLORERBAR_H

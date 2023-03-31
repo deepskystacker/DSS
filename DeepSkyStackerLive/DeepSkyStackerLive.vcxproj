@@ -90,7 +90,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
@@ -105,7 +105,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -139,7 +139,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
@@ -151,7 +151,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -194,23 +194,36 @@
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Bayer.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BilinearParameters.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BitmapInfo.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\ColorBitmap.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\ColorHelpers.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\ColorMultiBitmap.cpp" />
     <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Delaunay.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp" />
     <ClCompile Include="..\DeepSkyStacker\EntropyInfo.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\File.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Filters.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FITSUtil.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\GrayBitmap.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\GreyMultiBitmap.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\group.cpp" />
     <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\ImageSinks.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\MemoryBitmap.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Multitask.cpp" />
     <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp" />
@@ -220,6 +233,7 @@
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
     <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp" />
     <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\TaskInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
     <ClCompile Include="..\SMTP\Base64.cpp" />
@@ -290,29 +304,42 @@
     <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_support.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
+    <ClInclude Include="..\DeepSkyStacker\Bayer.h" />
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
+    <ClInclude Include="..\DeepSkyStacker\BilinearParameters.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapBase.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
     <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h" />
+    <ClInclude Include="..\DeepSkyStacker\BitmapInfo.h" />
+    <ClInclude Include="..\DeepSkyStacker\ColorBitmap.h" />
+    <ClInclude Include="..\DeepSkyStacker\ColorHelpers.h" />
+    <ClInclude Include="..\DeepSkyStacker\ColorMultiBitmap.h" />
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />
     <ClInclude Include="..\DeepSkyStacker\DarkFrame.h" />
     <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />
+    <ClInclude Include="..\DeepSkyStacker\Delaunay.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSCommon.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSProgress.h" />
     <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSTools.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSVersion.h" />
     <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h" />
+    <ClInclude Include="..\DeepSkyStacker\File.h" />
     <ClInclude Include="..\DeepSkyStacker\Filters.h" />
     <ClInclude Include="..\DeepSkyStacker\FITSUtil.h" />
     <ClInclude Include="..\DeepSkyStacker\FlatFrame.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
+    <ClInclude Include="..\DeepSkyStacker\GrayBitmap.h" />
+    <ClInclude Include="..\DeepSkyStacker\GreyMultiBitmap.h" />
+    <ClInclude Include="..\DeepSkyStacker\group.h" />
     <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
     <QtMoc Include="..\DeepSkyStacker\ImageListModel.h" />
+    <ClInclude Include="..\DeepSkyStacker\ImageSinks.h" />
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
     <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
     <ClInclude Include="..\DeepSkyStacker\MedianFilterEngine.h" />
+    <ClInclude Include="..\DeepSkyStacker\MemoryBitmap.h" />
     <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h" />
     <ClInclude Include="..\DeepSkyStacker\Multitask.h" />
     <ClInclude Include="..\DeepSkyStacker\PixelTransform.h" />
@@ -324,6 +351,7 @@
     <ClInclude Include="..\DeepSkyStacker\StackedBitmap.h" />
     <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
     <ClInclude Include="..\DeepSkyStacker\Stars.h" />
+    <ClInclude Include="..\DeepSkyStacker\TaskInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
     <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
     <ClInclude Include="..\SMTP\Base64.h" />
@@ -339,11 +367,9 @@
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
-    <ClInclude Include="..\Tools\memdc.h" />
-    <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
-    <ClInclude Include="DeepSkyStackerLive.h" />
+    <QtMoc Include="DeepSkyStackerLive.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <ClInclude Include="EmailSettings.h" />
     <ClInclude Include="GraphView.h" />

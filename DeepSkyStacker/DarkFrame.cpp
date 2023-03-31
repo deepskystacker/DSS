@@ -1,25 +1,16 @@
 #include <stdafx.h>
-#include <set>
-#include <algorithm>
-#include <omp.h>
-#include <ZExcept.h>
-#include <QPoint>
-
-#include "resource.h"
-#include "dssrect.h"
 #include "DarkFrame.h"
-
+#include "Ztrace.h"
 #include "DSSProgress.h"
-#include "Histogram.h"
+#include "MemoryBitmap.h"
 #include "Filters.h"
+#include "Histogram.h"
 #include "BitmapIterator.h"
+#include "Multitask.h"
+#include "CFABitmapInfo.h"
+#include "StackingTasks.h"
 
-#include "TIFFUtil.h"
-
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
+using namespace DSS;
 
 /* ------------------------------------------------------------------- */
 
@@ -1944,3 +1935,15 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase* 
 
 	return true;
 }
+
+void CDarkFrame::Reset(std::shared_ptr<CMemoryBitmap> pMaster)
+{
+	m_bDarkOptimization = CAllStackingTasks::GetDarkOptimization();
+	m_bHotPixelsDetection = CAllStackingTasks::GetHotPixelsDetection();
+	m_bBadLinesDetection = CAllStackingTasks::GetBadLinesDetection();
+	m_fDarkFactor = CAllStackingTasks::GetDarkFactor();
+	m_bHotPixelDetected = false;
+	m_pMasterDark = pMaster;
+	m_vHotPixels.clear();
+}
+

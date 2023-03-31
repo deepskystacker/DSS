@@ -1,4 +1,5 @@
 #pragma once
+#include "commonresource.h"
 
 
 // CStarMaskDlg dialog

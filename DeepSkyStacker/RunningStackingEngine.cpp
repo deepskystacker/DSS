@@ -1,22 +1,14 @@
 #include <stdafx.h>
-
-#include <math.h>
-#define _USE_MATH_DEFINES
-#include <cmath>
-
-#include <QPoint>
-#include <QPointF>
-#include "resource.h"
-
-#include "dssrect.h"
-
 #include "RunningStackingEngine.h"
-
-#include "MatchingStars.h"
-#include "PixelTransform.h"
+#include "Ztrace.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 #include "BitmapIterator.h"
-
-
+#include "StackingTasks.h"
+#include "FrameInfo.h"
+#include "PixelTransform.h"
+#include "Stars.h"
+#include "RegisterEngine.h"
 
 
 

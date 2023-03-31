@@ -1,11 +1,8 @@
-#ifndef _TIFFUTIL_H__
-#define _TIFFUTIL_H__
+#pragma once
 
 /* ------------------------------------------------------------------- */
-#include "DSSTools.h"
-#include "BitmapExt.h"
-#include "DSSProgress.h"
-#include <tiffio.h>
+#include "cfa.h"
+#include "DSSCommon.h"
 
 const int	TIFFTAG_DSS_BASE			= 50000;
 const int	TIFFTAG_DSS_NRFRAMES		= (TIFFTAG_DSS_BASE + 0);
@@ -47,34 +44,8 @@ protected:
 	SYSTEMTIME			m_DateTime;
 
 public :
-	CTIFFHeader()
-	{
-		TIFFSetWarningHandler(nullptr);
-		TIFFSetWarningHandlerExt(nullptr);
-		//TIFFSetErrorHandler(nullptr);
-		//TIFFSetErrorHandlerExt(nullptr);
-		DSSTIFFInitialize();
-		samplemax = 1.0;
-		samplemin = 0.0;
-		exposureTime = 0.0;
-		aperture = 0.0;
-		isospeed = 0;
-		gain = -1;
-		cfatype  = 0;
-		cfa      = 0;
-		nrframes = 0;
-		m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0};
-        w = 0;
-        h = 0;
-        spp = 0;
-        bps = 0;
-        photo = 0;
-        compression = 0;
-        planarconfig = 0;
-        sampleformat = 0;
-        master = 0;
-	};
-	virtual ~CTIFFHeader() {};
+	CTIFFHeader();
+	virtual ~CTIFFHeader() = default;
 
 public :
 	bool	IsCFA()
@@ -92,10 +63,7 @@ public :
 		return master;
 	};
 
-	bool	IsFloat()
-	{
-		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
-	};
+	bool IsFloat();
 
 	int	Height()
 	{
@@ -196,6 +164,9 @@ public :
 	};
 };
 
+typedef struct tiff TIFF;
+namespace DSS { class ProgressBase; }
+using namespace DSS;
 class CTIFFReader : public CTIFFHeader
 {
 public :
@@ -240,29 +211,10 @@ public:
 
 protected:
 	void SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster);
-	void SetCompression(TIFFCOMPRESSION tiffcomp)
-	{
-		compression = COMPRESSION_NONE;
-		switch (tiffcomp)
-		{
-		case TC_LZW :
-			compression = COMPRESSION_LZW;
-			break;
-		case TC_DEFLATE :
-			compression = COMPRESSION_DEFLATE;
-			break;
-		};
-	};
+	void SetCompression(TIFFCOMPRESSION tiffcomp);
 
 public:
-	CTIFFWriter(LPCTSTR szFileName, ProgressBase* pProgress) :
-		m_tiff{ nullptr },
-		m_strFileName{ szFileName },
-		m_pProgress{ pProgress },
-		m_Format{ TF_UNKNOWN }
-	{
-		compression = COMPRESSION_NONE;
-	}
+	CTIFFWriter(LPCTSTR szFileName, ProgressBase* pProgress);
 
 	virtual ~CTIFFWriter()
 	{
@@ -290,6 +242,8 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
+class CBitmapInfo;
+class CMemoryBitmap;
 
 bool GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress);
@@ -304,4 +258,3 @@ int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 
 /* ------------------------------------------------------------------- */
 
-#endif // _TIFFUTIL_H__

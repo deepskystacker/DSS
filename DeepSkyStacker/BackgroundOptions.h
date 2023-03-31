@@ -1,7 +1,4 @@
-#ifndef BACKGROUNDOPTIONS_H
-#define BACKGROUNDOPTIONS_H
-
-#include <QDialog>
+#pragma once
 
 enum BACKGROUNDCALIBRATIONMODE : short;
 enum BACKGROUNDCALIBRATIONINTERPOLATION : short;
@@ -57,5 +54,3 @@ private:
 
     void updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation);
 };
-
-#endif // BACKGROUNDOPTIONS_H

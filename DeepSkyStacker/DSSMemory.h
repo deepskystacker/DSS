@@ -1,15 +1,6 @@
 #pragma once
-#ifndef __DSSMEMORY_H__
-#define __DSSMEMORY_H__
 
 #ifdef _DEBUG
-
-namespace Gdiplus
-{
-	namespace DllExports
-	{
-#include <GdiplusMem.h>
-};
 
 #ifndef _GDIPLUSBASE_H
 #define _GDIPLUSBASE_H
@@ -50,5 +41,3 @@ namespace Gdiplus
 #endif // #ifndef _GDIPLUSBASE_H
 		}
 #endif // #ifdef _DEBUG
-
-#endif // __DSSMEMORY_H__

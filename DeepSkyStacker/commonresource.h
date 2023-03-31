@@ -3,7 +3,7 @@
 // Used by DeepSkyStacker.rc
 //
 #define IDC_DELETE                      2
-#define IDC_STOP                        3
+//#define IDC_STOP                        3
 #define IDC_ADD                         3
 #define IDC_LOAD                        4
 #define IDD_DEEPSTACKER                 101
@@ -17,7 +17,7 @@
 #define IDI_OPENFILE                    108
 #define IDI_UNDO                        109
 #define IDI_REDO                        110
-#define IDD_PROGRESS                    111
+//#define IDD_PROGRESS                    111
 #define IDD_SETTINGS                    112
 #define IDI_SETTINGS                    113
 #define IDD_SATURATION                  113
@@ -68,7 +68,7 @@
 #define IDB_IMAGELIST_CFA_RGB           157
 #define IDB_BITMAP4                     158
 #define IDB_IMAGELIST_COLOR             158
-#define IDB_BITMAP1                     160
+//#define IDB_BITMAP1                     160
 #define IDB_IMAGELIST_MASK              160
 #define IDD_DROPFILES                   162
 #define IDD_STACKINGINTERMEDIATE        163
@@ -136,7 +136,7 @@
 #define IDS_COLUMN_EXPOSURE             213
 #define IDB_RGBCALIBRATION_MINIMUM      213
 #define IDS_COLUMN_STARS                214
-#define IDB_4CORNERS                    216
+//#define IDB_4CORNERS                    216
 #define IDB_INTERSECTIONMODE            217
 #define IDS_TYPE_LIGHT                  300
 #define IDS_TYPE_DARK                   301

@@ -1,8 +1,4 @@
-#ifndef ABOUT_H
-#define ABOUT_H
-
-#include <QDialog>
-
+#pragma once
 namespace Ui {
 class About;
 }
@@ -57,5 +53,3 @@ private:
 
 	void onInitDialog();
 };
-
-#endif // ABOUT_H

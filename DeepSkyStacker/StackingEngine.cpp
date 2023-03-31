@@ -5,7 +5,6 @@
 #include "MatchingStars.h"
 #include "PixelTransform.h"
 #include "EntropyInfo.h"
-#include <math.h>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "Multitask.h"
@@ -13,17 +12,20 @@
 #include "Filters.h"
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
-#include <iostream>
 #include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
-#include <omp.h>
-#include <QRectF>
-#include <future>
+#include "Ztrace.h"
+#include "Workspace.h"
+#include "File.h"
+#include "MultiBitmap.h"
+#include "ColorBitmap.h"
+#include "ColorMultiBitmap.h"
+#include "GreyMultiBitmap.h"
+#include "AHDDemosaicing.h"
 
 
 #define _USE_MATH_DEFINES
-#include <cmath>
 
 #ifndef M_PI
 #define M_PI			3.14159265358979323846
@@ -1763,8 +1765,16 @@ public:
 	CStackTask() = delete;
 	~CStackTask() = default;
 	CStackTask(CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+		m_pStackingEngine {nullptr},
+		m_pProgress{ pProgress },
+		m_vLockedPixels{},
+		m_EntropyWindow {},
 		m_pBitmap{ pBitmap },
-		m_pProgress{ pProgress }
+		m_PixTransform{},
+		m_pLightTask { nullptr },
+		m_BackgroundCalibration {},
+		m_rcResult{},
+		m_pAvxEntropy { nullptr }
 	{}
 
 	void process();
@@ -2201,7 +2211,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	m_vCometShifts.clear();
 	try
 	{
-		STACKINGMODE stackingMode = static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt());
+		STACKINGMODE stackingMode = tasks.getStackingMode();
 
 		switch (stackingMode)
 		{
@@ -2253,7 +2263,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 		case SM_CUSTOM:
 		{
-			tasks.GetCustomRectangle(m_rcResult);
+			tasks.getCustomRectangle(m_rcResult);
 			m_rcResult.left *= m_lPixelSizeMultiplier;
 			m_rcResult.right *= m_lPixelSizeMultiplier;
 			m_rcResult.top *= m_lPixelSizeMultiplier;
@@ -2795,7 +2805,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 		hFile = _tfopen(strOutputFile, _T("wt"));
 		if (hFile)
 		{
-			CString			strText;
+			CString	strText;
+			QString strTempText;
 
 			_tsplitpath(strOutputFile, nullptr, nullptr, szName, nullptr);
 
@@ -2813,7 +2824,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			// Stacking Mode
 			strText.Format(IDS_RECAP_STACKINGMODE);
 			fprintf(hFile, "%s", (LPCSTR)CT2CA(strText, CP_UTF8));
-			switch (STACKINGMODE stackingMode = static_cast<STACKINGMODE>(Workspace().value("Stacking/Mosaic", uint(0)).toUInt()))
+			switch (tasks.getStackingMode())
 			{
 			case SM_NORMAL :
 				strText.Format(IDS_RECAP_STACKINGMODE_NORMAL);
@@ -2963,7 +2974,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						fprintf(hFile, "<ul>");
 						strText.Format(IDS_RECAP_METHOD);
 						fprintf(hFile, CT2CA(strText, CP_UTF8));
-						FormatFromMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
+						FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
+						strText = strTempText.toStdWString().c_str();
 						fprintf(hFile, CT2CA(strText, CP_UTF8));
 						fprintf(hFile, "</ul>");
 
@@ -2993,7 +3005,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
@@ -3036,7 +3049,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};
@@ -3094,7 +3108,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, (LPCSTR)CT2CA(strText+"<br>", CP_UTF8));
-							FormatFromMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
@@ -3136,7 +3151,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
-							FormatFromMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+							FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+							strText = strTempText.toStdWString().c_str();
 							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};

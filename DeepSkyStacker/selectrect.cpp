@@ -33,32 +33,11 @@
 **
 **
 ****************************************************************************/
-#include <QDebug>
-#include <QGuiApplication> 
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPen>
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-
-#include "ZTrace.h"
-#include "zexcept.h"
-
-extern bool		g_bShowRefStars;
-
-#include "imageview.h"
+#include "stdafx.h"
 #include "selectrect.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "DeepSkyStacker.h"
+#include "imageview.h"
 #include "StackingDlg.h"
+#include "DeepSkyStacker.h"
 
 enum class SelectionMode : quint8
 {

@@ -1,13 +1,10 @@
 #include <stdafx.h>
-#include <ZExcept.h>
 #include "MatchingStars.h"
-#include <algorithm>
-#include "Workspace.h"
+#include "ZExcept.h"
 
 #define _NO_EXCEPTION
-//#define _NO_TEMPLATE
-//#include <stdexcept>
 #include "Matrix.h"
+#include "Workspace.h"
 
 constexpr int		MINPAIRSTOBISQUARED = 25;
 constexpr int		MINPAIRSTOBICUBIC	= 40;

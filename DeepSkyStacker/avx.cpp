@@ -1,10 +1,13 @@
-#include "StdAfx.h"
-#include <QCoreApplication>
+#include "stdafx.h"
 #include "avx_support.h"
 #include "dssrect.h"
 #include "avx.h"
-#include <immintrin.h>
-#include <stdexcept>
+#include "PixelTransform.h"
+#include "BilinearParameters.h"
+#include "TaskInfo.h"
+#include "BackgroundCalibration.h"
+#include "avx_entropy.h"
+#include "EntropyInfo.h"
 
 AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },

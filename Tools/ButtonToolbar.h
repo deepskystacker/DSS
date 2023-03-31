@@ -1,8 +1,4 @@
-#ifndef __BUTTONTOOLBAR_H__
-#define __BUTTONTOOLBAR_H__
-
-#include <gdiplus.h>
-using namespace Gdiplus;
+#pragma once
 
 const		LONG				BUTTONTOOLBARSIZE = 48;
 
@@ -329,4 +325,3 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-#endif

@@ -34,8 +34,7 @@
 \*===================================================*/
 
 
-#ifndef __EASYSIZE_H_
-#define __EASYSIZE_H_
+#pragma once
 #define ES_BORDER 0xffffffff
 #define ES_KEEPSIZE 0xfffffffe
 #define ES_HCENTER 0x00000001
@@ -93,4 +92,3 @@ else if(t==ES_KEEPSIZE) { __ES__CalcBottomRight(this,TRUE,bottom,top,id,b,id##_e
 if(t != ES_KEEPSIZE) __ES__CalcBottomRight(this,TRUE,bottom,top,id,b,id##_es_b,rect,client.bottom);}\
 GetDlgItem(id)->MoveWindow(left,top,right-left,bottom-top,FALSE);\
 }
-#endif //__EASYSIZE_H_

@@ -1,11 +1,4 @@
-#ifndef __WORKSPACE_H__
-#define __WORKSPACE_H__
-
-#include <filesystem>
-#include <memory>
-#include <QString>
-#include <QVariant>
-namespace fs = std::filesystem;
+#pragma once
 
 class WorkspaceSettings;
 
@@ -108,4 +101,3 @@ public:
 	void Pop(bool bRestore = true);
 };
 
-#endif // __WORKSPACE_H__

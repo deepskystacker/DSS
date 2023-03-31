@@ -1,12 +1,31 @@
 #include <stdafx.h>
-#include "resource.h"
 #include "FlatFrame.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
 #include "Multitask.h"
+#include "DSSProgress.h"
+#include "MemoryBitmap.h"
+#include "CFABitmapInfo.h"
+#include "Ztrace.h"
+#include "resource.h"
 
-#include <omp.h>
+using namespace DSS;
 
+bool CFlatFrame::IsOk() const
+{
+	return static_cast<bool>(m_pFlatFrame) && m_pFlatFrame->IsOk();
+}
+
+bool CFlatFrame::IsCFA() const
+{
+	if(m_pFlatFrame.get())
+		return m_pFlatFrame->IsCFA();
+	return false;
+}
+
+void CFlatFrame::Clear()
+{
+	m_bComputed = false;
+	m_pFlatFrame.reset();
+}
 
 bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress)
 {

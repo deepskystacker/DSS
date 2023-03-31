@@ -1,24 +1,15 @@
 #include <stdafx.h>
-
-#include <QCoreApplication>
-#include <QDebug>
-#if defined (_CONSOLE)
-#include <iostream>
-#else
-#include <QMessageBox>
-#endif
-#include "resource.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
-#include "RegisterEngine.h"
-#include "Workspace.h"
-#include <direct.h>
-#include <QSettings>
 #include "ZExcept.h"
+#include "StackingTasks.h"
+#include "Workspace.h"
+#include "Ztrace.h"
+#include "RegisterEngine.h"
 
 namespace {
 
-	bool parseLine(QString line, std::int32_t& lChecked, QString& strType, QString& strFile)
+	bool parseLine(QString line, int& lChecked, QString& strType, QString& strFile)
 	{
 		bool result = false;
 
@@ -41,9 +32,9 @@ namespace {
 		return result;
 	}
 
-	bool	isChangeGroupLine(QString line, int16_t& groupId, QString& groupName)
+	bool isChangeGroupLine(QString line, int& groupId, QString& groupName)
 	{
-		bool				bResult = false;
+		bool bResult = false;
 
 		if (line.left(9) == "#GROUPID#")
 		{
@@ -71,22 +62,22 @@ namespace {
 
 namespace DSS
 {
-	size_t FrameList::checkedImageCount(const PICTURETYPE type, const int16_t id) const
+	size_t FrameList::checkedImageCount(const PICTURETYPE type, const int id) const
 	{
 		size_t result = 0;
 
 		// Iterate over all groups.
-		for (auto i = 0; i != imageGroups.size(); ++i)
+		for (int i = 0; i != imageGroups.size(); ++i)
 		{
 			// If the group number passed in was -1 then want to count the number of
 			// checked images of the relevant type in ALL groups.  Otherwise only
 			// count checked images for the passed group number.
 			if (-1 == id || id == i)
 			{
-				for (auto it = imageGroups[i].pictures->cbegin();
-					it != imageGroups[i].pictures->cend(); ++it)
+				for (auto it = imageGroups[i].pictures->cbegin(); it != imageGroups[i].pictures->cend(); ++it)
 				{
-					if (it->m_PictureType == type && it->m_bChecked == Qt::Checked) ++result;
+					if (it->m_PictureType == type && it->m_bChecked == Qt::Checked)
+						++result;
 				}
 			}
 		}
@@ -94,7 +85,7 @@ namespace DSS
 		return result;
 	}
 
-	size_t FrameList::countUnregisteredCheckedLightFrames(int id) const
+	size_t FrameList::countUnregisteredCheckedLightFrames(const int id) const
 	{
 		size_t result = 0;
 
@@ -106,17 +97,15 @@ namespace DSS
 			// count checked images for the passed group number.
 			if (-1 == id || id == static_cast<int>(group.index()))
 			{
-				for (auto it = group.pictures->cbegin();
-					it != group.pictures->cend(); ++it)
+				for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 				{
-					if (it->IsLightFrame() &&
-						it->m_bChecked == Qt::Checked &&
-						!it->m_bRegistered)	++result;
-				};
+					if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && !it->m_bRegistered)
+						++result;
+				}
 			}
 		}
 		return result;
-	};
+	}
 
 
 
@@ -124,13 +113,13 @@ namespace DSS
 	{
 		for (auto& group : imageGroups)
 		{
-			int row = 0; int groupIndex = group.index();
-			for (auto it = group.pictures->begin();
-				it != group.pictures->end(); ++it)
+			int row = 0;
+
+			for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it)
 			{
 				if (it->IsLightFrame())
 					it->m_bDeltaComputed = false;
-				if (index == groupIndex)
+				if (index == static_cast<int>(group.index()))
 				{
 					//
 					// Tell the table view which columns have been impacted
@@ -148,11 +137,11 @@ namespace DSS
 		imageGroups[index].pictures->emitChanged(0, imageGroups[index].pictures->rowCount(),
 			static_cast<int>(Column::dX),
 			static_cast<int>(Column::Angle));
-	};
+	}
 
 	void FrameList::clearOffset(fs::path file)
 	{
-		int group = Group::whichGroupContains(file);
+		const int group = Group::whichGroupContains(file);
 
 		ZASSERTSTATE(-1 != group);
 		int row = 0;
@@ -165,29 +154,33 @@ namespace DSS
 				// Ask the Table Model to tell the table view which rows/columns have changed
 				//
 				if (index == group)
+				{
 					imageGroups[group].pictures->emitChanged(row, row,
 						static_cast<int>(Column::dX),
 						static_cast<int>(Column::Angle));
+				}
 				return;
 			}
 			++row;
 		}
-	};
+	}
 
-	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR vVotedPairs)
+	void FrameList::updateOffset(fs::path file, double xOffset, double yOffset, double angle, const CBilinearParameters& transform, const VOTINGPAIRVECTOR& vVotedPairs)
 	{
-		int group = Group::whichGroupContains(file);
+		const int group = Group::whichGroupContains(file);
 
 		ZASSERTSTATE(-1 != group);
+		auto& pics = imageGroups[group].pictures;
+
 		int row = 0;
-		for (auto it = imageGroups[group].pictures->begin(); it != imageGroups[group].pictures->end(); ++it)
+		for (auto it = pics->begin(); it != pics->end(); ++it)
 		{
 			if (file == it->filePath)
 			{
 				it->m_bDeltaComputed = true;
-				imageGroups[group].pictures->setData(row, Column::dX, xOffset);
-				imageGroups[group].pictures->setData(row, Column::dY, yOffset);
-				imageGroups[group].pictures->setData(row, Column::Angle, angle);
+				pics->setData(row, Column::dX, xOffset);
+				pics->setData(row, Column::dY, yOffset);
+				pics->setData(row, Column::Angle, angle);
 				it->m_Transformation = transform;
 				it->m_vVotedPairs = vVotedPairs;
 
@@ -195,18 +188,15 @@ namespace DSS
 			}
 			++row;
 		}
-	};
+	}
 
-	QString FrameList::getReferenceFrame()
+	QString FrameList::getReferenceFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() && 
-					it->m_bChecked == Qt::Checked &&
-					it->m_bUseAsStarting
-					)
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
 				}
@@ -215,26 +205,25 @@ namespace DSS
 		return QString();
 	}
 	
-	bool FrameList::getReferenceFrame(CString& string)
+	bool FrameList::getReferenceFrame(CString& string) const
 	{
 		bool result = false;
 		for (const auto& group : imageGroups)
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() &&
-					it->m_bChecked == Qt::Checked &&
-					it->m_bUseAsStarting
-					)
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
 				{
+					result = true;
 					string = it->filePath.generic_wstring().c_str();
+					return result;
 				}
 			}
 		}
 		return result;
 	}
 
-	QString FrameList::getFirstCheckedLightFrame()
+	QString FrameList::getFirstCheckedLightFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
@@ -243,12 +232,12 @@ namespace DSS
 				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
-				};
-			};
+				}
+			}
 		}
 
 		return QString();
-	};
+	}
 
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
 	{
@@ -258,11 +247,10 @@ namespace DSS
 		double				fMaxScore = -1.0;
 
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
 		{
 			// and then over each image in the group
-			for (auto it = imageGroups[group].pictures->cbegin();
-				it != imageGroups[group].pictures->cend(); ++it)
+			for (auto it = imageGroups[group].pictures->cbegin(); it != imageGroups[group].pictures->cend(); ++it)
 			{
 				if (it->m_bChecked == Qt::Checked)
 				{
@@ -286,7 +274,7 @@ namespace DSS
 		if (comets > 1 && bReferenceFrameHasComet)
 			tasks.SetCometAvailable(true);
 		tasks.ResolveTasks();
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -300,34 +288,27 @@ namespace DSS
 #endif
 			)
 		{
-			fs::path directory;
-		
-			if (file.has_parent_path())
-				directory = file.parent_path();
-			else
-				directory = file.root_path();
+			const fs::path directory = file.has_parent_path() ? file.parent_path() : file.root_path();
 
 			fprintf(hFile, "DSS file list\n");
 			fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
 
-			uint16_t groupId = 0;
+			decltype(ListBitMap::m_groupId) groupId = 0;
 
-			for (auto &g : imageGroups)
+			for (auto& g : imageGroups)
 			{
 				// and then over each image in the group
-				for (auto it = g.pictures->cbegin();
-					it != g.pictures->cend(); ++it) 
+				for (auto it = g.pictures->cbegin(); it != g.pictures->cend(); ++it) 
 				{
-
-					long	checked{ 0 };
+					int checked = 0;
 					QString type;
 
 					if (groupId != it->m_groupId)
 					{
 						groupId = it->m_groupId;
 						fprintf(hFile, "#GROUPID#%hu\t%s\n", groupId, g.name().toUtf8().constData());
-					};
-					checked = it->m_bChecked == Qt::Checked ? 1L : 0L;
+					}
+					checked = it->m_bChecked == Qt::Checked ? 1 : 0;
 					if (it->IsLightFrame())
 					{
 						if (it->m_bUseAsStarting)
@@ -350,15 +331,18 @@ namespace DSS
 					// If not just leave it as the absolute path.
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
+#pragma warning (suppress:4477)
 					fprintf(hFile, "%ld\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
 						path.generic_u8string().c_str());
 				}
 				g.setDirty(false);
-			};
+			}
 
-			Workspace				workspace;
-
+			//
+			// Save workspace settings
+			//
+			Workspace workspace;
 			workspace.SaveToFile(hFile);
 			workspace.resetDirty();
 
@@ -371,27 +355,21 @@ namespace DSS
 
 	FrameList& FrameList::loadFilesFromList(fs::path fileList)
 	{
-		int16_t groupId = 0;
+		int groupId = 0;
 		std::error_code ec;
 
 		//
 		// Remember current directory and extract directory containing filelist
 		//
-		fs::path directory;
-
-		if (fileList.has_parent_path())
-			directory = fileList.parent_path();
-		else
-			directory = fileList.root_path();
-
-		fs::path oldCWD{ fs::current_path(ec) };		// Save CWD
+		const fs::path directory = fileList.has_parent_path() ? fileList.parent_path() : fileList.root_path();
+		const fs::path oldCWD = fs::current_path(ec); // Save CWD
 
 		if (ec)
 		{
 			ZTRACE_RUNTIME("fs::current_path() failed with error code %ld, %s",
 				ec.value(), ec.message().c_str());
 		}
-		
+
 		if (std::FILE* hFile =
 #if defined(_WINDOWS)
 			_wfopen(fileList.c_str(), L"rt")
@@ -400,7 +378,7 @@ namespace DSS
 #endif
 			)
 		{
-			CHAR			szBuffer[2000];
+			char			charBuffer[10000];
 			QString			strValue;
 			bool			bContinue = false;
 
@@ -415,9 +393,9 @@ namespace DSS
 			}
 
 			// Read scan line
-			if (fgets(szBuffer, sizeof(szBuffer), hFile))
+			if (fgets(charBuffer, sizeof(charBuffer), hFile))
 			{
-				strValue = QString::fromUtf8(szBuffer);
+				strValue = QString::fromUtf8(charBuffer);
 				if (!strValue.compare("DSS file list\n", Qt::CaseInsensitive))
 					bContinue = true;
 			}
@@ -425,27 +403,26 @@ namespace DSS
 			if (bContinue)
 			{
 				bContinue = false;
-				if (fgets(szBuffer, sizeof(szBuffer), hFile))
+				if (fgets(charBuffer, sizeof(charBuffer), hFile))
 				{
-					strValue = QString::fromUtf8(szBuffer);
+					strValue = QString::fromUtf8(charBuffer);
 					if (!strValue.compare("CHECKED\tTYPE\tFILE\n", Qt::CaseInsensitive))
 						bContinue = true;
 				}
-			};
+			}
 
 			if (bContinue)
 			{
 				// Read the file info
-				Workspace			workspace;
-				CHAR				szLine[10000];
+				Workspace workspace;
 
-				while (fgets(szLine, sizeof(szLine), hFile))
+				while (fgets(charBuffer, sizeof(charBuffer), hFile))
 				{
-					std::int32_t checkState(Qt::Unchecked);
+					int checkState = Qt::Unchecked;
 					QString			strType;
 					QString			strFile;
 					QString			strGroupName;
-					QString			strLine{ QString::fromUtf8(szLine).trimmed() };
+					QString			strLine{ QString::fromUtf8(charBuffer).trimmed() };
 
 					bool			bUseAsStarting = false;
 
@@ -459,7 +436,7 @@ namespace DSS
 						// a group
 						//
 						if (groupId == imageGroups.size())
-							static_cast<void>(addGroup());
+							addGroup();
 						ZASSERTSTATE(groupId < (1 + imageGroups.size()));
 
 						setGroup(groupId);	// Select the group in question
@@ -484,7 +461,7 @@ namespace DSS
 						{
 							Type = PICTURETYPE_REFLIGHTFRAME;
 							bUseAsStarting = true;
-						};
+						}
 
 						if (Type != PICTURETYPE_UNKNOWN)
 						{
@@ -525,9 +502,7 @@ namespace DSS
 #if defined(_CONSOLE)
 									std::cerr << errorMessage.toUtf8().constData();
 #else
-									QMessageBox::warning(nullptr, "DeepSkyStacker",
-										errorMessage,
-										QMessageBox::Ok);
+									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
 #endif
 									return *this;
 								}
@@ -539,13 +514,10 @@ namespace DSS
 								}
 							}
 						}
-								
-					};
-				};
-
+					}
+				}
 				workspace.resetDirty();
-			};
-
+			}
 			fclose(hFile);
 		}
 
@@ -554,14 +526,13 @@ namespace DSS
 		return *this;
 	}
 
-	void FrameList::blankCheckedItemScores()
+	void FrameList::blankCheckedItemScores() const
 	{
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		for (auto& group : imageGroups)
 		{
 			// and then over each image in the group
-			for (auto it = imageGroups[group].pictures->begin();
-				it != imageGroups[group].pictures->end(); ++it)
+			for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it)
 			{
 				if (it->m_bChecked == Qt::Checked && it->IsLightFrame())
 				{
@@ -569,27 +540,25 @@ namespace DSS
 				}
 			}
 		}
+	}
 
-	};
-
-	bool FrameList::areCheckedImagesCompatible(QString& reason)
+	bool FrameList::areCheckedImagesCompatible(QString& reason) const
 	{
 		bool				bResult = true;
 		bool				bFirst = true;
-		const ListBitMap* lb{ nullptr };
+		DSS::ImageListModel::const_iterator lb;
 
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size() && true == bResult; ++group)
+		for (const auto& group : imageGroups)
 		{
 			// and then over each image in the group
-			for (auto it = imageGroups[group].pictures->cbegin();
-				it != imageGroups[group].pictures->cend(); ++it)
+			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
 				if (it->m_bChecked == Qt::Checked)
 				{
 					if (bFirst)
 					{
-						lb = &(*it);
+						lb = it;
 						bFirst = false;
 					}
 					else
@@ -606,7 +575,7 @@ namespace DSS
 		}
 
 		return bResult;
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -614,18 +583,15 @@ namespace DSS
 	void FrameList::updateCheckedItemScores()
 	{
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		for (auto& group : imageGroups)
 		{
 			// and then over each image in the group
 			int row = 0;
-			for (auto it = imageGroups[group].pictures->begin();
-				it != imageGroups[group].pictures->end(); ++it, ++row)
+			for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it, ++row)
 			{
-				if (it->m_bChecked == Qt::Checked &&
-					it->IsLightFrame())
+				if (it->m_bChecked == Qt::Checked && it->IsLightFrame())
 				{
-					CLightFrameInfo		bmpInfo;
-
+					CLightFrameInfo bmpInfo;
 					bmpInfo.SetBitmap(it->filePath, false, false);
 
 					//
@@ -641,13 +607,12 @@ namespace DSS
 					if (bmpInfo.m_bInfoOk)
 					{
 						it->m_bRegistered = true;
-						imageGroups[group].pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-						imageGroups[group].pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+						group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
+						group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
-						imageGroups[group].pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
-						imageGroups[group].pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
-						imageGroups[group].pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
-
+						group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
+						group.pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+						group.pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
 					}
 					else
 					{
@@ -661,14 +626,13 @@ namespace DSS
 	void FrameList::updateItemScores(const QString& fileName)
 	{
 		int row = 0;
+		auto& group = imageGroups[index];
 
-		for (auto it = imageGroups[index].pictures->begin();
-			it != imageGroups[index].pictures->end(); ++it)
+		for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it)
 		{
 			if (it->filePath == fs::path(fileName.toStdString()) && it->IsLightFrame())
 			{
-				CLightFrameInfo		bmpInfo;
-
+				CLightFrameInfo bmpInfo;
 				bmpInfo.SetBitmap(it->filePath, false, false);
 
 				//
@@ -684,13 +648,12 @@ namespace DSS
 				if (bmpInfo.m_bInfoOk)
 				{
 					it->m_bRegistered = true;
-					imageGroups[index].pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-					imageGroups[index].pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+					group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
+					group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
-					imageGroups[index].pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
-					imageGroups[index].pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
-					imageGroups[index].pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
-
+					group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
+					group.pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+					group.pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
 				}
 				else
 				{
@@ -700,169 +663,212 @@ namespace DSS
 			++row;
 		}
 	}
+	//
+	// The function template 'checkSelective' is used as a common function for the below checkAllDarks(), checkAllFlats(), etc.
+	// Selector is a non-type-template-parameter, it needs to be invocable (i.e. a lambda).
+	//          It is called to decide, if the current file shall be checked or unchecked (i.e. file.m_bChecked set to a Qt::CheckState).
+	//          It must return a pair<bool, Qt::CheckState>.
+	// checkSelective() accepts a variable number of arguments, which are forwarded to the Selector.
+	//                  By that we can use Selectors with different arguments (used e.g. in checkImage() below).
+	// If the template parameter bool ImmediateReturn is true, the function will be escaped after the first found file.
+	//
+	template <auto Selector, bool ImmediateReturn, typename... Args>
+	requires (std::invocable<decltype(Selector), ListBitMap&, bool, const Args&...>)
+	void FrameList::checkSelective(const bool check, const Args&... args)
+	{
+		for (auto& group : imageGroups)
+		{
+			for (int fileIndex = 0; auto& file : group.pictures->mydata)
+			{
+				if (const auto [fileIncluded, checkState] = Selector(file, check, args...); fileIncluded == true)
+				{
+					file.m_bChecked = checkState;
+					const QModelIndex changedRow = group.pictures->createIndex(fileIndex, 0);
+					group.pictures->dataChanged(changedRow, changedRow, QList<int>{ Qt::CheckStateRole });
+					group.setDirty();
+					if constexpr (ImmediateReturn)
+						return;
+				}
+				++fileIndex;
+			}
+		}
+	}
 
 	void FrameList::checkAll(bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
+		const auto checkState = check ? Qt::Checked : Qt::Unchecked;
+
+		for (auto& group : imageGroups)
 		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
+			for (auto& file : group.pictures->mydata)
 			{
-				auto& file = group.pictures->mydata[idx];
-				if (check) file.m_bChecked = Qt::Checked;
-				else file.m_bChecked = Qt::Unchecked;
+				file.m_bChecked = checkState;
 			}
-			QModelIndex start{ group.pictures->createIndex(0, 0) };
-			QModelIndex end{ group.pictures->createIndex(group.pictures->rowCount(), 0) };
-			QVector<int> role{ Qt::CheckStateRole };
-			group.pictures->dataChanged(start, end, role);
+			group.pictures->dataChanged(
+				group.pictures->createIndex(0, 0),
+				group.pictures->createIndex(group.pictures->rowCount(), 0), 
+				QList<int>{ Qt::CheckStateRole }
+			);
 			group.setDirty();
 		}
 	}
 
 	void FrameList::checkAllDarks(bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsDarkFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsDarkFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsDarkFrame())
+		//		{
+		//			if (check)
+		//				file.m_bChecked = Qt::Checked;
+		//			else
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllFlats(bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsFlatFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsFlatFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsFlatFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllOffsets(bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsOffsetFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
-				QModelIndex start{ group.pictures->createIndex(index, 0) };
-				QModelIndex end{ group.pictures->createIndex(index, 0) };
-				QVector<int> role{ Qt::CheckStateRole };
-				group.pictures->dataChanged(start, end, role);
-			}
-
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsOffsetFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (auto& file : group.pictures->mydata)
+		//	{
+		//		if (file.IsOffsetFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//		}
+		//		QModelIndex start{ group.pictures->createIndex(index, 0) };
+		//		QModelIndex end{ group.pictures->createIndex(index, 0) };
+		//		const QVector<int> role{ Qt::CheckStateRole };
+		//		group.pictures->dataChanged(start, end, role);
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkAllLights(bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsLightFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-				}
-			}
-			group.setDirty();
-		}
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (file.IsLightFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//		}
+		//	}
+		//	group.setDirty();
+		//}
 	}
 
-	void FrameList::checkImage(const QString & image, bool check)
+	void FrameList::checkImage(const QString& image, bool check)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int32_t idx = 0; idx < group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (image == file.m_strFile && file.IsLightFrame())
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-					group.setDirty();
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-					return;
-				}
-			}
-		}
-	};
+		constexpr auto Selector = [](const auto& file, const bool check, const QString& image) {
+			return std::make_pair(image == file.m_strFile && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
+		};
+		checkSelective<Selector, true>(check, image);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (image == file.m_strFile && file.IsLightFrame())
+		//		{
+		//			if (check) 
+		//				file.m_bChecked = Qt::Checked;
+		//			else 
+		//				file.m_bChecked = Qt::Unchecked;
+		//			group.setDirty();
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//			return;
+		//		}
+		//	}
+		//}
+	}
 	/* ------------------------------------------------------------------- */
 
 
-	void FrameList::checkAbove(double threshold)
+	void FrameList::checkAbove(const double threshold)
 	{
-		for (int id = 0; id != imageGroups.size(); ++id)
-		{
-			auto& group = imageGroups[id];
-			for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
-			{
-				auto& file = group.pictures->mydata[idx];
-				if (file.IsLightFrame())
-				{
-					file.m_bChecked = 
-						(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
-					QModelIndex start{ group.pictures->createIndex(idx, 0) };
-					QModelIndex end{ group.pictures->createIndex(idx, 0) };
-					QVector<int> role{ Qt::CheckStateRole };
-					group.pictures->dataChanged(start, end, role);
-				}
-			}
-			group.setDirty();
+		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
+			return std::make_pair(file.IsLightFrame(), file.m_fOverallQuality >= threshold ? Qt::Checked : Qt::Unchecked);
 		};
-
-	};
+		checkSelective<Selector, false>(true, threshold);
+		//for (auto& group : imageGroups)
+		//{
+		//	for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
+		//	{
+		//		auto& file = group.pictures->mydata[idx];
+		//		if (file.IsLightFrame())
+		//		{
+		//			file.m_bChecked =
+		//				(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
+		//			QModelIndex start{ group.pictures->createIndex(idx, 0) };
+		//			QModelIndex end{ group.pictures->createIndex(idx, 0) };
+		//			const QVector<int> role{ Qt::CheckStateRole };
+		//			group.pictures->dataChanged(start, end, role);
+		//		}
+		//	}
+		//	group.setDirty();
+		//}
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -882,56 +888,120 @@ namespace DSS
 		//strFileName = m_vFiles[mItem].m_strFileName;
 		//virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1)
 		//addFile(strFileName, m_dwCurrentGroupID, m_dwCurrentJobID, PictureType, FALSE, nItem);
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
 	void FrameList::checkBest(double fPercent)
 	{
+		ZASSERTSTATE(fPercent >= 0.0);
+
 		std::vector<ScoredLightFrame> lightFrames;
 
-		for (auto & group : imageGroups)
+		for (auto& group : imageGroups)
 		{
 			for (size_t i = 0; i != group.pictures->mydata.size(); ++i)
 			{
 				const auto& file = group.pictures->mydata[i];
 				if (file.IsLightFrame())
-					lightFrames.emplace_back(group.index(),
+				{
+					lightFrames.emplace_back(
+						static_cast<decltype(ScoredLightFrame::group)>(group.index()),
 						static_cast<decltype(ScoredLightFrame::index)>(i),
-						file.m_fOverallQuality);
+						file.m_fOverallQuality
+					);
+				}
 			}
 			group.setDirty();
 		}
 
-		const int last = static_cast<int>(fPercent * lightFrames.size() / 100.0);
+		const size_t last = static_cast<size_t>(fPercent * lightFrames.size() / 100.0);
 		//
 		// Sort in *descending* order (see operator < in class definition)
 		std::sort(lightFrames.begin(), lightFrames.end());
 
 		for (size_t i = 0; i < lightFrames.size(); i++)
 		{
-			auto id = lightFrames[i].group;
-			auto idx = lightFrames[i].index;
+			const auto id = lightFrames[i].group;
+			const auto idx = lightFrames[i].index;
 
 			imageGroups[id].pictures->mydata[idx].m_bChecked =
 				(i <= last) ? Qt::Checked : Qt::Unchecked;
 			QModelIndex start	{ imageGroups[id].pictures->createIndex(idx, 0) };
 			QModelIndex end		{ imageGroups[id].pictures->createIndex(idx, 0) };
-			QVector<int> role{ Qt::CheckStateRole };
+			const QVector<int> role{ Qt::CheckStateRole };
 			imageGroups[id].pictures->dataChanged(start, end, role);
 		}
-	};
+	}
 
 	// Change the name of the specified group
-	void FrameList::setGroupName(std::uint16_t id, const QString& name)
+	void FrameList::setGroupName(int id, const QString& name)
 	{
-		ZASSERTSTATE(id > -1 && id < imageGroups.size());
-		if (-1 == id) id = index;	// set to current group
+		ZASSERTSTATE(id >= 0 && id < imageGroups.size());
+		if (-1 == id)
+			id = index;	// set to current group
 
 		imageGroups[id].setName(name);
 	}
 
 	/* ------------------------------------------------------------------- */
+
+	ListBitMap* FrameList::getListBitMap(const int row)
+	{
+		return &imageGroups[index].pictures->mydata[row];
+	}
+
+	void FrameList::clear()
+	{
+		for (auto& group : imageGroups)
+		{
+			group.pictures->clear();
+		}
+		imageGroups.resize(1);
+		Group::reset();
+	}
+
+	size_t FrameList::groupSize(const int id) const
+	{
+		ZASSERTSTATE(id < imageGroups.size());
+		ZASSERTSTATE(id >= 0);
+		return imageGroups[id].size();
+	}
+
+	bool FrameList::isLightFrame(const QString name) const
+	{
+		return imageGroups[index].pictures->isLightFrame(name);
+	}
+
+	bool FrameList::isChecked(const QString name) const
+	{
+		return imageGroups[index].pictures->isChecked(name);
+	}
+
+	bool FrameList::getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
+	{
+		return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
+	}
+
+	FrameList& FrameList::beginInsertRows(const int count)
+	{
+		auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
+		auto last{ first + count - 1 };
+		imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
+		return *this;
+	}
+
+	FrameList& FrameList::endInsertRows()
+	{
+		imageGroups[index].pictures->endInsertRows();
+		return *this;
+	}
+
+	bool FrameList::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
+	{
+		imageGroups[index].addFile(file, PictureType, bCheck);
+		return true;
+	}
 
 	void FrameList::retranslateUi()
 	{
@@ -946,5 +1016,4 @@ namespace DSS
 			++i;
 		}
 	}
-
 }

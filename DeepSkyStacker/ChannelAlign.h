@@ -1,15 +1,15 @@
-#ifndef __CHANNELALIGN_H__
-#define __CHANNELALIGN_H__
+#pragma once
 
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "BitmapExt.h"
 #include "PixelTransform.h"
+namespace DSS { class ProgressBase; }
 
 class CChannelAlign
 {
 private :
-	std::shared_ptr<CMemoryBitmap> AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, ProgressBase* pProgress);
+	std::shared_ptr<CMemoryBitmap> AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, DSS::ProgressBase* pProgress);
 	void CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* pTgtBitmap) const;
 
 public:
@@ -19,7 +19,6 @@ public:
 	~CChannelAlign()
 	{}
 
-	bool AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgress);
+	bool AlignChannels(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
 };
 
-#endif

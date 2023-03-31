@@ -561,6 +561,26 @@
              </property>
             </widget>
            </item>
+           <item>
+            <spacer name="verticalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="traceFileDisposition">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1002,6 +1022,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>traceFileDisposition</sender>
+   <signal>linkActivated(QString)</signal>
+   <receiver>ExplorerBar</receiver>
+   <slot>onToggleDeletion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>726</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>381</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>linkActivated()</slot>
@@ -1031,5 +1067,6 @@
   <slot>onOpenFlats()</slot>
   <slot>onOpenBias()</slot>
   <slot>onOpenDarkFlats()</slot>
+  <slot>onToggleDeletion()</slot>
  </slots>
 </ui>

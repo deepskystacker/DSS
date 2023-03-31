@@ -1,39 +1,15 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-#include <QDir>
-#include <QLibraryInfo>
-#include <QSettings>
-#include <QString>
-#include <QDebug>
-#include <QTranslator>
-#include <QShowEvent>
-
-#include "commonresource.h"
-#include "DSSCommon.h"
+#include "stdafx.h"
 #include "About.h"
 #include "ui/ui_About.h"
+#include "DSSVersion.h"
+#include "libraw/libraw_version.h"
+#include "fitsio.h"
+#include "tiffio.h"
+#include "DeepSkyStacker.h"
 
 extern bool		g_bShowRefStars;
 extern QTranslator theAppTranslator;
 extern QTranslator theQtTranslator;
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "DSSVersion.h"
-#include <fitsio.h>
-#include <tiffio.h>
-#include <libraw/libraw_version.h>
 
 #define xstr(s) str(s)
 #define str(s) #s
@@ -201,8 +177,8 @@ void About::onInitDialog()
         const QRect r{ DeepSkyStacker::instance()->rect() };
         QSize size = this->size();
 
-        int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-        int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+        int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+        int left = (r.left() + (r.width() / 2) - (size.width() / 2));
         move(left, top);
 	}
 }
@@ -277,11 +253,7 @@ void About::storeSettings()
 	// 
     QString translatorFileName = QLatin1String("qt_");
     translatorFileName += language;
-#if QT_VERSION >= 0x060000
     if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-    if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
         qApp->installTranslator(&theQtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);

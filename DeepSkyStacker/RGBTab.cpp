@@ -1,10 +1,7 @@
 // RGBTab.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "RGBTab.h"
-#include <BtnST.h>
 #include "ProcessingDlg.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -115,7 +112,7 @@ BOOL CRGBTab::OnSetActive()
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
 		m_bFirstActivation = false;
-	};
+	}
 
 	return CChildPropertyPage::OnSetActive();
 }
@@ -129,11 +126,11 @@ void CRGBTab::OnReset()
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnNotifyRedChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyRedChangeSelPeg(NMHDR *, LRESULT *)
 {
-};
+}
 
-void CRGBTab::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *)
 {
 	if (m_LinkSettings.GetCheck())
 	{
@@ -152,20 +149,20 @@ void CRGBTab::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
 		CGradient &			BlueGradient = m_BlueGradient.GetGradient();
 		BlueGradient.SetPeg(BlueGradient.IndexFromId(nID), Position);
 		m_BlueGradient.Invalidate(true);
-	};
+	}
 	GetParentProcessingDlg(this)->UpdateBezierCurve();
-};
+}
 
 void CRGBTab::OnNotifyRedPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	OnNotifyRedPegMove(pNotifyStruct, result);
-};
+}
 
-void CRGBTab::OnNotifyGreenChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyGreenChangeSelPeg(NMHDR *, LRESULT *)
 {
-};
+}
 
-void CRGBTab::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *)
 {
 	if (m_LinkSettings.GetCheck())
 	{
@@ -184,21 +181,21 @@ void CRGBTab::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
 		CGradient &			BlueGradient = m_BlueGradient.GetGradient();
 		BlueGradient.SetPeg(BlueGradient.IndexFromId(nID), Position);
 		m_BlueGradient.Invalidate(true);
-	};
+	}
 
 	GetParentProcessingDlg(this)->UpdateBezierCurve();
-};
+}
 
 void CRGBTab::OnNotifyGreenPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	OnNotifyGreenPegMove(pNotifyStruct, result);
-};
+}
 
-void CRGBTab::OnNotifyBlueChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyBlueChangeSelPeg(NMHDR *, LRESULT *)
 {
-};
+}
 
-void CRGBTab::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CRGBTab::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *)
 {
 	if (m_LinkSettings.GetCheck())
 	{
@@ -217,15 +214,15 @@ void CRGBTab::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
 		CGradient &			GreenGradient = m_GreenGradient.GetGradient();
 		GreenGradient.SetPeg(GreenGradient.IndexFromId(nID), Position);
 		m_GreenGradient.Invalidate(true);
-	};
+	}
 
 	GetParentProcessingDlg(this)->UpdateBezierCurve();
-};
+}
 
 void CRGBTab::OnNotifyBluePegMoved(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	OnNotifyBluePegMove(pNotifyStruct, result);
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -283,7 +280,7 @@ static void PopulateHistoAdjustMenu(CMenu & menu)
 
 	HistoAdjustTypeText(HAT_ASINH, strText);
 	menu.AppendMenu(MF_STRING, HAT_ASINH, strText);
-};
+}
 
 void CRGBTab::OnRedHat()
 {
@@ -305,9 +302,9 @@ void CRGBTab::OnRedHat()
 		{
 			SetGreenAdjustMethod(hat);
 			SetBlueAdjustMethod(hat);
-		};
+		}
 		GetParentProcessingDlg(this)->UpdateBezierCurve();
-	};
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -332,9 +329,9 @@ void CRGBTab::OnGreenHat()
 		{
 			SetRedAdjustMethod(hat);
 			SetBlueAdjustMethod(hat);
-		};
+		}
 		GetParentProcessingDlg(this)->UpdateBezierCurve();
-	};
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -359,10 +356,10 @@ void CRGBTab::OnBlueHat()
 		{
 			SetRedAdjustMethod(hat);
 			SetGreenAdjustMethod(hat);
-		};
+		}
 
 		GetParentProcessingDlg(this)->UpdateBezierCurve();
-	};
+	}
 }
 
 /* ------------------------------------------------------------------- */

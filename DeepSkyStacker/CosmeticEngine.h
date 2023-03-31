@@ -1,7 +1,4 @@
-#ifndef __COSMETICENGINE_H__
-#define __COSMETICENGINE_H__
-
-#include "StackingTasks.h"
+#pragma once
 
 class CCosmeticStats
 {
@@ -39,7 +36,10 @@ public :
 	};
 };
 
+class CPostCalibrationSettings;
+class CMemoryBitmap;
+namespace DSS { class ProgressBase; }
+using namespace DSS;
+
 std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress);
 void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress);
-
-#endif

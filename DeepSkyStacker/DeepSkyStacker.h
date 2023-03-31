@@ -1,4 +1,3 @@
-
 #pragma once
 /****************************************************************************
 **
@@ -35,26 +34,19 @@
 **
 **
 ****************************************************************************/
-#include <list>
-#include <QMainWindow>
-#include <QMessageBox>
-#include <QLabel>
-
 #include "dssbase.h"
-
-#include "ExplorerBar.h"
-class QSplitter;
-class QStackedWidget;
-#include "StackingDlg.h"
-class QWinHost;
-
+#include "dss_settings.h"
 namespace DSS
 {
 	class PictureList;
+	class StackingDlg;
 }
-
-#include "ProcessingDlg.h"
-#include "dss_settings.h"
+class ExplorerBar;
+class QStackedWidget;
+class QWinHost;
+class CProcessingDlg;
+class CDSSSettings;
+class CDeepStack;
 
 class DeepSkyStacker :
 	public QMainWindow,
@@ -76,18 +68,15 @@ private:
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	QWinHost* winHost;
-
-	CProcessingDlg	processingDlg;
-
-	CDeepStack				m_DeepStack;
-	CDSSSettings			m_Settings;
-	std::uint32_t			currTab;
-	QStringList				args;
-	QString					baseTitle;
+	std::unique_ptr<CProcessingDlg>	processingDlg;
+	std::unique_ptr<CDeepStack> m_DeepStack;
+	std::unique_ptr<CDSSSettings> m_Settings;
+	std::uint32_t currTab;
+	QStringList args;
+	QString baseTitle;
 	QString currentPathName;
-	//ITaskbarList3* m_taskbarList;
-	bool                    m_progress;
-	QLabel*	statusBarText;
+	bool m_progress;
+	QLabel* statusBarText;
 
 	void createStatusBar();
 	void updateTab();
@@ -109,100 +98,22 @@ public:
 	}
 
 	DeepSkyStacker();
+	~DeepSkyStacker();
 
-	~DeepSkyStacker()
-	{
-	}
+	inline qreal pixelRatio() { return devicePixelRatioF(); }
+	inline std::uint32_t tab() { return currTab; }
 
-	inline QString statusMessage()
-	{
-		return statusBarText->text();
-	}
-
-	CDeepStack& deepStack()
-	{
-		return m_DeepStack;
-	};
-
-	qreal pixelRatio()
-	{
-		return devicePixelRatioF();
-	}
-
-	void	setTab(std::uint32_t dwTabID)
-	{
-		if (dwTabID == IDD_REGISTERING)
-			dwTabID = IDD_STACKING;
-		//#ifdef DSSBETA
-		//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
-		//		dwTabID = IDD_LIBRARY;
-		//#endif
-		currTab = dwTabID;
-		updateTab();
-	};
-
-	std::uint32_t tab()
-	{
-		return currTab;
-	};
-
-	inline void disableSubDialogs()
-	{
-		stackingDlg->setEnabled(false);
-		processingDlg.EnableWindow(false);
-		//m_dlgLibrary.EnableWindow(false);
-		explorerBar->setEnabled(false);
-	};
-
-	inline void enableSubDialogs()
-	{
-		stackingDlg->setEnabled(true);
-		processingDlg.EnableWindow(true);
-		//m_dlgLibrary.EnableWindow(true);
-		explorerBar->setEnabled(true);
-	};
-
-	CDSSSettings& settings()
-	{
-		if (!m_Settings.IsLoaded())
-			m_Settings.Load();
-
-		return m_Settings;
-	};
-
-	DSS::StackingDlg& getStackingDlg()
-	{
-		return *stackingDlg;
-	};
-
-	CProcessingDlg& getProcessingDlg()
-	{
-		return processingDlg;
-	};
-
-
-	ExplorerBar& GetExplorerBar()
-	{
-		return *explorerBar;
-	};
-
-	inline void setWindowFilePath(const QString& name)
-	{
-		if (currentPathName == name) return;
-		currentPathName = name;
-		if (!name.isEmpty())
-			setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
-		else
-			setWindowTitle(baseTitle);
-	}
-
-	virtual inline void reportError(const QString& message, DSSBase::Severity severity) override
-	{
-		QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
-			Q_ARG(const QString&, message),
-			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
-	}
-
+	QString statusMessage();
+	CDeepStack& deepStack();
+	void setTab(std::uint32_t dwTabID);
+	void disableSubDialogs();
+	void enableSubDialogs();
+	CDSSSettings& settings();
+	DSS::StackingDlg& getStackingDlg();
+	CProcessingDlg& getProcessingDlg();
+	ExplorerBar& GetExplorerBar();
+	void setWindowFilePath(const QString& name);
+	virtual void reportError(const QString& message, DSSBase::Severity severity);
 };
 
 
@@ -212,16 +123,8 @@ public :
 	CWnd *				m_pMainDlg;
 
 public :
-	DeepSkyStackerApp() :
-		m_pMainDlg{ nullptr }
-	{
-        
-	};
-
-	virtual ~DeepSkyStackerApp()
-	{
-
-	};
+	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
+	virtual ~DeepSkyStackerApp() = default;
 
 	virtual BOOL InitInstance( ) override;
 	virtual int ExitInstance() override;

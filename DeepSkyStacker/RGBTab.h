@@ -1,17 +1,8 @@
-#if !defined(AFX_RGBTAB_H__82B3FFF2_8DA4_4979_BCC7_09D28857619B__INCLUDED_)
-#define AFX_RGBTAB_H__82B3FFF2_8DA4_4979_BCC7_09D28857619B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// RGBTab.h : header file
-//
-
-#include <GradientCtrl.h>
-#include <ChildProp.h>
-#include <BtnST.h>
-#include <cdxCRotBevelLine.h>
+#include "childprop.h"
 #include "Histogram.h"
+#include "BtnST.h"
+#include "gradientctrl.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CRGBTab dialog
@@ -148,8 +139,3 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_RGBTAB_H__82B3FFF2_8DA4_4979_BCC7_09D28857619B__INCLUDED_)

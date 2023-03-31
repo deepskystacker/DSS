@@ -1,60 +1,66 @@
-#include <stdafx.h>
-#include <QCoreApplication>
+#include "stdafx.h"
+#include "Ztrace.h"
 #include "BitmapBase.h"
+#include "BitmapCharacteristics.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
-
-template <typename T>
-void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics& bc)
 {
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	ZFUNCTRACE_RUNTIME();
 
-	if (pProgress != nullptr)
+	if (bc.m_lNrChannels == 1)
 	{
-		const QString strText(QCoreApplication::translate("BitmapBase", "Detecting hot pixels", "IDS_REMOVINGHOTPIXELS"));
-		pProgress->Start2(strText, m_lHeight);
-	};
-
-	const int height = this->Height();
-	const int width = this->Width();
-	std::vector<size_t> hotOffsets;
-	std::vector<size_t> localHotOffsets;
-
-#pragma omp parallel default(none) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
-	{
-#pragma omp for schedule(dynamic, 50) nowait
-		for (int row = 2; row < height - 2; ++row)
+		if (bc.m_lBitsPerPixel == 8)
 		{
-			for (int column = 2; column < width - 2; ++column)
+			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap");
+			return std::make_shared<C8BitGrayBitmap>();
+		}
+		else if (bc.m_lBitsPerPixel == 16)
+		{
+			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap");
+			return std::make_shared<C16BitGrayBitmap>();
+		}
+		else if (bc.m_lBitsPerPixel == 32)
+		{
+			if (bc.m_bFloat)
 			{
-				const size_t testOffset = this->GetOffset(column, row);
-				const T testValue = this->m_vPixels[testOffset];
-				constexpr double hotFactor = 4;
-
-				if (testValue > hotFactor * m_vPixels[GetOffset(column - 1, row)]
-					&& testValue > hotFactor * m_vPixels[GetOffset(column + 1, row)]
-					&& testValue > hotFactor * m_vPixels[GetOffset(column, row + 1)]
-					&& testValue > hotFactor * m_vPixels[GetOffset(column, row - 1)])
-				{
-					localHotOffsets.push_back(testOffset);
-					++column;
-				}
+				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap");
+				return std::make_shared<C32BitFloatGrayBitmap>();
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap");
+				return std::make_shared<C32BitGrayBitmap>();
 			}
 		}
-#pragma omp critical(OmpLockHotpixelRemove)
+	}
+	else if (bc.m_lNrChannels == 3)
+	{
+		if (bc.m_lBitsPerPixel == 8)
 		{
-			hotOffsets.insert(hotOffsets.end(), localHotOffsets.cbegin(), localHotOffsets.cend());
+			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap");
+			return std::make_shared<C24BitColorBitmap>();
+		}
+		else if (bc.m_lBitsPerPixel == 16)
+		{
+			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap");
+			return std::make_shared<C48BitColorBitmap>();
+		}
+		else if (bc.m_lBitsPerPixel == 32)
+		{
+			if (bc.m_bFloat)
+			{
+				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap");
+				return std::make_shared<C96BitFloatColorBitmap>();
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap");
+				return std::make_shared<C96BitColorBitmap>();
+			}
 		}
 	}
 
-	for (const auto hotOffset : hotOffsets)
-		this->m_vPixels[hotOffset] = 0;
-
-	if (pProgress != nullptr)
-		pProgress->End2();
+	return std::shared_ptr<CMemoryBitmap>{};
 }
-
-template void CGrayBitmapT<std::uint8_t>::RemoveHotPixels(ProgressBase*);
-template void CGrayBitmapT<std::uint16_t>::RemoveHotPixels(ProgressBase*);
-template void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(ProgressBase*);
-template void CGrayBitmapT<float>::RemoveHotPixels(ProgressBase*);
-template void CGrayBitmapT<double>::RemoveHotPixels(ProgressBase*);

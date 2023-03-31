@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "SavePicture.h"
+#include "resourceCZ.h"
 
 /* ------------------------------------------------------------------- */
 // CSavePicture

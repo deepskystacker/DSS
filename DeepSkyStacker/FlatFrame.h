@@ -1,7 +1,5 @@
-#ifndef __FLATFRAME_H__
-#define __FLATFRAME_H__
-
-#include "BitmapExt.h"
+#pragma once
+#include "Bayer.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -110,7 +108,8 @@ public :
 };
 
 /* ------------------------------------------------------------------- */
-
+class CMemoryBitmap;
+namespace DSS { class ProgressBase; }
 class CFlatFrame
 {
 public :
@@ -122,29 +121,13 @@ public :
 	CFlatFrame() : m_bComputed{ false }
 	{}
 
-	virtual ~CFlatFrame()
-	{}
+	virtual ~CFlatFrame() = default;
 
-	bool IsOk() const
-	{
-		return static_cast<bool>(m_pFlatFrame) && m_pFlatFrame->IsOk();
-	}
-
-	bool IsCFA() const
-	{
-		return ::IsCFA(m_pFlatFrame.get());
-	}
-
-	void Clear()
-	{
-		m_bComputed = false;
-		m_pFlatFrame.reset();
-	}
-
-	void ComputeFlatNormalization(ProgressBase* pProgress = nullptr);
-	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress = nullptr);
+	bool IsOk() const;
+	bool IsCFA() const;
+	void Clear();
+	void ComputeFlatNormalization(DSS::ProgressBase* pProgress = nullptr);
+	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, DSS::ProgressBase * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */
-
-#endif // __FLATFRAME_H__

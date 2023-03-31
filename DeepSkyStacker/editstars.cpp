@@ -33,31 +33,16 @@
 **
 **
 ****************************************************************************/
-#include "StdAfx.h"
-
-#include <QDebug>
-#include <QGuiApplication>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QToolBar>
-#include <QToolTip>
-#include <omp.h>
-
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
-
-#include "DeepSkyStacker.h"
-#include "dssrect.h"
+#include "stdafx.h"
 #include "editstars.h"
-#include "imageview.h"
 #include "Delaunay.h"
-#include "Stars.h"
-#include "MatchingStars.h"
+#include "imageview.h"
+#include "DSSCommon.h"
+#include "StackingDlg.h"
 #include "RegisterEngine.h"
 #include "BackgroundCalibration.h"
-#include "StackingDlg.h"
+#include "DeepSkyStacker.h"
+#include "ZExcept.h"
 
 // Classes etc. private to this file
 namespace
@@ -193,6 +178,38 @@ namespace DSS
 		//	"Ctrl+G to toggle display of the Grid"
 		//));
 
+	}
+	void EditStars::setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP)
+	{
+		if (g_bShowRefStars)
+		{
+			transformation = Tr;
+			vVotedPairs = vVP;
+		};
+	}
+
+	void EditStars::clearRefStars()
+	{
+		refStars.clear();
+	};
+
+	void EditStars::setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
+	{
+		m_pBitmap = bmp;
+		m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
+		m_bDirty = false;
+		m_fBackground = 0;
+		if (static_cast<bool>(m_pBitmap))
+			computeBackgroundValue();
+	}
+
+	void EditStars::setRefStars(STARVECTOR const& Stars)
+	{
+		if (g_bShowRefStars)
+		{
+			refStars = Stars;
+			std::sort(refStars.begin(), refStars.end(), CompareStarLuminancy);
+		};
 	}
 
 	void EditStars::leaveEvent(QEvent*)
@@ -347,12 +364,7 @@ namespace DSS
 			//
 			// Get the mouse location and convert to image coordinates
 			//
-#if QT_VERSION >= 0x060000
 			QPointF pt{ e->position() };
-#else
-			QPointF pt{ static_cast<qreal>(e->x()),
-				static_cast<qreal>(e->y()) };
-#endif
 			pt = imageView->screenToImage(pt);
 
 			if (pt.x() >= 0 && pt.x() < imageView->imageWidth() &&
@@ -836,11 +848,12 @@ namespace DSS
 				QBrush		brushAction;
 				QPen		penAction;
 
-				if (auto zoom = imageView->zoom() > 1)
+				auto zoom = imageView->zoom();
+				if (zoom > 1)
 				{
 					fRectSize *= zoom;
 					fDiameter *= zoom;
-				};
+				}
 
 				if (bAdd)
 				{
@@ -956,7 +969,8 @@ namespace DSS
 		//imageView->update();
 	}
 
-	void	EditStars::drawQualityGrid(QPainter& painter, const QRect& rcClient)
+	//void	EditStars::drawQualityGrid(QPainter& painter, const QRect& rcClient)
+	void	EditStars::drawQualityGrid(QPainter&, const QRect&)
 	{
 #if (0)
 		// Find the first top/left point in the image

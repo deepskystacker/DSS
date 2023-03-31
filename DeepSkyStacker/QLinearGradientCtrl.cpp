@@ -1,22 +1,10 @@
 // QLinearGradientCtrl.cpp 
 //
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <QColor>
-#include <QDebug>
-#include <QLinearGradient>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPoint>
-#include <QRect>
-#include <QRegion>
-#include <QWidget>
-
-#include <Ztrace.h>
-
+#include "stdafx.h"
 #include "QLinearGradientCtrl.h"
+
+#include "Ztrace.h"
+#include "ZExcBase.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // QLinearGradientCtrl
@@ -891,8 +879,8 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 	m_Gradient.setStops(stops);
 
 	//Select the previous peg
-	if (selectedPeg == STARTPEG) selectedPeg = STARTPEG;
-	else selectedPeg--;
+	if (!STARTPEG == selectedPeg)
+		selectedPeg--;
 	if (selectedPeg < 1) selectedPeg = STARTPEG;
 
 	if (bUpdate)

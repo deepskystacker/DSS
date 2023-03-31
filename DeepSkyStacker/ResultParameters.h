@@ -1,16 +1,12 @@
-#ifndef RESULTPARAMETERS_H
-#define RESULTPARAMETERS_H
-#include <memory>
-
-#include <QWidget>
-#include <QPicture>
-
+#pragma once
+#include "dssrect.h"
 class Workspace;
 
 namespace Ui {
 class ResultParameters;
 }
 
+class CAllStackingTasks;
 class ResultParameters : public QWidget
 {
 	Q_OBJECT
@@ -22,6 +18,8 @@ public:
 	explicit ResultParameters(QWidget *parent = nullptr);
 	~ResultParameters();
 
+	void setStackingTasks(CAllStackingTasks* pTasks);
+
 public slots:
 	void onSetActive();
 
@@ -32,7 +30,9 @@ private:
 	QPixmap mosaicPix;
 	QPixmap intersectionPix;
 	QPixmap customPix;
-	bool validCustomRectangle;
+	CAllStackingTasks* pStackingTasks;
+	bool customRectEnabled;
+	DSSRect customRect;
 
 private slots:
 	void	on_normalMode_clicked();
@@ -44,4 +44,3 @@ private slots:
 	void	on_alignRGB_clicked();
 
 };
-#endif // RESULTPARAMETERS_H

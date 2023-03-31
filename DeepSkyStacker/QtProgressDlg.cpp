@@ -1,9 +1,7 @@
 #include "stdafx.h"
-#include "deepskystacker.h"
 #include "QtProgressDlg.h"
-#include <QMessageBox>
-#include "qevent.h"
 #include "ui/ui_ProgressDlg.h"
+#include "DeepSkyStacker.h"
 
 using namespace DSS;
 

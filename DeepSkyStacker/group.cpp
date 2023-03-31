@@ -34,27 +34,69 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-#include <vector>
-
-#include "Ztrace.h"
-#include <QRectF>
-#include "dsscommon.h"
-#include "framelist.h"
-
 #include "group.h"
+#include "ImageListModel.h"
+#include "Ztrace.h"
+#include "FrameInfo.h"
+#include "RegisterEngine.h"
 
 namespace DSS
 {
+	Group::Group() :
+		pictures{ std::make_unique<ImageListModel>() },
+		Index{ nextIndex++ },		// First group is Main Group with Index of 0
+		Dirty{ false },
+		nameChanged{ false }
+	{
+		if (0 == Index)
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
+		}
+		else
+		{
+			Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
+		}
+	}
+
+	Group::Group(Group&& rhs) noexcept :
+		pictures{ std::move(rhs.pictures) },
+		Index{ std::exchange(rhs.Index, 0) },
+		Name{ std::move(rhs.Name) },
+		Dirty{ std::exchange(rhs.Dirty, false) },
+		nameChanged{ std::exchange(rhs.nameChanged, false) }
+	{}
+
+	Group& Group::operator=(Group&& rhs) noexcept
+	{
+		if (this != &rhs)
+		{
+			pictures = std::move(rhs.pictures);
+			Index = std::exchange(rhs.Index, 0);
+			Name = std::move(rhs.Name);
+			Dirty = std::exchange(rhs.Dirty, false);
+			nameChanged = std::exchange(rhs.nameChanged, false);
+		}
+		return *this;
+	}
+
+	void Group::addImage(const ListBitMap& image)
+	{
+		pictures->addImage(image);
+		Dirty = true;
+	}
+	
+	size_t Group::size() const noexcept
+	{
+		return pictures->rowCount();
+	}
+
 	void Group::addFile(fs::path file, PICTURETYPE PictureType, bool bCheck, int)
 	{
 		ZFUNCTRACE_RUNTIME();
 
 		ListBitMap			lb;
 
-		lb.m_groupId = Index;
+		lb.m_groupId = static_cast<decltype(ListBitMap::m_groupId)>(Index);
 
 		//
 		// Warning: If this code is changed, matching changes must also be made to ImageListModel::retranslateUi()
@@ -112,9 +154,9 @@ namespace DSS
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet = bmpInfo.m_bComet;
 					lb.m_SkyBackground = bmpInfo.m_SkyBackground;
-					lb.m_bUseAsStarting = (lb.m_PictureType == PICTURETYPE_REFLIGHTFRAME);
+					lb.m_bUseAsStarting = (PictureType == PICTURETYPE_REFLIGHTFRAME);
 				}
-			};
+			}
 
 			lb.m_strSizes = QString("%1 x %2").arg(lb.m_lWidth).arg(lb.m_lHeight);
 
@@ -128,12 +170,10 @@ namespace DSS
 			else
 				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "No", "IDS_NO");
 
-		};
+		}
 
 		pathToGroup.emplace(file, Index);
 
 		pictures->addImage(lb);
-
-
-	};
+	}
 }

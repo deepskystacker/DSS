@@ -1,20 +1,13 @@
-#ifndef RAWDDPSETTINGS_H
-#define RAWDDPSETTINGS_H
-#include <memory>
-
-class Workspace;
-class QAbstractButton;
-class QValidator;
-class CDSLR;
-enum CFATYPE : unsigned int;
-
-#include "DSSCommon.h"
-#include <QDialog>
+#pragma once
+#include "dslr.h"
 
 namespace Ui {
 	class RawDDPSettings;
 }
 
+class Workspace;
+class QValidator;
+class QShowEvent;
 class RawDDPSettings : public QDialog
 {
 	Q_OBJECT
@@ -44,7 +37,7 @@ private slots:
 
 	// Slots for FITS Files tab
 	void on_isFITSRaw_clicked(bool);
-	void on_DSLRs_currentIndexChanged(int);
+	void DSLRs_currentIndexChanged(int);
 	void brightness_2_editingFinished();
 	void redScale_2_editingFinished();
 	void blueScale_2_editingFinished();
@@ -74,5 +67,3 @@ private:
 	void showEvent(QShowEvent *event) override;
 	void onInitDialog();
 };
-
-#endif // RAWDDPSETTINGS_H

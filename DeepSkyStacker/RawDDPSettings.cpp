@@ -1,82 +1,14 @@
 // RawDDPSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-
-//#include <afxdlgs.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QDoubleValidator>
-#include <QSettings>
-#include <QShowEvent>
-#include <QString>
-
+#include "stdafx.h"
 #include "RawDDPSettings.h"
-#include "ui/ui_RawDDPSettings.h"
-
-extern bool		g_bShowRefStars;
-#include "commonresource.h"
-#include "resource.h"
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "BitmapExt.h"
-#include "QtProgressDlg.h"
-#include "RegisterEngine.h"
-#include "StackingDlg.h"
-#include "StackSettings.h"
-
+#include "dslr.h"
+#include "Ztrace.h"
+#include "ui_RawDDPSettings.h"
 #include "Workspace.h"
-
-class CDSLR
-{
-public:
-	QString				m_strName;
-	CFATYPE				m_CFAType;
-
-private:
-	void	CopyFrom(const CDSLR & cd)
-	{
-		m_strName = cd.m_strName;
-		m_CFAType = cd.m_CFAType;
-	};
-
-public:
-	CDSLR(QString name, CFATYPE CFAType) :
-		m_strName(name),
-		m_CFAType(CFAType)
-	{
-	};
-
-	CDSLR(const CDSLR & cd)
-	{
-		CopyFrom(cd);
-	};
-
-	virtual ~CDSLR()
-	{
-	};
-
-	const CDSLR & operator = (const CDSLR & cd)
-	{
-		CopyFrom(cd);
-		return *this;
-	};
-};
-
+#include "DeepSkyStacker.h"
+#include "ZExcept.h"
+#include "StackingDlg.h"
 
 void	RawDDPSettings::fillDSLRList(std::vector<CDSLR> & vDSLRs)
 {
@@ -419,8 +351,8 @@ void RawDDPSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 
@@ -500,6 +432,8 @@ void RawDDPSettings::onInitDialog()
 			ui->DSLRs->setCurrentIndex(row);
 		}
 	}
+
+	connect(ui->DSLRs, SIGNAL(currentIndexChanged(int)), this, SLOT(DSLRs_currentIndexChanged(int)));
 
 	updateBayerPattern().updateControls();
 
@@ -722,7 +656,7 @@ void RawDDPSettings::on_isFITSRaw_clicked(bool checked)
 	updateControls();
 }
 
-void RawDDPSettings::on_DSLRs_currentIndexChanged(int)
+void RawDDPSettings::DSLRs_currentIndexChanged(int)
 {
 	workspace->setValue("FitsDDP/DSLR", ui->DSLRs->currentText());
 	workspace->setValue("FitsDDP/BayerPattern", ui->DSLRs->currentData().toUInt());

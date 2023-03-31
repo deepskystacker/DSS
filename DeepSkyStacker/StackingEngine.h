@@ -1,9 +1,9 @@
-#ifndef __STACKINGENGINE_H__
-#define __STACKINGENGINE_H__
+#pragma once
 
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
 #include "BackgroundCalibration.h"
+#include "StackingTasks.h"
 
 class CComputeOffsetTask;
 
@@ -131,7 +131,7 @@ public :
 };
 
 /* ------------------------------------------------------------------- */
-
+class CTaskInfo;
 class CStackingEngine final
 {
 private:
@@ -178,10 +178,13 @@ private:
 
 public:
 	CStackingEngine() :
+		m_pProgress { nullptr },
+		m_lNrCurrentStackable { 0 },
 		m_lNrStackable{ 0 },
 		m_lNrCometStackable{ 0 },
 		m_lISOSpeed{ 0 },
 		m_lGain{ -1 },
+		m_fStarTrailsAngle {0.0},
 		m_pLightTask{ nullptr },
 		m_lNrStacked{ 0 },
 		m_fTotalExposure{ 0 },
@@ -284,5 +287,3 @@ public:
 	void WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile);
 };
 
-
-#endif // __STACKINGENGINE_H__

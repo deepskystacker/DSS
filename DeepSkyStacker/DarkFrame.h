@@ -1,11 +1,9 @@
-#ifndef __DARKFRAME_H__
-#define __DARKFRAME_H__
-
-#include "BitmapExt.h"
-#include "StackingTasks.h"
-#include <algorithm>
-#include <set>
+#pragma once
+#include "dssrect.h"
 #include "Stars.h"
+#include "Bayer.h"
+
+namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -133,7 +131,7 @@ typedef std::set<CExcludedPixel>			EXCLUDEDPIXELSET;
 typedef EXCLUDEDPIXELSET::iterator			EXCLUDEDPIXELITERATOR;
 
 /* ------------------------------------------------------------------- */
-
+class CMemoryBitmap;
 class CDarkFrameHotParameters
 {
 public:
@@ -222,30 +220,21 @@ private :
 	CDarkFrameHotParameters		m_HotParameters;
 	CDarkAmpGlowParameters		m_AmpglowParameters;
 
-	void Reset(std::shared_ptr<CMemoryBitmap> pMaster)
-	{
-		m_bDarkOptimization		= CAllStackingTasks::GetDarkOptimization();
-		m_bHotPixelsDetection	= CAllStackingTasks::GetHotPixelsDetection();
-		m_bBadLinesDetection	= CAllStackingTasks::GetBadLinesDetection();
-		m_fDarkFactor			= CAllStackingTasks::GetDarkFactor();
-		m_bHotPixelDetected		= false;
-		m_pMasterDark = pMaster;
-		m_vHotPixels.clear();
-	}
+	void Reset(std::shared_ptr<CMemoryBitmap> pMaster);
 
 
 	void	FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
 	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :
-	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, ProgressBase * pProgress);
+	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, DSS::ProgressBase * pProgress);
 
-	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, ProgressBase * pProgress);
-	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, ProgressBase * pProgress);
+	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, DSS::ProgressBase * pProgress);
+	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, DSS::ProgressBase * pProgress);
 	void	ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor);
 	void	RemoveContiguousHotPixels(bool bCFA);
-	void	FindHotPixels(ProgressBase * pProgress);
-	void	FindBadVerticalLines(ProgressBase * pProgress);
+	void	FindHotPixels(DSS::ProgressBase* pProgress);
+	void	FindBadVerticalLines(DSS::ProgressBase* pProgress);
 
 public :
 	CDarkFrame(std::shared_ptr<CMemoryBitmap> pMaster = std::shared_ptr<CMemoryBitmap>{})
@@ -262,8 +251,8 @@ public :
 		//m_pMasterDark = pMaster; // pMaster.Addref(); m_pMasterDark.m_p->Release(); m_pMasterDark.m_p = pMaster;
 	}
 
-	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress = nullptr);
-	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress = nullptr);
+	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, DSS::ProgressBase* pProgress = nullptr);
+	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress = nullptr);
 
 	bool IsOk() const
 	{
@@ -271,5 +260,3 @@ public :
 		return static_cast<bool>(this->m_pMasterDark);
 	}
 };
-
-#endif // __DARKFRAME_H__

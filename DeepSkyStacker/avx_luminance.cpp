@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "avx_luminance.h"
 #include "avx_cfa.h"
 #include "avx_support.h"

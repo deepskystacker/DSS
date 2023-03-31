@@ -1,24 +1,16 @@
 // BatchStacking.cpp : implementation file
 //
-
 #include "stdafx.h"
 #include "BatchStacking.h"
-
-
 #include "ui/ui_BatchStacking.h"
-
-#include "StackingTasks.h"
+#include "Ztrace.h"
 #include "Workspace.h"
+#include "StackingTasks.h"
 #include "FrameList.h"
 #include "QtProgressDlg.h"
 #include "StackingEngine.h"
-#include "DeepSkyStacker.h"
-
-#include <QStandardItemModel>
-#include <QFileDialog>
-#include <QDir>
-#include <QSettings>
-#include <QShowEvent>
+#include "TIFFUtil.h"
+#include "FITSUtil.h"
 
 namespace
 {

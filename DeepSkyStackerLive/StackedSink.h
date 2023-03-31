@@ -1,10 +1,5 @@
-#ifndef __STACKEDSINK_H__
-#define __STACKEDSINK_H__
-
-/* ------------------------------------------------------------------- */
-
-#include "DSSProgress.h"
-#include "DSSTools.h"
+#pragma once
+#include "WndImage.h"
 
 class CStackedSink : public CWndImageSink
 {
@@ -28,7 +23,3 @@ public :
 	void			SetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
 	void			ClearFootprint();
 };
-
-/* ------------------------------------------------------------------- */
-
-#endif // __STACKEDSINK_H__

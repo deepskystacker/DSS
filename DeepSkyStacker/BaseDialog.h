@@ -1,6 +1,4 @@
 #pragma once
-#include <QDialog>
-#include <QFlags>
 
 namespace DSS
 {

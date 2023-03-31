@@ -36,27 +36,17 @@
 ****************************************************************************/
 // StackingDlg.h : header file
 //
-
-#include "mrupath.h"
-#include <CtrlCache.h>
-#include <WndImage.h>
-#include <BtnST.h>
-#include "Label.h"
-#include "StackingTasks.h"
-#include "DeepStack.h"
-#include <BitmapSlider.h>
-#include <CustomTabCtrl.h>
-#include "StackingEngine.h"
-#include "imageloader.h"
+#include "DSSCommon.h"
+#include "BitmapExt.h"
 #include "FrameList.h"
+#include "dssrect.h"
+#include "mrupath.h"
+#include "imageloader.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
-
-#include <QDialog>
-#include <QFileDialog>
-#include <QMenu>
-#include <QStyledItemDelegate>
+class CAllStackingTasks;
+class CStackingEngine;
 
 namespace DSS
 {
@@ -80,8 +70,7 @@ class QErrorMessage;
 class QTextOption;
 class QSortFilterProxyModel;
 class QLabel;
-
-namespace fs = std::filesystem;
+class Workspace;
 
 namespace DSS
 {
@@ -105,7 +94,7 @@ namespace DSS
 
 		QString calculateElidedText(const QString& text, const QTextOption& textOption,
 			const QFont& font, const QRect& textRect, const Qt::Alignment valign,
-			Qt::TextElideMode textElideMode, int flags,
+			Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 			bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const;
 
 	};
@@ -225,7 +214,7 @@ namespace DSS
 			return frameList.getFirstCheckedLightFrame();
 		}
 
-		inline size_t countUnregisteredCheckedLightFrames(int id = -1) const
+		inline size_t countUnregisteredCheckedLightFrames(const int id = -1) const
 		{
 			return frameList.countUnregisteredCheckedLightFrames(id);
 		}
@@ -268,7 +257,6 @@ namespace DSS
 		ToolBar* pToolBar;
 
 		DSSRect	selectRect;
-		STACKINGMODE initialStackingMode;
 
 		//QFileDialog			fileDialog;
 
@@ -309,7 +297,7 @@ namespace DSS
 
 		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
 
-		bool checkStacking(CAllStackingTasks& tasks);
+		bool checkStacking([[maybe_unused]] CAllStackingTasks& tasks);
 
 		bool showRecap(CAllStackingTasks& tasks);
 
@@ -327,9 +315,11 @@ namespace DSS
 
 		void switchGroup(int);
 
-		void loadList(MRUPath& MRUList, QString& strFileList);
+		void loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
 
-		void saveList(MRUPath& MRUList, QString& strFileList);
+		void saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
+
+		bool isValidImage(const fs::path& path);
 
 		void retranslateUi();
 	};

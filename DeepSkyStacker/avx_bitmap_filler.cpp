@@ -1,8 +1,8 @@
-#include "StdAfx.h"
-#include "BitMapFiller.h"
+#include "stdafx.h"
+
 #include "avx_bitmap_filler.h"
 #include "avx_support.h"
-#include <immintrin.h>
+#include "ZExcept.h"
 
 
 // ---------------------------------

@@ -1,5 +1,4 @@
-#ifndef ZMSTRLCK_H
-#define ZMSTRLCK_H
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -51,4 +50,3 @@ static void releaseLock();
 // -MH-
 #endif
 
-#endif // !ZMSTRLCK_H

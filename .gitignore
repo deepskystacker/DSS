@@ -331,3 +331,6 @@ CodeMaid.config
 /DeepSkyStacker/i18n/*.qm
 /DeepSkyStackerLive/i18n/*.qm
 /Installers/DSS-Setup.exe
+
+# Compile Score files
+compileData*scor*

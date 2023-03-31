@@ -1,12 +1,9 @@
-#ifndef __IMAGELISTTAB_H__
-#define __IMAGELISTTAB_H__
-
 #pragma once
 
 #include "afxwin.h"
 #include "label.h"
-#include <ControlPos.h>
-#include <WndImage.h>
+#include "ControlPos.h"
+#include "WndImage.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "BitmapExt.h"
@@ -49,6 +46,3 @@ public :
 	void	UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, double fAngle);
 	BOOL	Close();
 };
-
-
-#endif

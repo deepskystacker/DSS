@@ -1,33 +1,18 @@
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QAction>
-#include <QMenu>
-#include <QPalette>
-#include <QSettings>
-#include <QString>
-#include <QSlider>
-
 #include "PostCalibration.h"
 #include "ui/ui_PostCalibration.h"
-
-extern bool	g_bShowRefStars;
-
-#include "resource.h"
-#include "commonresource.h"
+#include "Workspace.h"
+#include "StackSettings.h"
+#include "ZExcept.h"
+#include "Ztrace.h"
+#include "QtProgressDlg.h"
+#include "MasterFrames.h"
+#include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "CosmeticEngine.h"
-#include "MasterFrames.h"
-#include "DSSProgress.h"
-#include "QtProgressDlg.h"
-#include "StackSettings.h"
-#include "StackingTasks.h"
-#include "Workspace.h"
+#include "commonresource.h"
+
+extern bool	g_bShowRefStars;
 
 PostCalibration::PostCalibration(QWidget *parent) :
     QWidget(parent),
@@ -373,14 +358,13 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Load the bitmap
 				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
 				{
-					CString						strDescription;
-
+					QString	strDescription;
 					bmpInfo.GetDescription(strDescription);
 
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;

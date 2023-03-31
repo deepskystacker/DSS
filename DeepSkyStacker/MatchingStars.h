@@ -1,11 +1,11 @@
-#ifndef __MATCHINGSTARS_H__
-#define __MATCHINGSTARS_H__
+#pragma once
 
-#include "DSSTools.h"
 #if !defined(NDEBUG)
 #include <boost/container/vector.hpp>
 namespace bc = boost::container;
 #endif
+#include "DSSTools.h"
+#include "BilinearParameters.h"
 
 #pragma pack(push, STARTRIANGLE, 1)
 
@@ -316,7 +316,7 @@ typedef std::vector<CVotingPair>		VOTINGPAIRVECTOR;
 typedef VOTINGPAIRVECTOR::iterator		VOTINGPAIRITERATOR;
 
 /* ------------------------------------------------------------------- */
-
+class CBilinearParameters;
 class CMatchingStars
 {
 private:
@@ -409,6 +409,3 @@ public:
 		vPairs = m_vVotedPairs;
 	}
 };
-
-#endif // __MATCHINGSTARS_H__
-

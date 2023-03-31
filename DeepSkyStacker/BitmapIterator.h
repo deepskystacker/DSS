@@ -1,7 +1,5 @@
 #pragma once
-
-#include "BitmapBase.h"
-
+class CMemoryBitmap;
 template <class Ptr, class T>
 class BitmapIt
 {

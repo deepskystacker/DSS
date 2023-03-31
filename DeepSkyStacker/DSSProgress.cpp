@@ -1,6 +1,5 @@
 #include <stdafx.h>
 #include "DSSProgress.h"
-#include "boost/winapi/time.hpp"
 #include "Multitask.h"
 
 using namespace DSS;

@@ -34,117 +34,87 @@
 **
 **
 ****************************************************************************/
-
-#include <memory>
-
-#include <QCoreApplication>
-#include <QString>
+#include "DSSCommon.h"
 #include "ImageListModel.h"
+
+class ListBitMap;
 
 namespace DSS
 {
-	class Group
+	class Group final
 	{
-		friend class FrameList;
-
 	private:
+		friend class FrameList;
+		using IndexType = unsigned int;
+
 		//
 		// Initial group id is zero
 		//
-		inline static std::uint16_t nextIndex{ 0 };
+		inline static IndexType nextIndex{ 0 };
 		//
 		// Map of files to group id - used to check which group refers to a file (maybe none)
 		//
-		inline static std::map<fs::path, uint16_t> pathToGroup{};
+		inline static std::map<fs::path, IndexType> pathToGroup{};
 
 	public:
 
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		std::unique_ptr<ImageListModel>	pictures;
+		std::unique_ptr<ImageListModel> pictures;
 
-		explicit Group() :
-			pictures { std::make_unique<ImageListModel>() },
-			Index { nextIndex++ },		// First group is Main Group with Index of 0
-			Dirty{ false },
-			nameChanged { false }
-		{
-			if (0 == Index)
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
-			}
-			else
-			{
-				Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
-			}
-		}
-
+		Group();
 		//
 		// Don't intend this to be copied or assigned.
 		//
 		Group(const Group&) = delete;
-		Group& operator = (const Group&) = delete;
-
-		Group(Group&& rhs) noexcept :
-			pictures { std::move(rhs.pictures) },
-			Index { std::exchange(rhs.Index, 0) },
-			Name { std::move(rhs.Name) },
-			Dirty { std::exchange(rhs.Dirty, false) },
-			nameChanged { std::exchange(rhs.nameChanged, false) }
-		{
-		}
-
-		Group& operator = (Group&& rhs ) noexcept
-		{
-			if (this != &rhs)
-			{
-				pictures = std::move(rhs.pictures);
-				Index = std::exchange(rhs.Index, 0);
-				Name = std::move(rhs.Name);
-				Dirty = std::exchange(rhs.Dirty, false);
-				nameChanged = std::exchange(rhs.nameChanged, false);
-			}
-			return *this;
-		}
-
+		Group& operator=(const Group&) = delete;
+		Group(Group&& rhs) noexcept;
+		Group& operator=(Group&& rhs) noexcept;
 
 		//
 		// Accessors
 		//
-		inline size_t size() const noexcept
+		size_t size() const noexcept;
+
+		inline QString name() const noexcept
 		{
-			return pictures->rowCount();
+			return Name;
+		}
+		inline Group& setName(QString const& name) noexcept
+		{
+			Name = name;
+			nameChanged = true;
+			return *this;
+		}
+		inline bool dirty() const noexcept
+		{
+			return Dirty;
+		}
+		inline Group& setDirty(bool value = true) noexcept
+		{
+			Dirty = value;
+			return *this;
 		}
 
-		inline QString name() const noexcept { return Name; };
-		inline Group& setName(QString const& name) noexcept { Name = name; nameChanged = true; return *this; };
-		inline bool dirty() const noexcept { return Dirty; };
-		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
-
-		uint index() const noexcept { return Index; };
+		IndexType index() const noexcept { return Index; };
 
 		//
 		// Will call addImage() internally
 		//
- 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int32_t nItem = -1);
+ 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
 
 		//
 		// Add an image (row) to the table
 		//
-		void addImage(const ListBitMap& image)
-		{
-			pictures->addImage(image);
-			Dirty = true;
-		}
+		void addImage(const ListBitMap& image);
 
-		static int16_t whichGroupContains(const fs::path& path)
+		static int whichGroupContains(const fs::path& path)
 		{
-			int16_t result = -1;	// no group
 			if (auto iter = pathToGroup.find(path); iter != pathToGroup.end())
-				result = iter->second;
-
-			return result;
+				return static_cast<int>(iter->second);
+			else
+				return -1; // no group
 		}
 
 		static int32_t fileCount()
@@ -166,8 +136,8 @@ namespace DSS
 			pathToGroup.erase(pathToGroup.find(file));
 		}
 
-	protected:
-		uint16_t Index;		// This group's number
+	private:
+		IndexType Index;		// This group's number
 		//
 		// Every group has a name - initially "Main Group" or Group n"
 		//

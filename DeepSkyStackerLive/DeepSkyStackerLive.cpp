@@ -2,29 +2,13 @@
 //
 
 #include "stdafx.h"
-#include <chrono>
-#include <QLibraryInfo>
-#include <QDebug>
-#include <QDir>
-#include <QFileInfoList>
-#include <QMessageBox>
-#include <QSettings>
-#include <QStyleFactory>
-#include <QTranslator>
-#include <QApplication>
-#include <gdiplus.h>
-using namespace Gdiplus;
-
-#pragma comment(lib, "gdiplus.lib")
-
-#include "resource.h"
-
-#include "qmfcapp.h"
-
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
-
+#include "commonresource.h"
+#include "Ztrace.h"
 #include "SetUILanguage.h"
+
+bool	g_bShowRefStars = false;
 
 // CDeepSkyStackerLiveApp
 
@@ -114,6 +98,39 @@ bool	hasExpired()
 #endif
 	return bResult;
 };
+
+DeepSkyStackerLive::DeepSkyStackerLive() :
+	QMainWindow(),
+	initialised{ false },
+	winHost{ nullptr },
+	args{ qApp->arguments() },
+	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
+	statusBarText{ new QLabel("") }
+
+{
+}
+
+DeepSkyStackerLive::~DeepSkyStackerLive()
+{
+}
+
+void DeepSkyStackerLive::createStatusBar()
+{
+	statusBarText->setAlignment(Qt::AlignHCenter);
+	statusBar()->addWidget(statusBarText, 1);
+	//connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+}
+
+void DeepSkyStackerLive::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
+
+void DeepSkyStackerLive::displayMessage(const QString& message, QMessageBox::Icon icon)
+{
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
+	msgBox.exec();
+}
 
 /* ------------------------------------------------------------------- */
 QTranslator theQtTranslator;

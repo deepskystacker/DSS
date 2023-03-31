@@ -40,6 +40,9 @@
 #include "ChartLineSerie.h"
 #include "ChartPointsSerie.h"
 #include "ChartSurfaceSerie.h"
+#include "ChartLegend.h"
+#include "ChartTitle.h"
+#include "ChartAxis.h"
 
 #define CHARTCTRL_CLASSNAME    "ChartCtrl"  // Window class name
 

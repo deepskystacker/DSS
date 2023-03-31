@@ -1,7 +1,11 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "BitMapFiller.h"
 #include "avx_bitmap_filler.h"
 #include "avx_support.h"
+#include "DSSProgress.h"
+#include "ZExcept.h"
+
+using namespace DSS;
 
 // ----------------------------------
 // BitmapFillerInterface

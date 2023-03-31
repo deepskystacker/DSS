@@ -36,11 +36,6 @@
 ****************************************************************************/
 class QMouseEvent;
 
-#include <QObject>
-#include <QWidget>
-#include <QRect>
-#include <QString>
-
 enum class SelectionMode : quint8;
 
 namespace DSS
@@ -59,6 +54,11 @@ namespace DSS
         explicit SelectRect(QWidget* parent);
 
         void setGeometry(const QRect& r);
+        inline void reset()
+        {
+            selectRect = QRectF();
+            emit selectRectChanged(selectRect);
+        }
 
     protected:
         void paintEvent(QPaintEvent*) override;

@@ -2,67 +2,99 @@
 //  or project specific include files that are used frequently, but
 //      are changed infrequently
 //
-
 #pragma once
-
-#if defined(USE_HOARD)
-#pragma comment(lib, "lib\\winhoard.lib")
-#endif
-
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-//
-// Want to support windows 7 and up
-//
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
 
 // Visual Leak Detector
 //
 #include <vld.h>
 
-#include <QRectF>
+// Qt Files
+#include <QApplication>
+#include <QDialog>
+#include <QFileInfo>
+#include <QDir>
+#include <QTimer>
+#include <QString>
+#include <QImage>
+#include <QLocale>
+#include <QSettings>
+#include <QGlobalStatic>
+#include <QMutex>
+#include <QPoint>
+#include <QPointF>
+#include <QAbstractItemModel>
+#include <QStandardItemModel>
+#include <QIcon>
+#include <QFileDialog>
+#include <QMainWindow>
+#include <QMessageBox>
+#include <QLabel>
+#include <QStatusBar>
+#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QMimeType>
+#include <QStackedWidget>
+#include <QWidget>
+#include <QTranslator>
+#include <QStyleFactory>
+#include <QLibraryInfo>
+#include <QDockWidget>
+#include <QMenu>
+#include <QStandardPaths>
+#include <QValidator>
+#include <QStyledItemDelegate>
+#include <QThreadPool>
+#include <QTextLayout>
+#include <QPainter>
+#include <QTimeEdit>
+#include <QComboBox>
+#include <QSortFilterProxyModel>
+#include <QToolTip>
+#include <QClipboard>
+#include <QToolBar>
+#include <QGraphicsOpacityEffect>
+#include <QActionGroup>
+#include <QNetworkReply>
+#include <QErrorMessage>
+#include <QDialog>
+#include <QPushButton>
+
+// Standard Libraries
+#include <concurrent_unordered_set.h>
+#include <shared_mutex>
+#include <omp.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <mutex>
+#include <deque>
+#include <set>
+#include <future>
+#include <inttypes.h>
+#include <filesystem>
+#include <tuple>
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+
+namespace bip = boost::interprocess;
+namespace fs = std::filesystem;
+
+using std::min;
+using std::max;
+
+// Windows Files (eventually to go!)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#define _WIN32_WINNT _WIN32_WINNT_WIN7	// Want to support Windows XP and up
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
 #include <afxcview.h>
-#ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-#include <atlbase.h>
-
-#include <stdlib.h>
-#ifndef NDEBUG
-//#include <crtdbg.h>
-#endif
-
-#include <windows.h>
 #include <commctrl.h>
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <iostream>
-#include <vector>
-
-#include "DSSCommon.h"
-#include "DSSMemory.h"
-#include "Ztrace.h"
-
-extern CString OUTPUTFILE_FILTERS;
-extern CString OUTPUTLIST_FILTERS;
-extern CString SETTINGFILE_FILTERS;
-extern CString STARMASKFILE_FILTERS;
-
-extern bool		g_bShowRefStars;
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#include "resource.h"
-#include "commonresource.h"
-#include <afxdlgs.h>
-
-#include "BitmapExt.h"
+#include <afxole.h>
+#include <AFXPRIV.H>
+#include <richole.h>  // for IRichEditOleCallback
+#include <gdiplus.h>
+using namespace Gdiplus;

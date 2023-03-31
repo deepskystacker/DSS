@@ -1,10 +1,6 @@
-#ifndef __SETTINGS_H__
-#define __SETTINGS_H__
+#pragma once
 
-#include <set>
 #include "Workspace.h"
-#include <QChar>
-#include <QString>
 
 
 class CSetting
@@ -154,14 +150,13 @@ protected :
 
 	void	AddFileVariable(LPCTSTR szVariable, LPCTSTR szFileName)
 	{
-		CString			strValue;
 		CBitmapInfo		bmpInfo;
 
 		// Retrieve the date and time of creation and append it to the file name
 		if (GetPictureInfo(szFileName, bmpInfo))
 		{
-			strValue.Format(_T("%s[%s]"), szFileName, (LPCTSTR)bmpInfo.m_strDateTime);
-			AddVariable(szVariable, (LPCTSTR)strValue);
+			QString strValue = QString("%1[%2]").arg(szFileName, bmpInfo.m_strDateTime);
+			AddVariable(szVariable, strValue.toStdWString().c_str());
 		};
 	};
 
@@ -272,4 +267,3 @@ public :
 /* ------------------------------------------------------------------- */
 
 
-#endif // __SETTINGS_H__

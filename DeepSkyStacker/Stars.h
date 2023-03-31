@@ -1,10 +1,7 @@
-#ifndef __STARS_H__
-#define __STARS_H__
-
-#include <set>
-#include <algorithm>
-#include "DSSTools.h"
+#pragma once
 #include "dssrect.h"
+#include "DSSTools.h"
+
 
 class CStar
 {
@@ -229,5 +226,3 @@ inline int	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vSta
 
 	return lResult;
 };
-
-#endif // __STARS_H__

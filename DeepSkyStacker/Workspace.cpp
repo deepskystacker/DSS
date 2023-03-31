@@ -1,20 +1,7 @@
 #include <stdafx.h>
-#include <algorithm>
-#include <deque>
-#include <memory>
-#include <QDebug>
-#include <QGlobalStatic>
-#include <QSettings>
-#include <mutex>
-
-#include "resource.h"
 #include "Workspace.h"
-
-#include "BitmapExt.h"
-#include "DSSProgress.h"
-#include "DSSTools.h"
-#include "StackingTasks.h"
-
+#include "DSSCommon.h"
+#include "ZExcBase.h"
 class WorkspaceSettings
 {
 public:
@@ -421,16 +408,19 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 	if (it != m_vSettings.end())
 	{
 		//
+		// Special Case for Stacking/Mosaic - don't allow Custom mode
+		// 
+		if ("Stacking/Mosaic" == keyName && "2" == value)
+		{
+			value.setNum(static_cast<int>(SM_INTERSECTION)); // Force Intersection mode
+		}
+		//
 		// In all cases when we enter here the variable "value" will be
 		// a QString.
 		// We need to convert it to the same type as is currently stored
 		//
 		QVariant variant(value);
-#if QT_VERSION < 0x060000
-		QVariant::Type type = it->value().type();
-#else
 		QMetaType type = it->value().metaType();
-#endif
 		ZASSERT(variant.canConvert(type));
 		variant.convert(type);
 		it->setValue(variant);

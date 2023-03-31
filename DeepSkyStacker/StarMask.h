@@ -1,8 +1,7 @@
-#ifndef __STARMASK_H__
-#define __STARMASK_H__
+#pragma once
 
-#include <QSettings>
-#include "RegisterEngine.h"
+class CMemoryBitmap;
+namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -239,7 +238,6 @@ public:
 	}
 
 //	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, ProgressBase * pProgress = nullptr);
-	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, ProgressBase* pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress = nullptr);
 };
 
-#endif // __STARMASK_H__

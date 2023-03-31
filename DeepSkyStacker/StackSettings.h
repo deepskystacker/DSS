@@ -1,20 +1,18 @@
-#ifndef STACKSETTINGS_H
-#define STACKSETTINGS_H
-
-
-#include <QDialog>
-#include "ResultParameters.h"
-#include "CometStacking.h"
-#include "PostCalibration.h"
-#include "OutputTab.h"
-#include "IntermediateFiles.h"
-#include "AlignmentParameters.h"
-#include "StackingParameters.h"
-#include "StackingTasks.h"
+#pragma once
+#include "dssrect.h"
 
 namespace Ui {
 class StackSettings;
 }
+
+class ResultParameters;
+class CometStacking;
+class AlignmentParameters;
+class IntermediateFiles;
+class PostCalibration;
+class OutputTab;
+class StackingParameters;
+class CAllStackingTasks;
 
 class StackSettings : public QDialog
 {
@@ -53,11 +51,7 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
-	{
-		pStackingTasks = tasks;
-		return *this;
-	};
+	StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept;
 
 	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias)
 	{
@@ -109,17 +103,20 @@ private:
 	bool					enableFlat;
 	bool					enableBias;
 	bool					enableAll;
-	bool					customRectangleSelected;
-	bool					customRectangleEnabled;
+	bool					customRectEnabled;
+	DSSRect					customRect;
 	CAllStackingTasks *		pStackingTasks;
 
 	void showEvent(QShowEvent *event) override;
 	void changeEvent(QEvent *event) override;
 
 	void onInitDialog();
+	void setCustomRectEnabled(bool value)
+	{
+		customRectEnabled = value;
+	}
 
 private slots:
 	void tabChanged(int tab);
 	void on_chooseFolder_clicked(bool value);
 };
-#endif // STACKSETTINGS_H

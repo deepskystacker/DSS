@@ -2,20 +2,12 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
-#include <QSettings>
-
-#include "DeepSkyStackerLive.h"
-#include "DeepSkyStackerLiveDlg.h"
 #include "MainBoard.h"
-#include <gdiplus.h>
-#include "FolderDlg.h"
-#include "RestartMonitoring.h"
-
-#include <algorithm>
-#include <FrameInfo.h>
-#include <..\SMTP\PJNSMTP.h>
 #include "FrameInfoSupport.h"
+#include "DeepSkyStackerLiveDlg.h"
+#include "RestartMonitoring.h"
+#include "FolderDlg.h"
+#include "PJNSMTP.h"
 
 const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
@@ -85,7 +77,7 @@ void CMainBoard::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MONITOREDFOLDER, m_MonitoredFolder);
 
 	DDX_Control(pDX, IDC_MONITOR, m_Monitor);
-	DDX_Control(pDX, IDC_STACK, m_Stack);
+	DDX_Control(pDX, IDC_STACK_DSSLIVE, m_Stack);
 	DDX_Control(pDX, IDC_STOP, m_Stop);
 	DDX_Control(pDX, IDC_STATS, m_Stats);
 }
@@ -1092,9 +1084,9 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 
 							if (bmpInfo.m_strFileType=="RAW")
 								bAdd = m_LiveSettings.IsProcess_RAW();
-							else if (bmpInfo.m_strFileType.Left(4)=="FITS")
+							else if (bmpInfo.m_strFileType.left(4)=="FITS")
 								bAdd = m_LiveSettings.IsProcess_FITS();
-							else if (bmpInfo.m_strFileType.Left(4)=="TIFF")
+							else if (bmpInfo.m_strFileType.left(4)=="TIFF")
 								bAdd = m_LiveSettings.IsProcess_TIFF();
 							else
 								bAdd = m_LiveSettings.IsProcess_Others();
@@ -1172,7 +1164,7 @@ LRESULT CMainBoard::OnFolderChange([[maybe_unused]] WPARAM wParam, [[maybe_unuse
 		vNewFiles.clear();
 
 		for (LONG i = 0;i<vBitmapInfos.size();i++)
-			vNewFiles.push_back(vBitmapInfos[i].m_strFileName);
+			vNewFiles.push_back(CString(vBitmapInfos[i].m_strFileName.toStdWString().c_str()));
 
 		for (LONG i = 0;i<vNewFiles.size();i++)
 			m_vAllFiles.push_back(vNewFiles[i]);

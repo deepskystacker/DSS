@@ -1,16 +1,17 @@
-#ifndef _STACKINGTASKS_H__
-#define _STACKINGTASKS_H__
+#pragma once
 
-#include <QString>
+#include "DSSCommon.h"
+#include "DSSProgress.h"
 #include "dssrect.h"
-#include "BitmapExt.h"
-#include "FrameInfo.h"
 #include "TaskInfo.h"
 
+namespace DSS { class ProgressBase; }
 
+class CMemoryBitmap;
+class CFrameInfo;
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(const fs::path filePath, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, DSS::ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
@@ -129,8 +130,8 @@ public:
 
 
 /* ------------------------------------------------------------------- */
-
-bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+class CTaskInfo;
+bool GetTaskResult(const CTaskInfo* pTaskInfo, DSS::ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
@@ -187,10 +188,10 @@ public :
 		return (*this);
 	};
 
-	bool	DoOffsetTask(ProgressBase* const pProgress);
-	bool	DoDarkTask(ProgressBase* const pProgress);
-	bool	DoFlatTask(ProgressBase* const pProgress);
-	bool	DoDarkFlatTask(ProgressBase* const pProgress);
+	bool	DoOffsetTask(DSS::ProgressBase* const pProgress);
+	bool	DoDarkTask(DSS::ProgressBase* const pProgress);
+	bool	DoFlatTask(DSS::ProgressBase* const pProgress);
+	bool	DoDarkFlatTask(DSS::ProgressBase* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -201,9 +202,9 @@ private :
 	bool						m_bCalibrating;
 	bool						m_bUsingJPEG;
 	bool						m_bUsingFITS;
-	bool						m_bUseCustomRectangle;
+	bool						customRectEnabled;
 	bool						m_bCometAvailable;
-	DSSRect						m_rcCustom;
+	DSSRect						customRect;
 	bool						m_bDarkUsed;
 	bool						m_bBiasUsed;
 	bool						m_bFlatUsed;
@@ -228,7 +229,7 @@ public :
 		m_bCalibrating{ false },
 		m_bUsingJPEG{ false },
 		m_bUsingFITS{ false },
-		m_bUseCustomRectangle{ false },
+		customRectEnabled{ false },
 		m_bCometAvailable{ false },
 		m_bDarkUsed{ false },
 		m_bBiasUsed{ false },
@@ -336,37 +337,29 @@ public :
 		return m_fMaxExposureTime;
 	}
 
-	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
-	void SetCustomRectangle(const DSSRect& rcCustom)
+	void AddFileToTask(const CFrameInfo& FrameInfo, const std::uint32_t dwGroupID = 0);
+	void setCustomRectangle(const DSSRect& rcCustom)
 	{
 		if (rcCustom.isEmpty())
 		{
-			m_bUseCustomRectangle = false;
+			customRectEnabled = false;
 		}
 		else
 		{
-			m_bUseCustomRectangle = true;
-			m_rcCustom = rcCustom;
+			customRectEnabled = true;
+			customRect = rcCustom;
 		}
 	}
 
-	void UseCustomRectangle(bool bUse)
+	bool getCustomRectangle(DSSRect& rcCustom) const
 	{
-		if (!m_rcCustom.isEmpty())
-			m_bUseCustomRectangle = bUse;
-		else
-			m_bUseCustomRectangle = false;
+		rcCustom = customRect;
+		return !customRect.isEmpty();
 	}
 
-	bool GetCustomRectangle(DSSRect& rcCustom) const
+	void enableCustomRect(bool v = true)
 	{
-		rcCustom = m_rcCustom;
-		return !m_rcCustom.isEmpty();
-	}
-
-	bool IsCustomRectangleUsed() const
-	{
-		return m_bUseCustomRectangle;
+		customRectEnabled = v;
 	}
 
 	void ResolveTasks();
@@ -375,11 +368,13 @@ public :
 
 	int FindStackID(LPCTSTR szLightFrame);
 
-	bool DoOffsetTasks(ProgressBase* pProgress);
-	bool DoDarkTasks(ProgressBase* pProgress);
-	bool DoFlatTasks(ProgressBase* pProgress);
-	bool DoDarkFlatTasks(ProgressBase* pProgress);
-	bool DoAllPreTasks(ProgressBase* pProgress);
+	STACKINGMODE getStackingMode() const;
+
+	bool DoOffsetTasks(DSS::ProgressBase* pProgress);
+	bool DoDarkTasks(DSS::ProgressBase* pProgress);
+	bool DoFlatTasks(DSS::ProgressBase* pProgress);
+	bool DoDarkFlatTasks(DSS::ProgressBase* pProgress);
+	bool DoAllPreTasks(DSS::ProgressBase* pProgress);
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();
@@ -403,7 +398,6 @@ public :
 	static  double	GetDarkFactor();
 	static	bool	GetHotPixelsDetection();
 	static	bool	GetBadLinesDetection();
-	static  STACKINGMODE	GetResultMode();
 	static  bool	GetCreateIntermediates();
 	static  bool	GetSaveCalibrated();
 	static  bool	GetSaveCalibratedDebayered();
@@ -436,41 +430,8 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline void	SpaceToString(__int64 ulSpace, CString & strSpace)
-{
-	double					fKb,
-							fMb,
-							fGb;
-
-	fKb = ulSpace / 1024.0;
-	fMb	= fKb / 1024.0;
-	fGb = fMb / 1024.0;
-
-	if (fKb < 900)
-		strSpace.Format(IDS_RECAP_KILOBYTES, fKb);
-	else if (fMb < 900)
-		strSpace.Format(IDS_RECAP_MEGABYTES, fMb);
-	else
-		strSpace.Format(IDS_RECAP_GIGABYTES, fGb);
-};
-
-inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
-{
-	double fKb(ulSpace / 1024.0);
-	double fMb(fKb / 1024.0);
-	double fGb(fMb / 1024.0);
-
-	if (fKb < 900)
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES")
-		.arg(fKb, 0, 'f', 1);
-	else if (fMb < 900)
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES")
-		.arg(fMb, 0, 'f', 1);
-	else
-		strSpace = QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES")
-		.arg(fGb, 0, 'f', 1);
-};
+void SpaceToString(__int64 ulSpace, CString& strSpace);
+void SpaceToQString(__int64 ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 
-#endif // _STACKINGTASKS_H__

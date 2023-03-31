@@ -1,10 +1,4 @@
 #pragma once
-#include <filesystem>
-
-#include <QSettings>
-#include <QString>
-
-namespace fs = std::filesystem;
 
 class MRUPath
 {

@@ -1,14 +1,11 @@
 #include <stdafx.h>
 #include "DeepStack.h"
-#include <math.h>
-#include <tiffio.h>
-#include <algorithm>
-#include "MatchingStars.h"
+#include "Histogram.h"
+#include "Ztrace.h"
+#include "Multitask.h"
+#include "DSSProgress.h"
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
-/* ------------------------------------------------------------------- */
+using namespace DSS;
 
 void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 {

@@ -4,7 +4,9 @@
 #include "avx_entropy.h"
 
 class CTaskInfo;
-
+class DSSRect;
+class CMemoryBitmap;
+class AvxEntropy;
 
 class AvxAccumulation
 {

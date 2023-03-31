@@ -1,16 +1,14 @@
 #include <stdafx.h>
-#include "resource.h"
-#include "BitmapBase.h"
-#include "DSSTools.h"
 #include "MultiBitmapProcess.h"
 #include "StackingTasks.h"
-#include "DSSProgress.h"
-#include <algorithm>
-#include <iostream>
+#include "MultiBitmap.h"
+#include "MemoryBitmap.h"
+#include "Ztrace.h"
 #include "Multitask.h"
 #include "avx_output.h"
-#include <omp.h>
-#include <mutex>
+#include "ZExcBase.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
 namespace {
 

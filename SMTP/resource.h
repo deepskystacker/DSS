@@ -5,7 +5,7 @@
 #define IDD_MAIN_DIALOG                 102
 #define IDR_MAINFRAME                   128
 #define IDD_CONFIGURATION               129
-#define IDD_PROGRESS                    130
+//#define IDD_PROGRESS                    130
 #define IDS_PJNSMTP_UNEXPECTED_SMTP_LOGIN_RESPONSE 512
 #define IDS_PJNSMTP_UNEXPECTED_EHLO_RESPONSE 516
 #define IDS_PJNSMTP_UNEXPECTED_HELO_RESPONSE 517

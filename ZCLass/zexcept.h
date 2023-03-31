@@ -1,5 +1,4 @@
-#ifndef ZEXCEPT_H
-#define ZEXCEPT_H
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -455,4 +454,3 @@ void ZExport
 // -MH-
 #endif
 
-#endif /* ZEXCEPT_H */
