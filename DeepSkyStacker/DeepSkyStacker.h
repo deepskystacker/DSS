@@ -43,7 +43,6 @@ namespace DSS
 }
 class ExplorerBar;
 class QStackedWidget;
-class QStackedWidget;
 class QWinHost;
 class CProcessingDlg;
 class CDSSSettings;
