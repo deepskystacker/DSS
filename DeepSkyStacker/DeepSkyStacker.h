@@ -1,6 +1,4 @@
 #pragma once
-#include "dssbase.h"
-#include "dss_settings.h"
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2022 David C. Partridge
@@ -36,6 +34,8 @@
 **
 **
 ****************************************************************************/
+#include "dssbase.h"
+#include "dss_settings.h"
 namespace DSS
 {
 	class PictureList;
