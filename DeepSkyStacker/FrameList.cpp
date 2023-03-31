@@ -664,16 +664,15 @@ namespace DSS
 		}
 	}
 	//
-	// The function template 'checkSelective' is used as a common function for the below checkAll(), checkAllDarks(), etc.
-	// Selector is a non-type-template-parameter, it needs to be invocable (i.e. a function).
-	//          It is called to check, if the current file shall be checked or unchecked (i.e. file.m_bChecked set to checkState).
-	//          It must return several values that are used in the loop.
-	//          A requires clause is added to ensure correct usage.
+	// The function template 'checkSelective' is used as a common function for the below checkAllDarks(), checkAllFlats(), etc.
+	// Selector is a non-type-template-parameter, it needs to be invocable (i.e. a lambda).
+	//          It is called to decide, if the current file shall be checked or unchecked (i.e. file.m_bChecked set to a Qt::CheckState).
+	//          It must return a pair<bool, Qt::CheckState>.
 	// checkSelective() accepts a variable number of arguments, which are forwarded to the Selector.
 	//                  By that we can use Selectors with different arguments (used e.g. in checkImage() below).
-	// If the template parameter bool IndividualRowChanged is true, the function will call dataChanged() file by file.
+	// If the template parameter bool ImmediateReturn is true, the function will be escaped after the first found file.
 	//
-	template <auto Selector, bool IndividualRowChanged, typename... Args>
+	template <auto Selector, bool ImmediateReturn, typename... Args>
 	requires (std::invocable<decltype(Selector), ListBitMap&, bool, const Args&...>)
 	void FrameList::checkSelective(const bool check, const Args&... args)
 	{
@@ -681,51 +680,43 @@ namespace DSS
 		{
 			for (int fileIndex = 0; auto& file : group.pictures->mydata)
 			{
-				if (const auto [fileIncluded, checkState, doReturn] = Selector(file, check, args...); fileIncluded == true)
+				if (const auto [fileIncluded, checkState] = Selector(file, check, args...); fileIncluded == true)
 				{
 					file.m_bChecked = checkState;
-					if constexpr (IndividualRowChanged)
-					{
-						const QModelIndex changedRow = group.pictures->createIndex(fileIndex, 0);
-						group.pictures->dataChanged(changedRow, changedRow, QList<int>{ Qt::CheckStateRole });
-					}
+					const QModelIndex changedRow = group.pictures->createIndex(fileIndex, 0);
+					group.pictures->dataChanged(changedRow, changedRow, QList<int>{ Qt::CheckStateRole });
 					group.setDirty();
-					if (doReturn)
+					if constexpr (ImmediateReturn)
 						return;
 				}
 				++fileIndex;
-			}
-			if constexpr (!IndividualRowChanged)
-			{
-				group.pictures->dataChanged(group.pictures->createIndex(0, 0), group.pictures->createIndex(group.pictures->rowCount(), 0), QList<int>{ Qt::CheckStateRole });
 			}
 		}
 	}
 
 	void FrameList::checkAll(bool check)
 	{
-		constexpr auto Selector = [](const auto&, const bool check) { return std::make_tuple(true, check ? Qt::Checked : Qt::Unchecked, false); };
-		checkSelective<Selector, false>(check);
-		//const auto checkState = check ? Qt::Checked : Qt::Unchecked;
+		const auto checkState = check ? Qt::Checked : Qt::Unchecked;
 
-		//for (auto& group : imageGroups)
-		//{
-		//	for (auto& file : group.pictures->mydata)
-		//	{
-		//		file.m_bChecked = checkState;
-		//	}
-		//	QModelIndex start{ group.pictures->createIndex(0, 0) };
-		//	QModelIndex end{ group.pictures->createIndex(group.pictures->rowCount(), 0) };
-		//	const QVector<int> role{ Qt::CheckStateRole };
-		//	group.pictures->dataChanged(start, end, role);
-		//	group.setDirty();
-		//}
+		for (auto& group : imageGroups)
+		{
+			for (auto& file : group.pictures->mydata)
+			{
+				file.m_bChecked = checkState;
+			}
+			group.pictures->dataChanged(
+				group.pictures->createIndex(0, 0),
+				group.pictures->createIndex(group.pictures->rowCount(), 0), 
+				QList<int>{ Qt::CheckStateRole }
+			);
+			group.setDirty();
+		}
 	}
 
 	void FrameList::checkAllDarks(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_tuple(file.IsDarkFrame(), check ? Qt::Checked : Qt::Unchecked, false); };
-		checkSelective<Selector, true>(check);
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsDarkFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (auto& file : group.pictures->mydata)
@@ -749,8 +740,8 @@ namespace DSS
 
 	void FrameList::checkAllFlats(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_tuple(file.IsFlatFrame(), check ? Qt::Checked : Qt::Unchecked, false); };
-		checkSelective<Selector, true>(check);
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsFlatFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (auto& file : group.pictures->mydata)
@@ -775,8 +766,8 @@ namespace DSS
 
 	void FrameList::checkAllOffsets(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_tuple(file.IsOffsetFrame(), check ? Qt::Checked : Qt::Unchecked, false); };
-		checkSelective<Selector, true>(check);
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsOffsetFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (auto& file : group.pictures->mydata)
@@ -801,8 +792,8 @@ namespace DSS
 
 	void FrameList::checkAllLights(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_tuple(file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked, false); };
-		checkSelective<Selector, true>(check);
+		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
@@ -827,7 +818,7 @@ namespace DSS
 	void FrameList::checkImage(const QString& image, bool check)
 	{
 		constexpr auto Selector = [](const auto& file, const bool check, const QString& image) {
-			return std::make_tuple(image == file.m_strFile && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked, true);
+			return std::make_pair(image == file.m_strFile && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
 		};
 		checkSelective<Selector, true>(check, image);
 		//for (auto& group : imageGroups)
@@ -857,9 +848,9 @@ namespace DSS
 	void FrameList::checkAbove(const double threshold)
 	{
 		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
-			return std::make_tuple(file.IsLightFrame(), file.m_fOverallQuality >= threshold ? Qt::Checked : Qt::Unchecked, false);
+			return std::make_pair(file.IsLightFrame(), file.m_fOverallQuality >= threshold ? Qt::Checked : Qt::Unchecked);
 		};
-		checkSelective<Selector, true>(true, threshold);
+		checkSelective<Selector, false>(true, threshold);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (int idx = 0; idx != group.pictures->mydata.size(); ++idx)
