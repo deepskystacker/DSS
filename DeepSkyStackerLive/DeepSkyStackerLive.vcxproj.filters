@@ -31,6 +31,9 @@
     <Filter Include="Qt\i18n">
       <UniqueIdentifier>{35296fcd-9a3b-4ce5-b85c-721aa046fc66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Qt\ui">
+      <UniqueIdentifier>{4abe7899-f800-4251-9c3f-1ebce915fbfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStackerLive.cpp">
