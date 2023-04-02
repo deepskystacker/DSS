@@ -146,6 +146,7 @@ void RegisterSettings::onInitDialog()
 	ui->luminanceThreshold->
 		setSliderPosition(value);
 	ui->luminancePercent->setText(QString("%1%").arg(value));
+	detectionThreshold = value;
 
 	ui->medianFilter->
 		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
