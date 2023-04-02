@@ -3,39 +3,7 @@
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-Changes since the last release:
-
-1. Bug fix - correct problems with drag drop of a directory.
-
-2. Enhancement - if Custom Rectangle mode is read from a filelist or settings file, switch to Intersection mode.
-
-3. Bug fix - correct handling of reference frame in filelist.
-
-4. Bug Fix - FITS/DDP choice of Camera was not being handled correctly.
-
-Welcome to DeepSkyStacker 5.1.2
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-This is a bug fix release for problems reported against 5.1.0 and 5.1.1
-
-1. Bug fix - correct handling of file types (TIFF/FITS) in DeepSkyStackerCL for intermediate and final files
-
-2. Bug fix - correct handling of Stacking Mode (Standard/Mosaic/Intersection/Custom)
-
-3. Bug fix - unable to select a custom rectangle immediately after opening image file
-
-4. Bug fix - fileids in filelist files were being incorrectly written as ANSI not UTF8
-
-5. Bug fix - the selection for a custom rectangle was not always visible
-
-6. Enhancement - reduce the minium size for the image list to be two rows
-
-Welcome to DeepSkyStacker 5.1.1
-===============================
-
-This is a bug fix release for problems reported against 5.1.0
+This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
 
 1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
 
@@ -56,6 +24,30 @@ This is a bug fix release for problems reported against 5.1.0
 9. Bug fix - remove all "Set Black Point to Zero" recommendations from "Recommended Settings"
 
 10. Bug fix - Invalid input in RAW/DDP settings for scale factors caused an assertion failure
+
+11. Bug fix - correct handling of file types (TIFF/FITS) in DeepSkyStackerCL for intermediate and final files
+
+12. Bug fix - correct handling of Stacking Mode (Standard/Mosaic/Intersection/Custom)
+
+13. Bug fix - unable to select a custom rectangle immediately after opening image file
+
+14. Bug fix - fileids in filelist files were being incorrectly written as ANSI not UTF8
+
+15. Bug fix - the selection for a custom rectangle was not always visible
+
+16. Enhancement - reduce the minimum size for the image list to be two rows
+
+17. Bug fix - correct problems with drag drop of a directory.
+
+18. Enhancement - if Custom Rectangle mode is read from a filelist or settings file, switch to Intersection mode.
+
+19. Bug fix - correct handling of reference frame in filelist.
+
+20. Bug Fix - FITS/DDP choice of Camera was not being handled correctly.
+
+21. Bug fix - ensure that reference frame is used a) when checked, and b) when not checked
+
+22. Bug fix - Register settings set a value of 0 for the luminance threshold when it was initially set to 20.
 
 Welcome to DeepSkyStacker 5.1.0
 ===============================
