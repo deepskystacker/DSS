@@ -205,7 +205,6 @@ namespace DSS
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
 				if (it->IsLightFrame() && 
-					it->m_bChecked == Qt::Checked &&
 					it->m_bUseAsStarting
 					)
 				{
