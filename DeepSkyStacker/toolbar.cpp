@@ -75,10 +75,10 @@ namespace DSS
         setOrientation(Qt::Vertical);
 
         rectAction = addAction(selRect, "",
-            [=]()   {   this->rectAction->setChecked(true);
-                        this->starsAction->setChecked(false);
-                        this->cometAction->setChecked(false);
-                    });
+            [=]() {   this->rectAction->setChecked(true);
+        this->starsAction->setChecked(false);
+        this->cometAction->setChecked(false);
+            });
         rectAction->setToolTip(tr(
             "Custom Rectangle Mode:\n"
             "This mode allows you to create or modify a Custom Rectangle\n"
@@ -90,12 +90,12 @@ namespace DSS
         ZASSERT(pStackingDlg);
 
         connect(rectAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_rectButtonPressed);
- 
+
         starsAction = addAction(selStars, "",
-            [=]()   {   this->rectAction->setChecked(false);
-                        this->starsAction->setChecked(true);
-                        this->cometAction->setChecked(false);
-                    });     
+            [=]() {   this->rectAction->setChecked(false);
+        this->starsAction->setChecked(true);
+        this->cometAction->setChecked(false);
+            });
         starsAction->setToolTip(tr(
             "Edit Stars Mode:\n"
             "This mode shows the stars that have been detected in the image.\n"
@@ -103,12 +103,12 @@ namespace DSS
             "IDS_TOOLTIP_STAR"
         ));
         connect(starsAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_starsButtonPressed);
- 
+
         cometAction = addAction(selComet, "",
-            [=]()   {   this->rectAction->setChecked(false);
-                        this->starsAction->setChecked(false);
-                        this->cometAction->setChecked(true);
-                    });
+            [=]() {   this->rectAction->setChecked(false);
+        this->starsAction->setChecked(false);
+        this->cometAction->setChecked(true);
+            });
         cometAction->setToolTip(tr(
             "Edit Comet Mode:\n"
             "This mode allows you to select and edit the location\n"
@@ -116,7 +116,7 @@ namespace DSS
             "IDS_TOOLTIP_COMET"
         ));
         connect(cometAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_cometButtonPressed);
- 
+
         saveAction = addAction(saveButton, "");
         saveAction->setToolTip(tr(
             "Save changes:\n"
@@ -139,11 +139,15 @@ namespace DSS
 
         setIconSize(iconSize);
         adjustSize();
+        QColor colour = palette().window().color(); 
+        colour = colour.lighter(300);
+        colour.setAlpha(205);
         QString styleSheet(QString(
             "QToolBar "
-            "{background-color: rgba(255,255,255,205); "
-            "border-radius: %1px;}; "
+            "{background-color: %1; "
+            "border-radius: %2px;}; "
         )
+            .arg(colour.name(QColor::HexArgb))
             .arg(radius)
         );
         setStyleSheet(styleSheet);
