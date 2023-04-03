@@ -99,6 +99,39 @@ bool	hasExpired()
 	return bResult;
 };
 
+DeepSkyStackerLive::DeepSkyStackerLive() :
+	QMainWindow(),
+	initialised{ false },
+	winHost{ nullptr },
+	args{ qApp->arguments() },
+	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
+	statusBarText{ new QLabel("") }
+
+{
+}
+
+DeepSkyStackerLive::~DeepSkyStackerLive()
+{
+}
+
+void DeepSkyStackerLive::createStatusBar()
+{
+	statusBarText->setAlignment(Qt::AlignHCenter);
+	statusBar()->addWidget(statusBarText, 1);
+	//connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+}
+
+void DeepSkyStackerLive::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
+
+void DeepSkyStackerLive::displayMessage(const QString& message, QMessageBox::Icon icon)
+{
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
+	msgBox.exec();
+}
+
 /* ------------------------------------------------------------------- */
 QTranslator theQtTranslator;
 QTranslator theAppTranslator;

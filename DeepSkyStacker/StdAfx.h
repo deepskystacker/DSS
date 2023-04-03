@@ -72,6 +72,7 @@
 #include <future>
 #include <inttypes.h>
 #include <filesystem>
+#include <tuple>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 

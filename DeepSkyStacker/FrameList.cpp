@@ -196,7 +196,9 @@ namespace DSS
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
+				if (it->IsLightFrame() && 
+					it->m_bUseAsStarting
+					)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
 				}
@@ -663,8 +665,17 @@ namespace DSS
 			++row;
 		}
 	}
-
+	//
+	// The function template 'checkSelective' is used as a common function for the below checkAllDarks(), checkAllFlats(), etc.
+	// Selector is a non-type-template-parameter, it needs to be invocable (i.e. a lambda).
+	//          It is called to decide, if the current file shall be checked or unchecked (i.e. file.m_bChecked set to a Qt::CheckState).
+	//          It must return a pair<bool, Qt::CheckState>.
+	// checkSelective() accepts a variable number of arguments, which are forwarded to the Selector.
+	//                  By that we can use Selectors with different arguments (used e.g. in checkImage() below).
+	// If the template parameter bool ImmediateReturn is true, the function will be escaped after the first found file.
+	//
 	template <auto Selector, bool ImmediateReturn, typename... Args>
+	requires (std::invocable<decltype(Selector), ListBitMap&, bool, const Args&...>)
 	void FrameList::checkSelective(const bool check, const Args&... args)
 	{
 		for (auto& group : imageGroups)
@@ -687,22 +698,21 @@ namespace DSS
 
 	void FrameList::checkAll(bool check)
 	{
-		constexpr auto Selector = [](const auto&, const bool check) { return std::make_pair(true, check ? Qt::Checked : Qt::Unchecked); };
-		checkSelective<Selector, false>(check);
-		//const auto checkState = check ? Qt::Checked : Qt::Unchecked;
+		const auto checkState = check ? Qt::Checked : Qt::Unchecked;
 
-		//for (auto& group : imageGroups)
-		//{
-		//	for (auto& file : group.pictures->mydata)
-		//	{
-		//		file.m_bChecked = checkState;
-		//	}
-		//	QModelIndex start{ group.pictures->createIndex(0, 0) };
-		//	QModelIndex end{ group.pictures->createIndex(group.pictures->rowCount(), 0) };
-		//	const QVector<int> role{ Qt::CheckStateRole };
-		//	group.pictures->dataChanged(start, end, role);
-		//	group.setDirty();
-		//}
+		for (auto& group : imageGroups)
+		{
+			for (auto& file : group.pictures->mydata)
+			{
+				file.m_bChecked = checkState;
+			}
+			group.pictures->dataChanged(
+				group.pictures->createIndex(0, 0),
+				group.pictures->createIndex(group.pictures->rowCount(), 0), 
+				QList<int>{ Qt::CheckStateRole }
+			);
+			group.setDirty();
+		}
 	}
 
 	void FrameList::checkAllDarks(bool check)

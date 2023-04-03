@@ -455,7 +455,11 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 					lfi = bitmap;
 					lfi.RefreshSuperPixel();
 
-					if (!m_strReferenceFrame.CompareNoCase(lfi.filePath.c_str()))
+					//
+					// m_strReferenceFrame is a CString but contains the reference frame path
+					// with / separators rather than \\
+					//
+					if (!m_strReferenceFrame.CompareNoCase(lfi.filePath.generic_wstring().c_str()))
 					{
 						lfi.m_bStartingFrame = true;
 						bReferenceFrameFound = true;
@@ -819,7 +823,7 @@ void CStackingEngine::ComputeOffsets()
 
 	const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
 	if (m_pProgress)
-		m_pProgress->Start1(strText, lLast, false);
+		m_pProgress->Start1(strText, lLast, true);
 
 	// The first bitmap is the best one
 	if (m_vBitmaps.size() > 1)
