@@ -895,9 +895,9 @@ public :
 
 	virtual bool Close() { return OnClose(); }
 
-	virtual bool OnOpen();
+	virtual bool OnOpen() override;
 	void OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
-	virtual bool OnClose();
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */

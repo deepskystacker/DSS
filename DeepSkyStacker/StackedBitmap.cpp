@@ -1221,9 +1221,9 @@ public :
 		m_pStackedBitmap = pStackedBitmap;
 	};
 
-	virtual bool	OnOpen();
+	virtual bool	OnOpen() override;
 	void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
-	virtual bool	OnClose();
+	virtual bool	OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1316,9 +1316,9 @@ public :
 		m_pStackedBitmap = pStackedBitmap;
 	};
 
-	virtual bool	OnOpen();
-	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue);
-	virtual bool	OnClose();
+	virtual bool	OnOpen() override;
+	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool	OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */

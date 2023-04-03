@@ -342,59 +342,57 @@ bool CFITSReader::Open()
 			// One time action to create a mapping between the character name of the CFA
 			// pattern and our internal CFA type 
 			// 
-			static std::map<CString, CFATYPE> bayerMap;
-			if (bayerMap.empty())
-			{
-				bayerMap.emplace("BGGR", CFATYPE_BGGR);
-				bayerMap.emplace("GRBG", CFATYPE_GRBG);
-				bayerMap.emplace("GBRG", CFATYPE_GBRG);
-				bayerMap.emplace("RGGB", CFATYPE_RGGB);
+			static std::map<CString, CFATYPE> bayerMap {
+				{ "BGGR", CFATYPE_BGGR },
+				{ "GRBG", CFATYPE_GRBG },
+				{ "GBRG", CFATYPE_GBRG },
+				{ "RGGB", CFATYPE_RGGB },
 
-				bayerMap.emplace("CGMY", CFATYPE_CGMY);
-				bayerMap.emplace("CGYM", CFATYPE_CGYM);
-				bayerMap.emplace("CMGY", CFATYPE_CMGY);
-				bayerMap.emplace("CMYG", CFATYPE_CMYG);
-				bayerMap.emplace("CYMG", CFATYPE_CYMG);
-				bayerMap.emplace("CYGM", CFATYPE_CYGM);
+				{ "CGMY", CFATYPE_CGMY },
+				{ "CGYM", CFATYPE_CGYM },
+				{ "CMGY", CFATYPE_CMGY },
+				{ "CMYG", CFATYPE_CMYG },
+				{ "CYMG", CFATYPE_CYMG },
+				{ "CYGM", CFATYPE_CYGM },
 
-				bayerMap.emplace("GCMY", CFATYPE_GCMY);
-				bayerMap.emplace("GCYM", CFATYPE_GCYM);
-				bayerMap.emplace("GMCY", CFATYPE_GMCY);
-				bayerMap.emplace("GMYC", CFATYPE_GMYC);
-				bayerMap.emplace("GYCM", CFATYPE_GYCM);
-				bayerMap.emplace("GYMC", CFATYPE_GYMC);
+				{ "GCMY", CFATYPE_GCMY },
+				{ "GCYM", CFATYPE_GCYM },
+				{ "GMCY", CFATYPE_GMCY },
+				{ "GMYC", CFATYPE_GMYC },
+				{ "GYCM", CFATYPE_GYCM },
+				{ "GYMC", CFATYPE_GYMC },
 
-				bayerMap.emplace("MCGY", CFATYPE_MCGY);
-				bayerMap.emplace("MCYG", CFATYPE_MCYG);
-				bayerMap.emplace("MGYC", CFATYPE_MGYC);
-				bayerMap.emplace("MGCY", CFATYPE_MGCY);
-				bayerMap.emplace("MYGC", CFATYPE_MYGC);
-				bayerMap.emplace("MYCG", CFATYPE_MYCG);
+				{ "MCGY", CFATYPE_MCGY },
+				{ "MCYG", CFATYPE_MCYG },
+				{ "MGYC", CFATYPE_MGYC },
+				{ "MGCY", CFATYPE_MGCY },
+				{ "MYGC", CFATYPE_MYGC },
+				{ "MYCG", CFATYPE_MYCG },
 
-				bayerMap.emplace("YCGM", CFATYPE_YCGM);
-				bayerMap.emplace("YCMG", CFATYPE_YCMG);
-				bayerMap.emplace("YGMC", CFATYPE_YGMC);
-				bayerMap.emplace("YGCM", CFATYPE_YGCM);
-				bayerMap.emplace("YMCG", CFATYPE_YMCG);
-				bayerMap.emplace("YMGC", CFATYPE_YMGC);
+				{ "YCGM", CFATYPE_YCGM },
+				{ "YCMG", CFATYPE_YCMG },
+				{ "YGMC", CFATYPE_YGMC },
+				{ "YGCM", CFATYPE_YGCM },
+				{ "YMCG", CFATYPE_YMCG },
+				{ "YMGC", CFATYPE_YMGC },
 
-				bayerMap.emplace("CYGMCYMG", CFATYPE_CYGMCYMG);
-				bayerMap.emplace("GMCYMGCY", CFATYPE_GMCYMGCY);
-				bayerMap.emplace("CYMGCYGM", CFATYPE_CYMGCYGM);
-				bayerMap.emplace("MGCYGMCY", CFATYPE_MGCYGMCY);
-				bayerMap.emplace("GMYCGMCY", CFATYPE_GMYCGMCY);
-				bayerMap.emplace("YCGMCYGM", CFATYPE_YCGMCYGM);
-				bayerMap.emplace("GMCYGMYC", CFATYPE_GMCYGMYC);
-				bayerMap.emplace("CYGMYCGM", CFATYPE_CYGMYCGM);
-				bayerMap.emplace("YCGMYCMG", CFATYPE_YCGMYCMG);
-				bayerMap.emplace("GMYCMGYC", CFATYPE_GMYCMGYC);
-				bayerMap.emplace("YCMGYCGM", CFATYPE_YCMGYCGM);
-				bayerMap.emplace("MGYCGMYC", CFATYPE_MGYCGMYC);
-				bayerMap.emplace("MGYCMGCY", CFATYPE_MGYCMGCY);
-				bayerMap.emplace("YCMGCYMG", CFATYPE_YCMGCYMG);
-				bayerMap.emplace("MGCYMGYC", CFATYPE_MGCYMGYC);
-				bayerMap.emplace("CYMGYCMG", CFATYPE_CYMGYCMG);
-			}
+				{ "CYGMCYMG", CFATYPE_CYGMCYMG },
+				{ "GMCYMGCY", CFATYPE_GMCYMGCY },
+				{ "CYMGCYGM", CFATYPE_CYMGCYGM },
+				{ "MGCYGMCY", CFATYPE_MGCYGMCY },
+				{ "GMYCGMCY", CFATYPE_GMYCGMCY },
+				{ "YCGMCYGM", CFATYPE_YCGMCYGM },
+				{ "GMCYGMYC", CFATYPE_GMCYGMYC },
+				{ "CYGMYCGM", CFATYPE_CYGMYCGM },
+				{ "YCGMYCMG", CFATYPE_YCGMYCMG },
+				{ "GMYCMGYC", CFATYPE_GMYCMGYC },
+				{ "YCMGYCGM", CFATYPE_YCMGYCGM },
+				{ "MGYCGMYC", CFATYPE_MGYCGMYC },
+				{ "MGYCMGCY", CFATYPE_MGYCMGCY },
+				{ "YCMGCYMG", CFATYPE_YCMGCYMG },
+				{ "MGCYMGYC", CFATYPE_MGCYMGYC },
+				{ "CYMGYCMG", CFATYPE_CYMGYCMG }
+			};
 
 			//
 			// Attempt to determine the correct CFA (aka Bayer matrix) from keywords in the FITS header.
