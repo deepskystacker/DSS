@@ -207,7 +207,7 @@ public :
 	CDarkSettings() {}
 	virtual ~CDarkSettings() {};
 
-	virtual void	ReadFromRegistry()
+	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace(_T("Stacking/Dark_Method"), _T("0"));
 		ReadVariableFromWorkspace(_T("Stacking/Dark_Iteration"), _T("5"));
@@ -229,7 +229,7 @@ public :
 	CFlatSettings() {}
 	virtual ~CFlatSettings() {};
 
-	virtual void	ReadFromRegistry()
+	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace(_T("Stacking/Flat_Method"), _T("0"));
 		ReadVariableFromWorkspace(_T("Stacking/Flat_Iteration"), _T("5"));
@@ -256,7 +256,7 @@ public :
 	COffsetSettings() {}
 	virtual ~COffsetSettings() {};
 
-	virtual void	ReadFromRegistry()
+	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace(_T("Stacking/Offset_Method"), _T("0"));
 		ReadVariableFromWorkspace(_T("Stacking/Offset_Iteration"), _T("5"));

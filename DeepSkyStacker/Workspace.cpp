@@ -351,25 +351,23 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 
 	QString keyName, value;
 
-	static std::map<QString, QString> keyMap;
-	if (keyMap.empty())
-	{
-		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position", "Batch/Position/");
-		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position", "Recommended/Position/");
-		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/");
-		keyMap.emplace("Software\\DeepSkyStacker\\EditStars", "EditStars/");
-		keyMap.emplace("Software\\DeepSkyStacker\\Folders", "Folders/");
-		keyMap.emplace("Software\\DeepSkyStacker\\FileLists", "FileLists/");
-		keyMap.emplace("Software\\DeepSkyStacker\\FitsDDP", "FitsDDP/");
-		keyMap.emplace("Software\\DeepSkyStacker\\Live", "Live/");
-		keyMap.emplace("Software\\DeepSkyStacker\\Output", "Output/");
-		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Position", "Position/");
-		keyMap.emplace("Software\\DeepSkyStacker\\RawDDP", "RawDDP/");
-		keyMap.emplace("Software\\DeepSkyStacker\\Register", "Register/");
-		keyMap.emplace("Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/");
-		keyMap.emplace("Software\\DeepSkyStacker\\StarMask", "StarMask/");
-		keyMap.emplace("Software\\DeepSkyStacker\\Stacking", "Stacking/");
-	}
+	static std::map<QString, QString> keyMap {
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position", "Batch/Position/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position", "Recommended/Position/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/" },
+		{ "Software\\DeepSkyStacker\\EditStars", "EditStars/" },
+		{ "Software\\DeepSkyStacker\\Folders", "Folders/" },
+		{ "Software\\DeepSkyStacker\\FileLists", "FileLists/" },
+		{ "Software\\DeepSkyStacker\\FitsDDP", "FitsDDP/" },
+		{ "Software\\DeepSkyStacker\\Live", "Live/" },
+		{ "Software\\DeepSkyStacker\\Output", "Output/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Position", "Position/" },
+		{ "Software\\DeepSkyStacker\\RawDDP", "RawDDP/" },
+		{ "Software\\DeepSkyStacker\\Register", "Register/" },
+		{ "Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/" },
+		{ "Software\\DeepSkyStacker\\StarMask", "StarMask/" },
+		{ "Software\\DeepSkyStacker\\Stacking", "Stacking/" }
+	};
 
 	if (theString.startsWith("#WS#"))
 	{
