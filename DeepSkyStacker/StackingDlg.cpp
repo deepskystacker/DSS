@@ -2074,7 +2074,7 @@ namespace DSS
 
 	void StackingDlg::retrieveLatestVersionInfo()
 	{
-		//#ifndef DSSBETA
+		#ifndef DSSBETA
 		ZFUNCTRACE_RUNTIME();
 
 		QSettings			settings;
@@ -2091,7 +2091,7 @@ namespace DSS
 			req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 			networkManager->get(req);
 		}
-		//#endif
+		#endif
 	}
 
 	void StackingDlg::registerCheckedImages()
