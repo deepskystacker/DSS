@@ -50,14 +50,14 @@ public :
         fFactor2 = 0;
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction::SetRadius(fRadius);
 		fFactor1 = 1.0;
 		fFactor2 = 2*fRadius*fRadius;
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		return fFactor1 * exp(-(fValue * fValue)/fFactor2);
 	};
@@ -72,13 +72,13 @@ public :
 	{
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction_Bell::SetRadius(fRadius);
 		fFactor1 = 1.0/exp(-0.5);
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		return min(1.0, fFactor1 * exp(-(fValue * fValue)/fFactor2));
 	};
@@ -95,12 +95,12 @@ public :
 	{
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction::SetRadius(fRadius);
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		return max(0.0, 1-fValue/3.0/m_fRadius);
 	};
@@ -117,12 +117,12 @@ public :
 	{
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction::SetRadius(fRadius);
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		return max(0.0, 1.5-fValue*1.5/3.0/m_fRadius);
 	};
@@ -139,12 +139,12 @@ public :
 	{
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction::SetRadius(fRadius);
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		fValue /= 3.0*m_fRadius;
 		return max(0.0, 1.0-fValue*fValue*fValue);
@@ -162,12 +162,12 @@ public:
 	{
 	};
 
-	virtual void	SetRadius(double fRadius)
+	virtual void	SetRadius(double fRadius) override
 	{
 		CStarMaskFunction::SetRadius(fRadius);
 	};
 
-	virtual double	Compute(double fValue)
+	virtual double	Compute(double fValue) override
 	{
 		fValue /= 3.0 * m_fRadius;
 		return max(0.0, 1.0 - fValue * fValue * fValue * fValue);
