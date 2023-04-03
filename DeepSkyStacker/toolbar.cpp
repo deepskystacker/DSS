@@ -75,9 +75,9 @@ namespace DSS
         setOrientation(Qt::Vertical);
 
         rectAction = addAction(selRect, "",
-            [=]() {   this->rectAction->setChecked(true);
-        this->starsAction->setChecked(false);
-        this->cometAction->setChecked(false);
+            [=]() { this->rectAction->setChecked(true);
+                    this->starsAction->setChecked(false);
+                    this->cometAction->setChecked(false);
             });
         rectAction->setToolTip(tr(
             "Custom Rectangle Mode:\n"
@@ -92,9 +92,9 @@ namespace DSS
         connect(rectAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_rectButtonPressed);
 
         starsAction = addAction(selStars, "",
-            [=]() {   this->rectAction->setChecked(false);
-        this->starsAction->setChecked(true);
-        this->cometAction->setChecked(false);
+            [=]() { this->rectAction->setChecked(false);
+                    this->starsAction->setChecked(true);
+                    this->cometAction->setChecked(false);
             });
         starsAction->setToolTip(tr(
             "Edit Stars Mode:\n"
@@ -105,9 +105,9 @@ namespace DSS
         connect(starsAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_starsButtonPressed);
 
         cometAction = addAction(selComet, "",
-            [=]() {   this->rectAction->setChecked(false);
-        this->starsAction->setChecked(false);
-        this->cometAction->setChecked(true);
+            [=]() { this->rectAction->setChecked(false);
+                    this->starsAction->setChecked(false);
+                    this->cometAction->setChecked(true);
             });
         cometAction->setToolTip(tr(
             "Edit Comet Mode:\n"
