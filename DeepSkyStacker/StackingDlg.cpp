@@ -1414,8 +1414,8 @@ namespace DSS
 				if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
 					editStarsPtr->setTransformation(Transformation, vVotedPairs);
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
 				ui->information->setText(m_strShowFile);
 			}
 			else if (!m_strShowFile.isEmpty())
@@ -1425,8 +1425,8 @@ namespace DSS
 				// Display the "Loading filename" with red background gradient while loading in background
 				//
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
 				ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
 					.arg(m_strShowFile));
 				//
