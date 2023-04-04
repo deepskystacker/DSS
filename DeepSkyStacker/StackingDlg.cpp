@@ -1166,7 +1166,7 @@ namespace DSS
 		pictureList->tabBar->setShape(QTabBar::TriangularSouth);
 		pictureList->tabBar->setExpanding(false);
 		pictureList->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-		pictureList->tabBar->setCurrentIndex(pictureList->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
+		updateGroupTabs();
 
 		if (!fileList.empty())
 			openFileList(fileList);			// Will call updateListInfo()
