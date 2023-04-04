@@ -74,11 +74,20 @@ namespace DSS
 
         setOrientation(Qt::Vertical);
 
-        rectAction = addAction(selRect, "",
-            [=]()   {   this->rectAction->setChecked(true);
-                        this->starsAction->setChecked(false);
-                        this->cometAction->setChecked(false);
-                    });
+        // This functions returns a lambda with the 3 bools set to fixed values according to the arguments of the call.
+        const auto actions = [this](const bool rectChecked, const bool starsChecked, const bool cometChecked) {
+            return [this, rectChecked, starsChecked, cometChecked]() {
+                this->rectAction->setChecked(rectChecked);
+                this->starsAction->setChecked(starsChecked);
+                this->cometAction->setChecked(cometChecked);
+            };
+        };
+
+        rectAction = addAction(selRect, "", actions(true, false, false));
+            //[=]() { this->rectAction->setChecked(true);
+            //        this->starsAction->setChecked(false);
+            //        this->cometAction->setChecked(false);
+            //});
         rectAction->setToolTip(tr(
             "Custom Rectangle Mode:\n"
             "This mode allows you to create or modify a Custom Rectangle\n"
@@ -91,11 +100,11 @@ namespace DSS
 
         connect(rectAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_rectButtonPressed);
  
-        starsAction = addAction(selStars, "",
-            [=]()   {   this->rectAction->setChecked(false);
-                        this->starsAction->setChecked(true);
-                        this->cometAction->setChecked(false);
-                    });     
+        starsAction = addAction(selStars, "", actions(false, true, false));
+            //[=]()   {   this->rectAction->setChecked(false);
+            //            this->starsAction->setChecked(true);
+            //            this->cometAction->setChecked(false);
+            //        });     
         starsAction->setToolTip(tr(
             "Edit Stars Mode:\n"
             "This mode shows the stars that have been detected in the image.\n"
@@ -104,11 +113,11 @@ namespace DSS
         ));
         connect(starsAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_starsButtonPressed);
  
-        cometAction = addAction(selComet, "",
-            [=]()   {   this->rectAction->setChecked(false);
-                        this->starsAction->setChecked(false);
-                        this->cometAction->setChecked(true);
-                    });
+        cometAction = addAction(selComet, "", actions(false, false, true));
+            //[=]()   {   this->rectAction->setChecked(false);
+            //            this->starsAction->setChecked(false);
+            //            this->cometAction->setChecked(true);
+            //        });
         cometAction->setToolTip(tr(
             "Edit Comet Mode:\n"
             "This mode allows you to select and edit the location\n"
@@ -116,7 +125,7 @@ namespace DSS
             "IDS_TOOLTIP_COMET"
         ));
         connect(cometAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_cometButtonPressed);
- 
+
         saveAction = addAction(saveButton, "");
         saveAction->setToolTip(tr(
             "Save changes:\n"
@@ -139,11 +148,15 @@ namespace DSS
 
         setIconSize(iconSize);
         adjustSize();
+        QColor colour = palette().window().color(); 
+        colour = colour.lighter(300);
+        colour.setAlpha(205);
         QString styleSheet(QString(
             "QToolBar "
-            "{background-color: rgba(255,255,255,205); "
-            "border-radius: %1px;}; "
+            "{background-color: %1; "
+            "border-radius: %2px;}; "
         )
+            .arg(colour.name(QColor::HexArgb))
             .arg(radius)
         );
         setStyleSheet(styleSheet);
@@ -157,15 +170,15 @@ namespace DSS
     {
         onSaveAlways = new QAction(tr("Save without asking", "ID_SAVECONTEXT_SAVEWITHOUTASKING"), this);
         connect(onSaveAlways, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::SaveDontAsk)); });
+            [this]() { this->setSaveMode(static_cast<int>(EditSaveMode::SaveDontAsk)); });
 
         onSaveNever = new QAction(tr("Don't save", "ID_SAVECONTEXT_DONTSAVEWITHOUTASKING"), this);
         connect(onSaveNever, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::DiscardDontAsk)); });
+            [this]() { this->setSaveMode(static_cast<int>(EditSaveMode::DiscardDontAsk)); });
 
         onAskAlways = new QAction(tr("Ask always", "ID_SAVECONTEXT_ASKALWAYS"), this);
         connect(onAskAlways, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::AskAlways)); });
+            [this]() { this->setSaveMode(static_cast<int>(EditSaveMode::AskAlways)); });
 
         return *this;
     }
