@@ -959,7 +959,7 @@ namespace DSS
 		{
 			group.pictures->clear();
 		}
-		imageGroups.resize(1);
+		imageGroups.resize(2);
 		Group::reset();
 	}
 

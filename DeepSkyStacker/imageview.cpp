@@ -44,7 +44,6 @@ namespace DSS
 
     ImageView::ImageView(QWidget* parent)
         : QWidget(parent),
-        initialised{ false },
         m_scale(1.0),
         m_zoom(1.0),
         m_origin(0.0, 0.0),
@@ -78,25 +77,6 @@ namespace DSS
         ));
     }
 
-    void ImageView::showEvent(QShowEvent* event)
-    {
-        if (!event->spontaneous())
-        {
-            if (!initialised)
-            {
-                initialised = true;
-                onInitDialog();
-            }
-        }
-        // Invoke base class showEvent()
-        return Inherited::showEvent(event);
-    }
-
-    void ImageView::onInitDialog()
-    {
-        m_drawingPixmap = QPixmap{ size() };
-    }
-
     void ImageView::leaveEvent(QEvent* e)
     {
         emit Image_leaveEvent(e);
@@ -128,19 +108,14 @@ namespace DSS
         size *= ratio;
         m_drawingPixmap = QPixmap(size);
         m_drawingPixmap.setDevicePixelRatio(ratio);
-        if (nullptr != pPixmap)
-        {
-            drawOnPixmap();
-            update();
-        }
+        drawOnPixmap();
+        update();
         emit Image_resizeEvent(e);
         Inherited::resizeEvent(e);
     }
 
     void ImageView::drawOnPixmap()
     {
-        ZFUNCTRACE_RUNTIME();
-
         QPainter painter(&m_drawingPixmap);
         QPalette palette{ QGuiApplication::palette() };
         QBrush brush{ palette.dark() };
@@ -225,6 +200,9 @@ namespace DSS
     void ImageView::paintEvent(QPaintEvent*)
     {
         QPainter painter(this);
+        QBrush brush{ QGuiApplication::palette().dark() };
+
+        painter.fillRect(rect(), brush);
 
         //
         // Draw the stuff we drew onto the working pixmap onto the screen
