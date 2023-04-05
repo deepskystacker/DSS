@@ -47,9 +47,10 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
 		activeGroupColourName = "darkcyan";
 
-	connect(QGuiApplication::styleHints(), SIGNAL(colorSchemeChanged(Qt::ColorScheme)),
-		this, SLOT(onColorSchemeChanged(Qt::ColorScheme)));
+	connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
+		this, &ExplorerBar::onColorSchemeChanged);
 #endif
+
 	ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 	ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
@@ -480,7 +481,9 @@ void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
 		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 	}
+	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 
+	makeLinks();
 }
 #endif
 

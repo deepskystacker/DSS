@@ -140,13 +140,11 @@ namespace DSS
         void mouseMoveEvent(QMouseEvent* e) override;
         void mouseReleaseEvent(QMouseEvent* e) override;
         void resizeEvent(QResizeEvent* e) override;
-        void showEvent(QShowEvent* e) override;
 #if QT_CONFIG(wheelevent)
         void wheelEvent(QWheelEvent*) override;
 #endif
 
     private:
-        bool initialised;
         qreal m_scale, m_zoom;
         QPointF m_origin;
         std::unique_ptr<QPixmap> pPixmap;
@@ -162,7 +160,6 @@ namespace DSS
         void drawOnPixmap();
         void paintFourCorners(QPainter& painter);
         void paintZoomImage(QPainter& painter);
-        void onInitDialog();
         void retranslateUi();
     };
 }
