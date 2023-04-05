@@ -107,6 +107,10 @@ void ExplorerBar::onInitDialog()
 	ui->about->setFont(font);
 	ui->help->setFont(font);
 	ui->traceFileDisposition->setFont(font);
+
+	ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
+
+	connect(ui->enableSounds, &QCheckBox::stateChanged, this, &ExplorerBar::onEnableSoundsStateChanged);
 }
 
 void ExplorerBar::makeLinks()
@@ -455,6 +459,13 @@ void ExplorerBar::onToggleDeletion()
 	makeLink(ui->traceFileDisposition, blueColour);
 
 	update();
+}
+
+void ExplorerBar::onEnableSoundsStateChanged(int state)
+{
+	Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
+	QSettings{}.setValue("Beep", (Qt::Checked == checked));
+
 }
 
 #if QT_VERSION >= 0x060500

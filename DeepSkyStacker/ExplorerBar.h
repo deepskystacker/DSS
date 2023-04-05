@@ -82,6 +82,8 @@ private slots:
 
 	void onToggleDeletion();
 
+	void onEnableSoundsStateChanged(int);
+
 #if QT_VERSION >= 0x060500
 	void onColorSchemeChanged(Qt::ColorScheme colorScheme);
 #endif
