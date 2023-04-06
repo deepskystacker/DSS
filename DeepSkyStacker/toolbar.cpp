@@ -52,6 +52,20 @@ namespace DSS
         constexpr int iconpixels = 48;
         constexpr int radius = 27;
 
+        QColor colour = palette().window().color();
+        colour = colour.lighter(300);
+        colour.setAlpha(205);
+        QString styleSheet(QString(
+            "QToolButton {border: none; background-color: transparent;} "
+            "QToolBar "
+            "{background-color: %1; "
+            "border-radius: %2px;}"
+        )
+            .arg(colour.name(QColor::HexArgb))
+            .arg(radius)
+        );
+        setStyleSheet(styleSheet);
+
         setOpacity(0.6, false);
 
         QSize iconSize(iconpixels, iconpixels);
@@ -148,18 +162,6 @@ namespace DSS
 
         setIconSize(iconSize);
         adjustSize();
-        QColor colour = palette().window().color(); 
-        colour = colour.lighter(300);
-        colour.setAlpha(205);
-        QString styleSheet(QString(
-            "QToolBar "
-            "{background-color: %1; "
-            "border-radius: %2px;}; "
-        )
-            .arg(colour.name(QColor::HexArgb))
-            .arg(radius)
-        );
-        setStyleSheet(styleSheet);
 
         createActions().createMenus();
 

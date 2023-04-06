@@ -19,6 +19,10 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 4. Initial code changes for Qt 6.5.0 Dark/Light Theme support
 
+5. Add an option to turn off beeps on cmpletion of registering/stacking.
+
+6. Toolbar display improved (no square boxes round active/hovered buttons).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
