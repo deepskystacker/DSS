@@ -7,66 +7,42 @@
 #ifndef _TIFFCONF_
 #define _TIFFCONF_
 
-/* The size of a `int', as computed by sizeof. */
-#define SIZEOF_INT 4
 
-/* Signed 8-bit type */
-#define TIFF_INT8_T signed char
+#include <stddef.h>
+#include <stdint.h>
+#include <inttypes.h>
 
-/* Unsigned 8-bit type */
-#define TIFF_UINT8_T unsigned char
 
 /* Signed 16-bit type */
-#define TIFF_INT16_T signed short
-
-/* Unsigned 16-bit type */
-#define TIFF_UINT16_T unsigned short
-
-/* Signed 32-bit type formatter */
-#define TIFF_INT32_FORMAT "%d"
+#define TIFF_INT16_T int16_t
 
 /* Signed 32-bit type */
-#define TIFF_INT32_T signed int
-
-/* Unsigned 32-bit type formatter */
-#define TIFF_UINT32_FORMAT "%u"
-
-/* Unsigned 32-bit type */
-#define TIFF_UINT32_T unsigned int
-
-/* Signed 64-bit type formatter */
-#define TIFF_INT64_FORMAT "%I64d"
+#define TIFF_INT32_T int32_t
 
 /* Signed 64-bit type */
-#define TIFF_INT64_T signed __int64
+#define TIFF_INT64_T int64_t
 
-/* Unsigned 64-bit type formatter */
-#define TIFF_UINT64_FORMAT "%I64u"
+/* Signed 8-bit type */
+#define TIFF_INT8_T int8_t
+
+/* Unsigned 16-bit type */
+#define TIFF_UINT16_T uint16_t
+
+/* Unsigned 32-bit type */
+#define TIFF_UINT32_T uint32_t
 
 /* Unsigned 64-bit type */
-#define TIFF_UINT64_T unsigned __int64
+#define TIFF_UINT64_T uint64_t
 
-#if _WIN64
-/*
-  Windows 64-bit build
-*/
+/* Unsigned 8-bit type */
+#define TIFF_UINT8_T uint8_t
 
 /* Signed size type */
-#  define TIFF_SSIZE_T TIFF_INT64_T
-
-#else
-/*
-  Windows 32-bit build
-*/
-
-/* Signed size type */
-#  define TIFF_SSIZE_T signed int
-
-#endif
+#define TIFF_SSIZE_T int64_t
 
 /* Compatibility stuff. */
 
-/* Define as 0 or 1 according to the floating point format suported by the
+/* Define as 0 or 1 according to the floating point format supported by the
    machine */
 #define HAVE_IEEEFP 1
 
@@ -85,6 +61,9 @@
 
 /* Support JBIG compression (requires JBIG-KIT library) */
 /* #undef JBIG_SUPPORT */
+
+/* Support LERC compression */
+/* #undef LERC_SUPPORT */
 
 /* Support LogLuv high dynamic range encoding */
 #define LOGLUV_SUPPORT 1
@@ -111,8 +90,11 @@
 /* Support Deflate compression */
 /* #undef ZIP_SUPPORT */
 
+/* Support libdeflate enhanced compression */
+/* #undef LIBDEFLATE_SUPPORT */
+
 /* Support strip chopping (whether or not to convert single-strip uncompressed
-   images to mutiple strips of ~8Kb to reduce memory usage) */
+   images to multiple strips of ~8Kb to reduce memory usage) */
 #define STRIPCHOP_DEFAULT TIFF_STRIPCHOP
 
 /* Enable SubIFD tag (330) support */
@@ -128,7 +110,7 @@
 #define CHECK_JPEG_YCBCR_SUBSAMPLING 1
 
 /* Support MS MDI magic number files as TIFF */
-/* #undef MDI_SUPPORT */
+#define MDI_SUPPORT 1
 
 /*
  * Feature support definitions.
@@ -143,10 +125,3 @@
 #define IPTC_SUPPORT
 
 #endif /* _TIFFCONF_ */
-/*
- * Local Variables:
- * mode: c
- * c-basic-offset: 8
- * fill-column: 78
- * End:
- */

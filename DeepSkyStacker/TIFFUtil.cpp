@@ -216,7 +216,7 @@ bool CTIFFReader::Open()
 		if (!dwSkipExifInfo)
 		{
 			// Try to read EXIF data
-			uint64				ExifID;
+			uint64_t ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -232,8 +232,8 @@ bool CTIFFReader::Open()
 						aperture = 0.0;
 					// EXIFTAG_ISOSPEEDRATINGS is a uint16 according to the EXIF spec
 					isospeed = 0;
-					uint16	count = 0;
-					uint16 * iso_setting = nullptr;
+					uint16_t	count = 0;
+					uint16_t * iso_setting = nullptr;
 					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
 						isospeed = 0;
 					else
