@@ -2183,7 +2183,7 @@ namespace DSS
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
 					emit statusMessage(message);
-					QApplication::beep();
+					if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 					ZTRACE_RUNTIME(message);
 
 					if (bContinue && bStackAfter)
@@ -2463,7 +2463,7 @@ namespace DSS
 				statusMsg.append(" : ").append(message);
 				emit statusMessage(statusMsg);
 			}
-			QApplication::beep();
+			if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 
 			updateCheckedAndOffsets(StackingEngine);
 

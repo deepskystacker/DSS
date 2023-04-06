@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>275</width>
-    <height>763</height>
+    <height>810</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -94,14 +94,20 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>263</width>
-         <height>727</height>
+         <width>246</width>
+         <height>775</height>
         </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
          <width>230</width>
-         <height>700</height>
+         <height>775</height>
         </size>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -112,6 +118,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>228</width>
+            <height>382</height>
+           </size>
           </property>
           <property name="styleSheet">
            <string notr="true"/>
@@ -578,6 +590,29 @@
             <widget class="QLabel" name="traceFileDisposition">
              <property name="text">
               <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="enableSounds">
+             <property name="text">
+              <string>Enable progress sounds</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
              </property>
             </widget>
            </item>
