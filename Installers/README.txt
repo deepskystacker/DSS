@@ -23,6 +23,8 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 6. Toolbar display improved (no square boxes round active/hovered buttons).
 
+7. Upgrade libtiff to 4.5.0
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
