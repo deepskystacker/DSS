@@ -137,7 +137,8 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 DIST_COMMON = $(srcdir)/Makefile.am $(am__libtiffinclude_HEADERS_DIST) \
 	$(noinst_HEADERS) $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = tif_config.h tiffconf.h
+CONFIG_HEADER = $(top_builddir)/config/config.h tif_config.h \
+	tiffconf.h $(top_builddir)/port/libport_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
@@ -172,30 +173,31 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(libtiffincludedir)" \
 	"$(DESTDIR)$(libtiffincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libtiff_la_DEPENDENCIES = $(LIBPORT)
+libtiff_la_LIBADD =
 am__libtiff_la_SOURCES_DIST = tif_aux.c tif_close.c tif_codec.c \
 	tif_color.c tif_compress.c tif_dir.c tif_dirinfo.c \
 	tif_dirread.c tif_dirwrite.c tif_dumpmode.c tif_error.c \
 	tif_extension.c tif_fax3.c tif_fax3sm.c tif_flush.c \
-	tif_getimage.c tif_jbig.c tif_jpeg.c tif_jpeg_12.c tif_luv.c \
-	tif_lzma.c tif_lzw.c tif_next.c tif_ojpeg.c tif_open.c \
-	tif_packbits.c tif_pixarlog.c tif_predict.c tif_print.c \
-	tif_read.c tif_strip.c tif_swab.c tif_thunder.c tif_tile.c \
-	tif_version.c tif_warning.c tif_webp.c tif_write.c tif_zip.c \
-	tif_zstd.c tif_win32.c tif_unix.c
+	tif_getimage.c tif_hash_set.c tif_jbig.c tif_jpeg.c \
+	tif_jpeg_12.c tif_lerc.c tif_luv.c tif_lzma.c tif_lzw.c \
+	tif_next.c tif_ojpeg.c tif_open.c tif_packbits.c \
+	tif_pixarlog.c tif_predict.c tif_print.c tif_read.c \
+	tif_strip.c tif_swab.c tif_thunder.c tif_tile.c tif_version.c \
+	tif_warning.c tif_webp.c tif_write.c tif_zip.c tif_zstd.c \
+	tif_win32.c tif_unix.c
 @WIN32_IO_TRUE@am__objects_1 = tif_win32.lo
 @WIN32_IO_FALSE@am__objects_2 = tif_unix.lo
 am_libtiff_la_OBJECTS = tif_aux.lo tif_close.lo tif_codec.lo \
 	tif_color.lo tif_compress.lo tif_dir.lo tif_dirinfo.lo \
 	tif_dirread.lo tif_dirwrite.lo tif_dumpmode.lo tif_error.lo \
 	tif_extension.lo tif_fax3.lo tif_fax3sm.lo tif_flush.lo \
-	tif_getimage.lo tif_jbig.lo tif_jpeg.lo tif_jpeg_12.lo \
-	tif_luv.lo tif_lzma.lo tif_lzw.lo tif_next.lo tif_ojpeg.lo \
-	tif_open.lo tif_packbits.lo tif_pixarlog.lo tif_predict.lo \
-	tif_print.lo tif_read.lo tif_strip.lo tif_swab.lo \
-	tif_thunder.lo tif_tile.lo tif_version.lo tif_warning.lo \
-	tif_webp.lo tif_write.lo tif_zip.lo tif_zstd.lo \
-	$(am__objects_1) $(am__objects_2)
+	tif_getimage.lo tif_hash_set.lo tif_jbig.lo tif_jpeg.lo \
+	tif_jpeg_12.lo tif_lerc.lo tif_luv.lo tif_lzma.lo tif_lzw.lo \
+	tif_next.lo tif_ojpeg.lo tif_open.lo tif_packbits.lo \
+	tif_pixarlog.lo tif_predict.lo tif_print.lo tif_read.lo \
+	tif_strip.lo tif_swab.lo tif_thunder.lo tif_tile.lo \
+	tif_version.lo tif_warning.lo tif_webp.lo tif_write.lo \
+	tif_zip.lo tif_zstd.lo $(am__objects_1) $(am__objects_2)
 libtiff_la_OBJECTS = $(am_libtiff_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -225,7 +227,7 @@ AM_V_at = $(am__v_at_@AM_V@)
 am__v_at_ = $(am__v_at_@AM_DEFAULT_V@)
 am__v_at_0 = @
 am__v_at_1 = 
-DEFAULT_INCLUDES = -I.@am__isrc@
+DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/config -I$(top_builddir)/port
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/mkg3states.Po \
@@ -237,8 +239,9 @@ am__depfiles_remade = ./$(DEPDIR)/mkg3states.Po \
 	./$(DEPDIR)/tif_error.Plo ./$(DEPDIR)/tif_extension.Plo \
 	./$(DEPDIR)/tif_fax3.Plo ./$(DEPDIR)/tif_fax3sm.Plo \
 	./$(DEPDIR)/tif_flush.Plo ./$(DEPDIR)/tif_getimage.Plo \
-	./$(DEPDIR)/tif_jbig.Plo ./$(DEPDIR)/tif_jpeg.Plo \
-	./$(DEPDIR)/tif_jpeg_12.Plo ./$(DEPDIR)/tif_luv.Plo \
+	./$(DEPDIR)/tif_hash_set.Plo ./$(DEPDIR)/tif_jbig.Plo \
+	./$(DEPDIR)/tif_jpeg.Plo ./$(DEPDIR)/tif_jpeg_12.Plo \
+	./$(DEPDIR)/tif_lerc.Plo ./$(DEPDIR)/tif_luv.Plo \
 	./$(DEPDIR)/tif_lzma.Plo ./$(DEPDIR)/tif_lzw.Plo \
 	./$(DEPDIR)/tif_next.Plo ./$(DEPDIR)/tif_ojpeg.Plo \
 	./$(DEPDIR)/tif_open.Plo ./$(DEPDIR)/tif_packbits.Plo \
@@ -406,11 +409,17 @@ PATH_SEPARATOR = @PATH_SEPARATOR@
 PTHREAD_CC = @PTHREAD_CC@
 PTHREAD_CFLAGS = @PTHREAD_CFLAGS@
 PTHREAD_LIBS = @PTHREAD_LIBS@
+PYTHON_BIN = @PYTHON_BIN@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SPHINX_BUILD = @SPHINX_BUILD@
 STRIP = @STRIP@
+TIFF_MAN1_GEN = @TIFF_MAN1_GEN@
+TIFF_MAN1_PREBUILT = @TIFF_MAN1_PREBUILT@
+TIFF_MAN3_GEN = @TIFF_MAN3_GEN@
+TIFF_MAN3_PREBUILT = @TIFF_MAN3_PREBUILT@
 VERSION = @VERSION@
 XMKMF = @XMKMF@
 X_CFLAGS = @X_CFLAGS@
@@ -463,27 +472,28 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 tiff_libs_private = @tiff_libs_private@
+tiff_requires_private = @tiff_requires_private@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 LIBPORT = $(top_builddir)/port/libport.la
 LIBTIFF = $(top_builddir)/libtiff/libtiff.la
 libtiffincludedir = $(includedir)
-EXTRA_DIST = CMakeLists.txt Makefile.vc SConstruct libtiff.def \
-	libtiff.map libtiffxx.map tif_config.h-vms \
-	tif_config.h.cmake.in tif_config.vc.h tif_config.wince.h \
-	tiffconf.h.cmake.in tiffconf.vc.h tiffconf.wince.h \
-	$(am__append_2) $(am__append_4)
+EXTRA_DIST = CMakeLists.txt libtiff.def libtiff.map libtiffxx.map \
+	tif_config.h.cmake.in tiffconf.h.cmake.in $(am__append_2) \
+	$(am__append_4)
 libtiffinclude_HEADERS = tiff.h tiffio.h tiffvers.h $(am__append_1)
 noinst_HEADERS = \
 	t4.h \
 	tif_dir.h \
+	tif_hash_set.h \
 	tif_predict.h \
 	tiffiop.h \
 	uvcode.h
@@ -494,26 +504,30 @@ nodist_libtiffinclude_HEADERS = \
 libtiff_la_SOURCES = tif_aux.c tif_close.c tif_codec.c tif_color.c \
 	tif_compress.c tif_dir.c tif_dirinfo.c tif_dirread.c \
 	tif_dirwrite.c tif_dumpmode.c tif_error.c tif_extension.c \
-	tif_fax3.c tif_fax3sm.c tif_flush.c tif_getimage.c tif_jbig.c \
-	tif_jpeg.c tif_jpeg_12.c tif_luv.c tif_lzma.c tif_lzw.c \
-	tif_next.c tif_ojpeg.c tif_open.c tif_packbits.c \
-	tif_pixarlog.c tif_predict.c tif_print.c tif_read.c \
-	tif_strip.c tif_swab.c tif_thunder.c tif_tile.c tif_version.c \
-	tif_warning.c tif_webp.c tif_write.c tif_zip.c tif_zstd.c \
-	$(am__append_3) $(am__append_5)
+	tif_fax3.c tif_fax3sm.c tif_flush.c tif_getimage.c \
+	tif_hash_set.c tif_jbig.c tif_jpeg.c tif_jpeg_12.c tif_lerc.c \
+	tif_luv.c tif_lzma.c tif_lzw.c tif_next.c tif_ojpeg.c \
+	tif_open.c tif_packbits.c tif_pixarlog.c tif_predict.c \
+	tif_print.c tif_read.c tif_strip.c tif_swab.c tif_thunder.c \
+	tif_tile.c tif_version.c tif_warning.c tif_webp.c tif_write.c \
+	tif_zip.c tif_zstd.c $(am__append_3) $(am__append_5)
 libtiffxx_la_SOURCES = \
 	tif_stream.cxx
 
 lib_LTLIBRARIES = libtiff.la $(am__append_6)
 libtiff_la_LDFLAGS = -no-undefined -version-info \
 	$(LIBTIFF_VERSION_INFO) $(am__append_7) $(am__append_8)
-libtiff_la_LIBADD = $(LIBPORT)
 libtiffxx_la_LDFLAGS = -no-undefined -version-info \
 	$(LIBTIFF_VERSION_INFO) $(am__append_9) $(am__append_10)
-libtiffxx_la_LIBADD = $(LIBTIFF) $(LIBPORT)
+libtiffxx_la_LIBADD = $(LIBTIFF)
 libtiffxx_la_DEPENDENCIES = libtiff.la
 mkg3states_SOURCES = mkg3states.c tif_fax3.h
 mkg3states_LDADD = $(LIBPORT)
+@STATIC_LERC_FALSE@extra_CPPFLAGS = 
+@STATIC_LERC_TRUE@extra_CPPFLAGS = -DLERC_STATIC
+@HAVE_JPEGTURBO_DUAL_MODE_8_12_FALSE@JPEGTURBO_CPPFLAGS = 
+@HAVE_JPEGTURBO_DUAL_MODE_8_12_TRUE@JPEGTURBO_CPPFLAGS = -DHAVE_JPEGTURBO_DUAL_MODE_8_12
+AM_CPPFLAGS = -I$(top_srcdir)/libtiff -I$(top_srcdir)/port $(extra_CPPFLAGS) $(JPEGTURBO_CPPFLAGS)
 all: tif_config.h tiffconf.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -549,28 +563,24 @@ $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-tif_config.h: stamp-h1
-	@test -f $@ || rm -f stamp-h1
-	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h1
-
-stamp-h1: $(srcdir)/tif_config.h.in $(top_builddir)/config.status
-	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status libtiff/tif_config.h
-$(srcdir)/tif_config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps) 
-	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
-	rm -f stamp-h1
-	touch $@
-
-tiffconf.h: stamp-h2
+tif_config.h: stamp-h2
 	@test -f $@ || rm -f stamp-h2
 	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h2
 
-stamp-h2: $(srcdir)/tiffconf.h.in $(top_builddir)/config.status
+stamp-h2: $(srcdir)/tif_config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h2
+	cd $(top_builddir) && $(SHELL) ./config.status libtiff/tif_config.h
+
+tiffconf.h: stamp-h3
+	@test -f $@ || rm -f stamp-h3
+	@test -f $@ || $(MAKE) $(AM_MAKEFLAGS) stamp-h3
+
+stamp-h3: $(srcdir)/tiffconf.h.in $(top_builddir)/config.status
+	@rm -f stamp-h3
 	cd $(top_builddir) && $(SHELL) ./config.status libtiff/tiffconf.h
 
 distclean-hdr:
-	-rm -f tif_config.h stamp-h1 tiffconf.h stamp-h2
+	-rm -f tif_config.h stamp-h2 tiffconf.h stamp-h3
 
 clean-noinstPROGRAMS:
 	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
@@ -649,9 +659,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_fax3sm.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_flush.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_getimage.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_hash_set.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_jbig.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_jpeg.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_jpeg_12.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_lerc.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_luv.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_lzma.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tif_lzw.Plo@am__quote@ # am--include-marker
@@ -919,9 +931,11 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/tif_fax3sm.Plo
 	-rm -f ./$(DEPDIR)/tif_flush.Plo
 	-rm -f ./$(DEPDIR)/tif_getimage.Plo
+	-rm -f ./$(DEPDIR)/tif_hash_set.Plo
 	-rm -f ./$(DEPDIR)/tif_jbig.Plo
 	-rm -f ./$(DEPDIR)/tif_jpeg.Plo
 	-rm -f ./$(DEPDIR)/tif_jpeg_12.Plo
+	-rm -f ./$(DEPDIR)/tif_lerc.Plo
 	-rm -f ./$(DEPDIR)/tif_luv.Plo
 	-rm -f ./$(DEPDIR)/tif_lzma.Plo
 	-rm -f ./$(DEPDIR)/tif_lzw.Plo
@@ -1009,9 +1023,11 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/tif_fax3sm.Plo
 	-rm -f ./$(DEPDIR)/tif_flush.Plo
 	-rm -f ./$(DEPDIR)/tif_getimage.Plo
+	-rm -f ./$(DEPDIR)/tif_hash_set.Plo
 	-rm -f ./$(DEPDIR)/tif_jbig.Plo
 	-rm -f ./$(DEPDIR)/tif_jpeg.Plo
 	-rm -f ./$(DEPDIR)/tif_jpeg_12.Plo
+	-rm -f ./$(DEPDIR)/tif_lerc.Plo
 	-rm -f ./$(DEPDIR)/tif_luv.Plo
 	-rm -f ./$(DEPDIR)/tif_lzma.Plo
 	-rm -f ./$(DEPDIR)/tif_lzw.Plo
