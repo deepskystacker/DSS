@@ -30,7 +30,6 @@ CFITSHeader::CFITSHeader()
 	m_CFAType		= CFATYPE_NONE;
 	m_Format		= FF_UNKNOWN;
 	m_bSigned		= false;
-	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
     m_lWidth = 0;
     m_lHeight = 0;
@@ -115,7 +114,7 @@ void GetFITSRatio(double& fRed, double& fGreen, double& fBlue)
 }
 
 
-bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, CString& strComment)
+bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, QString& strComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -128,7 +127,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, CString& strComment)
 		if (!nStatus)
 		{
 			bResult = true;
-			strComment = szComment;
+			strComment = QString::fromLatin1(szComment);
 		};
 	};
 
@@ -165,7 +164,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPCSTR szKey, CString & strValue)
+bool CFITSReader::ReadKey(LPCSTR szKey, QString & strValue)
 {
 	bool				bResult = false;
 	CHAR				szValue[2000];
@@ -176,7 +175,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, CString & strValue)
 		fits_read_key(m_fits, TSTRING, szKey, szValue, nullptr, &nStatus);
 		if (!nStatus)
 		{
-			strValue = szValue;
+			strValue = QString::fromLatin1(szValue);
 			bResult = true;
 		};
 	};
@@ -265,16 +264,16 @@ bool CFITSReader::Open()
 		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
 
 		// File ok - move to the first image HDU
-		CString			strSimple;
+		QString			strSimple;
 		int			lNrAxis = 0;
 		int			lWidth  = 0,
 						lHeight = 0,
 						lNrChannels = 0;
 		double			fExposureTime = 0;
-		CString			strMake;
-		CString			strISOSpeed;
-		CString			CFAPattern("");
-		CString			filterName("");
+		QString			strMake;
+		QString			strISOSpeed;
+		QString			CFAPattern("");
+		QString			filterName("");
 		int			lISOSpeed = 0;
 		int			lGain = -1;
 		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
@@ -283,9 +282,9 @@ bool CFITSReader::Open()
 
 		bResult = ReadKey("SIMPLE", strSimple);
 		bResult = ReadKey("NAXIS", lNrAxis);
-		if ((strSimple == _T("T")) && (lNrAxis >= 2 && lNrAxis <= 3))
+		if ((strSimple == "T") && (lNrAxis >= 2 && lNrAxis <= 3))
 		{
-			CString				strComment;
+			QString				strComment;
 			ReadAllKeys();
 
 			bResult = ReadKey("INSTRUME", strMake);
@@ -297,10 +296,10 @@ bool CFITSReader::Open()
 			if (!bResult)
 				bResult = ReadKey("EXPOSURE", fExposureTime, strComment);
 
-			if (bResult && strComment.GetLength())
+			if (bResult && !strComment.isEmpty())
 			{
-				if ((strComment.Find(_T("in seconds"))<0) &&
-					((strComment.Find(_T("ms"))>0) || (fExposureTime>3600)))
+				if ((strComment.indexOf("in seconds")<0) &&
+					((strComment.indexOf("ms")>0) || (fExposureTime>3600)))
 				{
 					// Exposure time is most certainly in ms
 					fExposureTime /= 1000.0;
@@ -318,11 +317,11 @@ bool CFITSReader::Open()
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
 			{
-				if (strISOSpeed.Find(_T("ISO"), 0) == 0)
+
+				if (strISOSpeed.startsWith("ISO"))
 				{
-					strISOSpeed = strISOSpeed.Right(strISOSpeed.GetLength()-3);
-					strISOSpeed.Trim();
-					lISOSpeed = _ttol(strISOSpeed);
+					strISOSpeed.remove("ISO"); strISOSpeed = strISOSpeed.trimmed();
+					lISOSpeed = strISOSpeed.toInt();
 				};
 			};
 
@@ -342,7 +341,7 @@ bool CFITSReader::Open()
 			// One time action to create a mapping between the character name of the CFA
 			// pattern and our internal CFA type 
 			// 
-			static std::map<CString, CFATYPE> bayerMap {
+			static std::map<QString, CFATYPE> bayerMap {
 				{ "BGGR", CFATYPE_BGGR },
 				{ "GRBG", CFATYPE_GRBG },
 				{ "GBRG", CFATYPE_GBRG },
@@ -400,14 +399,14 @@ bool CFITSReader::Open()
 			// Some Meade DSI cameras used the keyword MOSAIC with a value of "CMYG", when in fact the actual
 			// matrix used was CYGMCYMG. so that is special cased.
 			// 
-			if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+			if (ReadKey("MOSAIC", CFAPattern) && strMake.startsWith("DSI"))
 			{
-				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", (LPCSTR)CT2CA(CFAPattern, CP_UTF8));
+				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CFAPattern.toUtf8().constData());
 
 				m_bDSI = true;
 				// Special case of DSI FITS files
-				CFAPattern.Trim();
-				if (CFAPattern == _T("CMYG"))
+				CFAPattern = CFAPattern.trimmed();
+				if (CFAPattern == "CMYG")
 					m_CFAType = CFATYPE_CYGMCYMG;
 			} 
 			//
@@ -422,12 +421,12 @@ bool CFITSReader::Open()
 				//
 				if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
 				{
-					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", (LPCSTR)CT2CA(CFAPattern,CP_UTF8));
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CFAPattern.toUtf8().constData());
 				}
 
-				CFAPattern.Trim();
+				CFAPattern = CFAPattern.trimmed();
 
-				if (CFAPattern != _T(""))
+				if (!CFAPattern.isEmpty())
 				{
 					auto it = bayerMap.find(CFAPattern);
 					if (bayerMap.end() != it) m_CFAType = it->second;
@@ -453,43 +452,52 @@ bool CFITSReader::Open()
 			m_xBayerOffset = std::lround(xBayerOffset);
 			m_yBayerOffset = std::lround(yBayerOffset);
 
-			CString			strDateTime;
+			QString			strDateTime;
 
 			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
 			{
 				// Decode 2007-11-02T22:07:03.890
 				//        01234567890123456789012
-				CString				strTime;
+				QString				strTime;
 
-				if (strDateTime.GetLength() >= 19)
+				if (strDateTime.length() >= 19)
 				{
-					m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-					m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-					m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-					m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
-					m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-					m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
+					m_DateTime = QDateTime::fromString(strDateTime, "yyyy-MM-ddThh:mm:ss");
+					//m_DateTime.wYear  = _ttol(strDateTime.Left(4));
+					//m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+					//m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
+					//m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
+					//m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
+					//m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 				}
-				else if ((strDateTime.GetLength() == 8) && ReadKey("TIME-OBS", strTime))
+				else if ((strDateTime.length() == 8) && ReadKey("TIME-OBS", strTime))
 				{
 					// Decode dd/mm/yy
 					//        01234567
-					m_DateTime.wYear  = _ttol(strDateTime.Mid(6, 2));
-					if (m_DateTime.wYear < 70)
-						m_DateTime.wYear += 2000;
+					QDate date = QDate::fromString(strDateTime, "dd/MM/yy");
+					if (date.year() < 70)
+						date = date.addYears(2000);
 					else
-						m_DateTime.wYear += 1900;
-					m_DateTime.wMonth = _ttol(strDateTime.Mid(3, 2));
-					m_DateTime.wDay   = _ttol(strDateTime.Mid(0, 2));
+						date = date.addYears(1900);
 
-					if (strTime.GetLength() >= 8)
+					//m_DateTime.wYear  = _ttol(strDateTime.Mid(6, 2));
+					//if (m_DateTime.wYear < 70)
+					//	m_DateTime.wYear += 2000;
+					//else
+					//	m_DateTime.wYear += 1900;
+					//m_DateTime.wMonth = _ttol(strDateTime.Mid(3, 2));
+					//m_DateTime.wDay   = _ttol(strDateTime.Mid(0, 2));
+
+					if (strTime.length() >= 8)
 					{
 						// Decode hh:mm:ss.xxx
 						//        01234567
-						m_DateTime.wHour   = _ttol(strTime.Mid(0, 2));
-						m_DateTime.wMinute = _ttol(strTime.Mid(3, 2));
-						m_DateTime.wSecond = _ttol(strTime.Mid(6, 2));
+						QTime time = QTime::fromString(strTime, "hh:hh:ss");
+						m_DateTime = QDateTime(date, time);
+						//m_DateTime.wHour   = _ttol(strTime.Mid(0, 2));
+						//m_DateTime.wMinute = _ttol(strTime.Mid(3, 2));
+						//m_DateTime.wSecond = _ttol(strTime.Mid(6, 2));
 					};
 				};
 			};
@@ -553,7 +561,7 @@ bool CFITSReader::Open()
 					bResult = false;
 					break;
 				};
-				m_filterName = QString::fromStdWString(filterName.GetString());
+				m_filterName = filterName;
 			};
 			
 			//
@@ -962,11 +970,12 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 		m_pBitmap->setFilterName(m_filterName);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString strDescription;
-		if (m_strMake.GetLength())
-			strDescription.Format(_T("FITS (%s)"), static_cast<LPCTSTR>(m_strMake));
+		QString strDescription;
+		if (!m_strMake.isEmpty())
+			strDescription = QString("FITS (%1)").arg(m_strMake);
 		else
-			strDescription	= _T("FITS");
+			strDescription = "FITS";
+
 		m_pBitmap->SetDescription(strDescription);
 	}
 
@@ -1088,8 +1097,8 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength() != 0) 
-			BitmapInfo.m_strFileType = QString("FITS (%1)").arg(QString::fromWCharArray(fits.m_strMake.GetString()));
+		if (fits.m_strMake.length() != 0) 
+			BitmapInfo.m_strFileType = QString("FITS (%1)").arg(fits.m_strMake);
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
@@ -1184,16 +1193,13 @@ void	CFITSWriter::WriteAllKeys()
 		}
 	};
 
-	if (!bFound && m_DateTime.wYear)
+	if (!bFound && m_DateTime.isValid())
 	{
 		// Add DATE-OBS to the list
-		CString			strDateTime;
+		QString	strDateTime{ m_DateTime.toString("yyyy-MM-ddThh:mm:ss") };
 
-		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"),
-						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
-						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
-		m_ExtraInfo.AddInfo("DATE-OBS", QString::fromWCharArray(strDateTime.GetString()), "");
+		m_ExtraInfo.AddInfo("DATE-OBS", strDateTime, "");
 	};
 
 	if (m_fits && m_ExtraInfo.m_vExtras.size())

@@ -72,12 +72,7 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 		getExifItem(PropertyTagDateTime, PropertyTagTypeASCII, strDateTime);
 		// Parse the string : YYYY/MM/DD hh:mm:ss
 		//                    0123456789012345678
-		BitmapInfo.m_DateTime.wYear = _ttol(strDateTime.Left(4));
-		BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-		BitmapInfo.m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-		BitmapInfo.m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-		BitmapInfo.m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-		BitmapInfo.m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+		BitmapInfo.m_DateTime = QDateTime::fromString(QString::fromWCharArray(strDateTime.GetString()), "yyyy/MM/dd hh:mm:ss");
 
 		//UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
 		//if (dwPropertySize != 0)

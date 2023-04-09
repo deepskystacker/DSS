@@ -78,6 +78,7 @@
 
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
+namespace chr = std::chrono;
 
 using std::min;
 using std::max;

@@ -13,7 +13,7 @@ class CMemoryBitmap
 {
 public:
 	CBitmapExtraInfo m_ExtraInfo;
-	SYSTEMTIME m_DateTime;
+	QDateTime m_DateTime;
 
 protected:
 	bool m_bTopDown;
@@ -89,9 +89,9 @@ public:
 		return *this;
 	};
 
-	virtual CMemoryBitmap& SetDescription(LPCTSTR szDescription)
+	virtual CMemoryBitmap& SetDescription(const QString& description)
 	{
-		m_strDescription = QString::fromWCharArray(szDescription);
+		m_strDescription = description;
 		return *this;
 	};
 

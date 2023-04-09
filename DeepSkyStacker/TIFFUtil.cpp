@@ -45,6 +45,11 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 
 };
 
+constexpr uint8_t TIFF_CFAPattern_RGGB[] { 00,01,01,02 };
+constexpr uint8_t TIFF_CFAPattern_BGGR[] { 02,01,01,00 };
+constexpr uint8_t TIFF_CFAPattern_GRBG[] { 01,00,02,01 };
+constexpr uint8_t TIFF_CFAPattern_GBRG[] { 01,02,00,01 };
+
 static TIFFExtendProc	g_TIFFParentExtender = nullptr;
 static bool				g_TIFFInitialized = false;
 
@@ -122,10 +127,14 @@ bool CTIFFReader::Open()
 		TIFFGetField(m_tiff, TIFFTAG_PHOTOMETRIC, &photo);
 		if (!TIFFGetField(m_tiff, TIFFTAG_SAMPLEFORMAT, &sampleformat))
 			sampleformat = SAMPLEFORMAT_UINT;
-		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfa))
-			cfa = 0;
+
+		int32_t cfaValue{ 0 };
+		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfaValue))
+			cfaValue = 0;
+		if (0 != cfaValue) cfa = true;
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
 			cfatype = cfa ? CFATYPE_RGGB : CFATYPE_NONE;
+
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_MASTER, &master))
 			master = 0;
 
@@ -202,16 +211,32 @@ bool CTIFFReader::Open()
 
 			if (strDateTime.GetLength() >= 19)
 			{
-				m_DateTime.wYear = _ttol(strDateTime.Left(4));
-				m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-				m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-				m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-				m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-				m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+				m_DateTime = QDateTime::fromString(QString::fromWCharArray(strDateTime.GetString()), "yyyy:MM:dd hh:mm:ss");
+				//m_DateTime.wYear = _ttol(strDateTime.Left(4));
+				//m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+				//m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
+				//m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
+				//m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
+				//m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
 			};
 		};
 
+		//
+		// Attempt to read the CFA from the root dir if this is a CFA image
+		//
+		if (PHOTOMETRIC_CFA == photo)
+		{
+			uint16_t cfarepeatpatterndim[2]{ 0 };
+			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &cfarepeatpatterndim))
+			{
+				uint16_t
+					x{ (cfarepeatpatterndim[0]) },
+					y{ (cfarepeatpatterndim[1]) };
 
+				uint8_t* cfapattern = static_cast<uint8_t*>(_alloca(x * y));
+				TIFFGetField(m_tiff, TIFFTAG_CFAPATTERN, cfapattern);
+			}
+		}
 
 		if (!dwSkipExifInfo)
 		{
@@ -572,7 +597,34 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLESPERPIXEL, spp);
 			TIFFSetField(m_tiff, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
 			if (spp == 1)
-				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+			{
+				//
+				// Only support CFA types BGGR, GRBG, GBRG, RGGB
+				//
+				if (cfa && cfatype >= static_cast<uint32_t>(CFATYPE_BGGR) && cfatype <= static_cast<uint32_t>(CFATYPE_RGGB))
+				{
+					TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);
+					uint16_t cfapatterndim[2]{ 2,2 };
+					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &cfapatterndim);
+					switch (cfatype)
+					{
+					case CFATYPE_BGGR:
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_BGGR);
+						break;
+					case CFATYPE_GRBG:
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_GRBG);
+						break;
+					case CFATYPE_GBRG:
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_GBRG);
+						break;
+					case CFATYPE_RGGB:
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_RGGB);
+						break;
+					}
+				}
+				else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+
+			}
 			else
 				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
@@ -603,16 +655,12 @@ bool CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCSTR)temp);
 			}
 
-			if (m_DateTime.wYear)
+			if (m_DateTime.isValid())
 			{
 				// Set the DATETIME TIFF tag
-				CStringA		strDateTime;
+				QString strDateTime = m_DateTime.toString("yyyy:MM:dd hh:mm:ss");
 
-				strDateTime.Format("%04d:%02d:%02d %02d:%02d:%02d",
-								   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
-								   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
-
-				TIFFSetField(m_tiff, TIFFTAG_DATETIME, (LPCSTR)strDateTime);
+				TIFFSetField(m_tiff, TIFFTAG_DATETIME, strDateTime.toStdString().c_str());
 			};
 
 			/* It is good to set resolutions too (but it is not nesessary) */
@@ -621,7 +669,7 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 
 			if (cfa)
-				TIFFSetField(m_tiff, TIFFTAG_DSS_CFA, cfa);
+				TIFFSetField(m_tiff, TIFFTAG_DSS_CFA, cfa ? 1 : 0);
 			if (cfa && cfatype)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_CFATYPE, cfatype);
 
@@ -1201,11 +1249,12 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		m_pBitmap->SetAperture(aperture);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString strDescription;
-		if (strMakeModel.GetLength() != 0)
-			strDescription.Format(_T("TIFF (%s)"), static_cast<LPCTSTR>(strMakeModel));
+		QString strDescription;
+		if (!strMakeModel.isEmpty())
+			strDescription = QString("TIFF (%1)").arg(strMakeModel);
 		else
-			strDescription	= "TIFF";
+			strDescription = "TIFF";
+
 		m_pBitmap->SetDescription(strDescription);
 	}
 
@@ -1286,14 +1335,13 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	if (tiff.Open())
 	{
 		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
-		CString				strMakeModel;
 
-		tiff.GetMakeModel(strMakeModel);
-
-		if (strMakeModel.GetLength())
-			BitmapInfo.m_strFileType = QString("TIFF (%1)").arg(QString::fromWCharArray(strMakeModel.GetString()));
+		QString makeModel{ tiff.getMakeModel() };
+		if (!makeModel.isEmpty())
+			BitmapInfo.m_strFileType = QString("TIFF (%1)").arg(tiff.getMakeModel());
 		else
 			BitmapInfo.m_strFileType = "TIFF";
+
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
 		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();
@@ -1367,9 +1415,8 @@ CTIFFHeader::CTIFFHeader()
 	isospeed = 0;
 	gain = -1;
 	cfatype = 0;
-	cfa = 0;
+	cfa = false;
 	nrframes = 0;
-	m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	w = 0;
 	h = 0;
 	spp = 0;

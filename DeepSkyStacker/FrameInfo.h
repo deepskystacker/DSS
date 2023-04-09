@@ -29,7 +29,7 @@ public :
 	int				m_lNrChannels;
 	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
-	SYSTEMTIME			m_DateTime;
+	QDateTime			m_DateTime;
 	bool				m_bMaster;
 	CString				m_strInfos;
 	bool				m_bFITS16bit;
