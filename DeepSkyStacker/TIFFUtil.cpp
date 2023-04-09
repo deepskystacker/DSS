@@ -212,12 +212,6 @@ bool CTIFFReader::Open()
 			if (strDateTime.GetLength() >= 19)
 			{
 				m_DateTime = QDateTime::fromString(QString::fromWCharArray(strDateTime.GetString()), "yyyy:MM:dd hh:mm:ss");
-				//m_DateTime.wYear = _ttol(strDateTime.Left(4));
-				//m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-				//m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-				//m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-				//m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-				//m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
 			};
 		};
 
