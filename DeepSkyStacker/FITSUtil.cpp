@@ -454,7 +454,6 @@ bool CFITSReader::Open()
 
 			QString			strDateTime;
 
-			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
 			{
 				// Decode 2007-11-02T22:07:03.890
@@ -464,12 +463,6 @@ bool CFITSReader::Open()
 				if (strDateTime.length() >= 19)
 				{
 					m_DateTime = QDateTime::fromString(strDateTime, "yyyy-MM-ddThh:mm:ss");
-					//m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-					//m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-					//m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-					//m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
-					//m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-					//m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 				}
 				else if ((strDateTime.length() == 8) && ReadKey("TIME-OBS", strTime))
 				{
@@ -481,23 +474,12 @@ bool CFITSReader::Open()
 					else
 						date = date.addYears(1900);
 
-					//m_DateTime.wYear  = _ttol(strDateTime.Mid(6, 2));
-					//if (m_DateTime.wYear < 70)
-					//	m_DateTime.wYear += 2000;
-					//else
-					//	m_DateTime.wYear += 1900;
-					//m_DateTime.wMonth = _ttol(strDateTime.Mid(3, 2));
-					//m_DateTime.wDay   = _ttol(strDateTime.Mid(0, 2));
-
 					if (strTime.length() >= 8)
 					{
 						// Decode hh:mm:ss.xxx
 						//        01234567
 						QTime time = QTime::fromString(strTime, "hh:hh:ss");
 						m_DateTime = QDateTime(date, time);
-						//m_DateTime.wHour   = _ttol(strTime.Mid(0, 2));
-						//m_DateTime.wMinute = _ttol(strTime.Mid(3, 2));
-						//m_DateTime.wSecond = _ttol(strTime.Mid(6, 2));
 					};
 				};
 			};
