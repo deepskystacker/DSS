@@ -138,35 +138,33 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& strInfoFileName)
 {
 	//ZFUNCTRACE_RUNTIME();
+	fs::path file{ szLightFrame };
+	file.replace_extension(".info.txt");
 
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szName[1+_MAX_FNAME];
+	QString infoFileName{ QString::fromStdU16String(file.generic_u16string()) };
 
-	_tsplitpath(szLightFrame, szDrive, szDir, szName, nullptr);
+	QFileInfo info{ infoFileName };
 
-	strInfoFileName.Empty();
-	strInfoFileName.Format(_T("%s%s%s.Info.txt"), szDrive, szDir, szName);
-
-	// Retrieve the file date/time
-	FILETIME		FileTime;
-	SYSTEMTIME		SystemTime;
-	TCHAR			szTime[200];
-	TCHAR			szDate[200];
-
-	if (GetFileCreationDateTime((LPCTSTR)strInfoFileName, FileTime))
+	//
+	// Get the file creation date/time if possible. If not get the last modified date/time
+	//
+	QDateTime birthTime{ info.birthTime() };
+	if (!birthTime.isValid())
 	{
-		FileTimeToSystemTime(&FileTime, &SystemTime);
-		SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
-
-		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
-		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
-
-		strInfoFileName.Format(_T("%s%s%s.Info.txt [%s %s]"), szDrive, szDir, szName, szDate, szTime);
+		birthTime = info.lastModified();
 	}
-	else
+
+	//
+	// File doesn't exist
+	// 
+	if (!birthTime.isValid())
 		strInfoFileName.Empty();
-};
+	else
+	{
+		QString temp = QString{ "%1 [%2]" }.arg(infoFileName).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
+		strInfoFileName = temp.toStdWString().c_str();
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
