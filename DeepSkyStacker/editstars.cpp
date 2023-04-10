@@ -1132,7 +1132,7 @@ namespace DSS
 			std::sort(stars.begin(), stars.end());
 
 			fs::path file{ fileName.toStdU16String() };
-			file.replace_extension(".Info.txt");
+			file.replace_extension(".info.txt");
 
 			regFrame.SaveRegisteringInfo(file.generic_wstring().c_str());
 
