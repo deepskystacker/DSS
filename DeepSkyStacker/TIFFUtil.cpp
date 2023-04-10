@@ -204,14 +204,14 @@ bool CTIFFReader::Open()
 
 		if (TIFFGetField(m_tiff, TIFFTAG_DATETIME, &szDateTime))
 		{
-			CString			strDateTime = szDateTime;
+			QString	strDateTime{ szDateTime };
 
 			// Decode 2007:11:02 22:07:03
 			//        0123456789012345678
 
-			if (strDateTime.GetLength() >= 19)
+			if (strDateTime.length() >= 19)
 			{
-				m_DateTime = QDateTime::fromString(QString::fromWCharArray(strDateTime.GetString()), "yyyy:MM:dd hh:mm:ss");
+				m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
 			};
 		};
 
