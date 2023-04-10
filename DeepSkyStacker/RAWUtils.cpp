@@ -261,7 +261,6 @@ namespace { // Only use in this .cpp file
 				m_fAperture = std::isfinite(P2.aperture) ? P2.aperture : 0.0;
 
 				// Retrieve the Date/Time
-				memset(&m_DateTime, 0, sizeof(m_DateTime));
 				if (P2.timestamp)
 				{
 					m_DateTime = QDateTime::fromSecsSinceEpoch(P2.timestamp);
@@ -379,8 +378,7 @@ namespace { // Only use in this .cpp file
 	void CRawDecod::checkCameraSupport(const QString& strModel)
 	{
 		bool result = false;
-		const char* camera = strModel.toLatin1().constData();
-		const std::string cameraString{ camera };
+		const std::string cameraString{ strModel.toLatin1().constData() };
 
 		static std::set<std::string> checkedCameras;
 
