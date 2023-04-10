@@ -416,39 +416,37 @@ bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	bool bResult = false;
 	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
 
-	if (pBitmap.get() != nullptr) // Useless, because make_unique (same as operator new) throws on out-of-memory.
+	GUID rawformat;
+
+	if ((pBitmap->GetType() == ImageTypeBitmap) &&
+		(pBitmap->GetRawFormat(&rawformat) == Ok))
 	{
-		GUID rawformat;
+		bResult = true;
+		if (rawformat == ImageFormatBMP)
+			BitmapInfo.m_strFileType	= "Windows BMP";
+		else if (rawformat == ImageFormatGIF)
+			BitmapInfo.m_strFileType	= "GIF";
+		else if (rawformat == ImageFormatJPEG)
+			BitmapInfo.m_strFileType	= "JPEG";
+		else if (rawformat == ImageFormatPNG)
+			BitmapInfo.m_strFileType	= "PNG";
+		else
+			bResult = false;
 
-		if ((pBitmap->GetType() == ImageTypeBitmap) &&
-			(pBitmap->GetRawFormat(&rawformat) == Ok))
+		RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
+
+		if (bResult)
 		{
-			bResult = true;
-			if (rawformat == ImageFormatBMP)
-				BitmapInfo.m_strFileType	= "Windows BMP";
-			else if (rawformat == ImageFormatGIF)
-				BitmapInfo.m_strFileType	= "GIF";
-			else if (rawformat == ImageFormatJPEG)
-				BitmapInfo.m_strFileType	= "JPEG";
-			else if (rawformat == ImageFormatPNG)
-				BitmapInfo.m_strFileType	= "PNG";
-			else
-				bResult = false;
-
-			RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-
-			if (bResult)
-			{
-				BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
-				BitmapInfo.m_CFAType		= CFATYPE_NONE;
-				BitmapInfo.m_lWidth			= pBitmap->GetWidth();
-				BitmapInfo.m_lHeight		= pBitmap->GetHeight();
-				BitmapInfo.m_lBitPerChannel	= 8;
-				BitmapInfo.m_lNrChannels	= 3;
-				BitmapInfo.m_bCanLoad		= true;
-			}
+			BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
+			BitmapInfo.m_CFAType		= CFATYPE_NONE;
+			BitmapInfo.m_lWidth			= pBitmap->GetWidth();
+			BitmapInfo.m_lHeight		= pBitmap->GetHeight();
+			BitmapInfo.m_lBitPerChannel	= 8;
+			BitmapInfo.m_lNrChannels	= 3;
+			BitmapInfo.m_bCanLoad		= true;
 		}
 	}
+
 	return bResult;
 }
 
@@ -946,7 +944,11 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 			BitmapInfo.m_InfoTime = now;
 
-			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString(Qt::ISODate);
+			//
+			// Originally used ISO 8601 date format yyyy-MM-ddThh:mm:ss - change to use the more
+			// familiar form: yyyy/MM/dd hh:mm:ss
+			//
+			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
 
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
