@@ -16,23 +16,6 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 		m_PictureType  = Type;
 	filePath = file;
 
-	/*
-	FILETIME		FileTime;
-	TCHAR			szTime[200];
-	TCHAR			szDate[200];
-	CString			strDateTime;
-
-	GetFileCreationDateTime(szFile, FileTime);
-	FileTimeToSystemTime(&FileTime, &m_FileTime);
-	SystemTimeToTzSpecificLocalTime(nullptr, &m_FileTime, &m_FileTime);
-
-	GetDateFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, nullptr, szDate, sizeof(szDate));
-	GetTimeFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, nullptr, szTime, sizeof(szTime));
-
-	strDateTime.Format("%s %s", szDate, szTime);
-	m_strDateTime = strDateTime;
-	*/
-
 	CBitmapInfo			bmpInfo;
 
 	bResult = GetPictureInfo(file.c_str() ,bmpInfo);
@@ -80,7 +63,6 @@ void CFrameInfo::CopyFrom(const CFrameInfo& cfi)
 	m_CFAType = cfi.m_CFAType;
 	m_lBitPerChannels = cfi.m_lBitPerChannels;
 	m_lNrChannels = cfi.m_lNrChannels;
-	m_FileTime = cfi.m_FileTime;
 	m_strDateTime = cfi.m_strDateTime;
 	m_DateTime = cfi.m_DateTime;
 	m_bMaster = cfi.m_bMaster;

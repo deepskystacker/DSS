@@ -27,7 +27,6 @@ public :
 	PICTURETYPE			m_PictureType;
 	int				m_lBitPerChannels;
 	int				m_lNrChannels;
-	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
 	QDateTime			m_DateTime;
 	bool				m_bMaster;
