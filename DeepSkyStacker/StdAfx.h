@@ -1,10 +1,6 @@
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
 #pragma once
-
 #if defined(_WINDOWS)
+//
 // Visual Leak Detector
 //
 #include <vld.h>
@@ -13,7 +9,6 @@
 // Windows Files (eventually to go!)
 #define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
 #define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
-
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -47,7 +42,6 @@ using namespace Gdiplus;
 #include <filesystem>
 #include <tuple>
 #include <boost/interprocess/sync/named_mutex.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
 
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
