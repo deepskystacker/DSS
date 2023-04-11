@@ -730,8 +730,8 @@ bool CTIFFWriter::Open()
 				else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
 
 			}
-			else
-				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
+			else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
+
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLEFORMAT, sampleformat);
 
