@@ -3,6 +3,7 @@
 #include "Histogram.h"
 #include "BtnST.h"
 #include "gradientctrl.h"
+#include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CRGBTab dialog

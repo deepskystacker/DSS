@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CB7B75F1-08F4-4C8D-A7EF-2AA33E9A67F1}</ProjectGuid>
+    <RootNamespace>DeepSkyStackerKernel</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <Keyword>QtVS_v304</Keyword>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtModules>core</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtModules>core</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Release.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Debug.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <IncludePath />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <IncludePath />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <WarningLevel>Level4</WarningLevel>
+      <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
+    <QtTranslation>
+      <BuildAction>lrelease</BuildAction>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <WarningLevel>Level4</WarningLevel>
+      <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
+    <QtTranslation>
+      <BuildAction>lrelease</BuildAction>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include=".\AHDDemosaicing.cpp" />
+    <ClCompile Include=".\avx.cpp" />
+    <ClCompile Include=".\avx_avg.cpp" />
+    <ClCompile Include=".\avx_bitmap_filler.cpp" />
+    <ClCompile Include=".\avx_cfa.cpp" />
+    <ClCompile Include=".\avx_entropy.cpp" />
+    <ClCompile Include=".\avx_filter.cpp" />
+    <ClCompile Include=".\avx_histogram.cpp" />
+    <ClCompile Include=".\avx_luminance.cpp" />
+    <ClCompile Include=".\avx_output.cpp" />
+    <ClCompile Include=".\avx_support.cpp" />
+    <ClCompile Include=".\BackgroundCalibration.cpp" />
+    <ClCompile Include=".\Bayer.cpp" />
+    <ClCompile Include=".\BilinearParameters.cpp" />
+    <ClCompile Include=".\BitmapBase.cpp" />
+    <ClCompile Include=".\BitmapExt.cpp" />
+    <ClCompile Include=".\BitMapFiller.cpp" />
+    <ClCompile Include=".\BitmapInfo.cpp" />
+    <ClCompile Include=".\ChannelAlign.cpp" />
+    <ClCompile Include=".\ColorBitmap.cpp" />
+    <ClCompile Include=".\ColorHelpers.cpp" />
+    <ClCompile Include=".\ColorMultiBitmap.cpp" />
+    <ClCompile Include=".\CosmeticEngine.cpp" />
+    <ClCompile Include=".\DarkFrame.cpp" />
+    <ClCompile Include=".\DeBloom.cpp" />
+    <ClCompile Include=".\DSSProgress.cpp" />
+    <ClCompile Include=".\DSSTools.cpp" />
+    <ClCompile Include=".\EntropyInfo.cpp" />
+    <ClCompile Include=".\File.cpp" />
+    <ClCompile Include=".\Filters.cpp" />
+    <ClCompile Include=".\FITSUtil.cpp" />
+    <ClCompile Include=".\FlatFrame.cpp" />
+    <ClCompile Include=".\FrameInfo.cpp" />
+    <ClCompile Include=".\FrameList.cpp" />
+    <ClCompile Include=".\GrayBitmap.cpp" />
+    <ClCompile Include=".\GreyMultiBitmap.cpp" />
+    <ClCompile Include=".\group.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\ImageListModel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\MasterFrames.cpp" />
+    <ClCompile Include=".\MatchingStars.cpp" />
+    <ClCompile Include=".\MedianFilterEngine.cpp" />
+    <ClCompile Include=".\MemoryBitmap.cpp" />
+    <ClCompile Include=".\MultiBitmapProcess.cpp" />
+    <ClCompile Include=".\Multitask.cpp" />
+    <ClCompile Include=".\RAWUtils.cpp" />
+    <ClCompile Include=".\RegisterEngine.cpp" />
+    <ClCompile Include=".\Settings.cpp" />
+    <ClCompile Include=".\StackingEngine.cpp" />
+    <ClCompile Include=".\StackingTasks.cpp" />
+    <ClCompile Include=".\TaskInfo.cpp" />
+    <ClCompile Include=".\TIFFUtil.cpp" />
+    <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="DeepStack.cpp" />
+    <ClCompile Include="dss_settings.cpp" />
+    <ClCompile Include="imageloader.cpp" />
+    <ClCompile Include="RunningStackingEngine.cpp" />
+    <ClCompile Include="StackedBitmap.cpp" />
+    <ClCompile Include="StarMask.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=".\AHDDemosaicing.h" />
+    <ClInclude Include=".\avx.h" />
+    <ClInclude Include=".\avx_avg.h" />
+    <ClInclude Include=".\avx_bitmap_filler.h" />
+    <ClInclude Include=".\avx_cfa.h" />
+    <ClInclude Include=".\avx_entropy.h" />
+    <ClInclude Include=".\avx_filter.h" />
+    <ClInclude Include=".\avx_histogram.h" />
+    <ClInclude Include=".\avx_luminance.h" />
+    <ClInclude Include=".\avx_output.h" />
+    <ClInclude Include=".\avx_support.h" />
+    <ClInclude Include=".\BackgroundCalibration.h" />
+    <ClInclude Include=".\Bayer.h" />
+    <ClInclude Include=".\BezierAdjust.h" />
+    <ClInclude Include=".\BitmapBase.h" />
+    <ClInclude Include=".\BitmapExt.h" />
+    <ClInclude Include=".\BitMapFiller.h" />
+    <ClInclude Include=".\BitmapInfo.h" />
+    <ClInclude Include=".\ChannelAlign.h" />
+    <ClInclude Include=".\ColorBitmap.h" />
+    <ClInclude Include=".\ColorHelpers.h" />
+    <ClInclude Include=".\ColorMultiBitmap.h" />
+    <ClInclude Include=".\CosmeticEngine.h" />
+    <ClInclude Include=".\DarkFrame.h" />
+    <ClInclude Include=".\DeBloom.h" />
+    <ClInclude Include=".\DSSCommon.h" />
+    <ClInclude Include=".\DSSProgress.h" />
+    <ClInclude Include=".\dssrect.h" />
+    <ClInclude Include=".\DSSTools.h" />
+    <ClInclude Include=".\EntropyInfo.h" />
+    <ClInclude Include=".\File.h" />
+    <ClInclude Include=".\Filters.h" />
+    <ClInclude Include=".\FITSUtil.h" />
+    <ClInclude Include=".\FlatFrame.h" />
+    <ClInclude Include=".\FrameInfo.h" />
+    <ClInclude Include=".\FrameList.h" />
+    <ClInclude Include=".\GrayBitmap.h" />
+    <ClInclude Include=".\GreyMultiBitmap.h" />
+    <ClInclude Include=".\group.h" />
+    <ClInclude Include=".\Histogram.h" />
+    <QtMoc Include=".\ImageListModel.h" />
+    <ClInclude Include=".\MasterFrames.h" />
+    <ClInclude Include=".\MatchingStars.h" />
+    <ClInclude Include=".\MemoryBitmap.h" />
+    <ClInclude Include=".\MultiBitmapProcess.h" />
+    <ClInclude Include=".\Multitask.h" />
+    <ClInclude Include=".\PixelTransform.h" />
+    <ClInclude Include=".\RAWUtils.h" />
+    <ClInclude Include=".\RegisterEngine.h" />
+    <ClInclude Include=".\Settings.h" />
+    <ClInclude Include=".\StackingEngine.h" />
+    <ClInclude Include=".\StackingTasks.h" />
+    <ClInclude Include=".\TaskInfo.h" />
+    <ClInclude Include=".\TIFFUtil.h" />
+    <ClInclude Include=".\Workspace.h" />
+    <ClInclude Include="avx_median.h" />
+    <ClInclude Include="BilinearParameters.h" />
+    <ClInclude Include="BitmapCharacteristics.h" />
+    <ClInclude Include="BitmapConstants.h" />
+    <ClInclude Include="BitmapExtraInfo.h" />
+    <ClInclude Include="BitmapIterator.h" />
+    <ClInclude Include="BitmapPartFile.h" />
+    <ClInclude Include="cfa.h" />
+    <ClInclude Include="CFABitmapInfo.h" />
+    <ClInclude Include="ColorRef.h" />
+    <ClInclude Include="DeepStack.h" />
+    <ClInclude Include="dssbase.h" />
+    <ClInclude Include="DSSVersion.h" />
+    <ClInclude Include="dss_settings.h" />
+    <ClInclude Include="DynamicStats.h" />
+    <ClInclude Include="ExtraInfo.h" />
+    <ClInclude Include="FlatPart.h" />
+    <ClInclude Include="FrameInfoSupport.h" />
+    <QtMoc Include="imageloader.h" />
+    <ClInclude Include="LinearInterpolationh.h" />
+    <ClInclude Include="matrix.h" />
+    <ClInclude Include="MedianFilterEngine.h" />
+    <ClInclude Include="MultiBitmap.h" />
+    <ClInclude Include="RationalInterpolation.h" />
+    <ClInclude Include="RunningStackingEngine.h" />
+    <ClInclude Include="SkyBackground.h" />
+    <ClInclude Include="StackedBitmap.h" />
+    <ClInclude Include="StarMask.h" />
+    <ClInclude Include="Stars.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libjpg\libjpg.vcxproj">
+      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibRaw\buildfiles\libraw.vcxproj">
+      <Project>{a71d2131-f425-381f-8a9a-29d60132a046}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
+      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
+      <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

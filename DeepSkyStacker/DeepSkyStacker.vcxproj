@@ -87,7 +87,7 @@
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -158,7 +158,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -267,121 +267,46 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="AHDDemosaicing.cpp" />
     <ClCompile Include="AlignmentParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AskRegistering.cpp" />
-    <ClCompile Include="avx.cpp" />
-    <ClCompile Include="avx_avg.cpp" />
-    <ClCompile Include="avx_bitmap_filler.cpp" />
-    <ClCompile Include="avx_cfa.cpp" />
-    <ClCompile Include="avx_entropy.cpp" />
-    <ClCompile Include="avx_filter.cpp" />
-    <ClCompile Include="avx_histogram.cpp" />
-    <ClCompile Include="avx_luminance.cpp" />
-    <ClCompile Include="avx_output.cpp" />
-    <ClCompile Include="avx_support.cpp" />
-    <ClCompile Include="BackgroundCalibration.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="BatchStacking.cpp" />
-    <ClCompile Include="Bayer.cpp" />
-    <ClCompile Include="BilinearParameters.cpp" />
-    <ClCompile Include="BitmapBase.cpp" />
-    <ClCompile Include="BitmapExt.cpp" />
-    <ClCompile Include="BitMapFiller.cpp" />
-    <ClCompile Include="BitmapInfo.cpp" />
-    <ClCompile Include="ChannelAlign.cpp" />
     <ClCompile Include="CheckAbove.cpp" />
-    <ClCompile Include="ColorBitmap.cpp" />
-    <ClCompile Include="ColorHelpers.cpp" />
-    <ClCompile Include="ColorMultiBitmap.cpp" />
     <ClCompile Include="CometStacking.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="CosmeticEngine.cpp" />
-    <ClCompile Include="DarkFrame.cpp" />
-    <ClCompile Include="DeBloom.cpp" />
     <ClCompile Include="DeepSkyStacker.cpp" />
-    <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
-    <ClCompile Include="DSSProgress.cpp" />
-    <ClCompile Include="DSSTools.cpp" />
-    <ClCompile Include="editstars.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="editstars.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
-    <ClCompile Include="File.cpp" />
-    <ClCompile Include="GrayBitmap.cpp" />
-    <ClCompile Include="GreyMultiBitmap.cpp" />
-    <ClCompile Include="group.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="ImageProperties.cpp" />
     <ClCompile Include="ImageSinks.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
-    <ClCompile Include="imageview.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MemoryBitmap.cpp" />
+    <ClCompile Include="imageview.cpp" />
     <ClCompile Include="picturelist.cpp" />
     <ClCompile Include="QElidedLabel.cpp" />
     <ClCompile Include="QtProgressDlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
-    <ClCompile Include="selectrect.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="BaseDialog.cpp" />
-    <ClCompile Include="TaskInfo.cpp" />
-    <ClCompile Include="toolbar.cpp" />
-    <ClCompile Include="dss_settings.cpp" />
-    <ClCompile Include="EntropyInfo.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Filters.cpp" />
-    <ClCompile Include="FITSUtil.cpp" />
-    <ClCompile Include="FlatFrame.cpp" />
-    <ClCompile Include="FrameInfo.cpp" />
-    <ClCompile Include="FrameList.cpp" />
-    <ClCompile Include="ImageListModel.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="imageloader.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="IntermediateFiles.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="LuminanceTab.cpp" />
-    <ClCompile Include="MasterFrames.cpp" />
-    <ClCompile Include="MatchingStars.cpp" />
-    <ClCompile Include="MedianFilterEngine.cpp" />
-    <ClCompile Include="mrulist.cpp" />
-    <ClCompile Include="MultiBitmapProcess.cpp" />
-    <ClCompile Include="Multitask.cpp" />
     <ClCompile Include="OutputTab.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -408,12 +333,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RAWUtils.cpp" />
     <ClCompile Include="RecommendedSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RegisterEngine.cpp" />
     <ClCompile Include="RegisterSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -423,26 +346,22 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RGBTab.cpp" />
-    <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="SaturationTab.cpp" />
     <ClCompile Include="SaveEditChanges.cpp" />
     <ClCompile Include="SavePicture.cpp" />
-    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="selectrect.cpp" />
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="SetUILanguage.cpp" />
-    <ClCompile Include="StackedBitmap.cpp" />
     <ClCompile Include="StackingDlg.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="StackingEngine.cpp" />
     <ClCompile Include="StackingParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="StackingTasks.cpp" />
     <ClCompile Include="StackRecap.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -451,15 +370,13 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="StarMask.cpp" />
     <ClCompile Include="StarMaskDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TIFFUtil.cpp" />
+    <ClCompile Include="toolbar.cpp" />
     <ClCompile Include="tracecontrol.cpp" />
-    <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc" />
@@ -478,7 +395,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ResourceCompile Include="DeepSkyStackerTR.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\dssbase.h" />
     <ClInclude Include="..\Tools\BtnST.h" />
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
     <ClInclude Include="..\Tools\childprop.h" />
@@ -494,106 +410,34 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
-    <ClInclude Include="AHDDemosaicing.h" />
     <QtMoc Include="AlignmentParameters.h" />
     <ClInclude Include="AskRegistering.h" />
-    <ClInclude Include="avx.h" />
-    <ClInclude Include="avx_avg.h" />
-    <ClInclude Include="avx_bitmap_filler.h" />
-    <ClInclude Include="avx_cfa.h" />
-    <ClInclude Include="avx_entropy.h" />
-    <ClInclude Include="avx_filter.h" />
-    <ClInclude Include="avx_histogram.h" />
-    <ClInclude Include="avx_luminance.h" />
-    <ClInclude Include="avx_median.h" />
-    <ClInclude Include="avx_output.h" />
-    <ClInclude Include="avx_support.h" />
-    <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
     <QtMoc Include="BatchStacking.h" />
     <QtMoc Include="BaseDialog.h" />
-    <ClInclude Include="Bayer.h" />
-    <ClInclude Include="BezierAdjust.h" />
-    <ClInclude Include="BilinearParameters.h" />
-    <ClInclude Include="BitmapBase.h" />
-    <ClInclude Include="BitmapCharacteristics.h" />
-    <ClInclude Include="BitmapConstants.h" />
-    <ClInclude Include="BitmapExt.h" />
-    <ClInclude Include="BitmapExtraInfo.h" />
-    <ClInclude Include="BitMapFiller.h" />
-    <ClInclude Include="BitmapInfo.h" />
-    <ClInclude Include="BitmapIterator.h" />
-    <ClInclude Include="BitmapPartFile.h" />
-    <ClInclude Include="cfa.h" />
-    <ClInclude Include="CFABitmapInfo.h" />
-    <ClInclude Include="ChannelAlign.h" />
     <QtMoc Include="CometStacking.h" />
     <QtMoc Include="CheckAbove.h" />
-    <ClInclude Include="ColorBitmap.h" />
-    <ClInclude Include="ColorHelpers.h" />
-    <ClInclude Include="ColorMultiBitmap.h" />
-    <ClInclude Include="ColorRef.h" />
     <ClInclude Include="commonresource.h" />
-    <ClInclude Include="CosmeticEngine.h" />
-    <ClInclude Include="DarkFrame.h" />
-    <ClInclude Include="DeBloom.h" />
     <QtMoc Include="DeepSkyStacker.h" />
-    <ClInclude Include="DeepStack.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="dslr.h" />
     <ClInclude Include="DSS-versionhelpers.h" />
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
-    <ClInclude Include="DSSCommon.h" />
-    <QtMoc Include="imageview.h" />
-    <QtMoc Include="editstars.h" />
     <ClInclude Include="DSSMemory.h" />
-    <ClInclude Include="DSSProgress.h" />
-    <QtMoc Include="selectrect.h" />
-    <QtMoc Include="toolbar.h" />
-    <ClInclude Include="DSSTools.h" />
-    <ClInclude Include="DSSVersion.h" />
-    <ClInclude Include="DynamicStats.h" />
-    <ClInclude Include="EntropyInfo.h" />
     <QtMoc Include="ExplorerBar.h" />
+    <QtMoc Include="editstars.h" />
     <ClInclude Include="ExceptionHandling.h" />
-    <ClInclude Include="File.h" />
-    <ClInclude Include="ExtraInfo.h" />
-    <ClInclude Include="Filters.h" />
-    <ClInclude Include="FITSUtil.h" />
-    <ClInclude Include="FlatFrame.h" />
-    <ClInclude Include="FlatPart.h" />
-    <ClInclude Include="FrameInfo.h" />
-    <ClInclude Include="FrameInfoSupport.h" />
-    <ClInclude Include="FrameList.h" />
-    <ClInclude Include="GrayBitmap.h" />
-    <ClInclude Include="GreyMultiBitmap.h" />
-    <ClInclude Include="group.h" />
-    <ClInclude Include="dss_settings.h" />
-    <ClInclude Include="dssrect.h" />
-    <ClInclude Include="Histogram.h" />
     <QtMoc Include="IntermediateFiles.h" />
-    <QtMoc Include="ImageListModel.h" />
-    <QtMoc Include="imageloader.h" />
     <QtMoc Include="ImageProperties.h" />
     <ClInclude Include="ImageSinks.h" />
+    <QtMoc Include="imageview.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="LinearInterpolationh.h" />
     <ClInclude Include="LuminanceTab.h" />
-    <ClInclude Include="MasterFrames.h" />
-    <ClInclude Include="MatchingStars.h" />
-    <ClInclude Include="matrix.h" />
-    <ClInclude Include="MedianFilterEngine.h" />
-    <ClInclude Include="MemoryBitmap.h" />
     <ClInclude Include="mrulist.h" />
-    <ClInclude Include="mrupath.h" />
-    <ClInclude Include="MultiBitmap.h" />
-    <ClInclude Include="MultiBitmapProcess.h" />
-    <ClInclude Include="Multitask.h" />
     <QtMoc Include="OutputTab.h" />
     <QtMoc Include="picturelist.h" />
-    <ClInclude Include="PixelTransform.h" />
     <QtMoc Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />
     <ClInclude Include="ProcessSettingsSheet.h" />
@@ -604,10 +448,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="QElidedLabel.h" />
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="QtProgressDlg.h" />
-    <ClInclude Include="RationalInterpolation.h" />
-    <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
-    <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
     <QtMoc Include="RenameGroup.h" />
     <ClInclude Include="Resource.h" />
@@ -617,29 +458,20 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="resourceIT.h" />
     <QtMoc Include="ResultParameters.h" />
     <ClInclude Include="RGBTab.h" />
-    <ClInclude Include="RunningStackingEngine.h" />
     <ClInclude Include="SaturationTab.h" />
     <QtMoc Include="SaveEditChanges.h" />
     <ClInclude Include="SavePicture.h" />
-    <ClInclude Include="Settings.h" />
+    <QtMoc Include="selectrect.h" />
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="SetUILanguage.h" />
-    <ClInclude Include="SkyBackground.h" />
-    <ClInclude Include="StackedBitmap.h" />
     <QtMoc Include="StackingDlg.h" />
-    <ClInclude Include="StackingEngine.h" />
     <QtMoc Include="StackingParameters.h" />
-    <ClInclude Include="StackingTasks.h" />
     <QtMoc Include="StackRecap.h" />
     <QtMoc Include="StackSettings.h" />
-    <ClInclude Include="StarMask.h" />
     <ClInclude Include="StarMaskDlg.h" />
-    <ClInclude Include="Stars.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TaskInfo.h" />
-    <ClInclude Include="TIFFUtil.h" />
+    <QtMoc Include="toolbar.h" />
     <ClInclude Include="tracecontrol.h" />
-    <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Tools\hdrdown.bmp" />
@@ -758,6 +590,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="undo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
+      <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\libjpg\libjpg.vcxproj">
       <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
     </ProjectReference>

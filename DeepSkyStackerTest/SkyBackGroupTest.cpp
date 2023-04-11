@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/SkyBackground.h"
+#include "SkyBackground.h"
 
 TEST_CASE("SkyBackground", "[SkyBackground]")
 {

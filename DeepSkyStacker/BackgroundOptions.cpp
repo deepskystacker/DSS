@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BackgroundOptions.h"
 #include "ui/ui_BackgroundOptions.h"
-#include "../DeepSkyStackerTest/AvxAccumulateTest.h"
+#include "StackingTasks.h"
 #include "Workspace.h"
 
 

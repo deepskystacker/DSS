@@ -8,7 +8,7 @@
 *  Copyright (c) Microsoft Corp.  All rights reserved.            *
 *                                                                 *
 ******************************************************************/
-#include <DSS-winapifamily.h>
+#include "DSS-winapifamily.h"
 #include <windows.h>
 
 #ifdef _MSC_VER

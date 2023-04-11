@@ -4,9 +4,8 @@
 #include "stdafx.h"
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
-#include "commonresource.h"
 #include "Ztrace.h"
-#include "SetUILanguage.h"
+#include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
 
 bool	g_bShowRefStars = false;
 
