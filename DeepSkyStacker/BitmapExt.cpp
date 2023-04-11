@@ -977,7 +977,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			"DSS::StackingDlg",
 			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
 
-		DSSBase::instance()->reportError(errorMessage, DSSBase::Severity::Warning);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 		return false;
 	}
