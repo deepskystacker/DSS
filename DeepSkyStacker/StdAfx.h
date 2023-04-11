@@ -43,6 +43,8 @@ using namespace Gdiplus;
 #include <tuple>
 #include <boost/interprocess/sync/named_mutex.hpp>
 
+#include "dssbase.h"
+
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
 namespace chr = std::chrono;
