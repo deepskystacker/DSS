@@ -238,9 +238,10 @@ bool CTIFFReader::Open()
 		//
 		// Attempt to read the CFA from the root dir if this is a CFA image
 		//
-		if (PHOTOMETRIC_CFA == photo)
+		if (bResult && 1 == spp) 
 		{
-			ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_CFA");
+			if (PHOTOMETRIC_CFA == photo) ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISCFA");
+			else ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISBLACK");
 			int count{ 0 };
 
 			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &pVoidArray))
@@ -704,7 +705,7 @@ bool CTIFFWriter::Open()
 				//
 				if (cfa && cfatype >= static_cast<uint32_t>(CFATYPE_BGGR) && cfatype <= static_cast<uint32_t>(CFATYPE_RGGB))
 				{
-					TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);
+					// TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);  // Don't use this - breaks too many things
 					constexpr uint16_t cfapatterndim[2]{ 2,2 };
 					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, cfapatterndim);
 					//
@@ -727,7 +728,7 @@ bool CTIFFWriter::Open()
 						break;
 					}
 				}
-				else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
 
 			}
 			else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
