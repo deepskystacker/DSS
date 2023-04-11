@@ -51,6 +51,7 @@
 #include "qwinhost.h"
 #include "DeepStack.h"
 #include "tracecontrol.h"
+#include "Workspace.h"
 
 
 CString OUTPUTFILE_FILTERS;
@@ -58,7 +59,6 @@ CString	OUTPUTLIST_FILTERS;
 CString SETTINGFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
-
 
 DSS::TraceControl traceControl;
 
@@ -181,6 +181,36 @@ void	deleteRemainingTempFiles()
 
 };
 
+DeepSkyStacker::DeepSkyStacker() :
+	QMainWindow(),
+	initialised{ false },
+	pictureList{ nullptr },
+	explorerBar{ nullptr },
+	stackedWidget{ nullptr },
+	stackingDlg{ nullptr },
+	winHost{ nullptr },
+	currTab{ 0 },
+	args{ qApp->arguments() },
+	// m_taskbarList{ nullptr },
+	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
+	m_progress{ false },
+	statusBarText{ new QLabel("") },
+	processingDlg{ std::make_unique<CProcessingDlg>() },
+	m_DeepStack{ std::make_unique<CDeepStack>() },
+	m_Settings{ std::make_unique<CDSSSettings>() },
+	errorMessageDialog{ new QErrorMessage(this) },
+	eMDI{ nullptr }		// errorMessageDialogIcon pointer
+{
+	ZFUNCTRACE_RUNTIME();
+	setAcceptDrops(true);
+	errorMessageDialog->setWindowTitle("DeepSkyStacker");
+}
+
+DeepSkyStacker::~DeepSkyStacker()
+{
+}
+
+
 void DeepSkyStacker::createStatusBar()
 {
 	statusBarText->setAlignment(Qt::AlignHCenter);
@@ -193,10 +223,56 @@ void DeepSkyStacker::updateStatus(const QString& text)
 	statusBarText->setText(text);
 }
 
-void DeepSkyStacker::displayMessage(const QString& message, QMessageBox::Icon icon)
+void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method)
+{
+	if (Method::QMessageBox == method)
+	{
+		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
+			Q_ARG(const QString&, message),
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)));
+	}
+	else
+	{
+		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
+			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)));
+	}
+}
+
+
+void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon)
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
+}
+
+void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon)
+{
+	//
+	// Hack to access the Icon displayed by QErrorMessage
+	//
+	if (nullptr == eMDI)
+	{
+		eMDI = errorMessageDialog->findChild<QLabel*>();
+	}
+
+	if (eMDI != nullptr)
+	{
+		switch (icon)
+		{
+		case (QMessageBox::Information):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+			break;
+		case (QMessageBox::Critical):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
+			break;
+		case (QMessageBox::Warning):
+		default:
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+			break;
+		}
+	}
+	errorMessageDialog->showMessage(message, type);
 }
 
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
@@ -249,6 +325,10 @@ void DeepSkyStacker::connectSignalsToSlots()
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Force setting of blackPointToZero as initially false
+	//
+	Workspace{}.setValue("RawDDP/BlackPointTo0", false);
 
 	//
 	// Set the Docking Area Corner Configuration so that the
@@ -404,33 +484,6 @@ GdiplusStartupOutput gdiSO;
 ULONG_PTR gdiplusToken{ 0ULL };
 ULONG_PTR gdiHookToken{ 0ULL };
 
-DeepSkyStacker::DeepSkyStacker() :
-	QMainWindow(),
-	initialised{ false },
-	pictureList{ nullptr },
-	explorerBar{ nullptr },
-	stackedWidget{ nullptr },
-	stackingDlg{ nullptr },
-	winHost{ nullptr },
-	currTab{ 0 },
-	args{ qApp->arguments() },
-	// m_taskbarList{ nullptr },
-	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
-	m_progress{ false },
-	statusBarText{ new QLabel("") }
-
-{
-	processingDlg = std::make_unique<CProcessingDlg>();
-	m_DeepStack = std::make_unique<CDeepStack>();
-	m_Settings = std::make_unique<CDSSSettings>();
-	ZFUNCTRACE_RUNTIME();
-	setAcceptDrops(true);
-}
-
-DeepSkyStacker::~DeepSkyStacker()
-{
-}
-
 void DeepSkyStacker::disableSubDialogs()
 {
 	stackingDlg->setEnabled(false);
@@ -520,14 +573,6 @@ void DeepSkyStacker::updateTab()
 	};
 	explorerBar->update();
 };
-
-void DeepSkyStacker::reportError(const QString& message, DSSBase::Severity severity)
-{
-	QMetaObject::invokeMethod(this, "displayMessage", Qt::QueuedConnection,
-		Q_ARG(const QString&, message),
-		Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity) ));
-}
-
 
 BOOL DeepSkyStackerApp::InitInstance()
 {
