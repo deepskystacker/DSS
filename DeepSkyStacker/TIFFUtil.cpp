@@ -240,7 +240,7 @@ bool CTIFFReader::Open()
 		//
 		if (bResult && 1 == spp) 
 		{
-			if (PHOTOMETRIC_CFA == photo) ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISCFA");
+			if (PHOTOMETRIC_CFA == photo) ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_CFA");
 			else ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISBLACK");
 			int count{ 0 };
 
