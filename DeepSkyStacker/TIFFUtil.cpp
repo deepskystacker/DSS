@@ -45,10 +45,21 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 
 };
 
-constexpr uint8_t TIFF_CFAPattern_RGGB[] { 00,01,01,02 };
-constexpr uint8_t TIFF_CFAPattern_BGGR[] { 02,01,01,00 };
-constexpr uint8_t TIFF_CFAPattern_GRBG[] { 01,00,02,01 };
-constexpr uint8_t TIFF_CFAPattern_GBRG[] { 01,02,00,01 };
+constexpr uint8_t TIFF_CFAPattern_RGGB[] { 0,1,1,2 };
+constexpr uint8_t TIFF_CFAPattern_BGGR[] { 2,1,1,0 };
+constexpr uint8_t TIFF_CFAPattern_GRBG[] { 1,0,2,1 };
+constexpr uint8_t TIFF_CFAPattern_GBRG[] { 1,2,0,1 };
+
+struct
+{
+	uint16_t dim[2]{ 0 };
+	union
+	{
+		uint8_t cfa4[4];
+		uint8_t cfa9[9];
+		uint8_t cfa16[16];
+	} cfa { 0 };
+} cfaDimPat;
 
 static TIFFExtendProc	g_TIFFParentExtender = nullptr;
 static bool				g_TIFFInitialized = false;
@@ -86,6 +97,22 @@ void DSSTIFFInitialize()
 bool CTIFFReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
+
+	//
+	// Used for reading lengths of TIFF custom tags.  Different tags
+	// return length as uint8, uint16, uint16[2], or uint32
+	//
+	union
+	{
+		uint32_t Long;
+		uint16_t Short1;
+		uint16_t Short2[2];
+		uint8_t Char[4];
+	} unionLong{ 0 };
+
+	// Used to read pointer to data when reading custom tags
+	void* pVoidArray{ nullptr };
+
 	bool			bResult = false;
 	QSettings		settings;
 
@@ -127,13 +154,6 @@ bool CTIFFReader::Open()
 		TIFFGetField(m_tiff, TIFFTAG_PHOTOMETRIC, &photo);
 		if (!TIFFGetField(m_tiff, TIFFTAG_SAMPLEFORMAT, &sampleformat))
 			sampleformat = SAMPLEFORMAT_UINT;
-
-		int32_t cfaValue{ 0 };
-		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfaValue))
-			cfaValue = 0;
-		if (0 != cfaValue) cfa = true;
-		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
-			cfatype = cfa ? CFATYPE_RGGB : CFATYPE_NONE;
 
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_MASTER, &master))
 			master = 0;
@@ -193,9 +213,9 @@ bool CTIFFReader::Open()
 			if (bResult)
 			{
 				if ((spp == 3) || (spp == 4))
-					bResult = (photo == PHOTOMETRIC_RGB);
+					bResult = (PHOTOMETRIC_RGB == photo);
 				else if (spp == 1)
-					bResult = (photo == PHOTOMETRIC_MINISBLACK);
+					bResult = (PHOTOMETRIC_MINISBLACK == photo || PHOTOMETRIC_CFA == photo);
 			};
 		};
 
@@ -220,15 +240,78 @@ bool CTIFFReader::Open()
 		//
 		if (PHOTOMETRIC_CFA == photo)
 		{
-			uint16_t cfarepeatpatterndim[2]{ 0 };
-			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &cfarepeatpatterndim))
-			{
-				uint16_t
-					x{ (cfarepeatpatterndim[0]) },
-					y{ (cfarepeatpatterndim[1]) };
+			ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_CFA");
+			int count{ 0 };
 
-				uint8_t* cfapattern = static_cast<uint8_t*>(_alloca(x * y));
-				TIFFGetField(m_tiff, TIFFTAG_CFAPATTERN, cfapattern);
+			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &pVoidArray))
+			{
+				cfaDimPat = {};		// clear the Dimension and Pattern structure
+				memcpy(&cfaDimPat.dim, pVoidArray, sizeof(cfaDimPat.dim));
+				ZTRACE_RUNTIME("TIFFTAG_CFAREPEATPATTERNDIM is set to: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
+
+				int patternSize{ cfaDimPat.dim[0] * cfaDimPat.dim[1] };
+
+				if (TIFFGetField(m_tiff, TIFFTAG_CFAPATTERN, &unionLong, &pVoidArray))
+				{
+					count = unionLong.Short1;
+					ZASSERT(count == patternSize && count <= sizeof(cfaDimPat.cfa));
+					memcpy(&cfaDimPat.cfa, pVoidArray, count);
+					if (4 == patternSize)
+					{
+						ZTRACE_RUNTIME("TIFFTAG_CFAPATTERN: %hhu%hhu%hhu%hhu",
+							cfaDimPat.cfa.cfa4[0],
+							cfaDimPat.cfa.cfa4[1],
+							cfaDimPat.cfa.cfa4[2],
+							cfaDimPat.cfa.cfa4[3]);
+						if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, 4))
+						{
+							ZTRACE_RUNTIME("CFAType set to RGGB");
+							cfa = 1;
+							cfatype = CFATYPE_RGGB;
+						} 
+						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, 4))
+						{
+							ZTRACE_RUNTIME("CFAType set to BGGR");
+							cfa = 1;
+							cfatype = CFATYPE_BGGR;
+						}
+						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, 4))
+						{
+							ZTRACE_RUNTIME("CFAType set to GRBG");
+							cfa = 1;
+							cfatype = CFATYPE_GRBG;
+						}
+						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, 4))
+						{
+							ZTRACE_RUNTIME("CFAType set to GBRG");
+							cfa = 1;
+							cfatype = CFATYPE_GBRG;
+						}
+						else
+						{
+							DSSBase::instance()->reportError(
+								QCoreApplication::translate("TIFFUtil", "CFA pattern: %1%2%3%4 found in TIFFTAG_CFAPATTERN is not supported")
+								.arg(cfaDimPat.cfa.cfa4[0])
+								.arg(cfaDimPat.cfa.cfa4[1])
+								.arg(cfaDimPat.cfa.cfa4[2])
+								.arg(cfaDimPat.cfa.cfa4[3]),
+								"Unsupported CFA Pattern",
+								DSSBase::Severity::Warning,
+								DSSBase::Method::QErrorMessage);
+						}
+
+					}
+					else
+					{
+						DSSBase::instance()->reportError(
+							QCoreApplication::translate("TIFFUtil", "CFA pattern dimension: %1x%2 found in TIFFTAG_CFAREPEATPATTERNDIM is not supported")
+							.arg(cfaDimPat.dim[0])
+							.arg(cfaDimPat.dim[1]),
+							"Unsupported CFA PatternDim",
+							DSSBase::Severity::Warning,
+							DSSBase::Method::QErrorMessage);
+					}
+				}
 			}
 		}
 
@@ -280,7 +363,31 @@ bool CTIFFReader::Open()
 				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
 			};
-		};
+		}
+
+		//
+		// If we have not yet found a setting for the CFA look to see if
+		// it is recorded in our private TIFF tags.
+		//
+		if (!cfa)
+		{
+			ZTRACE_RUNTIME("CFAType not yet set: Checking DSS private TIFF tags");
+			int32_t cfaValue{ 0 };
+			if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfaValue))
+				cfaValue = 0;
+			if (0 != cfaValue) cfa = true;
+			if (TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
+			{
+				ZTRACE_RUNTIME("CFAType set to %u", cfatype);
+			}
+			else 
+			{
+				cfa = false;
+				cfatype = CFATYPE_NONE;
+			}
+
+		}
+
 
 		if (bResult)
 			bResult = OnOpen();
@@ -598,21 +705,25 @@ bool CTIFFWriter::Open()
 				if (cfa && cfatype >= static_cast<uint32_t>(CFATYPE_BGGR) && cfatype <= static_cast<uint32_t>(CFATYPE_RGGB))
 				{
 					TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);
-					uint16_t cfapatterndim[2]{ 2,2 };
-					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &cfapatterndim);
+					constexpr uint16_t cfapatterndim[2]{ 2,2 };
+					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, cfapatterndim);
+					//
+					// Note that when writing the CFA pattern, need to specify how many
+					// octets are to be written.
+					//
 					switch (cfatype)
 					{
 					case CFATYPE_BGGR:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_BGGR);
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_BGGR);
 						break;
 					case CFATYPE_GRBG:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_GRBG);
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_GRBG);
 						break;
 					case CFATYPE_GBRG:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_GBRG);
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_GBRG);
 						break;
 					case CFATYPE_RGGB:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, &TIFF_CFAPattern_RGGB);
+						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_RGGB);
 						break;
 					}
 				}
