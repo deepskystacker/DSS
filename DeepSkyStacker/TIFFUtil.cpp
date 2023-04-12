@@ -94,6 +94,68 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
+void CTIFFReader::decodeCfaDimPat(int patternSize)
+{
+	ZTRACE_RUNTIME("CFA pattern dimension: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
+
+	if (4 == patternSize)
+	{
+		ZTRACE_RUNTIME("CFAPATTERN: %hhu%hhu%hhu%hhu",
+			cfaDimPat.cfa.cfa4[0],
+			cfaDimPat.cfa.cfa4[1],
+			cfaDimPat.cfa.cfa4[2],
+			cfaDimPat.cfa.cfa4[3]);
+		if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to RGGB");
+			cfa = 1;
+			cfatype = CFATYPE_RGGB;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to BGGR");
+			cfa = 1;
+			cfatype = CFATYPE_BGGR;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to GRBG");
+			cfa = 1;
+			cfatype = CFATYPE_GRBG;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to GBRG");
+			cfa = 1;
+			cfatype = CFATYPE_GBRG;
+		}
+		else
+		{
+			DSSBase::instance()->reportError(
+				QCoreApplication::translate("TIFFUtil", "CFA pattern: %1%2%3%4 is not supported")
+				.arg(cfaDimPat.cfa.cfa4[0])
+				.arg(cfaDimPat.cfa.cfa4[1])
+				.arg(cfaDimPat.cfa.cfa4[2])
+				.arg(cfaDimPat.cfa.cfa4[3]),
+				"Unsupported CFA Pattern",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
+		}
+
+	}
+	else
+	{
+		DSSBase::instance()->reportError(
+			QCoreApplication::translate("TIFFUtil", "CFA pattern dimension: %1x%2 found is not supported")
+			.arg(cfaDimPat.dim[0])
+			.arg(cfaDimPat.dim[1]),
+			"Unsupported CFA PatternDim",
+			DSSBase::Severity::Warning,
+			DSSBase::Method::QErrorMessage);
+	}
+
+}
+
 bool CTIFFReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -199,8 +261,8 @@ bool CTIFFReader::Open()
 			else if (bps == 32)
 			{
 				bResult = (sampleformat == SAMPLEFORMAT_UINT) ||
-						  (sampleformat == SAMPLEFORMAT_INT) ||
-						  (sampleformat == SAMPLEFORMAT_IEEEFP);
+					(sampleformat == SAMPLEFORMAT_INT) ||
+					(sampleformat == SAMPLEFORMAT_IEEEFP);
 
 				if (sampleformat == SAMPLEFORMAT_IEEEFP)
 				{
@@ -220,7 +282,7 @@ bool CTIFFReader::Open()
 		};
 
 		// Retrieve the Date/Time as in the TIFF TAG
-		char *				szDateTime;
+		char* szDateTime;
 
 		if (TIFFGetField(m_tiff, TIFFTAG_DATETIME, &szDateTime))
 		{
@@ -236,82 +298,31 @@ bool CTIFFReader::Open()
 		};
 
 		//
-		// Attempt to read the CFA from the root dir if this is a CFA image
+		// Attempt to read the CFA from the root IFD if this is could be a CFA image
 		//
-		if (bResult && 1 == spp) 
+		if (bResult && 1 == spp)
 		{
 			if (PHOTOMETRIC_CFA == photo) ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_CFA");
 			else ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISBLACK");
 			int count{ 0 };
 
+			ZTRACE_RUNTIME("Checking for TIFFTAG_CFAREPEATPATTERNDIM, TIFFTAG_CFAPATTERN");
+
 			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &pVoidArray))
 			{
+				ZTRACE_RUNTIME("TIFFTAG_CFAREPEATPATTERNDIM read OK");
 				cfaDimPat = {};		// clear the Dimension and Pattern structure
 				memcpy(&cfaDimPat.dim, pVoidArray, sizeof(cfaDimPat.dim));
-				ZTRACE_RUNTIME("TIFFTAG_CFAREPEATPATTERNDIM is set to: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
 
 				int patternSize{ cfaDimPat.dim[0] * cfaDimPat.dim[1] };
 
 				if (TIFFGetField(m_tiff, TIFFTAG_CFAPATTERN, &unionLong, &pVoidArray))
 				{
+					ZTRACE_RUNTIME("TIFFTAG_CFAPATTERN read OK");
 					count = unionLong.Short1;
 					ZASSERT(count == patternSize && count <= sizeof(cfaDimPat.cfa));
 					memcpy(&cfaDimPat.cfa, pVoidArray, count);
-					if (4 == patternSize)
-					{
-						ZTRACE_RUNTIME("TIFFTAG_CFAPATTERN: %hhu%hhu%hhu%hhu",
-							cfaDimPat.cfa.cfa4[0],
-							cfaDimPat.cfa.cfa4[1],
-							cfaDimPat.cfa.cfa4[2],
-							cfaDimPat.cfa.cfa4[3]);
-						if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, 4))
-						{
-							ZTRACE_RUNTIME("CFAType set to RGGB");
-							cfa = 1;
-							cfatype = CFATYPE_RGGB;
-						} 
-						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, 4))
-						{
-							ZTRACE_RUNTIME("CFAType set to BGGR");
-							cfa = 1;
-							cfatype = CFATYPE_BGGR;
-						}
-						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, 4))
-						{
-							ZTRACE_RUNTIME("CFAType set to GRBG");
-							cfa = 1;
-							cfatype = CFATYPE_GRBG;
-						}
-						else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, 4))
-						{
-							ZTRACE_RUNTIME("CFAType set to GBRG");
-							cfa = 1;
-							cfatype = CFATYPE_GBRG;
-						}
-						else
-						{
-							DSSBase::instance()->reportError(
-								QCoreApplication::translate("TIFFUtil", "CFA pattern: %1%2%3%4 found in TIFFTAG_CFAPATTERN is not supported")
-								.arg(cfaDimPat.cfa.cfa4[0])
-								.arg(cfaDimPat.cfa.cfa4[1])
-								.arg(cfaDimPat.cfa.cfa4[2])
-								.arg(cfaDimPat.cfa.cfa4[3]),
-								"Unsupported CFA Pattern",
-								DSSBase::Severity::Warning,
-								DSSBase::Method::QErrorMessage);
-						}
-
-					}
-					else
-					{
-						DSSBase::instance()->reportError(
-							QCoreApplication::translate("TIFFUtil", "CFA pattern dimension: %1x%2 found in TIFFTAG_CFAREPEATPATTERNDIM is not supported")
-							.arg(cfaDimPat.dim[0])
-							.arg(cfaDimPat.dim[1]),
-							"Unsupported CFA PatternDim",
-							DSSBase::Severity::Warning,
-							DSSBase::Method::QErrorMessage);
-					}
+					decodeCfaDimPat(patternSize);
 				}
 			}
 		}
@@ -331,21 +342,36 @@ bool CTIFFReader::Open()
 				{
 					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime))
 						exposureTime = 0.0;
+
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
-					// EXIFTAG_ISOSPEEDRATINGS is a uint16 according to the EXIF spec
+
+					// EXIFTAG_ISOSPEEDRATINGS is an array of uint16 according to the EXIF spec
 					isospeed = 0;
 					uint16_t	count = 0;
-					uint16_t * iso_setting = nullptr;
-					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
-						isospeed = 0;
-					else
+					uint16_t* iso_setting = nullptr;
+					if (TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
 					{
 						isospeed = iso_setting[0];
 					}
+					else isospeed = 0;
+
 					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 
 					//
+					// If we've not yet detected a cfa pattern interrogate EXIFTAG_CFAPATTERN
+					//
+					if (!cfa)
+					{
+						ZTRACE_RUNTIME("Checking for EXIF_CFAPATTERN tag");
+
+						if (TIFFGetField(m_tiff, EXIFTAG_CFAPATTERN, &unionLong, &pVoidArray))
+						{
+							memcpy(&cfaDimPat, pVoidArray, unionLong.Short1);
+							decodeCfaDimPat(cfaDimPat.dim[0] * cfaDimPat.dim[1]);
+						}
+					}
+
 					// Revert IFD to status quo ante TIFFReadEXIFDirectory
 					//
 					TIFFSetDirectory(m_tiff, currentIFD);
@@ -682,6 +708,9 @@ bool CTIFFWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
+	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
+	uint64_t dir_offset_EXIF{ 0 };
+	uint16_t count{ 0 };
 
 	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "w");
 	if (m_tiff)
@@ -705,9 +734,10 @@ bool CTIFFWriter::Open()
 				//
 				if (cfa && cfatype >= static_cast<uint32_t>(CFATYPE_BGGR) && cfatype <= static_cast<uint32_t>(CFATYPE_RGGB))
 				{
+					cfaDimPat = {};
 					// TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);  // Don't use this - breaks too many things
-					constexpr uint16_t cfapatterndim[2]{ 2,2 };
-					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, cfapatterndim);
+					cfaDimPat.dim[0] = 2; cfaDimPat.dim[1] = 2;
+					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, cfaDimPat.dim);
 					//
 					// Note that when writing the CFA pattern, need to specify how many
 					// octets are to be written.
@@ -715,23 +745,25 @@ bool CTIFFWriter::Open()
 					switch (cfatype)
 					{
 					case CFATYPE_BGGR:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_BGGR);
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_GRBG:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_GRBG);
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_GBRG:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_GBRG);
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_RGGB:
-						TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, TIFF_CFAPattern_RGGB);
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					}
-				}
-				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
+					TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, cfaDimPat.cfa.cfa4);
 
+				}
+				photo = PHOTOMETRIC_MINISBLACK;
 			}
-			else TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
+			
+			TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, photo);
 
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLEFORMAT, sampleformat);
@@ -798,6 +830,73 @@ bool CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
 
             TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
+
+			//***************************************************************************
+			// 
+			// Now write the EXIF IFD
+			// 
+			// **************************************************************************
+			
+			//
+			// Set a dummy EXIF tag in the original tiff-structure in order to reserve
+			// space for final dir_offset value, which is properly written at the end.
+			// 
+			// Initially use a value of 0 for dir_offset_EXIF
+			//
+			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
+
+			//
+			// Save current tiff-directory to file before directory is changed.
+			// Otherwise it will be lost! The tif-structure is overwritten/ freshly
+			// initialized by any "CreateDirectory"
+			//
+			TIFFWriteDirectory(m_tiff);
+			TIFFCreateEXIFDirectory(m_tiff);
+			TIFFSetField(m_tiff, EXIFTAG_EXIFVERSION, exifVersion);
+
+			//
+			// Now we can write EXIF tags we want to ...
+			//
+			if (0.0 != exposureTime)
+			{
+				TIFFSetField(m_tiff, EXIFTAG_EXPOSURETIME, exposureTime);
+			}
+			if (0.0 != aperture)
+			{
+				TIFFSetField(m_tiff, EXIFTAG_FNUMBER, aperture);
+			}
+			if (0 != isospeed)
+			{
+				// EXIFTAG_ISOSPEEDRATINGS is an array of three uint16 according to the EXIF spec
+				count = 3;
+				uint16_t iso_setting[3]{ static_cast<uint16_t>(isospeed), static_cast<uint16_t>(isospeed), static_cast<uint16_t>((1.2529 * isospeed) + 4.3434) };
+				TIFFSetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, count, &iso_setting);
+			}
+			
+			//
+			// Now write EXIFTAG_CFAPATTERN which is basically what we put into cfaDimPat 
+			// when the other (non-EXIF) CFA related tags were written.
+			//
+			if (cfa)
+			{
+				count = sizeof(cfaDimPat.dim + sizeof(cfaDimPat.cfa.cfa4));
+				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
+			}
+			
+			//
+			// Now that all the EXIF tags are written, need to write the EXIF
+			// custom directory into the file...
+			// 
+			// WriteCustomDirectory returns the actual offset of the EXIF directory.
+			//
+			TIFFWriteCustomDirectory(m_tiff, &dir_offset_EXIF);
+
+			// Go back to the first (main) directory, and set correct value of the
+			// EXIFIFD pointer. Note that the directory is reloaded from the file!
+			//
+			TIFFSetDirectory(m_tiff, 0);
+			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
+
 		}
 		else
 		{
