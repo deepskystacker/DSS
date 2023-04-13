@@ -33,6 +33,8 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 9. Change compression of TIFF format master files to use PKZIP Deflate instead of no compression.
 
+10. Change default compression for saving images to PKZIP Deflate (was NONE).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
