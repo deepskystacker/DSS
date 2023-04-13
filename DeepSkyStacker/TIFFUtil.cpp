@@ -841,14 +841,32 @@ bool CTIFFWriter::Open()
 			//
 			// Work out how many scanlines fit into the default strip
 			//
-			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
+			const unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 
 			ZTRACE_RUNTIME("Seting TIFFTAG_ROWSPERSTRIP to: %u", rowsPerStrip);
-			//
-			// Handle the case where the scanline is longer the default strip size
-			//
-			// if (0 == rowsPerStrip) rowsPerStrip = 1; 
 			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
+
+			int numStrips = h / rowsPerStrip;
+			//
+			// If it wasn't an exact division (IOW there's a remainder), add one
+			// for the final (short) strip.
+			//
+			if (0 != h % rowsPerStrip)
+				++numStrips;
+
+			//
+			// Pre-fill the StripOffsets and StripByteCounts tags with values of zero.
+			// 
+			// The values will be updated when the data is actually written, but the size
+			// of the base IFD won't change which in turn means it can be rewritten in 
+			// the same location as the file is closed.
+			// 
+			//
+			ZTRACE_RUNTIME("Writing %d empty encoded strips", numStrips);
+			for (int strip = 0; strip < numStrips; ++strip)
+			{
+				TIFFWriteEncodedStrip(m_tiff, strip, nullptr, 0);
+			}
 
 			//***************************************************************************
 			// 
@@ -919,8 +937,9 @@ bool CTIFFWriter::Open()
 			//
 			TIFFSetDirectory(m_tiff, currentIFD);
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
-			TIFFWriteDirectory(m_tiff);
-			TIFFSetDirectory(m_tiff, currentIFD);
+			TIFFCheckpointDirectory(m_tiff);
+			//TIFFWriteDirectory(m_tiff);
+			//TIFFSetDirectory(m_tiff, currentIFD);
 		}
 		else
 		{
@@ -1126,6 +1145,14 @@ bool CTIFFWriter::Close()
 	if (m_tiff)
 	{
 		bResult = OnClose();
+		//
+		// Write the updated base IFD to disk.  This is only safe to do if the directory SIZE
+		// hasn't changed at all since the end of the Open() member function.
+		// 
+		// This should be be case if the number of entries in the StripOffsets and StripByteCounts
+		// tags haven't changed.
+		//
+		TIFFWriteDirectory(m_tiff);
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
