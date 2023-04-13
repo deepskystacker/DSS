@@ -49,6 +49,10 @@ constexpr uint8_t TIFF_CFAPattern_RGGB[] { 0,1,1,2 };
 constexpr uint8_t TIFF_CFAPattern_BGGR[] { 2,1,1,0 };
 constexpr uint8_t TIFF_CFAPattern_GRBG[] { 1,0,2,1 };
 constexpr uint8_t TIFF_CFAPattern_GBRG[] { 1,2,0,1 };
+//
+// Write the image out as Strips (i.e. not scanline by scanline)
+// 
+constexpr unsigned int STRIP_SIZE_DEFAULT = 16'777'216UL;	// 16MB
 
 struct
 {
@@ -831,6 +835,21 @@ bool CTIFFWriter::Open()
 
             TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
 
+			tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
+			ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+
+			//
+			// Work out how many scanlines fit into the default strip
+			//
+			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
+
+			ZTRACE_RUNTIME("Seting TIFFTAG_ROWSPERSTRIP to: %u", rowsPerStrip);
+			//
+			// Handle the case where the scanline is longer the default strip size
+			//
+			// if (0 == rowsPerStrip) rowsPerStrip = 1; 
+			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
+
 			//***************************************************************************
 			// 
 			// Now write the EXIF IFD
@@ -851,6 +870,10 @@ bool CTIFFWriter::Open()
 			// initialized by any "CreateDirectory"
 			//
 			TIFFWriteDirectory(m_tiff);
+			//
+			// Get current TIFF Directory so we can return to it
+			//
+			auto currentIFD = TIFFCurrentDirectory(m_tiff);
 			TIFFCreateEXIFDirectory(m_tiff);
 			TIFFSetField(m_tiff, EXIFTAG_EXIFVERSION, exifVersion);
 
@@ -867,9 +890,9 @@ bool CTIFFWriter::Open()
 			}
 			if (0 != isospeed)
 			{
-				// EXIFTAG_ISOSPEEDRATINGS is an array of three uint16 according to the EXIF spec
-				count = 3;
-				uint16_t iso_setting[3]{ static_cast<uint16_t>(isospeed), static_cast<uint16_t>(isospeed), static_cast<uint16_t>((1.2529 * isospeed) + 4.3434) };
+				// EXIFTAG_ISOSPEEDRATINGS is array of uint16 according to the EXIF spec
+				count = 1;
+				uint16_t iso_setting{ static_cast<uint16_t>(isospeed) };
 				TIFFSetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, count, &iso_setting);
 			}
 			
@@ -894,9 +917,10 @@ bool CTIFFWriter::Open()
 			// Go back to the first (main) directory, and set correct value of the
 			// EXIFIFD pointer. Note that the directory is reloaded from the file!
 			//
-			TIFFSetDirectory(m_tiff, 0);
+			TIFFSetDirectory(m_tiff, currentIFD);
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
-
+			TIFFWriteDirectory(m_tiff);
+			TIFFSetDirectory(m_tiff, currentIFD);
 		}
 		else
 		{
@@ -924,11 +948,9 @@ bool CTIFFWriter::Write()
 
 	if (m_tiff)
 	{
-		tmsize_t		scanLineSize;
+		tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
 		tdata_t			buff;
 
-		scanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
 		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
 
 		//
@@ -1041,22 +1063,12 @@ bool CTIFFWriter::Write()
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
 
-			//
-			// Write the image out as Strips (i.e. not scanline by scanline)
-			// 
-			const unsigned int STRIP_SIZE_DEFAULT = 4'194'304UL;		// 4MB
 
 			//
 			// Work out how many scanlines fit into the default strip
 			//
 			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			
-			//
-			// Handle the case where the scanline is longer the default strip size
-			//
-			// if (0 == rowsPerStrip) rowsPerStrip = 1; 
-			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
-
 			//
 			// From that we derive the number of strips
 			//
