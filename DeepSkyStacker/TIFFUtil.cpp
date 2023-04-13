@@ -1235,6 +1235,7 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 	if (m_Format != TF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, CFAType, bMaster);
+		SetCompression(TC_DEFLATE);
 		if (!isospeed)
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)
