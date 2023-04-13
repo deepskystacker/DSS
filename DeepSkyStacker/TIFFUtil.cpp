@@ -938,8 +938,6 @@ bool CTIFFWriter::Open()
 			TIFFSetDirectory(m_tiff, currentIFD);
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
 			TIFFCheckpointDirectory(m_tiff);
-			//TIFFWriteDirectory(m_tiff);
-			//TIFFSetDirectory(m_tiff, currentIFD);
 		}
 		else
 		{
