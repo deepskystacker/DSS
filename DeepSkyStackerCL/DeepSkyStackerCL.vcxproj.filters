@@ -186,6 +186,9 @@
     <ClCompile Include="..\DeepSkyStacker\File.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\tracecontrol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">

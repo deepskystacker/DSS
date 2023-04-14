@@ -43,6 +43,8 @@ using namespace Gdiplus;
 namespace fs = std::filesystem;
 namespace chr = std::chrono;
 
+#include "dssbase.h"
+
 using std::min;
 using std::max;
 

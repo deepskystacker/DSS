@@ -36,6 +36,7 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
+#include <source_location>
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -60,7 +61,10 @@ CString SETTINGFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
 
-DSS::TraceControl traceControl;
+//
+// Set up tracing and manage trace file deletion
+//
+DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
 bool	hasExpired()
 {

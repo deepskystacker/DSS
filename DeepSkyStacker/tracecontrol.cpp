@@ -37,11 +37,13 @@
 #include <ctime>
 #include <filesystem>
 #include "tracecontrol.h"
+#include "ZExcBase.h"
 #include <QStandardPaths>
 
 namespace DSS
 {
-	TraceControl::TraceControl() :
+	TraceControl::TraceControl(std::string fName) :
+		fileName { fName },
 		dirName { QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) },
 		erase { true }
 	{
@@ -50,7 +52,19 @@ namespace DSS
 
 		using namespace std::literals;
 
-		(void) _putenv(traceTo.toStdString().c_str()); // set DSS_TRACETO=FILE
+		fs::path path{ fileName }; path = path.stem();	// only want the name
+
+		//
+		// et the start of the filename of the trace file based on whether
+		// we are being used in DSS, DSSCL or DSSLive
+		//
+		QString start{  };
+		if ("DeepSkyStacker" == path) start = "DSSTrace";
+		else if ("DeepSkyStackerCL" == path) start = "DSSCLTrace";
+		else if ("DeepSkyStackerLive" == path) start = "DSSLiveTrace";
+		else ZASSERT(false);
+		
+		(void) _putenv(traceTo.toStdString().c_str()); // set Z_TRACETO=FILE
 
 		std::time_t time = std::time({});
 		char timeString[std::size("yyyy-mm-ddThh-mm-ssZ")];
@@ -58,7 +72,8 @@ namespace DSS
 		std::cout << timeString << '\n';
 	
 		file = dirName.toStdU16String();
-		QString name = QString{ "DSSTrace_%1.log" }.
+		QString name = QString{ "%1_%2.log" }.
+			arg(start).
 			arg(timeString);
 
 		file /= "DeepSkyStacker";

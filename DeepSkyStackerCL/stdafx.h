@@ -1,4 +1,10 @@
 #pragma once
+#if defined(_WINDOWS)
+//
+// Visual Leak Detector
+//
+#include <vld.h>
+#endif
 
 // Windows Files (eventually to go!)
 #define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
@@ -48,6 +54,8 @@ using namespace Gdiplus;
 #include <inttypes.h>
 #include <filesystem>
 #include <boost/interprocess/sync/named_mutex.hpp>
+
+#include "dssbase.h"
 
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
