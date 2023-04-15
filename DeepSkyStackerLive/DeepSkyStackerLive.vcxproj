@@ -235,6 +235,7 @@
     <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
     <ClCompile Include="..\DeepSkyStacker\TaskInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\tracecontrol.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
     <ClCompile Include="..\SMTP\Base64.cpp" />
     <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp" />

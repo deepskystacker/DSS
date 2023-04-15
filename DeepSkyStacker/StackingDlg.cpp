@@ -497,8 +497,7 @@ namespace DSS
 		erase{ nullptr },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
-		dockTitle{ new QLabel(this) },
-		errorMessageDialog { new QErrorMessage(this) }
+		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -528,16 +527,6 @@ namespace DSS
 			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
 
 		retrieveLatestVersionInfo();
-
-		errorMessageDialog->setWindowTitle("DeepSkyStacker");
-
-		//
-		// Hack to access the Icon displayed by QErrorMessage
-		//
-		if (QLabel * eMDI{ errorMessageDialog->findChild<QLabel*>() }; eMDI != nullptr)
-		{
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
-		}
 	}
 
 	StackingDlg::~StackingDlg()
@@ -1523,12 +1512,7 @@ namespace DSS
 					.arg(file.generic_string().c_str())
 					.arg(groupId)
 					.arg(frameList.groupName(groupId));
-
-	#if defined(_CONSOLE)
-				std::cerr << errorMessage.toUtf8().constData();
-	#else
-				errorMessageDialog->showMessage(errorMessage, "Already loaded");
-	#endif
+				dssApp->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
 				return true;
 		}
 		return false;

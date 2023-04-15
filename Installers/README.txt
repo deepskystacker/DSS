@@ -25,6 +25,16 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 7. Upgrade libtiff to 4.5.0
 
+8. Add code to handle TIFF tags TIFFTAG_CFAREPEATPATTERNDIM and TIFFTAG_CFAPATTERN when processing TIFF files in CFA format. These tags are defined in the TIFF/EP standard.
+   Add code to handle EXIF tag EXIFTAG_CFAPATTERN which is defined in the EXIF standard.
+   This allows automatic detection of the CFA pattern needed to decode the file.
+   The only files that DSS writes as TIFF in CFA format are some of the master files.
+   All other TIFF output files will remain RGB.
+
+9. Change compression of TIFF format master files to use PKZIP Deflate instead of no compression.
+
+10. Change default compression for saving images to PKZIP Deflate (was NONE).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 

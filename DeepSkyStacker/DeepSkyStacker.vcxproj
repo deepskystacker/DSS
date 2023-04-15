@@ -121,6 +121,7 @@
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalOptions />
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -175,6 +176,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <WarningLevel>Level4</WarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -345,6 +347,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="TaskInfo.cpp" />
+    <ClCompile Include="TIFFTags.cpp" />
     <ClCompile Include="toolbar.cpp" />
     <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
@@ -637,6 +640,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="Stars.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TaskInfo.h" />
+    <ClInclude Include="TIFFTags.h" />
     <ClInclude Include="TIFFUtil.h" />
     <ClInclude Include="tracecontrol.h" />
     <ClInclude Include="Workspace.h" />

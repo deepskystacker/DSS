@@ -22,8 +22,8 @@ public:
 	bool m_bMaster;
 	bool m_bFITS16bit;
 	QString m_strDateTime;
-	SYSTEMTIME m_DateTime;
-	SYSTEMTIME m_InfoTime;
+	QDateTime m_DateTime;
+	QDateTime m_InfoTime;
 	CBitmapExtraInfo m_ExtraInfo;
 	int m_xBayerOffset;
 	int m_yBayerOffset;

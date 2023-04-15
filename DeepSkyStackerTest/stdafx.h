@@ -6,6 +6,7 @@
 #include <QString>
 #include <QPoint>
 #include <QElapsedTimer>
+#include <QDateTime>
 
 // Std
 #include <vector>

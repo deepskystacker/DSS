@@ -15,7 +15,7 @@ const int	TIFFTAG_DSS_CFA				= (TIFFTAG_DSS_BASE + 6);
 const int	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
 const int	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
 const int	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
-const int  TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
+const int   TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
 const int	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
 
 void DSSTIFFInitialize();
@@ -23,25 +23,25 @@ void DSSTIFFInitialize();
 class CTIFFHeader
 {
 protected:
-	int					w, h;
-    std::uint16_t		spp,
-						bps,
-						photo,
-						compression,
-						planarconfig,
-						sampleformat;
-	int					cfa;
-	int					cfatype;
-	int					master;
-	CString				strMakeModel;
-	double				samplemin,
-						samplemax;
-	float				exposureTime;
-	float				aperture;
-	int				isospeed;
-	int				gain;
-	int				nrframes;
-	SYSTEMTIME			m_DateTime;
+	uint32_t	w, h;		// TIFF_LONG
+    uint16_t	spp,		// TIFF_SHORT
+				bps,
+				photo,
+				compression,
+				planarconfig,
+				sampleformat;
+	bool		cfa;
+	uint32_t	cfatype;	// TIFF_LONG
+	uint32_t	master;		// TIFF_LONG
+	QString		strMakeModel;
+	double		samplemin,	// TIFF_DOUBLE
+				samplemax;
+	float		exposureTime;	// TIFF_FLOAT
+	float		aperture;	// TIFF_FLOAT
+	uint32_t	isospeed;	// TIFF_LONG
+	int32_t		gain;		// TIFF_LONG
+	uint32_t	nrframes;	// TIFF_LONG
+	QDateTime	m_DateTime;
 
 public :
 	CTIFFHeader();
@@ -153,12 +153,12 @@ public :
 			return 3;
 	};
 
-	void	GetMakeModel(CString & str)
+	QString	getMakeModel()
 	{
-		str = strMakeModel;
+		return strMakeModel;
 	};
 
-	SYSTEMTIME	GetDateTime()
+	QDateTime GetDateTime()
 	{
 		return m_DateTime;
 	};
@@ -196,6 +196,9 @@ public :
 	virtual bool	OnOpen() { return true; };
 	virtual void	OnRead(int, int, double, double, double) { return; }
 	virtual bool	OnClose() { return true; };
+
+private:
+	void decodeCfaDimPat(int patternSize);
 };
 
 /* ------------------------------------------------------------------- */

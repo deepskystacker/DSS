@@ -138,35 +138,33 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& strInfoFileName)
 {
 	//ZFUNCTRACE_RUNTIME();
+	fs::path file{ szLightFrame };
+	file.replace_extension(".info.txt");
 
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szName[1+_MAX_FNAME];
+	QString infoFileName{ QString::fromStdU16String(file.generic_u16string()) };
 
-	_tsplitpath(szLightFrame, szDrive, szDir, szName, nullptr);
+	QFileInfo info{ infoFileName };
 
-	strInfoFileName.Empty();
-	strInfoFileName.Format(_T("%s%s%s.Info.txt"), szDrive, szDir, szName);
-
-	// Retrieve the file date/time
-	FILETIME		FileTime;
-	SYSTEMTIME		SystemTime;
-	TCHAR			szTime[200];
-	TCHAR			szDate[200];
-
-	if (GetFileCreationDateTime((LPCTSTR)strInfoFileName, FileTime))
+	//
+	// Get the file creation date/time if possible. If not get the last modified date/time
+	//
+	QDateTime birthTime{ info.birthTime() };
+	if (!birthTime.isValid())
 	{
-		FileTimeToSystemTime(&FileTime, &SystemTime);
-		SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
-
-		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
-		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
-
-		strInfoFileName.Format(_T("%s%s%s.Info.txt [%s %s]"), szDrive, szDir, szName, szDate, szTime);
+		birthTime = info.lastModified();
 	}
-	else
+
+	//
+	// File doesn't exist
+	// 
+	if (!birthTime.isValid())
 		strInfoFileName.Empty();
-};
+	else
+	{
+		QString temp = QString{ "%1 [%2]" }.arg(infoFileName).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
+		strInfoFileName = temp.toStdWString().c_str();
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -567,58 +565,11 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	return bResult;
 };
 
-
-inline bool CompareDateTime(const SYSTEMTIME & dt1, const SYSTEMTIME & dt2)
-{
-	if (dt1.wYear>dt2.wYear)
-		return true;
-	else if (dt1.wYear<dt2.wYear)
-		return false;
-	else if (dt1.wMonth>dt2.wMonth)
-		return true;
-	else if (dt1.wMonth<dt2.wMonth)
-		return false;
-	else if (dt1.wDay>dt2.wDay)
-		return true;
-	else if (dt1.wDay<dt2.wDay)
-		return false;
-	else if (dt1.wHour>dt2.wHour)
-		return true;
-	else if (dt1.wHour<dt2.wHour)
-		return false;
-	else if (dt1.wMinute>dt2.wMinute)
-		return true;
-	else if (dt1.wMinute<dt2.wMinute)
-		return false;
-	else if (dt1.wSecond>dt2.wSecond)
-		return true;
-	else if (dt1.wSecond<dt2.wSecond)
-		return false;
-	else
-		return false;
-};
-
-/* ------------------------------------------------------------------- */
-
-double	ElapsedTime(const SYSTEMTIME & dt1, const SYSTEMTIME & dt2)
-{
-	FILETIME			ft1, ft2;
-	ULARGE_INTEGER		t1, t2;
-
-	SystemTimeToFileTime(&dt1, &ft1);
-	SystemTimeToFileTime(&dt2, &ft2);
-
-	memcpy(&t1, &ft1, sizeof(t1));
-	memcpy(&t2, &ft2, sizeof(t2));
-
-	return (t2.QuadPart-t1.QuadPart)/10000000.0;
-};
-
 /* ------------------------------------------------------------------- */
 
 inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFrameInfo * plfi2)
 {
-	return CompareDateTime(plfi2->m_DateTime, plfi1->m_DateTime);
+	return (plfi2->m_DateTime > plfi1->m_DateTime);
 };
 
 void CStackingEngine::ComputeMissingCometPositions()
@@ -675,15 +626,15 @@ void CStackingEngine::ComputeMissingCometPositions()
 					do
 					{
 						bool bFound = false;
-						double fElapsed;
+						qint64 elapsedSeconds;
 
 						bContinue = false;
 						for (ptrdiff_t j = lPreviousIndex - 1; j >= 0 && !bFound; j--)
 						{
 							if (vpLightFrames[j]->m_bComet)
 							{
-								fElapsed = ElapsedTime(vpLightFrames[j]->m_DateTime, pNextComet->m_DateTime);
-								if (fElapsed / 3600 < 12)
+								elapsedSeconds = vpLightFrames[j]->m_DateTime.secsTo(pNextComet->m_DateTime);
+								if (elapsedSeconds / 3600 < 12)
 								{
 									bFound = true;
 									bContinue = true;
@@ -697,8 +648,8 @@ void CStackingEngine::ComputeMissingCometPositions()
 						{
 							if (vpLightFrames[j]->m_bComet)
 							{
-								fElapsed = ElapsedTime(pPreviousComet->m_DateTime, vpLightFrames[j]->m_DateTime);
-								if (fElapsed / 3600 < 12)
+								elapsedSeconds = pPreviousComet->m_DateTime.secsTo(vpLightFrames[j]->m_DateTime);
+								if (elapsedSeconds / 3600 < 12)
 								{
 									bFound = true;
 									bContinue = true;
@@ -716,11 +667,11 @@ void CStackingEngine::ComputeMissingCometPositions()
 					ptPreviousComet = pPreviousComet->m_BilinearParameters.transform(ptPreviousComet);
 					ptNextComet		= pNextComet->m_BilinearParameters.transform(ptNextComet);
 
-					double				fElapsed2,
+					qint64				fElapsed2,
 										fElapsedCurrent;
 
-					fElapsed2 = ElapsedTime(pPreviousComet->m_DateTime, pNextComet->m_DateTime);
-					fElapsedCurrent = ElapsedTime(pPreviousComet->m_DateTime, vpLightFrames[i]->m_DateTime);
+					fElapsed2 = pPreviousComet->m_DateTime.secsTo(pNextComet->m_DateTime);
+					fElapsedCurrent = pPreviousComet->m_DateTime.secsTo(vpLightFrames[i]->m_DateTime);
 
 					if (fElapsed2)
 					{
