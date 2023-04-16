@@ -204,8 +204,8 @@ namespace { // Only use in this .cpp file
 	{
 	private:
 		CString			m_strFileName;
-		CString			m_strModel;
-		CString			m_strMake;
+		QString			m_strModel;
+		QString			m_strMake;
 		int				m_lISOSpeed;
 		double			m_fExposureTime;
 		double			m_fAperture;
@@ -213,7 +213,7 @@ namespace { // Only use in this .cpp file
 		int				m_lWidth;
 		bool			m_bColorRAW;
 		CFATYPE			m_CFAType;
-		SYSTEMTIME		m_DateTime;
+		QDateTime		m_DateTime;
 		bool            m_isRawFile;
 
 #define P1		rawProcessor.imgdata.idata
@@ -248,7 +248,6 @@ namespace { // Only use in this .cpp file
 			m_isRawFile{ rawProcessor.open_file(szFile) == LIBRAW_SUCCESS }
 		{
 			ZFUNCTRACE_RUNTIME();
-			m_DateTime.wYear = 0;
 
 			if (m_isRawFile)
 			{
@@ -262,19 +261,9 @@ namespace { // Only use in this .cpp file
 				m_fAperture = std::isfinite(P2.aperture) ? P2.aperture : 0.0;
 
 				// Retrieve the Date/Time
-				memset(&m_DateTime, 0, sizeof(m_DateTime));
 				if (P2.timestamp)
 				{
-					if (tm* const pdatetime = localtime(&(P2.timestamp)))
-					{
-						m_DateTime.wDayOfWeek = pdatetime->tm_wday;
-						m_DateTime.wDay = pdatetime->tm_mday;
-						m_DateTime.wMonth = pdatetime->tm_mon + 1;
-						m_DateTime.wYear = pdatetime->tm_year + 1900;
-						m_DateTime.wHour = pdatetime->tm_hour;
-						m_DateTime.wMinute = pdatetime->tm_min;
-						m_DateTime.wSecond = pdatetime->tm_sec;
-					}
+					m_DateTime = QDateTime::fromSecsSinceEpoch(P2.timestamp);
 				}
 
 				m_bColorRAW = P1.is_foveon || !(P1.filters);
@@ -306,13 +295,12 @@ namespace { // Only use in this .cpp file
 		bool IsRawFile() const;
 		bool LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
 
-		bool GetModel(CString& strModel)
+		QString getModel()
 		{
-			strModel = m_strMake + _T(" ") + m_strModel;
-			return true;
+			return (m_strMake + " " + m_strModel);
 		};
 
-		void checkCameraSupport(const CString& strModel);
+		void checkCameraSupport(const QString& strModel);
 
 		int	GetISOSpeed() noexcept
 		{
@@ -381,18 +369,16 @@ namespace { // Only use in this .cpp file
 
 		/* ------------------------------------------------------------------- */
 
-		SYSTEMTIME GetDateTime()
+		QDateTime GetDateTime()
 		{
 			return m_DateTime;
 		};
 	};
 
-	void CRawDecod::checkCameraSupport(const CString& strModel)
+	void CRawDecod::checkCameraSupport(const QString& strModel)
 	{
 		bool result = false;
-		CStringA strModelA(strModel);
-		const char* camera = strModelA.GetString();
-		const std::string cameraString{ camera };
+		const std::string cameraString{ strModel.toLatin1().constData() };
 
 		static std::set<std::string> checkedCameras;
 
@@ -461,7 +447,7 @@ namespace { // Only use in this .cpp file
 		if (false == result)
 		{
 			CString errorMessage;
-			errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, (LPCTSTR)strModel);
+			errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, strModel.toStdWString().c_str());
 #if defined(_CONSOLE)
 			std::wcerr << errorMessage;
 #else
@@ -487,8 +473,7 @@ namespace { // Only use in this .cpp file
 		pBitmap->SetAperture(m_fAperture);
 		pBitmap->m_DateTime = m_DateTime;
 
-		CString strDescription;
-		GetModel(strDescription);
+		QString strDescription{ getModel() };
 
 		//
 		// If it's a DNG file, we don't need to check for camera support, but if
@@ -926,11 +911,9 @@ bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
     CRawDecod dcr(szFileName);
     bool bResult = dcr.IsRawFile();
 
-	CString cstrModel;
 	if (bResult)
 	{
-		dcr.GetModel(cstrModel);
-		strModel = QString::fromWCharArray(cstrModel.GetString());
+		strModel = dcr.getModel();
 	}
 
 	return bResult;
@@ -979,9 +962,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			BitmapInfo.m_lBitPerChannel  = 16;
 			BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
 			BitmapInfo.m_bCanLoad		 = true;
-			CString strModel;
-			dcr.GetModel(strModel);
-			BitmapInfo.m_strModel = QString::fromWCharArray(strModel.GetString());
+			BitmapInfo.m_strModel = dcr.getModel();
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
 			BitmapInfo.m_fAperture       = dcr.getAperture();

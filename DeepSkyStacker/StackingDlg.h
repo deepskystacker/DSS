@@ -248,8 +248,6 @@ namespace DSS
 		QSortFilterProxyModel* proxyModel;
 		uint m_tipShowCount;
 
-		QErrorMessage* errorMessageDialog;
-
 		bool fileAlreadyLoaded(const fs::path& file);
 
 		EditStars* editStarsPtr;

@@ -9,11 +9,20 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "SetUILanguage.h"
+#include "tracecontrol.h"
+#include "Ztrace.h"
+
+//
+// Set up tracing and manage trace file deletion
+//
+DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
 	m_consoleOut{ stdout }
 {
+	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
 }
 
@@ -34,11 +43,10 @@ bool DeepSkyStackerCommandLine::Run()
 	return true;
 }
 
-void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] DSSBase::Severity severity)
+void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] const QString& type, [[maybe_unused]] Severity severity, [[maybe_unused]] Method method)
 {
 	std::cerr << message.toUtf8().constData() << std::endl;
 }
-
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {
@@ -330,9 +338,20 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 
 int main(int argc, char* argv[])
 {
+	ZFUNCTRACE_RUNTIME();
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+	//
+	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	//
+#if defined(_WINDOWS)
+	_CrtSetDbgFlag(0);
+#if !defined(NDEBUG)
+	AfxEnableMemoryLeakDump(false);
+#endif
 #endif
 
 #ifndef NOGDIPLUS

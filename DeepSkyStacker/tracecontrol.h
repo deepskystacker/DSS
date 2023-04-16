@@ -39,7 +39,7 @@ namespace DSS
 	class TraceControl
 	{
 	public:
-		TraceControl();
+		explicit TraceControl(std::string fName);
 		virtual ~TraceControl();
 
 		// Make class non copyable
@@ -58,9 +58,10 @@ namespace DSS
 			erase = v;
 		}
 	private:
+		std::string fileName;
 		const QString dirName;
 		fs::path file;
-		inline static const QString traceTo = "Z_TRACETO=FILE";
+		inline static const QString traceTo{ "Z_TRACETO=FILE" };
 		bool erase;
 	};
 }

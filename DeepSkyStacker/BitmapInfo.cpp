@@ -22,7 +22,7 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
 			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
 
-			if (propertyItem->type == type && pBitmap->GetPropertyItem(propertyId, dwPropertySize, propertyItem) == Gdiplus::Status::Ok)
+			if (pBitmap->GetPropertyItem(propertyId, dwPropertySize, propertyItem) == Gdiplus::Status::Ok && propertyItem->type == type)
 			{
 				if (propertyItem->type == PropertyTagTypeRational)
 				{
@@ -49,7 +49,7 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 				}
 				else if (propertyItem->type == PropertyTagTypeASCII)
 				{
-					if constexpr (std::is_same_v<decltype(field), CString&>)
+					if constexpr (std::is_same_v<decltype(field), QString&>)
 					{
 						field = static_cast<char*>(propertyItem->value);
 						bResult = true;
@@ -68,16 +68,11 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 		getExifItem(PropertyTagEquipModel, PropertyTagTypeASCII, BitmapInfo.m_strModel);
 		BitmapInfo.m_strModel = BitmapInfo.m_strModel.trimmed();
 
-		CString strDateTime;
+		QString strDateTime;
 		getExifItem(PropertyTagDateTime, PropertyTagTypeASCII, strDateTime);
-		// Parse the string : YYYY/MM/DD hh:mm:ss
+		// Parse the string : YYYY:MM:DD hh:mm:ss
 		//                    0123456789012345678
-		BitmapInfo.m_DateTime.wYear = _ttol(strDateTime.Left(4));
-		BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-		BitmapInfo.m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-		BitmapInfo.m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-		BitmapInfo.m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-		BitmapInfo.m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+		BitmapInfo.m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
 
 		//UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
 		//if (dwPropertySize != 0)

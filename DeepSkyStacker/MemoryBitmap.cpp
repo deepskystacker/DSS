@@ -13,7 +13,6 @@ CMemoryBitmap::CMemoryBitmap() :
 	m_lGain{ -1 },
 	m_lNrFrames{ 0 }
 {
-	m_DateTime.wYear = 0;
 }
 
 void CMemoryBitmap::CopyFrom(const CMemoryBitmap& mb)
