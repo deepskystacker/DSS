@@ -596,7 +596,7 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 			if (!lightframe.m_bDisabled && lightframe.m_bComet)
 			{
 				const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
-				times.push_back(ElapsedTime(firstLightframe.m_DateTime, lightframe.m_DateTime));
+				times.emplace_back(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
 				xPositions.push_back(position.x());
 				yPositions.push_back(position.y());
 			}
@@ -674,12 +674,11 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 			}
 	}
 
-	int i = 0;
-	for (CLightFrameInfo& lightframe : stackingEngine.LightFrames())
+	for (int i = 0; CLightFrameInfo& lightframe : stackingEngine.LightFrames())
 	{
 		if (!lightframe.m_bComet && !lightframe.m_bDisabled)
 		{
-			const ValT time = ElapsedTime(firstLightframe.m_DateTime, lightframe.m_DateTime);
+			const ValT time = static_cast<ValT>(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
 			lightframe.m_fXComet = xGradient * time + xOffset;
 			lightframe.m_fYComet = yGradient * time + yOffset;
 			lightframe.m_bTransformedCometPosition = true;
