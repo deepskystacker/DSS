@@ -419,6 +419,30 @@ bool CTIFFReader::Open()
 
 		}
 
+		//
+		// If this file is an eight bit TIFF, and purports to have a Bayer pattern
+		// inform the the user that we aren't going to play
+		//
+		if ((1 == spp) &&
+			(8 == bps) &&
+			(CFATYPE_NONE != cfa))
+		{
+			// 
+			// Set CFA type to none even if the TIFF tags specified otherwise
+			//
+			cfatype = CFATYPE_NONE; cfa = false;
+			QString errorMessage{ QCoreApplication::translate("Kernel",
+									"DeepSkyStacker will not de-Bayer 8 bit images",
+									"IDS_8BIT_FITS_NODEBAYER") };
+			DSSBase::instance()->reportError(
+				errorMessage,
+				"Will not de-Bayer 8 bit images",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
+		}
+
+
+
 
 		if (bResult)
 			bResult = OnOpen();
@@ -444,163 +468,261 @@ bool CTIFFReader::Read()
 	if (!m_tiff)
 		return false;
 
-	try
+	tmsize_t		scanLineSize;
+
+	if (m_pProgress)
+		m_pProgress->Start2(h);
+
+	scanLineSize = TIFFScanlineSize(m_tiff);
+	ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+	ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
+
+	//
+	// Allocate enough to hold the entire image
+	//
+	tmsize_t buffSize = scanLineSize * h;
+	ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
+	auto buffer = std::make_unique<unsigned char[]>(buffSize);
+	//
+	// The code used to read scan line by scan line and decode each individually
+	// Now try to inhale the whole image in as few calls as possible using
+	// TIFFReadEncodedStrip
+	//
+	auto stripCount = TIFFNumberOfStrips(m_tiff);
+	ZTRACE_RUNTIME("Number of strips is %u", stripCount);
+
+	unsigned char* curr = buffer.get();
+	for (unsigned int i = 0; i < stripCount; i++)
 	{
-		tmsize_t		scanLineSize;
-
-		if (m_pProgress)
-			m_pProgress->Start2(h);
-
-		scanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
-		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
-
-		//
-		// Allocate enough to hold the entire image
-		//
-		tmsize_t buffSize = scanLineSize * h;
-		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		auto buffer = std::make_unique<unsigned char[]>(buffSize);
-		//
-		// The code used to read scan line by scan line and decode each individually
-		// Now try to inhale the whole image in as few calls as possible using
-		// TIFFReadEncodedStrip
-		//
-		auto stripCount = TIFFNumberOfStrips(m_tiff);
-		ZTRACE_RUNTIME("Number of strips is %u", stripCount);
-
-		unsigned char* curr = buffer.get();
-		for (unsigned int i = 0; i < stripCount; i++)
+		const auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
+		if (-1 == count)
 		{
-			const auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
-			if (-1 == count)
+			ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
+			return false;
+		}
+		curr += count; // Increment current buffer pointer
+		if (m_pProgress != nullptr)
+			m_pProgress->Progress2((this->h / 2 * i) / stripCount);
+	}
+
+	std::uint8_t* byteBuff = buffer.get();
+	std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
+	std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
+	float* floatBuff = reinterpret_cast<float*>(byteBuff);
+
+	std::atomic_bool stop { false };
+
+	const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
+	{
+		constexpr double scaleFactor = std::numeric_limits<std::uint16_t>::max() / 256.0;
+		const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
+		return (static_cast<double>(value) - sampleMin) * normalizationFactor;
+	};
+
+	const auto loopOverPixels = [&, height = this->h, width = this->w, progress = this->m_pProgress](const int row, const auto& function) -> void
+	{
+		for (int col = 0; col < width; ++col)
+		{
+			if (!function(col))
+				return;
+		}
+		if (progress != nullptr && omp_get_thread_num() == 0)
+			progress->Progress2((height + row) / 2);
+
+	};
+
+	if (sampleformat == SAMPLEFORMAT_IEEEFP)
+	{
+		assert(bps == 32);
+
+		if (spp == 1)
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+			for (int y = 0; y < this->h; ++y)
 			{
-				ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
-				return false;
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+				loopOverPixels(y, [&](const int x) -> bool
+				{
+					//
+					// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+					//
+					if (stop.load()) return false;
+
+					const double gray = normalizeFloatValue(floatBuff[y * w + x]);
+					if (OnRead(x, y, gray, gray, gray))
+						return true;
+					stop = true;
+					return false;				
+				});
 			}
-			curr += count; // Increment current buffer pointer
-			if (m_pProgress != nullptr)
-				m_pProgress->Progress2((this->h / 2 * i) / stripCount);
-		}
-
-		std::uint8_t* byteBuff = buffer.get();
-		std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
-		std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
-		float* floatBuff = reinterpret_cast<float*>(byteBuff);
-
-		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
-		{
-			constexpr double scaleFactor = std::numeric_limits<std::uint16_t>::max() / 256.0;
-			const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
-			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
-		};
-
-		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const int row, const auto& function) -> void
-		{
-			for (int col = 0; col < width; ++col)
-				function(col);
-			if (progress != nullptr && omp_get_thread_num() == 0)
-				progress->Progress2((height + row) / 2);
-		};
-
-		if (sampleformat == SAMPLEFORMAT_IEEEFP)
-		{
-			assert(bps == 32);
-
-			if (spp == 1)
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
-				for (int y = 0; y < this->h; ++y)
-					loopOverPixels(y, [&](const int x) {
-						const double gray = normalizeFloatValue(floatBuff[y * w + x]);
-						OnRead(x, y, gray, gray, gray);
-					});
-			else
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-					loopOverPixels(y, [&](const int x) {
-						const int index = (y * w + x) * spp;
-						const double red = normalizeFloatValue(floatBuff[index]);
-						const double green = normalizeFloatValue(floatBuff[index + 1]);
-						const double blue = normalizeFloatValue(floatBuff[index + 2]);
-						OnRead(x, y, red, green, blue);
-					});
-		}
 		else
-		{
-			if (spp == 1)
-				switch (bps)
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+			for (int y = 0; y < this->h; ++y)
+			{
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+				loopOverPixels(y, [&](const int x) -> bool
 				{
-				case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = byteBuff[y * w + x];
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				}
-			else
-				switch (bps)
-				{
-				case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = byteBuff[index];
-							const double fGreen = byteBuff[index + 1];
-							const double fBlue = byteBuff[index + 2];
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = shortBuff[index] / scaleFactorInt16;
-							const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
-							const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = u32Buff[index] / scaleFactorInt32;
-							const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
-							const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				}
-		}
+					//
+					// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+					//
+					if (stop.load()) return false;
 
-		if (m_pProgress)
-			m_pProgress->End2();
+					const int index = (y * w + x) * spp;
+					const double red = normalizeFloatValue(floatBuff[index]);
+					const double green = normalizeFloatValue(floatBuff[index + 1]);
+					const double blue = normalizeFloatValue(floatBuff[index + 2]);
+					if (OnRead(x, y, red, green, blue))
+						return true;
+					stop = true;
+					return false;
+				});
+			}
 	}
-	catch (...)
+	else
 	{
-		return false;
+		if (spp == 1)
+			switch (bps)
+			{
+			case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = byteBuff[y * w + x];
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+
+					});
+				}
+				} break;
+			case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+
+				} break;
+			}
+		else
+			switch (bps)
+			{
+			case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = byteBuff[index];
+						const double fGreen = byteBuff[index + 1];
+						const double fBlue = byteBuff[index + 2];
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = shortBuff[index] / scaleFactorInt16;
+						const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
+						const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = u32Buff[index] / scaleFactorInt32;
+						const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+						const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+						});
+				}
+				} break;
+			}
 	}
+
+	if (m_pProgress)
+		m_pProgress->End2();
+	if (stop.load()) return false;
 
 	return true;
 };
@@ -1413,7 +1535,7 @@ public :
 	virtual bool Close() { return OnClose(); };
 
 	virtual bool OnOpen() override;
-	virtual void OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -1478,6 +1600,7 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 	if (static_cast<bool>(m_pBitmap))
 	{
 		bResult = m_pBitmap->Init(w, h);
+
 		m_pBitmap->SetCFA(cfa);
 		if (cfatype != 0)
 		{
@@ -1506,8 +1629,9 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
+bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
+	bool result = true;
 
 	try
 	{
@@ -1518,29 +1642,20 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
+		
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical);
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			e.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		result = false;
 	}
-
-	return;
+	return result;
 }
 
 /* ------------------------------------------------------------------- */
