@@ -59,8 +59,8 @@ class DeepSkyStacker :
 
 protected slots:
 	void updateStatus(const QString& text);
-	void qMessageBox(const QString& message, QMessageBox::Icon icon);
-	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon);
+	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
+	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
 
 private:
 	bool initialised;
@@ -117,7 +117,7 @@ public:
 	CProcessingDlg& getProcessingDlg();
 	ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
-	void reportError(const QString& message, const QString& type, Severity severity, Method method) override;
+	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 };
 
 

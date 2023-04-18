@@ -227,30 +227,33 @@ void DeepSkyStacker::updateStatus(const QString& text)
 	statusBarText->setText(text);
 }
 
-void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method)
+void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
 {
 	if (Method::QMessageBox == method)
 	{
 		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
 			Q_ARG(const QString&, message),
-			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)));
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
+			Q_ARG(bool, terminate));
 	}
 	else
 	{
 		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
-			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)));
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
+			Q_ARG(bool, terminate));
 	}
 }
 
 
-void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon)
+void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
+	if (terminate) QCoreApplication::exit(1);
 }
 
-void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon)
+void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
 {
 	//
 	// Hack to access the Icon displayed by QErrorMessage
@@ -277,6 +280,7 @@ void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, 
 		}
 	}
 	errorMessageDialog->showMessage(message, type);
+	if (terminate) QCoreApplication::exit(1);
 }
 
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
