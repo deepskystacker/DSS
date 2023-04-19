@@ -92,7 +92,7 @@ public:
 	bool Initialise();
 	bool Run();
 
-	void reportError(const QString& message, const QString& type, Severity severity, Method method) override;
+	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 
 protected:
 	void SetOption(StackingParams::eStackingOption option) { stackingParams.SetOption(option); }

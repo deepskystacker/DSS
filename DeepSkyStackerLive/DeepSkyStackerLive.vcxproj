@@ -441,6 +441,10 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
+    <QtRcc Include="resources.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\DeepSkyStackerLive.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

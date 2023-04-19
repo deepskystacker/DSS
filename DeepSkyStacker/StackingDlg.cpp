@@ -1505,15 +1505,15 @@ namespace DSS
 		//
 		if (auto groupId = Group::whichGroupContains(file); groupId != -1)
 		{
-				//
-				// If the file has already been loaded complain
-				//
-			    QString errorMessage = QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
-					.arg(file.generic_string().c_str())
-					.arg(groupId)
-					.arg(frameList.groupName(groupId));
-				dssApp->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
-				return true;
+			//
+			// If the file has already been loaded complain
+			//
+			QString errorMessage{ tr("File %1 was not loaded because it was already loaded in group %2 (%3)")
+				.arg(file.generic_string().c_str())
+				.arg(groupId)
+				.arg(frameList.groupName(groupId)) };
+			DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
+			return true;
 		}
 		return false;
 	}

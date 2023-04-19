@@ -194,7 +194,7 @@ public :
 	// bool getInfo();
 
 	virtual bool	OnOpen() { return true; };
-	virtual void	OnRead(int, int, double, double, double) { return; }
+	virtual bool	OnRead(int, int, double, double, double) { return true; }
 	virtual bool	OnClose() { return true; };
 
 private:
