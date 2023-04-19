@@ -79,7 +79,7 @@ About::About(QWidget *parent) :
     {
 		QString lang = it.section(".", 1, 1);
         QString langName = QLocale(lang).nativeLanguageName();
-        langName[0] = langName[0].toUpper();
+        if ("en" == lang) langName = "English";
         ui->comboBox->addItem(langName, lang);
     }
     setLanguage(settings.value("Language", "").toString());
