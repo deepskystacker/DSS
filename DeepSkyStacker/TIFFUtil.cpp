@@ -519,7 +519,7 @@ bool CTIFFReader::Read()
 		return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 	};
 
-	const auto loopOverPixels = [&, height = this->h, width = this->w, progress = this->m_pProgress](const int row, const auto& function) -> void
+	const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const int row, std::predicate<int> auto const& function) -> void
 	{
 		for (int col = 0; col < width; ++col)
 		{
