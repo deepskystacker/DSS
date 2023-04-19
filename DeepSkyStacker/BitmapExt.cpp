@@ -236,9 +236,10 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 			CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(AllDepthBitmap.m_pBitmap.get());
 
-			ZASSERTSTATE(nullptr != pCFABitmapInfo);
 			if (pBitmap->IsCFA())
 			{
+				ZASSERTSTATE(nullptr != pCFABitmapInfo);
+
 				if (AllDepthBitmap.m_bDontUseAHD && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 					pCFABitmapInfo->UseBilinear(true);
 
@@ -288,22 +289,28 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			bResult = true;
 		}
 	}
-	catch (std::exception & e)
+	catch (std::exception& e)
 	{
 		const QString errorMessage(e.what());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
-#ifndef _CONSOLE
+#if defined _WINDOWS
 	catch (CException & e)
 	{
-		e.ReportError();
+		TCHAR msg[225]{ 0 };
+		e.GetErrorMessage(msg, sizeof(msg)/sizeof(TCHAR));
 		e.Delete();
-		exit(1);
+		QString errorMessage{ QString::fromWCharArray(msg) };
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
+
 	}
 #endif
 	catch (ZException & ze)
@@ -319,22 +326,20 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			.arg(functionName)
 			.arg(ze.locationAtIndex(0)->lineNumber())
 			.arg(text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
 	catch (...)
 	{
 		const QString errorMessage("Unknown exception caught");
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
 	return bResult;
 }

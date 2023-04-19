@@ -595,7 +595,7 @@ bool CFITSReader::Read()
 	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = true;
+	bool result = true;
 	char error_text[31] = "";			// Error text for FITS errors.
 	
 	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
@@ -605,7 +605,7 @@ bool CFITSReader::Read()
 	if (m_lNrChannels > 3)
 		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
 
-	if (m_fits != nullptr) do
+	if (m_fits != nullptr)
 	{
 		double dNULL = 0;
 
@@ -650,7 +650,7 @@ bool CFITSReader::Read()
 			double localMin = 0, localMax = 0;
 #pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
-#pragma omp for schedule(dynamic, 10'000)
+#pragma omp for schedule(dynamic, 100'000)
 				for (std::int64_t element = 0; element < nElements; ++element)
 				{
 					const double fValue = doubleBuff[element];	// int (8 byte) floating point
@@ -706,11 +706,17 @@ bool CFITSReader::Read()
 			return (value - fMin) * normalizationFactor;
 		};
 
-#pragma omp parallel for default(none) schedule(guided, 50) if(nrProcessors > 1)
+		std::atomic_bool stop{ false };
+
+#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
+			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+
 			for (int col = 0; col < m_lWidth; ++col)
 			{
+				if (stop.load()) break;	// OK to break from inner loop
+
 				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
 				const int index = col + (row * m_lWidth);	// index into the image for this plane
 
@@ -760,16 +766,19 @@ bool CFITSReader::Read()
 					break;
 				}
 
-				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
+				if (!OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue)))
+				{
+					stop = true;
+					result = false;
+				}
 			}
 
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
 		}
 
-	} while (false);
-
-	return bResult;
+	}
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -888,28 +897,23 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 		// If this file is an eight bit FITS, and purports to have a Bayer pattern (or the user has
 		// explicitly specifed one), inform the the user that we aren't going to play
 		//
-		if ((m_lNrChannels == 1) &&
-			(m_lBitsPerPixel == 8) &&
-			(m_CFAType != CFATYPE_NONE))
+		if ((1 == m_lNrChannels) &&
+			(8 == m_lBitsPerPixel) &&
+			(CFATYPE_NONE != m_CFAType))
 		{
 			// 
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
 
-			static bool eightBitWarningIssued = false;
-			if (!eightBitWarningIssued)
-			{
-				CString errorMessage;
-				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
-#if defined(_CONSOLE)
-				std::wcerr << errorMessage;
-#else
-				AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
-#endif
-				// Remember we already said we won't do that!
-				eightBitWarningIssued = true;
-			}
+			QString errorMessage{ QCoreApplication::translate("Kernel",
+									"DeepSkyStacker will not de-Bayer 8 bit images",
+									"IDS_8BIT_FITS_NODEBAYER") };
+			DSSBase::instance()->reportError(
+				errorMessage,
+				"Will not de-Bayer 8 bit images",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
 		}
 
 		if (m_CFAType != CFATYPE_NONE)
@@ -972,7 +976,8 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	// Define maximal scaled pixel value of 255 (will be multiplied up later)
 	//
 	constexpr double maxValue = 255.0;
-	
+	bool result = true;
+
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
@@ -1008,28 +1013,19 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			(LPCTSTR)name,
-			(LPCTSTR)fileName,
-			(LPCTSTR)functionName,
-			e.locationAtIndex(0)->lineNumber(),
-			(LPCTSTR)text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical);
+		result = false;
 	}
-	return true;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
