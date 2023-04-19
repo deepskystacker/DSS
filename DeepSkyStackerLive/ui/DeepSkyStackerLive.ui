@@ -150,8 +150,9 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
+             <iconset resource="../resources.qrc">
+               <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png
+             </iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -266,8 +267,9 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
+             <iconset resource="../resources.qrc">
+               <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png
+             </iconset>
            </property>
            <property name="iconSize">
             <size>

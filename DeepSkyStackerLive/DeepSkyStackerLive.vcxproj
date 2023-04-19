@@ -390,7 +390,10 @@
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp" />
     <Image Include="..\Tools\hdrdown.bmp" />
     <Image Include="..\Tools\hdrup.bmp" />
+    <Image Include="res\4Corners.png" />
     <Image Include="res\DeepSkyStackerLive.ico" />
+    <Image Include="res\DSS_Icon32%402x.png" />
+    <Image Include="res\DSS_Icon32.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc" />
