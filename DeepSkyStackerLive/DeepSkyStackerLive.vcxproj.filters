@@ -729,6 +729,9 @@
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
+    <QtRcc Include="resources.qrc">
+      <Filter>Qt\ui</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\DeepSkyStackerLive.ui">

@@ -441,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
+    <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
