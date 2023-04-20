@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Qt">
+      <UniqueIdentifier>{12f450c2-26c6-4401-84f0-a22f45da9468}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\i18n">
+      <UniqueIdentifier>{b3934a91-3f0a-46a6-a570-83fcb402c655}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp">
@@ -338,5 +344,51 @@
     <QtMoc Include="DeepSkyStackerCL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\DSS.ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.de.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.en.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.es.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.it.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.pt_BR.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.tr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS.zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

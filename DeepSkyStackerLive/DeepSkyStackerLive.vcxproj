@@ -43,6 +43,7 @@
     <QtInstall>6.4.0_msvc2019_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
+    <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -311,22 +312,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSLive.ca.ts" />
-    <QtTranslation Include="i18n\DSSLive.cs.ts" />
-    <QtTranslation Include="i18n\DSSLive.de.ts" />
-    <QtTranslation Include="i18n\DSSLive.en.ts">
+    <QtTranslation Include="i18n\DSS.ca.ts" />
+    <QtTranslation Include="i18n\DSS.cs.ts" />
+    <QtTranslation Include="i18n\DSS.de.ts" />
+    <QtTranslation Include="i18n\DSS.en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSLive.es.ts" />
-    <QtTranslation Include="i18n\DSSLive.fr.ts" />
-    <QtTranslation Include="i18n\DSSLive.it.ts" />
-    <QtTranslation Include="i18n\DSSLive.nl.ts" />
-    <QtTranslation Include="i18n\DSSLive.pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSLive.ro.ts" />
-    <QtTranslation Include="i18n\DSSLive.ru.ts" />
-    <QtTranslation Include="i18n\DSSLive.tr.ts" />
-    <QtTranslation Include="i18n\DSSLive.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSS.es.ts" />
+    <QtTranslation Include="i18n\DSS.fr.ts" />
+    <QtTranslation Include="i18n\DSS.it.ts" />
+    <QtTranslation Include="i18n\DSS.nl.ts" />
+    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
+    <QtTranslation Include="i18n\DSS.ro.ts" />
+    <QtTranslation Include="i18n\DSS.ru.ts" />
+    <QtTranslation Include="i18n\DSS.tr.ts" />
+    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

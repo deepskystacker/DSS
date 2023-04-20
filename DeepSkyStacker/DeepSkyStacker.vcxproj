@@ -141,6 +141,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </QtRcc>
     <QtUic>
       <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
@@ -433,7 +435,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="ImageProperties.h" />
     <ClInclude Include="ImageSinks.h" />
     <QtMoc Include="imageview.h" />
-    <ClInclude Include="Library.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />

@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBEAAEBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Qt">
+      <UniqueIdentifier>{4c5ba692-76ed-40b9-a322-bee24408a179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\i18n">
+      <UniqueIdentifier>{ac3ab458-1fd5-4f23-8fc1-a9f17271bf96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -447,5 +453,51 @@
     <QtMoc Include="imageloader.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations_kernel.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\KernelDSS.ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.de.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.en.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.es.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.it.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.pt_BR.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.tr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
 </Project>

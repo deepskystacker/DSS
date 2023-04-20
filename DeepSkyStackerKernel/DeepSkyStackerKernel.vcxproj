@@ -122,6 +122,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
+      <QmOutputFile>%(Filename).qm</QmOutputFile>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -168,6 +169,8 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
+      <NoObsolete>true</NoObsolete>
+      <QmOutputFile>%(Filename).qm</QmOutputFile>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -340,6 +343,24 @@
     <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations_kernel.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\KernelDSS.ca.ts" />
+    <QtTranslation Include="i18n\KernelDSS.cs.ts" />
+    <QtTranslation Include="i18n\KernelDSS.de.ts" />
+    <QtTranslation Include="i18n\KernelDSS.en.ts" />
+    <QtTranslation Include="i18n\KernelDSS.es.ts" />
+    <QtTranslation Include="i18n\KernelDSS.fr.ts" />
+    <QtTranslation Include="i18n\KernelDSS.it.ts" />
+    <QtTranslation Include="i18n\KernelDSS.nl.ts" />
+    <QtTranslation Include="i18n\KernelDSS.pt_BR.ts" />
+    <QtTranslation Include="i18n\KernelDSS.ro.ts" />
+    <QtTranslation Include="i18n\KernelDSS.ru.ts" />
+    <QtTranslation Include="i18n\KernelDSS.tr.ts" />
+    <QtTranslation Include="i18n\KernelDSS.zh_TW.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
