@@ -136,6 +136,7 @@ void DeepSkyStackerLive::updateStatus(const QString& text)
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
 {
+	if (terminate) traceControl.setDeleteOnExit(false);
 	if (Method::QMessageBox == method)
 	{
 		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,

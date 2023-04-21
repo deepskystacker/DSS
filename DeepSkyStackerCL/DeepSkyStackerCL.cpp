@@ -45,6 +45,7 @@ bool DeepSkyStackerCommandLine::Run()
 
 void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] const QString& type, [[maybe_unused]] Severity severity, [[maybe_unused]] Method method, bool terminate)
 {
+	if (terminate) traceControl.setDeleteOnExit(false);
 	std::cerr << message.toUtf8().constData() << std::endl;
 	if (terminate) QCoreApplication::exit(1);
 }
