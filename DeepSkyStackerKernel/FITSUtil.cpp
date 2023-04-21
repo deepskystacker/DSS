@@ -12,6 +12,7 @@
 #include "RAWUtils.h"
 #include "BitmapInfo.h"
 #include "ColorHelpers.h"
+#include "dssbase.h"
 
 using namespace DSS;
 
@@ -30,7 +31,6 @@ CFITSHeader::CFITSHeader()
 	m_CFAType		= CFATYPE_NONE;
 	m_Format		= FF_UNKNOWN;
 	m_bSigned		= false;
-	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
     m_lWidth = 0;
     m_lHeight = 0;
@@ -115,7 +115,7 @@ void GetFITSRatio(double& fRed, double& fGreen, double& fBlue)
 }
 
 
-bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, CString& strComment)
+bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, QString& strComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -128,7 +128,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, CString& strComment)
 		if (!nStatus)
 		{
 			bResult = true;
-			strComment = szComment;
+			strComment = QString::fromLatin1(szComment);
 		};
 	};
 
@@ -165,7 +165,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPCSTR szKey, CString & strValue)
+bool CFITSReader::ReadKey(LPCSTR szKey, QString & strValue)
 {
 	bool				bResult = false;
 	CHAR				szValue[2000];
@@ -176,7 +176,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, CString & strValue)
 		fits_read_key(m_fits, TSTRING, szKey, szValue, nullptr, &nStatus);
 		if (!nStatus)
 		{
-			strValue = szValue;
+			strValue = QString::fromLatin1(szValue);
 			bResult = true;
 		};
 	};
@@ -265,16 +265,16 @@ bool CFITSReader::Open()
 		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
 
 		// File ok - move to the first image HDU
-		CString			strSimple;
+		QString			strSimple;
 		int			lNrAxis = 0;
 		int			lWidth  = 0,
 						lHeight = 0,
 						lNrChannels = 0;
 		double			fExposureTime = 0;
-		CString			strMake;
-		CString			strISOSpeed;
-		CString			CFAPattern("");
-		CString			filterName("");
+		QString			strMake;
+		QString			strISOSpeed;
+		QString			CFAPattern("");
+		QString			filterName("");
 		int			lISOSpeed = 0;
 		int			lGain = -1;
 		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
@@ -283,9 +283,9 @@ bool CFITSReader::Open()
 
 		bResult = ReadKey("SIMPLE", strSimple);
 		bResult = ReadKey("NAXIS", lNrAxis);
-		if ((strSimple == _T("T")) && (lNrAxis >= 2 && lNrAxis <= 3))
+		if ((strSimple == "T") && (lNrAxis >= 2 && lNrAxis <= 3))
 		{
-			CString				strComment;
+			QString				strComment;
 			ReadAllKeys();
 
 			bResult = ReadKey("INSTRUME", strMake);
@@ -297,10 +297,10 @@ bool CFITSReader::Open()
 			if (!bResult)
 				bResult = ReadKey("EXPOSURE", fExposureTime, strComment);
 
-			if (bResult && strComment.GetLength())
+			if (bResult && !strComment.isEmpty())
 			{
-				if ((strComment.Find(_T("in seconds"))<0) &&
-					((strComment.Find(_T("ms"))>0) || (fExposureTime>3600)))
+				if ((strComment.indexOf("in seconds")<0) &&
+					((strComment.indexOf("ms")>0) || (fExposureTime>3600)))
 				{
 					// Exposure time is most certainly in ms
 					fExposureTime /= 1000.0;
@@ -318,11 +318,11 @@ bool CFITSReader::Open()
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
 			{
-				if (strISOSpeed.Find(_T("ISO"), 0) == 0)
+
+				if (strISOSpeed.startsWith("ISO"))
 				{
-					strISOSpeed = strISOSpeed.Right(strISOSpeed.GetLength()-3);
-					strISOSpeed.Trim();
-					lISOSpeed = _ttol(strISOSpeed);
+					strISOSpeed.remove("ISO"); strISOSpeed = strISOSpeed.trimmed();
+					lISOSpeed = strISOSpeed.toInt();
 				};
 			};
 
@@ -342,59 +342,57 @@ bool CFITSReader::Open()
 			// One time action to create a mapping between the character name of the CFA
 			// pattern and our internal CFA type 
 			// 
-			static std::map<CString, CFATYPE> bayerMap;
-			if (bayerMap.empty())
-			{
-				bayerMap.emplace("BGGR", CFATYPE_BGGR);
-				bayerMap.emplace("GRBG", CFATYPE_GRBG);
-				bayerMap.emplace("GBRG", CFATYPE_GBRG);
-				bayerMap.emplace("RGGB", CFATYPE_RGGB);
+			static std::map<QString, CFATYPE> bayerMap {
+				{ "BGGR", CFATYPE_BGGR },
+				{ "GRBG", CFATYPE_GRBG },
+				{ "GBRG", CFATYPE_GBRG },
+				{ "RGGB", CFATYPE_RGGB },
 
-				bayerMap.emplace("CGMY", CFATYPE_CGMY);
-				bayerMap.emplace("CGYM", CFATYPE_CGYM);
-				bayerMap.emplace("CMGY", CFATYPE_CMGY);
-				bayerMap.emplace("CMYG", CFATYPE_CMYG);
-				bayerMap.emplace("CYMG", CFATYPE_CYMG);
-				bayerMap.emplace("CYGM", CFATYPE_CYGM);
+				{ "CGMY", CFATYPE_CGMY },
+				{ "CGYM", CFATYPE_CGYM },
+				{ "CMGY", CFATYPE_CMGY },
+				{ "CMYG", CFATYPE_CMYG },
+				{ "CYMG", CFATYPE_CYMG },
+				{ "CYGM", CFATYPE_CYGM },
 
-				bayerMap.emplace("GCMY", CFATYPE_GCMY);
-				bayerMap.emplace("GCYM", CFATYPE_GCYM);
-				bayerMap.emplace("GMCY", CFATYPE_GMCY);
-				bayerMap.emplace("GMYC", CFATYPE_GMYC);
-				bayerMap.emplace("GYCM", CFATYPE_GYCM);
-				bayerMap.emplace("GYMC", CFATYPE_GYMC);
+				{ "GCMY", CFATYPE_GCMY },
+				{ "GCYM", CFATYPE_GCYM },
+				{ "GMCY", CFATYPE_GMCY },
+				{ "GMYC", CFATYPE_GMYC },
+				{ "GYCM", CFATYPE_GYCM },
+				{ "GYMC", CFATYPE_GYMC },
 
-				bayerMap.emplace("MCGY", CFATYPE_MCGY);
-				bayerMap.emplace("MCYG", CFATYPE_MCYG);
-				bayerMap.emplace("MGYC", CFATYPE_MGYC);
-				bayerMap.emplace("MGCY", CFATYPE_MGCY);
-				bayerMap.emplace("MYGC", CFATYPE_MYGC);
-				bayerMap.emplace("MYCG", CFATYPE_MYCG);
+				{ "MCGY", CFATYPE_MCGY },
+				{ "MCYG", CFATYPE_MCYG },
+				{ "MGYC", CFATYPE_MGYC },
+				{ "MGCY", CFATYPE_MGCY },
+				{ "MYGC", CFATYPE_MYGC },
+				{ "MYCG", CFATYPE_MYCG },
 
-				bayerMap.emplace("YCGM", CFATYPE_YCGM);
-				bayerMap.emplace("YCMG", CFATYPE_YCMG);
-				bayerMap.emplace("YGMC", CFATYPE_YGMC);
-				bayerMap.emplace("YGCM", CFATYPE_YGCM);
-				bayerMap.emplace("YMCG", CFATYPE_YMCG);
-				bayerMap.emplace("YMGC", CFATYPE_YMGC);
+				{ "YCGM", CFATYPE_YCGM },
+				{ "YCMG", CFATYPE_YCMG },
+				{ "YGMC", CFATYPE_YGMC },
+				{ "YGCM", CFATYPE_YGCM },
+				{ "YMCG", CFATYPE_YMCG },
+				{ "YMGC", CFATYPE_YMGC },
 
-				bayerMap.emplace("CYGMCYMG", CFATYPE_CYGMCYMG);
-				bayerMap.emplace("GMCYMGCY", CFATYPE_GMCYMGCY);
-				bayerMap.emplace("CYMGCYGM", CFATYPE_CYMGCYGM);
-				bayerMap.emplace("MGCYGMCY", CFATYPE_MGCYGMCY);
-				bayerMap.emplace("GMYCGMCY", CFATYPE_GMYCGMCY);
-				bayerMap.emplace("YCGMCYGM", CFATYPE_YCGMCYGM);
-				bayerMap.emplace("GMCYGMYC", CFATYPE_GMCYGMYC);
-				bayerMap.emplace("CYGMYCGM", CFATYPE_CYGMYCGM);
-				bayerMap.emplace("YCGMYCMG", CFATYPE_YCGMYCMG);
-				bayerMap.emplace("GMYCMGYC", CFATYPE_GMYCMGYC);
-				bayerMap.emplace("YCMGYCGM", CFATYPE_YCMGYCGM);
-				bayerMap.emplace("MGYCGMYC", CFATYPE_MGYCGMYC);
-				bayerMap.emplace("MGYCMGCY", CFATYPE_MGYCMGCY);
-				bayerMap.emplace("YCMGCYMG", CFATYPE_YCMGCYMG);
-				bayerMap.emplace("MGCYMGYC", CFATYPE_MGCYMGYC);
-				bayerMap.emplace("CYMGYCMG", CFATYPE_CYMGYCMG);
-			}
+				{ "CYGMCYMG", CFATYPE_CYGMCYMG },
+				{ "GMCYMGCY", CFATYPE_GMCYMGCY },
+				{ "CYMGCYGM", CFATYPE_CYMGCYGM },
+				{ "MGCYGMCY", CFATYPE_MGCYGMCY },
+				{ "GMYCGMCY", CFATYPE_GMYCGMCY },
+				{ "YCGMCYGM", CFATYPE_YCGMCYGM },
+				{ "GMCYGMYC", CFATYPE_GMCYGMYC },
+				{ "CYGMYCGM", CFATYPE_CYGMYCGM },
+				{ "YCGMYCMG", CFATYPE_YCGMYCMG },
+				{ "GMYCMGYC", CFATYPE_GMYCMGYC },
+				{ "YCMGYCGM", CFATYPE_YCMGYCGM },
+				{ "MGYCGMYC", CFATYPE_MGYCGMYC },
+				{ "MGYCMGCY", CFATYPE_MGYCMGCY },
+				{ "YCMGCYMG", CFATYPE_YCMGCYMG },
+				{ "MGCYMGYC", CFATYPE_MGCYMGYC },
+				{ "CYMGYCMG", CFATYPE_CYMGYCMG }
+			};
 
 			//
 			// Attempt to determine the correct CFA (aka Bayer matrix) from keywords in the FITS header.
@@ -402,14 +400,14 @@ bool CFITSReader::Open()
 			// Some Meade DSI cameras used the keyword MOSAIC with a value of "CMYG", when in fact the actual
 			// matrix used was CYGMCYMG. so that is special cased.
 			// 
-			if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+			if (ReadKey("MOSAIC", CFAPattern) && strMake.startsWith("DSI"))
 			{
-				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", (LPCSTR)CT2CA(CFAPattern, CP_UTF8));
+				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CFAPattern.toUtf8().constData());
 
 				m_bDSI = true;
 				// Special case of DSI FITS files
-				CFAPattern.Trim();
-				if (CFAPattern == _T("CMYG"))
+				CFAPattern = CFAPattern.trimmed();
+				if (CFAPattern == "CMYG")
 					m_CFAType = CFATYPE_CYGMCYMG;
 			} 
 			//
@@ -424,12 +422,12 @@ bool CFITSReader::Open()
 				//
 				if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
 				{
-					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", (LPCSTR)CT2CA(CFAPattern,CP_UTF8));
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CFAPattern.toUtf8().constData());
 				}
 
-				CFAPattern.Trim();
+				CFAPattern = CFAPattern.trimmed();
 
-				if (CFAPattern != _T(""))
+				if (!CFAPattern.isEmpty())
 				{
 					auto it = bayerMap.find(CFAPattern);
 					if (bayerMap.end() != it) m_CFAType = it->second;
@@ -455,43 +453,34 @@ bool CFITSReader::Open()
 			m_xBayerOffset = std::lround(xBayerOffset);
 			m_yBayerOffset = std::lround(yBayerOffset);
 
-			CString			strDateTime;
+			QString			strDateTime;
 
-			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
 			{
 				// Decode 2007-11-02T22:07:03.890
 				//        01234567890123456789012
-				CString				strTime;
+				QString				strTime;
 
-				if (strDateTime.GetLength() >= 19)
+				if (strDateTime.length() >= 19)
 				{
-					m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-					m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-					m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-					m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
-					m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-					m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
+					m_DateTime = QDateTime::fromString(strDateTime, "yyyy-MM-ddThh:mm:ss");
 				}
-				else if ((strDateTime.GetLength() == 8) && ReadKey("TIME-OBS", strTime))
+				else if ((strDateTime.length() == 8) && ReadKey("TIME-OBS", strTime))
 				{
 					// Decode dd/mm/yy
 					//        01234567
-					m_DateTime.wYear  = _ttol(strDateTime.Mid(6, 2));
-					if (m_DateTime.wYear < 70)
-						m_DateTime.wYear += 2000;
+					QDate date = QDate::fromString(strDateTime, "dd/MM/yy");
+					if (date.year() < 70)
+						date = date.addYears(2000);
 					else
-						m_DateTime.wYear += 1900;
-					m_DateTime.wMonth = _ttol(strDateTime.Mid(3, 2));
-					m_DateTime.wDay   = _ttol(strDateTime.Mid(0, 2));
+						date = date.addYears(1900);
 
-					if (strTime.GetLength() >= 8)
+					if (strTime.length() >= 8)
 					{
 						// Decode hh:mm:ss.xxx
 						//        01234567
-						m_DateTime.wHour   = _ttol(strTime.Mid(0, 2));
-						m_DateTime.wMinute = _ttol(strTime.Mid(3, 2));
-						m_DateTime.wSecond = _ttol(strTime.Mid(6, 2));
+						QTime time = QTime::fromString(strTime, "hh:hh:ss");
+						m_DateTime = QDateTime(date, time);
 					};
 				};
 			};
@@ -555,7 +544,7 @@ bool CFITSReader::Open()
 					bResult = false;
 					break;
 				};
-				m_filterName = QString::fromStdWString(filterName.GetString());
+				m_filterName = filterName;
 			};
 			
 			//
@@ -607,7 +596,7 @@ bool CFITSReader::Read()
 	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = true;
+	bool result = true;
 	char error_text[31] = "";			// Error text for FITS errors.
 	
 	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
@@ -617,7 +606,7 @@ bool CFITSReader::Read()
 	if (m_lNrChannels > 3)
 		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
 
-	if (m_fits != nullptr) do
+	if (m_fits != nullptr)
 	{
 		double dNULL = 0;
 
@@ -662,7 +651,7 @@ bool CFITSReader::Read()
 			double localMin = 0, localMax = 0;
 #pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
-#pragma omp for schedule(dynamic, 10'000)
+#pragma omp for schedule(dynamic, 100'000)
 				for (std::int64_t element = 0; element < nElements; ++element)
 				{
 					const double fValue = doubleBuff[element];	// int (8 byte) floating point
@@ -718,11 +707,17 @@ bool CFITSReader::Read()
 			return (value - fMin) * normalizationFactor;
 		};
 
-#pragma omp parallel for default(none) schedule(guided, 50) if(nrProcessors > 1)
+		std::atomic_bool stop{ false };
+
+#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
+			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+
 			for (int col = 0; col < m_lWidth; ++col)
 			{
+				if (stop.load()) break;	// OK to break from inner loop
+
 				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
 				const int index = col + (row * m_lWidth);	// index into the image for this plane
 
@@ -772,16 +767,19 @@ bool CFITSReader::Read()
 					break;
 				}
 
-				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
+				if (!OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue)))
+				{
+					stop = true;
+					result = false;
+				}
 			}
 
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
 		}
 
-	} while (false);
-
-	return bResult;
+	}
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -900,30 +898,22 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 		// If this file is an eight bit FITS, and purports to have a Bayer pattern (or the user has
 		// explicitly specifed one), inform the the user that we aren't going to play
 		//
-		if ((m_lNrChannels == 1) &&
-			(m_lBitsPerPixel == 8) &&
-			(m_CFAType != CFATYPE_NONE))
+		if ((1 == m_lNrChannels) &&
+			(8 == m_lBitsPerPixel) &&
+			(CFATYPE_NONE != m_CFAType))
 		{
 			// 
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
-
-			static bool eightBitWarningIssued = false;
-			if (!eightBitWarningIssued)
-			{
-				//CString errorMessage;
-				//errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
-				const QString errorMessage(QCoreApplication::translate("FitsUtils", "DeepSkyStacker will not de-Bayer 8 bit images", "IDS_8BIT_FITS_NODEBAYER"));
-
-#if defined(_CONSOLE)
-				std::wcerr << errorMessage.toStdWString().c_str();
-#else
-				AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONWARNING);
-#endif
-				// Remember we already said we won't do that!
-				eightBitWarningIssued = true;
-			}
+			QString errorMessage{ QCoreApplication::translate("Kernel",
+									"DeepSkyStacker will not de-Bayer 8 bit images",
+									"IDS_8BIT_FITS_NODEBAYER") };
+			DSSBase::instance()->reportError(
+				errorMessage,
+				"Will not de-Bayer 8 bit images",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
 		}
 
 		if (m_CFAType != CFATYPE_NONE)
@@ -966,11 +956,12 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 		m_pBitmap->setFilterName(m_filterName);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString strDescription;
-		if (m_strMake.GetLength())
-			strDescription.Format(_T("FITS (%s)"), static_cast<LPCTSTR>(m_strMake));
+		QString strDescription;
+		if (!m_strMake.isEmpty())
+			strDescription = QString("FITS (%1)").arg(m_strMake);
 		else
-			strDescription	= _T("FITS");
+			strDescription = "FITS";
+
 		m_pBitmap->SetDescription(strDescription);
 	}
 
@@ -985,7 +976,8 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	// Define maximal scaled pixel value of 255 (will be multiplied up later)
 	//
 	constexpr double maxValue = 255.0;
-	
+	bool result = true;
+
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
@@ -1021,28 +1013,19 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			(LPCTSTR)name,
-			(LPCTSTR)fileName,
-			(LPCTSTR)functionName,
-			e.locationAtIndex(0)->lineNumber(),
-			(LPCTSTR)text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical);
+		result = false;
 	}
-	return true;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1092,8 +1075,8 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength() != 0) 
-			BitmapInfo.m_strFileType = QString("FITS (%1)").arg(QString::fromWCharArray(fits.m_strMake.GetString()));
+		if (fits.m_strMake.length() != 0) 
+			BitmapInfo.m_strFileType = QString("FITS (%1)").arg(fits.m_strMake);
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
@@ -1188,16 +1171,13 @@ void	CFITSWriter::WriteAllKeys()
 		}
 	};
 
-	if (!bFound && m_DateTime.wYear)
+	if (!bFound && m_DateTime.isValid())
 	{
 		// Add DATE-OBS to the list
-		CString			strDateTime;
+		QString	strDateTime{ m_DateTime.toString("yyyy-MM-ddThh:mm:ss") };
 
-		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"),
-						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
-						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
-		m_ExtraInfo.AddInfo("DATE-OBS", QString::fromWCharArray(strDateTime.GetString()), "");
+		m_ExtraInfo.AddInfo("DATE-OBS", strDateTime, "");
 	};
 
 	if (m_fits && m_ExtraInfo.m_vExtras.size())

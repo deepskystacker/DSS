@@ -1215,9 +1215,9 @@ public :
 		m_pStackedBitmap = pStackedBitmap;
 	};
 
-	virtual bool	OnOpen();
-	void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
-	virtual bool	OnClose();
+	virtual bool	OnOpen() override;
+	bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool	OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1252,12 +1252,12 @@ bool CTIFFReadStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
+bool CTIFFReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
 	if (m_pStackedBitmap)
 		m_pStackedBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 
-	return;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1310,9 +1310,9 @@ public :
 		m_pStackedBitmap = pStackedBitmap;
 	};
 
-	virtual bool	OnOpen();
-	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue);
-	virtual bool	OnClose();
+	virtual bool	OnOpen() override;
+	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool	OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */

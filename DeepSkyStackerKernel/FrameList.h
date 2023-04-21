@@ -17,7 +17,10 @@ namespace DSS
 	public:
 		FrameList()
 		{
-			imageGroups.emplace_back();
+			//
+			// Add Main Group AND Group 1 (user enhancement request)
+			//
+			imageGroups.emplace_back(); imageGroups.emplace_back();
 		};
 		FrameList(const FrameList&) = delete;
 		FrameList(FrameList&&) = delete;

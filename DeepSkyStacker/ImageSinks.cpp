@@ -592,7 +592,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 		strInfoFileName = szDrive;
 		strInfoFileName += szDir;
 		strInfoFileName += szFile;
-		strInfoFileName += _T(".Info.txt");
+		strInfoFileName += _T(".info.txt");
 
 		regFrame.SaveRegisteringInfo(strInfoFileName);
 

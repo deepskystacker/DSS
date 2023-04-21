@@ -20,7 +20,7 @@ CSavePicture::CSavePicture(bool bOpenFileDialog, LPCTSTR lpszDefExt, LPCTSTR lps
 	m_bUseRect = false;
 	m_ofn.FlagsEx = OFN_EX_NOPLACESBAR;
 
-	m_Compression = TC_NONE;
+	m_Compression = TC_DEFLATE;
 }
 
 /* ------------------------------------------------------------------- */

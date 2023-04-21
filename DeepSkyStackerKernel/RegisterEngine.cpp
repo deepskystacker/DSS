@@ -1313,7 +1313,7 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 	m_bInfoOk = false;
 	filePath = path;
 	_tsplitpath(filePath.c_str(), szDrive, szDir, szFile, szExt);
-	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
+	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".info.txt"));
 
 	m_strInfoFileName = szInfoName;
 
@@ -1505,7 +1505,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 				TCHAR szFile[1 + _MAX_FNAME];
 
 				_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
-				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
+				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".info.txt"));
 				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
 			}
 

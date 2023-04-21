@@ -6,6 +6,12 @@
 #include "DeepSkyStackerLiveDlg.h"
 #include "Ztrace.h"
 #include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
+#include "tracecontrol.h"
+
+//
+// Set up tracing and manage trace file deletion
+//
+DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
 bool	g_bShowRefStars = false;
 
@@ -146,8 +152,9 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	winHost{ nullptr },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
-	statusBarText{ new QLabel("") }
-
+	statusBarText{ new QLabel("") },
+	errorMessageDialog{ new QErrorMessage(this) },
+	eMDI{ nullptr }		// errorMessageDialogIcon pointer
 {
 }
 
@@ -167,11 +174,64 @@ void DeepSkyStackerLive::updateStatus(const QString& text)
 	statusBarText->setText(text);
 }
 
-void DeepSkyStackerLive::displayMessage(const QString& message, QMessageBox::Icon icon)
+void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
+{
+	if (terminate) traceControl.setDeleteOnExit(false);
+	if (Method::QMessageBox == method)
+	{
+		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
+			Q_ARG(const QString&, message),
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
+			Q_ARG(bool, terminate));
+	}
+	else
+	{
+		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
+			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
+			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
+			Q_ARG(bool, terminate));
+	}
+}
+
+
+void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
+	if (terminate) QCoreApplication::exit(1);
 }
+
+void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
+{
+	//
+	// Hack to access the Icon displayed by QErrorMessage
+	//
+	if (nullptr == eMDI)
+	{
+		eMDI = errorMessageDialog->findChild<QLabel*>();
+	}
+
+	if (eMDI != nullptr)
+	{
+		switch (icon)
+		{
+		case (QMessageBox::Information):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+			break;
+		case (QMessageBox::Critical):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
+			break;
+		case (QMessageBox::Warning):
+		default:
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+			break;
+		}
+	}
+	errorMessageDialog->showMessage(message, type);
+	if (terminate) QCoreApplication::exit(1);
+}
+
+
 
 /* ------------------------------------------------------------------- */
 QTranslator theQtTranslator;
@@ -188,6 +248,16 @@ int WINAPI _tWinMain(
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console known how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+	//
+	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	//
+#if defined(_WINDOWS)
+	_CrtSetDbgFlag(0);
+#if !defined(NDEBUG)
+	AfxEnableMemoryLeakDump(false);
+#endif
 #endif
 
 	int nRetCode = 0;

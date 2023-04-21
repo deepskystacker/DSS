@@ -20,11 +20,11 @@ public:
 	int				m_lGain;
 	bool			m_bFloat;
 	bool			m_bSigned;
-	CString			m_strMake;
+	QString			m_strMake;
 	CFATYPE			m_CFAType;
 	FITSFORMAT		m_Format;
 	CBitmapExtraInfo	m_ExtraInfo;
-	SYSTEMTIME		m_DateTime;
+	QDateTime		m_DateTime;
 	int				m_xBayerOffset;
 	int				m_yBayerOffset;
 	int				m_bitPix;
@@ -88,7 +88,7 @@ public:
 		return m_lGain;
 	};
 
-	inline SYSTEMTIME	GetDateTime() noexcept
+	inline QDateTime GetDateTime() noexcept
 	{
 		return m_DateTime;
 	};
@@ -122,10 +122,10 @@ protected:
 	bool					m_bDSI;
 
 private :
-	bool	ReadKey(LPCSTR szKey, double & fValue, CString & strComment);
+	bool	ReadKey(LPCSTR szKey, double & fValue, QString & strComment);
 	bool	ReadKey(LPCSTR szKey, double & fValue);
 	bool	ReadKey(LPCSTR szKey, int& lValue);
-	bool	ReadKey(LPCSTR szKey, CString & strValue);
+	bool	ReadKey(LPCSTR szKey, QString & strValue);
 	void	ReadAllKeys();
 
 public:
@@ -151,7 +151,7 @@ public:
 	virtual bool Close();
 
 	virtual bool OnOpen() { return true; }
-	virtual bool OnRead(int, int, double, double, double) { return false; }
+	virtual bool OnRead(int, int, double, double, double) { return true; }
 	virtual bool OnClose() { return true; }
 };
 

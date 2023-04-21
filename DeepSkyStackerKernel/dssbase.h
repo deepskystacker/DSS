@@ -56,8 +56,16 @@ public:
 		Critical = 3
 	};
 
+	enum class Method
+	{
+		QMessageBox = 0,
+		QErrorMessage = 1
+	};
+
 	// severity 2 is QMessageBox::Warning
-	virtual void reportError(const QString& message, Severity = Severity::Warning) = 0;
+	virtual void reportError(const QString& message, const QString& type,
+		Severity severity = Severity::Warning, Method method = Method::QMessageBox,
+		bool terminate = false) = 0;
 
 	inline static DSSBase* instance()
 	{
@@ -66,7 +74,6 @@ public:
 
 	inline static void setInstance(DSSBase* instance)
 	{
-		//ZASSERT(nullptr == theInstance);	// Commented out whilst refactoring header as this is a big include.
 		theInstance = instance;
 	}
 

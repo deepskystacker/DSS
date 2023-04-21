@@ -61,11 +61,14 @@ public:
 	DeepSkyStackerLive(DeepSkyStackerLive&& rhs) = delete;
 	DeepSkyStackerLive& operator=(DeepSkyStackerLive&& rhs) = delete;
 
+	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
+
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 
 protected slots:
 	void updateStatus(const QString& text);
-	void displayMessage(const QString& message, QMessageBox::Icon icon);
+	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
+	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
 
 private:
 	bool initialised;
@@ -73,6 +76,8 @@ private:
 	QStringList args;
 	QString baseTitle;
 	QLabel* statusBarText;
+	QErrorMessage* errorMessageDialog;
+	QLabel* eMDI;		// errorMessageDialogIcon pointer
 
 	void createStatusBar();
 };

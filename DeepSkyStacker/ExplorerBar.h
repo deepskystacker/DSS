@@ -82,11 +82,19 @@ private slots:
 
 	void onToggleDeletion();
 
+	void onEnableSoundsStateChanged(int);
+
+#if QT_VERSION >= 0x060500
+	void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+#endif
+
 
 private:
     Ui::ExplorerBar *ui;
 	bool initialised;
 	MRUPath	mruPath;
+	QString windowColourName;
+	QString activeGroupColourName;
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();

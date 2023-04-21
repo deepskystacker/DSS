@@ -216,9 +216,6 @@
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tracecontrol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseDialog.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -404,9 +401,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="dslr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tracecontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

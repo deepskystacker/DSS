@@ -3,6 +3,41 @@ Welcome to DeepSkyStacker 5.1.4
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since the last release:
+
+1. Upgrade CFISTIO library to 4.2.0
+
+2. Always create a tracefile in DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
+
+	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT time.
+
+The trace file will be deleted on normal application exit, but an option is provided to keep the file.
+
+3. Add both Main Group and Group 1 at startup.
+
+4. Initial code changes for Qt 6.5.0 Dark/Light Theme support
+
+5. Add an option to turn off beeps on cmpletion of registering/stacking.
+
+6. Toolbar display improved (no square boxes round active/hovered buttons).
+
+7. Upgrade libtiff to 4.5.0
+
+8. Add code to handle TIFF tags TIFFTAG_CFAREPEATPATTERNDIM and TIFFTAG_CFAPATTERN when processing TIFF files in CFA format. These tags are defined in the TIFF/EP standard.
+   Add code to handle EXIF tag EXIFTAG_CFAPATTERN which is defined in the EXIF standard.
+   This allows automatic detection of the CFA pattern needed to decode the file.
+   The only files that DSS writes as TIFF in CFA format are some of the master files.
+   All other TIFF output files will remain RGB.
+
+9. Change compression of TIFF format master files to use PKZIP Deflate instead of no compression.
+
+10. Change default compression for saving images to PKZIP Deflate (was NONE).
+
+Welcome to DeepSkyStacker 5.1.3
+===============================
+
 This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
 
 1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.

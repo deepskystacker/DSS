@@ -66,7 +66,7 @@ public :
 	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
 	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
-	virtual Image *	GetOverlayImage(CRect & rcClient);
+	virtual Image *	GetOverlayImage(CRect & rcClient) override;
 
 	bool	GetSelectRect(CRect & rcSelect)
 	{
@@ -362,7 +362,7 @@ public :
 	virtual bool	Image_OnMouseLeave() override;
 	virtual bool	Image_OnMouseMove(long lX, long lY) override;
 	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
-	virtual bool	Image_OnLButtonUp(long lX, long lY);
+	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };

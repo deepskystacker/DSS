@@ -10,6 +10,7 @@
 #include "ZExcBase.h"
 #include "RAWUtils.h"
 #include "tiffio.h"
+#include "dssbase.h"
 #include "zlib.h"
 
 using namespace DSS;
@@ -45,6 +46,26 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 
 };
 
+constexpr uint8_t TIFF_CFAPattern_RGGB[] { 0,1,1,2 };
+constexpr uint8_t TIFF_CFAPattern_BGGR[] { 2,1,1,0 };
+constexpr uint8_t TIFF_CFAPattern_GRBG[] { 1,0,2,1 };
+constexpr uint8_t TIFF_CFAPattern_GBRG[] { 1,2,0,1 };
+//
+// Write the image out as Strips (i.e. not scanline by scanline)
+// 
+constexpr unsigned int STRIP_SIZE_DEFAULT = 16'777'216UL;	// 16MB
+
+struct
+{
+	uint16_t dim[2]{ 0 };
+	union
+	{
+		uint8_t cfa4[4];
+		uint8_t cfa9[9];
+		uint8_t cfa16[16];
+	} cfa { 0 };
+} cfaDimPat;
+
 static TIFFExtendProc	g_TIFFParentExtender = nullptr;
 static bool				g_TIFFInitialized = false;
 
@@ -78,9 +99,87 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
+void CTIFFReader::decodeCfaDimPat(int patternSize)
+{
+	ZTRACE_RUNTIME("CFA pattern dimension: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
+
+	if (4 == patternSize)
+	{
+		ZTRACE_RUNTIME("CFAPATTERN: %hhu%hhu%hhu%hhu",
+			cfaDimPat.cfa.cfa4[0],
+			cfaDimPat.cfa.cfa4[1],
+			cfaDimPat.cfa.cfa4[2],
+			cfaDimPat.cfa.cfa4[3]);
+		if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to RGGB");
+			cfa = 1;
+			cfatype = CFATYPE_RGGB;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to BGGR");
+			cfa = 1;
+			cfatype = CFATYPE_BGGR;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to GRBG");
+			cfa = 1;
+			cfatype = CFATYPE_GRBG;
+		}
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, 4))
+		{
+			ZTRACE_RUNTIME("CFAType set to GBRG");
+			cfa = 1;
+			cfatype = CFATYPE_GBRG;
+		}
+		else
+		{
+			DSSBase::instance()->reportError(
+				QCoreApplication::translate("TIFFUtil", "CFA pattern: %1%2%3%4 is not supported")
+				.arg(cfaDimPat.cfa.cfa4[0])
+				.arg(cfaDimPat.cfa.cfa4[1])
+				.arg(cfaDimPat.cfa.cfa4[2])
+				.arg(cfaDimPat.cfa.cfa4[3]),
+				"Unsupported CFA Pattern",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
+		}
+
+	}
+	else
+	{
+		DSSBase::instance()->reportError(
+			QCoreApplication::translate("TIFFUtil", "CFA pattern dimension: %1x%2 found is not supported")
+			.arg(cfaDimPat.dim[0])
+			.arg(cfaDimPat.dim[1]),
+			"Unsupported CFA PatternDim",
+			DSSBase::Severity::Warning,
+			DSSBase::Method::QErrorMessage);
+	}
+
+}
+
 bool CTIFFReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
+
+	//
+	// Used for reading lengths of TIFF custom tags.  Different tags
+	// return length as uint8, uint16, uint16[2], or uint32
+	//
+	union
+	{
+		uint32_t Long;
+		uint16_t Short1;
+		uint16_t Short2[2];
+		uint8_t Char[4];
+	} unionLong{ 0 };
+
+	// Used to read pointer to data when reading custom tags
+	void* pVoidArray{ nullptr };
+
 	bool			bResult = false;
 	QSettings		settings;
 
@@ -122,10 +221,7 @@ bool CTIFFReader::Open()
 		TIFFGetField(m_tiff, TIFFTAG_PHOTOMETRIC, &photo);
 		if (!TIFFGetField(m_tiff, TIFFTAG_SAMPLEFORMAT, &sampleformat))
 			sampleformat = SAMPLEFORMAT_UINT;
-		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfa))
-			cfa = 0;
-		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
-			cfatype = cfa ? CFATYPE_RGGB : CFATYPE_NONE;
+
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_MASTER, &master))
 			master = 0;
 
@@ -170,8 +266,8 @@ bool CTIFFReader::Open()
 			else if (bps == 32)
 			{
 				bResult = (sampleformat == SAMPLEFORMAT_UINT) ||
-						  (sampleformat == SAMPLEFORMAT_INT) ||
-						  (sampleformat == SAMPLEFORMAT_IEEEFP);
+					(sampleformat == SAMPLEFORMAT_INT) ||
+					(sampleformat == SAMPLEFORMAT_IEEEFP);
 
 				if (sampleformat == SAMPLEFORMAT_IEEEFP)
 				{
@@ -184,39 +280,62 @@ bool CTIFFReader::Open()
 			if (bResult)
 			{
 				if ((spp == 3) || (spp == 4))
-					bResult = (photo == PHOTOMETRIC_RGB);
+					bResult = (PHOTOMETRIC_RGB == photo);
 				else if (spp == 1)
-					bResult = (photo == PHOTOMETRIC_MINISBLACK);
+					bResult = (PHOTOMETRIC_MINISBLACK == photo || PHOTOMETRIC_CFA == photo);
 			};
 		};
 
 		// Retrieve the Date/Time as in the TIFF TAG
-		char *				szDateTime;
+		char* szDateTime;
 
 		if (TIFFGetField(m_tiff, TIFFTAG_DATETIME, &szDateTime))
 		{
-			CString			strDateTime = szDateTime;
+			QString	strDateTime{ szDateTime };
 
 			// Decode 2007:11:02 22:07:03
 			//        0123456789012345678
 
-			if (strDateTime.GetLength() >= 19)
+			if (strDateTime.length() >= 19)
 			{
-				m_DateTime.wYear = _ttol(strDateTime.Left(4));
-				m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-				m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
-				m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
-				m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
-				m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+				m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
 			};
 		};
 
+		//
+		// Attempt to read the CFA from the root IFD if this is could be a CFA image
+		//
+		if (bResult && 1 == spp)
+		{
+			if (PHOTOMETRIC_CFA == photo) ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_CFA");
+			else ZTRACE_RUNTIME("TIFFTAG_PHOTOMETRIC is set to PHOTOMETRIC_MINISBLACK");
+			int count{ 0 };
 
+			ZTRACE_RUNTIME("Checking for TIFFTAG_CFAREPEATPATTERNDIM, TIFFTAG_CFAPATTERN");
+
+			if (TIFFGetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, &pVoidArray))
+			{
+				ZTRACE_RUNTIME("TIFFTAG_CFAREPEATPATTERNDIM read OK");
+				cfaDimPat = {};		// clear the Dimension and Pattern structure
+				memcpy(&cfaDimPat.dim, pVoidArray, sizeof(cfaDimPat.dim));
+
+				int patternSize{ cfaDimPat.dim[0] * cfaDimPat.dim[1] };
+
+				if (TIFFGetField(m_tiff, TIFFTAG_CFAPATTERN, &unionLong, &pVoidArray))
+				{
+					ZTRACE_RUNTIME("TIFFTAG_CFAPATTERN read OK");
+					count = unionLong.Short1;
+					ZASSERT(count == patternSize && count <= sizeof(cfaDimPat.cfa));
+					memcpy(&cfaDimPat.cfa, pVoidArray, count);
+					decodeCfaDimPat(patternSize);
+				}
+			}
+		}
 
 		if (!dwSkipExifInfo)
 		{
 			// Try to read EXIF data
-			uint64				ExifID;
+			uint64_t ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -228,21 +347,36 @@ bool CTIFFReader::Open()
 				{
 					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime))
 						exposureTime = 0.0;
+
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
-					// EXIFTAG_ISOSPEEDRATINGS is a uint16 according to the EXIF spec
+
+					// EXIFTAG_ISOSPEEDRATINGS is an array of uint16 according to the EXIF spec
 					isospeed = 0;
-					uint16	count = 0;
-					uint16 * iso_setting = nullptr;
-					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
-						isospeed = 0;
-					else
+					uint16_t	count = 0;
+					uint16_t* iso_setting = nullptr;
+					if (TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
 					{
 						isospeed = iso_setting[0];
 					}
+					else isospeed = 0;
+
 					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 
 					//
+					// If we've not yet detected a cfa pattern interrogate EXIFTAG_CFAPATTERN
+					//
+					if (!cfa)
+					{
+						ZTRACE_RUNTIME("Checking for EXIF_CFAPATTERN tag");
+
+						if (TIFFGetField(m_tiff, EXIFTAG_CFAPATTERN, &unionLong, &pVoidArray))
+						{
+							memcpy(&cfaDimPat, pVoidArray, unionLong.Short1);
+							decodeCfaDimPat(cfaDimPat.dim[0] * cfaDimPat.dim[1]);
+						}
+					}
+
 					// Revert IFD to status quo ante TIFFReadEXIFDirectory
 					//
 					TIFFSetDirectory(m_tiff, currentIFD);
@@ -261,7 +395,55 @@ bool CTIFFReader::Open()
 				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
 			};
-		};
+		}
+
+		//
+		// If we have not yet found a setting for the CFA look to see if
+		// it is recorded in our private TIFF tags.
+		//
+		if (!cfa)
+		{
+			ZTRACE_RUNTIME("CFAType not yet set: Checking DSS private TIFF tags");
+			int32_t cfaValue{ 0 };
+			if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfaValue))
+				cfaValue = 0;
+			if (0 != cfaValue) cfa = true;
+			if (TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
+			{
+				ZTRACE_RUNTIME("CFAType set to %u", cfatype);
+			}
+			else 
+			{
+				cfa = false;
+				cfatype = CFATYPE_NONE;
+			}
+
+		}
+
+		//
+		// If this file is an eight bit TIFF, and purports to have a Bayer pattern
+		// inform the the user that we aren't going to play
+		//
+		if ((1 == spp) &&
+			(8 == bps) &&
+			(CFATYPE_NONE != cfa))
+		{
+			// 
+			// Set CFA type to none even if the TIFF tags specified otherwise
+			//
+			cfatype = CFATYPE_NONE; cfa = false;
+			QString errorMessage{ QCoreApplication::translate("Kernel",
+									"DeepSkyStacker will not de-Bayer 8 bit images",
+									"IDS_8BIT_FITS_NODEBAYER") };
+			DSSBase::instance()->reportError(
+				errorMessage,
+				"Will not de-Bayer 8 bit images",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QErrorMessage);
+		}
+
+
+
 
 		if (bResult)
 			bResult = OnOpen();
@@ -287,163 +469,261 @@ bool CTIFFReader::Read()
 	if (!m_tiff)
 		return false;
 
-	try
+	tmsize_t		scanLineSize;
+
+	if (m_pProgress)
+		m_pProgress->Start2(h);
+
+	scanLineSize = TIFFScanlineSize(m_tiff);
+	ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+	ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
+
+	//
+	// Allocate enough to hold the entire image
+	//
+	tmsize_t buffSize = scanLineSize * h;
+	ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
+	auto buffer = std::make_unique<unsigned char[]>(buffSize);
+	//
+	// The code used to read scan line by scan line and decode each individually
+	// Now try to inhale the whole image in as few calls as possible using
+	// TIFFReadEncodedStrip
+	//
+	auto stripCount = TIFFNumberOfStrips(m_tiff);
+	ZTRACE_RUNTIME("Number of strips is %u", stripCount);
+
+	unsigned char* curr = buffer.get();
+	for (unsigned int i = 0; i < stripCount; i++)
 	{
-		tmsize_t		scanLineSize;
-
-		if (m_pProgress)
-			m_pProgress->Start2(h);
-
-		scanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
-		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
-
-		//
-		// Allocate enough to hold the entire image
-		//
-		tmsize_t buffSize = scanLineSize * h;
-		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		auto buffer = std::make_unique<unsigned char[]>(buffSize);
-		//
-		// The code used to read scan line by scan line and decode each individually
-		// Now try to inhale the whole image in as few calls as possible using
-		// TIFFReadEncodedStrip
-		//
-		auto stripCount = TIFFNumberOfStrips(m_tiff);
-		ZTRACE_RUNTIME("Number of strips is %u", stripCount);
-
-		unsigned char* curr = buffer.get();
-		for (unsigned int i = 0; i < stripCount; i++)
+		const auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
+		if (-1 == count)
 		{
-			const auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
-			if (-1 == count)
+			ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
+			return false;
+		}
+		curr += count; // Increment current buffer pointer
+		if (m_pProgress != nullptr)
+			m_pProgress->Progress2((this->h / 2 * i) / stripCount);
+	}
+
+	std::uint8_t* byteBuff = buffer.get();
+	std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
+	std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
+	float* floatBuff = reinterpret_cast<float*>(byteBuff);
+
+	std::atomic_bool stop { false };
+
+	const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
+	{
+		constexpr double scaleFactor = std::numeric_limits<std::uint16_t>::max() / 256.0;
+		const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
+		return (static_cast<double>(value) - sampleMin) * normalizationFactor;
+	};
+
+	const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const int row, std::predicate<int> auto const& function) -> void
+	{
+		for (int col = 0; col < width; ++col)
+		{
+			if (!function(col))
+				return;
+		}
+		if (progress != nullptr && omp_get_thread_num() == 0)
+			progress->Progress2((height + row) / 2);
+
+	};
+
+	if (sampleformat == SAMPLEFORMAT_IEEEFP)
+	{
+		assert(bps == 32);
+
+		if (spp == 1)
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+			for (int y = 0; y < this->h; ++y)
 			{
-				ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
-				return false;
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+				loopOverPixels(y, [&](const int x) -> bool
+				{
+					//
+					// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+					//
+					if (stop.load()) return false;
+
+					const double gray = normalizeFloatValue(floatBuff[y * w + x]);
+					if (OnRead(x, y, gray, gray, gray))
+						return true;
+					stop = true;
+					return false;				
+				});
 			}
-			curr += count; // Increment current buffer pointer
-			if (m_pProgress != nullptr)
-				m_pProgress->Progress2((this->h / 2 * i) / stripCount);
-		}
-
-		std::uint8_t* byteBuff = buffer.get();
-		std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
-		std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
-		float* floatBuff = reinterpret_cast<float*>(byteBuff);
-
-		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
-		{
-			constexpr double scaleFactor = std::numeric_limits<std::uint16_t>::max() / 256.0;
-			const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
-			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
-		};
-
-		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const int row, const auto& function) -> void
-		{
-			for (int col = 0; col < width; ++col)
-				function(col);
-			if (progress != nullptr && omp_get_thread_num() == 0)
-				progress->Progress2((height + row) / 2);
-		};
-
-		if (sampleformat == SAMPLEFORMAT_IEEEFP)
-		{
-			assert(bps == 32);
-
-			if (spp == 1)
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
-				for (int y = 0; y < this->h; ++y)
-					loopOverPixels(y, [&](const int x) {
-						const double gray = normalizeFloatValue(floatBuff[y * w + x]);
-						OnRead(x, y, gray, gray, gray);
-					});
-			else
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-					loopOverPixels(y, [&](const int x) {
-						const int index = (y * w + x) * spp;
-						const double red = normalizeFloatValue(floatBuff[index]);
-						const double green = normalizeFloatValue(floatBuff[index + 1]);
-						const double blue = normalizeFloatValue(floatBuff[index + 2]);
-						OnRead(x, y, red, green, blue);
-					});
-		}
 		else
-		{
-			if (spp == 1)
-				switch (bps)
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+			for (int y = 0; y < this->h; ++y)
+			{
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+				loopOverPixels(y, [&](const int x) -> bool
 				{
-				case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = byteBuff[y * w + x];
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
-							OnRead(x, y, fGray, fGray, fGray);
-						});
-					} break;
-				}
-			else
-				switch (bps)
-				{
-				case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = byteBuff[index];
-							const double fGreen = byteBuff[index + 1];
-							const double fBlue = byteBuff[index + 2];
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = shortBuff[index] / scaleFactorInt16;
-							const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
-							const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-					for (int y = 0; y < this->h; ++y)
-						loopOverPixels(y, [&](const int x) {
-							const int index = (y * w + x) * spp;
-							const double fRed = u32Buff[index] / scaleFactorInt32;
-							const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
-							const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
-							OnRead(x, y, fRed, fGreen, fBlue);
-						});
-					} break;
-				}
-		}
+					//
+					// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+					//
+					if (stop.load()) return false;
 
-		if (m_pProgress)
-			m_pProgress->End2();
+					const int index = (y * w + x) * spp;
+					const double red = normalizeFloatValue(floatBuff[index]);
+					const double green = normalizeFloatValue(floatBuff[index + 1]);
+					const double blue = normalizeFloatValue(floatBuff[index + 2]);
+					if (OnRead(x, y, red, green, blue))
+						return true;
+					stop = true;
+					return false;
+				});
+			}
 	}
-	catch (...)
+	else
 	{
-		return false;
+		if (spp == 1)
+			switch (bps)
+			{
+			case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = byteBuff[y * w + x];
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+
+					});
+				}
+				} break;
+			case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
+						if (OnRead(x, y, fGray, fGray, fGray))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+
+				} break;
+			}
+		else
+			switch (bps)
+			{
+			case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = byteBuff[index];
+						const double fGreen = byteBuff[index + 1];
+						const double fBlue = byteBuff[index + 2];
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = shortBuff[index] / scaleFactorInt16;
+						const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
+						const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+					});
+				}
+				} break;
+			case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+				{
+					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					loopOverPixels(y, [&](const int x) -> bool
+					{
+						//
+						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+						//
+						if (stop.load()) return false;
+
+						const int index = (y * w + x) * spp;
+						const double fRed = u32Buff[index] / scaleFactorInt32;
+						const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+						const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
+						if (OnRead(x, y, fRed, fGreen, fBlue))
+							return true;
+						stop = true;
+						return false;
+						});
+				}
+				} break;
+			}
 	}
+
+	if (m_pProgress)
+		m_pProgress->End2();
+	if (stop.load()) return false;
 
 	return true;
 };
@@ -555,6 +835,9 @@ bool CTIFFWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
+	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
+	uint64_t dir_offset_EXIF{ 0 };
+	uint16_t count{ 0 };
 
 	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "w");
 	if (m_tiff)
@@ -572,9 +855,43 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLESPERPIXEL, spp);
 			TIFFSetField(m_tiff, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
 			if (spp == 1)
-				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_MINISBLACK);
-			else
-				TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_RGB);
+			{
+				//
+				// Only support CFA types BGGR, GRBG, GBRG, RGGB
+				//
+				if (cfa && cfatype >= static_cast<uint32_t>(CFATYPE_BGGR) && cfatype <= static_cast<uint32_t>(CFATYPE_RGGB))
+				{
+					cfaDimPat = {};
+					// TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, PHOTOMETRIC_CFA);  // Don't use this - breaks too many things
+					cfaDimPat.dim[0] = 2; cfaDimPat.dim[1] = 2;
+					TIFFSetField(m_tiff, TIFFTAG_CFAREPEATPATTERNDIM, cfaDimPat.dim);
+					//
+					// Note that when writing the CFA pattern, need to specify how many
+					// octets are to be written.
+					//
+					switch (cfatype)
+					{
+					case CFATYPE_BGGR:
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, sizeof(cfaDimPat.cfa.cfa4));
+						break;
+					case CFATYPE_GRBG:
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, sizeof(cfaDimPat.cfa.cfa4));
+						break;
+					case CFATYPE_GBRG:
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, sizeof(cfaDimPat.cfa.cfa4));
+						break;
+					case CFATYPE_RGGB:
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, sizeof(cfaDimPat.cfa.cfa4));
+						break;
+					}
+					TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, cfaDimPat.cfa.cfa4);
+
+				}
+				photo = PHOTOMETRIC_MINISBLACK;
+			}
+			
+			TIFFSetField(m_tiff, TIFFTAG_PHOTOMETRIC, photo);
+
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLEFORMAT, sampleformat);
 
@@ -603,16 +920,12 @@ bool CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCSTR)temp);
 			}
 
-			if (m_DateTime.wYear)
+			if (m_DateTime.isValid())
 			{
 				// Set the DATETIME TIFF tag
-				CStringA		strDateTime;
+				QString strDateTime = m_DateTime.toString("yyyy:MM:dd hh:mm:ss");
 
-				strDateTime.Format("%04d:%02d:%02d %02d:%02d:%02d",
-								   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
-								   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
-
-				TIFFSetField(m_tiff, TIFFTAG_DATETIME, (LPCSTR)strDateTime);
+				TIFFSetField(m_tiff, TIFFTAG_DATETIME, strDateTime.toStdString().c_str());
 			};
 
 			/* It is good to set resolutions too (but it is not nesessary) */
@@ -621,7 +934,7 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 
 			if (cfa)
-				TIFFSetField(m_tiff, TIFFTAG_DSS_CFA, cfa);
+				TIFFSetField(m_tiff, TIFFTAG_DSS_CFA, cfa ? 1 : 0);
 			if (cfa && cfatype)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_CFATYPE, cfatype);
 
@@ -644,6 +957,110 @@ bool CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
 
             TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
+
+			tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
+			ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+
+			//
+			// Work out how many scanlines fit into the default strip
+			//
+			const unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
+
+			ZTRACE_RUNTIME("Seting TIFFTAG_ROWSPERSTRIP to: %u", rowsPerStrip);
+			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
+
+			int numStrips = h / rowsPerStrip;
+			//
+			// If it wasn't an exact division (IOW there's a remainder), add one
+			// for the final (short) strip.
+			//
+			if (0 != h % rowsPerStrip)
+				++numStrips;
+
+			//
+			// Pre-fill the StripOffsets and StripByteCounts tags with values of zero.
+			// 
+			// The values will be updated when the data is actually written, but the size
+			// of the base IFD won't change which in turn means it can be rewritten in 
+			// the same location as the file is closed.
+			// 
+			//
+			ZTRACE_RUNTIME("Writing %d empty encoded strips", numStrips);
+			for (int strip = 0; strip < numStrips; ++strip)
+			{
+				TIFFWriteEncodedStrip(m_tiff, strip, nullptr, 0);
+			}
+
+			//***************************************************************************
+			// 
+			// Now write the EXIF IFD
+			// 
+			// **************************************************************************
+			
+			//
+			// Set a dummy EXIF tag in the original tiff-structure in order to reserve
+			// space for final dir_offset value, which is properly written at the end.
+			// 
+			// Initially use a value of 0 for dir_offset_EXIF
+			//
+			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
+
+			//
+			// Save current tiff-directory to file before directory is changed.
+			// Otherwise it will be lost! The tif-structure is overwritten/ freshly
+			// initialized by any "CreateDirectory"
+			//
+			TIFFWriteDirectory(m_tiff);
+			//
+			// Get current TIFF Directory so we can return to it
+			//
+			auto currentIFD = TIFFCurrentDirectory(m_tiff);
+			TIFFCreateEXIFDirectory(m_tiff);
+			TIFFSetField(m_tiff, EXIFTAG_EXIFVERSION, exifVersion);
+
+			//
+			// Now we can write EXIF tags we want to ...
+			//
+			if (0.0 != exposureTime)
+			{
+				TIFFSetField(m_tiff, EXIFTAG_EXPOSURETIME, exposureTime);
+			}
+			if (0.0 != aperture)
+			{
+				TIFFSetField(m_tiff, EXIFTAG_FNUMBER, aperture);
+			}
+			if (0 != isospeed)
+			{
+				// EXIFTAG_ISOSPEEDRATINGS is array of uint16 according to the EXIF spec
+				count = 1;
+				uint16_t iso_setting{ static_cast<uint16_t>(isospeed) };
+				TIFFSetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, count, &iso_setting);
+			}
+			
+			//
+			// Now write EXIFTAG_CFAPATTERN which is basically what we put into cfaDimPat 
+			// when the other (non-EXIF) CFA related tags were written.
+			//
+			if (cfa)
+			{
+				count = sizeof(cfaDimPat.dim + sizeof(cfaDimPat.cfa.cfa4));
+				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
+			}
+			
+			//
+			// Now that all the EXIF tags are written, need to write the EXIF
+			// custom directory into the file...
+			// 
+			// WriteCustomDirectory returns the actual offset of the EXIF directory.
+			//
+			TIFFWriteCustomDirectory(m_tiff, &dir_offset_EXIF);
+
+			// Go back to the first (main) directory, and set correct value of the
+			// EXIFIFD pointer. Note that the directory is reloaded from the file!
+			//
+			TIFFSetDirectory(m_tiff, currentIFD);
+			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
+			TIFFCheckpointDirectory(m_tiff);
 		}
 		else
 		{
@@ -671,11 +1088,9 @@ bool CTIFFWriter::Write()
 
 	if (m_tiff)
 	{
-		tmsize_t		scanLineSize;
+		tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
 		tdata_t			buff;
 
-		scanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
 		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
 
 		//
@@ -788,22 +1203,12 @@ bool CTIFFWriter::Write()
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
 
-			//
-			// Write the image out as Strips (i.e. not scanline by scanline)
-			// 
-			const unsigned int STRIP_SIZE_DEFAULT = 4'194'304UL;		// 4MB
 
 			//
 			// Work out how many scanlines fit into the default strip
 			//
 			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			
-			//
-			// Handle the case where the scanline is longer the default strip size
-			//
-			// if (0 == rowsPerStrip) rowsPerStrip = 1; 
-			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
-
 			//
 			// From that we derive the number of strips
 			//
@@ -861,6 +1266,14 @@ bool CTIFFWriter::Close()
 	if (m_tiff)
 	{
 		bResult = OnClose();
+		//
+		// Write the updated base IFD to disk.  This is only safe to do if the directory SIZE
+		// hasn't changed at all since the end of the Open() member function.
+		// 
+		// This should be be case if the number of entries in the StripOffsets and StripByteCounts
+		// tags haven't changed.
+		//
+		TIFFWriteDirectory(m_tiff);
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
@@ -895,9 +1308,9 @@ public :
 
 	virtual bool Close() { return OnClose(); }
 
-	virtual bool OnOpen();
+	virtual bool OnOpen() override;
 	void OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
-	virtual bool OnClose();
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -945,6 +1358,7 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 	if (m_Format != TF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, CFAType, bMaster);
+		SetCompression(TC_DEFLATE);
 		if (!isospeed)
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)
@@ -1122,7 +1536,7 @@ public :
 	virtual bool Close() { return OnClose(); };
 
 	virtual bool OnOpen() override;
-	virtual void OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -1187,6 +1601,7 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 	if (static_cast<bool>(m_pBitmap))
 	{
 		bResult = m_pBitmap->Init(w, h);
+
 		m_pBitmap->SetCFA(cfa);
 		if (cfatype != 0)
 		{
@@ -1201,11 +1616,12 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		m_pBitmap->SetAperture(aperture);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString strDescription;
-		if (strMakeModel.GetLength() != 0)
-			strDescription.Format(_T("TIFF (%s)"), static_cast<LPCTSTR>(strMakeModel));
+		QString strDescription;
+		if (!strMakeModel.isEmpty())
+			strDescription = QString("TIFF (%1)").arg(strMakeModel);
 		else
-			strDescription	= "TIFF";
+			strDescription = "TIFF";
+
 		m_pBitmap->SetDescription(strDescription);
 	}
 
@@ -1214,8 +1630,9 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
+bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
+	bool result = true;
 
 	try
 	{
@@ -1226,29 +1643,20 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
+		
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical);
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			e.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		result = false;
 	}
-
-	return;
+	return result;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1286,14 +1694,13 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	if (tiff.Open())
 	{
 		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
-		CString				strMakeModel;
 
-		tiff.GetMakeModel(strMakeModel);
-
-		if (strMakeModel.GetLength())
-			BitmapInfo.m_strFileType = QString("TIFF (%1)").arg(QString::fromWCharArray(strMakeModel.GetString()));
+		QString makeModel{ tiff.getMakeModel() };
+		if (!makeModel.isEmpty())
+			BitmapInfo.m_strFileType = QString("TIFF (%1)").arg(tiff.getMakeModel());
 		else
 			BitmapInfo.m_strFileType = "TIFF";
+
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
 		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();
@@ -1367,9 +1774,8 @@ CTIFFHeader::CTIFFHeader()
 	isospeed = 0;
 	gain = -1;
 	cfatype = 0;
-	cfa = 0;
+	cfa = false;
 	nrframes = 0;
-	m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	w = 0;
 	h = 0;
 	spp = 0;

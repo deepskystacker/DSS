@@ -4,7 +4,7 @@
 <context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="130"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="136"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Срок действия этой бета-версии DeepSkyStacker истек
@@ -78,6 +78,79 @@ At this point all the incoming(and previously registered) images will be stacked
     </message>
 </context>
 <context>
+    <name>Form</name>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="20"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="32"/>
+        <source>status 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="67"/>
+        <source>status 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="90"/>
+        <source>Stacked Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="207"/>
+        <source>Last Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="324"/>
+        <source>Graphs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="332"/>
+        <source>Score</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="339"/>
+        <source>FWHM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="346"/>
+        <source>dX/dY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="353"/>
+        <source>Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="360"/>
+        <source>Sky Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="405"/>
+        <source>Image List</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="416"/>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="427"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LiveEngine</name>
     <message>
         <location filename="../LiveEngine.cpp" line="283"/>
@@ -133,7 +206,7 @@ At this point all the incoming(and previously registered) images will be stacked
 <context>
     <name>MainBoard</name>
     <message>
-        <location filename="../MainBoard.cpp" line="1173"/>
+        <location filename="../MainBoard.cpp" line="1181"/>
         <source>%1 new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -141,7 +214,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1177"/>
+        <location filename="../MainBoard.cpp" line="1185"/>
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
@@ -149,7 +222,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1273"/>
+        <location filename="../MainBoard.cpp" line="1281"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -157,7 +230,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1304"/>
+        <location filename="../MainBoard.cpp" line="1312"/>
         <source>Stop monitoring folder %1
 </source>
         <comment>IDS_LOG_STOPMONITORING</comment>
@@ -165,7 +238,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1320"/>
+        <location filename="../MainBoard.cpp" line="1328"/>
         <source>Start Stacking files
 </source>
         <comment>IDS_LOG_STARTSTACKING</comment>
@@ -173,7 +246,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1321"/>
+        <location filename="../MainBoard.cpp" line="1329"/>
         <source>Stop Stacking files
 </source>
         <comment>IDS_LOG_STOPSTACKING</comment>
@@ -181,7 +254,7 @@ At this point all the incoming(and previously registered) images will be stacked
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1569"/>
+        <location filename="../MainBoard.cpp" line="1577"/>
         <source>An error occurred while sending the email!
 </source>
         <comment>IDS_ERRORSENDINGEMAIL</comment>

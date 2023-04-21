@@ -497,8 +497,7 @@ namespace DSS
 		erase{ nullptr },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
-		dockTitle{ new QLabel(this) },
-		errorMessageDialog { new QErrorMessage(this) }
+		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -528,16 +527,6 @@ namespace DSS
 			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
 
 		retrieveLatestVersionInfo();
-
-		errorMessageDialog->setWindowTitle("DeepSkyStacker");
-
-		//
-		// Hack to access the Icon displayed by QErrorMessage
-		//
-		if (QLabel * eMDI{ errorMessageDialog->findChild<QLabel*>() }; eMDI != nullptr)
-		{
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
-		}
 	}
 
 	StackingDlg::~StackingDlg()
@@ -1166,7 +1155,7 @@ namespace DSS
 		pictureList->tabBar->setShape(QTabBar::TriangularSouth);
 		pictureList->tabBar->setExpanding(false);
 		pictureList->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-		pictureList->tabBar->setCurrentIndex(pictureList->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
+		updateGroupTabs();
 
 		if (!fileList.empty())
 			openFileList(fileList);			// Will call updateListInfo()
@@ -1414,8 +1403,8 @@ namespace DSS
 				if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
 					editStarsPtr->setTransformation(Transformation, vVotedPairs);
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
 				ui->information->setText(m_strShowFile);
 			}
 			else if (!m_strShowFile.isEmpty())
@@ -1425,8 +1414,8 @@ namespace DSS
 				// Display the "Loading filename" with red background gradient while loading in background
 				//
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
 				ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
 					.arg(m_strShowFile));
 				//
@@ -1516,20 +1505,15 @@ namespace DSS
 		//
 		if (auto groupId = Group::whichGroupContains(file); groupId != -1)
 		{
-				//
-				// If the file has already been loaded complain
-				//
-			    QString errorMessage = QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
-					.arg(file.generic_string().c_str())
-					.arg(groupId)
-					.arg(frameList.groupName(groupId));
-
-	#if defined(_CONSOLE)
-				std::cerr << errorMessage.toUtf8().constData();
-	#else
-				errorMessageDialog->showMessage(errorMessage, "Already loaded");
-	#endif
-				return true;
+			//
+			// If the file has already been loaded complain
+			//
+			QString errorMessage{ tr("File %1 was not loaded because it was already loaded in group %2 (%3)")
+				.arg(file.generic_string().c_str())
+				.arg(groupId)
+				.arg(frameList.groupName(groupId)) };
+			DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
+			return true;
 		}
 		return false;
 	}
@@ -2074,7 +2058,7 @@ namespace DSS
 
 	void StackingDlg::retrieveLatestVersionInfo()
 	{
-		//#ifndef DSSBETA
+		#ifndef DSSBETA
 		ZFUNCTRACE_RUNTIME();
 
 		QSettings			settings;
@@ -2091,7 +2075,7 @@ namespace DSS
 			req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 			networkManager->get(req);
 		}
-		//#endif
+		#endif
 	}
 
 	void StackingDlg::registerCheckedImages()
@@ -2183,7 +2167,7 @@ namespace DSS
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
 					emit statusMessage(message);
-					QApplication::beep();
+					if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 					ZTRACE_RUNTIME(message);
 
 					if (bContinue && bStackAfter)
@@ -2463,7 +2447,7 @@ namespace DSS
 				statusMsg.append(" : ").append(message);
 				emit statusMessage(statusMsg);
 			}
-			QApplication::beep();
+			if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 
 			updateCheckedAndOffsets(StackingEngine);
 

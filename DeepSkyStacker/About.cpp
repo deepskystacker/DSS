@@ -57,11 +57,11 @@ About::About(QWidget *parent) :
     copyright = TIFFGetVersion();
     copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
     copyright = copyright.left(copyright.indexOf("Copyright")-1);
-    strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.",
+    strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1997 Sam Leffler\nCopyright © 1991-1997 Silicon Graphics, Inc.",
 				"IDS_ABOUT_TIFF").arg(copyright);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
-    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.remotesensing.org/libtiff/");
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.simplesystems.org/libtiff/");
     strHTML += strText;
 
     strText = tr("FITS decoding by CFitsIO (version %1)\nCopyright NASA",
@@ -78,7 +78,7 @@ About::About(QWidget *parent) :
     {
 		QString lang = it.section(".", 1, 1);
         QString langName = QLocale(lang).nativeLanguageName();
-        langName[0] = langName[0].toUpper();
+        if ("en" == lang) langName = "English";
         ui->comboBox->addItem(langName, lang);
     }
     setLanguage(settings.value("Language", "").toString());

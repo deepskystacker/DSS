@@ -144,7 +144,7 @@ private:
 	std::atomic<int>		m_lNrCometStackable;
 	int						m_lISOSpeed;
 	int						m_lGain;
-	SYSTEMTIME					m_DateTime;
+	QDateTime				m_DateTime;
 	CBitmapExtraInfo			m_ExtraInfo;
 	DSSRect						m_rcResult;
 	double						m_fTotalExposure;
@@ -203,7 +203,6 @@ public:
 		m_bCometInterpolating{ false }
 
 	{
-		m_DateTime.wYear = 0;
 		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
 	}
 

@@ -9,6 +9,14 @@
 #include "FolderDlg.h"
 #include "PJNSMTP.h"
 
+namespace
+{
+	bool CompareBitmapInfoDateTime(const CBitmapInfo& bi1, const CBitmapInfo& bi2)
+	{
+		return bi1.m_DateTime < bi2.m_DateTime;
+	}
+}
+
 const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
 #define TEXT_DARK RGB(200, 200, 200)

@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <chrono>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -235,9 +236,10 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 			CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(AllDepthBitmap.m_pBitmap.get());
 
-			ZASSERTSTATE(nullptr != pCFABitmapInfo);
 			if (pBitmap->IsCFA())
 			{
+				ZASSERTSTATE(nullptr != pCFABitmapInfo);
+
 				if (AllDepthBitmap.m_bDontUseAHD && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 					pCFABitmapInfo->UseBilinear(true);
 
@@ -287,22 +289,28 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			bResult = true;
 		}
 	}
-	catch (std::exception & e)
+	catch (std::exception& e)
 	{
 		const QString errorMessage(e.what());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
-#ifndef _CONSOLE
+#if defined _WINDOWS
 	catch (CException & e)
 	{
-		e.ReportError();
+		TCHAR msg[225]{ 0 };
+		e.GetErrorMessage(msg, sizeof(msg)/sizeof(TCHAR));
 		e.Delete();
-		exit(1);
+		QString errorMessage{ QString::fromWCharArray(msg) };
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
+
 	}
 #endif
 	catch (ZException & ze)
@@ -318,22 +326,20 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			.arg(functionName)
 			.arg(ze.locationAtIndex(0)->lineNumber())
 			.arg(text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
 	catch (...)
 	{
 		const QString errorMessage("Unknown exception caught");
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+
+		//
+		// Report the error and terminate 
+		//
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
 	return bResult;
 }
@@ -415,39 +421,37 @@ bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	bool bResult = false;
 	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
 
-	if (pBitmap.get() != nullptr) // Useless, because make_unique (same as operator new) throws on out-of-memory.
+	GUID rawformat;
+
+	if ((pBitmap->GetType() == ImageTypeBitmap) &&
+		(pBitmap->GetRawFormat(&rawformat) == Ok))
 	{
-		GUID rawformat;
+		bResult = true;
+		if (rawformat == ImageFormatBMP)
+			BitmapInfo.m_strFileType	= "Windows BMP";
+		else if (rawformat == ImageFormatGIF)
+			BitmapInfo.m_strFileType	= "GIF";
+		else if (rawformat == ImageFormatJPEG)
+			BitmapInfo.m_strFileType	= "JPEG";
+		else if (rawformat == ImageFormatPNG)
+			BitmapInfo.m_strFileType	= "PNG";
+		else
+			bResult = false;
 
-		if ((pBitmap->GetType() == ImageTypeBitmap) &&
-			(pBitmap->GetRawFormat(&rawformat) == Ok))
+		RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
+
+		if (bResult)
 		{
-			bResult = true;
-			if (rawformat == ImageFormatBMP)
-				BitmapInfo.m_strFileType	= "Windows BMP";
-			else if (rawformat == ImageFormatGIF)
-				BitmapInfo.m_strFileType	= "GIF";
-			else if (rawformat == ImageFormatJPEG)
-				BitmapInfo.m_strFileType	= "JPEG";
-			else if (rawformat == ImageFormatPNG)
-				BitmapInfo.m_strFileType	= "PNG";
-			else
-				bResult = false;
-
-			RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-
-			if (bResult)
-			{
-				BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
-				BitmapInfo.m_CFAType		= CFATYPE_NONE;
-				BitmapInfo.m_lWidth			= pBitmap->GetWidth();
-				BitmapInfo.m_lHeight		= pBitmap->GetHeight();
-				BitmapInfo.m_lBitPerChannel	= 8;
-				BitmapInfo.m_lNrChannels	= 3;
-				BitmapInfo.m_bCanLoad		= true;
-			}
+			BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
+			BitmapInfo.m_CFAType		= CFATYPE_NONE;
+			BitmapInfo.m_lWidth			= pBitmap->GetWidth();
+			BitmapInfo.m_lHeight		= pBitmap->GetHeight();
+			BitmapInfo.m_lBitPerChannel	= 8;
+			BitmapInfo.m_lNrChannels	= 3;
+			BitmapInfo.m_bCanLoad		= true;
 		}
 	}
+
 	return bResult;
 }
 
@@ -874,7 +878,7 @@ namespace {
 
 	using InfoCache = concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
-	SYSTEMTIME g_BitmapInfoTime;
+	QDateTime g_BitmapInfoTime{ QDateTime::currentDateTime() };
 	std::shared_mutex bitmapInfoMutex;
 }
 
@@ -885,31 +889,16 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	QString name{ QString::fromWCharArray(szFileName) };
 	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
+	auto now{ QDateTime::currentDateTime() };	// local time
 
 	// First try to find the info in the cache
 	if (!g_sBitmapInfoCache.empty())
 	{
 		// Check that the cache is not old (more than 5 minutes)
-		SYSTEMTIME			st;
-		FILETIME			ft1, ft2;
-		ULARGE_INTEGER		ulft1, ulft2;
+		constexpr qint64 maxAge{ 300 };		// 300 seconds == 5 minutes
+		auto age{ g_BitmapInfoTime.secsTo(now) };
 
-		GetSystemTime(&st);
-
-		SystemTimeToFileTime(&g_BitmapInfoTime, &ft1);
-		SystemTimeToFileTime(&st, &ft2);
-
-		ulft1.LowPart = ft1.dwLowDateTime;
-		ulft1.HighPart = ft1.dwHighDateTime;
-
-		ulft2.LowPart = ft2.dwLowDateTime;
-		ulft2.HighPart = ft2.dwHighDateTime;
-
-		const std::int64_t diff = ulft2.QuadPart - ulft1.QuadPart;
-
-		// diff is in 100 of nanoseconds (1e6 millisecond = 1 nanosecond)
-		constexpr std::int64_t MaxDiff = std::int64_t{ 10000 } * 1000 * 60 * 5;
-		if (diff > MaxDiff)
+		if (age > maxAge)
 		{
 			std::lock_guard<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
 			g_sBitmapInfoCache.clear();
@@ -939,33 +928,36 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 		if (bResult)
 		{
-			TCHAR			szTime[200];
-			TCHAR			szDate[200];
-
-			if (!BitmapInfo.m_DateTime.wYear)
+			if (!BitmapInfo.m_DateTime.isValid())
 			{
-				// use the file creation time instead of the EXIF info
-				FILETIME		FileTime;
-				SYSTEMTIME		SystemTime;
+				QFileInfo info{ name };
 
-				GetFileCreationDateTime(szFileName, FileTime);
-				FileTimeToSystemTime(&FileTime, &SystemTime);
-				SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
-				BitmapInfo.m_DateTime = SystemTime;
+				//
+				// This originally used the EXIF info but that wasn't always available, so it was
+				// changed to use the file creation time.  Sadly that's not available in all cases
+				// on Unix like systems so now the code has changed again to use the last modification
+				// time if the creation time is unavailable.
+				//
+				QDateTime birthTime{ info.birthTime() };
+				if (!birthTime.isValid())
+				{
+					birthTime = info.lastModified();
+				}
 
+				BitmapInfo.m_DateTime = birthTime;
 			};
 
-			GetSystemTime(&BitmapInfo.m_InfoTime);
+			BitmapInfo.m_InfoTime = now;
 
-			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
-			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
-			CString strDateTime;
-			strDateTime.Format(_T("%s %s"), szDate, szTime);
-			BitmapInfo.m_strDateTime = QString::fromWCharArray(strDateTime.GetString());
+			//
+			// Originally used ISO 8601 date format yyyy-MM-ddThh:mm:ss - change to use the more
+			// familiar form: yyyy/MM/dd hh:mm:ss
+			//
+			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
 
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
-				GetSystemTime(&g_BitmapInfoTime);
+				g_BitmapInfoTime = now;
 			g_sBitmapInfoCache.insert(BitmapInfo);
 		}
 	}
@@ -990,7 +982,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			"DSS::StackingDlg",
 			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
 
-		DSSBase::instance()->reportError(errorMessage, DSSBase::Severity::Warning);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 		return false;
 	}
@@ -1418,40 +1410,6 @@ void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& f
 	fBlue = max(0.0, min(255.0, fBlue));
 }
 
-
-
-bool CompareBitmapInfoDateTime(const CBitmapInfo& bi1, const CBitmapInfo& bi2)
-{
-	if (bi1.m_DateTime.wYear < bi2.m_DateTime.wYear)
-		return true;
-	else if (bi1.m_DateTime.wYear > bi2.m_DateTime.wYear)
-		return false;
-	else if (bi1.m_DateTime.wMonth < bi2.m_DateTime.wMonth)
-		return true;
-	else if (bi1.m_DateTime.wMonth > bi2.m_DateTime.wMonth)
-		return false;
-	else if (bi1.m_DateTime.wDay < bi2.m_DateTime.wDay)
-		return true;
-	else if (bi1.m_DateTime.wDay > bi2.m_DateTime.wDay)
-		return false;
-	else if (bi1.m_DateTime.wHour < bi2.m_DateTime.wHour)
-		return true;
-	else if (bi1.m_DateTime.wHour > bi2.m_DateTime.wHour)
-		return false;
-	else if (bi1.m_DateTime.wMinute < bi2.m_DateTime.wMinute)
-		return true;
-	else if (bi1.m_DateTime.wMinute > bi2.m_DateTime.wMinute)
-		return false;
-	else if (bi1.m_DateTime.wSecond < bi2.m_DateTime.wSecond)
-		return true;
-	else if (bi1.m_DateTime.wSecond > bi2.m_DateTime.wSecond)
-		return false;
-	else
-		return (bi1.m_DateTime.wMilliseconds < bi2.m_DateTime.wMilliseconds);
-}
-
-
-
 //////////////////////////////////////////////////////////////////////////
 C32BitsBitmap::C32BitsBitmap()
 {
@@ -1651,8 +1609,6 @@ void CBitmapInfo::Init()
 	m_fExposure = 0.0;
 	m_fAperture = 0.0;
 	m_bFITS16bit = false;
-	m_DateTime = { 0 };
-	m_InfoTime = { 0 };
 	m_xBayerOffset = 0;
 	m_yBayerOffset = 0;
 }

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <QStyleHints>
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
 
@@ -33,10 +34,27 @@ static void makeLink(QLabel *label, QString color)
 ExplorerBar::ExplorerBar(QWidget *parent) :
 	QDockWidget(parent),
 	initialised{ false },
-	ui(new Ui::ExplorerBar)
+	ui(new Ui::ExplorerBar),
+	windowColourName{ palette().color(QPalette::ColorRole::Window).name()},	// Default base window colour
+	activeGroupColourName { "lightcyan" }
 {
-	ZTRACE_RUNTIME("Creating Left Panel");
+	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
+#if QT_VERSION >= 0x060500
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+		activeGroupColourName = "darkcyan";
+
+	connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
+		this, &ExplorerBar::onColorSchemeChanged);
+#endif
+
+	ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+	ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+
 	bool value{ traceControl.deleteOnExit() };
 	QString disposition;
 	if (value)
@@ -52,7 +70,7 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	show();
 	activateWindow();
 
-	ZTRACE_RUNTIME("Creating Left Panel - ok");
+	ZTRACE_RUNTIME("Creating Explorer Bar - ok");
 }
 
 ExplorerBar::~ExplorerBar()
@@ -89,6 +107,10 @@ void ExplorerBar::onInitDialog()
 	ui->about->setFont(font);
 	ui->help->setFont(font);
 	ui->traceFileDisposition->setFont(font);
+
+	ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
+
+	connect(ui->enableSounds, &QCheckBox::stateChanged, this, &ExplorerBar::onEnableSoundsStateChanged);
 }
 
 void ExplorerBar::makeLinks()
@@ -439,7 +461,42 @@ void ExplorerBar::onToggleDeletion()
 	update();
 }
 
+void ExplorerBar::onEnableSoundsStateChanged(int state)
+{
+	Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
+	QSettings{}.setValue("Beep", (Qt::Checked == checked));
 
+}
+
+#if QT_VERSION >= 0x060500
+void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
+{
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == scheme)
+		activeGroupColourName = "darkcyan";
+	else
+		activeGroupColourName = "lightcyan";
+
+	windowColourName = palette().color(QPalette::ColorRole::Window).name();	// Default base window colour
+
+	const auto tabID = dssApp->tab();
+	if (IDD_REGISTERING == tabID)
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+	}
+	else
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+	}
+	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+
+	makeLinks();
+}
+#endif
 
 void ExplorerBar::LoadSettingFile()
 {
@@ -536,6 +593,15 @@ void ExplorerBar::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
+		bool value{ traceControl.deleteOnExit() };
+		QString disposition;
+		if (value)
+			disposition = tr("deleted");
+		else
+			disposition = tr("kept");
+
+		ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
+
 		//
 		// The Labels are now plain text labels, so make them into links
 		// just as done by the ctor.
@@ -566,15 +632,15 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 		const auto dwTabID = dssApp->tab();
 		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 		{
-			ui->registerAndStack->setStyleSheet("background-color: lightcyan");
-			ui->processing->setStyleSheet("background-color: rgb(240, 240, 240)");
+			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+			ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 			// Change tab to stacking
 			dssApp->setTab(IDD_STACKING);
 		}
 		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
 		{
-			ui->registerAndStack->setStyleSheet("background-color: rgb(240, 240, 240)");
-			ui->processing->setStyleSheet("background-color: lightcyan");
+			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+			ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 			// Change tab to processing
 			dssApp->setTab(IDD_PROCESSING);
 		};
