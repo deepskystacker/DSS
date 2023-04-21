@@ -593,6 +593,15 @@ void ExplorerBar::changeEvent(QEvent* event)
 	{
 		ui->retranslateUi(this);
 
+		bool value{ traceControl.deleteOnExit() };
+		QString disposition;
+		if (value)
+			disposition = tr("deleted");
+		else
+			disposition = tr("kept");
+
+		ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
+
 		//
 		// The Labels are now plain text labels, so make them into links
 		// just as done by the ctor.

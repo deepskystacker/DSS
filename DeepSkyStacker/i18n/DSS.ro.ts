@@ -42,7 +42,7 @@
     <message>
         <location filename="../About.cpp" line="41"/>
         <source>(Now somewhat out of date)</source>
-        <translation type="unfinished">(Acum oarecum demodat)</translation>
+        <translation>(Acum oarecum demodat)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="51"/>
@@ -51,15 +51,6 @@ Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
         <translation>Decodare fișire RAW de LibRaw (versiune %1)
 Copyright © 1997-2022 LibRaw LLC</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="61"/>
-        <source>TIFF file encoding/decoding by LibTIFF (version %1)
-Copyright © 1988-1996 Sam Leffler
-Copyright © 1991-1996 Silicon Graphics, Inc.</source>
-        <comment>IDS_ABOUT_TIFF</comment>
-        <translation>Codare/decodare fișiere TIFF de LibTIFF (versiune %1)
-Copyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="68"/>
@@ -113,6 +104,16 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="126"/>
         <source>and</source>
         <translation>și</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="61"/>
+        <source>TIFF file encoding/decoding by LibTIFF (version %1)
+Copyright © 1988-1997 Sam Leffler
+Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+        <comment>IDS_ABOUT_TIFF</comment>
+        <translation>Codare/decodare fișiere TIFF de LibTIFF (versiune %1)
+Copyright © 1988-1997 Sam Leffler
+Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="115"/>
@@ -358,43 +359,43 @@ Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a 
         <translation>Aplică cosmetizare - Pixeli Fiebinți</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1340"/>
+        <location filename="../BitmapExt.cpp" line="1332"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Medie</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1343"/>
+        <location filename="../BitmapExt.cpp" line="1335"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Mediană</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1346"/>
+        <location filename="../BitmapExt.cpp" line="1338"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Maxim</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1349"/>
+        <location filename="../BitmapExt.cpp" line="1341"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, Iterații = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1352"/>
+        <location filename="../BitmapExt.cpp" line="1344"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Medie ponderată auto adaptivă (Iterații = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1355"/>
+        <location filename="../BitmapExt.cpp" line="1347"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Entropie medie ponderată</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1358"/>
+        <location filename="../BitmapExt.cpp" line="1350"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Medie Kappa-Sigma (Kappa = %1, Iterații  = %2)</translation>
@@ -618,7 +619,7 @@ Cometa:%1</translation>
         <location filename="../group.cpp" line="120"/>
         <location filename="../ImageListModel.cpp" line="466"/>
         <location filename="../ImageListModel.cpp" line="692"/>
-        <location filename="../StackingDlg.cpp" line="686"/>
+        <location filename="../StackingDlg.cpp" line="675"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
@@ -627,7 +628,7 @@ Cometa:%1</translation>
         <location filename="../group.cpp" line="122"/>
         <location filename="../ImageListModel.cpp" line="476"/>
         <location filename="../ImageListModel.cpp" line="694"/>
-        <location filename="../StackingDlg.cpp" line="688"/>
+        <location filename="../StackingDlg.cpp" line="677"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
@@ -636,7 +637,7 @@ Cometa:%1</translation>
         <location filename="../group.cpp" line="124"/>
         <location filename="../ImageListModel.cpp" line="471"/>
         <location filename="../ImageListModel.cpp" line="696"/>
-        <location filename="../StackingDlg.cpp" line="687"/>
+        <location filename="../StackingDlg.cpp" line="676"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
@@ -645,7 +646,7 @@ Cometa:%1</translation>
         <location filename="../group.cpp" line="126"/>
         <location filename="../ImageListModel.cpp" line="481"/>
         <location filename="../ImageListModel.cpp" line="698"/>
-        <location filename="../StackingDlg.cpp" line="689"/>
+        <location filename="../StackingDlg.cpp" line="678"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
@@ -654,7 +655,7 @@ Cometa:%1</translation>
         <location filename="../group.cpp" line="128"/>
         <location filename="../ImageListModel.cpp" line="462"/>
         <location filename="../ImageListModel.cpp" line="700"/>
-        <location filename="../StackingDlg.cpp" line="685"/>
+        <location filename="../StackingDlg.cpp" line="674"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
@@ -920,12 +921,12 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="822"/>
+        <location filename="../StackingDlg.cpp" line="811"/>
         <source>Rename group</source>
         <translation>Redenumire grup</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="911"/>
+        <location filename="../StackingDlg.cpp" line="900"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -938,43 +939,43 @@ Această operație este ireversibilă și nu poate fi întreruptă.</numerusform
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="662"/>
+        <location filename="../StackingDlg.cpp" line="651"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Folosește ca și cadru de referință</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="666"/>
+        <location filename="../StackingDlg.cpp" line="655"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Bifează</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="668"/>
+        <location filename="../StackingDlg.cpp" line="657"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Debifează</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="671"/>
+        <location filename="../StackingDlg.cpp" line="660"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Șterge din listă</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="677"/>
+        <location filename="../StackingDlg.cpp" line="666"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Copie în clipboard</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="680"/>
+        <location filename="../StackingDlg.cpp" line="669"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Șterge de pe disc...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="710"/>
+        <location filename="../StackingDlg.cpp" line="699"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -985,24 +986,24 @@ Tasta Delete pentru a elimina (nu a șterge) rândurile selectate
 Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="989"/>
-        <location filename="../StackingDlg.cpp" line="1465"/>
+        <location filename="../BitmapExt.cpp" line="981"/>
+        <location filename="../StackingDlg.cpp" line="1454"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1474"/>
+        <location filename="../StackingDlg.cpp" line="1463"/>
         <source>Failed to load image %1</source>
         <translation>Nu s-a putut încărca imaginea %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1777"/>
+        <location filename="../StackingDlg.cpp" line="1761"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="717"/>
+        <location filename="../StackingDlg.cpp" line="706"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Faceți dublu clic aici pentru a ancora/dezancora lista de imagini</translation>
     </message>
@@ -1014,49 +1015,49 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         <translation>Grup Principal</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1430"/>
+        <location filename="../StackingDlg.cpp" line="1419"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Se încarcă %1</translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="499"/>
-        <location filename="../StackingDlg.cpp" line="1522"/>
+        <location filename="../StackingDlg.cpp" line="1511"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Fișierul %1 nu a fost încărcat deoarece a fost deja încărcat în grupul %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1551"/>
+        <location filename="../StackingDlg.cpp" line="1535"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Încarcă Cadre Light...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1555"/>
+        <location filename="../StackingDlg.cpp" line="1539"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Încarcă Cadre Dark...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1573"/>
+        <location filename="../StackingDlg.cpp" line="1557"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Încarcă Cadre Dark Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1561"/>
+        <location filename="../StackingDlg.cpp" line="1545"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Încarcă Cadre Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="674"/>
+        <location filename="../StackingDlg.cpp" line="663"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Proprietati...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="992"/>
+        <location filename="../StackingDlg.cpp" line="981"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -1066,13 +1067,13 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1567"/>
+        <location filename="../StackingDlg.cpp" line="1551"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Încarcă Cadre Bias...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1790"/>
+        <location filename="../StackingDlg.cpp" line="1774"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -1086,37 +1087,37 @@ Cadre Dark Flat: %4
 Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1873"/>
+        <location filename="../StackingDlg.cpp" line="1857"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Încarcă o altă Listă de Fișiere...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2050"/>
+        <location filename="../StackingDlg.cpp" line="2034"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versiunea %1 este disponibil pentru a fi descărcat.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2066"/>
+        <location filename="../StackingDlg.cpp" line="2050"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Cod de eroare verificare version Internet %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2182"/>
+        <location filename="../StackingDlg.cpp" line="2166"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2201"/>
+        <location filename="../StackingDlg.cpp" line="2185"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Trebuie să bifați cadrele light pentru a le înregistra.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2259"/>
+        <location filename="../StackingDlg.cpp" line="2243"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1126,19 +1127,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker are nevoie sa creeze fișiere în aceste directoare în timpul procesării.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2280"/>
+        <location filename="../StackingDlg.cpp" line="2264"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Imaginile bifate nu sunt compatibile: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2284"/>
+        <location filename="../StackingDlg.cpp" line="2268"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Trebuie să bifați cadrele light pentru a le stivui.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2332"/>
+        <location filename="../StackingDlg.cpp" line="2316"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1148,18 +1149,18 @@ Do you want to save the changes?</source>
 Vreți să salvați modificările?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2448"/>
+        <location filename="../StackingDlg.cpp" line="2432"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Timp total de stivuire: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2464"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2544"/>
+        <location filename="../StackingDlg.cpp" line="2528"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1177,22 +1178,22 @@ Vreți să salvați modificările?</translation>
         <translation>Grupul %1</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="120"/>
+        <location filename="../FrameInfo.cpp" line="100"/>
         <source>Width mismatch</source>
         <translation>Lățime necorespunzătoare</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="125"/>
+        <location filename="../FrameInfo.cpp" line="105"/>
         <source>Height mismatch</source>
         <translation>Înălțime necorespunzătoare</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="130"/>
+        <location filename="../FrameInfo.cpp" line="110"/>
         <source>Colour depth mismatch</source>
         <translation>Înălțime necorespunzătoare</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="151"/>
+        <location filename="../FrameInfo.cpp" line="131"/>
         <source>Number of channels mismatch</source>
         <translation>Număr de canale necorespunzător</translation>
     </message>
@@ -1306,14 +1307,14 @@ Faceți clic dreapta pentru a modifica comportamentul.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="85"/>
+        <location filename="../DeepSkyStacker.cpp" line="89"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Această versiune beta a DeepSkyStacker a expirat
 Probabil că puteți obține alta sau puteți descărca versiunea finală de pe site-ul web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="113"/>
+        <location filename="../DeepSkyStacker.cpp" line="117"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -1321,7 +1322,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 (Puteți modifica această opțiune mai târziu din fereastra Despre)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="356"/>
+        <location filename="../DeepSkyStacker.cpp" line="444"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
@@ -1773,6 +1774,16 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>Fișiere FITS</translation>
+    </message>
+</context>
+<context>
+    <name>Kernel</name>
+    <message>
+        <location filename="../FITSUtil.cpp" line="909"/>
+        <location filename="../TIFFUtil.cpp" line="434"/>
+        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
+        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
+        <translation>DeepSkyStacker nu va debayeriza imaginile pe 8 biti</translation>
     </message>
 </context>
 <context>
@@ -2776,43 +2787,43 @@ Doriți să le salvați?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1369"/>
+        <location filename="../BitmapExt.cpp" line="1361"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Medie</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1372"/>
+        <location filename="../BitmapExt.cpp" line="1364"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Mediana</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1375"/>
+        <location filename="../BitmapExt.cpp" line="1367"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Maxim</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1378"/>
+        <location filename="../BitmapExt.cpp" line="1370"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, Iteratii = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1384"/>
+        <location filename="../BitmapExt.cpp" line="1376"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Medie ponderata auto adaptiva (Iteratii = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1390"/>
+        <location filename="../BitmapExt.cpp" line="1382"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Entropie medie ponderata</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1395"/>
+        <location filename="../BitmapExt.cpp" line="1387"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Medie Kappa-Sigma (Kappa = %1, Iteratii  = %2)</translation>
@@ -3344,82 +3355,82 @@ Doriți să le salvați?</translation>
 <context>
     <name>StackingEngine</name>
     <message>
-        <location filename="../StackingEngine.cpp" line="765"/>
-        <location filename="../StackingEngine.cpp" line="822"/>
+        <location filename="../StackingEngine.cpp" line="716"/>
+        <location filename="../StackingEngine.cpp" line="773"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>Calculează offsets</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1128"/>
+        <location filename="../StackingEngine.cpp" line="1079"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>Calculează Imaginea Finală (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1229"/>
+        <location filename="../StackingEngine.cpp" line="1180"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>Stivuiește - Ajustare Bayer - Calculează ajustare</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1239"/>
+        <location filename="../StackingEngine.cpp" line="1190"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>Calculează ajustare %1 din %2</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1294"/>
+        <location filename="../StackingEngine.cpp" line="1245"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>Stivuire - Ajustare Bayer - Aplică ajustare</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1296"/>
+        <location filename="../StackingEngine.cpp" line="1247"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>Calculează ajustarea maximă</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1331"/>
+        <location filename="../StackingEngine.cpp" line="1282"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>Aplică ajustarea</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1402"/>
+        <location filename="../StackingEngine.cpp" line="1353"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>Salvează imaginea Înregistrată și Calibrată în %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1449"/>
-        <location filename="../StackingEngine.cpp" line="1561"/>
-        <location filename="../StackingEngine.cpp" line="1607"/>
+        <location filename="../StackingEngine.cpp" line="1400"/>
+        <location filename="../StackingEngine.cpp" line="1512"/>
+        <location filename="../StackingEngine.cpp" line="1558"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Salvează imaginea Calibrată în %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1836"/>
+        <location filename="../StackingEngine.cpp" line="1787"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>Interpolează cu Adaptive Homogeneity Directed (AHD)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1879"/>
+        <location filename="../StackingEngine.cpp" line="1830"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>Calculează Entropia</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1891"/>
+        <location filename="../StackingEngine.cpp" line="1842"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>Calculează parametrii de Calibrare Fundal</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2123"/>
+        <location filename="../StackingEngine.cpp" line="2074"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -3427,8 +3438,8 @@ Only %3 are available on this drive.</source>
 Doar %3 este disponibil pe acest drive.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2124"/>
-        <location filename="../StackingEngine.cpp" line="2439"/>
+        <location filename="../StackingEngine.cpp" line="2075"/>
+        <location filename="../StackingEngine.cpp" line="2390"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3436,13 +3447,13 @@ Do you really want to continue?</source>
 Sunteți sigur că vreți să continuați?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2280"/>
+        <location filename="../StackingEngine.cpp" line="2231"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Stivuiește %1 din %2 - Offset [%3,%4] - Unghi : %5° </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2288"/>
+        <location filename="../StackingEngine.cpp" line="2239"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3450,7 +3461,7 @@ Sunteți sigur că vreți să continuați?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2290"/>
+        <location filename="../StackingEngine.cpp" line="2241"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3458,7 +3469,7 @@ Sunteți sigur că vreți să continuați?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2438"/>
+        <location filename="../StackingEngine.cpp" line="2389"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3472,7 +3483,7 @@ Verificați/schimbați pragul de detecție pentru stele ca să detectați mai mu
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2449"/>
+        <location filename="../StackingEngine.cpp" line="2400"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Stivuire</translation>
@@ -3902,6 +3913,19 @@ comparativ cu abaterea standard (%1).</translation>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
         <translation>Creează Mască pentru Stea...</translation>
+    </message>
+</context>
+<context>
+    <name>TIFFUtil</name>
+    <message>
+        <location filename="../TIFFUtil.cpp" line="139"/>
+        <source>CFA pattern: %1%2%3%4 is not supported</source>
+        <translation>Modelul CFA: %1%2%3%4 nu este acceptat</translation>
+    </message>
+    <message>
+        <location filename="../TIFFUtil.cpp" line="153"/>
+        <source>CFA pattern dimension: %1x%2 found is not supported</source>
+        <translation>Dimensiunea modelului CFA: %1x%2 găsit nu este acceptată</translation>
     </message>
 </context>
 </TS>
