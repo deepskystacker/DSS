@@ -1,213 +1,185 @@
-// ***************************************************************** -*- C++ -*-
-/*
- * Copyright (C) 2004-2021 Exiv2 authors
- * This program is part of the Exiv2 distribution.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, 5th Floor, Boston, MA 02110-1301 USA.
- */
-#ifndef RIFFVIDEO_HPP
-#define RIFFVIDEO_HPP
+// SPDX-License-Identifier: GPL-2.0-or-later
+#pragma once
 
-// *****************************************************************************
-#include "exiv2lib_export.h"
-
-// included header files
 #include "exif.hpp"
+#include "exiv2lib_export.h"
 #include "image.hpp"
 
-// *****************************************************************************
-// namespace extensions
 namespace Exiv2 {
 
 // *****************************************************************************
 // class definitions
 
-    // Add RIFF to the supported image formats
-    namespace ImageType {
-        const int riff = 20; //!< Treating riff as an image type>
+/*!
+  @brief Class to access RIFF video files.
+ */
+class EXIV2API RiffVideo : public Image {
+ public:
+  //! @name Creators
+  //@{
+  /*!
+    @brief Constructor for a Riff video. Since the constructor
+        can not return a result, callers should check the good() method
+        after object construction to determine success or failure.
+    @param io An auto-pointer that owns a BasicIo instance used for
+        reading and writing image metadata. \b Important: The constructor
+        takes ownership of the passed in BasicIo instance through the
+        auto-pointer. Callers should not continue to use the BasicIo
+        instance after it is passed to this method. Use the Image::io()
+        method to get a temporary reference.
+   */
+  explicit RiffVideo(BasicIo::UniquePtr io);
+  //@}
+
+  //! @name Manipulators
+  //@{
+  void readMetadata() override;
+  void writeMetadata() override;
+  //@}
+
+  //! @name Accessors
+  //@{
+  [[nodiscard]] std::string mimeType() const override;
+  //@}
+
+ protected:
+  class HeaderReader {
+    std::string id_;
+    uint64_t size_ = 0;
+
+   public:
+    explicit HeaderReader(const BasicIo::UniquePtr& io);
+
+    [[nodiscard]] uint64_t getSize() const {
+      return size_;
     }
 
-    /*!
-      @brief Class to access RIFF video files.
-     */
-    class EXIV2LIB_DEPRECATED_EXPORT RiffVideo:public Image
-    {
-    public:
-        //! @name Creators
-        //@{
-        /*!
-          @brief Constructor for a Riff video. Since the constructor
-              can not return a result, callers should check the good() method
-              after object construction to determine success or failure.
-          @param io An auto-pointer that owns a BasicIo instance used for
-              reading and writing image metadata. \b Important: The constructor
-              takes ownership of the passed in BasicIo instance through the
-              auto-pointer. Callers should not continue to use the BasicIo
-              instance after it is passed to this method. Use the Image::io()
-              method to get a temporary reference.
-         */
-        RiffVideo(BasicIo::AutoPtr io);
-        //@}
+    [[nodiscard]] const std::string& getId() const {
+      return id_;
+    }
+  };
 
-        //! @name Manipulators
-        //@{
-        void printStructure(std::ostream& out, PrintStructureOption option,int depth);
-        void readMetadata();
-        void writeMetadata();
-        //@}
+  void readList(const HeaderReader& header_);
 
-        //! @name Accessors
-        //@{
-        std::string mimeType() const;
-        const char* printAudioEncoding(uint64_t i);
-        //@}
+  void readChunk(const HeaderReader& header_);
 
-    protected:
-        /*!
-          @brief Check for a valid tag and decode the block at the current IO
-          position. Calls tagDecoder() or skips to next tag, if required.
-         */
-        void decodeBlock();
-        /*!
-          @brief Interpret tag information, and call the respective function
-              to save it in the respective XMP container. Decodes a Tag
-              Information and saves it in the respective XMP container, if
-              the block size is small.
-          @param buf Data buffer which cotains tag ID.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void tagDecoder(Exiv2::DataBuf& buf, unsigned long size);
-        /*!
-          @brief Interpret Junk tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void junkHandler(long size);
-        /*!
-          @brief Interpret Stream tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void streamHandler(long size);
-        /*!
-          @brief Interpret Stream Format tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void streamFormatHandler(long size);
-        /*!
-          @brief Interpret Riff Header tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void aviHeaderTagsHandler(long size);
-        /*!
-          @brief Interpret Riff List tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void listHandler(long size);
-        /*!
-          @brief Interpret Riff Stream Data tag information, and save it
-              in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-         */
-        void streamDataTagHandler(long size);
-        /*!
-          @brief Interpret INFO tag information, and save it
-              in the respective XMP container.
-         */
-        void infoTagsHandler();
-        /*!
-          @brief Interpret Nikon Tags related to Video information, and
-              save it in the respective XMP container.
-         */
-        void nikonTagsHandler();
-        /*!
-          @brief Interpret OpenDML tag information, and save it
-              in the respective XMP container.
-         */
-        void odmlTagsHandler();
-        //! @brief Skips Particular Blocks of Metadata List.
-        void skipListData();
-        /*!
-          @brief Interprets DateTimeOriginal tag or stream name tag
-              information, and save it in the respective XMP container.
-          @param size Size of the data block used to store Tag Information.
-          @param i parameter used to overload function
-         */
-        void dateTimeOriginal(long size, int i = 0);
-        /*!
-          @brief Calculates Sample Rate of a particular stream.
-          @param buf Data buffer with the dividend.
-          @param divisor The Divisor required to calculate sample rate.
-          @return Return the sample rate of the stream.
-         */
-        double returnSampleRate(Exiv2::DataBuf& buf, long divisor = 1);
-        /*!
-          @brief Calculates Aspect Ratio of a video, and stores it in the
-              respective XMP container.
-          @param width Width of the video.
-          @param height Height of the video.
-         */
-        void fillAspectRatio(long width = 1,long height = 1);
-        /*!
-          @brief Calculates Duration of a video, and stores it in the
-              respective XMP container.
-          @param frame_rate Frame rate of the video.
-          @param frame_count Total number of frames present in the video.
-         */
-        void fillDuration(double frame_rate, long frame_count);
+  void decodeBlocks();
 
-    private:
-        //! @name NOT Implemented
-        //@{
-        //! Copy constructor
-        RiffVideo(const RiffVideo& rhs);
-        //! Assignment operator
-        RiffVideo& operator=(const RiffVideo& rhs);
-        bool equalsRiffTag(Exiv2::DataBuf& buf ,const char* str);
-        //@}
+ private:
+  static bool equal(const std::string& str1, const std::string& str2);
 
-    private:
-        const static int RIFF_TAG_SIZE;
-        const static char* RIFF_CHUNK_HEADER_ICCP;
-        const static char* RIFF_CHUNK_HEADER_EXIF;
-        const static char* RIFF_CHUNK_HEADER_XMP;
-        //! Variable to check the end of metadata traversing.
-        bool continueTraversing_;
-        //! Variable which stores current stream being processsed.
-        int streamType_;
+  /*!
+  @brief Interpret MainAVIHeader (avih) structure, and save it in the respective XMP container.
+  */
+  void readAviHeader();
 
-    }; //Class RiffVideo
+  /*!
+  @brief Interpret stream header list element (strh), and save it in the respective XMP container.
+  */
+  void readStreamHeader();
 
-// *****************************************************************************
-// template, inline and free functions
+  /*!
+  @brief Interpret stream header list element (strf), and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+  */
+  void readStreamFormat(uint64_t size_);
 
-    // These could be static private functions on Image subclasses but then
-    // ImageFactory needs to be made a friend.
-    /*!
-      @brief Create a new RiffVideo instance and return an auto-pointer to it.
-          Caller owns the returned object and the auto-pointer ensures that
-          it will be deleted.
-     */
-    EXIV2LIB_DEPRECATED_EXPORT Image::AutoPtr newRiffInstance(BasicIo::AutoPtr io, bool create);
+  /*!
+  @brief Interpret Additional header data (strd), and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readStreamData(uint64_t size_) const;
 
-    //! Check if the file iIo is a Riff Video.
-    EXIV2LIB_DEPRECATED_EXPORT bool isRiffType(BasicIo& iIo, bool advance);
+  /*!
+  @brief Interpret stream header list element (strn) , and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void StreamName(uint64_t size_) const;
+  /*!
+  @brief Interpret INFO List Chunk, and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readInfoListChunk(uint64_t size_);
 
-}                                       // namespace Exiv2
+  /*!
+  @brief Interpret Riff Stream Data tag information, and save it in the respective XMP container.
+  The Movi - Lists contain Video, Audio, Subtitle and (secondary) index data. Those can be grouped into rec - Lists.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readMoviList(uint64_t size_) const;
+  /*!
+  @brief Interpret Video Properties Header chunk, and save it in the respective XMP container.
+  The video properties header identifies video signal properties associated with a digital video stream in an AVI file
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readVPRPChunk(uint64_t size_) const;
+  /*!
+  @brief Interpret Riff INdex Chunk, and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readIndexChunk(uint64_t size_) const;
+  /*!
+  @brief Interpret Riff Stream Chunk, and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readDataChunk(uint64_t size_) const;
+  /*!
+  @brief Interpret Junk Chunk and save it in the respective XMP container.
+  @param size_ Size of the data block used to store Tag Information.
+ */
+  void readJunk(uint64_t size_) const;
 
-#endif                                  // RIFFVIDEO_HPP
+  static std::string getStreamType(uint32_t stream);
+  /*!
+   @brief Calculates Duration of a video, and stores it in the respective XMP container.
+   @param frame_rate Frame rate of the video.
+   @param frame_count Total number of frames present in the video.
+  */
+  void fillDuration(double frame_rate, size_t frame_count);
+
+  /*!
+   @brief Calculates Aspect Ratio of a video, and stores it in the respective XMP container.
+   @param width Width of the video.
+   @param height Height of the video.
+  */
+  void fillAspectRatio(size_t width, size_t height);
+
+  static constexpr auto CHUNK_HEADER_ICCP = "ICCP";
+  static constexpr auto CHUNK_HEADER_EXIF = "EXIF";
+  static constexpr auto CHUNK_HEADER_XMP = "XMP ";
+
+  /* Chunk header names */
+  static constexpr auto CHUNK_ID_MOVI = "MOVI";
+  static constexpr auto CHUNK_ID_DATA = "DATA";
+  static constexpr auto CHUNK_ID_HDRL = "HDRL";
+  static constexpr auto CHUNK_ID_STRL = "STRL";
+  static constexpr auto CHUNK_ID_LIST = "LIST";
+  static constexpr auto CHUNK_ID_JUNK = "JUNK";
+  static constexpr auto CHUNK_ID_AVIH = "AVIH";
+  static constexpr auto CHUNK_ID_STRH = "STRH";
+  static constexpr auto CHUNK_ID_STRF = "STRF";
+  static constexpr auto CHUNK_ID_FMT = "FMT ";
+  static constexpr auto CHUNK_ID_STRN = "STRN";
+  static constexpr auto CHUNK_ID_STRD = "STRD";
+  static constexpr auto CHUNK_ID_IDIT = "IDIT";
+  static constexpr auto CHUNK_ID_INFO = "INFO";
+  static constexpr auto CHUNK_ID_NCDT = "NCDT";
+  static constexpr auto CHUNK_ID_ODML = "ODML";
+  static constexpr auto CHUNK_ID_VPRP = "VPRP";
+  static constexpr auto CHUNK_ID_IDX1 = "IDX1";
+
+  int streamType_{};
+
+};  // Class RiffVideo
+
+/*
+  @brief Create a new RiffVideo instance and return an auto-pointer to it.
+      Caller owns the returned object and the auto-pointer ensures that
+      it will be deleted.
+ */
+EXIV2API Image::UniquePtr newRiffInstance(BasicIo::UniquePtr io, bool create);
+
+//! Check if the file iIo is a Riff Video.
+EXIV2API bool isRiffType(BasicIo& iIo, bool advance);
+
+}  // namespace Exiv2
