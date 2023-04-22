@@ -974,8 +974,8 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 						{
 							f.seekg(2, std::ios::cur);
 							BitmapInfo.m_lBitPerChannel = f.get();
-							BitmapInfo.m_lWidth = big_endian::read_word(f);
 							BitmapInfo.m_lHeight = big_endian::read_word(f);
+							BitmapInfo.m_lWidth = big_endian::read_word(f);
 							BitmapInfo.m_lNrChannels = f.get();
 							foundSOF = true;
 							break;
