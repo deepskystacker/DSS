@@ -37,6 +37,7 @@
 //
 #include <stdafx.h>
 #include <source_location>
+#include <exiv2/exiv2.hpp>
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -1020,7 +1021,8 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-
+		Exiv2::XmpParser::initialize();
+		::atexit(Exiv2::XmpParser::terminate);
 
 		mainWindow.show();
 		//result = app.run(&theApp);

@@ -2,6 +2,7 @@
 //
 
 #include <stdafx.h>
+#include <exiv2/exiv2.hpp>
 #include "DeepSkyStackerCL.h"
 #include "QtProgressConsole.h"
 #include "FrameList.h"
@@ -369,6 +370,10 @@ int main(int argc, char* argv[])
 #endif
 
 	SetUILanguage();
+
+	Exiv2::XmpParser::initialize();
+	::atexit(Exiv2::XmpParser::terminate);
+
 	DeepSkyStackerCommandLine process(argc, argv);
 
 	process.Run();
