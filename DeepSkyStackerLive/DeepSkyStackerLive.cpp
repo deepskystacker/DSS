@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <exiv2/exiv2.hpp>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "commonresource.h"
@@ -318,6 +319,9 @@ int WINAPI _tWinMain(
 
 		if (!hasExpired())
 		{
+			Exiv2::XmpParser::initialize();
+			::atexit(Exiv2::XmpParser::terminate);
+
 			CLiveSettings liveSettings;
 			liveSettings.LoadFromRegistry();
 
