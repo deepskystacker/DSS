@@ -925,50 +925,29 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
-	TCHAR szExt[_MAX_EXT];
-	CString strExt;
 
-	//
-	// Check the extension - a file with the following extensions
-	// are definitely not considered to be a RAW file
-	// 
-	// .tiff .tif		TIFF files
-	// .jpg .jpeg .jpe	JPEG files
-	// .txt	.html
-	// .dssfilelist
-	//
-	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
-	strExt = szExt;
-	strExt.MakeUpper();
+	CRawDecod dcr(szFileName);
+	bResult = dcr.IsRawFile();
 
-	if ((strExt != _T(".TIF")) && (strExt != _T(".TIFF")) && 
-		strExt != _T(".JPG") && strExt != _T(".JPEG") && strExt != _T(".JPE") &&
-		strExt != _T(".TXT") && strExt != ".HTML" &&
-		strExt != _T(".DSSFILELIST"))
+	if (bResult)
 	{
-		CRawDecod dcr(szFileName);
-		bResult = dcr.IsRawFile();
-
-		if (bResult)
-		{
-			BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName);
-			BitmapInfo.m_strFileType	 = "RAW";
-			if (dcr.IsColorRAW())
-				BitmapInfo.m_CFAType	 = CFATYPE_NONE;
-			else
-				BitmapInfo.m_CFAType	 = dcr.GetCFAType();
-			BitmapInfo.m_lWidth			 = dcr.Width();
-			BitmapInfo.m_lHeight		 = dcr.Height();
-			BitmapInfo.m_lBitPerChannel  = 16;
-			BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
-			BitmapInfo.m_bCanLoad		 = true;
-			BitmapInfo.m_strModel = dcr.getModel();
-			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
-			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
-			BitmapInfo.m_fAperture       = dcr.getAperture();
-			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
-		};
-	}
+		BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileType	 = "RAW";
+		if (dcr.IsColorRAW())
+			BitmapInfo.m_CFAType	 = CFATYPE_NONE;
+		else
+			BitmapInfo.m_CFAType	 = dcr.GetCFAType();
+		BitmapInfo.m_lWidth			 = dcr.Width();
+		BitmapInfo.m_lHeight		 = dcr.Height();
+		BitmapInfo.m_lBitPerChannel  = 16;
+		BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
+		BitmapInfo.m_bCanLoad		 = true;
+		BitmapInfo.m_strModel = dcr.getModel();
+		BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
+		BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
+		BitmapInfo.m_fAperture       = dcr.getAperture();
+		BitmapInfo.m_DateTime		 = dcr.GetDateTime();
+	};
 
 	return bResult;
 };

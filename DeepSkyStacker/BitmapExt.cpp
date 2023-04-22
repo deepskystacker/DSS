@@ -1,5 +1,9 @@
 #include <stdafx.h>
 #include <chrono>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -25,6 +29,9 @@
 #endif//_CONSOLE
 
 using namespace DSS;
+
+const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
+		"kdc", "srf", "arw", "raw", "dng", "ia", "rw2" };
 
 /* ------------------------------------------------------------------- */
 
@@ -401,7 +408,8 @@ bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 				rpBitmap = pBitmap;
 
 				CBitmapInfo bmpInfo;
-				if (RetrieveEXIFInfo(szFileName, bmpInfo))
+				QString name{ QString::fromWCharArray(szFileName) };
+				if (RetrieveEXIFInfo(name, bmpInfo))
 					pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
 				bResult = true;
@@ -410,51 +418,6 @@ bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 	}
 	return bResult;
 }
-
-
-
-
-
-bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
-
-	GUID rawformat;
-
-	if ((pBitmap->GetType() == ImageTypeBitmap) &&
-		(pBitmap->GetRawFormat(&rawformat) == Ok))
-	{
-		bResult = true;
-		if (rawformat == ImageFormatBMP)
-			BitmapInfo.m_strFileType	= "Windows BMP";
-		else if (rawformat == ImageFormatGIF)
-			BitmapInfo.m_strFileType	= "GIF";
-		else if (rawformat == ImageFormatJPEG)
-			BitmapInfo.m_strFileType	= "JPEG";
-		else if (rawformat == ImageFormatPNG)
-			BitmapInfo.m_strFileType	= "PNG";
-		else
-			bResult = false;
-
-		RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-
-		if (bResult)
-		{
-			BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
-			BitmapInfo.m_CFAType		= CFATYPE_NONE;
-			BitmapInfo.m_lWidth			= pBitmap->GetWidth();
-			BitmapInfo.m_lHeight		= pBitmap->GetHeight();
-			BitmapInfo.m_lBitPerChannel	= 8;
-			BitmapInfo.m_lNrChannels	= 3;
-			BitmapInfo.m_bCanLoad		= true;
-		}
-	}
-
-	return bResult;
-}
-
 
 bool C32BitsBitmap::CopyToClipboard()
 {
@@ -882,11 +845,47 @@ namespace {
 	std::shared_mutex bitmapInfoMutex;
 }
 
+namespace little_endian {
+	unsigned read_word(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		return b << 8 | a;
+	}
+
+	unsigned read_dword(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		unsigned c = ins.get();
+		unsigned d = ins.get();
+		return d << 24 | c << 16 | b << 8 | a;
+	}
+}
+
+namespace big_endian {
+	unsigned read_word(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		return a << 8 | b;
+	}
+
+	unsigned read_dword(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		unsigned c = ins.get();
+		unsigned d = ins.get();
+		return a << 24 | b << 16 | c << 8 | d;
+	}
+}
 
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	QString name{ QString::fromWCharArray(szFileName) };
+
 	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
@@ -915,22 +914,134 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		}
 	}
 
+	QFileInfo info{ name };
+	QString extension{ info.suffix().toLower() }; 
+
 	if (!bResult)
 	{
-		if (IsRAWPicture(szFileName, BitmapInfo))
+		QMimeDatabase mimeDB{ };
+		auto mime = mimeDB.mimeTypeForFile(info);
+		bool isJpeg{ false }, isPng{ false };
+		if (mime.inherits("image/jpeg"))
+		{
+			isJpeg = true;
+			BitmapInfo.m_strFileType = "JPEG";
+		}
+		else if (mime.inherits("image/png"))
+		{
+			isPng = true;
+			BitmapInfo.m_strFileType = "PNG";
+		}
+
+		//
+		// Check RAW image file types
+		//
+		if (rawFileExtensions.contains(extension) && IsRAWPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsTIFFPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/tiff") && IsTIFFPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsFITSPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/fits") && IsFITSPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsOtherPicture(szFileName, BitmapInfo))
-			bResult = true;
+		else if (isJpeg || isPng)
+		{
+			QFile file{ name };
+			file.open(QIODevice::ReadOnly);
+			if (file.isOpen())
+			{
+				//
+				// Read the first 64K of the file into a buffer
+				//
+				const QByteArray data{ file.peek(65536LL) };
+				std::string dataString{ data.constData(), 65536ULL };
+				std::istringstream f (dataString);
+				if (isJpeg)
+				{
+					//
+					// It is jpeg - we hope, but check it really is ...
+					//
+					if (big_endian::read_word(f) != 0xFFD8) return false;
+
+					bool foundSOF{ false };
+					while (f)
+					{
+						// seek for next marker
+						int b { 0 };
+						while (f and (f.get() != 0xFF)) /* no body */;
+						while (f and ((b = f.get()) == 0xFF)) /* no body */;
+
+						// the SOF marker contains the image dimensions
+						if ((0xC0 <= b) and (b <= 0xCF) and (b != 0xC4) and (b != 0xC8) and (b != 0xCC))
+						{
+							f.seekg(2, std::ios::cur);
+							BitmapInfo.m_lBitPerChannel = f.get();
+							BitmapInfo.m_lWidth = big_endian::read_word(f);
+							BitmapInfo.m_lHeight = big_endian::read_word(f);
+							BitmapInfo.m_lNrChannels = f.get();
+							foundSOF = true;
+							break;
+						}
+
+						// Otherwise we must skip stuff (like thumbnails...)
+						else
+						{
+							f.seekg(big_endian::read_word(f) - 2, std::ios::cur);
+						}
+					}
+					if (!foundSOF) return false;
+				}
+				else
+				{
+					char header[8] {};
+					constexpr unsigned char pngheader[8]{137, 80, 78, 71, 13, 10, 26, 10};
+
+					//
+					// It must be PNG - but check anyway ...
+					//
+					f.read(header, sizeof(header));
+					if (0 != memcmp(header, pngheader, sizeof(header))) return false;
+
+					constexpr unsigned char IHDR[4]{73, 72, 68, 82}; // IHDR as ascii 
+					char type[4]{};
+
+					//
+					// The first segment MUST be the IHDR segment
+					//
+					uint32_t chunkLength = big_endian::read_dword(f); chunkLength;
+					f.read(type, sizeof(type));
+					if (0 != memcmp(type, IHDR, sizeof(type))) return false;
+
+					BitmapInfo.m_lWidth = big_endian::read_dword(f);
+					BitmapInfo.m_lHeight = big_endian::read_dword(f);
+					BitmapInfo.m_lBitPerChannel = f.get();
+
+					char colorType = f.get();
+					switch (colorType)
+					{
+					case 0:
+					case 4:
+						BitmapInfo.m_lNrChannels = 1;
+						break;
+					case 2:		// RGB
+					case 6:		// RGBA (strictly 4 channels but we say 3)
+						BitmapInfo.m_lNrChannels = 3;
+						break;
+					default:
+						return false;
+					}
+				}
+				BitmapInfo.m_strFileName = name;
+				BitmapInfo.m_CFAType = CFATYPE_NONE;
+				BitmapInfo.m_bCanLoad = true;
+				bResult = true;
+				RetrieveEXIFInfo(name, BitmapInfo);
+			}
+			else return false;
+		}
 
 		if (bResult)
 		{
 			if (!BitmapInfo.m_DateTime.isValid())
 			{
-				QFileInfo info{ name };
 
 				//
 				// This originally used the EXIF info but that wasn't always available, so it was
