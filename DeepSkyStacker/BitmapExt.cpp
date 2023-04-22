@@ -952,7 +952,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 				// Read the first 64K of the file into a buffer
 				//
 				const QByteArray data{ file.peek(65536LL) };
-				std::string dataString{ data.constData(), 65536ULL };
+				const std::string dataString{ data.constData(), 65536ULL };
 				std::istringstream f (dataString);
 				if (isJpeg)
 				{
