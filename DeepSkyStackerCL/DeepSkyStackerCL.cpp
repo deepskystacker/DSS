@@ -2,8 +2,6 @@
 //
 
 #include <stdafx.h>
-#include <exiv2/exiv2.hpp>
-#include <QImageReader>
 #include "DeepSkyStackerCL.h"
 #include "QtProgressConsole.h"
 #include "FrameList.h"

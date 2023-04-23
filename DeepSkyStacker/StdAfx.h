@@ -20,12 +20,19 @@
 #include <afxole.h>
 #include <AFXPRIV.H>
 #include <richole.h>  // for IRichEditOleCallback
+#include <source_location>
 #include <gdiplus.h>
 using namespace Gdiplus;
 
 // Qt Files
 #include <QtWidgets>
 #include <QNetworkReply>
+#include <QStyleHints>
+
+// Dependency Libraries
+#include <exiv2/exiv2.hpp>
+#include <exiv2/exif.hpp>
+#include <exiv2/easyaccess.hpp>
 
 // Standard Libraries
 #include <concurrent_unordered_set.h>

@@ -1,10 +1,4 @@
 #include <stdafx.h>
-#include <atomic>
-#include <chrono>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <iostream>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"

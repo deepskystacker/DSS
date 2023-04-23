@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include <exiv2/exiv2.hpp>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "Ztrace.h"

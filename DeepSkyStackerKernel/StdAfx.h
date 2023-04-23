@@ -38,6 +38,12 @@
 #include <QClipboard>
 #include <QActionGroup>
 #include <QMimeDatabase>
+#include <QStandardPaths>
+
+// Dependency Libraries
+#include <exiv2/exiv2.hpp>
+#include <exiv2/exif.hpp>
+#include <exiv2/easyaccess.hpp>
 
 // Standard Libraries
 #include <concurrent_unordered_set.h>

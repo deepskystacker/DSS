@@ -36,8 +36,6 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
-#include <source_location>
-#include <exiv2/exiv2.hpp>
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"

@@ -36,10 +36,6 @@
 // BitmapInfo.cpp : implementation file
 //
 #include "stdafx.h"
-#include <exiv2/exiv2.hpp>
-#include <exiv2/exif.hpp>
-#include <exiv2/easyaccess.hpp>
-#include <string>
 #include "BitmapInfo.h"
 #include <zexcept.h>
 #include <Ztrace.h>

@@ -34,11 +34,8 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
-#include <ctime>
-#include <filesystem>
 #include "tracecontrol.h"
 #include "ZExcBase.h"
-#include <QStandardPaths>
 
 namespace DSS
 {

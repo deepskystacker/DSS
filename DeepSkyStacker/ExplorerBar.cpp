@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <QStyleHints>
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
 
