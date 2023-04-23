@@ -4,7 +4,7 @@
 <context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="136"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="137"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker&apos;ın bu beta sürümünün süresi doldu
@@ -99,52 +99,52 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="207"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="206"/>
         <source>Last Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="324"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="322"/>
         <source>Graphs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="332"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="330"/>
         <source>Score</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="339"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="337"/>
         <source>FWHM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="346"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="344"/>
         <source>dX/dY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="353"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="351"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="360"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="358"/>
         <source>Sky Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="405"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="403"/>
         <source>Image List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="416"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="414"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="427"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="425"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>

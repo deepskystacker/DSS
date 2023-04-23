@@ -19,43 +19,43 @@
         <translation>Kozmetik uyguluyor - Sıcak Gözeler (Pikseller)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1332"/>
+        <location filename="../BitmapExt.cpp" line="1509"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Ortalama</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1335"/>
+        <location filename="../BitmapExt.cpp" line="1512"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Orta değer</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1338"/>
+        <location filename="../BitmapExt.cpp" line="1515"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>En yüksek değer</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1341"/>
+        <location filename="../BitmapExt.cpp" line="1518"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (kappa= %1,  Tekrarlama= %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1344"/>
+        <location filename="../BitmapExt.cpp" line="1521"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Otamatik Uyabilen Ağırlıklı Ortalama (Tekrarlama = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1347"/>
+        <location filename="../BitmapExt.cpp" line="1524"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Entropi ağırlıklı ortalama</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1350"/>
+        <location filename="../BitmapExt.cpp" line="1527"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Orta değer Kappa-Sigma (Kappa = %1, Tekrarlama = %2)</translation>
@@ -337,7 +337,7 @@
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../BitmapExt.cpp" line="981"/>
+        <location filename="../BitmapExt.cpp" line="1141"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
@@ -1002,25 +1002,25 @@ ve DeepSkyStacker&apos;a referans kare ve diğerleri arasında dönüşüm bulab
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1388"/>
+        <location filename="../RegisterEngine.cpp" line="1389"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>%1 deki Kalibre edilen resim kaydediliyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1417"/>
+        <location filename="../RegisterEngine.cpp" line="1418"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Görüntüleri hizalıyor</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1470"/>
+        <location filename="../RegisterEngine.cpp" line="1472"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Hizalanıyor %1&apos;si (toplam %2)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1481"/>
+        <location filename="../RegisterEngine.cpp" line="1483"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -1028,7 +1028,7 @@ ve DeepSkyStacker&apos;a referans kare ve diğerleri arasında dönüşüm bulab
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1483"/>
+        <location filename="../RegisterEngine.cpp" line="1485"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -1082,43 +1082,43 @@ ve DeepSkyStacker&apos;a referans kare ve diğerleri arasında dönüşüm bulab
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1361"/>
+        <location filename="../BitmapExt.cpp" line="1538"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Ortalama</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1364"/>
+        <location filename="../BitmapExt.cpp" line="1541"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Orta değer</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1367"/>
+        <location filename="../BitmapExt.cpp" line="1544"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>En yüksek değer</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1370"/>
+        <location filename="../BitmapExt.cpp" line="1547"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (kappa= %1,  Tekrarlama= %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1376"/>
+        <location filename="../BitmapExt.cpp" line="1553"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Otamatik Uyabilen Ağırlıklı Ortalama (Tekrarlama = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1382"/>
+        <location filename="../BitmapExt.cpp" line="1559"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Entropi ağırlıklı ortalama</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1387"/>
+        <location filename="../BitmapExt.cpp" line="1564"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Orta değer Kappa-Sigma (Kappa = %1, Tekrarlama = %2)</translation>

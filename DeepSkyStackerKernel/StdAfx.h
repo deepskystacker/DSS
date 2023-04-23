@@ -37,6 +37,7 @@
 #include <QSortFilterProxyModel>
 #include <QClipboard>
 #include <QActionGroup>
+#include <QMimeDatabase>
 
 // Standard Libraries
 #include <concurrent_unordered_set.h>
