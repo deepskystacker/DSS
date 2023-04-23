@@ -386,8 +386,8 @@ bool CTIFFReader::Open()
 		else
 		{
 			CBitmapInfo			BitmapInfo;
-
-			if (RetrieveEXIFInfo(m_strFileName, BitmapInfo))
+			QString name{ QString::fromWCharArray(m_strFileName.GetString()) };
+			if (RetrieveEXIFInfo(name, BitmapInfo))
 			{
 				exposureTime = BitmapInfo.m_fExposure;
 				aperture	 = BitmapInfo.m_fAperture;

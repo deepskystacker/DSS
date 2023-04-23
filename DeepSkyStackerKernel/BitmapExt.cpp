@@ -1,5 +1,10 @@
 #include <stdafx.h>
+#include <atomic>
 #include <chrono>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -25,6 +30,9 @@
 #endif//_CONSOLE
 
 using namespace DSS;
+
+const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
+		"kdc", "srf", "arw", "raw", "dng", "ia", "rw2" };
 
 /* ------------------------------------------------------------------- */
 
@@ -230,7 +238,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, false, pProgress))
+		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -282,9 +290,11 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 			AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap.get());
 
 			//
-			// Create a QImage from the raw data
+			// If FetchPicture didn't create a QImage (which it does when loading a jpeg or png file),
+			// then we need to create a QImage from the raw bitmap data.
 			//
-			AllDepthBitmap.initQImage();
+			if (!AllDepthBitmap.m_Image) 
+				AllDepthBitmap.initQImage();
 
 			bResult = true;
 		}
@@ -345,116 +355,117 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 }
 
 
-bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress)
+bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
+	std::shared_ptr<QImage>& pQImage )
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-	std::shared_ptr<C24BitColorBitmap> pBitmap;
+	const int numberOfProcessors = CMultitask::GetNrProcessors();
+	bool result = false;
 
-	std::unique_ptr<Gdiplus::Bitmap> pSrcBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
-
-	if (static_cast<bool>(pSrcBitmap)) // This is actually useless, because make_unique throws on out-of-memory.
+	//
+	// pQImage better be a nullptr
+	//
+	ZASSERTSTATE(!pQImage);		
+	pQImage = std::make_shared<QImage>(name);	// load the file
+	if (pQImage->isNull())		// If it failed ...
 	{
+		ZTRACE_RUNTIME("Failed to load file into QImage");
+		pQImage.reset();
+		return false;
+	}
+	std::shared_ptr<CMemoryBitmap> pBitmap;
+	int bits { pQImage->bitPlaneCount() };
+	switch (bits)
+	{
+	case 24:
+		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
 		pBitmap = std::make_shared<C24BitColorBitmap>();
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), szFileName);
-		if (static_cast<bool>(pBitmap))
-		{
-			const int lWidth = static_cast<int>(pSrcBitmap->GetWidth());
-			const int lHeight = static_cast<int>(pSrcBitmap->GetHeight());
-
-			Gdiplus::Rect rc(0, 0, lWidth - 1, lHeight - 1);
-			Gdiplus::BitmapData bitmapData;
-
-			if (pProgress != nullptr)
-				pProgress->Start2(lHeight);
-
-			pBitmap->Init(lWidth, lHeight);
-
-			if (pSrcBitmap->LockBits(&rc, Gdiplus::ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Gdiplus::Status::Ok)
-			{
-				std::uint8_t* pBasePixels = static_cast<std::uint8_t*>(bitmapData.Scan0);
-					  
-				std::uint8_t* pRedPixel = pBitmap->GetRedPixel(0, 0);
-				std::uint8_t* pGreenPixel = pBitmap->GetGreenPixel(0, 0);
-				std::uint8_t* pBluePixel = pBitmap->GetBluePixel(0, 0);
-
-				for (int j = 0; j < lHeight; j++)
-				{
-					std::uint8_t* pPixel = pBasePixels;
-
-					for (int i = 0; i < lWidth; i++)
-					{
-						*pBluePixel++ = *pPixel++;
-						*pGreenPixel++ = *pPixel++;
-						*pRedPixel++ = *pPixel++;
-					}
-					if (pProgress != nullptr)
-						pProgress->Progress2(j+1);
-					pBasePixels += std::abs(bitmapData.Stride);
-				}
-
-				if (pProgress != nullptr)
-					pProgress->End2();
-
-				pSrcBitmap->UnlockBits(&bitmapData);
-
-				rpBitmap = pBitmap;
-
-				CBitmapInfo bmpInfo;
-				if (RetrieveEXIFInfo(szFileName, bmpInfo))
-					pBitmap->m_DateTime = bmpInfo.m_DateTime;
-
-				bResult = true;
-			}
-		}
+		break;
+	case 48:
+		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
+		pBitmap = std::make_shared<C48BitColorBitmap>();
+		break;
+	default:
+		pQImage.reset();
+		return false;
 	}
-	return bResult;
-}
+	const int width{ pQImage->width() };
+	const int height{ pQImage->height() };
 
+	if (pProgress != nullptr)
+		pProgress->Start2(height);
 
+	pBitmap->Init(width, height);
+	//
+	// Point to the first RGB quad in the QImage which we
+	// need to cast to QRgb* (which is unsigned int*) from
+	// unsigned char * which is what QImage::bits() returns
+	//
 
-
-
-bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
-
-	GUID rawformat;
-
-	if ((pBitmap->GetType() == ImageTypeBitmap) &&
-		(pBitmap->GetRawFormat(&rawformat) == Ok))
+	auto pImageData{ pQImage->constBits() };
+	auto bytes_per_line = pQImage->bytesPerLine();
+	
+	std::atomic_int loopCtr{ 0 };
+	if (24 == bits)
 	{
-		bResult = true;
-		if (rawformat == ImageFormatBMP)
-			BitmapInfo.m_strFileType	= "Windows BMP";
-		else if (rawformat == ImageFormatGIF)
-			BitmapInfo.m_strFileType	= "GIF";
-		else if (rawformat == ImageFormatJPEG)
-			BitmapInfo.m_strFileType	= "JPEG";
-		else if (rawformat == ImageFormatPNG)
-			BitmapInfo.m_strFileType	= "PNG";
-		else
-			bResult = false;
-
-		RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-
-		if (bResult)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
 		{
-			BitmapInfo.m_strFileName	= QString::fromStdWString(szFileName);
-			BitmapInfo.m_CFAType		= CFATYPE_NONE;
-			BitmapInfo.m_lWidth			= pBitmap->GetWidth();
-			BitmapInfo.m_lHeight		= pBitmap->GetHeight();
-			BitmapInfo.m_lBitPerChannel	= 8;
-			BitmapInfo.m_lNrChannels	= 3;
-			BitmapInfo.m_bCanLoad		= true;
+			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
+			for (int i = 0; i < width; i++)
+			{
+
+				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
+				fRed = qRed(*pRgbPixel);
+				fGreen = qGreen(*pRgbPixel);
+				fBlue = qBlue(*pRgbPixel);
+				pBitmap->SetPixel(i, j,
+					std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+				pRgbPixel++;
+
+			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
+		}
+	}
+	else       // Must be a 48 bit image
+	{
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
+		{
+			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
+			for (int i = 0; i < width; i++)
+			{
+				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
+				fRed = pRgba64Pixel->red();		// Returns quint16 == uint16_t
+				fGreen = pRgba64Pixel->green();
+				fBlue = pRgba64Pixel->blue();
+				pBitmap->SetPixel(i, j,
+					std::clamp(fRed, 0.0, 65535.0),
+					std::clamp(fGreen, 0.0, 65535.0),
+					std::clamp(fBlue, 0.0, 65535.0));
+
+			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
 		}
 	}
 
-	return bResult;
-}
+	if (pProgress != nullptr)
+		pProgress->End2();
 
+	rpBitmap = pBitmap;
+
+	CBitmapInfo bmpInfo;
+	if (RetrieveEXIFInfo(name, bmpInfo))
+		pBitmap->m_DateTime = bmpInfo.m_DateTime;
+
+	result = true;
+
+	return result;
+}
 
 bool C32BitsBitmap::CopyToClipboard()
 {
@@ -882,11 +893,47 @@ namespace {
 	std::shared_mutex bitmapInfoMutex;
 }
 
+namespace little_endian {
+	unsigned read_word(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		return b << 8 | a;
+	}
+
+	unsigned read_dword(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		unsigned c = ins.get();
+		unsigned d = ins.get();
+		return d << 24 | c << 16 | b << 8 | a;
+	}
+}
+
+namespace big_endian {
+	unsigned read_word(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		return a << 8 | b;
+	}
+
+	unsigned read_dword(std::istream& ins)
+	{
+		unsigned a = ins.get();
+		unsigned b = ins.get();
+		unsigned c = ins.get();
+		unsigned d = ins.get();
+		return a << 24 | b << 16 | c << 8 | d;
+	}
+}
 
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	QString name{ QString::fromWCharArray(szFileName) };
+
 	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
@@ -915,22 +962,134 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		}
 	}
 
+	QFileInfo info{ name };
+	QString extension{ info.suffix().toLower() }; 
+
 	if (!bResult)
 	{
-		if (IsRAWPicture(szFileName, BitmapInfo))
+		QMimeDatabase mimeDB{ };
+		auto mime = mimeDB.mimeTypeForFile(info);
+		bool isJpeg{ false }, isPng{ false };
+		if (mime.inherits("image/jpeg"))
+		{
+			isJpeg = true;
+			BitmapInfo.m_strFileType = "JPEG";
+		}
+		else if (mime.inherits("image/png"))
+		{
+			isPng = true;
+			BitmapInfo.m_strFileType = "PNG";
+		}
+
+		//
+		// Check RAW image file types
+		//
+		if (rawFileExtensions.contains(extension) && IsRAWPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsTIFFPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/tiff") && IsTIFFPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsFITSPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/fits") && IsFITSPicture(szFileName, BitmapInfo))
 			bResult = true;
-		else if (IsOtherPicture(szFileName, BitmapInfo))
-			bResult = true;
+		else if (isJpeg || isPng)
+		{
+			QFile file{ name };
+			file.open(QIODevice::ReadOnly);
+			if (file.isOpen())
+			{
+				//
+				// Read the first 64K of the file into a buffer
+				//
+				const QByteArray data{ file.peek(65536LL) };
+				const std::string dataString{ data.constData(), 65536ULL };
+				std::istringstream f (dataString);
+				if (isJpeg)
+				{
+					//
+					// It is jpeg - we hope, but check it really is ...
+					//
+					if (big_endian::read_word(f) != 0xFFD8) return false;
+
+					bool foundSOF{ false };
+					while (f)
+					{
+						// seek for next marker
+						int b { 0 };
+						while (f and (f.get() != 0xFF)) /* no body */;
+						while (f and ((b = f.get()) == 0xFF)) /* no body */;
+
+						// the SOF marker contains the image dimensions
+						if ((0xC0 <= b) and (b <= 0xCF) and (b != 0xC4) and (b != 0xC8) and (b != 0xCC))
+						{
+							f.seekg(2, std::ios::cur);
+							BitmapInfo.m_lBitPerChannel = f.get();
+							BitmapInfo.m_lHeight = big_endian::read_word(f);
+							BitmapInfo.m_lWidth = big_endian::read_word(f);
+							BitmapInfo.m_lNrChannels = f.get();
+							foundSOF = true;
+							break;
+						}
+
+						// Otherwise we must skip stuff (like thumbnails...)
+						else
+						{
+							f.seekg(big_endian::read_word(f) - 2, std::ios::cur);
+						}
+					}
+					if (!foundSOF) return false;
+				}
+				else
+				{
+					char header[8] {};
+					constexpr unsigned char pngheader[8]{137, 80, 78, 71, 13, 10, 26, 10};
+
+					//
+					// It must be PNG - but check anyway ...
+					//
+					f.read(header, sizeof(header));
+					if (0 != memcmp(header, pngheader, sizeof(header))) return false;
+
+					constexpr unsigned char IHDR[4]{73, 72, 68, 82}; // IHDR as ascii 
+					char type[4]{};
+
+					//
+					// The first segment MUST be the IHDR segment
+					//
+					uint32_t chunkLength = big_endian::read_dword(f); chunkLength;
+					f.read(type, sizeof(type));
+					if (0 != memcmp(type, IHDR, sizeof(type))) return false;
+
+					BitmapInfo.m_lWidth = big_endian::read_dword(f);
+					BitmapInfo.m_lHeight = big_endian::read_dword(f);
+					BitmapInfo.m_lBitPerChannel = f.get();
+
+					char colorType = f.get();
+					switch (colorType)
+					{
+					case 0:
+					case 4:
+						BitmapInfo.m_lNrChannels = 1;
+						break;
+					case 2:		// RGB
+					case 6:		// RGBA (strictly 4 channels but we say 3)
+						BitmapInfo.m_lNrChannels = 3;
+						break;
+					default:
+						return false;
+					}
+				}
+				BitmapInfo.m_strFileName = name;
+				BitmapInfo.m_CFAType = CFATYPE_NONE;
+				BitmapInfo.m_bCanLoad = true;
+				bResult = true;
+				RetrieveEXIFInfo(name, BitmapInfo);
+			}
+			else return false;
+		}
 
 		if (bResult)
 		{
 			if (!BitmapInfo.m_DateTime.isValid())
 			{
-				QFileInfo info{ name };
 
 				//
 				// This originally used the EXIF info but that wasn't always available, so it was
@@ -966,12 +1125,13 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* const pProgress)
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
+	ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
-	bool bResult = false;
-
+	bool result{ false };
+	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
 	const auto fileName = filePath.generic_wstring(); // Otherwise szFileName could be a dangling pointer.
 	const wchar_t* szFileName = fileName.c_str();
 
@@ -987,52 +1147,69 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		return false;
 	}
 
+	QFileInfo info{ name };
+	QString extension{ info.suffix().toLower() };
+	QMimeDatabase mimeDB{ };
+	auto mime = mimeDB.mimeTypeForFile(info);
+
+
 	do  // do { ... } while (false); to be able to leave with break;
 	{
 		CBitmapInfo BitmapInfo;
 		int loadResult = 0;
 
-		if (IsRAWPicture(szFileName, BitmapInfo))
-			bResult = LoadRAWPicture(szFileName, rpBitmap, ignoreBrightness, pProgress);
-		if (bResult)
-			break;		// All done - file has been loaded 
-			
-		// Meanings of loadResult:
 		//
-		//		-1		Not a file of the appropriate type
-		//		0		File successfully loaded
-		//		1		File failed to load
+		// Is it a raw file?
 		//
-		// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
-
-		loadResult = LoadTIFFPicture(szFileName, BitmapInfo, rpBitmap, pProgress);
-		if (0 == loadResult)
+		if (rawFileExtensions.contains(extension))			// No need to call IsRawPicture here
 		{
-			bResult = true;
-			break; // All done - file has been loaded 
+			result = LoadRAWPicture(szFileName, rpBitmap, ignoreBrightness, pProgress);
+			break;
 		}
-		else if (1 == loadResult)
-			break; // All done - file failed to load
+
+		//
+		// Maybe it is a TIFF file?
+		//
+		else if (mime.inherits("image/tiff"))
+		{
+			// Meanings of loadResult:
+			//
+			//		-1		Not a file of the appropriate type
+			//		0		File successfully loaded
+			//		1		File failed to load
+			//
+			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
+
+			loadResult = LoadTIFFPicture(szFileName, BitmapInfo, rpBitmap, pProgress);
+			if (0 == loadResult)
+			{
+				result = true;
+				break; // All done - file has been loaded 
+			}
+			else break; // All done - file failed to load
+		}
 
 		//
 		// It wasn't a TIFF file, so try to load a FITS file
 		//
-		loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
-		if (0 == loadResult)
+		else if (mime.inherits("image/fits"))
 		{
-			bResult = true;
-			break;		// All done - file has been loaded 
+			loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			if (0 == loadResult)
+			{
+				result = true;
+				break;		// All done - file has been loaded 
+			}
+			else break;		// All done - file failed to load
 		}
-		else if (1 == loadResult)
-			break;		// All done - file failed to load
 
 		//
 		// It wasn't a FITS file, so try to load other stuff ...
 		//
-		bResult = LoadOtherPicture(szFileName, rpBitmap, pProgress);
+		else result = LoadOtherPicture(name, rpBitmap, pProgress, pQImage);
 
 	} while (false);
-	return bResult;
+	return result;
 }
 
 class CSubtractTask

@@ -1,199 +1,117 @@
+/****************************************************************************
+**
+** Copyright (C) 2023 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+// BitmapInfo.cpp : implementation file
+//
 #include "stdafx.h"
+#include <exiv2/exiv2.hpp>
+#include <exiv2/exif.hpp>
+#include <exiv2/easyaccess.hpp>
+#include <string>
 #include "BitmapInfo.h"
-#include "Ztrace.h"
+#include <zexcept.h>
+#include <Ztrace.h>
 
-bool RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+using namespace Exiv2;
+
+// Type for an Exiv2 Easy access function
+using EasyAccessFct = Exiv2::ExifData::const_iterator(*)(const Exiv2::ExifData&);
+
+bool RetrieveEXIFInfo(const QString& name, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
-	return RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
-}
-
-bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-
-	const auto getExifItem = [pBitmap, &bResult](const PROPID propertyId, const unsigned short type, auto& field) -> void
+	bool result{ false };
+	//
+	// Use Exiv2 C++ class library to retrieve the EXIF information we want
+	//
+	auto image = ImageFactory::open(name.toStdString());
+	ZASSERT(image.get() != nullptr);
+	image->readMetadata();
+	auto& exifData{ image->exifData() };
+	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", name.toUtf8().constData());
+	if (exifData.empty())
 	{
-		const auto dwPropertySize = pBitmap->GetPropertyItemSize(propertyId);
-		if (dwPropertySize != 0)
-		{
-			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
-			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
+		ZTRACE_RUNTIME("No EXIF data found in file");
+		return result;
+	}
 
-			if (pBitmap->GetPropertyItem(propertyId, dwPropertySize, propertyItem) == Gdiplus::Status::Ok && propertyItem->type == type)
-			{
-				if (propertyItem->type == PropertyTagTypeRational)
-				{
-					const std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
-					const std::uint32_t dwNumerator = *pValues;
-					const std::uint32_t dwDenominator = *(pValues + 1);
-					if (dwDenominator != 0)
-					{
-						if constexpr (std::is_same_v<decltype(field), double&>)
-						{
-							field = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
-							bResult = true;
-						}
-					}
-				}
-				else if (propertyItem->type == PropertyTagTypeShort)
-				{
-					if constexpr (std::is_same_v<decltype(field), int&>)
-					{
-						const std::uint16_t* pValue = static_cast<std::uint16_t*>(propertyItem->value);
-						field = static_cast<int>(*pValue);
-						bResult = true;
-					}
-				}
-				else if (propertyItem->type == PropertyTagTypeASCII)
-				{
-					if constexpr (std::is_same_v<decltype(field), QString&>)
-					{
-						field = static_cast<char*>(propertyItem->value);
-						bResult = true;
-					}
-				}
-			}
-		}
-	};
+	ExifData::const_iterator iterator{ };
 
-	if (pBitmap != nullptr)
+	// Exposure time
+	if (iterator = exposureTime(exifData); exifData.end() != iterator)
 	{
-		getExifItem(PropertyTagExifExposureTime, PropertyTagTypeRational, BitmapInfo.m_fExposure);
-		getExifItem(PropertyTagExifFNumber, PropertyTagTypeRational, BitmapInfo.m_fAperture);
-		getExifItem(PropertyTagExifISOSpeed, PropertyTagTypeShort, BitmapInfo.m_lISOSpeed);
+		BitmapInfo.m_fExposure = iterator->toFloat();
+		result = true;
+	}
+	
+	// Aperture
+	if (iterator = fNumber(exifData); exifData.end() != iterator)
+	{
+		BitmapInfo.m_fAperture = iterator->toFloat();
+		result = true;
+	}
+	//else if (iterator = apertureValue(exifData); exifData.end() != iterator)
+	//{
+	//	BitmapInfo.m_fAperture = iterator->toFloat();
+	//	result = true;
+	//}
 
-		getExifItem(PropertyTagEquipModel, PropertyTagTypeASCII, BitmapInfo.m_strModel);
-		BitmapInfo.m_strModel = BitmapInfo.m_strModel.trimmed();
+	// ISO
+	if (iterator = isoSpeed(exifData); exifData.end() != iterator)
+	{
+		BitmapInfo.m_lISOSpeed = iterator->toInt64(0);	// Return 1st element if multi-element IFD
+		result = true;
+	}
 
-		QString strDateTime;
-		getExifItem(PropertyTagDateTime, PropertyTagTypeASCII, strDateTime);
+	// Model
+	if (iterator = model(exifData); exifData.end() != iterator )
+	{
+		BitmapInfo.m_strModel = QString(iterator->toString().c_str()).trimmed();
+		result = true;
+	}
+	
+	// Date/Time
+	if (iterator = dateTimeOriginal(exifData); exifData.end() != iterator)
+	{
+		QString strDateTime{ iterator->toString().c_str() };
+
 		// Parse the string : YYYY:MM:DD hh:mm:ss
 		//                    0123456789012345678
 		BitmapInfo.m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
-
-		//UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
-		//if (dwPropertySize != 0)
-		//{
-		//	auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
-		//	// PropertyTagTypeRational
-		//	Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifExposureTime, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeRational)
-		//		{
-		//			std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
-		//			std::uint32_t dwNumerator, dwDenominator;
-
-		//			dwNumerator = *pValues;
-		//			dwDenominator = *(pValues + 1);
-
-		//			if (dwDenominator != 0)
-		//			{
-		//				BitmapInfo.m_fExposure = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
-		//				bResult = true;
-		//			};
-		//		};
-		//	};
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeRational
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifFNumber, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if (propertyItem->type == PropertyTagTypeRational)
-		//		{
-		//			UINT *			pValues = (UINT*)propertyItem->value;
-		//			UINT			dwNumerator,
-		//				dwDenominator;
-
-		//			dwNumerator = *pValues;
-		//			pValues++;
-		//			dwDenominator = *pValues;
-
-		//			if (dwDenominator)
-		//			{
-		//				BitmapInfo.m_fAperture = (double)dwNumerator / (double)dwDenominator;
-		//				bResult = true;
-		//			};
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeShort
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-
-		//	if (pBitmap->GetPropertyItem(PropertyTagExifISOSpeed, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeShort)
-		//		{
-		//			BitmapInfo.m_lISOSpeed = *((WORD*)propertyItem->value);
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeASCII
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-		//	if (pBitmap->GetPropertyItem(PropertyTagEquipModel, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeASCII)
-		//		{
-		//			BitmapInfo.m_strModel = (char*)propertyItem->value;
-		//			BitmapInfo.m_strModel.TrimRight();
-		//			BitmapInfo.m_strModel.TrimLeft();
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
-		//if (dwPropertySize)
-		//{
-		//	// PropertyTagTypeASCII
-		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-		//	if (pBitmap->GetPropertyItem(PropertyTagDateTime, dwPropertySize, propertyItem) == Ok)
-		//	{
-		//		if(propertyItem->type == PropertyTagTypeASCII)
-		//		{
-		//			CString				strDateTime = (char*)propertyItem->value;
-
-		//			// Parse the string : YYYY/MM/DD hh:mm:ss
-		//			//                    0123456789012345678
-		//			BitmapInfo.m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-		//			BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-		//			BitmapInfo.m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-		//			BitmapInfo.m_DateTime.wHour	 = _ttol(strDateTime.Mid(11, 2));
-		//			BitmapInfo.m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-		//			BitmapInfo.m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
-
-		//			bResult = true;
-		//		};
-		//	};
-
-		//	free(propertyItem);
-		//};
-
-	};
-
-	return bResult;
+		result = true;
+	}
+	
+	return result;
 }

@@ -37,6 +37,7 @@
 //
 #include <stdafx.h>
 #include <source_location>
+#include <exiv2/exiv2.hpp>
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -1022,10 +1023,17 @@ int main(int argc, char* argv[])
 	qRegisterMetaType<PICTURETYPE>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-
+		Exiv2::XmpParser::initialize();
+		::atexit(Exiv2::XmpParser::terminate);
 
 		mainWindow.show();
 		//result = app.run(&theApp);
