@@ -403,17 +403,16 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 	auto pImageData{ pQImage->constBits() };
 	auto bytes_per_line = pQImage->bytesPerLine();
 
-//#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
-	for (int j = 0; j < height; j++)
+	if (24 == bits)
 	{
-		const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
-		const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
-		for (int i = 0; i < width; i++)
+		//#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
 		{
-
-			double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
-			if (24 == bits)
+			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
+			for (int i = 0; i < width; i++)
 			{
+
+				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 				fRed = qRed(*pRgbPixel);
 				fGreen = qGreen(*pRgbPixel);
 				fBlue = qBlue(*pRgbPixel);
@@ -422,9 +421,21 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 					std::clamp(fGreen, 0.0, 255.0),
 					std::clamp(fBlue, 0.0, 255.0));
 				pRgbPixel++;
+
+				if (pProgress != nullptr)
+					pProgress->Progress2(j + 1);
 			}
-			else
+		}
+	}
+	else       // Must be a 48 bit image
+	{
+		//#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
+		{
+			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
+			for (int i = 0; i < width; i++)
 			{
+				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 				fRed = pRgba64Pixel->red();		// Returns quint16 == uint16_t
 				fGreen = pRgba64Pixel->green();
 				fBlue = pRgba64Pixel->blue();
@@ -432,9 +443,9 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 					std::clamp(fRed, 0.0, 65535.0),
 					std::clamp(fGreen, 0.0, 65535.0),
 					std::clamp(fBlue, 0.0, 65535.0));
+				if (pProgress != nullptr)
+					pProgress->Progress2(j + 1);
 			}
-			if (pProgress != nullptr)
-				pProgress->Progress2(j + 1);
 		}
 	}
 
