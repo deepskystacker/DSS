@@ -911,14 +911,14 @@ Clique com o botão direito para alterar o comportamento.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="90"/>
+        <location filename="../DeepSkyStacker.cpp" line="88"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Esta versão beta do DeepSkyStacker expirou
 Você provavelmente pode obter outro ou baixar a versão final do site.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="118"/>
+        <location filename="../DeepSkyStacker.cpp" line="116"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -926,7 +926,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 (voce pode activar-desativar esta opcao mais tarde na janela respectiva)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="446"/>
+        <location filename="../DeepSkyStacker.cpp" line="444"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 não existe ou não é um ficheiro</translation>
     </message>
@@ -996,93 +996,93 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="61"/>
-        <location filename="../ExplorerBar.cpp" line="453"/>
-        <location filename="../ExplorerBar.cpp" line="599"/>
+        <location filename="../ExplorerBar.cpp" line="60"/>
+        <location filename="../ExplorerBar.cpp" line="452"/>
+        <location filename="../ExplorerBar.cpp" line="598"/>
         <source>deleted</source>
         <translation>excluído</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="63"/>
-        <location filename="../ExplorerBar.cpp" line="455"/>
-        <location filename="../ExplorerBar.cpp" line="601"/>
+        <location filename="../ExplorerBar.cpp" line="62"/>
+        <location filename="../ExplorerBar.cpp" line="454"/>
+        <location filename="../ExplorerBar.cpp" line="600"/>
         <source>kept</source>
         <translation>mantido</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="65"/>
-        <location filename="../ExplorerBar.cpp" line="457"/>
-        <location filename="../ExplorerBar.cpp" line="603"/>
+        <location filename="../ExplorerBar.cpp" line="64"/>
+        <location filename="../ExplorerBar.cpp" line="456"/>
+        <location filename="../ExplorerBar.cpp" line="602"/>
         <source>Trace File will be %1</source>
         <translation>O arquivo de rastreamento será %1</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="261"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Registar Configuracoes...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="263"/>
+        <location filename="../ExplorerBar.cpp" line="262"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Integrando Configuracoes...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="305"/>
+        <location filename="../ExplorerBar.cpp" line="304"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurar configuracoes primarias por defeito</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="307"/>
+        <location filename="../ExplorerBar.cpp" line="306"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Carregar configuracoes do DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="311"/>
+        <location filename="../ExplorerBar.cpp" line="310"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Carga...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="372"/>
+        <location filename="../ExplorerBar.cpp" line="371"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Guardar as configuracoes com o DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="376"/>
+        <location filename="../ExplorerBar.cpp" line="375"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Guardar como...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="438"/>
+        <location filename="../ExplorerBar.cpp" line="437"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Ajuda.chm</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="515"/>
+        <location filename="../ExplorerBar.cpp" line="514"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Carregar configuracoes do DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="519"/>
+        <location filename="../ExplorerBar.cpp" line="518"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Configuracoes (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="566"/>
+        <location filename="../ExplorerBar.cpp" line="565"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>DeepSkyStacker Configuracoes (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="562"/>
+        <location filename="../ExplorerBar.cpp" line="561"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Guardar configuracoes do DeepSkyStacker</translation>
@@ -1273,11 +1273,6 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
         <translation>DeepSkyStacker - Propriedades da Imagem</translation>
-    </message>
-    <message>
-        <location filename="../ui/ImageProperties.ui" line="85"/>
-        <source>hh:mm:ss.zzz</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
