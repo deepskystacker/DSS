@@ -232,7 +232,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <BuildAction>lrelease</BuildAction>
       <OutputDir>.\%(RelativeDir)</OutputDir>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
-      <NoObsolete>false</NoObsolete>
+      <NoObsolete>true</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>

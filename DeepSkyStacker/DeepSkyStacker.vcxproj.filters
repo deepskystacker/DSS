@@ -54,12 +54,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="About.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="ExplorerBar.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="AlignmentParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -192,12 +186,6 @@
     <ClCompile Include="RenameGroup.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="QtProgressDlg.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveEditChanges.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -210,28 +198,40 @@
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageProperties.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="About.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BaseDialog.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="imageview.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="toolbar.cpp">
-      <Filter>Dialogs</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="editstars.cpp">
-      <Filter>Dialogs</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imageview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtProgressDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="selectrect.cpp">
-      <Filter>Dialogs</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DeepSkyStacker.cpp">
+    <ClCompile Include="toolbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -848,9 +848,6 @@
     <QtMoc Include="StackSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="About.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="ResultParameters.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -884,9 +881,6 @@
     <QtMoc Include="RawDDPSettings.h">
       <Filter>Dialogs\Settings</Filter>
     </QtMoc>
-    <QtMoc Include="ExplorerBar.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -908,9 +902,6 @@
     <QtMoc Include="RenameGroup.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="SaveEditChanges.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="CheckAbove.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -923,26 +914,35 @@
     <QtMoc Include="BatchStacking.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtProgressDlg.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
-    <QtMoc Include="ImageProperties.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="QElidedLabel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="imageview.h">
-      <Filter>Dialogs</Filter>
+    <QtMoc Include="selectrect.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="toolbar.h">
-      <Filter>Dialogs</Filter>
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SaveEditChanges.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtProgressDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="imageview.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageProperties.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ExplorerBar.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="editstars.h">
-      <Filter>Dialogs</Filter>
+      <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="selectrect.h">
-      <Filter>Dialogs</Filter>
+    <QtMoc Include="About.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
