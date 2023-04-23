@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <sstream>
@@ -358,6 +359,7 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 	std::shared_ptr<QImage>& pQImage )
 {
 	ZFUNCTRACE_RUNTIME();
+	const int numberOfProcessors = CMultitask::GetNrProcessors();
 	bool result = false;
 
 	//
@@ -402,10 +404,11 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 
 	auto pImageData{ pQImage->constBits() };
 	auto bytes_per_line = pQImage->bytesPerLine();
-
+	
+	std::atomic_int loopCtr{ 0 };
 	if (24 == bits)
 	{
-		//#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
@@ -422,14 +425,14 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 					std::clamp(fBlue, 0.0, 255.0));
 				pRgbPixel++;
 
-				if (pProgress != nullptr)
-					pProgress->Progress2(j + 1);
 			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
 		}
 	}
 	else       // Must be a 48 bit image
 	{
-		//#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
@@ -443,9 +446,10 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 					std::clamp(fRed, 0.0, 65535.0),
 					std::clamp(fGreen, 0.0, 65535.0),
 					std::clamp(fBlue, 0.0, 65535.0));
-				if (pProgress != nullptr)
-					pProgress->Progress2(j + 1);
+
 			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
 		}
 	}
 
