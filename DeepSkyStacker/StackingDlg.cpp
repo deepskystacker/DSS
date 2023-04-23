@@ -1460,6 +1460,12 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(m_strShowFile));
+		pictureList->tableView->setEnabled(true);
+		//
+		// Disabling the tableview resulted in it loosing focus
+		// so put the focus back
+		//
+		pictureList->tableView->setFocus(Qt::OtherFocusReason);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)

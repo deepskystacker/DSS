@@ -19,7 +19,8 @@ bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMem
 bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::ProgressBase* pProgress = nullptr);
 bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::ProgressBase* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
 
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, DSS::ProgressBase* const pProgress);
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
+	DSS::ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage);
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
 std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, DSS::ProgressBase* pProgress = nullptr);
 
