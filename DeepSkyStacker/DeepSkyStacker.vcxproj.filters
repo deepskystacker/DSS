@@ -213,19 +213,10 @@
     <ClCompile Include="editstars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExplorerBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageProperties.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="imageview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QtProgressDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="selectrect.cpp">
@@ -233,6 +224,15 @@
     </ClCompile>
     <ClCompile Include="toolbar.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerBar.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageProperties.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -923,19 +923,10 @@
     <QtMoc Include="toolbar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="SaveEditChanges.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="QtProgressDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="imageview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ImageProperties.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ExplorerBar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="editstars.h">
@@ -943,6 +934,15 @@
     </QtMoc>
     <QtMoc Include="About.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageProperties.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="ExplorerBar.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="SaveEditChanges.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
