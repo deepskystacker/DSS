@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_bitmap_filler.h"
-#include "../DeepSkyStacker/GrayBitmap.h"
-#include "../DeepSkyStacker/BitMapFiller.h"
-#include "../DeepSkyStacker/MedianFilterEngine.h"
+#include "avx_bitmap_filler.h"
+#include "GrayBitmap.h"
+#include "BitMapFiller.h"
+#include "MedianFilterEngine.h"
 
 TEST_CASE("OpenMP parallelization", "[OpenMP]")
 {

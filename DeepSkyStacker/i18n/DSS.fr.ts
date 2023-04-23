@@ -29,23 +29,23 @@
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="76"/>
+        <location filename="../About.cpp" line="75"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="34"/>
+        <location filename="../About.cpp" line="33"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
         <translation>DeepSkyStacker version %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="41"/>
+        <location filename="../About.cpp" line="40"/>
         <source>(Now somewhat out of date)</source>
         <translation>(Maintenant un peu dépassé)</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="51"/>
+        <location filename="../About.cpp" line="50"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
@@ -53,7 +53,7 @@ Copyright © 1997-2022 LibRaw LLC</source>
 Copyright © 1997-2022 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="68"/>
+        <location filename="../About.cpp" line="67"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
@@ -61,52 +61,52 @@ Copyright NASA</source>
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="90"/>
+        <location filename="../About.cpp" line="89"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Version espagnole: Ricardo Contreras et l&apos;équipe du site</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="94"/>
+        <location filename="../About.cpp" line="93"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Version tchèque :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="98"/>
+        <location filename="../About.cpp" line="97"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Version italienne :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="102"/>
+        <location filename="../About.cpp" line="101"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Version Catalane :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="106"/>
+        <location filename="../About.cpp" line="105"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Version allemande :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="111"/>
+        <location filename="../About.cpp" line="110"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Version néerlandaise :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="108"/>
-        <location filename="../About.cpp" line="112"/>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="107"/>
+        <location filename="../About.cpp" line="111"/>
+        <location filename="../About.cpp" line="120"/>
+        <location filename="../About.cpp" line="124"/>
         <location filename="../About.cpp" line="125"/>
-        <location filename="../About.cpp" line="126"/>
         <source>and</source>
         <translation>et</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="61"/>
+        <location filename="../About.cpp" line="60"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</source>
@@ -116,31 +116,31 @@ Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="115"/>
+        <location filename="../About.cpp" line="114"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Version Chinoise (traditionnel) :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="119"/>
+        <location filename="../About.cpp" line="118"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Version portugaise :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Version Roumaine :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="128"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Version Russe :</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="132"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Version Turque :</translation>
@@ -343,75 +343,6 @@ Ajoutez les différentes listes que vous souhaitez empiler et cliquez sur OK pou
     </message>
 </context>
 <context>
-    <name>BitmapBase</name>
-    <message>
-        <location filename="../GrayBitmap.cpp" line="527"/>
-        <source>Detecting hot pixels</source>
-        <comment>IDS_REMOVINGHOTPIXELS</comment>
-        <translation>Détection des pixels chauds</translation>
-    </message>
-</context>
-<context>
-    <name>BitmapExt</name>
-    <message>
-        <location filename="../CosmeticEngine.cpp" line="507"/>
-        <source>Applying cosmetic - Hot Pixels</source>
-        <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation>Application de la cosmétique - Pixels Chauds</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1332"/>
-        <source>Average</source>
-        <comment>IDS_RECAP_AVERAGE</comment>
-        <translation>Moyenne</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1335"/>
-        <source>Median</source>
-        <comment>IDS_RECAP_MEDIAN</comment>
-        <translation>Médiane</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1338"/>
-        <source>Maximum</source>
-        <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation>Maximum</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1341"/>
-        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation>Kappa-Sigma (Kappa = %1, Itérations = %2)</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1344"/>
-        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
-        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation>Moyenne pondérée auto adaptative (Itérations = %1)</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1347"/>
-        <source>Entropy Weighted Average</source>
-        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation>Moyenne pondérée par l&apos;entropie</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1350"/>
-        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation>Kappa-Sigma médian (Kappa = %1, Iterations = %2)</translation>
-    </message>
-</context>
-<context>
-    <name>ChannelAlign</name>
-    <message>
-        <location filename="../ChannelAlign.cpp" line="49"/>
-        <source>Aligning Channel</source>
-        <comment>IDS_ALIGNINGCHANNEL</comment>
-        <translation>Alignement du canal</translation>
-    </message>
-</context>
-<context>
     <name>CheckAbove</name>
     <message>
         <location filename="../ui/CheckAbove.ui" line="14"/>
@@ -476,31 +407,6 @@ La comète et les étoiles seront nettes. Ce processus est deux fois plus long.<
     </message>
 </context>
 <context>
-    <name>CosmeticEngine</name>
-    <message>
-        <location filename="../CosmeticEngine.cpp" line="510"/>
-        <location filename="../CosmeticEngine.cpp" line="539"/>
-        <location filename="../CosmeticEngine.cpp" line="595"/>
-        <location filename="../CosmeticEngine.cpp" line="624"/>
-        <source>Creating Median Filtered Image</source>
-        <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation>Creation de l&apos;image du filtre médian</translation>
-    </message>
-    <message>
-        <location filename="../CosmeticEngine.cpp" line="534"/>
-        <location filename="../CosmeticEngine.cpp" line="619"/>
-        <source>Applying cosmetic - Cold Pixels</source>
-        <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
-        <translation>Application de la cosmétique - Pixels Froids</translation>
-    </message>
-    <message>
-        <location filename="../CosmeticEngine.cpp" line="592"/>
-        <source>Applying cosmetic - Hot Pixels</source>
-        <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation>Application de la cosmétique - Pixels Chauds</translation>
-    </message>
-</context>
-<context>
     <name>DSS</name>
     <message>
         <location filename="../StackingDlg.cpp" line="117"/>
@@ -528,36 +434,30 @@ La comète et les étoiles seront nettes. Ce processus est deux fois plus long.<
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
-        <source>Windows Bitmaps (*.bmp)</source>
-        <comment>IDS_FILTER_INPUT</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="130"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fichiers JPEG ou PNG (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="131"/>
+        <location filename="../StackingDlg.cpp" line="130"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fichiers TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="132"/>
+        <location filename="../StackingDlg.cpp" line="131"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fichiers RAW (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="135"/>
+        <location filename="../StackingDlg.cpp" line="134"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fichiers FITS (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="136"/>
+        <location filename="../StackingDlg.cpp" line="135"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Tous les fichiers (*)</translation>
@@ -617,245 +517,34 @@ Comète :%1</translation>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../group.cpp" line="120"/>
-        <location filename="../ImageListModel.cpp" line="466"/>
-        <location filename="../ImageListModel.cpp" line="692"/>
-        <location filename="../StackingDlg.cpp" line="675"/>
+        <location filename="../StackingDlg.cpp" line="674"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../group.cpp" line="122"/>
-        <location filename="../ImageListModel.cpp" line="476"/>
-        <location filename="../ImageListModel.cpp" line="694"/>
-        <location filename="../StackingDlg.cpp" line="677"/>
+        <location filename="../StackingDlg.cpp" line="676"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../group.cpp" line="124"/>
-        <location filename="../ImageListModel.cpp" line="471"/>
-        <location filename="../ImageListModel.cpp" line="696"/>
-        <location filename="../StackingDlg.cpp" line="676"/>
+        <location filename="../StackingDlg.cpp" line="675"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../group.cpp" line="126"/>
-        <location filename="../ImageListModel.cpp" line="481"/>
-        <location filename="../ImageListModel.cpp" line="698"/>
-        <location filename="../StackingDlg.cpp" line="678"/>
+        <location filename="../StackingDlg.cpp" line="677"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../group.cpp" line="128"/>
-        <location filename="../ImageListModel.cpp" line="462"/>
-        <location filename="../ImageListModel.cpp" line="700"/>
-        <location filename="../StackingDlg.cpp" line="674"/>
+        <location filename="../StackingDlg.cpp" line="673"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Image</translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="164"/>
-        <location filename="../ImageListModel.cpp" line="704"/>
-        <source>RGB %1 bit/ch</source>
-        <comment>IDS_FORMAT_RGB</comment>
-        <translation>RGB %1 bits/ch</translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="166"/>
-        <location filename="../ImageListModel.cpp" line="706"/>
-        <source>Gray %1 bit</source>
-        <comment>IDS_FORMAT_GRAY</comment>
-        <translation>Monochrome %1 bits</translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="109"/>
-        <location filename="../ImageListModel.cpp" line="681"/>
-        <source>Master Dark</source>
-        <comment>IDS_TYPE_MASTERDARK</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="111"/>
-        <location filename="../ImageListModel.cpp" line="683"/>
-        <source>Master Dark Flat</source>
-        <comment>IDS_TYPE_MASTERDARKFLAT</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="113"/>
-        <location filename="../ImageListModel.cpp" line="685"/>
-        <source>Master Flat</source>
-        <comment>IDS_TYPE_MASTERFLAT</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="115"/>
-        <location filename="../ImageListModel.cpp" line="687"/>
-        <source>Master Offset</source>
-        <comment>IDS_TYPE_MASTEROFFSET</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="169"/>
-        <location filename="../ImageListModel.cpp" line="709"/>
-        <source>Yes</source>
-        <comment>IDS_YES</comment>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="171"/>
-        <location filename="../ImageListModel.cpp" line="711"/>
-        <source>No</source>
-        <comment>IDS_NO</comment>
-        <translation>Non</translation>
-    </message>
-</context>
-<context>
-    <name>DSS::ImageListModel</name>
-    <message>
-        <location filename="../ImageListModel.cpp" line="222"/>
-        <source>Yes</source>
-        <comment>IDS_YES</comment>
-        <translation>Oui</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="222"/>
-        <source>No</source>
-        <comment>IDS_NO</comment>
-        <translation>Non</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="357"/>
-        <location filename="../ImageListModel.cpp" line="369"/>
-        <source>Double click to change the type</source>
-        <translation>Double-cliquez pour changer le type</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="361"/>
-        <location filename="../ImageListModel.cpp" line="373"/>
-        <source>Double click to edit</source>
-        <translation>Double-cliquez pour modifier</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="390"/>
-        <source>Path</source>
-        <comment>IDS_COLUMN_PATH</comment>
-        <translation>Chemin</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="392"/>
-        <source>File</source>
-        <comment>IDS_COLUMN_FILE</comment>
-        <translation>Fichier</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="394"/>
-        <source>Type</source>
-        <comment>IDS_COLUMN_TYPE</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="396"/>
-        <source>Filter</source>
-        <comment>IDS_COLUMN_FILTER</comment>
-        <translation>Filtre</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="398"/>
-        <source>Score</source>
-        <comment>IDS_COLUMN_SCORE</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="400"/>
-        <source>dX</source>
-        <comment>IDS_COLUMN_DX</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="402"/>
-        <source>dY</source>
-        <comment>IDS_COLUMN_DY</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="404"/>
-        <source>Angle</source>
-        <comment>IDS_COLUMN_ANGLE</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="406"/>
-        <source>Date/Time</source>
-        <comment>IDS_COLUMN_DATETIME</comment>
-        <translation>Date/Heure</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="408"/>
-        <source>Size</source>
-        <comment>IDS_COLUMN_SIZES</comment>
-        <translation>Taille</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="410"/>
-        <source>CFA</source>
-        <comment>IDS_COLUMN_CFA</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="412"/>
-        <source>Depth</source>
-        <comment>IDS_COLUMN_DEPTH</comment>
-        <translation>Profondeur</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="414"/>
-        <source>Info</source>
-        <comment>IDS_COLUMN_INFOS</comment>
-        <translation>Infos</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="416"/>
-        <source>ISO/Gain</source>
-        <comment>IDS_COLUMN_ISO_GAIN</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="418"/>
-        <source>Exposure</source>
-        <comment>IDS_COLUMN_EXPOSURE</comment>
-        <translation>Temps de pose</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="420"/>
-        <source>Aperture</source>
-        <comment>IDS_COLUMN_APERTURE</comment>
-        <translation>Ouverture</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="424"/>
-        <source>#Stars</source>
-        <comment>IDS_COLUMN_STARS</comment>
-        <translation>#Etoiles</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="426"/>
-        <source>Sky Background</source>
-        <comment>IDS_COLUMN_SKYBACKGROUND</comment>
-        <translation>Fond du ciel</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="422"/>
-        <source>FWHM</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -921,12 +610,12 @@ Ctrl + 4 pour basculer en mode 4 coins</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="811"/>
+        <location filename="../StackingDlg.cpp" line="810"/>
         <source>Rename group</source>
         <translation>Renommer le groupe</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="900"/>
+        <location filename="../StackingDlg.cpp" line="899"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -938,43 +627,43 @@ Cette opération ne peut être annulée.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="651"/>
+        <location filename="../StackingDlg.cpp" line="650"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Utiliser comme image de reference</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="655"/>
+        <location filename="../StackingDlg.cpp" line="654"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Cocher</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="657"/>
+        <location filename="../StackingDlg.cpp" line="656"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Décocher</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="660"/>
+        <location filename="../StackingDlg.cpp" line="659"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Enlever de la liste</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="666"/>
+        <location filename="../StackingDlg.cpp" line="665"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Copier dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="669"/>
+        <location filename="../StackingDlg.cpp" line="668"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Supprimer du disque ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="699"/>
+        <location filename="../StackingDlg.cpp" line="698"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -985,78 +674,69 @@ Touche Suppr pour supprimer (et non effacer) les lignes sélectionnées
 Bouton droit de la souris pour afficher le menu</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="981"/>
-        <location filename="../StackingDlg.cpp" line="1454"/>
+        <location filename="../StackingDlg.cpp" line="1453"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 n&apos;existe pas ou n&apos;est pas un fichier</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1463"/>
+        <location filename="../StackingDlg.cpp" line="1462"/>
         <source>Failed to load image %1</source>
         <translation>Impossible de charger l&apos;image %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1761"/>
+        <location filename="../StackingDlg.cpp" line="1766"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Images : %1      -      Dark : %2      -      Flat :%3      -   Dark Flat : %4    -      Offset/Bias : %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="706"/>
+        <location filename="../StackingDlg.cpp" line="705"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Double-cliquez ici pour ancrer/détacher la liste d&apos;images</translation>
     </message>
     <message>
-        <location filename="../group.cpp" line="53"/>
-        <location filename="../FrameList.cpp" line="1014"/>
-        <source>Main Group</source>
-        <comment>IDS_MAINGROUP</comment>
-        <translation>Groupe Principal</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1419"/>
+        <location filename="../StackingDlg.cpp" line="1418"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Chargement de %1</translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="499"/>
-        <location filename="../StackingDlg.cpp" line="1511"/>
+        <location filename="../StackingDlg.cpp" line="1516"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Le fichier %1 n&apos;a pas été chargé car il était déjà chargé dans le groupe %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1535"/>
+        <location filename="../StackingDlg.cpp" line="1540"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Ouvrir des images brutes ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1539"/>
+        <location filename="../StackingDlg.cpp" line="1544"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Ouvrir des images de darks ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1557"/>
+        <location filename="../StackingDlg.cpp" line="1562"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Ouvrir des images de dark flats ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1545"/>
+        <location filename="../StackingDlg.cpp" line="1550"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Ouvrir des images de flats ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="663"/>
+        <location filename="../StackingDlg.cpp" line="662"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Propriétés ...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="981"/>
+        <location filename="../StackingDlg.cpp" line="980"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -1065,13 +745,13 @@ Bouton droit de la souris pour afficher le menu</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1551"/>
+        <location filename="../StackingDlg.cpp" line="1556"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Ouvrir des images d&apos;offsets ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1774"/>
+        <location filename="../StackingDlg.cpp" line="1779"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -1085,37 +765,37 @@ Dark Flat : %4
 Offset/Bias : %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1857"/>
+        <location filename="../StackingDlg.cpp" line="1862"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Ouvrir une autre Liste de Fichiers ...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2034"/>
+        <location filename="../StackingDlg.cpp" line="2039"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker version %1 est disponible en téléchargement.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2050"/>
+        <location filename="../StackingDlg.cpp" line="2055"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Code d&apos;erreur Internet de vérification de version %1&#xa0;:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2166"/>
+        <location filename="../StackingDlg.cpp" line="2171"/>
         <source>Total registering time: %1 %2</source>
         <translation>Durée totale d&apos;enregistrement: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2185"/>
+        <location filename="../StackingDlg.cpp" line="2190"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Vous devez cocher des images avant de procéder à l&apos;enregistrement.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2243"/>
+        <location filename="../StackingDlg.cpp" line="2248"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1125,19 +805,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker a besoin de pouvoir créer des fichiers dans ce(s) répertoire(s) lors de ses opérations.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2264"/>
+        <location filename="../StackingDlg.cpp" line="2269"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Les images cochées ne sont pas compatibles : %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2268"/>
+        <location filename="../StackingDlg.cpp" line="2273"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Vous devez cocher des images avant de procéder à l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2316"/>
+        <location filename="../StackingDlg.cpp" line="2321"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1147,18 +827,18 @@ Do you want to save the changes?</source>
 Voulez-vous enregistrer les modifications ?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2432"/>
+        <location filename="../StackingDlg.cpp" line="2437"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Temps total d&apos;empilement: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2464"/>
+        <location filename="../StackingDlg.cpp" line="2469"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Enregistrement de l&apos;image finale dans %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2528"/>
+        <location filename="../StackingDlg.cpp" line="2533"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1167,33 +847,6 @@ Voulez-vous enregistrer les modifications ?</translation>
 %2 (ligne %3):
 
 %4</translation>
-    </message>
-    <message>
-        <location filename="../group.cpp" line="57"/>
-        <location filename="../FrameList.cpp" line="1016"/>
-        <source>Group %1</source>
-        <comment>IDS_GROUPIDMASK</comment>
-        <translation>Groupe %1</translation>
-    </message>
-    <message>
-        <location filename="../FrameInfo.cpp" line="100"/>
-        <source>Width mismatch</source>
-        <translation>Largeurs différentes</translation>
-    </message>
-    <message>
-        <location filename="../FrameInfo.cpp" line="105"/>
-        <source>Height mismatch</source>
-        <translation>Hauteurs différentes</translation>
-    </message>
-    <message>
-        <location filename="../FrameInfo.cpp" line="110"/>
-        <source>Colour depth mismatch</source>
-        <translation>Profondeurs de couleur différentes</translation>
-    </message>
-    <message>
-        <location filename="../FrameInfo.cpp" line="131"/>
-        <source>Number of channels mismatch</source>
-        <translation>Nombre de canaux différents</translation>
     </message>
 </context>
 <context>
@@ -1261,50 +914,9 @@ Clic droit pour changer de comportent.</translation>
     </message>
 </context>
 <context>
-    <name>DarkFrame</name>
-    <message>
-        <location filename="../DarkFrame.cpp" line="582"/>
-        <source>Computing Dark Optimization parameters</source>
-        <comment>IDS_COMPUTINGDARKOPTIMIZATIONFACTOR</comment>
-        <translation>Calcul des paramètres de l&apos;optimisation du dark</translation>
-    </message>
-    <message>
-        <location filename="../DarkFrame.cpp" line="1312"/>
-        <source>Creating Median Filtered Image</source>
-        <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation>Creation de l&apos;image du filtre médian</translation>
-    </message>
-    <message>
-        <location filename="../DarkFrame.cpp" line="1706"/>
-        <source>Detecting Hot Pixels (1/2)</source>
-        <comment>IDS_DETECTINGHOTPIXELS1</comment>
-        <translation>Détection des pixels chauds (1/2)</translation>
-    </message>
-    <message>
-        <location filename="../DarkFrame.cpp" line="1716"/>
-        <source>Detecting Hot Pixels (2/2)</source>
-        <comment>IDS_DETECTINGHOTPIXELS2</comment>
-        <translation>Détection des pixels chauds (2/2)</translation>
-    </message>
-    <message>
-        <location filename="../DarkFrame.cpp" line="1903"/>
-        <source>Optimizing Dark Matching</source>
-        <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
-        <translation>Optimisation du Dark</translation>
-    </message>
-    <message>
-        <location filename="../DarkFrame.cpp" line="1910"/>
-        <location filename="../DarkFrame.cpp" line="1920"/>
-        <location filename="../DarkFrame.cpp" line="1929"/>
-        <source>Subtracting Dark Frame</source>
-        <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation>Soustraction du master dark</translation>
-    </message>
-</context>
-<context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="89"/>
+        <location filename="../DeepSkyStacker.cpp" line="90"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Cette version bêta de DeepSkyStacker a expiré.
@@ -1312,7 +924,7 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="117"/>
+        <location filename="../DeepSkyStacker.cpp" line="118"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -1320,7 +932,7 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
 (Vous pouvez activer ou désactiver cette option plus tard depuis le dialogue d&apos;A propos)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="444"/>
+        <location filename="../DeepSkyStacker.cpp" line="446"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 n&apos;existe pas ou n&apos;est pas un fichier</translation>
     </message>
@@ -1392,18 +1004,21 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
     <message>
         <location filename="../ExplorerBar.cpp" line="61"/>
         <location filename="../ExplorerBar.cpp" line="453"/>
+        <location filename="../ExplorerBar.cpp" line="599"/>
         <source>deleted</source>
         <translation>supprimé</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="63"/>
         <location filename="../ExplorerBar.cpp" line="455"/>
+        <location filename="../ExplorerBar.cpp" line="601"/>
         <source>kept</source>
         <translation>conservé</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="65"/>
         <location filename="../ExplorerBar.cpp" line="457"/>
+        <location filename="../ExplorerBar.cpp" line="603"/>
         <source>Trace File will be %1</source>
         <translation>Le fichier de suivi sera %1</translation>
     </message>
@@ -1659,15 +1274,6 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
     </message>
 </context>
 <context>
-    <name>FlatFrame</name>
-    <message>
-        <location filename="../FlatFrame.cpp" line="131"/>
-        <source>Calibrating Master Flat</source>
-        <comment>IDS_NORMALIZINGMASTERFLAT</comment>
-        <translation>Calibrage du master Flat</translation>
-    </message>
-</context>
-<context>
     <name>ImageProperties</name>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
@@ -1766,31 +1372,6 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>Enregistrer les fichiers intermédiaires au format FITS</translation>
-    </message>
-</context>
-<context>
-    <name>Kernel</name>
-    <message>
-        <location filename="../FITSUtil.cpp" line="909"/>
-        <location filename="../TIFFUtil.cpp" line="434"/>
-        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
-        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation>DeepSkyStacker ne de-Bayer images 8 bits</translation>
-    </message>
-</context>
-<context>
-    <name>MasterFrame</name>
-    <message>
-        <location filename="../MasterFrames.cpp" line="65"/>
-        <source>Subtracting Offset Frame</source>
-        <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation>Soustraction du master offset</translation>
-    </message>
-    <message>
-        <location filename="../MasterFrames.cpp" line="89"/>
-        <source>Applying Flat Frame</source>
-        <comment>IDS_APPLYINGFLAT</comment>
-        <translation>Application du master flat</translation>
     </message>
 </context>
 <context>
@@ -2388,77 +1969,6 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
     </message>
 </context>
 <context>
-    <name>RegisterEngine</name>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="889"/>
-        <source>Registering %1</source>
-        <comment>IDS_REGISTERINGNAME</comment>
-        <translation>Enregistrement de %1</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="918"/>
-        <source>Registering %1 (%2 stars)</source>
-        <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
-        <translation>Enregistrement de %1 (%2 étoiles)</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1065"/>
-        <source>Computing luminances %1</source>
-        <comment>IDS_COMPUTINGLUMINANCE</comment>
-        <translation>Calcul de la luminance de %1</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1245"/>
-        <source>Loading %1 bit/ch %2 picture
-%3</source>
-        <comment>IDS_LOADRGBPICTURE</comment>
-        <translation>Chargement de l&apos;image %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1249"/>
-        <source>Loading %1 bits gray %2 picture
-%3</source>
-        <comment>IDS_LOADGRAYPICTURE</comment>
-        <translation>Chargement de l&apos;image monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1388"/>
-        <source>Saving Calibrated image in %1</source>
-        <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation>Enregistrement de l&apos;image calibrée dans %1</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1417"/>
-        <source>Registering pictures</source>
-        <comment>IDS_REGISTERING</comment>
-        <translation>Enregistrement des images</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1470"/>
-        <source>Registering %1 of %2</source>
-        <comment>IDS_REGISTERINGPICTURE</comment>
-        <translation>Enregistrement %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1481"/>
-        <source>Loading %1 bit/ch %2 light frame
-%3</source>
-        <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>Chargement de l&apos;image %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../RegisterEngine.cpp" line="1483"/>
-        <source>Loading %1 bits gray %2 light frame
-%3</source>
-        <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>Chargement de l&apos;image monochrome %1 bits %2
-%3</translation>
-    </message>
-</context>
-<context>
     <name>RegisterSettings</name>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
@@ -2671,31 +2181,6 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
     </message>
 </context>
 <context>
-    <name>RunningStackingEngine</name>
-    <message>
-        <location filename="../RunningStackingEngine.cpp" line="95"/>
-        <source>Computing Background Calibration parameters</source>
-        <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation>Calcul des paramètres de calibrage du fond</translation>
-    </message>
-    <message>
-        <location filename="../RunningStackingEngine.cpp" line="110"/>
-        <source>Stacking %1 bit/ch %2 light frame
-%3</source>
-        <comment>IDS_STACKRGBLIGHT</comment>
-        <translation>Empilement de l&apos;image %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../RunningStackingEngine.cpp" line="112"/>
-        <source>Stacking %1 bits gray %2 light frame
-%3</source>
-        <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation>Empilement de l&apos;image monochrome %1 bits %2
-%3</translation>
-    </message>
-</context>
-<context>
     <name>SaveEditChanges</name>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
@@ -2759,91 +2244,6 @@ Voulez-vous les enregistrer ?</translation>
         <location filename="../ui/StackRecap.ui" line="38"/>
         <source>Stacking Settings ...</source>
         <translation>Paramètres d&apos;empilement ...</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="65"/>
-        <source>%L1 kB</source>
-        <comment>IDS_RECAP_KILOBYTES</comment>
-        <translation>%L1 ko</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="68"/>
-        <source>%L1 MB</source>
-        <comment>IDS_RECAP_MEGABYTES</comment>
-        <translation>%L1 Mo</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="71"/>
-        <source>%L1 GB</source>
-        <comment>IDS_RECAP_GIGABYTES</comment>
-        <translation>%L1 Go</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1361"/>
-        <source>Average</source>
-        <comment>IDS_RECAP_AVERAGE</comment>
-        <translation>Moyenne</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1364"/>
-        <source>Median</source>
-        <comment>IDS_RECAP_MEDIAN</comment>
-        <translation>Médiane</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1367"/>
-        <source>Maximum</source>
-        <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation>Maximum</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1370"/>
-        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation>Kappa-Sigma (Kappa = %1, Itérations = %2)</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1376"/>
-        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
-        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation>Moyenne pondérée auto adaptative (Itérations = %1)</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1382"/>
-        <source>Entropy Weighted Average</source>
-        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation>Moyenne pondérée par l&apos;entropie</translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="1387"/>
-        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation>Kappa-Sigma médian (Kappa = %1, Iterations = %2)</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="645"/>
-        <source>%1 hr %2 mn %3 s </source>
-        <comment>IDS_EXPOSURETIME3</comment>
-        <translation>%1 h %2 m %3 s </translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="650"/>
-        <source>%1 mn %2 s </source>
-        <comment>IDS_EXPOSURETIME2</comment>
-        <translation>%1 m %2 s </translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="654"/>
-        <source>%1 s </source>
-        <comment>IDS_EXPOSURETIME1</comment>
-        <translation>%1 s </translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="660"/>
-        <location filename="../FrameInfoSupport.h" line="77"/>
-        <source>1/%1 s</source>
-        <comment>IDS_EXPOSUREFORMAT_INF</comment>
-        <translation>1/%1 s</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="176"/>
@@ -3166,24 +2566,6 @@ Voulez-vous les enregistrer ?</translation>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
         <translation>Attention : l&apos;option création des images calibrées et enregistrées a été sélectionnée. Assurez-vous de disposer de suffisament de place libre pour créer les fichiers.</translation>
     </message>
-    <message>
-        <location filename="../FrameInfoSupport.h" line="62"/>
-        <source>%1 hr %2 mn %3 s</source>
-        <comment>IDS_EXPOSURETIME3</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../FrameInfoSupport.h" line="67"/>
-        <source>%1 mn %2 s</source>
-        <comment>IDS_EXPOSURETIME2</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../FrameInfoSupport.h" line="71"/>
-        <source>%1 s</source>
-        <comment>IDS_EXPOSURETIME1</comment>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>StackSettings</name>
@@ -3246,239 +2628,6 @@ Voulez-vous les enregistrer ?</translation>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Sélectionner le répertoire qui va contenir les fichiers temporaires.</translation>
-    </message>
-</context>
-<context>
-    <name>StackedBitmap</name>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="295"/>
-        <source>Loading DSImage</source>
-        <comment>IDS_LOADDSIMAGE</comment>
-        <translation>Chargement d&apos;un fichier DSImage</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="307"/>
-        <location filename="../StackedBitmap.cpp" line="1247"/>
-        <location filename="../StackedBitmap.cpp" line="1342"/>
-        <source>Loading %1</source>
-        <comment>IDS_LOADPICTURE</comment>
-        <translation>Chargement de %1</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="410"/>
-        <source>Saving DSImage File</source>
-        <comment>IDS_SAVINGDSIMAGE</comment>
-        <translation>Enregistrement d&apos;un fichier DSImage</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="412"/>
-        <source>Saving stacked picture in %1 (DSImage)</source>
-        <comment>IDS_SAVEDSIMAGE</comment>
-        <translation>Enregistrement d&apos;une image dans %1 (DSImage)</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="630"/>
-        <source>Processing Image...</source>
-        <comment>IDS_PROCESSINGIMAGE</comment>
-        <translation>Traitement de l&apos;image en cours...</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="900"/>
-        <source>Saving TIFF %1 bit</source>
-        <comment>IDS_SAVINGTIFF</comment>
-        <translation>Enregistrement en TIFF %1 bits</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="903"/>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
-        <source>Saving %1</source>
-        <comment>IDS_SAVINGPICTURE</comment>
-        <translation>Enregistrement de %1</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="950"/>
-        <location filename="../StackedBitmap.cpp" line="989"/>
-        <location filename="../StackedBitmap.cpp" line="1144"/>
-        <location filename="../StackedBitmap.cpp" line="1186"/>
-        <source>Picture saved with settings applied.</source>
-        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation>Image enregistrée avec les ajustements appliqués.</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="952"/>
-        <location filename="../StackedBitmap.cpp" line="991"/>
-        <location filename="../StackedBitmap.cpp" line="1146"/>
-        <location filename="../StackedBitmap.cpp" line="1188"/>
-        <source>Picture saved with settings embedded.</source>
-        <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
-        <translation>Image enregistrée avec les ajustements inclus.</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1093"/>
-        <source>Saving FITS %1 bit</source>
-        <comment>IDS_SAVINGFITS</comment>
-        <translation>Enregistrement en FITS %1 bits</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1242"/>
-        <source>Loading TIFF %1 bit monochrome</source>
-        <comment>IDS_LOADGRAYTIFF</comment>
-        <translation>Chargement d&apos;un fichier TIFF %1 bits monochrome</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1244"/>
-        <source>Loading TIFF %1 bit/ch</source>
-        <comment>IDS_LOADRGBTIFF</comment>
-        <translation>Chargement d&apos;un fichier TIFF %1 bits/ch</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1337"/>
-        <source>Loading FITS %1 bit monochrome</source>
-        <comment>IDS_LOADGRAYFITS</comment>
-        <translation>Chargement d&apos;un fichier FITS %1 bits monochrome</translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1339"/>
-        <source>Loading FITS %1 bit/ch</source>
-        <comment>IDS_LOADRGBFITS</comment>
-        <translation>Chargement d&apos;un fichier FITS %1 bits/ch</translation>
-    </message>
-</context>
-<context>
-    <name>StackingEngine</name>
-    <message>
-        <location filename="../StackingEngine.cpp" line="716"/>
-        <location filename="../StackingEngine.cpp" line="773"/>
-        <source>Computing offsets</source>
-        <comment>IDS_COMPUTINGOFFSETS</comment>
-        <translation>Calcul des décalages</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1079"/>
-        <source>Computing Final Picture (%1)</source>
-        <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
-        <translation>Calcul de l&apos;image (%1)</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1180"/>
-        <source>Stacking - Adjust Bayer - Compute adjustment</source>
-        <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
-        <translation>Empilement - Ajustement Bayer - Calcul de l&apos;ajustement</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1190"/>
-        <source>Compute adjustment %1 of %2</source>
-        <comment>IDS_COMPUTINGADJUSTMENT</comment>
-        <translation>Calcul de l&apos;ajustement %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1245"/>
-        <source>Stacking - Adjust Bayer - Apply adjustment</source>
-        <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
-        <translation>Empilement - Ajustement Bayer - Application de l&apos;ajustement</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1247"/>
-        <source>Compute maximum adjustment</source>
-        <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
-        <translation>Calcul de l&apos;ajustement maximal</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1282"/>
-        <source>Applying adjustment</source>
-        <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
-        <translation>Application de l&apos;ajustement</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1353"/>
-        <source>Saving Registered and Calibrated image in %1</source>
-        <comment>IDS_SAVINGINTERMEDIATE</comment>
-        <translation>Enregistrement de l&apos;image enregistrée et calibrée dans %1</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1400"/>
-        <location filename="../StackingEngine.cpp" line="1512"/>
-        <location filename="../StackingEngine.cpp" line="1558"/>
-        <source>Saving Calibrated image in %1</source>
-        <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation>Enregistrement de l&apos;image calibrée dans %1</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1787"/>
-        <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
-        <comment>IDS_AHDDEMOSAICING</comment>
-        <translation>Interpolation Adaptative Homogène Dirigée (AHD)</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1830"/>
-        <source>Computing Entropy</source>
-        <comment>IDS_COMPUTINGENTROPY</comment>
-        <translation>Calcul de l&apos;entropie</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="1842"/>
-        <source>Computing Background Calibration parameters</source>
-        <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation>Calcul des paramètres de calibrage du fond</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2074"/>
-        <source>The process needs temporarily %1 of free space on the %2 drive.
-Only %3 are available on this drive.</source>
-        <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation>Le processus nécessite temporairement %1 d&apos;espace libre sur le disque %2.
-Il ne reste que %3 libre sur ce disque.</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2075"/>
-        <location filename="../StackingEngine.cpp" line="2390"/>
-        <source>
-Do you really want to continue?</source>
-        <comment>IDS_WANTTOCONTINUE</comment>
-        <translation>
-Voulez-vous réellement continuer ?</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2231"/>
-        <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
-        <comment>IDS_STACKING_PICTURE</comment>
-        <translation>Empilement %1 sur %2 - Décalage [%3,%4] - Angle : %5°</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2239"/>
-        <source>Stacking %1 bit/ch %2 light frame
-%3</source>
-        <comment>IDS_STACKRGBLIGHT</comment>
-        <translation>Empilement de l&apos;image %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2241"/>
-        <source>Stacking %1 bits gray %2 light frame
-%3</source>
-        <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation>Empilement de l&apos;image monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2389"/>
-        <source>Only one frame (out of %1) will be stacked.
-
-You should check/change the star detection threshold to detect more stars
-and help DeepSkyStacker find a transformation between the reference frame and the others.
-</source>
-        <comment>IDS_WARNING_ONLYONEFRAME</comment>
-        <translation>Une seule image (sur %1) sera empilée.
-
-Vous devriez vérifier/modifier le seuil des détection pour détecter plus d&apos;étoiles
-et aider DeepSkyStacker à trouver une transformation entre l&apos;image de référence et les autres.
-</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2400"/>
-        <source>Stacking</source>
-        <comment>IDS_STACKING</comment>
-        <translation>Empilement</translation>
     </message>
 </context>
 <context>
@@ -3651,269 +2800,6 @@ par rapport à l&apos;écart moyen (%1).</translation>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Facteur de multiplication du noir :</translation>
-    </message>
-</context>
-<context>
-    <name>StackingTasks</name>
-    <message>
-        <location filename="../StackingTasks.cpp" line="101"/>
-        <source>Loading %1 bits gray %2 dark frame
-%3</source>
-        <comment>IDS_LOADGRAYDARK</comment>
-        <translation>Chargement de l&apos;image de dark monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="105"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARKFLAT</comment>
-        <translation>Chargement de l&apos;image de dark flat %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="107"/>
-        <source>Loading %1 bits gray %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADGRAYDARKFLAT</comment>
-        <translation>Chargement de l&apos;image de dark flat monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="111"/>
-        <source>Loading %1 bit/ch %2 offset frame
-%3</source>
-        <comment>IDS_LOADRGBOFFSET</comment>
-        <translation>Chargement de l&apos;image d&apos;offset %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="113"/>
-        <source>Loading %1 bits gray %2 offset frame
-%3</source>
-        <comment>IDS_LOADGRAYOFFSET</comment>
-        <translation>Chargement de l&apos;image d&apos;offset monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="117"/>
-        <source>Loading %1 bit/ch %2 flat frame
-%3</source>
-        <comment>IDS_LOADRGBFLAT</comment>
-        <translation>Chargement de l&apos;image de flat %1 bit/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="119"/>
-        <source>Loading %1 bits gray %2 flat frame
-%3</source>
-        <comment>IDS_LOADGRAYFLAT</comment>
-        <translation>Chargement de l&apos;image de flat monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="123"/>
-        <source>Loading %1 bit/ch %2 light frame
-%3</source>
-        <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>Chargement de l&apos;image %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="125"/>
-        <source>Loading %1 bits gray %2 light frame
-%3</source>
-        <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>Chargement de l&apos;image monochrome %1 bits %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="343"/>
-        <source>Create Master Offset Frame</source>
-        <comment>IDS_CREATEMASTEROFFSET</comment>
-        <translation>Création de l&apos;image Master Offset</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
-        <source>Adding Offset frame %1 of %2</source>
-        <comment>IDS_ADDOFFSET</comment>
-        <translation>Ajout de l&apos;image d&apos;offset %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="391"/>
-        <source>Computing master offset (%1)</source>
-        <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
-        <translation>Calcul de l&apos;image du master offset (%1)</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="409"/>
-        <source>Master Offset created from %n picture(s) (%1)</source>
-        <comment>IDS_MEDIANOFFSETINFO</comment>
-        <translation>
-            <numerusform>Master Offset créé à partir d&apos;une image (%1)</numerusform>
-            <numerusform>Master Offset créé à partir de %n images (%1)</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="418"/>
-        <source>Saving Master Offset</source>
-        <comment>IDS_SAVINGMASTEROFFSET</comment>
-        <translation>Enregistrement du Master Offset</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="510"/>
-        <source>Create Master Dark Frame</source>
-        <comment>IDS_CREATEMASTERDARK</comment>
-        <translation>Création de l&apos;image Master Dark</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="541"/>
-        <source>Adding Dark frame %1 of %2</source>
-        <comment>IDS_ADDDARK</comment>
-        <translation>Ajout de l&apos;image de dark %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="556"/>
-        <location filename="../StackingTasks.cpp" line="733"/>
-        <location filename="../StackingTasks.cpp" line="1164"/>
-        <source>Subtracting Offset Frame</source>
-        <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation>Soustraction du master offset</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="577"/>
-        <source>Computing master dark (%1)</source>
-        <comment>IDS_COMPUTINGMEDIANDARK</comment>
-        <translation>Calcul de l&apos;image du master dark (%1)</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="595"/>
-        <source>Master Dark created from %n picture(s) (%1)</source>
-        <comment>IDS_MEDIANDARKINFO</comment>
-        <translation>
-            <numerusform>Master Dark créé à partir d&apos;une image (%1)</numerusform>
-            <numerusform>Master Dark créé à partir de %n images (%1)</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="775"/>
-        <source>Master Dark Flat created from %n picture(s) (%1)</source>
-        <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation>
-            <numerusform>Master Dark Flat créé à partir d&apos;une image (%1)&quot;</numerusform>
-            <numerusform>Master Dark Flat créé à partir de %n images (%1)&quot;</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1227"/>
-        <source>Master Flat created from %n picture(s) (%1)</source>
-        <comment>IDS_MEDIANFLATINFO</comment>
-        <translation>
-            <numerusform>Master Flat créé à partir d&apos;une image (%1)</numerusform>
-            <numerusform>Master Flat créé à partir de %n images (%1)</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="604"/>
-        <source>Saving Master Dark</source>
-        <comment>IDS_SAVINGMASTERDARK</comment>
-        <translation>Enregistrement du Master Dark</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="99"/>
-        <source>Loading %1 bit/ch %2 dark frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation>Chargement de l&apos;image de dark %1 bits/ch %2
-%3</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="701"/>
-        <source>Create Master Dark Flat Frame</source>
-        <comment>IDS_CREATEMASTERDARKFLAT</comment>
-        <translation>Création du Master Dark Flat</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="717"/>
-        <source>Adding Dark Flat frame %1 of %2</source>
-        <comment>IDS_ADDDARKFLAT</comment>
-        <translation>Ajout de l&apos;image de dark flat %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="757"/>
-        <source>Computing master dark flat (%1)</source>
-        <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
-        <translation>Calcul de l&apos;image du master dark flat (%1)</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="784"/>
-        <source>Saving Master Dark Flat</source>
-        <comment>IDS_SAVINGMASTERDARKFLAT</comment>
-        <translation>Enregistrement du Master Dark Flat</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="949"/>
-        <source>Computing Flat Calibration Parameters</source>
-        <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
-        <translation>Calcul des paramètres de calibration du flat</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1001"/>
-        <source>Applying Flat Calibration Parameters</source>
-        <comment>IDS_APPLYINGFLATCALIBRATION</comment>
-        <translation>Application des paramètres de calibration du flat</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1121"/>
-        <source>Create Master Flat Frame</source>
-        <comment>IDS_CREATEMASTERFLAT</comment>
-        <translation>Creation de l&apos;image Master Flat</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1152"/>
-        <source>Adding Flat frame %1 of %2</source>
-        <comment>IDS_ADDFLAT</comment>
-        <translation>Ajout de l&apos;image de flat %1 sur %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1174"/>
-        <source>Subtracting Dark Frame</source>
-        <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation>Soustraction du master dark</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1209"/>
-        <source>Computing master flat (%1)</source>
-        <comment>IDS_COMPUTINGMEDIANFLAT</comment>
-        <translation>Calcul de l&apos;image du master flat (%1)</translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1235"/>
-        <source>Saving Master Flat</source>
-        <comment>IDS_SAVINGMASTERFLAT</comment>
-        <translation>Enregistrement du Master Flat</translation>
-    </message>
-</context>
-<context>
-    <name>StarMask</name>
-    <message>
-        <location filename="../StarMask.cpp" line="34"/>
-        <source>Creating Star Mask...</source>
-        <comment>IDS_CREATINGSTARMASK</comment>
-        <translation>Création du masque d&apos;étoiles...</translation>
-    </message>
-</context>
-<context>
-    <name>TIFFUtil</name>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="139"/>
-        <source>CFA pattern: %1%2%3%4 is not supported</source>
-        <translation>Modèle CFA : %1%2%3%4 n&apos;est pas pris en charge</translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="153"/>
-        <source>CFA pattern dimension: %1x%2 found is not supported</source>
-        <translation>Dimension de modèle CFA : %1x%2 trouvé n&apos;est pas pris en charge</translation>
     </message>
 </context>
 </TS>

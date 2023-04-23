@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_cfa.h"
-#include "../DeepSkyStacker/GrayBitmap.h"
-#include "../DeepSkyStacker/Multitask.h"
-#include "../DeepSkyStacker/MultiBitmap.h"
-#include "../DeepSkyStacker/MedianFilterEngine.h"
+#include "avx_cfa.h"
+#include "GrayBitmap.h"
+#include "Multitask.h"
+#include "MultiBitmap.h"
+#include "MedianFilterEngine.h"
 
 TEST_CASE("AVX CFA", "[AVX][CFA]")
 {

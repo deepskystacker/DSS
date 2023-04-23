@@ -1,5 +1,5 @@
 #pragma once
-#include "../DeepSkyStacker/EntropyInfo.h"
+#include "EntropyInfo.h"
 
 class TestEntropyInfo : public CEntropyInfo
 {

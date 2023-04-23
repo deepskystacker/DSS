@@ -13,7 +13,8 @@ $Log$
 ******************************************************************************/
 
 #include "stdafx.h"
-#include "commonresource.h"
+//#include "commonresource.h"
+#include "resource.h"
 #include "ListViewCtrlEx.h"
 
 /*** Definition of class "CListCtrlEx" ***************************************/
