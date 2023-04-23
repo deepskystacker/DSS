@@ -322,6 +322,13 @@ int WINAPI _tWinMain(
 			Exiv2::XmpParser::initialize();
 			::atexit(Exiv2::XmpParser::terminate);
 
+			//
+			// Increase maximum size of QImage from the default of 128MB to 1GB
+			//
+			constexpr int oneGB{ 1024 * 1024 * 1024 };
+			QImageReader::setAllocationLimit(oneGB);
+
+
 			CLiveSettings liveSettings;
 			liveSettings.LoadFromRegistry();
 

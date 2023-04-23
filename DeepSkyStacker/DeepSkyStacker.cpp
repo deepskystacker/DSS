@@ -1018,6 +1018,12 @@ int main(int argc, char* argv[])
 	qRegisterMetaType<PICTURETYPE>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
