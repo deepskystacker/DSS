@@ -883,13 +883,7 @@ namespace DSS
 			__PRETTY_FUNCTION__;
 #else
 			__FUNCTION__;
-#endif			
-		//LONG			lIndice;  TODO
-		//CString			strFileName;
-
-		//strFileName = m_vFiles[mItem].m_strFileName;
-		//virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1)
-		//addFile(strFileName, m_dwCurrentGroupID, m_dwCurrentJobID, PictureType, FALSE, nItem);
+#endif
 	}
 
 	/* ------------------------------------------------------------------- */

@@ -34,7 +34,6 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CString strText;
 	const int lWidth = pBitmap->Width();
 	const int lHeight = pBitmap->Height();
 

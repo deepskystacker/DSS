@@ -31,8 +31,6 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
-	//CStringA strText;
-	//strText.LoadString(IDS_APPLYINGFLAT);
 	const QString strText(QCoreApplication::translate("FlatFrame", "Applying Flat Frame", "IDS_APPLYINGFLAT"));
 
 	// Check and remove super pixel settings
