@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_histogram.h"
-#include "../DeepSkyStacker/MedianFilterEngine.h"
+#include "avx_histogram.h"
+#include "MedianFilterEngine.h"
 
 TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 {

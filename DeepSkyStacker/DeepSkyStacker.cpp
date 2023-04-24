@@ -36,7 +36,6 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
-#include <source_location>
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -681,9 +680,6 @@ DeepSkyStackerApp *		GetDSSApp()
 
 using namespace std;
 
-QTranslator theQtTranslator;
-QTranslator theAppTranslator;
-
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
@@ -862,6 +858,47 @@ static char const* global_program_name;
 
 void reportCpuType();
 
+bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
+{
+	QString translatorFileName(prefix);
+	translatorFileName += (language == "") ? QLocale::system().name() : language;
+
+	qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
+	if (!translator.load(translatorFileName, path))
+	{
+		qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
+		return false;
+	}
+	
+	if(!app.installTranslator(&translator))
+	{
+		qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
+		return false;
+	}
+	return true;
+}
+
+bool LoadTranslations()
+{
+	if (!qApp)
+		return false;
+
+	static QTranslator theQtTranslator;
+	static QTranslator theAppTranslator;
+	static QTranslator theKernelTranslator;
+
+	Q_INIT_RESOURCE(translations_kernel);
+
+	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
+	QSettings settings;
+	const QString language = settings.value("Language").toString();
+	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
+	LoadTranslationUnit(*qApp, theAppTranslator, "DSS.", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theKernelTranslator, "KernelDSS.", ":/i18n/", language);
+	
+	return true;
+}
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -955,40 +992,7 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Initialize Application - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
-
-	//
-	// Retrieve the Qt language name (e.g.) en_GB
-	//
-	QString language = settings.value("Language").toString();
-
-	//
-	// Language was not defined in our preferences, so select the system default
-	//
-	if (language == "")
-	{
-		language = QLocale::system().name();
-	}
-
-	QString translatorFileName = QLatin1String("qt_");
-	translatorFileName += language;
-	qDebug() << "qt translator filename: " << translatorFileName;
-	
-	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-	{
-		app.installTranslator(&theQtTranslator);
-	}
-
-	translatorFileName = QLatin1String("DSS.");
-	translatorFileName += language;
-	qDebug() << "app translator filename: " << translatorFileName;
-	//
-	// Install the language if it actually exists.
-	//
-	if (theAppTranslator.load(translatorFileName, ":/i18n/"))
-	{
-		app.installTranslator(&theAppTranslator);
-	}
+	LoadTranslations();
 
 	//
 	// Do the old Windows language stuff
@@ -1017,10 +1021,17 @@ int main(int argc, char* argv[])
 	qRegisterMetaType<PICTURETYPE>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-
+		Exiv2::XmpParser::initialize();
+		::atexit(Exiv2::XmpParser::terminate);
 
 		mainWindow.show();
 		//result = app.run(&theApp);

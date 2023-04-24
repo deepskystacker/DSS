@@ -3,7 +3,7 @@
 // Version
 //
 
-#include "..\DeepSkyStacker\DSSVersion.h"
+#include "..\DeepSkyStackerKernel\DSSVersion.h"
 
 
 

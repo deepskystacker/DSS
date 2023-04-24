@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_bitmap_filler.h"
-#include "../DeepSkyStacker/ColorBitmap.h"
-#include "../DeepSkyStacker/MedianFilterEngine.h"
-#include "../DeepSkyStacker/DSSProgress.h"
+#include "avx_bitmap_filler.h"
+#include "ColorBitmap.h"
+#include "MedianFilterEngine.h"
+#include "DSSProgress.h"
 
 template <size_t SZ>
 void be2le(std::uint16_t(&out)[SZ], const std::uint16_t* pIn)

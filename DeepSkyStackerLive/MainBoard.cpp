@@ -440,7 +440,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		CString					strText;
 		CString					strTime;
 
-		ExposureToString(m_fTotalExposureTime, strTime);
+		strTime = exposureToString(m_fTotalExposureTime).toStdWString().c_str();
 		strText.Format(m_strStatsMask, m_lNrPending, m_lNrRegistered, m_lNrStacked, (LPCTSTR)strTime);
 
 		m_Stats.GetWindowRect(&rcStats);
