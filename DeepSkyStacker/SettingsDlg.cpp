@@ -5,6 +5,7 @@
 #include "deepskystacker.h"
 #include "SettingsDlg.h"
 #include "dss_settings.h"
+#include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSettingsDlg dialog

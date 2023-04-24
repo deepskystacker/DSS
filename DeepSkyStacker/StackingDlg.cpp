@@ -126,7 +126,6 @@ namespace DSS
 			"Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
 			"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
 			"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-		QT_TRANSLATE_NOOP3("DSS", "Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS",
@@ -1461,6 +1460,12 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(m_strShowFile));
+		pictureList->tableView->setEnabled(true);
+		//
+		// Disabling the tableview resulted in it loosing focus
+		// so put the focus back
+		//
+		pictureList->tableView->setFocus(Qt::OtherFocusReason);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)

@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D7EEA2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBEAAEBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Qt">
+      <UniqueIdentifier>{4c5ba692-76ed-40b9-a322-bee24408a179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\i18n">
+      <UniqueIdentifier>{ac3ab458-1fd5-4f23-8fc1-a9f17271bf96}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\AHDDemosaicing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BackgroundCalibration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BitmapExt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ChannelAlign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\CosmeticEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\DarkFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\DeBloom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\EntropyInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Filters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\FITSUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\FlatFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\FrameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MasterFrames.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MatchingStars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MultiBitmapProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Multitask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\RAWUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\RegisterEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\StackingEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\StackingTasks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\TIFFUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Workspace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_avg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_filter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_luminance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_cfa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BitmapBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MedianFilterEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_support.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_entropy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\FrameList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ImageListModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BitMapFiller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\avx_bitmap_filler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\group.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\DSSProgress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ColorBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\DSSTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BilinearParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\GrayBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MemoryBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ColorHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ColorMultiBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\GreyMultiBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Bayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\BitmapInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\TaskInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include=".\File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RunningStackingEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StackedBitmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imageloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StarMask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dss_settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracecontrol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\AHDDemosaicing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BackgroundCalibration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BezierAdjust.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BitmapExt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ChannelAlign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\CosmeticEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DarkFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DeBloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DSSCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DSSProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DSSTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\EntropyInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Filters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\FITSUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\FlatFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\FrameInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\FrameList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MasterFrames.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MatchingStars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MultiBitmapProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Multitask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\PixelTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\RAWUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\RegisterEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\StackingEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\StackingTasks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\TIFFUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Workspace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_avg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_output.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_luminance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_cfa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BitmapBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_support.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_entropy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BitMapFiller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\avx_bitmap_filler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\group.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ColorBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\GrayBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MemoryBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ColorHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ColorMultiBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\GreyMultiBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Bayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\BitmapInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\TaskInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\File.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\dssrect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_median.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BilinearParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapCharacteristics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapExtraInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapPartFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cfa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CFABitmapInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorRef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtraInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatPart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearInterpolationh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MedianFilterEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RationalInterpolation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dssbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameInfoSupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RunningStackingEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackedBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StarMask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dss_settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tracecontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include=".\ImageListModel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="imageloader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations_kernel.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\KernelDSS.ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.de.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.en.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.es.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.it.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.pt_BR.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.tr.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\KernelDSS.zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+  </ItemGroup>
+</Project>

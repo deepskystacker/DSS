@@ -7,9 +7,8 @@
 #include "tiffio.h"
 #include "DeepSkyStacker.h"
 
-extern bool		g_bShowRefStars;
-extern QTranslator theAppTranslator;
-extern QTranslator theQtTranslator;
+extern bool	g_bShowRefStars;
+extern bool LoadTranslations();
 
 #define xstr(s) str(s)
 #define str(s) #s
@@ -79,7 +78,7 @@ About::About(QWidget *parent) :
     {
 		QString lang = it.section(".", 1, 1);
         QString langName = QLocale(lang).nativeLanguageName();
-        langName[0] = langName[0].toUpper();
+        if ("en" == lang) langName = "English";
         ui->comboBox->addItem(langName, lang);
     }
     setLanguage(settings.value("Language", "").toString());
@@ -223,38 +222,8 @@ void About::storeSettings()
     QSettings settings;
 
 	settings.setValue("Dialogs/About/geometry", saveGeometry());
-
     settings.setValue("Language", m_Language);
-
-	
-	//
-	// Retrieve the Qt language name (e.g.) en_GB
-	//
-	QString language = settings.value("Language").toString();
-
-	//
-	// Language was not defined in our preferences, so select the system default
-	//
-	if (language == "")
-	{
-		language = QLocale::system().name();
-	}
-
-    //
-    // Install the language if it actually exists.
-    //
-    if (theAppTranslator.load("DSS." + language, ":/i18n/"))
-    {
-        qApp->installTranslator(&theAppTranslator);
-    }
-
-	//
-	// Install the system language ...
-	// 
-    QString translatorFileName = QLatin1String("qt_");
-    translatorFileName += language;
-    if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-        qApp->installTranslator(&theQtTranslator);
-
     settings.setValue("InternetCheck", m_InternetCheck);
+
+    LoadTranslations();
 }

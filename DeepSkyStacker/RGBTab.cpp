@@ -260,26 +260,13 @@ static void PopulateHistoAdjustMenu(CMenu & menu)
 
 	menu.CreatePopupMenu();
 
-	HistoAdjustTypeText(HAT_LINEAR, strText);
-	menu.AppendMenu(MF_STRING, HAT_LINEAR, strText);
-
-	HistoAdjustTypeText(HAT_CUBEROOT, strText);
-	menu.AppendMenu(MF_STRING, HAT_CUBEROOT, strText);
-
-	HistoAdjustTypeText(HAT_SQUAREROOT, strText);
-	menu.AppendMenu(MF_STRING, HAT_SQUAREROOT, strText);
-
-	HistoAdjustTypeText(HAT_LOG, strText);
-	menu.AppendMenu(MF_STRING, HAT_LOG, strText);
-
-	HistoAdjustTypeText(HAT_LOGLOG, strText);
-	menu.AppendMenu(MF_STRING, HAT_LOGLOG, strText);
-
-	HistoAdjustTypeText(HAT_LOGSQUAREROOT, strText);
-	menu.AppendMenu(MF_STRING, HAT_LOGSQUAREROOT, strText);
-
-	HistoAdjustTypeText(HAT_ASINH, strText);
-	menu.AppendMenu(MF_STRING, HAT_ASINH, strText);
+	menu.AppendMenu(MF_STRING, HAT_LINEAR, HistoAdjustTypeText(HAT_LINEAR).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_CUBEROOT, HistoAdjustTypeText(HAT_CUBEROOT).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_SQUAREROOT, HistoAdjustTypeText(HAT_SQUAREROOT).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_LOG, HistoAdjustTypeText(HAT_LOG).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_LOGLOG, HistoAdjustTypeText(HAT_LOGLOG).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_LOGSQUAREROOT, HistoAdjustTypeText(HAT_LOGSQUAREROOT).toStdWString().c_str());
+	menu.AppendMenu(MF_STRING, HAT_ASINH, HistoAdjustTypeText(HAT_ASINH).toStdWString().c_str());
 }
 
 void CRGBTab::OnRedHat()

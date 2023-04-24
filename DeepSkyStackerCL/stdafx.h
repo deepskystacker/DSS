@@ -31,6 +31,12 @@ using namespace Gdiplus;
 #include <QPointF>
 #include <QAbstractItemModel>
 #include <QIcon>
+#include <QImageReader>
+
+// Dependency Libraries
+#include <exiv2/exiv2.hpp>
+#include <exiv2/exif.hpp>
+#include <exiv2/easyaccess.hpp>
 
 // Standard Libraries
 #include <concurrent_unordered_set.h>

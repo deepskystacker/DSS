@@ -43,6 +43,7 @@
     <QtInstall>6.4.0_msvc2019_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
+    <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -66,14 +67,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
     <IncludePath />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
     <IncludePath />
   </PropertyGroup>
@@ -84,7 +85,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;../;..\DeepSkyStacker;..\ChartCtrl;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -105,7 +106,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -125,6 +126,12 @@
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
     </QtRcc>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles</QtMocDir>
+    </QtMoc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -133,7 +140,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;../;..\DeepSkyStacker;..\ChartCtrl;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -151,7 +158,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;htmlhelp.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -170,6 +177,12 @@
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
     </QtRcc>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles</QtMocDir>
+    </QtMoc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ChartCtrl\ChartAxis.cpp" />
@@ -182,61 +195,7 @@
     <ClCompile Include="..\ChartCtrl\ChartSerie.cpp" />
     <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp" />
     <ClCompile Include="..\ChartCtrl\ChartTitle.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Bayer.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BilinearParameters.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\BitmapInfo.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\ColorBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\ColorHelpers.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\ColorMultiBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Delaunay.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\EntropyInfo.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\File.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Filters.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\FITSUtil.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\GrayBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\GreyMultiBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\group.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\ImageSinks.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\MemoryBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Multitask.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\RegisterEngine.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\RunningStackingEngine.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Settings.cpp" />
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\TaskInfo.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\tracecontrol.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
     <ClCompile Include="..\SMTP\Base64.cpp" />
     <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp" />
     <ClCompile Include="..\SMTP\PJNSMTP.cpp">
@@ -293,68 +252,8 @@
     <ClInclude Include="..\ChartCtrl\ChartSerie.h" />
     <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h" />
     <ClInclude Include="..\ChartCtrl\ChartTitle.h" />
-    <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_avg.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_cfa.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_entropy.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_filter.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_histogram.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_luminance.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
-    <ClInclude Include="..\DeepSkyStacker\avx_support.h" />
-    <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
-    <ClInclude Include="..\DeepSkyStacker\Bayer.h" />
-    <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
-    <ClInclude Include="..\DeepSkyStacker\BilinearParameters.h" />
-    <ClInclude Include="..\DeepSkyStacker\BitmapBase.h" />
-    <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
-    <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h" />
-    <ClInclude Include="..\DeepSkyStacker\BitmapInfo.h" />
-    <ClInclude Include="..\DeepSkyStacker\ColorBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\ColorHelpers.h" />
-    <ClInclude Include="..\DeepSkyStacker\ColorMultiBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />
-    <ClInclude Include="..\DeepSkyStacker\DarkFrame.h" />
-    <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />
-    <ClInclude Include="..\DeepSkyStacker\Delaunay.h" />
-    <ClInclude Include="..\DeepSkyStacker\DSSCommon.h" />
-    <ClInclude Include="..\DeepSkyStacker\DSSProgress.h" />
     <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
-    <ClInclude Include="..\DeepSkyStacker\DSSTools.h" />
-    <ClInclude Include="..\DeepSkyStacker\DSSVersion.h" />
-    <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h" />
-    <ClInclude Include="..\DeepSkyStacker\File.h" />
-    <ClInclude Include="..\DeepSkyStacker\Filters.h" />
-    <ClInclude Include="..\DeepSkyStacker\FITSUtil.h" />
-    <ClInclude Include="..\DeepSkyStacker\FlatFrame.h" />
-    <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
-    <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
-    <ClInclude Include="..\DeepSkyStacker\GrayBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\GreyMultiBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\group.h" />
-    <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
-    <QtMoc Include="..\DeepSkyStacker\ImageListModel.h" />
-    <ClInclude Include="..\DeepSkyStacker\ImageSinks.h" />
-    <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
-    <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
-    <ClInclude Include="..\DeepSkyStacker\MedianFilterEngine.h" />
-    <ClInclude Include="..\DeepSkyStacker\MemoryBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h" />
-    <ClInclude Include="..\DeepSkyStacker\Multitask.h" />
-    <ClInclude Include="..\DeepSkyStacker\PixelTransform.h" />
-    <ClInclude Include="..\DeepSkyStacker\RAWUtils.h" />
-    <ClInclude Include="..\DeepSkyStacker\RegisterEngine.h" />
-    <ClInclude Include="..\DeepSkyStacker\RunningStackingEngine.h" />
-    <ClInclude Include="..\DeepSkyStacker\Settings.h" />
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
-    <ClInclude Include="..\DeepSkyStacker\StackedBitmap.h" />
-    <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
-    <ClInclude Include="..\DeepSkyStacker\Stars.h" />
-    <ClInclude Include="..\DeepSkyStacker\TaskInfo.h" />
-    <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
-    <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
     <ClInclude Include="..\SMTP\Base64.h" />
     <ClInclude Include="..\SMTP\PJNMD5.h" />
     <ClInclude Include="..\SMTP\PJNNTLMAuth.h" />
@@ -390,7 +289,10 @@
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp" />
     <Image Include="..\Tools\hdrdown.bmp" />
     <Image Include="..\Tools\hdrup.bmp" />
+    <Image Include="res\4Corners.png" />
     <Image Include="res\DeepSkyStackerLive.ico" />
+    <Image Include="res\DSS_Icon32%402x.png" />
+    <Image Include="res\DSS_Icon32.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc" />
@@ -408,8 +310,8 @@
     <ResourceCompile Include="DeepSkyStackerLiveTR.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libjpg\libjpg.vcxproj">
-      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
+    <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
+      <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
     </ProjectReference>
     <ProjectReference Include="..\LibRaw\buildfiles\libraw.vcxproj">
       <Project>{a71d2131-f425-381f-8a9a-29d60132a046}</Project>
@@ -422,22 +324,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSLive.ca.ts" />
-    <QtTranslation Include="i18n\DSSLive.cs.ts" />
-    <QtTranslation Include="i18n\DSSLive.de.ts" />
-    <QtTranslation Include="i18n\DSSLive.en.ts">
+    <QtTranslation Include="i18n\DSS.ca.ts" />
+    <QtTranslation Include="i18n\DSS.cs.ts" />
+    <QtTranslation Include="i18n\DSS.de.ts" />
+    <QtTranslation Include="i18n\DSS.en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSLive.es.ts" />
-    <QtTranslation Include="i18n\DSSLive.fr.ts" />
-    <QtTranslation Include="i18n\DSSLive.it.ts" />
-    <QtTranslation Include="i18n\DSSLive.nl.ts" />
-    <QtTranslation Include="i18n\DSSLive.pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSLive.ro.ts" />
-    <QtTranslation Include="i18n\DSSLive.ru.ts" />
-    <QtTranslation Include="i18n\DSSLive.tr.ts" />
-    <QtTranslation Include="i18n\DSSLive.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSS.es.ts" />
+    <QtTranslation Include="i18n\DSS.fr.ts" />
+    <QtTranslation Include="i18n\DSS.it.ts" />
+    <QtTranslation Include="i18n\DSS.nl.ts" />
+    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
+    <QtTranslation Include="i18n\DSS.ro.ts" />
+    <QtTranslation Include="i18n\DSS.ru.ts" />
+    <QtTranslation Include="i18n\DSS.tr.ts" />
+    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

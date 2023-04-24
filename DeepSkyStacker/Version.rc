@@ -3,7 +3,7 @@
 // Version
 //
 
-#include "DSSVersion.h"
+#include "./../DeepSkyStackerKernel/DSSVersion.h"
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION DSSVER_MAJOR,DSSVER_MINOR,DSSVER_SUB,DSSVER_BUILD

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_entropy.h"
-#include "../DeepSkyStacker/ColorBitmap.h"
-#include "../DeepSkyStacker/Multitask.h"
+#include "avx_entropy.h"
+#include "ColorBitmap.h"
+#include "Multitask.h"
 #include "AvxEntropyTest.h"
 
 std::tuple<float, float> calcEntropy(const std::vector<int>& incidences)

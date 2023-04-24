@@ -197,7 +197,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 			strDepth.Format(IDS_FORMAT_GRAY, bmpInfo.m_lBitPerChannel);
 		m_ImageList.SetItemText(nItem, COLUMN_DEPTH, (LPCTSTR)strDepth);
 
-		CString				strText;
+		CString strText;
 
 		if (bmpInfo.m_lISOSpeed)
 			ISOToString(bmpInfo.m_lISOSpeed, strText);
@@ -207,7 +207,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 			ISOToString(0, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_ISO_GAIN, (LPCTSTR)strText);
 
-		ExposureToString(bmpInfo.m_fExposure, strText);
+		strText = exposureToString(bmpInfo.m_fExposure).toStdWString().c_str();
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
 
 		strText.Format(_T("%.1f"), bmpInfo.m_fAperture);

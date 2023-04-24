@@ -82,7 +82,7 @@
         <enum>QDateTimeEdit::HourSection</enum>
        </property>
        <property name="displayFormat">
-        <string>hh:mm:ss.zzz</string>
+        <string notr="true">hh:mm:ss.zzz</string>
        </property>
       </widget>
      </item>

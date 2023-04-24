@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <QStyleHints>
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
 
@@ -592,6 +591,15 @@ void ExplorerBar::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
+
+		bool value{ traceControl.deleteOnExit() };
+		QString disposition;
+		if (value)
+			disposition = tr("deleted");
+		else
+			disposition = tr("kept");
+
+		ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
 
 		//
 		// The Labels are now plain text labels, so make them into links

@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+    <file>KernelDSS.ca.qm</file>
+    <file>KernelDSS.cs.qm</file>
+    <file>KernelDSS.de.qm</file>
+    <file>KernelDSS.en.qm</file>
+    <file>KernelDSS.es.qm</file>
+    <file>KernelDSS.fr.qm</file>
+    <file>KernelDSS.it.qm</file>
+    <file>KernelDSS.nl.qm</file>
+    <file>KernelDSS.pt_BR.qm</file>
+    <file>KernelDSS.ro.qm</file>
+    <file>KernelDSS.ru.qm</file>
+    <file>KernelDSS.tr.qm</file>
+    <file>KernelDSS.zh_TW.qm</file>
+</qresource>
+</RCC>

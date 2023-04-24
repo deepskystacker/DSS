@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/BitmapIterator.h"
-#include "../DeepSkyStacker/ColorBitmap.h"
+#include "BitmapIterator.h"
+#include "ColorBitmap.h"
 
 
 TEST_CASE("Gray Pixel Iterator", "[GrayPixelIterator]")

@@ -45,6 +45,7 @@ bool DeepSkyStackerCommandLine::Run()
 
 void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] const QString& type, [[maybe_unused]] Severity severity, [[maybe_unused]] Method method, bool terminate)
 {
+	if (terminate) traceControl.setDeleteOnExit(false);
 	std::cerr << message.toUtf8().constData() << std::endl;
 	if (terminate) QCoreApplication::exit(1);
 }
@@ -368,6 +369,16 @@ int main(int argc, char* argv[])
 #endif
 
 	SetUILanguage();
+
+	Exiv2::XmpParser::initialize();
+	::atexit(Exiv2::XmpParser::terminate);
+
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
 	DeepSkyStackerCommandLine process(argc, argv);
 
 	process.Run();
