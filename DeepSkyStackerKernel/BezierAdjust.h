@@ -121,31 +121,25 @@ private :
 		std::sort(m_vPoints.begin(), m_vPoints.end());
 	};
 
-	double	ExtractValue(LPCTSTR szString, LPCTSTR szVariable)
+	double	ExtractValue(const QString& szString, const QString& szVariable)
 	{
-		double				fValue = 0.0;
-		CString				strString = szString;
-		CString				strVariable = szVariable;
-		int					nPos, nStart, nEnd;
-		CString				strValue;
+		double fValue = 0.0;
 
-		strVariable += "=";
-		nPos = strString.Find(strVariable, 0);
+		QString strVariable(szVariable + "=");
+		qsizetype nPos = szString.indexOf(strVariable, 0);
 		if (nPos >= 0)
 		{
-			nStart = nPos + strVariable.GetLength();
-			nEnd = strString.Find(_T(";"), nStart);
+			qsizetype nStart = nPos + strVariable.length();
+			qsizetype nEnd = szString.indexOf(";", nStart);
 			if (nEnd < 0)
-				nEnd = strString.Find(_T("}"), nStart);
+				nEnd = szString.indexOf("}", nStart);
 			if (nEnd > nStart)
 			{
-				strValue = strString.Mid(nStart, nEnd-nStart);
-				fValue = _ttof(strValue);
-			};
-		};
-
+				fValue = szString.mid(nStart, nEnd - nStart).toFloat();
+			}
+		}
 		return fValue;
-	};
+	}
 
 public :
 	CBezierAdjust()
@@ -251,21 +245,26 @@ public :
 		return true;
 	};
 
-	void	ToText(CString & strParameters)
+	void	ToText(QString& strParameters)
 	{
-		strParameters.Format(_T("Bezier{DA=%.2f;DP=%.2f;MA=%.2f;MP=%.2f;HA=%.2f;HP=%.2f;SS=%.2f;}"),
-							 m_fDarknessAngle, m_fDarknessPower, m_fMidtoneAngle, m_fMidtone,
-							 m_fHighlightAngle, m_fHighlightPower, m_fSaturationShift);
+		strParameters = QString("Bezier{DA=%1;DP=%2;MA=%3;MP=%4;HA=%5;HP=%6;SS=%7;}")
+							.arg(m_fDarknessAngle, 0, 'f', 2)
+							.arg(m_fDarknessPower, 0, 'f', 2)
+							.arg(m_fMidtoneAngle, 0, 'f', 2)
+							.arg(m_fMidtone, 0, 'f', 2)
+							.arg(m_fHighlightAngle, 0, 'f', 2)
+							.arg(m_fHighlightPower, 0, 'f', 2)
+							.arg(m_fSaturationShift, 0, 'f', 2);
 	};
 
-	void	FromText(LPCTSTR szParameters)
+	void	FromText(const QString& szParameters)
 	{
-		m_fDarknessAngle	= ExtractValue(szParameters, _T("DA"));
-		m_fDarknessPower	= ExtractValue(szParameters, _T("DP"));
-		m_fMidtoneAngle		= ExtractValue(szParameters, _T("MA"));
-		m_fMidtone			= ExtractValue(szParameters, _T("MP"));
-		m_fHighlightAngle	= ExtractValue(szParameters, _T("HA"));
-		m_fHighlightPower	= ExtractValue(szParameters, _T("HP"));
-		m_fSaturationShift	= ExtractValue(szParameters, _T("SS"));
+		m_fDarknessAngle	= ExtractValue(szParameters, "DA");
+		m_fDarknessPower	= ExtractValue(szParameters, "DP");
+		m_fMidtoneAngle		= ExtractValue(szParameters, "MA");
+		m_fMidtone			= ExtractValue(szParameters, "MP");
+		m_fHighlightAngle	= ExtractValue(szParameters, "HA");
+		m_fHighlightPower	= ExtractValue(szParameters, "HP");
+		m_fSaturationShift	= ExtractValue(szParameters, "SS");
 	};
 };

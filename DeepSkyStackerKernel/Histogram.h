@@ -164,31 +164,22 @@ private :
 		};
 	};
 
-	double	ExtractValue(LPCTSTR szString, LPCTSTR szVariable)
+	double	ExtractValue(const QString& szString, const QString& szVariable)
 	{
-		double				fValue = 0.0;
-		CString				strString = szString;
-		CString				strVariable = szVariable;
-		int					nPos, nStart, nEnd;
-		CString				strValue;
-
-		strVariable += "=";
-		nPos = strString.Find(strVariable, 0);
+		double fValue = 0.0;
+		QString strVariable(szVariable + "=");
+		qsizetype nPos = szString.indexOf(strVariable, 0);
 		if (nPos >= 0)
 		{
-			nStart = nPos + strVariable.GetLength();
-			nEnd = strString.Find(_T(";"), nStart);
+			qsizetype nStart = nPos + strVariable.length();
+			qsizetype nEnd = szString.indexOf(";", nStart);
 			if (nEnd < 0)
-				nEnd = strString.Find(_T("}"), nStart);
+				nEnd = szString.indexOf("}", nStart);
 			if (nEnd > nStart)
-			{
-				strValue = strString.Mid(nStart, nEnd-nStart);
-				fValue = _ttof(strValue);
-			};
-		};
-
+				fValue = szString.mid(nStart, nEnd-nStart).toFloat();
+		}
 		return fValue;
-	};
+	}
 
 public :
 	CHistogramAdjust()
@@ -308,25 +299,32 @@ public :
 		return true;
 	};
 
-	void	ToText(CString & strParameters) const
+	void	ToText(QString & strParameters) const
 	{
-		strParameters.Format(_T("Min=%2.f;Max=%.2f;Shift=%.2f;MinOrg=%.2f;MaxOrg=%2.f;MinUsed=%.2f;MaxUsed=%.2f;HAT=%ld;"),
-							m_fMin, m_fMax, m_fShift, m_fOrgMin, m_fOrgMax, m_fUsedMin, m_fUsedMax, static_cast<std::uint16_t>(m_HAT));
+		strParameters = QString("Min=%1;Max=%2;Shift=%3;MinOrg=%4;MaxOrg=%5;MinUsed=%6;MaxUsed=%7;HAT=%8;")
+			.arg(m_fMin, 0, 'f', 2)
+			.arg(m_fMax, 0, 'f', 2)
+			.arg(m_fShift, 0, 'f', 2)
+			.arg(m_fOrgMin, 0, 'f', 2)
+			.arg(m_fOrgMax, 0, 'f', 2)
+			.arg(m_fUsedMin, 0, 'f', 2)
+			.arg(m_fUsedMax, 0, 'f', 2)
+			.arg(m_HAT);
 	};
 
-	void	FromText(LPCTSTR szParameters)
+	void	FromText(const QString& szParameters)
 	{
-		m_fMin = ExtractValue(szParameters, _T("Min"));
-		m_fMax = ExtractValue(szParameters, _T("Max"));
-		m_fShift = ExtractValue(szParameters, _T("Shift"));
-		m_fOrgMin = ExtractValue(szParameters, _T("MinOrg"));
-		m_fOrgMax = ExtractValue(szParameters, _T("MaxOrg"));
-		m_fUsedMin = ExtractValue(szParameters, _T("MinUsed"));
-		m_fUsedMax = ExtractValue(szParameters, _T("MaxUsed"));
+		m_fMin = ExtractValue(szParameters, "Min");
+		m_fMax = ExtractValue(szParameters, "Max");
+		m_fShift = ExtractValue(szParameters, "Shift");
+		m_fOrgMin = ExtractValue(szParameters, "MinOrg");
+		m_fOrgMax = ExtractValue(szParameters, "MaxOrg");
+		m_fUsedMin = ExtractValue(szParameters, "MinUsed");
+		m_fUsedMax = ExtractValue(szParameters, "MaxUsed");
 
 		int				lValue;
 
-		lValue = ExtractValue(szParameters, _T("HAT"));
+		lValue = ExtractValue(szParameters, "HAT");
 		m_HAT = (HISTOADJUSTTYPE)lValue;
 	};
 };
@@ -347,28 +345,21 @@ private :
 		m_BlueAdjust	= ha.m_BlueAdjust;
 	};
 
-	void	ExtractParameters(LPCTSTR szParameters, LPCSTR szSub, CHistogramAdjust & ha)
+	void	ExtractParameters(const QString& szParameters, const QString& szSub, CHistogramAdjust & ha)
 	{
-		CString				strParameters = szParameters;
-		CString				strSub = szSub;
-		int					nPos, nStart, nEnd;
-		CString				strSubParameters;
-
-		strSub += "{";
-
-		nPos = strParameters.Find(strSub);
+		QString strSub(szSub + "{");
+		qsizetype nPos = szParameters.indexOf(strSub);
 		if (nPos >= 0)
 		{
-			nStart = nPos + strSub.GetLength();
-			nEnd = strParameters.Find(_T("}"), nStart);
+			qsizetype nStart = nPos + strSub.length();
+			qsizetype nEnd = szParameters.indexOf("}", nStart);
 			if (nEnd > nStart)
 			{
-				strSubParameters = strParameters.Mid(nStart, nEnd-nStart);
-				ha.FromText(strSubParameters);
-			};
-		};
-
-	};
+				QString strValue(szParameters.mid(nStart, nEnd - nStart));
+				ha.FromText(strValue);
+			}
+		}
+	}
 
 public :
 	CRGBHistogramAdjust() {	};
@@ -423,27 +414,30 @@ public :
 		return m_RedAdjust.Save(hFile) && m_GreenAdjust.Save(hFile) && m_BlueAdjust.Save(hFile);
 	};
 
-	void	ToText(CString & strParameters) const
+	void	ToText(QString & strParameters) const
 	{
-		CString				strRedParameters;
-		CString				strGreenParameters;
-		CString				strBlueParameters;
+		QString strRedParameters;
+		QString strGreenParameters;
+		QString strBlueParameters;
 
 		m_RedAdjust.ToText(strRedParameters);
 		m_GreenAdjust.ToText(strGreenParameters);
 		m_BlueAdjust.ToText(strBlueParameters);
 
-		strParameters.Format(_T("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}"),
-			(LPCTSTR)strRedParameters,
-			(LPCTSTR)strGreenParameters,
-			(LPCTSTR)strBlueParameters);
+		strParameters = QString("RedAdjust{%1}GreenAdjust{%2}BlueAdjust{%3}")
+			.arg(strRedParameters)
+			.arg(strGreenParameters)
+			.arg(strBlueParameters);
 	};
 
-	void	FromText(LPCTSTR szParameters)
+	void	FromText(const QString& szParameters)
 	{
-		ExtractParameters(szParameters, "RedAdjust", m_RedAdjust);
-		ExtractParameters(szParameters, "GreenAdjust", m_GreenAdjust);
-		ExtractParameters(szParameters, "BlueAdjust", m_BlueAdjust);
+		static const QString strRedAdjust("RedAdjust");
+		static const QString strGreenAdjust("GreenAdjust");
+		static const QString strBlueAdjust("BlueAdjust");
+		ExtractParameters(szParameters, strRedAdjust, m_RedAdjust);
+		ExtractParameters(szParameters, strGreenAdjust, m_GreenAdjust);
+		ExtractParameters(szParameters, strBlueAdjust, m_BlueAdjust);
 	};
 };
 

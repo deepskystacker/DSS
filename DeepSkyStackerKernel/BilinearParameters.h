@@ -25,7 +25,7 @@ public:
 	double					fXWidth, fYWidth;
 
 private:
-	bool GetNextParameter(CString& strParameters, double& fValue) const;
+	bool GetNextParameter(QString& strParameters, double& fValue) const;
 
 public:
 	CBilinearParameters()
@@ -38,8 +38,8 @@ public:
 	CBilinearParameters& operator=(const CBilinearParameters& bp) = default;
 
 	void Clear() noexcept;
-	void ToText(CString& strText) const;
-	bool FromText(LPCTSTR szText);
+	void ToText(QString& strText) const;
+	bool FromText(const QString& szText);
 	QPointF transform(const QPointF& pt) const noexcept;
 	double Angle(int lWidth) const noexcept;
 	void Offsets(double& dX, double& dY) const noexcept;

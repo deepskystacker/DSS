@@ -724,24 +724,22 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 		}
 		else
 		{
-			char *				szBezierParameters = nullptr;
-			char *				szAdjustParameters = nullptr;
-			CString				strBezierParameters;
-			CString				strAdjustParameters;
+			char* szBezierParameters = nullptr;
+			char* szAdjustParameters = nullptr;
 
 			m_BezierAdjust.Reset();
 			if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, &szBezierParameters))
 			{
-				strBezierParameters = szBezierParameters;
-				if (strBezierParameters.GetLength())
+				QString strBezierParameters(szBezierParameters);
+				if (strBezierParameters.length())
 					m_BezierAdjust.FromText(strBezierParameters);
 			};
 
 			m_HistoAdjust.Reset();
 			if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, &szAdjustParameters))
 			{
-				strAdjustParameters = szAdjustParameters;
-				if (strAdjustParameters.GetLength())
+				QString strAdjustParameters(szAdjustParameters);
+				if (strAdjustParameters.length())
 					m_HistoAdjust.FromText(strAdjustParameters);
 			};
 		};
@@ -775,15 +773,13 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySett
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_NRFRAMES, m_lNrBitmaps);
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_SETTINGSAPPLIED, bApplySettings);
 
-		CString				strBezierParameters;
-		CString				strHistoParameters;
+		QString strBezierParameters;
+		QString	strHistoParameters;
 
 		m_BezierAdjust.ToText(strBezierParameters);
-		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS,
-			(LPCSTR)CT2A(strBezierParameters));
+		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, strBezierParameters.toUtf8().constData());
 		m_HistoAdjust.ToText(strHistoParameters);
-		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS,
-			(LPCSTR)CT2A(strHistoParameters));
+		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, strHistoParameters.toUtf8().constData());
 	};
 };
 

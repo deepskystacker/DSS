@@ -128,10 +128,8 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 		}
 		else
 		{
-			CString					strParameters;
-
-			strParameters = currentLine.toStdWString().c_str();
-			bResult = lfsi.m_BilinearParameters.FromText((LPCTSTR)strParameters);
+			QString strParameters(currentLine);
+			bResult = lfsi.m_BilinearParameters.FromText(strParameters);
 		}
 
 		if (!bEnd && bResult)
@@ -248,16 +246,16 @@ void CLightFramesStackingInfo::Save()
 
 		CString strInfoFileName;
 		GetInfoFileName((LPCTSTR)m_strReferenceFrame, strInfoFileName);
-		stream << strInfoFileName.GetString() << Qt::endl;
+		stream << QString::fromWCharArray(strInfoFileName.GetString()) << Qt::endl;
 
 		for (const auto& stackingInfo : m_vLightFrameStackingInfo)
 		{
-			stream << stackingInfo.m_strInfoFileName.GetString() << Qt::endl;
-			stream << stackingInfo.m_strFileName.GetString() << Qt::endl;
+			stream << QString::fromWCharArray(stackingInfo.m_strInfoFileName.GetString()) << Qt::endl;
+			stream << QString::fromWCharArray(stackingInfo.m_strFileName.GetString()) << Qt::endl;
 
-			CString			strParameters;
+			QString strParameters;
 			stackingInfo.m_BilinearParameters.ToText(strParameters);
-			stream << strParameters.GetString() << Qt::endl;
+			stream << strParameters << Qt::endl;
 		};
 		file.close();
 	};

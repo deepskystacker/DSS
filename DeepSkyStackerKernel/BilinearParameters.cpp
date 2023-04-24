@@ -14,98 +14,124 @@ void CBilinearParameters::Clear() noexcept
 	fXWidth = fYWidth = 1.0;
 }
 
-bool CBilinearParameters::GetNextParameter(CString& strParameters, double& fValue) const
+bool CBilinearParameters::GetNextParameter(QString& strParameters, double& fValue) const
 {
-	bool			bResult = false;
-	int				nPos;
-	CString			strValue;
+	if (strParameters.isEmpty())
+		return false;
 
-	if (strParameters.GetLength())
-	{
-		nPos = strParameters.Find(_T(","));
-		if (nPos >= 0)
-			strValue = strParameters.Left(nPos);
-		else
-			strValue = strParameters;
+	QString strValue(strParameters);
+	qsizetype nPos = strParameters.indexOf(",");
+	if (nPos >= 0)
+		strValue = strParameters.mid(0, nPos);
+	fValue = strValue.toFloat();
 
-		fValue = _ttof((LPCTSTR)strValue);	// Change _ttof to _ttof for Unicode
-		strParameters = strParameters.Right(std::max(0, strParameters.GetLength() - strValue.GetLength() - 1));
-		bResult = true;
-	};
-
-	return bResult;
+	strParameters = strParameters.mid(nPos+1, std::max(0, (int)(strParameters.length() - strValue.length() - 1)));
+	return true;
 }
 
-void CBilinearParameters::ToText(CString& strText) const
+void CBilinearParameters::ToText(QString& strText) const
 {
 	if (Type == TT_NONE)
 	{
-		strText.Format(_T("None(%.20g,%.20g)"), fXWidth, fYWidth);
+		strText = QString("None(%.20g,%.20g)").arg(fXWidth, 0, 'f', 2).arg(fYWidth, 0, 'g', 20);
 	}
 	else if (Type == TT_BICUBIC)
 	{
-		CString			strText1;
-
-		strText1.Format(_T("Bicubic(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
-			a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
-		strText = strText1;
-
-		strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
-			b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15);
-		strText += strText1;
-		strText1.Format(_T("%.20g,%.20g)"),
-			fXWidth, fYWidth);
-		strText += strText1;
+		strText = QString("Bicubic(%1,%2,%3,%4,%5,%6,%7,%8,%9,%10,%11,%12,%13,%14,%15,%16,%17,%18,%19,%20,%21,%22,%23,%24,%25,%26,%27,%28,%29,%30,%31,%32,%33,%34)")
+			.arg(a0, 0, 'g', 20)
+			.arg(a1, 0, 'g', 20)
+			.arg(a2, 0, 'g', 20)
+			.arg(a3, 0, 'g', 20)
+			.arg(a4, 0, 'g', 20)
+			.arg(a5, 0, 'g', 20)
+			.arg(a6, 0, 'g', 20)
+			.arg(a7, 0, 'g', 20)
+			.arg(a8, 0, 'g', 20)
+			.arg(a9, 0, 'g', 20)
+			.arg(a10, 0, 'g', 20)
+			.arg(a11, 0, 'g', 20)
+			.arg(a12, 0, 'g', 20)
+			.arg(a13, 0, 'g', 20)
+			.arg(a14, 0, 'g', 20)
+			.arg(a15, 0, 'g', 20)
+			.arg(b0, 0, 'g', 20)
+			.arg(b1, 0, 'g', 20)
+			.arg(b2, 0, 'g', 20)
+			.arg(b3, 0, 'g', 20)
+			.arg(b4, 0, 'g', 20)
+			.arg(b5, 0, 'g', 20)
+			.arg(b6, 0, 'g', 20)
+			.arg(b7, 0, 'g', 20)
+			.arg(b8, 0, 'g', 20)
+			.arg(b9, 0, 'g', 20)
+			.arg(b10, 0, 'g', 20)
+			.arg(b11, 0, 'g', 20)
+			.arg(b12, 0, 'g', 20)
+			.arg(b13, 0, 'g', 20)
+			.arg(b14, 0, 'g', 20)
+			.arg(b15, 0, 'g', 20)
+			.arg(fXWidth, 0, 'g', 20)
+			.arg(fYWidth, 0, 'g', 20);
 	}
 	else if (Type == TT_BISQUARED)
 	{
-		CString			strText1;
-
-		strText1.Format(_T("Bisquared(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
-			a0, a1, a2, a3, a4, a5, a6, a7, a8);
-		strText = strText1;
-
-		strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"),
-			b0, b1, b2, b3, b4, b5, b6, b7, b8,
-			fXWidth, fYWidth);
-		strText += strText1;
+		strText = QString("Bisquared(%1,%2,%3,%4,%5,%6,%7,%8,%9,%10,%11,%12,%13,%14,%15,%16,%17,%18,%19,%20)")
+			.arg(a0, 0, 'g', 20)
+			.arg(a1, 0, 'g', 20)
+			.arg(a2, 0, 'g', 20)
+			.arg(a3, 0, 'g', 20)
+			.arg(a4, 0, 'g', 20)
+			.arg(a5, 0, 'g', 20)
+			.arg(a6, 0, 'g', 20)
+			.arg(a7, 0, 'g', 20)
+			.arg(a8, 0, 'g', 20)
+			.arg(b0, 0, 'g', 20)
+			.arg(b1, 0, 'g', 20)
+			.arg(b2, 0, 'g', 20)
+			.arg(b3, 0, 'g', 20)
+			.arg(b4, 0, 'g', 20)
+			.arg(b5, 0, 'g', 20)
+			.arg(b6, 0, 'g', 20)
+			.arg(b7, 0, 'g', 20)
+			.arg(b8, 0, 'g', 20)
+			.arg(fXWidth, 0, 'g', 20)
+			.arg(fYWidth, 0, 'g', 20);
 	}
 	else
 	{
-		strText.Format(_T("Bilinear(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"),
-			a0, a1, a2, a3,
-			b0, b1, b2, b3,
-			fXWidth, fYWidth);
+		strText = QString("Bilinear(%1,%2,%3,%4,%5,%6,%7,%8,%9,%10)")
+			.arg(a0, 0, 'g', 20)
+			.arg(a1, 0, 'g', 20)
+			.arg(a2, 0, 'g', 20)
+			.arg(a3, 0, 'g', 20)
+			.arg(b0, 0, 'g', 20)
+			.arg(b1, 0, 'g', 20)
+			.arg(b2, 0, 'g', 20)
+			.arg(b3, 0, 'g', 20)
+			.arg(fXWidth, 0, 'g', 20)
+			.arg(fYWidth, 0, 'g', 20);
 	};
 }
 
-bool CBilinearParameters::FromText(LPCTSTR szText)
+bool CBilinearParameters::FromText(const QString& szText)
 {
-	bool			bResult = false;
-	CString			strText = szText;
-	int				nPos1,
-		nPos2;
+	qsizetype nPos1 = szText.indexOf("(");
+	qsizetype nPos2 = szText.indexOf(")");
+	if (!(nPos1 >= 0 && nPos2 > nPos1))
+		return false;
 
-	nPos1 = strText.Find(_T("("));
-	nPos2 = strText.Find(_T(")"));
-	if (nPos1 >= 0 && nPos2 > nPos1)
+	const QString strType(szText.left(nPos1));
+	QString strParameters(szText.mid(nPos1 + 1, nPos2 - nPos1 - 1));
+	if (strType.compare("None", Qt::CaseInsensitive) == 0)
 	{
-		CString		strType;
-		CString		strParameters;
-
-		strType = strText.Left(nPos1);
-		strParameters = strText.Mid(nPos1 + 1, nPos2 - nPos1 - 1);
-		if (!strType.CompareNoCase(_T("None")))
-		{
-			Clear();
-			Type = TT_NONE;
-			bResult = GetNextParameter(strParameters, fXWidth) &&
-				GetNextParameter(strParameters, fYWidth);
-		}
-		else if (!strType.CompareNoCase(_T("Bilinear")))
-		{
-			Type = TT_BILINEAR;
-			bResult = GetNextParameter(strParameters, a0) &&
+		Clear();
+		Type = TT_NONE;
+		return (GetNextParameter(strParameters, fXWidth) && GetNextParameter(strParameters, fYWidth));
+	}
+	else if (strType.compare("Bilinear", Qt::CaseInsensitive) == 0)
+	{
+		Type = TT_BILINEAR;
+		return (GetNextParameter(strParameters, a0) &&
 				GetNextParameter(strParameters, a1) &&
 				GetNextParameter(strParameters, a2) &&
 				GetNextParameter(strParameters, a3) &&
@@ -114,12 +140,12 @@ bool CBilinearParameters::FromText(LPCTSTR szText)
 				GetNextParameter(strParameters, b2) &&
 				GetNextParameter(strParameters, b3) &&
 				GetNextParameter(strParameters, fXWidth) &&
-				GetNextParameter(strParameters, fYWidth);
-		}
-		else if (!strType.CompareNoCase(_T("Bisquared")))
-		{
-			Type = TT_BISQUARED;
-			bResult = GetNextParameter(strParameters, a0) &&
+				GetNextParameter(strParameters, fYWidth));
+	}
+	else if (strType.compare("Bisquared", Qt::CaseInsensitive) == 0)
+	{
+		Type = TT_BISQUARED;
+		return (GetNextParameter(strParameters, a0) &&
 				GetNextParameter(strParameters, a1) &&
 				GetNextParameter(strParameters, a2) &&
 				GetNextParameter(strParameters, a3) &&
@@ -138,12 +164,12 @@ bool CBilinearParameters::FromText(LPCTSTR szText)
 				GetNextParameter(strParameters, b7) &&
 				GetNextParameter(strParameters, b8) &&
 				GetNextParameter(strParameters, fXWidth) &&
-				GetNextParameter(strParameters, fYWidth);
-		}
-		else if (!strType.CompareNoCase(_T("Bicubic")))
-		{
-			Type = TT_BICUBIC;
-			bResult = GetNextParameter(strParameters, a0) &&
+				GetNextParameter(strParameters, fYWidth));
+	}
+	else if (strType.compare("Bicubic", Qt::CaseInsensitive) == 0)
+	{
+		Type = TT_BICUBIC;
+		return (GetNextParameter(strParameters, a0) &&
 				GetNextParameter(strParameters, a1) &&
 				GetNextParameter(strParameters, a2) &&
 				GetNextParameter(strParameters, a3) &&
@@ -176,11 +202,9 @@ bool CBilinearParameters::FromText(LPCTSTR szText)
 				GetNextParameter(strParameters, b14) &&
 				GetNextParameter(strParameters, b15) &&
 				GetNextParameter(strParameters, fXWidth) &&
-				GetNextParameter(strParameters, fYWidth);
-		};
-	};
-
-	return bResult;
+				GetNextParameter(strParameters, fYWidth));
+	}
+	return true;
 }
 QPointF CBilinearParameters::transform(const QPointF& pt) const noexcept
 {
