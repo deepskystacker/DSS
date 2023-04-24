@@ -27,7 +27,7 @@ private :
 	BOOL						m_bStackedImage;
 	std::shared_ptr<C32BitsBitmap>	m_pWndImage;
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
-	CGammaTransformation		m_GammaTransformation;
+	DSS::GammaTransformation m_GammaTransformation;
 	bool						m_bDarkMode;
 
 public:

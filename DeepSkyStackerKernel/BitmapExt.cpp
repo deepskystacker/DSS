@@ -589,55 +589,74 @@ bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 
 /* ------------------------------------------------------------------- */
 
-void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
+namespace DSS
 {
-	ZFUNCTRACE_RUNTIME();
-	const int lBlackPoint = static_cast<int>(65535.0 * fBlackPoint);
-	const int lWhitePoint = static_cast<int>(65535.0 * fWhitePoint);
-
-	constexpr int TransformSize = 65537;
-	m_vTransformation.resize(TransformSize);
-
-	CRationalInterpolation ri;
-	ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
-
-	// Perform rational interpolation
-	for (int i = 0; i < TransformSize; i++)
+	void GammaTransformation::initTransformation(double fGamma)
 	{
-		if (i <= lBlackPoint)
-			m_vTransformation[i] = 0;
-		else if (i >= lWhitePoint)
-			m_vTransformation[i] = 255;
-		else
+		ZFUNCTRACE_RUNTIME();
+		double				fBlackPoint = 0.0,
+			fWhitePoint = 1.0,
+			fGrayPoint = 0.5;
+
+		fGrayPoint = pow(0.5, 1.0 / fGamma);
+		initTransformation(fBlackPoint, fGrayPoint, fWhitePoint);
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void GammaTransformation::initTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
+	{
+		ZFUNCTRACE_RUNTIME();
+		const int lBlackPoint = static_cast<int>(uint16Max_asDouble * fBlackPoint);
+		const int lWhitePoint = static_cast<int>(uint16Max_asDouble * fWhitePoint);
+
+		u8transform.resize(transformSize);
+		u16transform.resize(transformSize);
+
+		CRationalInterpolation ri;
+		ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
+
+		// Perform rational interpolation for uint16_t
+		for (int i = 0; i < transformSize; i++)
 		{
-			const double fValue = ri.Interpolate(i / 65535.0);
-			m_vTransformation[i] = 255.0 * fValue;//pow(fValue, fGamma);
-		};
-	};
-};
+			if (i <= lBlackPoint)
+				u16transform[i] = 0;
+			else if (i >= lWhitePoint)
+				u16transform[i] = std::numeric_limits<uint16_t>::max();
+			else
+			{
+				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
+				u16transform[i] = static_cast<double>(std::numeric_limits<uint16_t>::max()) * fValue;//pow(fValue, fGamma);
+			}
+		}
 
-/* ------------------------------------------------------------------- */
+		// Perform rational interpolation for uint8_t
+		for (int i = 0; i < transformSize; i++)
+		{
+			if (i <= lBlackPoint)
+				u8transform[i] = 0;
+			else if (i >= lWhitePoint)
+				u8transform[i] = std::numeric_limits<uint8_t>::max();
+			else
+			{
+				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
+				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * fValue;//pow(fValue, fGamma);
+			}
+		}
 
-void CGammaTransformation::InitTransformation(double fGamma)
-{
-	ZFUNCTRACE_RUNTIME();
-	double				fBlackPoint = 0.0,
-						fWhitePoint = 1.0,
-						fGrayPoint	= 0.5;
-
-	fGrayPoint = pow(0.5, 1.0 / fGamma);
-	InitTransformation(fBlackPoint, fGrayPoint, fWhitePoint);
-};
+		valid = true;
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
 template <template<class> class BitmapClass, class T>
-bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
+bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::GammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	if (pInBitmap != nullptr && gammatrans.IsInitialized())
+	if (pInBitmap != nullptr && gammatrans.isInitialized())
 	{
 		const size_t width = pInBitmap->Width();
 		const size_t height = pInBitmap->Height();
@@ -655,48 +674,92 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 		auto pImageData = pImage->bits();
 		auto bytes_per_line = pImage->bytesPerLine();
 
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-		for (int j = 0; j < height; j++)
+		qDebug() << "Image Format is " << pImage->format();
+		if (QImage::Format_RGB32 == pImage->format())
 		{
-			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
-			if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+			for (int j = 0; j < height; j++)
 			{
-				// Init iterators
-				T* pRed = pInBitmap->GetRedPixel(0, j);
-				T* pGreen = pInBitmap->GetGreenPixel(0, j);
-				T* pBlue = pInBitmap->GetBluePixel(0, j);
-
-				for (int i = 0; i < width; i++)
+				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
 				{
-					*pOutPixel++ = qRgb(gammatrans.m_vTransformation[*pRed / fMultiplier],
-										gammatrans.m_vTransformation[*pGreen / fMultiplier],
-										gammatrans.m_vTransformation[*pBlue / fMultiplier]);
-					pRed++;
-					pGreen++;
-					pBlue++;
+					// Init iterators
+					T* pRed = pInBitmap->GetRedPixel(0, j);
+					T* pGreen = pInBitmap->GetGreenPixel(0, j);
+					T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+					for (int i = 0; i < width; i++)
+					{
+						*pOutPixel++ = qRgb(gammatrans.getTransformation(*pRed / fMultiplier),
+							gammatrans.getTransformation(*pGreen / fMultiplier),
+							gammatrans.getTransformation(*pBlue / fMultiplier));
+						pRed++;
+						pGreen++;
+						pBlue++;
+					}
+				}
+				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+				{
+					// Init iterators
+					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					unsigned char value = 0;
+
+					for (int i = 0; i < width; i++)
+					{
+						value = gammatrans.getTransformation(*pGray / fMultiplier);
+						*pOutPixel++ = qRgb(value, value, value);
+						pGray++;
+					}
 				}
 			}
-			if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
-			{
-				// Init iterators
-				T* pGray = pInBitmap->GetGrayPixel(0, j);
-				unsigned char value = 0;
-
-				for (int i = 0; i < width; i++)
-				{
-					value = gammatrans.m_vTransformation[*pGray / fMultiplier];
-					*pOutPixel++ = qRgb(value, value, value);
-					pGray++;
-				}
-			}
+			bResult = true;
 		}
-		bResult = true;
+		else        // Must be RGB64
+		{
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+			for (int j = 0; j < height; j++)
+			{
+				QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
+				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+				{
+					// Init iterators
+					T* pRed = pInBitmap->GetRedPixel(0, j);
+					T* pGreen = pInBitmap->GetGreenPixel(0, j);
+					T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+					for (int i = 0; i < width; i++)
+					{
+						*pOutPixel++ = QRgba64::fromRgba64(gammatrans.getTransformation16(*pRed / fMultiplier),
+							gammatrans.getTransformation16(*pGreen / fMultiplier),
+							gammatrans.getTransformation16(*pBlue / fMultiplier),
+							std::numeric_limits<uint16_t>::max());
+						pRed++;
+						pGreen++;
+						pBlue++;
+					}
+				}
+				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+				{
+					// Init iterators
+					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					unsigned char value = 0;
+
+					for (int i = 0; i < width; i++)
+					{
+						value = gammatrans.getTransformation16(*pGray / fMultiplier);
+						*pOutPixel++ = qRgba64(value, value, value, std::numeric_limits<uint16_t>::max());
+						pGray++;
+					}
+				}
+			}
+			bResult = true;
+		}
 	}
 	return bResult;
 }
 
 /* ------------------------------------------------------------------- */
-bool ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans)
+bool ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, GammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -735,12 +798,12 @@ bool ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTr
 
 
 template <template<class> class BitmapClass, class T>
-bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, GammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	if (pInBitmap != nullptr && gammatrans.IsInitialized())
+	if (pInBitmap != nullptr && gammatrans.isInitialized())
 	{
 		bool bContinue;
 		const int lWidth = pInBitmap->Width();
@@ -773,9 +836,9 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
-						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pRed / fMultiplier];
-						pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen / fMultiplier];
-						pOutPixel->rgbBlue = gammatrans.m_vTransformation[*pBlue / fMultiplier];
+						pOutPixel->rgbRed = gammatrans.getTransformation(*pRed / fMultiplier);
+						pOutPixel->rgbGreen = gammatrans.getTransformation(*pGreen / fMultiplier);
+						pOutPixel->rgbBlue = gammatrans.getTransformation(*pBlue / fMultiplier);
 						pOutPixel->rgbReserved = 0;
 						pRed++;
 						pGreen++;
@@ -792,7 +855,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
-						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pGray / fMultiplier];
+						pOutPixel->rgbRed = gammatrans.getTransformation(*pGray / fMultiplier);
 						pOutPixel->rgbBlue = pOutPixel->rgbRed;
 						pOutPixel->rgbGreen = pOutPixel->rgbRed;
 						pOutPixel->rgbReserved = 0;
@@ -807,7 +870,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 	return bResult;
 }
 
-bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans)
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, GammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;

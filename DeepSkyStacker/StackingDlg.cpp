@@ -1364,7 +1364,7 @@ namespace DSS
 				//
 				m_LoadedImage.m_Image = pImage;
 				m_LoadedImage.m_pBitmap = pBitmap;
-				if (m_GammaTransformation.IsInitialized())
+				if (m_GammaTransformation.isInitialized())
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 
@@ -2686,7 +2686,7 @@ namespace DSS
 	{
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
-		// on final time
+		// one final time
 		//
 		gammaChanging(peg);
 
@@ -2706,7 +2706,7 @@ namespace DSS
 		whitePoint = stops[3].first;
 
 		// Adjust Gamma
-		m_GammaTransformation.InitTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
+		m_GammaTransformation.initTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
 
 		if (m_LoadedImage.m_pBitmap)
 		{

@@ -206,7 +206,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pPegNMHDR->nmhdr.code == GC_PEGMOVED)
 	{
 		// Adjust Gamma
-		m_GammaTransformation.InitTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
+		m_GammaTransformation.initTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
 
 		if (m_pWndImage)
 		{
