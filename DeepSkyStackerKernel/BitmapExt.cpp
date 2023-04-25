@@ -352,6 +352,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
 	std::shared_ptr<QImage>& pQImage )
 {
+	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	ZFUNCTRACE_RUNTIME();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
 	bool result = false;
@@ -433,14 +434,14 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 			for (int i = 0; i < width; i++)
 			{
 				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
-				fRed = pRgba64Pixel->red();		// Returns quint16 == uint16_t
-				fGreen = pRgba64Pixel->green();
-				fBlue = pRgba64Pixel->blue();
+				fRed = pRgba64Pixel->red() / scaleFactorInt16;		// Returns quint16 == uint16_t
+				fGreen = pRgba64Pixel->green() / scaleFactorInt16;
+				fBlue = pRgba64Pixel->blue() / scaleFactorInt16;
 				pBitmap->SetPixel(i, j,
-					std::clamp(fRed, 0.0, 65535.0),
-					std::clamp(fGreen, 0.0, 65535.0),
-					std::clamp(fBlue, 0.0, 65535.0));
-
+					std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+				pRgba64Pixel++;
 			}
 			if (pProgress != nullptr)
 				pProgress->Progress2(++loopCtr);
@@ -674,7 +675,6 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		auto pImageData = pImage->bits();
 		auto bytes_per_line = pImage->bytesPerLine();
 
-		qDebug() << "Image Format is " << pImage->format();
 		if (QImage::Format_RGB32 == pImage->format())
 		{
 #pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
