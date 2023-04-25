@@ -54,8 +54,11 @@ CFITSHeader::~CFITSHeader()
 
 inline double AdjustColor(const double fColor)
 {
+	//
+	// Clamping is now down by the bitmap classes
+	// 
 	if (std::isfinite(fColor))
-		return std::clamp(fColor, 0.0, 255.0);
+		return fColor;	// Was return std::clamp(fColor, 0.0, 255.0);
 	else
 		return 0.0;
 };
