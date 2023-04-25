@@ -234,7 +234,7 @@ void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, cons
 		m_Picture.SetImg(pWndBitmap->GetHBITMAP(), true);
 		m_pWndImage = pWndBitmap;
 		m_pBitmap	= pBitmap;
-		if (m_GammaTransformation.IsInitialized())
+		if (m_GammaTransformation.isInitialized())
 			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 
 		m_Picture.Invalidate(TRUE);

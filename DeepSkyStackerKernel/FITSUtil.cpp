@@ -1,4 +1,3 @@
-256.
 #include <stdafx.h>
 //#include "resource.h"
 #include "Workspace.h"
