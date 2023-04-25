@@ -1,3 +1,4 @@
+256.
 #include <stdafx.h>
 //#include "resource.h"
 #include "Workspace.h"
@@ -592,7 +593,7 @@ bool CFITSReader::Open()
 
 bool CFITSReader::Read()
 {
-	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();;
+	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
