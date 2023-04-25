@@ -206,7 +206,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pPegNMHDR->nmhdr.code == GC_PEGMOVED)
 	{
 		// Adjust Gamma
-		m_GammaTransformation.InitTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
+		m_GammaTransformation.initTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
 
 		if (m_pWndImage)
 		{
@@ -234,7 +234,7 @@ void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, cons
 		m_Picture.SetImg(pWndBitmap->GetHBITMAP(), true);
 		m_pWndImage = pWndBitmap;
 		m_pBitmap	= pBitmap;
-		if (m_GammaTransformation.IsInitialized())
+		if (m_GammaTransformation.isInitialized())
 			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 
 		m_Picture.Invalidate(TRUE);

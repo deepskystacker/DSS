@@ -69,7 +69,8 @@ void CSettingsDlg::UpdateControls()
 			CDSSSetting cds;
 			m_pSettings->GetItem(i, cds);
 
-			if (!cds.m_strName.CompareNoCase(strText))
+			const QString text(QString::fromWCharArray(strText));
+			if (!cds.m_strName.compare(text, Qt::CaseInsensitive))
 				bAdd = false;
 		}
 	}
@@ -89,7 +90,7 @@ void CSettingsDlg::OnAdd()
 	CString				strText;
 
 	m_Name.GetWindowText(strText);
-	m_CurrentSetting.m_strName = strText;
+	m_CurrentSetting.m_strName = QString::fromWCharArray(strText);
 
 	m_pSettings->Add(m_CurrentSetting);
 	m_List.AddString(strText);
@@ -169,7 +170,7 @@ BOOL CSettingsDlg::OnInitDialog()
 		{
 			CDSSSetting cds;
 			if (m_pSettings->GetItem(i, cds))
-				m_List.AddString(cds.m_strName);
+				m_List.AddString(cds.m_strName.toStdWString().c_str());
 		}
 	}
 

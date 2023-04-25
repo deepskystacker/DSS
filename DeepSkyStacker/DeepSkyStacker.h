@@ -71,7 +71,7 @@ private:
 	QWinHost* winHost;
 	std::unique_ptr<CProcessingDlg>	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
-	std::unique_ptr<CDSSSettings> m_Settings;
+	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
 	std::uint32_t currTab;
 	QStringList args;
 	QString baseTitle;
@@ -112,7 +112,7 @@ public:
 	void setTab(std::uint32_t dwTabID);
 	void disableSubDialogs();
 	void enableSubDialogs();
-	CDSSSettings& settings();
+	CDSSSettings& imageProcessingSettings();
 	DSS::StackingDlg& getStackingDlg();
 	CProcessingDlg& getProcessingDlg();
 	ExplorerBar& GetExplorerBar();

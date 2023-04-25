@@ -240,7 +240,7 @@ namespace DSS
 		Ui::StackingDlg* ui;
 		bool initialised;
 		QString			m_strShowFile;
-		CGammaTransformation	m_GammaTransformation;
+		GammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
 		IconSizeDelegate* iconSizeDelegate;

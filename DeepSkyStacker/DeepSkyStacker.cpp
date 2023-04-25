@@ -200,7 +200,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	statusBarText{ new QLabel("") },
 	processingDlg{ std::make_unique<CProcessingDlg>() },
 	m_DeepStack{ std::make_unique<CDeepStack>() },
-	m_Settings{ std::make_unique<CDSSSettings>() },
+	m_ImageProcessingSettings{ std::make_unique<CDSSSettings>() },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr }		// errorMessageDialogIcon pointer
 {
@@ -508,12 +508,12 @@ void DeepSkyStacker::enableSubDialogs()
 	explorerBar->setEnabled(true);
 }
 
-CDSSSettings& DeepSkyStacker::settings()
+CDSSSettings& DeepSkyStacker::imageProcessingSettings()
 {
-	if (!m_Settings->IsLoaded())
-		m_Settings->Load();
+	if (!m_ImageProcessingSettings->IsLoaded())
+		m_ImageProcessingSettings->Load();
 
-	return *m_Settings.get();
+	return *m_ImageProcessingSettings.get();
 }
 
 DSS::StackingDlg& DeepSkyStacker::getStackingDlg()

@@ -165,7 +165,7 @@ public:
 
 	virtual double GetMaximumValue() const override
 	{
-		return m_fMultiplier * 256.0;
+		return (m_fMultiplier * 256.0) - 1;
 	}
 
 	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override;
