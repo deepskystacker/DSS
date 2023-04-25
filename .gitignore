@@ -328,7 +328,9 @@ CodeMaid.config
 /Installers/RunTime64
 /Installers/RunTime32
 /DeepSkyStacker/GeneratedFiles
+/DeepSkyStackerKernel/i18n/*.qm
 /DeepSkyStacker/i18n/*.qm
+/DeepSkyStackerCL/i18n/*.qm
 /DeepSkyStackerLive/i18n/*.qm
 /Installers/DSS-Setup.exe
 
