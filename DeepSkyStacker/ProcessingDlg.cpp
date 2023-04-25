@@ -386,7 +386,7 @@ void CProcessingDlg::OnRedo()
 void CProcessingDlg::OnSettings()
 {
 	CSettingsDlg			dlg;
-	CDSSSettings &			Settings = dssApp->settings();
+	CDSSSettings &			Settings = dssApp->imageProcessingSettings();
 
 	KillTimer(1);
 	dlg.SetDSSSettings(&Settings, m_ProcessParams);

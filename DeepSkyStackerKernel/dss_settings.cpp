@@ -38,20 +38,11 @@
 #pragma pack(push, HDSETTINGS, 2)
 
 namespace {
-	void GetDefaultSettingsFileName(CString& strFile)
+	void GetDefaultSettingsFileName(QString& strFile)
 	{
-		CString			strBase;
-		TCHAR			szFileName[1 + _MAX_PATH];
-		TCHAR			szDrive[1 + _MAX_DRIVE];
-		TCHAR			szDir[1 + _MAX_DIR];
-
-		GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
-		strBase = szFileName;
-		_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
-
-		strFile = szDrive;
-		strFile += szDir;
-		strFile += "DSSSettings.DSSSettings";
+		strFile = QString("%1%2DSSSettings.DSSSettings")
+					.arg(QCoreApplication::applicationDirPath())
+					.arg(QDir::separator());
 	}
 }
 
@@ -70,16 +61,13 @@ using HDSETTINGSHEADER = struct
 #pragma pack(pop, HDSETTINGS)
 
 /* ------------------------------------------------------------------- */
-
-bool	CDSSSettings::Load(LPCTSTR szFile)
+bool CDSSSettings::Load()
 {
-	bool			bResult = false;
-	CString			strFile = szFile;
+	QString szFile;
+	if (szFile.isEmpty())
+		GetDefaultSettingsFileName(szFile);
 
-	if (!strFile.GetLength())
-		GetDefaultSettingsFileName(strFile);
-
-	if (FILE* hFile = _tfopen(strFile, _T("rb")))
+	if (FILE* hFile = _tfopen(szFile.toStdWString().c_str(), _T("rb")))
 	{
 		HDSETTINGSHEADER Header;
 		fread(&Header, sizeof(Header), 1, hFile);
@@ -95,30 +83,24 @@ bool	CDSSSettings::Load(LPCTSTR szFile)
 				cds.Load(hFile);
 				m_lSettings.push_back(std::move(cds));
 			}
-
-			bResult = true;
 			m_lSettings.sort();
+			fclose(hFile);
+			return true;
 		}
-
 		fclose(hFile);
 	}
-
-	m_bLoaded = true;
-
-	return bResult;
+	return false;
 }
 
 /* ------------------------------------------------------------------- */
 
-bool	CDSSSettings::Save(LPCTSTR szFile)
+bool	CDSSSettings::Save()
 {
-	bool bResult = false;
-	CString strFile = szFile;
+	QString outFile;
+	if (outFile.isEmpty())
+		GetDefaultSettingsFileName(outFile);
 
-	if (!strFile.GetLength())
-		GetDefaultSettingsFileName(strFile);
-
-	if (FILE* hFile = _tfopen(strFile, _T("wb")))
+	if (FILE* hFile = _tfopen(outFile.toStdWString().c_str(), _T("wb")))
 	{
 		m_lSettings.sort();
 
@@ -134,8 +116,7 @@ bool	CDSSSettings::Save(LPCTSTR szFile)
 			it->Save(hFile);
 
 		fclose(hFile);
-		bResult = true;
+		return true;
 	}
-
-	return bResult;
+	return false;
 }
