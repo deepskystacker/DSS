@@ -39,7 +39,7 @@
 class CDSSSetting
 {
 public:
-	CString				m_strName;
+	QString				m_strName;
 	CBezierAdjust		m_BezierAdjust;
 	CRGBHistogramAdjust	m_HistoAdjust;
 
@@ -69,7 +69,7 @@ public:
 	bool operator < (const CDSSSetting& cds) const
 	{
 		int			nCompare;
-		nCompare = m_strName.CompareNoCase(cds.m_strName);
+		nCompare = m_strName.compare(cds.m_strName, Qt::CaseInsensitive);
 
 		if (nCompare < 0)
 			return true;
@@ -84,15 +84,15 @@ public:
 
 		fread(&lNameSize, sizeof(lNameSize), 1, hFile);
 		fread(szName, sizeof(TCHAR), lNameSize, hFile);
-		m_strName = szName;
+		m_strName = QString::fromWCharArray(&szName[0]);
 		return m_BezierAdjust.Load(hFile) && m_HistoAdjust.Load(hFile);
 	};
 
 	bool	Save(FILE* hFile)
 	{
-		int		lNameSize = m_strName.GetLength() + 1;
+		int		lNameSize = m_strName.length() + 1;
 		fwrite(&lNameSize, sizeof(lNameSize), 1, hFile);
-		fwrite((LPCTSTR)m_strName, sizeof(TCHAR), lNameSize, hFile);
+		fwrite(m_strName.toStdWString().c_str(), sizeof(TCHAR), lNameSize, hFile);
 
 		return m_BezierAdjust.Save(hFile) && m_HistoAdjust.Save(hFile);
 	};
@@ -118,8 +118,8 @@ public:
 	{
 		return m_bLoaded;
 	};
-	bool	Load(LPCTSTR szFile = nullptr);
-	bool	Save(LPCTSTR szFile = nullptr);
+	bool Load();
+	bool Save();
 
 	int	Count()
 	{

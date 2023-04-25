@@ -65,19 +65,47 @@ public:
 	void SetPixel(int x, int y, COLORREF crColor);
 };
 
-class	CGammaTransformation
+namespace DSS
 {
-public:
-	std::vector<std::uint8_t> m_vTransformation;
+	class	GammaTransformation
+	{
+	private:
+		std::vector<uint8_t> u8transform;
+		std::vector<uint16_t> u16transform;
+		constexpr static int transformSize{ 1 + std::numeric_limits<uint16_t>::max() };
+		constexpr static double uint16Max_asDouble{ std::numeric_limits<uint16_t>::max() };
+		bool valid;
 
-public:
-	CGammaTransformation() {};
-	~CGammaTransformation() {};
+	public:
+		GammaTransformation() : valid{ false }
+		{};
+		~GammaTransformation() {};
 
-	void InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint);
-	void InitTransformation(double fGamma);
-	bool IsInitialized() { return (m_vTransformation.size() == 65537); }
-};
+		//
+		// Don't intend this to be copied or assigned.
+		//
+		GammaTransformation(const GammaTransformation&) = delete;
+		GammaTransformation& operator=(const GammaTransformation&) = delete;
+		GammaTransformation(GammaTransformation&& rhs) noexcept;
+		GammaTransformation& operator=(GammaTransformation&& rhs) noexcept;
+
+		void initTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint);
+
+		void initTransformation(double fGamma);
+
+		uint8_t getTransformation(int index)
+		{
+			return u8transform[index];
+		}
+
+		uint16_t getTransformation16(int index)
+		{
+			return u16transform[index];
+		}
+
+		bool isInitialized() { return valid; }
+	};
+}
 
 class CAllDepthBitmap
 {
@@ -101,6 +129,6 @@ void CopyBitmapToClipboard(HBITMAP hBitmap);
 bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, DSS::ProgressBase* pProgress = nullptr);
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::ProgressBase* pProgress);
 
-bool	ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans);
-bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans);
+bool	ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);
+bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);
 
