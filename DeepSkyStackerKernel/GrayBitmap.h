@@ -11,8 +11,10 @@ class CGrayBitmapT : public CMemoryBitmap, public CCFABitmapInfo
 public:
 	//friend CColorBitmapT<TType>;
 	//friend CGrayMedianFilterEngineT<TType>;
-
 	std::vector<TType>	m_vPixels;
+
+	CGrayBitmapT();
+	virtual ~CGrayBitmapT() = default;
 
 private:
 	static consteval double initMultiplier()
@@ -29,9 +31,10 @@ private:
 	{
 		if (std::is_same_v<TType, std::uint16_t> ||
 			std::is_same_v<TType, double> ||
-			std::is_same_v < TType, float> ||
-			std::is_same_v<TType, std::uint32_t>)	
+			std::is_same_v < TType, float>)
 			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
+		else if (std::is_same_v<TType, std::uint32_t>)
+			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4294967295.0 ] 
 		else
 			return static_cast<double>(std::numeric_limits<std::uint8_t>::max());	// Range of [0.0, 255.0]
 	};
@@ -42,11 +45,9 @@ private:
 	constinit inline static bool m_bDouble{ std::is_same_v<TType, double> };
 	constinit inline static bool m_bDWord{ std::is_same_v<TType, std::uint32_t> };
 	constinit inline static bool m_bFloat{ std::is_same_v<TType, float> };
-	inline static double m_fMultiplier{ initMultiplier() };
+	double m_fMultiplier{ initMultiplier() };
 	constexpr static double clampValue{ initClamp() };
 
-
-private:
 	bool InitInternals();
 
 	void CheckXY(size_t x, size_t y) const;
@@ -85,8 +86,6 @@ protected:
 	};
 
 public:
-	CGrayBitmapT();
-	virtual ~CGrayBitmapT() = default;
 
 	void SetMultiplier(double fMultiplier)
 	{
