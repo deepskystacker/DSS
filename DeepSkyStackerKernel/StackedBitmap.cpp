@@ -840,7 +840,7 @@ public :
 	};
 
 	virtual bool OnOpen() override;
-	void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -899,14 +899,14 @@ bool CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 	lX += m_lXStart;
 	lY += m_lYStart;
 
 	m_pStackedBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue, m_bApplySettings);
 
-	return;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */

@@ -240,7 +240,7 @@ public:
 	bool Close();
 
 	virtual bool OnOpen() { return true; };
-	virtual void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) = 0;
+	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) = 0;
 	virtual bool OnClose() { return true; };
 };
 

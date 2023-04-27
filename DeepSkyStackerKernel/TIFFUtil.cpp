@@ -1077,8 +1077,8 @@ bool CTIFFWriter::Open()
 bool CTIFFWriter::Write()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool		bResult = false;
-	bool		bError = false;
+	bool		result = false;
+	bool		error = false;
 
 	//
     // Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
@@ -1113,16 +1113,24 @@ bool CTIFFWriter::Write()
 
 			// int	rowProgress = 0;
 
+			std::atomic_bool stop{ false };
 #pragma omp parallel for default(none)
 			for (int row = 0; row < h; row++)
 			{
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
 				for (int col = 0; col < w; col++)
 				{
+					if (stop.load()) break;	// OK to break from inner loop
 					int index = (row * w * spp) + (col * spp);
 
 					double		fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
 
-					OnWrite(col, row, fRed, fGreen, fBlue);
+					if (!OnWrite(col, row, fRed, fGreen, fBlue))
+					{
+						stop = true;
+						result = false;
+						break;
+					}
 
 					//
 					// If its a cfa bitmap, set grey level to maximum of RGB
@@ -1203,6 +1211,7 @@ bool CTIFFWriter::Write()
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
 
+			if (false == result) return false;
 
 			//
 			// Work out how many scanlines fit into the default strip
@@ -1232,15 +1241,15 @@ bool CTIFFWriter::Write()
 				if (bytesRemaining < stripSize)
 					size = bytesRemaining;
 
-				tsize_t result = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
-				if (-1 == result)
+				tsize_t written = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
+				if (-1 == written)
 				{
 					ZTRACE_RUNTIME("TIFFWriteEncodedStrip() failed");
-					bError = true;
+					error = true;
 					break;
 				}
-				curr += result;
-				bytesRemaining -= result;
+				curr += written;
+				bytesRemaining -= written;
 
 				if (m_pProgress != nullptr)
 					m_pProgress->Progress2((h/2) + ((percentStep * strip) / 2));
@@ -1250,10 +1259,10 @@ bool CTIFFWriter::Write()
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
-		bResult = (!bError) ? true : false;
+		result = (!error) ? true : false;
 	};
 
-	return bResult;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1309,7 +1318,7 @@ public :
 	virtual bool Close() { return OnClose(); }
 
 	virtual bool OnOpen() override;
-	void OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
+	bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -1378,9 +1387,9 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
-
+	bool result { true };
 	try
 	{
 		if (m_pMemoryBitmap)
@@ -1396,29 +1405,21 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			e.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical,
+			DSSBase::Method::QMessageBox,
+			true);
+		result = false;
 	}
 
-	return;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */

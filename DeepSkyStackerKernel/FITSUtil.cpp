@@ -243,21 +243,12 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		CString errorText{ &error_text[0] };
-		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			(LPCTSTR)m_strFileName, 
-			status,
-			(LPCTSTR)errorText);
+		QString errorText{ &error_text[0] };
+		QString errorMessage{ "fits_open_diskfile %1\nreturned a status of %d, error text is:\n\"%s\"" };
+		errorMessage = errorMessage.arg(QString::fromWCharArray(m_strFileName.GetString())).arg(status).arg(error_text);
 
-		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
-
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
-#endif
-
+		ZTRACE_RUNTIME(errorMessage);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 	}
 
@@ -1418,7 +1409,8 @@ bool CFITSWriter::Write()
 					for (int i = 0; i < m_lWidth; i++)
 					{
 						double fRed, fGreen, fBlue;
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						double fGray;
 						if (m_CFAType != CFATYPE_NONE)
@@ -1486,7 +1478,8 @@ bool CFITSWriter::Write()
 					{
 						double fRed, fGreen, fBlue;
 
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						if (m_lBitsPerPixel == 8)
 						{
@@ -1660,6 +1653,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 
 bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue)
 {
+	bool result { true };
 	try
 	{
 		if (m_pMemoryBitmap)
@@ -1676,28 +1670,21 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			(LPCTSTR)name,
-			(LPCTSTR)fileName,
-			(LPCTSTR)functionName,
-			e.locationAtIndex(0)->lineNumber(),
-			(LPCTSTR)text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical,
+			DSSBase::Method::QMessageBox,
+			true);
+		result = false;
 	}
-
-	return true;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
