@@ -1,5 +1,4 @@
 #include <stdafx.h>
-#include "MultiBitmapProcess.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"
 #include "MemoryBitmap.h"
@@ -180,10 +179,10 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	const auto handleError = [](const auto& errorMessage,[[maybe_unused]] const auto flags) -> void
+	const auto handleError = [](const QString& errorMessage,[[maybe_unused]] const auto flags) -> void
 	{
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toStdWString().c_str();
 #else
 		AfxMessageBox(errorMessage, flags);
 #endif
@@ -213,7 +212,7 @@ void CCombineTask::process()
 		}
 		catch (const std::exception& e)
 		{
-			CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+			QString errorMessage(e.what());
 			handleError(errorMessage, MB_OK | MB_ICONSTOP);
 		}
 #if !defined(_CONSOLE)
@@ -226,15 +225,28 @@ void CCombineTask::process()
 #endif
 		catch (ZException& ze)
 		{
-			auto location = ze.locationAtIndex(0);
-			CString errorMessage;
-			errorMessage.Format(_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-				CString{ CA2CT(ze.name()) }, CString{ CA2CT(location->fileName()) }, CString{ CA2CT(location->functionName()) }, location->lineNumber(), CString{ CA2CT(ze.text(0)) });
+			const ZExceptionLocation* location = ze.locationAtIndex(0);
+			QString errorMessage;
+			if (location)
+			{
+				errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
+									.arg(ze.name())
+									.arg(location->fileName())
+									.arg(location->functionName())
+									.arg(location->lineNumber())
+									.arg(ze.text(0));
+			}
+			else
+			{
+				errorMessage = QString("Exception %1 thrown from an unknown Function.\n\n%5")
+					.arg(ze.name())
+					.arg(ze.text(0));
+			}
 			handleError(errorMessage, MB_OK | MB_ICONSTOP);
 		}
 		catch (...)
 		{
-			CString errorMessage(_T("Unknown exception caught"));
+			const QString errorMessage("Unknown exception caught");
 			handleError(errorMessage, MB_OK | MB_ICONSTOP);
 		}
 	}

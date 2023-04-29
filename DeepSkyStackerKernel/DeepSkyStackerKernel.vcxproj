@@ -123,6 +123,7 @@
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
       <QmOutputFile>%(Filename).qm</QmOutputFile>
+      <NoObsolete>true</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -290,7 +291,6 @@
     <ClInclude Include=".\MasterFrames.h" />
     <ClInclude Include=".\MatchingStars.h" />
     <ClInclude Include=".\MemoryBitmap.h" />
-    <ClInclude Include=".\MultiBitmapProcess.h" />
     <ClInclude Include=".\Multitask.h" />
     <ClInclude Include=".\PixelTransform.h" />
     <ClInclude Include=".\RAWUtils.h" />

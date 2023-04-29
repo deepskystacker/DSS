@@ -317,7 +317,11 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 			_tsplitpath(szFileName, nullptr, nullptr, szName, szExt);
 			strName.Format(_T("%s%s"), szName, szExt);
-			strText = QCoreApplication::translate("LiveEngine", "Image %1 registered: %2 star(s) detected - FWHM = %3 - Score = %4\n", "IDS_LOG_REGISTERRESULTS").arg(QString::fromWCharArray(strName).arg(lfi.m_vStars.size()).arg(lfi.m_fFWHM, 0, 'f', 2).arg(lfi.m_fOverallQuality, 0, 'f', 2));
+			strText = QCoreApplication::translate("LiveEngine", "Image %1 registered: %2 star(s) detected - FWHM = %3 - Score = %4\n",
+				"IDS_LOG_REGISTERRESULTS")
+				.arg(QString::fromWCharArray(strName)
+				.arg(lfi.m_vStars.size())
+				.arg(lfi.m_fFWHM, 0, 'f', 2).arg(lfi.m_fOverallQuality, 0, 'f', 2));
 			PostToLog(strText, true);
 
 			CString					strError;

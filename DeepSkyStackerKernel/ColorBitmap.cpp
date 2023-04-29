@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <algorithm>
 #include "ColorBitmap.h"
 #include "ColorHelpers.h"
 #include "ZExcept.h"
@@ -28,12 +29,7 @@ size_t CColorBitmapT<TType>::GetOffset(int x, int y) const
 template <typename TType>
 CColorBitmapT<TType>::CColorBitmapT() :
 	m_lWidth{ 0 },
-	m_lHeight{ 0 },
-	m_bWord{ std::is_same_v<TType, std::uint16_t> },
-	m_bDouble{ std::is_same_v<TType, double> },
-	m_bDWord{ std::is_same_v<TType, std::uint32_t> },
-	m_bFloat{ std::is_same_v<TType, float> },
-	m_fMultiplier{ (std::is_same_v<TType, std::uint16_t> || std::is_same_v<TType, double> || std::is_same_v<TType, float>) ? 256.0 : (std::is_same_v<TType, std::uint32_t> ? 256.0 * 65536.0 : 1.0) }
+	m_lHeight{ 0 }
 {
 	m_bTopDown = true;
 }
@@ -100,9 +96,9 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fRed, double fGre
 	CheckXY(i, j);
 
 	const size_t lOffset = GetOffset(i, j);
-	m_Red.m_vPixels[lOffset] = fRed * m_fMultiplier;
-	m_Green.m_vPixels[lOffset] = fGreen * m_fMultiplier;
-	m_Blue.m_vPixels[lOffset] = fBlue * m_fMultiplier;
+	m_Red.m_vPixels[lOffset] = std::clamp(fRed * m_fMultiplier, 0.0, clampValue);
+	m_Green.m_vPixels[lOffset] = std::clamp(fGreen * m_fMultiplier, 0.0, clampValue);
+	m_Blue.m_vPixels[lOffset] = std::clamp(fBlue * m_fMultiplier, 0.0, clampValue);
 }
 
 template <typename TType>
@@ -112,7 +108,7 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fGray)
 	CheckXY(i, j);		// Throw if not
 
 	const size_t lOffset = GetOffset(i, j);
-	const double value = fGray * m_fMultiplier;
+	const double value = std::clamp(fGray * m_fMultiplier, 0.0, clampValue);
 	m_Red.m_vPixels[lOffset] = value;
 	m_Green.m_vPixels[lOffset] = value;
 	m_Blue.m_vPixels[lOffset] = value;

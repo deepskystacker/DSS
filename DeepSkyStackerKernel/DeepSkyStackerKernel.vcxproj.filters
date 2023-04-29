@@ -262,9 +262,6 @@
     <ClInclude Include=".\MatchingStars.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\MultiBitmapProcess.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\Multitask.h">
       <Filter>Header Files</Filter>
     </ClInclude>

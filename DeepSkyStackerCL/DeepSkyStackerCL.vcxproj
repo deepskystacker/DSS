@@ -122,6 +122,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
+      <NoObsolete>true</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

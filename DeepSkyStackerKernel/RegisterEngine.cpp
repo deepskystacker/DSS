@@ -1355,10 +1355,9 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 			strOutputFile += _T(".cal.tif");
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(lfi.filePath, strExt);
-			strOutputFile += ".cal"+strExt;
+			strOutputFile += ".cal"+CString(strExt.toStdWString().c_str());
 		}
 
 		strCalibratedFile = strOutputFile;

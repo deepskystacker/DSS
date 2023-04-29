@@ -840,7 +840,7 @@ public :
 	};
 
 	virtual bool OnOpen() override;
-	void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -899,14 +899,14 @@ bool CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 	lX += m_lXStart;
 	lY += m_lYStart;
 
 	m_pStackedBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue, m_bApplySettings);
 
-	return;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1083,7 +1083,7 @@ bool CFITSWriterStacker::OnOpen()
 		strText = QCoreApplication::translate("StackedBitmap", "Saving FITS %1 bit", "IDS_SAVINGFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(m_strFileName);
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1329,7 +1329,7 @@ bool CFITSReadStacker::OnOpen()
 			strText = QCoreApplication::translate("StackedBitmap", "Loading FITS %1 bit/ch", "IDS_LOADRGBFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(m_strFileName);
 		m_pProgress->Progress1(strText, 0);
 	};
 

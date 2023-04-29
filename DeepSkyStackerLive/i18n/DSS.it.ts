@@ -4,7 +4,7 @@
 <context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="137"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="136"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Questa versione beta di DeepSkyStacker è scaduta
@@ -157,7 +157,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished">Caricamento %1 bit/can %2 immagine
+        <translation>Caricamento %1 bit/can %2 immagine
 %3</translation>
     </message>
     <message>
@@ -165,14 +165,14 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished">Caricamento %1 bits grigi %2 immagine
+        <translation>Caricamento %1 bits grigi %2 immagine
 %3</translation>
     </message>
     <message>
         <location filename="../LiveEngine.cpp" line="301"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Allineo %1</translation>
+        <translation>Allineo %1</translation>
     </message>
     <message>
         <location filename="../LiveEngine.cpp" line="320"/>
@@ -182,25 +182,28 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="330"/>
+        <location filename="../LiveEngine.cpp" line="334"/>
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Avviso: immagine %1 -&gt; %2
+</translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="342"/>
+        <location filename="../LiveEngine.cpp" line="346"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;immagine %1 non è impilabile (%2)
+</translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="350"/>
+        <location filename="../LiveEngine.cpp" line="354"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Errore durante il caricamento del file %1
+</translation>
     </message>
 </context>
 <context>

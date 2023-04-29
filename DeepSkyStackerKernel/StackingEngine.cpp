@@ -719,7 +719,7 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const 
 
 	std::atomic_bool stop{ false };
 	std::atomic<int> nLoopCount{ 1 };
-	const QString strText(QCoreApplication::translate("Kernel", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
 	if (pProg != nullptr)
 		pProg->Progress1(strText, 0);
 
@@ -776,7 +776,7 @@ void CStackingEngine::ComputeOffsets()
 	else
 		m_lNrStackable = std::min(static_cast<int>(m_vBitmaps.size()), 1);
 	m_lNrCometStackable = 0;
-	const QString strText(QCoreApplication::translate("Kernel", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
 
 	const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
 	if (m_pProgress)
@@ -1082,7 +1082,7 @@ void CStackingEngine::ComputeBitmap()
 			QString strMethod;
 			FormatFromMethod(strMethod, m_pLightTask->m_Method, m_pLightTask->m_fKappa, m_pLightTask->m_lNrIterations);
 
-			const QString strText(QCoreApplication::translate("Kernel", "Computing Final Picture (%1)", "IDS_COMPUTINGMEDIANLIGHT").arg(strMethod));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Computing Final Picture (%1)", "IDS_COMPUTINGMEDIANLIGHT").arg(strMethod));
 
 			m_pProgress->Start1(strText, 1, true);
 			m_pProgress->Progress1(strText, 0);
@@ -1183,7 +1183,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		std::unique_ptr<C96BitFloatColorBitmap> pCover = std::make_unique<C96BitFloatColorBitmap>();
 		pCover->Init(m_rcResult.width(), m_rcResult.height());
 
-		strText = QCoreApplication::translate("Kernel", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
+		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
 		if (m_pProgress)
 			m_pProgress->Start1(strText, static_cast<int>(m_vPixelTransforms.size()), false);
 
@@ -1193,7 +1193,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			++lNrBitmaps;
 			if (m_pProgress != nullptr)
 			{
-				strText = QCoreApplication::translate("Kernel", "Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT").arg(lNrBitmaps + 1).arg(m_vPixelTransforms.size());
+				strText = QCoreApplication::translate("StackingEngine", "Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT").arg(lNrBitmaps + 1).arg(m_vPixelTransforms.size());
 				m_pProgress->Progress1(strText, lNrBitmaps + 1);
 				m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
 			}
@@ -1248,9 +1248,9 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		lProgress = 0;
 		if (m_pProgress != nullptr)
 		{
-			strText = QCoreApplication::translate("Kernel", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
 			m_pProgress->Start1(strText, 2, false);
-			strText = QCoreApplication::translate("Kernel", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
 			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		};
 
@@ -1285,7 +1285,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		lProgress = 0;
 		if (m_pProgress != nullptr)
 		{
-			strText = QCoreApplication::translate("Kernel", "Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
 			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		}
 
@@ -1348,15 +1348,14 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 			strOutputFile += ".reg.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".reg"+strExt;
+			strOutputFile += ".reg" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("Kernel", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1394,16 +1393,15 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			strOutputFile += ".cal.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cal"+strExt;
+			strOutputFile += ".cal" + CString(strExt.toStdWString().c_str());
 		};
 
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("Kernel", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 
@@ -1465,10 +1463,9 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 			strOutputFile += ".cosmetic.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cosmetic"+strExt;
+			strOutputFile += ".cosmetic" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
@@ -1507,15 +1504,14 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 			strOutputFile += "Comet.tif";
 		else
 		{
-			CString		strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += "Comet"+strExt;
+			strOutputFile += "Comet" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("Kernel", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1552,16 +1548,14 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 			strOutputFile += "Cometless.tif";
 		else
 		{
-			CString		strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-
-			strOutputFile += "Cometless" + strExt;
+			strOutputFile += "Cometless" + CString(strExt.toStdWString().c_str());
 		}
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("Kernel", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		}
 
@@ -1790,7 +1784,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 			// Start by demosaicing the input bitmap
 			if (m_pProgress != nullptr)
 			{
-				strText = QCoreApplication::translate("Kernel", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING");
+				strText = QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING");
 				m_pProgress->Start2(strText, 0);
 			};
 			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
@@ -1833,7 +1827,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 		{
 			if (m_pProgress != nullptr)
 			{
-				strText = QCoreApplication::translate("Kernel", "Computing Entropy", "IDS_COMPUTINGENTROPY");
+				strText = QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY");
 				m_pProgress->Start2(strText, 0);
 			}
 			StackTask.m_EntropyWindow.Init(pBitmap, 10, m_pProgress);
@@ -1845,7 +1839,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 		{
 			if (m_pProgress != nullptr)
 			{
-				strText = QCoreApplication::translate("Kernel", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
+				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				m_pProgress->Start2(strText, 0);
 			}
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), bFirst, m_pProgress);
@@ -2077,8 +2071,8 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				SpaceToQString(ulFreeSpace, strFreeSpace);
 				SpaceToQString(ulNeededSpace, strNeededSpace);
 
-				const QString strText(QCoreApplication::translate("Kernel", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive)).arg(strFreeSpace) +
-									  QCoreApplication::translate("Kernel", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
+				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive)).arg(strFreeSpace) +
+									  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 				bContinue = m_pProgress->Warning(strText);
 			}
 		} break;
@@ -2242,9 +2236,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 						const auto strDescription = lightframeInfo.m_strInfos;
 						if (lightframeInfo.m_lNrChannels == 3)
-							strText = QCoreApplication::translate("Kernel", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 						else
-							strText = QCoreApplication::translate("Kernel", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 
 						ZTRACE_RUNTIME(strText);
 						// First apply transformations
@@ -2392,8 +2386,8 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* c
 
 	if (pProgress != nullptr && (m_lNrStackable == 1) && (tasks.GetNrLightFrames() > 1))
 	{
-		const QString strText(QCoreApplication::translate("Kernel", "Only one frame (out of %1) will be stacked.\n\nYou should check/change the star detection threshold to detect more stars\nand help DeepSkyStacker find a transformation between the reference frame and the others.\n", "IDS_WARNING_ONLYONEFRAME").arg(tasks.GetNrLightFrames()) +
-							  QCoreApplication::translate("Kernel", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
+		const QString strText(QCoreApplication::translate("StackingEngine", "Only one frame (out of %1) will be stacked.\n\nYou should check/change the star detection threshold to detect more stars\nand help DeepSkyStacker find a transformation between the reference frame and the others.\n", "IDS_WARNING_ONLYONEFRAME").arg(tasks.GetNrLightFrames()) +
+							  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 		bContinue = m_pProgress->Warning(strText);
 	}
 
@@ -2403,7 +2397,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* c
 		if (tasks.IsCometAvailable() && tasks.GetCometStackingMode() == CSM_COMETSTAR)
 			 m_lNrCurrentStackable = m_lNrCometStackable;
 
-		const QString strText(QCoreApplication::translate("Kernel", "Stacking", "IDS_STACKING"));
+		const QString strText(QCoreApplication::translate("StackingEngine", "Stacking", "IDS_STACKING"));
 		if (pProgress != nullptr)
 			pProgress->Start1(strText, m_lNrCurrentStackable, true);
 
@@ -2558,7 +2552,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 
 	{
 		CString			strBasePath;
-		CString			strExt;
+		QString			strExt;
 		bool			bFileExists = false;
 		int			lNumber = 0;
 
@@ -2577,7 +2571,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 			strExt = ".fit";
 			if (m_vBitmaps.size())
 				GetFITSExtension(m_vBitmaps[0].filePath, strExt);
-			strFileName = strBasePath+strBaseName+strExt;
+			strFileName = strBasePath+strBaseName + CString(strExt.toStdWString().c_str());;
 		};
 
 		if (OutputSettings.m_bAppend)
@@ -2592,7 +2586,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 					fclose(hFile);
 					lNumber++;
 					bFileExists = true;
-					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, (LPCTSTR)strExt);
+					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, strExt.toStdWString().c_str());
 				}
 				else
 					bFileExists = false;
@@ -2662,45 +2656,45 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			stream << "-> " << szName << "<br><br>" << Qt::endl;
 
 			// Stacking Mode
-			stream << QCoreApplication::translate("Kernel", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
+			stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
 			switch (tasks.getStackingMode())
 			{
 			case SM_NORMAL :
-				stream << QCoreApplication::translate("Kernel", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
+				stream << QCoreApplication::translate("StackRecap", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
 				break;
 			case SM_MOSAIC :
-				stream << QCoreApplication::translate("Kernel", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
+				stream << QCoreApplication::translate("StackRecap", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
 				break;
 			case SM_INTERSECTION :
-				stream << QCoreApplication::translate("Kernel", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
+				stream << QCoreApplication::translate("StackRecap", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
 				break;
 			case SM_CUSTOM :
-				stream << QCoreApplication::translate("Kernel", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
+				stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
 				break;
 			};
 
 			stream << "<br>";
 
 			// Alignment method
-			stream << QCoreApplication::translate("Kernel", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
+			stream << QCoreApplication::translate("StackRecap", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
 
 			switch (tasks.GetAlignmentMethod())
 			{
 			case 0 :
 			case 1 :
-				stream << QCoreApplication::translate("Kernel", "Automatic", "IDS_ALIGN_AUTO");
+				stream << QCoreApplication::translate("StackRecap", "Automatic", "IDS_ALIGN_AUTO");
 				break;
 			case 2 :
-				stream << QCoreApplication::translate("Kernel", "Bilinear", "IDS_ALIGN_BILINEAR");
+				stream << QCoreApplication::translate("StackRecap", "Bilinear", "IDS_ALIGN_BILINEAR");
 				break;
 			case 3 :
-				stream << QCoreApplication::translate("Kernel", "Bisquared", "IDS_ALIGN_BISQUARED");
+				stream << QCoreApplication::translate("StackRecap", "Bisquared", "IDS_ALIGN_BISQUARED");
 				break;
 			case 4 :
-				stream << QCoreApplication::translate("Kernel", "Bicubic", "IDS_ALIGN_BICUBIC");
+				stream << QCoreApplication::translate("StackRecap", "Bicubic", "IDS_ALIGN_BICUBIC");
 				break;
 			case 5 :
-				stream << QCoreApplication::translate("Kernel", "No Alignment", "IDS_ALIGN_NONE");
+				stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
 				break;
 			};
 			stream << "<br>" << Qt::endl;
@@ -2709,7 +2703,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			const int dwDrizzle = tasks.GetPixelSizeMultiplier();
 			if (dwDrizzle > 1)
 			{
-				stream << QCoreApplication::translate("Kernel", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
+				stream << QCoreApplication::translate("StackRecap", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
 				stream << "<br>" << Qt::endl;
 			};
 
@@ -2719,17 +2713,17 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 				COMETSTACKINGMODE	CometStackingMode;
 
 				CometStackingMode = tasks.GetCometStackingMode();
-				stream << QCoreApplication::translate("Kernel", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
+				stream << QCoreApplication::translate("StackRecap", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
 				switch (CometStackingMode)
 				{
 				case CSM_STANDARD :
-					stream << QCoreApplication::translate("Kernel", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
+					stream << QCoreApplication::translate("StackRecap", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
 					break;
 				case CSM_COMETONLY :
-					stream << QCoreApplication::translate("Kernel", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
+					stream << QCoreApplication::translate("StackRecap", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
 					break;
 				case CSM_COMETSTAR :
-					stream << QCoreApplication::translate("Kernel", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
+					stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
 					break;
 				};
 				stream << "<br>" << Qt::endl;
@@ -2741,12 +2735,12 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			tasks.GetPostCalibrationSettings(pcs);
 			if (pcs.m_bHot)
 			{
-				stream << QCoreApplication::translate("Kernel", "Cosmetic applied to hot pixels (Filter = %ld px, Detection Threshold = %.1f%%)\n", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
+				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
 				stream << "<br>" << Qt::endl;
 			};
 			if (pcs.m_bCold)
 			{
-				stream << QCoreApplication::translate("Kernel", "Cosmetic applied to cold pixels (Filter = %ld px, Detection Threshold = %.1f%%)\n", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
+				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
 				stream << "<br>" << Qt::endl;
 			};
 
@@ -2767,16 +2761,16 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 			QString				strGainText;
 			CString				strHotPixels;
 			QString				strYesNo;
-			QString strYes(QCoreApplication::translate("Kernel", "Yes", "IDS_YES"));
-			QString strNo(QCoreApplication::translate("Kernel", "No", "IDS_NO"));
+			QString strYes(QCoreApplication::translate("StackingEngine", "Yes", "IDS_YES"));
+			QString strNo(QCoreApplication::translate("StackingEngine", "No", "IDS_NO"));
 			BACKGROUNDCALIBRATIONMODE	CalibrationMode;
 
 			CalibrationMode = tasks.GetBackgroundCalibrationMode();
 
-			strISOText = QCoreApplication::translate("Kernel", "ISO", "IDS_ISO");
-			strGainText = QCoreApplication::translate("Kernel", "ISO", "IDS_GAIN");
-			strBackgroundCalibration = QCoreApplication::translate("Kernel", "RGB Channels Background Calibration: %1\n", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
-			strPerChannelBackgroundCalibration = QCoreApplication::translate("Kernel", "Per Channel Background Calibration: %1\n", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
+			strISOText = QCoreApplication::translate("StackRecap", "ISO", "IDS_ISO");
+			strGainText = QCoreApplication::translate("StackRecap", "Gain", "IDS_GAIN");
+			strBackgroundCalibration = QCoreApplication::translate("StackRecap", "RGB Channels Background Calibration: %1", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
+			strPerChannelBackgroundCalibration = QCoreApplication::translate("StackRecap", "Per Channel Background Calibration: %1", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
 
 			for (i = 0;i<tasks.m_vStacks.size();i++)
 			{
@@ -2795,7 +2789,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 					strExposure = exposureToString(lTaskExposure);
 					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-					QString strText(QCoreApplication::translate("Kernel", "Stacking step %1\n  ->%2 frames (%3: %4) - total exposure: ", "IDS_RECAP_STEP")
+					QString strText(QCoreApplication::translate("StackRecap", "Stacking step %1<br>  ->%2 frames (%3: %4) - total exposure: ",
+						"IDS_RECAP_STEP")
 									.arg(i + 1)
 									.arg(si.m_pLightTask->m_vBitmaps.size())
 									.arg(strISOGainText)
@@ -2808,12 +2803,12 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 					if (si.m_pLightTask->m_vBitmaps.size()>1)
 					{
 						FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);						
-						stream << "<ul>" << QCoreApplication::translate("Kernel", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
+						stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
 
 						if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
 							(IsRawBayer() || IsFITSRawBayer()))
 						{
-							stream << "<br>" << QCoreApplication::translate("Kernel", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
+							stream << "<br>" << QCoreApplication::translate("StackRecap", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
 						};
 					};
 
@@ -2826,7 +2821,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
 						GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-						stream << QCoreApplication::translate("Kernel", "\t-> Offset: %1 frames (%2: %3) exposure: %4\n", "IDS_RECAP_OFFSET")
+						stream << QCoreApplication::translate("StackRecap", "-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
 									.arg(si.m_pOffsetTask->m_vBitmaps.size())
 									.arg(strISOGainText)
 									.arg(strISOGainValue)
@@ -2835,7 +2830,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						if (si.m_pOffsetTask->m_vBitmaps.size()>1)
 						{
 							FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);							
-							stream << "<ul>" << QCoreApplication::translate("Kernel", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
+							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
 						}
 						else
 							stream << "<br>";
@@ -2843,18 +2838,18 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						if (si.m_pOffsetTask->HasISOSpeed())
 						{
 							if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: ISO speed not matching with light frames\n", "IDS_RECAP_ISOWARNING");
+								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
 						}
 						else
 						{
 							if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: Gain does not match Light frame gain\n", "IDS_RECAP_GAINWARNING");
+								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
 						};
 						stream << "</ul>";
 					}
 					else
 					{
-						stream << QCoreApplication::translate("Kernel", "\t-> No Offset\n", "IDS_RECAP_NOOFFSET");
+						stream << QCoreApplication::translate("StackRecap", "-> No Offset", "IDS_RECAP_NOOFFSET");
 					}
 
 					if (si.m_pDarkTask)
@@ -2862,7 +2857,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
 						GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-						stream << QCoreApplication::translate("Kernel", "\t-> Dark: %1 frames (%2 : %3) exposure: %4\n", "IDS_RECAP_DARK")
+						stream << QCoreApplication::translate("StackRecap", "-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
 									.arg(si.m_pDarkTask->m_vBitmaps.size())
 									.arg(strISOGainText)
 									.arg(strISOGainValue)
@@ -2870,7 +2865,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 
 						if (si.m_pDarkTask->m_vBitmaps.size()>1)
 						{
-							stream << "<ul>" << QCoreApplication::translate("Kernel", "Method: ", "IDS_RECAP_METHOD");
+							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD");
 							FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
 							stream << strTempText << "</ul>";
 						}
@@ -2882,20 +2877,20 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						if (si.m_pDarkTask->HasISOSpeed())
 						{
 							if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: ISO speed not matching with light frames\n", "IDS_RECAP_ISOWARNING") << "<br>";
+								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING") << "<br>";
 						}
 						else
 						{
 							if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: Gain does not match Light frame gain\n", "IDS_RECAP_GAINWARNING") << "<br>";
+								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING") << "<br>";
 						}
 						if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
-							stream << QCoreApplication::translate("Kernel", "\t\tWarning: exposure time not matching with light frames\n", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
+							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
 						stream << "</ul>";
 					}
 					else
 					{
-						stream << QCoreApplication::translate("Kernel", "\t-> No Dark\n", "IDS_RECAP_NODARK");
+						stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
 					}
 
 					if (si.m_pDarkFlatTask && si.m_pFlatTask)
@@ -2903,7 +2898,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
 						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-						stream << QCoreApplication::translate("Kernel", "\t-> Dark Flat: %1 frames (%2 : %3) exposure: %4\n", "IDS_RECAP_DARKFLAT")
+						stream << QCoreApplication::translate("StackRecap", "-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
 									.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
 									.arg(strISOGainText)
 									.arg(strISOGainValue)
@@ -2911,7 +2906,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 
 						if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
 						{
-							stream << "<ul>" << QCoreApplication::translate("Kernel", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
 							FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
 							stream << strTempText << "</ul>";
 						}
@@ -2921,15 +2916,15 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						if (si.m_pDarkFlatTask->HasISOSpeed())
 						{
 							if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: ISO speed not matching with flat frames\n", "IDS_RECAP_ISOWARNINGDARKFLAT");
+								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
 						}
 						else
 						{
 							if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n", "IDS_RECAP_GAINWARNINGDARKFLAT");
+								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
 						}
 						if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
-							stream << QCoreApplication::translate("Kernel", "\t\tWarning: exposure time not matching with flat frames\n", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
+							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
 						stream << "</ul>";
 					}
 
@@ -2940,7 +2935,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 
 						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-						stream << QCoreApplication::translate("Kernel", "\t-> Flat: %1 frames (%2: %3) exposure: %4\n", "IDS_RECAP_FLAT")
+						stream << QCoreApplication::translate("StackRecap", "-> Flat: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLAT")
 									.arg(si.m_pFlatTask->m_vBitmaps.size())
 									.arg(strISOGainText)
 									.arg(strISOGainValue)
@@ -2948,7 +2943,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 
 						if (si.m_pFlatTask->m_vBitmaps.size()>1)
 						{
-							stream << "<ul>" << QCoreApplication::translate("Kernel", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
 							FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
 							stream << strTempText << "</ul>";
 						}
@@ -2956,18 +2951,18 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						if (si.m_pFlatTask->HasISOSpeed())
 						{
 							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: ISO speed not matching with light frames\n", "IDS_RECAP_ISOWARNING");
+								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
 						}
 						else
 						{
 							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("Kernel", "\t\tWarning: Gain does not match Light frame gain\n", "IDS_RECAP_GAINWARNING");
+								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
 						}
 						stream << "</ul>";
 					}
 					else
 					{
-						stream << QCoreApplication::translate("Kernel", "\t-> No Flat\n", "IDS_RECAP_NOFLAT");
+						stream << QCoreApplication::translate("StackRecap", "-> No Flat", "IDS_RECAP_NOFLAT");
 					}
 
 					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
@@ -2987,41 +2982,41 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						stream << "<hr><br>" << Qt::endl;
 						stream << "<a name=\"Task" << i << "\"></a>";
 						
-						stream << "<b>" << QCoreApplication::translate("Kernel", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
+						stream << "<b>" << QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
 						for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
 							stream << si.m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
 
 						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
 						{
-							stream << "<b>" << QCoreApplication::translate("Kernel", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
+							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
 							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("Kernel", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile << "<br>";
+								stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile << "<br>";
 							for (j = 0; j < si.m_pOffsetTask->m_vBitmaps.size(); j++)
 								stream << si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
 						}
 
 						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
 						{
-							stream << "<b>" << QCoreApplication::translate("Kernel", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
+							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
 							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("Kernel", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile << "<br>";
+								stream << QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile << "<br>";
 							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
 								stream << si.m_pDarkTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
 						}
 
 						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
 						{
-							stream << "<b>" << QCoreApplication::translate("Kernel", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
+							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
 							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("Kernel", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile << "<br>";
+								stream << QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile << "<br>";
 							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
 								stream << si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
 						};
 						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
 						{
-							stream << "<b>" << QCoreApplication::translate("Kernel", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
+							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
 							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("Kernel", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile << "<br>";
+								stream << QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile << "<br>";
 							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
 								stream << si.m_pFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
 						};

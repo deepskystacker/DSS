@@ -18,32 +18,54 @@ public:
 template <typename TType>
 class CColorBitmapT : public CMemoryBitmap, public CColorBitmap
 {
-public:
 	//friend CColorMedianFilterEngineT<TType>;
-
-private:
-	int m_lHeight;
-	int m_lWidth;
-	bool m_bWord;
-	bool m_bDouble;
-	bool m_bDWord;
-	bool m_bFloat;
-	const double m_fMultiplier;
-
 public:
 	CGrayBitmapT<TType> m_Red;
 	CGrayBitmapT<TType> m_Green;
 	CGrayBitmapT<TType> m_Blue;
 
+	CColorBitmapT();
+	virtual ~CColorBitmapT() = default;
+
 private:
+	static consteval double initMultiplier()
+	{
+		if (std::is_same_v<TType, std::uint16_t> || std::is_same_v<TType, double> || std::is_same_v<TType, float>)
+			return 256.0;			// Range of [0.0, 65535.0]
+		else if (std::is_same_v<TType, std::uint32_t>)
+			return 256.0 * 65536.0;	// Range of [0.0, 65535.0]
+		else
+			return 1.0;				// Range of [0.0, 255.0]
+	};
+
+	static consteval double initClamp()
+	{
+		if (std::is_same_v<TType, std::uint16_t> ||
+			std::is_same_v<TType, double> ||
+			std::is_same_v < TType, float>)
+			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
+		else if (std::is_same_v<TType, std::uint32_t>)
+			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4294967295.0 ] 
+		else
+			return static_cast<double>(std::numeric_limits<std::uint8_t>::max());	// Range of [0.0, 255.0]
+	};
+
+	int m_lHeight;
+	int m_lWidth;
+	constinit inline static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
+	constinit inline static bool m_bDouble{ std::is_same_v<TType, double> };
+	constinit inline static bool m_bDWord{ std::is_same_v<TType, std::uint32_t> };
+	constinit inline static bool m_bFloat{ std::is_same_v<TType, float> };
+	double m_fMultiplier{ initMultiplier() };
+	constexpr static double clampValue{ initClamp() };
+
+public:
 	void CheckXY(size_t x, size_t y) const;
 
 	size_t GetOffset(const size_t x, const size_t y) const;
 	size_t GetOffset(int x, int y) const;
 
-public:
-	CColorBitmapT();
-	virtual ~CColorBitmapT() = default;
+
 
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override;
 

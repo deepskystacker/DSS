@@ -415,9 +415,9 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 				fGreen = qGreen(*pRgbPixel);
 				fBlue = qBlue(*pRgbPixel);
 				pBitmap->SetPixel(i, j,
-					std::clamp(fRed, 0.0, 255.0),
-					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+					fRed,	// was std::clamp(fRed, 0.0, 255.0),
+					fGreen, // was std::clamp(fGreen, 0.0, 255.0),
+					fBlue);	// was std::clamp(fBlue, 0.0, 255.0));
 				pRgbPixel++;
 
 			}
@@ -438,9 +438,9 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 				fGreen = pRgba64Pixel->green() / scaleFactorInt16;
 				fBlue = pRgba64Pixel->blue() / scaleFactorInt16;
 				pBitmap->SetPixel(i, j,
-					std::clamp(fRed, 0.0, 255.0),
-					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+					fRed,	// was std::clamp(fRed, 0.0, 255.0),
+					fGreen, // was std::clamp(fGreen, 0.0, 255.0),
+					fBlue);	// was std::clamp(fBlue, 0.0, 255.0));
 				pRgba64Pixel++;
 			}
 			if (pProgress != nullptr)
