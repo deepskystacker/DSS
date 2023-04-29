@@ -54,8 +54,11 @@ CFITSHeader::~CFITSHeader()
 
 inline double AdjustColor(const double fColor)
 {
+	//
+	// Clamping is now down by the bitmap classes
+	// 
 	if (std::isfinite(fColor))
-		return std::clamp(fColor, 0.0, 255.0);
+		return fColor;	// Was return std::clamp(fColor, 0.0, 255.0);
 	else
 		return 0.0;
 };
@@ -239,18 +242,12 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		const QString errorMessage = QString("fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
-										.arg(m_strFileName)
-										.arg(status)
-										.arg(error_text);
+		QString errorText{ &error_text[0] };
+		QString errorMessage{ "fits_open_diskfile %1\nreturned a status of %d, error text is:\n\"%s\"" };
+		errorMessage = errorMessage.arg(QString::fromWCharArray(m_strFileName.GetString())).arg(status).arg(error_text);
+
 		ZTRACE_RUNTIME(errorMessage);
-
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toUtf8().constData();
-#else
-		AfxMessageBox(errorMessage.toUtf8().constData(), MB_OK | MB_ICONWARNING);
-#endif
-
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 	}
 
@@ -1408,7 +1405,8 @@ bool CFITSWriter::Write()
 					for (int i = 0; i < m_lWidth; i++)
 					{
 						double fRed, fGreen, fBlue;
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						double fGray;
 						if (m_CFAType != CFATYPE_NONE)
@@ -1476,7 +1474,8 @@ bool CFITSWriter::Write()
 					{
 						double fRed, fGreen, fBlue;
 
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						if (m_lBitsPerPixel == 8)
 						{
@@ -1650,6 +1649,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 
 bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue)
 {
+	bool result { true };
 	try
 	{
 		if (m_pMemoryBitmap)
@@ -1666,21 +1666,21 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 	}
 	catch (ZException& e)
 	{
-		const QString errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
-										.arg(e.name())
-										.arg(e.locationAtIndex(0)->fileName())
-										.arg(e.locationAtIndex(0)->functionName())
-										.arg(e.locationAtIndex(0)->lineNumber())
-										.arg(e.text(0));
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-	}
+		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
+			arg(e.name()).
+			arg(e.locationAtIndex(0)->fileName()).
+			arg(e.locationAtIndex(0)->functionName()).
+			arg(e.text(0)));
 
-	return true;
+		DSSBase::instance()->reportError(
+			errorMessage,
+			"",
+			DSSBase::Severity::Critical,
+			DSSBase::Method::QMessageBox,
+			true);
+		result = false;
+	}
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
