@@ -4,7 +4,7 @@
 <context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="137"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="136"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Această versiune beta a DeepSkyStacker a expirat
@@ -182,21 +182,21 @@ Din acest moment toate imaginile adăugate(și cele deja înregistrate) vor fi s
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="330"/>
+        <location filename="../LiveEngine.cpp" line="334"/>
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="342"/>
+        <location filename="../LiveEngine.cpp" line="346"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="350"/>
+        <location filename="../LiveEngine.cpp" line="354"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>

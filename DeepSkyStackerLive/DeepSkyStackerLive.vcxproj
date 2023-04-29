@@ -170,7 +170,7 @@
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
     <QtTranslation>
-      <NoObsolete>true</NoObsolete>
+      <NoObsolete>false</NoObsolete>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
     </QtTranslation>
