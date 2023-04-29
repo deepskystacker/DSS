@@ -4,10 +4,10 @@
 <context>
     <name>DeepSkyStackerCL</name>
     <message>
-        <location filename="../DeepSkyStackerCL.cpp" line="296"/>
+        <location filename="../DeepSkyStackerCL.cpp" line="294"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished">Enregistrement de l&apos;image finale dans %1</translation>
+        <translation>Enregistrement de l&apos;image finale dans %1</translation>
     </message>
 </context>
 </TS>

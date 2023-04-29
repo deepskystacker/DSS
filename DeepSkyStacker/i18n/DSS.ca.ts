@@ -2380,7 +2380,7 @@ Desitja guardar-los?</translation>
         <location filename="../StackRecap.cpp" line="339"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation>%1 processadors detectats i utilitzats </translation>
+        <translation>%1 processadors detectats i utilitzats</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="342"/>
