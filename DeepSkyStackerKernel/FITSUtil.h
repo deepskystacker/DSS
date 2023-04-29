@@ -111,7 +111,7 @@ class CFITSReader : public CFITSHeader
 {
 public:
 	fitsfile*				m_fits;
-	CString					m_strFileName;
+	QString					m_strFileName;
 	ProgressBase*			m_pProgress;
 
 protected:
@@ -132,7 +132,7 @@ public:
 	CFITSReader(LPCTSTR szFileName, ProgressBase *	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{ szFileName },
+		m_strFileName{ QString::fromWCharArray(szFileName) },
 		m_pProgress{ pProgress },
 		m_fGreenRatio{ 1.0 },
 		m_fRedRatio{ 1.0 },
@@ -161,14 +161,14 @@ class CFITSWriter : public CFITSHeader
 {
 public:
 	fitsfile*				m_fits;
-	CString					m_strFileName;
+	QString					m_strFileName;
 	ProgressBase*			m_pProgress;
-	CString					m_strDescription;
+	QString					m_strDescription;
 
 private :
 	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
 	bool	WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment = nullptr);
-	bool	WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, const QString& szValue, LPCSTR szComment = nullptr);
 	void	WriteAllKeys();
 
 protected:
@@ -178,7 +178,7 @@ public:
 	CFITSWriter(LPCTSTR szFileName, ProgressBase*	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{ szFileName },
+		m_strFileName{ QString::fromWCharArray(szFileName) },
 		m_pProgress{ pProgress }
 	{
 		m_Format = FF_UNKNOWN;
@@ -191,7 +191,7 @@ public:
 
 	void SetDescription(LPCTSTR szDescription)
 	{
-		m_strDescription = szDescription;
+		m_strDescription = QString::fromWCharArray(szDescription);
 	};
 
 	void SetFormat(FITSFORMAT FITSFormat)
@@ -222,6 +222,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription);
 bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
 int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
-void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
-void GetFITSExtension(fs::path path, CString& strExtension);
+void GetFITSExtension(LPCTSTR szFileName, QString& strExtension);
+void GetFITSExtension(fs::path path, QString& strExtension);
+void GetFITSExtension(const QString& path, QString& strExtension);
 

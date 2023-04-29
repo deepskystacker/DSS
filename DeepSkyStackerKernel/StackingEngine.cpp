@@ -1348,10 +1348,9 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 			strOutputFile += ".reg.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".reg"+strExt;
+			strOutputFile += ".reg" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
@@ -1394,10 +1393,9 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			strOutputFile += ".cal.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cal"+strExt;
+			strOutputFile += ".cal" + CString(strExt.toStdWString().c_str());
 		};
 
 
@@ -1465,10 +1463,9 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 			strOutputFile += ".cosmetic.tif";
 		else
 		{
-			CString			strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cosmetic"+strExt;
+			strOutputFile += ".cosmetic" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
@@ -1507,10 +1504,9 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 			strOutputFile += "Comet.tif";
 		else
 		{
-			CString		strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += "Comet"+strExt;
+			strOutputFile += "Comet" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
@@ -1552,11 +1548,9 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 			strOutputFile += "Cometless.tif";
 		else
 		{
-			CString		strExt;
-
+			QString strExt;
 			GetFITSExtension(m_strCurrentLightFrame, strExt);
-
-			strOutputFile += "Cometless" + strExt;
+			strOutputFile += "Cometless" + CString(strExt.toStdWString().c_str());
 		}
 
 		if (m_pProgress)
@@ -2558,7 +2552,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 
 	{
 		CString			strBasePath;
-		CString			strExt;
+		QString			strExt;
 		bool			bFileExists = false;
 		int			lNumber = 0;
 
@@ -2577,7 +2571,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 			strExt = ".fit";
 			if (m_vBitmaps.size())
 				GetFITSExtension(m_vBitmaps[0].filePath, strExt);
-			strFileName = strBasePath+strBaseName+strExt;
+			strFileName = strBasePath+strBaseName + CString(strExt.toStdWString().c_str());;
 		};
 
 		if (OutputSettings.m_bAppend)
@@ -2592,7 +2586,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 					fclose(hFile);
 					lNumber++;
 					bFileExists = true;
-					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, (LPCTSTR)strExt);
+					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, strExt.toStdWString().c_str());
 				}
 				else
 					bFileExists = false;

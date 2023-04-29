@@ -190,13 +190,12 @@ void CFITSReader::ReadAllKeys()
 {
 	if (m_fits)
 	{
-		int					nKeywords;
-		int					nStatus = 0;
-		QSettings			settings;
-		CString				strPropagated;
+		int nKeywords;
+		int nStatus = 0;
+		QSettings settings;
+		QString strPropagated(settings.value("FitsDDP/Propagated", "").toString());
 
-		strPropagated = (LPCTSTR)settings.value("FitsDDP/Propagated", "").toString().utf16();
-		if ("" == strPropagated)
+		if (strPropagated.isEmpty())
 			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 
 
@@ -212,11 +211,11 @@ void CFITSReader::ReadAllKeys()
 			nKeyClass = fits_get_keyclass(szKeyName);
 			if ((nKeyClass == TYP_USER_KEY) || (nKeyClass == TYP_REFSYS_KEY))
 			{
-				bool		bPropagate = false;
-				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
+				bool bPropagate = false;
+				QString strKeyName;
+				strKeyName = QString("[%1]").arg(szKeyName);
 
-				if (strPropagated.Find(strKeyName) != -1)
+				if (strPropagated.indexOf(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
 					szKeyName,
@@ -236,23 +235,20 @@ bool CFITSReader::Open()
 	int					status = 0;
 	char error_text[31] = "";			// Error text for FITS errors.
 
-	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_ACP), READONLY, &status);
+	fits_open_diskfile(&m_fits, m_strFileName.toLatin1().constData(), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		CString errorText{ &error_text[0] };
-		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			(LPCTSTR)m_strFileName, 
-			status,
-			(LPCTSTR)errorText);
-
-		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
+		const QString errorMessage = QString("fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
+										.arg(m_strFileName)
+										.arg(status)
+										.arg(error_text);
+		ZTRACE_RUNTIME(errorMessage);
 
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toUtf8().constData();
 #else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+		AfxMessageBox(errorMessage.toUtf8().constData(), MB_OK | MB_ICONWARNING);
 #endif
 
 
@@ -261,8 +257,7 @@ bool CFITSReader::Open()
 
 	if (m_fits)
 	{
-		CStringA fileName(m_strFileName);
-		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
+		ZTRACE_RUNTIME("Opened %s", m_strFileName.toUtf8().constData());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -1061,14 +1056,13 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 	// Require a fits file extension
 	{
-		TCHAR szExt[1+_MAX_EXT];
-		CString strExt;
-		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
-		strExt = szExt;
+		//TCHAR szExt[1+_MAX_EXT];
+		const QString strFilename(QString::fromWCharArray(szFileName));
+		const QString strExt = QFileInfo(strFilename).suffix();
 
-		if (!(0 == strExt.CompareNoCase(_T(".FIT")) ||
-			  0 == strExt.CompareNoCase(_T(".FITS")) ||
-			  0 == strExt.CompareNoCase(_T(".FTS"))))
+		if (!(0 == strExt.compare("FIT", Qt::CaseInsensitive) ||
+			  0 == strExt.compare("FITS", Qt::CaseInsensitive) ||
+			  0 == strExt.compare("FTS", Qt::CaseInsensitive)))
 		{
 			bContinue = false;
 		}
@@ -1140,14 +1134,14 @@ bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment)
+bool	CFITSWriter::WriteKey(LPCSTR szKey, const QString& szValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TSTRING, szKey, (void*)szValue, szComment, &nStatus);
+		fits_write_key(m_fits, TSTRING, szKey, (void*)szValue.toUtf8().constData(), szComment, &nStatus);
 		if (!nStatus)
 			bResult = true;
 	};
@@ -1191,21 +1185,25 @@ void	CFITSWriter::WriteAllKeys()
 			CHAR szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
-			CString strName(ei.m_strName.toStdWString().c_str());
-			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(strName, CP_UTF8), szValue, nullptr, &nStatus);
+			fits_read_key(m_fits, TSTRING, ei.m_strName.toUtf8().constData(), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
 				CHAR		szCard[FLEN_CARD];
 				int			nType;
-				CString		strTemplate;
+				QString		strTemplate;
 
 				if (!ei.m_strComment.isEmpty())
-					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str(), ei.m_strComment.toStdWString().c_str());
+					strTemplate = QString("%1 = %2 / %3")
+						.arg(ei.m_strName)
+						.arg(ei.m_strValue)
+						.arg(ei.m_strComment);
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str());
+					strTemplate = QString("%1 = %2")
+					.arg(ei.m_strName)
+					.arg(ei.m_strValue);
 
-				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
+				fits_parse_template(strTemplate.toUtf8().data(), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
 			};
 		};
@@ -1267,15 +1265,13 @@ bool CFITSWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	CString			strFileName = m_strFileName;
-
-	// Close();
+	const QString strFileName(m_strFileName);
 
 	// Create a new fits file
 	int				nStatus = 0;
 
-	DeleteFile(strFileName.GetString());
-	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_ACP), &nStatus);
+	DeleteFile(strFileName.toStdWString().c_str());
+	fits_create_diskfile(&m_fits, strFileName.toUtf8().constData(), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();
@@ -1316,7 +1312,7 @@ bool CFITSWriter::Open()
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_filterName != "")
-					bResult = bResult && WriteKey("FILTER", m_filterName.toStdWString().c_str());
+					bResult = bResult && WriteKey("FILTER", m_filterName);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1325,10 +1321,7 @@ bool CFITSWriter::Open()
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
 					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
 
-				CString			strSoftware = "DeepSkyStacker ";
-				strSoftware += VERSION_DEEPSKYSTACKER;
-
-				WriteKey("SOFTWARE", strSoftware.GetString());
+				WriteKey("SOFTWARE", QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
 				WriteAllKeys();
 			};
 
@@ -1673,23 +1666,16 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			(LPCTSTR)name,
-			(LPCTSTR)fileName,
-			(LPCTSTR)functionName,
-			e.locationAtIndex(0)->lineNumber(),
-			(LPCTSTR)text);
+		const QString errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
+										.arg(e.name())
+										.arg(e.locationAtIndex(0)->fileName())
+										.arg(e.locationAtIndex(0)->functionName())
+										.arg(e.locationAtIndex(0)->lineNumber())
+										.arg(e.text(0));
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::wcerr << errorMessage.toStdWString().c_str();
 #else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+		AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONSTOP);
 #endif
 		exit(1);
 	}
@@ -1819,31 +1805,26 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 	return result;
 }
 
-
-void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
+void GetFITSExtension(const QString& path, QString& strExtension)
 {
-	TCHAR szExt[1 + _MAX_EXT];
-	CString strExt;
+	QFileInfo fileInfo(path);
 
-	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
-
-	strExt = szExt;
-	if (!strExt.CompareNoCase(_T(".FITS")))
+	const QString strExt("." + fileInfo.suffix());
+	if (strExt.compare(".FITS", Qt::CaseInsensitive) == 0)
 		strExtension = strExt;
-	else if (!strExt.CompareNoCase(_T(".FIT")))
+	else if (strExt.compare(".FIT", Qt::CaseInsensitive) == 0)
 		strExtension = strExt;
 	else
 		strExtension = ".fts";
 }
 
-void GetFITSExtension(fs::path path, CString& strExtension)
+void GetFITSExtension(LPCTSTR szFileName, QString& strExtension)
 {
-	fs::path ext = path.extension();
+	GetFITSExtension(QString::fromWCharArray(szFileName), strExtension);
+}
 
-	if (!ext.compare(".fits"))
-		strExtension = ext.c_str();
-	else if (!ext.compare(".fit"))
-		strExtension = ext.c_str();
-	else
-		strExtension = ".fts";
+void GetFITSExtension(fs::path path, QString& strExtension)
+{
+	QDir qPath(path);
+	GetFITSExtension(qPath.absolutePath(), strExtension);
 }
