@@ -244,7 +244,7 @@ bool CFITSReader::Open()
 		fits_get_errstatus(status, error_text);
 		QString errorText{ &error_text[0] };
 		QString errorMessage{ "fits_open_diskfile %1\nreturned a status of %d, error text is:\n\"%s\"" };
-		errorMessage = errorMessage.arg(QString::fromWCharArray(m_strFileName.GetString())).arg(status).arg(error_text);
+		errorMessage = errorMessage.arg(m_strFileName).arg(status).arg(error_text);
 
 		ZTRACE_RUNTIME(errorMessage);
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
