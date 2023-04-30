@@ -168,9 +168,6 @@
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="QLinearGradientCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\WndImage.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -213,9 +210,6 @@
     <ClCompile Include="editstars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imageview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QtProgressDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -233,6 +227,12 @@
     </ClCompile>
     <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\imageview.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -884,9 +884,6 @@
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="QLinearGradientCtrl.h">
-      <Filter>Tools</Filter>
-    </QtMoc>
     <QtMoc Include="qwinhost.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
@@ -926,9 +923,6 @@
     <QtMoc Include="QtProgressDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="imageview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="editstars.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -943,6 +937,12 @@
     </QtMoc>
     <QtMoc Include="SaveEditChanges.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\imageview.h">
+      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -212,8 +212,10 @@
     <ClCompile Include="..\Tools\Gradient.cpp" />
     <ClCompile Include="..\Tools\GradientCtrl.cpp" />
     <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
+    <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\Label.cpp" />
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp" />
@@ -221,7 +223,6 @@
     <ClCompile Include="EmailSettings.cpp" />
     <ClCompile Include="GraphView.cpp" />
     <ClCompile Include="ImageList.cpp" />
-    <ClCompile Include="ImageView.cpp" />
     <ClCompile Include="LiveEngine.cpp" />
     <ClCompile Include="LiveSettings.cpp" />
     <ClCompile Include="LogTab.cpp" />
@@ -265,8 +266,10 @@
     <ClInclude Include="..\Tools\Gradient.h" />
     <ClInclude Include="..\Tools\gradientctrl.h" />
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
+    <QtMoc Include="..\Tools\imageview.h" />
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />
@@ -274,7 +277,6 @@
     <ClInclude Include="EmailSettings.h" />
     <ClInclude Include="GraphView.h" />
     <ClInclude Include="ImageList.h" />
-    <ClInclude Include="ImageView.h" />
     <ClInclude Include="LiveEngine.h" />
     <ClInclude Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
@@ -293,6 +295,11 @@
     <Image Include="res\DeepSkyStackerLive.ico" />
     <Image Include="res\DSS_Icon32%402x.png" />
     <Image Include="res\DSS_Icon32.png" />
+    <Image Include="res\Monitor-Down.png" />
+    <Image Include="res\Monitor-Up.png" />
+    <Image Include="res\Stack-Down.png" />
+    <Image Include="res\Stack-Up.png" />
+    <Image Include="res\Stop.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc" />

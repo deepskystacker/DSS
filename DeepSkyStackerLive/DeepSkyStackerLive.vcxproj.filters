@@ -48,9 +48,6 @@
     <ClCompile Include="ImageList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LiveEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -149,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="..\SMTP\SocMFC.cpp">
       <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\imageview.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +254,6 @@
     <ClInclude Include="ImageList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LiveEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -301,6 +301,21 @@
     <Image Include="res\DSS_Icon32%402x.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\Monitor-Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Monitor-Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stack-Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stack-Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc">
@@ -346,6 +361,12 @@
   <ItemGroup>
     <QtMoc Include="DeepSkyStackerLive.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\imageview.h">
+      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
