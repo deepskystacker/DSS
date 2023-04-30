@@ -174,28 +174,28 @@ Vanaf dit moment worden alle binnenkomende (en voorgaande geregistreerde) afbeel
         <translation>Registreren %1</translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="320"/>
+        <location filename="../LiveEngine.cpp" line="324"/>
         <source>Image %1 registered: %2 star(s) detected - FWHM = %3 - Score = %4
 </source>
         <comment>IDS_LOG_REGISTERRESULTS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="334"/>
+        <location filename="../LiveEngine.cpp" line="339"/>
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="346"/>
+        <location filename="../LiveEngine.cpp" line="351"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="354"/>
+        <location filename="../LiveEngine.cpp" line="359"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
