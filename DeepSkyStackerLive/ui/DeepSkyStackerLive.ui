@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>DeepSkyStackerLive</class>
+ <widget class="QWidget" name="DeepSkyStackerLive">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,54 +19,121 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout1">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <widget class="QLabel" name="status1">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>status 1</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="monitorText">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string comment="IDC_MONITORINGRECT">Monitoring</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="folderName">
+       <property name="text">
+        <string comment="IDC_MONITOREDFOLDER">&lt;Click here to select the Monitored Folder&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QToolBar" name="toolbar">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>300</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="movable">
-      <bool>false</bool>
-     </property>
-     <property name="floatable">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="status2">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>status 2</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QToolBar" name="toolbar">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="movable">
+        <bool>false</bool>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>48</width>
+         <height>48</height>
+        </size>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
+       <property name="floatable">
+        <bool>false</bool>
+       </property>
+       <addaction name="actionMonitor"/>
+       <addaction name="actionStack"/>
+       <addaction name="actionStop"/>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <spacer name="verticalSpacer_1">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>13</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>24</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="status">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string comment="IDC_STATS">Pending: %ld - Registered: %ld - Stacked: %ld - Total exposure time: %s</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
@@ -77,9 +144,9 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
-     <widget class="StackingDlg" name="stackedImage">
+     <widget class="QWidget" name="stackedImage">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -87,7 +154,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Stacked Image</string>
+       <string comment="IDC_STACKEDIMAGE">Stacked Image</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout2">
        <property name="spacing">
@@ -150,8 +217,8 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-             <iconset resource="../resources.qrc">
-               <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/4Corners.png</normaloff>:/4Corners.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -195,7 +262,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="StackingDlg" name="lastImage">
+     <widget class="QWidget" name="lastImage">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -203,7 +270,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Last Image</string>
+       <string comment="IDC_LASTIMAGE">Last Image</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout3">
        <property name="spacing">
@@ -266,8 +333,8 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-             <iconset resource="../resources.qrc">
-               <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
+            <iconset resource="../resources.qrc">
+             <normaloff>:/4Corners.png</normaloff>:/4Corners.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -319,43 +386,50 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Graphs</string>
+       <string comment="IDC_GRAPHS">Graphs</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout4">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout5">
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="radioScore">
            <property name="text">
-            <string>Score</string>
+            <string comment="IDC_SCORE">Score</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="radioFWHM">
            <property name="text">
-            <string>FWHM</string>
+            <string comment="IDC_FWHM">FWHM</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="radioStars">
            <property name="text">
-            <string>dX/dY</string>
+            <string comment="IDC_STARS">#Stars</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="radioOffset">
            <property name="text">
-            <string>Angle</string>
+            <string comment="IDC_OFFSET">dX/dY</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="radioAngle">
            <property name="text">
-            <string>Sky Background</string>
+            <string comment="IDC_ANGLE">Angle</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioBackground">
+           <property name="text">
+            <string comment="IDC_SKYBACKGROUND">Sky Background</string>
            </property>
           </widget>
          </item>
@@ -400,7 +474,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Image List</string>
+       <string comment="IDC_IMAGELIST">Image List</string>
       </attribute>
      </widget>
      <widget class="QTextBrowser" name="log">
@@ -411,7 +485,7 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Log</string>
+       <string comment="IDC_LOGLIST">Log</string>
       </attribute>
      </widget>
      <widget class="QWidget" name="settings">
@@ -422,31 +496,66 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Settings</string>
+       <string comment="IDC_WARNINGS">Settings</string>
       </attribute>
      </widget>
     </widget>
    </item>
   </layout>
+  <action name="actionMonitor">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/Monitor-Up.png</normaloff>
+     <normalon>:/Monitor-Down.png</normalon>:/Monitor-Up.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_MONITOR">Monitor</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_MONITOR">Monitor</string>
+   </property>
+  </action>
+  <action name="actionStack">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/Stack-Up.png</normaloff>
+     <normalon>:/Stack-Down.png</normalon>:/Stack-Up.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_STACK_DSSLIVE">Stack</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_STACK_DSSLIVE">Stack</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/Stop.png</normaloff>
+     <normalon>:/Stop.png</normalon>:/Stop.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_STOP">Stop</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_STOP">Stop</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>StackingDlg</class>
-   <extends>QWidget</extends>
-   <header>stackingdlg.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>QLinearGradientCtrl</class>
    <extends>QWidget</extends>
-   <header>qlineargradientctrl.h</header>
+   <header>QLinearGradientCtrl.h</header>
   </customwidget>
   <customwidget>
    <class>DSS::ImageView</class>
    <extends>QWidget</extends>
-   <header>dss::imageview.h</header>
+   <header>imageview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -37,14 +37,16 @@
 // DeepSkyStackerLive.h : main header file for DeepSkyStackerLive
 //
 #include "dssbase.h"
+#include "ui/ui_DeepSkyStackerLive.h"
 
 class QWinHost;
 
 class DeepSkyStackerLive :
-	public QMainWindow,
+	public QWidget,
+	public Ui_DeepSkyStackerLive,
 	public DSSBase
 {
-	typedef QMainWindow
+	typedef QWidget
 		Inherited;
 
 	Q_OBJECT
@@ -63,7 +65,7 @@ public:
 
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 
-	inline qreal pixelRatio() { return devicePixelRatioF(); }
+	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
 
 protected slots:
 	void updateStatus(const QString& text);
@@ -75,11 +77,8 @@ private:
 	QWinHost* winHost;
 	QStringList args;
 	QString baseTitle;
-	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
-
-	void createStatusBar();
 };
 
 class CDeepSkyStackerLiveApp : public CWinApp
