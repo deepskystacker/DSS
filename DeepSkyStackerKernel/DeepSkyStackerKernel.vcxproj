@@ -239,6 +239,7 @@
     <ClCompile Include="imageloader.cpp" />
     <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
+    <ClCompile Include="StackWalker.cpp" />
     <ClCompile Include="StarMask.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -288,6 +289,7 @@
     <ClInclude Include=".\group.h" />
     <ClInclude Include=".\Histogram.h" />
     <ClInclude Include="ExceptionHandling.h" />
+    <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
     <QtMoc Include=".\ImageListModel.h" />
     <ClInclude Include=".\MasterFrames.h" />

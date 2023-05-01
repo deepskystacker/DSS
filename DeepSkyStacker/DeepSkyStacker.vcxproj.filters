@@ -186,9 +186,6 @@
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\StackWalker.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -390,9 +387,6 @@
     </ClInclude>
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\StackWalker.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="dslr.h">
       <Filter>Header Files</Filter>

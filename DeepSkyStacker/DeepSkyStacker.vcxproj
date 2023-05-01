@@ -263,7 +263,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\StackWalker.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
@@ -407,7 +406,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
-    <ClInclude Include="..\Tools\StackWalker.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
