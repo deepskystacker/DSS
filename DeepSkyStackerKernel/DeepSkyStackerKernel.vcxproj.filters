@@ -197,6 +197,9 @@
     <ClCompile Include="tracecontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ExceptionHandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -446,6 +449,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tracecontrol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionHandling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

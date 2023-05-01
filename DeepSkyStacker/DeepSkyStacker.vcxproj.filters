@@ -189,9 +189,6 @@
     <ClCompile Include="..\Tools\StackWalker.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="ExceptionHandling.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -395,9 +392,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\StackWalker.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ExceptionHandling.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="dslr.h">
