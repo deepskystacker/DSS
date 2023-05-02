@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>816</width>
+    <width>757</width>
     <height>748</height>
    </rect>
   </property>
@@ -544,8 +544,8 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-52</y>
-            <width>639</width>
+            <y>0</y>
+            <width>580</width>
             <height>601</height>
            </rect>
           </property>
@@ -651,7 +651,7 @@
                </spacer>
               </item>
               <item row="2" column="1">
-               <widget class="QCheckBox" name="warnScore">
+               <widget class="QRadioButton" name="warnScore">
                 <property name="minimumSize">
                  <size>
                   <width>27</width>
@@ -660,20 +660,26 @@
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>20</width>
+                  <width>27</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">scoreButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="2" column="2">
-               <widget class="QCheckBox" name="dontStackScore">
+               <widget class="QRadioButton" name="dontStackScore">
                 <property name="text">
                  <string comment="IDC_DONTSTACK_SCORE">... score is less than</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">scoreButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="2" column="3">
@@ -686,7 +692,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="4" colspan="3">
+              <item row="2" column="4" colspan="2">
                <spacer name="horizontalSpacer_13">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -716,7 +722,7 @@
                </spacer>
               </item>
               <item row="3" column="1">
-               <widget class="QCheckBox" name="warnStars">
+               <widget class="QRadioButton" name="warnStars">
                 <property name="minimumSize">
                  <size>
                   <width>27</width>
@@ -725,20 +731,26 @@
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>20</width>
+                  <width>27</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">starsButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="3" column="2">
-               <widget class="QCheckBox" name="dontStackStars">
+               <widget class="QRadioButton" name="dontStackStars">
                 <property name="text">
-                 <string comment="IDC_DONTSTACK_STARS">... star count is less than</string>
+                 <string comment="IDC_DONTSTACK_STAR">... star count is less than</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">starsButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="3" column="3">
@@ -751,7 +763,7 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="4" colspan="3">
+              <item row="3" column="4" colspan="2">
                <spacer name="horizontalSpacer_14">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -781,29 +793,23 @@
                </spacer>
               </item>
               <item row="4" column="1">
-               <widget class="QCheckBox" name="warnSkyBackgroung">
-                <property name="minimumSize">
-                 <size>
-                  <width>27</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>20</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
+               <widget class="QRadioButton" name="warnSkyBackground">
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">skyBGButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="4" column="2">
-               <widget class="QCheckBox" name="dontStackSkyBackground">
+               <widget class="QRadioButton" name="dontStackSkyBackground">
                 <property name="text">
                  <string comment="IDC_DONTSTACK_SKYBACKGROUND">... sky background is greater than</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">skyBGButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="4" column="3">
@@ -816,7 +822,7 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="4" colspan="2">
+              <item row="4" column="4">
                <widget class="QLabel" name="label_3">
                 <property name="text">
                  <string>%</string>
@@ -853,7 +859,7 @@
                </spacer>
               </item>
               <item row="5" column="1">
-               <widget class="QCheckBox" name="warnFWHM">
+               <widget class="QRadioButton" name="warnFWHM">
                 <property name="minimumSize">
                  <size>
                   <width>27</width>
@@ -862,20 +868,26 @@
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>20</width>
+                  <width>27</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">FWHMButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="5" column="2">
-               <widget class="QCheckBox" name="dontStackFWHM">
+               <widget class="QRadioButton" name="dontStackFWHM">
                 <property name="text">
                  <string comment="IDC_DONTSTACK_FWHM">... FWHM is greater than</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">FWHMButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="5" column="3">
@@ -888,7 +900,7 @@
                 </property>
                </widget>
               </item>
-              <item row="5" column="4" colspan="2">
+              <item row="5" column="4">
                <widget class="QLabel" name="label_4">
                 <property name="text">
                  <string>pixels</string>
@@ -925,7 +937,7 @@
                </spacer>
               </item>
               <item row="6" column="1">
-               <widget class="QCheckBox" name="warnOffset">
+               <widget class="QRadioButton" name="warnOffset">
                 <property name="minimumSize">
                  <size>
                   <width>27</width>
@@ -934,20 +946,26 @@
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>20</width>
+                  <width>27</width>
                   <height>16777215</height>
                  </size>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">offsetButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="6" column="2">
-               <widget class="QCheckBox" name="dontStackOffset">
+               <widget class="QRadioButton" name="dontStackOffset">
                 <property name="text">
                  <string comment="IDC_DONTSTACK_OFFSET">... dX or dY is greater than </string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">offsetButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="6" column="3">
@@ -960,14 +978,14 @@
                 </property>
                </widget>
               </item>
-              <item row="6" column="4" colspan="2">
+              <item row="6" column="4">
                <widget class="QLabel" name="label_5">
                 <property name="text">
                  <string>pixels</string>
                 </property>
                </widget>
               </item>
-              <item row="6" column="6" colspan="2">
+              <item row="6" column="6">
                <spacer name="horizontalSpacer_17">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -997,23 +1015,35 @@
                </spacer>
               </item>
               <item row="7" column="1">
-               <widget class="QCheckBox" name="warnAngle">
+               <widget class="QRadioButton" name="warnAngle">
                 <property name="minimumSize">
                  <size>
                   <width>27</width>
                   <height>0</height>
                  </size>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>27</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">angleButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="7" column="2">
-               <widget class="QCheckBox" name="checkBox">
+               <widget class="QRadioButton" name="dontStackAngle">
                 <property name="text">
-                 <string>... angle is greater than</string>
+                 <string comment="IDC_DONTSTACK_ANGLE">... angle is greater than</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">angleButtonGroup</string>
+                </attribute>
                </widget>
               </item>
               <item row="7" column="3">
@@ -1475,4 +1505,12 @@
   <include location="../resources.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="scoreButtonGroup"/>
+  <buttongroup name="starsButtonGroup"/>
+  <buttongroup name="skyBGButtonGroup"/>
+  <buttongroup name="FWHMButtonGroup"/>
+  <buttongroup name="offsetButtonGroup"/>
+  <buttongroup name="angleButtonGroup"/>
+ </buttongroups>
 </ui>
