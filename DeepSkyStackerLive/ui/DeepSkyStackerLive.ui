@@ -1107,7 +1107,7 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
+              <item row="0" column="2" colspan="2">
                <widget class="QLabel" name="setEmailAddress">
                 <property name="toolTip">
                  <string>Click here to set or change the email address</string>
@@ -1116,6 +1116,19 @@
                  <string>Click here to set or change the email address</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="4">
+               <spacer name="horizontalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>90</width>
+                  <height>17</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="1" column="0">
                <widget class="QCheckBox" name="warnFlashApp">
@@ -1140,6 +1153,19 @@
                  <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
                 </property>
                </widget>
+              </item>
+              <item row="1" column="3" colspan="2">
+               <spacer name="horizontalSpacer_20">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>134</width>
+                  <height>17</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>
