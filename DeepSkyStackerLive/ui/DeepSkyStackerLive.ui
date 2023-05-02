@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1048</width>
-    <height>1108</height>
+    <width>816</width>
+    <height>748</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>757</width>
-    <height>653</height>
+    <height>748</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,12 @@
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>126</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
      </property>
@@ -158,7 +164,13 @@
      <property name="minimumSize">
       <size>
        <width>730</width>
-       <height>550</height>
+       <height>598</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="currentIndex">
@@ -513,6 +525,18 @@
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QScrollArea" name="scrollArea">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>537</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -521,30 +545,34 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>888</width>
-            <height>909</height>
+            <width>639</width>
+            <height>601</height>
            </rect>
           </property>
-          <widget class="QGroupBox" name="stackingGroup">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>10</y>
-             <width>465</width>
-             <height>311</height>
-            </rect>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>311</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Stacking</string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QGroupBox" name="stackingGroup">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>290</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>290</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Stacking</string>
+             </property>
              <layout class="QGridLayout" name="gridLayout">
               <item row="0" column="0" colspan="3">
                <widget class="QCheckBox" name="dontStackUntil">
@@ -563,12 +591,25 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="4">
+              <item row="0" column="4" colspan="3">
                <widget class="QLabel" name="label_2">
                 <property name="text">
                  <string>images are available</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="7">
+               <spacer name="horizontalSpacer_19">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>166</width>
+                  <height>15</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="1" column="0">
                <spacer name="horizontalSpacer_9">
@@ -589,7 +630,7 @@
               <item row="1" column="1" colspan="2">
                <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Warn   Don't stack if...</string>
+                 <string>Warn  Don't stack if...</string>
                 </property>
                </widget>
               </item>
@@ -611,6 +652,12 @@
               </item>
               <item row="2" column="1">
                <widget class="QCheckBox" name="warnScore">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>20</width>
@@ -639,6 +686,19 @@
                 </property>
                </widget>
               </item>
+              <item row="2" column="4" colspan="3">
+               <spacer name="horizontalSpacer_13">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="3" column="0">
                <spacer name="horizontalSpacer_4">
                 <property name="orientation">
@@ -657,6 +717,12 @@
               </item>
               <item row="3" column="1">
                <widget class="QCheckBox" name="warnStars">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>20</width>
@@ -685,6 +751,19 @@
                 </property>
                </widget>
               </item>
+              <item row="3" column="4" colspan="3">
+               <spacer name="horizontalSpacer_14">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="4" column="0">
                <spacer name="horizontalSpacer_5">
                 <property name="orientation">
@@ -703,6 +782,12 @@
               </item>
               <item row="4" column="1">
                <widget class="QCheckBox" name="warnSkyBackgroung">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>20</width>
@@ -731,12 +816,25 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="4">
+              <item row="4" column="4" colspan="2">
                <widget class="QLabel" name="label_3">
                 <property name="text">
                  <string>%</string>
                 </property>
                </widget>
+              </item>
+              <item row="4" column="6" colspan="2">
+               <spacer name="horizontalSpacer_15">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>241</width>
+                  <height>15</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="5" column="0">
                <spacer name="horizontalSpacer_6">
@@ -756,6 +854,12 @@
               </item>
               <item row="5" column="1">
                <widget class="QCheckBox" name="warnFWHM">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>20</width>
@@ -784,12 +888,25 @@
                 </property>
                </widget>
               </item>
-              <item row="5" column="4">
+              <item row="5" column="4" colspan="2">
                <widget class="QLabel" name="label_4">
                 <property name="text">
                  <string>pixels</string>
                 </property>
                </widget>
+              </item>
+              <item row="5" column="6" colspan="2">
+               <spacer name="horizontalSpacer_16">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>204</width>
+                  <height>15</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="6" column="0">
                <spacer name="horizontalSpacer_7">
@@ -809,6 +926,12 @@
               </item>
               <item row="6" column="1">
                <widget class="QCheckBox" name="warnOffset">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>20</width>
@@ -837,12 +960,25 @@
                 </property>
                </widget>
               </item>
-              <item row="6" column="4">
+              <item row="6" column="4" colspan="2">
                <widget class="QLabel" name="label_5">
                 <property name="text">
                  <string>pixels</string>
                 </property>
                </widget>
+              </item>
+              <item row="6" column="6" colspan="2">
+               <spacer name="horizontalSpacer_17">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>24</width>
+                  <height>18</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item row="7" column="0">
                <spacer name="horizontalSpacer_8">
@@ -862,6 +998,12 @@
               </item>
               <item row="7" column="1">
                <widget class="QCheckBox" name="warnAngle">
+                <property name="minimumSize">
+                 <size>
+                  <width>27</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -891,6 +1033,19 @@
                 </property>
                </widget>
               </item>
+              <item row="7" column="5" colspan="3">
+               <spacer name="horizontalSpacer_18">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>149</width>
+                  <height>14</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
               <item row="8" column="0" colspan="4">
                <widget class="QCheckBox" name="moveNonStackable">
                 <property name="text">
@@ -912,48 +1067,253 @@
                </widget>
               </item>
              </layout>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QGroupBox" name="warningGroup">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>340</y>
-             <width>579</width>
-             <height>219</height>
-            </rect>
-           </property>
-           <property name="title">
-            <string>Warnings</string>
-           </property>
-          </widget>
-          <widget class="QGroupBox" name="optionsGroup">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>640</y>
-             <width>579</width>
-             <height>141</height>
-            </rect>
-           </property>
-           <property name="title">
-            <string>Options</string>
-           </property>
-          </widget>
-          <widget class="QGroupBox" name="filtersGroup">
-           <property name="geometry">
-            <rect>
-             <x>9</x>
-             <y>781</y>
-             <width>579</width>
-             <height>121</height>
-            </rect>
-           </property>
-           <property name="title">
-            <string>Filters</string>
-           </property>
-          </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="warningGroup">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>82</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>82</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Warnings</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="0">
+               <widget class="QCheckBox" name="warnSound">
+                <property name="text">
+                 <string comment="IDC_WARN_SOUND">Sound</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QCheckBox" name="warnEmail">
+                <property name="text">
+                 <string comment="IDC_WARN_EMAIL">Send email to:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLabel" name="setEmailAddress">
+                <property name="toolTip">
+                 <string>Click here to set or change the email address</string>
+                </property>
+                <property name="text">
+                 <string>Click here to set or change the email address</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="warnFlashApp">
+                <property name="text">
+                 <string comment="IDC_WARN_FLASH">Flash Application</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="warnFile">
+                <property name="text">
+                 <string>Create warning file in:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QLabel" name="setWarningFolder">
+                <property name="toolTip">
+                 <string comment="IDC_STACKEDOUTPUTFOLDER">Click Here to select the output folder</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="optionsGroup">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>83</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>83</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Options</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_3">
+              <item row="0" column="0" colspan="2">
+               <widget class="QCheckBox" name="saveStackedImage">
+                <property name="text">
+                 <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QLineEdit" name="imageCount">
+                <property name="maximumSize">
+                 <size>
+                  <width>60</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>images</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <spacer name="horizontalSpacer_11">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_9">
+                <property name="text">
+                 <string>Output folder:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="3">
+               <widget class="QLabel" name="label_10">
+                <property name="toolTip">
+                 <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
+                </property>
+                <property name="text">
+                 <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <spacer name="horizontalSpacer_12">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="filtersGroup">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>104</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>104</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>Filters</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_4">
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>Process only ...</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="processRaw">
+                <property name="text">
+                 <string comment="IDC_PROCESS_RAW">RAW images (CR2, NEF, ORF, DNG...)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="processTIFF">
+                <property name="text">
+                 <string comment="IDC_PROCESS_TIFF">TIFF images</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="processFITS">
+                <property name="text">
+                 <string comment="IDC_PROCESS_FITS">FITS images</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QCheckBox" name="processOther">
+                <property name="text">
+                 <string comment="IDC_PROCESS_OTHERS">Other images (JPEG, PNG)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>217</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
         </widget>
        </item>
