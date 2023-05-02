@@ -42,11 +42,24 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 
+//
+// Necessary Windows header
+//
+#if defined(_WINDOWS)
+#include <afx.h>
+#endif
+
+#include "avx_support.h"
 #include "DeepSkyStackerLive.h"
 #include "DSSVersion.h"
-#include "Ztrace.h"
+#include "ExceptionHandling.h"
+#include "LiveSettings.h"
+#include <zexcept.h>
+#include <ztrace.h>
 #include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
 #include "tracecontrol.h"
+
+using namespace DSS;
 
 //
 // Set up tracing and manage trace file deletion
@@ -55,6 +68,7 @@ DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
 bool	g_bShowRefStars = false;
 
+void reportCpuType();
 
 bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
 {
@@ -97,59 +111,7 @@ bool LoadTranslations()
 	return true;
 }
 
-// CDeepSkyStackerLiveApp
-
-BEGIN_MESSAGE_MAP(CDeepSkyStackerLiveApp, CWinApp)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
-END_MESSAGE_MAP()
-
-
-// CDeepSkyStackerLiveApp construction
-
-CDeepSkyStackerLiveApp::CDeepSkyStackerLiveApp()
-{
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-}
-
-
-// The one and only CDeepSkyStackerLiveApp object
-
-CDeepSkyStackerLiveApp theApp;
-
-/* ------------------------------------------------------------------- */
-
-CDeepSkyStackerLiveApp *		GetDSSLiveApp()
-{
-	return &theApp;
-};
-
 using namespace std;
-
-/* ------------------------------------------------------------------- */
-// CDeepSkyStackerLiveApp initialization
-
-BOOL CDeepSkyStackerLiveApp::InitInstance()
-{
-	// InitCommonControlsEx() is required on Windows XP if an application
-	// manifest specifies use of ComCtl32.dll version 6 or later to enable
-	// visual styles.  Otherwise, any window creation will fail.
-	INITCOMMONCONTROLSEX InitCtrls;
-	InitCtrls.dwSize = sizeof(InitCtrls);
-	// Set this to include all the common control classes you want to use
-	// in your application.
-	InitCtrls.dwICC = ICC_WIN95_CLASSES;
-	InitCommonControlsEx(&InitCtrls);
-	AfxInitRichEdit2();
-	AfxSocketInit();
-
-	CWinApp::InitInstance();
-
-	// Standard initialization
-	SetRegistryKey(_T("DeepSkyStacker5"));
-
-	return FALSE;
-}
 
 /* ------------------------------------------------------------------- */
 
@@ -200,6 +162,88 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 
 DeepSkyStackerLive::~DeepSkyStackerLive()
 {
+}
+
+void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
+{
+	ZFUNCTRACE_RUNTIME();
+
+	e->accept();
+
+	ZTRACE_RUNTIME("Saving Window State and Position");
+
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+	auto geometry{ saveGeometry() };
+	settings.setValue("geometry", geometry);
+#ifndef NDEBUG	
+	ZTRACE_RUNTIME("Hex dump of geometry:");
+	ZTrace::dumpHex(geometry.constData(), geometry.length());
+#endif 
+
+	settings.endGroup();
+	//QTableView* tableView = this->findChild<QTableView*>("tableView");
+	//settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
+	//	tableView->horizontalHeader()->saveState());
+	settings.sync();
+}
+
+
+void DeepSkyStackerLive::showEvent(QShowEvent* event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitialise();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
+
+void DeepSkyStackerLive::connectSignalsToSlots()
+{
+}
+
+
+void DeepSkyStackerLive::onInitialise()
+{
+	ZFUNCTRACE_RUNTIME();
+	//
+	// Connect Qt Signals to appropriate slots
+	//
+	connectSignalsToSlots();
+
+	setWindowIcon(QIcon(":/DSSIcon.png"));
+
+	setWindowTitle(baseTitle);
+
+	gamma1->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
+	gamma1->setPegsOnLeftOrBottom(true).
+		setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
+
+	gamma2->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
+	gamma2->setPegsOnLeftOrBottom(true).
+		setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
+
+	ZTRACE_RUNTIME("Restoring Window State and Position");
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+
+	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
+
+#ifndef NDEBUG
+	if (geometry.length())
+	{
+		ZTRACE_RUNTIME("Hex dump of geometry:");
+		ZTrace::dumpHex(geometry.constData(), geometry.length());
+	}
+#endif
+
+	restoreGeometry(geometry);
+	settings.endGroup();
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -262,21 +306,31 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 
 
 /* ------------------------------------------------------------------- */
-QTranslator theQtTranslator;
-QTranslator theAppTranslator;
 
-int WINAPI _tWinMain(
-	[[maybe_unused]] HINSTANCE hInstance,  // handle to current instance
-	[[maybe_unused]] HINSTANCE hPrevInstance,  // handle to previous instance
-	[[maybe_unused]] LPTSTR lpCmdLine,      // pointer to command line
-	[[maybe_unused]] int nCmdShow          // show state of window
-				   )
+std::unique_ptr<std::uint8_t[]> backPocket;
+constexpr size_t backPocketSize{ 1024 * 1024 };
+
+static char const* global_program_name;
+
+int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+	int result{ 0 };
+
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console known how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
+
+	//
+	// Create a storage cushion (aka back pocket storage)
+	// and ensure that it is actually touched.
+	//
+	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
+	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
+	{
+		*p = static_cast<uint8_t>('\xff');
+	}
 
 	//
 	// Silence the MFC memory leak dump as we use Visual Leak Detector.
@@ -288,101 +342,115 @@ int WINAPI _tWinMain(
 #endif
 #endif
 
-	int nRetCode = 0;
+	if (hasExpired())
+		return 1;
 
-	OleInitialize(nullptr);
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
 
-	SetUILanguage();
+	QApplication app(argc, argv);
 
-	#ifndef NOGDIPLUS
-	GdiplusStartupInput		gdiplusStartupInput;
-	GdiplusStartupOutput	gdiSO;
-	ULONG_PTR				gdiplusToken;
-	ULONG_PTR				gdiHookToken;
+	//
+	// Set up organisation etc. for QSettings usage
+	//
+	QCoreApplication::setOrganizationName("DeepSkyStacker");
+	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
+	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
-	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
-	gdiSO.NotificationHook(&gdiHookToken);
-	#endif
+	//
+	// Set the Qt Application Style
+	//
+	app.setStyle(QStyleFactory::create("Fusion"));
 
-	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
+	LoadTranslations();
+
+	reportCpuType();
+
+	ZTRACE_RUNTIME("Creating Main Window");
+	DeepSkyStackerLive mainWindow;
+	DSSBase::setInstance(&mainWindow);
+
+	//
+	// Register QMessageBox::Icon enum as meta type
+	//
+	qRegisterMetaType<QMessageBox::Icon>();
+
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
+	ZTRACE_RUNTIME("Invoking QApplication::exec()");
+	try
 	{
-		wcerr << _T("Fatal Error: MFC initialization failed") << endl;
-		nRetCode = 1;
+		LiveSettings liveSettings;
+		liveSettings.LoadFromRegistry();
+
+		Exiv2::XmpParser::initialize();
+		::atexit(Exiv2::XmpParser::terminate);
+
+		mainWindow.show();
+		//result = app.run(&theApp);
+		result = app.exec();
+
 	}
-	else
+	catch (std::exception& e)
 	{
-		theApp.InitInstance();
-		QString cmdLine{ QString::fromWCharArray(theApp.m_lpCmdLine, wcslen(theApp.m_lpCmdLine)) };
-		QStringList argList{ cmdLine.split(' ') };
-		int argc = argList.count();
-		char** argv = new char* [1 + argc];
-		int i;
-		for (i = 0; i < argc; ++i)
-		{
-			QString arg = argList[i];
-			argv[i] = new char[arg.length() + 1];
-			qstrcpy(argv[i], arg.toLocal8Bit().data());
-		}
-		argv[i] = 0;
+		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
+		traceControl.setDeleteOnExit(false);
+		QString errorMessage(e.what());
+#if defined(_CONSOLE)
+		std::cerr << errorMessage.toUtf8().constData();
+#else
+		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
+#endif
+	}
+	catch (CException& e)
+	{
+		traceControl.setDeleteOnExit(false);
+		constexpr unsigned int msglen{ 255 };
+		TCHAR message[msglen]{ 0x00 };
+		e.GetErrorMessage(&message[0], msglen);
+		ZTRACE_RUNTIME("CException caught: %s", (LPCSTR)CT2CA(message));
 
-		QApplication app(argc, argv);
+		e.ReportError();
+		e.Delete();
+	}
+	catch (ZException& ze)
+	{
+		traceControl.setDeleteOnExit(false);
 
-		for (i = 0; i < argc; ++i)
-		{
-			char* arg = argv[i];
-			delete[] arg;
-		}
-		delete[] argv;
+		ZTRACE_RUNTIME("ZException %s thrown from: %s Function: %s() Line: %d\n\n%s",
+			ze.name(),
+			ze.locationAtIndex(0)->fileName(),
+			ze.locationAtIndex(0)->functionName(),
+			ze.locationAtIndex(0)->lineNumber(),
+			ze.text(0));
 
-		//
-		// Set up organisation etc. for QSettings usage
-		//
-		QCoreApplication::setOrganizationName("DeepSkyStacker");
-		QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
-		QCoreApplication::setApplicationName("DeepSkyStacker5");
+		QString name(ze.name());
+		QString fileName(ze.locationAtIndex(0)->fileName());
+		QString functionName(ze.locationAtIndex(0)->functionName());
+		QString text(ze.text(0));
 
-		//
-		// Set the Qt Application Style
-		//
-		app.setStyle(QStyleFactory::create("Fusion"));
+		QString errorMessage{ "Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5" };
+		errorMessage = errorMessage
+			.arg(name)
+			.arg(fileName)
+			.arg(functionName)
+			.arg(ze.locationAtIndex(0)->lineNumber())
+			.arg(text);
 
-		LoadTranslations();
-
-		if (!hasExpired())
-		{
-			Exiv2::XmpParser::initialize();
-			::atexit(Exiv2::XmpParser::terminate);
-
-			//
-			// Increase maximum size of QImage from the default of 128MB to 1GB
-			//
-			constexpr int oneGB{ 1024 * 1024 * 1024 };
-			QImageReader::setAllocationLimit(oneGB);
-
-
-			CLiveSettings liveSettings;
-			liveSettings.LoadFromRegistry();
-
-			CDeepSkyStackerLiveDlg	dlg(liveSettings.UseDarkTheme());
-
-			theApp.m_pMainWnd = &dlg;
-			//dlg.DragAcceptFiles(TRUE);
-			dlg.DoModal();
-		};
+#if defined(_CONSOLE)
+		std::cerr << errorMessage.toUtf8().constData();
+#else
+		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
+#endif
 	}
 
-	#ifndef NOGDIPLUS
-	// Shutdown GDI+
-	gdiSO.NotificationUnhook(gdiHookToken);
-	GdiplusShutdown(gdiplusToken);
-	#endif
-
-	OleUninitialize();
-
-	return nRetCode;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */

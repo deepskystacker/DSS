@@ -87,7 +87,7 @@ private :
 	double					m_fTotalExposureTime;
 	LONG					m_lNrEmails;
 
-	CLiveSettings			m_LiveSettings;
+	DSS::LiveSettings			m_LiveSettings;
 
 	bool m_bDarkMode;
 

@@ -12,7 +12,7 @@ class CSettingsTab : public CDialog
 	DECLARE_DYNAMIC(CSettingsTab)
 private :
 	CControlPos			m_ControlPos;
-	CLiveSettings		m_LiveSettings;
+	DSS::LiveSettings		m_LiveSettings;
 	CString				m_strStackedOutputFolder;
 	CString				m_strWarnFileFolder;
 	CString				m_strEmail;

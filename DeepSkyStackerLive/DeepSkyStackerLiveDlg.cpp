@@ -1,7 +1,7 @@
 // DeepSkyStackerLiveDlg.cpp : implementation file
 //
-
 #include "stdafx.h"
+#if(0)
 #include "DeepSkyStackerLiveDlg.h"
 #include "resource.h"
 #include "DeepSkyStackerLive.h"
@@ -578,3 +578,4 @@ void FlashMainWindow()
 	if (pWnd)
 		pWnd->FlashWindowEx(FLASHW_ALL, 4, 0);
 }
+#endif

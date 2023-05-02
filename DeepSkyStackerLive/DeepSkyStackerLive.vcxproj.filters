@@ -16,12 +16,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{84d72efc-2d1e-4b4c-bbcc-5548631dbce9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\ChartCtrl">
-      <UniqueIdentifier>{d16bcf5c-7ba8-426c-8511-b28330c8078d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\SMTP">
-      <UniqueIdentifier>{49f47abc-e9dd-4995-a63b-affee1bed0c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Qt">
       <UniqueIdentifier>{c5a27a9c-3aa3-4e06-85fa-10899ddf8ba8}</UniqueIdentifier>
     </Filter>
@@ -34,9 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStackerLive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeepSkyStackerLiveDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EmailSettings.cpp">
@@ -57,16 +48,10 @@
     <ClCompile Include="LogTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RestartMonitoring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StackedSink.cpp">
@@ -75,166 +60,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BtnST.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ControlPos.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\FolderDlg.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Gradient.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Label.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartAxis.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartAxisLabel.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartCtrl.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartGrid.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartLegend.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartLineSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartPointsSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartTitle.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\Base64.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\PJNSMTP.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\SocMFC.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\imageview.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="DeepSkyStackerLiveDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\BtnST.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ControlPos.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\FolderDlg.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Gradient.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\gradientctrl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Label.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartAxis.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartAxisLabel.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartCtrl.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartGrid.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartLegend.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartLineSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartObject.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartPointsSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartTitle.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\Base64.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNMD5.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNNTLMAuth.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNSMTP.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\SocMFC.h">
-      <Filter>Tools\SMTP</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\dssrect.h">
       <Filter>Header Files</Filter>

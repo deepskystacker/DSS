@@ -472,7 +472,7 @@ private :
 	HANDLE						m_hThread;
 	DWORD						m_dwThreadID;
 	HANDLE						m_hEvent;
-	CLiveSettings				m_LiveSettings;
+	DSS::LiveSettings			m_LiveSettings;
 	std::deque<CString>			m_qToRegister;
 	std::deque<CLightFrameInfo>	m_qToStack;
 	BOOL						m_bStackingOn;

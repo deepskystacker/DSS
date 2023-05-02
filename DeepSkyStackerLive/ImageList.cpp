@@ -1,10 +1,11 @@
 // ImageList.cpp : implementation file
 //
-
 #include "stdafx.h"
+#if (0)
 #include "resource.h"
 #include "DeepSkyStackerLive.h"
-#include "DeepSkyStackerLiveDlg.h"
+//#include "DeepSkyStackerLiveDlg.h"
+#include "LiveEngine.h"
 #include "ImageList.h"
 #include "RegisterEngine.h"
 #include "FrameInfoSupport.h"
@@ -325,4 +326,4 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 };
 
 /* ------------------------------------------------------------------- */
-
+#endif

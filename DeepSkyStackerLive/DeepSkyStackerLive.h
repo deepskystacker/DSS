@@ -67,8 +67,14 @@ public:
 
 	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
 
+protected:
+	void closeEvent(QCloseEvent* e) override;
+	void showEvent(QShowEvent* event) override;
+
+	void onInitialise();
+
 protected slots:
-	void updateStatus(const QString& text);
+	// void updateStatus(const QString& text);
 	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
 	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
 
@@ -79,22 +85,7 @@ private:
 	QString baseTitle;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
+
+	void connectSignalsToSlots();
+
 };
-
-class CDeepSkyStackerLiveApp : public CWinApp
-{
-public:
-	CDeepSkyStackerLiveApp();
-
-// Overrides
-	public:
-	virtual BOOL InitInstance();
-
-// Implementation
-
-	DECLARE_MESSAGE_MAP()
-};
-
-extern CDeepSkyStackerLiveApp theApp;
-
-CDeepSkyStackerLiveApp *		GetDSSLiveApp();

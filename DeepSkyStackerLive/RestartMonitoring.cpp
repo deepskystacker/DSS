@@ -1,7 +1,7 @@
-// DeepSkyStackerLiveDlg.cpp : implementation file
+// RestartMonitoring.cpp : implementation file
 //
-
 #include "stdafx.h"
+#if (0)
 #include "resource.h"
 #include "RestartMonitoring.h"
 
@@ -100,3 +100,4 @@ void CRestartMonitoring::OnBnClickedUsependingimages()
 }
 
 /* ------------------------------------------------------------------- */
+#endif

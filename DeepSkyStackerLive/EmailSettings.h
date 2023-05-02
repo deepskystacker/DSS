@@ -14,7 +14,7 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 private :
-	CLiveSettings *			m_pLiveSettings;
+	DSS::LiveSettings *		m_pLiveSettings;
 
 	CEdit					m_Object;
 	CEdit					m_SendTo;
@@ -23,7 +23,7 @@ private :
 	CButton					m_SendOnce;
 
 public :
-	void	SetLiveSettings(CLiveSettings * pLiveSettings)
+	void	SetLiveSettings(DSS::LiveSettings * pLiveSettings)
 	{
 		m_pLiveSettings = pLiveSettings;
 	};

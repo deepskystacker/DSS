@@ -20,7 +20,6 @@ DWORD	WINAPI	LiveEngineThreadProc(LPVOID lpParameter)
 	DWORD						dwResult = 0;
 	CLiveEngine *				pLiveEngine = reinterpret_cast<CLiveEngine *>(lpParameter);
 
-	SetUILanguage();
 	if (pLiveEngine)
 		pLiveEngine->LiveEngine();
 
@@ -377,18 +376,14 @@ void CLiveEngine::SaveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap
 {
 	if (pBitmap)
 	{
-		CString				strFolder;
-		CString				strOutputFile;
+		QString	outputFile { m_LiveSettings.getStackedOutputFolder() + "/Autostack.tif" };
 
-		m_LiveSettings.GetStackedOutputFolder(strFolder);
-		strOutputFile.Format(_T("%s\\Autostack.tif"), (LPCTSTR)strFolder);
 
 		CString				strText;
 
-		strText.Format(IDS_SAVINGSTACKEDIMAGE, (LPCTSTR)strFolder);
-		this->Start2(QString::fromStdWString(strText.GetString()), 0);
+		//this->Start2(QCoreApplication::translate("LiveEngine", "Saving Stacked Image in\n%1").arg(outputFile));
 
-		WriteTIFF(strOutputFile, pBitmap.get(), this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
+		WriteTIFF(outputFile.toStdWString().c_str(), pBitmap.get(), this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
 		this->End2();
 
 		PostStackedImageSaved();

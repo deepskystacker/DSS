@@ -9,5 +9,6 @@
         <file alias="Stack-Down.png">res/Stack-Down.png</file>
         <file alias="Stack-Up.png">res/Stack-Up.png</file>
         <file alias="Stop.png">res/Stop.png</file>
+        <file alias="StopSign.png">res/StopSign.png</file>
     </qresource>
 </RCC>

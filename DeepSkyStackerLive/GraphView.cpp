@@ -1,7 +1,7 @@
-// ExplorerBar.cpp : implementation file
+// GraphView.cpp : implementation file
 //
-
 #include "stdafx.h"
+#if (0)
 #include "GraphView.h"
 #include "ChartCtrl.h"
 #include "ChartObject.h"
@@ -559,3 +559,4 @@ void CChartSeries::SetPoint(double fX, POINTTYPE ptType)
 		};
 	};
 }
+#endif

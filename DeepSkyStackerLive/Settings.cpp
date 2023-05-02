@@ -1,6 +1,7 @@
 // ExplorerBar.cpp : implementation file
 //
 #include "stdafx.h"
+#if (0)
 #include "Settings.h"
 #include "resource.h"
 #include "DeepSkyStackerLiveDlg.h"
@@ -519,3 +520,4 @@ void CSettingsTab::OnResetEmailCount()
 };
 
 /* ------------------------------------------------------------------- */
+#endif

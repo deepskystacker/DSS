@@ -3,7 +3,7 @@
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveSettings::LoadFromRegistry()
+void	DSS::LiveSettings::LoadFromRegistry()
 {
 	QSettings settings;
 	settings.beginGroup("DeepSkyStackerLive");
@@ -24,24 +24,24 @@ void	CLiveSettings::LoadFromRegistry()
 
 	m_bDarkMode = settings.value("DarkMode", false).toBool();
 
-	m_strFileFolder = settings.value("FileFolder", "").toString().toStdWString().c_str();
-	m_strEmail = settings.value("Email", "").toString().toStdWString().c_str();
-	m_strWarnFileFolder = settings.value("WarningFileFolder", "").toString().toStdWString().c_str();
-	m_strStackedOutputFolder = settings.value("StackedOutputFolder", "").toString().toStdWString().c_str();
+	m_strFileFolder = settings.value("FileFolder", "").toString();
+	m_strEmail = settings.value("Email", "").toString();
+	m_strWarnFileFolder = settings.value("WarningFileFolder", "").toString();
+	m_strStackedOutputFolder = settings.value("StackedOutputFolder", "").toString();
 
-	m_strSMTP = settings.value("SMTP", "").toString().toStdWString().c_str();
-	m_strAccount = settings.value("Account", "").toString().toStdWString().c_str();
-	m_strObject = settings.value("Object", "").toString().toStdWString().c_str();
+	m_strSMTP = settings.value("SMTP", "").toString();
+	m_strAccount = settings.value("Account", "").toString();
+	m_strObject = settings.value("Object", "").toString();
 	settings.endGroup();
 
 #if defined (Q_OS_WIN)
-	if (!m_strSMTP.GetLength() && !m_strAccount.GetLength())
+	if (!m_strSMTP.isEmpty() && !m_strAccount.isEmpty())
 	{
 		QSettings sysSettings("HKEY_CURRENT_USER\\Software\\Microsoft",
 			QSettings::NativeFormat);
 		sysSettings.beginGroup("Internet Account Manager/Accounts/00000001");
-		m_strSMTP = sysSettings.value("SMTP Server", "").toString().toStdWString().c_str();
-		m_strAccount = sysSettings.value("SMTP Email Address", "").toString().toStdWString().c_str();
+		m_strSMTP = sysSettings.value("SMTP Server", "").toString();
+		m_strAccount = sysSettings.value("SMTP Email Address", "").toString();
 
 		sysSettings.endGroup();
 	};
@@ -50,7 +50,7 @@ void	CLiveSettings::LoadFromRegistry()
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveSettings::SaveToRegistry()
+void	DSS::LiveSettings::SaveToRegistry()
 {
 	QSettings settings;
 	settings.beginGroup("DeepSkyStackerLive");
@@ -71,14 +71,14 @@ void	CLiveSettings::SaveToRegistry()
 
 	settings.setValue("DarkMode", m_bDarkMode);
 
-	settings.setValue("FileFolder", QString::fromStdWString(m_strFileFolder.GetString()));
-	settings.setValue("WarningFileFolder", QString::fromStdWString(m_strWarnFileFolder.GetString()));
-	settings.setValue("StackedOutputFolder", QString::fromStdWString(m_strStackedOutputFolder.GetString()));
+	settings.setValue("FileFolder", m_strFileFolder);
+	settings.setValue("WarningFileFolder", m_strWarnFileFolder);
+	settings.setValue("StackedOutputFolder", m_strStackedOutputFolder);
 
-	settings.setValue("Email", QString::fromStdWString(m_strEmail.GetString()));
-	settings.setValue("SMTP", QString::fromStdWString(m_strSMTP.GetString()));
-	settings.setValue("Account", QString::fromStdWString(m_strAccount.GetString()));
-	settings.setValue("Object", QString::fromStdWString(m_strObject.GetString()));
+	settings.setValue("Email", m_strEmail);
+	settings.setValue("SMTP", m_strSMTP);
+	settings.setValue("Account", m_strAccount);
+	settings.setValue("Object", m_strObject);
 
 	settings.endGroup();
 

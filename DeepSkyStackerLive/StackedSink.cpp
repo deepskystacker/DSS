@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#if (0)
 #include "StackedSink.h"
 #include "resource.h"
 
@@ -60,3 +61,4 @@ void	CStackedSink::ClearFootprint()
 
 /* ------------------------------------------------------------------- */
 
+#endif

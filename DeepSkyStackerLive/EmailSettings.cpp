@@ -1,7 +1,7 @@
 // EmailSettings.cpp : implementation file
 //
-
 #include "stdafx.h"
+#if (0)
 #include "resource.h"
 #include "EmailSettings.h"
 #include <..\SMTP\PJNSMTP.h>
@@ -135,3 +135,4 @@ void CEmailSettings::OnBnClickedTest()
 }
 
 /* ------------------------------------------------------------------- */
+#endif

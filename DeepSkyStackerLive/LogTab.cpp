@@ -1,6 +1,8 @@
-// ExplorerBar.cpp : implementation file
+// LogTab.cpp : implementation file
 //
 #include "stdafx.h"
+
+#if (0)
 #include "LogTab.h"
 
 /* ------------------------------------------------------------------- */
@@ -104,3 +106,5 @@ void CLogTab::AddToLog(QString szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 	m_Log.SetSelectionCharFormat(cf);
 	m_Log.ReplaceSel(szText.toStdWString().c_str());
 };
+
+#endif
