@@ -72,7 +72,7 @@ namespace DSS
 	private:
 
 		bool initialised;
-		QString showFile;
+		fs::path fileToShow;
 		GammaTransformation	gammaTransformation;
 
 		ImageLoader		imageLoader;

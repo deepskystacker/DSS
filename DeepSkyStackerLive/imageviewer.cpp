@@ -211,9 +211,12 @@ namespace DSS
 	{
 		std::shared_ptr<CMemoryBitmap>	pBitmap;
 		std::shared_ptr<QImage>	pImage;
+		QString fileName;
+		if (!fileToShow.empty()) fileName = QString::fromStdU16String(fileToShow.generic_u16string());
+
 		try
 		{
-			if (!showFile.isEmpty() && imageLoader.load(showFile, pBitmap, pImage))
+			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
 			{
 				//
 				// The image we want is available in the cache
@@ -227,15 +230,15 @@ namespace DSS
 				information->setStyleSheet(
 					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
 					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
-				information->setText(showFile);
+				information->setText(fileName);
 			}
-			else if (!showFile.isEmpty())
+			else if (!fileToShow.empty())
 			{
 				information->setStyleSheet(
 					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
 					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
 				information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-					.arg(showFile));
+					.arg(fileName));
 			}
 			else
 			{
@@ -253,7 +256,7 @@ namespace DSS
 			QApplication::beep();
 			QMessageBox::warning(this,
 				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(showFile));
+				tr("%1 does not exist or is not a file").arg(fileName));
 		}
 	};
 
@@ -264,7 +267,7 @@ namespace DSS
 		QApplication::beep();
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
-			tr("Failed to load image %1").arg(showFile));
+			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
 	}
 
 }
