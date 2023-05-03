@@ -2309,50 +2309,34 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(CA2CT(e.what()));
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
+		const QString errorMessage(e.what());
+		DSSBase::instance()->reportError(errorMessage, "");
 	}
-#if !defined(_CONSOLE)
-	catch (CException & e)
+	catch (ZException& e)
 	{
-		e.ReportError();
-		e.Delete();
-	}
-#endif
-	catch (ZException & ze)
-	{
-		CString errorMessage;
-		CString name(CA2CT(ze.name()));
-		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(ze.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			ze.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CStackingEngine::StackAll",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CStackingEngine::StackAll",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 	}
 	catch (...)
 	{
-		CString errorMessage(_T("Unknown exception caught"));
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-
+		const QString errorMessage(QCoreApplication::translate("CStackingEngine::StackAll", "Unknown exception caught"));
+		DSSBase::instance()->reportError(errorMessage, "");
 	}
 
 	// Clear everything

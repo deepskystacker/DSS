@@ -242,10 +242,11 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		QString errorText{ &error_text[0] };
-		QString errorMessage{ "fits_open_diskfile %1\nreturned a status of %d, error text is:\n\"%s\"" };
-		errorMessage = errorMessage.arg(m_strFileName).arg(status).arg(error_text);
-
+		QString errorMessage(QCoreApplication::translate( "Kernel",
+														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
+															.arg(m_strFileName)
+															.arg(status)
+															.arg(error_text));
 		ZTRACE_RUNTIME(errorMessage);
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
@@ -898,7 +899,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
-			QString errorMessage{ QCoreApplication::translate("Kernel",
+			const QString errorMessage{ QCoreApplication::translate("Kernel",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
 			DSSBase::instance()->reportError(
@@ -1005,16 +1006,24 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical);
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		result = false;
 	}
 	return result;
@@ -1666,19 +1675,25 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical,
-			DSSBase::Method::QMessageBox,
-			true);
-		result = false;
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
+		exit(1);
 	}
 	return result;
 };

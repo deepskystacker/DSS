@@ -1405,17 +1405,24 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical,
-			DSSBase::Method::QMessageBox,
-			true);
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap::OnWrite",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox);
 		result = false;
 	}
 
@@ -1644,17 +1651,24 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-		
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical);
-
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}		
+		DSSBase::instance()->reportError( errorMessage, "", DSSBase::Severity::Critical);
 		result = false;
 	}
 	return result;

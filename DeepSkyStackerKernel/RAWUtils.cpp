@@ -447,11 +447,7 @@ namespace { // Only use in this .cpp file
 		if (false == result)
 		{
 			const QString errorMessage(QCoreApplication::translate("RawUtils", "Sorry, LibRaw doesn't support your %1 camera", "IDS_CAMERA_NOT_SUPPORTED").arg(strModel));
-#if defined(_CONSOLE)
-			std::wcerr << errorMessage.toStdWString().c_str();
-#else
-			AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONWARNING);
-#endif
+			DSSBase::instance()->reportError(errorMessage, "");
 		}
 
 		return;

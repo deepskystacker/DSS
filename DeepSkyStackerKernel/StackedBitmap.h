@@ -3,12 +3,9 @@
 #include "Histogram.h"
 #include "ColorRef.h"
 
-//#ifndef _CONSOLE
-#include "BitmapExt.h"
-//#endif//_CONSOLE
-
 namespace DSS { class ProgressBase; }
-
+class C32BitsBitmap;
+class CMemoryBitmap;
 /* ------------------------------------------------------------------- */
 
 #pragma pack(push, HDPIXELINFO, 4)
