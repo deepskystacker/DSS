@@ -1303,20 +1303,20 @@ namespace DSS
 
 			if (ndx.isValid())
 			{
-				QString  fileName;
+				fs::path  file;
 				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
-				fileName = model->selectedFileName(row);
+				file = model->selectedFile(row);
 				//
 				// If the filename has changed but we have changes to the stars that need to be saved
 				//
-				if (fileName != m_strShowFile && checkEditChanges())
+				if (file != fileToShow && checkEditChanges())
 				{
-					ui->information->setText(m_strShowFile);
+					ui->information->setText(QString::fromStdU16String(fileToShow.generic_u16string()));
 					ui->information->setTextFormat(Qt::PlainText);
 					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 					ui->information->setOpenExternalLinks(false);
-					m_strShowFile = fileName;
+					fileToShow = file;
 					imageLoad();
 				}
 			}
@@ -1349,9 +1349,12 @@ namespace DSS
 	{
 		std::shared_ptr<CMemoryBitmap>	pBitmap;
 		std::shared_ptr<QImage>	pImage;
+		QString fileName;
+		if (!fileToShow.empty()) fileName = QString::fromStdU16String(fileToShow.generic_u16string());
+
 		try
 		{
-			if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
+			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
 			{
 				pictureList->tableView->setEnabled(true);
 				//
@@ -1368,9 +1371,9 @@ namespace DSS
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 
-				if (frameList.isLightFrame(m_strShowFile))
+				if (frameList.isLightFrame(fileToShow))
 				{
-					editStarsPtr->setLightFrame(m_strShowFile);
+					editStarsPtr->setLightFrame(fileName);
 					editStarsPtr->setBitmap(pBitmap);
 					if (pToolBar->rectAction->isChecked())
 					{
@@ -1399,14 +1402,14 @@ namespace DSS
 				CBilinearParameters		Transformation;
 				VOTINGPAIRVECTOR		vVotedPairs;
 
-				if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
+				if (frameList.getTransformation(fileName, Transformation, vVotedPairs))
 					editStarsPtr->setTransformation(Transformation, vVotedPairs);
 				ui->information->setStyleSheet(
 					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
 					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
-				ui->information->setText(m_strShowFile);
+				ui->information->setText(fileName);
 			}
-			else if (!m_strShowFile.isEmpty())
+			else if (!fileToShow.empty())
 			{
 				pictureList->tableView->setEnabled(false);
 				//
@@ -1416,7 +1419,7 @@ namespace DSS
 					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
 					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
 				ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-					.arg(m_strShowFile));
+					.arg(fileName));
 				//
 				// No longer interested in signals from the imageView object
 				//
@@ -1450,7 +1453,7 @@ namespace DSS
 			QApplication::beep();
 			QMessageBox::warning(this,
 				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(m_strShowFile));
+				tr("%1 does not exist or is not a file").arg(fileName));
 		}
 	};
 
@@ -1459,7 +1462,7 @@ namespace DSS
 		QApplication::beep();
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
-			tr("Failed to load image %1").arg(m_strShowFile));
+			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
 		pictureList->tableView->setEnabled(true);
 		//
 		// Disabling the tableview resulted in it loosing focus
@@ -1493,7 +1496,7 @@ namespace DSS
 		editStarsPtr->saveRegisterSettings();
 		pToolBar->setSaveEnabled(false);
 		// Update the list with the new info
-		frameList.updateItemScores(m_strShowFile);
+		frameList.updateItemScores(fileToShow);
 	}
 
 	void StackingDlg::pictureChanged()
@@ -1709,7 +1712,7 @@ namespace DSS
 				editStarsPtr->saveRegisterSettings();
 				pToolBar->setSaveEnabled(false);
 				// Update the list with the new info
-				frameList.updateItemScores(m_strShowFile);
+				frameList.updateItemScores(fileToShow);
 			}
 			else if (dlgResult == QDialogButtonBox::DestructiveRole)
 			{
@@ -1799,8 +1802,8 @@ namespace DSS
 			frameList.clear();
 			selectRectPtr->reset();
 			editStarsPtr->setBitmap(nullptr);
-			m_strShowFile.clear();
-			ui->information->setText(m_strShowFile);
+			fileToShow.clear();
+			ui->information->setText("");
 			imageLoader.clearCache();
 			m_LoadedImage.reset();
 			updateGroupTabs();
@@ -2151,12 +2154,12 @@ namespace DSS
 
 						frameList.updateCheckedItemScores();
 						// Update the current image score if necessary
-						if (!m_strShowFile.isEmpty()
-							&& frameList.isLightFrame(m_strShowFile)
-							&& frameList.isChecked(m_strShowFile))
+						if (!fileToShow.empty()
+							&& frameList.isLightFrame(fileToShow)
+							&& frameList.isChecked(fileToShow))
 						{
 							// Update the registering info
-							editStarsPtr->setLightFrame(m_strShowFile);
+							editStarsPtr->setLightFrame(QString::fromStdU16String(fileToShow.generic_u16string()));
 							ui->picture->update();
 						};
 
@@ -2284,7 +2287,7 @@ namespace DSS
 		// and ask accordingly
 		CLightFrameInfo			lfi;
 
-		lfi.SetBitmap(m_strShowFile.toStdU16String(), false, false);
+		lfi.SetBitmap(fileToShow, false, false);
 		if (!lfi.IsRegistered())
 		{
 			CAskRegistering		dlg;
@@ -2295,13 +2298,13 @@ namespace DSS
 				{
 					// Register only this light frame
 					frameList.checkAllLights(false);
-					frameList.checkImage(m_strShowFile, true);
+					frameList.checkImage(fileToShow, true);
 					registerCheckedImages();
 				}
 				else if (dlg.GetAction() == ARA_ALL)
 				{
 					// Register all the checked light frames (including this one).
-					frameList.checkImage(m_strShowFile, true);
+					frameList.checkImage(fileToShow, true);
 					registerCheckedImages();
 				};
 			};
@@ -2368,7 +2371,7 @@ namespace DSS
 
 	void StackingDlg::reloadCurrentImage()
 	{
-		if (!m_strShowFile.isEmpty())
+		if (!fileToShow.empty())
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			imageLoader.clearCache();

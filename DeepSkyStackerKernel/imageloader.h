@@ -6,7 +6,7 @@ class C32BitsBitmap;
 class LoadedImage
 {
 public:
-	QString						fileName;
+	fs::path fileName;
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	std::shared_ptr<QImage>	m_Image;
 	int						lastUse;
@@ -64,7 +64,7 @@ class ImageLoader :
 
     static const inline int16_t MAXIMAGESINCACHE{ 20 };
 	static inline std::mutex mutex{};
-	QString	fileToLoad;
+	fs::path fileToLoad;
 	std::vector<LoadedImage>	imageVector;
 
 public:
@@ -75,6 +75,7 @@ public:
 
 	void	clearCache();
 	bool	load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
+	bool	load(const fs::path& file, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
 
 signals:
 	void imageLoaded();

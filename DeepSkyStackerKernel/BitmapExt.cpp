@@ -223,7 +223,7 @@ bool	CAllDepthBitmap::initQImage()
 };
 
 
-bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
+bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -232,7 +232,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
+		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());

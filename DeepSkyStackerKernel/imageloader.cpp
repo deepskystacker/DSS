@@ -9,13 +9,11 @@ void ThreadLoader::run()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	QString strImage(imageLoader->fileToLoad);
-
-	if (strImage.size())
+	if (!imageLoader->fileToLoad.empty())
 	{
 		CAllDepthBitmap				adb;
 
-		if (LoadPicture((LPCTSTR)strImage.utf16(), adb))
+		if (LoadPicture(imageLoader->fileToLoad, adb))
 		{
 			const std::lock_guard <std::mutex> lock { imageLoader->mutex };
 
@@ -44,10 +42,15 @@ void ImageLoader::clearCache()
 
 bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
 {
+	fs::path p{ fileName.toStdU16String() };
+
+	return load(p, pBitmap, pImage);
+}
+
+bool ImageLoader::load(const fs::path& p, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
+{
 	ZFUNCTRACE_RUNTIME();
 
-	fs::path p{ fileName.toStdU16String() };
-	
 	auto type{ status(p).type() };
 
 	if (fs::file_type::regular != type)
@@ -62,7 +65,7 @@ bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap
 	//
 	for (LoadedImage& image : imageVector)
 	{
-		if (image.fileName == fileName)
+		if (image.fileName == p)
 		{
 			pBitmap = image.m_pBitmap;		// Return the pointer stored in the shared ptr
 			pImage = image.m_Image;		// Return the pointer stored in the shared ptr
@@ -77,7 +80,7 @@ bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap
 	// Did we find the image in our cache?
 	if (found)
 	{
-		ZTRACE_RUNTIME("Image file %s found in image cache", fileName.toLocal8Bit().constData());
+		ZTRACE_RUNTIME("Image file %s found in image cache", p.generic_string().c_str());
 		result = true;
 		if (imageVector.size() > MAXIMAGESINCACHE)
 		{
@@ -88,8 +91,8 @@ bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap
 	}
 	else
 	{
-		ZTRACE_RUNTIME("Loading image file %s in thread", fileName.toLocal8Bit().constData());
-		fileToLoad = fileName;
+		ZTRACE_RUNTIME("Loading image file %s in thread", p.generic_string().c_str());
+		fileToLoad = p;
 		ThreadLoader* threadLoader(new ThreadLoader(this));
 		QThreadPool::globalInstance()->start(threadLoader);
 	}

@@ -239,7 +239,7 @@ namespace DSS
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
 		bool initialised;
-		QString			m_strShowFile;
+		fs::path fileToShow;
 		GammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;

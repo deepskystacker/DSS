@@ -117,21 +117,21 @@ namespace DSS
         iterator end() { return mydata.end(); }
 
         //
-        // return the filename held in the base FrameInfo object
+        // return the file held in the base FrameInfo object
         //
-        QString selectedFileName(int row) const
+        fs::path selectedFile(int row) const
         {
-            return QString::fromStdU16String(mydata[row].filePath.generic_u16string());
+            return mydata[row].filePath;
         }
 
         //
         // Check if a loaded image is a light frame
         //
-        bool isLightFrame(QString name) const
+        bool isLightFrame(const fs::path& name) const
         {
             for (auto const& data : mydata)
             {
-                if (data.filePath == fs::path(name.toStdString()))
+                if (data.filePath == name)
                 {
                     if (data.IsLightFrame()) return true;
                     else return false;
@@ -144,11 +144,11 @@ namespace DSS
         //
         // Check if a loaded image has been checked
         //
-        bool isChecked(QString name) const
+        bool isChecked(const fs::path& name) const
         {
             for (auto const& data : mydata)
             {
-                if (data.filePath == fs::path(name.toStdU16String()))
+                if (data.filePath == name)
                 {
                     if (Qt::Checked == data.m_bChecked) return true;
                     else return false;
