@@ -174,7 +174,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="stackedImage">
       <property name="sizePolicy">
@@ -545,7 +545,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>639</width>
+            <width>546</width>
             <height>601</height>
            </rect>
           </property>
@@ -1474,5 +1474,38 @@
  <resources>
   <include location="../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>fourCorners1</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>picture1</receiver>
+   <slot>on_fourCorners_clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>596</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>475</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fourCorners2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>picture2</receiver>
+   <slot>on_fourCorners_clicked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>51</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>244</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
