@@ -36,13 +36,13 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.4.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.4.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -193,6 +193,7 @@
     <ClCompile Include="EmailSettings.cpp" />
     <ClCompile Include="GraphView.cpp" />
     <ClCompile Include="ImageList.cpp" />
+    <ClCompile Include="imageviewer.cpp" />
     <ClCompile Include="LiveEngine.cpp" />
     <ClCompile Include="LiveSettings.cpp" />
     <ClCompile Include="LogTab.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="EmailSettings.h" />
     <ClInclude Include="GraphView.h" />
     <ClInclude Include="ImageList.h" />
+    <QtMoc Include="imageviewer.h" />
     <ClInclude Include="LiveEngine.h" />
     <ClInclude Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
@@ -298,6 +300,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
+    <QtUic Include="ui\ImageViewer.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

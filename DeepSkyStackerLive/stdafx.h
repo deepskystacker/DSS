@@ -17,6 +17,10 @@
 #include <QtWidgets>
 #include <QNetworkReply>
 
+// ZClass Files
+#include <zexcept.h>
+#include <Ztrace.h>
+
 // Dependency Libraries
 #include <exiv2/exiv2.hpp>
 #include <exiv2/exif.hpp>

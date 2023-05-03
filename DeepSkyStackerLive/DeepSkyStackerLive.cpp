@@ -41,6 +41,7 @@
 
 #include <QErrorMessage>
 #include <QMessageBox>
+#include <QImageReader>
 
 //
 // Necessary Windows header
@@ -220,14 +221,6 @@ void DeepSkyStackerLive::onInitialise()
 
 	setWindowTitle(baseTitle);
 
-	gamma1->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
-	gamma1->setPegsOnLeftOrBottom(true).
-		setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
-
-	gamma2->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
-	gamma2->setPegsOnLeftOrBottom(true).
-		setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
-
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -264,7 +257,6 @@ void DeepSkyStackerLive::reportError(const QString& message, const QString& type
 			Q_ARG(bool, terminate));
 	}
 }
-
 
 void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
 {
@@ -318,7 +310,7 @@ int main(int argc, char* argv[])
 	int result{ 0 };
 
 #if defined(_WINDOWS)
-	// Set console code page to UTF-8 so console known how to interpret string data
+	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
@@ -393,7 +385,6 @@ int main(int argc, char* argv[])
 		::atexit(Exiv2::XmpParser::terminate);
 
 		mainWindow.show();
-		//result = app.run(&theApp);
 		result = app.exec();
 
 	}
@@ -402,22 +393,8 @@ int main(int argc, char* argv[])
 		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
 		traceControl.setDeleteOnExit(false);
 		QString errorMessage(e.what());
-#if defined(_CONSOLE)
-		std::cerr << errorMessage.toUtf8().constData();
-#else
-		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
-#endif
-	}
-	catch (CException& e)
-	{
-		traceControl.setDeleteOnExit(false);
-		constexpr unsigned int msglen{ 255 };
-		TCHAR message[msglen]{ 0x00 };
-		e.GetErrorMessage(&message[0], msglen);
-		ZTRACE_RUNTIME("CException caught: %s", (LPCSTR)CT2CA(message));
 
-		e.ReportError();
-		e.Delete();
+		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 	}
 	catch (ZException& ze)
 	{
@@ -443,11 +420,7 @@ int main(int argc, char* argv[])
 			.arg(ze.locationAtIndex(0)->lineNumber())
 			.arg(text);
 
-#if defined(_CONSOLE)
-		std::cerr << errorMessage.toUtf8().constData();
-#else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
-#endif
 	}
 
 	return result;
