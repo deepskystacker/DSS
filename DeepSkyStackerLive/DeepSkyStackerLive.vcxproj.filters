@@ -72,6 +72,9 @@
     <ClCompile Include="MainBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="imageviewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -209,6 +212,9 @@
     <QtMoc Include="..\Tools\imageview.h">
       <Filter>Tools</Filter>
     </QtMoc>
+    <QtMoc Include="imageviewer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS.ca.ts">
@@ -261,6 +267,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\DeepSkyStackerLive.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ImageViewer.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>

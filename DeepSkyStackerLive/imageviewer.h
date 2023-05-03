@@ -34,68 +34,51 @@
 **
 **
 ****************************************************************************/
-// DeepSkyStackerLive.h : main header file for DeepSkyStackerLive
+// ImageViewer.h : Declares the class behaviors for the application.
 //
-#include "dssbase.h"
-#include "ui/ui_DeepSkyStackerLive.h"
-
-class QWinHost;
+#include <QWidget>
+#include "ui_ImageViewer.h"
+#include "BitmapExt.h"
+#include "imageloader.h"
 
 namespace DSS
 {
-	class ImageViewer;
-	class GraphViewer;
-	class LiveSettings;
+	class ImageViewer :
+		public QWidget,
+		public Ui_ImageViewer
+	{
+		Q_OBJECT
+
+	public:
+		ImageViewer();
+		ImageViewer(QWidget* parent);
+		~ImageViewer();
+	
+		//
+		// Don't intend this to be copied or assigned.
+		//
+		ImageViewer(const ImageViewer&) = delete;
+		ImageViewer& operator=(const ImageViewer&) = delete;
+		ImageViewer(ImageViewer&& rhs) = delete;
+		ImageViewer& operator=(ImageViewer&& rhs) = delete;
+
+	public slots:
+		void gammaChanging(int peg);
+		void gammaChanged(int peg);
+
+		void imageLoad();
+		void imageLoadFailed();
+
+	private:
+
+		bool initialised;
+		QString showFile;
+		GammaTransformation	gammaTransformation;
+
+		ImageLoader		imageLoader;
+		LoadedImage		loadedImage;
+
+		void connectSignalsToSlots();
+		void doCtorStuff();
+	};
 }
-
-class DeepSkyStackerLive :
-	public QWidget,
-	public Ui_DeepSkyStackerLive,
-	public DSSBase
-{
-	typedef QWidget
-		Inherited;
-
-	Q_OBJECT
-
-public:
-	DeepSkyStackerLive();
-	~DeepSkyStackerLive();
-
-	//
-	// Don't intend this to be copied or assigned.
-	//
-	DeepSkyStackerLive(const DeepSkyStackerLive&) = delete;
-	DeepSkyStackerLive& operator=(const DeepSkyStackerLive&) = delete;
-	DeepSkyStackerLive(DeepSkyStackerLive&& rhs) = delete;
-	DeepSkyStackerLive& operator=(DeepSkyStackerLive&& rhs) = delete;
-
-	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
-
-	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
-
-protected:
-	void closeEvent(QCloseEvent* e) override;
-	void showEvent(QShowEvent* event) override;
-
-	void onInitialise();
-
-protected slots:
-	// void updateStatus(const QString& text);
-	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
-	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
-
-private:
-	bool initialised;
-	QWinHost* winHost;
-	QStringList args;
-	QString baseTitle;
-	QErrorMessage* errorMessageDialog;
-	QLabel* eMDI;		// errorMessageDialogIcon pointer
-	DSS::ImageViewer* stackedImageViewer;
-	DSS::ImageViewer* lastImageViewer;
-	DSS::LiveSettings* liveSettings;
-
-	void connectSignalsToSlots();
-
-};
