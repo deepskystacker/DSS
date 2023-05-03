@@ -179,16 +179,6 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	const auto handleError = [](const QString& errorMessage,[[maybe_unused]] const auto flags) -> void
-	{
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage.toStdWString().c_str();
-#else
-		AfxMessageBox(errorMessage, flags);
-#endif
-		exit(1);
-	};
-
 #pragma omp parallel for default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
 	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
 	{
@@ -212,42 +202,34 @@ void CCombineTask::process()
 		}
 		catch (const std::exception& e)
 		{
-			QString errorMessage(e.what());
-			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+			const QString errorMessage(e.what());
+			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		}
-#if !defined(_CONSOLE)
-		catch (CException& e)
+		catch (ZException& e)
 		{
-			e.ReportError();
-			e.Delete();
-			exit(1);
-		}
-#endif
-		catch (ZException& ze)
-		{
-			const ZExceptionLocation* location = ze.locationAtIndex(0);
 			QString errorMessage;
-			if (location)
+			if (e.locationAtIndex(0))
 			{
-				errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
-									.arg(ze.name())
-									.arg(location->fileName())
-									.arg(location->functionName())
-									.arg(location->lineNumber())
-									.arg(ze.text(0));
+				errorMessage = QCoreApplication::translate("CCombineTask",
+														"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+															.arg(e.name())
+															.arg(e.locationAtIndex(0)->fileName())
+															.arg(e.locationAtIndex(0)->functionName())
+															.arg(e.text(0));
 			}
 			else
 			{
-				errorMessage = QString("Exception %1 thrown from an unknown Function.\n\n%5")
-					.arg(ze.name())
-					.arg(ze.text(0));
+				errorMessage = QCoreApplication::translate("CCombineTask",
+														"Exception %1 thrown from an unknown Function.\n\n%2")
+															.arg(e.name())
+															.arg(e.text(0));
 			}
-			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		}
 		catch (...)
 		{
-			const QString errorMessage("Unknown exception caught");
-			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+			const QString errorMessage(QCoreApplication::translate("CCombineTask", "Unknown exception caught"));
+			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		}
 	}
 }

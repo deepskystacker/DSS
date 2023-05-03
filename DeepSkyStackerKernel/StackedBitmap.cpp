@@ -10,6 +10,7 @@
 #include "BitmapInfo.h"
 #include "tiffio.h"
 #include "FITSUtil.h"
+#include "BitmapExt.h"
 
 using namespace DSS;
 /* ------------------------------------------------------------------- */

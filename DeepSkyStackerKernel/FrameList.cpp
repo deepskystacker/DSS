@@ -501,11 +501,7 @@ namespace DSS
 										.arg(groupId)
 										.arg(groupName(groupId)));
 
-#if defined(_CONSOLE)
-									std::cerr << errorMessage.toUtf8().constData();
-#else
-									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
-#endif
+									DSSBase::instance()->reportError(errorMessage, "");
 									return *this;
 								}
 								else

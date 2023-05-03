@@ -19,10 +19,6 @@
 #include "omp.h"
 #include "dssbase.h"
 
-#ifndef _CONSOLE
-#include "DeepSkyStacker.h"
-#endif//_CONSOLE
-
 using namespace DSS;
 
 const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
@@ -302,34 +298,25 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 		//
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
-#if defined _WINDOWS
-	catch (CException & e)
+	catch (ZException& e)
 	{
-		TCHAR msg[225]{ 0 };
-		e.GetErrorMessage(msg, sizeof(msg)/sizeof(TCHAR));
-		e.Delete();
-		QString errorMessage{ QString::fromWCharArray(msg) };
-
-		//
-		// Report the error and terminate 
-		//
-		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
-
-	}
-#endif
-	catch (ZException & ze)
-	{
-		const QString name(ze.name());
-		const QString fileName(ze.locationAtIndex(0)->fileName());
-		const QString functionName(ze.locationAtIndex(0)->functionName());
-		const QString text(ze.text(0));
-
-		const QString errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
-			.arg(name)
-			.arg(fileName)
-			.arg(functionName)
-			.arg(ze.locationAtIndex(0)->lineNumber())
-			.arg(text);
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("BitmapExt",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("BitmapExt",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
 
 		//
 		// Report the error and terminate 
@@ -338,7 +325,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 	}
 	catch (...)
 	{
-		const QString errorMessage("Unknown exception caught");
+		const QString errorMessage(QCoreApplication::translate("BitmapExt", "Unknown exception caught"));
 
 		//
 		// Report the error and terminate 
@@ -1195,9 +1182,9 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
 		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
-		QString errorMessage{ QCoreApplication::translate(
-			"DSS::StackingDlg",
-			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
+		const QString errorMessage{ QCoreApplication::translate(
+									"BitmapExt",
+									"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
