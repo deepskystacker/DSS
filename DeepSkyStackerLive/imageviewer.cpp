@@ -40,20 +40,9 @@
 
 namespace DSS
 {
-	ImageViewer::ImageViewer()
-		: QWidget{},
-		initialised{ false }
-	{
-		doCtorStuff();
-	}
 	ImageViewer::ImageViewer(QWidget *parent)
 		: QWidget{ parent },
 		initialised{ false }
-	{
-		doCtorStuff();
-	}
-
-	void ImageViewer::doCtorStuff()
 	{
 		setupUi(this);
 

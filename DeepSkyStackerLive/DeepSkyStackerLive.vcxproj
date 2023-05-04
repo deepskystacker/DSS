@@ -205,6 +205,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
     </ClCompile>
+    <ClCompile Include="settingstab.cpp" />
     <ClCompile Include="StackedSink.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -224,12 +225,13 @@
     <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />
     <ClInclude Include="LiveEngine.h" />
-    <ClInclude Include="LiveSettings.h" />
+    <QtMoc Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
     <ClInclude Include="MainBoard.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RestartMonitoring.h" />
     <ClInclude Include="Settings.h" />
+    <QtMoc Include="settingstab.h" />
     <ClInclude Include="StackedSink.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -299,6 +301,7 @@
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
     <QtUic Include="ui\ImageViewer.ui" />
   </ItemGroup>

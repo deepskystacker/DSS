@@ -50,8 +50,7 @@ namespace DSS
 		Q_OBJECT
 
 	public:
-		ImageViewer();
-		ImageViewer(QWidget* parent);
+		ImageViewer(QWidget* parent = nullptr);
 		~ImageViewer();
 	
 		//
@@ -79,6 +78,5 @@ namespace DSS
 		LoadedImage		loadedImage;
 
 		void connectSignalsToSlots();
-		void doCtorStuff();
 	};
 }

@@ -68,54 +68,20 @@ namespace DSS
 {
 	class LiveSettings
 	{
-	private:
-		std::uint32_t m_dwStackingFlags;
-		std::uint32_t m_dwWarningFlags;
-		std::uint32_t m_dwWarningActions;
-		std::uint32_t m_dwMinImages;
-		std::uint32_t m_dwScore;
-		std::uint32_t m_dwStars;
-		std::uint32_t m_dwFWHM;
-		std::uint32_t m_dwOffset;
-		std::uint32_t m_dwAngle;
-		std::uint32_t m_dwSaveCount;
-		std::uint32_t m_dwProcessFlags;
-		std::uint32_t m_dwSkyBackground;
-		QString				m_strFileFolder;
-		QString				m_strWarnFileFolder;
-		QString				m_strStackedOutputFolder;
-
-		QString				m_strEmail;
-		QString				m_strSMTP;
-		QString				m_strAccount;
-		QString				m_strObject;
-
-		bool				m_bDarkMode;
-
 	public:
-		LiveSettings()
-		{
-			m_dwStackingFlags = 0;
-			m_dwWarningFlags = 0;
-			m_dwWarningActions = LSWA_SOUND;
-			m_dwMinImages = 5;
-			m_dwScore = 1000;
-			m_dwStars = 30;
-			m_dwFWHM = 50;
-			m_dwOffset = 100;
-			m_dwAngle = 20;
-			m_dwSaveCount = 10;
-			m_dwSkyBackground = 20;
-			m_dwProcessFlags = LSPF_ALL;
-			m_bDarkMode = true;
-		};
+		LiveSettings();
+		~LiveSettings();
 
-		~LiveSettings()
-		{
-		};
+		//
+		// Don't intend this to be copied or assigned.
+		//
+		LiveSettings(const LiveSettings&) = delete;
+		LiveSettings& operator=(const LiveSettings&) = delete;
+		LiveSettings(LiveSettings&& rhs) = delete;
+		LiveSettings& operator=(LiveSettings&& rhs) = delete;
 
-		void	LoadFromRegistry();
-		void	SaveToRegistry();
+		void	load();
+		void	save();
 
 		BOOL	IsDontStack_Score() { return (m_dwStackingFlags & LSSF_SCORE) ? TRUE : FALSE; };
 		BOOL	IsDontStack_Stars() { return (m_dwStackingFlags & LSSF_STARS) ? TRUE : FALSE; };
@@ -144,9 +110,6 @@ namespace DSS
 		BOOL	IsProcess_FITS() { return (m_dwProcessFlags & LSPF_FITS) ? TRUE : FALSE; };
 		BOOL	IsProcess_TIFF() { return (m_dwProcessFlags & LSPF_TIFF) ? TRUE : FALSE; };
 		BOOL	IsProcess_Others() { return (m_dwProcessFlags & LSPF_OTHERS) ? TRUE : FALSE; };
-
-		bool	UseDarkTheme() const { return m_bDarkMode; }
-		void	UseDarkTheme(bool bState) { m_bDarkMode = bState; }
 
 		void	SetDontStack_Score(BOOL bSet) { bSet ? (m_dwStackingFlags |= LSSF_SCORE) : (m_dwStackingFlags &= ~LSSF_SCORE); };
 		void	SetDontStack_Stars(BOOL bSet) { bSet ? (m_dwStackingFlags |= LSSF_STARS) : (m_dwStackingFlags &= ~LSSF_STARS); };
@@ -292,5 +255,27 @@ namespace DSS
 		{
 			m_strFileFolder = fileFolder;
 		};
+
+	private:
+		std::uint32_t m_dwStackingFlags;
+		std::uint32_t m_dwWarningFlags;
+		std::uint32_t m_dwWarningActions;
+		std::uint32_t m_dwMinImages;
+		std::uint32_t m_dwScore;
+		std::uint32_t m_dwStars;
+		std::uint32_t m_dwFWHM;
+		std::uint32_t m_dwOffset;
+		std::uint32_t m_dwAngle;
+		std::uint32_t m_dwSaveCount;
+		std::uint32_t m_dwProcessFlags;
+		std::uint32_t m_dwSkyBackground;
+		QString				m_strFileFolder;
+		QString				m_strWarnFileFolder;
+		QString				m_strStackedOutputFolder;
+
+		QString				m_strEmail;
+		QString				m_strSMTP;
+		QString				m_strAccount;
+		QString				m_strObject;
 	};
 }

@@ -46,7 +46,7 @@
 //
 // Necessary Windows header
 //
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 #include <afx.h>
 #endif
 
@@ -309,7 +309,7 @@ int main(int argc, char* argv[])
 	ZFUNCTRACE_RUNTIME();
 	int result{ 0 };
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
@@ -327,7 +327,7 @@ int main(int argc, char* argv[])
 	//
 	// Silence the MFC memory leak dump as we use Visual Leak Detector.
 	//
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
 #if !defined(NDEBUG)
 	AfxEnableMemoryLeakDump(false);
@@ -379,7 +379,7 @@ int main(int argc, char* argv[])
 	try
 	{
 		LiveSettings liveSettings;
-		liveSettings.LoadFromRegistry();
+		liveSettings.load();
 
 		Exiv2::XmpParser::initialize();
 		::atexit(Exiv2::XmpParser::terminate);

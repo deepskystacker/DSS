@@ -605,7 +605,7 @@ void CLiveEngine::LiveEngine()
 					};
 					break;
 				case LEM_UPDATESETTINGS :
-					m_LiveSettings.LoadFromRegistry();
+					m_LiveSettings.load();
 					break;
 				case LEM_SAVESTACKEDIMAGE :
 					SaveStackedImage();
@@ -846,7 +846,7 @@ CLiveEngine::CLiveEngine()
 	m_bRegisteringOn	= TRUE;
 	m_bReferenceFrameSet = FALSE;
 	m_lNrUnsavedImages   = 0;
-	m_LiveSettings.LoadFromRegistry();
+	m_LiveSettings.load();
     m_lTotal1 = 0;
     m_lTotal2 = 0;
     m_lAchieved1 = 0;
