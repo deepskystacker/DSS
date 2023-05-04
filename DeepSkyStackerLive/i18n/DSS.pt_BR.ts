@@ -2,9 +2,20 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pt_BR">
 <context>
+    <name>DSS::ImageView</name>
+    <message>
+        <location filename="../../Tools/imageview.cpp" line="72"/>
+        <source>Ctrl++ or Ctrl+= to zoom in
+Ctrl+- to zoom out
+ or use the mouse wheel to zoom
+Ctrl+4 to toggle 4-Corners mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="136"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="139"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Esta versão beta do DeepSkyStacker expirou
@@ -76,84 +87,322 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 
 </translation>
     </message>
-</context>
-<context>
-    <name>Form</name>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="20"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="32"/>
-        <source>status 1</source>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="49"/>
+        <source>Monitoring</source>
+        <comment>IDC_MONITORINGRECT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="67"/>
-        <source>status 2</source>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="59"/>
+        <source>&lt;Click here to select the Monitored Folder&gt;</source>
+        <comment>IDC_MONITOREDFOLDER</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="90"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="151"/>
+        <source>Pending: %ld - Registered: %ld - Stacked: %ld - Total exposure time: %s</source>
+        <comment>IDC_STATS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="187"/>
         <source>Stacked Image</source>
+        <comment>IDC_STACKEDIMAGE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="206"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="303"/>
         <source>Last Image</source>
+        <comment>IDC_LASTIMAGE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="322"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="419"/>
         <source>Graphs</source>
+        <comment>IDC_GRAPHS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="330"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="427"/>
         <source>Score</source>
+        <comment>IDC_SCORE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="337"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="434"/>
         <source>FWHM</source>
+        <comment>IDC_FWHM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="344"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="441"/>
+        <source>#Stars</source>
+        <comment>IDC_STARS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="448"/>
         <source>dX/dY</source>
+        <comment>IDC_OFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="351"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="455"/>
         <source>Angle</source>
+        <comment>IDC_ANGLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="358"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="462"/>
         <source>Sky Background</source>
+        <comment>IDC_SKYBACKGROUND</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="403"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="507"/>
         <source>Image List</source>
+        <comment>IDC_IMAGELIST</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="414"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="518"/>
         <source>Log</source>
+        <comment>IDC_LOGLIST</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DeepSkyStackerLive.ui" line="425"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="523"/>
         <source>Settings</source>
+        <comment>IDC_WARNINGS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="574"/>
+        <source>Stacking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="580"/>
+        <source>Don&apos;t stack until at least</source>
+        <comment>IDC_DONTSTACK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="597"/>
+        <source>images are available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="633"/>
+        <source>Warn  Don&apos;t stack if...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="675"/>
+        <source>... score is less than</source>
+        <comment>IDC_DONTSTACK_SCORE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="740"/>
+        <source>... star count is less than</source>
+        <comment>IDC_DONTSTACK_STARS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="805"/>
+        <source>... sky background is greater than</source>
+        <comment>IDC_DONTSTACK_SKYBACKGROUND</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="822"/>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="877"/>
+        <source>... FWHM is greater than</source>
+        <comment>IDC_DONTSTACK_FWHM</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="894"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="966"/>
+        <source>pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="949"/>
+        <source>... dX or dY is greater than </source>
+        <comment>IDC_DONTSTACK_OFFSET</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1015"/>
+        <source>... angle is greater than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1032"/>
+        <source>°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1052"/>
+        <source>Move non-stackable files to the &apos;NonStackable&apos; sub-folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1065"/>
+        <source>(the &apos;NonStackable&apos; sub folder will be created if necessary)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1093"/>
+        <source>Warnings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1099"/>
+        <source>Sound</source>
+        <comment>IDC_WARN_SOUND</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1106"/>
+        <source>Send email to:</source>
+        <comment>IDC_WARN_EMAIL</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1113"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1116"/>
+        <source>Click here to set or change the email address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1136"/>
+        <source>Flash Application</source>
+        <comment>IDC_WARN_FLASH</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1143"/>
+        <source>Create warning file in:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1150"/>
+        <source>Click Here to select the output folder</source>
+        <comment>IDC_STACKEDOUTPUTFOLDER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1153"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1244"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1247"/>
+        <source>Click here to select the output folder</source>
+        <comment>IDC_STACKEDOUTPUTFOLDER</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1194"/>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1200"/>
+        <source>Save stacked image to file each </source>
+        <comment>IDC_SAVESTACKEDIMAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1217"/>
+        <source>images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1237"/>
+        <source>Output folder:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1288"/>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1294"/>
+        <source>Process only ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1301"/>
+        <source>RAW images (CR2, NEF, ORF, DNG...)</source>
+        <comment>IDC_PROCESS_RAW</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1308"/>
+        <source>TIFF images</source>
+        <comment>IDC_PROCESS_TIFF</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1328"/>
+        <source>FITS images</source>
+        <comment>IDC_PROCESS_FITS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1335"/>
+        <source>Other images (JPEG, PNG)</source>
+        <comment>IDC_PROCESS_OTHERS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1390"/>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1397"/>
+        <source>Cancel changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1429"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1432"/>
+        <source>Monitor</source>
+        <comment>IDC_MONITOR</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1442"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1445"/>
+        <source>Stack</source>
+        <comment>IDC_STACK_DSSLIVE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1455"/>
+        <location filename="../ui/DeepSkyStackerLive.ui" line="1458"/>
+        <source>Stop</source>
+        <comment>IDC_STOP</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>LiveEngine</name>
     <message>
-        <location filename="../LiveEngine.cpp" line="283"/>
+        <location filename="../LiveEngine.cpp" line="282"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -161,7 +410,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 %3</translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="285"/>
+        <location filename="../LiveEngine.cpp" line="284"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -169,34 +418,37 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 %3</translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="301"/>
+        <location filename="../LiveEngine.cpp" line="300"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation type="unfinished">Registando %1</translation>
     </message>
-    <message>
-        <location filename="../LiveEngine.cpp" line="324"/>
-        <source>Image %1 registered: %2 star(s) detected - FWHM = %3 - Score = %4
+    <message numerus="yes">
+        <location filename="../LiveEngine.cpp" line="320"/>
+        <source>Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3
 </source>
         <comment>IDS_LOG_REGISTERRESULTS</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="339"/>
+        <location filename="../LiveEngine.cpp" line="334"/>
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="351"/>
+        <location filename="../LiveEngine.cpp" line="346"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../LiveEngine.cpp" line="359"/>
+        <location filename="../LiveEngine.cpp" line="354"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
@@ -206,7 +458,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 <context>
     <name>MainBoard</name>
     <message>
-        <location filename="../MainBoard.cpp" line="1181"/>
+        <location filename="../MainBoard.cpp" line="1216"/>
         <source>%1 new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -214,7 +466,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1185"/>
+        <location filename="../MainBoard.cpp" line="1220"/>
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
@@ -222,7 +474,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1281"/>
+        <location filename="../MainBoard.cpp" line="1316"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -230,7 +482,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1312"/>
+        <location filename="../MainBoard.cpp" line="1347"/>
         <source>Stop monitoring folder %1
 </source>
         <comment>IDS_LOG_STOPMONITORING</comment>
@@ -238,7 +490,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1328"/>
+        <location filename="../MainBoard.cpp" line="1363"/>
         <source>Start Stacking files
 </source>
         <comment>IDS_LOG_STARTSTACKING</comment>
@@ -246,7 +498,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1329"/>
+        <location filename="../MainBoard.cpp" line="1364"/>
         <source>Stop Stacking files
 </source>
         <comment>IDS_LOG_STOPSTACKING</comment>
@@ -254,7 +506,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
 </translation>
     </message>
     <message>
-        <location filename="../MainBoard.cpp" line="1577"/>
+        <location filename="../MainBoard.cpp" line="1612"/>
         <source>An error occurred while sending the email!
 </source>
         <comment>IDS_ERRORSENDINGEMAIL</comment>

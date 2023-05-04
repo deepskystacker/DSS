@@ -94,7 +94,7 @@ CMainBoard::CMainBoard(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
     m_lProgressAchieved = 0;
     m_lProgressTotal = 0;
 
-	m_LiveSettings.LoadFromRegistry();
+	m_LiveSettings.load();
 }
 
 /* ------------------------------------------------------------------- */

@@ -229,7 +229,7 @@ inline	DWORD	GetEditDWORDValue(CEdit & edit)
 
 void CSettingsTab::UpdateFromRegistry()
 {
-	m_LiveSettings.LoadFromRegistry();
+	m_LiveSettings.load();
 
 	m_Warn_Score.SetCheck(m_LiveSettings.IsWarning_Score());
 	m_Warn_Stars.SetCheck(m_LiveSettings.IsWarning_Stars());
@@ -299,7 +299,7 @@ void CSettingsTab::UpdateFromRegistry()
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsTab::SaveToRegistry()
+void CSettingsTab::save()
 {
 	m_LiveSettings.SetWarning_Score(m_Warn_Score.GetCheck());
 	m_LiveSettings.SetWarning_Stars(m_Warn_Stars.GetCheck());
@@ -344,7 +344,7 @@ void CSettingsTab::SaveToRegistry()
 	m_LiveSettings.SetWarning_FileFolder(m_strWarnFileFolder);
 	m_LiveSettings.SetStackedOutputFolder(m_strStackedOutputFolder);
 
-	m_LiveSettings.SaveToRegistry();
+	m_LiveSettings.save();
 	m_bDirty = FALSE;
 };
 
@@ -408,7 +408,7 @@ BOOL CSettingsTab::Close()
 
 void CSettingsTab::OnApplyChanges()
 {
-	SaveToRegistry();
+	save();
 	UpdateLiveSettings();
 	UpdateControls();
 };

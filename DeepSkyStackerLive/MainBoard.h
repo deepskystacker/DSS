@@ -103,7 +103,7 @@ private :
 public :
 	void	UpdateLiveSettings()
 	{
-		m_LiveSettings.LoadFromRegistry();
+		m_LiveSettings.load();
 		m_LiveEngine.UpdateSettings();
 	};
 

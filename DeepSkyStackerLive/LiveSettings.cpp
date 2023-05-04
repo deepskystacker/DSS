@@ -39,7 +39,19 @@
 /* ------------------------------------------------------------------- */
 namespace DSS
 {
-	void	LiveSettings::LoadFromRegistry()
+
+	LiveSettings::LiveSettings()
+	{
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	LiveSettings::~LiveSettings()
+	{}
+
+	/* ------------------------------------------------------------------- */
+
+	void	LiveSettings::load()
 	{
 		QSettings settings;
 		settings.beginGroup("DeepSkyStackerLive");
@@ -83,7 +95,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void	LiveSettings::SaveToRegistry()
+	void	LiveSettings::save()
 	{
 		QSettings settings;
 		settings.beginGroup("DeepSkyStackerLive");

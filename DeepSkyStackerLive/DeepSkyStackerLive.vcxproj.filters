@@ -75,6 +75,9 @@
     <ClCompile Include="imageviewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="settingstab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -99,9 +102,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LiveEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LogTab.h">
@@ -215,6 +215,12 @@
     <QtMoc Include="imageviewer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="LiveSettings.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="settingstab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS.ca.ts">
@@ -270,6 +276,9 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\ImageViewer.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\SettingsTab.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>

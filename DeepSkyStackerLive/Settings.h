@@ -50,7 +50,7 @@ protected :
 
 private :
 	void	UpdateFromRegistry();
-	void	SaveToRegistry();
+	void	save();
 	void	UpdateControls();
 
 private :
