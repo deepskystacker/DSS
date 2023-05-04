@@ -64,9 +64,9 @@ namespace
 						if (iff == IFF_TIFF)
 						{
 							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 							else
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 						}
 						else
 						{

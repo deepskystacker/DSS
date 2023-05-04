@@ -379,7 +379,8 @@ void CLiveEngine::SaveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap
 
 		//this->Start2(QCoreApplication::translate("LiveEngine", "Saving Stacked Image in\n%1").arg(outputFile));
 
-		WriteTIFF(outputFile.toStdWString().c_str(), pBitmap.get(), this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
+		const QString description("Autostacked Image");
+		WriteTIFF(outputFile.toStdWString().c_str(), pBitmap.get(), this, description, 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
 		this->End2();
 
 		PostStackedImageSaved();

@@ -1358,10 +1358,11 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Registered and Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, description.toStdWString().c_str(), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1425,10 +1426,11 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			if (CFATransform == CFAT_SUPERPIXEL)
 				pCFABitmapInfo->UseBilinear(true);
 		}
+		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.GetString(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), m_pProgress, description.toStdWString().c_str(), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1470,10 +1472,12 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 
 		if (m_pProgress)
 			m_pProgress->Start2(0);
+		
+		const QString description("Delta Cosmetic Image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, description.toStdWString().c_str());
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1514,10 +1518,11 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Comet alone");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, description.toStdWString().c_str());
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1559,10 +1564,11 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 			m_pProgress->Start2(strText, 0);
 		}
 
+		const QString description("Cometless image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, description.toStdWString().c_str());
 
 		if (m_pProgress)
 			m_pProgress->End2();
