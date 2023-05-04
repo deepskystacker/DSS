@@ -1393,7 +1393,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		if (m_IntermediateFileFormat == IFF_TIFF)
 			bResult = WriteTIFF(strOutputFile.GetString(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), pProgress, description.toStdWString().c_str(), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
+			bResult = WriteFITS(strOutputFile.GetString(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseSuperPixels(true);

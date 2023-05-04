@@ -110,9 +110,9 @@ using namespace DSS;
 class CFITSReader : public CFITSHeader
 {
 public:
-	fitsfile*				m_fits;
-	QString					m_strFileName;
-	ProgressBase*			m_pProgress;
+	fitsfile* m_fits;
+	fs::path m_strFileName;
+	ProgressBase* m_pProgress;
 
 protected:
 	double					m_fGreenRatio;
@@ -129,10 +129,10 @@ private :
 	void	ReadAllKeys();
 
 public:
-	CFITSReader(LPCTSTR szFileName, ProgressBase *	pProgress) :
+	CFITSReader(const fs::path& szFileName, ProgressBase *	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{ QString::fromWCharArray(szFileName) },
+		m_strFileName{ szFileName },
 		m_pProgress{ pProgress },
 		m_fGreenRatio{ 1.0 },
 		m_fRedRatio{ 1.0 },
@@ -160,10 +160,10 @@ public:
 class CFITSWriter : public CFITSHeader
 {
 public:
-	fitsfile*				m_fits;
-	QString					m_strFileName;
-	ProgressBase*			m_pProgress;
-	QString					m_strDescription;
+	fitsfile* m_fits;
+	fs::path m_strFileName;
+	ProgressBase* m_pProgress;
+	QString m_strDescription;
 
 private :
 	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
@@ -175,10 +175,10 @@ protected:
 	void SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType);
 
 public:
-	CFITSWriter(LPCTSTR szFileName, ProgressBase*	pProgress) :
+	CFITSWriter(const fs::path& szFileName, ProgressBase*	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{ QString::fromWCharArray(szFileName) },
+		m_strFileName{szFileName},
 		m_pProgress{ pProgress }
 	{
 		m_Format = FF_UNKNOWN;
@@ -189,9 +189,9 @@ public:
 		Close();
 	};
 
-	void SetDescription(LPCTSTR szDescription)
+	void SetDescription(const QString& szDescription)
 	{
-		m_strDescription = QString::fromWCharArray(szDescription);
+		m_strDescription = szDescription;
 	};
 
 	void SetFormat(FITSFORMAT FITSFormat)
@@ -213,16 +213,17 @@ class CBitmapInfo;
 class CMemoryBitmap;
 
 CFATYPE GetFITSCFATYPE();
-bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
-			   int lISOSpeed, int lGain, double fExposure);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescriptionL, int lISOSpeed, int lGain, double fExposure);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription);
-bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
-void GetFITSExtension(LPCTSTR szFileName, QString& strExtension);
-void GetFITSExtension(fs::path path, QString& strExtension);
+bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescriptionL, int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription);
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress);
+bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress);
+void GetFITSExtension(const fs::path& szFileName, QString& strExtension);
+void GetFITSExtension(const fs::path& path, QString& strExtension);
 void GetFITSExtension(const QString& path, QString& strExtension);
 

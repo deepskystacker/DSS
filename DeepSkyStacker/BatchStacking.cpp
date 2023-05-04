@@ -71,9 +71,9 @@ namespace
 						else
 						{
 							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
+								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 							else
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 						}
 						dlg.End2();
 					}
