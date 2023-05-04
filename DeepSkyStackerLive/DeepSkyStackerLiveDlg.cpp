@@ -165,7 +165,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	UpdateTab();
 	UpdateSizes();
 
-	m_Log.AddToLog(QString::fromStdWString(strTitle.GetString()), TRUE, TRUE);
+	m_Log.AddToLog(QString::fromWCharArray(strTitle.GetString()), TRUE, TRUE);
 	m_Log.AddToLog("\n");
 
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
@@ -238,8 +238,8 @@ void CDeepSkyStackerLiveDlg::OnClose( )
 
 		settings.beginGroup("DeepSkyStackerLive");
 		settings.setValue("Maximized", dwMaximized);
-		settings.setValue("Left", QString::fromStdWString(strLeft.GetString()));
-		settings.setValue("Top", QString::fromStdWString(strTop.GetString()));
+		settings.setValue("Left", QString::fromWCharArray(strLeft.GetString()));
+		settings.setValue("Top", QString::fromWCharArray(strTop.GetString()));
 		settings.setValue("Width", dwWidth);
 		settings.setValue("Height", dwHeight);
 		settings.endGroup();

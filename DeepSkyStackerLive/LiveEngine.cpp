@@ -65,14 +65,14 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 			CString				strMsg;
 
 			strMsg.Format(IDS_FILEMOVED, strFileName.GetString(), strSubFolder.GetString());
-			PostToLog(QString::fromStdWString(strMsg.GetString()), true, false, false, RGB(128, 0, 0));
+			PostToLog(QString::fromWCharArray(strMsg.GetString()), true, false, false, RGB(128, 0, 0));
 		}
 		else
 		{
 			CString				strMsg;
 
 			strMsg.Format(IDS_ERRORMOVINGFILE, strFileName.GetString(), strSubFolder.GetString());
-			PostToLog(QString::fromStdWString(strMsg.GetString()), true, true, false, RGB(255, 0, 0));
+			PostToLog(QString::fromWCharArray(strMsg.GetString()), true, true, false, RGB(255, 0, 0));
 		};
 	};
 };
@@ -434,7 +434,7 @@ void	CLiveEngine::PostWarning(LPCTSTR szWarning)
 {
 	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg->SetWarning(QString::fromStdWString(szWarning));
+	pMsg->SetWarning(QString::fromWCharArray(szWarning));
 	PostOutMessage(pMsg);
 };
 
@@ -543,12 +543,12 @@ BOOL CLiveEngine::ProcessNext()
 			if (bWarning)
 			{
 				strText.Format(IDS_LOG_WARNING, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strWarning);
-				PostToLog(QString::fromStdWString(strText.GetString()), TRUE, FALSE, TRUE, RGB(208, 127, 0));
+				PostToLog(QString::fromWCharArray(strText.GetString()), TRUE, FALSE, TRUE, RGB(208, 127, 0));
 			};
 			if (bError)
 			{
 				strText.Format(IDS_LOG_IMAGENOTSTACKABLE1, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strError);
-				PostToLog(QString::fromStdWString(strText.GetString()), TRUE, TRUE, FALSE, RGB(255, 0, 0));
+				PostToLog(QString::fromWCharArray(strText.GetString()), TRUE, TRUE, FALSE, RGB(255, 0, 0));
 				PostChangeImageStatus(lfi.filePath.c_str(), IS_NOTSTACKABLE);
 				MoveImage(lfi.filePath.c_str());
 			};

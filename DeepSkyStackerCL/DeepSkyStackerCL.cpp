@@ -98,7 +98,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 			CString cstrOutputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
 			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !bUseFits))
 			{
-				stackingParams.SetOutputFile(QString::fromStdWString(cstrOutputPath.GetString()));
+				stackingParams.SetOutputFile(QString::fromWCharArray(cstrOutputPath.GetString()));
 				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
 				SaveBitmap(stackingParams, pBitmap);
 			}

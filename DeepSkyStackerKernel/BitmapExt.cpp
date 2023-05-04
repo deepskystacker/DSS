@@ -1184,7 +1184,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
 		const QString errorMessage{ QCoreApplication::translate(
 									"BitmapExt",
-									"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
+									"%1 does not exist or is not a file").arg(QString::fromWCharArray(fileName.c_str())) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
@@ -1785,7 +1785,7 @@ CBitmapInfo::CBitmapInfo(const CBitmapInfo& bi)
 CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
 {
 	Init();
-	m_strFileName = QString::fromStdWString(szFileName);
+	m_strFileName = QString::fromWCharArray(szFileName);
 }
 
 void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)

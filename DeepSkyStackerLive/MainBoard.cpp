@@ -1011,7 +1011,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 			QSettings settings; 
 
 			settings.beginGroup("DeepSkyStackerLive");
-			settings.setValue("MonitoredFolder", QString::fromStdWString(strFolder.GetString()));
+			settings.setValue("MonitoredFolder", QString::fromWCharArray(strFolder.GetString()));
 			settings.endGroup();
 
 			bResult = TRUE;
