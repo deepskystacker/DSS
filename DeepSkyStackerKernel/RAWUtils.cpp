@@ -203,7 +203,7 @@ namespace { // Only use in this .cpp file
 	class CRawDecod
 	{
 	private:
-		CString			m_strFileName;
+		fs::path		m_strFileName;
 		QString			m_strModel;
 		QString			m_strMake;
 		int				m_lISOSpeed;
@@ -236,7 +236,7 @@ namespace { // Only use in this .cpp file
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 	public:
-		CRawDecod(LPCTSTR szFile) :
+		CRawDecod(fs::path szFile) :
 			m_strFileName(szFile),
 			m_bColorRAW{ false },
 			m_CFAType{ CFATYPE_NONE },
@@ -245,7 +245,7 @@ namespace { // Only use in this .cpp file
 			m_fAperture{ 0.0 },
 			m_lHeight{ 0 },
 			m_lWidth{ 0 },
-			m_isRawFile{ rawProcessor.open_file(szFile) == LIBRAW_SUCCESS }
+			m_isRawFile{ rawProcessor.open_file(m_strFileName.wstring().c_str()) == LIBRAW_SUCCESS }
 		{
 			ZFUNCTRACE_RUNTIME();
 
@@ -541,7 +541,7 @@ namespace { // Only use in this .cpp file
 			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 			{
 				bResult = false;
-				ZTRACE_RUNTIME("Cannot unpack %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
+				ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName.wstring().c_str(), libraw_strerror(ret));
 			}
 			if (!bResult)
 				break;
@@ -857,7 +857,7 @@ namespace { // Only use in this .cpp file
 				//
 				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
 				{
-					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
+					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName.wstring().c_str(), libraw_strerror(ret));
 					if (LIBRAW_FATAL_ERROR(ret))
 						bResult = false;
 				}
