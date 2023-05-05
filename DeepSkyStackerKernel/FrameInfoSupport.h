@@ -1,43 +1,4 @@
 #pragma once
-//#include "commonresource.h"
-// inline void	ExposureToString(double fExposure, CString& strText)
-// {
-// 	// DELETE THIS ONE DAY
-// 	if (fExposure)
-// 	{
-// 		int			lExposure;
-// 
-// 		if (fExposure >= 1)
-// 		{
-// 			lExposure = fExposure;
-// 			std::uint32_t	dwRemainingTime = lExposure;
-// 			std::uint32_t	dwHour,
-// 				dwMin,
-// 				dwSec;
-// 
-// 			dwHour = dwRemainingTime / 3600;
-// 			dwRemainingTime -= dwHour * 3600;
-// 			dwMin = dwRemainingTime / 60;
-// 			dwRemainingTime -= dwMin * 60;
-// 			dwSec = dwRemainingTime;
-// 
-// 			if (dwHour)
-// 				strText.Format(IDS_EXPOSURETIME3, dwHour, dwMin, dwSec);
-// 			else if (dwMin)
-// 				strText.Format(IDS_EXPOSURETIME2, dwMin, dwSec);
-// 			else
-// 				strText.Format(IDS_EXPOSURETIME1, dwSec);
-// 		}
-// 		else
-// 		{
-// 			lExposure = 1.0 / fExposure + 0.5;
-// 			strText.Format(IDS_EXPOSUREFORMAT_INF, lExposure);
-// 		};
-// 	}
-// 	else
-// 		strText = "-";
-// }
-
 inline QString exposureToString(double fExposure)
 {
 	QString strText;
