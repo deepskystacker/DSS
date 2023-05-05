@@ -84,22 +84,6 @@ inline QString exposureToString(double fExposure)
 	return strText;
 }
 
-inline void	ISOToString(int lISOSpeed, CString& strText)
-{
-	if (lISOSpeed)
-		strText.Format(_T("%ld"), lISOSpeed);
-	else
-		strText = "-";
-}
-
-inline void	GainToString(int lGain, CString& strText)
-{
-	if (lGain >= 0)
-		strText.Format(_T("%ld"), lGain);
-	else
-		strText = "-";
-}
-
 inline void	ISOToString(int lISOSpeed, QString& strText)
 {
 	if (lISOSpeed)
