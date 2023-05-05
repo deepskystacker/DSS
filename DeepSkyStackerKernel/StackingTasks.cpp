@@ -1304,9 +1304,9 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, const std::u
 		m_vTasks.push_back(ti);
 	};
 
-	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == _T("JPEG")))
+	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.left(4) == "JPEG"))
 		m_bUsingJPEG = true;
-	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == _T("FITS")))
+	if (!m_bUsingFITS && (FrameInfo.m_strInfos.left(4) == "FITS"))
 		m_bUsingFITS = true;
 	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
 		m_bCalibrating = true;

@@ -136,14 +136,12 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 
 		for (size_t i = 0; i < pTask->m_vBitmaps.size(); i++)
 		{
-			CString			strFile;
+			const QString strFile(QString("%s[%s]").arg(pTask->m_vBitmaps[i].filePath.native().c_str()).arg(pTask->m_vBitmaps[i].m_strDateTime));
+			m_vFiles.push_back(strFile.toStdWString().c_str());
 
-			strFile.Format(_T("%s[%s]"), (LPCTSTR)(pTask->m_vBitmaps[i].filePath.c_str()), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
-			m_vFiles.push_back(strFile);
-
-			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == _T("FITS")))
+			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.left(4) == "FITS"))
 				bFITS = true;
-			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == _T("RAW")))
+			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.left(3) == "RAW"))
 				bRAW = true;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;

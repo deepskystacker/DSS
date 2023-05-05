@@ -2245,11 +2245,10 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								.arg(lightframeInfo.m_fAngle * 180 / M_PI, 0, 'f', 1), m_lNrStacked + 1);
 						}
 
-						const auto strDescription = lightframeInfo.m_strInfos;
 						if (lightframeInfo.m_lNrChannels == 3)
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 						else
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 
 						ZTRACE_RUNTIME(strText);
 						// First apply transformations

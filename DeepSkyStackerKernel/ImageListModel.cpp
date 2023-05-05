@@ -213,7 +213,7 @@ namespace DSS
                 };
                 break;
             case Column::FileTime:
-                return QString::fromWCharArray(file.m_strDateTime.GetString());
+                return file.m_strDateTime;
                 break;
             case Column::Size:
                 return file.m_strSizes;
@@ -224,7 +224,7 @@ namespace DSS
                 return file.m_strDepth;
                 break;
             case Column::Info:
-                return QString::fromWCharArray(file.m_strInfos.GetString());
+                return file.m_strInfos;
                 break;
             case Column::ISO:
                 // ISO value, of if ISO is not available then the Gain value
