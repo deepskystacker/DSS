@@ -40,7 +40,7 @@ About::About(QWidget *parent) :
     strText += tr("(Now somewhat out of date)") += "<br><br>";
     strHTML += strText;
 
-	strText = "Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd.";
+	strText = "Qt Application Framework 6.5.1\nCopyright © 2023 The Qt Company Ltd.";
 	strText += "<br>";
 	strText = strText.replace("\n", "<br>");
 	strHTML += strText;
@@ -68,7 +68,19 @@ About::About(QWidget *parent) :
 				"IDS_ABOUT_FITS").arg(xstr(CFITSIO_VERSION));
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
-    strText = QString("<a href=\"%1\">%1</a><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
+    strHTML += strText;
+
+    strText = tr("Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 2.0\nCopyright 2004-2022 Exiv2 authors");
+    strText = strText.replace("\n", "<br>");
+    strHTML += strText + "<br>";
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://github.com/Exiv2/exiv2");
+    strHTML += strText;
+
+    strText = tr("SMTP support by SMTP Client for Qt (C++) - Version 0.27.6\nCopyright Tőkés Attila");
+    strText = strText.replace("\n", "<br>");
+    strHTML += strText + "<br>";
+    strText = QString("<a href=\"%1\">%1</a><br>").arg("https://github.com/bluetiger9/SmtpClient-for-Qt");
     strHTML += strText;
 
     ui->setupUi(this);
