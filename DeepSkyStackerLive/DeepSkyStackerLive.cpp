@@ -151,6 +151,7 @@ bool	hasExpired()
 
 DeepSkyStackerLive::DeepSkyStackerLive() :
 	Ui_DeepSkyStackerLive {},
+	liveSettings {make_unique<LiveSettings>()},
 	initialised{ false },
 	winHost{ nullptr },
 	args{ qApp->arguments() },
@@ -158,6 +159,10 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr }		// errorMessageDialogIcon pointer
 {
+	//
+	// Must set this before invoking setupUi 
+	//
+	dssInstance = this;
 	setupUi(this);
 }
 
@@ -212,6 +217,7 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 void DeepSkyStackerLive::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
+
 	//
 	// Connect Qt Signals to appropriate slots
 	//
@@ -223,7 +229,7 @@ void DeepSkyStackerLive::onInitialise()
 
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
-	settings.beginGroup("MainWindow");
+	settings.beginGroup("DeepSkyStackerLive/MainWindow");
 
 	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
 
@@ -378,9 +384,6 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-		LiveSettings liveSettings;
-		liveSettings.load();
-
 		Exiv2::XmpParser::initialize();
 		::atexit(Exiv2::XmpParser::terminate);
 

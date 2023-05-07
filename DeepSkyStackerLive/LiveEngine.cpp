@@ -372,7 +372,7 @@ void CLiveEngine::SaveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap
 {
 	if (pBitmap)
 	{
-		QString	outputFile { m_LiveSettings.getStackedOutputFolder() + "/Autostack.tif" };
+		QString	outputFile { m_LiveSettings.GetStackedOutputFolder() + "/Autostack.tif" };
 
 
 		CString				strText;
@@ -458,7 +458,7 @@ BOOL CLiveEngine::ProcessNext()
 	{
 		if (!m_bReferenceFrameSet)
 		{
-			if (m_LiveSettings.IsDontStack_Delayed() && m_qToStack.size() < m_LiveSettings.GetMinImages())
+			if (m_LiveSettings.IsDontStack_Until() && m_qToStack.size() < m_LiveSettings.GetMinImages())
 			{
 				bResult = FALSE;
 			}

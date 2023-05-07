@@ -1561,7 +1561,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 						CString				strFolder;
 						CString				strFile;
 
-						m_LiveSettings.GetWarning_FileFolder(strFolder);
+						strFolder = m_LiveSettings.GetWarning_FileFolder();
 
 						strFile.Format(_T("%s\\DSSLiveWarning.txt"), (LPCTSTR)strFolder);
 						FILE *				hFile;

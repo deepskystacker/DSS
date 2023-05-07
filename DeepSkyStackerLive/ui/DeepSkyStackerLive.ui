@@ -312,7 +312,6 @@
       <attribute name="title">
        <string comment="IDC_WARNINGS">Settings</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_2"/>
      </widget>
     </widget>
    </item>

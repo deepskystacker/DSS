@@ -168,7 +168,7 @@
            </widget>
           </item>
           <item row="2" column="3">
-           <widget class="QLineEdit" name="minScore">
+           <widget class="QLineEdit" name="score">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -233,7 +233,7 @@
            </widget>
           </item>
           <item row="3" column="3">
-           <widget class="QLineEdit" name="minStarCount">
+           <widget class="QLineEdit" name="stars">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -272,7 +272,7 @@
            </spacer>
           </item>
           <item row="4" column="1">
-           <widget class="QCheckBox" name="warnSkyBackgroung">
+           <widget class="QCheckBox" name="warnSkyBackground">
             <property name="minimumSize">
              <size>
               <width>27</width>
@@ -298,7 +298,7 @@
            </widget>
           </item>
           <item row="4" column="3">
-           <widget class="QLineEdit" name="maxSkyBackground">
+           <widget class="QLineEdit" name="skyBackground">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -370,7 +370,7 @@
            </widget>
           </item>
           <item row="5" column="3">
-           <widget class="QLineEdit" name="maxFWHM">
+           <widget class="QLineEdit" name="FWHM">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -442,7 +442,7 @@
            </widget>
           </item>
           <item row="6" column="3">
-           <widget class="QLineEdit" name="maxOffset">
+           <widget class="QLineEdit" name="offset">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -508,7 +508,7 @@
            </widget>
           </item>
           <item row="7" column="3">
-           <widget class="QLineEdit" name="maxAngle">
+           <widget class="QLineEdit" name="angle">
             <property name="maximumSize">
              <size>
               <width>60</width>
@@ -599,12 +599,12 @@
            </widget>
           </item>
           <item row="0" column="2" colspan="2">
-           <widget class="QLabel" name="setEmailAddress">
+           <widget class="QLabel" name="emailAddress">
             <property name="toolTip">
-             <string>Click here to set or change the email address</string>
+             <string notr="true"/>
             </property>
             <property name="text">
-             <string>Click here to set or change the email address</string>
+             <string notr="true">Click here to set or change the email address</string>
             </property>
            </widget>
           </item>
@@ -622,7 +622,7 @@
            </spacer>
           </item>
           <item row="1" column="0">
-           <widget class="QCheckBox" name="warnFlashApp">
+           <widget class="QCheckBox" name="warnFlash">
             <property name="text">
              <string comment="IDC_WARN_FLASH">Flash Application</string>
             </property>
@@ -636,12 +636,12 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLabel" name="setWarningFolder">
+           <widget class="QLabel" name="warnFileFolder">
             <property name="toolTip">
-             <string comment="IDC_STACKEDOUTPUTFOLDER">Click Here to select the output folder</string>
+             <string notr="true"/>
             </property>
             <property name="text">
-             <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
+             <string notr="true" comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
             </property>
            </widget>
           </item>
@@ -685,13 +685,6 @@
           <string>Options</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="saveStackedImage">
-            <property name="text">
-             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2">
            <widget class="QLineEdit" name="imageCount">
             <property name="maximumSize">
@@ -702,15 +695,25 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_8">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="saveStackedImage">
             <property name="text">
-             <string>images</string>
+             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
             </property>
            </widget>
           </item>
-          <item row="0" column="4">
-           <spacer name="horizontalSpacer_11">
+          <item row="1" column="1" colspan="3">
+           <widget class="QLabel" name="stackedOutputFolder">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true">Click here to select the output folder</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <spacer name="horizontalSpacer_12">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -729,18 +732,8 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="3">
-           <widget class="QLabel" name="label_10">
-            <property name="toolTip">
-             <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
-            </property>
-            <property name="text">
-             <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <spacer name="horizontalSpacer_12">
+          <item row="0" column="5">
+           <spacer name="horizontalSpacer_11">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -751,6 +744,23 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>images</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="resetOutputFolder">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>Reset</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -774,6 +784,9 @@
            <width>16777215</width>
            <height>104</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string notr="true"/>
          </property>
          <property name="title">
           <string>Filters</string>

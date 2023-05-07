@@ -53,9 +53,8 @@ class DeepSkyStackerLive :
 	public Ui_DeepSkyStackerLive,
 	public DSSBase
 {
-	typedef QWidget
-		Inherited;
-
+	using Inherited = QWidget;
+	
 	Q_OBJECT
 
 public:
@@ -74,6 +73,14 @@ public:
 
 	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
 
+	inline static DeepSkyStackerLive* instance()
+	{
+		return dssInstance;
+	}
+
+	std::unique_ptr<DSS::LiveSettings> liveSettings;
+
+
 protected:
 	void closeEvent(QCloseEvent* e) override;
 	void showEvent(QShowEvent* event) override;
@@ -87,6 +94,7 @@ protected slots:
 
 private:
 	bool initialised;
+	static inline DeepSkyStackerLive* dssInstance{ nullptr };
 	QWinHost* winHost;
 	QStringList args;
 	QString baseTitle;
@@ -94,8 +102,8 @@ private:
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
 	DSS::ImageViewer* stackedImageViewer;
 	DSS::ImageViewer* lastImageViewer;
-	DSS::LiveSettings* liveSettings;
 
 	void connectSignalsToSlots();
 
 };
+using DeepSkyStacker = DeepSkyStackerLive;

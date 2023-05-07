@@ -71,6 +71,9 @@
     <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -78,6 +81,9 @@
     <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -225,7 +231,7 @@
     <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />
     <ClInclude Include="LiveEngine.h" />
-    <QtMoc Include="LiveSettings.h" />
+    <ClInclude Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
     <ClInclude Include="MainBoard.h" />
     <ClInclude Include="resource.h" />
@@ -301,6 +307,7 @@
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ui\EmailSettings.ui" />
     <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
     <QtUic Include="ui\ImageViewer.ui" />

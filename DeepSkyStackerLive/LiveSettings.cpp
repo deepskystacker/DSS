@@ -40,8 +40,21 @@
 namespace DSS
 {
 
-	LiveSettings::LiveSettings()
+	LiveSettings::LiveSettings() :
+		m_dwStackingFlags { 0 },
+		m_dwWarningActions{ 0 },
+		m_dwMinImages{ 0 },
+		m_dwScore{ 0 },
+		m_dwStars{ 0 },
+		m_dwSkyBackground{ 0 },
+		m_dwFWHM{ 0 },
+		m_dwOffset{ 0 },
+		m_dwAngle{ 0 },
+		m_dwSaveCount{ 0 },
+		m_dwProcessFlags{ 0 }
 	{
+		ZFUNCTRACE_RUNTIME();
+		load();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -62,6 +75,7 @@ namespace DSS
 		m_dwProcessFlags = settings.value("ProcessFlags", 0U).toUInt();
 		m_dwMinImages = settings.value("MinImages", 0U).toUInt();
 		m_dwScore = settings.value("Score", 0U).toUInt();
+		ZTRACE_RUNTIME("Score is %d", m_dwScore);
 		m_dwStars = settings.value("Stars", 0U).toUInt();
 		m_dwFWHM = settings.value("FWHM", 0U).toUInt();
 		m_dwOffset = settings.value("Offset", 0U).toUInt();

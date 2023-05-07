@@ -245,7 +245,7 @@ void CSettingsTab::UpdateFromRegistry()
 	m_DontStack_Angle.SetCheck(m_LiveSettings.IsDontStack_Angle());
 	m_DontStack_SkyBackground.SetCheck(m_LiveSettings.IsDontStack_SkyBackground());
 
-	m_DontStack.SetCheck(m_LiveSettings.IsDontStack_Delayed());
+	m_DontStack.SetCheck(m_LiveSettings.IsDontStack_Until());
 
 	m_SaveStackedImage.SetCheck(m_LiveSettings.IsStack_Save());
 	m_MoveNonStackable.SetCheck(m_LiveSettings.IsStack_Move());
@@ -315,7 +315,7 @@ void CSettingsTab::save()
 	m_LiveSettings.SetDontStack_Angle(m_DontStack_Angle.GetCheck());
 	m_LiveSettings.SetDontStack_SkyBackground(m_DontStack_SkyBackground.GetCheck());
 
-	m_LiveSettings.SetDontStack_Delayed(m_DontStack.GetCheck());
+	m_LiveSettings.SetDontStack_Until(m_DontStack.GetCheck());
 
 	m_LiveSettings.SetStack_Save(m_SaveStackedImage.GetCheck());
 	m_LiveSettings.SetStack_Move(m_MoveNonStackable.GetCheck());

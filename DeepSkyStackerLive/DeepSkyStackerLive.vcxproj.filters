@@ -122,6 +122,9 @@
     <ClInclude Include="StackedSink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LiveSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
@@ -215,9 +218,6 @@
     <QtMoc Include="imageviewer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="LiveSettings.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="settingstab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -279,6 +279,9 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\SettingsTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\EmailSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>
