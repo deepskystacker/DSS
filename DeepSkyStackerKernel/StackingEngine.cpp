@@ -1349,7 +1349,8 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 		else
 		{
 			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
+			const QString strFilename(QString::fromWCharArray(m_strCurrentLightFrame.GetString()));
+			GetFITSExtension(strFilename, strExt);
 			strOutputFile += ".reg" + CString(strExt.toStdWString().c_str());
 		};
 
@@ -1358,10 +1359,11 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Registered and Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.GetString(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1394,7 +1396,8 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 		else
 		{
 			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
+			const QString strFilename(QString::fromWCharArray(m_strCurrentLightFrame.GetString()));
+			GetFITSExtension(strFilename, strExt);
 			strOutputFile += ".cal" + CString(strExt.toStdWString().c_str());
 		};
 
@@ -1425,10 +1428,11 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			if (CFATransform == CFAT_SUPERPIXEL)
 				pCFABitmapInfo->UseBilinear(true);
 		}
+		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.GetString(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.GetString(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1464,16 +1468,19 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 		else
 		{
 			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
+			const QString strFilename(QString::fromWCharArray(m_strCurrentLightFrame.GetString()));
+			GetFITSExtension(strFilename, strExt);
 			strOutputFile += ".cosmetic" + CString(strExt.toStdWString().c_str());
 		};
 
 		if (m_pProgress)
 			m_pProgress->Start2(0);
+		
+		const QString description("Delta Cosmetic Image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteFITS(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1505,7 +1512,8 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 		else
 		{
 			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
+			const QString strFilename(QString::fromWCharArray(m_strCurrentLightFrame.GetString()));
+			GetFITSExtension(strFilename, strExt);
 			strOutputFile += "Comet" + CString(strExt.toStdWString().c_str());
 		};
 
@@ -1514,10 +1522,11 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Comet alone");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteFITS(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1549,7 +1558,8 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 		else
 		{
 			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
+			const QString strFilename(QString::fromWCharArray(m_strCurrentLightFrame.GetString()));
+			GetFITSExtension(strFilename, strExt);
 			strOutputFile += "Cometless" + CString(strExt.toStdWString().c_str());
 		}
 
@@ -1559,10 +1569,11 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 			m_pProgress->Start2(strText, 0);
 		}
 
+		const QString description("Cometless image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteTIFF(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteFITS(strOutputFile.GetString(), pBitmap, m_pProgress, description);
 
 		if (m_pProgress)
 			m_pProgress->End2();
@@ -2234,11 +2245,10 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								.arg(lightframeInfo.m_fAngle * 180 / M_PI, 0, 'f', 1), m_lNrStacked + 1);
 						}
 
-						const auto strDescription = lightframeInfo.m_strInfos;
 						if (lightframeInfo.m_lNrChannels == 3)
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 						else
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
 
 						ZTRACE_RUNTIME(strText);
 						// First apply transformations

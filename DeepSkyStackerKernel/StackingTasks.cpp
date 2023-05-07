@@ -256,10 +256,9 @@ static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, boo
 
 /* ------------------------------------------------------------------- */
 
-static void WriteMasterTIFF(LPCTSTR szMasterFileName, CMemoryBitmap * pMasterBitmap, ProgressBase * pProgress,
-			LPCTSTR szDescription, CTaskInfo *pTaskInfo)
+static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, ProgressBase* pProgress, const QString& szDescription, CTaskInfo* pTaskInfo)
 {
-    WriteTIFF(szMasterFileName, pMasterBitmap, pProgress, szDescription,
+    WriteTIFF(szFileName, pMasterBitmap, pProgress, szDescription,
 		pTaskInfo->m_lISOSpeed, pTaskInfo->m_lGain, pTaskInfo->m_fExposure, pTaskInfo->m_fAperture);
 };
 
@@ -407,8 +406,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					}
 
 					// TODO: Work out how to do this better.
-					const CString strInfo2(strInfo.toStdWString().c_str());
-					WriteMasterTIFF(strMasterOffset, pOffsetBitmap.get(), pProgress, strInfo2, m_pOffsetTask);
+					WriteMasterTIFF(strMasterOffset.GetString(), pOffsetBitmap.get(), pProgress, strInfo, m_pOffsetTask);
 
 					m_pOffsetTask->m_strOutputFile = strMasterOffset;
 					m_pOffsetTask->m_bDone = true;
@@ -592,8 +590,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 						pProgress->Start2(QString::fromWCharArray(strMasterDark), 0);
 					}
 
-					CString strInfo2(strInfo.toStdWString().c_str());
-					WriteMasterTIFF(strMasterDark, pDarkBitmap.get(), pProgress, strInfo2, m_pDarkTask);
+					WriteMasterTIFF(strMasterDark.GetString(), pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
 
 					m_pDarkTask->m_strOutputFile = strMasterDark;
 					m_pDarkTask->m_bDone = true;
@@ -772,8 +769,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 						pProgress->Start2(QString::fromWCharArray(strMasterDarkFlat.GetString()), 0);
 					};
 
-					CString strInfo2(strInfo.toStdWString().c_str());
-					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap.get(), pProgress, strInfo2, m_pDarkFlatTask);
+					WriteMasterTIFF(strMasterDarkFlat.GetString(), pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
 
 					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
 					m_pDarkFlatTask->m_bDone = true;
@@ -1223,8 +1219,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 						pProgress->Start2(QString::fromWCharArray(strMasterFlat.GetString()), 0);
 					}
 
-					CString strInfo2(strInfo.toStdWString().c_str());
-					WriteMasterTIFF(strMasterFlat, pFlatBitmap.get(), pProgress, strInfo2, m_pFlatTask);
+					WriteMasterTIFF(strMasterFlat.GetString(), pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);
 
 					m_pFlatTask->m_strOutputFile = strMasterFlat;
 					m_pFlatTask->m_bDone = true;
@@ -1309,9 +1304,9 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, const std::u
 		m_vTasks.push_back(ti);
 	};
 
-	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == _T("JPEG")))
+	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.left(4) == "JPEG"))
 		m_bUsingJPEG = true;
-	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == _T("FITS")))
+	if (!m_bUsingFITS && (FrameInfo.m_strInfos.left(4) == "FITS"))
 		m_bUsingFITS = true;
 	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
 		m_bCalibrating = true;

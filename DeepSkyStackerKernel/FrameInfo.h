@@ -27,10 +27,10 @@ public :
 	PICTURETYPE			m_PictureType;
 	int				m_lBitPerChannels;
 	int				m_lNrChannels;
-	CString				m_strDateTime;
+	QString				m_strDateTime;
 	QDateTime			m_DateTime;
 	bool				m_bMaster;
-	CString				m_strInfos;
+	QString				m_strInfos;
 	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
 	QString				m_filterName;

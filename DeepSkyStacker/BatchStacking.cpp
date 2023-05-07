@@ -64,16 +64,16 @@ namespace
 						if (iff == IFF_TIFF)
 						{
 							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 							else
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 						}
 						else
 						{
 							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
+								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 							else
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 						}
 						dlg.End2();
 					}
@@ -175,7 +175,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromStdWString(path.native()));
+			filePaths.append(QString::fromWCharArray(path.native().c_str()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);

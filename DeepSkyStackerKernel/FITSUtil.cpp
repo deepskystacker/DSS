@@ -238,13 +238,14 @@ bool CFITSReader::Open()
 	int					status = 0;
 	char error_text[31] = "";			// Error text for FITS errors.
 
-	fits_open_diskfile(&m_fits, m_strFileName.toLatin1().constData(), READONLY, &status);
+	// Open filename as ascii - won't work with international characters but we are limited to char with fits library.
+	fits_open_diskfile(&m_fits, m_strFileName.string().c_str(), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
 		QString errorMessage(QCoreApplication::translate( "Kernel",
 														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
-															.arg(m_strFileName)
+															.arg(m_strFileName.wstring().c_str())
 															.arg(status)
 															.arg(error_text));
 		ZTRACE_RUNTIME(errorMessage);
@@ -255,7 +256,7 @@ bool CFITSReader::Open()
 
 	if (m_fits)
 	{
-		ZTRACE_RUNTIME("Opened %s", m_strFileName.toUtf8().constData());
+		ZTRACE_RUNTIME("Opened %s", m_strFileName.wstring().c_str());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -805,7 +806,7 @@ private :
 	bool ignoreBrightness;
 
 public :
-	CFITSReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
+	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
 		CFITSReader{ szFileName, pProgress },
 		m_outBitmap{ rpBitmap },
 		ignoreBrightness{ ignoreBr }
@@ -1045,7 +1046,7 @@ bool CFITSReadInMemoryBitmap::OnClose()
 }
 
 
-bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, ignoreBrightness, pProgress };
@@ -1053,7 +1054,7 @@ bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, cons
 }
 
 
-bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1063,7 +1064,7 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	// Require a fits file extension
 	{
 		//TCHAR szExt[1+_MAX_EXT];
-		const QString strFilename(QString::fromWCharArray(szFileName));
+		const QString strFilename(QString::fromWCharArray(szFileName.wstring().c_str()));
 		const QString strExt = QFileInfo(strFilename).suffix();
 
 		if (!(0 == strExt.compare("FIT", Qt::CaseInsensitive) ||
@@ -1080,7 +1081,7 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName.wstring().c_str());
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
 		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();
@@ -1271,13 +1272,12 @@ bool CFITSWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	const QString strFileName(m_strFileName);
 
 	// Create a new fits file
 	int				nStatus = 0;
 
-	DeleteFile(strFileName.toStdWString().c_str());
-	fits_create_diskfile(&m_fits, strFileName.toUtf8().constData(), &nStatus);
+	DeleteFile(m_strFileName.wstring().c_str());
+	fits_create_diskfile(&m_fits, m_strFileName.string().c_str(), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();
@@ -1572,7 +1572,7 @@ private :
 	FITSFORMAT GetBestFITSFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CFITSWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
 		CFITSWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1707,7 +1707,7 @@ bool CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1718,8 +1718,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
-		if (szDescription)
-			fits.SetDescription(szDescription);
+		fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
@@ -1740,14 +1739,19 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, /*szDescription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
+
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1758,8 +1762,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
-		if (szDescription)
-			fits.SetDescription(szDescription);
+		fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
@@ -1777,21 +1780,25 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 };
 
 /* ------------------------------------------------------------------- */
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, /*szDestription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, LPCTSTR szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 
-bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
 
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.
@@ -1833,9 +1840,9 @@ void GetFITSExtension(const QString& path, QString& strExtension)
 		strExtension = ".fts";
 }
 
-void GetFITSExtension(LPCTSTR szFileName, QString& strExtension)
+void GetFITSExtension(const fs::path& szFileName, QString& strExtension)
 {
-	GetFITSExtension(QString::fromWCharArray(szFileName), strExtension);
+	GetFITSExtension(QString::fromWCharArray(szFileName.wstring().c_str()), strExtension);
 }
 
 void GetFITSExtension(fs::path path, QString& strExtension)

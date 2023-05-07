@@ -29,12 +29,10 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 		m_CFAType			= bmpInfo.m_CFAType;
 		m_bFITS16bit		= bmpInfo.m_bFITS16bit;
 		m_DateTime			= bmpInfo.m_DateTime;
-		m_strDateTime		= bmpInfo.m_strDateTime.toStdWString().c_str();
+		m_strDateTime		= bmpInfo.m_strDateTime;
 		m_ExtraInfo			= bmpInfo.m_ExtraInfo;
 
-		QString strInfo;
-		bmpInfo.GetDescription(strInfo);
-		m_strInfos = strInfo.toStdWString().c_str();
+		bmpInfo.GetDescription(m_strInfos);
 
 		m_lISOSpeed			= bmpInfo.m_lISOSpeed;
 		m_lGain				= bmpInfo.m_lGain;

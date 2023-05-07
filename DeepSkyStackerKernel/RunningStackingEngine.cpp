@@ -100,16 +100,14 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgr
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);
-		QString strDescription;
 		PIXELDISPATCHVECTOR vPixels;
 
 		vPixels.reserve(16);
 
-		strDescription = QString::fromWCharArray(lfi.m_strInfos.GetString());
 		if (lfi.m_lNrChannels == 3)
-			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitPerChannels).arg(lfi.m_strInfos).arg(lfi.filePath.c_str());
 		else
-			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitPerChannels).arg(lfi.m_strInfos).arg(lfi.filePath.c_str());
 		
 		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);
