@@ -378,7 +378,8 @@ namespace DSS
 
 	void SettingsTab::setEmailAddress([[maybe_unused]] const QString& link)
 	{
-
+		QMessageBox::information(this, "Not yet implemented",
+			"setEmail configuration to be done");
 	}
 
 	/* ------------------------------------------------------------------- */

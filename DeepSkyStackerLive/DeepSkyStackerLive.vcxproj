@@ -113,7 +113,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;SmtpMime.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -165,7 +165,7 @@
       <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;SmtpMime.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -225,6 +225,25 @@
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />
+    <ClInclude Include="..\include\SmtpMime\emailaddress.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeattachment.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h" />
+    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h" />
+    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimefile.h" />
+    <ClInclude Include="..\include\SmtpMime\mimehtml.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h" />
+    <ClInclude Include="..\include\SmtpMime\mimemessage.h" />
+    <ClInclude Include="..\include\SmtpMime\mimemultipart.h" />
+    <ClInclude Include="..\include\SmtpMime\mimepart.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimetext.h" />
+    <ClInclude Include="..\include\SmtpMime\quotedprintable.h" />
+    <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
+    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <ClInclude Include="EmailSettings.h" />
     <ClInclude Include="GraphView.h" />
@@ -311,6 +330,9 @@
     <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
     <QtUic Include="ui\ImageViewer.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\SmtpMime\SmtpMime" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -25,6 +25,9 @@
     <Filter Include="Qt\ui">
       <UniqueIdentifier>{4abe7899-f800-4251-9c3f-1ebce915fbfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SmtpMime">
+      <UniqueIdentifier>{ba1f9d69-a738-45e1-a63f-5e9ef2baf608}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStackerLive.cpp">
@@ -125,6 +128,57 @@
     <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\emailaddress.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeattachment.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimefile.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimehtml.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimemessage.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimemultipart.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimepart.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimetext.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\quotedprintable.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
@@ -221,6 +275,12 @@
     <QtMoc Include="settingstab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </QtMoc>
+    <QtMoc Include="..\include\SmtpMime\smtpclient.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS.ca.ts">
@@ -284,5 +344,10 @@
     <QtUic Include="ui\EmailSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\SmtpMime\SmtpMime">
+      <Filter>Header Files\SmtpMime</Filter>
+    </None>
   </ItemGroup>
 </Project>
