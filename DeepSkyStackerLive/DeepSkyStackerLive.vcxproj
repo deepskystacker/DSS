@@ -196,7 +196,7 @@
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp" />
     <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
-    <ClCompile Include="EmailSettings.cpp" />
+    <ClCompile Include="emailsettings.cpp" />
     <ClCompile Include="GraphView.cpp" />
     <ClCompile Include="ImageList.cpp" />
     <ClCompile Include="imageviewer.cpp" />
@@ -245,7 +245,7 @@
     <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
     <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
-    <ClInclude Include="EmailSettings.h" />
+    <QtMoc Include="emailsettings.h" />
     <ClInclude Include="GraphView.h" />
     <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />

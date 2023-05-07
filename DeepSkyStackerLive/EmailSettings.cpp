@@ -1,138 +1,162 @@
-// EmailSettings.cpp : implementation file
-//
 #include "stdafx.h"
-#if (0)
-#include "resource.h"
-#include "EmailSettings.h"
-#include <..\SMTP\PJNSMTP.h>
+#include "DeepSkyStackerLive.h"
+#include "LiveSettings.h"
+#include "emailsettings.h"
+#include <SmtpMime/SmtpMime>
 
-// CEmailSettings dialog
-
-
-/* ------------------------------------------------------------------- */
-
-CEmailSettings::CEmailSettings(CWnd* pParent /*=nullptr*/)
-	: CDialog(CEmailSettings::IDD, pParent)
+namespace DSS
 {
-	m_pLiveSettings = nullptr;
-}
-
-/* ------------------------------------------------------------------- */
-
-void CEmailSettings::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_SENDTO, m_SendTo);
-	DDX_Control(pDX, IDC_OBJECT, m_Object);
-	DDX_Control(pDX, IDC_SMTPSERVER, m_SMTP);
-	DDX_Control(pDX, IDC_ACCOUNT, m_Account);
-	DDX_Control(pDX, IDC_SENDONCE, m_SendOnce);
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CEmailSettings, CDialog)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_TEST, &CEmailSettings::OnBnClickedTest)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-// CEmailSettings message handlers
-
-BOOL CEmailSettings::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	if (m_pLiveSettings)
+	EmailSettings::EmailSettings(QWidget* parent)
+		: QDialog(parent),
+		initialised{ false },
+		liveSettings{ *(DeepSkyStacker::instance()->liveSettings) }
 	{
-		CString				strEmail;
-		CString				strSMTP;
-		CString				strObject;
-		CString				strAccount;
-		BOOL				bMultiple;
+		setupUi(this);
 
-		m_pLiveSettings->GetEmailSettings(strEmail, strAccount, strSMTP, strObject);
+		connectSignalsToSlots();
 
-		m_SendTo.SetWindowText(strEmail);
-		m_Object.SetWindowText(strObject);
-		m_SMTP.SetWindowText(strSMTP);
-		m_Account.SetWindowText(strAccount);
-
-		bMultiple = m_pLiveSettings->IsWarning_SendMultipleEmails();
-
-		m_SendOnce.SetCheck(!bMultiple);
-	};
-
-	return TRUE;  // return TRUE  unless you set the focus to a control
-}
-
-/* ------------------------------------------------------------------- */
-
-void CEmailSettings::OnOK()
-{
-	if (m_pLiveSettings)
-	{
-		CString				strEmail;
-		CString				strSMTP;
-		CString				strObject;
-		CString				strAccount;
-		BOOL				bMultiple;
-
-		m_SendTo.GetWindowText(strEmail);
-		m_Object.GetWindowText(strObject);
-		m_SMTP.GetWindowText(strSMTP);
-		m_Account.GetWindowText(strAccount);
-		m_pLiveSettings->SetEmailSettings(strEmail, strAccount, strSMTP, strObject);
-
-		bMultiple = !m_SendOnce.GetCheck();
-		m_pLiveSettings->SetWarning_SendMultipleEmails(bMultiple);
-	};
-
-	CDialog::OnOK();
-};
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-void CEmailSettings::OnBnClickedTest()
-{
-	BOOL				bOk = TRUE;
-	CString				strEmail;
-	CString				strSMTP;
-	CString				strObject;
-	CString				strAccount;
-	CString				strText;
-
-	m_SendTo.GetWindowText(strEmail);
-	m_Object.GetWindowText(strObject);
-	m_SMTP.GetWindowText(strSMTP);
-	m_Account.GetWindowText(strAccount);
-
-	try
-	{
-		CPJNSMTPConnection smtp;
-		smtp.Connect(strSMTP);
-
-		CPJNSMTPMessage m;
-		CPJNSMTPAddress emailAddress{ strEmail };
-		m.m_To.Add(emailAddress);
-		m.m_From = CPJNSMTPAddress(strAccount);
-		m.m_sSubject = strObject;
-		m.AddTextBody(strObject);
-		smtp.SendMessage(m);
 	}
-	catch (...)
+
+	EmailSettings::~EmailSettings()
+	{}
+
+	void EmailSettings::connectSignalsToSlots()
 	{
-		bOk = FALSE;
-	};
+		connect(buttonBox, &QDialogButtonBox::accepted, this, &EmailSettings::save);
+		connect(buttonBox, &QDialogButtonBox::rejected, this, &EmailSettings::reject);
+		connect(testButton, &QPushButton::pressed, this, &EmailSettings::test);
+	}
 
-	if (bOk)
-		strText.LoadString(IDS_EMAILSENTOK);
-	else
-		strText.LoadString(IDS_ERRORSENDINGEMAIL);
 
-	AfxMessageBox(strText, MB_OK | MB_ICONINFORMATION);
+	void EmailSettings::showEvent(QShowEvent* event)
+	{
+		if (!event->spontaneous())
+		{
+			if (!initialised)
+			{
+				initialised = true;
+				onInitDialog();
+			}
+		}
+		// Invoke base class showEvent()
+		return Inherited::showEvent(event);
+	}
+
+	void EmailSettings::onInitDialog()
+	{
+		QString	to{};
+		QString	subject{};
+		QString	server{};
+		int		port;
+		uint	encryption;
+		QString	account{};
+		QString	password{};
+
+		liveSettings.getEmailSettings(to, subject, server, port, encryption, account, password);
+
+		emailTo->setText(to);
+		emailSubject->setText(subject);
+		smtpServer->setText(server);
+
+		switch (port)
+		{
+		case 2525:
+			smtpPort->setCurrentIndex(1);
+			break;
+		case 0:
+		case 587:
+		default:
+			smtpPort->setCurrentIndex(0);
+			break;
+		}
+
+		switch (encryption)
+		{
+		case 0:
+		default:
+			smtpEncryption->setCurrentIndex(0);
+			break;
+		case 1:
+			smtpEncryption->setCurrentIndex(1);
+			break;
+		case 2:
+			smtpEncryption->setCurrentIndex(2);
+			break;
+		}
+
+		emailAccount->setText(account);
+		emailPassword->setText(password);
+	}
+
+	/* ------------------------------------------------------------------- */
+	/* Slots                                                               */
+	/* ------------------------------------------------------------------- */
+	void EmailSettings::save()
+	{
+		int port{ 587 };	// default is 587
+		if (1 == smtpPort->currentIndex())
+			port = 2525;
+
+
+		uint encryption{ static_cast<uint>(smtpEncryption->currentIndex()) };
+
+		liveSettings.setEmailSettings(emailTo->text(), emailSubject->text(),
+			smtpServer->text(), port, encryption,
+			emailAccount->text(), emailPassword->text());
+		liveSettings.save();
+		accept();
+	}
+
+	void EmailSettings::test()
+	{
+		int port{ 587 };	// default is 587
+		if (1 == smtpPort->currentIndex())
+			port = 2525;
+
+		SmtpClient::ConnectionType connectionType{ static_cast<SmtpClient::ConnectionType>(smtpEncryption->currentIndex()) };
+		
+		MimeMessage message;
+
+		EmailAddress sender("david.partridge@perdrix.co.uk", "DeepSkyStackerLive");
+		message.setSender(sender);
+
+		EmailAddress to(emailTo->text(), "");
+		message.addRecipient(to);
+
+		message.setSubject(emailSubject->text());
+
+		// Now add some text to the email.
+		// First we create a MimeText object.
+
+		MimeText text;
+
+		text.setText("Hi,\nThis is a simple email message.\n");
+
+		// Now add it to the mail
+
+		message.addPart(&text);
+
+		// Now we can send the mail
+		SmtpClient smtp(smtpServer->text(), port, connectionType);
+
+		smtp.connectToHost();
+		if (!smtp.waitForReadyConnected()) {
+			QMessageBox::warning(this, "SMTP Failure", "Failed to connect to host!");
+			return;
+		}
+		qDebug() << "account " << emailAccount->text() << " pw " << emailPassword->text();
+		smtp.login(emailAccount->text(), emailPassword->text());
+		if (!smtp.waitForAuthenticated()) {
+			QMessageBox::warning(this, "SMTP Failure", "Failed to login!");
+			return;
+		}
+
+		smtp.sendMail(message);
+		if (!smtp.waitForMailSent()) {
+			QMessageBox::warning(this, "SMTP Failure", "Failed to send mail!");
+			return;
+		}
+
+		smtp.quit();
+		QMessageBox::information(this, "SMTP Success", "Test email sent OK!");
 }
-
-/* ------------------------------------------------------------------- */
-#endif

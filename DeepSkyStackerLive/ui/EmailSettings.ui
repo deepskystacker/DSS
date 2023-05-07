@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>EmailSettings</class>
+ <widget class="QDialog" name="EmailSettings">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="subjectText"/>
+       <widget class="QLineEdit" name="emailSubject"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
@@ -45,7 +45,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="sendTo"/>
+       <widget class="QLineEdit" name="emailTo"/>
       </item>
      </layout>
     </widget>
@@ -84,7 +84,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="portNumber">
+       <widget class="QComboBox" name="smtpPort">
         <property name="maximumSize">
          <size>
           <width>55</width>
@@ -123,7 +123,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QComboBox" name="encryption">
+       <widget class="QComboBox" name="smtpEncryption">
         <item>
          <property name="text">
           <string>None</string>
@@ -152,7 +152,7 @@
        </widget>
       </item>
       <item row="2" column="1" colspan="3">
-       <widget class="QLineEdit" name="accountName"/>
+       <widget class="QLineEdit" name="emailAccount"/>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_6">
@@ -162,7 +162,7 @@
        </widget>
       </item>
       <item row="3" column="1" colspan="2">
-       <widget class="QLineEdit" name="password">
+       <widget class="QLineEdit" name="emailPassword">
         <property name="echoMode">
          <enum>QLineEdit::PasswordEchoOnEdit</enum>
         </property>
@@ -179,7 +179,7 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="testButton">
      <property name="text">
       <string comment="IDC_TEST">Test</string>
      </property>

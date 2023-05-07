@@ -84,23 +84,25 @@ namespace DSS
 		m_dwSaveCount = settings.value("SaveCount", 0U).toUInt();
 
 		m_strFileFolder = settings.value("FileFolder", "").toString();
-		m_strEmail = settings.value("Email", "").toString();
 		m_strWarnFileFolder = settings.value("WarningFileFolder", "").toString();
 		m_strStackedOutputFolder = settings.value("StackedOutputFolder", "").toString();
 
-		m_strSMTP = settings.value("SMTP", "").toString();
-		m_strAccount = settings.value("Account", "").toString();
-		m_strObject = settings.value("Object", "").toString();
-		settings.endGroup();
+		emailTo = settings.value("EmailTo", "").toString();
+		emailSubject = settings.value("EmailSubject", "").toString();
+		smtpServer = settings.value("SMTPServer", "").toString();
+		smtpPort = settings.value("SMTPPort", 587).toInt();
+		smtpEncryption = settings.value("SMTPEncryption", 0U).toUInt();
+		emailAccount = settings.value("EmailAccount", "").toString();
+		emailPassword = settings.value("EmailPassword", "").toString();
 
 #if defined (Q_OS_WIN)
-		if (!m_strSMTP.isEmpty() && !m_strAccount.isEmpty())
+		if (smtpServer.isEmpty() && emailAccount.isEmpty())
 		{
 			QSettings sysSettings("HKEY_CURRENT_USER\\Software\\Microsoft",
 				QSettings::NativeFormat);
 			sysSettings.beginGroup("Internet Account Manager/Accounts/00000001");
-			m_strSMTP = sysSettings.value("SMTP Server", "").toString();
-			m_strAccount = sysSettings.value("SMTP Email Address", "").toString();
+			smtpServer = sysSettings.value("SMTP Server", "").toString();
+			emailAccount = sysSettings.value("SMTP Email Address", "").toString();
 
 			sysSettings.endGroup();
 		};
@@ -132,10 +134,13 @@ namespace DSS
 		settings.setValue("WarningFileFolder", m_strWarnFileFolder);
 		settings.setValue("StackedOutputFolder", m_strStackedOutputFolder);
 
-		settings.setValue("Email", m_strEmail);
-		settings.setValue("SMTP", m_strSMTP);
-		settings.setValue("Account", m_strAccount);
-		settings.setValue("Object", m_strObject);
+		settings.setValue("EmailTo", emailTo);
+		settings.setValue("EmailSubject", emailSubject);
+		settings.setValue("SMTPServer", smtpServer);
+		settings.setValue("SMTPPort", smtpPort);
+		settings.setValue("SMTPEncryption", smtpEncryption);
+		settings.setValue("EmailAccount", emailAccount);
+		settings.setValue("EmailPassword", emailPassword);
 
 		settings.endGroup();
 

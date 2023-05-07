@@ -145,25 +145,33 @@ namespace DSS
 		void	SetProcess_TIFF(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_TIFF) : (m_dwProcessFlags &= ~LSPF_TIFF); };
 		void	SetProcess_Others(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_OTHERS) : (m_dwProcessFlags &= ~LSPF_OTHERS); };
 
-		void	GetEmailSettings(QString& strEmail, QString& strAccount, QString& strSMTP, QString& strObject)
+		void getEmailSettings(QString& email, QString& subject, QString& SMTP, int& port, uint& encryption,
+			QString& account, QString& pw)
 		{
-			strEmail = m_strEmail;
-			strSMTP = m_strSMTP;
-			strObject = m_strObject;
-			strAccount = m_strAccount;
+			email = emailTo;
+			subject = emailSubject;
+			SMTP = smtpServer;
+			port = smtpPort;
+			encryption = smtpEncryption;
+			account = emailAccount;
+			pw = emailPassword;
 		};
 
 		QString	emailAddress()
 		{
-			return m_strEmail;
-		};
+			return emailTo;
+		}
 
-		void	SetEmailSettings(const QString& email, const QString& account, const QString& SMTP, const QString& Object)
+		void setEmailSettings(const QString& email, const QString& subject, const QString& SMTP, int port, uint encryption,
+			const QString& account, const QString& pw)
 		{
-			m_strEmail = email;
-			m_strAccount = account;
-			m_strSMTP = SMTP;
-			m_strObject = Object;
+			emailTo = email;
+			emailSubject = subject;
+			smtpServer = SMTP;
+			smtpPort = port;
+			smtpEncryption = encryption;
+			emailAccount = account;
+			emailPassword = pw;
 		};
 
 		double	GetScore()
@@ -273,9 +281,15 @@ namespace DSS
 		QString				m_strWarnFileFolder;
 		QString				m_strStackedOutputFolder;
 
-		QString				m_strEmail;
-		QString				m_strSMTP;
-		QString				m_strAccount;
-		QString				m_strObject;
+		//
+		// Email configuration stuff
+		//
+		QString	emailTo;
+		QString	emailSubject;
+		QString	smtpServer;
+		int		smtpPort;
+		uint	smtpEncryption;
+		QString	emailAccount;
+		QString	emailPassword;
 	};
 }

@@ -33,9 +33,6 @@
     <ClCompile Include="DeepSkyStackerLive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EmailSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="settingstab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="emailsettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -93,9 +93,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EmailSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphView.h">
@@ -280,6 +277,9 @@
     </QtMoc>
     <QtMoc Include="..\include\SmtpMime\smtpclient.h">
       <Filter>Header Files\SmtpMime</Filter>
+    </QtMoc>
+    <QtMoc Include="emailsettings.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

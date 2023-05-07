@@ -35,7 +35,9 @@
 ****************************************************************************/
 #include "stdafx.h"
 #include <QFileDialog>
+#include "LiveSettings.h"
 #include "settingstab.h"
+#include "emailsettings.h"
 #include "DeepSkyStackerLive.h"
 
 
@@ -59,7 +61,7 @@ namespace DSS
 	SettingsTab::SettingsTab(QWidget* parent)
 		: QWidget { parent },
 		dirty{ false },
-		liveSettings {*(DeepSkyStackerLive::instance()->liveSettings)},
+		liveSettings {*(DeepSkyStacker::instance()->liveSettings)},
 		minImagesValidator{ new QIntValidator(1, 50, this) },
 		scoreValidator {new QDoubleValidator(0.0, 9999.9, 1, this)},
 		starCountValidator {new QIntValidator(10, 50, this)},
@@ -194,7 +196,6 @@ namespace DSS
 		makeLink(warnFileFolder, linkColour);
 		makeLink(stackedOutputFolder, linkColour);
 		makeLink(emailAddress, linkColour);
-
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -378,8 +379,24 @@ namespace DSS
 
 	void SettingsTab::setEmailAddress([[maybe_unused]] const QString& link)
 	{
-		QMessageBox::information(this, "Not yet implemented",
-			"setEmail configuration to be done");
+		EmailSettings dlg(this);
+
+		if (QDialog::Accepted == dlg.exec())
+		{
+			strEmailAddress = liveSettings.emailAddress();
+			if (!strEmailAddress.isEmpty())
+			{
+				emailAddress->setText(strEmailAddress);
+				warnEmail->setEnabled(true);
+			}
+			else
+			{
+				emailAddress->setText(tr("Click here to set or change the email address"));
+				warnEmail->setChecked(false);
+				warnEmail->setEnabled(false);
+			}
+			makeLink(emailAddress, linkColour);
+		}	
 	}
 
 	/* ------------------------------------------------------------------- */

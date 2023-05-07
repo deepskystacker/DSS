@@ -36,12 +36,13 @@
 ****************************************************************************/
 
 #include "ui_SettingsTab.h"
-#include "LiveSettings.h"
 
 class QWidget;
 
 namespace DSS
 {
+	class LiveSettings;
+
 	class SettingsTab : public QWidget, public Ui::SettingsTab
 	{
 		Q_OBJECT
