@@ -214,7 +214,9 @@ namespace DSS
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
+				if (it->IsLightFrame() &&
+					it->m_bUseAsStarting
+					)
 				{
 					result = true;
 					string = it->filePath.generic_wstring().c_str();
