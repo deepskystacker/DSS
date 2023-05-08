@@ -22,6 +22,7 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private slots:
+		void showPasswordClicked(bool checked);
 		void save();
 		void test();
 

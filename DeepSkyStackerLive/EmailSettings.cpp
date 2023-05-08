@@ -25,6 +25,7 @@ namespace DSS
 		connect(buttonBox, &QDialogButtonBox::accepted, this, &EmailSettings::save);
 		connect(buttonBox, &QDialogButtonBox::rejected, this, &EmailSettings::reject);
 		connect(testButton, &QPushButton::pressed, this, &EmailSettings::test);
+		connect(showPassword, &QCheckBox::clicked, this, &EmailSettings::showPasswordClicked);
 	}
 
 
@@ -53,6 +54,14 @@ namespace DSS
 		QString	password{};
 
 		liveSettings.getEmailSettings(to, subject, server, port, encryption, account, password);
+
+		//
+		// De-obfuscate the password
+		//
+		for (auto& character : password)
+		{
+			character = QChar(static_cast<uint16_t>(character.unicode()) ^ 0x82U);
+		}
 
 		emailTo->setText(to);
 		emailSubject->setText(subject);
@@ -91,6 +100,21 @@ namespace DSS
 	/* ------------------------------------------------------------------- */
 	/* Slots                                                               */
 	/* ------------------------------------------------------------------- */
+	void EmailSettings::showPasswordClicked(bool checked)
+	{
+		if (checked)
+		{
+			emailPassword->setEchoMode(QLineEdit::Normal);
+		}
+		else
+		{
+			emailPassword->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+		}
+		update();
+	}
+
+	/* ------------------------------------------------------------------- */
+
 	void EmailSettings::save()
 	{
 		int port{ 587 };	// default is 587
@@ -99,13 +123,25 @@ namespace DSS
 
 
 		uint encryption{ static_cast<uint>(smtpEncryption->currentIndex()) };
+		QString password{ emailPassword->text() };
+
+		//
+		// Obfuscate the password prior to saving it
+		//
+		for (auto& character : password)
+		{
+			character = QChar(static_cast<uint16_t>(character.unicode()) ^ 0x82U);
+		}
 
 		liveSettings.setEmailSettings(emailTo->text(), emailSubject->text(),
 			smtpServer->text(), port, encryption,
-			emailAccount->text(), emailPassword->text());
+			emailAccount->text(), password);
+
 		liveSettings.save();
 		accept();
 	}
+
+	/* ------------------------------------------------------------------- */
 
 	void EmailSettings::test()
 	{
@@ -114,7 +150,7 @@ namespace DSS
 			port = 2525;
 
 		SmtpClient::ConnectionType connectionType{ static_cast<SmtpClient::ConnectionType>(smtpEncryption->currentIndex()) };
-		
+
 		MimeMessage message;
 
 		EmailAddress sender("david.partridge@perdrix.co.uk", "DeepSkyStackerLive");
@@ -140,23 +176,30 @@ namespace DSS
 		SmtpClient smtp(smtpServer->text(), port, connectionType);
 
 		smtp.connectToHost();
-		if (!smtp.waitForReadyConnected()) {
-			QMessageBox::warning(this, "SMTP Failure", "Failed to connect to host!");
+		if (!smtp.waitForReadyConnected())
+		{
+			QString errorMessage{ "Failed to connect to host %1 (%2)!" };
+			QMessageBox::warning(this, "SMTP", errorMessage.arg(smtpServer->text()).arg(port));
 			return;
 		}
-		qDebug() << "account " << emailAccount->text() << " pw " << emailPassword->text();
+
 		smtp.login(emailAccount->text(), emailPassword->text());
-		if (!smtp.waitForAuthenticated()) {
-			QMessageBox::warning(this, "SMTP Failure", "Failed to login!");
+		if (!smtp.waitForAuthenticated())
+		{
+			QString errorMessage{ "Failed to login as %1!" };
+
+			QMessageBox::warning(this, "SMTP", errorMessage.arg(emailAccount->text()));
 			return;
 		}
 
 		smtp.sendMail(message);
-		if (!smtp.waitForMailSent()) {
-			QMessageBox::warning(this, "SMTP Failure", "Failed to send mail!");
+		if (!smtp.waitForMailSent())
+		{
+			QMessageBox::warning(this, "SMTP", "Failed to send mail!");
 			return;
 		}
 
 		smtp.quit();
-		QMessageBox::information(this, "SMTP Success", "Test email sent OK!");
+		QMessageBox::information(this, "SMTP", "Test email sent OK!");
+	}
 }
