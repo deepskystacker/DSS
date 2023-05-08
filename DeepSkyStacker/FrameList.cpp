@@ -223,7 +223,10 @@ namespace DSS
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
 				if (it->IsLightFrame() &&
+<<<<<<< HEAD:DeepSkyStacker/FrameList.cpp
 					it->m_bChecked == Qt::Checked &&
+=======
+>>>>>>> edb99fe... Fix bug spotted by Simon Smith - a reference frame doens't need to be checked.:DeepSkyStackerKernel/FrameList.cpp
 					it->m_bUseAsStarting
 					)
 				{
