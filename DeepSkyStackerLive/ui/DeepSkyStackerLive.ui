@@ -174,7 +174,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>2</number>
      </property>
      <widget class="DSS::ImageViewer" name="stackedImage">
       <property name="sizePolicy">
@@ -216,6 +216,9 @@
            <property name="text">
             <string comment="IDC_SCORE">Score</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -223,6 +226,9 @@
            <property name="text">
             <string comment="IDC_FWHM">FWHM</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -230,6 +236,9 @@
            <property name="text">
             <string comment="IDC_STARS">#Stars</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -237,6 +246,9 @@
            <property name="text">
             <string comment="IDC_OFFSET">dX/dY</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -244,6 +256,9 @@
            <property name="text">
             <string comment="IDC_ANGLE">Angle</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -251,6 +266,9 @@
            <property name="text">
             <string comment="IDC_SKYBACKGROUND">Sky Background</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">graphButtonGroup</string>
+           </attribute>
           </widget>
          </item>
          <item>
@@ -374,4 +392,7 @@
   <include location="../resources.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="graphButtonGroup"/>
+ </buttongroups>
 </ui>
