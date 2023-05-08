@@ -157,8 +157,18 @@ namespace DSS
 	void EmailSettings::test()
 	{
 		int port{ 587 };	// default is 587
-		if (1 == smtpPort->currentIndex())
+		switch (smtpPort->currentIndex())
+		{
+		case 0:
+			port = 465;
+			break;
+		case 2:
 			port = 2525;
+			break;
+		default:
+			port = 587;
+			break;
+		}
 
 		SmtpClient::ConnectionType connectionType{ static_cast<SmtpClient::ConnectionType>(smtpEncryption->currentIndex()) };
 
