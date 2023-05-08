@@ -205,12 +205,6 @@
     <ClCompile Include="LogTab.cpp" />
     <ClCompile Include="MainBoard.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
-    <ClCompile Include="Settings.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-    </ClCompile>
     <ClCompile Include="settingstab.cpp" />
     <ClCompile Include="StackedSink.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -255,7 +249,6 @@
     <ClInclude Include="MainBoard.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RestartMonitoring.h" />
-    <ClInclude Include="Settings.h" />
     <QtMoc Include="settingstab.h" />
     <ClInclude Include="StackedSink.h" />
     <ClInclude Include="stdafx.h" />
