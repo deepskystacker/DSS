@@ -70,12 +70,14 @@ namespace DSS
 		switch (port)
 		{
 		case 2525:
-			smtpPort->setCurrentIndex(1);
+			smtpPort->setCurrentIndex(2);
 			break;
-		case 0:
+		case 465:
+			smtpPort->setCurrentIndex(0);
+			break;
 		case 587:
 		default:
-			smtpPort->setCurrentIndex(0);
+			smtpPort->setCurrentIndex(1);
 			break;
 		}
 
@@ -118,9 +120,18 @@ namespace DSS
 	void EmailSettings::save()
 	{
 		int port{ 587 };	// default is 587
-		if (1 == smtpPort->currentIndex())
+		switch (smtpPort->currentIndex())
+		{
+		case 0:
+			port = 465;
+			break;
+		case 2:
 			port = 2525;
-
+			break;
+		default:
+			port = 587;
+			break;
+		}
 
 		uint encryption{ static_cast<uint>(smtpEncryption->currentIndex()) };
 		QString password{ emailPassword->text() };
