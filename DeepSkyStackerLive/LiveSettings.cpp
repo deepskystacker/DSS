@@ -106,6 +106,16 @@ namespace DSS
 
 			sysSettings.endGroup();
 		};
+		if (smtpServer.isEmpty() && emailAccount.isEmpty())
+		{
+			QSettings sysSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Office\\16.0\\Outlook\\Profiles\\Outlook",
+				QSettings::NativeFormat);
+			sysSettings.beginGroup("9375CFF0413111d3B88A00104B2A6676/00000002");
+			smtpServer = sysSettings.value("SMTP Server", "").toString();
+			emailAccount = sysSettings.value("POP3 User", "").toString();
+
+			sysSettings.endGroup();
+		}; 
 #endif
 	};
 
