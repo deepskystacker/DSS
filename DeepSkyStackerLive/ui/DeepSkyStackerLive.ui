@@ -52,11 +52,14 @@
         </item>
         <item>
          <widget class="QLabel" name="folderName">
+          <property name="toolTip">
+           <string comment="IDC_MONITOREDFOLDER">Click here to select the Monitored Folder</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
           </property>
           <property name="text">
-           <string comment="IDC_MONITOREDFOLDER">&lt;Click here to select the Monitored Folder&gt;</string>
+           <string comment="IDC_MONITOREDFOLDER">Click here to select the Monitored Folder</string>
           </property>
          </widget>
         </item>

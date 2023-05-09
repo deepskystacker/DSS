@@ -61,15 +61,65 @@
 #include "tracecontrol.h"
 
 using namespace DSS;
+using namespace std;
 
 //
 // Set up tracing and manage trace file deletion
 //
-DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+DSS::TraceControl traceControl{ source_location::current().file_name() };
 
 bool	g_bShowRefStars = false;
 
 void reportCpuType();
+
+namespace
+{
+	//
+	// Comvert a QLabel with "plain text" to a hyperlink
+	//
+	static void makeLink(QLabel* label, QString color, QString text)
+	{
+		label->setText(QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>").arg(color, text));
+	}
+
+	static void makeLink(QLabel* label, QString color)
+	{
+		makeLink(label, color, label->text());
+	}
+
+	bool hasExpired()
+	{
+		ZFUNCTRACE_RUNTIME();
+		bool				bResult = false;
+		using namespace std::chrono;
+#ifdef DSSBETA
+
+		ZTRACE_RUNTIME("Check beta expiration\n");
+
+		auto now{ system_clock::now() };
+		auto tt{ system_clock::to_time_t(now) };
+		auto local_tm{ *localtime(&tt) };
+
+		auto year{ local_tm.tm_year + 1900 };
+		auto month{ local_tm.tm_mon + 1 };
+
+		constexpr auto		lMaxYear = DSSBETAEXPIREYEAR;
+		constexpr auto		lMaxMonth = DSSBETAEXPIREMONTH;
+		if ((year > lMaxYear) || ((year == lMaxYear) && (month > lMaxMonth)))
+		{
+			QString message = QCoreApplication::translate("DeepSkyStackerLive",
+				"This beta version of DeepSkyStacker has expired\nYou can probably get another one or download the final release from the web site.");
+			QMessageBox::critical(nullptr, "DeepSkyStacker",
+				message, QMessageBox::Ok);
+			bResult = true;
+		};
+
+		ZTRACE_RUNTIME("Check beta expiration - ok\n");
+
+#endif
+		return bResult;
+	}
+}
 
 bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
 {
@@ -112,52 +162,21 @@ bool LoadTranslations()
 	return true;
 }
 
-using namespace std;
-
 /* ------------------------------------------------------------------- */
-
-bool	hasExpired()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
-	using namespace std::chrono;
-#ifdef DSSBETA
-
-	ZTRACE_RUNTIME("Check beta expiration\n");
-
-	auto now{ system_clock::now() };
-	auto tt{ system_clock::to_time_t(now) };
-	auto local_tm{ *localtime(&tt) };
-
-	auto year{ local_tm.tm_year + 1900 };
-	auto month{ local_tm.tm_mon + 1 };
-
-	constexpr auto		lMaxYear = DSSBETAEXPIREYEAR;
-	constexpr auto		lMaxMonth = DSSBETAEXPIREMONTH;
-	if ((year > lMaxYear) || ((year == lMaxYear) && (month > lMaxMonth)))
-	{
-		QString message = QCoreApplication::translate("DeepSkyStackerLive",
-			"This beta version of DeepSkyStacker has expired\nYou can probably get another one or download the final release from the web site.");
-		QMessageBox::critical(nullptr, "DeepSkyStacker",
-			message, QMessageBox::Ok);
-		bResult = true;
-	};
-
-	ZTRACE_RUNTIME("Check beta expiration - ok\n");
-
-#endif
-	return bResult;
-};
 
 DeepSkyStackerLive::DeepSkyStackerLive() :
 	Ui_DeepSkyStackerLive {},
 	liveSettings {make_unique<LiveSettings>()},
 	initialised{ false },
+	monitoring {false}, 
 	winHost{ nullptr },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
 	errorMessageDialog{ new QErrorMessage(this) },
-	eMDI{ nullptr }		// errorMessageDialogIcon pointer
+	eMDI{ nullptr },		// errorMessageDialogIcon pointer
+	linkColour{ palette().color(QPalette::ColorRole::Link).name() },
+	stackedImageViewer {nullptr},
+	lastImageViewer {nullptr}
 {
 	//
 	// Must set this before invoking setupUi 
@@ -194,6 +213,7 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	settings.sync();
 }
 
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::showEvent(QShowEvent* event)
 {
@@ -209,9 +229,22 @@ void DeepSkyStackerLive::showEvent(QShowEvent* event)
 	return Inherited::showEvent(event);
 }
 
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::connectSignalsToSlots()
 {
+	connect(folderName, &QLabel::linkActivated,
+		this, &DeepSkyStackerLive::setMonitoredFolder);
 }
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::makeLinks()
+{
+	makeLink(folderName, linkColour);
+}
+
+/* ------------------------------------------------------------------- */
 
 
 void DeepSkyStackerLive::onInitialise()
@@ -227,8 +260,21 @@ void DeepSkyStackerLive::onInitialise()
 
 	setWindowTitle(baseTitle);
 
-	ZTRACE_RUNTIME("Restoring Window State and Position");
+	//
+	// Has the folder to be monitored already been set?
+	// If so change the text in the display panel
+	//
 	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	QString dir{ settings.value("MonitoredFolder", "").toString() };
+	if (!dir.isEmpty())
+		folderName->setText(dir);
+	settings.endGroup();
+
+	makeLinks();
+
+	ZTRACE_RUNTIME("Restoring Window State and Position");
+
 	settings.beginGroup("DeepSkyStackerLive/MainWindow");
 
 	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
@@ -264,12 +310,17 @@ void DeepSkyStackerLive::reportError(const QString& message, const QString& type
 	}
 }
 
+/* ------------------------------------------------------------------- */
+/* Slots                                                               */
+/* ------------------------------------------------------------------- */
 void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
 	if (terminate) QCoreApplication::exit(1);
 }
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
 {
@@ -301,7 +352,40 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 	if (terminate) QCoreApplication::exit(1);
 }
 
+/* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link)
+{
+	if (monitoring)
+	{
+		QMessageBox::information(this, "DeepSkyStackerLive",
+			tr("You cannot change the monitored folder while monitoring.", "IDS_CANTCHANGEMONITOREDFOLDER"));
+	}
+	else
+	{
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+
+		QString startDir{ settings.value("MonitoredFolder", "").toString() };
+		if (startDir.isEmpty())
+			startDir = QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first();
+
+		QString dir = QFileDialog::getExistingDirectory(this,
+			tr("Select the folder to be monitored", "IDS_SELECTMONITOREDFOLDER"),
+			startDir,
+			QFileDialog::ShowDirsOnly
+			| QFileDialog::DontResolveSymlinks);
+		if (!dir.isEmpty())
+		{
+			settings.setValue("MonitoredFolder", dir);
+
+			folderName->setText(dir);
+			makeLink(folderName, linkColour);
+		}
+		settings.endGroup();
+
+	}
+}
 
 /* ------------------------------------------------------------------- */
 

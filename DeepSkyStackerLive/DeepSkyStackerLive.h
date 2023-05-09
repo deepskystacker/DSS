@@ -94,16 +94,23 @@ protected slots:
 
 private:
 	bool initialised;
+	bool monitoring;
 	static inline DeepSkyStackerLive* dssInstance{ nullptr };
 	QWinHost* winHost;
 	QStringList args;
 	QString baseTitle;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
+	QString linkColour;
 	DSS::ImageViewer* stackedImageViewer;
 	DSS::ImageViewer* lastImageViewer;
+	QString monitoredFolder;
 
 	void connectSignalsToSlots();
+	void makeLinks();
+
+private slots:
+	void setMonitoredFolder(const QString& link);
 
 };
 using DeepSkyStacker = DeepSkyStackerLive;
