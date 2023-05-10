@@ -206,26 +206,6 @@ namespace DSS
 		}
 		return QString();
 	}
-	
-	bool FrameList::getReferenceFrame(CString& string) const
-	{
-		bool result = false;
-		for (const auto& group : imageGroups)
-		{
-			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
-			{
-				if (it->IsLightFrame() &&
-					it->m_bUseAsStarting
-					)
-				{
-					result = true;
-					string = it->filePath.generic_wstring().c_str();
-					return result;
-				}
-			}
-		}
-		return result;
-	}
 
 	QString FrameList::getFirstCheckedLightFrame() const
 	{

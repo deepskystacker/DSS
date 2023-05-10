@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 //#include "resource.h"
 #include "Workspace.h"
 #include "FITSUtil.h"
@@ -623,13 +623,8 @@ bool CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-			CStringA errMsg;
-			errMsg.Format(
-				"fits_read_pixll returned a status of %d, error text is \"%s\"",
-				status,
-				error_text);
-
-			ZException exc(errMsg, status, ZException::unrecoverable);
+			const QString errMsg(QString("fits_read_pixll returned a status of %1, error text is \"%2\"").arg(status).arg(error_text));
+			ZException exc(errMsg.toLatin1().constData(), status, ZException::unrecoverable);
 			exc.addLocation(ZEXCEPTION_LOCATION());
 			exc.logExceptionData();
 			throw exc;

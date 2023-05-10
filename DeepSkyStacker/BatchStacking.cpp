@@ -32,7 +32,6 @@ namespace
 			bool bContinue = true;
 			DSS::ProgressDlg dlg;
 			CStackingEngine StackingEngine;
-			CString strReferenceFrame;
 
 			// First check that the images are registered
 			if (list.countUnregisteredCheckedLightFrames() != 0)
@@ -43,8 +42,9 @@ namespace
 
 			if (bContinue)
 			{
-				if (list.getReferenceFrame(strReferenceFrame))
-					StackingEngine.SetReferenceFrame(strReferenceFrame);
+				const QString strReferenceFrame(list.getReferenceFrame());
+				if (!strReferenceFrame.isEmpty())
+					StackingEngine.SetReferenceFrame(strReferenceFrame.toStdWString().c_str());
 
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
