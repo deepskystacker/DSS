@@ -78,6 +78,9 @@
     <ClCompile Include="emailsettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="foldermonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -273,6 +276,9 @@
       <Filter>Header Files\SmtpMime</Filter>
     </QtMoc>
     <QtMoc Include="emailsettings.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="foldermonitor.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
