@@ -909,10 +909,8 @@ bool CTIFFWriter::Open()
 			//
 			// Set Software name in the same way we do elsewhere.
 			//
-			CStringA			strSoftware = "DeepSkyStacker ";
-			strSoftware += VERSION_DEEPSKYSTACKER;
-
-			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, (LPCSTR)strSoftware);
+			const QString strSoftware(QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
+			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, strSoftware.toLatin1().constData());
 
 			if (m_strDescription.length())
 			{
