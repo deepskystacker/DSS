@@ -557,89 +557,78 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 
 /* ------------------------------------------------------------------- */
 
-bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
+bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 {
-	bool				bResult = false;
-	FILE *				hFile;
+	bool bResult = false;
+	QFile data(szInfoFileName);
+	if (!data.open(QFile::WriteOnly | QFile::Truncate))
+		return false;
 
-	hFile = _tfopen(szInfoFileName, _T("wt+"));
-	if (hFile)
+	QTextStream fileOut(&data);	
 	{
-		fprintf(hFile, "OverallQuality = %.2f\n", m_fOverallQuality);
-		//fprintf(hFile, "Width = %ld\n", m_lWidth);
-		//fprintf(hFile, "Height = %ld\n", m_lHeight);
-		fprintf(hFile, "RedXShift = 0.0\n");
-		fprintf(hFile, "RedYShift = 0.0\n");
-		fprintf(hFile, "BlueXShift = 0.0\n");
-		fprintf(hFile, "BlueYShift = 0.0\n");
+		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << "RedXShift = 0.0" << Qt::endl;
+		fileOut << "RedYShift = 0.0" << Qt::endl;
+		fileOut << "BlueXShift = 0.0" << Qt::endl;
+		fileOut << "BlueYShift = 0.0" << Qt::endl;
 		if (m_bComet)
-			fprintf(hFile, "Comet = %.2f, %.2f\n", m_fXComet, m_fYComet);
-		fprintf(hFile, "SkyBackground = %.4f\n", m_SkyBackground.m_fLight);
-		fprintf(hFile, "NrStars = %zu\n", m_vStars.size());
+			fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
+		fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
 		for (int i = 0; i<m_vStars.size();i++)
 		{
-			fprintf(hFile, "Star# = %ld\n", i);
-			fprintf(hFile, "Intensity = %.2f\n", m_vStars[i].m_fIntensity);
-			fprintf(hFile, "Quality = %.2f\n",  m_vStars[i].m_fQuality);
-			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
-			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n",
-				m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top,
-				m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
-			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
-			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
-																	  m_vStars[i].m_fLargeMajorAxis,
-																	  m_vStars[i].m_fSmallMajorAxis,
-																	  m_vStars[i].m_fLargeMinorAxis,
-																	  m_vStars[i].m_fSmallMinorAxis);
-		};
-		fclose(hFile);
+			fileOut << "Star# = " << i << Qt::endl;
+			fileOut << QString("Intensity = %1").arg(m_vStars[i].m_fIntensity, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Quality = %1").arg(m_vStars[i].m_fQuality, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("MeanRadius = %1").arg(m_vStars[i].m_fMeanRadius, 0, 'f', 2) << Qt::endl;
+			fileOut << "Rect = " <<	m_vStars[i].m_rcStar.left << ", " <<
+									m_vStars[i].m_rcStar.top << ", " <<
+									m_vStars[i].m_rcStar.right << ", " <<
+									m_vStars[i].m_rcStar.bottom << Qt::endl;
+			fileOut << QString("Center = %1, %2").arg(m_vStars[i].m_fX, 0, 'f', 2).arg(m_vStars[i].m_fY, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Axises = %1, %2, %3, %4, %5")
+									.arg(m_vStars[i].m_fMajorAxisAngle, 0, 'f', 2)
+									.arg(m_vStars[i].m_fLargeMajorAxis, 0, 'f', 2)
+									.arg(m_vStars[i].m_fSmallMajorAxis, 0, 'f', 2)
+									.arg(m_vStars[i].m_fLargeMinorAxis, 0, 'f', 2)
+									.arg(m_vStars[i].m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+		}
 		bResult = true;
-	};
-
+	}
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 namespace {
-bool GetNextValue(FILE* hFile, CString& strVariable, CString& strValue)
+bool GetNextValue(QTextStream* fileIn, QString& strVariable, QString& strValue)
 {
-	bool				bResult = false;
-	CHAR				szText[2000];
-	CString				strText;
-	int					nPos;
-
-	strVariable.Empty();
-	strValue.Empty();
-	if (fgets(szText, sizeof(szText), hFile))
+	bool bResult = false;
+	strVariable.clear();
+	strValue.clear();
+	
+	if (!fileIn->atEnd())
 	{
-		strText = CA2CTEX<sizeof(szText)>(szText, CP_UTF8);
-		nPos = strText.Find(_T("="), 0); // Search = sign
+		const QString strText = fileIn->readLine();
+		int nPos = strText.indexOf("="); // Search = sign
 		if (nPos >= 0)
 		{
-			strVariable = strText.Left(nPos - 1);
-			strValue = strText.Right(strText.GetLength() - nPos - 1);
-			strVariable.TrimLeft();
-			strVariable.TrimRight();
-			strValue.TrimLeft();
-			strValue.TrimRight();
+			strVariable = strText.left(nPos - 1).trimmed();
+			strValue = strText.right(strText.length() - nPos - 1).trimmed();
 		}
 		else
 		{
-			strVariable = strText;
-			strVariable.TrimLeft();
-			strVariable.TrimRight();
-		};
+			strVariable = strText.trimmed();
+		}
 		bResult = true;
-	};
-
+	}
 	return bResult;
 }
 }
 
 /* ------------------------------------------------------------------- */
 
-bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
+bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 {
 	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
@@ -651,180 +640,112 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		return false;
 	};
 
-	auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
-	std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(szInfoFileName, _T("rt")), dtor }; // Use unique_ptr for RAII. Destructor will close the file.
+	QFile data(szInfoFileName);
+	if (!data.open(QFile::ReadOnly))
+		return unsuccessfulReturn();
+	QTextStream fileIn(&data);
 
-	// Try to open the file as a text file
-	if (pFile.get() != nullptr)
+	QString strVariable;
+	QString strValue;
+	int lNrStars = 0;
+	bool bEnd = false;
+
+	m_bComet = false;
+
+	// Read overall quality
+	while (!bEnd)
 	{
-		CString strVariable;
-		CString strValue;
-		int lNrStars = 0;
-		bool bEnd = false;
-
-		m_bComet = false;
-
-		// Read overall quality
-		while (!bEnd)
-		{
-			if (GetNextValue(pFile.get(), strVariable, strValue) == false) // It did not even find "NrStars".
-				return unsuccessfulReturn();
-
-			if (!strVariable.CompareNoCase(_T("OverallQuality")))
-				m_fOverallQuality = _ttof(strValue);
-			if (!strVariable.CompareNoCase(_T("Comet")))
-			{
-				// Parse value (X, Y)
-				int			nPos;
-				CString		strX, strY;
-
-				// Get X
-				nPos = strValue.Find(_T(","));
-				strX = strValue.Left(nPos);
-				strX.TrimLeft();
-				strX.TrimRight();
-				m_fXComet = _ttof(strX);
-
-				strValue = strValue.Right(strValue.GetLength()-nPos-1);
-				// Get Y
-				strY = strValue;
-				strY.TrimLeft();
-				strY.TrimRight();
-				m_fYComet = _ttof(strY);
-				m_bComet = true;
-			}
-			/*else if (!strVariable.CompareNoCase(_T("Width")))
-				m_lWidth = _ttol(strValue);
-			else if (!strVariable.CompareNoCase(_T("Height")))
-				m_lHeight = _ttol(strValue);
-			else if (!strVariable.CompareNoCase(_T("RedXShift")))
-				m_fRedXShift = _ttof(strValue);
-			else if (!strVariable.CompareNoCase(_T("RedYShift")))
-				m_fRedYShift = _ttof(strValue);
-			else if (!strVariable.CompareNoCase(_T("BlueXShift")))
-				m_fBlueXShift = _ttof(strValue);
-			else if (!strVariable.CompareNoCase(_T("BlueYShift")))
-				m_fBlueYShift = _ttof(strValue);*/
-			else if (!strVariable.CompareNoCase(_T("SkyBackground")))
-				m_SkyBackground.m_fLight = _ttof(strValue);
-			else if (!strVariable.CompareNoCase(_T("NrStars")))
-			{
-				lNrStars = _ttol(strValue);
-				bEnd = true;
-			};
-		};
-
-		const auto getValueString = [](const auto& string, const auto position) -> CString
-		{
-			auto valueString = string.Left(position);
-			valueString.TrimLeft();
-			valueString.TrimRight();
-			return valueString;
-		};
-
-		// Jump to the first [Star#]
-		if (GetNextValue(pFile.get(), strVariable, strValue) == false || strVariable.CompareNoCase(_T("Star#")) != 0) // Did not find "Star#".
+		if (GetNextValue(&fileIn, strVariable, strValue) == false) // It did not even find "NrStars".
 			return unsuccessfulReturn();
-		bEnd = false;
-		for (int i = 0; i < lNrStars && !bEnd; i++)
+
+		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
+			m_fOverallQuality = strValue.toDouble();
+
+		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
 		{
-			bool bNextStar = false;
-			CStar ms;
-			ms.m_fPercentage  = 0;
-			ms.m_fDeltaRadius = 0;
+			// Parse value (X, Y)
+			int nPos;
 
-			while (!bNextStar)
+			// Get X
+			nPos = strValue.indexOf(",");
+			m_fXComet = strValue.left(nPos).trimmed().toDouble();
+
+			// Get Y
+			m_fYComet = strValue.right(strValue.length() - nPos - 1).trimmed().toDouble();
+			m_bComet = true;
+		}
+		else if (0 == strVariable.compare("SkyBackground", Qt::CaseInsensitive))
+			m_SkyBackground.m_fLight = strValue.toDouble();
+		else if (0 == strVariable.compare("NrStars", Qt::CaseInsensitive))
+		{
+			lNrStars = strValue.toInt();
+			bEnd = true;
+		}
+	}
+
+	// Jump to the first [Star#]
+	if (GetNextValue(&fileIn, strVariable, strValue) == false || strVariable.compare("Star#", Qt::CaseInsensitive) != 0) // Did not find "Star#".
+		return unsuccessfulReturn();
+	bEnd = false;
+	for (int i = 0; i < lNrStars && !bEnd; i++)
+	{
+		bool bNextStar = false;
+		CStar ms;
+		ms.m_fPercentage  = 0;
+		ms.m_fDeltaRadius = 0;
+
+		while (!bNextStar)
+		{
+			GetNextValue(&fileIn, strVariable, strValue);
+			if (!strVariable.compare("Intensity", Qt::CaseInsensitive))
+				ms.m_fIntensity = strValue.toDouble();
+			else if (!strVariable.compare("Quality", Qt::CaseInsensitive))
+				ms.m_fQuality = strValue.toDouble();
+			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
+				ms.m_fMeanRadius = strValue.toDouble();
+			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))
 			{
-				GetNextValue(pFile.get(), strVariable, strValue);
-				if (!strVariable.CompareNoCase(_T("Intensity")))
-					ms.m_fIntensity = _ttof(strValue);
-				else if (!strVariable.CompareNoCase(_T("Quality")))
-					ms.m_fQuality = _ttof(strValue);
-				else if (!strVariable.CompareNoCase(_T("MeanRadius")))
-					ms.m_fMeanRadius = _ttof(strValue);
-				else if (!strVariable.CompareNoCase(_T("Rect")))
-				{
-					// Parse value (left, top, right, bottom)
-					// get Left
-					int nPos = strValue.Find(_T(","));
-					CString strCoord = getValueString(strValue, nPos);
-					const int left = _ttol(strCoord);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Top
-					nPos = strValue.Find(_T(","));
-					strCoord = getValueString(strValue, nPos);
-					const int top = _ttol(strCoord);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Right
-					nPos = strValue.Find(_T(","));
-					strCoord = getValueString(strValue, nPos);
-					const int right = _ttol(strCoord);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Bottom
-					strCoord = getValueString(strValue, strValue.GetLength());
-					const int bottom = _ttol(strCoord);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-
-					ms.m_rcStar.setCoords(left, top, right, bottom);
-				}
-				else if (!strVariable.CompareNoCase(_T("Axises")))
-				{
-					// Parse value (left, top, right, bottom)
-					// get Angle
-					int nPos = strValue.Find(_T(","));
-					CString strParams = getValueString(strValue, nPos);
-					ms.m_fMajorAxisAngle = _ttof(strParams);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Large Major
-					nPos = strValue.Find(_T(","));
-					strParams = getValueString(strValue, nPos);
-					ms.m_fLargeMajorAxis = _ttof(strParams);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Small Major
-					nPos = strValue.Find(_T(","));
-					strParams = getValueString(strValue, nPos);
-					ms.m_fSmallMajorAxis = _ttof(strParams);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Large Minor Axis
-					nPos = strValue.Find(_T(","));
-					strParams = getValueString(strValue, nPos);
-					ms.m_fLargeMinorAxis = _ttof(strParams);
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Small Minor Axis
-					strParams = getValueString(strValue, strValue.GetLength());
-					ms.m_fSmallMinorAxis = _ttof(strParams);
-				}
-				else if (!strVariable.CompareNoCase(_T("Center")))
-				{
-					// Parse value (X, Y)
-					// Get X
-					int nPos = strValue.Find(_T(","));
-					CString strX = getValueString(strValue, nPos);
-					ms.m_fX = _ttof(strX);
-
-					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// Get Y
-					CString strY = getValueString(strValue, strValue.GetLength());
-					ms.m_fY = _ttof(strY);
-				}
-				else
-				{
-					bEnd = strValue.IsEmpty();
-					bNextStar = !strVariable.CompareNoCase(_T("Star#")) || bEnd;
-				}
+				const QStringList items(strValue.split(","));
+				if(items.count() != 4)
+					return unsuccessfulReturn();
+				ms.m_rcStar.setCoords(items[0].toInt(), items[1].toInt(), items[2].toInt(), items[3].toInt());
 			}
+			else if (!strVariable.compare("Axises", Qt::CaseInsensitive))
+			{
+				const QStringList items(strValue.split(","));
+				if (items.count() != 5)
+					return unsuccessfulReturn();
 
-			if (ms.IsValid())
-				m_vStars.push_back(std::move(ms));
+				ms.m_fMajorAxisAngle = items[0].toDouble();
+				ms.m_fLargeMajorAxis = items[1].toDouble();
+				ms.m_fSmallMajorAxis = items[2].toDouble();
+				ms.m_fLargeMinorAxis = items[3].toDouble();
+				ms.m_fSmallMinorAxis = items[4].toDouble();
+			}
+			else if (!strVariable.compare("Center", Qt::CaseInsensitive))
+			{
+				const QStringList items(strValue.split(","));
+				if (items.count() != 2)
+					return unsuccessfulReturn();
+
+				ms.m_fX = items[0].toDouble();
+				ms.m_fY = items[1].toDouble();
+			}
+			else
+			{
+				bEnd = strValue.isEmpty();
+				bNextStar = !strVariable.compare("Star#", Qt::CaseInsensitive) || bEnd;
+			}
 		}
 
-		ComputeFWHM();
-
-		m_bInfoOk = true;
-		bResult = true;
+		if (ms.IsValid())
+			m_vStars.push_back(std::move(ms));
 	}
-	else
-		m_bInfoOk = false;
+
+	ComputeFWHM();
+
+	m_bInfoOk = true;
+	bResult = true;
 
 	return bResult;
 }
@@ -1508,7 +1429,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 				_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
 				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".info.txt"));
-				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
+				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName.GetString());
 			}
 
 			if (pProgress != nullptr)

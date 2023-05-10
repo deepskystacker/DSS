@@ -161,8 +161,8 @@ public :
 	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
 	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
 
-	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
-	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
+	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
+	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
 };
 
 /* ------------------------------------------------------------------- */
@@ -171,7 +171,7 @@ class CLightFrameInfo : public CFrameInfo,
 						public CRegisteredFrame
 {
 public:
-	CString m_strInfoFileName;
+	fs::path m_strInfoFileName;
 	bool m_bStartingFrame;
 	bool m_bTransformedCometPosition;
 
