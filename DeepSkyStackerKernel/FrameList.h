@@ -122,7 +122,6 @@ namespace DSS
 		void updateItemScores(const fs::path& fileName);
 
 		QString getReferenceFrame() const;
-		bool getReferenceFrame(CString& string) const;
 
 		void clearOffsets();
 
