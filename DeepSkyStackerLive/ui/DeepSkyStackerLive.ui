@@ -151,7 +151,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string comment="IDC_STATS">Pending: %ld - Registered: %ld - Stacked: %ld - Total exposure time: %s</string>
+             <string comment="IDC_STATS">Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</string>
             </property>
            </widget>
           </item>
