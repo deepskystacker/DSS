@@ -15,7 +15,7 @@ namespace DSS
 		ZASSERT(!folder.isEmpty());
 
 		folderToWatch = folder.toStdU16String();
-		for (auto& file : std::filesystem::directory_iterator(path_to_watch))
+		for (auto& file : fs::directory_iterator(path_to_watch))
 		{
 			//
 			// Only interested in reqular files.
@@ -23,7 +23,7 @@ namespace DSS
 			if (file.is_regular_file())
 			{
 				existing_.push_back(file);
-				paths_[file] = std::filesystem::last_write_time(file);
+				paths_[file] = fs::last_write_time(file);
 			}
 		}
 		emit existingFiles(existing_);
@@ -43,7 +43,7 @@ namespace DSS
 			auto it = paths_.begin();
 			while (it != paths_.end())
 			{
-				if (!std::filesystem::exists(it->first)) 
+				if (!fs::exists(it->first)) 
 				{
 					emit fileErased(it->first);
 					it = paths_.erase(it);
@@ -55,9 +55,9 @@ namespace DSS
 			}
 
 			// Check if a file was created or modified
-			for (auto& file : std::filesystem::directory_iterator(folderToWatch))
+			for (auto& file : fs::directory_iterator(folderToWatch))
 			{
-				auto current_file_last_write_time = std::filesystem::last_write_time(file);
+				auto current_file_last_write_time = fs::last_write_time(file);
 
 				if (!paths_.contains(file))
 				{
