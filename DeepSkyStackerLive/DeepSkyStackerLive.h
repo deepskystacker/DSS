@@ -111,6 +111,10 @@ private:
 
 private slots:
 	void setMonitoredFolder(const QString& link);
+	void monitorTriggered(bool checked);
+	void stackTriggered(bool checked);
+	void stopTriggered();
 
 };
 using DeepSkyStacker = DeepSkyStackerLive;
+using DSSLive = DeepSkyStackerLive;

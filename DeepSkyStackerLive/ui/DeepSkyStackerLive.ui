@@ -338,6 +338,9 @@
    </item>
   </layout>
   <action name="actionMonitor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/Monitor-Up.png</normaloff>
@@ -351,6 +354,9 @@
    </property>
   </action>
   <action name="actionStack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../resources.qrc">
      <normaloff>:/Stack-Up.png</normaloff>
@@ -366,8 +372,7 @@
   <action name="actionStop">
    <property name="icon">
     <iconset resource="../resources.qrc">
-     <normaloff>:/StopSign.png</normaloff>
-     <normalon>:/Stop.png</normalon>:/StopSign.png</iconset>
+     <normaloff>:/StopSign.png</normaloff>:/StopSign.png</iconset>
    </property>
    <property name="text">
     <string comment="IDC_STOP">Stop</string>

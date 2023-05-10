@@ -234,7 +234,13 @@ void DeepSkyStackerLive::showEvent(QShowEvent* event)
 void DeepSkyStackerLive::connectSignalsToSlots()
 {
 	connect(folderName, &QLabel::linkActivated,
-		this, &DeepSkyStackerLive::setMonitoredFolder);
+		this, &DSSLive::setMonitoredFolder);
+	connect(actionMonitor, &QAction::triggered,
+		this, &DSSLive::monitorTriggered);
+	connect(actionStack, &QAction::triggered,
+		this, &DSSLive::stackTriggered);
+	connect(actionStop, &QAction::triggered,
+		this, &DSSLive::stopTriggered);
 }
 
 /* ------------------------------------------------------------------- */
@@ -388,6 +394,25 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 }
 
 /* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
+{
+	qDebug() << "Monitor button pressed";
+}
+
+void DeepSkyStackerLive::stackTriggered(bool checked)
+{
+	qDebug() << "Stack button pressed"; 
+	actionMonitor->setChecked(checked);
+}
+
+void DeepSkyStackerLive::stopTriggered()
+{
+	qDebug() << "Stop button pressed";
+	actionMonitor->setChecked(false);
+	actionStack->setChecked(false);
+}
+
 
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
