@@ -1074,7 +1074,7 @@ bool CTIFFWriter::Open()
 bool CTIFFWriter::Write()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool		result = false;
+	bool		result = true;
 	bool		error = false;
 
 	//
