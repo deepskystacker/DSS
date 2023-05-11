@@ -380,7 +380,7 @@ void ExplorerBar::onSaveSettings()
 	{
 		if (a == saveLiveSettings)
 		{
-			// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+			// Save the DSSLive setting file to the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 			QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
 			fs::path fileName(directory.toStdU16String());
