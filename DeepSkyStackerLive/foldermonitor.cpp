@@ -15,7 +15,7 @@ namespace DSS
 		ZASSERT(!folder.isEmpty());
 
 		folderToWatch = folder.toStdU16String();
-		for (auto& file : fs::directory_iterator(path_to_watch))
+		for (auto& file : fs::directory_iterator(folderToWatch))
 		{
 			//
 			// Only interested in reqular files.
