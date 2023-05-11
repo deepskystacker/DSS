@@ -1,5 +1,5 @@
 
-#include <stdafx.h>
+#include "stdafx.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"
@@ -664,15 +664,13 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
 		{
 			// Parse value (X, Y)
-			int nPos;
-
-			// Get X
-			nPos = strValue.indexOf(",");
-			m_fXComet = strValue.left(nPos).trimmed().toDouble();
-
-			// Get Y
-			m_fYComet = strValue.right(strValue.length() - nPos - 1).trimmed().toDouble();
-			m_bComet = true;
+			const QStringList items(strValue.split(","));
+			if (items.count() == 2)
+			{
+				m_fXComet = items[0].toDouble();
+				m_fXComet = items[1].toDouble();
+				m_bComet = true;
+			}
 		}
 		else if (0 == strVariable.compare("SkyBackground", Qt::CaseInsensitive))
 			m_SkyBackground.m_fLight = strValue.toDouble();
@@ -1255,33 +1253,27 @@ CRegisterEngine::CRegisterEngine()
 	m_bSaveCalibratedDebayered = CAllStackingTasks::GetSaveCalibratedDebayered();
 }
 
-bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, CString& strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, QString& strCalibratedFile)
 {
 	bool bResult = false;
 
 	if (!lfi.filePath.empty() && static_cast<bool>(pBitmap))
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(lfi.filePath);
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
 
-		const auto fileName = lfi.filePath.generic_wstring(); // Otherwise c_str() could be a dangling pointer.
-		_tsplitpath(fileName.c_str(), szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
-		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += _T(".cal.tif");
+		if ((m_IntermediateFileFormat == IFF_TIFF))
+		{
+			strCalibratedFile = strPath + strBaseName + ".cal.tif";
+		}
 		else
 		{
-			QString strExt;
-			GetFITSExtension(lfi.filePath, strExt);
-			strOutputFile += ".cal"+CString(strExt.toStdWString().c_str());
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strCalibratedFile = strPath + strBaseName + ".cal" + strFitsExt;
 		}
-
-		strCalibratedFile = strOutputFile;
+		strCalibratedFile = QDir::toNativeSeparators(strCalibratedFile);
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap;
 
@@ -1306,15 +1298,15 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 
 		if (pProgress)
 		{
-			const QString strText(QCoreApplication::translate("RegisterEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("RegisterEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(strCalibratedFile));
 			pProgress->Start2(strText, 0);
 		}
 
 		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.GetString(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
+			bResult = WriteTIFF(strCalibratedFile.toStdWString().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile.GetString(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
+			bResult = WriteFITS(strCalibratedFile.toStdWString().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1410,7 +1402,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			// Apply offset, dark and flat to lightframe
 			MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
 
-			CString strCalibratedFile;
+			QString strCalibratedFile;
 
 			if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
 				SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
@@ -1420,16 +1412,12 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			lfInfo->RegisterPicture(pBitmap.get());
 			lfInfo->SaveRegisteringInfo();
 
-			if (strCalibratedFile.GetLength())
+			if (strCalibratedFile.length())
 			{
-				CString strInfoFileName;
-				TCHAR szDrive[1 + _MAX_DRIVE];
-				TCHAR szDir[1 + _MAX_DIR];
-				TCHAR szFile[1 + _MAX_FNAME];
-
-				_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
-				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".info.txt"));
-				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName.GetString());
+				const QFileInfo fileInfo(strCalibratedFile);
+				const QString strInfoFileName = QFileInfo(strCalibratedFile).path() + QDir::separator() + QFileInfo(strCalibratedFile).baseName() + ".info.txt";
+				const fs::path strInfoFilePath(QDir::toNativeSeparators(strInfoFileName).toStdWString().c_str());
+				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFilePath);
 			}
 
 			if (pProgress != nullptr)
