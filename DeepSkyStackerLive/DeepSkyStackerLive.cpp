@@ -277,6 +277,17 @@ void DeepSkyStackerLive::onInitialise()
 		folderName->setText(dir);
 	settings.endGroup();
 
+	//
+	// Before any messages are written to the log, reduce the line spacing a bit
+	// and reduce the font size by one
+	//
+	QTextBlockFormat bf = messageLog->textCursor().blockFormat();
+	bf.setLineHeight(85, QTextBlockFormat::ProportionalHeight);
+	messageLog->textCursor().setBlockFormat(bf);
+	QFont font{ messageLog->currentFont() };
+	font.setPointSize(font.pointSize() - 1); font.setWeight(QFont::Medium);
+	messageLog->setFont(font);
+
 	writeToLog(baseTitle, true, true);
 	writeToLog("\n");
 
@@ -289,17 +300,17 @@ void DeepSkyStackerLive::onInitialise()
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 2\nClick on the Monitor button to start monitoring the folder\n"
-		"When the monitoring is on incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
+		"When monitoring is active incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 3\nTo start stacking the images click on the Stack button\n"
-		"At this point all the incoming(and previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
+		"At this point all the incoming (and all previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"You can pause/start again the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
+		"You can pause/restart the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"To stop the monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
+		"To stop monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
 		false, false, false);
 
 	makeLinks();
@@ -405,7 +416,7 @@ void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]
 		QDateTime now{ QDateTime::currentDateTime() };
 		QString ts{ now.toString("yyyy-MM-dd hh:mm:ss") };
 		ts += " - ";
-		messageLog->setFontWeight(QFont::Normal);
+		messageLog->setFontWeight(QFont::Medium);
 		messageLog->setFontItalic(false);
 
 		messageLog->insertPlainText(ts);
@@ -415,7 +426,7 @@ void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]
 	if (bold)
 		messageLog->setFontWeight(QFont::Bold);
 	else
-		messageLog->setFontWeight(QFont::Normal);
+		messageLog->setFontWeight(QFont::Medium);
 	messageLog->setFontItalic(italic);
 
 	messageLog->insertPlainText(message);

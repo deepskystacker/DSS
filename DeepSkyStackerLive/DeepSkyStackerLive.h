@@ -70,7 +70,7 @@ public:
 	DeepSkyStackerLive& operator=(DeepSkyStackerLive&& rhs) = delete;
 
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
-	void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(Qt::black));
+	void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
 
 	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
 
@@ -92,7 +92,7 @@ protected slots:
 	// void updateStatus(const QString& text);
 	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
 	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
-	void writeLogMessage(const QString& message, bool addTimeStamp, bool bold, bool italic, QColor colour = QColor(Qt::black));
+	void writeLogMessage(const QString& message, bool addTimeStamp, bool bold, bool italic, QColor colour);
 
 private:
 	bool initialised;
