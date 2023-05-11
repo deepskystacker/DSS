@@ -59,6 +59,7 @@
 #include <ztrace.h>
 #include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
 #include "tracecontrol.h"
+#include "Workspace.h"
 
 using namespace DSS;
 using namespace std;
@@ -331,6 +332,17 @@ void DeepSkyStackerLive::onInitialise()
 
 	restoreGeometry(geometry);
 	settings.endGroup();
+
+	Workspace workspace;
+	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+	QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+	fs::path fileName(directory.toStdU16String());
+	create_directories(fileName);		// In case they don't exist
+
+	fileName /= "DSSLive.settings";		// Append the filename with a path separator
+	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
+	workspace.ReadFromFile(fileName);
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
