@@ -353,7 +353,7 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress, CString& strCalibratedFile);
+	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress, QString& strCalibratedFile);
 
 public :
 	CRegisterEngine();
