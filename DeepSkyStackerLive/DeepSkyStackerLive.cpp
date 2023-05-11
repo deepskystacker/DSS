@@ -216,6 +216,23 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 
 /* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::keyPressEvent(QKeyEvent* event)
+{
+	if (Qt::Key_F1)
+	{
+		event->setAccepted(true);		// Set that we've handled the event. 
+		CallHelp();
+	}
+	else
+	{
+		event->setAccepted(false);
+	}
+	Inherited::keyPressEvent(event);
+
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::showEvent(QShowEvent* event)
 {
 	if (!event->spontaneous())
@@ -343,6 +360,8 @@ void DeepSkyStackerLive::onInitialise()
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
 	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
 	workspace.ReadFromFile(fileName);
+
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -500,7 +519,6 @@ void DeepSkyStackerLive::stopTriggered()
 	actionStack->setChecked(false);
 }
 
-
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
@@ -626,3 +644,13 @@ int main(int argc, char* argv[])
 };
 
 /* ------------------------------------------------------------------- */
+
+#include <htmlhelp.h>
+void DeepSkyStackerLive::CallHelp()
+{
+	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE")};
+
+	QString directory = QCoreApplication::applicationDirPath();
+
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}

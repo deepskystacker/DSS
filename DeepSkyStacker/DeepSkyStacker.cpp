@@ -298,6 +298,22 @@ void DeepSkyStacker::dropEvent(QDropEvent* e)
 	stackingDlg->dropFiles(e);
 }
 
+void DeepSkyStacker::keyPressEvent(QKeyEvent* event)
+{
+	if (Qt::Key_F1)
+	{
+		event->setAccepted(true);		// Set that we've handled the event. 
+		CallHelp();
+	}
+	else
+	{
+		event->setAccepted(false);
+	}
+	Inherited::keyPressEvent(event);
+
+}
+
+/* ------------------------------------------------------------------- */
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
 	if (!event->spontaneous())
@@ -444,6 +460,7 @@ void DeepSkyStacker::onInitialise()
 				tr("%1 does not exist or is not a file").arg(name));
 	}
 
+	setFocusPolicy(Qt::StrongFocus);
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
@@ -1106,7 +1123,21 @@ int main(int argc, char* argv[])
 	theApp.ExitInstance();
 	return result;
 }
+
 /* ------------------------------------------------------------------- */
+
+#include <htmlhelp.h>
+void DeepSkyStacker::CallHelp()
+{
+	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+
+	QString directory = QCoreApplication::applicationDirPath();
+
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}
+
+/* ------------------------------------------------------------------- */
+
 void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath)
 {
 	ZFUNCTRACE_RUNTIME();

@@ -83,10 +83,12 @@ public:
 
 
 protected:
+	void keyPressEvent(QKeyEvent* e) override;
 	void closeEvent(QCloseEvent* e) override;
 	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();
+	void CallHelp();
 
 protected slots:
 	// void updateStatus(const QString& text);

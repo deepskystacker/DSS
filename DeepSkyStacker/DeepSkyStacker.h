@@ -86,11 +86,13 @@ private:
 	void updateTab();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 	void connectSignalsToSlots();
+	void CallHelp();
 
 protected:
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e);
 	void dropEvent(QDropEvent* e);
+	void keyPressEvent(QKeyEvent* event);
 	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();

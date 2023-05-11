@@ -439,7 +439,7 @@ void ExplorerBar::onHelp()
 	//
 	// Invoking HtmlHelp works fine on Windows but ...
 	//
-	::HtmlHelp(::GetDesktopWindow(), CString((wchar_t*)helpFile.utf16()), HH_DISPLAY_TOPIC, 0);
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
 
 void ExplorerBar::onToggleDeletion()
