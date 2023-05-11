@@ -278,26 +278,28 @@ void DeepSkyStackerLive::onInitialise()
 	settings.endGroup();
 
 	writeToLog(baseTitle, true, true);
+	writeToLog("\n");
+
 
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"\nHow to use  DeepSkyStacker Live ?", "IDS_LOG_STARTING"),
+		"\nHow to use  DeepSkyStacker Live ?\n", "IDS_LOG_STARTING"),
 		false, true, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"Step 1\nCheck the Settings tabs for all the stacking and warning settings\n", "IDS_LOG_STARTING_1"),
+		"Step 1\nCheck the Settings tabs for all the stacking and warning settings\n\n", "IDS_LOG_STARTING_1"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 2\nClick on the Monitor button to start monitoring the folder\n"
-		"When the monitoring is on incoming images are only registered but not stacked.\n", "IDS_LOG_STARTING_2"),
+		"When the monitoring is on incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 3\nTo start stacking the images click on the Stack button\n"
-		"At this point all the incoming(and previously registered) images will be stacked.", "IDS_LOG_STARTING_3"),
+		"At this point all the incoming(and previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"You can pause/start again the stacking process by clicking on the Stack button.", "IDS_LOG_STARTING_4"),
+		"You can pause/start again the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
 		false, false, false);
 	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
-		"To stop the monitoring and stacking click on the Stop button.\n", "IDS_LOG_STARTING_5"),
+		"To stop the monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
 		false, false, false);
 
 	makeLinks();
@@ -395,24 +397,27 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 
 void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]] bool addTimeStamp, bool bold, bool italic, QColor colour)
 {
-	if (bold)
-		messageLog->setFontWeight(QFont::Bold);
-	else
-		messageLog->setFontWeight(QFont::Normal);
-
-	messageLog->setFontItalic(italic);
-	messageLog->setTextColor(colour);
+	messageLog->moveCursor(QTextCursor::End);
 	if (addTimeStamp)
 	{
 		QDateTime now{ QDateTime::currentDateTime() };
 		QString ts{ now.toString("yyyy-MM-dd hh:mm:ss") };
-		ts += " " + message;
-		messageLog->append(ts);
+		ts += " ";
+		messageLog->setFontWeight(QFont::Normal);
+		messageLog->setFontItalic(false);
+
+		messageLog->insertPlainText(ts);
+		messageLog->moveCursor(QTextCursor::End);
 	}
+
+	if (bold)
+		messageLog->setFontWeight(QFont::Bold);
 	else
-	{
-		messageLog->append(message);
-	}
+		messageLog->setFontWeight(QFont::Normal);
+	messageLog->setFontItalic(italic);
+	messageLog->setTextColor(colour);
+
+	messageLog->insertPlainText(message);
 }
 
 
