@@ -398,11 +398,13 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]] bool addTimeStamp, bool bold, bool italic, QColor colour)
 {
 	messageLog->moveCursor(QTextCursor::End);
+	messageLog->setTextColor(colour);
+
 	if (addTimeStamp)
 	{
 		QDateTime now{ QDateTime::currentDateTime() };
 		QString ts{ now.toString("yyyy-MM-dd hh:mm:ss") };
-		ts += " ";
+		ts += " - ";
 		messageLog->setFontWeight(QFont::Normal);
 		messageLog->setFontItalic(false);
 
@@ -415,7 +417,6 @@ void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]
 	else
 		messageLog->setFontWeight(QFont::Normal);
 	messageLog->setFontItalic(italic);
-	messageLog->setTextColor(colour);
 
 	messageLog->insertPlainText(message);
 }
