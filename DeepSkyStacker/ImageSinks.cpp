@@ -594,7 +594,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 		strInfoFileName += szFile;
 		strInfoFileName += _T(".info.txt");
 
-		regFrame.SaveRegisteringInfo(strInfoFileName);
+		regFrame.SaveRegisteringInfo(strInfoFileName.GetString());
 
 		m_bDirty = false;
 	};
