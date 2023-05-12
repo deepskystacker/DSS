@@ -37,6 +37,8 @@
 //
 
 #include <stdafx.h>
+#include <htmlhelp.h>
+
 #include <source_location>
 
 #include <QErrorMessage>
@@ -175,6 +177,7 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
 	linkColour{ palette().color(QPalette::ColorRole::Link).name() },
 	stackedImageViewer {nullptr},
 	lastImageViewer {nullptr}
@@ -184,6 +187,11 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	//
 	dssInstance = this;
 	setupUi(this);
+
+	//
+	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
+	//
+	helpShortCut->setContext(Qt::ApplicationShortcut);
 }
 
 DeepSkyStackerLive::~DeepSkyStackerLive()
@@ -216,23 +224,6 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::keyPressEvent(QKeyEvent* event)
-{
-	if (Qt::Key_F1)
-	{
-		event->setAccepted(true);		// Set that we've handled the event. 
-		CallHelp();
-	}
-	else
-	{
-		event->setAccepted(false);
-	}
-	Inherited::keyPressEvent(event);
-
-}
-
-/* ------------------------------------------------------------------- */
-
 void DeepSkyStackerLive::showEvent(QShowEvent* event)
 {
 	if (!event->spontaneous())
@@ -251,6 +242,8 @@ void DeepSkyStackerLive::showEvent(QShowEvent* event)
 
 void DeepSkyStackerLive::connectSignalsToSlots()
 {
+	connect(helpShortCut, &QShortcut::activated,
+		this, &DeepSkyStacker::help);
 	connect(folderName, &QLabel::linkActivated,
 		this, &DSSLive::setMonitoredFolder);
 	connect(actionMonitor, &QAction::triggered,
@@ -360,8 +353,6 @@ void DeepSkyStackerLive::onInitialise()
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
 	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
 	workspace.ReadFromFile(fileName);
-
-	setFocusPolicy(Qt::StrongFocus);
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -396,6 +387,18 @@ void DeepSkyStackerLive::writeToLog(const QString& message, bool addTS, bool bol
 /* ------------------------------------------------------------------- */
 /* Slots                                                               */
 /* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::help()
+{
+	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+
+	QString directory = QCoreApplication::applicationDirPath();
+
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
@@ -644,13 +647,3 @@ int main(int argc, char* argv[])
 };
 
 /* ------------------------------------------------------------------- */
-
-#include <htmlhelp.h>
-void DeepSkyStackerLive::CallHelp()
-{
-	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE")};
-
-	QString directory = QCoreApplication::applicationDirPath();
-
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
-}

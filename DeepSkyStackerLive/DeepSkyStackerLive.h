@@ -83,12 +83,13 @@ public:
 
 
 protected:
-	void keyPressEvent(QKeyEvent* e) override;
 	void closeEvent(QCloseEvent* e) override;
 	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();
-	void CallHelp();
+
+public slots:
+	void help();
 
 protected slots:
 	// void updateStatus(const QString& text);
@@ -105,6 +106,7 @@ private:
 	QString baseTitle;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
+	QShortcut* helpShortCut;
 	QString linkColour;
 	DSS::ImageViewer* stackedImageViewer;
 	DSS::ImageViewer* lastImageViewer;

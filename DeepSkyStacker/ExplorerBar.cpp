@@ -65,6 +65,8 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 
 	makeLinks();
 
+	connect(ui->help, &QLabel::linkActivated, DeepSkyStacker::instance(), &DeepSkyStacker::help);
+
 	raise();
 	show();
 	activateWindow();
@@ -429,17 +431,6 @@ void ExplorerBar::onAbout()
 	About dlg(this);
 
 	dlg.exec();
-}
-
-void ExplorerBar::onHelp()
-{
-	QString helpFile = QCoreApplication::applicationDirPath() + 
-		"/" + tr("DeepSkyStacker Help.chm", "IDS_HELPFILE");
-
-	//
-	// Invoking HtmlHelp works fine on Windows but ...
-	//
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
 
 void ExplorerBar::onToggleDeletion()

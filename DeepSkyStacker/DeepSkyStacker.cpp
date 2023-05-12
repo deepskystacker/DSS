@@ -36,6 +36,8 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
+#include <htmlhelp.h>
+
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -202,9 +204,14 @@ DeepSkyStacker::DeepSkyStacker() :
 	m_DeepStack{ std::make_unique<CDeepStack>() },
 	m_ImageProcessingSettings{ std::make_unique<CDSSSettings>() },
 	errorMessageDialog{ new QErrorMessage(this) },
-	eMDI{ nullptr }		// errorMessageDialogIcon pointer
+	eMDI{ nullptr },		// errorMessageDialogIcon pointer
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
+	//
+	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
 }
@@ -213,17 +220,11 @@ DeepSkyStacker::~DeepSkyStacker()
 {
 }
 
-
 void DeepSkyStacker::createStatusBar()
 {
 	statusBarText->setAlignment(Qt::AlignHCenter);
 	statusBar()->addWidget(statusBarText, 1);
 	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
-}
-
-void DeepSkyStacker::updateStatus(const QString& text)
-{
-	statusBarText->setText(text);
 }
 
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -245,43 +246,7 @@ void DeepSkyStacker::reportError(const QString& message, const QString& type, Se
 	}
 }
 
-
-void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
-{
-	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
-	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
-}
-
-void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
-{
-	//
-	// Hack to access the Icon displayed by QErrorMessage
-	//
-	if (nullptr == eMDI)
-	{
-		eMDI = errorMessageDialog->findChild<QLabel*>();
-	}
-
-	if (eMDI != nullptr)
-	{
-		switch (icon)
-		{
-		case (QMessageBox::Information):
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
-			break;
-		case (QMessageBox::Critical):
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
-			break;
-		case (QMessageBox::Warning):
-		default:
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
-			break;
-		}
-	}
-	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
-}
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
 {
@@ -296,21 +261,6 @@ void DeepSkyStacker::dropEvent(QDropEvent* e)
 	activateWindow();
 
 	stackingDlg->dropFiles(e);
-}
-
-void DeepSkyStacker::keyPressEvent(QKeyEvent* event)
-{
-	if (Qt::Key_F1)
-	{
-		event->setAccepted(true);		// Set that we've handled the event. 
-		CallHelp();
-	}
-	else
-	{
-		event->setAccepted(false);
-	}
-	Inherited::keyPressEvent(event);
-
 }
 
 /* ------------------------------------------------------------------- */
@@ -330,6 +280,7 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
+	connect(helpShortCut, &QShortcut::activated, this, &DeepSkyStacker::help);
 	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
 
 	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
@@ -460,7 +411,6 @@ void DeepSkyStacker::onInitialise()
 				tr("%1 does not exist or is not a file").arg(name));
 	}
 
-	setFocusPolicy(Qt::StrongFocus);
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
@@ -598,6 +548,67 @@ void DeepSkyStacker::updateTab()
 	};
 	explorerBar->update();
 };
+
+/* ------------------------------------------------------------------- */
+/* Slots                                                               */
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::help()
+{
+	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+
+	QString directory = QCoreApplication::applicationDirPath();
+
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
+{
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
+	msgBox.exec();
+	if (terminate) QCoreApplication::exit(1);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
+{
+	//
+	// Hack to access the Icon displayed by QErrorMessage
+	//
+	if (nullptr == eMDI)
+	{
+		eMDI = errorMessageDialog->findChild<QLabel*>();
+	}
+
+	if (eMDI != nullptr)
+	{
+		switch (icon)
+		{
+		case (QMessageBox::Information):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+			break;
+		case (QMessageBox::Critical):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
+			break;
+		case (QMessageBox::Warning):
+		default:
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+			break;
+		}
+	}
+	errorMessageDialog->showMessage(message, type);
+	if (terminate) QCoreApplication::exit(1);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
 
 BOOL DeepSkyStackerApp::InitInstance()
 {
@@ -1122,18 +1133,6 @@ int main(int argc, char* argv[])
 #endif
 	theApp.ExitInstance();
 	return result;
-}
-
-/* ------------------------------------------------------------------- */
-
-#include <htmlhelp.h>
-void DeepSkyStacker::CallHelp()
-{
-	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-
-	QString directory = QCoreApplication::applicationDirPath();
-
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
 
 /* ------------------------------------------------------------------- */
