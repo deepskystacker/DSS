@@ -555,9 +555,8 @@ void DeepSkyStacker::updateTab()
 
 void DeepSkyStacker::help()
 {
+	ZFUNCTRACE_RUNTIME();
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-
-	QString directory = QCoreApplication::applicationDirPath();
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
