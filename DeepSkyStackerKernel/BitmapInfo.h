@@ -73,6 +73,7 @@ public:
 	CBitmapInfo();
 	CBitmapInfo(const CBitmapInfo& bi);
 	CBitmapInfo(LPCTSTR szFileName);
+	CBitmapInfo(const fs::path& szFileName);
 
 	virtual ~CBitmapInfo() = default;
 

@@ -899,7 +899,7 @@ namespace { // Only use in this .cpp file
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
+bool IsRAWPicture(const fs::path& szFileName, QString& strModel)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -916,7 +916,7 @@ bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool IsRAWPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -926,7 +926,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 	if (bResult)
 	{
-		BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName.wstring().c_str());
 		BitmapInfo.m_strFileType	 = "RAW";
 		if (dcr.IsColorRAW())
 			BitmapInfo.m_CFAType	 = CFATYPE_NONE;

@@ -136,7 +136,7 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 
 		for (size_t i = 0; i < pTask->m_vBitmaps.size(); i++)
 		{
-			const QString strFile(QString("%s[%s]").arg(pTask->m_vBitmaps[i].filePath.native().c_str()).arg(pTask->m_vBitmaps[i].m_strDateTime));
+			const QString strFile(QString("%1[%2]").arg(pTask->m_vBitmaps[i].filePath.u8string().c_str()).arg(pTask->m_vBitmaps[i].m_strDateTime));
 			m_vFiles.push_back(strFile.toStdWString().c_str());
 
 			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.left(4) == "FITS"))

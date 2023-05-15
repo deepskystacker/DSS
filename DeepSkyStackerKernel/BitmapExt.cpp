@@ -975,8 +975,14 @@ namespace big_endian {
 
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
+	const fs::path strFilename(szFileName);
+	return GetPictureInfo(strFilename, BitmapInfo);
+}
+bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
+{
 	ZFUNCTRACE_RUNTIME();
-	QString name{ QString::fromWCharArray(szFileName) };
+
+	const QString name = QString::fromWCharArray(szFileName.wstring().c_str());
 
 	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
 	bool bResult = false;
@@ -1786,6 +1792,12 @@ CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
 {
 	Init();
 	m_strFileName = QString::fromWCharArray(szFileName);
+}
+
+CBitmapInfo::CBitmapInfo(const fs::path& szFileName)
+{
+	Init();
+	m_strFileName = QString::fromWCharArray(szFileName.wstring().c_str());
 }
 
 void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)

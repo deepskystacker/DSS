@@ -159,6 +159,17 @@ protected :
 			AddVariable(szVariable, strValue.toStdWString().c_str());
 		};
 	};
+	void	AddFileVariable(LPCTSTR szVariable, const fs::path& szFileName)
+	{
+		CBitmapInfo		bmpInfo;
+
+		// Retrieve the date and time of creation and append it to the file name
+		if (GetPictureInfo(szFileName, bmpInfo))
+		{
+			QString strValue = QString("%1[%2]").arg(szFileName.c_str(), bmpInfo.m_strDateTime);
+			AddVariable(szVariable, strValue.toStdWString().c_str());
+		};
+	};
 
 	void	AddRAWSettings()
 	{
@@ -216,7 +227,7 @@ public :
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
-		if (pTask && pTask->m_strOutputFile.GetLength())
+		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
 	};
 };
@@ -238,12 +249,12 @@ public :
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
-		if (pTask && pTask->m_strOutputFile.GetLength())
+		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
 	};
 	void	SetMasterDarkFlat(CTaskInfo * pTask)
 	{
-		if (pTask && pTask->m_strOutputFile.GetLength())
+		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable(_T("MasterDarkFlat"), pTask->m_strOutputFile);
 	};
 };

@@ -2611,418 +2611,396 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 {
 	ZFUNCTRACE_RUNTIME();
 
-	COutputSettings		OutputSettings;
-	CString				strOutputFile = szOutputFile;
-
+	COutputSettings	OutputSettings;
 	tasks.GetOutputSettings(OutputSettings);
+	if (!OutputSettings.m_bOutputHTML)
+		return;
 
-	if (OutputSettings.m_bOutputHTML)
+	const QFileInfo fileInfo(QString::fromWCharArray(szOutputFile));
+	const QString strOutputFile(QString("%1%2%3.html").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName()));
+
+	QFile file(strOutputFile);
+	if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
+		return;
+	QTextStream stream(&file);
+
+	QString strTempText;
+
+	stream << "<html>" << Qt::endl;
+	stream << "<head>" << Qt::endl;
+	stream << "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">";
+	stream << "<title>DeepSkyStacker - " << fileInfo.baseName() << "</title>";
+	stream << "</head>" << Qt::endl;
+	stream << "<body>" << Qt::endl;
+	stream << "-> " << fileInfo.baseName() << "<br><br>" << Qt::endl;
+
+	// Stacking Mode
+	stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
+	switch (tasks.getStackingMode())
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
+	case SM_NORMAL :
+		stream << QCoreApplication::translate("StackRecap", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
+		break;
+	case SM_MOSAIC :
+		stream << QCoreApplication::translate("StackRecap", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
+		break;
+	case SM_INTERSECTION :
+		stream << QCoreApplication::translate("StackRecap", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
+		break;
+	case SM_CUSTOM :
+		stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
+		break;
+	};
 
-		_tsplitpath(szOutputFile, szDrive, szDir, szName, nullptr);
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
-		strOutputFile += _T(".html");
+	stream << "<br>";
 
-		QFile file(QString::fromWCharArray(strOutputFile.GetString()));
-		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
-			return;
-		QTextStream stream(&file);
+	// Alignment method
+	stream << QCoreApplication::translate("StackRecap", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
 
+	switch (tasks.GetAlignmentMethod())
+	{
+	case 0 :
+	case 1 :
+		stream << QCoreApplication::translate("StackRecap", "Automatic", "IDS_ALIGN_AUTO");
+		break;
+	case 2 :
+		stream << QCoreApplication::translate("StackRecap", "Bilinear", "IDS_ALIGN_BILINEAR");
+		break;
+	case 3 :
+		stream << QCoreApplication::translate("StackRecap", "Bisquared", "IDS_ALIGN_BISQUARED");
+		break;
+	case 4 :
+		stream << QCoreApplication::translate("StackRecap", "Bicubic", "IDS_ALIGN_BICUBIC");
+		break;
+	case 5 :
+		stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
+		break;
+	};
+	stream << "<br>" << Qt::endl;
+
+	// Drizzle ?
+	const int dwDrizzle = tasks.GetPixelSizeMultiplier();
+	if (dwDrizzle > 1)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
+		stream << "<br>" << Qt::endl;
+	};
+
+	// Comet
+	if (tasks.IsCometAvailable())
+	{
+		COMETSTACKINGMODE	CometStackingMode;
+
+		CometStackingMode = tasks.GetCometStackingMode();
+		stream << QCoreApplication::translate("StackRecap", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
+		switch (CometStackingMode)
 		{
-			QString strTempText;
+		case CSM_STANDARD :
+			stream << QCoreApplication::translate("StackRecap", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
+			break;
+		case CSM_COMETONLY :
+			stream << QCoreApplication::translate("StackRecap", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
+			break;
+		case CSM_COMETSTAR :
+			stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
+			break;
+		};
+		stream << "<br>" << Qt::endl;
+	};
 
-			_tsplitpath(strOutputFile, nullptr, nullptr, szName, nullptr);
+	// Post calibration settings
+	CPostCalibrationSettings		pcs;
 
-			stream << "<html>" << Qt::endl;
+	tasks.GetPostCalibrationSettings(pcs);
+	if (pcs.m_bHot)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
+		stream << "<br>" << Qt::endl;
+	};
+	if (pcs.m_bCold)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
+		stream << "<br>" << Qt::endl;
+	};
 
-			stream << "<head>" << Qt::endl;
-			stream << "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">";
-			stream << "<title>DeepSkyStacker - " << szName << "</title>";
-			stream << "</head>" << Qt::endl;
+	if (pcs.m_bHot || pcs.m_bCold)
+		stream << "<br><br>";
 
+	// Now the list of tasks
+	int				i, j;
+	int				lTotalExposure = 0;
+	QString				strBackgroundCalibration;
+	QString				strPerChannelBackgroundCalibration;
+	QString				strExposure;
+	QString				strISOGainValue;
+	QString				strISOGainText;
+	QString				strISOText;
+	QString				strGainText;
+	QString				strYesNo;
+	QString strYes(QCoreApplication::translate("StackingEngine", "Yes", "IDS_YES"));
+	QString strNo(QCoreApplication::translate("StackingEngine", "No", "IDS_NO"));
+	BACKGROUNDCALIBRATIONMODE	CalibrationMode;
 
-			stream << "<body>" << Qt::endl;
-			stream << "-> " << szName << "<br><br>" << Qt::endl;
+	CalibrationMode = tasks.GetBackgroundCalibrationMode();
 
-			// Stacking Mode
-			stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
-			switch (tasks.getStackingMode())
+	strISOText = QCoreApplication::translate("StackRecap", "ISO", "IDS_ISO");
+	strGainText = QCoreApplication::translate("StackRecap", "Gain", "IDS_GAIN");
+	strBackgroundCalibration = QCoreApplication::translate("StackRecap", "RGB Channels Background Calibration: %1", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
+	strPerChannelBackgroundCalibration = QCoreApplication::translate("StackRecap", "Per Channel Background Calibration: %1", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
+
+	for (i = 0;i<tasks.m_vStacks.size();i++)
+	{
+		CStackingInfo& si = tasks.m_vStacks[i];
+
+		if (si.m_pLightTask)
+		{
+			stream << "<table border='1px' cellspacing=0 cellpadding=5 width=100%%><tr><td>";
+			int			lTaskExposure = 0;
+
+			for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
+				lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
+
+			lTotalExposure += lTaskExposure;
+
+			strExposure = exposureToString(lTaskExposure);
+			GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+			QString strText(QCoreApplication::translate("StackRecap", "Stacking step %1<br>  ->%2 frames (%3: %4) - total exposure: ",
+				"IDS_RECAP_STEP")
+							.arg(i + 1)
+							.arg(si.m_pLightTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue));
+
+			stream << "<a href=\"#Task" << i << "\">" << strText << "</a>";
+			stream << strExposure << "<br>";
+			stream << "<ul>" << strBackgroundCalibration << "<br>" << strPerChannelBackgroundCalibration << "</ul>";
+
+			if (si.m_pLightTask->m_vBitmaps.size()>1)
 			{
-			case SM_NORMAL :
-				stream << QCoreApplication::translate("StackRecap", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
-				break;
-			case SM_MOSAIC :
-				stream << QCoreApplication::translate("StackRecap", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
-				break;
-			case SM_INTERSECTION :
-				stream << QCoreApplication::translate("StackRecap", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
-				break;
-			case SM_CUSTOM :
-				stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
-				break;
-			};
+				FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);						
+				stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
 
-			stream << "<br>";
-
-			// Alignment method
-			stream << QCoreApplication::translate("StackRecap", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
-
-			switch (tasks.GetAlignmentMethod())
-			{
-			case 0 :
-			case 1 :
-				stream << QCoreApplication::translate("StackRecap", "Automatic", "IDS_ALIGN_AUTO");
-				break;
-			case 2 :
-				stream << QCoreApplication::translate("StackRecap", "Bilinear", "IDS_ALIGN_BILINEAR");
-				break;
-			case 3 :
-				stream << QCoreApplication::translate("StackRecap", "Bisquared", "IDS_ALIGN_BISQUARED");
-				break;
-			case 4 :
-				stream << QCoreApplication::translate("StackRecap", "Bicubic", "IDS_ALIGN_BICUBIC");
-				break;
-			case 5 :
-				stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
-				break;
-			};
-			stream << "<br>" << Qt::endl;
-
-			// Drizzle ?
-			const int dwDrizzle = tasks.GetPixelSizeMultiplier();
-			if (dwDrizzle > 1)
-			{
-				stream << QCoreApplication::translate("StackRecap", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
-				stream << "<br>" << Qt::endl;
-			};
-
-			// Comet
-			if (tasks.IsCometAvailable())
-			{
-				COMETSTACKINGMODE	CometStackingMode;
-
-				CometStackingMode = tasks.GetCometStackingMode();
-				stream << QCoreApplication::translate("StackRecap", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
-				switch (CometStackingMode)
+				if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
+					(IsRawBayer() || IsFITSRawBayer()))
 				{
-				case CSM_STANDARD :
-					stream << QCoreApplication::translate("StackRecap", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
-					break;
-				case CSM_COMETONLY :
-					stream << QCoreApplication::translate("StackRecap", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
-					break;
-				case CSM_COMETSTAR :
-					stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
-					break;
+					stream << "<br>" << QCoreApplication::translate("StackRecap", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
 				};
-				stream << "<br>" << Qt::endl;
 			};
 
-			// Post calibration settings
-			CPostCalibrationSettings		pcs;
+			stream << "<hr>";
+			if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
+				stream << "<ul>";
 
-			tasks.GetPostCalibrationSettings(pcs);
-			if (pcs.m_bHot)
+			if (si.m_pOffsetTask)
 			{
-				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
-				stream << "<br>" << Qt::endl;
-			};
-			if (pcs.m_bCold)
-			{
-				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
-				stream << "<br>" << Qt::endl;
-			};
+				strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
+				GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-			if (pcs.m_bHot || pcs.m_bCold)
-				stream << "<br><br>";
+				stream << QCoreApplication::translate("StackRecap", "-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
+							.arg(si.m_pOffsetTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
 
-			// Now the list of tasks
-			int				i, j;
-			int				lTotalExposure = 0;
-			QString				strBackgroundCalibration;
-			QString				strPerChannelBackgroundCalibration;
-			CString				strDarkOptimization;
-			CString				strDarkFactor;
-			QString				strExposure;
-			QString				strISOGainValue;
-			QString				strISOGainText;
-			QString				strISOText;
-			QString				strGainText;
-			CString				strHotPixels;
-			QString				strYesNo;
-			QString strYes(QCoreApplication::translate("StackingEngine", "Yes", "IDS_YES"));
-			QString strNo(QCoreApplication::translate("StackingEngine", "No", "IDS_NO"));
-			BACKGROUNDCALIBRATIONMODE	CalibrationMode;
-
-			CalibrationMode = tasks.GetBackgroundCalibrationMode();
-
-			strISOText = QCoreApplication::translate("StackRecap", "ISO", "IDS_ISO");
-			strGainText = QCoreApplication::translate("StackRecap", "Gain", "IDS_GAIN");
-			strBackgroundCalibration = QCoreApplication::translate("StackRecap", "RGB Channels Background Calibration: %1", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
-			strPerChannelBackgroundCalibration = QCoreApplication::translate("StackRecap", "Per Channel Background Calibration: %1", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
-
-			for (i = 0;i<tasks.m_vStacks.size();i++)
-			{
-				CStackingInfo& si = tasks.m_vStacks[i];
-
-				if (si.m_pLightTask)
+				if (si.m_pOffsetTask->m_vBitmaps.size()>1)
 				{
-					stream << "<table border='1px' cellspacing=0 cellpadding=5 width=100%%><tr><td>";
-					int			lTaskExposure = 0;
-
-					for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
-						lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
-
-					lTotalExposure += lTaskExposure;
-
-					strExposure = exposureToString(lTaskExposure);
-					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-					QString strText(QCoreApplication::translate("StackRecap", "Stacking step %1<br>  ->%2 frames (%3: %4) - total exposure: ",
-						"IDS_RECAP_STEP")
-									.arg(i + 1)
-									.arg(si.m_pLightTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue));
-
-					stream << "<a href=\"#Task" << i << "\">" << strText << "</a>";
-					stream << strExposure << "<br>";
-					stream << "<ul>" << strBackgroundCalibration << "<br>" << strPerChannelBackgroundCalibration << "</ul>";
-
-					if (si.m_pLightTask->m_vBitmaps.size()>1)
-					{
-						FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);						
-						stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
-
-						if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
-							(IsRawBayer() || IsFITSRawBayer()))
-						{
-							stream << "<br>" << QCoreApplication::translate("StackRecap", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
-						};
-					};
-
-					stream << "<hr>";
-					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
-						stream << "<ul>";
-
-					if (si.m_pOffsetTask)
-					{
-						strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
-						GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
-									.arg(si.m_pOffsetTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pOffsetTask->m_vBitmaps.size()>1)
-						{
-							FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);							
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
-						}
-						else
-							stream << "<br>";
-
-						if (si.m_pOffsetTask->HasISOSpeed())
-						{
-							if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-						}
-						else
-						{
-							if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-						};
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Offset", "IDS_RECAP_NOOFFSET");
-					}
-
-					if (si.m_pDarkTask)
-					{
-						strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
-						GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
-									.arg(si.m_pDarkTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pDarkTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD");
-							FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-
-						stream << "<ul>" << strDarkOptimization << strHotPixels;
-						if (strDarkFactor.GetLength())
-							stream << strDarkFactor << "<br>";
-
-						if (si.m_pDarkTask->HasISOSpeed())
-						{
-							if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING") << "<br>";
-						}
-						else
-						{
-							if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING") << "<br>";
-						}
-						if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
-							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
-					}
-
-					if (si.m_pDarkFlatTask && si.m_pFlatTask)
-					{
-						strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
-						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
-									.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
-							FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-						else
-							stream << "<br>";
-
-						if (si.m_pDarkFlatTask->HasISOSpeed())
-						{
-							if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
-						}
-						else
-						{
-							if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
-						}
-						if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
-							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
-						stream << "</ul>";
-					}
-
-					if (si.m_pFlatTask)
-					{
-						strExposure = exposureToString(si.m_pFlatTask->m_fExposure);
-						GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Flat: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLAT")
-									.arg(si.m_pFlatTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pFlatTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
-							FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-
-						if (si.m_pFlatTask->HasISOSpeed())
-						{
-							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-						}
-						else
-						{
-							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-						}
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Flat", "IDS_RECAP_NOFLAT");
-					}
-
-					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
-						stream << "</ul>";
-					stream << "</td></tr></table><br>";
+					FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);							
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
 				}
+				else
+					stream << "<br>";
+
+				if (si.m_pOffsetTask->HasISOSpeed())
+				{
+					if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
+				}
+				else
+				{
+					if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
+				};
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Offset", "IDS_RECAP_NOOFFSET");
 			}
 
-			if (m_vBitmaps.size())
+			if (si.m_pDarkTask)
 			{
-				for (i = 0;i<tasks.m_vStacks.size();i++)
+				strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
+				GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
+							.arg(si.m_pDarkTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pDarkTask->m_vBitmaps.size()>1)
 				{
-					CStackingInfo &			si = tasks.m_vStacks[i];
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD");
+					FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
 
-					if (si.m_pLightTask)
-					{
-						stream << "<hr><br>" << Qt::endl;
-						stream << "<a name=\"Task" << i << "\"></a>";
+				stream << "<ul>";
+				if (si.m_pDarkTask->HasISOSpeed())
+				{
+					if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING") << "<br>";
+				}
+				else
+				{
+					if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING") << "<br>";
+				}
+				if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
+					stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
+			}
+
+			if (si.m_pDarkFlatTask && si.m_pFlatTask)
+			{
+				strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
+				GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
+							.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
+				{
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+					FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
+				else
+					stream << "<br>";
+
+				if (si.m_pDarkFlatTask->HasISOSpeed())
+				{
+					if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+				}
+				else
+				{
+					if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+				}
+				if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
+					stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
+				stream << "</ul>";
+			}
+
+			if (si.m_pFlatTask)
+			{
+				strExposure = exposureToString(si.m_pFlatTask->m_fExposure);
+				GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				// SCS: I think is an error - if nothing else si.m_pDarkFlatTask can be NULL if you have a flat but no dark flat!
+				//GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Flat: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLAT")
+							.arg(si.m_pFlatTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pFlatTask->m_vBitmaps.size()>1)
+				{
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+					FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
+
+				if (si.m_pFlatTask->HasISOSpeed())
+				{
+					if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
+				}
+				else
+				{
+					if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
+				}
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Flat", "IDS_RECAP_NOFLAT");
+			}
+
+			if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
+				stream << "</ul>";
+			stream << "</td></tr></table><br>";
+		}
+	}
+
+	if (m_vBitmaps.size())
+	{
+		for (i = 0;i<tasks.m_vStacks.size();i++)
+		{
+			CStackingInfo &			si = tasks.m_vStacks[i];
+
+			if (si.m_pLightTask)
+			{
+				stream << "<hr><br>" << Qt::endl;
+				stream << "<a name=\"Task" << i << "\"></a>";
 						
-						stream << "<b>" << QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
-						for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
-							stream << si.m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
+				stream << "<b>" << QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
+				for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
+					stream << si.m_pLightTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
 
-						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
-							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile << "<br>";
-							for (j = 0; j < si.m_pOffsetTask->m_vBitmaps.size(); j++)
-								stream << si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						}
+				if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
+					if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0; j < si.m_pOffsetTask->m_vBitmaps.size(); j++)
+						stream << si.m_pOffsetTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				}
 
-						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
-							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
-								stream << si.m_pDarkTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						}
+				if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
+					if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
+						stream << si.m_pDarkTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				}
 
-						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
-							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
-								stream << si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						};
-						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
-							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
-								stream << si.m_pFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						};
-					};
+				if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
+					if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
+						stream << si.m_pDarkFlatTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				};
+				if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
+					if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
+						stream << si.m_pFlatTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
 				};
 			};
-
-			stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
-			stream << "</body>" << Qt::endl;
-			stream << "</html>" << Qt::endl;
 		};
 	};
-};
+
+	stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
+	stream << "</body>" << Qt::endl;
+	stream << "</html>" << Qt::endl;
+}
 
 /* ------------------------------------------------------------------- */

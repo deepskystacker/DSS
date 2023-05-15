@@ -158,10 +158,10 @@ private :
 	};
 
 private :
-	bool	CheckForExistingOffset(CString & strMasterFile);
-	bool	CheckForExistingDark(CString & strMasterFile);
-	bool	CheckForExistingDarkFlat(CString & strMasterFile);
-	bool	CheckForExistingFlat(CString & strMasterFile);
+	bool	CheckForExistingOffset(fs::path& strMasterFile);
+	bool	CheckForExistingDark(fs::path& strMasterFile);
+	bool	CheckForExistingDarkFlat(fs::path& strMasterFile);
+	bool	CheckForExistingFlat(fs::path& strMasterFile);
 
 public :
 	CStackingInfo()

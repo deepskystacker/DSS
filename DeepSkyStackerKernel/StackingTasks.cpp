@@ -166,12 +166,7 @@ public:
 	{
 		ZFUNCTRACE_RUNTIME();
 
-		// Intentionally defined with CStringW and wchar_t. Compiler shall complain if compiling as MBCS.
-		const auto getU16chars = [](const CStringW& str) -> const wchar_t* {
-			return static_cast<const wchar_t*>(str);
-		};
-
-		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress, &getU16chars](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
+		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
 		{
 			if (taskId == pTaskInfo->m_dwTaskID && static_cast<bool>(pSrcBitmap))
 			{
@@ -181,7 +176,7 @@ public:
 			else
 			{
 				pSrcBitmap.reset();
-				if (LoadFrame(fs::path{ getU16chars(pTaskInfo->m_strOutputFile) }, pTaskInfo->m_TaskType, pProgress, pSrcBitmap))
+				if (LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, pSrcBitmap))
 				{
 					taskId = pTaskInfo->m_dwTaskID;
 					rpBitmap = pSrcBitmap;
@@ -197,7 +192,7 @@ public:
 
 		bool bResult = false;
 		rpBitmap.reset();
-		if (pTaskInfo != nullptr && pTaskInfo->m_strOutputFile.GetLength() != 0)
+		if (pTaskInfo != nullptr && !pTaskInfo->m_strOutputFile.empty())
 		{
 			switch (pTaskInfo->m_TaskType)
 			{
@@ -263,8 +258,7 @@ static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, P
 };
 
 /* ------------------------------------------------------------------- */
-
-bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
+bool	CStackingInfo::CheckForExistingOffset(fs::path& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -289,7 +283,7 @@ bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 		{
 			if (newSettings == bmpSettings)
 			{
-				strMasterFile = strMasterOffset;
+				strMasterFile = strMasterOffset.GetString();
 				bResult = true;
 			}
 		}
@@ -308,7 +302,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 		ZASSERT(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
 		if (m_pOffsetTask->m_vBitmaps.size() == 1)
 		{
-			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].filePath.c_str();
+			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].filePath;
 			m_pOffsetTask->m_bDone = true;
 			m_pOffsetTask->m_bUnmodified = true;
 		}
@@ -408,7 +402,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					// TODO: Work out how to do this better.
 					WriteMasterTIFF(strMasterOffset.GetString(), pOffsetBitmap.get(), pProgress, strInfo, m_pOffsetTask);
 
-					m_pOffsetTask->m_strOutputFile = strMasterOffset;
+					m_pOffsetTask->m_strOutputFile = strMasterOffset.GetString();
 					m_pOffsetTask->m_bDone = true;
 
 					// Save the description
@@ -423,8 +417,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 	return bResult;
 }
 
-
-bool CStackingInfo::CheckForExistingDark(CString& strMasterFile)
+bool CStackingInfo::CheckForExistingDark(fs::path& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -451,7 +444,7 @@ bool CStackingInfo::CheckForExistingDark(CString& strMasterFile)
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDark;
+					strMasterFile = strMasterDark.GetString();
 					bResult = true;
 				}
 			}
@@ -474,7 +467,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 
 		if (m_pDarkTask->m_vBitmaps.size() == 1)
 		{
-			m_pDarkTask->m_strOutputFile = m_pDarkTask->m_vBitmaps[0].filePath.c_str();
+			m_pDarkTask->m_strOutputFile = m_pDarkTask->m_vBitmaps[0].filePath;
 			m_pDarkTask->m_bDone = true;
 		}
 		else if (CheckForExistingDark(m_pDarkTask->m_strOutputFile))
@@ -592,7 +585,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 
 					WriteMasterTIFF(strMasterDark.GetString(), pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
 
-					m_pDarkTask->m_strOutputFile = strMasterDark;
+					m_pDarkTask->m_strOutputFile = strMasterDark.GetString();
 					m_pDarkTask->m_bDone = true;
 
 					// Save the description
@@ -608,8 +601,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 	return bResult;
 }
 
-
-bool CStackingInfo::CheckForExistingDarkFlat(CString& strMasterFile)
+bool CStackingInfo::CheckForExistingDarkFlat(fs::path& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -640,7 +632,7 @@ bool CStackingInfo::CheckForExistingDarkFlat(CString& strMasterFile)
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDarkFlat;
+					strMasterFile = strMasterDarkFlat.GetString();
 					bResult = true;
 				};
 			};
@@ -664,7 +656,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 
 		if (m_pDarkFlatTask->m_vBitmaps.size() == 1)
 		{
-			m_pDarkFlatTask->m_strOutputFile = m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str();
+			m_pDarkFlatTask->m_strOutputFile = m_pDarkFlatTask->m_vBitmaps[0].filePath;
 			m_pDarkFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingDarkFlat(m_pDarkFlatTask->m_strOutputFile))
@@ -771,7 +763,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 
 					WriteMasterTIFF(strMasterDarkFlat.GetString(), pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
 
-					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
+					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat.GetString();
 					m_pDarkFlatTask->m_bDone = true;
 
 					// Save the description
@@ -1027,7 +1019,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingInfo::CheckForExistingFlat(CString& strMasterFile)
+bool CStackingInfo::CheckForExistingFlat(fs::path& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1056,7 +1048,7 @@ bool CStackingInfo::CheckForExistingFlat(CString& strMasterFile)
 				newSettings.SetMasterDarkFlat(m_pDarkFlatTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterFlat;
+					strMasterFile = strMasterFlat.GetString();
 					bResult = true;
 				}
 			}
@@ -1079,7 +1071,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 		if (m_pFlatTask->m_vBitmaps.size() == 1)
 		{
-			m_pFlatTask->m_strOutputFile = m_pFlatTask->m_vBitmaps[0].filePath.c_str();
+			m_pFlatTask->m_strOutputFile = m_pFlatTask->m_vBitmaps[0].filePath;
 			m_pFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingFlat(m_pFlatTask->m_strOutputFile))
@@ -1221,7 +1213,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 					WriteMasterTIFF(strMasterFlat.GetString(), pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);
 
-					m_pFlatTask->m_strOutputFile = strMasterFlat;
+					m_pFlatTask->m_strOutputFile = strMasterFlat.GetString();
 					m_pFlatTask->m_bDone = true;
 
 					// Save the description
@@ -1696,7 +1688,7 @@ bool CAllStackingTasks::DoOffsetTasks(ProgressBase * pProgress)
 			{
 				ZTRACE_RUNTIME("------------------------------\nCreate Master Offset");
 				bResult = m_vStacks[i].DoOffsetTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", m_vStacks[i].m_pOffsetTask->m_strOutputFile.u8string().c_str());
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1724,14 +1716,14 @@ bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", m_vStacks[i].m_pOffsetTask->m_strOutputFile.u8string().c_str());
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				// CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkTask;
 
 				bResult = m_vStacks[i].DoDarkTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkTask->m_strOutputFile,CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", m_vStacks[i].m_pDarkTask->m_strOutputFile.u8string().c_str());
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1757,14 +1749,14 @@ bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile,CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", m_vStacks[i].m_pOffsetTask->m_strOutputFile.u8string().c_str());
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				// CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkFlatTask;
 
 				bResult = m_vStacks[i].DoDarkFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkFlatTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", m_vStacks[i].m_pDarkFlatTask->m_strOutputFile.u8string().c_str());
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1802,14 +1794,14 @@ bool CAllStackingTasks::DoFlatTasks(ProgressBase * pProgress)
 
 				if (stack.m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(stack.m_pOffsetTask->m_strOutputFile, CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", stack.m_pOffsetTask->m_strOutputFile.u8string().c_str());
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				// CTaskInfo* pTaskInfo = stack.m_pFlatTask;
 
 				bResult = stack.DoFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(stack.m_pFlatTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", stack.m_pFlatTask->m_strOutputFile.u8string().c_str());
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			}

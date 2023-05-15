@@ -12,6 +12,6 @@ bool IsRawBilinear();
 void PushRAWSettings(bool bSuperPixel, bool bRawBayer);
 void PopRAWSettings();
 
-bool IsRAWPicture(LPCTSTR szFileName, QString& strModel);
-bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+bool IsRAWPicture(const fs::path& szFileName, QString& strModel);
+bool IsRAWPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
 bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, DSS::ProgressBase* pProgress);
