@@ -6,8 +6,8 @@
 class CSetting
 {
 public :
-	CString			m_strVariable;
-	CString			m_strValue;
+	QString			m_strVariable;
+	QString			m_strValue;
 
 private :
 	void	CopyFrom(const CSetting & s)
@@ -51,20 +51,16 @@ public :
 	bool	Read(LPCTSTR szLine)
 	{
 		bool			bResult = false;
-		CString			strLine = szLine;
+		QString			strLine = QString::fromWCharArray(szLine);
 		int				nPos;
 
-		nPos = strLine.Find(_T("="));
+		nPos = strLine.indexOf("=");
 		if (nPos >= 0)
 		{
-			m_strVariable = strLine.Left(nPos);
-			m_strValue    = strLine.Right(strLine.GetLength()-nPos-1);
-			m_strVariable.Trim();
-			m_strValue.TrimRight(_T("\n"));
-			m_strValue.Trim();
+			m_strVariable = strLine.left(nPos).trimmed();
+			m_strValue = strLine.right(strLine.length() - nPos - 1).trimmed();
 			bResult = true;
-		};
-
+		}
 		return bResult;
 	};
 
@@ -83,7 +79,7 @@ public :
 	{
 		bool		bResult = true;
 
-		fprintf(hFile, "%s=%s\n", (LPCSTR)CT2CA(m_strVariable), (LPCSTR)CT2CA(m_strValue));
+		fprintf(hFile, "%s=%s\n", m_strVariable.toStdString().c_str(), m_strValue.toStdString().c_str());
 
 		return bResult;
 	};
@@ -98,28 +94,28 @@ typedef SETTINGSET::const_iterator	SETTINGCONSTITERATOR;
 class CGlobalSettings
 {
 protected :
-	SETTINGSET				m_sSettings;
-	std::vector<CString>	m_vFiles;
+	SETTINGSET m_sSettings;
+	std::vector<QString> m_vFiles; // Not really files - they are files with date/times on the end, so stored as a string and not a fs::path.
 
 protected :
 	bool	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
 	{
-		Workspace		workspace;
-		CString			strValue;
-		QString		keyName((QChar *)szKey);
+		Workspace workspace;
+		const QString keyName(QString::fromWCharArray(szKey));
+		const QString prefix(szPrefix ? QString::fromWCharArray(szPrefix) : "");
+		const QString strDefault(QString::fromWCharArray(szDefault));
+		QString strValue(workspace.value(keyName).toString());
 
-		strValue = (LPCTSTR)workspace.value(keyName).toString().utf16();
+		if (strValue.isEmpty())
+			strValue = strDefault;
 
-		if (!strValue.GetLength())
-			strValue = szDefault;
-
-		CSetting		s;
+		CSetting s;
 
 		if (szPrefix)
-			s.m_strVariable.Format(_T("%s.%s"), szPrefix, szKey);
+			s.m_strVariable = QString("%1.%2").arg(prefix).arg(keyName);
 		else
-			s.m_strVariable = szKey;
-		s.m_strValue	= strValue;
+			s.m_strVariable = keyName;
+		s.m_strValue = strValue;
 
 		m_sSettings.insert(s);
 
@@ -130,8 +126,8 @@ protected :
 	{
 		CSetting		s;
 
-		s.m_strVariable = szVariable;
-		s.m_strValue.Format(_T("%ld"), lValue);
+		s.m_strVariable = QString::fromWCharArray(szVariable);
+		s.m_strValue = QString("%1").arg(lValue);
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
@@ -141,8 +137,8 @@ protected :
 	{
 		CSetting		s;
 
-		s.m_strVariable = szVariable;
-		s.m_strValue    = szValue;;
+		s.m_strVariable = QString::fromWCharArray(szVariable);
+		s.m_strValue    = QString::fromWCharArray(szValue);
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);

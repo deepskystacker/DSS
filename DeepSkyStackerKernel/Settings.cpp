@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 
 //#include "resource.h"
 #include "StackingTasks.h"
@@ -20,7 +20,7 @@ bool CGlobalSettings::operator == (const CGlobalSettings & gs) const
 		// Check that this is the same files
 		bResult = true;
 		for (size_t i = 0; i < m_vFiles.size() && bResult; i++)
-			bResult = !m_vFiles[i].CompareNoCase(gs.m_vFiles[i]);
+			bResult = (m_vFiles[i].compare(gs.m_vFiles[i], Qt::CaseInsensitive) == 0);
 	};
 
 	if (bResult)
@@ -67,13 +67,10 @@ bool	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 
 		// Then read the file list
 		CHAR			szBuffer[2000];
-
 		while (fgets(szBuffer, sizeof(szBuffer), hFile))
 		{
-			CString		strFileName = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer);
-
-			strFileName.TrimRight(_T("\n"));
-			m_vFiles.push_back(strFileName);
+			const QString strFileName(szBuffer);
+			m_vFiles.push_back(strFileName.trimmed());
 		};
 
 		std::sort(m_vFiles.begin(), m_vFiles.end());
@@ -106,7 +103,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 		// Then write the file list
 		fprintf(hFile, "----FileList----\n");
 		for (size_t i = 0; i < m_vFiles.size(); i++)
-			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vFiles[i], CP_UTF8));
+			fprintf(hFile, "%s\n", m_vFiles[i].toStdString().c_str());
 
 		fclose(hFile);
 	};
@@ -137,7 +134,7 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		for (size_t i = 0; i < pTask->m_vBitmaps.size(); i++)
 		{
 			const QString strFile(QString("%1[%2]").arg(pTask->m_vBitmaps[i].filePath.u8string().c_str()).arg(pTask->m_vBitmaps[i].m_strDateTime));
-			m_vFiles.push_back(strFile.toStdWString().c_str());
+			m_vFiles.push_back(strFile);
 
 			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.left(4) == "FITS"))
 				bFITS = true;
