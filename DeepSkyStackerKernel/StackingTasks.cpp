@@ -263,7 +263,7 @@ bool	CStackingInfo::CheckForExistingOffset(fs::path& strMasterFile)
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	if (!m_pOffsetTask && m_pOffsetTask->m_vBitmaps.empty())
+	if (m_pOffsetTask != nullptr && m_pOffsetTask->m_vBitmaps.size() > 0)
 	{
 		TCHAR			szDrive[1+_MAX_DRIVE];
 		TCHAR			szDir[1+_MAX_DIR];
@@ -422,7 +422,7 @@ bool CStackingInfo::CheckForExistingDark(fs::path& strMasterFile)
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	if (m_pDarkTask != nullptr && !m_pDarkTask->m_vBitmaps.empty())
+	if (m_pDarkTask != nullptr && m_pDarkTask->m_vBitmaps.size() > 0)
 	{
 		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
@@ -607,7 +607,7 @@ bool CStackingInfo::CheckForExistingDarkFlat(fs::path& strMasterFile)
 
 	bool				bResult = false;
 
-	if (m_pDarkFlatTask && m_pDarkFlatTask->m_vBitmaps.size())
+	if (m_pDarkFlatTask != nullptr && m_pDarkFlatTask->m_vBitmaps.size() > 0)
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
@@ -1025,7 +1025,7 @@ bool CStackingInfo::CheckForExistingFlat(fs::path& strMasterFile)
 
 	bool bResult = false;
 
-	if (m_pFlatTask != nullptr && !m_pFlatTask->m_vBitmaps.empty())
+	if (m_pFlatTask != nullptr && m_pFlatTask->m_vBitmaps.size() > 0)
 	{
 		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
