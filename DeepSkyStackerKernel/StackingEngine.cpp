@@ -2062,7 +2062,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		{
 		case SM_MOSAIC:
 		{
-			CString strDrive;
+			fs::path strDrive;
 			QString strFreeSpace;
 			QString strNeededSpace;
 
@@ -2082,7 +2082,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				SpaceToQString(ulFreeSpace, strFreeSpace);
 				SpaceToQString(ulNeededSpace, strNeededSpace);
 
-				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive)).arg(strFreeSpace) +
+				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive.wstring().c_str())).arg(strFreeSpace) +
 									  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 				bContinue = m_pProgress->Warning(strText);
 			}

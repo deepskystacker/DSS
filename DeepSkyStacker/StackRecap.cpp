@@ -179,16 +179,14 @@ void StackRecap::fillWithAllTasks()
 		int				lTotalExposure = 0;
 		__int64				ulNeededSpace;
 		__int64				ulFreeSpace;
-		QString				strDrive;
 		QString				strFreeSpace;
 		QString				strNeededSpace;
 		STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
-		CString				strDriveCString;
-		strDriveCString = CString((wchar_t*)strDrive.utf16());
-		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
+		fs::path drive;
+		ulFreeSpace = pStackingTasks->AvailableDiskSpace(drive);
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
 		SpaceToQString(ulFreeSpace, strFreeSpace);
@@ -240,7 +238,7 @@ void StackRecap::fillWithAllTasks()
 			strText = tr("The process temporarily requires %1 of free space on the %2 drive.<br>"
 					"Only %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
 				.arg(strNeededSpace)
-				.arg(strDrive)
+				.arg(drive.wstring().c_str())
 				.arg(strFreeSpace);
 			insertHTML(strHTML, strText, QColor(Qt::red), true, false);
 			if (ResultMode == SM_MOSAIC)
@@ -721,7 +719,7 @@ void StackRecap::fillWithAllTasks()
 			strText = tr("The process will temporarily use %1 on the %2 drive (%3 free).",
 				"IDS_RECAP_INFODISKSPACE")
 				.arg(strNeededSpace)
-				.arg(strDrive)
+				.arg(drive.wstring().c_str())
 				.arg(strFreeSpace);
 			insertHTML(strHTML, strText);
 			if (ResultMode == SM_MOSAIC)

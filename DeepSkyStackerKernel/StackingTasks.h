@@ -378,11 +378,12 @@ public :
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();
-	std::int64_t AvailableDiskSpace(CString & strDrive);
+	std::int64_t AvailableDiskSpace(fs::path& strDrive);
 
 	bool	checkReadOnlyStatus(QStringList & folders);
 
 	static	QString GetTemporaryFilesFolder();
+	static	void GetTemporaryFilesFolder(fs::path& tempPath);
 	static	void SetTemporaryFilesFolder(QString strFolder);
 
 	static	void GetPostCalibrationSettings(CPostCalibrationSettings & pcs);

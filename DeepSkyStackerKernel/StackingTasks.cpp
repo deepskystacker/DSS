@@ -231,23 +231,28 @@ void ClearTaskCache()
 
 /* ------------------------------------------------------------------- */
 
-static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, bool bExposure, TCHAR const *pszDrive, TCHAR const *pszDir,
-	CString *pstrMasterFile, CString *pstrMasterInfoFile)
+static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool bExposure, const fs::path& rBasePath, fs::path& masterFile, fs::path& masterInfoFile)
 {
-	TCHAR const *pszISOGain = pTaskInfo->HasISOSpeed() ? _T("ISO") : _T("Gain");
+	QFileInfo fileInfo(rBasePath);
+	const QString strPath(fileInfo.path() + QDir::separator());
+	const QString strBaseName(fileInfo.baseName());
+
+	const QString ISOGain = pTaskInfo->HasISOSpeed() ? "ISO" : "Gain";
 	int const lISOGain = pTaskInfo->HasISOSpeed() ? pTaskInfo->m_lISOSpeed : pTaskInfo->m_lGain;
 
-	CString strFileName;
+	QString strFileName;
 	if (bExposure)
-		strFileName.Format(_T("%s%s%s_%s%ld_%lds"),
-			pszDrive, pszDir, pszType, pszISOGain, lISOGain, (int)pTaskInfo->m_fExposure);
+		strFileName = QString("%1%2_%3%4_%5").arg(strPath).arg(type).arg(ISOGain).arg(lISOGain).arg((int)pTaskInfo->m_fExposure);
 	else
-		strFileName.Format(_T("%s%s%s_%s%ld"),
-			pszDrive, pszDir, pszType, pszISOGain, lISOGain);
+		strFileName = QString("%1%2_%3%4").arg(strPath).arg(type).arg(ISOGain).arg(lISOGain);
 
-	pstrMasterFile->Format(_T("%s.tif"), strFileName.GetString());
-	pstrMasterInfoFile->Format(_T("%s.Description.txt"), strFileName.GetString());
-};
+	// Can probably do the following directly into the fs::path I suspect ...
+	const QString strMasterPath(strFileName + ".tif");
+	const QString strMasterInfoFile(strFileName + ".Description.txt");
+
+	masterFile = QDir::toNativeSeparators(strMasterPath).toStdWString().c_str();
+	masterInfoFile = QDir::toNativeSeparators(strMasterInfoFile).toStdWString().c_str();
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -265,25 +270,20 @@ bool	CStackingInfo::CheckForExistingOffset(fs::path& strMasterFile)
 
 	if (m_pOffsetTask != nullptr && m_pOffsetTask->m_vBitmaps.size() > 0)
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		CString			strMasterOffset;
-		CString			strMasterOffsetInfo;
+		fs::path strMasterOffset;
+		fs::path strMasterOffsetInfo;
 
-		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-		BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
-			&strMasterOffset, &strMasterOffsetInfo);
+		BuildMasterFileNames(m_pOffsetTask, "MasterOffset", false, m_pOffsetTask->m_vBitmaps[0].filePath, strMasterOffset, strMasterOffsetInfo);
 
 		// Check that the Master Offset File is existing
 		COffsetSettings bmpSettings;
 		COffsetSettings newSettings;
 
-		if (newSettings.InitFromCurrent(m_pOffsetTask, strMasterOffset) && bmpSettings.ReadFromFile(strMasterOffsetInfo))
+		if (newSettings.InitFromCurrent(m_pOffsetTask, strMasterOffset.wstring().c_str()) && bmpSettings.ReadFromFile(strMasterOffsetInfo.wstring().c_str()))
 		{
 			if (newSettings == bmpSettings)
 			{
-				strMasterFile = strMasterOffset.GetString();
+				strMasterFile = strMasterOffset;
 				bResult = true;
 			}
 		}
@@ -358,8 +358,8 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 			if (bResult)
 			{
 				// Save the resulting master offset
-				CString strMasterOffset;
-				CString strMasterOffsetInfo;
+				fs::path strMasterOffset;
+				fs::path strMasterOffsetInfo;
 				QString strMethod;
 				FormatFromMethod(strMethod, m_pOffsetTask->m_Method, m_pOffsetTask->m_fKappa, m_pOffsetTask->m_lNrIterations);
 				strText = QCoreApplication::translate("StackingTasks", "Computing master offset (%1)", "IDS_COMPUTINGMEDIANOFFSET").arg(strMethod);
@@ -377,17 +377,12 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pOffsetBitmap))
 				{
-					TCHAR szDrive[1+_MAX_DRIVE];
-					TCHAR szDir[1+_MAX_DIR];
-
 					const QString strInfo{ tr("Master Offset created from %n picture(s) (%1)",
 						"IDS_MEDIANOFFSETINFO",
 						static_cast<int>(m_pOffsetTask->m_vBitmaps.size()))
 						.arg(strMethod) };
 
-					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
+					BuildMasterFileNames(m_pOffsetTask, "MasterOffset", /* bExposure */false, m_pOffsetTask->m_vBitmaps[0].filePath, strMasterOffset, strMasterOffsetInfo);
 
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Offset", "IDS_SAVINGMASTEROFFSET");
 					ZTRACE_RUNTIME(strText);
@@ -396,19 +391,19 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterOffset.GetString()), 0);
+						pProgress->Start2(QString::fromWCharArray(strMasterOffset.wstring().c_str()), 0);
 					}
 
 					// TODO: Work out how to do this better.
-					WriteMasterTIFF(strMasterOffset.GetString(), pOffsetBitmap.get(), pProgress, strInfo, m_pOffsetTask);
+					WriteMasterTIFF(strMasterOffset, pOffsetBitmap.get(), pProgress, strInfo, m_pOffsetTask);
 
-					m_pOffsetTask->m_strOutputFile = strMasterOffset.GetString();
+					m_pOffsetTask->m_strOutputFile = strMasterOffset;
 					m_pOffsetTask->m_bDone = true;
 
 					// Save the description
 					COffsetSettings s;
-					s.InitFromCurrent(m_pOffsetTask, strMasterOffset);
-					s.WriteToFile(strMasterOffsetInfo);
+					s.InitFromCurrent(m_pOffsetTask, strMasterOffset.wstring().c_str());
+					s.WriteToFile(strMasterOffsetInfo.wstring().c_str());
 				}
 			}
 		}
@@ -426,25 +421,21 @@ bool CStackingInfo::CheckForExistingDark(fs::path& strMasterFile)
 	{
 		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[1+_MAX_DRIVE];
-			TCHAR			szDir[1+_MAX_DIR];
-			CString			strMasterDark;
-			CString			strMasterDarkInfo;
+			fs::path strMasterDark;
+			fs::path strMasterDarkInfo;
 
-			_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir, &strMasterDark, &strMasterDarkInfo);
+			BuildMasterFileNames(m_pDarkTask, "MasterDark", true, m_pDarkTask->m_vBitmaps[0].filePath, strMasterDark, strMasterDarkInfo);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings bmpSettings;
 			CDarkSettings newSettings;
 
-			if (newSettings.InitFromCurrent(m_pDarkTask, strMasterDark) && bmpSettings.ReadFromFile(strMasterDarkInfo))
+			if (newSettings.InitFromCurrent(m_pDarkTask, strMasterDark.wstring().c_str()) && bmpSettings.ReadFromFile(strMasterDarkInfo.wstring().c_str()))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDark.GetString();
+					strMasterFile = strMasterDark;
 					bResult = true;
 				}
 			}
@@ -542,8 +533,8 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 			if (bResult)
 			{
 				// Save Master Dark Frame
-				CString strMasterDark;
-				CString strMasterDarkInfo;
+				fs::path strMasterDark;
+				fs::path strMasterDarkInfo;
 				QString strMethod;
 				FormatFromMethod(strMethod, m_pDarkTask->m_Method, m_pDarkTask->m_fKappa, m_pDarkTask->m_lNrIterations);
 				strText = QCoreApplication::translate("StackingTasks", "Computing master dark (%1)", "IDS_COMPUTINGMEDIANDARK").arg(strMethod);
@@ -561,17 +552,12 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pDarkBitmap))
 				{
-					TCHAR szDrive[1+_MAX_DRIVE];
-					TCHAR szDir[1+_MAX_DIR];
-
 					const QString strInfo{ tr("Master Dark created from %n picture(s) (%1)",
 						"IDS_MEDIANDARKINFO",
 						static_cast<int>(m_pDarkTask->m_vBitmaps.size()))
 						.arg(strMethod) };
 
-					_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir, &strMasterDark, &strMasterDarkInfo);
+					BuildMasterFileNames(m_pDarkTask, "MasterDark", true, m_pDarkTask->m_vBitmaps[0].filePath, strMasterDark, strMasterDarkInfo);
 
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Dark", "IDS_SAVINGMASTERDARK");
 					ZTRACE_RUNTIME(strText);
@@ -580,19 +566,19 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterDark), 0);
+						pProgress->Start2(QString::fromWCharArray(strMasterDark.wstring().c_str()), 0);
 					}
 
-					WriteMasterTIFF(strMasterDark.GetString(), pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
+					WriteMasterTIFF(strMasterDark, pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
 
-					m_pDarkTask->m_strOutputFile = strMasterDark.GetString();
+					m_pDarkTask->m_strOutputFile = strMasterDark;
 					m_pDarkTask->m_bDone = true;
 
 					// Save the description
 					CDarkSettings s;
-					s.InitFromCurrent(m_pDarkTask, strMasterDark);
+					s.InitFromCurrent(m_pDarkTask, strMasterDark.wstring().c_str());
 					s.SetMasterOffset(m_pOffsetTask);
-					s.WriteToFile(strMasterDarkInfo);
+					s.WriteToFile(strMasterDarkInfo.wstring().c_str());
 				}
 			}
 		}
@@ -611,28 +597,22 @@ bool CStackingInfo::CheckForExistingDarkFlat(fs::path& strMasterFile)
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[1+_MAX_DRIVE];
-			TCHAR			szDir[1+_MAX_DIR];
-			CString			strMasterDarkFlat;
-			CString			strMasterDarkFlatInfo;
-			//int			lExposure = m_pDarkFlatTask->m_fExposure;
+			fs::path strMasterDarkFlat;
+			fs::path strMasterDarkFlatInfo;
 
-			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-			BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
-				&strMasterDarkFlat, &strMasterDarkFlatInfo);
+			BuildMasterFileNames(m_pDarkFlatTask, "MasterDarkFlat", true, m_pDarkFlatTask->m_vBitmaps[0].filePath, strMasterDarkFlat, strMasterDarkFlatInfo);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
 			CDarkSettings		newSettings;
 
-			if (newSettings.InitFromCurrent(m_pDarkFlatTask, strMasterDarkFlat) &&
-				bmpSettings.ReadFromFile(strMasterDarkFlatInfo))
+			if (newSettings.InitFromCurrent(m_pDarkFlatTask, strMasterDarkFlat.wstring().c_str()) &&
+				bmpSettings.ReadFromFile(strMasterDarkFlatInfo.wstring().c_str()))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDarkFlat.GetString();
+					strMasterFile = strMasterDarkFlat;
 					bResult = true;
 				};
 			};
@@ -719,9 +699,9 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 			if (bResult)
 			{
 				// Save Master Dark Frame
-				CString						strMasterDarkFlat;
-				CString						strMasterDarkFlatInfo;
-				QString						strMethod;
+				fs::path strMasterDarkFlat;
+				fs::path strMasterDarkFlatInfo;
+				QString strMethod;
 
 				FormatFromMethod(strMethod, m_pDarkFlatTask->m_Method, m_pDarkFlatTask->m_fKappa, m_pDarkFlatTask->m_lNrIterations);
 				strText = QCoreApplication::translate("StackingTasks", "Computing master dark flat (%1)", "IDS_COMPUTINGMEDIANDARKFLAT").arg(strMethod);
@@ -739,18 +719,12 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pDarkFlatBitmap))
 				{
-					TCHAR			szDrive[1+_MAX_DRIVE];
-					TCHAR			szDir[1+_MAX_DIR];
-
 					const QString strInfo{ tr("Master Dark Flat created from %n picture(s) (%1)",
 						"IDS_MEDIANDARKFLATINFO",
 						static_cast<int>(m_pDarkFlatTask->m_vBitmaps.size()))
 						.arg(strMethod) };
 
-					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-					BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
-						&strMasterDarkFlat, &strMasterDarkFlatInfo);
+					BuildMasterFileNames(m_pDarkFlatTask, "MasterDarkFlat", true, m_pDarkFlatTask->m_vBitmaps[0].filePath, strMasterDarkFlat, strMasterDarkFlatInfo);
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Dark Flat", "IDS_SAVINGMASTERDARKFLAT");
 					ZTRACE_RUNTIME(strText);
 
@@ -758,20 +732,20 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterDarkFlat.GetString()), 0);
+						pProgress->Start2(QString::fromWCharArray(strMasterDarkFlat.wstring().c_str()), 0);
 					};
 
-					WriteMasterTIFF(strMasterDarkFlat.GetString(), pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
+					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
 
-					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat.GetString();
+					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
 					m_pDarkFlatTask->m_bDone = true;
 
 					// Save the description
 					CDarkSettings		s;
 
-					s.InitFromCurrent(m_pDarkFlatTask, strMasterDarkFlat);
+					s.InitFromCurrent(m_pDarkFlatTask, strMasterDarkFlat.wstring().c_str());
 					s.SetMasterOffset(m_pOffsetTask);
-					s.WriteToFile(strMasterDarkFlatInfo);
+					s.WriteToFile(strMasterDarkFlatInfo.wstring().c_str());
 				};
 			};
 		};
@@ -1029,26 +1003,22 @@ bool CStackingInfo::CheckForExistingFlat(fs::path& strMasterFile)
 	{
 		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[1+_MAX_DRIVE];
-			TCHAR			szDir[1+_MAX_DIR];
-			CString			strMasterFlat;
-			CString			strMasterFlatInfo;
+			fs::path strMasterFlat;
+			fs::path strMasterFlatInfo;
 
-			_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir, &strMasterFlat, &strMasterFlatInfo);
+			BuildMasterFileNames(m_pFlatTask, "MasterFlat", false, m_pFlatTask->m_vBitmaps[0].filePath, strMasterFlat, strMasterFlatInfo);
 
 			// Check that the Master Offset File is existing
 			CFlatSettings bmpSettings;
 			CFlatSettings newSettings;
 
-			if (newSettings.InitFromCurrent(m_pFlatTask, strMasterFlat) && bmpSettings.ReadFromFile(strMasterFlatInfo))
+			if (newSettings.InitFromCurrent(m_pFlatTask, strMasterFlat.wstring().c_str()) && bmpSettings.ReadFromFile(strMasterFlatInfo.wstring().c_str()))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				newSettings.SetMasterDarkFlat(m_pDarkFlatTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterFlat.GetString();
+					strMasterFile = strMasterFlat;
 					bResult = true;
 				}
 			}
@@ -1170,8 +1140,8 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 			if (bResult)
 			{
 				// Save Master Flat Frame
-				CString strMasterFlat;
-				CString strMasterFlatInfo;
+				fs::path strMasterFlat;
+				fs::path strMasterFlatInfo;
 				QString strMethod;
 
 				FormatFromMethod(strMethod, m_pFlatTask->m_Method, m_pFlatTask->m_fKappa, m_pFlatTask->m_lNrIterations);
@@ -1191,16 +1161,12 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 				if (static_cast<bool>(pFlatBitmap))
 				{
-					TCHAR szDrive[1 + _MAX_DRIVE];
-					TCHAR szDir[1 + _MAX_DIR];
 					const QString strInfo{ tr("Master Flat created from %n picture(s) (%1)",
 						"IDS_MEDIANFLATINFO",
 						static_cast<int>(m_pFlatTask->m_vBitmaps.size()))
 						.arg(strMethod) };
 
-					_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir, &strMasterFlat, &strMasterFlatInfo);
+					BuildMasterFileNames(m_pFlatTask, "MasterFlat", false, m_pFlatTask->m_vBitmaps[0].filePath, strMasterFlat, strMasterFlatInfo);
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Flat", "IDS_SAVINGMASTERFLAT");
 					ZTRACE_RUNTIME(strText);
 
@@ -1208,20 +1174,20 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterFlat.GetString()), 0);
+						pProgress->Start2(QString::fromWCharArray(strMasterFlat.wstring().c_str()), 0);
 					}
 
-					WriteMasterTIFF(strMasterFlat.GetString(), pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);
+					WriteMasterTIFF(strMasterFlat, pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);
 
-					m_pFlatTask->m_strOutputFile = strMasterFlat.GetString();
+					m_pFlatTask->m_strOutputFile = strMasterFlat;
 					m_pFlatTask->m_bDone = true;
 
 					// Save the description
 					CFlatSettings s;
-					s.InitFromCurrent(m_pFlatTask, strMasterFlat);
+					s.InitFromCurrent(m_pFlatTask, strMasterFlat.wstring().c_str());
 					s.SetMasterOffset(m_pOffsetTask);
 					s.SetMasterDarkFlat(m_pDarkFlatTask);
-					s.WriteToFile(strMasterFlatInfo);
+					s.WriteToFile(strMasterFlatInfo.wstring().c_str());
 				}
 			}
 		}
@@ -1963,35 +1929,35 @@ std::int64_t CAllStackingTasks::computeNecessaryDiskSpace()
 
 /* ------------------------------------------------------------------- */
 
-std::int64_t CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
+std::int64_t CAllStackingTasks::AvailableDiskSpace(fs::path& strDrive)
 {
-	fs::path path{ GetTemporaryFilesFolder().toStdU16String() };
+	fs::path path;
+	GetTemporaryFilesFolder(path);
 	
 	auto [cap, _, avail] = std::filesystem::space(path);
 
-	strDrive = CString((LPCTSTR)path.root_name().wstring().c_str());
-
+	strDrive = path.root_name();
 	return avail;
 };
 
 /* ------------------------------------------------------------------- */
 
-QString CAllStackingTasks::GetTemporaryFilesFolder()
+void CAllStackingTasks::GetTemporaryFilesFolder(fs::path& tempPath)
 {
 	ZFUNCTRACE_RUNTIME();
 	QSettings	settings;
 
-	fs::path path{ settings.value("Stacking/TemporaryFilesFolder", QString("")).toString().toStdU16String() };
+	tempPath = settings.value("Stacking/TemporaryFilesFolder", QString("")).toString().toStdU16String();
 
 	//
 	// If it is a directory, check we can write a file to it and return its name if so.
 	//
-	if (fs::file_type::directory == status(path).type())
+	if (fs::file_type::directory == status(tempPath).type())
 	{
 		// Check that we can write to it
-		auto file = path / "Temp.txt";
+		auto file = tempPath / "Temp.txt";
 
-		if (std::FILE* f = 
+		if (std::FILE* f =
 #if defined _WINDOWS
 			_wfopen(file.c_str(), L"wb")
 #else
@@ -2001,14 +1967,21 @@ QString CAllStackingTasks::GetTemporaryFilesFolder()
 		{
 			fclose(f);
 			fs::remove(file);
-			return QString::fromStdU16String(path.u16string());
+			return;
 		}
 	}
 	//
 	// If it's not a directory or we can't write to it return the default
 	// system temp directory
 	//
-	return QString::fromStdU16String(fs::temp_directory_path().u16string());
+	tempPath = fs::temp_directory_path();
+};
+
+QString CAllStackingTasks::GetTemporaryFilesFolder()
+{
+	fs::path path;
+	GetTemporaryFilesFolder(path);
+	return QString::fromStdU16String(path.u16string());
 };
 
 /* ------------------------------------------------------------------- */
