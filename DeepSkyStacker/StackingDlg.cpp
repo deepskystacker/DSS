@@ -2461,38 +2461,37 @@ namespace DSS
 
 			if (bContinue)
 			{
-				CString strFileName;
 				Workspace workspace;
 				const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
-
-				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.generic_wstring().c_str(), iff == IFF_TIFF))
+				fs::path strFileName;
+				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList, iff == IFF_TIFF))
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.wstring().c_str())));
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 
 					if (iff == IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 						else
-							WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 					}
 					else
 					{
 						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 						else
-							WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 					}
 
 					dlg.End2();
 					dlg.SetJointProgress(false);
 					dlg.Close();
 
-					dssApp->getProcessingDlg().LoadFile(strFileName);
+					dssApp->getProcessingDlg().LoadFile(strFileName.wstring().c_str());
 
 					// Change tab to processing
 					dssApp->setTab(IDD_PROCESSING);

@@ -282,7 +282,7 @@ public:
 		m_bCometInterpolating = bSet;
 	}
 
-	bool GetDefaultOutputFileName(CString& strFileName, LPCTSTR szFileList, bool bTIFF = true);
-	void WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile);
+	bool GetDefaultOutputFileName(fs::path& strFileName, const fs::path& szFileList, bool bTIFF = true);
+	void WriteDescription(CAllStackingTasks& tasks, const fs::path& outputFile);
 };
 

@@ -50,34 +50,34 @@ namespace
 				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
 				if (bContinue)
 				{
-					CString strFileName{ fileList.stem().c_str() };
+					fs::path strFileName = fileList;
 
 					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
 
-					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.c_str(), iff == IFF_TIFF))
+					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList, iff == IFF_TIFF))
 					{
 						StackingEngine.WriteDescription(tasks, strFileName);
 
-						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.wstring().c_str())));
 						dlg.Start2(strText, 0);
 
 						if (iff == IFF_TIFF)
 						{
 							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 							else
-								WriteTIFF(strFileName.GetString(), pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 						}
 						else
 						{
 							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
+								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 							else
-								WriteFITS(strFileName.GetString(), pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
+								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 						}
 						dlg.End2();
 					}
-					outputFile = QString::fromWCharArray(strFileName.GetString());
+					outputFile = QString::fromWCharArray(strFileName.wstring().c_str());
 				}
 			}
 			dlg.Close();

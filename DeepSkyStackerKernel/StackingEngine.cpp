@@ -2489,106 +2489,81 @@ void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pPr
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR szFileList, bool bTIFF)
+bool	CStackingEngine::GetDefaultOutputFileName(fs::path& strFileName, const fs::path& szFileList, bool bTIFF)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult;
 	// Retrieve the first light frame
-	COutputSettings		OutputSettings;
-
+	COutputSettings OutputSettings;
 	CAllStackingTasks::GetOutputSettings(OutputSettings);
-
-	bResult = OutputSettings.m_bOutput;
-
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szName[1+_MAX_FNAME];
-	CString				strBaseName = strFileName;
-	CString				strFileList = szFileList;
-	CString				strOutputFolder;
+	bool bResult = OutputSettings.m_bOutput;
 
 	// By default use the folder of the first light frame
+	QString strOutputFolder;
 	if (m_vBitmaps.size())
 	{
 		// Use the folder of the first light frame
-		_tsplitpath(m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-		strOutputFolder = szDrive;
-		strOutputFolder += szDir;
-	};
+		QFileInfo fileInfo(m_vBitmaps[0].filePath);
+		strOutputFolder = QDir::toNativeSeparators(fileInfo.path() + QDir::separator());
+	}
 
 	if (OutputSettings.m_bOtherFolder && OutputSettings.m_strFolder.length())
 	{
-		strOutputFolder = CString((LPCTSTR)OutputSettings.m_strFolder.utf16());
-	};
+		strOutputFolder = QDir::toNativeSeparators(OutputSettings.m_strFolder + QDir::separator());
+	}
 
-	if (OutputSettings.m_bFileListFolder && strFileList.GetLength())
+	if (OutputSettings.m_bFileListFolder && !szFileList.empty())
 	{
-		_tsplitpath(strFileList, szDrive, szDir, nullptr, nullptr);
+		QFileInfo fileInfo(szFileList);
+		strOutputFolder = QDir::toNativeSeparators(fileInfo.path() + QDir::separator());
+	}
 
-		strOutputFolder = szDrive;
-		strOutputFolder += szDir;
-	};
-
-	if (!strBaseName.GetLength())
+	QString strBaseName = strFileName.u8string().c_str();
+	if (strBaseName.isEmpty())
 	{
-		if (OutputSettings.m_bAutosave || !strFileList.GetLength())
-			strBaseName = _T("Autosave");
+		if (OutputSettings.m_bAutosave || szFileList.empty())
+			strBaseName = "Autosave";
 		else
 		{
-			_tsplitpath(szFileList, nullptr, nullptr, szName, nullptr);
-			strBaseName = szName;
-			if (!strBaseName.GetLength())
-				strBaseName = _T("Autosave");
-		};
-	};
+			QFileInfo fileInfo(szFileList);
 
-	{
-		CString			strBasePath;
-		QString			strExt;
-		bool			bFileExists = false;
-		int			lNumber = 0;
-
-		strBasePath = strOutputFolder;
-		// Add trailing backslash
-		if (strBasePath.Right(1) != _T("\\") && strBasePath.Right(1) != _T("/"))
-			strBasePath += _T("\\");
-
-		if (bTIFF)
-		{
-			strExt = ".tif";
-			strFileName = strBasePath+strBaseName+".tif";
+			strBaseName = fileInfo.baseName();
+			if (strBaseName.isEmpty())
+				strBaseName = "Autosave";
 		}
-		else
-		{
-			strExt = ".fit";
-			if (m_vBitmaps.size())
-				GetFITSExtension(m_vBitmaps[0].filePath, strExt);
-			strFileName = strBasePath+strBaseName + CString(strExt.toStdWString().c_str());;
-		};
+	}
 
-		if (OutputSettings.m_bAppend)
+	QString strExt;
+	if (bTIFF)
+	{
+		strExt = ".tif";
+	}
+	else
+	{
+		strExt = ".fit";
+		if (m_vBitmaps.size())
+			GetFITSExtension(m_vBitmaps[0].filePath, strExt);
+	}
+	QString outFile = strOutputFolder + strBaseName + strExt;
+
+	if (OutputSettings.m_bAppend)
+	{
+		int lNumber = 0;
+		bool bFileExists = false;
+		do
 		{
-			do
+			QFile file(outFile);
+			bFileExists = file.open(QIODevice::ReadOnly);
+			if (bFileExists)
 			{
-				FILE *		hFile;
-
-				hFile = _tfopen(strFileName, _T("rb"));
-				if (hFile)
-				{
-					fclose(hFile);
-					lNumber++;
-					bFileExists = true;
-					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, strExt.toStdWString().c_str());
-				}
-				else
-					bFileExists = false;
+				lNumber++;
+				outFile = QString("%1%2%3%4").arg(strOutputFolder).arg(strBaseName).arg(lNumber, 3, 10, QLatin1Char('0')).arg(strExt);
+				file.close();
 			}
-			while (bFileExists && (lNumber<1000));
-		};
-	};
-
+		}
+		while (bFileExists && (lNumber<1000));
+	}
+	strFileName = outFile.toStdWString().c_str();
 	return bResult;
 };
 
@@ -2607,7 +2582,7 @@ static void GetISOGainStrings(CTaskInfo *pTask, const QString& strISO, const QSt
 	}
 }
 
-void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile)
+void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path& outputFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -2616,7 +2591,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 	if (!OutputSettings.m_bOutputHTML)
 		return;
 
-	const QFileInfo fileInfo(QString::fromWCharArray(szOutputFile));
+	const QFileInfo fileInfo(outputFile);
 	const QString strOutputFile(QString("%1%2%3.html").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName()));
 
 	QFile file(strOutputFile);
