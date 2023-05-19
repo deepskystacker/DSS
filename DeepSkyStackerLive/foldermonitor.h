@@ -10,7 +10,7 @@ namespace DSS
 	void run() override;
 
 	public:
-		FolderMonitor(QObject* parent);
+		FolderMonitor();
 		~FolderMonitor();
 
 		//

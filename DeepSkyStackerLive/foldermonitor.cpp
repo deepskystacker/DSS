@@ -5,8 +5,8 @@
 
 namespace DSS
 {
-	FolderMonitor::FolderMonitor(QObject* parent)
-		: QObject(parent),
+	FolderMonitor::FolderMonitor()
+		: QObject(),
 		stopped{ false },
 		delay{ 5UL }
 	{
@@ -30,7 +30,9 @@ namespace DSS
 	}
 
 	FolderMonitor::~FolderMonitor()
-	{}
+	{ 
+		disconnect(this, nullptr);
+	}
 
 	void FolderMonitor::run()
 	{

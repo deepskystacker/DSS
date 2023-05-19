@@ -541,7 +541,7 @@ void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
 		setMonitoredFolder("");
 	}
 
-	folderMonitor = new FolderMonitor(this);
+	folderMonitor = new FolderMonitor();
 	connectMonitorSignals();
 	QThreadPool::globalInstance()->start(folderMonitor);
 
@@ -566,13 +566,10 @@ void DeepSkyStackerLive::stopTriggered()
 	actionMonitor->setChecked(false);
 	actionStack->setChecked(false);
 
-	//
 	// 
 	// Stop the folder monitor thread.
-	// No longer interested in changes to the folder.
 	//
 	emit stopMonitor();
-	disconnect(folderMonitor, nullptr);
 	folderMonitor = nullptr;
 }
 
