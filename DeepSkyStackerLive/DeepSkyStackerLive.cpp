@@ -62,6 +62,7 @@
 #include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
 #include "tracecontrol.h"
 #include "Workspace.h"
+#include "foldermonitor.h"
 
 using namespace DSS;
 using namespace std;
@@ -254,6 +255,15 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 		this, &DSSLive::stopTriggered);
 }
 
+void DeepSkyStackerLive::connectMonitorSignals()
+{
+	connect(folderMonitor, &FolderMonitor::existingFiles,
+		this, &DSSLive::onExistingFiles);
+	connect(folderMonitor, &FolderMonitor::fileCreated,
+		this, &DSSLive::onNewFile);
+	connect(this, &DSSLive::stopMonitor,
+		folderMonitor, &FolderMonitor::stop);
+}
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::makeLinks()
@@ -285,7 +295,10 @@ void DeepSkyStackerLive::onInitialise()
 	settings.beginGroup("DeepSkyStackerLive");
 	QString dir{ settings.value("MonitoredFolder", "").toString() };
 	if (!dir.isEmpty())
+	{
 		folderName->setText(dir);
+		monitoredFolder = dir;
+	}
 	settings.endGroup();
 
 	//
@@ -303,24 +316,24 @@ void DeepSkyStackerLive::onInitialise()
 	writeToLog("\n");
 
 
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"\nHow to use  DeepSkyStacker Live ?\n", "IDS_LOG_STARTING"),
 		false, true, false);
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"Step 1\nCheck the Settings tabs for all the stacking and warning settings\n\n", "IDS_LOG_STARTING_1"),
 		false, false, false);
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"Step 2\nClick on the Monitor button to start monitoring the folder\n"
 		"When monitoring is active incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
 		false, false, false);
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"Step 3\nTo start stacking the images click on the Stack button\n"
 		"At this point all the incoming (and all previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
 		false, false, false);
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"You can pause/restart the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
 		false, false, false);
-	writeToLog(QCoreApplication::translate("DeepSkyStackerLive",
+	writeToLog(tr(
 		"To stop monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
 		false, false, false);
 
@@ -495,6 +508,7 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 
 			folderName->setText(dir);
 			makeLink(folderName, linkColour);
+			monitoredFolder = dir;
 		}
 		settings.endGroup();
 
@@ -505,8 +519,38 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 
 void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
 {
+	ZFUNCTRACE_RUNTIME();
 	qDebug() << "Monitor button pressed";
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+
+	//
+	// Has the folder to monitor aleady been set?  If not set it.
+	// 
+	if (monitoredFolder.isEmpty())
+	{
+		setMonitoredFolder("");
+	}
+	fs::path dir{ monitoredFolder.toStdU16String() };
+
+	if (!is_directory(dir))
+	{
+		QMessageBox::information(this, "DeepSkyStackerLive",
+			tr("%1 is not a directory. Please select a valid directory.").arg(monitoredFolder));
+		settings.setValue("MonitoredFolder", "");
+		setMonitoredFolder("");
+	}
+
+	folderMonitor = new FolderMonitor(this);
+	connectMonitorSignals();
+	QThreadPool::globalInstance()->start(folderMonitor);
+
+	writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
+		true, true, false, Qt::green);
+
 }
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::stackTriggered(bool checked)
 {
@@ -514,12 +558,45 @@ void DeepSkyStackerLive::stackTriggered(bool checked)
 	actionMonitor->setChecked(checked);
 }
 
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::stopTriggered()
 {
 	qDebug() << "Stop button pressed";
 	actionMonitor->setChecked(false);
 	actionStack->setChecked(false);
+
+	//
+	// 
+	// Stop the folder monitor thread.
+	// No longer interested in changes to the folder.
+	//
+	emit stopMonitor();
+	disconnect(folderMonitor, nullptr);
+	folderMonitor = nullptr;
 }
+
+/* ------------------------------------------------------------------- */
+
+void DSSLive::onExistingFiles(const std::vector<fs::path>& files)
+{
+	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("%d existing files files found", files.size());
+	for (const auto& file : files)
+	{
+		ZTRACE_RUNTIME(" %s", file.generic_string().c_str());
+	}
+
+}
+
+/* ------------------------------------------------------------------- */
+
+void DSSLive::onNewFile(const fs::path& file)
+{
+	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("New file created in watched folder: %s", file.generic_string().c_str());
+}
+
 
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };

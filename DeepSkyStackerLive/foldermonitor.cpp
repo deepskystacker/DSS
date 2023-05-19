@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <atomic>
+#include <Ztrace.h>
 #include "foldermonitor.h"
 
 namespace DSS
@@ -26,7 +27,6 @@ namespace DSS
 				paths_[file] = fs::last_write_time(file);
 			}
 		}
-		emit existingFiles(existing_);
 	}
 
 	FolderMonitor::~FolderMonitor()
@@ -34,10 +34,13 @@ namespace DSS
 
 	void FolderMonitor::run()
 	{
-		while (!stopped)
+		ZFUNCTRACE_RUNTIME();
+		moveToThread(QThread::currentThread());
+		emit existingFiles(existing_);		// Tell the boss about existing files
 
+		while (!stopped)
 		{
-			// Wait for "delay" milliseconds
+			// Wait for "delay" seconds
 			QThread::sleep(delay);
 
 			auto it = paths_.begin();
@@ -81,6 +84,7 @@ namespace DSS
 
 	void FolderMonitor::stop()
 	{
+		ZFUNCTRACE_RUNTIME();
 		stopped = true;
 	}
 }
