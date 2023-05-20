@@ -69,7 +69,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(false);
 		m_csFWHM.SetVisible(false);
 		m_csSkyBackground.SetVisible(false);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	}
 	else if (m_FWHM.GetCheck())
 	{
@@ -80,7 +80,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(false);
 		m_csFWHM.SetVisible(true);
 		m_csSkyBackground.SetVisible(false);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	}
 	else if (m_Stars.GetCheck())
 	{
@@ -91,7 +91,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(false);
 		m_csFWHM.SetVisible(false);
 		m_csSkyBackground.SetVisible(false);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	}
 	else if (m_Offset.GetCheck())
 	{
@@ -102,7 +102,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(true);
 		m_csFWHM.SetVisible(false);
 		m_csSkyBackground.SetVisible(false);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	}
 	else if (m_Angle.GetCheck())
 	{
@@ -113,7 +113,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(false);
 		m_csFWHM.SetVisible(false);
 		m_csSkyBackground.SetVisible(false);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	}
 	else if (m_SkyBackground.GetCheck())
 	{
@@ -124,7 +124,7 @@ void CGraphViewTab::ChangeVisibleGraph()
 		m_csdY.SetVisible(false);
 		m_csFWHM.SetVisible(false);
 		m_csSkyBackground.SetVisible(true);
-		m_Graph.GetLegend()->SetVisible(FALSE);
+		m_Graph.GetLegend()->SetVisible(false);
 	};
 
 	m_Graph.GetLeftAxis()->SetAutomatic(true);
@@ -150,7 +150,7 @@ BOOL CGraphViewTab::OnInitDialog()
 
 	m_ControlPos.AddControl(IDC_GRAPH, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 
-	m_Score.SetCheck(TRUE);
+	m_Score.SetCheck(true);
 
 	if (m_bDarkMode)
 	{
@@ -185,7 +185,7 @@ BOOL CGraphViewTab::OnInitDialog()
 
 	ChangeVisibleGraph();
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -194,11 +194,11 @@ void CGraphViewTab::OnScore()
 {
 	if (m_Score.GetCheck())
 	{
-		m_FWHM.SetCheck(FALSE);
-		m_Stars.SetCheck(FALSE);
-		m_Offset.SetCheck(FALSE);
-		m_Angle.SetCheck(FALSE);
-		m_SkyBackground.SetCheck(FALSE);
+		m_FWHM.SetCheck(false);
+		m_Stars.SetCheck(false);
+		m_Offset.SetCheck(false);
+		m_Angle.SetCheck(false);
+		m_SkyBackground.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -209,11 +209,11 @@ void CGraphViewTab::OnFWHM()
 {
 	if (m_FWHM.GetCheck())
 	{
-		m_Score.SetCheck(FALSE);
-		m_Stars.SetCheck(FALSE);
-		m_Offset.SetCheck(FALSE);
-		m_Angle.SetCheck(FALSE);
-		m_SkyBackground.SetCheck(FALSE);
+		m_Score.SetCheck(false);
+		m_Stars.SetCheck(false);
+		m_Offset.SetCheck(false);
+		m_Angle.SetCheck(false);
+		m_SkyBackground.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -224,11 +224,11 @@ void CGraphViewTab::OnStars()
 {
 	if (m_Stars.GetCheck())
 	{
-		m_Score.SetCheck(FALSE);
-		m_FWHM.SetCheck(FALSE);
-		m_Offset.SetCheck(FALSE);
-		m_Angle.SetCheck(FALSE);
-		m_SkyBackground.SetCheck(FALSE);
+		m_Score.SetCheck(false);
+		m_FWHM.SetCheck(false);
+		m_Offset.SetCheck(false);
+		m_Angle.SetCheck(false);
+		m_SkyBackground.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -239,11 +239,11 @@ void CGraphViewTab::OnOffset()
 {
 	if (m_Offset.GetCheck())
 	{
-		m_Score.SetCheck(FALSE);
-		m_FWHM.SetCheck(FALSE);
-		m_Stars.SetCheck(FALSE);
-		m_Angle.SetCheck(FALSE);
-		m_SkyBackground.SetCheck(FALSE);
+		m_Score.SetCheck(false);
+		m_FWHM.SetCheck(false);
+		m_Stars.SetCheck(false);
+		m_Angle.SetCheck(false);
+		m_SkyBackground.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -254,11 +254,11 @@ void CGraphViewTab::OnAngle()
 {
 	if (m_Angle.GetCheck())
 	{
-		m_Score.SetCheck(FALSE);
-		m_FWHM.SetCheck(FALSE);
-		m_Stars.SetCheck(FALSE);
-		m_Offset.SetCheck(FALSE);
-		m_SkyBackground.SetCheck(FALSE);
+		m_Score.SetCheck(false);
+		m_FWHM.SetCheck(false);
+		m_Stars.SetCheck(false);
+		m_Offset.SetCheck(false);
+		m_SkyBackground.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -299,11 +299,11 @@ void CGraphViewTab::OnSkyBackground()
 {
 	if (m_SkyBackground.GetCheck())
 	{
-		m_Score.SetCheck(FALSE);
-		m_FWHM.SetCheck(FALSE);
-		m_Stars.SetCheck(FALSE);
-		m_Offset.SetCheck(FALSE);
-		m_Angle.SetCheck(FALSE);
+		m_Score.SetCheck(false);
+		m_FWHM.SetCheck(false);
+		m_Stars.SetCheck(false);
+		m_Offset.SetCheck(false);
+		m_Angle.SetCheck(false);
 		ChangeVisibleGraph();
 	};
 };
@@ -326,13 +326,13 @@ void	CGraphViewTab::AddScoreFWHMStars(LPCTSTR szFileName, double fScore, double 
 
 void	CGraphViewTab::AddOffsetAngle(LPCTSTR szFileName, double fdX, double fdY, double fAngle)
 {
-	BOOL				bFound = FALSE;
+	BOOL				bFound = false;
 
 	for (LONG i = (LONG)m_vFiles.size()-1;i>=0 && !bFound;i--)
 	{
 		if (!m_vFiles[i].CompareNoCase(szFileName))
 		{
-			bFound = TRUE;
+			bFound = true;
 			m_csdX.AddPoint(i+1, fdX);
 			m_csdY.AddPoint(i+1, fdY);
 			m_csAngle.AddPoint(i+1, fAngle);
@@ -344,13 +344,13 @@ void	CGraphViewTab::AddOffsetAngle(LPCTSTR szFileName, double fdX, double fdY, d
 
 void CGraphViewTab::SetPoint(LPCTSTR szFileName, POINTTYPE ptType, CHARTTYPE ctType)
 {
-	BOOL				bFound = FALSE;
+	BOOL				bFound = false;
 
 	for (LONG i = (LONG)(m_vFiles.size())-1;i>=0 && !bFound;i--)
 	{
 		if (!m_vFiles[i].CompareNoCase(szFileName))
 		{
-			bFound = TRUE;
+			bFound = true;
 			switch (ctType)
 			{
 			case CT_SCORE :
@@ -452,13 +452,13 @@ void CGraphViewTab::ChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info)
 
 BOOL CChartSeries::IsPointInSerie(double fX, double fY, CChartSerie* pSerie)
 {
-	BOOL			bResult = FALSE;
+	BOOL			bResult = false;
 
 	for (LONG i = (LONG)(pSerie->GetPointsCount()) - 1; i >= 0 && !bResult; i--)
 	{
 		if (fX == pSerie->GetXPointValue(i) &&
 			fY == pSerie->GetYPointValue(i))
-			bResult = TRUE;
+			bResult = true;
 	};
 
 	return bResult;
@@ -527,14 +527,14 @@ void CChartSeries::AddPoint(double fX, double fY)
 void CChartSeries::SetPoint(double fX, POINTTYPE ptType)
 {
 	// First search the point in the Main serie
-	BOOL				bFound = FALSE;
+	BOOL				bFound = false;
 	double				fY;
 
 	for (LONG i = (LONG)(m_pMain->GetPointsCount()) - 1; i >= 0 && !bFound; i--)
 	{
 		if (m_pMain->GetXPointValue(i) == fX)
 		{
-			bFound = TRUE;
+			bFound = true;
 			fY = m_pMain->GetYPointValue(i);
 			if (ptType == PT_REFERENCE)
 			{

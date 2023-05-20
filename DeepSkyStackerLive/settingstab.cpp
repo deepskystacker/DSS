@@ -323,6 +323,7 @@ namespace DSS
 		liveSettings.SetProcess_Others(Qt::Checked == processOther->checkState());
 
 		liveSettings.save();
+		emit settingsChanged();
 		dirty = false;
 	}
 

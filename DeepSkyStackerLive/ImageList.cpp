@@ -138,7 +138,7 @@ BOOL CImageListTab::OnInitDialog()
 	m_ControlPos.AddControl(IDC_IMAGELIST, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 	InitList();
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -159,7 +159,7 @@ BOOL CImageListTab::Close()
 
 		delete[] pState;
 	}
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -170,7 +170,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 	CBitmapInfo				bmpInfo;
 
 	GetPictureInfo(szImage, bmpInfo);
-	lfi.SetBitmap(szImage, FALSE, FALSE);
+	lfi.SetBitmap(szImage, false, false);
 	if (lfi.IsRegistered() && bmpInfo.CanLoad())
 	{
 		// Add the file to the list
@@ -256,7 +256,7 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
-	BOOL				bFound = FALSE;
+	BOOL				bFound = false;
 
 	for (LONG i = 0;i<m_ImageList.GetItemCount() && !bFound;i++)
 	{
@@ -267,7 +267,7 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 
 		if (!strTemp.CompareNoCase(strImage))
 		{
-			bFound = TRUE;
+			bFound = true;
 			switch (status)
 			{
 			case IS_LOADED :
@@ -303,7 +303,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
-	BOOL				bFound = FALSE;
+	BOOL				bFound = false;
 
 	for (LONG i = 0;i<m_ImageList.GetItemCount() && !bFound;i++)
 	{
@@ -314,7 +314,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 
 		if (!strTemp.CompareNoCase(strImage))
 		{
-			bFound = TRUE;
+			bFound = true;
 			strValue.Format(_T("%.2f"), fdX);
 			m_ImageList.SetItemText(i, COLUMN_DX, strValue);
 			strValue.Format(_T("%.2f"), fdY);

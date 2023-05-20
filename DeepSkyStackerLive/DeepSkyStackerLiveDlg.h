@@ -115,7 +115,7 @@ protected:
 /* ------------------------------------------------------------------- */
 
 CDeepSkyStackerLiveDlg* GetDSSLiveDlg(CWnd* pDialog);
-void AddToLog(QString szString, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
+void AddToLog(QString szString, BOOL bAddDateTime = false, BOOL bBold = false, BOOL bItalic = false, COLORREF crColor = RGB(0, 0, 0));
 void SetLastImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName = nullptr);
 void SetStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap);
 void AdviseStackedImageSaved();

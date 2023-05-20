@@ -45,10 +45,10 @@ BOOL CRestartMonitoring::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_DropPending.SetCheck(TRUE);
-	m_CreateNewEmpty.SetCheck(TRUE);
+	m_DropPending.SetCheck(true);
+	m_CreateNewEmpty.SetCheck(true);
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return true;  // return true  unless you set the focus to a control
 }
 
 /* ------------------------------------------------------------------- */
@@ -67,9 +67,9 @@ void CRestartMonitoring::OnBnClickedCreatenewstackedimage()
 {
 	if (m_CreateNewEmpty.GetCheck())
 	{
-		m_StartFromCurrent.SetCheck(FALSE);
-		m_DropPending.SetCheck(TRUE);
-		m_UsePending.SetCheck(FALSE);
+		m_StartFromCurrent.SetCheck(false);
+		m_DropPending.SetCheck(true);
+		m_UsePending.SetCheck(false);
 	};
 }
 
@@ -79,7 +79,7 @@ void CRestartMonitoring::OnBnClickedStartfromcurrentstackedimage()
 {
 	if (m_StartFromCurrent.GetCheck())
 	{
-		m_CreateNewEmpty.SetCheck(FALSE);
+		m_CreateNewEmpty.SetCheck(false);
 	};
 }
 
@@ -88,7 +88,7 @@ void CRestartMonitoring::OnBnClickedStartfromcurrentstackedimage()
 void CRestartMonitoring::OnBnClickedDroppendingimages()
 {
 	if (m_DropPending.GetCheck())
-		m_UsePending.SetCheck(FALSE);
+		m_UsePending.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
@@ -96,7 +96,7 @@ void CRestartMonitoring::OnBnClickedDroppendingimages()
 void CRestartMonitoring::OnBnClickedUsependingimages()
 {
 	if (m_UsePending.GetCheck())
-		m_DropPending.SetCheck(FALSE);
+		m_DropPending.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */

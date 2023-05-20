@@ -81,10 +81,10 @@ CMainBoard::CMainBoard(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	m_bDarkMode(bDarkMode)
 {
 	m_ulSHRegister = 0;
-	m_bProgressing = FALSE;
-	m_bMonitoring  = FALSE;
-	m_bStacking	   = FALSE;
-	m_bStopping	   = FALSE;
+	m_bProgressing = false;
+	m_bMonitoring  = false;
+	m_bStacking	   = false;
+	m_bStopping	   = false;
 
 	m_lNrPending	= 0;
 	m_lNrRegistered = 0;
@@ -727,7 +727,7 @@ void	CMainBoard::DrawStopButton(CDC * pDC)
 
 BOOL CMainBoard::OnEraseBkgnd(CDC* pDC)
 {
-	BOOL						bResult = TRUE;//CDialog::OnEraseBkgnd(pDC);
+	BOOL						bResult = true;//CDialog::OnEraseBkgnd(pDC);
 	CRect						rc;
 	CDC							MemDC;
 	CBitmap						Bitmap;
@@ -749,15 +749,15 @@ BOOL CMainBoard::OnEraseBkgnd(CDC* pDC)
 	m_MonitoringRect.GetWindowRect(&rc);
 	m_MonitoringRect.GetWindowText(strText);
 	ScreenToClient(&rc);
-	DrawGradientFrameRect(&MemDC, strText, rc, TRUE, TRUE);
-	DrawGradientFrameRect(&MemDC, strText, rc, TRUE, FALSE);
+	DrawGradientFrameRect(&MemDC, strText, rc, true, true);
+	DrawGradientFrameRect(&MemDC, strText, rc, true, false);
 
 	/*
 	m_SettingsRect.GetWindowRect(&rc);
 	m_SettingsRect.GetWindowText(strText);
 	ScreenToClient(&rc);
-	DrawGradientFrameRect(&MemDC, strText, rc, TRUE, TRUE);
-	DrawGradientFrameRect(&MemDC, strText, rc, TRUE, FALSE);
+	DrawGradientFrameRect(&MemDC, strText, rc, true, true);
+	DrawGradientFrameRect(&MemDC, strText, rc, true, false);
 	*/
 
 	m_StackedImage.GetWindowRect(&rc);
@@ -806,18 +806,18 @@ BOOL CMainBoard::OnEraseBkgnd(CDC* pDC)
 
 /* ------------------------------------------------------------------- */
 
-static void InitLabel(CLabel & label, BOOL bMain = FALSE, bool bDarkMode = false)
+static void InitLabel(CLabel & label, BOOL bMain = false, bool bDarkMode = false)
 {
-	label.SetLink(TRUE, TRUE);
-	label.SetTransparent(TRUE);
+	label.SetLink(true, true);
+	label.SetTransparent(true);
 	label.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
-	label.SetFont3D(FALSE);
+	label.SetFont3D(false);
 	label.SetTextColor(bDarkMode ? TEXT_DARK : TEXT_NORMAL);
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
 
 	if (bMain)
 	{
-		//label.SetFontBold(TRUE);
+		//label.SetFontBold(true);
 		label.SetTextColor(RGB(109, 23, 7));
 	};
 };
@@ -871,7 +871,7 @@ void CMainBoard::OnLButtonDown( UINT, CPoint pt)
 			{
 				if (CheckRestartMonitoring())
 				{
-					m_bMonitoring = TRUE;
+					m_bMonitoring = true;
 					OnMonitor();
 					InvalidateButtons();
 				};
@@ -880,9 +880,9 @@ void CMainBoard::OnLButtonDown( UINT, CPoint pt)
 	}
 	else if (IsInRect(m_Stack, pt))
 	{
-		BOOL			bProceed = TRUE;
+		BOOL			bProceed = true;
 		if (m_bStacking)
-			m_bStacking = FALSE;
+			m_bStacking = false;
 		else
 		{
 			if (IsMonitoredFolderOk() || ChangeMonitoredFolder())
@@ -894,10 +894,10 @@ void CMainBoard::OnLButtonDown( UINT, CPoint pt)
 						OnMonitor();
 				};
 				if (m_bMonitoring)
-					m_bStacking = TRUE;
+					m_bStacking = true;
 			}
 			else
-				bProceed = FALSE;
+				bProceed = false;
 		};
 		if (bProceed)
 		{
@@ -908,7 +908,7 @@ void CMainBoard::OnLButtonDown( UINT, CPoint pt)
 	else if (IsInRect(m_Stop, pt))
 	{
 		OnStop();
-		m_bStacking = m_bMonitoring = FALSE;
+		m_bStacking = m_bMonitoring = false;
 		OnStack();
 		InvalidateButtons();
 	};
@@ -921,14 +921,14 @@ void CMainBoard::OnLButtonDown( UINT, CPoint pt)
 
 BOOL	CMainBoard::CheckRestartMonitoring()
 {
-	BOOL					bResult = TRUE;
+	BOOL					bResult = true;
 
 	if (!m_bMonitoring)
 	{
 		if (m_lNrStacked || m_lNrPending)
 		{
 			CRestartMonitoring		dlg;
-			bResult = FALSE;
+			bResult = false;
 
 			if (dlg.DoModal() == IDOK)
 			{
@@ -936,7 +936,7 @@ BOOL	CMainBoard::CheckRestartMonitoring()
 					m_LiveEngine.ClearPendingImages();
 				if (dlg.IsClearStackedImage())
 					m_LiveEngine.ClearStackedImage();
-				bResult = TRUE;
+				bResult = true;
 			};
 		};
 	};
@@ -948,7 +948,7 @@ BOOL	CMainBoard::CheckRestartMonitoring()
 
 BOOL	CMainBoard::IsMonitoredFolderOk()
 {
-	BOOL					bResult = FALSE;
+	BOOL					bResult = false;
 
 	QSettings settings;
 	settings.beginGroup("DeepSkyStackerLive");
@@ -968,7 +968,7 @@ BOOL	CMainBoard::IsMonitoredFolderOk()
 		{
 			fclose(hFile);
 			DeleteFile(strFile);
-			bResult = TRUE;
+			bResult = true;
 		}
 		else
 			strFolder.Empty();
@@ -981,7 +981,7 @@ BOOL	CMainBoard::IsMonitoredFolderOk()
 
 BOOL	CMainBoard::ChangeMonitoredFolder()
 {
-	BOOL					bResult = FALSE;
+	BOOL					bResult = false;
 
 	if (m_bMonitoring)
 	{
@@ -997,7 +997,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 
 		m_MonitoredFolder.GetWindowText(strFolder);
 
-		CFolderDlg				dlg(FALSE, strFolder, this);
+		CFolderDlg				dlg(false, strFolder, this);
 
 		strTitle.LoadString(IDS_SELECTMONITOREDFOLDER);
 		dlg.SetTitle(strTitle);
@@ -1014,7 +1014,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 			settings.setValue("MonitoredFolder", QString::fromWCharArray(strFolder.GetString()));
 			settings.endGroup();
 
-			bResult = TRUE;
+			bResult = true;
 		};	};
 
 	return bResult;
@@ -1046,7 +1046,7 @@ BOOL CMainBoard::OnInitDialog()
 		m_MonitoredFolder.SetWindowText(strFolder);
 	};
 
-	InitLabel(m_MonitoredFolder, FALSE, true);
+	InitLabel(m_MonitoredFolder, false, true);
 
 	m_ControlPos.SetParent(this);
 	m_ControlPos.AddControl(IDC_MONITORINGRECT, CP_RESIZE_HORIZONTAL);
@@ -1054,7 +1054,7 @@ BOOL CMainBoard::OnInitDialog()
 	m_ControlPos.AddControl(IDC_MONITOREDFOLDER, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_STATS, CP_RESIZE_HORIZONTAL);
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1123,7 +1123,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 
 						if (GetPictureInfo(strFile, bmpInfo))
 						{
-							BOOL			bAdd = FALSE;
+							BOOL			bAdd = false;
 
 							if (bmpInfo.m_strFileType=="RAW")
 								bAdd = m_LiveSettings.IsProcess_RAW();
@@ -1214,11 +1214,11 @@ LRESULT CMainBoard::OnFolderChange([[maybe_unused]] WPARAM wParam, [[maybe_unuse
 		std::sort(m_vAllFiles.begin(), m_vAllFiles.end());
 
 		strNewFiles = QCoreApplication::translate("MainBoard", "%1 new file(s) found\n", "IDS_LOG_NEWFILESFOUND").arg(vNewFiles.size());
-		AddToLog(strNewFiles, TRUE, FALSE, FALSE, LOG_GREEN_TEXT);
+		AddToLog(strNewFiles, true, false, false, LOG_GREEN_TEXT);
 		for (LONG i = 0;i<vNewFiles.size();i++)
 		{
 			strNewFiles = QCoreApplication::translate("MainBoard", "-> New file: %1\n", "IDS_LOG_NEWFILE").arg(vNewFiles[i].GetString());
-			AddToLog(strNewFiles, FALSE, FALSE, FALSE, LOG_GREEN_TEXT);
+			AddToLog(strNewFiles, false, false, false, LOG_GREEN_TEXT);
 			m_LiveEngine.AddFileToProcess(vNewFiles[i]);
 		};
 	};
@@ -1247,7 +1247,7 @@ void CMainBoard::OnMonitor()
 	CComPtr<IBindCtx>		pIBindCtx;
 	SHChangeNotifyEntry		shCNE;
 	LPITEMIDLIST			ppidl;
-	BOOL					bUseExisting = FALSE;
+	BOOL					bUseExisting = false;
 
 	if (m_ulSHRegister)
 	{
@@ -1280,7 +1280,7 @@ void CMainBoard::OnMonitor()
 			if (nResult == IDYES)
 			{
 				m_vAllFiles.clear();
-				bUseExisting = TRUE;
+				bUseExisting = true;
 			};
 		}
 		else
@@ -1297,7 +1297,7 @@ void CMainBoard::OnMonitor()
 		if (hResult != S_OK)
 			throw(hResult);
 
-		shCNE.fRecursive = FALSE;
+		shCNE.fRecursive = false;
 		shCNE.pidl		 = ppidl;
 		m_ulSHRegister = SHChangeNotifyRegister(m_hWnd, SHCNE_DISKEVENTS, SHCNE_ALLEVENTS, WM_FOLDERCHANGE, 1, &shCNE);
 
@@ -1314,14 +1314,14 @@ void CMainBoard::OnMonitor()
 		//if (m_ulSHRegister)
 		{
 			const QString strText(QCoreApplication::translate("MainBoard", "Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(strFolder.GetString()));
-			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
+			AddToLog(strText, true, true, false, LOG_GREEN_TEXT);
 		}
 		/*else
 		{
 			CString			strText;
 
 			strText.Format(IDS_LOG_ERRORSTARTMONITORING, (LPCTSTR)strFolder);
-			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
+			AddToLog(strText, true, true, false, LOG_GREEN_TEXT);
 		};*/
 
 		if (bUseExisting)
@@ -1345,7 +1345,7 @@ void CMainBoard::OnStop()
 		settings.endGroup();
 
 		const QString strText(QCoreApplication::translate("MainBoard", "Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder));
-		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
+		AddToLog(strText, true, true, false, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
 			SHChangeNotifyDeregister(m_ulSHRegister);
@@ -1362,7 +1362,7 @@ void CMainBoard::OnStack()
 		const QString strText(m_bStacking ? 
 			QCoreApplication::translate("MainBoard", "Start Stacking files\n", "IDS_LOG_STARTSTACKING") :
 			QCoreApplication::translate("MainBoard", "Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
-		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
+		AddToLog(strText, true, true, false, LOG_YELLOW_TEXT);
 
 	};
 	m_LiveEngine.EnableRegistering(m_bMonitoring);
@@ -1379,7 +1379,7 @@ void CMainBoard::InvalidateProgress()
 	m_ProgressRect.ClientToScreen(&rcProgress);
 	ScreenToClient(&rcProgress);
 	rcProgress.InflateRect(2, 2);
-	InvalidateRect(&rcProgress, TRUE);
+	InvalidateRect(&rcProgress, true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1402,7 +1402,7 @@ void CMainBoard::InvalidateButtons()
 	rcButtons.UnionRect(&rcButtons, &rcStop);
 	// Then add the text below
 	rcButtons.bottom += 20;
-	InvalidateRect(&rcButtons, TRUE);
+	InvalidateRect(&rcButtons, true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1414,7 +1414,7 @@ void	CMainBoard::InvalidateStats()
 	m_Stats.GetWindowRect(rcStats);
 	ScreenToClient(&rcStats);
 	rcStats.InflateRect(2, 2);
-	InvalidateRect(&rcStats, TRUE);
+	InvalidateRect(&rcStats, true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1452,13 +1452,13 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 					if (lTotal)
 						m_lProgressTotal = lTotal;
 					m_lProgressAchieved = lAchieved;
-					m_bProgressing = TRUE;
+					m_bProgressing = true;
 					InvalidateProgress();
 				};
 			};
 			break;
 		case LEM_ENDPROGRESS :
-			m_bProgressing = FALSE;
+			m_bProgressing = false;
 			InvalidateProgress();
 			break;
 		case LEM_UPDATEPENDING :
@@ -1575,12 +1575,12 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 					};
 					if (m_LiveSettings.IsWarning_Email())
 					{
-						BOOL				bSendEmail = FALSE;
+						BOOL				bSendEmail = false;
 
 						if (m_LiveSettings.IsWarning_SendMultipleEmails())
-							bSendEmail = TRUE;
+							bSendEmail = true;
 						else if (!m_lNrEmails)
-							bSendEmail = TRUE;
+							bSendEmail = true;
 
 						if (bSendEmail)
 						{
@@ -1610,7 +1610,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 							catch (...)
 							{
 								const QString strError(QCoreApplication::translate("MainBoard", "An error occurred while sending the email!\n", "IDS_ERRORSENDINGEMAIL"));
-								AddToLog(strError, TRUE, TRUE, FALSE, RGB(255, 0, 0));
+								AddToLog(strError, true, true, false, RGB(255, 0, 0));
 							};
 						};
 					};

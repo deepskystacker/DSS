@@ -236,7 +236,7 @@ public :
 		m_strFile = szFile;
 	};
 
-	void	SetLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
+	void	SetLog(const QString& text, BOOL bDateTime = false, BOOL bBold = false, BOOL bItalic = false, COLORREF crColor = RGB(0, 0, 0))
 	{
 		m_Msg = LEM_ADDTOLOG;
 		m_strText		= text;
@@ -281,12 +281,12 @@ public :
 
 	BOOL	GetNewFile(CString & strFileName)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_NEWFILE)
 		{
 			strFileName = m_strFile;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -294,12 +294,12 @@ public :
 
 	BOOL	GetRegisteredImage(CString & strFileName)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_FILEREGISTERED)
 		{
 			strFileName = m_strFile;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -307,7 +307,7 @@ public :
 
 	BOOL	GetImageOffsets(CString & strFileName, double & fdX, double & fdY, double & fAngle)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_UPDATEIMAGEOFFSETS)
 		{
@@ -315,7 +315,7 @@ public :
 			fdX			= m_fdX;
 			fdY			= m_fdY;
 			fAngle		= m_fAngle;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -323,7 +323,7 @@ public :
 
 	BOOL	GetFootprint(QPointF & pt1, QPointF & pt2, QPointF & pt3, QPointF & pt4)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_SETFOOTPRINT)
 		{
@@ -331,7 +331,7 @@ public :
 			pt2 = m_ptFootprint[1];
 			pt3 = m_ptFootprint[2];
 			pt4 = m_ptFootprint[3];
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -339,13 +339,13 @@ public :
 
 	BOOL	GetImageStatus(CString & strFileName, IMAGESTATUS & status)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_CHANGEIMAGESTATUS)
 		{
 			strFileName = m_strFile;
 			status		= m_ImageStatus;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -353,14 +353,14 @@ public :
 
 	BOOL	GetImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& pWndBitmap, CString& strFileName)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_FILELOADED)
 		{
 			pBitmap = m_pBitmap;
 			pWndBitmap = m_pWndBitmap;
 			strFileName = m_strFile;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -368,7 +368,7 @@ public :
 
 	BOOL	GetStackedImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& pWndBitmap, LONG & lNrStacked, double & fExposure)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_SETSTACKEDIMAGE)
 		{
@@ -376,7 +376,7 @@ public :
 			pWndBitmap = m_pWndBitmap;
 			lNrStacked = m_lNrStacked;
 			fExposure  = m_fExposure;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -385,11 +385,11 @@ public :
 
 	BOOL	GetImageInfo(CString & strFile, STACKIMAGEINFO & info)
 	{
-		BOOL			bResult = FALSE;
+		BOOL			bResult = false;
 
 		if (m_Msg == LEM_UPDATEIMAGEINFO)
 		{
-			bResult = TRUE;
+			bResult = true;
 			strFile = m_strFile;
 			info	= m_ImageInfo;
 		};
@@ -486,7 +486,7 @@ private :
 	void	CloseEngine();
 	BOOL	GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMSGLIST & msglist);
 	void	PostOutMessage(const std::shared_ptr<CLiveEngineMsg>& pMsg);
-	void	PostToLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
+	void	PostToLog(const QString& text, BOOL bDateTime = false, BOOL bBold = false, BOOL bItalic = false, COLORREF crColor = RGB(0, 0, 0));
 	void	PostStrippedToLogWithDateStamp(const QString& text);
 	void	PostProgress(const QString& szText, LONG lAchieved, LONG lTotal);
 	void	PostEndProgress();
@@ -527,8 +527,8 @@ public :
 	void	AddFileToProcess(LPCTSTR szFile);
 
 	void	UpdateSettings();
-	void	EnableRegistering(BOOL bEnable = TRUE);
-	void	EnableStacking(BOOL bEnable = TRUE);
+	void	EnableRegistering(BOOL bEnable = true);
+	void	EnableStacking(BOOL bEnable = true);
 	void	PostSaveStackedImage();
 
 	void	ClearStackedImage();

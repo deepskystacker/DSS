@@ -34,59 +34,36 @@
 **
 **
 ****************************************************************************/
+// FolderRegistr.h : Header file
+//
+#include <deque>
 
-#include "ui_SettingsTab.h"
-
-class QWidget;
+#include <QObject>
 
 namespace DSS
 {
-	class LiveSettings;
-
-	class SettingsTab : public QWidget, public Ui::SettingsTab
+	class FileRegistrar : public QThread
 	{
 		Q_OBJECT
 
+	void run() override;
+
 	signals:
-		void settingsChanged();
+		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
+		void fileRegistered(fs::path file);
 
 	public:
-		SettingsTab(QWidget* parent = nullptr);
-		~SettingsTab();
+		FileRegistrar(QObject* parent);
+		~FileRegistrar();
+
+		void addFile(fs::path file);
 
 	private:
-		bool dirty;
-		LiveSettings& liveSettings;
-		QIntValidator* minImagesValidator;
-		QDoubleValidator* scoreValidator;
-		QIntValidator* starCountValidator;
-		QIntValidator* skyBGValidator;
-		QDoubleValidator* fwhmValidator;
-		QDoubleValidator* offsetValidator;
-		QDoubleValidator* angleValidator;
-		QIntValidator* imageCountValidator;
-		QString linkColour;
-		QString strEmailAddress;
-		QString strWarnFileFolder;
-		QString strStackedOutputFolder;
+		QWaitCondition condvar;
+		QMutex mutex;
+		std::deque<fs::path> pending;
 
-		void connectSignalsToSlots();
-		void setValidators();
-		void makeLinks();
-		void updateButtons();
-
-		void load();
-		void save();
-
-	private slots:
-		void setEmailAddress(const QString& link);
-		void warnEmail_Clicked(bool checked);
-		void setWarnFileFolder(const QString& link);
-		void warnFile_Clicked(bool checked);
-		void setStackedOutputFolder(const QString& link);
-		void resetOutputFolder_Pressed();
-		void applyChanges();
-		void cancelChanges();
-		void settingChanged();
+		void registerImage(fs::path file);
 	};
 }
+

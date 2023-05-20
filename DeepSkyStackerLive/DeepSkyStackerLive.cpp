@@ -63,6 +63,7 @@
 #include "tracecontrol.h"
 #include "Workspace.h"
 #include "foldermonitor.h"
+#include "fileregistrar.h"
 
 using namespace DSS;
 using namespace std;
@@ -167,6 +168,11 @@ bool LoadTranslations()
 }
 
 /* ------------------------------------------------------------------- */
+const QStringList rawExtensions { ".cr2", ".cr3", ".crw", ".nef", ".mrw", ".orf", ".raf", ".pef", ".x3f", ".dcr",
+								  ".kdc", ".srf", ".arw", ".raw", ".dng", ".ia", ".rw2" };
+const QStringList fitsExtensions { ".fits", ".fit", ".fts" };
+const QStringList tiffExtensions { ".tif", ".tiff" };
+const QStringList otherExtensions{ ".jpg", ".jpeg", ".png" };
 
 DeepSkyStackerLive::DeepSkyStackerLive() :
 	Ui_DeepSkyStackerLive {},
@@ -181,7 +187,9 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
 	linkColour{ palette().color(QPalette::ColorRole::Link).name() },
 	stackedImageViewer {nullptr},
-	lastImageViewer {nullptr}
+	lastImageViewer {nullptr},
+	folderMonitor { nullptr },
+	fileRegistrar { nullptr }
 {
 	//
 	// Must set dssInstance before invoking setupUi 
@@ -204,6 +212,12 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	ZFUNCTRACE_RUNTIME();
 
 	e->accept();
+
+	//
+	// Stop the folder monitor if it is running
+	//
+	ZTRACE_RUNTIME("Stopping folder monitor");
+	emit stopMonitor();		
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
@@ -248,11 +262,13 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 	connect(folderName, &QLabel::linkActivated,
 		this, &DSSLive::setMonitoredFolder);
 	connect(actionMonitor, &QAction::triggered,
-		this, &DSSLive::monitorTriggered);
+		this, &DSSLive::monitorPressed);
 	connect(actionStack, &QAction::triggered,
-		this, &DSSLive::stackTriggered);
+		this, &DSSLive::stackPressed);
 	connect(actionStop, &QAction::triggered,
-		this, &DSSLive::stopTriggered);
+		this, &DSSLive::stopPressed);
+	connect(settingsTab, &SettingsTab::settingsChanged,
+		this, &DSSLive::settingsChanged);
 }
 
 void DeepSkyStackerLive::connectMonitorSignals()
@@ -278,6 +294,7 @@ void DeepSkyStackerLive::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
 
+	traceControl.setDeleteOnExit(false);
 	//
 	// Connect Qt Signals to appropriate slots
 	//
@@ -366,6 +383,11 @@ void DeepSkyStackerLive::onInitialise()
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
 	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
 	workspace.ReadFromFile(fileName);
+
+	if (liveSettings->IsProcess_RAW()) validExtensions += rawExtensions;
+	if (liveSettings->IsProcess_FITS()) validExtensions += fitsExtensions;
+	if (liveSettings->IsProcess_TIFF()) validExtensions += tiffExtensions;
+	if (liveSettings->IsProcess_Others()) validExtensions += otherExtensions;
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -517,7 +539,7 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
+void DeepSkyStackerLive::monitorPressed([[maybe_unused]] bool checked)
 {
 	ZFUNCTRACE_RUNTIME();
 	qDebug() << "Monitor button pressed";
@@ -545,6 +567,7 @@ void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
 	connectMonitorSignals();
 	QThreadPool::globalInstance()->start(folderMonitor);
 
+	ZTRACE_RUNTIME("Start monitoring folder %s", monitoredFolder.toUtf8().constData());
 	writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
 		true, true, false, Qt::green);
 
@@ -552,7 +575,7 @@ void DeepSkyStackerLive::monitorTriggered([[maybe_unused]] bool checked)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::stackTriggered(bool checked)
+void DeepSkyStackerLive::stackPressed(bool checked)
 {
 	qDebug() << "Stack button pressed"; 
 	actionMonitor->setChecked(checked);
@@ -560,7 +583,7 @@ void DeepSkyStackerLive::stackTriggered(bool checked)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::stopTriggered()
+void DeepSkyStackerLive::stopPressed()
 {
 	qDebug() << "Stop button pressed";
 	actionMonitor->setChecked(false);
@@ -569,29 +592,80 @@ void DeepSkyStackerLive::stopTriggered()
 	// 
 	// Stop the folder monitor thread.
 	//
+	QString message{ tr("Stop monitoring folder %1", "IDS_LOG_STOPMONITORING").arg(monitoredFolder) };
+	ZTRACE_RUNTIME(message.toUtf8().constData());
+	message += "\n";
+	writeToLog(message,
+		true, true, false, Qt::red);
 	emit stopMonitor();
 	folderMonitor = nullptr;
+
+	//
+	// Delete the file registrar (which will also stop it).
+	//
+	delete fileRegistrar; fileRegistrar = nullptr;
+}
+
+void DSSLive::settingsChanged()
+{
+	validExtensions.clear();
+	if (liveSettings->IsProcess_RAW()) validExtensions += rawExtensions;
+	if (liveSettings->IsProcess_FITS()) validExtensions += fitsExtensions;
+	if (liveSettings->IsProcess_TIFF()) validExtensions += tiffExtensions;
+	if (liveSettings->IsProcess_Others()) validExtensions += otherExtensions;
 }
 
 /* ------------------------------------------------------------------- */
 
-void DSSLive::onExistingFiles(const std::vector<fs::path>& files)
+void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 {
 	ZFUNCTRACE_RUNTIME();
-	ZTRACE_RUNTIME("%d existing files files found", files.size());
+	
+	std::vector<fs::path> filteredFiles;
+	ZTRACE_RUNTIME(" %d existing files files found", files.size());
+
 	for (const auto& file : files)
 	{
-		ZTRACE_RUNTIME(" %s", file.generic_string().c_str());
+		QString extension{ QString::fromStdU16String(file.extension().u16string()).toLower() };
+		if (validExtensions.contains(extension))
+		{
+			filteredFiles.emplace_back(file);
+		}
 	}
+
+
+	ZTRACE_RUNTIME(" of which %d passed filtering", filteredFiles.size());
+
+	if (0 != filteredFiles.size() && nullptr == fileRegistrar)
+	{
+		fileRegistrar = new FileRegistrar(this);
+		connect(fileRegistrar, &FileRegistrar::writeToLog,
+			this, &DSSLive::writeToLog);
+		connect(fileRegistrar, &FileRegistrar::fileRegistered,
+			this, &DSSLive::fileRegistered);
+
+		for (const auto& file : filteredFiles)
+		{
+			fileRegistrar->addFile(file);
+		}
+	}
+
+
+
+
 
 }
 
 /* ------------------------------------------------------------------- */
 
-void DSSLive::onNewFile(const fs::path& file)
+void DeepSkyStackerLive::onNewFile(const fs::path& file)
 {
-	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("New file created in watched folder: %s", file.generic_string().c_str());
+}
+
+void DeepSkyStackerLive::fileRegistered(fs::path file)
+{
+	qDebug() << "File " << QString::fromStdU16String(file.filename().generic_u16string().c_str()) << " registered";
 }
 
 

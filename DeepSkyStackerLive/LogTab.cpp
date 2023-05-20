@@ -58,7 +58,7 @@ BOOL CLogTab::OnInitDialog()
 	if(m_bDarkMode)
 		m_Log.SetBackgroundColor(false, COLORREF(RGB(80, 80, 80)));
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */

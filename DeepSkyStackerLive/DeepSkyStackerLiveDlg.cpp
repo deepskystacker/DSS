@@ -111,8 +111,8 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
+	SetIcon(m_hIcon, true);			// Set big icon
+	SetIcon(m_hIcon, false);		// Set small icon
 
 	// TODO: Add extra initialization here
 	CString			strMask;
@@ -124,9 +124,9 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 
 	m_MainBoard.Create(IDD_MAINBOARD, this);
 	m_Log.Create(IDD_LOG, this);
-	m_StackedImage.SetStackedImage(TRUE);
+	m_StackedImage.SetStackedImage(true);
 	m_StackedImage.Create(IDD_IMAGEVIEW, this);
-	m_LastImage.SetStackedImage(FALSE);
+	m_LastImage.SetStackedImage(false);
 	m_LastImage.Create(IDD_IMAGEVIEW, this);
 	m_ImageList.Create(IDD_IMAGELIST, this);
 	m_ImageList.SetToDarkMode(m_bUseDarkTheme);
@@ -165,29 +165,29 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	UpdateTab();
 	UpdateSizes();
 
-	m_Log.AddToLog(QString::fromWCharArray(strTitle.GetString()), TRUE, TRUE);
+	m_Log.AddToLog(QString::fromWCharArray(strTitle.GetString()), true, true);
 	m_Log.AddToLog("\n");
 
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"\nHow to use  DeepSkyStacker Live ? \n","IDS_LOG_STARTING"),
-		FALSE, TRUE, FALSE);
+		false, true, false);
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 1\nCheck the Settings tabs for all the stackingand warning settings\n\n", "IDS_LOG_STARTING_1"),
-		FALSE, FALSE, FALSE);
+		false, false, false);
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 2\nClick on the Monitor button to start monitoring the folder\n"
 		"When the monitoring is on incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
-		FALSE, FALSE, FALSE);
+		false, false, false);
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"Step 3\nTo start stacking the images click on the Stack button\n"
 		"At this point all the incoming(and previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
-		FALSE, FALSE, FALSE);
+		false, false, false);
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"You can pause/start again the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
-		FALSE, FALSE, FALSE);
+		false, false, false);
 	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
 		"To stop the monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
-		FALSE, FALSE, FALSE);
+		false, false, false);
 
 	{
 		Workspace			workspace;
@@ -205,7 +205,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 		workspace.ReadFromFile(strPath);
 	};
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	return true;  // return true  unless you set the focus to a control
 }
 
 /* ------------------------------------------------------------------- */
@@ -361,7 +361,7 @@ CDeepSkyStackerLiveDlg* GetDSSLiveDlg(CWnd* pDialog)
 		return pDlg;
 	};
 }
-void AddToLog(QString szString, BOOL bAddDateTime /* = FALSE */, BOOL bBold /* = FALSE */, BOOL bItalic /* = FALSE */, COLORREF crColor /* = RGB(0, 0, 0) */)
+void AddToLog(QString szString, BOOL bAddDateTime /* = false */, BOOL bBold /* = false */, BOOL bItalic /* = false */, COLORREF crColor /* = RGB(0, 0, 0) */)
 {
 	CWnd* pWnd = AfxGetApp()->GetMainWnd();
 

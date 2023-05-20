@@ -47,6 +47,7 @@ namespace DSS
 	class GraphViewer;
 	class LiveSettings;
 	class FolderMonitor;
+	class FileRegistrar;
 }
 
 class DeepSkyStackerLive :
@@ -116,6 +117,8 @@ private:
 	DSS::ImageViewer* lastImageViewer;
 	QString monitoredFolder;
 	DSS::FolderMonitor* folderMonitor;
+	QStringList validExtensions;
+	DSS::FileRegistrar* fileRegistrar;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();
@@ -123,13 +126,15 @@ private:
 
 private slots:
 	void setMonitoredFolder(const QString& link);
-	void monitorTriggered(bool checked);
-	void stackTriggered(bool checked);
-	void stopTriggered();
+	void monitorPressed(bool checked);
+	void stackPressed(bool checked);
+	void stopPressed();
+
+	void settingsChanged();
 
 	void onExistingFiles(const std::vector<fs::path>&);
 	void onNewFile(const fs::path& file);
-
+	void fileRegistered(fs::path file);
 };
 using DeepSkyStacker = DeepSkyStackerLive;
 using DSSLive = DeepSkyStackerLive;

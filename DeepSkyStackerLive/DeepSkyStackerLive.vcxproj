@@ -197,6 +197,7 @@
     <ClCompile Include="DeepSkyStackerLive.cpp" />
     <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
     <ClCompile Include="emailsettings.cpp" />
+    <ClCompile Include="fileregistrar.cpp" />
     <ClCompile Include="foldermonitor.cpp" />
     <ClCompile Include="GraphView.cpp" />
     <ClCompile Include="ImageList.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />
+    <QtMoc Include="fileregistrar.h" />
     <ClInclude Include="GraphView.h" />
     <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />

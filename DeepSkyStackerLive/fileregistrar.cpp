@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2023 David C. Partridge
@@ -34,59 +33,88 @@
 **
 **
 ****************************************************************************/
-
-#include "ui_SettingsTab.h"
-
-class QWidget;
-
+// FolderRegistrar.cpp : Defines the class behaviors for the application.
+//
+#include "stdafx.h"
+#include "fileregistrar.h"
 namespace DSS
 {
-	class LiveSettings;
-
-	class SettingsTab : public QWidget, public Ui::SettingsTab
+	FileRegistrar::FileRegistrar(QObject* parent)
+		: QThread(parent)
 	{
-		Q_OBJECT
+		ZTRACE_RUNTIME("File registrar active");
+		start();
+	}
 
-	signals:
-		void settingsChanged();
+	FileRegistrar::~FileRegistrar()
+	{
+		{
+			QMutexLocker lock(&mutex);
 
-	public:
-		SettingsTab(QWidget* parent = nullptr);
-		~SettingsTab();
+			// Clear the work queue
+			if (!pending.empty())
+				pending.clear();
 
-	private:
-		bool dirty;
-		LiveSettings& liveSettings;
-		QIntValidator* minImagesValidator;
-		QDoubleValidator* scoreValidator;
-		QIntValidator* starCountValidator;
-		QIntValidator* skyBGValidator;
-		QDoubleValidator* fwhmValidator;
-		QDoubleValidator* offsetValidator;
-		QDoubleValidator* angleValidator;
-		QIntValidator* imageCountValidator;
-		QString linkColour;
-		QString strEmailAddress;
-		QString strWarnFileFolder;
-		QString strStackedOutputFolder;
+			// Add a null entry to the work queue to show we're done
+			// and wake up the run() mf
+			pending.emplace_back(fs::path());
+			condvar.wakeOne();
+		}
+		
+		//
+		// Wait for run() to terminate
+		//
+		wait();
+		ZTRACE_RUNTIME("File registrar deleted");
+	}
 
-		void connectSignalsToSlots();
-		void setValidators();
-		void makeLinks();
-		void updateButtons();
+	void FileRegistrar::run()
+	{
+		forever
+		{
+			fs::path file;
+			{
+				QMutexLocker lock(&mutex);
+				//
+				// Wait for work to arrive
+				//
+				if (pending.empty())
+					condvar.wait(&mutex);
 
-		void load();
-		void save();
+				//
+				// Something to do?
+				//
+				file = pending.front(); pending.pop_front();
 
-	private slots:
-		void setEmailAddress(const QString& link);
-		void warnEmail_Clicked(bool checked);
-		void setWarnFileFolder(const QString& link);
-		void warnFile_Clicked(bool checked);
-		void setStackedOutputFolder(const QString& link);
-		void resetOutputFolder_Pressed();
-		void applyChanges();
-		void cancelChanges();
-		void settingChanged();
-	};
+				if (file.empty()) break;
+			}
+
+			registerImage(file);
+		}
+	}
+	 
+	void FileRegistrar::addFile(fs::path file)
+	{
+		ZTRACE_RUNTIME(" Adding file %s to work queue", file.filename().generic_string().c_str());
+		QMutexLocker lock(&mutex);
+		pending.emplace_back(file);
+		condvar.wakeOne();
+	}
+
+	void FileRegistrar::registerImage(fs::path file)
+	{
+		ZFUNCTRACE_RUNTIME();
+		ZTRACE_RUNTIME("Registering %s", file.filename().generic_string().c_str());
+		sleep(1);
+		QString message{ tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3", "IDS_LOG_REGISTERRESULTS", 10)
+			.arg(QString::fromStdU16String(file.generic_u16string().c_str()))
+			.arg(20., 0, 'f', 2)
+			.arg(200., 0, 'f', 2) };
+
+		ZTRACE_RUNTIME(message.toUtf8().constData());
+		message += "\n";
+		writeToLog(message,
+			true);
+		emit fileRegistered(file);
+	}
 }

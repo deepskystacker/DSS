@@ -81,13 +81,13 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 
 BOOL	CLiveEngine::IsImageStackable1(LPCTSTR szFile, double fStarCount, double fFWHM, double fScore, double fSkyBackground, CString & strError)
 {
-	BOOL						bResult = TRUE;
+	BOOL						bResult = true;
 
 	if (m_LiveSettings.IsDontStack_Score())
 	{
 		if (fScore < m_LiveSettings.GetScore())
 		{
-			bResult = FALSE;
+			bResult = false;
 			strError.Format(IDS_NOSTACK_SCORE, fScore, m_LiveSettings.GetScore());
 			PostChangeImageInfo(szFile, II_DONTSTACK_SCORE);
 		};
@@ -97,7 +97,7 @@ BOOL	CLiveEngine::IsImageStackable1(LPCTSTR szFile, double fStarCount, double fF
 	{
 		if (fStarCount < m_LiveSettings.GetStars())
 		{
-			bResult = FALSE;
+			bResult = false;
 			strError.Format(IDS_NOSTACK_STARS, fStarCount, (double)m_LiveSettings.GetStars());
 			PostChangeImageInfo(szFile, II_DONTSTACK_STARS);
 		};
@@ -107,7 +107,7 @@ BOOL	CLiveEngine::IsImageStackable1(LPCTSTR szFile, double fStarCount, double fF
 	{
 		if (fFWHM > m_LiveSettings.GetFWHM())
 		{
-			bResult = FALSE;
+			bResult = false;
 			strError.Format(IDS_NOSTACK_FWHM, fFWHM, (double)m_LiveSettings.GetFWHM());
 			PostChangeImageInfo(szFile, II_DONTSTACK_FWHM);
 		};
@@ -117,7 +117,7 @@ BOOL	CLiveEngine::IsImageStackable1(LPCTSTR szFile, double fStarCount, double fF
 	{
 		if (fSkyBackground > m_LiveSettings.GetSkyBackground())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strError.Format(IDS_NOSTACK_SKYBACKGROUND, fSkyBackground, (double)m_LiveSettings.GetSkyBackground());
 			PostChangeImageInfo(szFile, II_DONTSTACK_SKYBACKGROUND);
 		};
@@ -131,13 +131,13 @@ BOOL	CLiveEngine::IsImageStackable1(LPCTSTR szFile, double fStarCount, double fF
 
 BOOL CLiveEngine::IsImageStackable2(LPCTSTR szFile, double fdX, double fdY, double fAngle, CString & strError)
 {
-	BOOL						bResult = TRUE;
+	BOOL						bResult = true;
 
 	if (m_LiveSettings.IsDontStack_Offset())
 	{
 		if ((fabs(fdX) > m_LiveSettings.GetOffset()) || (fabs(fdY) > m_LiveSettings.GetOffset()))
 		{
-			bResult = FALSE;
+			bResult = false;
 			strError.Format(IDS_NOSTACK_OFFSET, fdX, fdY, m_LiveSettings.GetOffset());
 		};
 		if (fabs(fdX) > m_LiveSettings.GetOffset())
@@ -150,7 +150,7 @@ BOOL CLiveEngine::IsImageStackable2(LPCTSTR szFile, double fdX, double fdY, doub
 	{
 		if (fabs(fAngle) > m_LiveSettings.GetAngle())
 		{
-			bResult = FALSE;
+			bResult = false;
 			strError.Format(IDS_NOSTACK_ANGLE, fAngle, (double)m_LiveSettings.GetAngle());
 			PostChangeImageInfo(szFile, II_DONTSTACK_ANGLE);
 		};
@@ -163,13 +163,13 @@ BOOL CLiveEngine::IsImageStackable2(LPCTSTR szFile, double fdX, double fdY, doub
 
 BOOL	CLiveEngine::IsImageWarning1(LPCTSTR szFile, double fStarCount, double fFWHM, double fScore, double fSkyBackground, CString & strWarning)
 {
-	BOOL						bResult = FALSE;
+	BOOL						bResult = false;
 
 	if (m_LiveSettings.IsWarning_Score())
 	{
 		if (fScore < m_LiveSettings.GetScore())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strWarning.Format(IDS_NOSTACK_SCORE, fScore, m_LiveSettings.GetScore());
 			PostChangeImageInfo(szFile, II_WARNING_SCORE);
 		};
@@ -179,7 +179,7 @@ BOOL	CLiveEngine::IsImageWarning1(LPCTSTR szFile, double fStarCount, double fFWH
 	{
 		if (fStarCount < m_LiveSettings.GetStars())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strWarning.Format(IDS_NOSTACK_STARS, fStarCount, (double)m_LiveSettings.GetStars());
 			PostChangeImageInfo(szFile, II_WARNING_STARS);
 		};
@@ -189,7 +189,7 @@ BOOL	CLiveEngine::IsImageWarning1(LPCTSTR szFile, double fStarCount, double fFWH
 	{
 		if (fFWHM > m_LiveSettings.GetFWHM())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strWarning.Format(IDS_NOSTACK_FWHM, fFWHM, (double)m_LiveSettings.GetFWHM());
 			PostChangeImageInfo(szFile, II_WARNING_FWHM);
 		};
@@ -199,7 +199,7 @@ BOOL	CLiveEngine::IsImageWarning1(LPCTSTR szFile, double fStarCount, double fFWH
 	{
 		if (fSkyBackground > m_LiveSettings.GetSkyBackground())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strWarning.Format(IDS_NOSTACK_SKYBACKGROUND, fSkyBackground, (double)m_LiveSettings.GetSkyBackground());
 			PostChangeImageInfo(szFile, II_WARNING_SKYBACKGROUND);
 		};
@@ -212,23 +212,23 @@ BOOL	CLiveEngine::IsImageWarning1(LPCTSTR szFile, double fStarCount, double fFWH
 
 BOOL	CLiveEngine::IsImageWarning2(LPCTSTR szFile, double fdX, double fdY, double fAngle, CString & strWarning)
 {
-	BOOL						bResult = FALSE;
+	BOOL						bResult = false;
 
 	if (m_LiveSettings.IsWarning_Offset())
 	{
 		if ((fabs(fdX) > m_LiveSettings.GetOffset()) || (fabs(fdY) > m_LiveSettings.GetOffset()))
 		{
-			bResult = FALSE;
+			bResult = false;
 			strWarning.Format(IDS_NOSTACK_OFFSET, fdX, fdY, m_LiveSettings.GetOffset());
 		};
 		if (fabs(fdX) > m_LiveSettings.GetOffset())
 		{
-			bResult = TRUE;
+			bResult = true;
 			PostChangeImageInfo(szFile, II_WARNING_DX);
 		};
 		if (fabs(fdY) > m_LiveSettings.GetOffset())
 		{
-			bResult = TRUE;
+			bResult = true;
 			PostChangeImageInfo(szFile, II_WARNING_DY);
 		};
 	};
@@ -237,7 +237,7 @@ BOOL	CLiveEngine::IsImageWarning2(LPCTSTR szFile, double fdX, double fdY, double
 	{
 		if (fabs(fAngle) > m_LiveSettings.GetAngle())
 		{
-			bResult = TRUE;
+			bResult = true;
 			strWarning.Format(IDS_NOSTACK_ANGLE, fAngle, (double)m_LiveSettings.GetAngle());
 			PostChangeImageInfo(szFile, II_WARNING_ANGLE);
 		};
@@ -250,13 +250,13 @@ BOOL	CLiveEngine::IsImageWarning2(LPCTSTR szFile, double fdX, double fdY, double
 
 BOOL CLiveEngine::IsFileAvailable(LPCTSTR szFileName)
 {
-	BOOL						bResult = FALSE;
+	BOOL						bResult = false;
 	HANDLE						hFile;
 
 	hFile = CreateFile(szFileName, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile)
 	{
-		bResult = TRUE;
+		bResult = true;
 		CloseHandle(hFile);
 	};
 
@@ -267,7 +267,7 @@ BOOL CLiveEngine::IsFileAvailable(LPCTSTR szFileName)
 
 BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 {
-	BOOL						bResult = FALSE;
+	BOOL						bResult = false;
 
 	CBitmapInfo			bmpInfo;
 
@@ -275,7 +275,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 	{
 		QString strText;
 		QString strDescription;
-		//BOOL bOverrideRAW = TRUE;
+		//BOOL bOverrideRAW = true;
 
 		bmpInfo.GetDescription(strDescription);
 		if (bmpInfo.m_lNrChannels==3)
@@ -299,7 +299,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 			strText = QCoreApplication::translate("LiveEngine", "Registering %1", "IDS_REGISTERINGNAME").arg(QString::fromWCharArray(szFileName));
 			Start2(strText, 0);
-			lfi.SetBitmap(szFileName, FALSE, FALSE);
+			lfi.SetBitmap(szFileName, false, false);
 			lfi.SetProgress(this);
 			lfi.RegisterPicture(adb.m_pBitmap.get());
 			lfi.SaveRegisteringInfo();
@@ -452,8 +452,8 @@ void CLiveEngine::PostStackedImageSaved()
 
 BOOL CLiveEngine::ProcessNext()
 {
-	// Returns FALSE is there is nothing to do
-	BOOL				bResult = FALSE;
+	// Returns false is there is nothing to do
+	BOOL				bResult = false;
 
 	if (m_qToStack.size() && m_bStackingOn)
 	{
@@ -461,7 +461,7 @@ BOOL CLiveEngine::ProcessNext()
 		{
 			if (m_LiveSettings.IsDontStack_Until() && m_qToStack.size() < m_LiveSettings.GetMinImages())
 			{
-				bResult = FALSE;
+				bResult = false;
 			}
 			else
 			{
@@ -488,12 +488,12 @@ BOOL CLiveEngine::ProcessNext()
 					PostChangeImageStatus((*bestit).filePath.c_str(), IS_STACKED);
 					PostChangeImageInfo((*bestit).filePath.c_str(), II_SETREFERENCE);
 					m_qToStack.erase(bestit);
-					m_bReferenceFrameSet = TRUE;
+					m_bReferenceFrameSet = true;
 					PostStackedImage();
 				}
 				else
 					m_qToStack.clear();
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		else
@@ -502,8 +502,8 @@ BOOL CLiveEngine::ProcessNext()
 			double					fdX, fdY, fAngle;
 			CString					strError;
 			CString					strText;
-			BOOL					bError = FALSE;
-			BOOL					bWarning = FALSE;
+			BOOL					bError = false;
+			BOOL					bWarning = false;
 			CString					strWarning;
 
 			lfi = m_qToStack.front();
@@ -530,30 +530,30 @@ BOOL CLiveEngine::ProcessNext()
 				}
 				else
 				{
-					bError = TRUE;
+					bError = true;
 				};
 			}
 			else
 			{
 				// Can't find transformation - impossible to stack the image
 				strError.LoadString(IDS_NOSTACK_NOTRANSFORMATION);
-				bError = TRUE;
+				bError = true;
 			};
 
 			if (bWarning)
 			{
 				strText.Format(IDS_LOG_WARNING, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strWarning);
-				PostToLog(QString::fromWCharArray(strText.GetString()), TRUE, FALSE, TRUE, RGB(208, 127, 0));
+				PostToLog(QString::fromWCharArray(strText.GetString()), true, false, true, RGB(208, 127, 0));
 			};
 			if (bError)
 			{
 				strText.Format(IDS_LOG_IMAGENOTSTACKABLE1, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strError);
-				PostToLog(QString::fromWCharArray(strText.GetString()), TRUE, TRUE, FALSE, RGB(255, 0, 0));
+				PostToLog(QString::fromWCharArray(strText.GetString()), true, true, false, RGB(255, 0, 0));
 				PostChangeImageStatus(lfi.filePath.c_str(), IS_NOTSTACKABLE);
 				MoveImage(lfi.filePath.c_str());
 			};
 
-			bResult = TRUE;
+			bResult = true;
 		};
 	}
 	if (m_bRegisteringOn && !bResult && m_qToRegister.size())
@@ -567,7 +567,7 @@ BOOL CLiveEngine::ProcessNext()
 			LoadFile(strFileName);
 		else
 			m_qToRegister.push_back(strFileName);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -577,7 +577,7 @@ BOOL CLiveEngine::ProcessNext()
 
 void CLiveEngine::LiveEngine()
 {
-	BOOL				bEnd = FALSE;
+	BOOL				bEnd = false;
 	MSG					msg;
 
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -612,22 +612,22 @@ void CLiveEngine::LiveEngine()
 					SaveStackedImage();
 					break;
 				case LEM_ENABLESTACKING :
-					m_bRegisteringOn = TRUE;
-					m_bStackingOn = TRUE;
+					m_bRegisteringOn = true;
+					m_bStackingOn = true;
 					break;
 				case LEM_DISABLESTACKING :
-					m_bStackingOn = FALSE;
+					m_bStackingOn = false;
 					break;
 				case LEM_ENABLEREGISTERING :
-					m_bRegisteringOn = TRUE;
+					m_bRegisteringOn = true;
 					break;
 				case LEM_DISABLEREGISTERING :
-					m_bRegisteringOn = FALSE;
-					m_bStackingOn    = FALSE;
+					m_bRegisteringOn = false;
+					m_bStackingOn    = false;
 					break;
 				case LEM_CLEARSTACKEDIMAGE :
 					m_RunningStackingEngine.Clear();
-					m_bReferenceFrameSet = FALSE;
+					m_bReferenceFrameSet = false;
 					PostStackedImage();
 					break;
 				case LEM_CLEARPENDINGIMAGES :
@@ -636,9 +636,9 @@ void CLiveEngine::LiveEngine()
 					PostUpdatePending();
 					break;
 				case LEM_STOP :
-					m_bRegisteringOn = FALSE;
-					m_bStackingOn    = FALSE;
-					bEnd = TRUE;
+					m_bRegisteringOn = false;
+					m_bStackingOn    = false;
+					bEnd = true;
 					break;
 				};
 			};
@@ -656,7 +656,7 @@ void CLiveEngine::StartEngine()
 	if (!m_hThread)
 	{
 		// Create the thread
-		m_hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
+		m_hEvent	= CreateEvent(nullptr, true, false, nullptr);
 		if (m_hEvent)
 		{
 			m_hThread = CreateThread(nullptr, 0, LiveEngineThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
@@ -665,7 +665,7 @@ void CLiveEngine::StartEngine()
 				SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
 				ResetEvent(m_hEvent);
 				ResumeThread(m_hThread);
-				WaitForMultipleObjects(1, &m_hEvent, TRUE, INFINITE);
+				WaitForMultipleObjects(1, &m_hEvent, true, INFINITE);
 			};
 		};
 	};
@@ -680,7 +680,7 @@ void CLiveEngine::CloseEngine()
 		m_CriticalSection.Lock();
 		m_InMessages.clear();
 		m_CriticalSection.Unlock();
-		WaitForMultipleObjects(1, &m_hEvent, TRUE, INFINITE);
+		WaitForMultipleObjects(1, &m_hEvent, true, INFINITE);
 
 		std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
@@ -690,7 +690,7 @@ void CLiveEngine::CloseEngine()
 		m_CriticalSection.Unlock();
 
 		PostThreadMessage(m_dwThreadID, WM_LE_MESSAGE, 0, 0);
-		WaitForMultipleObjects(1, &m_hThread, TRUE, INFINITE);
+		WaitForMultipleObjects(1, &m_hThread, true, INFINITE);
 
 		CloseHandle(m_hThread);
 		CloseHandle(m_hEvent);
@@ -703,7 +703,7 @@ void CLiveEngine::CloseEngine()
 
 BOOL CLiveEngine::GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMSGLIST & msglist)
 {
-	BOOL			bResult = FALSE;
+	BOOL			bResult = false;
 
 	rMsg.reset();
 
@@ -715,7 +715,7 @@ BOOL CLiveEngine::GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMS
 		// Remove the first item
 		msglist.pop_front();
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	m_CriticalSection.Unlock();
@@ -751,7 +751,7 @@ void CLiveEngine::PostStrippedToLogWithDateStamp(const QString& text)
 	QString strStrippedText{ text };
 	strStrippedText.replace('\n', ' ');
 	strStrippedText += '\n';
-	PostToLog(strStrippedText, TRUE);
+	PostToLog(strStrippedText, true);
 }
 
 /* ------------------------------------------------------------------- */
@@ -843,9 +843,9 @@ CLiveEngine::CLiveEngine()
 	m_hThread			= nullptr;
 	m_dwThreadID		= 0;
 	m_hEvent			= nullptr;
-	m_bStackingOn		= FALSE;
-	m_bRegisteringOn	= TRUE;
-	m_bReferenceFrameSet = FALSE;
+	m_bStackingOn		= false;
+	m_bRegisteringOn	= true;
+	m_bReferenceFrameSet = false;
 	m_lNrUnsavedImages   = 0;
 	m_LiveSettings.load();
     m_lTotal1 = 0;
@@ -908,22 +908,22 @@ void CLiveEngine::EnableRegistering(BOOL bEnable)
 	if (bEnable)
 	{
 		pMsg->SetEnableRegistering();
-		bRemoveEnable = FALSE;
+		bRemoveEnable = false;
 	}
 	else
 	{
 		pMsg->SetDisableRegistering();
-		bRemoveEnable = TRUE;
+		bRemoveEnable = true;
 	};
 	m_CriticalSection.Lock();
 	{
 		LIVEENGINEMSGITERATOR			it;
-		BOOL							bFound = FALSE;
+		BOOL							bFound = false;
 
 		// Remove enable or disable messages already in the queue
 		do
 		{
-			bFound = FALSE;
+			bFound = false;
 
 			for (it = m_InMessages.begin();it!=m_InMessages.end() && !bFound;it++)
 			{
@@ -953,22 +953,22 @@ void CLiveEngine::EnableStacking(BOOL bEnable)
 	if (bEnable)
 	{
 		pMsg->SetEnableStacking();
-		bRemoveEnable = FALSE;
+		bRemoveEnable = false;
 	}
 	else
 	{
 		pMsg->SetDisableStacking();
-		bRemoveEnable = TRUE;
+		bRemoveEnable = true;
 	};
 	m_CriticalSection.Lock();
 	{
 		LIVEENGINEMSGITERATOR			it;
-		BOOL							bFound = FALSE;
+		BOOL							bFound = false;
 
 		// Remove enable or disable messages already in the queue
 		do
 		{
-			bFound = FALSE;
+			bFound = false;
 
 			for (it = m_InMessages.begin();it!=m_InMessages.end() && !bFound;it++)
 			{
