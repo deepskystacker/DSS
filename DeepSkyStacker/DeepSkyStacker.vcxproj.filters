@@ -189,9 +189,6 @@
     <ClCompile Include="QElidedLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QElidedLabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeepSkyStacker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -226,6 +223,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\imageview.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\QElidedLabel.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
@@ -899,9 +899,6 @@
     <QtMoc Include="BatchStacking.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QElidedLabel.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="selectrect.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -930,6 +927,9 @@
       <Filter>Tools</Filter>
     </QtMoc>
     <QtMoc Include="..\Tools\imageview.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QElidedLabel.h">
       <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>

@@ -264,6 +264,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp">
@@ -300,7 +301,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
     <ClCompile Include="picturelist.cpp" />
-    <ClCompile Include="QElidedLabel.cpp" />
     <ClCompile Include="QtProgressDlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
@@ -408,6 +408,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
+    <QtMoc Include="..\Tools\QElidedLabel.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
@@ -442,7 +443,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
-    <QtMoc Include="QElidedLabel.h" />
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="QtProgressDlg.h" />
     <QtMoc Include="RecommendedSettings.h" />
