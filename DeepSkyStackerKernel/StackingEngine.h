@@ -62,29 +62,29 @@ typedef std::vector<CImageCometShift>		IMAGECOMETSHIFTVECTOR;
 class CLightFrameStackingInfo
 {
 public :
-	fs::path m_strFileName;
+	fs::path file;
 	QString m_strInfoFileName;
 	CBilinearParameters m_BilinearParameters;
 
 private :
-	void	CopyFrom(const CLightFrameStackingInfo & lfsi)
+	void	CopyFrom(const CLightFrameStackingInfo & rhs)
 	{
-		m_strFileName		 = lfsi.m_strFileName;
-		m_strInfoFileName	 = lfsi.m_strInfoFileName;
-		m_BilinearParameters = lfsi.m_BilinearParameters;
+		file = rhs.file;
+		m_strInfoFileName = rhs.m_strInfoFileName;
+		m_BilinearParameters = rhs.m_BilinearParameters;
 	};
 public :
 	CLightFrameStackingInfo() = default;
-	CLightFrameStackingInfo(const fs::path& szFileName)
+	CLightFrameStackingInfo(const fs::path& path) :
+		file { path }
 	{
-		m_strFileName = szFileName;
 	};
 
 	~CLightFrameStackingInfo() {};
 
-	CLightFrameStackingInfo(const CLightFrameStackingInfo & lfsi)
+	CLightFrameStackingInfo(const CLightFrameStackingInfo & rhs)
 	{
-		CopyFrom(lfsi);
+		CopyFrom(rhs);
 	};
 
 	CLightFrameStackingInfo & operator = (const CLightFrameStackingInfo & lfsi)
@@ -93,9 +93,9 @@ public :
 		return (*this);
 	};
 
-	bool operator < (const CLightFrameStackingInfo & lfsi) const
+	bool operator < (const CLightFrameStackingInfo & rhs) const
 	{
-		return (m_strFileName.compare(lfsi.m_strFileName));
+		return (file < rhs.file);
 	};
 
 };
@@ -108,7 +108,7 @@ typedef LIGHTFRAMESTACKINGINFOVECTOR::iterator		LIGHTFRAMESTACKINGINFOITERATOR;
 class CLightFramesStackingInfo
 {
 private :
-	fs::path m_strReferenceFrame;
+	fs::path referenceFrame;
 	QString m_strStackingFileInfo;
 	LIGHTFRAMESTACKINGINFOVECTOR m_vLightFrameStackingInfo;
 
@@ -125,7 +125,7 @@ public :
 	void	Save();
 	void	Clear()
 	{
-		m_strReferenceFrame.clear();
+		referenceFrame.clear();
 		m_strStackingFileInfo.clear();
 		m_vLightFrameStackingInfo.clear();
 	};
@@ -139,7 +139,7 @@ private:
 	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
 	CLightFramesStackingInfo	m_StackingInfo;
 	ProgressBase *				m_pProgress;
-	fs::path m_strReferenceFrame;
+	fs::path referenceFrame;
 	int						m_lNrCurrentStackable;
 	std::atomic<int>		m_lNrStackable;
 	std::atomic<int>		m_lNrCometStackable;
@@ -163,7 +163,7 @@ private:
 	bool						m_bSaveCalibrated;
 	bool						m_bSaveIntermediate;
 	bool						m_bSaveCalibratedDebayered;
-	fs::path m_strCurrentLightFrame;
+	fs::path currentLightFrame;
 	CFATYPE						m_InputCFAType;
 	int						m_lPixelSizeMultiplier;
 	INTERMEDIATEFILEFORMAT		m_IntermediateFileFormat;
@@ -250,9 +250,9 @@ public:
 		return this->m_vBitmaps[n];
 	}
 
-	void SetReferenceFrame(const fs::path& szRefFrame)
+	void SetReferenceFrame(const fs::path& path)
 	{
-		m_strReferenceFrame = szRefFrame;
+		referenceFrame = path;
 	}
 
 	void SetSaveIntermediate(bool bSaveIntermediate)

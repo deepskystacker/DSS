@@ -239,13 +239,13 @@ bool CFITSReader::Open()
 	char error_text[31] = "";			// Error text for FITS errors.
 
 	// Open filename as ascii - won't work with international characters but we are limited to char with fits library.
-	fits_open_diskfile(&m_fits, m_strFileName.string().c_str(), READONLY, &status);
+	fits_open_diskfile(&m_fits, file.generic_string().c_str(), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
 		QString errorMessage(QCoreApplication::translate( "Kernel",
 														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
-															.arg(m_strFileName.wstring().c_str())
+															.arg(file.generic_u16string().c_str())
 															.arg(status)
 															.arg(error_text));
 		ZTRACE_RUNTIME(errorMessage);
@@ -256,7 +256,7 @@ bool CFITSReader::Open()
 
 	if (m_fits)
 	{
-		ZTRACE_RUNTIME("Opened %s", m_strFileName.wstring().c_str());
+		ZTRACE_RUNTIME("Opened %s", file.generic_string().c_str());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -1049,17 +1049,17 @@ bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 }
 
 
-bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
+bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
 	bool					bContinue = true;
-	CFITSReader				fits(szFileName, nullptr);
+	CFITSReader				fits(path, nullptr);
 
 	// Require a fits file extension
 	{
 		//TCHAR szExt[1+_MAX_EXT];
-		const QString strFilename(QString::fromWCharArray(szFileName.wstring().c_str()));
+		const QString strFilename(QString::fromStdU16String(path.generic_u16string().c_str()));
 		const QString strExt = QFileInfo(strFilename).suffix();
 
 		if (!(0 == strExt.compare("FIT", Qt::CaseInsensitive) ||
@@ -1076,7 +1076,7 @@ bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName.wstring().c_str());
+		BitmapInfo.m_strFileName = QString::fromStdU16String(path.generic_u16string().c_str());
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
 		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();
@@ -1271,8 +1271,8 @@ bool CFITSWriter::Open()
 	// Create a new fits file
 	int				nStatus = 0;
 
-	DeleteFile(m_strFileName.wstring().c_str());
-	fits_create_diskfile(&m_fits, m_strFileName.string().c_str(), &nStatus);
+	fs::remove(file);
+	fits_create_diskfile(&m_fits, file.generic_string().c_str(), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();
@@ -1835,9 +1835,9 @@ void GetFITSExtension(const QString& path, QString& strExtension)
 		strExtension = ".fts";
 }
 
-void GetFITSExtension(const fs::path& szFileName, QString& strExtension)
+void GetFITSExtension(const fs::path& file, QString& strExtension)
 {
-	GetFITSExtension(QString::fromWCharArray(szFileName.wstring().c_str()), strExtension);
+	GetFITSExtension(QString::fromStdU16String(file.generic_u16string().c_str()), strExtension);
 }
 
 void GetFITSExtension(fs::path path, QString& strExtension)

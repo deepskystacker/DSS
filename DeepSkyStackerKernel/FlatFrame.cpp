@@ -104,7 +104,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 		{
 			ZTRACE_RUNTIME("Target.RealWidth = %d, Source.RealWidth = %d", pTarget->RealWidth(), m_pFlatFrame->RealWidth());
 			ZTRACE_RUNTIME("Target.RealHeight = %d, Source.RealHeight = %d", pTarget->RealHeight(), m_pFlatFrame->RealHeight());
-			ZTRACE_RUNTIME("Did not perform %s", strText.toStdWString().c_str());
+			ZTRACE_RUNTIME("Did not perform %s", strText.toUtf8().constData());
 		}
 	}
 

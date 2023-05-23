@@ -95,11 +95,11 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 		bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
 		if (bContinue)
 		{
-			fs::path outputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
-			if (StackingEngine.GetDefaultOutputFileName(outputPath, stackingParams.GetFileList().toStdWString().c_str(), !bUseFits))
+			fs::path outputPath(stackingParams.GetOutputFilename().toStdU16String());
+			if (StackingEngine.GetDefaultOutputFileName(outputPath, stackingParams.GetFileList().toStdU16String().c_str(), !bUseFits))
 			{
-				stackingParams.SetOutputFile(QString::fromWCharArray(outputPath.wstring().c_str()));
-				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
+				stackingParams.SetOutputFile(QString::fromStdU16String(outputPath.generic_u16string().c_str()));
+				StackingEngine.WriteDescription(tasks, outputPath);
 				SaveBitmap(stackingParams, pBitmap);
 			}
 		}
@@ -311,7 +311,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 			fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
 			break;
 		}
-		WriteFITS(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, fitsformat, nullptr);
+		WriteFITS(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, fitsformat, nullptr);
 	}
 	else
 	{
@@ -332,7 +332,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 				break;
 			}
 		}
-		WriteTIFF(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, tiffFormat, stackingParams.GetTiffCompression(), nullptr);
+		WriteTIFF(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, tiffFormat, stackingParams.GetTiffCompression(), nullptr);
 	}
 }
 

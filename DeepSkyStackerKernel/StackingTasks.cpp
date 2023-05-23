@@ -231,27 +231,22 @@ void ClearTaskCache()
 
 /* ------------------------------------------------------------------- */
 
-static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool bExposure, const fs::path& rBasePath, fs::path& masterFile, fs::path& masterInfoFile)
+static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool bExposure, const fs::path& basePath, fs::path& masterFile, fs::path& masterInfoFile)
 {
-	QFileInfo fileInfo(rBasePath);
-	const QString strPath(fileInfo.path() + QDir::separator());
-	const QString strBaseName(fileInfo.baseName());
-
 	const QString ISOGain = pTaskInfo->HasISOSpeed() ? "ISO" : "Gain";
 	int const lISOGain = pTaskInfo->HasISOSpeed() ? pTaskInfo->m_lISOSpeed : pTaskInfo->m_lGain;
 
-	QString strFileName;
+	fs::path dir{ basePath }; dir.remove_filename();
+
+	QString fileName;
 	if (bExposure)
-		strFileName = QString("%1%2_%3%4_%5").arg(strPath).arg(type).arg(ISOGain).arg(lISOGain).arg((int)pTaskInfo->m_fExposure);
+		fileName = QString("%1_%2%3_%4s").arg(type).arg(ISOGain).arg(lISOGain).arg((int)pTaskInfo->m_fExposure);
 	else
-		strFileName = QString("%1%2_%3%4").arg(strPath).arg(type).arg(ISOGain).arg(lISOGain);
+		fileName = QString("%1_%2%3").arg(type).arg(ISOGain).arg(lISOGain);
+	fs::path name{ fileName.toStdU16String() };
 
-	// Can probably do the following directly into the fs::path I suspect ...
-	const QString strMasterPath(strFileName + ".tif");
-	const QString strMasterInfoFile(strFileName + ".Description.txt");
-
-	masterFile = QDir::toNativeSeparators(strMasterPath).toStdWString().c_str();
-	masterInfoFile = QDir::toNativeSeparators(strMasterInfoFile).toStdWString().c_str();
+	masterFile = dir; masterFile.replace_filename(name.replace_extension(".tif"));
+	masterInfoFile = dir;  masterInfoFile.replace_filename(name.replace_extension("Description.txt"));
 }
 
 /* ------------------------------------------------------------------- */

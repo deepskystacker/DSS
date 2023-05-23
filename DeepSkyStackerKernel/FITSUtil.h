@@ -111,7 +111,7 @@ class CFITSReader : public CFITSHeader
 {
 public:
 	fitsfile* m_fits;
-	fs::path m_strFileName;
+	fs::path file;
 	ProgressBase* m_pProgress;
 
 protected:
@@ -129,10 +129,10 @@ private :
 	void	ReadAllKeys();
 
 public:
-	CFITSReader(const fs::path& szFileName, ProgressBase *	pProgress) :
+	CFITSReader(const fs::path& path, ProgressBase *	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{ szFileName },
+		file { path },
 		m_pProgress{ pProgress },
 		m_fGreenRatio{ 1.0 },
 		m_fRedRatio{ 1.0 },
@@ -161,7 +161,7 @@ class CFITSWriter : public CFITSHeader
 {
 public:
 	fitsfile* m_fits;
-	fs::path m_strFileName;
+	fs::path file;
 	ProgressBase* m_pProgress;
 	QString m_strDescription;
 
@@ -175,10 +175,10 @@ protected:
 	void SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType);
 
 public:
-	CFITSWriter(const fs::path& szFileName, ProgressBase*	pProgress) :
+	CFITSWriter(const fs::path& path, ProgressBase*	pProgress) :
 		CFITSHeader(),
 		m_fits{ nullptr },
-		m_strFileName{szFileName},
+		file {path},
 		m_pProgress{ pProgress }
 	{
 		m_Format = FF_UNKNOWN;

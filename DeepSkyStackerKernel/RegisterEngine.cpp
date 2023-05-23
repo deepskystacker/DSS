@@ -1304,9 +1304,9 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 
 		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strCalibratedFile.toStdWString().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
+			bResult = WriteTIFF(strCalibratedFile.toStdU16String().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
 		else
-			bResult = WriteFITS(strCalibratedFile.toStdWString().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
+			bResult = WriteFITS(strCalibratedFile.toStdU16String().c_str(), pOutBitmap.get(), pProgress, description, lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1414,10 +1414,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			if (strCalibratedFile.length())
 			{
-				const QFileInfo fileInfo(strCalibratedFile);
-				const QString strInfoFileName = QFileInfo(strCalibratedFile).path() + QDir::separator() + QFileInfo(strCalibratedFile).baseName() + ".info.txt";
-				const fs::path strInfoFilePath(QDir::toNativeSeparators(strInfoFileName).toStdWString().c_str());
-				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFilePath);
+				fs::path file{ strCalibratedFile.toStdU16String().c_str() };
+				lfInfo->CRegisteredFrame::SaveRegisteringInfo(file.replace_extension(".info.txt"));
 			}
 
 			if (pProgress != nullptr)

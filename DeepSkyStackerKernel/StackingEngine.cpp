@@ -33,13 +33,13 @@
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& szReferenceFrame)
+void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	const QFileInfo fileInfo(szReferenceFrame);
+	const QFileInfo fileInfo(path);
 
-	m_strReferenceFrame = szReferenceFrame;
+	referenceFrame = path;
 	m_strStackingFileInfo = QDir::toNativeSeparators(QString("%1%2%3.stackinfo.txt").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName()));
 
 	unsigned int dwAlignmentTransformation = 2;
@@ -87,7 +87,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& szReferenceFram
 			QString strInfoFileName;
 			const QString strStoredInfoFileName(currentLine);
 
-			GetInfoFileName(m_strReferenceFrame, strInfoFileName);
+			GetInfoFileName(referenceFrame, strInfoFileName);
 			if (strInfoFileName.compare(strStoredInfoFileName, Qt::CaseInsensitive))
 				bEnd = true;
 		}
@@ -115,7 +115,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& szReferenceFram
 		}
 		else
 		{
-			lfsi.m_strFileName = currentLine.toStdWString().c_str();
+			lfsi.file = currentLine.toStdU16String().c_str();
 		}
 
 		currentLine = file.readLine(nMaxRead).simplified();
@@ -162,7 +162,7 @@ void	CLightFramesStackingInfo::GetInfoFileName(const fs::path& lightFrame, QStri
 		strInfoFileName.clear();
 	else
 	{
-		strInfoFileName = QString{ "%1 [%2]" }.arg(file.wstring().c_str()).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
+		strInfoFileName = QString{ "%1 [%2]" }.arg(file.generic_u16string().c_str()).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
 	}
 }
 
@@ -177,7 +177,7 @@ void	CLightFramesStackingInfo::AddLightFrame(const fs::path& szLightFrame, const
 
 	GetInfoFileName(szLightFrame, strInfoFileName);
 	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), lfsi);
-	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.compare(szLightFrame))
+	if (it != m_vLightFrameStackingInfo.end() && !it->file.compare(szLightFrame))
 	{
 		// There is already this light frame
 		it->m_strInfoFileName = strInfoFileName;
@@ -202,7 +202,7 @@ bool CLightFramesStackingInfo::GetParameters(const fs::path& szLightFrame, CBili
 	bool bResult = false;
 
 	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), CLightFrameStackingInfo(szLightFrame));
-	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.compare(szLightFrame))
+	if (it != m_vLightFrameStackingInfo.end() && !it->file.compare(szLightFrame))
 	{
 		QString strInfoFileName;
 		GetInfoFileName(szLightFrame, strInfoFileName);
@@ -223,7 +223,7 @@ void CLightFramesStackingInfo::Save()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (!m_strReferenceFrame.empty() && !m_strStackingFileInfo.isEmpty())
+	if (!referenceFrame.empty() && !m_strStackingFileInfo.isEmpty())
 	{
 		QFile file(m_strStackingFileInfo);
 		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
@@ -238,13 +238,13 @@ void CLightFramesStackingInfo::Save()
 		stream << dwAlignmentTransformation << Qt::endl;
 
 		QString strInfoFileName;
-		GetInfoFileName(m_strReferenceFrame, strInfoFileName);
+		GetInfoFileName(referenceFrame, strInfoFileName);
 		stream << strInfoFileName << Qt::endl;
 
 		for (const auto& stackingInfo : m_vLightFrameStackingInfo)
 		{
 			stream << stackingInfo.m_strInfoFileName << Qt::endl;
-			stream << QString::fromWCharArray(stackingInfo.m_strFileName.wstring().c_str()) << Qt::endl;
+			stream << QString::fromStdU16String(stackingInfo.file.generic_u16string().c_str()) << Qt::endl;
 
 			QString strParameters;
 			stackingInfo.m_BilinearParameters.ToText(strParameters);
@@ -431,7 +431,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 	ZFUNCTRACE_RUNTIME();
 
 	bool bReferenceFrameFound;
-	if (!m_strReferenceFrame.empty())
+	if (!referenceFrame.empty())
 		bReferenceFrameFound = false;
 	else
 		bReferenceFrameFound = true;
@@ -456,7 +456,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 					// m_strReferenceFrame is a CString but contains the reference frame path
 					// with / separators rather than \\
 					//
-					if (!m_strReferenceFrame.compare(lfi.filePath))
+					if (!referenceFrame.compare(lfi.filePath))
 					{
 						lfi.m_bStartingFrame = true;
 						bReferenceFrameFound = true;
@@ -472,9 +472,9 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		// Look for the reference frame and add it to the list
 		CLightFrameInfo			lfi;
 		CFrameInfo				fi;
-		if (fi.InitFromFile(m_strReferenceFrame, PICTURETYPE_LIGHTFRAME))
+		if (fi.InitFromFile(referenceFrame, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(m_strReferenceFrame, false, false);
+			lfi.SetBitmap(referenceFrame, false, false);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;
@@ -1324,9 +1324,9 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 
 	bool				bResult = false;
 
-	if (!m_strCurrentLightFrame.empty() && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		const QFileInfo fileInfo(m_strCurrentLightFrame);		
+		const QFileInfo fileInfo(currentLightFrame);		
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 		QString strOutputFile;
@@ -1348,9 +1348,9 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 		};
 		const QString description("Registered and Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1366,9 +1366,9 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 
 	bool				bResult = false;
 
-	if (!m_strCurrentLightFrame.empty() && static_cast<bool>(pBitmap))
+	if (!currentLightFrame.empty() && static_cast<bool>(pBitmap))
 	{
-		const QFileInfo fileInfo(m_strCurrentLightFrame);
+		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 		QString strOutputFile;
@@ -1411,9 +1411,9 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 		}
 		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdWString().c_str(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile.toStdWString().c_str(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1432,9 +1432,9 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 
 	bool				bResult = false;
 
-	if (!m_strCurrentLightFrame.empty() && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		const QFileInfo fileInfo(m_strCurrentLightFrame);
+		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 		QString strOutputFile;
@@ -1454,9 +1454,9 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 		
 		const QString description("Delta Cosmetic Image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1472,9 +1472,9 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 
 	bool bResult = false;
 
-	if (!m_strCurrentLightFrame.empty() && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		const QFileInfo fileInfo(m_strCurrentLightFrame);
+		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 		QString strOutputFile;
@@ -1496,9 +1496,9 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 		};
 		const QString description("Comet alone");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1514,9 +1514,9 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 
 	bool bResult = false;
 
-	if (!m_strCurrentLightFrame.empty() && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		const QFileInfo fileInfo(m_strCurrentLightFrame);
+		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 		QString strOutputFile;
@@ -1539,9 +1539,9 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 
 		const QString description("Cometless image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile.toStdWString().c_str(), pBitmap, m_pProgress, description);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 
 		if (m_pProgress)
 			m_pProgress->End2();
@@ -2223,7 +2223,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lightframeInfo.m_vStars), m_pProgress);
 
 						// Here save the calibrated light frame if needed
-						m_strCurrentLightFrame = lightframeInfo.filePath.c_str();
+						currentLightFrame = lightframeInfo.filePath;
 
 						std::shared_ptr<CMemoryBitmap> pDelta = ApplyCosmetic(pBitmap, m_PostCalibrationSettings, m_pProgress);
 						if (m_bSaveCalibrated)
@@ -2457,7 +2457,7 @@ void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pPr
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::GetDefaultOutputFileName(fs::path& strFileName, const fs::path& szFileList, bool bTIFF)
+bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& fileList, bool bTIFF)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -2465,73 +2465,77 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& strFileName, const fs::
 	COutputSettings OutputSettings;
 	CAllStackingTasks::GetOutputSettings(OutputSettings);
 	bool bResult = OutputSettings.m_bOutput;
-
-	// By default use the folder of the first light frame
-	QString strOutputFolder;
+	fs::path folder;
 	if (m_vBitmaps.size())
 	{
 		// Use the folder of the first light frame
-		QFileInfo fileInfo(m_vBitmaps[0].filePath);
-		strOutputFolder = QDir::toNativeSeparators(fileInfo.path() + QDir::separator());
+		folder = m_vBitmaps[0].filePath;
 	}
 
 	if (OutputSettings.m_bOtherFolder && OutputSettings.m_strFolder.length())
 	{
-		strOutputFolder = QDir::toNativeSeparators(OutputSettings.m_strFolder + QDir::separator());
+		folder = OutputSettings.m_strFolder.toStdU16String();
 	}
 
-	if (OutputSettings.m_bFileListFolder && !szFileList.empty())
+	if (OutputSettings.m_bFileListFolder && !fileList.empty())
 	{
-		QFileInfo fileInfo(szFileList);
-		strOutputFolder = QDir::toNativeSeparators(fileInfo.path() + QDir::separator());
+		folder = fileList;
 	}
 
-	QString strBaseName = strFileName.u8string().c_str();
-	if (strBaseName.isEmpty())
+	folder.remove_filename();
+
+	fs::path name{ file.stem() };
+	if (name.empty())
 	{
-		if (OutputSettings.m_bAutosave || szFileList.empty())
-			strBaseName = "Autosave";
+		if (OutputSettings.m_bAutosave || fileList.empty())
+			name = "Autosave";
 		else
 		{
-			QFileInfo fileInfo(szFileList);
-
-			strBaseName = fileInfo.baseName();
-			if (strBaseName.isEmpty())
-				strBaseName = "Autosave";
+			name = fileList.stem();
+			if (name.empty())
+				name = "Autosave";
 		}
 	}
 
-	QString strExt;
+	fs::path extension;
 	if (bTIFF)
 	{
-		strExt = ".tif";
+		extension = ".tif";
 	}
 	else
 	{
-		strExt = ".fit";
+		extension = ".fit";
 		if (m_vBitmaps.size())
-			GetFITSExtension(m_vBitmaps[0].filePath, strExt);
+			extension = m_vBitmaps[0].filePath.extension();
 	}
-	QString outFile = strOutputFolder + strBaseName + strExt;
+	fs::path outputFile{ folder };
 
 	if (OutputSettings.m_bAppend)
 	{
-		int lNumber = 0;
-		bool bFileExists = false;
+		int i = 0;
+		bool fileExists = false;
+		QString suffix;
 		do
 		{
-			QFile file(outFile);
-			bFileExists = file.open(QIODevice::ReadOnly);
-			if (bFileExists)
+			fs::path newName{ name };
+			if (i > 0)
 			{
-				lNumber++;
-				outFile = QString("%1%2%3%4").arg(strOutputFolder).arg(strBaseName).arg(lNumber, 3, 10, QLatin1Char('0')).arg(strExt);
-				file.close();
+				suffix = QString("%1").arg(i, 3, 10, QLatin1Char('0'));
+				newName += suffix.toStdU16String();
 			}
+			outputFile.replace_filename(newName.replace_extension(extension));
+
+			fileExists = exists(outputFile);
+			if (!fileExists) break;
+			++i;
 		}
-		while (bFileExists && (lNumber<1000));
+		while (fileExists && (i<1000));
 	}
-	strFileName = QDir::toNativeSeparators(outFile).toStdWString().c_str();
+	else
+	{
+		outputFile.replace_filename(name.replace_extension(extension));
+	}
+	file = outputFile;
 	return bResult;
 };
 

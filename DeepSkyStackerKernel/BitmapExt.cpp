@@ -978,13 +978,13 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	const fs::path strFilename(szFileName);
 	return GetPictureInfo(strFilename, BitmapInfo);
 }
-bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
+bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	const QString name = QString::fromWCharArray(szFileName.wstring().c_str());
+	const QString name = QString::fromStdU16String(path.generic_u16string());
 
-	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
+	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().constData());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
 
@@ -1003,7 +1003,7 @@ bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 		else
 		{
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
-			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
+			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
 			if (it != g_sBitmapInfoCache.cend())
 			{
 				BitmapInfo = *it;
@@ -1034,11 +1034,11 @@ bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 		//
 		// Check RAW image file types
 		//
-		if (rawFileExtensions.contains(extension) && IsRAWPicture(szFileName, BitmapInfo))
+		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/tiff") && IsTIFFPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/fits") && IsFITSPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/fits") && IsFITSPicture(path, BitmapInfo))
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
@@ -1182,15 +1182,15 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
 	bool result{ false };
 	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
-	const auto fileName = filePath.generic_wstring(); // Otherwise szFileName could be a dangling pointer.
-	const wchar_t* szFileName = fileName.c_str();
+	//const auto fileName = filePath.generic_u16string(); // Otherwise szFileName could be a dangling pointer.
+	const wchar_t* szFileName = filePath.c_str();
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
 		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
 		const QString errorMessage{ QCoreApplication::translate(
 									"BitmapExt",
-									"%1 does not exist or is not a file").arg(QString::fromWCharArray(fileName.c_str())) };
+									"%1 does not exist or is not a file").arg(name) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
@@ -1230,7 +1230,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			//
 			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
 
-			loadResult = LoadTIFFPicture(szFileName, BitmapInfo, rpBitmap, pProgress);
+			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1244,7 +1244,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		else if (mime.inherits("image/fits"))
 		{
-			loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1797,7 +1797,7 @@ CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
 CBitmapInfo::CBitmapInfo(const fs::path& szFileName)
 {
 	Init();
-	m_strFileName = QString::fromWCharArray(szFileName.wstring().c_str());
+	m_strFileName = QString::fromStdU16String(szFileName.generic_u16string().c_str());
 }
 
 void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
