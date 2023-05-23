@@ -1556,7 +1556,7 @@ void CAllStackingTasks::ResetTasksStatus()
 
 /* ------------------------------------------------------------------- */
 
-int CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
+int CAllStackingTasks::FindStackID(const fs::path& szLightFrame)
 {
 	int lResult = 0;
 
