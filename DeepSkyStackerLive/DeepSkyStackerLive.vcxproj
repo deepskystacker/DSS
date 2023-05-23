@@ -193,6 +193,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\imageview.cpp" />
+    <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp" />
     <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="..\include\SmtpMime\quotedprintable.h" />
     <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
     <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
+    <QtMoc Include="..\Tools\QElidedLabel.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />

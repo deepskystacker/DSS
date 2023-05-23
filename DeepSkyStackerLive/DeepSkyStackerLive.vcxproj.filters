@@ -84,6 +84,9 @@
     <ClCompile Include="fileregistrar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Tools\QElidedLabel.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -286,6 +289,9 @@
     </QtMoc>
     <QtMoc Include="fileregistrar.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QElidedLabel.h">
+      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
