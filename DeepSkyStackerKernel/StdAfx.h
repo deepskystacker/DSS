@@ -68,7 +68,7 @@ using std::min;
 using std::max;
 
 // As this interface is used everywhere for error reporting.
-// If it got too big, or changed a lot, then we could move out to specfic cpp files.
+// If it got too big, or changed a lot, then we could move out to specific cpp files.
 #include "dssbase.h"
 
 
@@ -77,14 +77,3 @@ using std::max;
 #define _WIN32_WINNT _WIN32_WINNT_WIN7	// Want to support Windows XP and up
 
 #include <afx.h>
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
-#include <afxcview.h>
-#include <afxcmn.h>			// MFC support for Windows Common Controls
-#include <commctrl.h>
-#include <afxole.h>
-#include <AFXPRIV.H>
-#include <richole.h>  // for IRichEditOleCallback
-#include <gdiplus.h>
-using namespace Gdiplus;

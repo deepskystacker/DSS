@@ -366,7 +366,7 @@ public :
 	void ResetTasksStatus();
 	void UpdateTasksMethods();
 
-	int FindStackID(LPCTSTR szLightFrame);
+	int FindStackID(const fs::path& szLightFrame);
 
 	STACKINGMODE getStackingMode() const;
 
