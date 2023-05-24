@@ -326,8 +326,7 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Keep Only the first light frame
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
 				const fs::path& filePath = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath;
-				const auto fileName = filePath.generic_wstring(); // Otherwise strFileName could be a dangling pointer.
-				const wchar_t* strFileName = fileName.c_str();
+				const QString fileName = QString::fromStdU16String(filePath.generic_u16string().c_str());
 
 				CMasterFrames	MasterFrames;
 
@@ -356,15 +355,15 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Load the image
 				CBitmapInfo		bmpInfo;
 				// Load the bitmap
-				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
+				if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 				{
 					QString	strDescription;
 					bmpInfo.GetDescription(strDescription);
 
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(fileName);
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(fileName);
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;

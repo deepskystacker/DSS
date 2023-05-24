@@ -1153,7 +1153,7 @@ void CLightFrameInfo::RegisterPicture()
 	CBitmapInfo			bmpInfo;
 	bool				bLoaded;
 
-	if (GetPictureInfo(filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
+	if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 	{
 		QString strText;
 		QString	strDescription;
@@ -1362,7 +1362,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			auto bmpInfo = std::make_unique<CBitmapInfo>();
-			if (!GetPictureInfo(lfInfo->filePath.c_str(), *bmpInfo) || !bmpInfo->CanLoad())
+			if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
 				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;

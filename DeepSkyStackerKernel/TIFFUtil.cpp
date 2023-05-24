@@ -386,8 +386,7 @@ bool CTIFFReader::Open()
 		else
 		{
 			CBitmapInfo			BitmapInfo;
-			QString name{ QString::fromWCharArray(m_strFileName.wstring().c_str()) };
-			if (RetrieveEXIFInfo(name, BitmapInfo))
+			if (RetrieveEXIFInfo(m_strFileName, BitmapInfo))
 			{
 				exposureTime = BitmapInfo.m_fExposure;
 				aperture	 = BitmapInfo.m_fAperture;
@@ -1709,7 +1708,7 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 
 	if (tiff.Open())
 	{
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName.wstring().c_str());
+		BitmapInfo.m_strFileName	= szFileName;
 
 		QString makeModel{ tiff.getMakeModel() };
 		if (!makeModel.isEmpty())

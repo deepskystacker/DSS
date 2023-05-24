@@ -926,7 +926,7 @@ bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 	if (bResult)
 	{
-		BitmapInfo.m_strFileName	 = QString::fromStdU16String(path.generic_u16string().c_str());
+		BitmapInfo.m_strFileName	 = path;
 		BitmapInfo.m_strFileType	 = "RAW";
 		if (dcr.IsColorRAW())
 			BitmapInfo.m_CFAType	 = CFATYPE_NONE;

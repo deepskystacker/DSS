@@ -1188,7 +1188,7 @@ namespace DSS
 			if (!ignoreExtensions.contains(extension) && !stem.startsWith("autosave"))
 			{
 				// Try to load image info to check it is a valid image
-				if (GetPictureInfo(file.generic_wstring().c_str(), bitmapInfo))
+				if (GetPictureInfo(file, bitmapInfo))
 				{
 					//
 					// It is a valid image
@@ -2785,6 +2785,6 @@ namespace DSS
 	{
 		CBitmapInfo			BitmapInfo;
 
-		return (GetPictureInfo(path.generic_wstring().c_str(), BitmapInfo));
+		return (GetPictureInfo(path, BitmapInfo));
 	}
 }
