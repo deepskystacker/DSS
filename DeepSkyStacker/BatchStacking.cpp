@@ -42,42 +42,42 @@ namespace
 
 			if (bContinue)
 			{
-				const QString strReferenceFrame(list.getReferenceFrame());
-				if (!strReferenceFrame.isEmpty())
-					StackingEngine.SetReferenceFrame(strReferenceFrame.toStdWString().c_str());
+				const QString referenceFrame(list.getReferenceFrame());
+				if (!referenceFrame.isEmpty())
+					StackingEngine.SetReferenceFrame(referenceFrame.toStdU16String());
 
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
 				if (bContinue)
 				{
-					fs::path strFileName = fileList;
+					fs::path file;
 
 					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
 
-					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList, iff == IFF_TIFF))
+					if (StackingEngine.GetDefaultOutputFileName(file, fileList, iff == IFF_TIFF))
 					{
-						StackingEngine.WriteDescription(tasks, strFileName);
+						StackingEngine.WriteDescription(tasks, file);
 
-						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.wstring().c_str())));
+						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromStdU16String(file.generic_u16string())));
 						dlg.Start2(strText, 0);
 
 						if (iff == IFF_TIFF)
 						{
 							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 							else
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 						}
 						else
 						{
 							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 							else
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 						}
 						dlg.End2();
 					}
-					outputFile = QString::fromWCharArray(strFileName.wstring().c_str());
+					outputFile = QString::fromStdU16String(file.generic_u16string());
 				}
 			}
 			dlg.Close();

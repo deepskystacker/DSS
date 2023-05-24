@@ -336,13 +336,14 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 }
 
 
-bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
+bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
 	std::shared_ptr<QImage>& pQImage )
 {
 	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	ZFUNCTRACE_RUNTIME();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
 	bool result = false;
+	const QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 	//
 	// pQImage better be a nullptr
@@ -441,7 +442,7 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 	rpBitmap = pBitmap;
 
 	CBitmapInfo bmpInfo;
-	if (RetrieveEXIFInfo(name, bmpInfo))
+	if (RetrieveEXIFInfo(file, bmpInfo))
 		pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
 	result = true;
@@ -1131,7 +1132,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 				BitmapInfo.m_CFAType = CFATYPE_NONE;
 				BitmapInfo.m_bCanLoad = true;
 				bResult = true;
-				RetrieveEXIFInfo(name, BitmapInfo);
+				RetrieveEXIFInfo(path, BitmapInfo);
 			}
 			else return false;
 		}
@@ -1181,23 +1182,20 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
 	bool result{ false };
-	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
-	//const auto fileName = filePath.generic_u16string(); // Otherwise szFileName could be a dangling pointer.
-	const wchar_t* szFileName = filePath.c_str();
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
-		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
+		ZTRACE_RUNTIME("File %s not found", filePath.generic_u8string().c_str());
 		const QString errorMessage{ QCoreApplication::translate(
 									"BitmapExt",
-									"%1 does not exist or is not a file").arg(name) };
+									"%1 does not exist or is not a file").arg(filePath.generic_u16string().c_str()) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 		return false;
 	}
 
-	QFileInfo info{ name };
+	QFileInfo info{ QString::fromStdU16String(filePath.u16string()) };
 	QString extension{ info.suffix().toLower() };
 	QMimeDatabase mimeDB{ };
 	auto mime = mimeDB.mimeTypeForFile(info);
@@ -1213,7 +1211,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		if (rawFileExtensions.contains(extension))			// No need to call IsRawPicture here
 		{
-			result = LoadRAWPicture(szFileName, rpBitmap, ignoreBrightness, pProgress);
+			result = LoadRAWPicture(filePath, rpBitmap, ignoreBrightness, pProgress);
 			break;
 		}
 
@@ -1256,7 +1254,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		// It wasn't a FITS file, so try to load other stuff ...
 		//
-		else result = LoadOtherPicture(name, rpBitmap, pProgress, pQImage);
+		else result = LoadOtherPicture(filePath, rpBitmap, pProgress, pQImage);
 
 	} while (false);
 	return result;

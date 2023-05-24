@@ -45,18 +45,18 @@ using namespace Exiv2;
 // Type for an Exiv2 Easy access function
 using EasyAccessFct = Exiv2::ExifData::const_iterator(*)(const Exiv2::ExifData&);
 
-bool RetrieveEXIFInfo(const QString& name, CBitmapInfo& BitmapInfo)
+bool RetrieveEXIFInfo(const fs::path& name, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool result{ false };
 	//
 	// Use Exiv2 C++ class library to retrieve the EXIF information we want
 	//
-	auto image = ImageFactory::open(name.toStdString());
+	auto image = ImageFactory::open(name.string());
 	ZASSERT(image.get() != nullptr);
 	image->readMetadata();
 	auto& exifData{ image->exifData() };
-	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", name.toUtf8().constData());
+	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", name.generic_u8string().c_str());
 	if (exifData.empty())
 	{
 		ZTRACE_RUNTIME("No EXIF data found in file");

@@ -88,4 +88,4 @@ public:
 	bool IsInitialized();
 };
 
-bool RetrieveEXIFInfo(const QString& name, CBitmapInfo& BitmapInfo);
+bool RetrieveEXIFInfo(const fs::path &name, CBitmapInfo& BitmapInfo);

@@ -807,8 +807,8 @@ private :
 						m_lYStart;
 
 public :
-	CTIFFWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
-	   CTIFFWriter(szFileName, pProgress),
+	CTIFFWriterStacker(const fs::path& p, LPRECT lprc, ProgressBase *	pProgress) :
+	   CTIFFWriter(p, pProgress),
 		m_lprc { lprc },
 		m_pStackedBitmap{ nullptr },
 		m_bApplySettings { false },
@@ -891,7 +891,7 @@ bool CTIFFWriterStacker::OnOpen()
 		strText = QCoreApplication::translate("StackedBitmap", "Saving TIFF %1 bit", "IDS_SAVINGTIFF").arg(bps);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.wstring().c_str()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromStdU16String(file.generic_u16string()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1235,7 +1235,7 @@ bool CTIFFReadStacker::OnOpen()
 			strText = QCoreApplication::translate("StackedBitmap", "Loading TIFF %1 bit/ch", "IDS_LOADRGBTIFF").arg(bps);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.wstring().c_str()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromStdU16String(file.generic_u16string()));
 		m_pProgress->Progress1(strText, 0);
 	};
 

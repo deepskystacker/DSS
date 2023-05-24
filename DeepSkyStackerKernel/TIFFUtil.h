@@ -171,14 +171,14 @@ class CTIFFReader : public CTIFFHeader
 {
 public :
 	TIFF* m_tiff;
-	fs::path m_strFileName;
+	fs::path file;
 	ProgressBase* m_pProgress;
 
 public :
-	CTIFFReader(const fs::path& szFileName, ProgressBase *	pProgress)
+	CTIFFReader(const fs::path& p, ProgressBase *	pProgress)
 	{
 		m_tiff		  = nullptr;
-		m_strFileName = szFileName;
+		file = p;
 		m_pProgress   = pProgress;
 	};
 
@@ -207,7 +207,7 @@ class CTIFFWriter : public CTIFFHeader
 {
 public:
 	TIFF* m_tiff;
-	fs::path m_strFileName;
+	fs::path file;
 	ProgressBase* m_pProgress;
 	QString m_strDescription;
 	TIFFFORMAT m_Format;

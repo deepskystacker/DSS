@@ -64,6 +64,7 @@
 #include "Workspace.h"
 #include "foldermonitor.h"
 #include "fileregistrar.h"
+#include "QElidedLabel.h"
 
 using namespace DSS;
 using namespace std;

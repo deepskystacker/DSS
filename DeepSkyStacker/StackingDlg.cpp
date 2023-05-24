@@ -2468,7 +2468,7 @@ namespace DSS
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.wstring().c_str())));
+					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromStdU16String(strFileName.generic_u16string())));
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 

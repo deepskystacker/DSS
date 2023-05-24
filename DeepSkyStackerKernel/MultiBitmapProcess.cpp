@@ -8,14 +8,16 @@
 #include "ZExcBase.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
+#include <QTemporaryFile>
 
 namespace {
 
-QString GetTempFileName()
+fs::path tempFile()
 {
-	TCHAR szTempFileName[1 + _MAX_PATH] = { '\0' };
-	::GetTempFileName(reinterpret_cast<LPCTSTR>(CAllStackingTasks::GetTemporaryFilesFolder().utf16()), _T("DSS"), 0, szTempFileName);
-	return QString::fromWCharArray(szTempFileName);
+	QString name{ CAllStackingTasks::GetTemporaryFilesFolder() }; name += "/DSS";
+	QTemporaryFile tempFile{ QTemporaryFile(name) };
+	tempFile.setAutoRemove(false);
+	return tempFile.fileName().toStdU16String();
 }
 
 }
@@ -29,13 +31,13 @@ void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
 
 /* ------------------------------------------------------------------- */
 
-void CMultiBitmap::DestroyTempFiles()
+void CMultiBitmap::removeTempFiles()
 {
 	for (auto& bitmapPart : this->m_vFiles)
 	{
-		if (!bitmapPart.m_tempFileName.isEmpty())
-			DeleteFile(reinterpret_cast<LPCTSTR>(bitmapPart.m_tempFileName.utf16()));
-		bitmapPart.m_tempFileName.clear();
+		if (!bitmapPart.file.empty())
+			fs::remove(bitmapPart.file);
+		bitmapPart.file.clear();
 	}
 	m_vFiles.clear();
 }
@@ -77,7 +79,7 @@ void CMultiBitmap::InitParts()
 		}
 		lEndRow = std::min(lEndRow, m_lHeight - 1);
 
-		m_vFiles.emplace_back(GetTempFileName(), lStartRow, lEndRow);
+		m_vFiles.emplace_back(tempFile(), lStartRow, lEndRow);
 	}
 
 	m_bInitDone.store(true);
@@ -110,16 +112,23 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 	if (pProgress)
 		pProgress->Start2(m_lHeight);
 
-	for (const auto& file : m_vFiles)
+	for (const auto& partFile : m_vFiles)
 	{
 		auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
-		std::unique_ptr<FILE, decltype(dtor)> pFile{ _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("a+b")), dtor };
+		std::unique_ptr<FILE, decltype(dtor)> pFile{
+#if defined(_WINDOWS)
+			_wfopen(partFile.file.c_str(), L"a+b"),
+#else
+			std::fopen(partFile.file.c_ctr(), "a+b"),
+#endif
+			dtor };
+
 		if (pFile.get() == nullptr)
 			return false;
 
 		fseek(pFile.get(), 0, SEEK_END);
 
-		for (int j = file.m_lStartRow; j <= file.m_lEndRow; j++)
+		for (int j = partFile.m_lStartRow; j <= partFile.m_lEndRow; j++)
 		{
 			pBitmap->GetScanLine(j, scanLineBuffer.data());
 			if (fwrite(scanLineBuffer.data(), lScanLineSize, 1, pFile.get()) != 1)
@@ -366,19 +375,24 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 		// Making the file reading concurrent (e.g. with std::async) is hardly a speed improvement,
 		// because only about 7% of the time is spent for reading the data from the files.
 
-		for (const auto& file : m_vFiles)
+		for (const auto& partFile : m_vFiles)
 		{
 			if (!bResult)
 				break;
 
 			// Read the full bitmap in memory
-			const size_t fileSize = lScanLineSize * m_lNrAddedBitmaps * (size_t{ 1 } + file.m_lEndRow - file.m_lStartRow);
+			const size_t fileSize = lScanLineSize * m_lNrAddedBitmaps * (size_t{ 1 } + partFile.m_lEndRow - partFile.m_lStartRow);
 
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
 
-			FILE* hFile = _tfopen(reinterpret_cast<LPCTSTR>(file.m_tempFileName.utf16()), _T("rb"));
-			if (hFile != nullptr)
+			if (std::FILE* hFile =
+#if defined(_WINDOWS)
+				_wfopen(partFile.file.c_str(), L"rb")
+#else
+				std::fopen(partFile.file.c_ctr(), "rb")
+#endif
+				)
 			{
 				bResult = fread(buffer.data(), 1, fileSize, hFile) == fileSize;
 				fclose(hFile);
@@ -391,7 +405,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 
 			// More than 90% of the time of GetResult() is spent in CombineTask::process().
 			// Only 7% for reading the data from files.
-			CCombineTask{ file.m_lStartRow, file.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap.get() }.process();
+			CCombineTask{ partFile.m_lStartRow, partFile.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap.get() }.process();
 
 			if (pProgress != nullptr)
 			{
@@ -407,6 +421,6 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 			return SmoothOut(pBitmap.get(), pProgress);
 		}
 	}
-	DestroyTempFiles();
+	removeTempFiles();
 	return pBitmap;
 }

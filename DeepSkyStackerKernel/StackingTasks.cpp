@@ -386,7 +386,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterOffset.wstring().c_str()), 0);
+						pProgress->Start2(QString::fromStdU16String(strMasterOffset.generic_u16string()), 0);
 					}
 
 					// TODO: Work out how to do this better.
@@ -561,7 +561,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterDark.wstring().c_str()), 0);
+						pProgress->Start2(QString::fromStdU16String(strMasterDark.generic_u16string()), 0);
 					}
 
 					WriteMasterTIFF(strMasterDark, pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
@@ -727,7 +727,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterDarkFlat.wstring().c_str()), 0);
+						pProgress->Start2(QString::fromStdU16String(strMasterDarkFlat.generic_u16string()), 0);
 					};
 
 					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
@@ -1169,7 +1169,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					{
 						pProgress->Start1(strText, 1, false);
 						pProgress->Progress1(strText, 1);
-						pProgress->Start2(QString::fromWCharArray(strMasterFlat.wstring().c_str()), 0);
+						pProgress->Start2(QString::fromStdU16String(strMasterFlat.generic_u16string()), 0);
 					}
 
 					WriteMasterTIFF(strMasterFlat, pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);

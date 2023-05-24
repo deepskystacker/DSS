@@ -190,13 +190,17 @@ bool CTIFFReader::Open()
 	//
 	TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
 	TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
-	m_tiff = TIFFOpenW(m_strFileName.wstring().c_str(), "r");
+#ifdef Q_OS_WIN
+	m_tiff = TIFFOpenW(file.wstring().c_str(), "r");
+#else
+	m_tiff = TIFFOpenW(file.u8string.c_str(), "r");
+#endif
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
 
 	if (m_tiff)
 	{
-		ZTRACE_RUNTIME("Opened %s", m_strFileName.wstring().c_str());
+		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
 		cfa = 0;
 		master = 0;
@@ -386,8 +390,7 @@ bool CTIFFReader::Open()
 		else
 		{
 			CBitmapInfo			BitmapInfo;
-			QString name{ QString::fromWCharArray(m_strFileName.wstring().c_str()) };
-			if (RetrieveEXIFInfo(name, BitmapInfo))
+			if (RetrieveEXIFInfo(file, BitmapInfo))
 			{
 				exposureTime = BitmapInfo.m_fExposure;
 				aperture	 = BitmapInfo.m_fAperture;
@@ -749,9 +752,9 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFWriter::CTIFFWriter(const fs::path& szFileName, ProgressBase* pProgress) :
+CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
 	m_tiff{ nullptr },
-	m_strFileName{ szFileName },
+	file{ p },
 	m_pProgress{ pProgress },
 	m_Format{ TF_UNKNOWN }
 {
@@ -839,7 +842,11 @@ bool CTIFFWriter::Open()
 	uint64_t dir_offset_EXIF{ 0 };
 	uint16_t count{ 0 };
 
-	m_tiff = TIFFOpenW(m_strFileName.wstring().c_str(), "w");
+#ifdef Q_OS_WIN
+	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
+#else
+	m_tiff = TIFFOpenW(file.u8string.c_str(), "w");
+#endif
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;
@@ -914,7 +921,7 @@ bool CTIFFWriter::Open()
 
 			if (m_strDescription.length())
 			{
-				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, m_strDescription.toStdWString().c_str());
+				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, m_strDescription.toStdString().c_str());
 			}
 
 			if (m_DateTime.isValid())
@@ -1709,7 +1716,7 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 
 	if (tiff.Open())
 	{
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName.wstring().c_str());
+		BitmapInfo.m_strFileName	= QString::fromStdU16String(szFileName.generic_u16string());
 
 		QString makeModel{ tiff.getMakeModel() };
 		if (!makeModel.isEmpty())
