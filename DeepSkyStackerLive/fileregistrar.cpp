@@ -105,7 +105,93 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		ZTRACE_RUNTIME("Registering %s", file.filename().generic_string().c_str());
-		sleep(1);
+		CBitmapInfo			bmpInfo;
+
+		if (GetPictureInfo(szFileName, bmpInfo) && bmpInfo.CanLoad())
+		{
+			QString strText;
+			QString strDescription;
+
+			bmpInfo.GetDescription(strDescription);
+			if (bmpInfo.m_lNrChannels == 3)
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
+			else
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
+
+			Start2(strText, 0);
+			CAllDepthBitmap				adb;
+			adb.SetDontUseAHD(true);
+
+			bResult = LoadPicture(szFileName, adb, this);
+			End2();
+			if (bResult)
+			{
+				PostFileLoaded(adb.m_pBitmap, adb.m_pWndBitmap, szFileName);
+				PostChangeImageStatus(szFileName, IS_LOADED);
+
+				// Now register the image
+				CLightFrameInfo			lfi;
+
+				strText = QCoreApplication::translate("LiveEngine", "Registering %1", "IDS_REGISTERINGNAME").arg(QString::fromWCharArray(szFileName));
+				Start2(strText, 0);
+				lfi.SetBitmap(szFileName, false, false);
+				lfi.SetProgress(this);
+				lfi.RegisterPicture(adb.m_pBitmap.get());
+				lfi.SaveRegisteringInfo();
+				lfi.m_lISOSpeed = bmpInfo.m_lISOSpeed;
+				lfi.m_lGain = bmpInfo.m_lGain;
+				lfi.m_fExposure = bmpInfo.m_fExposure;
+				End2();
+				PostFileRegistered(szFileName);
+				PostChangeImageStatus(szFileName, IS_REGISTERED);
+
+				TCHAR					szName[_MAX_FNAME];
+				TCHAR					szExt[_MAX_EXT];
+				CString					strName;
+
+				_tsplitpath(szFileName, nullptr, nullptr, szName, szExt);
+				strName.Format(_T("%s%s"), szName, szExt);
+				int count = static_cast<int>(lfi.m_vStars.size()); // Work round LUpdate bug
+				strText = QCoreApplication::translate("LiveEngine", "Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3\n", "IDS_LOG_REGISTERRESULTS", count)
+					.arg(QString::fromWCharArray(strName))
+					.arg(lfi.m_fFWHM, 0, 'f', 2)
+					.arg(lfi.m_fOverallQuality, 0, 'f', 2);
+
+				PostToLog(strText, true);
+
+				CString					strError;
+				BOOL					bWarning;
+				CString					strWarning;
+				bWarning = IsImageWarning1(szFileName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality, lfi.m_SkyBackground.m_fLight * 100.0, strWarning);
+				PostChangeImageInfo(szFileName, II_DONTSTACK_NONE);
+				if (bWarning)
+				{
+					strText = QCoreApplication::translate("LiveEngine", "Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(QString::fromWCharArray(szFileName)).arg(QString::fromWCharArray(strWarning));
+					PostToLog(strText, true, false, false, RGB(208, 127, 0));
+					PostWarning(strWarning);
+				};
+				if (IsImageStackable1(szFileName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality, lfi.m_SkyBackground.m_fLight * 100.0, strError))
+				{
+					// Check against stacking conditions before adding it to
+					// the stack list
+					m_qToStack.push_back(lfi);
+				}
+				else
+				{
+					strText = QCoreApplication::translate("LiveEngine", "Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(QString::fromWCharArray(szFileName)).arg(QString::fromWCharArray(strError));
+					PostToLog(strText, true, true, false, RGB(255, 0, 0));
+					PostChangeImageStatus(szFileName, IS_NOTSTACKABLE);
+					MoveImage(szFileName);
+				};
+			}
+			else
+			{
+				strText = QCoreApplication::translate("LiveEngine", "Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(QString::fromWCharArray(szFileName));
+				PostToLog(strText, true, true, false, RGB(255, 0, 0));
+				MoveImage(szFileName);
+			};
+		};
+
 		QString message{ tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3", "IDS_LOG_REGISTERRESULTS", 10)
 			.arg(QString::fromStdU16String(file.generic_u16string().c_str()))
 			.arg(20., 0, 'f', 2)

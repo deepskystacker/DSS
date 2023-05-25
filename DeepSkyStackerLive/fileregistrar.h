@@ -53,7 +53,7 @@ namespace DSS
 		void fileRegistered(fs::path file);
 
 	public:
-		FileRegistrar(QObject* parent);
+		FileRegistrar(QObject* parent = nullptr);
 		~FileRegistrar();
 
 		void addFile(fs::path file);

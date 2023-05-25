@@ -274,7 +274,7 @@
     <ClInclude Include=".\DarkFrame.h" />
     <ClInclude Include=".\DeBloom.h" />
     <ClInclude Include=".\DSSCommon.h" />
-    <ClInclude Include=".\DSSProgress.h" />
+    <QtMoc Include=".\DSSProgress.h" />
     <ClInclude Include=".\dssrect.h" />
     <ClInclude Include=".\DSSTools.h" />
     <ClInclude Include=".\EntropyInfo.h" />

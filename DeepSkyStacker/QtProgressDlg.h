@@ -7,18 +7,18 @@ namespace Ui {
 
 namespace DSS
 {
-	class ProgressDlg :	public QDialog,
-						public ProgressBase
+	class ProgressDlg : public ProgressBase					
 	{
 		Q_OBJECT
 
 	private:
-		Ui::ProgressDlg* m_ui;
+		QDialog* theDialog;
+		Ui::ProgressDlg* ui;
 		bool m_cancelInProgress;
 		static const QString m_emptyString;
 
 	public:
-		ProgressDlg();
+		ProgressDlg(QObject* parent = nullptr);
 		~ProgressDlg();
 
 		void setTimeRemaining(const QString& strText);

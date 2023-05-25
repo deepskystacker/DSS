@@ -18,26 +18,25 @@ namespace {
 }
 
 
-ProgressDlg::ProgressDlg() :
-	QDialog(GetMainApplicationWindow()),
-	m_ui(new Ui::ProgressDlg),
-	m_cancelInProgress(false)
+ProgressDlg::ProgressDlg(QObject* parent) :
+	ProgressBase{ parent },
+	theDialog{ new QDialog(GetMainApplicationWindow()) },   // make the dlg application modal
+	ui{ new Ui::ProgressDlg },
+	m_cancelInProgress{ false }
 {
-	m_ui->setupUi(this);
-	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
-	connect(m_ui->StopButton, SIGNAL(clicked(bool)), this, SLOT(cancelPressed()));
+	ui->setupUi(theDialog);
+	theDialog->setWindowFlags(theDialog->windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
+	ProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
 
-	retainHiddenWidgetSize(*m_ui->ProcessText1);
-	retainHiddenWidgetSize(*m_ui->ProcessText2);
-	retainHiddenWidgetSize(*m_ui->ProgressBar1);
-	retainHiddenWidgetSize(*m_ui->ProgressBar2);
+	retainHiddenWidgetSize(*ui->ProcessText1);
+	retainHiddenWidgetSize(*ui->ProcessText2);
+	retainHiddenWidgetSize(*ui->ProgressBar1);
+	retainHiddenWidgetSize(*ui->ProgressBar2);
 }
 
 ProgressDlg::~ProgressDlg()
 {
 	Close();
-	if (m_ui)
-		delete m_ui;
 }
 
 void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
@@ -49,28 +48,28 @@ void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
 
 void ProgressDlg::EnableCancelButton(bool bState)
 {
-	m_ui->StopButton->setEnabled(bState);
+	ui->StopButton->setEnabled(bState);
 }
 void ProgressDlg::applyTitleText(const QString& strText)
 {
 	if (!strText.isEmpty())
-		setWindowTitle(strText);
+		theDialog->setWindowTitle(strText);
 }
 void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
-	m_ui->ProgressBar1->setRange(nMin, nMax);
+	ui->ProgressBar1->setRange(nMin, nMax);
 }
 void ProgressDlg::setProgress2Range(int nMin, int nMax)
 {
-	m_ui->ProgressBar2->setRange(nMin, nMax);
+	ui->ProgressBar2->setRange(nMin, nMax);
 }
 void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
-	m_ui->ProcessText1->setVisible(bSet1);
-	m_ui->ProgressBar1->setVisible(bSet1);
+	ui->ProcessText1->setVisible(bSet1);
+	ui->ProgressBar1->setVisible(bSet1);
 	
-	m_ui->ProcessText2->setVisible(bSet2);
-	m_ui->ProgressBar2->setVisible(bSet2);
+	ui->ProcessText2->setVisible(bSet2);
+	ui->ProgressBar2->setVisible(bSet2);
 }
 
 void ProgressDlg::closeEvent(QCloseEvent* pEvent)
@@ -81,16 +80,16 @@ void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 
 void ProgressDlg::cancelPressed()
 {
-	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(theDialog, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_cancelInProgress = true;
-		m_ui->StopButton->setEnabled(false);
+		ui->StopButton->setEnabled(false);
 	}
 }
 
 void ProgressDlg::setTimeRemaining(const QString& strText)
 {
-	m_ui->TimeRemaining->setText(strText);
+	ui->TimeRemaining->setText(strText);
 	QApplication::processEvents();
 }
 
@@ -104,25 +103,25 @@ void ProgressDlg::initialise()
 	EnableCancelButton(m_enableCancel);
 	setProgress1Range(0, m_total1);
 	setItemVisibility(true, false);
-	setFocus();
+	theDialog->setFocus();
 	applyTitleText(GetTitleText());
 
-	raise();
-	show();
+	theDialog->raise();
+	theDialog->show();
 	QApplication::processEvents();
 }
 
 void ProgressDlg::applyStart1Text(const QString& strText)
 {
-	m_ui->ProcessText1->setText(strText);
-	raise();
-	show();
+	ui->ProcessText1->setText(strText);
+	theDialog->raise();
+	theDialog->show();
 	QApplication::processEvents();
 }
 
 void ProgressDlg::applyStart2Text(const QString& strText)
 {
-	m_ui->ProcessText2->setText(strText);
+	ui->ProcessText2->setText(strText);
 	setProgress2Range(0, m_total2);
 	if (m_total2 == 0)
 	{
@@ -133,14 +132,14 @@ void ProgressDlg::applyStart2Text(const QString& strText)
 		setItemVisibility(true, true);
 		applyProgress2(0);
 	}
-	raise();
-	show();
+	theDialog->raise();
+	theDialog->show();
 	QApplication::processEvents();
 }
 
 void ProgressDlg::applyProgress1(int lAchieved)
 {
-	m_ui->ProgressBar1->setValue(lAchieved);
+	ui->ProgressBar1->setValue(lAchieved);
 
 	// Now do time remaining as well
 	if (m_total1 > 1 && lAchieved > 1)
@@ -183,13 +182,13 @@ void ProgressDlg::applyProgress1(int lAchieved)
 
 void ProgressDlg::applyProgress2(int lAchieved)
 {
-	m_ui->ProgressBar2->setValue(lAchieved);
+	ui->ProgressBar2->setValue(lAchieved);
 	QApplication::processEvents();
 }
 
 void ProgressDlg::applyProcessorsUsed(int nCount)
 {
-	m_ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
+	ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
 	QApplication::processEvents();
 }
 
@@ -205,11 +204,11 @@ bool ProgressDlg::hasBeenCanceled()
 
 bool ProgressDlg::doWarning(const QString& szText)
 {
-	return (QMessageBox::question(this, "", szText) == QMessageBox::Yes);
+	return (QMessageBox::question(theDialog, "", szText) == QMessageBox::Yes);
 }
 
 void ProgressDlg::closeProgress()
 {
 	DeepSkyStacker::instance()->enableSubDialogs();
-	hide();
+	theDialog->hide();
 }
