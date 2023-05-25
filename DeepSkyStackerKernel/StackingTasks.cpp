@@ -65,7 +65,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 	const auto fileName = filePath.generic_wstring(); // Otherwise szFile could be a dangling pointer.
 	const auto szFile = fileName.c_str();
 
-	if (GetPictureInfo(szFile, bmpInfo) && bmpInfo.CanLoad())
+	if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 	{
 		QString strText;
 		QString strDescription;

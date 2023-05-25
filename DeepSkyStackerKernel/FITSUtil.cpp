@@ -1076,7 +1076,7 @@ bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
-		BitmapInfo.m_strFileName = QString::fromStdU16String(path.generic_u16string().c_str());
+		BitmapInfo.m_strFileName = path;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
 		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();

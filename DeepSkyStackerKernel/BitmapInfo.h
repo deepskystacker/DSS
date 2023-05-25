@@ -41,7 +41,7 @@
 class CBitmapInfo
 {
 public:
-	QString m_strFileName;
+	fs::path m_strFileName;
 	QString m_strFileType;
 	QString m_strModel;
 	int m_lISOSpeed;
@@ -72,8 +72,7 @@ private:
 public:
 	CBitmapInfo();
 	CBitmapInfo(const CBitmapInfo& bi);
-	CBitmapInfo(LPCTSTR szFileName);
-	CBitmapInfo(const fs::path& szFileName);
+	CBitmapInfo(const fs::path& fileName);
 
 	virtual ~CBitmapInfo() = default;
 

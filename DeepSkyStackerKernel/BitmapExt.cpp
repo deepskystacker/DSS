@@ -361,11 +361,11 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	switch (bits)
 	{
 	case 24:
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
+		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.generic_string().c_str());
 		pBitmap = std::make_shared<C24BitColorBitmap>();
 		break;
 	case 48:
-		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
+		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.generic_string().c_str());
 		pBitmap = std::make_shared<C48BitColorBitmap>();
 		break;
 	default:
@@ -922,7 +922,7 @@ namespace {
 	{
 		size_t operator()(const CBitmapInfo& other) const
 		{
-			const auto& str = other.m_strFileName;
+			const auto& str = QString::fromStdU16String(other.m_strFileName.generic_u16string().c_str());
 			const QByteArray data = str.toUtf8();
 			const void* pRawData = data.constData();
 			return fnv1a_hash(reinterpret_cast<const unsigned char*>(pRawData), data.length());
@@ -983,9 +983,9 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	const QString name = QString::fromStdU16String(path.generic_u16string());
+	//const QString name = QString::fromStdU16String(path.generic_u16string());
 
-	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().constData());
+	ZTRACE_RUNTIME("Getting image information for %s", path.generic_string().c_str());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
 
@@ -1013,7 +1013,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		}
 	}
 
-	QFileInfo info{ name };
+	QFileInfo info{ path };
 	QString extension{ info.suffix().toLower() }; 
 
 	if (!bResult)
@@ -1043,7 +1043,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
-			QFile file{ name };
+			QFile file{ path };
 			file.open(QIODevice::ReadOnly);
 			if (file.isOpen())
 			{
@@ -1128,7 +1128,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 						return false;
 					}
 				}
-				BitmapInfo.m_strFileName = name;
+				BitmapInfo.m_strFileName = path;
 				BitmapInfo.m_CFAType = CFATYPE_NONE;
 				BitmapInfo.m_bCanLoad = true;
 				bResult = true;
@@ -1182,20 +1182,23 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
 	bool result{ false };
+	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
+	//const auto fileName = filePath.generic_u16string(); // Otherwise szFileName could be a dangling pointer.
+	const wchar_t* szFileName = filePath.c_str();
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
 		ZTRACE_RUNTIME("File %s not found", filePath.generic_u8string().c_str());
 		const QString errorMessage{ QCoreApplication::translate(
 									"BitmapExt",
-									"%1 does not exist or is not a file").arg(filePath.generic_u16string().c_str()) };
+									"%1 does not exist or is not a file").arg(name) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 		return false;
 	}
 
-	QFileInfo info{ QString::fromStdU16String(filePath.u16string()) };
+	QFileInfo info{ name };
 	QString extension{ info.suffix().toLower() };
 	QMimeDatabase mimeDB{ };
 	auto mime = mimeDB.mimeTypeForFile(info);
@@ -1786,16 +1789,10 @@ CBitmapInfo::CBitmapInfo(const CBitmapInfo& bi)
 	CopyFrom(bi);
 }
 
-CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
+CBitmapInfo::CBitmapInfo(const fs::path& fileName)
 {
 	Init();
-	m_strFileName = QString::fromWCharArray(szFileName);
-}
-
-CBitmapInfo::CBitmapInfo(const fs::path& szFileName)
-{
-	Init();
-	m_strFileName = QString::fromStdU16String(szFileName.generic_u16string().c_str());
+	m_strFileName = fileName;
 }
 
 void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
@@ -1852,12 +1849,12 @@ CBitmapInfo& CBitmapInfo::operator=(const CBitmapInfo& bi)
 
 bool CBitmapInfo::operator<(const CBitmapInfo& other) const
 {
-	return (m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) < 0);
+	return (m_strFileName.compare(other.m_strFileName) < 0);
 }
 
 bool CBitmapInfo::operator==(const CBitmapInfo& other) const
 {
-	return this->m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) == 0;
+	return this->m_strFileName.compare(other.m_strFileName) == 0;
 }
 bool CBitmapInfo::CanLoad() const
 {

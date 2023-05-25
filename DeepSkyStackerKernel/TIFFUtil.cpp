@@ -1716,7 +1716,7 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 
 	if (tiff.Open())
 	{
-		BitmapInfo.m_strFileName	= QString::fromStdU16String(szFileName.generic_u16string());
+		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName.wstring().c_str());
 
 		QString makeModel{ tiff.getMakeModel() };
 		if (!makeModel.isEmpty())

@@ -18,7 +18,7 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 
 	CBitmapInfo			bmpInfo;
 
-	bResult = GetPictureInfo(file.c_str() ,bmpInfo);
+	bResult = GetPictureInfo(file ,bmpInfo);
 
 	if (bResult)
 	{
