@@ -87,8 +87,4 @@ public:
 	bool IsInitialized();
 };
 
-<<<<<<< HEAD
-bool RetrieveEXIFInfo(const fs::path &name, CBitmapInfo& BitmapInfo);
-=======
 bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo);
->>>>>>> 2f5bcbe791c16e0fbde4f0b554ba20ef84df42bb
