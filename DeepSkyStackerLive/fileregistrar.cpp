@@ -37,6 +37,8 @@
 //
 #include "stdafx.h"
 #include "fileregistrar.h"
+#include "BitmapExt.h"
+#include "BitmapInfo.h"
 namespace DSS
 {
 	FileRegistrar::FileRegistrar(QObject* parent)
@@ -107,17 +109,17 @@ namespace DSS
 		ZTRACE_RUNTIME("Registering %s", file.filename().generic_string().c_str());
 		CBitmapInfo			bmpInfo;
 
-		if (GetPictureInfo(szFileName, bmpInfo) && bmpInfo.CanLoad())
+		if (GetPictureInfo(file, bmpInfo) && bmpInfo.CanLoad())
 		{
 			QString strText;
 			QString strDescription;
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(file.generic_u16string().c_str());
 			else
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
-
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(file.generic_u16string().c_str());
+#if 0
 			Start2(strText, 0);
 			CAllDepthBitmap				adb;
 			adb.SetDontUseAHD(true);
@@ -190,6 +192,7 @@ namespace DSS
 				PostToLog(strText, true, true, false, RGB(255, 0, 0));
 				MoveImage(szFileName);
 			};
+#endif
 		};
 
 		QString message{ tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3", "IDS_LOG_REGISTERRESULTS", 10)
