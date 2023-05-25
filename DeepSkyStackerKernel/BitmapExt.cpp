@@ -361,11 +361,11 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	switch (bits)
 	{
 	case 24:
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.generic_string().c_str());
+		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
 		pBitmap = std::make_shared<C24BitColorBitmap>();
 		break;
 	case 48:
-		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.generic_string().c_str());
+		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
 		pBitmap = std::make_shared<C48BitColorBitmap>();
 		break;
 	default:
