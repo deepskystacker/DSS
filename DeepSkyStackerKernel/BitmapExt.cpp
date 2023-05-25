@@ -1184,7 +1184,6 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	bool result{ false };
 	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
 	//const auto fileName = filePath.generic_u16string(); // Otherwise szFileName could be a dangling pointer.
-	const wchar_t* szFileName = filePath.c_str();
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
