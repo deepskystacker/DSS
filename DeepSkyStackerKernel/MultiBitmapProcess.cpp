@@ -10,16 +10,16 @@
 #include "ColorBitmap.h"
 #include <QTemporaryFile>
 
-namespace {
-
-fs::path tempFile()
+namespace
 {
-	QString name{ CAllStackingTasks::GetTemporaryFilesFolder() }; name += "/DSS";
-	QTemporaryFile tempFile{ QTemporaryFile(name) };
-	tempFile.setAutoRemove(false);
-	return tempFile.fileName().toStdU16String();
-}
-
+	fs::path tempFile()
+	{
+		QString name{ CAllStackingTasks::GetTemporaryFilesFolder() }; name += "DSSXXXXXX.tmp";
+		QTemporaryFile tempFile{ name };
+		tempFile.open();
+		tempFile.setAutoRemove(false);
+		return tempFile.fileName().toStdU16String();
+	}
 }
 
 /* ------------------------------------------------------------------- */
