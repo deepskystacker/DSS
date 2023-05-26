@@ -36,6 +36,7 @@ private:
 	std::unique_ptr<Workspace> workspace;
 	CAllStackingTasks *pStackingTasks;
 	bool	initialised;
+	QColor windowTextColour;
 
 	void CallStackingSettings(int tab = 0);
 

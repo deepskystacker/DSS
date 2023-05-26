@@ -120,7 +120,6 @@ void ExplorerBar::makeLinks()
 	QString redColour = QColor(Qt::red).name();
 	QString blueColour = QColor(Qt::blue).name();
 
-
 	makeLink(ui->openLights, redColour);
 	makeLink(ui->openDarks, defColour);
 	makeLink(ui->openFlats, defColour);
@@ -154,6 +153,7 @@ void ExplorerBar::makeLinks()
 	makeLink(ui->about, defColour);
 	makeLink(ui->help, defColour);
 	makeLink(ui->traceFileDisposition, blueColour);
+	update();
 }
 
 //void ExplorerBar::linkActivated()
@@ -465,26 +465,48 @@ void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
 	// Dark colour scheme?
 	//
 	if (Qt::ColorScheme::Dark == scheme)
+	{
 		activeGroupColourName = "darkcyan";
+	}
 	else
+	{
 		activeGroupColourName = "lightcyan";
-
-	windowColourName = palette().color(QPalette::ColorRole::Window).name();	// Default base window colour
-
-	const auto tabID = dssApp->tab();
-	if (IDD_REGISTERING == tabID)
-	{
-		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
-		ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 	}
-	else
-	{
-		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
-		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
-	}
-	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 
-	makeLinks();
+	//
+	// The following code was placed into a single shot lambda to work round a Qt 6.5.0 bug
+	// which means that the new colour values for (e.g.) Window colour have not been set
+	// when this code is invoked as a result of the ColorSchemeChanged signal.
+	// 
+	// Once Qt have issued a bug fix for this the code can be reverted to call everything
+	// directly from here.
+	//
+	QTimer::singleShot(100,
+		[this]()
+		{
+			this->windowColourName = palette().color(QPalette::ColorRole::Window).name();	// Default base window colour
+
+			const auto tabID = dssApp->tab();
+			if (IDD_REGISTERING == tabID)
+			{
+				this->ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+				this->ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+			}
+			else
+			{
+				this->ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+				this->ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+			}
+			this->ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+
+			//
+			// Hack to restore the original text for makeLinks to modify ...
+			// 
+			this->ui->retranslateUi(this);
+
+			this->makeLinks();
+		});
+
 }
 #endif
 

@@ -32,7 +32,8 @@ StackRecap::StackRecap(QWidget *parent) :
 	ui{ new Ui::StackRecap() },
 	workspace { std::make_unique<Workspace>() },
 	pStackingTasks(nullptr),
-	initialised(false)
+	initialised(false),
+	windowTextColour(palette().color(QPalette::ColorRole::WindowText))
 {
 	ui->setupUi(this);
 	//
@@ -265,7 +266,7 @@ void StackRecap::fillWithAllTasks()
 		strHTML += "<table border=0 valign=middle cellspacing=0 width='100%'><tr>";
 		strHTML += "<td width='48%'>";
 		strText = tr("Stacking mode: ", "IDS_RECAP_STACKINGMODE");
-		insertHTML(strHTML, strText, QColor(Qt::black), true);
+		insertHTML(strHTML, strText, windowTextColour, true);
 		switch (ResultMode)
 		{
 		case SM_NORMAL :
@@ -288,7 +289,7 @@ void StackRecap::fillWithAllTasks()
 
 		strText = tr("Alignment method: ", "IDS_RECAP_ALIGNMENT");
 		strHTML += "</td><td width='48%'>";
-		insertHTML(strHTML, strText, QColor(Qt::black), true);
+		insertHTML(strHTML, strText, windowTextColour, true);
 
 		switch (dwAlignment)
 		{
@@ -350,7 +351,7 @@ void StackRecap::fillWithAllTasks()
 
 			CometStackingMode = pStackingTasks->GetCometStackingMode();
 			strText = tr("Comet processing : ", "IDS_RECAP_COMETSTACKING");
-			insertHTML(strHTML, strText, QColor(Qt::black), true, false);
+			insertHTML(strHTML, strText, windowTextColour, true, false);
 			switch (CometStackingMode)
 			{
 			case CSM_STANDARD :
@@ -417,7 +418,7 @@ void StackRecap::fillWithAllTasks()
 					.arg(si.m_pLightTask->m_vBitmaps.size())
 					.arg(strISOGainText)
 					.arg(strISOGainValue);
-				insertHTML(strHTML, strText, QColor(Qt::black), true);
+				insertHTML(strHTML, strText, windowTextColour, true);
 				insertHTML(strHTML, strExposure, QColor(Qt::darkGreen), true);
 				strHTML += "<ul style=\"list-style: none; \">";
 				strHTML += "<li>";
@@ -710,7 +711,7 @@ void StackRecap::fillWithAllTasks()
 			"Estimated Total exposure time: %1<br>(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)",
 			"IDS_RECAP_TOTALEXPOSURETIME")
 			.arg(strExposure);
-		insertHTML(strHTML, strText, QColor(Qt::black), true, true);
+		insertHTML(strHTML, strText, windowTextColour, true, true);
 		strHTML += "<br>";
 
 		if (ulFreeSpace > ulNeededSpace)
