@@ -31,9 +31,9 @@ StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
 	ui{ new Ui::StackRecap() },
 	workspace { std::make_unique<Workspace>() },
-	pStackingTasks(nullptr),
-	initialised(false),
-	windowTextColour(palette().color(QPalette::ColorRole::WindowText))
+	pStackingTasks { nullptr },
+	initialised{ false },
+	windowTextColour{ palette().color(QPalette::ColorRole::WindowText) }
 {
 	ui->setupUi(this);
 	//
