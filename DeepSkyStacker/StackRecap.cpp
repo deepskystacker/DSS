@@ -458,7 +458,7 @@ void StackRecap::fillWithAllTasks()
 				};
 				strHTML += "</ul>";
 
-				strHTML += "<hr>";
+				strHTML += "<hr style=\"background-color:" + windowTextColour.name() + "\">";
 				strHTML += "<ul style=\"list-style: none; \">";
 
 				//if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)

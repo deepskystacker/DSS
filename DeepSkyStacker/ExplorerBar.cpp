@@ -117,8 +117,8 @@ void ExplorerBar::onInitDialog()
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
-	QString redColour = QColor(Qt::red).name();
-	QString blueColour = QColor(Qt::blue).name();
+	QString redColour = QColorConstants::Red.name();
+	QString blueColour = QColorConstants::Blue.name();
 
 	makeLink(ui->openLights, redColour);
 	makeLink(ui->openDarks, defColour);
