@@ -37,7 +37,9 @@ ProgressDlg::ProgressDlg(QObject* parent) :
 ProgressDlg::~ProgressDlg()
 {
 	Close();
+	delete theDialog; theDialog = nullptr;
 	delete ui; ui = nullptr;
+
 }
 
 void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
