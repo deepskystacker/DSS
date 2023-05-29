@@ -186,9 +186,6 @@
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="QElidedLabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DeepSkyStacker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
