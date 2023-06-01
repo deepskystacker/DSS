@@ -341,7 +341,6 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
-	traceControl.setDeleteOnExit(false);
 
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console knows how to interpret string data
