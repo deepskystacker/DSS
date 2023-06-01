@@ -193,7 +193,7 @@ bool CTIFFReader::Open()
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "r");
 #else
-	m_tiff = TIFFOpenW(file.u8string.c_str(), "r");
+	m_tiff = TIFFOpen(file.u8string.c_str(), "r");
 #endif
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
@@ -845,7 +845,7 @@ bool CTIFFWriter::Open()
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
 #else
-	m_tiff = TIFFOpenW(file.u8string.c_str(), "w");
+	m_tiff = TIFFOpen(file.u8string.c_str(), "w");
 #endif
 	if (m_tiff)
 	{
@@ -988,12 +988,22 @@ bool CTIFFWriter::Open()
 			// of the base IFD won't change which in turn means it can be rewritten in 
 			// the same location as the file is closed.
 			// 
+			// Turn off the TIFF error handle while we do this, otherwise an error message
+			// 
+			//		ZIPEncode: Encoder error: buffer error.
 			//
+			// is issued for each empty strip.
+			//
+			TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
+			TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
 			ZTRACE_RUNTIME("Writing %d empty encoded strips", numStrips);
 			for (int strip = 0; strip < numStrips; ++strip)
 			{
 				TIFFWriteEncodedStrip(m_tiff, strip, nullptr, 0);
 			}
+			TIFFSetErrorHandler(oldHandler);
+			TIFFSetErrorHandlerExt(oldHandlerExt);
+
 
 			//***************************************************************************
 			// 
