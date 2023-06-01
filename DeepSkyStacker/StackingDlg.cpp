@@ -2088,7 +2088,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::ProgressDlg			dlg;
+		DSS::ProgressDlg dlg{ this };
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
@@ -2222,7 +2222,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::ProgressDlg	dlg;
+						DSS::ProgressDlg dlg{ this };
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2403,7 +2403,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::ProgressDlg dlg;
+		DSS::ProgressDlg dlg{ this };
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2563,7 +2563,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::ProgressDlg	dlg;
+				DSS::ProgressDlg dlg{ this };
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2573,7 +2573,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::ProgressDlg			dlg;
+				DSS::ProgressDlg dlg{ this };
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

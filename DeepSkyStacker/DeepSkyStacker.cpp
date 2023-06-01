@@ -343,6 +343,7 @@ void DeepSkyStacker::onInitialise()
 		int lastErr = GetLastError();
 		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
 	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
 
 	HWND hwnd{ processingDlg->GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);

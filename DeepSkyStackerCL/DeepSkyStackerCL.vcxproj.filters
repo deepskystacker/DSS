@@ -30,6 +30,9 @@
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtProgressConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -39,9 +42,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\dssbase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QtProgressConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
@@ -342,6 +342,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DeepSkyStackerCL.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtProgressConsole.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

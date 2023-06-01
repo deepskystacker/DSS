@@ -12,9 +12,28 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 
-namespace
+
+
+namespace DSS
 {
-	static bool processList(const fs::path& fileList, QString& outputFile)
+	extern QStringList OUTPUTLIST_FILTERS;
+
+	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+		Inherited(Behaviour::PersistGeometry, parent),
+		ui(new Ui::BatchStacking),
+		m_fileListModel(new QStandardItemModel(this))
+	{
+		ui->setupUi(this);
+
+		ui->fileLists->setModel(m_fileListModel);
+	}
+
+	BatchStacking::~BatchStacking()
+	{
+		delete ui;
+	}
+
+	bool BatchStacking::processList(const fs::path& fileList, QString& outputFile)
 	{
 		ZFUNCTRACE_RUNTIME();
 		bool bResult = true;
@@ -30,7 +49,7 @@ namespace
 		if (!tasks.m_vStacks.empty())
 		{
 			bool bContinue = true;
-			DSS::ProgressDlg dlg;
+			DSS::ProgressDlg dlg{ this };
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered
@@ -86,26 +105,6 @@ namespace
 		workspace.Pop();
 
 		return bResult;
-	};
-}
-
-namespace DSS
-{
-	extern QStringList OUTPUTLIST_FILTERS;
-
-	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
-		Inherited(Behaviour::PersistGeometry, parent),
-		ui(new Ui::BatchStacking),
-		m_fileListModel(new QStandardItemModel(this))
-	{
-		ui->setupUi(this);
-
-		ui->fileLists->setModel(m_fileListModel);
-	}
-
-	BatchStacking::~BatchStacking()
-	{
-		delete ui;
 	}
 
 	void BatchStacking::accept()

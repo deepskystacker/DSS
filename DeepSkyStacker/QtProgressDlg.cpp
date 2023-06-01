@@ -5,27 +5,14 @@
 
 using namespace DSS;
 
-const QString ProgressDlg::m_emptyString;
-
-namespace {
-	QMainWindow* GetMainApplicationWindow()
-	{
-		for (QWidget* pWnd : QApplication::topLevelWidgets())
-			if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
-				return dynamic_cast<QMainWindow*>(pWnd);
-		return nullptr;
-	}
-}
-
-
-ProgressDlg::ProgressDlg(QObject* parent) :
-	ProgressBase{ parent },
-	theDialog{ new QDialog(GetMainApplicationWindow()) },   // make the dlg application modal
+ProgressDlg::ProgressDlg(QWidget* parent) :
+	QDialog { parent },
+	ProgressBase{ },
 	ui{ new Ui::ProgressDlg },
 	m_cancelInProgress{ false }
 {
-	ui->setupUi(theDialog);
-	theDialog->setWindowFlags(theDialog->windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
+	ui->setupUi(this);
+	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
 	ProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
 
 	retainHiddenWidgetSize(*ui->ProcessText1);
@@ -37,9 +24,51 @@ ProgressDlg::ProgressDlg(QObject* parent) :
 ProgressDlg::~ProgressDlg()
 {
 	Close();
-	delete theDialog; theDialog = nullptr;
-	delete ui; ui = nullptr;
+	delete ui;
+}
 
+void ProgressDlg::Start1(const QString& title, int total1, bool enableCancel /* = true */)
+{
+	QMetaObject::invokeMethod(this, "slotStart1", Qt::AutoConnection,
+		Q_ARG(const QString&, title),
+		Q_ARG(int, total1),
+		Q_ARG(bool, enableCancel));
+}
+
+void ProgressDlg::Progress1(const QString& text, int achieved)
+{
+	QMetaObject::invokeMethod(this, "slotProgress1", Qt::AutoConnection,
+		Q_ARG(const QString&, text),
+		Q_ARG(int, achieved));
+}
+
+void ProgressDlg::Start2(const QString& title, int total2)
+{
+	QMetaObject::invokeMethod(this, "slotStart2", Qt::AutoConnection,
+		Q_ARG(const QString&, title),
+		Q_ARG(int, total2));
+}
+
+void ProgressDlg::Progress2(const QString& text, int achieved)
+{
+	QMetaObject::invokeMethod(this, "slotProgress2", Qt::AutoConnection,
+		Q_ARG(const QString&, text),
+		Q_ARG(int, achieved));
+}
+
+void ProgressDlg::End2()
+{
+	QMetaObject::invokeMethod(this, "slotEnd2", Qt::AutoConnection);
+}
+
+void ProgressDlg::Close()
+{
+	QMetaObject::invokeMethod(this, "slotClose", Qt::AutoConnection);
+}
+
+bool ProgressDlg::Warning(const QString& szText)
+{
+	return doWarning(szText);
 }
 
 void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
@@ -56,7 +85,7 @@ void ProgressDlg::EnableCancelButton(bool bState)
 void ProgressDlg::applyTitleText(const QString& strText)
 {
 	if (!strText.isEmpty())
-		theDialog->setWindowTitle(strText);
+		setWindowTitle(strText);
 }
 void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
@@ -83,7 +112,7 @@ void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 
 void ProgressDlg::cancelPressed()
 {
-	if (QMessageBox::question(theDialog, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_cancelInProgress = true;
 		ui->StopButton->setEnabled(false);
@@ -93,7 +122,6 @@ void ProgressDlg::cancelPressed()
 void ProgressDlg::setTimeRemaining(const QString& strText)
 {
 	ui->TimeRemaining->setText(strText);
-	QApplication::processEvents();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,20 +134,18 @@ void ProgressDlg::initialise()
 	EnableCancelButton(m_enableCancel);
 	setProgress1Range(0, m_total1);
 	setItemVisibility(true, false);
-	theDialog->setFocus();
+	setFocus();
 	applyTitleText(GetTitleText());
 
-	theDialog->raise();
-	theDialog->show();
-	QApplication::processEvents();
+	raise();
+	show();
 }
 
 void ProgressDlg::applyStart1Text(const QString& strText)
 {
 	ui->ProcessText1->setText(strText);
-	theDialog->raise();
-	theDialog->show();
-	QApplication::processEvents();
+	raise();
+	show();
 }
 
 void ProgressDlg::applyStart2Text(const QString& strText)
@@ -135,9 +161,8 @@ void ProgressDlg::applyStart2Text(const QString& strText)
 		setItemVisibility(true, true);
 		applyProgress2(0);
 	}
-	theDialog->raise();
-	theDialog->show();
-	QApplication::processEvents();
+	raise();
+	show();
 }
 
 void ProgressDlg::applyProgress1(int lAchieved)
@@ -186,13 +211,11 @@ void ProgressDlg::applyProgress1(int lAchieved)
 void ProgressDlg::applyProgress2(int lAchieved)
 {
 	ui->ProgressBar2->setValue(lAchieved);
-	QApplication::processEvents();
 }
 
 void ProgressDlg::applyProcessorsUsed(int nCount)
 {
 	ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
-	QApplication::processEvents();
 }
 
 void ProgressDlg::endProgress2()
@@ -200,18 +223,149 @@ void ProgressDlg::endProgress2()
 	setItemVisibility(true, false);
 }
 
-bool ProgressDlg::hasBeenCanceled()
-{
-	return IsCancelled();
-}
-
 bool ProgressDlg::doWarning(const QString& szText)
 {
-	return (QMessageBox::question(theDialog, "", szText) == QMessageBox::Yes);
+	return (QMessageBox::question(this, "", szText) == QMessageBox::Yes);
 }
 
 void ProgressDlg::closeProgress()
 {
 	DeepSkyStacker::instance()->enableSubDialogs();
-	theDialog->hide();
+	hide();
+}
+
+/************************************************************************************/
+/* SLOTS                                                                            */
+/************************************************************************************/
+void ProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
+{
+	m_lastTotal1 = 0;
+	m_total1 = total1;
+	m_timer.start();
+	m_firstProgress = true;
+	m_enableCancel = enableCancel;
+
+	if (GetTitleText().compare(title, Qt::CaseInsensitive) != 0)
+	{
+		m_strLastOut[OT_TITLE] = title;
+		applyTitleText(GetTitleText());
+	}
+	UpdateProcessorsUsed();
+	initialise();
+	QCoreApplication::processEvents();
+}
+
+/************************************************************************************/
+
+void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
+{
+	qDebug() << __FUNCTION__;
+	// Always update on first loop, then only if a second has passed or a min progress has occurred.
+	if (!(m_firstProgress ||
+		(static_cast<double>(lAchieved1 - m_lastTotal1) > (m_total1 / 100.0) * m_minProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
+		(m_timer.elapsed() > 1000)
+		))
+		return;
+
+	m_firstProgress = false;
+	m_lastTotal1 = lAchieved1;
+
+	if (GetStart1Text().compare(szText, Qt::CaseInsensitive) != 0)
+	{
+		if (!szText.isEmpty())
+			m_strLastOut[OT_TEXT1] = szText;
+		applyStart1Text(GetStart1Text());
+	}
+
+	if (m_total1)
+	{
+		double percentage = (double)m_lastTotal1 / (double)m_total1 * 100.0;
+		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
+		applyProgress1(lAchieved1);
+	}
+	UpdateProcessorsUsed();
+	QCoreApplication::processEvents();
+}
+
+/************************************************************************************/
+
+void ProgressDlg::slotStart2(const QString& szText, int lTotal2)
+{
+	m_lastTotal2 = 0;
+	m_total2 = lTotal2;
+	if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
+	{
+		if (!szText.isEmpty())
+			m_strLastOut[OT_TEXT2] = szText;
+		applyStart2Text(GetStart2Text());
+	}
+
+	if (m_jointProgress)
+		Start1(GetStart2Text(), m_total2, m_enableCancel);
+
+	UpdateProcessorsUsed();
+	QCoreApplication::processEvents();
+}
+
+/************************************************************************************/
+
+void ProgressDlg::slotProgress2(const QString& szText, int lAchieved2)
+{
+	// Always update after a min progress has occurred.
+	float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+	float fRoundedSoFar = ceil(fAmountSoFar);
+
+	float fAmountGoingTo = (float)lAchieved2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+	float fRoundedGoingTo = ceil(fAmountGoingTo);
+
+	if (fRoundedGoingTo <= fRoundedSoFar &&
+		lAchieved2 < m_total2)
+		return;
+
+	if (lAchieved2 > m_total2)
+		m_total2 = lAchieved2;
+	m_lastTotal2 = lAchieved2;
+
+	double percentage = 0.0f;
+	if (m_total2)
+		percentage = (double)m_lastTotal2 / (double)m_total2 * 100.0;
+
+	if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
+	{
+		if (!szText.isEmpty())
+			m_strLastOut[OT_TEXT2] = szText;
+		if (!m_jointProgress)
+			applyStart2Text(GetStart2Text());
+	}
+
+	if (m_jointProgress)
+	{
+		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
+		applyProgress1(lAchieved2);
+		m_total2 = 0;
+	}
+	else if (m_total2)
+	{
+		m_strLastOut[OT_PROGRESS2] = QString("%1%").arg(percentage, 0, 'f', 0);
+		applyProgress2(lAchieved2);
+	}
+	UpdateProcessorsUsed();
+
+	QCoreApplication::processEvents();
+}
+
+/************************************************************************************/
+
+void ProgressDlg::slotEnd2()
+{
+	ProgressBase::Progress2(m_total2);	// Set to 100% is ending.
+	UpdateProcessorsUsed();
+	endProgress2();
+}
+
+/************************************************************************************/
+
+void ProgressDlg::slotClose()
+{
+	closeProgress();
 }

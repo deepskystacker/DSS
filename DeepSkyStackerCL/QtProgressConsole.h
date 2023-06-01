@@ -1,14 +1,13 @@
 #pragma once
 #include "DSSProgress.h"
-
-namespace Ui {
-	class ProgressDlg;
-}
+#include "DSSCommon.h"
 
 namespace DSS
 {
-	class ProgressConsole : public ProgressBase
+	class ProgressConsole : public QObject, public ProgressBase
 	{
+		Q_OBJECT
+
 	private:
 		QTextStream m_out;
 		TERMINAL_OUTPUT_MODE m_style;
@@ -28,28 +27,87 @@ namespace DSS
 			Close();
 		}
 
-		virtual void initialise() override{};
-		virtual void applyStart1Text(const QString& strText) override { PrintText(strText, OT_TEXT1); }
-		virtual void applyStart2Text(const QString& strText) override 
+		//
+		// These eight mfs implement the public interface defined in DSS::ProgressBase
+		// They invoke the corresponding slots using QMetaObject::invokeMethod
+		// so that they can be invoked from ANY thread in the application will run on
+		// the GUI thread.
+		//
+		virtual void Start1(const QString& title, int total1, bool enableCancel = false) override
+		{
+			QMetaObject::invokeMethod(this, "slotStart1", Qt::AutoConnection,
+				Q_ARG(const QString&, title),
+				Q_ARG(int, total1),
+				Q_ARG(bool, enableCancel));
+		}
+
+		virtual void Progress1(const QString& text, int achieved) override
+		{
+			QMetaObject::invokeMethod(this, "slotProgress1", Qt::AutoConnection,
+				Q_ARG(const QString&, text),
+				Q_ARG(int, achieved));
+		}
+
+		virtual void Start2(const QString& title, int total2) override
+		{
+			QMetaObject::invokeMethod(this, "slotStart2", Qt::AutoConnection,
+				Q_ARG(const QString&, title),
+				Q_ARG(int, total2));
+		}
+
+		virtual void Progress2(const QString& text, int achieved) override
+		{
+			QMetaObject::invokeMethod(this, "slotProgress2", Qt::AutoConnection,
+				Q_ARG(const QString&, text),
+				Q_ARG(int, achieved));
+		}
+
+		virtual void End2() override
+		{
+			QMetaObject::invokeMethod(this, "slotEnd2", Qt::AutoConnection);
+		}
+
+		virtual void Close() override
+		{
+			QMetaObject::invokeMethod(this, "slotClose", Qt::AutoConnection);
+		}
+
+		virtual bool IsCanceled() const override { return false; }
+
+		virtual bool Warning(const QString& szText)
+		{
+			return doWarning(szText);
+		}
+
+		void initialise(){};
+		void applyStart1Text(const QString& strText) { PrintText(strText, OT_TEXT1); }
+		void applyStart2Text(const QString& strText) 
 		{
 			if(m_total2>0)
 				PrintText(strText, OT_TEXT2); 
 		}
-		virtual void applyProgress1([[maybe_unused]] int lAchieved) override
+		void applyProgress1([[maybe_unused]] int lAchieved)
 		{
 			PrintText(GetProgress1Text(), OT_PROGRESS1);
 		}
-		virtual void applyProgress2([[maybe_unused]] int lAchieved) override
+		void applyProgress2([[maybe_unused]] int lAchieved)
 		{
 			PrintText(GetProgress2Text(), OT_PROGRESS2);
 		}
-		virtual void applyTitleText(const QString& strText) override { PrintText(strText, OT_TITLE); }
+		void applyTitleText(const QString& strText) { PrintText(strText, OT_TITLE); }
 
-		virtual void endProgress2() override {}
-		virtual bool hasBeenCanceled() override { return false; }
-		virtual void closeProgress() { }
-		virtual bool doWarning([[maybe_unused]] const QString& szText) override { return true; }
+		void endProgress2(){}
+		void closeProgress() { }
+		bool doWarning([[maybe_unused]] const QString& szText) { return true; }
 		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
+
+	protected slots:
+		virtual void slotStart1(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
+		virtual void slotProgress1(const QString& szText, int lAchieved1);
+		virtual void slotStart2(const QString& szText, int lTotal2);
+		virtual void slotProgress2(const QString& szText, int lAchieved2);
+		virtual void slotEnd2();
+		virtual void slotClose();
 
 	private:
 		void PrintText(const QString& szText, eOutputType type)

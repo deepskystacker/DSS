@@ -37,6 +37,7 @@ namespace DSS
 		QStandardItemModel*	m_fileListModel{ nullptr };
 
 	private:
+		bool processList(const fs::path& fileList, QString& outputFile);
 		Q_DISABLE_COPY(BatchStacking)
 	};
 }
