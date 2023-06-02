@@ -36,7 +36,7 @@
 // ProgressConsole.cpp : Defines the entry point for the console progress display.
 //
 #include <stdafx.h>
-#include "QtProgressConsole.h"
+#include "progressconsole.h"
 namespace DSS
 {
 	/************************************************************************************/

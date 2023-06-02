@@ -3,7 +3,7 @@
 
 #include <stdafx.h>
 #include "DeepSkyStackerCL.h"
-#include "QtProgressConsole.h"
+#include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"

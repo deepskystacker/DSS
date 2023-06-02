@@ -30,7 +30,7 @@
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtProgressConsole.cpp">
+    <ClCompile Include="progressconsole.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -344,7 +344,7 @@
     <QtMoc Include="DeepSkyStackerCL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtProgressConsole.h">
+    <QtMoc Include="progressconsole.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
