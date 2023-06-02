@@ -52,7 +52,7 @@
 #include "DeepSkyStacker.h"
 #include "CheckAbove.h"
 #include "Workspace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "RegisterSettings.h"
 #include "avx_support.h"
 #include "FrameInfoSupport.h"

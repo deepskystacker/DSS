@@ -7,7 +7,7 @@
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"

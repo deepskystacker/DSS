@@ -207,6 +207,7 @@
     <ClCompile Include="LiveSettings.cpp" />
     <ClCompile Include="LogTab.cpp" />
     <ClCompile Include="MainBoard.cpp" />
+    <ClCompile Include="progresslive.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
     <ClCompile Include="settingstab.cpp" />
     <ClCompile Include="StackedSink.cpp" />
@@ -253,6 +254,7 @@
     <ClInclude Include="LiveSettings.h" />
     <ClInclude Include="LogTab.h" />
     <ClInclude Include="MainBoard.h" />
+    <QtMoc Include="progresslive.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="RestartMonitoring.h" />
     <QtMoc Include="settingstab.h" />

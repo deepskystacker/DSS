@@ -7,7 +7,7 @@
 #include "DeepStack.h"
 #include "SettingsDlg.h"
 #include "Ztrace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StarMaskDlg.h"
 #include "StarMask.h"
 #include "FITSUtil.h"

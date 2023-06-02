@@ -301,7 +301,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
     <ClCompile Include="picturelist.cpp" />
-    <ClCompile Include="QtProgressDlg.cpp" />
+    <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -443,8 +443,8 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
+    <QtMoc Include="progressdlg.h" />
     <ClInclude Include="qmfcapp.h" />
-    <QtMoc Include="QtProgressDlg.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <QtMoc Include="RegisterSettings.h" />
     <QtMoc Include="RenameGroup.h" />

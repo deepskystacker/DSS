@@ -41,7 +41,7 @@
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "RecommendedSettings.h"
 #include "StackSettings.h"
 #include "RegisterEngine.h"
