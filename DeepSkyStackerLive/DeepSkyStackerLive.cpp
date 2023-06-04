@@ -64,6 +64,7 @@
 #include "Workspace.h"
 #include "foldermonitor.h"
 #include "fileregistrar.h"
+#include "progresslive.h"
 #include "QElidedLabel.h"
 
 using namespace DSS;
@@ -190,7 +191,9 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	stackedImageViewer {nullptr},
 	lastImageViewer {nullptr},
 	folderMonitor { nullptr },
-	fileRegistrar { nullptr }
+	fileRegistrar { nullptr },
+	progressLabel { new QLabel(this) },
+	pProgress {make_unique<DSS::ProgressLive>()}
 {
 	//
 	// Must set dssInstance before invoking setupUi 
@@ -270,6 +273,12 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 		this, &DSSLive::stopPressed);
 	connect(settingsTab, &SettingsTab::settingsChanged,
 		this, &DSSLive::settingsChanged);
+
+	// Progress signals
+	connect(pProgress.get(), &ProgressLive::progress,
+		this, &DSSLive::progress);
+	connect(pProgress.get(), &ProgressLive::endProgress,
+		this, &DSSLive::endProgress);
 }
 
 void DeepSkyStackerLive::connectMonitorSignals()
@@ -389,6 +398,14 @@ void DeepSkyStackerLive::onInitialise()
 	if (liveSettings->IsProcess_FITS()) validExtensions += fitsExtensions;
 	if (liveSettings->IsProcess_TIFF()) validExtensions += tiffExtensions;
 	if (liveSettings->IsProcess_Others()) validExtensions += otherExtensions;
+
+	//
+	// Create a QLabel on top of the progress bar to display text.
+	//
+	progressLabel->setAlignment(Qt::AlignCenter); progressLabel->setStyleSheet(QString::fromUtf8("background: qcolor(rgba(0,0,0,0))"));
+	auto layout = new QVBoxLayout(progressBar);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->addWidget(progressLabel);
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -424,12 +441,28 @@ void DeepSkyStackerLive::writeToLog(const QString& message, bool addTS, bool bol
 /* Slots                                                               */
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStacker::help()
+void DeepSkyStackerLive::help()
 {
 	ZFUNCTRACE_RUNTIME();
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::progress(const QString& str, int achieved, int total)
+{
+	progressLabel->setText(str);
+	progressBar->setMaximum(total);
+	progressBar->setValue(achieved);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::endProgress()
+{
+	progressBar->setValue(progressBar->maximum());
 }
 
 /* ------------------------------------------------------------------- */
@@ -639,7 +672,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 
 	if (0 != filteredFiles.size() && nullptr == fileRegistrar)
 	{
-		fileRegistrar = new FileRegistrar(this);
+		fileRegistrar = new FileRegistrar(this, pProgress.get());
 		connect(fileRegistrar, &FileRegistrar::writeToLog,
 			this, &DSSLive::writeToLog);
 		connect(fileRegistrar, &FileRegistrar::fileRegistered,
@@ -650,11 +683,6 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 			fileRegistrar->addFile(file);
 		}
 	}
-
-
-
-
-
 }
 
 /* ------------------------------------------------------------------- */
@@ -662,6 +690,12 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 void DeepSkyStackerLive::onNewFile(const fs::path& file)
 {
 	ZTRACE_RUNTIME("New file created in watched folder: %s", file.generic_string().c_str());
+	QString extension{ QString::fromStdU16String(file.extension().u16string()).toLower() };
+	if (validExtensions.contains(extension))
+	{
+		ZTRACE_RUNTIME(" File passed filtering");
+		fileRegistrar->addFile(file);
+	}
 }
 
 void DeepSkyStackerLive::fileRegistered(fs::path file)

@@ -42,6 +42,7 @@
 
 namespace DSS
 {
+	class ProgressLive;
 	class FileRegistrar : public QThread
 	{
 		Q_OBJECT
@@ -53,12 +54,13 @@ namespace DSS
 		void fileRegistered(fs::path file);
 
 	public:
-		FileRegistrar(QObject* parent = nullptr);
+		FileRegistrar(QObject* parent = nullptr, ProgressLive* progress = nullptr);
 		~FileRegistrar();
 
 		void addFile(fs::path file);
 
 	private:
+		ProgressLive* pProgress;
 		QWaitCondition condvar;
 		QMutex mutex;
 		std::deque<fs::path> pending;

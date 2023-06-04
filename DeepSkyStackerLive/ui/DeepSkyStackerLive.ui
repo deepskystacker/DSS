@@ -120,30 +120,37 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QLabel" name="progressLabel">
-            <property name="minimumSize">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
              <size>
-              <width>0</width>
-              <height>38</height>
+              <width>20</width>
+              <height>14</height>
              </size>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>8</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string notr="true"/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           </spacer>
           </item>
           <item>
            <widget class="QProgressBar" name="progressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+            </property>
             <property name="value">
              <number>24</number>
+            </property>
+            <property name="format">
+             <string/>
             </property>
            </widget>
           </item>
@@ -154,6 +161,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
             </property>
             <property name="text">
              <string comment="IDC_STATS">Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</string>

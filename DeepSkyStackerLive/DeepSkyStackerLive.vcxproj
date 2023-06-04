@@ -117,6 +117,7 @@
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <Manifest>
       <OutputManifestFile />

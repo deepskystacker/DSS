@@ -92,8 +92,8 @@ namespace DSS
 		virtual bool Warning(const QString& szText) = 0;
 
 		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
-		const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
-		const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
+		virtual const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
+		virtual const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
 		const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }
 		const QString& GetProgress1Text() const { return m_strLastOut[OT_PROGRESS1]; }
 		const QString& GetProgress2Text() const { return m_strLastOut[OT_PROGRESS2]; }

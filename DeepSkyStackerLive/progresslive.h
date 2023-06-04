@@ -46,6 +46,10 @@ namespace DSS
 	{
 		Q_OBJECT
 
+	signals:
+		void progress(const QString& str, int achieved, int total);
+		void endProgress();
+
 	public:
 		ProgressLive(QObject* parent = nullptr);
 		~ProgressLive();
@@ -63,31 +67,33 @@ namespace DSS
 		virtual void Start2(const QString& szText, int lTotal2) override;
 		virtual void Progress2(const QString& szText, int lAchieved2) override;
 		virtual void End2() override;
-		virtual void Close() override {};
+		virtual void Close() override;
 		virtual bool IsCanceled() const override { return false; }
-		virtual bool Warning(const QString& szText) override;
+		virtual bool Warning([[maybe_unused]]const QString& szText) override { return true; };
 
-
+		virtual const QString& GetStart1Text() const override { return progress1Text; }
+		virtual const QString& GetStart2Text() const override { return progress2Text; }
+/*
 		void setTimeRemaining(const QString& strText);
 		void setProgress1Range(int nMin, int nMax);
 		void setProgress2Range(int nMin, int nMax);
 		void setItemVisibility(bool bSet1, bool bSet2);
 
 		void EnableCancelButton(bool bState);
-
+*/
 
 	protected:
-		void applyStart1Text(const QString& strText);
-		void applyStart2Text(const QString& strText);
-		void applyProgress1(int lAchieved);
-		void applyProgress2(int lAchieved);
-		void applyTitleText(const QString& strText);
-		void initialise();
-		void endProgress2();
-		void closeProgress();
-		bool doWarning(const QString& szText);
-
 		// ProgressBase
-		virtual void applyProcessorsUsed(int nCount) override;
+		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
+
+	private:
+		QString progress1Text;
+		QString progress2Text;
+		LONG total1;
+		LONG total2;
+		LONG achieved1;
+		LONG achieved2;
+		QString lastText1;
+		QString lastText2;
 	};
 }

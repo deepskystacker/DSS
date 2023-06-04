@@ -35,7 +35,18 @@
 ****************************************************************************/
 // ProgressLive.cpp : Implements most of the DSSLive Progress logic
 #include "stdafx.h"
+#include "DeepSkyStackerLive.h"
 #include "progresslive.h"
+
+namespace
+{
+	QString stripString(const QString& s)
+	{
+		QString result{ s };
+		result.replace('\n', ' ');
+		return result + '\n';
+	}
+}
 
 namespace DSS
 {
@@ -46,132 +57,73 @@ namespace DSS
 	ProgressLive::~ProgressLive()
 	{}
 
-	void ProgressLive::Start1(const QString& title, int total1, bool enableCancel /* = true */)
+	// DSSProgress methods
+	void	ProgressLive::Start1(const QString& title, int t1, [[maybe_unused]] bool bEnableCancel)
 	{
-		m_lastTotal1 = 0;
-		m_total1 = total1;
-		m_timer.start();
-		m_firstProgress = true;
-		m_enableCancel = enableCancel;
-
-		if (GetTitleText().compare(title, Qt::CaseInsensitive) != 0)
+		if (!title.isEmpty())
 		{
-			m_strLastOut[OT_TITLE] = title;
-			applyTitleText(GetTitleText());
-		}
-		UpdateProcessorsUsed();
-		initialise();
-		QCoreApplication::processEvents();
-	}
+			progress1Text = title;
+			DeepSkyStackerLive::instance()->writeToLog(stripString(title));
+		};
+		if (0 != t1)
+			total1 = t1;
+		achieved1 = 0;
+	};
 
-	/************************************************************************************/
+	/* ------------------------------------------------------------------- */
 
-	void ProgressLive::Progress1(const QString& szText, int lAchieved1)
+	void	ProgressLive::Progress1(const QString& text, int lAchieved1)
 	{
-		qDebug() << __FUNCTION__;
-		// Always update on first loop, then only if a second has passed or a min progress has occurred.
-		if (!(m_firstProgress ||
-			(static_cast<double>(lAchieved1 - m_lastTotal1) > (m_total1 / 100.0) * m_minProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
-			(m_timer.elapsed() > 1000)
-			))
-			return;
-
-		m_firstProgress = false;
-		m_lastTotal1 = lAchieved1;
-
-		if (GetStart1Text().compare(szText, Qt::CaseInsensitive) != 0)
+		if (!text.isEmpty())
+			progress1Text = text;
+		if (((double)(lAchieved1 - achieved1) / (double)total1) > 0.10)
 		{
-			if (!szText.isEmpty())
-				m_strLastOut[OT_TEXT1] = szText;
-			applyStart1Text(GetStart1Text());
-		}
+			emit progress(progress1Text, lAchieved1, total1);
+			achieved1 = lAchieved1;
+		};
+	};
 
-		if (m_total1)
-		{
-			double percentage = (double)m_lastTotal1 / (double)m_total1 * 100.0;
-			m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
-			applyProgress1(lAchieved1);
-		}
-		UpdateProcessorsUsed();
-		QCoreApplication::processEvents();
-	}
+	/* ------------------------------------------------------------------- */
 
-	/************************************************************************************/
-
-	void ProgressLive::Start2(const QString& szText, int lTotal2)
+	void	ProgressLive::Start2(const QString& text, int lTotal2)
 	{
-		m_lastTotal2 = 0;
-		m_total2 = lTotal2;
-		if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
+		if (!text.isEmpty())
 		{
-			if (!szText.isEmpty())
-				m_strLastOut[OT_TEXT2] = szText;
-			applyStart2Text(GetStart2Text());
-		}
+			progress2Text = text;
+			DeepSkyStackerLive::instance()->writeToLog(stripString(text));
+		};
+		if (lTotal2)
+			total2 = lTotal2;
+		achieved2 = 0;
+	};
 
-		if (m_jointProgress)
-			Start1(GetStart2Text(), m_total2, m_enableCancel);
+	/* ------------------------------------------------------------------- */
 
-		UpdateProcessorsUsed();
-		QCoreApplication::processEvents();
-	}
-
-	/************************************************************************************/
-
-	void ProgressLive::Progress2(const QString& szText, int lAchieved2)
+	void	ProgressLive::Progress2(const QString& text, int lAchieved2)
 	{
-		// Always update after a min progress has occurred.
-		float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
-		float fRoundedSoFar = ceil(fAmountSoFar);
-
-		float fAmountGoingTo = (float)lAchieved2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
-		float fRoundedGoingTo = ceil(fAmountGoingTo);
-
-		if (fRoundedGoingTo <= fRoundedSoFar &&
-			lAchieved2 < m_total2)
-			return;
-
-		if (lAchieved2 > m_total2)
-			m_total2 = lAchieved2;
-		m_lastTotal2 = lAchieved2;
-
-		double percentage = 0.0f;
-		if (m_total2)
-			percentage = (double)m_lastTotal2 / (double)m_total2 * 100.0;
-
-		if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
+		if (!text.isEmpty())
+			progress2Text = text;
+		if ((((double)(lAchieved2 - achieved2) / (double)total2) > 0.10) ||
+			(lAchieved2 == total2))
 		{
-			if (!szText.isEmpty())
-				m_strLastOut[OT_TEXT2] = szText;
-			if (!m_jointProgress)
-				applyStart2Text(GetStart2Text());
-		}
+			emit progress(progress2Text, lAchieved2, total2);
+			achieved2 = lAchieved2;
+		};
+	};
 
-		if (m_jointProgress)
-		{
-			m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
-			applyProgress1(lAchieved2);
-			m_total2 = 0;
-		}
-		else if (m_total2)
-		{
-			m_strLastOut[OT_PROGRESS2] = QString("%1%").arg(percentage, 0, 'f', 0);
-			applyProgress2(lAchieved2);
-		}
-		UpdateProcessorsUsed();
+	/* ------------------------------------------------------------------- */
 
-		QCoreApplication::processEvents();
-	}
-
-	/************************************************************************************/
-
-	void ProgressLive::End2()
+	void	ProgressLive::End2()
 	{
-		ProgressBase::Progress2(m_total2);	// Set to 100% is ending.
-		UpdateProcessorsUsed();
-		endProgress2();
-	}
+		emit endProgress();
+	};
 
-	/************************************************************************************/
+	/* ------------------------------------------------------------------- */
 
+	void ProgressLive::Close()
+	{
+		emit endProgress();
+	};
+
+	/* ------------------------------------------------------------------- */
 }
