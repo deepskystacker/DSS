@@ -34,7 +34,8 @@
 **
 ****************************************************************************/
 // ProgressDlg.cpp : Implements the DeepSkyStacker Progress Dialog
-//#include "stdafx.h"
+//
+#include "stdafx.h"
 #include "progressdlg.h"
 #include "ui/ui_ProgressDlg.h"
 #include "DeepSkyStacker.h"
