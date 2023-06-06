@@ -87,6 +87,9 @@
     <ClCompile Include="..\Tools\QElidedLabel.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="progresslive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -292,6 +295,9 @@
     </QtMoc>
     <QtMoc Include="..\Tools\QElidedLabel.h">
       <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="progresslive.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

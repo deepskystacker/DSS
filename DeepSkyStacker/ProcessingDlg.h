@@ -10,6 +10,8 @@
 
 /* ------------------------------------------------------------------- */
 
+class QWidget;
+
 class CValuedRect
 {
 public :
@@ -321,10 +323,12 @@ private :
 	bool					m_bDirty;
 
 	CSelectRectSink			m_SelectRectSink;
+	QWidget* parentWidget;
 
 // Construction
 public:
 	CProcessingDlg(CWnd* pParent = nullptr);   // standard constructor
+	void setParent(QWidget* p) { parentWidget = p; };
 
 	bool	SaveOnClose();
 

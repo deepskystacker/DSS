@@ -66,7 +66,36 @@ bool	g_bShowRefStars = false;
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
-
+namespace
+{
+#ifndef NDEBUG
+	QtMessageHandler originalHandler;
+	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+	{
+		QByteArray localMsg = msg.toLocal8Bit();
+		const char* file = context.file ? context.file : "";
+		const char* function = context.function ? context.function : "";
+		switch (type) {
+		case QtDebugMsg:
+			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtInfoMsg:
+			ZTRACE_RUNTIME("Qt Info: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtWarningMsg:
+			ZTRACE_RUNTIME("Qt Warning: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtCriticalMsg:
+			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtFatalMsg:
+			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		}
+		originalHandler(type, context, msg);
+	}
+#endif
+}
 bool	hasExpired()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -343,6 +372,7 @@ void DeepSkyStacker::onInitialise()
 		int lastErr = GetLastError();
 		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
 	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
 
 	HWND hwnd{ processingDlg->GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);
@@ -933,6 +963,13 @@ int main(int argc, char* argv[])
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console known how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+#ifndef NDEBUG
+	//
+	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	//
+	originalHandler = qInstallMessageHandler(qtMessageLogger);
 #endif
 
 	//

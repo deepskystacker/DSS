@@ -37,12 +37,11 @@
 // DSSProgress.h : Header file
 //
 #include <QObject>
+#include <QString>
 namespace DSS
 {
-	class ProgressBase : public QObject
+	class ProgressBase
 	{
-		Q_OBJECT
-
 	protected:
 		bool m_jointProgress;
 		int m_total1;
@@ -64,12 +63,11 @@ namespace DSS
 		};
 		QString m_strLastOut[OT_MAX];
 
-		static const QString m_strEmptyString;
+		static inline const QString m_strEmptyString {};
 		static constexpr float m_minProgressStep{ 5.0f };
 
 	public:
-		ProgressBase(QObject* parent = nullptr) :
-			QObject(parent),
+		ProgressBase() :
 			m_jointProgress{ false },
 			m_total1{ 0 },
 			m_total2{ 0 },
@@ -81,43 +79,35 @@ namespace DSS
 
 		virtual ~ProgressBase() = default;
 
-	public slots:
-		virtual void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
-		virtual bool Progress1(const QString& szText, int lAchieved1);
-		virtual void Start2(const QString& szText, int lTotal2);
-		virtual bool Progress2(const QString& szText, int lAchieved2);
-		virtual void End2();
-		virtual bool IsCanceled();
-		virtual void Close();
-		virtual bool Warning(const QString& szText);
+		//
+		// These eight mfs define the interface implemented in subclasses
+		//
+		virtual void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true) = 0 ;
+		virtual void Progress1(const QString& szText, int lAchieved1) = 0;
+		virtual void Start2(const QString& szText, int lTotal2) = 0;
+		virtual void Progress2(const QString& szText, int lAchieved2) = 0;
+		virtual void End2() = 0;
+		virtual void Close() = 0;
+		virtual bool IsCanceled() const = 0;
+		virtual bool Warning(const QString& szText) = 0;
 
-		virtual void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
+		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
 		virtual const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
 		virtual const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
-		virtual const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }
-		virtual const QString& GetProgress1Text() const { return m_strLastOut[OT_PROGRESS1]; }
-		virtual const QString& GetProgress2Text() const { return m_strLastOut[OT_PROGRESS2]; }
+		const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }
+		const QString& GetProgress1Text() const { return m_strLastOut[OT_PROGRESS1]; }
+		const QString& GetProgress2Text() const { return m_strLastOut[OT_PROGRESS2]; }
 
 		// Helper functions - when you just want to update the progress and not the text.
-		virtual void Start1(int lTotal1, bool bEnableCancel = true) { Start1(m_strEmptyString, lTotal1, bEnableCancel); }
-		virtual void Start2(int lTotal2) { Start2(m_strEmptyString, lTotal2); }
-		virtual bool Progress1(int lAchieved1) { return Progress1(m_strEmptyString, lAchieved1); }
-		virtual bool Progress2(int lAchieved2) { return Progress2(m_strEmptyString, lAchieved2); }
+		void Start1(int lTotal1, bool bEnableCancel = true) { Start1(m_strEmptyString, lTotal1, bEnableCancel); }
+		void Start2(int lTotal2) { Start2(m_strEmptyString, lTotal2); }
+		void Progress1(int lAchieved1) { Progress1(m_strEmptyString, lAchieved1); }
+		void Progress2(int lAchieved2) { Progress2(m_strEmptyString, lAchieved2); }
 
 	protected:
 		void UpdateProcessorsUsed();
-
-	protected: // Pure virtual - implementation of the progress bar will fill these in.
-		virtual void applyStart1Text(const QString& strText) = 0;
-		virtual void applyStart2Text(const QString& strText) = 0;
-		virtual void applyProgress1(int lAchieved) = 0;
-		virtual void applyProgress2(int lAchieved) = 0;
-		virtual void applyTitleText(const QString& strText) = 0;
-		virtual void initialise() = 0;
-		virtual void endProgress2() = 0;
-		virtual bool hasBeenCanceled() = 0;
-		virtual void closeProgress() = 0;
-		virtual bool doWarning(const QString& szText) = 0;
 		virtual void applyProcessorsUsed(int nCount) = 0;
+
+
 	};
 }

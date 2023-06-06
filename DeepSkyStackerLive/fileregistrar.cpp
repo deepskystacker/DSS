@@ -41,8 +41,9 @@
 #include "BitmapInfo.h"
 namespace DSS
 {
-	FileRegistrar::FileRegistrar(QObject* parent)
-		: QThread(parent)
+	FileRegistrar::FileRegistrar(QObject* parent, ProgressLive* progress) :
+		QThread{ parent },
+		pProgress{progress}
 	{
 		ZTRACE_RUNTIME("File registrar active");
 		start();

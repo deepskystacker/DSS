@@ -41,7 +41,7 @@
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "RecommendedSettings.h"
 #include "StackSettings.h"
 #include "RegisterEngine.h"
@@ -254,7 +254,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::ProgressDlg				dlg;
+	DSS::ProgressDlg dlg{ this };
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);

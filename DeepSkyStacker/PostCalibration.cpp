@@ -5,7 +5,7 @@
 #include "StackSettings.h"
 #include "ZExcept.h"
 #include "Ztrace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "MasterFrames.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"

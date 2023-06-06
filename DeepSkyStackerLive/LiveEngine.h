@@ -545,17 +545,6 @@ private :
 	LONG m_lAchieved2;
 	QString m_strLastSent[2];
 
-	// ProgressBase
-	virtual void applyStart1Text(const QString& strText) override;
-	virtual void applyStart2Text(const QString& strText) override;
-	virtual void applyProgress1(int lAchieved) override;
-	virtual void applyProgress2(int lAchieved) override;
-	virtual void applyTitleText(const QString& strText) override;
-	virtual void initialise() override;
-	virtual void endProgress2() override;
-	virtual bool hasBeenCanceled() override;
-	virtual void closeProgress() override;
-	virtual bool doWarning(const QString& szText) override;
 	virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
 
 private:

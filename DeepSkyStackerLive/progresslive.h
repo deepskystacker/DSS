@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2020, 2022 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,38 +34,66 @@
 **
 **
 ****************************************************************************/
-// FolderRegistr.h : Header file
+// ProgressLive.h : Defines the DSS Live Progress class
 //
-#include <deque>
-
 #include <QObject>
+#include "DSSProgress.h"
 
 namespace DSS
 {
-	class ProgressLive;
-	class FileRegistrar : public QThread
+
+	class ProgressLive : public QObject, public ProgressBase
 	{
 		Q_OBJECT
 
-	void run() override;
-
 	signals:
-		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
-		void fileRegistered(fs::path file);
+		void progress(const QString& str, int achieved, int total);
+		void endProgress();
 
 	public:
-		FileRegistrar(QObject* parent = nullptr, ProgressLive* progress = nullptr);
-		~FileRegistrar();
+		ProgressLive(QObject* parent = nullptr);
+		~ProgressLive();
 
-		void addFile(fs::path file);
+		//
+		// These eight mfs implement the public interface defined in DSS::ProgressBase
+		// Unlike DeepSkyStacker and DeepSkyStackerCL they run on whatever thread invokes
+		// them.
+		// 
+		// They or the functions they call emit Qt signals to update the progress
+		// information in the DeepSkyStackerLive window.
+		//
+		virtual void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true) override;
+		virtual void Progress1(const QString& szText, int lAchieved1) override;
+		virtual void Start2(const QString& szText, int lTotal2) override;
+		virtual void Progress2(const QString& szText, int lAchieved2) override;
+		virtual void End2() override;
+		virtual void Close() override;
+		virtual bool IsCanceled() const override { return false; }
+		virtual bool Warning([[maybe_unused]]const QString& szText) override { return true; };
+
+		virtual const QString& GetStart1Text() const override { return progress1Text; }
+		virtual const QString& GetStart2Text() const override { return progress2Text; }
+/*
+		void setTimeRemaining(const QString& strText);
+		void setProgress1Range(int nMin, int nMax);
+		void setProgress2Range(int nMin, int nMax);
+		void setItemVisibility(bool bSet1, bool bSet2);
+
+		void EnableCancelButton(bool bState);
+*/
+
+	protected:
+		// ProgressBase
+		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
 
 	private:
-		ProgressLive* pProgress;
-		QWaitCondition condvar;
-		QMutex mutex;
-		std::deque<fs::path> pending;
-
-		void registerImage(fs::path file);
+		QString progress1Text;
+		QString progress2Text;
+		LONG total1;
+		LONG total2;
+		LONG achieved1;
+		LONG achieved2;
+		QString lastText1;
+		QString lastText2;
 	};
 }
-

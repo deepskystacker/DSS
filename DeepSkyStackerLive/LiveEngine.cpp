@@ -4,7 +4,7 @@
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "TIFFUtil.h"
-
+#if (0)
 const DWORD				WM_LE_MESSAGE		= WM_USER+1;
 
 #ifndef M_PI
@@ -1091,4 +1091,4 @@ bool CLiveEngine::doWarning([[maybe_unused]] const QString& szText)
 {
 	return true;
 }
-
+#endif

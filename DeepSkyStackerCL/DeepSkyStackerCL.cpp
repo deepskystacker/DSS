@@ -2,8 +2,9 @@
 //
 
 #include <stdafx.h>
+#include <QtLogging>
 #include "DeepSkyStackerCL.h"
-#include "QtProgressConsole.h"
+#include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
@@ -17,6 +18,36 @@
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
+namespace
+{
+#ifndef NDEBUG
+	QtMessageHandler originalHandler;
+	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+	{
+		QByteArray localMsg = msg.toLocal8Bit();
+		const char* file = context.file ? context.file : "";
+		const char* function = context.function ? context.function : "";
+		switch (type) {
+		case QtDebugMsg:
+			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtInfoMsg:
+			ZTRACE_RUNTIME("Qt Info: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtWarningMsg:
+			ZTRACE_RUNTIME("Qt Warning: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtCriticalMsg:
+			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		case QtFatalMsg:
+			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			break;
+		}
+		originalHandler(type, context, msg);
+	}
+#endif
+}
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
@@ -341,9 +372,17 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+#ifndef NDEBUG
+	//
+	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	//
+	originalHandler = qInstallMessageHandler(qtMessageLogger);
 #endif
 
 	//

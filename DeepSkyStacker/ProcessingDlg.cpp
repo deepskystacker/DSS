@@ -7,7 +7,7 @@
 #include "DeepStack.h"
 #include "SettingsDlg.h"
 #include "Ztrace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StarMaskDlg.h"
 #include "StarMask.h"
 #include "FITSUtil.h"
@@ -523,7 +523,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	DSS::ProgressDlg		dlg;
+	DSS::ProgressDlg dlg{ parentWidget };
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -581,7 +581,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ parentWidget };
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -695,7 +695,7 @@ void CProcessingDlg::SaveDSImage()
 	dlgOpen.m_ofn.nFilterIndex = filterIndex;
 
 	TCHAR				szBigBuffer[20000] = _T("");
-	DSS::ProgressDlg		dlg;
+	DSS::ProgressDlg dlg{ parentWidget };
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -796,7 +796,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			DSS::ProgressDlg dlg;
+			DSS::ProgressDlg dlg{ parentWidget };
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -869,7 +869,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ parentWidget };
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);

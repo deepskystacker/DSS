@@ -198,9 +198,6 @@
     <ClCompile Include="editstars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtProgressDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="selectrect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -224,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="..\Tools\QElidedLabel.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="progressdlg.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -902,9 +902,6 @@
     <QtMoc Include="toolbar.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtProgressDlg.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="editstars.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -928,6 +925,9 @@
     </QtMoc>
     <QtMoc Include="..\Tools\QElidedLabel.h">
       <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdlg.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

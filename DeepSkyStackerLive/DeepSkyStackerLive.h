@@ -48,6 +48,7 @@ namespace DSS
 	class LiveSettings;
 	class FolderMonitor;
 	class FileRegistrar;
+	class ProgressLive;
 }
 
 class DeepSkyStackerLive :
@@ -102,6 +103,9 @@ protected slots:
 	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
 	void writeLogMessage(const QString& message, bool addTimeStamp, bool bold, bool italic, QColor colour);
 
+	void progress(const QString& str, int achieved, int total);
+	void endProgress();
+
 private:
 	bool initialised;
 	bool monitoring;
@@ -119,6 +123,8 @@ private:
 	DSS::FolderMonitor* folderMonitor;
 	QStringList validExtensions;
 	DSS::FileRegistrar* fileRegistrar;
+	QLabel* progressLabel;
+	std::unique_ptr<DSS::ProgressLive> pProgress;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();
