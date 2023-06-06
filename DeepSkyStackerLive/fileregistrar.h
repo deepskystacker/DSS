@@ -37,8 +37,9 @@
 // FolderRegistr.h : Header file
 //
 #include <deque>
-
 #include <QObject>
+
+class CMemoryBitmap;
 
 namespace DSS
 {
@@ -51,6 +52,8 @@ namespace DSS
 
 	signals:
 		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
+		void addImageToList(fs::path file);
+		void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
 		void fileRegistered(fs::path file);
 
 	public:

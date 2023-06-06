@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DeepSkyStackerLive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -88,6 +85,9 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="progresslive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepSkyStackerLive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -38,6 +38,7 @@
 //
 #include "dssbase.h"
 #include "ui/ui_DeepSkyStackerLive.h"
+#include <QStyledItemDelegate>
 
 class QWinHost;
 
@@ -51,6 +52,21 @@ namespace DSS
 	class ProgressLive;
 }
 
+class ElidedTextDelegate : public QStyledItemDelegate
+{
+	Q_OBJECT
+
+public:
+	using QStyledItemDelegate::QStyledItemDelegate;
+
+protected:
+	void initStyleOption(QStyleOptionViewItem* option, const QModelIndex& index) const override
+	{
+		QStyledItemDelegate::initStyleOption(option, index);
+		option->textElideMode = Qt::ElideNone;
+	}
+};
+
 class DeepSkyStackerLive :
 	public QWidget,
 	public Ui_DeepSkyStackerLive,
@@ -59,6 +75,38 @@ class DeepSkyStackerLive :
 	using Inherited = QWidget;
 	
 	Q_OBJECT
+
+	enum class ImageListColumns
+	{
+		Status,
+		File,
+		Exposure,
+		Aperture,
+		Score,
+		Stars,
+		FWHM,
+		dX,
+		dY,
+		Angle,
+		DateTime,
+		Size,
+		CFA,
+		Depth,
+		Info,
+		ISOGain,
+		SkyBackground,
+		ColumnCount
+	};
+
+	enum class ImageStatus
+	{
+		pending,
+		loaded,
+		registered,
+		stackDelayed,
+		nonStackable,
+		stacked
+	};
 
 signals:
 	void stopMonitor();
@@ -105,6 +153,10 @@ protected slots:
 
 	void progress(const QString& str, int achieved, int total);
 	void endProgress();
+	void addImageToList(fs::path path);
+	void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
+	void fileRegistered(fs::path file);
+	void changeImageStatus(const QString& name, ImageStatus status);
 
 private:
 	bool initialised;
@@ -124,7 +176,10 @@ private:
 	QStringList validExtensions;
 	DSS::FileRegistrar* fileRegistrar;
 	QLabel* progressLabel;
-	std::unique_ptr<DSS::ProgressLive> pProgress;
+	DSS::ProgressLive* pProgress;
+	std::uint32_t pendingImageCount;	// was m_lNrPending
+	std::uint32_t stackedImageCount;	// was m_lNrStacked
+	ElidedTextDelegate* elidedTextDelegate;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();
@@ -140,7 +195,6 @@ private slots:
 
 	void onExistingFiles(const std::vector<fs::path>&);
 	void onNewFile(const fs::path& file);
-	void fileRegistered(fs::path file);
 };
 using DeepSkyStacker = DeepSkyStackerLive;
 using DSSLive = DeepSkyStackerLive;

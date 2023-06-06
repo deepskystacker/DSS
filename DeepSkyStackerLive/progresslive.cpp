@@ -92,9 +92,9 @@ namespace DSS
 			progress2Text = text;
 			DeepSkyStackerLive::instance()->writeToLog(stripString(text));
 		};
-		if (lTotal2)
-			total2 = lTotal2;
+		total2 = lTotal2;
 		achieved2 = 0;
+		emit progress(progress2Text, achieved2, total2);
 	};
 
 	/* ------------------------------------------------------------------- */

@@ -196,7 +196,12 @@
     <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
-    <ClCompile Include="DeepSkyStackerLive.cpp" />
+    <ClCompile Include="DeepSkyStackerLive.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
     <ClCompile Include="emailsettings.cpp" />
     <ClCompile Include="fileregistrar.cpp" />

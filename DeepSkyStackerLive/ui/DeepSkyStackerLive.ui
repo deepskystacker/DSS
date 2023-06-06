@@ -147,7 +147,7 @@
              <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
             </property>
             <property name="value">
-             <number>24</number>
+             <number>0</number>
             </property>
             <property name="format">
              <string/>
@@ -155,7 +155,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="status">
+           <widget class="QLabel" name="statusMessage">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -192,7 +192,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="DSS::ImageViewer" name="stackedImage">
       <property name="sizePolicy">
@@ -322,12 +322,15 @@
        </item>
       </layout>
      </widget>
-     <widget class="QTableView" name="imageList">
+     <widget class="QTableWidget" name="imageList">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
       </property>
       <attribute name="title">
        <string comment="IDC_IMAGELIST">Image List</string>

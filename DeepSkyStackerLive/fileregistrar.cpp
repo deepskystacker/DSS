@@ -37,6 +37,7 @@
 //
 #include "stdafx.h"
 #include "fileregistrar.h"
+#include "progresslive.h"
 #include "BitmapExt.h"
 #include "BitmapInfo.h"
 namespace DSS
@@ -99,6 +100,7 @@ namespace DSS
 	void FileRegistrar::addFile(fs::path file)
 	{
 		ZTRACE_RUNTIME(" Adding file %s to work queue", file.filename().generic_string().c_str());
+		emit addImageToList(file);		// Add the image to the image list in Pending state
 		QMutexLocker lock(&mutex);
 		pending.emplace_back(file);
 		condvar.wakeOne();
@@ -109,33 +111,36 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		ZTRACE_RUNTIME("Registering %s", file.filename().generic_string().c_str());
 		CBitmapInfo			bmpInfo;
+		bool result{ false };
 
 		if (GetPictureInfo(file, bmpInfo) && bmpInfo.CanLoad())
 		{
 			QString strText;
 			QString strDescription;
+			QString name{ QString::fromStdU16String(file.generic_u16string().c_str()) };
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(file.generic_u16string().c_str());
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
 			else
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(file.generic_u16string().c_str());
-#if 0
-			Start2(strText, 0);
+				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+
+			pProgress->Start2(strText, 0);
 			CAllDepthBitmap				adb;
 			adb.SetDontUseAHD(true);
 
-			bResult = LoadPicture(szFileName, adb, this);
-			End2();
-			if (bResult)
-			{
-				PostFileLoaded(adb.m_pBitmap, adb.m_pWndBitmap, szFileName);
-				PostChangeImageStatus(szFileName, IS_LOADED);
+			result = LoadPicture(file, adb, pProgress);
+			pProgress->End2();
 
+			if (result)
+			{
+				emit fileLoaded(adb.m_pBitmap, adb.m_Image, file);
+
+#if (0)
 				// Now register the image
 				CLightFrameInfo			lfi;
 
-				strText = QCoreApplication::translate("LiveEngine", "Registering %1", "IDS_REGISTERINGNAME").arg(QString::fromWCharArray(szFileName));
+				strText = QCoreApplication::translate("LiveEngine", "Registering %1", "IDS_REGISTERINGNAME").arg(name);
 				Start2(strText, 0);
 				lfi.SetBitmap(szFileName, false, false);
 				lfi.SetProgress(this);
@@ -156,7 +161,7 @@ namespace DSS
 				strName.Format(_T("%s%s"), szName, szExt);
 				int count = static_cast<int>(lfi.m_vStars.size()); // Work round LUpdate bug
 				strText = QCoreApplication::translate("LiveEngine", "Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3\n", "IDS_LOG_REGISTERRESULTS", count)
-					.arg(QString::fromWCharArray(strName))
+					.arg(name)
 					.arg(lfi.m_fFWHM, 0, 'f', 2)
 					.arg(lfi.m_fOverallQuality, 0, 'f', 2);
 
@@ -169,7 +174,7 @@ namespace DSS
 				PostChangeImageInfo(szFileName, II_DONTSTACK_NONE);
 				if (bWarning)
 				{
-					strText = QCoreApplication::translate("LiveEngine", "Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(QString::fromWCharArray(szFileName)).arg(QString::fromWCharArray(strWarning));
+					strText = QCoreApplication::translate("LiveEngine", "Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(file.generic_u16string().c_str()).arg(name);
 					PostToLog(strText, true, false, false, RGB(208, 127, 0));
 					PostWarning(strWarning);
 				};
@@ -181,19 +186,20 @@ namespace DSS
 				}
 				else
 				{
-					strText = QCoreApplication::translate("LiveEngine", "Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(QString::fromWCharArray(szFileName)).arg(QString::fromWCharArray(strError));
+					strText = QCoreApplication::translate("LiveEngine", "Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(QString::fromWCharArray(strError));
 					PostToLog(strText, true, true, false, RGB(255, 0, 0));
 					PostChangeImageStatus(szFileName, IS_NOTSTACKABLE);
 					MoveImage(szFileName);
 				};
+#endif
 			}
 			else
 			{
-				strText = QCoreApplication::translate("LiveEngine", "Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(QString::fromWCharArray(szFileName));
-				PostToLog(strText, true, true, false, RGB(255, 0, 0));
-				MoveImage(szFileName);
+				strText = QCoreApplication::translate("LiveEngine", "Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(file.generic_u16string().c_str());
+				writeToLog(strText, true, true, false, Qt::red);
+				// TODO MoveImage(szFileName);
 			};
-#endif
+
 		};
 
 		QString message{ tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3", "IDS_LOG_REGISTERRESULTS", 10)
