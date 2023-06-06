@@ -326,7 +326,7 @@ namespace DSS
         const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
 
         // If the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
-        if (!displayRect.contains(mouseLocation) || m_pToolBar->underMouse()) return;
+        if (!displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse())) return;
 
         //QPoint where{ static_cast<int>(mouseLocation.x() - diameter / 2), static_cast<int>(mouseLocation.y() - diameter / 2) };
         QPoint where(std::max(0.0, mouseLocation.x() - diameter), 0);
@@ -536,7 +536,7 @@ namespace DSS
             //
             const QPoint globalMouseLocation(QCursor::pos());
             const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
-            if (displayRect.contains(mouseLocation) && !m_pToolBar->underMouse())
+            if (displayRect.contains(mouseLocation) && (m_pToolBar && !m_pToolBar->underMouse()))
             {
                 const QString tip = toolTip();
                 if (!tip.isEmpty() && m_tipShowCount % 25 == 0)
