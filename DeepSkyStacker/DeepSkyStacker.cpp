@@ -261,14 +261,14 @@ void DeepSkyStacker::reportError(const QString& message, const QString& type, Se
 	if (terminate) traceControl.setDeleteOnExit(false);
 	if (Method::QMessageBox == method)
 	{
-		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qMessageBox", Qt::AutoConnection,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 	else
 	{
-		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::AutoConnection,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
