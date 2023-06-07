@@ -90,6 +90,9 @@
     <ClCompile Include="DeepSkyStackerLive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filestacker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="..\include\SmtpMime\smtpmime_global.h">
       <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="dssliveenums.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +303,9 @@
       <Filter>Tools</Filter>
     </QtMoc>
     <QtMoc Include="progresslive.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="filestacker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

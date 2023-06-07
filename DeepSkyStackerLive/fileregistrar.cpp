@@ -33,13 +33,17 @@
 **
 **
 ****************************************************************************/
-// FolderRegistrar.cpp : Defines the class behaviors for the application.
+// FileRegistrar.cpp : Defines the class behaviors for the application.
 //
 #include "stdafx.h"
+#include "DeepSkyStackerLive.h"
 #include "fileregistrar.h"
 #include "progresslive.h"
 #include "BitmapExt.h"
 #include "BitmapInfo.h"
+#include "RegisterEngine.h"
+#include "LiveSettings.h"
+
 namespace DSS
 {
 	FileRegistrar::FileRegistrar(QObject* parent, ProgressLive* progress) :
@@ -121,9 +125,9 @@ namespace DSS
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+				strText = tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
 			else
-				strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+				strText = tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
 
 			pProgress->Start2(strText, 0);
 			CAllDepthBitmap				adb;
@@ -136,81 +140,156 @@ namespace DSS
 			{
 				emit fileLoaded(adb.m_pBitmap, adb.m_Image, file);
 
-#if (0)
+				std::shared_ptr<CLightFrameInfo>  lfi {std::make_shared<CLightFrameInfo>()};
 				// Now register the image
-				CLightFrameInfo			lfi;
 
-				strText = QCoreApplication::translate("LiveEngine", "Registering %1", "IDS_REGISTERINGNAME").arg(name);
-				Start2(strText, 0);
-				lfi.SetBitmap(szFileName, false, false);
-				lfi.SetProgress(this);
-				lfi.RegisterPicture(adb.m_pBitmap.get());
-				lfi.SaveRegisteringInfo();
-				lfi.m_lISOSpeed = bmpInfo.m_lISOSpeed;
-				lfi.m_lGain = bmpInfo.m_lGain;
-				lfi.m_fExposure = bmpInfo.m_fExposure;
-				End2();
-				PostFileRegistered(szFileName);
-				PostChangeImageStatus(szFileName, IS_REGISTERED);
+				lfi->SetBitmap(file, false, false);
+				lfi->SetProgress(pProgress);
+				lfi->RegisterPicture(adb.m_pBitmap.get());
+				lfi->SaveRegisteringInfo();
+				lfi->m_lISOSpeed = bmpInfo.m_lISOSpeed;
+				lfi->m_lGain = bmpInfo.m_lGain;
+				lfi->m_fExposure = bmpInfo.m_fExposure;
 
-				TCHAR					szName[_MAX_FNAME];
-				TCHAR					szExt[_MAX_EXT];
-				CString					strName;
-
-				_tsplitpath(szFileName, nullptr, nullptr, szName, szExt);
-				strName.Format(_T("%s%s"), szName, szExt);
-				int count = static_cast<int>(lfi.m_vStars.size()); // Work round LUpdate bug
-				strText = QCoreApplication::translate("LiveEngine", "Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3\n", "IDS_LOG_REGISTERRESULTS", count)
+				int count = static_cast<int>(lfi->m_vStars.size()); // Work round LUpdate bug
+				strText = tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3\n", "IDS_LOG_REGISTERRESULTS", count)
 					.arg(name)
-					.arg(lfi.m_fFWHM, 0, 'f', 2)
-					.arg(lfi.m_fOverallQuality, 0, 'f', 2);
+					.arg(lfi->m_fFWHM, 0, 'f', 2)
+					.arg(lfi->m_fOverallQuality, 0, 'f', 2);
 
-				PostToLog(strText, true);
+				ZTRACE_RUNTIME(strText.toUtf8().constData());
+				strText += "\n";
+				writeToLog(strText,
+					true);
+				emit changeImageInfo(file, II_DONTSTACK_NONE);
 
-				CString					strError;
-				BOOL					bWarning;
-				CString					strWarning;
-				bWarning = IsImageWarning1(szFileName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality, lfi.m_SkyBackground.m_fLight * 100.0, strWarning);
-				PostChangeImageInfo(szFileName, II_DONTSTACK_NONE);
-				if (bWarning)
+				QString warning;
+
+				if(imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
 				{
-					strText = QCoreApplication::translate("LiveEngine", "Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(file.generic_u16string().c_str()).arg(name);
-					PostToLog(strText, true, false, false, RGB(208, 127, 0));
-					PostWarning(strWarning);
+					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(name).arg(warning);
+					writeToLog(strText, true, false, false, qRgb(208, 127, 0));
+					emit warningCondition(warning);
 				};
-				if (IsImageStackable1(szFileName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality, lfi.m_SkyBackground.m_fLight * 100.0, strError))
+
+				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
 				{
 					// Check against stacking conditions before adding it to
 					// the stack list
-					m_qToStack.push_back(lfi);
+					emit fileRegistered(lfi);
 				}
 				else
 				{
-					strText = QCoreApplication::translate("LiveEngine", "Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(QString::fromWCharArray(strError));
-					PostToLog(strText, true, true, false, RGB(255, 0, 0));
-					PostChangeImageStatus(szFileName, IS_NOTSTACKABLE);
-					MoveImage(szFileName);
+					strText = tr("Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(strText);
+					writeToLog(strText, true, true, false, Qt::red);
+					emit fileNotStackable(file);
 				};
-#endif
+
 			}
 			else
 			{
-				strText = QCoreApplication::translate("LiveEngine", "Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(file.generic_u16string().c_str());
+				strText = tr("Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(name);
 				writeToLog(strText, true, true, false, Qt::red);
-				// TODO MoveImage(szFileName);
+				emit fileNotStackable(file);
 			};
+		};
+	}
 
+	bool FileRegistrar::isImageStackable(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& error)
+	{
+		bool result = true;
+		LiveSettings* liveSettings { DSSLive::instance()->liveSettings.get() };
+		if (liveSettings->IsDontStack_Score())
+		{
+			if (fScore < liveSettings->GetScore())
+			{
+				result = false;
+				error = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
+				emit changeImageInfo(file, II_DONTSTACK_SCORE);
+			};
 		};
 
-		QString message{ tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3", "IDS_LOG_REGISTERRESULTS", 10)
-			.arg(QString::fromStdU16String(file.generic_u16string().c_str()))
-			.arg(20., 0, 'f', 2)
-			.arg(200., 0, 'f', 2) };
+		if (liveSettings->IsDontStack_Stars())
+		{
+			if (fStarCount < liveSettings->GetStars())
+			{
+				result = false;
+				error = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
+				emit changeImageInfo(file, II_DONTSTACK_STARS);
+			};
+		};
 
-		ZTRACE_RUNTIME(message.toUtf8().constData());
-		message += "\n";
-		writeToLog(message,
-			true);
-		emit fileRegistered(file);
-	}
+		if (liveSettings->IsDontStack_FWHM())
+		{
+			if (fFWHM > liveSettings->GetFWHM())
+			{
+				result = false;
+				error = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
+				emit changeImageInfo(file, II_DONTSTACK_FWHM);
+			};
+		};
+
+		if (liveSettings->IsDontStack_SkyBackground())
+		{
+			if (fSkyBackground > liveSettings->GetSkyBackground())
+			{
+				result = false;
+				error = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
+				emit changeImageInfo(file, II_DONTSTACK_SKYBACKGROUND);
+			};
+		};
+
+
+		return result;
+	};
+
+
+	bool FileRegistrar::imageWarning(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& warning)
+	{
+		bool result = false;
+		LiveSettings* liveSettings{ DSSLive::instance()->liveSettings.get() };
+
+		if (liveSettings->IsWarning_Score())
+		{
+			if (fScore < liveSettings->GetScore())
+			{
+				result = false;
+				warning = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
+				emit changeImageInfo(file, II_WARNING_SCORE);
+			};
+		};
+
+		if (liveSettings->IsWarning_Stars())
+		{
+			if (fStarCount < liveSettings->GetStars())
+			{
+				result = false;
+				warning = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
+				emit changeImageInfo(file, II_WARNING_STARS);
+			};
+		};
+
+		if (liveSettings->IsWarning_FWHM())
+		{
+			if (fFWHM > liveSettings->GetFWHM())
+			{
+				result = false;
+				warning = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
+				emit changeImageInfo(file, II_WARNING_FWHM);
+			};
+		};
+
+		if (liveSettings->IsWarning_SkyBackground())
+		{
+			if (fSkyBackground > liveSettings->GetSkyBackground())
+			{
+				result = false;
+				warning = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
+				emit changeImageInfo(file, II_WARNING_SKYBACKGROUND);
+			};
+		};
+
+		return result;
+	};
+
 }

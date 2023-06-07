@@ -87,6 +87,7 @@ namespace DSS
 
 	void	ProgressLive::Start2(const QString& text, int lTotal2)
 	{
+		mutex.lock();
 		if (!text.isEmpty())
 		{
 			progress2Text = text;
@@ -116,6 +117,7 @@ namespace DSS
 	void	ProgressLive::End2()
 	{
 		emit endProgress();
+		mutex.unlock();
 	};
 
 	/* ------------------------------------------------------------------- */

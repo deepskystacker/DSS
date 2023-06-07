@@ -93,7 +93,6 @@ namespace DSS
 		LONG total2;
 		LONG achieved1;
 		LONG achieved2;
-		QString lastText1;
-		QString lastText2;
+		QRecursiveMutex mutex;
 	};
 }

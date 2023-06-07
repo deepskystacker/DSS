@@ -41,6 +41,7 @@
 #include <QStyledItemDelegate>
 
 class QWinHost;
+class CLightFrameInfo;
 
 namespace DSS
 {
@@ -76,38 +77,6 @@ class DeepSkyStackerLive :
 	
 	Q_OBJECT
 
-	enum class ImageListColumns
-	{
-		Status,
-		File,
-		Exposure,
-		Aperture,
-		Score,
-		Stars,
-		FWHM,
-		dX,
-		dY,
-		Angle,
-		DateTime,
-		Size,
-		CFA,
-		Depth,
-		Info,
-		ISOGain,
-		SkyBackground,
-		ColumnCount
-	};
-
-	enum class ImageStatus
-	{
-		pending,
-		loaded,
-		registered,
-		stackDelayed,
-		nonStackable,
-		stacked
-	};
-
 signals:
 	void stopMonitor();
 
@@ -133,14 +102,19 @@ public:
 		return dssInstance;
 	}
 
-	std::unique_ptr<DSS::LiveSettings> liveSettings;
+	inline std::uint32_t pendingImageCount() { return pendingImageCnt; }
+	inline std::uint32_t registeredImageCount() { return registeredImageCnt; }
+	inline std::uint32_t stackedImageCount() { return stackedImageCnt; }
 
+	std::unique_ptr<DSS::LiveSettings> liveSettings;
 
 protected:
 	void closeEvent(QCloseEvent* e) override;
 	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();
+
+	void moveToNonStackable(fs::path& file);
 
 public slots:
 	void help();
@@ -155,8 +129,10 @@ protected slots:
 	void endProgress();
 	void addImageToList(fs::path path);
 	void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
-	void fileRegistered(fs::path file);
+	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
+	void fileNotStackable(fs::path file);
 	void changeImageStatus(const QString& name, ImageStatus status);
+	void updateStatusMessage();
 
 private:
 	bool initialised;
@@ -177,12 +153,15 @@ private:
 	DSS::FileRegistrar* fileRegistrar;
 	QLabel* progressLabel;
 	DSS::ProgressLive* pProgress;
-	std::uint32_t pendingImageCount;	// was m_lNrPending
-	std::uint32_t stackedImageCount;	// was m_lNrStacked
 	ElidedTextDelegate* elidedTextDelegate;
+	std::atomic_uint32_t pendingImageCnt;		// was m_lNrPending
+	std::atomic_uint32_t registeredImageCnt;	// was m_lNrRegistered
+	std::atomic_uint32_t stackedImageCnt;		// was m_lNrStacked
+	std::chrono::duration<int, std::milli> totalExposure;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();
+	void createFileRegistrar();
 	void makeLinks();
 
 private slots:

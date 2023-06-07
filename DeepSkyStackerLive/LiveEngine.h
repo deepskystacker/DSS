@@ -50,6 +50,7 @@ typedef enum tagIMAGESTATUS
 	IS_STACKED					= 5
 }IMAGESTATUS;
 
+#if (0)
 typedef enum tagSTACKIMAGEINFO
 {
 	II_SETREFERENCE				= 0,
@@ -70,6 +71,7 @@ typedef enum tagSTACKIMAGEINFO
 	II_WARNING_ANGLE			= 107,
 	II_WARNING_SKYBACKGROUND	= 108
 }STACKIMAGEINFO;
+#endif
 
 /* ------------------------------------------------------------------- */
 

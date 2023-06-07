@@ -38,9 +38,12 @@
 
 #include <stdafx.h>
 #include <htmlhelp.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <source_location>
 
+#include <QApplication>
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QImageReader>
@@ -57,6 +60,7 @@
 #include "DeepSkyStackerLive.h"
 #include "DSSVersion.h"
 #include "ExceptionHandling.h"
+#include "FrameInfoSupport.h"
 #include "LiveSettings.h"
 #include <zexcept.h>
 #include <ztrace.h>
@@ -66,9 +70,7 @@
 #include "foldermonitor.h"
 #include "fileregistrar.h"
 #include "progresslive.h"
-#include <QApplication>
-#include <stdio.h>
-#include <stdlib.h>
+#include "RegisterEngine.h"
 
 using namespace DSS;
 using namespace std;
@@ -229,8 +231,10 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	fileRegistrar { nullptr },
 	progressLabel { new QLabel(this) },
 	pProgress {new DSS::ProgressLive(this)},
-	pendingImageCount{ 0 },
-	stackedImageCount{ 0 }
+	pendingImageCnt{ 0 },
+	registeredImageCnt{ 0 },
+	stackedImageCnt{ 0 },
+	totalExposure{ std::chrono::milliseconds{0} }
 {
 	//
 	// Must set dssInstance before invoking setupUi 
@@ -258,7 +262,12 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	// Stop the folder monitor if it is running
 	//
 	ZTRACE_RUNTIME("Stopping folder monitor");
-	emit stopMonitor();		
+	emit stopMonitor();	
+
+	//
+	// Delete the file registrar (which will also stop it).
+	//
+	delete fileRegistrar; fileRegistrar = nullptr;
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
@@ -327,7 +336,23 @@ void DeepSkyStackerLive::connectMonitorSignals()
 	connect(this, &DSSLive::stopMonitor,
 		folderMonitor, &FolderMonitor::stop);
 }
+
 /* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::createFileRegistrar()
+{
+	fileRegistrar = new FileRegistrar(this, pProgress);
+	connect(fileRegistrar, &FileRegistrar::writeToLog,
+		this, &DSSLive::writeToLog);
+	connect(fileRegistrar, &FileRegistrar::addImageToList,
+		this, &DSSLive::addImageToList);
+	connect(fileRegistrar, &FileRegistrar::fileLoaded,
+		this, &DSSLive::fileLoaded);
+	connect(fileRegistrar, &FileRegistrar::fileRegistered,
+		this, &DSSLive::fileRegistered);
+	connect(fileRegistrar, &FileRegistrar::fileNotStackable,
+		this, &DSSLive::fileNotStackable);
+}
 
 void DeepSkyStackerLive::makeLinks()
 {
@@ -437,9 +462,19 @@ void DeepSkyStackerLive::onInitialise()
 	if (liveSettings->IsProcess_Others()) validExtensions += otherExtensions;
 
 	//
+	// Force the progressBar to keep its size when hidden and hide it
+	// 
+	QSizePolicy sp{ progressBar->sizePolicy() };
+	sp.setRetainSizeWhenHidden(true);
+	progressBar->setSizePolicy(sp);
+	progressBar->setVisible(false);
+
+	//
 	// Create a QLabel on top of the progress bar to display text.
 	//
-	progressLabel->setAlignment(Qt::AlignCenter); progressLabel->setStyleSheet(QString::fromUtf8("background: qcolor(rgba(0,0,0,0))"));
+	progressLabel->setAlignment(Qt::AlignCenter);
+	progressLabel->setStyleSheet(QString::fromUtf8("background: qcolor(rgba(0,0,0,0))"));
+	progressLabel->setWordWrap(true);
 	auto layout = new QVBoxLayout(progressBar);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(progressLabel);
@@ -494,14 +529,14 @@ void DeepSkyStackerLive::reportError(const QString& message, const QString& type
 	if (terminate) traceControl.setDeleteOnExit(false);
 	if (Method::QMessageBox == method)
 	{
-		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qMessageBox", Qt::AutoConnection,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 	else
 	{
-		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::AutoConnection,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
@@ -510,7 +545,7 @@ void DeepSkyStackerLive::reportError(const QString& message, const QString& type
 
 void DeepSkyStackerLive::writeToLog(const QString& message, bool addTS, bool bold, bool italic, QColor colour)
 {
-	QMetaObject::invokeMethod(this, "writeLogMessage", Qt::QueuedConnection,
+	QMetaObject::invokeMethod(this, "writeLogMessage", Qt::AutoConnection,
 		Q_ARG(const QString&, message),
 		Q_ARG(bool, addTS),
 		Q_ARG(bool, bold),
@@ -534,16 +569,22 @@ void DeepSkyStackerLive::help()
 
 void DeepSkyStackerLive::progress(const QString& str, int achieved, int total)
 {
-	progressLabel->setText(str);
 	progressBar->setMaximum(total);
 	progressBar->setValue(achieved);
+	progressBar->setVisible(true);
+	progressLabel->setText(str);
+	update();
 }
 
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::endProgress()
 {
-	progressBar->setValue(progressBar->maximum());
+	progressLabel->setText("");
+	progressBar->setValue(0);
+	progressBar->setVisible(false);
+	update();
+
 }
 
 /* ------------------------------------------------------------------- */
@@ -690,6 +731,30 @@ void DeepSkyStackerLive::monitorPressed([[maybe_unused]] bool checked)
 
 /* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::moveToNonStackable(fs::path& file)
+{
+	std::error_code ec;
+	fs::path name{ file.filename() };
+	fs::path output{ file };
+	output.remove_filename();
+	output /= "NonStackable";
+	fs::create_directory(output, ec);
+	if (ec)
+	{
+		QString message{ QString::fromStdString(ec.message()) };
+		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+	}
+	output /= name;
+	fs::rename(file, output, ec);
+	if (ec)
+	{
+		QString message{ QString::fromStdString(ec.message()) };
+		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::stackPressed(bool checked)
 {
 	qDebug() << "Stack button pressed"; 
@@ -751,7 +816,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 
 	ZTRACE_RUNTIME(" of which %d passed filtering", filteredFiles.size());
 
-	if (0 == pendingImageCount && 0 == stackedImageCount && !filteredFiles.empty())
+	if (0 == pendingImageCnt && 0 == stackedImageCnt && !filteredFiles.empty())
 	{
 		if (QMessageBox::Yes == QMessageBox::question(this, "DeepSkyStackerLive",
 			tr("You have %n images(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
@@ -763,22 +828,19 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 		}
 	}
 	
-	if (useExistingFiles && !filteredFiles.empty() && nullptr == fileRegistrar)
+	if (useExistingFiles && !filteredFiles.empty())
 	{
-		fileRegistrar = new FileRegistrar(this, pProgress);
-		connect(fileRegistrar, &FileRegistrar::writeToLog,
-			this, &DSSLive::writeToLog);
-		connect(fileRegistrar, &FileRegistrar::addImageToList,
-			this, &DSSLive::addImageToList);
-		connect(fileRegistrar, &FileRegistrar::fileLoaded,
-			this, &DSSLive::fileLoaded);
-		connect(fileRegistrar, &FileRegistrar::fileRegistered,
-			this, &DSSLive::fileRegistered);
+		if (nullptr == fileRegistrar)
+		{
+			createFileRegistrar();	// Create the file registrar and connect signals/slots
+		}
 
 		for (const auto& file : filteredFiles)
 		{
 			fileRegistrar->addFile(file);
+			++pendingImageCnt;					// Increment number of pending images
 		}
+		updateStatusMessage();
 	}
 }
 
@@ -791,9 +853,18 @@ void DeepSkyStackerLive::onNewFile(const fs::path& file)
 	if (validExtensions.contains(extension))
 	{
 		ZTRACE_RUNTIME(" File passed filtering");
+		if (nullptr == fileRegistrar)
+		{
+			createFileRegistrar();	// Create the file registrar and connect signals/slots
+		}
+
 		fileRegistrar->addFile(file);
+		++pendingImageCnt;					// Increment number of pending images
+		updateStatusMessage();
 	}
 }
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::addImageToList(fs::path path)
 {
@@ -870,11 +941,50 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::fileRegistered(fs::path file)
+void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 {
-	qDebug() << "File " << QString::fromStdU16String(file.filename().generic_u16string().c_str()) << " registered";
+	QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string().c_str()) };
+	qDebug() << "File " << name << "registered";
+	changeImageStatus(name, ImageStatus::registered);
+
+	//
+	// Check for the existence of the file stacking thread.  If it isn't already active
+	// create it and set up signals and slots.
+	//
+	//if (nullptr == fileStacker)
+	//{
+
+	//}
+
+	--pendingImageCnt; ++registeredImageCnt;
+	updateStatusMessage();
 }
 
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::fileNotStackable(fs::path file)
+{
+	qDebug() << "File " << QString::fromStdU16String(file.filename().generic_u16string().c_str()) << " not Stackable";
+	QString name{ QString::fromStdU16String(file.filename().generic_u16string().c_str()) };
+	changeImageStatus(name, ImageStatus::nonStackable);
+	if (liveSettings->IsStack_Move())
+	{
+		moveToNonStackable(file);
+	}
+	--pendingImageCnt;
+	updateStatusMessage();
+}
+
+/* ------------------------------------------------------------------- */
+void DeepSkyStackerLive::updateStatusMessage()
+{
+	double msecs{ static_cast<double>(totalExposure.count()) };
+	QString exposure{ exposureToString(msecs) };
+	QString message{ tr("Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4")
+		.arg(pendingImageCnt).arg(registeredImageCnt).arg(stackedImageCnt).arg(exposure) };
+	statusMessage->setText(message);
+	update();
+}
 
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
@@ -951,6 +1061,7 @@ int main(int argc, char* argv[])
 	//
 	// Register QMessageBox::Icon enum as meta type
 	//
+	qRegisterMetaType<STACKIMAGEINFO>();
 	qRegisterMetaType<QMessageBox::Icon>();
 
 	//

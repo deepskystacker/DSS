@@ -130,7 +130,7 @@
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>14</height>
+              <height>11</height>
              </size>
             </property>
            </spacer>
@@ -157,7 +157,7 @@
           <item>
            <widget class="QLabel" name="statusMessage">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -166,7 +166,7 @@
              <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
             </property>
             <property name="text">
-             <string comment="IDC_STATS">Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</string>
+             <string notr="true" comment="IDC_STATS"/>
             </property>
            </widget>
           </item>
