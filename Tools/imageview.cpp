@@ -116,6 +116,7 @@ namespace DSS
 
     void ImageView::drawOnPixmap()
     {
+        if (m_drawingPixmap.isNull()) return;
         QPainter painter(&m_drawingPixmap);
         QPalette palette{ QGuiApplication::palette() };
         QBrush brush{ palette.dark() };
