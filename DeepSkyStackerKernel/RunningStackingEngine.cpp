@@ -90,11 +90,6 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgr
 
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			if (pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("RunningStackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-				pProgress->Start2(strText, 0);
-			};
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
 		};
 
