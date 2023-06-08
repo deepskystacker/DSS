@@ -992,6 +992,9 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 
 	CComputeLuminanceTask{ pBitmap, pGrayBitmap.get(), m_pProgress }.process();
 
+	if (m_pProgress != nullptr)
+		m_pProgress->End2();
+
 	if (m_bApplyMedianFilter)
 	{
 		std::shared_ptr<CGrayBitmap> pFiltered = std::dynamic_pointer_cast<CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
