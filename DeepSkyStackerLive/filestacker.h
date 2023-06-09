@@ -55,16 +55,22 @@ namespace DSS
 
 	signals:
 		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
+		void setImageOffsets(QString name, double dx, double dy , double angle);
+		void fileStacked(std::shared_ptr<CLightFrameInfo> p);
+		void fileNotStackable(fs::path file);
+		void setImageInfo(fs::path file, STACKIMAGEINFO info);
+		void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
+		void handleWarning(QString text);
 
 	public:
 		FileStacker(QObject* parent = nullptr, ProgressLive* progress = nullptr);
 		~FileStacker();
 
-		void addFile(std::shared_ptr<CLightFrameInfo>&& lfi);
-		inline void enableStacking()
+		void addFile(std::shared_ptr<CLightFrameInfo>& lfi);
+		inline void enableStacking(bool enable = true)
 		{
-			stackingEnabled = true;
-			if (!pending.empty())
+			stackingEnabled = enable;
+			if (enable && !pending.empty())
 			{
 				condvar.wakeOne();
 			}
@@ -81,6 +87,9 @@ namespace DSS
 		CRunningStackingEngine stackingEngine;
 
 		void stackNextImage();
+		bool isImageStackable(const fs::path& file, double fdX, double fdY, double fAngle, QString& error);
+		bool imageWarning(const fs::path& file, double fdX, double fdY, double fAngle, QString& warning);
+
 
 	};
 }

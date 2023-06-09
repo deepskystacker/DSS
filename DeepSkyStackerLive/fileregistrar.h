@@ -57,16 +57,25 @@ namespace DSS
 		void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 		void fileNotStackable(fs::path file);
-		void changeImageInfo(fs::path file, STACKIMAGEINFO info);
-		void warningCondition(QString text);
+		void setImageInfo(fs::path file, STACKIMAGEINFO info);
+		void handleWarning(QString text);
 
 	public:
 		FileRegistrar(QObject* parent = nullptr, ProgressLive* progress = nullptr);
 		~FileRegistrar();
 
 		void addFile(fs::path file);
+		inline void enableRegistration(bool enable = true)
+		{
+			registrationEnabled = enable;
+			if (enable && !pending.empty())
+			{
+				condvar.wakeOne();
+			}
+		}
 
 	private:
+		volatile bool registrationEnabled;
 		ProgressLive* pProgress;
 		QWaitCondition condvar;
 		QMutex mutex;

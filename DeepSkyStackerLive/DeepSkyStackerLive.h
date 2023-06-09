@@ -50,6 +50,7 @@ namespace DSS
 	class LiveSettings;
 	class FolderMonitor;
 	class FileRegistrar;
+	class FileStacker;
 	class ProgressLive;
 }
 
@@ -131,8 +132,13 @@ protected slots:
 	void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
 	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 	void fileNotStackable(fs::path file);
+	void fileStacked(std::shared_ptr<CLightFrameInfo> p);
 	void changeImageStatus(const QString& name, ImageStatus status);
 	void updateStatusMessage();
+	void handleWarning(QString text);
+	void setImageOffsets(QString name, double dx, double dy, double angle);
+	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
+
 
 private:
 	bool initialised;
@@ -151,6 +157,7 @@ private:
 	DSS::FolderMonitor* folderMonitor;
 	QStringList validExtensions;
 	DSS::FileRegistrar* fileRegistrar;
+	DSS::FileStacker* fileStacker;
 	QLabel* progressLabel;
 	DSS::ProgressLive* pProgress;
 	ElidedTextDelegate* elidedTextDelegate;
@@ -162,7 +169,26 @@ private:
 	void connectSignalsToSlots();
 	void connectMonitorSignals();
 	void createFileRegistrar();
+	void createFileStacker();
 	void makeLinks();
+	void stopMonitoring();
+	void stopStacking();
+
+	inline QString isoToString(int lISOSpeed) const
+	{
+		if (lISOSpeed)
+			return QString::number(lISOSpeed);
+		else
+			return QString("-");
+	}
+
+	inline QString gainToString(int lGain) const
+	{
+		if (lGain >= 0)
+			return QString::number(lGain);
+		else
+			return QString("-");
+	}
 
 private slots:
 	void setMonitoredFolder(const QString& link);

@@ -69,6 +69,7 @@
 #include "Workspace.h"
 #include "foldermonitor.h"
 #include "fileregistrar.h"
+#include "filestacker.h"
 #include "progresslive.h"
 #include "RegisterEngine.h"
 
@@ -94,21 +95,29 @@ namespace
 		QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file ? context.file : "";
 		const char* function = context.function ? context.function : "";
+		char* name{ static_cast<char *>(_alloca(1 + strlen(file))) };
+		strcpy(name, file);
+		if (0 != strlen(name))
+		{
+			fs::path path{ name };
+			strcpy(name, path.filename().string().c_str());
+		}
+
 		switch (type) {
 		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Info: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warning: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Warn: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		}
 		originalHandler(type, context, msg);
@@ -167,16 +176,16 @@ bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char*
 	QString translatorFileName(prefix);
 	translatorFileName += (language == "") ? QLocale::system().name() : language;
 
-	qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
+	//qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
 	if (!translator.load(translatorFileName, path))
 	{
-		qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
+		//qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
 		return false;
 	}
 
 	if (!app.installTranslator(&translator))
 	{
-		qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
+		//qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
 		return false;
 	}
 	return true;
@@ -229,6 +238,7 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	lastImageViewer {nullptr},
 	folderMonitor { nullptr },
 	fileRegistrar { nullptr },
+	fileStacker{ nullptr },
 	progressLabel { new QLabel(this) },
 	pProgress {new DSS::ProgressLive(this)},
 	pendingImageCnt{ 0 },
@@ -265,14 +275,15 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	emit stopMonitor();	
 
 	//
-	// Delete the file registrar (which will also stop it).
+	// Delete the file registrar and file stacker (which will also stop them).
 	//
 	delete fileRegistrar; fileRegistrar = nullptr;
+	delete fileStacker; fileStacker = nullptr;
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
 	QSettings settings;
-	settings.beginGroup("MainWindow");
+	settings.beginGroup("DeepSkyStackerLive/MainWindow");
 	auto geometry{ saveGeometry() };
 	settings.setValue("geometry", geometry);
 #ifndef NDEBUG	
@@ -281,9 +292,11 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 #endif 
 
 	settings.endGroup();
-	//QTableView* tableView = this->findChild<QTableView*>("tableView");
-	//settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
-	//	tableView->horizontalHeader()->saveState());
+	settings.beginGroup("DeepSkyStackerLive/ImageList");
+	settings.setValue("HorizontalHeader/windowState",
+		imageList->horizontalHeader()->saveState());
+	settings.endGroup();
+
 	settings.sync();
 }
 
@@ -352,7 +365,34 @@ void DeepSkyStackerLive::createFileRegistrar()
 		this, &DSSLive::fileRegistered);
 	connect(fileRegistrar, &FileRegistrar::fileNotStackable,
 		this, &DSSLive::fileNotStackable);
+	//connect(fileRegistrar, &FileRegistrar::setImageInfo,			// This goes to the chart handling code
+	//	this, &DSSLive::setImageInfo);
+	connect(fileRegistrar, &FileRegistrar::handleWarning,
+		this, &DSSLive::handleWarning);
 }
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::createFileStacker()
+{
+	fileStacker = new FileStacker(this, pProgress);
+	connect(fileStacker, &FileStacker::writeToLog,
+		this, &DSSLive::writeToLog);
+	connect(fileStacker, &FileStacker::setImageOffsets,
+		this, &DSSLive::setImageOffsets);
+	connect(fileStacker, &FileStacker::fileStacked,
+		this, &DSSLive::fileStacked);
+	connect(fileStacker, &FileStacker::fileNotStackable,
+		this, &DSSLive::fileNotStackable);
+	connect(fileStacker, &FileStacker::setImageFootprint,
+		this, &DSSLive::setImageFootprint);
+	//connect(fileStacker, &FileStacker::setImageInfo,			// This goes to the chart handling code
+	//	this, &DSSLive::setImageInfo);
+	connect(fileStacker, &FileStacker::handleWarning,
+		this, &DSSLive::handleWarning);
+}
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::makeLinks()
 {
@@ -445,6 +485,17 @@ void DeepSkyStackerLive::onInitialise()
 	restoreGeometry(geometry);
 	settings.endGroup();
 
+	//
+	// Restore windowState of table widget's horizontal header
+	//
+	settings.beginGroup("DeepSkyStackerLive/ImageList");
+	imageList->horizontalHeader()->restoreState(
+		settings.value("HorizontalHeader/windowState").toByteArray());
+	settings.endGroup();
+
+
+
+
 	Workspace workspace;
 	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 	QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -496,7 +547,7 @@ void DeepSkyStackerLive::onInitialise()
 	imageList->horizontalHeader()->setFont(font);
 
 	// 
-	// Set image list headers
+	// Set image list headers and their alignments
 	//
 	imageList->setHorizontalHeaderLabels(QStringList{}
 		<< tr("Status")
@@ -516,12 +567,53 @@ void DeepSkyStackerLive::onInitialise()
 		<< tr("Info", "IDS_COLUMN_INFOS")
 		<< tr("ISO/Gain", "IDS_COLUMN_ISO_GAIN")
 		<< tr("Sky Background", "IDS_COLUMN_SKYBACKGROUND"));
+	for (int column = 0; column != static_cast<int>(ImageListColumns::ColumnCount); ++column)
+	{
+		auto item = imageList->horizontalHeaderItem(column);
+		Qt::Alignment alignment{ Qt::AlignLeft };
+		switch (static_cast<ImageListColumns>(column))
+		{
+		case ImageListColumns::Exposure:
+		case ImageListColumns::Aperture:
+		case ImageListColumns::Score:
+		case ImageListColumns::Stars:
+		case ImageListColumns::FWHM:
+		case ImageListColumns::dX:
+		case ImageListColumns::dY:
+		case ImageListColumns::Angle:
+		case ImageListColumns::DateTime:
+		case ImageListColumns::Size:
+		case ImageListColumns::ISOGain:
+		case ImageListColumns::SkyBackground:
+			alignment = Qt::AlignRight;
+			break;
+		case ImageListColumns::CFA:
+			alignment = Qt::AlignHCenter;
+			break;
+		}
+		item->setTextAlignment(alignment);
+	}
+	//
+	// Restore windowState of table widget's horizontal header
+	//
+	settings.beginGroup("DeepSkyStackerLive/ImageList");
+	imageList->horizontalHeader()->restoreState(
+		settings.value("HorizontalHeader/windowState").toByteArray());
+	settings.endGroup();
+
+	
 	//
 	// Set image list non-editable
 	//
 	imageList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	tabWidget->setCurrentIndex(0);
+
+	//
+	// Finally create our worker threads
+	//
+	createFileRegistrar();
+	createFileStacker();
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -552,6 +644,31 @@ void DeepSkyStackerLive::writeToLog(const QString& message, bool addTS, bool bol
 		Q_ARG(bool, italic),
 		Q_ARG(QColor, colour));
 }
+
+void DeepSkyStackerLive::stopMonitoring()
+{
+	// 
+	// Stop the folder monitor thread.
+	//
+	QString message{ tr("Stop monitoring folder %1", "IDS_LOG_STOPMONITORING").arg(monitoredFolder) };
+	ZTRACE_RUNTIME(message.toUtf8().constData());
+	message += "\n";
+	writeToLog(message,
+		true, true, false, Qt::red);
+	emit stopMonitor();
+	folderMonitor = nullptr;
+	fileRegistrar->enableRegistration(false);
+}
+void DeepSkyStackerLive::stopStacking()
+{
+	QString message{ tr("Stop Stacking files", "IDS_LOG_STOPSTACKING") };
+	ZTRACE_RUNTIME(message.toUtf8().constData());
+	message += "\n";
+	writeToLog(message,
+		true, true, false, Qt::yellow);
+	fileStacker->enableStacking(false);
+}
+
 
 /* ------------------------------------------------------------------- */
 /* Slots                                                               */
@@ -698,34 +815,42 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 void DeepSkyStackerLive::monitorPressed([[maybe_unused]] bool checked)
 {
 	ZFUNCTRACE_RUNTIME();
-	qDebug() << "Monitor button pressed";
-	QSettings settings;
-	settings.beginGroup("DeepSkyStackerLive");
-
-	//
-	// Has the folder to monitor aleady been set?  If not set it.
-	// 
-	if (monitoredFolder.isEmpty())
+	if (checked)
 	{
-		setMonitoredFolder("");
-	}
-	fs::path dir{ monitoredFolder.toStdU16String() };
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
 
-	if (!is_directory(dir))
+		//
+		// Has the folder to monitor aleady been set?  If not set it.
+		// 
+		if (monitoredFolder.isEmpty())
+		{
+			setMonitoredFolder("");
+		}
+		fs::path dir{ monitoredFolder.toStdU16String() };
+
+		if (!is_directory(dir))
+		{
+			QMessageBox::information(this, "DeepSkyStackerLive",
+				tr("%1 is not a directory. Please select a valid directory.").arg(monitoredFolder));
+			settings.setValue("MonitoredFolder", "");
+			setMonitoredFolder("");
+		}
+
+		folderMonitor = new FolderMonitor();
+		connectMonitorSignals();
+		QThreadPool::globalInstance()->start(folderMonitor);
+
+		ZTRACE_RUNTIME("Start monitoring folder %s", monitoredFolder.toUtf8().constData());
+		writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
+			true, true, false, Qt::green);
+
+		fileRegistrar->enableRegistration();
+	}
+	else
 	{
-		QMessageBox::information(this, "DeepSkyStackerLive",
-			tr("%1 is not a directory. Please select a valid directory.").arg(monitoredFolder));
-		settings.setValue("MonitoredFolder", "");
-		setMonitoredFolder("");
+		stopMonitoring();
 	}
-
-	folderMonitor = new FolderMonitor();
-	connectMonitorSignals();
-	QThreadPool::globalInstance()->start(folderMonitor);
-
-	ZTRACE_RUNTIME("Start monitoring folder %s", monitoredFolder.toUtf8().constData());
-	writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
-		true, true, false, Qt::green);
 
 }
 
@@ -757,33 +882,37 @@ void DeepSkyStackerLive::moveToNonStackable(fs::path& file)
 
 void DeepSkyStackerLive::stackPressed(bool checked)
 {
-	qDebug() << "Stack button pressed"; 
-	actionMonitor->setChecked(checked);
+	if (checked)
+	{
+		//
+		// If Stack is pressed also need to make it so Monitor was also pressed
+		//
+		if (!actionMonitor->isChecked())
+			actionMonitor->trigger();
+
+		QString message{ tr("Start Stacking files", "IDS_LOG_STARTSTACKING") };
+		ZTRACE_RUNTIME(message.toUtf8().constData());
+		message += "\n";
+		writeToLog(message,
+			true, true, false, Qt::yellow);
+
+		fileStacker->enableStacking();
+	}
+	else
+	{
+		stopStacking();
+	}
 }
 
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::stopPressed()
 {
-	qDebug() << "Stop button pressed";
 	actionMonitor->setChecked(false);
 	actionStack->setChecked(false);
-
-	// 
-	// Stop the folder monitor thread.
-	//
-	QString message{ tr("Stop monitoring folder %1", "IDS_LOG_STOPMONITORING").arg(monitoredFolder) };
-	ZTRACE_RUNTIME(message.toUtf8().constData());
-	message += "\n";
-	writeToLog(message,
-		true, true, false, Qt::red);
-	emit stopMonitor();
-	folderMonitor = nullptr;
-
-	//
-	// Delete the file registrar (which will also stop it).
-	//
-	delete fileRegistrar; fileRegistrar = nullptr;
+	
+	stopMonitoring();
+	stopStacking();
 }
 
 void DSSLive::settingsChanged()
@@ -830,11 +959,6 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 	
 	if (useExistingFiles && !filteredFiles.empty())
 	{
-		if (nullptr == fileRegistrar)
-		{
-			createFileRegistrar();	// Create the file registrar and connect signals/slots
-		}
-
 		for (const auto& file : filteredFiles)
 		{
 			fileRegistrar->addFile(file);
@@ -853,10 +977,6 @@ void DeepSkyStackerLive::onNewFile(const fs::path& file)
 	if (validExtensions.contains(extension))
 	{
 		ZTRACE_RUNTIME(" File passed filtering");
-		if (nullptr == fileRegistrar)
-		{
-			createFileRegistrar();	// Create the file registrar and connect signals/slots
-		}
 
 		fileRegistrar->addFile(file);
 		++pendingImageCnt;					// Increment number of pending images
@@ -876,10 +996,32 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 	//
 	// Insert TableWidgetItems for all columns
 	//
-	for (int i = 0; i < static_cast<int>(ImageListColumns::ColumnCount); ++i)
+	for (int column = 0; column < static_cast<int>(ImageListColumns::ColumnCount); ++column)
 	{
 		QTableWidgetItem* item = new QTableWidgetItem;
-		imageList->setItem(row, i, item);
+		Qt::Alignment alignment{ Qt::AlignLeft };
+		switch (static_cast<ImageListColumns>(column))
+		{
+		case ImageListColumns::Exposure:
+		case ImageListColumns::Aperture:
+		case ImageListColumns::Score:
+		case ImageListColumns::Stars:
+		case ImageListColumns::FWHM:
+		case ImageListColumns::dX:
+		case ImageListColumns::dY:
+		case ImageListColumns::Angle:
+		case ImageListColumns::DateTime:
+		case ImageListColumns::Size:
+		case ImageListColumns::ISOGain:
+		case ImageListColumns::SkyBackground:
+			alignment = Qt::AlignRight;
+			break;
+		case ImageListColumns::CFA:
+			alignment = Qt::AlignHCenter;
+			break;
+		}
+		item->setTextAlignment(alignment);
+		imageList->setItem(row, column, item);
 	}
 
 	QFileInfo info{ name };
@@ -898,7 +1040,7 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 
 void DeepSkyStackerLive::fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file)
 {
-	QString name{ QString::fromStdU16String(file.filename().generic_u16string().c_str()) };
+	QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 	lastImage->picture->setPixmap(QPixmap::fromImage(*image));
 
 	changeImageStatus(name, ImageStatus::loaded);
@@ -919,7 +1061,7 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 		newStatus = tr("Registered", "IDS_STATUS_REGISTERED");
 		break;
 	case ImageStatus::stackDelayed:
-		newStatus = tr("Stack delayed", "IDS_STATUS_STACKDELAYE");
+		newStatus = tr("Stack delayed", "IDS_STATUS_STACKDELAYED");
 		break;
 	case ImageStatus::nonStackable:
 		newStatus = tr("Not stackable", "IDS_STATUS_NOTSTACKABLE");
@@ -941,22 +1083,105 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 
 /* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::setImageFootprint([[maybe_unused]] QPointF p1, [[maybe_unused]] QPointF p2, [[maybe_unused]] QPointF p3, [[maybe_unused]] QPointF p4)
+{
+	ZFUNCTRACE_RUNTIME();
+}
+
+
+void DeepSkyStackerLive::setImageOffsets(QString name, double dX, double dY, double angle)
+{
+	QLocale locale;
+	for (int row = 0; row < imageList->rowCount(); ++row)
+	{
+		if (name == imageList->item(row, static_cast<int>(ImageListColumns::File))->text())
+		{
+			imageList->item(row, static_cast<int>(ImageListColumns::dX))->setText(locale.toString(dX, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::dY))->setText(locale.toString(dY, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::Angle))->setText(locale.toString(angle, 'f', 2));
+			break;
+		}
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 {
 	QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string().c_str()) };
-	qDebug() << "File " << name << "registered";
+	ZTRACE_RUNTIME("File %s registered", name.toUtf8().constData());
 	changeImageStatus(name, ImageStatus::registered);
+	CBitmapInfo				bmpInfo;
 
-	//
-	// Check for the existence of the file stacking thread.  If it isn't already active
-	// create it and set up signals and slots.
-	//
-	//if (nullptr == fileStacker)
-	//{
+	GetPictureInfo(lfi->filePath, bmpInfo);
+	lfi->SetBitmap(lfi->filePath, false, false);
 
-	//}
+	fileStacker->addFile(lfi);
+	QLocale locale;
+	QString temp;
+	for (int row = 0; row < imageList->rowCount(); ++row)
+	{
+		if (name == imageList->item(row, static_cast<int>(ImageListColumns::File))->text())
+		{
+			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(bmpInfo.m_fExposure));
+			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
+			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 0));
+			imageList->item(row, static_cast<int>(ImageListColumns::FWHM))->setText(locale.toString(lfi->m_fFWHM, 'f', 2));
+			//
+			imageList->item(row, static_cast<int>(ImageListColumns::dX))->setText("NC");
+			imageList->item(row, static_cast<int>(ImageListColumns::dY))->setText("NC");
+			imageList->item(row, static_cast<int>(ImageListColumns::Angle))->setText("NC");
+			//
+			imageList->item(row, static_cast<int>(ImageListColumns::DateTime))->setText(bmpInfo.m_strDateTime);
+			temp = QString("%1 x %2").arg(bmpInfo.m_lWidth).arg(bmpInfo.m_lHeight);
+			imageList->item(row, static_cast<int>(ImageListColumns::Size))->setText(temp);
+			if (bmpInfo.m_CFAType == CFATYPE_NONE)
+				temp = tr("No", "IDS_NO");
+			else
+				temp = tr("Yes", "IDS_YES");
+			imageList->item(row, static_cast<int>(ImageListColumns::CFA))->setText(temp);
+			if (lfi->m_lNrChannels == 3)
+				temp = tr("RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(bmpInfo.m_lBitPerChannel);
+			else
+				temp = tr("Gray %1 bit", "IDS_FORMAT_GRAY").arg(bmpInfo.m_lBitPerChannel);
+
+			imageList->item(row, static_cast<int>(ImageListColumns::Depth))->setText(temp);
+			temp = bmpInfo.m_strFileType;
+			if (bmpInfo.m_strModel.length())
+				temp += " " + bmpInfo.m_strModel;
+			imageList->item(row, static_cast<int>(ImageListColumns::Info))->setText(temp);
+			temp = "";
+			if (bmpInfo.m_lISOSpeed)
+			{
+				temp = isoToString(bmpInfo.m_lISOSpeed);
+			}
+			else if (bmpInfo.m_lGain >= 0)
+			{
+				temp = gainToString(bmpInfo.m_lGain);
+			}
+			imageList->item(row, static_cast<int>(ImageListColumns::ISOGain))->setText(temp);
+			temp = tr("%1%").arg(locale.toString(lfi->m_SkyBackground.m_fLight * 100.0, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::SkyBackground))->setText(temp);
+			break;
+		}
+
+	}
+	//TODO AddScoreFWHMStarsToGraph(lfi.filePath.generic_wstring().c_str(), lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight * 100.0);
 
 	--pendingImageCnt; ++registeredImageCnt;
+	updateStatusMessage();
+
+}
+
+void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
+{
+	QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string().c_str()) };
+	ZTRACE_RUNTIME("File %s stacked", name.toUtf8().constData());
+
+	changeImageStatus(name, ImageStatus::stacked);
+
+	--registeredImageCnt; ++stackedImageCnt;
 	updateStatusMessage();
 }
 
@@ -964,8 +1189,8 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 
 void DeepSkyStackerLive::fileNotStackable(fs::path file)
 {
-	qDebug() << "File " << QString::fromStdU16String(file.filename().generic_u16string().c_str()) << " not Stackable";
 	QString name{ QString::fromStdU16String(file.filename().generic_u16string().c_str()) };
+	ZTRACE_RUNTIME("File %s not Stackable", name.toUtf8().constData());
 	changeImageStatus(name, ImageStatus::nonStackable);
 	if (liveSettings->IsStack_Move())
 	{
@@ -976,6 +1201,14 @@ void DeepSkyStackerLive::fileNotStackable(fs::path file)
 }
 
 /* ------------------------------------------------------------------- */
+
+void DSSLive::handleWarning(QString warning)
+{
+	ZFUNCTRACE_RUNTIME();
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::updateStatusMessage()
 {
 	double msecs{ static_cast<double>(totalExposure.count()) };

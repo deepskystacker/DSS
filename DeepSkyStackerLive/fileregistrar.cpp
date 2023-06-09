@@ -48,6 +48,7 @@ namespace DSS
 {
 	FileRegistrar::FileRegistrar(QObject* parent, ProgressLive* progress) :
 		QThread{ parent },
+		registrationEnabled(false),
 		pProgress{progress}
 	{
 		ZTRACE_RUNTIME("File registrar active");
@@ -84,9 +85,9 @@ namespace DSS
 			{
 				QMutexLocker lock(&mutex);
 				//
-				// Wait for work to arrive
+				// Wait for registration to be be enabled, and if enabled, for work to arrive
 				//
-				if (pending.empty())
+				if (!registrationEnabled || pending.empty())
 					condvar.wait(&mutex);
 
 				//
@@ -107,7 +108,10 @@ namespace DSS
 		emit addImageToList(file);		// Add the image to the image list in Pending state
 		QMutexLocker lock(&mutex);
 		pending.emplace_back(file);
-		condvar.wakeOne();
+		if (registrationEnabled)
+		{
+			condvar.wakeOne();
+		}
 	}
 
 	void FileRegistrar::registerImage(fs::path file)
@@ -121,7 +125,7 @@ namespace DSS
 		{
 			QString strText;
 			QString strDescription;
-			QString name{ QString::fromStdU16String(file.generic_u16string().c_str()) };
+			QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
@@ -152,24 +156,24 @@ namespace DSS
 				lfi->m_fExposure = bmpInfo.m_fExposure;
 
 				int count = static_cast<int>(lfi->m_vStars.size()); // Work round LUpdate bug
-				strText = tr("Image %1 registered: %n star(s) detected - FWHM = %2 - Score = %3\n", "IDS_LOG_REGISTERRESULTS", count)
+				strText = tr("Image %L1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3\n", "IDS_LOG_REGISTERRESULTS", count)
 					.arg(name)
 					.arg(lfi->m_fFWHM, 0, 'f', 2)
 					.arg(lfi->m_fOverallQuality, 0, 'f', 2);
 
 				ZTRACE_RUNTIME(strText.toUtf8().constData());
 				strText += "\n";
-				writeToLog(strText,
+				emit writeToLog(strText,
 					true);
-				emit changeImageInfo(file, II_DONTSTACK_NONE);
+				emit setImageInfo(file, II_DONTSTACK_NONE);
 
 				QString warning;
 
 				if(imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
 				{
 					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(name).arg(warning);
-					writeToLog(strText, true, false, false, qRgb(208, 127, 0));
-					emit warningCondition(warning);
+					emit writeToLog(strText, true, false, false, qRgb(208, 127, 0));
+					emit handleWarning(warning);
 				};
 
 				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
@@ -181,7 +185,7 @@ namespace DSS
 				else
 				{
 					strText = tr("Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(strText);
-					writeToLog(strText, true, true, false, Qt::red);
+					emit writeToLog(strText, true, true, false, Qt::red);
 					emit fileNotStackable(file);
 				};
 
@@ -189,7 +193,7 @@ namespace DSS
 			else
 			{
 				strText = tr("Error loading file %1\n", "IDS_LOG_ERRORLOADINGFILE").arg(name);
-				writeToLog(strText, true, true, false, Qt::red);
+				emit writeToLog(strText, true, true, false, Qt::red);
 				emit fileNotStackable(file);
 			};
 		};
@@ -204,8 +208,8 @@ namespace DSS
 			if (fScore < liveSettings->GetScore())
 			{
 				result = false;
-				error = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
-				emit changeImageInfo(file, II_DONTSTACK_SCORE);
+				error = tr("Score (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore(), 0, 'f', 2);
+				emit setImageInfo(file, II_DONTSTACK_SCORE);
 			};
 		};
 
@@ -214,8 +218,8 @@ namespace DSS
 			if (fStarCount < liveSettings->GetStars())
 			{
 				result = false;
-				error = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
-				emit changeImageInfo(file, II_DONTSTACK_STARS);
+				error = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
+				emit setImageInfo(file, II_DONTSTACK_STARS);
 			};
 		};
 
@@ -224,8 +228,8 @@ namespace DSS
 			if (fFWHM > liveSettings->GetFWHM())
 			{
 				result = false;
-				error = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
-				emit changeImageInfo(file, II_DONTSTACK_FWHM);
+				error = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
+				emit setImageInfo(file, II_DONTSTACK_FWHM);
 			};
 		};
 
@@ -234,8 +238,8 @@ namespace DSS
 			if (fSkyBackground > liveSettings->GetSkyBackground())
 			{
 				result = false;
-				error = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
-				emit changeImageInfo(file, II_DONTSTACK_SKYBACKGROUND);
+				error = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
+				emit setImageInfo(file, II_DONTSTACK_SKYBACKGROUND);
 			};
 		};
 
@@ -255,7 +259,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
-				emit changeImageInfo(file, II_WARNING_SCORE);
+				emit setImageInfo(file, II_WARNING_SCORE);
 			};
 		};
 
@@ -265,7 +269,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
-				emit changeImageInfo(file, II_WARNING_STARS);
+				emit setImageInfo(file, II_WARNING_STARS);
 			};
 		};
 
@@ -275,7 +279,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
-				emit changeImageInfo(file, II_WARNING_FWHM);
+				emit setImageInfo(file, II_WARNING_FWHM);
 			};
 		};
 
@@ -285,7 +289,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
-				emit changeImageInfo(file, II_WARNING_SKYBACKGROUND);
+				emit setImageInfo(file, II_WARNING_SKYBACKGROUND);
 			};
 		};
 
