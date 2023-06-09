@@ -27,21 +27,29 @@ namespace
 		QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file ? context.file : "";
 		const char* function = context.function ? context.function : "";
+		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
+		strcpy(name, file);
+		if (0 != strlen(name))
+		{
+			fs::path path{ name };
+			strcpy(name, path.filename().string().c_str());
+		}
+
 		switch (type) {
 		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Info: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warning: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Warn: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u, %s)", localMsg.constData(), file, context.line, function);
+			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
 			break;
 		}
 		originalHandler(type, context, msg);
