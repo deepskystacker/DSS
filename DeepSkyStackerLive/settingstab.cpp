@@ -112,8 +112,6 @@ namespace DSS
 
 	void SettingsTab::connectSignalsToSlots()
 	{
-		qDebug() << "connecting signals to slots";
-
 		connect(dontStackUntil, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(minImages, &QLineEdit::textEdited, this, &SettingsTab::settingChanged);
 
