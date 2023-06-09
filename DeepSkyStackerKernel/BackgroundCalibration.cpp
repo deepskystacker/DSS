@@ -97,7 +97,7 @@ void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap
 	if (pProgress != nullptr)
 	{
 		strText = QCoreApplication::translate("BackgroundCalibration", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-		pProgress->Start2(height);
+		pProgress->Start2(strText, height);
 	}
 
 	std::vector<int> vRedHisto(HistogramSize());
