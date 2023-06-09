@@ -196,13 +196,14 @@ namespace { // Only use in this .cpp file
 		BitmapFillerInterface* pDSSBitMapFiller = nullptr;
 	};
 
-	DSSLibRaw rawProcessor;
-
 	/* ------------------------------------------------------------------- */
 
 	class CRawDecod
 	{
 	private:
+		std::unique_ptr<DSSLibRaw> pLibRaw;
+		DSSLibRaw& rawProcessor;
+
 		fs::path		file;
 		QString			m_strModel;
 		QString			m_strMake;
@@ -237,7 +238,9 @@ namespace { // Only use in this .cpp file
 
 	public:
 		CRawDecod(fs::path path) :
-			file(path),
+			pLibRaw {std::make_unique<DSSLibRaw>()},
+			rawProcessor{ *pLibRaw },
+			file{ path },
 			m_bColorRAW{ false },
 			m_CFAType{ CFATYPE_NONE },
 			m_lISOSpeed{ 0 },
@@ -393,7 +396,7 @@ namespace { // Only use in this .cpp file
 
 		if (supportedCameras.empty())
 		{
-			const char** cameraList = ::rawProcessor.cameraList();
+			const char** cameraList = rawProcessor.cameraList();
 			const size_t count = rawProcessor.cameraCount();
 			supportedCameras.reserve(count);
 
@@ -891,7 +894,6 @@ namespace { // Only use in this .cpp file
 
 	bool CRawDecod::IsRawFile() const
 	{
-		ZFUNCTRACE_RUNTIME();
 		return m_isRawFile;
 	}
 
