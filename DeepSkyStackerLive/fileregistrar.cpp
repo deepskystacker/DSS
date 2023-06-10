@@ -142,7 +142,7 @@ namespace DSS
 
 			if (result)
 			{
-				emit fileLoaded(adb.m_pBitmap, adb.m_Image, file);
+				emit fileLoaded(adb.m_Image, file);
 
 				std::shared_ptr<CLightFrameInfo>  lfi {std::make_shared<CLightFrameInfo>()};
 				// Now register the image

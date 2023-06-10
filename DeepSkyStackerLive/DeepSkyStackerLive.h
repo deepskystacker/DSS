@@ -129,7 +129,7 @@ protected slots:
 	void progress(const QString& str, int achieved, int total);
 	void endProgress();
 	void addImageToList(fs::path path);
-	void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
+	void fileLoaded(std::shared_ptr<QImage> image, fs::path file);
 	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 	void fileNotStackable(fs::path file);
 	void fileStacked(std::shared_ptr<CLightFrameInfo> p);
@@ -138,7 +138,8 @@ protected slots:
 	void handleWarning(QString text);
 	void setImageOffsets(QString name, double dx, double dy, double angle);
 	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
-
+	void showStackedImage(std::shared_ptr<QImage> image, double exposure);
+	void stackedImageSaved();
 
 private:
 	bool initialised;
@@ -164,7 +165,7 @@ private:
 	std::atomic_uint32_t pendingImageCnt;		// was m_lNrPending
 	std::atomic_uint32_t registeredImageCnt;	// was m_lNrRegistered
 	std::atomic_uint32_t stackedImageCnt;		// was m_lNrStacked
-	std::chrono::duration<int, std::milli> totalExposure;
+	double totalExposure;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();

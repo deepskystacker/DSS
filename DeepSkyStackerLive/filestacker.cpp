@@ -42,6 +42,9 @@
 #include "RegisterEngine.h"
 #include "LiveSettings.h"
 #include "DeepSkyStackerLive.h"
+#include "Multitask.h"
+#include "BitmapIterator.h"
+#include "TIFFUtil.h"
 
 namespace DSS
 {
@@ -50,7 +53,8 @@ namespace DSS
 		stackingEnabled{ false },
 		pProgress{ progress },
 		liveSettings{ DSSLive::instance()->liveSettings.get() },
-		referenceFrameIsSet {false}
+		referenceFrameIsSet {false},
+		unsavedImageCount{ 0 }
 	{
 		ZTRACE_RUNTIME("File stacker active");
 		start();
@@ -112,62 +116,77 @@ namespace DSS
 	void FileStacker::stackNextImage()
 	{
 		ZFUNCTRACE_RUNTIME();
+
 		if (!referenceFrameIsSet)
 		{
 			if (liveSettings->IsDontStack_Until() && pending.size() < liveSettings->GetMinImages())
 				return;
 			else
 			{
-				// Select the best reference frame from all the available images
-				// (best score)
-				double maxScore = 0;
-				std::deque<std::shared_ptr<CLightFrameInfo>>::iterator	it,
-					bestit = pending.end();
-
-				for (it = pending.begin(); it != pending.end(); it++)
+				std::shared_ptr<CLightFrameInfo> lfi;
+				bool bestFrameFound{ false };
 				{
-					if ((*it)->m_fOverallQuality > maxScore)
+					QMutexLocker lock(&mutex);
+
+					// Select the best reference frame from all the available images
+					// (best score)
+					double maxScore = 0;
+					std::deque<std::shared_ptr<CLightFrameInfo>>::iterator	it,
+						bestit = pending.end();
+
+					for (it = pending.begin(); it != pending.end(); it++)
 					{
-						bestit = it;
-						maxScore = (*it)->m_fOverallQuality;
+						if ((*it)->m_fOverallQuality > maxScore)
+						{
+							bestit = it;
+							maxScore = (*it)->m_fOverallQuality;
+						}
 					}
+					if (bestit != pending.end())
+					{
+						bestFrameFound = true;
+						lfi = *bestit;
+						pending.erase(bestit);
+					}
+					else pending.clear();
 				}
 
-				if (bestit != pending.end())
+				if (bestFrameFound)
 				{
-					CLightFrameInfo& lfi{ *(*bestit) };
-					QString name{ QString::fromStdU16String(lfi.filePath.filename().generic_u16string()) };
+					QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string()) };
 
-					stackingEngine.ComputeOffset(lfi);
+					stackingEngine.ComputeOffset(*lfi);
 					emit setImageOffsets(name, 0, 0, 0);
 
-					stackingEngine.AddImage(lfi, pProgress);
-					emit fileStacked(*bestit);
-					emit setImageInfo(lfi.filePath, II_SETREFERENCE);
-
-					pending.erase(bestit);
+					stackingEngine.AddImage(*lfi, pProgress);
+					emit fileStacked(lfi);
+					emit setImageInfo(lfi->filePath, II_SETREFERENCE);
 					referenceFrameIsSet = true;
 				}
-				else
-					pending.clear();
+
 			}
 		}
 		else
 		{
-			CLightFrameInfo			lfi;
 			double					dX, dY, angle;
 			QString					strError;
 			QString					strText;
 			bool					error = false;
 			bool					warning = false;
 			QString					strWarning;
-			std::shared_ptr<CLightFrameInfo> pInfo{ pending.front() };
 
-			lfi = *pInfo;
+			std::shared_ptr<CLightFrameInfo> pInfo;
+
+			{
+				QMutexLocker lock(&mutex);
+				pInfo = pending.front();
+				pending.pop_front();
+			}
+
+			CLightFrameInfo	lfi{ *pInfo };
 
 			QString name{ QString::fromStdU16String(lfi.filePath.filename().generic_u16string()) };
 
-			pending.pop_front();
 			if (stackingEngine.ComputeOffset(lfi))
 			{
 				lfi.m_BilinearParameters.Offsets(dX, dY);
@@ -188,6 +207,10 @@ namespace DSS
 
 					lfi.m_BilinearParameters.Footprint(pt1, pt2, pt3, pt4);
 					emit setImageFootprint(pt1, pt2, pt3, pt4);
+					//
+					// Call the mf that will save the stacked image and emit a signal o
+					//
+					saveStackedImage();			
 				}
 				else
 				{
@@ -287,5 +310,147 @@ namespace DSS
 		};
 
 		return result;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void FileStacker::saveImage(const std::shared_ptr<CMemoryBitmap>& pBitmap)
+	{
+		if (pBitmap)
+		{
+			QString	outputFile{ liveSettings->GetStackedOutputFolder() };
+			if (!outputFile.isEmpty())
+			{
+				outputFile += "/Autostack.tif";
+
+				fs::path file{ outputFile.toStdU16String() };
+
+				const QString description("Autostacked Image");
+				WriteTIFF(file, pBitmap.get(), pProgress, description, 0, -1, stackingEngine.GetTotalExposure(), 0.0);
+			}
+
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void FileStacker::saveStackedImage()
+	{
+		std::shared_ptr<CMemoryBitmap>	pStackedImage;
+
+		stackingEngine.GetStackedImage(pStackedImage);
+
+		auto image = makeQImage(pStackedImage);
+
+		emit showStackedImage(image, stackingEngine.GetTotalExposure());
+
+		++unsavedImageCount;
+		if (liveSettings->IsStack_Save() &&
+			liveSettings->GetSaveCount() <= unsavedImageCount)
+		{
+			// Save the stacked image in the output folder
+			saveImage(pStackedImage);
+			emit stackedImageSaved();
+
+
+			unsavedImageCount = 0;
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	std::shared_ptr<QImage>	FileStacker::makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage)
+	{
+		ZFUNCTRACE_RUNTIME();
+		size_t			width = pStackedImage->Width(), height = pStackedImage->Height();
+		const int numberOfProcessors = CMultitask::GetNrProcessors();
+
+		std::shared_ptr<QImage> image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
+
+		struct thread_vars {
+			const CMemoryBitmap* source;
+			BitmapIteratorConst<const CMemoryBitmap*> pixelItSrc;
+			explicit thread_vars(const CMemoryBitmap* s) : source{ s }, pixelItSrc{ source }
+			{}
+			thread_vars(const thread_vars& rhs) : source{ rhs.source }, pixelItSrc{ rhs.source }
+			{}
+		};
+
+		//
+		//				**** W A R N I N G ***
+		// 
+		// Calling QImage::bits() on a non-const QImage causes a
+		// deep copy of the image data on the assumption that it's
+		// about to be changed. That's fine
+		//
+		// Unfortunately QImage::scanLine does the same thing, which
+		// means that it's not safe to use it inside openmp loops, as
+		// the deep copy code isn't thread safe.
+		// 
+		// In any case making a deep copy of the image data for every
+		// row of the image data is hugely inefficient.
+		//
+
+		if (pStackedImage->IsMonochrome() && pStackedImage->IsCFA())
+		{
+			// Slow Method
+
+			//
+			// Point to the first RGB quad in the QImage which we
+			// need to cast to QRgb* (which is unsigned int*) from
+			// unsigned char * which is what QImage::bits() returns
+			//
+
+			auto pImageData = image->bits();
+			auto bytes_per_line = image->bytesPerLine();
+
+#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+			for (int j = 0; j < height; j++)
+			{
+				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+				for (int i = 0; i < width; i++)
+				{
+					double			fRed, fGreen, fBlue;
+					pStackedImage->GetPixel(i, j, fRed, fGreen, fBlue);
+
+					*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+						std::clamp(fGreen, 0.0, 255.0),
+						std::clamp(fBlue, 0.0, 255.0));
+				}
+			}
+		}
+		else
+		{
+			// Fast Method
+
+			//
+			// Point to the first RGB quad in the QImage which we
+			// need to cast to QRgb* (which is unsigned int*) from
+			// unsigned char * which is what QImage::bits() returns
+			//
+
+			auto pImageData = image->bits();
+			auto bytes_per_line = image->bytesPerLine();
+			thread_vars threadVars(pStackedImage.get());
+
+#pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+			for (int j = 0; j < height; j++)
+			{
+				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+				threadVars.pixelItSrc.Reset(0, j);
+
+				for (int i = 0; i < width; i++, ++threadVars.pixelItSrc, ++pOutPixel)
+				{
+					double			fRed, fGreen, fBlue;
+					threadVars.pixelItSrc.GetPixel(fRed, fGreen, fBlue);
+
+					*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
+						std::clamp(fGreen, 0.0, 255.0),
+						std::clamp(fBlue, 0.0, 255.0));
+				}
+			}
+		};
+
+		return image;
 	};
 }

@@ -204,14 +204,14 @@ namespace DSS
 			m_dwMinImages = dwMinImages;
 		};
 
-		DWORD	GetSaveCount()
+		std::uint32_t GetSaveCount()
 		{
-			return (double)m_dwSaveCount;
+			return m_dwSaveCount;
 		};
 
-		void	SetSaveCount(DWORD dwSaveCount)
+		void SetSaveCount(std::uint32_t count)
 		{
-			m_dwSaveCount = dwSaveCount;
+			m_dwSaveCount = count;
 		};
 
 		double	GetFWHM()

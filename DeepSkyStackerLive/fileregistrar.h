@@ -54,7 +54,7 @@ namespace DSS
 	signals:
 		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
 		void addImageToList(fs::path file);
-		void fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file);
+		void fileLoaded(std::shared_ptr<QImage> image, fs::path file);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 		void fileNotStackable(fs::path file);
 		void setImageInfo(fs::path file, STACKIMAGEINFO info);
@@ -75,7 +75,7 @@ namespace DSS
 		}
 
 	private:
-		volatile bool registrationEnabled;
+		volatile bool registrationEnabled;		// OK to use volatile for bool (but nothing else)
 		ProgressLive* pProgress;
 		QWaitCondition condvar;
 		QMutex mutex;

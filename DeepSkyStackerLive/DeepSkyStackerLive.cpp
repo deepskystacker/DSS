@@ -244,7 +244,7 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	pendingImageCnt{ 0 },
 	registeredImageCnt{ 0 },
 	stackedImageCnt{ 0 },
-	totalExposure{ std::chrono::milliseconds{0} }
+	totalExposure{ 0.0 }
 {
 	//
 	// Must set dssInstance before invoking setupUi 
@@ -390,6 +390,10 @@ void DeepSkyStackerLive::createFileStacker()
 	//	this, &DSSLive::setImageInfo);
 	connect(fileStacker, &FileStacker::handleWarning,
 		this, &DSSLive::handleWarning);
+	connect(fileStacker, &FileStacker::showStackedImage,
+		this, &DSSLive::showStackedImage);
+	connect(fileStacker, &FileStacker::stackedImageSaved,
+		this, &DSSLive::stackedImageSaved);
 }
 
 /* ------------------------------------------------------------------- */
@@ -521,6 +525,13 @@ void DeepSkyStackerLive::onInitialise()
 	progressBar->setVisible(false);
 
 	//
+	// Similarly for the copy to clipboard messages in the image viewers
+	//
+	lastImage->copyToClipboard->setSizePolicy(sp);
+	lastImage->copyToClipboard->setVisible(false);
+	stackedImage->copyToClipboard->setSizePolicy(sp);
+	stackedImage->copyToClipboard->setVisible(false);
+
 	// Create a QLabel on top of the progress bar to display text.
 	//
 	progressLabel->setAlignment(Qt::AlignCenter);
@@ -1038,13 +1049,24 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::fileLoaded(std::shared_ptr<CMemoryBitmap> bitmap, std::shared_ptr<QImage> image, fs::path file)
+void DeepSkyStackerLive::fileLoaded(std::shared_ptr<QImage> image, fs::path file)
 {
 	QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 	lastImage->picture->setPixmap(QPixmap::fromImage(*image));
 
 	changeImageStatus(name, ImageStatus::loaded);
 }
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::showStackedImage(std::shared_ptr<QImage> image, double exposure)
+{
+	stackedImage->picture->setPixmap(QPixmap::fromImage(*image));
+	stackedImage->copyToClipboard->setVisible(true);
+	totalExposure = exposure;
+}
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus status)
 {
@@ -1185,6 +1207,12 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 	updateStatusMessage();
 }
 
+void DeepSkyStackerLive::stackedImageSaved()
+{
+	QString text{ tr("The stacked image has been saved", "IDS_STACKEDIMAGESAVED") };
+	stackedImage->information->setText(text);
+}
+
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::fileNotStackable(fs::path file)
@@ -1211,8 +1239,7 @@ void DSSLive::handleWarning(QString warning)
 
 void DeepSkyStackerLive::updateStatusMessage()
 {
-	double msecs{ static_cast<double>(totalExposure.count()) };
-	QString exposure{ exposureToString(msecs) };
+	QString exposure{ exposureToString(totalExposure) };
 	QString message{ tr("Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4")
 		.arg(pendingImageCnt).arg(registeredImageCnt).arg(stackedImageCnt).arg(exposure) };
 	statusMessage->setText(message);

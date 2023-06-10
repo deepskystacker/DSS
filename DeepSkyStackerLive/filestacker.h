@@ -61,6 +61,8 @@ namespace DSS
 		void setImageInfo(fs::path file, STACKIMAGEINFO info);
 		void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 		void handleWarning(QString text);
+		void showStackedImage(std::shared_ptr<QImage> image, double exposure);
+		void stackedImageSaved();
 
 	public:
 		FileStacker(QObject* parent = nullptr, ProgressLive* progress = nullptr);
@@ -77,7 +79,7 @@ namespace DSS
 		}
 
 	private:
-		bool stackingEnabled;
+		volatile bool stackingEnabled;		// OK to use volatile for bool (but nothing else)
 		ProgressLive* pProgress;
 		LiveSettings* liveSettings;
 		QWaitCondition condvar;
@@ -85,10 +87,14 @@ namespace DSS
 		std::deque<std::shared_ptr<CLightFrameInfo>> pending;
 		bool referenceFrameIsSet;
 		CRunningStackingEngine stackingEngine;
+		std::uint32_t unsavedImageCount;
 
 		void stackNextImage();
 		bool isImageStackable(const fs::path& file, double fdX, double fdY, double fAngle, QString& error);
 		bool imageWarning(const fs::path& file, double fdX, double fdY, double fAngle, QString& warning);
+		void saveStackedImage();
+		std::shared_ptr<QImage> makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage);
+		void saveImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
 
 
 	};
