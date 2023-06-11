@@ -360,9 +360,9 @@ void PostCalibration::on_testCosmetic_clicked()
 					bmpInfo.GetDescription(strDescription);
 					QString name{ QString::fromStdU16String(filePath.generic_u16string()) };
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;

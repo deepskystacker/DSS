@@ -63,8 +63,6 @@ namespace DSS
 	void ImageViewer::connectSignalsToSlots()
 	{
 		connect(fourCorners, SIGNAL(clicked(bool)), picture, SLOT(on_fourCorners_clicked(bool)));
-		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
-		connect(&imageLoader, SIGNAL(imageLoadFailed()), this, SLOT(imageLoadFailed()));
 		connect(gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
 		connect(gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
 
@@ -181,82 +179,11 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	//
-	// This member function/Slot is invoked under two conditions:
-	//
-	// 1. To request the loading of an image file which may or may not already be loadedImage,
-	//    by invoking imageLoader.load().
-	// 
-	//    If the image was previously loadedImage is still available in the image cache then the result will be true and 
-	//    both pBitMap and pImage will be set.
-	//
-	//    If the image is not in the cache, then the result will be false, and imageLoader.load will load the image
-	//    into the cache in a background thread running in the default Qt threadpool.
-	//
-	// 2. On completion of image loading by the background thread.  In this case the image will now be available in 
-	//    the cache, so invoking imageLoader.load() will now return true.
-	//
-	void ImageViewer::imageLoad()
+	void ImageViewer::setLoadedImage(std::shared_ptr<LoadedImage> p)
 	{
-		std::shared_ptr<CMemoryBitmap>	pBitmap;
-		std::shared_ptr<QImage>	pImage;
-		QString fileName;
-		if (!fileToShow.empty()) fileName = QString::fromStdU16String(fileToShow.generic_u16string());
-
-		try
-		{
-			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
-			{
-				//
-				// The image we want is available in the cache
-				//
-				loadedImage.m_Image = pImage;
-				loadedImage.m_pBitmap = pBitmap;
-				if (gammaTransformation.isInitialized())
-					ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
-				picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));
-
-				information->setStyleSheet(
-					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
-					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
-				information->setText(fileName);
-			}
-			else if (!fileToShow.empty())
-			{
-				information->setStyleSheet(
-					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
-					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
-				information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-					.arg(fileName));
-			}
-			else
-			{
-				//
-				// Display the blue gradient with no text
-				//
-				information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-				information->setText("");
-			}
-		}
-		catch (ZAccessError&)
-		{
-			QApplication::beep();
-			QMessageBox::warning(this,
-				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(fileName));
-		}
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void ImageViewer::imageLoadFailed()
-	{
-		QApplication::beep();
-		QMessageBox::warning(this,
-			"DeepSkyStacker",
-			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
+		loadedImage = *p;
+		if (gammaTransformation.isInitialized())
+			ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
+		picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));
 	}
-
 }

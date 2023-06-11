@@ -1079,7 +1079,7 @@ bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		BitmapInfo.m_strFileName = path;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
-		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();
+		BitmapInfo.m_lBitsPerChannel = fits.BitPerChannels();
 		BitmapInfo.m_lNrChannels	= fits.NrChannels();
 		BitmapInfo.m_bFloat			= fits.IsFloat();
 		BitmapInfo.m_CFAType		= fits.GetCFAType();

@@ -142,14 +142,14 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 				bRAW = true;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;
-			lBitPerChannels = pTask->m_vBitmaps[i].m_lBitPerChannels;
+			lBitPerChannels = pTask->m_vBitmaps[i].m_lBitsPerChannel;
 			lNrChannels     = pTask->m_vBitmaps[i].m_lNrChannels;
 		};
 
 		// Check sizes
 		if ((lWidth != bmpInfo.m_lWidth) || (lHeight!=bmpInfo.m_lHeight))
 			bResult = false;
-		if ((lBitPerChannels != bmpInfo.m_lBitPerChannel) || (lNrChannels != bmpInfo.m_lNrChannels))
+		if ((lBitPerChannels != bmpInfo.m_lBitsPerChannel) || (lNrChannels != bmpInfo.m_lNrChannels))
 			bResult = false;
 		if (!bmpInfo.m_bMaster)
 			bResult = false;

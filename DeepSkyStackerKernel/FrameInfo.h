@@ -25,7 +25,7 @@ public :
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
-	int				m_lBitPerChannels;
+	int				m_lBitsPerChannel;
 	int				m_lNrChannels;
 	QString				m_strDateTime;
 	QDateTime			m_DateTime;
@@ -105,7 +105,7 @@ public :
 
 	bool IsCompatible(const CFrameInfo & cfi) const
 	{
-		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
+		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitsPerChannel, cfi.m_lNrChannels, cfi.m_CFAType);
 	};
 
 	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);

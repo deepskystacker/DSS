@@ -46,6 +46,18 @@
         <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <property name="topMargin">
+         <number>2</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>2</number>
+        </property>
         <item>
          <widget class="QLabel" name="information">
           <property name="sizePolicy">
@@ -74,7 +86,7 @@
            <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
           </property>
           <property name="text">
-           <string comment="IDC_COPYTOCLIPBOARD">Copy current picture to clipboard</string>
+           <string comment="IDC_COPYTOCLIPBOARD">&lt;a href='.' style='text-decoration: none;'&gt;Copy current picture to clipboard&lt;/a&gt;</string>
           </property>
          </widget>
         </item>

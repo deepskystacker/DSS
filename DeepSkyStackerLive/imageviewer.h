@@ -61,12 +61,11 @@ namespace DSS
 		ImageViewer(ImageViewer&& rhs) = delete;
 		ImageViewer& operator=(ImageViewer&& rhs) = delete;
 
+		void setLoadedImage(std::shared_ptr<LoadedImage> p);
+
 	public slots:
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
-
-		void imageLoad();
-		void imageLoadFailed();
 
 	private:
 
@@ -74,7 +73,6 @@ namespace DSS
 		fs::path fileToShow;
 		GammaTransformation	gammaTransformation;
 
-		ImageLoader		imageLoader;
 		LoadedImage		loadedImage;
 
 		void connectSignalsToSlots();

@@ -1164,11 +1164,11 @@ void CLightFrameInfo::RegisterPicture()
 		bmpInfo.GetDescription(strDescription);
 
 		if (bmpInfo.m_lNrChannels == 3)
-			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE").arg(bmpInfo.m_lBitPerChannel)
+			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE").arg(bmpInfo.m_lBitsPerChannel)
 			.arg(strDescription)
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 		else
-			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE").arg(bmpInfo.m_lBitPerChannel)
+			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE").arg(bmpInfo.m_lBitsPerChannel)
 			.arg(strDescription)
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 
@@ -1396,9 +1396,9 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			bmpInfo->GetDescription(strDescription);
 			QString strText2;
 			if (bmpInfo->m_lNrChannels == 3)
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
 			else
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
 			if (pProgress != nullptr)
 				pProgress->Start2(strText2, 0);
 

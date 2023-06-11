@@ -50,7 +50,7 @@ public:
 	double m_fAperture;
 	int m_lWidth;
 	int m_lHeight;
-	int m_lBitPerChannel;
+	int m_lBitsPerChannel;
 	int m_lNrChannels;
 	bool m_bCanLoad;
 	bool m_bFloat;

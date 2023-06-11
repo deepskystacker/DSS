@@ -193,9 +193,9 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		m_ImageList.SetItemText(nItem, COLUMN_SIZES, (LPCTSTR)strSizes);
 
 		if (lfi.m_lNrChannels == 3)
-			strDepth.Format(IDS_FORMAT_RGB, bmpInfo.m_lBitPerChannel);
+			strDepth.Format(IDS_FORMAT_RGB, bmpInfo.m_lBitsPerChannel);
 		else
-			strDepth.Format(IDS_FORMAT_GRAY, bmpInfo.m_lBitPerChannel);
+			strDepth.Format(IDS_FORMAT_GRAY, bmpInfo.m_lBitsPerChannel);
 		m_ImageList.SetItemText(nItem, COLUMN_DEPTH, (LPCTSTR)strDepth);
 
 		CString strText;

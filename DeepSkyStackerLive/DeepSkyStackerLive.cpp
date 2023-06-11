@@ -226,7 +226,7 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	Ui_DeepSkyStackerLive {},
 	liveSettings {make_unique<LiveSettings>()},
 	initialised{ false },
-	monitoring {false}, 
+	monitoring { false }, 
 	winHost{ nullptr },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -275,10 +275,11 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	emit stopMonitor();	
 
 	//
-	// Delete the file registrar and file stacker (which will also stop them).
+	// Delete the file stacker and file registrar (which will also stop them).
+	// Note: It's important that the fileStacker is deleted first!
 	//
-	delete fileRegistrar; fileRegistrar = nullptr;
 	delete fileStacker; fileStacker = nullptr;
+	delete fileRegistrar; fileRegistrar = nullptr;
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
@@ -338,6 +339,14 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 		this, &DSSLive::progress);
 	connect(pProgress, &ProgressLive::endProgress,
 		this, &DSSLive::endProgress);
+
+	// Links in labels on stackedImage and lastImage tabs
+	connect(stackedImage->information, &QLabel::linkActivated,
+		this, &DSSLive::saveStackedImage);
+	connect(stackedImage->copyToClipboard, &QLabel::linkActivated,
+		this, &DSSLive::copyStackedImage);
+	connect(lastImage->copyToClipboard, &QLabel::linkActivated,
+		this, &DSSLive::copyLastImage);
 }
 
 void DeepSkyStackerLive::connectMonitorSignals()
@@ -523,6 +532,12 @@ void DeepSkyStackerLive::onInitialise()
 	sp.setRetainSizeWhenHidden(true);
 	progressBar->setSizePolicy(sp);
 	progressBar->setVisible(false);
+
+	//
+	// Set initial text for image viewer tabs information text
+	//
+	stackedImage->information->setText(tr("No stacked image", "IDS_NOSTACKEDIMAGE"));
+	lastImage->information->setText(tr("No image loaded", "IDS_NOIMAGELOADED"));
 
 	//
 	// Similarly for the copy to clipboard messages in the image viewers
@@ -1049,10 +1064,12 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::fileLoaded(std::shared_ptr<QImage> image, fs::path file)
+void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image)
 {
-	QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
-	lastImage->picture->setPixmap(QPixmap::fromImage(*image));
+	QString name{ QString::fromStdU16String(image->fileName.filename().generic_u16string()) };
+	lastImage->setLoadedImage(image);
+	lastImage->copyToClipboard->setVisible(true);
+	lastImage->information->setText(name);
 
 	changeImageStatus(name, ImageStatus::loaded);
 }
@@ -1063,7 +1080,12 @@ void DeepSkyStackerLive::showStackedImage(std::shared_ptr<QImage> image, double 
 {
 	stackedImage->picture->setPixmap(QPixmap::fromImage(*image));
 	stackedImage->copyToClipboard->setVisible(true);
+	stackedImage->information->setText(
+		QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>")
+		.arg(palette().color(QPalette::ColorRole::WindowText).name())
+		.arg(tr("Click here to save the stacked image to file", "IDS_SAVESTACKEDIMAGE")));
 	totalExposure = exposure;
+	updateStatusMessage();
 }
 
 /* ------------------------------------------------------------------- */
@@ -1134,18 +1156,36 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 	ZTRACE_RUNTIME("File %s registered", name.toUtf8().constData());
 	changeImageStatus(name, ImageStatus::registered);
 	CBitmapInfo				bmpInfo;
+	QString temp;
 
 	GetPictureInfo(lfi->filePath, bmpInfo);
-	lfi->SetBitmap(lfi->filePath, false, false);
+	//lfi->m_fExposure = bmpInfo.m_fExposure;
+	//lfi->m_fAperture = bmpInfo.m_fAperture;
+	lfi->m_strDateTime = bmpInfo.m_strDateTime;
+	lfi->m_DateTime = bmpInfo.m_DateTime;
+	//lfi->m_lWidth = bmpInfo.m_lWidth;
+	//lfi->m_lHeight = bmpInfo.m_lHeight;
+	//lfi->m_lISOSpeed = bmpInfo.m_lISOSpeed;
+	//lfi->m_lGain = bmpInfo.m_lGain;
+	//lfi->m_lBitsPerChannel = bmpInfo.m_lBitsPerChannel;
+	temp = bmpInfo.m_strFileType;
+	if (bmpInfo.m_strModel.length())
+		temp += " " + bmpInfo.m_strModel;
+	lfi->m_strInfos = temp;
+	temp = "";
 
-	fileStacker->addFile(lfi);
+	//
+	// Add the file to the stacking work queue 
+	//
+	if (nullptr != fileStacker)
+		fileStacker->addFile(lfi);
+	
 	QLocale locale;
-	QString temp;
 	for (int row = 0; row < imageList->rowCount(); ++row)
 	{
 		if (name == imageList->item(row, static_cast<int>(ImageListColumns::File))->text())
 		{
-			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(bmpInfo.m_fExposure));
+			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(lfi->m_fExposure));
 			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
 			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 0));
@@ -1164,23 +1204,18 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 				temp = tr("Yes", "IDS_YES");
 			imageList->item(row, static_cast<int>(ImageListColumns::CFA))->setText(temp);
 			if (lfi->m_lNrChannels == 3)
-				temp = tr("RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(bmpInfo.m_lBitPerChannel);
+				temp = tr("RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lfi->m_lBitsPerChannel);
 			else
-				temp = tr("Gray %1 bit", "IDS_FORMAT_GRAY").arg(bmpInfo.m_lBitPerChannel);
-
+				temp = tr("Gray %1 bit", "IDS_FORMAT_GRAY").arg(lfi->m_lBitsPerChannel);
 			imageList->item(row, static_cast<int>(ImageListColumns::Depth))->setText(temp);
-			temp = bmpInfo.m_strFileType;
-			if (bmpInfo.m_strModel.length())
-				temp += " " + bmpInfo.m_strModel;
-			imageList->item(row, static_cast<int>(ImageListColumns::Info))->setText(temp);
-			temp = "";
-			if (bmpInfo.m_lISOSpeed)
+			imageList->item(row, static_cast<int>(ImageListColumns::Info))->setText(lfi->m_strInfos);
+			if (lfi->m_lISOSpeed)
 			{
-				temp = isoToString(bmpInfo.m_lISOSpeed);
+				temp = isoToString(lfi->m_lISOSpeed);
 			}
-			else if (bmpInfo.m_lGain >= 0)
+			else if (lfi->m_lGain >= 0)
 			{
-				temp = gainToString(bmpInfo.m_lGain);
+				temp = gainToString(lfi->m_lGain);
 			}
 			imageList->item(row, static_cast<int>(ImageListColumns::ISOGain))->setText(temp);
 			temp = tr("%1%").arg(locale.toString(lfi->m_SkyBackground.m_fLight * 100.0, 'f', 2));
@@ -1196,6 +1231,8 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 
 }
 
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 {
 	QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string().c_str()) };
@@ -1207,6 +1244,28 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 	updateStatusMessage();
 }
 
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::copyStackedImage()
+{
+	QMessageBox::information(this, "Work in progress", "To be written");
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::saveStackedImage()
+{
+	QMessageBox::information(this, "Work in progress", "To be written");
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::copyLastImage()
+{
+	QMessageBox::information(this, "Work in progress", "To be written");
+}
+
+/* ------------------------------------------------------------------- */
 void DeepSkyStackerLive::stackedImageSaved()
 {
 	QString text{ tr("The stacked image has been saved", "IDS_STACKEDIMAGESAVED") };

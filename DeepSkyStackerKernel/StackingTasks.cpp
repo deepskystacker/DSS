@@ -77,33 +77,33 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			break;
 		case PICTURETYPE_DARKFLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			break;
 		case PICTURETYPE_OFFSETFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			break;
 		case PICTURETYPE_FLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
 			bOverrideRAW = false;
 			break;
 		};
@@ -1858,7 +1858,7 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 			lWidth = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
 			lHeight = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
 			lNrChannels = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
-			lNrBytesPerChannel = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
+			lNrBytesPerChannel = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitsPerChannel/8;
 
 			ulSpace	= static_cast<std::int64_t>(lWidth) * lHeight * lNrBytesPerChannel * lNrChannels;
 			ulLSpace = static_cast<std::int64_t>(lWidth) * lHeight * 2 * 3;

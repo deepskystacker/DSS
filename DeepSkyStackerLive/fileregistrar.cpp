@@ -129,9 +129,9 @@ namespace DSS
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+				strText = tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 			else
-				strText = tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(name);
+				strText = tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 
 			pProgress->Start2(strText, 0);
 			CAllDepthBitmap				adb;
@@ -142,7 +142,12 @@ namespace DSS
 
 			if (result)
 			{
-				emit fileLoaded(adb.m_Image, file);
+				std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
+				loadedImage->fileName = file;
+				loadedImage->m_pBitmap = adb.m_pBitmap;
+				loadedImage->m_Image = adb.m_Image;
+
+				emit fileLoaded(loadedImage);
 
 				std::shared_ptr<CLightFrameInfo>  lfi {std::make_shared<CLightFrameInfo>()};
 				// Now register the image

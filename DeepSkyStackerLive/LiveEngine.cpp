@@ -279,9 +279,9 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 
 		bmpInfo.GetDescription(strDescription);
 		if (bmpInfo.m_lNrChannels==3)
-			strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
+			strText = QCoreApplication::translate("LiveEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
 		else
-			strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
+			strText = QCoreApplication::translate("LiveEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(QString::fromWCharArray(szFileName));
 
 		Start2(strText, 0);
 		CAllDepthBitmap				adb;

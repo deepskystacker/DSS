@@ -129,7 +129,7 @@ protected slots:
 	void progress(const QString& str, int achieved, int total);
 	void endProgress();
 	void addImageToList(fs::path path);
-	void fileLoaded(std::shared_ptr<QImage> image, fs::path file);
+	void fileLoaded(std::shared_ptr<LoadedImage> image);
 	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 	void fileNotStackable(fs::path file);
 	void fileStacked(std::shared_ptr<CLightFrameInfo> p);
@@ -140,6 +140,9 @@ protected slots:
 	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 	void showStackedImage(std::shared_ptr<QImage> image, double exposure);
 	void stackedImageSaved();
+	void saveStackedImage();
+	void copyStackedImage();
+	void copyLastImage();
 
 private:
 	bool initialised;

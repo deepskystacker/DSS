@@ -1736,7 +1736,7 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
-		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();
+		BitmapInfo.m_lBitsPerChannel = tiff.BitPerChannels();
 		BitmapInfo.m_lNrChannels	= tiff.NrChannels();
 		BitmapInfo.m_bFloat			= tiff.IsFloat();
 		BitmapInfo.m_CFAType		= tiff.GetCFAType();

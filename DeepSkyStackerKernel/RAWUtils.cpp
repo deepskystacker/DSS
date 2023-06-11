@@ -936,7 +936,7 @@ bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo)
 			BitmapInfo.m_CFAType	 = dcr.GetCFAType();
 		BitmapInfo.m_lWidth			 = dcr.Width();
 		BitmapInfo.m_lHeight		 = dcr.Height();
-		BitmapInfo.m_lBitPerChannel  = 16;
+		BitmapInfo.m_lBitsPerChannel  = 16;
 		BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
 		BitmapInfo.m_bCanLoad		 = true;
 		BitmapInfo.m_strModel = dcr.getModel();

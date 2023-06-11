@@ -1072,7 +1072,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 						if ((0xC0 <= b) and (b <= 0xCF) and (b != 0xC4) and (b != 0xC8) and (b != 0xCC))
 						{
 							f.seekg(2, std::ios::cur);
-							BitmapInfo.m_lBitPerChannel = f.get();
+							BitmapInfo.m_lBitsPerChannel = f.get();
 							BitmapInfo.m_lHeight = big_endian::read_word(f);
 							BitmapInfo.m_lWidth = big_endian::read_word(f);
 							BitmapInfo.m_lNrChannels = f.get();
@@ -1111,7 +1111,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 					BitmapInfo.m_lWidth = big_endian::read_dword(f);
 					BitmapInfo.m_lHeight = big_endian::read_dword(f);
-					BitmapInfo.m_lBitPerChannel = f.get();
+					BitmapInfo.m_lBitsPerChannel = f.get();
 
 					char colorType = f.get();
 					switch (colorType)
@@ -1805,7 +1805,7 @@ void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
 	m_fAperture = bi.m_fAperture;
 	m_lWidth = bi.m_lWidth;
 	m_lHeight = bi.m_lHeight;
-	m_lBitPerChannel = bi.m_lBitPerChannel;
+	m_lBitsPerChannel = bi.m_lBitsPerChannel;
 	m_lNrChannels = bi.m_lNrChannels;
 	m_bCanLoad = bi.m_bCanLoad;
 	m_bFloat = bi.m_bFloat;
@@ -1825,7 +1825,7 @@ void CBitmapInfo::Init()
 {
 	m_lWidth = 0;
 	m_lHeight = 0;
-	m_lBitPerChannel = 0;
+	m_lBitsPerChannel = 0;
 	m_lNrChannels = 0;
 	m_bCanLoad = false;
 	m_CFAType = CFATYPE_NONE;
