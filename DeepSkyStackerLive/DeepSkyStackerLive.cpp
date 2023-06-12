@@ -1076,9 +1076,9 @@ void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::showStackedImage(std::shared_ptr<QImage> image, double exposure)
+void DeepSkyStackerLive::showStackedImage(std::shared_ptr<LoadedImage> li, double exposure)
 {
-	stackedImage->picture->setPixmap(QPixmap::fromImage(*image));
+	stackedImage->setLoadedImage(li);
 	stackedImage->copyToClipboard->setVisible(true);
 	stackedImage->information->setText(
 		QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>")

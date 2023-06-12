@@ -41,6 +41,7 @@
 #include "RunningStackingEngine.h"
 
 class CLightFrameInfo;
+class LoadedImage;
 
 namespace DSS
 {
@@ -61,7 +62,7 @@ namespace DSS
 		void setImageInfo(fs::path file, STACKIMAGEINFO info);
 		void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 		void handleWarning(QString text);
-		void showStackedImage(std::shared_ptr<QImage> image, double exposure);
+		void showStackedImage(std::shared_ptr<LoadedImage> li, double exposure);
 		void stackedImageSaved();
 
 	public:
@@ -92,7 +93,7 @@ namespace DSS
 		void stackNextImage();
 		bool isImageStackable(const fs::path& file, double fdX, double fdY, double fAngle, QString& error);
 		bool imageWarning(const fs::path& file, double fdX, double fdY, double fAngle, QString& warning);
-		void saveStackedImage();
+		void saveStackedImage(const fs::path& file);
 		std::shared_ptr<QImage> makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage);
 		void saveImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
 

@@ -162,6 +162,11 @@ namespace DSS
 					emit fileStacked(lfi);
 					emit setImageInfo(lfi->filePath, II_SETREFERENCE);
 					referenceFrameIsSet = true;
+					//
+					// Call the mf that will save the stacked image and emit a signal o
+					//
+					saveStackedImage(lfi->filePath);
+
 				}
 
 			}
@@ -210,7 +215,7 @@ namespace DSS
 					//
 					// Call the mf that will save the stacked image and emit a signal o
 					//
-					saveStackedImage();			
+					saveStackedImage(lfi.filePath);			
 				}
 				else
 				{
@@ -334,7 +339,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FileStacker::saveStackedImage()
+	void FileStacker::saveStackedImage(const fs::path& file)
 	{
 		std::shared_ptr<CMemoryBitmap>	pStackedImage;
 
@@ -342,7 +347,12 @@ namespace DSS
 
 		auto image = makeQImage(pStackedImage);
 
-		emit showStackedImage(image, stackingEngine.GetTotalExposure());
+		std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
+		loadedImage->fileName = file;
+		loadedImage->m_pBitmap = pStackedImage;
+		loadedImage->m_Image = image;
+
+		emit showStackedImage(loadedImage, stackingEngine.GetTotalExposure());
 
 		++unsavedImageCount;
 		if (liveSettings->IsStack_Save() &&
