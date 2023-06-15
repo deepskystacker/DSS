@@ -165,7 +165,7 @@ namespace DSS
 					//
 					// Call the mf that will save the stacked image and emit a signal o
 					//
-					saveStackedImage(lfi->filePath);
+					emitStackedImage(lfi->filePath);
 
 				}
 
@@ -215,7 +215,7 @@ namespace DSS
 					//
 					// Call the mf that will save the stacked image and emit a signal o
 					//
-					saveStackedImage(lfi.filePath);			
+					emitStackedImage(lfi.filePath);			
 				}
 				else
 				{
@@ -319,19 +319,31 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FileStacker::saveImage(const std::shared_ptr<CMemoryBitmap>& pBitmap)
+	void FileStacker::saveStackedImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage)
 	{
-		if (pBitmap)
+		ZFUNCTRACE_RUNTIME();
+		if (pStackedImage)
 		{
+			ZTRACE_RUNTIME("First 128 bytes of stacked image");
+			int scanLineSize = (pStackedImage->BitPerSample() * (pStackedImage->IsMonochrome() ? 1 : 3) * pStackedImage->Width() / 8);
+			void* scanLine = (void*)malloc(scanLineSize);
+
+			pStackedImage->GetScanLine(0, scanLine);
+
+			ZTrace::dumpHex(scanLine, 128);
+
+			free(scanLine);
+
 			QString	outputFile{ liveSettings->GetStackedOutputFolder() };
 			if (!outputFile.isEmpty())
 			{
 				outputFile += "/Autostack.tif";
 
 				fs::path file{ outputFile.toStdU16String() };
+				fs::remove(file);
 
 				const QString description("Autostacked Image");
-				WriteTIFF(file, pBitmap.get(), pProgress, description, 0, -1, stackingEngine.GetTotalExposure(), 0.0);
+				WriteTIFF(file, pStackedImage.get(), pProgress, description, 0, -1, stackingEngine.GetTotalExposure(), 0.0);
 			}
 
 		};
@@ -339,11 +351,10 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FileStacker::saveStackedImage(const fs::path& file)
+	void FileStacker::emitStackedImage(const fs::path& file)
 	{
-		std::shared_ptr<CMemoryBitmap>	pStackedImage;
-
-		stackingEngine.GetStackedImage(pStackedImage);
+		ZFUNCTRACE_RUNTIME();
+		std::shared_ptr<CMemoryBitmap>	pStackedImage{ stackingEngine.getStackedImage() };
 
 		auto image = makeQImage(pStackedImage);
 
@@ -359,7 +370,7 @@ namespace DSS
 			liveSettings->GetSaveCount() <= unsavedImageCount)
 		{
 			// Save the stacked image in the output folder
-			saveImage(pStackedImage);
+			saveStackedImage(pStackedImage);
 			emit stackedImageSaved();
 
 
@@ -374,6 +385,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		size_t			width = pStackedImage->Width(), height = pStackedImage->Height();
 		const int numberOfProcessors = CMultitask::GetNrProcessors();
+		uchar* pImageData{ nullptr };
 
 		std::shared_ptr<QImage> image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
 
@@ -411,7 +423,7 @@ namespace DSS
 			// unsigned char * which is what QImage::bits() returns
 			//
 
-			auto pImageData = image->bits();
+			pImageData = image->bits();
 			auto bytes_per_line = image->bytesPerLine();
 
 #pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
@@ -439,7 +451,7 @@ namespace DSS
 			// unsigned char * which is what QImage::bits() returns
 			//
 
-			auto pImageData = image->bits();
+			pImageData = image->bits();
 			auto bytes_per_line = image->bytesPerLine();
 			thread_vars threadVars(pStackedImage.get());
 

@@ -59,6 +59,15 @@ void CRunningStackingEngine::CreatePublicBitmap()
 				++itOut;
 			}
 		}
+		ZTRACE_RUNTIME("First 128 bytes of m_pPublicBitmap");
+		int	scanLineSize = (m_pPublicBitmap->BitPerSample() * (m_pPublicBitmap->IsMonochrome() ? 1 : 3) * m_pPublicBitmap->Width() / 8);
+
+		void* scanLine = (void*)malloc(scanLineSize);
+		m_pPublicBitmap->GetScanLine(0, scanLine);
+
+		ZTrace::dumpHex(scanLine, 128);
+
+		free(scanLine);
 	}
 }
 

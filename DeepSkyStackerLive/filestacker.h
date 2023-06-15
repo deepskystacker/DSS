@@ -93,9 +93,9 @@ namespace DSS
 		void stackNextImage();
 		bool isImageStackable(const fs::path& file, double fdX, double fdY, double fAngle, QString& error);
 		bool imageWarning(const fs::path& file, double fdX, double fdY, double fAngle, QString& warning);
-		void saveStackedImage(const fs::path& file);
+		void emitStackedImage(const fs::path& file);
 		std::shared_ptr<QImage> makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage);
-		void saveImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
+		void saveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
 
 
 	};
