@@ -40,9 +40,11 @@ private:
 
 	static consteval double initClamp()
 	{
-		if (std::is_same_v<TType, std::uint16_t> ||
-			std::is_same_v<TType, double> ||
-			std::is_same_v < TType, float>)
+		if (std::is_same_v<TType, double>)
+			return std::numeric_limits<double>::max();
+		else if (std::is_same_v<TType, float>)
+			return std::numeric_limits<float>::max();
+		else if (std::is_same_v<TType, std::uint16_t>)
 			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
 		else if (std::is_same_v<TType, std::uint32_t>)
 			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4294967295.0 ] 
