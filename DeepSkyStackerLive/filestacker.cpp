@@ -324,15 +324,6 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		if (pStackedImage)
 		{
-			ZTRACE_RUNTIME("First 128 bytes of stacked image");
-			int scanLineSize = (pStackedImage->BitPerSample() * (pStackedImage->IsMonochrome() ? 1 : 3) * pStackedImage->Width() / 8);
-			void* scanLine = (void*)malloc(scanLineSize);
-
-			pStackedImage->GetScanLine(0, scanLine);
-
-			ZTrace::dumpHex(scanLine, 128);
-
-			free(scanLine);
 
 			QString	outputFile{ liveSettings->GetStackedOutputFolder() };
 			if (!outputFile.isEmpty())
