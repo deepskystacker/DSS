@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>RestartMonitoring</class>
+ <widget class="QDialog" name="RestartMonitoring">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -39,7 +39,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="createNew">
           <property name="text">
            <string comment="IDC_CREATENEWSTACKEDIMAGE">Create a new empty stacked image</string>
           </property>
@@ -96,7 +96,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="useCurrent">
           <property name="text">
            <string comment="IDC_STARTFROMCURRENTSTACKEDIMAGE">Start from the current stacked image</string>
           </property>
@@ -126,7 +126,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QRadioButton" name="dropPending">
           <property name="text">
            <string comment="IDC_DROPPENDINGIMAGES">Drop all the pending images</string>
           </property>
@@ -183,7 +183,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_4">
+         <widget class="QRadioButton" name="usePending">
           <property name="text">
            <string comment="IDC_USEPENDINGIMAGES">Use and process the pending images</string>
           </property>
@@ -232,7 +232,7 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup1"/>
   <buttongroup name="buttonGroup2"/>
+  <buttongroup name="buttonGroup1"/>
  </buttongroups>
 </ui>

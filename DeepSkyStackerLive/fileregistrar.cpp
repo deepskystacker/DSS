@@ -104,9 +104,11 @@ namespace DSS
 	 
 	void FileRegistrar::addFile(fs::path file)
 	{
-		ZTRACE_RUNTIME(" Adding file %s to work queue", file.filename().generic_string().c_str());
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
+		ZTRACE_RUNTIME(" Adding file %s to work queue", name.toUtf8().constData());
 		emit addImageToList(file);		// Add the image to the image list in Pending state
 		QMutexLocker lock(&mutex);
+		emit writeToLog(tr("-> New file: %1\n","IDS_LOG_NEWFILE").arg(name), false, false, false, Qt::green);
 		pending.emplace_back(file);
 		if (registrationEnabled)
 		{

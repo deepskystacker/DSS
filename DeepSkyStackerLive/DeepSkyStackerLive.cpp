@@ -985,6 +985,8 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 	
 	if (useExistingFiles && !filteredFiles.empty())
 	{
+		writeToLog(tr("%n new file(s) found\n", "IDS_LOG_NEWFILESFOUND", static_cast<int>(filteredFiles.size())),
+			true, false, false, Qt::green);
 		for (const auto& file : filteredFiles)
 		{
 			fileRegistrar->addFile(file);

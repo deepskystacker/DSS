@@ -90,6 +90,9 @@
     <ClCompile Include="filestacker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RestartMonitoring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -302,6 +305,9 @@
     <QtMoc Include="filestacker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="RestartMonitoring.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS.ca.ts">
@@ -365,10 +371,9 @@
     <QtUic Include="ui\EmailSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="RestartMonitoring.ui">
+    <QtUic Include="ui\RestartMonitoring.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="Widget.ui" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\SmtpMime\SmtpMime">

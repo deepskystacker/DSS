@@ -215,6 +215,7 @@
     <ClCompile Include="LogTab.cpp" />
     <ClCompile Include="MainBoard.cpp" />
     <ClCompile Include="progresslive.cpp" />
+    <ClCompile Include="RestartMonitoring.cpp" />
     <ClCompile Include="settingstab.cpp" />
     <ClCompile Include="StackedSink.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -265,6 +266,7 @@
     <QtMoc Include="progresslive.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="settingstab.h" />
+    <QtMoc Include="RestartMonitoring.h" />
     <ClInclude Include="StackedSink.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -334,12 +336,11 @@
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="RestartMonitoring.ui" />
     <QtUic Include="ui\EmailSettings.ui" />
+    <QtUic Include="ui\RestartMonitoring.ui" />
     <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
     <QtUic Include="ui\ImageViewer.ui" />
-    <QtUic Include="Widget.ui" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\SmtpMime\SmtpMime" />
