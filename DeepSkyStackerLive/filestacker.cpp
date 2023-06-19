@@ -63,6 +63,11 @@ namespace DSS
 	FileStacker::~FileStacker()
 	{
 		{
+			//
+			// Wait for current image stack to complete
+			//
+			QMutexLocker stackLock(&stacking);
+
 			QMutexLocker lock(&mutex);
 
 			// Clear the work queue
@@ -99,6 +104,7 @@ namespace DSS
 			}
 
 			stackNextImage();
+			
 		}
 	}
 
@@ -113,8 +119,34 @@ namespace DSS
 
 	}
 
+	size_t FileStacker::registeredImageCount()
+	{
+		QMutexLocker lock(&mutex);
+		return pending.size();
+	}
+
+	void FileStacker::dropPendingImages()
+	{
+		QMutexLocker lock(&mutex);
+		pending.clear();
+	}
+
+	void FileStacker::clearStackedImage()
+	{
+		//
+		// Wait until stackNextImage() has finished
+		//
+		QMutexLocker lock(&stacking);
+
+		stackingEngine.Clear();
+		referenceFrameIsSet = false;
+		fs::path path;
+		emitStackedImage(path);
+	}
+
 	void FileStacker::stackNextImage()
 	{
+		QMutexLocker stackLock(&stacking);		// Seize the mutex to show stacking is active
 		ZFUNCTRACE_RUNTIME();
 
 		if (!referenceFrameIsSet)
@@ -347,34 +379,44 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		std::shared_ptr<CMemoryBitmap>	pStackedImage{ stackingEngine.getStackedImage() };
 
-		auto image = makeQImage(pStackedImage);
-
 		std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
 		loadedImage->fileName = file;
 		loadedImage->m_pBitmap = pStackedImage;
-		loadedImage->m_Image = image;
-
-		emit showStackedImage(loadedImage, stackingEngine.GetTotalExposure());
-
-		++unsavedImageCount;
-		if (liveSettings->IsStack_Save() &&
-			liveSettings->GetSaveCount() <= unsavedImageCount)
+		
+		if (pStackedImage)
 		{
-			// Save the stacked image in the output folder
-			saveStackedImage(pStackedImage);
-			emit stackedImageSaved();
+			auto image = makeQImage(pStackedImage);
+			loadedImage->m_Image = image;
+		}
+
+		emit showStackedImage(loadedImage, stackingEngine.GetNrStackedImages(), stackingEngine.GetTotalExposure());
+
+		//
+		// If there's anything to save...
+		// 
+		if (pStackedImage)
+		{
+			++unsavedImageCount;
+			if (liveSettings->IsStack_Save() &&
+				liveSettings->GetSaveCount() <= unsavedImageCount)
+			{
+				// Save the stacked image in the output folder
+				saveStackedImage(pStackedImage);
+				emit stackedImageSaved();
 
 
-			unsavedImageCount = 0;
-		};
-	};
+				unsavedImageCount = 0;
+			}
+		}
+	}
 
 	/* ------------------------------------------------------------------- */
 
 	std::shared_ptr<QImage>	FileStacker::makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage)
 	{
 		ZFUNCTRACE_RUNTIME();
-		size_t			width = pStackedImage->Width(), height = pStackedImage->Height();
+
+		size_t width = pStackedImage->Width(), height = pStackedImage->Height();
 		const int numberOfProcessors = CMultitask::GetNrProcessors();
 		uchar* pImageData{ nullptr };
 

@@ -182,6 +182,11 @@ namespace DSS
 	void ImageViewer::setLoadedImage(std::shared_ptr<LoadedImage> p)
 	{
 		loadedImage = *p;
+		if (loadedImage.m_Image->isNull())
+		{
+			picture->clear();
+			return;
+		}
 		if (gammaTransformation.isInitialized())
 			ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
 		picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));

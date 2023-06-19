@@ -54,21 +54,6 @@ namespace DSS
 	class ProgressLive;
 }
 
-class ElidedTextDelegate : public QStyledItemDelegate
-{
-	Q_OBJECT
-
-public:
-	using QStyledItemDelegate::QStyledItemDelegate;
-
-protected:
-	void initStyleOption(QStyleOptionViewItem* option, const QModelIndex& index) const override
-	{
-		QStyledItemDelegate::initStyleOption(option, index);
-		option->textElideMode = Qt::ElideNone;
-	}
-};
-
 class DeepSkyStackerLive :
 	public QWidget,
 	public Ui_DeepSkyStackerLive,
@@ -80,6 +65,8 @@ class DeepSkyStackerLive :
 
 signals:
 	void stopMonitor();
+	void clearStackedImage();
+	void dropPendingImages();
 
 public:
 	DeepSkyStackerLive();
@@ -103,8 +90,6 @@ public:
 		return dssInstance;
 	}
 
-	inline std::uint32_t pendingImageCount() { return pendingImageCnt; }
-	inline std::uint32_t registeredImageCount() { return registeredImageCnt; }
 	inline std::uint32_t stackedImageCount() { return stackedImageCnt; }
 
 	std::unique_ptr<DSS::LiveSettings> liveSettings;
@@ -138,7 +123,7 @@ protected slots:
 	void handleWarning(QString text);
 	void setImageOffsets(QString name, double dx, double dy, double angle);
 	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
-	void showStackedImage(std::shared_ptr<LoadedImage> li, double exposure);
+	void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
 	void stackedImageSaved();
 	void saveStackedImage();
 	void copyStackedImage();
@@ -146,7 +131,6 @@ protected slots:
 
 private:
 	bool initialised;
-	bool monitoring;
 	static inline DeepSkyStackerLive* dssInstance{ nullptr };
 	QWinHost* winHost;
 	QStringList args;
@@ -164,10 +148,7 @@ private:
 	DSS::FileStacker* fileStacker;
 	QLabel* progressLabel;
 	DSS::ProgressLive* pProgress;
-	ElidedTextDelegate* elidedTextDelegate;
-	std::atomic_uint32_t pendingImageCnt;		// was m_lNrPending
-	std::atomic_uint32_t registeredImageCnt;	// was m_lNrRegistered
-	std::atomic_uint32_t stackedImageCnt;		// was m_lNrStacked
+	std::uint32_t stackedImageCnt;		// was m_lNrStacked
 	double totalExposure;
 
 	void connectSignalsToSlots();
@@ -175,8 +156,12 @@ private:
 	void createFileRegistrar();
 	void createFileStacker();
 	void makeLinks();
+	void startMonitoring();
 	void stopMonitoring();
 	void stopStacking();
+	bool checkRestartMonitor();
+	void removeFromListIfStatusIs(const QString& status);
+	bool canWriteToMonitoredFolder();
 
 	inline QString isoToString(int lISOSpeed) const
 	{
@@ -195,7 +180,7 @@ private:
 	}
 
 private slots:
-	void setMonitoredFolder(const QString& link);
+	bool setMonitoredFolder(const QString& link);
 	void monitorPressed(bool checked);
 	void stackPressed(bool checked);
 	void stopPressed();

@@ -93,6 +93,9 @@
     <ClCompile Include="RestartMonitoring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChartTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -308,6 +311,9 @@
     <QtMoc Include="RestartMonitoring.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="ChartTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS.ca.ts">
@@ -372,6 +378,9 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\RestartMonitoring.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ChartTab.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>

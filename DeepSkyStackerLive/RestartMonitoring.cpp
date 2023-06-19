@@ -38,11 +38,41 @@
 #include "stdafx.h"
 #include "RestartMonitoring.h"
 
-RestartMonitoring::RestartMonitoring(QWidget *parent)
-	: QDialog(parent)
+namespace DSS
 {
-	setupUi(this);
-}
+	RestartMonitoring::RestartMonitoring(QWidget* parent)
+		: QDialog(parent)
+	{
+		setupUi(this);
+		createNew->setChecked(true);
+		dropPending->setChecked(true);
 
-RestartMonitoring::~RestartMonitoring()
-{}
+		connectSignalsToSlots();
+
+	}
+
+	RestartMonitoring::~RestartMonitoring()
+	{}
+
+	void RestartMonitoring::connectSignalsToSlots()
+	{
+		connect(buttonBox, &QDialogButtonBox::accepted,
+			this, &RestartMonitoring::accept);
+		connect(buttonBox, &QDialogButtonBox::rejected,
+			this, &RestartMonitoring::reject);
+		connect(createNew, &QRadioButton::toggled,
+			this, &RestartMonitoring::newToggled);
+		connect(dropPending, &QRadioButton::toggled,
+			this, &RestartMonitoring::dropToggled);
+	}
+
+	void RestartMonitoring::newToggled(bool checked)
+	{
+		clearStackedImage_ = checked;
+	}
+
+	void RestartMonitoring::dropToggled(bool checked)
+	{
+		dropPendingImages_ = checked;
+	}
+}

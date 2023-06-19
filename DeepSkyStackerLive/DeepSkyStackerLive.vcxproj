@@ -196,6 +196,7 @@
     <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
+    <ClCompile Include="ChartTab.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -250,6 +251,7 @@
     <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
     <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
+    <QtMoc Include="ChartTab.h" />
     <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />
@@ -336,6 +338,7 @@
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ui\ChartTab.ui" />
     <QtUic Include="ui\EmailSettings.ui" />
     <QtUic Include="ui\RestartMonitoring.ui" />
     <QtUic Include="ui\SettingsTab.ui" />

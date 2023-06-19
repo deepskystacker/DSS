@@ -216,7 +216,7 @@
        <string comment="IDC_LASTIMAGE">Last Image</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="graphs">
+     <widget class="DSS::ChartTab" name="graphs">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -226,101 +226,7 @@
       <attribute name="title">
        <string comment="IDC_GRAPHS">Graphs</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout4">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout5">
-         <item>
-          <widget class="QRadioButton" name="radioScore">
-           <property name="text">
-            <string comment="IDC_SCORE">Score</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioFWHM">
-           <property name="text">
-            <string comment="IDC_FWHM">FWHM</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioStars">
-           <property name="text">
-            <string comment="IDC_STARS">#Stars</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioOffset">
-           <property name="text">
-            <string comment="IDC_OFFSET">dX/dY</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioAngle">
-           <property name="text">
-            <string comment="IDC_ANGLE">Angle</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioBackground">
-           <property name="text">
-            <string comment="IDC_SKYBACKGROUND">Sky Background</string>
-           </property>
-           <attribute name="buttonGroup">
-            <string notr="true">graphButtonGroup</string>
-           </attribute>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QWidget" name="widget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>550</width>
-           <height>300</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <layout class="QVBoxLayout" name="verticalLayout4"/>
      </widget>
      <widget class="QTableWidget" name="imageList">
       <property name="sizePolicy">
@@ -426,12 +332,15 @@ li.checked::marker { content: &quot;\2612&quot;; }
    <header>settingstab.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>DSS::ChartTab</class>
+   <extends>QWidget</extends>
+   <header location="global">ChartTab.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
  <connections/>
- <buttongroups>
-  <buttongroup name="graphButtonGroup"/>
- </buttongroups>
 </ui>

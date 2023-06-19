@@ -72,6 +72,7 @@
 #include "filestacker.h"
 #include "progresslive.h"
 #include "RegisterEngine.h"
+#include "RestartMonitoring.h"
 
 using namespace DSS;
 using namespace std;
@@ -226,7 +227,6 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	Ui_DeepSkyStackerLive {},
 	liveSettings {make_unique<LiveSettings>()},
 	initialised{ false },
-	monitoring { false }, 
 	winHost{ nullptr },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStackerLive %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -241,8 +241,6 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	fileStacker{ nullptr },
 	progressLabel { new QLabel(this) },
 	pProgress {new DSS::ProgressLive(this)},
-	pendingImageCnt{ 0 },
-	registeredImageCnt{ 0 },
 	stackedImageCnt{ 0 },
 	totalExposure{ 0.0 }
 {
@@ -378,6 +376,8 @@ void DeepSkyStackerLive::createFileRegistrar()
 	//	this, &DSSLive::setImageInfo);
 	connect(fileRegistrar, &FileRegistrar::handleWarning,
 		this, &DSSLive::handleWarning);
+	connect(this, &DSSLive::dropPendingImages,
+		fileRegistrar, &FileRegistrar::dropPendingImages);
 }
 
 /* ------------------------------------------------------------------- */
@@ -403,6 +403,10 @@ void DeepSkyStackerLive::createFileStacker()
 		this, &DSSLive::showStackedImage);
 	connect(fileStacker, &FileStacker::stackedImageSaved,
 		this, &DSSLive::stackedImageSaved);
+	connect(this, &DSSLive::dropPendingImages,
+		fileStacker, &FileStacker::dropPendingImages);
+	connect(this, &DSSLive::clearStackedImage,
+		fileStacker, &FileStacker::clearStackedImage);
 }
 
 /* ------------------------------------------------------------------- */
@@ -671,6 +675,43 @@ void DeepSkyStackerLive::writeToLog(const QString& message, bool addTS, bool bol
 		Q_ARG(QColor, colour));
 }
 
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStackerLive::startMonitoring()
+{
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+
+	//
+	// Has the folder to monitor aleady been set?  If not set it.
+	// 
+	if (monitoredFolder.isEmpty())
+	{
+		setMonitoredFolder("");
+	}
+	fs::path dir{ monitoredFolder.toStdU16String() };
+
+	if (!is_directory(dir))
+	{
+		QMessageBox::information(this, "DeepSkyStackerLive",
+			tr("%1 is not a directory. Please select a valid directory.").arg(monitoredFolder));
+		settings.setValue("MonitoredFolder", "");
+		setMonitoredFolder("");
+	}
+
+	folderMonitor = new FolderMonitor();
+	connectMonitorSignals();
+	QThreadPool::globalInstance()->start(folderMonitor);
+
+	ZTRACE_RUNTIME("Start monitoring folder %s", monitoredFolder.toUtf8().constData());
+	writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
+		true, true, false, Qt::green);
+
+	fileRegistrar->enableRegistration();
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::stopMonitoring()
 {
 	// 
@@ -691,7 +732,7 @@ void DeepSkyStackerLive::stopStacking()
 	ZTRACE_RUNTIME(message.toUtf8().constData());
 	message += "\n";
 	writeToLog(message,
-		true, true, false, Qt::yellow);
+		true, true, false, Qt::red);
 	fileStacker->enableStacking(false);
 }
 
@@ -802,9 +843,10 @@ void DeepSkyStackerLive::writeLogMessage(const QString& message, [[maybe_unused]
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link)
+bool DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link)
 {
-	if (monitoring)
+	bool result{ false };
+	if (folderMonitor)
 	{
 		QMessageBox::information(this, "DeepSkyStackerLive",
 			tr("You cannot change the monitored folder while monitoring.", "IDS_CANTCHANGEMONITOREDFOLDER"));
@@ -830,48 +872,89 @@ void DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 			folderName->setText(dir);
 			makeLink(folderName, linkColour);
 			monitoredFolder = dir;
+			result = true;
 		}
 		settings.endGroup();
-
 	}
+	return result;
 }
+
+/* ------------------------------------------------------------------- */
+
+bool DeepSkyStackerLive::checkRestartMonitor()
+{
+	bool result{ true };
+
+	if (stackedImageCnt || fileRegistrar->pendingImageCount() || fileStacker->registeredImageCount())
+	{
+		result = false;
+		RestartMonitoring dlg;
+		if ( QDialog::Accepted == dlg.exec())
+		{ 
+			result = true;
+			if (dlg.clearStackedImage())
+			{
+				emit clearStackedImage();
+				removeFromListIfStatusIs(tr("Stacked", "IDS_STATUS_STACKED"));
+			}
+			if (dlg.dropPendingImages())
+			{
+				emit dropPendingImages();
+				removeFromListIfStatusIs(tr("Pending"));
+				removeFromListIfStatusIs(tr("Registered", "IDS_STATUS_REGISTERED"));
+
+			}
+			updateStatusMessage();
+		}
+	}
+	return result;
+}
+
+
+/* ------------------------------------------------------------------- */
+
+bool DeepSkyStackerLive::canWriteToMonitoredFolder()
+{
+	bool result{ false };
+	fs::path dir{ monitoredFolder.toStdU16String() };
+
+	//
+	// Check that a file can be written
+	//
+	if (is_directory(dir))
+	{
+		auto  file = dir /= "DSSLive.test.txt";
+		if (std::FILE* hFile =
+#if defined _WINDOWS
+			_wfopen(file.generic_wstring().c_str(), L"wt")
+#else
+			std::fopen(file.generic_string().c_str(), "wt")
+#endif
+			)
+		{
+			auto bytes = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
+			if (bytes > 0)
+				result = true;
+			fclose(hFile);
+			fs::remove(file);
+		}
+	}
+
+	return result;
+}
+
 
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::monitorPressed([[maybe_unused]] bool checked)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (checked)
+	if (checked )
 	{
-		QSettings settings;
-		settings.beginGroup("DeepSkyStackerLive");
-
-		//
-		// Has the folder to monitor aleady been set?  If not set it.
-		// 
-		if (monitoredFolder.isEmpty())
+		if (checkRestartMonitor())
 		{
-			setMonitoredFolder("");
+			startMonitoring();
 		}
-		fs::path dir{ monitoredFolder.toStdU16String() };
-
-		if (!is_directory(dir))
-		{
-			QMessageBox::information(this, "DeepSkyStackerLive",
-				tr("%1 is not a directory. Please select a valid directory.").arg(monitoredFolder));
-			settings.setValue("MonitoredFolder", "");
-			setMonitoredFolder("");
-		}
-
-		folderMonitor = new FolderMonitor();
-		connectMonitorSignals();
-		QThreadPool::globalInstance()->start(folderMonitor);
-
-		ZTRACE_RUNTIME("Start monitoring folder %s", monitoredFolder.toUtf8().constData());
-		writeToLog(tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(monitoredFolder),
-			true, true, false, Qt::green);
-
-		fileRegistrar->enableRegistration();
 	}
 	else
 	{
@@ -910,19 +993,31 @@ void DeepSkyStackerLive::stackPressed(bool checked)
 {
 	if (checked)
 	{
-		//
-		// If Stack is pressed also need to make it so Monitor was also pressed
-		//
-		if (!actionMonitor->isChecked())
-			actionMonitor->trigger();
+		bool startStacker{ false };
+		if (!folderMonitor)
+		{
+			if (canWriteToMonitoredFolder() || setMonitoredFolder(""))
+			{
+				if (checkRestartMonitor())
+				{
+					actionMonitor->setChecked(true);
+					startMonitoring();
+					startStacker = true;
+				}
+			}
+		}
+		else startStacker = true;
 
-		QString message{ tr("Start Stacking files", "IDS_LOG_STARTSTACKING") };
-		ZTRACE_RUNTIME(message.toUtf8().constData());
-		message += "\n";
-		writeToLog(message,
-			true, true, false, Qt::yellow);
+		if (startStacker)
+		{
+			QString message{ tr("Start Stacking files", "IDS_LOG_STARTSTACKING") };
+			ZTRACE_RUNTIME(message.toUtf8().constData());
+			message += "\n";
+			writeToLog(message,
+				true, true, false, Qt::yellow);
 
-		fileStacker->enableStacking();
+			fileStacker->enableStacking();
+		}
 	}
 	else
 	{
@@ -934,11 +1029,17 @@ void DeepSkyStackerLive::stackPressed(bool checked)
 
 void DeepSkyStackerLive::stopPressed()
 {
-	actionMonitor->setChecked(false);
-	actionStack->setChecked(false);
-	
-	stopMonitoring();
-	stopStacking();
+	if (actionMonitor->isChecked())
+	{
+		actionMonitor->setChecked(false);
+		stopMonitoring();
+
+	}
+	if (actionStack->isChecked())
+	{
+		actionStack->setChecked(false);
+		stopStacking();
+	}
 }
 
 void DSSLive::settingsChanged()
@@ -971,7 +1072,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 
 	ZTRACE_RUNTIME(" of which %d passed filtering", filteredFiles.size());
 
-	if (0 == pendingImageCnt && 0 == stackedImageCnt && !filteredFiles.empty())
+	if (0 == fileRegistrar->pendingImageCount() && 0 == stackedImageCnt && !filteredFiles.empty())
 	{
 		if (QMessageBox::Yes == QMessageBox::question(this, "DeepSkyStackerLive",
 			tr("You have %n images(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
@@ -990,7 +1091,6 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 		for (const auto& file : filteredFiles)
 		{
 			fileRegistrar->addFile(file);
-			++pendingImageCnt;					// Increment number of pending images
 		}
 		updateStatusMessage();
 	}
@@ -1007,7 +1107,6 @@ void DeepSkyStackerLive::onNewFile(const fs::path& file)
 		ZTRACE_RUNTIME(" File passed filtering");
 
 		fileRegistrar->addFile(file);
-		++pendingImageCnt;					// Increment number of pending images
 		updateStatusMessage();
 	}
 }
@@ -1066,6 +1165,19 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 
 /* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::removeFromListIfStatusIs(const QString& status)
+{
+	for (int row = imageList->rowCount() -1; row >= 0; --row)
+	{
+		if (status == imageList->item(row, static_cast<int>(ImageListColumns::Status))->text())
+		{
+			imageList->removeRow(row);
+		}
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image)
 {
 	QString name{ QString::fromStdU16String(image->fileName.filename().generic_u16string()) };
@@ -1078,15 +1190,30 @@ void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::showStackedImage(std::shared_ptr<LoadedImage> li, double exposure)
+void DeepSkyStackerLive::showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure)
 {
-	stackedImage->setLoadedImage(li);
-	stackedImage->copyToClipboard->setVisible(true);
-	stackedImage->information->setText(
-		QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>")
-		.arg(palette().color(QPalette::ColorRole::WindowText).name())
-		.arg(tr("Click here to save the stacked image to file", "IDS_SAVESTACKEDIMAGE")));
+	stackedImageCnt = count;
 	totalExposure = exposure;
+
+	//
+	// If there wasn't a valid stacked image, clear the stacked image display, otherwise
+	// display the image
+	//
+	if (!li->m_pBitmap)
+	{
+		stackedImage->information->setText(tr("No stacked image", "IDS_NOSTACKEDIMAGE"));
+		stackedImage->picture->clear();
+		stackedImage->copyToClipboard->setVisible(false);
+	}
+	else
+	{
+		stackedImage->setLoadedImage(li);
+		stackedImage->copyToClipboard->setVisible(true);
+		stackedImage->information->setText(
+			QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>")
+			.arg(palette().color(QPalette::ColorRole::WindowText).name())
+			.arg(tr("Click here to save the stacked image to file", "IDS_SAVESTACKEDIMAGE")));
+	}
 	updateStatusMessage();
 }
 
@@ -1227,7 +1354,6 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 	}
 	//TODO AddScoreFWHMStarsToGraph(lfi.filePath.generic_wstring().c_str(), lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight * 100.0);
 
-	--pendingImageCnt; ++registeredImageCnt;
 	updateStatusMessage();
 
 }
@@ -1241,7 +1367,6 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 
 	changeImageStatus(name, ImageStatus::stacked);
 
-	--registeredImageCnt; ++stackedImageCnt;
 	updateStatusMessage();
 }
 
@@ -1284,7 +1409,6 @@ void DeepSkyStackerLive::fileNotStackable(fs::path file)
 	{
 		moveToNonStackable(file);
 	}
-	--pendingImageCnt;
 	updateStatusMessage();
 }
 
@@ -1301,7 +1425,7 @@ void DeepSkyStackerLive::updateStatusMessage()
 {
 	QString exposure{ exposureToString(totalExposure) };
 	QString message{ tr("Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4")
-		.arg(pendingImageCnt).arg(registeredImageCnt).arg(stackedImageCnt).arg(exposure) };
+		.arg(fileRegistrar->pendingImageCount()).arg(fileStacker->registeredImageCount()).arg(stackedImageCnt).arg(exposure) };
 	statusMessage->setText(message);
 	update();
 }

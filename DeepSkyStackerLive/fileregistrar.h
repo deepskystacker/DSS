@@ -53,7 +53,7 @@ namespace DSS
 	void run() override;
 
 	signals:
-		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
+		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = Qt::green);
 		void addImageToList(fs::path file);
 		void fileLoaded(std::shared_ptr<LoadedImage> image);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
@@ -74,6 +74,11 @@ namespace DSS
 				condvar.wakeOne();
 			}
 		}
+		size_t pendingImageCount();
+
+
+	public slots:
+		void dropPendingImages();
 
 	private:
 		volatile bool registrationEnabled;		// OK to use volatile for bool (but nothing else)

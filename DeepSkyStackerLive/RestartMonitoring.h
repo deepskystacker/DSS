@@ -40,18 +40,28 @@
 #include <QDialog>
 #include "ui_RestartMonitoring.h"
 
-class RestartMonitoring : public QDialog, public Ui::RestartMonitoring
+namespace DSS
 {
-	Q_OBJECT
+	class RestartMonitoring : public QDialog, public Ui::RestartMonitoring
+	{
+		Q_OBJECT
 
-public:
-	RestartMonitoring(QWidget *parent = nullptr);
-	~RestartMonitoring();
-	bool clearStackedImage() { return clearStacked_; }
-	bool dropPending() { return dropPending_; }
+	public:
+		RestartMonitoring(QWidget* parent = nullptr);
+		~RestartMonitoring();
+		bool clearStackedImage() { return clearStackedImage_; }
+		bool dropPendingImages() { return dropPendingImages_; }
 
-private:
-	bool clearStacked_;
-	bool dropPending_;
-	 
-};
+	private slots:
+		void newToggled(bool checked);
+		void dropToggled(bool checked);
+
+	private:
+		bool clearStackedImage_;
+		bool dropPendingImages_;
+
+		void connectSignalsToSlots();
+
+
+	};
+}

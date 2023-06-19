@@ -55,19 +55,20 @@ namespace DSS
 		void run() override;
 
 	signals:
-		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
+		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = Qt::yellow);
 		void setImageOffsets(QString name, double dx, double dy , double angle);
 		void fileStacked(std::shared_ptr<CLightFrameInfo> p);
 		void fileNotStackable(fs::path file);
 		void setImageInfo(fs::path file, STACKIMAGEINFO info);
 		void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 		void handleWarning(QString text);
-		void showStackedImage(std::shared_ptr<LoadedImage> li, double exposure);
+		void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
 		void stackedImageSaved();
 
 	public:
 		FileStacker(QObject* parent = nullptr, ProgressLive* progress = nullptr);
 		~FileStacker();
+		size_t registeredImageCount();
 
 		void addFile(std::shared_ptr<CLightFrameInfo>& lfi);
 		inline void enableStacking(bool enable = true)
@@ -79,12 +80,17 @@ namespace DSS
 			}
 		}
 
+	public slots:
+		void dropPendingImages();
+		void clearStackedImage();
+
 	private:
 		volatile bool stackingEnabled;		// OK to use volatile for bool (but nothing else)
 		ProgressLive* pProgress;
 		LiveSettings* liveSettings;
 		QWaitCondition condvar;
 		QMutex mutex;
+		QMutex stacking;
 		std::deque<std::shared_ptr<CLightFrameInfo>> pending;
 		bool referenceFrameIsSet;
 		CRunningStackingEngine stackingEngine;

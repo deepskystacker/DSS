@@ -77,6 +77,19 @@ namespace DSS
 		ZTRACE_RUNTIME("File registrar deleted");
 	}
 
+	void FileRegistrar::dropPendingImages()
+	{
+		QMutexLocker lock(&mutex);
+		pending.clear();
+	}
+
+	size_t FileRegistrar::pendingImageCount()
+	{
+		QMutexLocker lock(&mutex);
+		return pending.size();
+	}
+
+
 	void FileRegistrar::run()
 	{
 		forever
