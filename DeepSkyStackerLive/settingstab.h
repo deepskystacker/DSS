@@ -37,8 +37,6 @@
 
 #include "ui_SettingsTab.h"
 
-class QWidget;
-
 namespace DSS
 {
 	class LiveSettings;
