@@ -192,7 +192,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="DSS::ImageViewer" name="stackedImage">
       <property name="sizePolicy">
@@ -216,17 +216,10 @@
        <string comment="IDC_LASTIMAGE">Last Image</string>
       </attribute>
      </widget>
-     <widget class="DSS::ChartTab" name="graphs">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+     <widget class="DSS::ChartTab" name="chartTab">
       <attribute name="title">
        <string comment="IDC_GRAPHS">Graphs</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout4"/>
      </widget>
      <widget class="QTableWidget" name="imageList">
       <property name="sizePolicy">
