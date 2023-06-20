@@ -314,6 +314,7 @@
     <QtTranslation Include="i18n\DSS.ru.ts" />
     <QtTranslation Include="i18n\DSS.tr.ts" />
     <QtTranslation Include="i18n\DSS.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSS.zh_CN.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

@@ -13,5 +13,6 @@
     <file>DSS.ru.qm</file>
     <file>DSS.tr.qm</file>
     <file>DSS.zh_TW.qm</file>
+    <file>DSS.zh_CN.qm</file>
 </qresource>
 </RCC>
