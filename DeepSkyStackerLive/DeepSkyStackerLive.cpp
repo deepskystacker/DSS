@@ -1258,6 +1258,7 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 
 void DeepSkyStackerLive::setImageFootprint([[maybe_unused]] QPointF p1, [[maybe_unused]] QPointF p2, [[maybe_unused]] QPointF p3, [[maybe_unused]] QPointF p4)
 {
+	// TODO
 }
 
 
