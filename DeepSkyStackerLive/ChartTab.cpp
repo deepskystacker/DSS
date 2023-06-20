@@ -21,6 +21,16 @@ namespace DSS
 		skybgChart{new QChart()}
 	{
 		setupUi(this);
+		theme = (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
+			? QChart::ChartTheme::ChartThemeBlueCerulean : QChart::ChartThemeBrownSand;
+
+		scoreChart->setTheme(theme);
+		fwhmChart->setTheme(theme);
+		starsChart->setTheme(theme);
+		offsetChart->setTheme(theme);
+		angleChart->setTheme(theme);
+		skybgChart->setTheme(theme);
+
 		radioScore->setChecked(true);
 		chartView->setChart(scoreChart);
 		connectSignalsToSlots();
@@ -57,7 +67,8 @@ namespace DSS
 			this, &ChartTab::angleButtonClicked);
 		connect(radioBackground, &QRadioButton::clicked,
 			this, &ChartTab::skybgButtonClicked);
-
+		connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
+			this, &ChartTab::colorSchemeChanged);
 	}
 
 
@@ -606,6 +617,19 @@ namespace DSS
 			QLocale locale;
 			QToolTip::showText(globalMouseLocation, locale.toString(point.y(), 'f', 2), this);
 		}
+	}
+
+	void ChartTab::colorSchemeChanged(Qt::ColorScheme colorScheme)
+	{
+		theme = (colorScheme == Qt::ColorScheme::Dark)
+			? QChart::ChartTheme::ChartThemeBlueCerulean : QChart::ChartThemeBrownSand;
+
+		scoreChart->setTheme(theme);
+		fwhmChart->setTheme(theme);
+		starsChart->setTheme(theme);
+		offsetChart->setTheme(theme);
+		angleChart->setTheme(theme);
+		skybgChart->setTheme(theme);
 	}
 
 }

@@ -32,6 +32,8 @@ namespace DSS
 
 	private:
 		std::deque<QString> files;
+		QChart::ChartTheme theme;
+		Qt::ColorScheme scheme;
 		QLineSeries* scoreSeries;
 		QChart* scoreChart;
 		QLineSeries* fwhmSeries;
@@ -63,6 +65,7 @@ namespace DSS
 		void dYHovered(const QPointF& point, bool state);
 		void angleHovered(const QPointF& point, bool state);
 		void skybgHovered(const QPointF& point, bool state);
+		void colorSchemeChanged(Qt::ColorScheme colorScheme);
 
 	public slots:
 		void setImageInfo(QString name, STACKIMAGEINFO info);
