@@ -121,41 +121,6 @@ namespace DSS
 				break; // the necessary point has been updated
 			}
 		}
-/*
-		for (LONG i = (LONG)(m_vFiles.size()) - 1; i >= 0 && !bFound; i--)
-		{
-			if (!m_vFiles[i].CompareNoCase(name))
-			{
-				bFound = TRUE;
-				switch (ctType)
-				{
-				case CT_SCORE:
-					m_csScores.setPoint(i + 1, ptType);
-					break;
-				case CT_FWHM:
-					m_csFWHM.setPoint(i + 1, ptType);
-					break;
-				case CT_STARS:
-					m_csStars.setPoint(i + 1, ptType);
-					break;
-				case CT_DX:
-					m_csdX.setPoint(i + 1, ptType);
-					break;
-				case CT_DY:
-					m_csdY.setPoint(i + 1, ptType);
-					break;
-				case CT_ANGLE:
-					m_csAngle.setPoint(i + 1, ptType);
-					break;
-				case CT_SKYBACKGROUND:
-					m_csSkyBackground.setPoint(i + 1, ptType);
-					break;
-				};
-			};
-		};
-
-		m_Graph.RefreshCtrl();
-*/
 	}
 
 	/* ------------------------------------------------------------------- */
