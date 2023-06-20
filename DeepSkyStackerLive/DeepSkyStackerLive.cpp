@@ -1289,15 +1289,10 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 	QString temp;
 
 	GetPictureInfo(lfi->filePath, bmpInfo);
-	//lfi->m_fExposure = bmpInfo.m_fExposure;
-	//lfi->m_fAperture = bmpInfo.m_fAperture;
+
 	lfi->m_strDateTime = bmpInfo.m_strDateTime;
 	lfi->m_DateTime = bmpInfo.m_DateTime;
-	//lfi->m_lWidth = bmpInfo.m_lWidth;
-	//lfi->m_lHeight = bmpInfo.m_lHeight;
-	//lfi->m_lISOSpeed = bmpInfo.m_lISOSpeed;
-	//lfi->m_lGain = bmpInfo.m_lGain;
-	//lfi->m_lBitsPerChannel = bmpInfo.m_lBitsPerChannel;
+
 	temp = bmpInfo.m_strFileType;
 	if (bmpInfo.m_strModel.length())
 		temp += " " + bmpInfo.m_strModel;
@@ -1376,21 +1371,21 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 
 void DeepSkyStackerLive::copyStackedImage()
 {
-	QMessageBox::information(this, "Work in progress", "To be written");
+	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
 }
 
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::saveStackedImage()
 {
-	QMessageBox::information(this, "Work in progress", "To be written");
+	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
 }
 
 /* ------------------------------------------------------------------- */
 
 void DeepSkyStackerLive::copyLastImage()
 {
-	QMessageBox::information(this, "Work in progress", "To be written");
+	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
 }
 
 /* ------------------------------------------------------------------- */
@@ -1419,7 +1414,9 @@ void DeepSkyStackerLive::fileNotStackable(fs::path file)
 void DSSLive::handleWarning(QString warning)
 {
 	ZFUNCTRACE_RUNTIME();
+	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
 }
+
 
 /* ------------------------------------------------------------------- */
 
