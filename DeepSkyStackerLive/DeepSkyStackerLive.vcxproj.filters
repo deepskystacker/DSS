@@ -80,9 +80,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -151,16 +148,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\DeepSkyStackerLive.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Tools\hdrdown.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Tools\hdrup.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\4Corners.png">
@@ -184,7 +172,7 @@
     <Image Include="res\Stack-Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\Stop.png">
+    <Image Include="res\StopSign.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

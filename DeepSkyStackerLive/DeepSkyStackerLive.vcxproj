@@ -219,7 +219,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
@@ -259,9 +258,6 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\DeepSkyStacker\res\4Corners.bmp" />
-    <Image Include="..\Tools\hdrdown.bmp" />
-    <Image Include="..\Tools\hdrup.bmp" />
     <Image Include="res\4Corners.png" />
     <Image Include="res\DeepSkyStackerLive.ico" />
     <Image Include="res\DSS_Icon32%402x.png" />
@@ -270,7 +266,7 @@
     <Image Include="res\Monitor-Up.png" />
     <Image Include="res\Stack-Down.png" />
     <Image Include="res\Stack-Up.png" />
-    <Image Include="res\Stop.png" />
+    <Image Include="res\StopSign.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc" />
