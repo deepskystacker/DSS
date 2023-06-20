@@ -1,4 +1,3 @@
-
 /****************************************************************************
 **
 ** Copyright (C) 2023 David C. Partridge
@@ -192,7 +191,7 @@ namespace DSS
 
 					stackingEngine.AddImage(*lfi, pProgress);
 					emit fileStacked(lfi);
-					emit setImageInfo(lfi->filePath, II_SETREFERENCE);
+					emit setImageInfo(name, II_SETREFERENCE);
 					referenceFrameIsSet = true;
 					//
 					// Call the mf that will save the stacked image and emit a signal o
@@ -229,7 +228,7 @@ namespace DSS
 				lfi.m_BilinearParameters.Offsets(dX, dY);
 				angle = lfi.m_BilinearParameters.Angle(lfi.RenderedWidth()) * 180.0 / M_PI;
 				emit setImageOffsets(name, dX, dY, angle);
-				emit setImageInfo(lfi.filePath, II_DONTSTACK_NONE);
+				emit setImageInfo(name, II_DONTSTACK_NONE);
 
 				warning = imageWarning(lfi.filePath, dX, dY, angle, strWarning);
 				if (warning)
@@ -281,6 +280,7 @@ namespace DSS
 	{
 		bool result = true;
 
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 		if (liveSettings->IsDontStack_Offset())
 		{
 			double maxOffset{ liveSettings->GetOffset() };
@@ -291,9 +291,9 @@ namespace DSS
 					.arg(dX, 0, 'f', 2).arg(dX, 0, 'f', 2).arg(maxOffset, 0, 'f', 2);
 			}
 			if (fabs(dX) > maxOffset)
-				emit setImageInfo(file, II_DONTSTACK_DX);
+				emit setImageInfo(name, II_DONTSTACK_DX);
 			if (fabs(dY) > maxOffset)
-				emit setImageInfo(file, II_DONTSTACK_DY);
+				emit setImageInfo(name, II_DONTSTACK_DY);
 		}
 
 		if (result && liveSettings->IsDontStack_Angle())
@@ -304,7 +304,7 @@ namespace DSS
 				result = false;
 				error = tr("Angle (%L1°) is greater than %L2°", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
-				emit setImageInfo(file, II_DONTSTACK_ANGLE);
+				emit setImageInfo(name, II_DONTSTACK_ANGLE);
 			}
 		}
 
@@ -315,6 +315,7 @@ namespace DSS
 	{
 		bool result = false;
 
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 		if (liveSettings->IsWarning_Offset())
 		{
 			double maxOffset{ liveSettings->GetOffset() };
@@ -326,11 +327,11 @@ namespace DSS
 			};
 			if (fabs(dX) > maxOffset)
 			{
-				emit setImageInfo(file, II_WARNING_DX);
+				emit setImageInfo(name, II_WARNING_DX);
 			};
 			if (fabs(dY) > liveSettings->GetOffset())
 			{
-				emit setImageInfo(file, II_WARNING_DY);
+				emit setImageInfo(name, II_WARNING_DY);
 			};
 		};
 
@@ -342,7 +343,7 @@ namespace DSS
 				result = true;
 				warning = tr("Angle (%1°) is greater than %2°", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
-				emit setImageInfo(file, II_WARNING_ANGLE);
+				emit setImageInfo(name, II_WARNING_ANGLE);
 			};
 		};
 

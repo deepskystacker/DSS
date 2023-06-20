@@ -203,12 +203,10 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
     <ClCompile Include="emailsettings.cpp" />
     <ClCompile Include="fileregistrar.cpp" />
     <ClCompile Include="filestacker.cpp" />
     <ClCompile Include="foldermonitor.cpp" />
-    <ClCompile Include="GraphView.cpp" />
     <ClCompile Include="ImageList.cpp" />
     <ClCompile Include="imageviewer.cpp" />
     <ClCompile Include="LiveEngine.cpp" />
@@ -258,7 +256,6 @@
     <QtMoc Include="fileregistrar.h" />
     <ClInclude Include="dssliveenums.h" />
     <QtMoc Include="filestacker.h" />
-    <ClInclude Include="GraphView.h" />
     <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />
     <ClInclude Include="LiveEngine.h" />

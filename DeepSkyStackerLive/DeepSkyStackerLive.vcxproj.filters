@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GraphView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImageList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,9 +53,6 @@
     </ClCompile>
     <ClCompile Include="..\Tools\imageview.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="DeepSkyStackerLiveDlg.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainBoard.cpp">
       <Filter>Source Files</Filter>
@@ -108,9 +102,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageList.h">

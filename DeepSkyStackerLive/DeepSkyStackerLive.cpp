@@ -372,8 +372,8 @@ void DeepSkyStackerLive::createFileRegistrar()
 		this, &DSSLive::fileRegistered);
 	connect(fileRegistrar, &FileRegistrar::fileNotStackable,
 		this, &DSSLive::fileNotStackable);
-	//connect(fileRegistrar, &FileRegistrar::setImageInfo,			// This goes to the chart handling code
-	//	this, &DSSLive::setImageInfo);
+	connect(fileRegistrar, &FileRegistrar::setImageInfo,			// This goes to the chart handling code
+		chartTab, &ChartTab::setImageInfo);
 	connect(fileRegistrar, &FileRegistrar::handleWarning,
 		this, &DSSLive::handleWarning);
 	connect(this, &DSSLive::dropPendingImages,
@@ -395,8 +395,8 @@ void DeepSkyStackerLive::createFileStacker()
 		this, &DSSLive::fileNotStackable);
 	connect(fileStacker, &FileStacker::setImageFootprint,
 		this, &DSSLive::setImageFootprint);
-	//connect(fileStacker, &FileStacker::setImageInfo,			// This goes to the chart handling code
-	//	this, &DSSLive::setImageInfo);
+	connect(fileStacker, &FileStacker::setImageInfo,			// This goes to the chart handling code
+		chartTab, &ChartTab::setImageInfo);
 	connect(fileStacker, &FileStacker::handleWarning,
 		this, &DSSLive::handleWarning);
 	connect(fileStacker, &FileStacker::showStackedImage,
@@ -885,7 +885,7 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 {
 	bool result{ true };
 
-	if (stackedImageCnt || fileRegistrar->pendingImageCount() || fileStacker->registeredImageCount())
+	if ((fileRegistrar && fileStacker && stackedImageCnt) || fileRegistrar->pendingImageCount() || fileStacker->registeredImageCount())
 	{
 		result = false;
 		RestartMonitoring dlg;
@@ -1271,9 +1271,11 @@ void DeepSkyStackerLive::setImageOffsets(QString name, double dX, double dY, dou
 			imageList->item(row, static_cast<int>(ImageListColumns::dX))->setText(locale.toString(dX, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::dY))->setText(locale.toString(dY, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Angle))->setText(locale.toString(angle, 'f', 2));
+
 			break;
 		}
 	}
+	chartTab->addOffsetAngle(name, dX, dY, angle);
 }
 
 /* ------------------------------------------------------------------- */
@@ -1352,7 +1354,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		}
 
 	}
-	//TODO AddScoreFWHMStarsToGraph(lfi.filePath.generic_wstring().c_str(), lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight * 100.0);
+	chartTab->addScoreFWHMStars(name, lfi->m_fOverallQuality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
 
 	updateStatusMessage();
 
@@ -1424,10 +1426,13 @@ void DSSLive::handleWarning(QString warning)
 void DeepSkyStackerLive::updateStatusMessage()
 {
 	QString exposure{ exposureToString(totalExposure) };
-	QString message{ tr("Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4")
-		.arg(fileRegistrar->pendingImageCount()).arg(fileStacker->registeredImageCount()).arg(stackedImageCnt).arg(exposure) };
-	statusMessage->setText(message);
-	update();
+	if (fileRegistrar && fileStacker)
+	{
+		QString message{ tr("Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4")
+			.arg(fileRegistrar->pendingImageCount()).arg(fileStacker->registeredImageCount()).arg(stackedImageCnt).arg(exposure) };
+		statusMessage->setText(message);
+		update();
+	}
 }
 
 std::unique_ptr<std::uint8_t[]> backPocket;

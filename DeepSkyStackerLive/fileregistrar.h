@@ -58,7 +58,7 @@ namespace DSS
 		void fileLoaded(std::shared_ptr<LoadedImage> image);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 		void fileNotStackable(fs::path file);
-		void setImageInfo(fs::path file, STACKIMAGEINFO info);
+		void setImageInfo(QString name, STACKIMAGEINFO info);
 		void handleWarning(QString text);
 
 	public:
@@ -82,6 +82,7 @@ namespace DSS
 
 	private:
 		volatile bool registrationEnabled;		// OK to use volatile for bool (but nothing else)
+		volatile bool closing;
 		ProgressLive* pProgress;
 		QWaitCondition condvar;
 		QMutex mutex;

@@ -48,7 +48,8 @@ namespace DSS
 {
 	FileRegistrar::FileRegistrar(QObject* parent, ProgressLive* progress) :
 		QThread{ parent },
-		registrationEnabled(false),
+		registrationEnabled{ false },
+		closing{false},
 		pProgress{progress}
 	{
 		ZTRACE_RUNTIME("File registrar active");
@@ -57,6 +58,7 @@ namespace DSS
 
 	FileRegistrar::~FileRegistrar()
 	{
+		closing = true;
 		{
 			QMutexLocker lock(&mutex);
 
@@ -85,6 +87,7 @@ namespace DSS
 
 	size_t FileRegistrar::pendingImageCount()
 	{
+		if (closing) return 0;
 		QMutexLocker lock(&mutex);
 		return pending.size();
 	}
@@ -185,7 +188,7 @@ namespace DSS
 				strText += "\n";
 				emit writeToLog(strText,
 					true);
-				emit setImageInfo(file, II_DONTSTACK_NONE);
+				emit setImageInfo(name, II_DONTSTACK_NONE);
 
 				QString warning;
 
@@ -223,13 +226,14 @@ namespace DSS
 	{
 		bool result = true;
 		LiveSettings* liveSettings { DSSLive::instance()->liveSettings.get() };
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 		if (liveSettings->IsDontStack_Score())
 		{
 			if (fScore < liveSettings->GetScore())
 			{
 				result = false;
 				error = tr("Score (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore(), 0, 'f', 2);
-				emit setImageInfo(file, II_DONTSTACK_SCORE);
+				emit setImageInfo(name, II_DONTSTACK_SCORE);
 			};
 		};
 
@@ -239,7 +243,7 @@ namespace DSS
 			{
 				result = false;
 				error = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
-				emit setImageInfo(file, II_DONTSTACK_STARS);
+				emit setImageInfo(name, II_DONTSTACK_STARS);
 			};
 		};
 
@@ -249,7 +253,7 @@ namespace DSS
 			{
 				result = false;
 				error = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
-				emit setImageInfo(file, II_DONTSTACK_FWHM);
+				emit setImageInfo(name, II_DONTSTACK_FWHM);
 			};
 		};
 
@@ -259,7 +263,7 @@ namespace DSS
 			{
 				result = false;
 				error = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
-				emit setImageInfo(file, II_DONTSTACK_SKYBACKGROUND);
+				emit setImageInfo(name, II_DONTSTACK_SKYBACKGROUND);
 			};
 		};
 
@@ -272,6 +276,7 @@ namespace DSS
 	{
 		bool result = false;
 		LiveSettings* liveSettings{ DSSLive::instance()->liveSettings.get() };
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 
 		if (liveSettings->IsWarning_Score())
 		{
@@ -279,7 +284,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
-				emit setImageInfo(file, II_WARNING_SCORE);
+				emit setImageInfo(name, II_WARNING_SCORE);
 			};
 		};
 
@@ -289,7 +294,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
-				emit setImageInfo(file, II_WARNING_STARS);
+				emit setImageInfo(name, II_WARNING_STARS);
 			};
 		};
 
@@ -299,7 +304,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
-				emit setImageInfo(file, II_WARNING_FWHM);
+				emit setImageInfo(name, II_WARNING_FWHM);
 			};
 		};
 
@@ -309,7 +314,7 @@ namespace DSS
 			{
 				result = false;
 				warning = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
-				emit setImageInfo(file, II_WARNING_SKYBACKGROUND);
+				emit setImageInfo(name, II_WARNING_SKYBACKGROUND);
 			};
 		};
 

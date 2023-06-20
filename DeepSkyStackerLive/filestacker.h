@@ -59,7 +59,7 @@ namespace DSS
 		void setImageOffsets(QString name, double dx, double dy , double angle);
 		void fileStacked(std::shared_ptr<CLightFrameInfo> p);
 		void fileNotStackable(fs::path file);
-		void setImageInfo(fs::path file, STACKIMAGEINFO info);
+		void setImageInfo(QString name, STACKIMAGEINFO info);
 		void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 		void handleWarning(QString text);
 		void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
