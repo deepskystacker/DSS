@@ -127,7 +127,7 @@
       <ResourceOutputFileName />
     </ManifestResourceCompile>
     <QtTranslation>
-      <NoObsolete>false</NoObsolete>
+      <NoObsolete>true</NoObsolete>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
     </QtTranslation>
@@ -178,7 +178,7 @@
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <QtTranslation>
-      <NoObsolete>false</NoObsolete>
+      <NoObsolete>true</NoObsolete>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
     </QtTranslation>
