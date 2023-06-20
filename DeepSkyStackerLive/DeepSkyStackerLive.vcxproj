@@ -194,7 +194,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\imageview.cpp" />
-    <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="ChartTab.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp">
@@ -207,12 +206,8 @@
     <ClCompile Include="fileregistrar.cpp" />
     <ClCompile Include="filestacker.cpp" />
     <ClCompile Include="foldermonitor.cpp" />
-    <ClCompile Include="ImageList.cpp" />
     <ClCompile Include="imageviewer.cpp" />
-    <ClCompile Include="LiveEngine.cpp" />
     <ClCompile Include="LiveSettings.cpp" />
-    <ClCompile Include="LogTab.cpp" />
-    <ClCompile Include="MainBoard.cpp" />
     <ClCompile Include="progresslive.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
     <ClCompile Include="settingstab.cpp" />
@@ -248,20 +243,14 @@
     <ClInclude Include="..\include\SmtpMime\quotedprintable.h" />
     <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
     <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
-    <QtMoc Include="..\Tools\QElidedLabel.h" />
     <QtMoc Include="ChartTab.h" />
-    <ClInclude Include="DeepSkyStackerLiveDlg.h" />
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />
     <QtMoc Include="fileregistrar.h" />
     <ClInclude Include="dssliveenums.h" />
     <QtMoc Include="filestacker.h" />
-    <ClInclude Include="ImageList.h" />
     <QtMoc Include="imageviewer.h" />
-    <ClInclude Include="LiveEngine.h" />
     <ClInclude Include="LiveSettings.h" />
-    <ClInclude Include="LogTab.h" />
-    <ClInclude Include="MainBoard.h" />
     <QtMoc Include="progresslive.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="settingstab.h" />

@@ -30,16 +30,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImageList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LiveEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LiveSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LogTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StackedSink.cpp">
@@ -53,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="..\Tools\imageview.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="MainBoard.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="imageviewer.cpp">
       <Filter>Source Files</Filter>
@@ -71,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="fileregistrar.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\QElidedLabel.cpp">
-      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="progresslive.cpp">
       <Filter>Source Files</Filter>
@@ -99,21 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeepSkyStackerLiveDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LiveEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogTab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
@@ -289,9 +259,6 @@
     </QtMoc>
     <QtMoc Include="fileregistrar.h">
       <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="..\Tools\QElidedLabel.h">
-      <Filter>Tools</Filter>
     </QtMoc>
     <QtMoc Include="progresslive.h">
       <Filter>Header Files</Filter>
