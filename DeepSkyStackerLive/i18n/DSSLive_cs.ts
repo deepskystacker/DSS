@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.1" language="cs_CZ">
 <context>
     <name>DSS::ChartTab</name>
     <message>
@@ -10,21 +10,21 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="31"/>
-        <location filename="../ChartTab.cpp" line="163"/>
+        <location filename="../ChartTab.cpp" line="174"/>
         <source>Score</source>
         <comment>IDC_SCORE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="47"/>
-        <location filename="../ChartTab.cpp" line="195"/>
+        <location filename="../ChartTab.cpp" line="206"/>
         <source>FWHM</source>
         <comment>IDC_FWHM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="63"/>
-        <location filename="../ChartTab.cpp" line="225"/>
+        <location filename="../ChartTab.cpp" line="236"/>
         <source>#Stars</source>
         <comment>IDC_STARS</comment>
         <translation type="unfinished"></translation>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="111"/>
-        <location filename="../ChartTab.cpp" line="255"/>
+        <location filename="../ChartTab.cpp" line="266"/>
         <source>Sky Background</source>
         <comment>IDC_SKYBACKGROUND</comment>
         <translation type="unfinished"></translation>
@@ -56,7 +56,7 @@
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
-        <translation type="unfinished">-&gt; Новый файл: %1
+        <translation type="unfinished">-&gt; Nový soubor: %1
 </translation>
     </message>
     <message>
@@ -64,7 +64,7 @@
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished">Загрука %1 бит/канал %2 кадра изображения
+        <translation type="unfinished">Načítání %1 bit/k %2 aktivního snímku
 %3</translation>
     </message>
     <message>
@@ -72,7 +72,7 @@
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished">Загрузка %1 бит оттенков серого %2 кадра изображения
+        <translation type="unfinished">Načítání %1 bitového %2 aktivního šedého snímku
 %3</translation>
     </message>
     <message numerus="yes">
@@ -91,21 +91,24 @@
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Upozornění: Obrázek %1 -&gt; %2
+</translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="210"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obrázek %1 nelze stohovat (%2)
+</translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="218"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chyba při načítání souboru %1
+</translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="235"/>
@@ -174,7 +177,8 @@
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obrázek %1 nelze stohovat (%2)
+</translation>
     </message>
     <message>
         <location filename="../filestacker.cpp" line="290"/>
@@ -486,8 +490,8 @@ Ctrl+4 to toggle 4-Corners mode</source>
         <location filename="../DeepSkyStackerLive.cpp" line="161"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Срок действия этой бета-версии DeepSkyStacker истек
-Вы, вероятно, можете получить еще один или загрузить финальную версию с веб-сайта.</translation>
+        <translation>Platnost této beta verze DeepSkyStacker vypršela
+Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="465"/>
@@ -663,14 +667,14 @@ At this point all the incoming (and all previously registered) images will be st
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Начало мониторинга каталога %1
+        <translation type="unfinished">Start prohlížení složky %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="720"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Остановка мониторинга каталога %1
+        <translation type="unfinished">Ukončení prohlížení složky %1
  {1?}</translation>
     </message>
     <message>

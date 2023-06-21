@@ -357,7 +357,6 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		if (pStackedImage)
 		{
-
 			QString	outputFile{ liveSettings->GetStackedOutputFolder() };
 			if (!outputFile.isEmpty())
 			{

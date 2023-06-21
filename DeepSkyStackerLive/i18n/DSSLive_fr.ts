@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca_ES">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>DSS::ChartTab</name>
     <message>
@@ -10,21 +10,21 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="31"/>
-        <location filename="../ChartTab.cpp" line="163"/>
+        <location filename="../ChartTab.cpp" line="174"/>
         <source>Score</source>
         <comment>IDC_SCORE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="47"/>
-        <location filename="../ChartTab.cpp" line="195"/>
+        <location filename="../ChartTab.cpp" line="206"/>
         <source>FWHM</source>
         <comment>IDC_FWHM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="63"/>
-        <location filename="../ChartTab.cpp" line="225"/>
+        <location filename="../ChartTab.cpp" line="236"/>
         <source>#Stars</source>
         <comment>IDC_STARS</comment>
         <translation type="unfinished"></translation>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="111"/>
-        <location filename="../ChartTab.cpp" line="255"/>
+        <location filename="../ChartTab.cpp" line="266"/>
         <source>Sky Background</source>
         <comment>IDC_SKYBACKGROUND</comment>
         <translation type="unfinished"></translation>
@@ -56,7 +56,7 @@
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
-        <translation type="unfinished">-&gt; Nou arxiu: %1
+        <translation type="unfinished">-&gt; Nouveau fichier : %1
 </translation>
     </message>
     <message>
@@ -64,7 +64,7 @@
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished">Carregant %1 bit/ch %2 light frame
+        <translation type="unfinished">Chargement de l&apos;image %1 bits/ch %2
 %3</translation>
     </message>
     <message>
@@ -72,7 +72,7 @@
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished">Carregant %1 bits gray %2 light frame
+        <translation type="unfinished">Chargement de l&apos;image monochrome %1 bits %2
 %3</translation>
     </message>
     <message numerus="yes">
@@ -90,7 +90,7 @@
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
-        <translation type="unfinished">Avís: Imatge %1 -&gt; %2
+        <translation type="unfinished">Avertissement : Image %1 -&gt; %2
 </translation>
     </message>
     <message>
@@ -98,7 +98,7 @@
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished">La imatge %1 no es pot apilar (%2)
+        <translation type="unfinished">L&apos;image %1 n&apos;est pas empilable (%2)
 </translation>
     </message>
     <message>
@@ -106,7 +106,7 @@
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
-        <translation type="unfinished">S&apos;ha produït un error en carregar el fitxer %1
+        <translation type="unfinished">Erreur lors du chargement du fichier %1
 </translation>
     </message>
     <message>
@@ -176,7 +176,7 @@
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished">La imatge %1 no es pot apilar (%2)
+        <translation type="unfinished">L&apos;image %1 n&apos;est pas empilable (%2)
 </translation>
     </message>
     <message>
@@ -489,8 +489,8 @@ Ctrl+4 to toggle 4-Corners mode</source>
         <location filename="../DeepSkyStackerLive.cpp" line="161"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Aquesta versió beta de DeepSkyStacker ha caducat
-Probablement en podeu obtenir un altre o descarregar la versió final del lloc web.</translation>
+        <translation>Cette version bêta de DeepSkyStacker a expiré.
+Vous pouvez probablement en obtenir une autre ou télécharger la version finale à partir du site Web.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="465"/>
@@ -666,14 +666,14 @@ At this point all the incoming (and all previously registered) images will be st
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Començar a supervisar el directori %1
+        <translation type="unfinished">Début de la surveillance du répertoire %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="720"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Aturar la supervisió del directori %1
+        <translation type="unfinished">Arrêt de la surveillance du répertoire %1
  {1?}</translation>
     </message>
     <message>

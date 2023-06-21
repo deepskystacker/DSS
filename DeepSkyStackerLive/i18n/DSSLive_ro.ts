@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="ro_RO">
 <context>
     <name>DSS::ChartTab</name>
     <message>
@@ -10,21 +10,21 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="31"/>
-        <location filename="../ChartTab.cpp" line="163"/>
+        <location filename="../ChartTab.cpp" line="174"/>
         <source>Score</source>
         <comment>IDC_SCORE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="47"/>
-        <location filename="../ChartTab.cpp" line="195"/>
+        <location filename="../ChartTab.cpp" line="206"/>
         <source>FWHM</source>
         <comment>IDC_FWHM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="63"/>
-        <location filename="../ChartTab.cpp" line="225"/>
+        <location filename="../ChartTab.cpp" line="236"/>
         <source>#Stars</source>
         <comment>IDC_STARS</comment>
         <translation type="unfinished"></translation>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="111"/>
-        <location filename="../ChartTab.cpp" line="255"/>
+        <location filename="../ChartTab.cpp" line="266"/>
         <source>Sky Background</source>
         <comment>IDC_SKYBACKGROUND</comment>
         <translation type="unfinished"></translation>
@@ -56,7 +56,7 @@
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
-        <translation type="unfinished">-&gt; Novo ficheiro: %1
+        <translation type="unfinished">-&gt; Fișier nou: %1
 </translation>
     </message>
     <message>
@@ -64,7 +64,7 @@
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished">Carregando %1 bit/ch %2 light frame
+        <translation type="unfinished">Încarcă %1 bit/ch %2 cadru light
 %3</translation>
     </message>
     <message>
@@ -72,7 +72,7 @@
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished">Carregando %1 bits gray %2 light frame
+        <translation type="unfinished">Încarcă %1 biți gri %2 cadru light
 %3</translation>
     </message>
     <message numerus="yes">
@@ -81,6 +81,7 @@
 </source>
         <comment>IDS_LOG_REGISTERRESULTS</comment>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -485,8 +486,8 @@ Ctrl+4 to toggle 4-Corners mode</source>
         <location filename="../DeepSkyStackerLive.cpp" line="161"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Esta versão beta do DeepSkyStacker expirou
-Você provavelmente pode obter outro ou baixar a versão final do site.</translation>
+        <translation>Această versiune beta a DeepSkyStacker a expirat
+Probabil că puteți obține alta sau puteți descărca versiunea finală de pe site-ul web.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="465"/>
@@ -662,14 +663,14 @@ At this point all the incoming (and all previously registered) images will be st
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Inicio monitorizao na pasta %1
+        <translation type="unfinished">Începe monitorizare director %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="720"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Paragem monitorizacao na pasta %1
+        <translation type="unfinished">Oprește monitorizare director %1
  {1?}</translation>
     </message>
     <message>
@@ -731,6 +732,7 @@ Do you want to process them?</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -739,6 +741,7 @@ Do you want to process them?</source>
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>

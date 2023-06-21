@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.1" language="zh_TW">
 <context>
     <name>DSS::ChartTab</name>
     <message>
@@ -10,21 +10,21 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="31"/>
-        <location filename="../ChartTab.cpp" line="163"/>
+        <location filename="../ChartTab.cpp" line="174"/>
         <source>Score</source>
         <comment>IDC_SCORE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="47"/>
-        <location filename="../ChartTab.cpp" line="195"/>
+        <location filename="../ChartTab.cpp" line="206"/>
         <source>FWHM</source>
         <comment>IDC_FWHM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="63"/>
-        <location filename="../ChartTab.cpp" line="225"/>
+        <location filename="../ChartTab.cpp" line="236"/>
         <source>#Stars</source>
         <comment>IDC_STARS</comment>
         <translation type="unfinished"></translation>
@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="111"/>
-        <location filename="../ChartTab.cpp" line="255"/>
+        <location filename="../ChartTab.cpp" line="266"/>
         <source>Sky Background</source>
         <comment>IDC_SKYBACKGROUND</comment>
         <translation type="unfinished"></translation>
@@ -56,7 +56,7 @@
         <source>-&gt; New file: %1
 </source>
         <comment>IDS_LOG_NEWFILE</comment>
-        <translation type="unfinished">-&gt; Nouveau fichier : %1
+        <translation type="unfinished">-&gt; 新檔案: %1
 </translation>
     </message>
     <message>
@@ -64,7 +64,7 @@
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished">Chargement de l&apos;image %1 bits/ch %2
+        <translation type="unfinished">載入每色 %1 bit %2 之天體影像
 %3</translation>
     </message>
     <message>
@@ -72,7 +72,7 @@
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished">Chargement de l&apos;image monochrome %1 bits %2
+        <translation type="unfinished">載入 %1 bit %2 之灰階天體影像
 %3</translation>
     </message>
     <message numerus="yes">
@@ -82,7 +82,6 @@
         <comment>IDS_LOG_REGISTERRESULTS</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -90,24 +89,21 @@
         <source>Warning: Image %1 -&gt; %2
 </source>
         <comment>IDS_LOG_WARNING</comment>
-        <translation type="unfinished">Avertissement : Image %1 -&gt; %2
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="210"/>
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished">L&apos;image %1 n&apos;est pas empilable (%2)
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="218"/>
         <source>Error loading file %1
 </source>
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
-        <translation type="unfinished">Erreur lors du chargement du fichier %1
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="235"/>
@@ -176,8 +172,7 @@
         <source>Image %1 is not stackable (%2)
 </source>
         <comment>IDS_LOG_IMAGENOTSTACKABLE1</comment>
-        <translation type="unfinished">L&apos;image %1 n&apos;est pas empilable (%2)
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../filestacker.cpp" line="290"/>
@@ -489,8 +484,8 @@ Ctrl+4 to toggle 4-Corners mode</source>
         <location filename="../DeepSkyStackerLive.cpp" line="161"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Cette version bêta de DeepSkyStacker a expiré.
-Vous pouvez probablement en obtenir une autre ou télécharger la version finale à partir du site Web.</translation>
+        <translation>DeepSkyStacker 測試版已過期
+您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="465"/>
@@ -666,14 +661,14 @@ At this point all the incoming (and all previously registered) images will be st
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Début de la surveillance du répertoire %1
+        <translation type="unfinished">開始監視檔案夾 %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="720"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Arrêt de la surveillance du répertoire %1
+        <translation type="unfinished">停止監視檔案夾 %1
  {1?}</translation>
     </message>
     <message>
@@ -734,7 +729,6 @@ Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
         <translation type="unfinished">
             <numerusform></numerusform>
-            <numerusform></numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -743,7 +737,6 @@ Do you want to process them?</source>
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
         <translation type="unfinished">
-            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
