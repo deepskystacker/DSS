@@ -88,7 +88,8 @@ About::About(QWidget *parent) :
     QDir dir(":/i18n/", "DSS_*.qm");
     for(auto it: dir.entryList())
     {
-		QString lang = it.section(".", 1, 1);
+		QString lang = it.section('_', 1);
+        lang = lang.section('.', 0, 0);
         QString langName = QLocale(lang).nativeLanguageName();
         if ("en" == lang) langName = "English";
         ui->comboBox->addItem(langName, lang);
