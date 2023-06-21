@@ -81,8 +81,8 @@ namespace DSS
 		void dropPendingImages();
 
 	private:
-		volatile bool registrationEnabled;		// OK to use volatile for bool (but nothing else)
-		volatile bool closing;
+		std::atomic_bool registrationEnabled;
+		std::atomic_bool closing;
 		ProgressLive* pProgress;
 		QWaitCondition condvar;
 		QMutex mutex;

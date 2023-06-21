@@ -85,7 +85,7 @@ namespace DSS
 		void clearStackedImage();
 
 	private:
-		volatile bool stackingEnabled;		// OK to use volatile for bool (but nothing else)
+		std::atomic_bool stackingEnabled;
 		ProgressLive* pProgress;
 		LiveSettings* liveSettings;
 		QWaitCondition condvar;
