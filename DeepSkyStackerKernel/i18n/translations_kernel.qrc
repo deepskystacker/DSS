@@ -1,17 +1,18 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="i18n">
-    <file>KernelDSS.ca.qm</file>
-    <file>KernelDSS.cs.qm</file>
-    <file>KernelDSS.de.qm</file>
-    <file>KernelDSS.en.qm</file>
-    <file>KernelDSS.es.qm</file>
-    <file>KernelDSS.fr.qm</file>
-    <file>KernelDSS.it.qm</file>
-    <file>KernelDSS.nl.qm</file>
-    <file>KernelDSS.pt_BR.qm</file>
-    <file>KernelDSS.ro.qm</file>
-    <file>KernelDSS.ru.qm</file>
-    <file>KernelDSS.tr.qm</file>
-    <file>KernelDSS.zh_TW.qm</file>
+    <file>DSSKernel_ca.qm</file>
+    <file>DSSKernel_cs.qm</file>
+    <file>DSSKernel_de.qm</file>
+    <file>DSSKernel_en.qm</file>
+    <file>DSSKernel_es.qm</file>
+    <file>DSSKernel_fr.qm</file>
+    <file>DSSKernel_it.qm</file>
+    <file>DSSKernel_nl.qm</file>
+    <file>DSSKernel_pt_BR.qm</file>
+    <file>DSSKernel_ro.qm</file>
+    <file>DSSKernel_ru.qm</file>
+    <file>DSSKernel_tr.qm</file>
+    <file>DSSKernel_zh_CN.qm</file>
+    <file>DSSKernel_zh_TW.qm</file>
 </qresource>
 </RCC>
