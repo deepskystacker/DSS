@@ -89,7 +89,7 @@ namespace DSS
 				switch (pointType)
 				{
 				case PT_REFERENCE:
-					conf[QXYSeries::PointConfiguration::Color] = QColorConstants::DarkGreen;;
+					conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Cyan;
 					conf[QXYSeries::PointConfiguration::Size] = 6;
 					break;
 				case PT_WRONG:
