@@ -85,7 +85,7 @@ About::About(QWidget *parent) :
 
     ui->setupUi(this);
     ui->comboBox->addItem(tr("Default"), "");
-    QDir dir(":/i18n/", "DSS.*.qm");
+    QDir dir(":/i18n/", "DSS_*.qm");
     for(auto it: dir.entryList())
     {
 		QString lang = it.section(".", 1, 1);

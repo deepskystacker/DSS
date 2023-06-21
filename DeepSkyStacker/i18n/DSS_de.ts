@@ -1,109 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ca_ES">
+<TS version="2.1" language="de_DE">
 <context>
     <name>About</name>
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation>Referent a DeepSkyStacker</translation>
+        <translation>Über DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation>Idioma</translation>
+        <translation>Sprache</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation>Escolliu l&apos;idioma:</translation>
+        <translation>Sprache auswählen:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation>Verificar si existeix una nova versió disponible en iniciar</translation>
+        <translation>Beim Start auf neue Version prüfen</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation>Referent a &amp;Qt</translation>
+        <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="75"/>
+        <location filename="../About.cpp" line="87"/>
         <source>Default</source>
-        <translation>Idioma per defecte</translation>
+        <translation>Voreinstellung</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="33"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation>DeepSkyStacker versió %1</translation>
+        <translation>DeepSkyStacker Version %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="40"/>
         <source>(Now somewhat out of date)</source>
-        <translation>(Ara una mica desfasat)</translation>
+        <translation>(Inzwischen etwas veraltet)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="50"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>Decodificació d&apos;arxius RAW amb LibRaw (versió %1)
-Copyright © 1997-2019 LibRaw LLC {1)?} {1997-2022 ?}</translation>
+        <translation>RAW-Datei Dekodierung mit LibRaw (Version %1)
+Copyright © 1997-2022 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="67"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation>Decodificació d&apos;arxius FITS amb CFitsIO (versió %1)
+        <translation>FITS-Dekodierung mit CFitsIO (Version %1)
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Spanish version: Ricardo Contreras and the team from</source>
-        <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation>Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
+        <location filename="../About.cpp" line="74"/>
+        <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
+Copyright 2004-2023 Exiv2 authors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Czech version:</source>
-        <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation>Versió en Txec:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Italian version:</source>
-        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation>Versió en Italià:</translation>
+        <location filename="../About.cpp" line="80"/>
+        <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
+Copyright Tőkés Attila</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="101"/>
-        <source>Catalan version:</source>
-        <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation>Versió en Català:</translation>
+        <source>Spanish version: Ricardo Contreras and the team from</source>
+        <comment>IDS_ABOUT_LANG_SPANISH</comment>
+        <translation>Spanische Version: Ricardo Contreras und sein Team</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="105"/>
+        <source>Czech version:</source>
+        <comment>IDS_ABOUT_LANG_CZECH</comment>
+        <translation>Tschechische Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="109"/>
+        <source>Italian version:</source>
+        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
+        <translation>Italienische Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="113"/>
+        <source>Catalan version:</source>
+        <comment>IDS_ABOUT_LANG_CATALAN</comment>
+        <translation>Katalanische Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="117"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation>Versió Alemanya:</translation>
+        <translation>Deutsche Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="110"/>
+        <location filename="../About.cpp" line="122"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation>Versió Holandesa:</translation>
+        <translation>Holländische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="107"/>
-        <location filename="../About.cpp" line="111"/>
-        <location filename="../About.cpp" line="120"/>
-        <location filename="../About.cpp" line="124"/>
-        <location filename="../About.cpp" line="125"/>
+        <location filename="../About.cpp" line="119"/>
+        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="136"/>
+        <location filename="../About.cpp" line="137"/>
         <source>and</source>
-        <translation>i</translation>
+        <translation>und</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="60"/>
@@ -111,39 +123,39 @@ Copyright NASA</translation>
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>Codificació i Decodificació d&apos;arcxius TIFF amb LibTIFF (versió %1)
+        <translation>TIFF-Datei Kodierung/Dekodierung mit LibTIFF (Version %1)
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="114"/>
+        <location filename="../About.cpp" line="126"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation>Versió Xinès Tradicional:</translation>
+        <translation>Traditionell Chinesische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="118"/>
+        <location filename="../About.cpp" line="130"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Versió en Portugès:</translation>
+        <translation>Portugiesische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation>Versió Romanesa:</translation>
+        <translation>Rumänische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="128"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Versió en Rus:</translation>
+        <translation>Russische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Versió Turca:</translation>
+        <translation>Türkische Version:</translation>
     </message>
 </context>
 <context>
@@ -151,37 +163,37 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation>Alineació</translation>
+        <translation>Ausrichtung</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation>Transformació utilitzada durant l&apos;alineat</translation>
+        <translation>Verwendete Methode zur Ausrichtung</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation>Automàtic</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation>Bilineal</translation>
+        <translation>Bilinear</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation>Biquadrada</translation>
+        <translation>Bisquared</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation>Bicúbica</translation>
+        <translation>Bikubisch</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation>Sense alineament</translation>
+        <translation>Keine Ausrichtung</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="31"/>
@@ -189,9 +201,9 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation>Automàtic
+        <translation>Automatisch
 
-El mètode d&apos;alineat és seleccionat automàticament depenent de la quantitat d&apos;estrelles disponibles.</translation>
+Ausrichtungsmethode wird automatisch gewählt abhängig von der Anzahl verfügbarer Sterne.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="36"/>
@@ -199,9 +211,9 @@ El mètode d&apos;alineat és seleccionat automàticament depenent de la quantit
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation>Alineat Bilinear
+        <translation>Bilineare Ausrichtung
 
-L&apos;Alineat Bilinear és utilitzat en tots els casos.</translation>
+Die bilineare Ausrichtung kann in allen Fällen verwendet werden. Es können weniger als 25 Sterne zur Verfügung stehen.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="41"/>
@@ -209,9 +221,9 @@ L&apos;Alineat Bilinear és utilitzat en tots els casos.</translation>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation>Alineat Biquadrat
+        <translation>Bisquared Ausrichtung
 
-L&apos;Alineat Biquadrat és utilitzat quan hi ha almenys 25 estrelles disponibles, d&apos;altra banda s&apos;utilitza el mètode d&apos;Alineat Bilinear.</translation>
+Für die bisquared Ausrichtungmethode müssen mindestens 25 Sterne zur Verfügung stehen, sonst wird die bilineare Ausrichtung verwendet.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="47"/>
@@ -219,9 +231,9 @@ L&apos;Alineat Biquadrat és utilitzat quan hi ha almenys 25 estrelles disponibl
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation>Alineat Bicúbic
+        <translation>Bikubische Ausrichtung
 
-El mètode d&apos;Alineat Bicúbico és utilitzat quan hi ha almenys 40 estrelles disponibles, si hi ha de 25 a 39 estrelles disponibles s&apos;utilitza el mètode Biquadrat, d&apos;altra banda s&apos;utilitza el mètode Bilinear quan hi ha menys de 25 estrelles disponibles.</translation>
+Für die bikubische Ausrichtungsmethode müssen mindestens 40 Sterne zur Verfügung stehen. Bei 25 bis 39 Sternen wird bisquared gewählt, bei noch weniger Sternen ist nur die bilineare Methode möglich.</translation>
     </message>
 </context>
 <context>
@@ -229,7 +241,7 @@ El mètode d&apos;Alineat Bicúbico és utilitzat quan hi ha almenys 40 estrelle
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation>Light Frame sense Registre</translation>
+        <translation>Unregistrierter Lightframe</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -237,25 +249,25 @@ El mètode d&apos;Alineat Bicúbico és utilitzat quan hi ha almenys 40 estrelle
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation>Aquest light frame no està registrat
-(les estrelles no han estat detectades).
+        <translation>Dieser Lightframe ist nicht registriert
+(Die Sterne wurden noch nicht erfasst).
 
-Desitja...</translation>
+Möchten Sie...</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation>registrar aquest light frame</translation>
+        <translation>diesen Lightframe registrieren</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="73"/>
         <source>to register all the light frames</source>
-        <translation>registrar tots els light frames</translation>
+        <translation>alle Lightframes registrieren</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="80"/>
         <source>to continue without registering the light frame</source>
-        <translation>continuar sense registrar el light frame</translation>
+        <translation>fortfahren ohne Registrierung des Lightframes</translation>
     </message>
 </context>
 <context>
@@ -263,47 +275,47 @@ Desitja...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation>Opcions de Fons</translation>
+        <translation>Hintergrund Optionen</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation>Mètode de Calibració</translation>
+        <translation>Kalibrierungs-Methode</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation>Lineal</translation>
+        <translation>Linear</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation>Racional</translation>
+        <translation>Rational</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation>Mètode de Calibració de Fons RGB</translation>
+        <translation>RGB-Hintergrund Kalibrierungs-Methode</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation>Cap</translation>
+        <translation>Keine</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation>Mínim</translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation>Mig</translation>
+        <translation>Mittel</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation>Màxim</translation>
+        <translation>Maximum</translation>
     </message>
 </context>
 <context>
@@ -311,7 +323,7 @@ Desitja...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation>Apilat per Lots</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -319,26 +331,26 @@ Desitja...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation>Esta ventana es utilizada para iniciar el proceso de apilado para listas de imágenes existentes.
-Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar los procesos de apilado.</translation>
+        <translation>Mit diesem Dialog können Sie einen Stacking-Prozess aus bestehenden Bilderlisten starten
+Fügen Sie die zu stackenden Bilderlisten im Auswahlfeld hinzu, und klicken Sie auf OK, um den Prozess zu starten.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation>Agregar Llistes d&apos;Arxius...</translation>
+        <translation>Bilderlisten hinzufügen...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation>Netejar llista</translation>
+        <translation>Liste löschen</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="61"/>
+        <location filename="../BatchStacking.cpp" line="80"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Guardant imatge Final en %1</translation>
+        <translation>Fertiges Bild speichern in %1</translation>
     </message>
 </context>
 <context>
@@ -347,13 +359,13 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Verificar totes les imatges...</translation>
+        <translation>Alle Bilder auswählen über...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum score:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Valor mínim de puntuació:</translation>
+        <translation>Minimalem Score:</translation>
     </message>
 </context>
 <context>
@@ -361,46 +373,48 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation>Cometa</translation>
+        <translation>Komet</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation>Paràmetres d&apos;apilat per a cometes</translation>
+        <translation>Komet Stacking Parameter</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation>Apilat estàndard</translation>
+        <translation>Standard Stacking</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation>La posició del cometa és ignorada.\nEl cometa apareixerà borrós.</translation>
+        <translation>Die Kometenposition wird ignoriert.
+Der Komet wird unscharf.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation>La posició del cometa és utilitzada.
-El cometa es veurà nítid i les estrelles tindran traces.</translation>
+        <translation>Kometenposition wird berücksichtigt.
+Der Komet wird scharf und die Sterne haben Strichspuren.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation>La posició del cometa és utilitzada. \nEl cometa i las estrelles es veuran nítids. Aquest procés necessita el doble de temps.</translation>
+        <translation>Kometenposition wird berücksichtigt.
+Sowohl Komet als auch Sterne werden scharf. Dieser Prozess dauert doppelt so lange.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation>Apilat per a cometes</translation>
+        <translation>Komet Stacking</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation>Apilat d&apos;estrelles + cometa</translation>
+        <translation>Sterne + Komet Stacking</translation>
     </message>
 </context>
 <context>
@@ -409,55 +423,55 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../StackingDlg.cpp" line="117"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Llista d&apos;Arxius (*.dssfilelist)</translation>
+        <translation>Datei Liste (*.dssfilelist)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="118"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Llista d&apos;Arxius (*.txt)</translation>
+        <translation>Datei Liste (*.txt)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="119"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Tots Els Arxius (*)</translation>
+        <translation>Alle Dateien (*)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="125"/>
-        <source>Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
+        <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Arxius d&apos;Imatge (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Arxiu JPEG o PNG (*.jpg *.jpeg *.png)</translation>
+        <translation>JPEG oder PNG-Dateien (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="130"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Arxiu TIFF (*.tif *.tiff)</translation>
+        <translation>TIFF-Dateien (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="131"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Arxiu RAW (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation>RAW-Dateien (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="134"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Arxiu FITS (*.fits *.fit *.fts)</translation>
+        <translation>FITS-Dateien (*.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="135"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Tots Els Arxius (*)</translation>
+        <translation>Alle Dateien (*)</translation>
     </message>
 </context>
 <context>
@@ -466,25 +480,25 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../editstars.cpp" line="861"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
-        <translation>Faci click per a marcar el cometa aquí</translation>
+        <translation>Klicken, um den Kometen hier festzulegen</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="863"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
-        <translation>Faci click per a agregar aquesta estrella</translation>
+        <translation>Zum Hinzufügen dieses Sterns anklicken</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="870"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
-        <translation>Faci click per a borrar el cometa</translation>
+        <translation>Zum Entfernen des Kometen anklicken</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="872"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
-        <translation>Faci click per a eliminar aquesta estrella</translation>
+        <translation>Zum Entfernen des Sterns anklicken</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="920"/>
@@ -492,7 +506,9 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 Score: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation></translation>
+        <translation>#Sterne: %1
+Score: %2
+FWHM: %3</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="927"/>
@@ -500,13 +516,13 @@ FWHM: %3</source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
         <translation>
-Cometa:%1</translation>
+Komet:%1</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="927"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Si</translation>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -515,7 +531,7 @@ Cometa:%1</translation>
         <location filename="../StackingDlg.cpp" line="674"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation></translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="676"/>
@@ -527,78 +543,78 @@ Cometa:%1</translation>
         <location filename="../StackingDlg.cpp" line="675"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation></translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="677"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation></translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="673"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation></translation>
+        <translation>Light</translation>
     </message>
 </context>
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="72"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
 Ctrl+4 to toggle 4-Corners mode</source>
-        <translation>Ctrl++ o Ctrl+= per ampliar
-Ctrl+- per reduir la imatge
- o utilitzeu la roda del ratolí per fer zoom
-Ctrl+4 per canviar el mode de 4 cantonades</translation>
+        <translation>Strg++ oder Strg+= zum Vergrößern
+Strg+- zum Verkleinern
+oder verwenden Sie das Mausrad zum Zoomen
+Strg+4 zum Umschalten des 4-Ecken-Modus</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="84"/>
+        <location filename="../progressdlg.cpp" line="152"/>
         <source>Are you sure you wish to cancel this operation?</source>
-        <translation>Esteu segur que voleu cancel·lar aquesta operació?</translation>
+        <translation>Möchten Sie diesen Vorgang wirklich abbrechen?</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <location filename="../progressdlg.cpp" line="226"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
-        <translation>Temps restant: %1 hr %2 min %3 seg </translation>
+        <translation>Geschätzte verbleibende Zeit: %1 h %2 m %3 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <location filename="../progressdlg.cpp" line="229"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
-        <translation>Temps restant: %1 min %2 seg </translation>
+        <translation>Geschätzte verbleibende Zeit: %1 m %2 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <location filename="../progressdlg.cpp" line="232"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
-        <translation>Temps restant: %1 seg </translation>
+        <translation>Geschätzte verbleibende Zeit: %1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <location filename="../progressdlg.cpp" line="235"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
-        <translation>Temps restant: &lt; 1 seg </translation>
+        <translation>Geschätzte verbleibende Zeit: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <location filename="../progressdlg.cpp" line="242"/>
         <source>Estimated remaining Time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Temps restant: Desconegut</translation>
+        <translation>Geschätzte verbleibende Zeit: Unbekannt</translation>
     </message>
     <message numerus="yes">
-        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <location filename="../progressdlg.cpp" line="255"/>
         <source>%n Processor(s) Used</source>
         <translation>
-            <numerusform>%n Processador Utilitzat</numerusform>
-            <numerusform>%n Processadors Utilitzats</numerusform>
+            <numerusform>%n Prozessor verwendet</numerusform>
+            <numerusform>%n Prozessoren verwendet</numerusform>
         </translation>
     </message>
 </context>
@@ -607,7 +623,7 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="810"/>
         <source>Rename group</source>
-        <translation>Reanomena el grup</translation>
+        <translation>Gruppe umbenennen</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="899"/>
@@ -615,45 +631,47 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
         <translation>
-            <numerusform>¿Realment desitja eliminar permanentement un arxiu?\nAquesta operació no pot revertir-se o cancel·lar-se.</numerusform>
-            <numerusform>¿Realment desitja eliminar permanentement %n arxius?\nAquesta operació no pot revertir-se o cancel·lar-se.</numerusform>
+            <numerusform>Wollen Sie wirklich diese Datei dauerhaft löschen?
+Dieser Vorgang kann nicht rückgängig gemacht werden.</numerusform>
+            <numerusform>Wollen Sie wirklich die %n Dateien dauerhaft löschen?
+Dieser Vorgang kann nicht rückgängig gemacht werden.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="650"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
-        <translation>Utilitzar com a quadre de referència</translation>
+        <translation>Als Referenzbild verwenden</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="654"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
-        <translation>Seleccionar</translation>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="656"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
-        <translation>Deseleccionar</translation>
+        <translation>Deselektieren</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="659"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
-        <translation>Eliminar de la llista</translation>
+        <translation>Von der Liste entfernen</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="665"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
-        <translation>Copiar al portapapers</translation>
+        <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="668"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
-        <translation>Borrar del disc...</translation>
+        <translation>Von der Festplatte löschen...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="698"/>
@@ -661,183 +679,183 @@ This operation cannot be reversed or cancelled.</source>
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
 Right mouse button to display the menu</source>
-        <translation>Barra espaiadora per marcar/desmarcar les files seleccionades
-Ctrl-A o equivalent per seleccionar totes les files
-Tecla Suprimeix per eliminar (no esborrar) les files seleccionades
-Botó dret del ratolí per mostrar el menú</translation>
+        <translation>Leertaste zum Selektieren/Deselektieren markierter Zeilen
+Strg-A oder entsprechende Taste, um alle Zeilen auszuwählen
+Entfernen-Taste, um ausgewählte Zeilen zu entfernen (nicht zu löschen).
+Rechte Maustaste, um das Menü anzuzeigen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1453"/>
+        <location filename="../StackingDlg.cpp" line="1456"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 no existeix o no és un fitxer</translation>
+        <translation>%1 existiert nicht oder ist keine Datei</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1462"/>
+        <location filename="../StackingDlg.cpp" line="1465"/>
         <source>Failed to load image %1</source>
-        <translation>No s&apos;ha pogut carregar la imatge %1</translation>
+        <translation>Bild %1 konnte nicht geladen werden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1766"/>
+        <location filename="../StackingDlg.cpp" line="1769"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
-        <translation>Imatges: %1      -      Darks: %2      -      Flats: %3      -   Dark Flats: %4   -      Offset/Bias: %5</translation>
+        <translation>Lightframes: %1      -      Darkframes: %2      -      Flatframes: %3      -   Dark-Flatframes: %4   -      Offset/Biasframes: %5</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="705"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation>Feu doble clic aquí per acoblar/desacoblar la llista d&apos;imatges</translation>
+        <translation>Doppelklicken Sie hier, um die Bildliste anzudocken/zu lösen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1418"/>
+        <location filename="../StackingDlg.cpp" line="1421"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
-        <translation>Carregant %1</translation>
+        <translation>Lade %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1516"/>
+        <location filename="../StackingDlg.cpp" line="1519"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
-        <translation>El fitxer %1 no s&apos;ha carregat perquè ja estava carregat al grup %2 (%3)</translation>
+        <translation>Datei %1 wurde nicht geladen, da sie bereits in Gruppe %2 (%3) geladen war</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1540"/>
+        <location filename="../StackingDlg.cpp" line="1543"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
-        <translation>Obrir Light Frames...</translation>
+        <translation>Lightframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1544"/>
+        <location filename="../StackingDlg.cpp" line="1547"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
-        <translation>Obrir Dark Frames...</translation>
+        <translation>Darkframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1562"/>
+        <location filename="../StackingDlg.cpp" line="1565"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
-        <translation>Obrir Dark Flat Frames...</translation>
+        <translation>Dark-Flatframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1550"/>
+        <location filename="../StackingDlg.cpp" line="1553"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
-        <translation>Obrir Flat Frames...</translation>
+        <translation>Flatframes öffnen...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="662"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
-        <translation>Propietats...</translation>
+        <translation>Eigenschaften...</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="980"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
-            <numerusform>%n arxiu seleccionat</numerusform>
-            <numerusform>%n arxius seleccionats</numerusform>
+            <numerusform>%n Datei ausgewählt</numerusform>
+            <numerusform>%n Dateien ausgewählt</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1556"/>
+        <location filename="../StackingDlg.cpp" line="1559"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
-        <translation>Obrir Bias Frames...</translation>
+        <translation>Biasframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1779"/>
+        <location filename="../StackingDlg.cpp" line="1782"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
 Dark Flat Frames: %4
 Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO2</comment>
-        <translation>Imatges: %1
-Darks: %2
-Flats: %3
-Dark Flats: %4
-Offset/Bias: %5</translation>
+        <translation>Lightframes: %1
+Darkframes: %2
+Flatframes: %3
+Dark-Flatframes: %4
+Offset/Biasframes: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1862"/>
+        <location filename="../StackingDlg.cpp" line="1865"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
-        <translation>Obrir una altra Llista d&apos;Arxius...</translation>
+        <translation>Andere Dateiliste öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2039"/>
+        <location filename="../StackingDlg.cpp" line="2042"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation>La versió %1 de DeepSkyStacker està disponible per a ser descarregada.</translation>
+        <translation>DeepSkyStacker Version %1 zum Download verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2055"/>
+        <location filename="../StackingDlg.cpp" line="2058"/>
         <source>Internet version check error code %1:
 %2</source>
-        <translation>Codi d&apos;error d&apos;Internet de comprovació de versió %1:
+        <translation>Internet-Fehlercode %1 der Versionsprüfung:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2171"/>
+        <location filename="../StackingDlg.cpp" line="2174"/>
         <source>Total registering time: %1 %2</source>
-        <translation>Temps total de registre: %1 %2</translation>
+        <translation>Gesamtzeit für Registrierung: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2190"/>
+        <location filename="../StackingDlg.cpp" line="2193"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
-        <translation>Vè. ha de seleccionar light frames per a registrar-los.</translation>
+        <translation>Bitte Lightframes zum Registrieren auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2248"/>
+        <location filename="../StackingDlg.cpp" line="2251"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
         <comment>IDS_WARNINGREADONLY</comment>
-        <translation>La següent carpeta(es) son de només lectura:
+        <translation>Folgende(r) Ordner sind read-only :
 %1
-DeepSkyStacker necessita crear arxius en aquestes carpetes durant el processament.</translation>
+DeepSkyStacker benötigt sie zum Erstellen von Dateien während des Prozesses.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2272"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>Les imatges marcades no són compatibles: %1.</translation>
+        <translation>Die selektierten Bilder sind inkompatibel: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2273"/>
+        <location filename="../StackingDlg.cpp" line="2276"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
-        <translation>Vè. ha de seleccionar light frames per a apilar-los.</translation>
+        <translation>Bitte Lightframes zum Stacken auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2321"/>
+        <location filename="../StackingDlg.cpp" line="2324"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
         <comment>IDS_WARNING_SAVECHANGES</comment>
-        <translation>Vostè ha fet alguns canvis a la llista de %1 arxius i/o a la configuració.
+        <translation>Sie haben einige Änderungen an der %1 Dateiliste und/oder den Einstellungen vorgenommen.
 
-Vol desar els canvis?</translation>
+Wollen Sie die Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2437"/>
+        <location filename="../StackingDlg.cpp" line="2440"/>
         <source>Total stacking time: %1 %2</source>
-        <translation>Temps total d&apos;apilament: %1 %2</translation>
+        <translation>Gesamtzeit für Stapeln: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2469"/>
+        <location filename="../StackingDlg.cpp" line="2471"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Guardant imatge Final en %1</translation>
+        <translation>Fertiges Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2533"/>
+        <location filename="../StackingDlg.cpp" line="2535"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
 %4</source>
-        <translation>S&apos;ha detectat una excepció a la funció: %1
-%2 (línia %3):
+        <translation>Ausnahme in Funktion: %1
+%2 (Zeile %3):
 
 %4</translation>
     </message>
@@ -850,9 +868,9 @@ Vol desar els canvis?</translation>
 This mode allows you to create or modify a Custom Rectangle
 defining the part of the images you wish to stack.</source>
         <comment>IDS_TOOLTIP_SELECTRECT</comment>
-        <translation>Mètode Rectangle a Mida:
-Aquest mètode pot ser utilitzat per a crear i modificar
-el Rectangle a Mida.</translation>
+        <translation>Auswahlrechteck-Modus
+In diesem Modus können Sie ein Auswahlrechteck
+erstellen und verändern.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="122"/>
@@ -860,9 +878,9 @@ el Rectangle a Mida.</translation>
 This mode shows the stars that have been detected in the image.
 You can add additional stars or remove incorrectly detected stars.</source>
         <comment>IDS_TOOLTIP_STAR</comment>
-        <translation>Mètode Edició d&apos;Estrelles:
-Aquest mètode pot ser utilitzat per a agregar/eliminar estrelles
-a la imatge.</translation>
+        <translation>Sternauswahl-Modus
+Zeigt die gefundenen Sterne.
+Sie können im angezeigten Bild Sterne hinzufügen oder entfernen.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="135"/>
@@ -870,9 +888,9 @@ a la imatge.</translation>
 This mode allows you to select and edit the location
 of the comet&apos;s nucleus in the image.</source>
         <comment>IDS_TOOLTIP_COMET</comment>
-        <translation>Mètode Edició de Comete:
-Aquest mètode pot ser utilitzat per a editar la posició
-del cometa en la imatge.</translation>
+        <translation>Kometenauswahl-Modus
+In diesem Modus legen Sie die Position
+des Kometen im angezeigten Bild fest.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="144"/>
@@ -882,51 +900,58 @@ in Edit Stars and Edit Comet modes.
 
 Right Click to change behaviour.</source>
         <comment>IDS_TOOLTIP_SAVE</comment>
-        <translation>Guardar cavis:
-Guardar tots els cavis (Estrelles i Cometa) per a la imatge actual.
+        <translation>Änderungen speichern:
+Speichert die am aktuellen Bild vorgenommenen Änderungen
+in den Modi „Sterne bearbeiten“ und „Kometen bearbeiten“.
 
-Right Click to change behaviour.</translation>
+Rechts-Klick, um das Verhalten zu ändern.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="173"/>
         <source>Save without asking</source>
         <comment>ID_SAVECONTEXT_SAVEWITHOUTASKING</comment>
-        <translation>Guardar sense preguntar</translation>
+        <translation>Ohne Nachfrage speichern</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="177"/>
         <source>Don&apos;t save</source>
         <comment>ID_SAVECONTEXT_DONTSAVEWITHOUTASKING</comment>
-        <translation>No guardar sense preguntar</translation>
+        <translation>Nicht speichern</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="181"/>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
-        <translation>Preguntar sempr</translation>
+        <translation>Immer nachfragen</translation>
     </message>
 </context>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="88"/>
+        <location filename="../DeepSkyStacker.cpp" line="127"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Aquesta versió beta de DeepSkyStacker ha caducat
-Probablement en podeu obtenir un altre o descarregar la versió final del lloc web.</translation>
+        <translation>Diese Beta-Version von DeepSkyStacker ist abgelaufen
+Sie können möglicherweise eine weitere bekommen oder die endgültige Version von der Webseite herunterladen.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="116"/>
+        <location filename="../DeepSkyStacker.cpp" line="155"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
-        <translation>Desitja que DeepSkyStacker verifiqui si hi ha una nova versió disponible en iniciar-se?
-(Vè. pot habilitar o deshabilitar aquesta opció més tard en la finestra de Referent a...)</translation>
+        <translation>Wollen Sie beim Start prüfen, ob eine neue Version von DeepSkyStacker verfügbar ist?
+(Sie können diese Option später in der Über DeepSkyStacker Dialogbox an und abschalten)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="444"/>
+        <location filename="../DeepSkyStacker.cpp" line="449"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 no existeix o no és un fitxer</translation>
+        <translation>%1 existiert nicht oder ist keine Datei</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="597"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation type="unfinished">DeepSkyStacker Help.chm</translation>
     </message>
 </context>
 <context>
@@ -934,15 +959,15 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation>Agregar arxius...</translation>
+        <translation>Dateien hinzufügen...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="86"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
         <translation>
-            <numerusform>Agregar un arxiu com a</numerusform>
-            <numerusform>Agregar %n arxius com a</numerusform>
+            <numerusform>Datei hinzufügen als</numerusform>
+            <numerusform>%n Dateien hinzufügen als</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -950,7 +975,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
         <translation>
-            <numerusform></numerusform>
+            <numerusform>Lightframes</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -959,7 +984,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
         <translation>
-            <numerusform></numerusform>
+            <numerusform>Darkframes</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -968,7 +993,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
         <translation>
-            <numerusform></numerusform>
+            <numerusform>Flatframes</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -977,7 +1002,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
         <translation>
-            <numerusform></numerusform>
+            <numerusform>Dark-Flatframes</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -986,7 +1011,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
         <translation>
-            <numerusform></numerusform>
+            <numerusform>Offset/Biasframes</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -995,274 +1020,268 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <name>ExplorerBar</name>
     <message>
         <location filename="../ExplorerBar.cpp" line="60"/>
-        <location filename="../ExplorerBar.cpp" line="452"/>
-        <location filename="../ExplorerBar.cpp" line="598"/>
+        <location filename="../ExplorerBar.cpp" line="443"/>
+        <location filename="../ExplorerBar.cpp" line="611"/>
         <source>deleted</source>
-        <translation>se suprimirà</translation>
+        <translation>gelöscht</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="62"/>
-        <location filename="../ExplorerBar.cpp" line="454"/>
-        <location filename="../ExplorerBar.cpp" line="600"/>
+        <location filename="../ExplorerBar.cpp" line="445"/>
+        <location filename="../ExplorerBar.cpp" line="613"/>
         <source>kept</source>
-        <translation>es conservarà</translation>
+        <translation>aufbewahrt</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="64"/>
-        <location filename="../ExplorerBar.cpp" line="456"/>
-        <location filename="../ExplorerBar.cpp" line="602"/>
+        <location filename="../ExplorerBar.cpp" line="447"/>
+        <location filename="../ExplorerBar.cpp" line="615"/>
         <source>Trace File will be %1</source>
-        <translation>El fitxer de traça %1</translation>
+        <translation>Trace-Datei wird %1</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="261"/>
+        <location filename="../ExplorerBar.cpp" line="263"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation>Configuració de registre...</translation>
+        <translation>Registrierungs-Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="264"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="304"/>
-        <source>Restore Default settings</source>
-        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation>Restaura configuració per defecte</translation>
+        <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="306"/>
+        <source>Restore Default settings</source>
+        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
+        <translation>Standardeinstellungen wiederherstellen</translation>
+    </message>
+    <message>
+        <location filename="../ExplorerBar.cpp" line="308"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Carrega configuració de DeepSkyStacker Live</translation>
+        <translation>DeepSkyStacker Live Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="310"/>
+        <location filename="../ExplorerBar.cpp" line="312"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation>Carrega...</translation>
+        <translation>Lade...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="371"/>
+        <location filename="../ExplorerBar.cpp" line="373"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Desa com a configuració de DeepSkyStacker Live</translation>
+        <translation>Als DeepSkyStacker Live Einstellung speichern</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="375"/>
+        <location filename="../ExplorerBar.cpp" line="377"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation>Desa com...</translation>
+        <translation>Speichern als...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="437"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation>Ayuda DeepSkyStacker.chm</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="514"/>
+        <location filename="../ExplorerBar.cpp" line="527"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation>Carrega configuració de DeepSkyStacker</translation>
+        <translation>DeepSkyStacker Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="518"/>
+        <location filename="../ExplorerBar.cpp" line="531"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation>Configuració de DeepSkyStacker (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="565"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>DSS Settings Files (*.dsssettings)</source>
-        <translation>Configuració de DeepSkyStacke</translation>
+        <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="561"/>
+        <location filename="../ExplorerBar.cpp" line="574"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation>Desa configuració de Save DeepSkyStacker</translation>
+        <translation>DeepSkyStacker Einstellungen speichern</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation>Registrant i Apilant</translation>
+        <translation>Registrieren und Stacken</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation>Obrir arxius d&apos;imatge...</translation>
+        <translation>Lightframes öffnen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation>arxius dark...</translation>
+        <translation>Darkframes...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation>arxius flat...</translation>
+        <translation>Flatframes...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation>arxius dark flat...</translation>
+        <translation>Dark/Flatframes...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation>arxius offset...</translation>
+        <translation>Offset/Biasframes...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation>Obrir una llista d&apos;arxius...</translation>
+        <translation>Dateiliste öffnen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation>Guardar la llista d&apos;arxius...</translation>
+        <translation>Dateiliste speichern...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation>Netejar llista</translation>
+        <translation>Liste Löschen</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation>Seleccionar tot</translation>
+        <translation>Alle auswählen</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation>Seleccionar per sobre del llindar...</translation>
+        <translation>Auswahl oberhalb einer Schwelle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation>Deseleccionar tot</translation>
+        <translation>Auswahl aufheben</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation>Registrar imatges seleccionades...</translation>
+        <translation>Ausgewählte Bilder registrieren...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation>Calcular offsets...</translation>
+        <translation>Offsets berechnen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation>Apilar imatges seleccionades...</translation>
+        <translation>Ausgewählte Bilder stacken...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation>Apilat per lots...</translation>
+        <translation>Stapelverarbeitung...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation>Processant</translation>
+        <translation>Bearbeitung</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation>Obrir arxiu d&apos;imatge...</translation>
+        <translation>Bilddatei öffnen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation>Copiar la imatge al portapapers</translation>
+        <translation>Bild in die Zwischenablage kopieren</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation>Crear una Màscara d&apos;Estrelles...</translation>
+        <translation>Sternmaske erstellen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation>Guardar la imatge a un arxiu...</translation>
+        <translation>Bild speichern unter...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation>Opcions</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation>Paràmetres...</translation>
+        <translation>Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Configuració Raw/FITS DDP...</translation>
+        <translation>Raw/FITS DDP Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation>Carrega...</translation>
+        <translation>Laden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation>Desa...</translation>
+        <translation>Speichern...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation>Recomanat...</translation>
+        <translation>Empfohlen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation>Referent a DeepSkyStacker...</translation>
+        <translation>Über DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation>Ajuda de DeepSkyStacker...</translation>
+        <translation>DeepSkyStacker&apos;s Hilfe...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="612"/>
         <source>Enable progress sounds</source>
-        <translation>Activa els sons de progrés</translation>
+        <translation>Fortschrittsgeräusche aktivieren</translation>
     </message>
 </context>
 <context>
@@ -1270,12 +1289,12 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation>DeepSkyStacker - Propietats de la imatge</translation>
+        <translation>DeepSkyStacker - Bildeigenschaften</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation>Arxiu</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
@@ -1285,12 +1304,12 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation>Profunditat</translation>
+        <translation>Tiefe</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation>Exposició</translation>
+        <translation>Belichtung</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
@@ -1300,22 +1319,22 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation>Grandària</translation>
+        <translation>Größe</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation>Data/Hora</translation>
+        <translation>Datum/Zeit</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation>Tipus</translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation>Informació</translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1323,42 +1342,42 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation>Arxius Intermedis</translation>
+        <translation>Zwischenbilder</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation>Paràmetres de creació d&apos;arxius temporals</translation>
+        <translation>Einstellungen für die Zwischenbilder</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation>Crear un arxiu calibrat per cada light frame</translation>
+        <translation>Erstelle eine kalibrierte Datei für jeden Lightframe</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation>Desa una imatge debayeritzada en processar imatges RAW</translation>
+        <translation>Ein interpoliertes Bild speichern bei RAW-Bild Verarbeitung</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation>Crear un archivo calibrat/registrat per a cada light frame</translation>
+        <translation>Erstelle eine registrierte/kalibrierte Datei für jeden Lightframe</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation>Format de l&apos;Arxiu Intermedi</translation>
+        <translation>Zwischenbilder Format</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation>Guardar Arxius Intermedis com arxius TIFF</translation>
+        <translation>Zwischenbilder als TIFF-Datei speichern</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation>Guardar Arxius Intermedis com arxius FITS</translation>
+        <translation>Zwischenbilder als FITS-Datei speichern</translation>
     </message>
 </context>
 <context>
@@ -1366,82 +1385,82 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation>Sortida</translation>
+        <translation>Ausgabe</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation>Configuració dels fitxers de sortida</translation>
+        <translation>Ausgabedatei Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation>Crear fitxer de sortida</translation>
+        <translation>Ausgabedatei erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation>Crear fitxer de descripció HTML</translation>
+        <translation>HTML Beschreibungs-Datei erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation></translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation>&lt;nom del llistat de fitxers &gt;.tif/fits</translation>
+        <translation>&lt;Dateilisten-Name&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation>Annexar un número per evitar sobrescriure el fitxer (001, 002, ...)</translation>
+        <translation>Nummerieren um Datei-Überschreiben zu vermeiden (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation>Crear el Fitxer de sortida a la carpeta de l&apos;imatge de referència</translation>
+        <translation>Ausgabedatei im Ordner des Referenzframes erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation>Crear el Fitxer de sortida a la carpeta del llistat d&apos;arxius</translation>
+        <translation>Ausgabedatei im Ordner der Dateiliste erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation>Crear el Fitxer de sortida a</translation>
+        <translation>Ausgabedatei erstellen in</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation>&lt;Carpeta de Sortida&gt;</translation>
+        <translation>&lt;Ausgabe-Ordner&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation>Nom del fitxer de sortida</translation>
+        <translation>Ausgabedatei-Name</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation>Ubicació de sortida</translation>
+        <translation>Ausgabe-Ordner</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="133"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation>Seleccioneu Carpeta de sortida</translation>
+        <translation>Ausgabe-Ordner wählen</translation>
     </message>
 </context>
 <context>
@@ -1449,111 +1468,111 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation>Cosmètica</translation>
+        <translation>Kosmetik</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation>Ajustaments de Cosmètica de post-calibrat</translation>
+        <translation>Kosmetik-Einstellungen zur Nachkalibrierung</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation>Grandària del Filtre</translation>
+        <translation>Filter-Größe</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation>Detectar i netejar els Hot Pixels restants</translation>
+        <translation>Erkennen und Entfernen verbliebener Hot-Pixel</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation>&lt;small&gt;Efecte Dèbil&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Wirkung schwach&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation>&lt;small&gt;Fort&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;stark&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation>Llindar de Detecció</translation>
+        <translation>Erkennungs-Schwellenwert</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation>Detectar i netejar els Cold Pixels restants</translation>
+        <translation>Erkennen und Entfernen verbliebener Cold-Pixel</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation>Reemplaçar el valor del píxel amb</translation>
+        <translation>Pixel-Wert ersetzen mit</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation>Prova en el primer frame...</translation>
+        <translation>An erstem Frame testen...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation>Guardar una imatge que mostri els píxels netejats per a cada light frame</translation>
+        <translation>Ein Bild pro Lightframe speichern, das die entfernten Pixel zeigt</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="22"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation>la mediana</translation>
+        <translation>Median</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="23"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation>el filtre gaussià</translation>
+        <translation>Gauss-Filter</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="349"/>
+        <location filename="../PostCalibration.cpp" line="347"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation>Calculant Cosmètica</translation>
+        <translation>Kosmetik berechnen</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="365"/>
+        <location filename="../PostCalibration.cpp" line="363"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>Carregant %1 bit/ch %2 light frame
+        <translation>Lade %1 Bit/Ch %2 Lightframe
 %3</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="367"/>
+        <location filename="../PostCalibration.cpp" line="365"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>Carregant %1 bits gray %2 light frame
+        <translation>Lade %1 Bit Graustufen %2 Lightframe
 %3</translation>
     </message>
 </context>
 <context>
     <name>ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="814"/>
+        <location filename="../ProcessingDlg.cpp" line="815"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
+        <translation>Sternmaske in %1 speichern</translation>
     </message>
 </context>
 <context>
@@ -1561,12 +1580,12 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation></translation>
+        <translation>Bearbeitung...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="148"/>
         <source>Cancel</source>
-        <translation>Cancel·lar</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -1574,151 +1593,151 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>Configuració del Procés de Desenvolupament Digital RAW/FITS</translation>
+        <translation>RAW/FITS Einstellungen zur digitalen Entwicklung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation>Arxius RAW</translation>
+        <translation>RAW Dateien</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation>Lluentor</translation>
+        <translation>Helligkeit</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation>Escala de Vermell</translation>
+        <translation>Rot-Skalierung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation>Escala de Blau</translation>
+        <translation>Blau-Skalierung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation>Balanç de Blancs</translation>
+        <translation>Weißabgleich</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation>Sense processament del Balanç de Blancs</translation>
+        <translation>Kein Weißabgleich</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation>Utilitzar Balanç de Blancs de la Càmera</translation>
+        <translation>Weißabgleich der Kamera verwenden</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation>Transformació de Matriu Bayer</translation>
+        <translation>Bayer Matrix Transformation</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation>Interpolació Bilineal</translation>
+        <translation>Bilineare Interpolation</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation>Interpolació Adaptive Homogeneity-Directed (AHD)</translation>
+        <translation>Adaptive Homogeneity-Directed Interpolation (AHD)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation>Utilitzar algoritme Bayer Drizzle (sense interpolació, sense debayerització)</translation>
+        <translation>Bayer Drizzle Algorithmus (keine Interpolation, kein De-Bayering)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation>Aquesta opció utilitza la Matriu Bayer tal i com és. No es fan interpolacions i a cada píxel només se&apos;ls dóna els components primaris de la matriu.</translation>
+        <translation>Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert, sondern jedes Pixel erhält nur die Primärfarbe der Sensormatrix.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation>Aquesta opció utilitza la Matriu Bayer per a crear un súper píxel des de cada grup de 4 píxels (RGBG). La grandària de la imatge resultant serà dividida en dues parts.</translation>
+        <translation>Diese Option verwendet die Bayer-Matrix, um aus jeder 4er-Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation>Arxius FITS</translation>
+        <translation>FITS Dateien</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Els arxius FITS Monocromàtics de 16 bit són arxius RAW creats amb una DSLR o amb una càmera CCD color.&lt;br&gt;Deixeu &lt;span style = &quot;font-style: italic;&quot;&gt; desmarcat &lt;/span&gt; per intentar la detecció automàtica basada en paraules clau FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 Bit FITS Dateien sind RAW Dateien mit einer DSLR oder einer Farb-CCD Kamera erstellt.&lt;br&gt;Lassen Sie &lt;span style = &quot;font-style: italic;&quot;&gt;de-selektiert&lt;/span&gt;, um eine automatische Erkennung basierend auf FITS-Schlüsselwörtern zu versuchen. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation>Càmera:</translation>
+        <translation>Kamera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation>Ajust de Colors</translation>
+        <translation>Farbanpassung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation>Escala de Vermell</translation>
+        <translation>Rot-Skalierung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation>Escala de Blau</translation>
+        <translation>Blau-Skalierung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation>Filtre de Patró de Bayer utilitzat</translation>
+        <translation>Bayer-Matrix Filter verwendet</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation>Crear super-píxels de la Matriu Bayer en cru (sense interpolació)</translation>
+        <translation>Erstellen von Super-Pixel aus der RAW-Bayer-Matrix (keine Interpolation)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation>Força l&apos;ús de valors no signats quan els valors signats han estat emmagatzemats</translation>
+        <translation>Vorzeichenlose Werte erzwingen, wenn vorzeichenbehaftete Werte gespeichert sind</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="18"/>
         <source>Generic RGGB</source>
-        <translation>RGGB Genèric</translation>
+        <translation>Generisch RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="19"/>
         <source>Generic BGGR</source>
-        <translation>BGGR Genèric</translation>
+        <translation>Generisch BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic GBRG</source>
-        <translation>GBRG Genèric</translation>
+        <translation>Generisch GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic GRBG</source>
-        <translation>GRGB Genèric</translation>
+        <translation>Generisch GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic</source>
-        <translation>Genèric</translation>
+        <translation>Generisch</translation>
     </message>
 </context>
 <context>
@@ -1726,233 +1745,233 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation>Paràmetres recomanats</translation>
+        <translation>Empfohlene Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="41"/>
         <source>Show all recommendations</source>
-        <translation>Mostra totes les recomanacions</translation>
+        <translation>Alle Empfehlungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="188"/>
+        <location filename="../RecommendedSettings.cpp" line="195"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation>Aquesta és la configuració recomanada.&lt;br&gt;És possible que no funcioni correctament en totes les situacions, però usualment és un bon punt de partida.</translation>
+        <translation>Dies sind empfohlene Einstellungen.&lt;br&gt;Sie funktionieren nicht in allen Situationen, sind aber ein guter Ausgangspunkt.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="192"/>
+        <location filename="../RecommendedSettings.cpp" line="199"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation>Faci clic en l&apos;enllaç proposat per a canviar la configuració segons indicat</translation>
+        <translation>Klicken Sie auf den vorgeschlagenen Link, um die Einstellungen zu übernehmen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="196"/>
+        <location filename="../RecommendedSettings.cpp" line="203"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation>Els paràmetres que estan a punt són mostrats en verd</translation>
+        <translation>Einstellungen, die bereits gewählt sind, werden grün angezeigt</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="256"/>
-        <location filename="../RecommendedSettings.cpp" line="288"/>
+        <location filename="../RecommendedSettings.cpp" line="263"/>
+        <location filename="../RecommendedSettings.cpp" line="295"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
-        <translation>Si està processant imatges de banda estreta (especialment H%1)</translation>
+        <translation>Wenn Sie Schmalband-Aufnahmen verarbeiten (speziell H%1)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="261"/>
+        <location filename="../RecommendedSettings.cpp" line="268"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation>Usar el mode de super-píxel</translation>
+        <translation>Super-Pixel-Modus verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="293"/>
-        <location filename="../RecommendedSettings.cpp" line="663"/>
-        <location filename="../RecommendedSettings.cpp" line="709"/>
+        <location filename="../RecommendedSettings.cpp" line="300"/>
+        <location filename="../RecommendedSettings.cpp" line="670"/>
+        <location filename="../RecommendedSettings.cpp" line="716"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
-        <translation>Usar Calibració de Fons per Canal</translation>
+        <translation>Hintergrund-Kalibrierung pro Kanal verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="315"/>
+        <location filename="../RecommendedSettings.cpp" line="322"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
-        <translation>Està processant exposicions llargues i possiblement bones imatges SNR</translation>
+        <translation>Sie verarbeiten langbelichtete Bilder wahrscheinlich mit gutem SNR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="318"/>
+        <location filename="../RecommendedSettings.cpp" line="325"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>Usi AHD debayer</translation>
+        <translation>AHD De-Bayering verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="324"/>
+        <location filename="../RecommendedSettings.cpp" line="331"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation>Està processant exposicions curtes i possiblement imatges SNR pobres</translation>
+        <translation>Sie verarbeiten kurzbelichtete Bilder möglicherweise mit niedrigem SNR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="327"/>
+        <location filename="../RecommendedSettings.cpp" line="334"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation>Usi debayer bilineal</translation>
+        <translation>Bilineares De-Bayering verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="371"/>
+        <location filename="../RecommendedSettings.cpp" line="378"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation>Està usant imatge bias</translation>
+        <translation>Sie verwenden Biasframes</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="374"/>
+        <location filename="../RecommendedSettings.cpp" line="381"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation>Estableix el punt negre a 0 per a millorar la calibració</translation>
+        <translation>Zur Verbesserung der Kalibrierung setzen Sie den Schwarzpunkt auf 0</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="383"/>
+        <location filename="../RecommendedSettings.cpp" line="390"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation>Està usant imatges flat sense imatges bias</translation>
+        <translation>Sie verwenden Flatframes ohne Biasframes</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="386"/>
+        <location filename="../RecommendedSettings.cpp" line="393"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
-        <translation>No establir el punt negre a 0</translation>
+        <translation>Schwarzpunkt nicht auf 0 setzen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="407"/>
+        <location filename="../RecommendedSettings.cpp" line="414"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>Està usant un llindar de detecció d&apos;estrelles baix</translation>
+        <translation>Sie verwenden einen niedrigen Sternerkennungs-Schwellenwert</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="410"/>
+        <location filename="../RecommendedSettings.cpp" line="417"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
-        <translation>Aplicar el Filtre de Mediana abans de registrar les imatges per a reduir el soroll i millorar la detecció d&apos;estrelles</translation>
+        <translation>Verwenden Sie vor der Registrierung einen Median-Filter, um das Rauschen zu reduzieren und die Sternerkennung zu verbessern</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="427"/>
+        <location filename="../RecommendedSettings.cpp" line="434"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
-        <translation>Si està usant una DSLR modificada</translation>
+        <translation>Wenn Sie eine modifizierte DSLR verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="430"/>
+        <location filename="../RecommendedSettings.cpp" line="437"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation>Reinicialitza tots els balanços de blancs</translation>
+        <translation>Alle Weißabgleich-Einstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="467"/>
+        <location filename="../RecommendedSettings.cpp" line="474"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation>Està intentant creat una imatge de cometa amb traços d&apos;estrelles</translation>
+        <translation>Sie versuchen ein Kometenbild mit Stern-Strichspuren zu erstellen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="470"/>
-        <location filename="../RecommendedSettings.cpp" line="540"/>
+        <location filename="../RecommendedSettings.cpp" line="477"/>
+        <location filename="../RecommendedSettings.cpp" line="547"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
-        <translation>Usar mètode de combinació Mitjana</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="481"/>
-        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
-        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation>Està intentant crear una imatge de cometa alineant les estrelles i el cometa des de %1 imatge(s)</translation>
+        <translation>Verwenden Sie die Durchschnitts-Kombinations-Methode</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="488"/>
-        <location filename="../RecommendedSettings.cpp" line="521"/>
+        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
+        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
+        <translation>Sie versuchen ein Kometenbild, ausgerichtet auf Komet und Sterne, aus %1 Lightframe(s) zu erstellen</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="495"/>
+        <location filename="../RecommendedSettings.cpp" line="528"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
-        <translation>Usar mètode de combinació Kappa- Sigma Clipping</translation>
+        <translation>Verwenden Sie die Kappa-Sigma-Clipping Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="496"/>
-        <location filename="../RecommendedSettings.cpp" line="548"/>
-        <location filename="../RecommendedSettings.cpp" line="580"/>
-        <location filename="../RecommendedSettings.cpp" line="612"/>
-        <location filename="../RecommendedSettings.cpp" line="644"/>
+        <location filename="../RecommendedSettings.cpp" line="503"/>
+        <location filename="../RecommendedSettings.cpp" line="555"/>
+        <location filename="../RecommendedSettings.cpp" line="587"/>
+        <location filename="../RecommendedSettings.cpp" line="619"/>
+        <location filename="../RecommendedSettings.cpp" line="651"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
-        <translation>Usar mètode de combinació Mediana</translation>
+        <translation>Verwenden Sie die Median Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="514"/>
+        <location filename="../RecommendedSettings.cpp" line="521"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
-        <translation>Està apilant %1 imatge(s)</translation>
+        <translation>Sie stacken %1 Lightframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="530"/>
+        <location filename="../RecommendedSettings.cpp" line="537"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
-        <translation>Usar mètode de combinació Mitjana Ponderada Auto Adaptativa</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="564"/>
-        <source>You are creating a master dark from %1 dark frame(s)</source>
-        <comment>IDS_RECO_DARK_REASON</comment>
-        <translation>Està creant un dark mestre des de %1 imatge(s) dark</translation>
+        <translation>Verwenden Sie die Auto Adaptive Weighted Average Kombinations-Methode</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="571"/>
-        <location filename="../RecommendedSettings.cpp" line="603"/>
-        <location filename="../RecommendedSettings.cpp" line="635"/>
+        <source>You are creating a master dark from %1 dark frame(s)</source>
+        <comment>IDS_RECO_DARK_REASON</comment>
+        <translation>Sie erstellen ein Master-Dark aus %1 Darkframe(s)</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="578"/>
+        <location filename="../RecommendedSettings.cpp" line="610"/>
+        <location filename="../RecommendedSettings.cpp" line="642"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
-        <translation>Usar mètode de combinació Mediana Kappa-Sigma Clipping</translation>
+        <translation>Verwenden Sie die Median-Kappa-Sigma-Clipping Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="596"/>
+        <location filename="../RecommendedSettings.cpp" line="603"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation>Està creant un bias mestre des de %1 imatge(s) bias</translation>
+        <translation>Sie erstellen ein Master-Bias aus %1 Biasframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="628"/>
+        <location filename="../RecommendedSettings.cpp" line="635"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
-        <translation>Està creant un flat mestre des de %1 imatge(s) flat</translation>
+        <translation>Sie erstellen ein Master-Flat aus %1 Flatframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="660"/>
+        <location filename="../RecommendedSettings.cpp" line="667"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
-        <translation>Si la imatge resultant sembla massa gris</translation>
+        <translation>Wenn das resultierende Bild zu grau aussieht</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="683"/>
+        <location filename="../RecommendedSettings.cpp" line="690"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
-        <translation>Si el balanç de color en la imatge resultant és difícil de fixar en el post-processat</translation>
+        <translation>Wenn die Farbbalance im fertigen Bild in der Nachbearbeitung schwierig zu korrigieren ist</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="686"/>
+        <location filename="../RecommendedSettings.cpp" line="693"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
-        <translation>Usar calibració de fons RGB</translation>
+        <translation>RGB Hintergrund-Kalibrierung verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="706"/>
+        <location filename="../RecommendedSettings.cpp" line="713"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation>Està apilant imatges en escala de grisos i poden tenir valors de fons lleugerament diferents</translation>
+        <translation>Sie stacken Graustufenbilder mit leicht unterschiedlichen Hintergrundwerten</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="793"/>
+        <location filename="../RecommendedSettings.cpp" line="802"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation>o</translation>
+        <translation>oder</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="854"/>
+        <location filename="../RecommendedSettings.cpp" line="863"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation>Primer ha de afegir imatges a la llista i comprovar-les.</translation>
+        <translation>Sie müssen zuerst Bilder zur Liste hinzufügen und auswählen.</translation>
     </message>
 </context>
 <context>
@@ -1960,134 +1979,134 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation>Configuració de Registrat</translation>
+        <translation>Registrierungs-Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation>Accions</translation>
+        <translation>Aktionen</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation>Paràmetres d&apos;apilat...</translation>
+        <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation>Paràmetres Recomanats...</translation>
+        <translation>Empfohlene Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation>Registrar imatges ja registrades</translation>
+        <translation>Registrieren bereits registrierter Bilder</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Detecció automàtica de hot pixels&quot;</translation>
+        <translation>Automatische Hotpixel-Erkennung</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation>Apilar després de registrar</translation>
+        <translation>Stacken nach der Registrierung</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation>Seleccionar el millor</translation>
+        <translation>Wählt die besten</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation>% de les fotos i apilar-les</translation>
+        <translation>% der Bilder zum Stacken aus</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation>Avançat</translation>
+        <translation>Erweitert</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation>Llindar de detecció d&apos;estrelles</translation>
+        <translation>Sternerkennungs-Schwellenwert</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="274"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation>Calcular el número d&apos;estrelles detectades</translation>
+        <translation>Anzahl der erkannten Sterne berechnen</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="317"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation>Redueix el soroll usant el Filtre de Mediana</translation>
+        <translation>Medianfilter zur Rauschreduzierung verwenden</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="157"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation>No oblidi agregar i seleccionar els arxius dark, flat i offset abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Dark-, Flat- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="160"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation>No oblidi agregar i seleccionar els arxius dark i flat abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Dark- und Flatframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="163"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation>No oblidi agregar i seleccionar els arxius dark i offset abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Dark- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="166"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation>No oblidi agregar i seleccionar els arxiu flat i offset abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Flat- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation>No oblidi agregar i seleccionar els arxius dark abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Darkframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation>No oblidi agregar i seleccionar els arxius flat abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Flatframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation>No oblidi agregar i seleccionar els arxius offset abans d&apos;apilar.</translation>
+        <translation>Vergessen Sie nicht, Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="199"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation>darks, flats i offsets/bias seleccionats.</translation>
+        <translation>Darks, Flats und Offsets/Bias ausgewählt.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="263"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation>Registrant %1</translation>
+        <translation>Registrierung %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="270"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation>%1 estrella/es</translation>
+        <translation>%1 Stern(e)</translation>
     </message>
 </context>
 <context>
@@ -2095,12 +2114,12 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation>Reanomena el grup</translation>
+        <translation>Gruppe umbenennen</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation>Nom grup:</translation>
+        <translation>Gruppenname:</translation>
     </message>
 </context>
 <context>
@@ -2108,63 +2127,63 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation>Resultat</translation>
+        <translation>Ergebnis</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation>Mètode Estàndard</translation>
+        <translation>Standard Modus</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation>Mètode &quot;Mosaic&quot;</translation>
+        <translation>Mosaik Modus</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation>Mode d&apos;intersecció</translation>
+        <translation>Schnittmengen Modus</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation>Rectangle a mida</translation>
+        <translation>Auswahlrechteck</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation>Habilitar Drizzle 2x</translation>
+        <translation>2x Drizzle aktivieren</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation>Habilitar Drizzle 3x</translation>
+        <translation>3x Drizzle aktivieren</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation>Alinear els canals RGB en la imatge final</translation>
+        <translation>RGB-Kanäle im Endbild ausrichten</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="68"/>
         <location filename="../ResultParameters.cpp" line="130"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation>El resultat del procés d&apos;apilat està enquadrat pel light frame de referència.</translation>
+        <translation>Der Ausschnitt des Stacking-Prozesses entspricht dem Referenz Ligthframe.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="78"/>
         <location filename="../ResultParameters.cpp" line="143"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation>El resultat del procés d&apos;apilat conté tots els light frames de l&apos;apilat.</translation>
+        <translation>Das Ergebnis des Stacking-Prozesses umrahmt alle Lightframes des Stacks.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="88"/>
         <location filename="../ResultParameters.cpp" line="157"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation>El resultat del procés d&apos;apilat és emmarcat per la intersecció de totes les imatges.</translation>
+        <translation>Der Ausschnitt des Stacking-Prozesses ist die Schnittmenge aller Lightframes.</translation>
     </message>
 </context>
 <context>
@@ -2172,7 +2191,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation>Guarda els canvis?</translation>
+        <translation>Änderungen speichern?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -2180,39 +2199,39 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Vè. ha fet alguns canvis (posició d&apos;estrelles o cometes)
+        <translation>Sie haben einige Änderungen vorgenommen (Sterne oder Kometen-Positionen)
 
-Desitja guardar-los?</translation>
+Wollen sie diese speichern?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>La pròxima vegada...</translation>
+        <translation>Das nächste Mal...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation>Guardar sense preguntar</translation>
+        <translation>speichern ohne Nachfrage</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation>No guardar sense preguntar</translation>
+        <translation>verwerfen ohne Nachfrage</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation>Pregunta de nou</translation>
+        <translation>immer nachfragen</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Vè. pot accedir a aquestes opcions fent clic amb el botó dret en el botó de Guarda</translation>
+        <translation>Diese Optionen lassen sich mit einem Rechtsklick auf den Speichern-Button ändern</translation>
     </message>
 </context>
 <context>
@@ -2220,338 +2239,338 @@ Desitja guardar-los?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation>Passos d&apos;apilat</translation>
+        <translation>Stacking Schritte</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
-        <translation>Configuració recomanada ...</translation>
+        <translation>Empfohlene Einstellungen...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="38"/>
         <source>Stacking Settings ...</source>
-        <translation>Configuració d&apos;apilat ...</translation>
+        <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="176"/>
+        <location filename="../StackRecap.cpp" line="184"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation>ISO</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="177"/>
+        <location filename="../StackRecap.cpp" line="185"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation></translation>
+        <translation>Gain</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="197"/>
+        <location filename="../StackRecap.cpp" line="203"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Si</translation>
+        <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="198"/>
+        <location filename="../StackRecap.cpp" line="204"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation></translation>
+        <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="212"/>
+        <location filename="../StackRecap.cpp" line="218"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation>Calibració de Fons de Canals RGB: %1</translation>
+        <translation>RGB Hintergrund Kalibrierung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="217"/>
+        <location filename="../StackRecap.cpp" line="223"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Calibració de Fons per a cada Canal: %1</translation>
+        <translation>Hintergrund-Kalibrierung pro Kanal : %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="222"/>
+        <location filename="../StackRecap.cpp" line="228"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation>Optimizació de Darks: %1</translation>
+        <translation>Dark Optimierung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="227"/>
+        <location filename="../StackRecap.cpp" line="233"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation>Factor de multiplicació del Dark: %1</translation>
+        <translation>Dark Multiplikationsfaktor: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="231"/>
+        <location filename="../StackRecap.cpp" line="237"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation>Detecció i eliminat de Hot Pixels: %1</translation>
+        <translation>Hot Pixel Erkennung und Entfernung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="240"/>
+        <location filename="../StackRecap.cpp" line="246"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation>El procés necessita temporalmente %1 d&apos;espai lliure en la unitat %2.&lt;br&gt;Només %3s estan disponibles en aquesta unitat.</translation>
+        <translation>Dieser Prozess benötigt vorübergehend %1 freien Speicherplatz auf dem %2 Laufwerk.&lt;br&gt;Es sind nur %3 auf diesem Laufwerk verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="261"/>
+        <location filename="../StackRecap.cpp" line="268"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation>Atenció: Vè. aquesta utilitzant arxius dark, flat o bias amb arxius JPEG.\n A causa de la compressió amb pèrdua de dades el calibratge no funciona amb arxius JPEG.</translation>
+        <translation>Warnung: Sie verwenden als Dark, Flat oder Biasframes JPEG-Dateien.&lt;br&gt;Aufgrund des verlustbehafteten Komprimierung ist eine Kalibrierung von JPEG-Dateien nicht möglich.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="269"/>
+        <location filename="../StackRecap.cpp" line="276"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation>Mètode d&apos;Apilat: </translation>
+        <translation>Stacking Modus: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="274"/>
+        <location filename="../StackRecap.cpp" line="281"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation>Estàndard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="277"/>
+        <location filename="../StackRecap.cpp" line="284"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation>Mosaic</translation>
+        <translation>Mosaik</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="280"/>
+        <location filename="../StackRecap.cpp" line="287"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation>Rectangle a mida</translation>
+        <translation>Auswahlrechteck</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="283"/>
+        <location filename="../StackRecap.cpp" line="290"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation>Intersecció</translation>
+        <translation>Schnittmenge</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="291"/>
+        <location filename="../StackRecap.cpp" line="298"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation>Mètode d&apos;Alineat: </translation>
+        <translation>Ausrichtungsmethode: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="299"/>
+        <location filename="../StackRecap.cpp" line="306"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation>Automàtic</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="302"/>
+        <location filename="../StackRecap.cpp" line="309"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation>Bilineal</translation>
+        <translation>Bilinear</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="305"/>
+        <location filename="../StackRecap.cpp" line="312"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation>Biquadrada</translation>
+        <translation>Bisquared</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="308"/>
+        <location filename="../StackRecap.cpp" line="315"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation>Bicúbica</translation>
+        <translation>Bikubisch</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="311"/>
+        <location filename="../StackRecap.cpp" line="318"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation>Sense alineament</translation>
+        <translation>Keine Ausrichtung</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="322"/>
+        <location filename="../StackRecap.cpp" line="329"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation>Drizzle x%1 habilitat</translation>
+        <translation>%1x Drizzle aktiviert</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="328"/>
+        <location filename="../StackRecap.cpp" line="335"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation>L&apos;opció de drizzle seleccionada no és compatible amb el mètode Bayer Drizzle.</translation>
+        <translation>Die ausgewählte Drizzle-Option ist mit dem Bayer-Drizzle Modus nicht kompatibel.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="339"/>
+        <location filename="../StackRecap.cpp" line="346"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation>%1 processadors detectats i utilitzats</translation>
+        <translation>%1 Prozessoren gefunden und verwendet</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="342"/>
+        <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation>%1 processadors detectats - només un utilitzat</translation>
+        <translation>%1 Prozessor(en) gefunden - nur einen verwendet</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="354"/>
+        <location filename="../StackRecap.cpp" line="361"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation>Processament de Cometes : </translation>
+        <translation>Kometen-Verarbeitung : </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="359"/>
+        <location filename="../StackRecap.cpp" line="366"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation>Alinear amb estrelles (sense processament específic)</translation>
+        <translation>Auf Sterne ausrichten (keine spezifische Verarbeitung)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="362"/>
+        <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation>Alinear amb cometa</translation>
+        <translation>Auf Komet ausrichten</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="365"/>
+        <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation>Alinear amb estrelles i cometa</translation>
+        <translation>Auf Sterne und Komet ausrichten</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="379"/>
+        <location filename="../StackRecap.cpp" line="386"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation>Cosmètica aplicada als hot pixels (Filtre = %1 px, Llindar de Detecció = %L2%)&lt;br&gt;</translation>
+        <translation>Kosmetische Korrektur der Hot Pixel (Filter = %1 Px, Erkennungs-Schwellenwert = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="387"/>
+        <location filename="../StackRecap.cpp" line="394"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation>Cosmètica aplicada als cold pixels (Filtre = %1 px, Llindar de Detecció = %L2%)&lt;br&gt;</translation>
+        <translation>Kosmetische Korrektur der Cold Pixel (Filter = %1 Px, Erkennungs-Schwellenwert = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="416"/>
+        <location filename="../StackRecap.cpp" line="423"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation>Apilat Pas %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - exposició total: </translation>
+        <translation>Stacking Schritt %1&lt;br&gt;  -&gt;%2 Bilder (%3: %4) - Gesamtbelichtung: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="434"/>
-        <location filename="../StackRecap.cpp" line="478"/>
-        <location filename="../StackRecap.cpp" line="533"/>
-        <location filename="../StackRecap.cpp" line="609"/>
-        <location filename="../StackRecap.cpp" line="664"/>
+        <location filename="../StackRecap.cpp" line="441"/>
+        <location filename="../StackRecap.cpp" line="485"/>
+        <location filename="../StackRecap.cpp" line="540"/>
+        <location filename="../StackRecap.cpp" line="616"/>
+        <location filename="../StackRecap.cpp" line="671"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation>Mètode: </translation>
+        <translation>Methode: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="445"/>
+        <location filename="../StackRecap.cpp" line="452"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation>Atenció: L&apos;opció Bayer Drizzle seleccionada en els ajustaments RAW DDP poden dur a resultats estranys amb algun altre mètode diferent a Mitjana.</translation>
+        <translation>Warnung: Die ausgewählte Bayer-Drizzle Option in den RAW DDP Einstellungen kann mit einer anderen als der Durchschnittsmethode zu ungewöhnlichen Resultaten führen.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="465"/>
+        <location filename="../StackRecap.cpp" line="472"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation>Offset: %1 frames (%2: %3) exposició: %4</translation>
+        <translation>-&gt; Offset: %2 Bilder (%2: %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="518"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation>-&gt; Sense Offset</translation>
+        <translation>-&gt; Kein Offset</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="520"/>
+        <location filename="../StackRecap.cpp" line="527"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation>-&gt; Dark: %1 frames (%2 : %3) exposició: %4</translation>
+        <translation>-&gt; Dark: %1 Bilder (%2 : %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="578"/>
+        <location filename="../StackRecap.cpp" line="585"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation>Precaució: el temps d&apos;exposició no coincideix amb el dels light frames</translation>
+        <translation>Achtung: Belichtungszeit passt nicht zu Lightframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="587"/>
+        <location filename="../StackRecap.cpp" line="594"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation>-&gt; Sense Dark</translation>
+        <translation>-&gt; Kein Dark</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="596"/>
+        <location filename="../StackRecap.cpp" line="603"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation>-&gt; Dark Flat: %1 frames (%2 : %3) exposició: %4</translation>
+        <translation>-&gt; Dark Flat: %1 Bilder (%2 : %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="652"/>
+        <location filename="../StackRecap.cpp" line="659"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation>-&gt; Flat: %1 frames (%2: %3) exposició: %4</translation>
+        <translation>-&gt; Flat: %1 Bilder (%2: %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="490"/>
-        <location filename="../StackRecap.cpp" line="560"/>
-        <location filename="../StackRecap.cpp" line="676"/>
+        <location filename="../StackRecap.cpp" line="497"/>
+        <location filename="../StackRecap.cpp" line="567"/>
+        <location filename="../StackRecap.cpp" line="683"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation>Precaució: la sensibilitat ISO no coincideix amb la dels light frames</translation>
+        <translation>Achtung: ISO Wert passt nicht zu Lightframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="500"/>
-        <location filename="../StackRecap.cpp" line="570"/>
-        <location filename="../StackRecap.cpp" line="686"/>
+        <location filename="../StackRecap.cpp" line="507"/>
+        <location filename="../StackRecap.cpp" line="577"/>
+        <location filename="../StackRecap.cpp" line="693"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation>Precaució:el guany no coincideix amb la dels light frames</translation>
+        <translation>Achtung: Gain stimmt nicht mit dem Gain der Lightframes überein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="622"/>
+        <location filename="../StackRecap.cpp" line="629"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation>Precaució: la sensibilitat ISO no coincideix amb la dels flat frames</translation>
+        <translation>Achtung: ISO Wert passt nicht zu Flatframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="632"/>
+        <location filename="../StackRecap.cpp" line="639"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation>Precaució: el guany no coincideix amb la dels flat frames</translation>
+        <translation>Achtung: Gain des Dark Flats stimmt nicht mit dem Gain der Flats überein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="640"/>
+        <location filename="../StackRecap.cpp" line="647"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation>Precaució: el temps d&apos;exposició no coincideix amb el dels flat frames</translation>
+        <translation>Achtung: Belichtungszeit passt nicht zu Flatframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="696"/>
+        <location filename="../StackRecap.cpp" line="703"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation>-&gt; Sense Flat</translation>
+        <translation>-&gt; Kein Flat</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="711"/>
+        <location filename="../StackRecap.cpp" line="718"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation>Temps d&apos;Exposició Total estimat: %1&lt;br&gt;(el total de temps d&apos;exposició és calculat tenint en compte que tots els light frames seleccionats són utilitzats en el procés d&apos;apilat)</translation>
+        <translation>Geschätzte Gesamt-Belichtungszeit: %1&lt;br&gt;(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle gewählten Lightframes für den Stacking-Prozess verwendet werden)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="721"/>
+        <location filename="../StackRecap.cpp" line="728"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation>El procés utilitzarà temporalment %1 en la unitat %2 (%3 lliures).</translation>
+        <translation>Der Prozess wird vorübergehend %1 auf dem %2 Laufwerk benötigen (%3 frei).</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="250"/>
-        <location filename="../StackRecap.cpp" line="730"/>
+        <location filename="../StackRecap.cpp" line="256"/>
+        <location filename="../StackRecap.cpp" line="737"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation>Nota: l&apos;espai de disc necessari és calculat utilitzant la grandària de la imatge del quadre de referència. Depenent de la grandària de la imatge resultant pot requerir-se més espai.</translation>
+        <translation>Hinweis: Der benötigte Speicherplatz ist aus der Größe des Referenzbildes errechnet. Je nach Größe des Summenbildes kann mehr Speicherplatz erforderlich sein.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="738"/>
+        <location filename="../StackRecap.cpp" line="745"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation>Atenció: l&apos;opció de guardar les imatges registrades i calibrades està seleccionada. Verifiqui que té suficient espai lliure en el disc per a allotjar aquests arxius.</translation>
+        <translation>Warnung: Die Option Speichern der registrierten und kalibrierten Bilder ist aktiviert. Bitte überprüfen Sie zuerst, ob Sie genügend freien Festplatten-Speicher zur Verfügung haben.</translation>
     </message>
 </context>
 <context>
@@ -2559,7 +2578,7 @@ Desitja guardar-los?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation>Carpeta d&apos;Arxius Temporals:</translation>
+        <translation>Temporärer Dateiordner:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
@@ -2569,52 +2588,52 @@ Desitja guardar-los?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation>Reduir la prioritat d&apos;execució</translation>
+        <translation>Priorität der Worker-Threads reduzieren</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation>Utilitzar tots els processadors disponibles</translation>
+        <translation>Alle verfügbaren Prozessoren verwenden</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation>Vectorització SIMD</translation>
+        <translation>SIMD-Vektorisierung</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation>Configuració d&apos;apilat</translation>
+        <translation>Stacking Einstellungen</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="47"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation></translation>
+        <translation>Light</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="48"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation></translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="49"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation></translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation></translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="187"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation>Si us plau seleccioni la carpeta que conté els arxius temporals</translation>
+        <translation>Wählen Sie einen Ordner für die temporären Dateien</translation>
     </message>
 </context>
 <context>
@@ -2623,19 +2642,19 @@ Desitja guardar-los?</translation>
         <location filename="../StackingParameters.cpp" line="17"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation>Sense Calibració de Fons</translation>
+        <translation>Keine Hintergrund-Kalibrierung</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Calibració de Fons per a cada Canal</translation>
+        <translation>Hintergrund Kalibrierung pro Kanal</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation>Calibració de Fons de Canals RGB</translation>
+        <translation>RGB-Kanäle Hintergrund Kalibrierung</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="58"/>
@@ -2645,11 +2664,11 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation>Els píxels fora del rang:
-[Mean-%1*%2 , Mean+%1*%2 ]
-són eliminats iterativament.
+        <translation>Die Pixel außerhalb des Bereichs:
+[Mean-%1*%2 , Mean+%1*%2]
+werden iterativ entfernt.
 
-Els píxels restants són promitjats.</translation>
+Die verbleibenden Pixel werden gemittelt.</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="67"/>
@@ -2659,11 +2678,11 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation>Els píxels fora del rang:
-[Mean-%1*%2 , Mean+%1*%2 ]
-són reemplaçats iterativament pel valor mig.
+        <translation>Die Pixel ausserhalb des Bereiches:
+[Mean-%1*%2, Mean+%1*%2]
+werden iterativ durch den Medianwert ersetzt.
 
-Els píxels són posteriorment promitjats.</translation>
+Danach werden die Pixel gemittelt.</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="74"/>
@@ -2672,58 +2691,57 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation>La &lt;b&gt;mitjana ponderada&lt;/b&gt; s&apos;obté mitjançant
-la ponderació iterativa de cada píxel
-partint de la desviació de la mitjana
-comparativament a la desviació estàndard (%1).</translation>
+        <translation>Der &lt;b&gt;Weighted Average&lt;/b&gt; ist ein gewichteter Mittelwert,
+der iterativ angewendet wird, wobei die Gewichte mit steigender Abweichung vom letzten Mittelwert
+im Verhältnis zur Standardabweichung (%1) kleiner werden.</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation>Opcions...</translation>
+        <translation>Optionen...</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation>Apilant</translation>
+        <translation>Stacking</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation>Mètode d&apos;Apilat</translation>
+        <translation>Stacking Modus</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation>Número d&apos;iteracions:</translation>
+        <translation>Anzahl der Iterationen:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation>Mediana</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation>Retallat (clipping) Kappa-Sigma</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation>Màxim</translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation>Retallat (clipping) Media Kappa-Sigma</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
@@ -2735,7 +2753,7 @@ comparativament a la desviació estàndard (%1).</translation>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation>Mitjana</translation>
+        <translation>Durchschnitt</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
@@ -2748,45 +2766,44 @@ comparativament a la desviació estàndard (%1).</translation>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation>Entropy Weighted Average
-(Alt rang dinàmic)</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation></translation>
+        <translation>Deblooming</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation>Paràmetres...</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation>Optimització de Darks</translation>
+        <translation>Dark Optimierung</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation>Detecció i eliminat de columnes defectuoses</translation>
+        <translation>Fehlerhafte Spalten erkennen und entfernen</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Detecció i eliminat de Hot Pixels</translation>
+        <translation>Hot Pixel erkennen und entfernen</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation>Factor de multiplicació de Dark</translation>
+        <translation>Dark Multiplikationsfaktor:</translation>
     </message>
 </context>
 </TS>

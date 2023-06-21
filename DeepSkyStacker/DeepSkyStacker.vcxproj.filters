@@ -931,43 +931,46 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts">
+    <QtTranslation Include="i18n\DSS_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.cs.ts">
+    <QtTranslation Include="i18n\DSS_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.de.ts">
+    <QtTranslation Include="i18n\DSS_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.en.ts">
+    <QtTranslation Include="i18n\DSS_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.es.ts">
+    <QtTranslation Include="i18n\DSS_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.fr.ts">
+    <QtTranslation Include="i18n\DSS_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.it.ts">
+    <QtTranslation Include="i18n\DSS_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.nl.ts">
+    <QtTranslation Include="i18n\DSS_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.pt_BR.ts">
+    <QtTranslation Include="i18n\DSS_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ro.ts">
+    <QtTranslation Include="i18n\DSS_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ru.ts">
+    <QtTranslation Include="i18n\DSS_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.tr.ts">
+    <QtTranslation Include="i18n\DSS_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.zh_TW.ts">
+    <QtTranslation Include="i18n\DSS_zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

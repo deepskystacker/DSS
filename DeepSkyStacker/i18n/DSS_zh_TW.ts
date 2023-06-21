@@ -1,109 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="cs_CZ">
+<TS version="2.1" language="zh_TW">
 <context>
     <name>About</name>
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation>O programu DeepSkyStacker</translation>
+        <translation>關於DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation>Jazyk</translation>
+        <translation>語系</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation>Zvolte jazyk:</translation>
+        <translation>選擇語言：</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation>Při spuštění ověřit, zda není novější verze</translation>
+        <translation>啟動時檢查是否有新版本</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation>O &amp;Qt</translation>
+        <translation>關於&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="75"/>
+        <location filename="../About.cpp" line="87"/>
         <source>Default</source>
-        <translation>Automaticky</translation>
+        <translation>預設</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="33"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation>DeepSkyStacker verze %1</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="40"/>
         <source>(Now somewhat out of date)</source>
-        <translation>(Nyní poněkud zastaralé)</translation>
+        <translation>（現在有點過時了）</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="50"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>RAW soubory dekódovány pomocí LibRaw (verze %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="67"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation>FITS dekódovány pomocí CFitsIO (verze %1)
-Copyright NASA</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Spanish version: Ricardo Contreras and the team from</source>
-        <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation>Španělský překlad: Ricardo Contreras a skupina</translation>
+        <location filename="../About.cpp" line="74"/>
+        <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
+Copyright 2004-2023 Exiv2 authors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Czech version:</source>
-        <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation>Český překlad:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Italian version:</source>
-        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation>Italský překlad:</translation>
+        <location filename="../About.cpp" line="80"/>
+        <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
+Copyright Tőkés Attila</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="101"/>
-        <source>Catalan version:</source>
-        <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation>Katalánský překlad:</translation>
+        <source>Spanish version: Ricardo Contreras and the team from</source>
+        <comment>IDS_ABOUT_LANG_SPANISH</comment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="105"/>
+        <source>Czech version:</source>
+        <comment>IDS_ABOUT_LANG_CZECH</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="109"/>
+        <source>Italian version:</source>
+        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="113"/>
+        <source>Catalan version:</source>
+        <comment>IDS_ABOUT_LANG_CATALAN</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="117"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation>Německý překlad:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="110"/>
+        <location filename="../About.cpp" line="122"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation>Holandský překlad:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="107"/>
-        <location filename="../About.cpp" line="111"/>
-        <location filename="../About.cpp" line="120"/>
-        <location filename="../About.cpp" line="124"/>
-        <location filename="../About.cpp" line="125"/>
+        <location filename="../About.cpp" line="119"/>
+        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="136"/>
+        <location filename="../About.cpp" line="137"/>
         <source>and</source>
-        <translation>a</translation>
+        <translation>以及</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="60"/>
@@ -111,39 +121,39 @@ Copyright NASA</translation>
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>TIFF soubory kódovány/dekódovány pomocí LibTIFF (verze %1)
-Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+        <translation>TIFF 文件編碼/解碼，由 LibTIFF（版本 %1）
+版權所有 © 1988-1997 Sam Leffler
+版權所有 © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="114"/>
+        <location filename="../About.cpp" line="126"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation>Verze tradiční čínštiny:</translation>
+        <translation>繁体中文版本：</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="118"/>
+        <location filename="../About.cpp" line="130"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Portugalský překlad:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation>Rumunská verze:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="128"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Ruská verze:</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Turecká verze:</translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -151,37 +161,37 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation>Zarovnání</translation>
+        <translation>對齊星點</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation>Převod použitý při zarovnávání</translation>
+        <translation>對齊各影像中的星點時所用的轉換法</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation>Automatický</translation>
+        <translation>系統自動決定</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation>Bilineární</translation>
+        <translation>雙線性</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation>Bisquared</translation>
+        <translation>雙二次方</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation>Bikubický</translation>
+        <translation>雙三次方</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation>Nezarovnáno</translation>
+        <translation>不執行對齊各幅星點</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="31"/>
@@ -189,9 +199,9 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation>Automaticky
+        <translation>自動
 
-Automatické zarovnání vybere samočinně způsob zarovnání podle počtu dostupných hvězd.</translation>
+視星星數目自動決定星點對齊方式。</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="36"/>
@@ -199,9 +209,9 @@ Automatické zarovnání vybere samočinně způsob zarovnání podle počtu dos
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation>Bilineární zarovnání
+        <translation>雙線性
 
-Bilineární (dvojité lineární) zarovnání je použitelné ve všech případech.</translation>
+一律使用雙線性法對齊星點。</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="41"/>
@@ -209,9 +219,7 @@ Bilineární (dvojité lineární) zarovnání je použitelné ve všech přípa
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation>Bisquared zarovnání
-
-Bisquared (dvojité plošné) zarovnání se používá při dostupnosti nejméně 25 hvězd, jinak se používá bilineární metoda.</translation>
+        <translation>雙平方\n\n在有超過25個星點時使用雙平方法，否則使用雙線性。</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="47"/>
@@ -219,9 +227,7 @@ Bisquared (dvojité plošné) zarovnání se používá při dostupnosti nejmén
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation>Bikubické zarovnání
-
-Bikubické (dvojité prostorové )zarovnání se používá při dostupnosti nejméně 40 hvězd, pro 25 až 39 dostupných hvězd se používá metoda dvojitá plošná a pro méně jak 25 dostupných hvězd bilineární metoda.</translation>
+        <translation>雙立方\n\n超過40個星點時使用雙立方法，25到39個星點時使用雙平方，25以下使用雙線性。</translation>
     </message>
 </context>
 <context>
@@ -229,7 +235,7 @@ Bikubické (dvojité prostorové )zarovnání se používá při dostupnosti nej
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation>Nezarovnaný aktivní snímek</translation>
+        <translation>尚未偵測星點的天體影像</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -237,25 +243,24 @@ Bikubické (dvojité prostorové )zarovnání se používá při dostupnosti nej
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation>Tento aktivní snímek nebyl zarovnán
-(nebyly zjištěny žádné hvězdy).
+        <translation>本天體影像尚未通過星點偵測
 
-Chcete...</translation>
+您要....</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation>zarovnat tento aktivní snímek</translation>
+        <translation>偵測本幅影像中的星點</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="73"/>
         <source>to register all the light frames</source>
-        <translation>zarovnat všechny aktivní snímky</translation>
+        <translation>偵測所有影像中的星點</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="80"/>
         <source>to continue without registering the light frame</source>
-        <translation>pokračovat bez zarovnání aktivního snímku</translation>
+        <translation>繼續處理但不偵測本幅影像中的星點</translation>
     </message>
 </context>
 <context>
@@ -263,47 +268,47 @@ Chcete...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation>Nastavení pozadí</translation>
+        <translation>背景選項</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation>Způsob kalibrace</translation>
+        <translation>校正方法</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation>Lineární</translation>
+        <translation>線性</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation>Rozumná</translation>
+        <translation>有理數</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation>Způsob kalibrace RGB pozadí</translation>
+        <translation>RGB背景校正方式</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation>Žádná</translation>
+        <translation>無</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation>Minimální</translation>
+        <translation>極小值</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation>Střední</translation>
+        <translation>中間值</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation>Maximum</translation>
+        <translation>最大值</translation>
     </message>
 </context>
 <context>
@@ -311,7 +316,7 @@ Chcete...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation>Skupinové slučování</translation>
+        <translation>批次疊合</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -319,27 +324,27 @@ Chcete...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation>Toto okno se používá pro spuštění slučování z existujícího seznamu snímků.
+        <translation>本對話框可用於疊合既有的影像清單
 
-Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
+加入您欲疊合的影像清單並按OK鍵以開始疊合</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation>Přidat seznam souborů...</translation>
+        <translation>增加檔案清單</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation>Smazat seznam</translation>
+        <translation>清除影像清單</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="61"/>
+        <location filename="../BatchStacking.cpp" line="80"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Ukládání výsledného obrazu do %1</translation>
+        <translation>儲存最終影像於 %1</translation>
     </message>
 </context>
 <context>
@@ -348,13 +353,13 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Výběr všech obrazů...</translation>
+        <translation>勾選以上所有影像...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum score:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Minimální hodnota kvality:</translation>
+        <translation>最低分數值</translation>
     </message>
 </context>
 <context>
@@ -362,48 +367,45 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation>Kometa</translation>
+        <translation>彗星</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation>Parametry kometárního slučování</translation>
+        <translation>彗星疊合參數</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation>Normální slučování</translation>
+        <translation>標準疊合</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation>Poloha komety je ignorována.
-Kometa bude rozmazána.</translation>
+        <translation>不考慮彗星位置。\n疊出的彗星會變模糊。</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation>Poloha komety bude brána v úvahu.
-Kometa bude ostrá a hvězdy budou protáhlé.</translation>
+        <translation>使用彗星位置。\n疊出的彗星會是清析的，恆星則會拖線。</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation>Poloha komety bude brána v úvahu.
-Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</translation>
+        <translation>使用彗星的位置。\n疊出的彗星與恆星都會是清析的。處理時間會加倍。</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation>Kometární slučování</translation>
+        <translation>彗星疊合</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation>Slučování komet + hvězd</translation>
+        <translation>恆星加彗星疊合</translation>
     </message>
 </context>
 <context>
@@ -412,55 +414,57 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../StackingDlg.cpp" line="117"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Seznamy souborů (*.dssfilelist)</translation>
+        <translation>檔案清單 (*.dssfilelist)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="118"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Seznamy souborů (*.txt)</translation>
+        <translation>檔案清單 (*.txt)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="119"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Všechny soubory (*)</translation>
+        <translation>所有檔案 (*)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="125"/>
-        <source>Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
+        <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Obrazové soubory (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>JPEG nebo PNG soubory (*.jpg *.jpeg *.png)</translation>
+        <translation>17 / 5,000
+Translation results
+JPEG 或 PNG 文件 (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="130"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>TIFF soubory (*.tif *.tiff)</translation>
+        <translation>TIFF 文件 (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="131"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>RAW soubory (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation>RAW 文件 (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="134"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>FITS soubory (*.fits *.fit *.fts)</translation>
+        <translation>FITS 文件 (*.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="135"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Všechny soubory (*)</translation>
+        <translation>所有檔案 (*)</translation>
     </message>
 </context>
 <context>
@@ -469,25 +473,25 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../editstars.cpp" line="861"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
-        <translation>Klikněte pro nastavení komety</translation>
+        <translation>點選以設定彗星於此</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="863"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
-        <translation>Klikněte pro přidání hvězdy</translation>
+        <translation>點此以加入此星</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="870"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
-        <translation>Klikněte pro odstranění komety</translation>
+        <translation>點此以移除彗星</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="872"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
-        <translation>Klikněte pro odstranění hvězdy</translation>
+        <translation>點此以移除此星</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="920"/>
@@ -495,8 +499,8 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
 Score: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>Hvězdy: %1
-Kvalita: %2
+        <translation>恆星數: %1
+分數: %2
 FWHM: %3</translation>
     </message>
     <message>
@@ -505,13 +509,13 @@ FWHM: %3</translation>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
         <translation>
-Kometa:%1</translation>
+彗星:%1</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="927"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Ano</translation>
+        <translation>是</translation>
     </message>
 </context>
 <context>
@@ -520,91 +524,89 @@ Kometa:%1</translation>
         <location filename="../StackingDlg.cpp" line="674"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation>Temné pozadí</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="676"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
-        <translation>Vyrov.temného pozadí</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="675"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation>Vyrovnání jasu</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="677"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation>Vyrovnání zkreslení</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="673"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation>Aktivní</translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="72"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
 Ctrl+4 to toggle 4-Corners mode</source>
-        <translation>Ctrl++ nebo Ctrl+= pro přiblížení
-Ctrl+- pro oddálení
-nebo použijte kolečko myši pro přiblížení
-Ctrl+4 přepne režim 4 rohů</translation>
+        <translation>Ctrl++ 或 Ctrl+= 放大
+Ctrl+- 縮小
+或使用鼠標滾輪縮放
+Ctrl+4 切換四角模式</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="84"/>
+        <location filename="../progressdlg.cpp" line="152"/>
         <source>Are you sure you wish to cancel this operation?</source>
-        <translation>Opravdu chcete tuto operaci zrušit?</translation>
+        <translation>您確定要取消此操作嗎？</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <location filename="../progressdlg.cpp" line="226"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
-        <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
+        <translation>預計剩餘時間: %1 時 %2 分 %3 秒 </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <location filename="../progressdlg.cpp" line="229"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
-        <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
+        <translation>預計剩餘時間: %1 分 %2 秒 </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <location filename="../progressdlg.cpp" line="232"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
-        <translation>Odhadovaný zbývající čas: %1 s </translation>
+        <translation>預計剩餘時間: %1 秒 </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <location filename="../progressdlg.cpp" line="235"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
-        <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
+        <translation>預計剩餘時間: &lt;1 秒 </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <location filename="../progressdlg.cpp" line="242"/>
         <source>Estimated remaining Time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Odhadovaný zbývající čas: Neznámý</translation>
+        <translation>預計剩餘時間: 不明</translation>
     </message>
     <message numerus="yes">
-        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <location filename="../progressdlg.cpp" line="255"/>
         <source>%n Processor(s) Used</source>
         <translation>
-            <numerusform>Použitý %n procesor</numerusform>
-            <numerusform>Použité %n procesory</numerusform>
-            <numerusform>Použito %n procesorů</numerusform>
+            <numerusform>%n 個處理器正在使用中</numerusform>
         </translation>
     </message>
 </context>
@@ -613,7 +615,7 @@ Ctrl+4 přepne režim 4 rohů</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="810"/>
         <source>Rename group</source>
-        <translation>Skupinové jméno</translation>
+        <translation>重命名群組</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="899"/>
@@ -621,49 +623,45 @@ Ctrl+4 přepne režim 4 rohů</translation>
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
         <translation>
-            <numerusform>Opravdu chcete tento soubor trvale smazat?
-Tuto činnost nelze obnovit nebo zrušit!</numerusform>
-            <numerusform>Opravdu chcete trvale vymazat %n soubory?
-Tuto činnost nelze obnovit nebo zrušit!</numerusform>
-            <numerusform>Opravdu chcete trvale vymazat %n souborů?
-Tuto činnost nelze obnovit nebo zrušit!</numerusform>
+            <numerusform>確定要永久移除 %n 個檔？
+本動作一旦執行就無法再回復或取消。</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="650"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
-        <translation>Použít jako souřadnicový systém</translation>
+        <translation>以此為基準影像</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="654"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
-        <translation>Zvolit</translation>
+        <translation>勾選</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="656"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
-        <translation>Nezvolit</translation>
+        <translation>取消勾選</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="659"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
-        <translation>Odstranit ze seznamu</translation>
+        <translation>從清單中移除</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="665"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
-        <translation>Kopie do schránky</translation>
+        <translation>複製至暫存區</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="668"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
-        <translation>Vymazat z disku...</translation>
+        <translation>從硬碟裡刪除</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="698"/>
@@ -671,184 +669,182 @@ Tuto činnost nelze obnovit nebo zrušit!</numerusform>
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
 Right mouse button to display the menu</source>
-        <translation>Mezerník pro zaškrtnutí/odškrtnutí vybraných řádků
-Ctrl-A nebo ekvivalent pro výběr všech řádků
-Klávesa Delete pro odstranění (ne vymazání) vybraných řádků
-Pravým tlačítkem myši zobrazíte nabídku</translation>
+        <translation>空格鍵選中/取消選中選定的行
+Ctrl-A 或相當於選擇所有行
+刪除鍵刪除（不擦除）選定的行
+鼠標右鍵顯示菜單</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1453"/>
+        <location filename="../StackingDlg.cpp" line="1456"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 neexistuje nebo to není soubor</translation>
+        <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1462"/>
+        <location filename="../StackingDlg.cpp" line="1465"/>
         <source>Failed to load image %1</source>
-        <translation>Nepodařilo se načíst obrázek %1</translation>
+        <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1766"/>
+        <location filename="../StackingDlg.cpp" line="1769"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
-        <translation>Aktivní snímky: %1      -      Temné pozadí: %2      -      Vyrovnání jasu: %3      -   Vyrovnání temného pozadí: %4   -      Vyrovnání zkreslení: %5</translation>
+        <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="705"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation>Dvojitým kliknutím sem ukotvíte/odemknete seznam obrázků</translation>
+        <translation>雙擊此處停靠/取消停靠圖像列表</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1418"/>
+        <location filename="../StackingDlg.cpp" line="1421"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
-        <translation>Načítání %1</translation>
+        <translation>載入 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1516"/>
+        <location filename="../StackingDlg.cpp" line="1519"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
-        <translation>Soubor %1 nebyl načten, protože již byl načten ve skupině %2 (%3)</translation>
+        <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1540"/>
+        <location filename="../StackingDlg.cpp" line="1543"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
-        <translation>Otevřít aktivní snímky...</translation>
+        <translation>開啟天體影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1544"/>
+        <location filename="../StackingDlg.cpp" line="1547"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
-        <translation>Otevřít snímky temného pozadí...</translation>
+        <translation>開啟暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1562"/>
+        <location filename="../StackingDlg.cpp" line="1565"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
-        <translation>Otevřít snímky vyrovnání temného pozadí...</translation>
+        <translation>開起平場暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1550"/>
+        <location filename="../StackingDlg.cpp" line="1553"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
-        <translation>Otevřít snímky vyrovnání jasu...</translation>
+        <translation>開啟平場影像...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="662"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
-        <translation>Vlastnosti...</translation>
+        <translation>屬性...</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="980"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
-            <numerusform>Vybrán %n soubor</numerusform>
-            <numerusform>Vybrány %n soubory</numerusform>
-            <numerusform>Vybráno %n souborů</numerusform>
+            <numerusform>選擇了 %n 個文件</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1556"/>
+        <location filename="../StackingDlg.cpp" line="1559"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
-        <translation>Otevřít snímky vyrovnání zkreslení...</translation>
+        <translation>開啟偏壓影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1779"/>
+        <location filename="../StackingDlg.cpp" line="1782"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
 Dark Flat Frames: %4
 Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO2</comment>
-        <translation>Aktivní snímky: %1
-Temné pozadí:%2
-Vyrovnání jasu: %3
-Vyrovnání temného pozadí: %4
-Vyrovnání zkreslení: %5</translation>
+        <translation>天體影像: %1
+暗電流: %2
+平場: %3
+平場暗電流: %4
+偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1862"/>
+        <location filename="../StackingDlg.cpp" line="1865"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
-        <translation>Otevřít jiný seznam...</translation>
+        <translation>開啟另一個檔案清單</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2039"/>
+        <location filename="../StackingDlg.cpp" line="2042"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation>Ke stažení je dostupná verze programu DeepSkyStacker %1.</translation>
+        <translation>第%1版DeepSkyStacker已可下載。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2055"/>
+        <location filename="../StackingDlg.cpp" line="2058"/>
         <source>Internet version check error code %1:
 %2</source>
-        <translation>Kontrola verze Internetový kód chyby %1:
+        <translation>版本檢查 Internet 錯誤代碼 %1：
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2171"/>
+        <location filename="../StackingDlg.cpp" line="2174"/>
         <source>Total registering time: %1 %2</source>
-        <translation>Celkový čas registrace: %1 %2</translation>
+        <translation>總註冊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2190"/>
+        <location filename="../StackingDlg.cpp" line="2193"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
-        <translation>Pro zarovnání musíte vybrat snímek.</translation>
+        <translation>偵測星點前需先勾選天體影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2248"/>
+        <location filename="../StackingDlg.cpp" line="2251"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
         <comment>IDS_WARNINGREADONLY</comment>
-        <translation>Následující složka(y) jsou jen pro čtení:
+        <translation>下列檔案夾目前為唯讀:
 %1
-Program DeepSkyStacker potřebuje při své práci v nich vytvářet soubory.</translation>
+DeepSkyStacker需要在執行中存取這些檔案夾。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2272"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>Vybrané obrázky nejsou kompatibilní: %1.</translation>
+        <translation>勾选的图片不相容: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2273"/>
+        <location filename="../StackingDlg.cpp" line="2276"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
-        <translation>Pro sloučení musíte vybrat snímek.</translation>
+        <translation>疊合前需先勾選天體影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2321"/>
+        <location filename="../StackingDlg.cpp" line="2324"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
         <comment>IDS_WARNING_SAVECHANGES</comment>
-        <translation>Provedli jste změny v seznamu souborů %1 a/nebo nastavení.
+        <translation>您已更動%s檔案清單或設定。
 
-Chcete změny uložit?</translation>
+要儲存這些變定嗎？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2437"/>
+        <location filename="../StackingDlg.cpp" line="2440"/>
         <source>Total stacking time: %1 %2</source>
-        <translation>Celková doba skládání: %1 %2</translation>
+        <translation>總堆疊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2469"/>
+        <location filename="../StackingDlg.cpp" line="2471"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Ukládání výsledného obrazu do %1</translation>
+        <translation>儲存最終影像於 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2533"/>
+        <location filename="../StackingDlg.cpp" line="2535"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
 %4</source>
-        <translation>Výjimka zachycená ve funkci: %1
-%2 (řádek %3):
+        <translation>函數中捕獲異常：%1
+%2（行 %3）：
 
 %4</translation>
     </message>
@@ -861,9 +857,8 @@ Chcete změny uložit?</translation>
 This mode allows you to create or modify a Custom Rectangle
 defining the part of the images you wish to stack.</source>
         <comment>IDS_TOOLTIP_SELECTRECT</comment>
-        <translation>Režim volitelného obdelníku
-V tomto režimu můžete provést úpravy
-zvoleného obdelníku.</translation>
+        <translation>自訂方形區塊模式
+本模式可產生並修正自訂方形區塊。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="122"/>
@@ -871,9 +866,8 @@ zvoleného obdelníku.</translation>
 This mode shows the stars that have been detected in the image.
 You can add additional stars or remove incorrectly detected stars.</source>
         <comment>IDS_TOOLTIP_STAR</comment>
-        <translation>Úprava režimu hvězd
-V tomto režimu můžete přidávat/odstraňovat
-hvězdy v obrázku.</translation>
+        <translation>星點編修模式
+本模式可在影像中加入或移除星點。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="135"/>
@@ -881,9 +875,8 @@ hvězdy v obrázku.</translation>
 This mode allows you to select and edit the location
 of the comet&apos;s nucleus in the image.</source>
         <comment>IDS_TOOLTIP_COMET</comment>
-        <translation>Kometární režim
-V tomto režimu můžete upravovat polohu
-komety v obrázku.</translation>
+        <translation>彗星編修模式
+本模式可修改彗星在照片中的位置。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="144"/>
@@ -893,52 +886,57 @@ in Edit Stars and Edit Comet modes.
 
 Right Click to change behaviour.</source>
         <comment>IDS_TOOLTIP_SAVE</comment>
-        <translation>Uložení změn
-Uloží všechny změny (hvězdy a komety)
-iv aktuálním obraze.
+        <translation>儲存改變
+儲存對本影像做的所有改變（星點與彗星）。
 
-Kliknutím pravým tlačítkem změníte chování.</translation>
+鼠標右鍵單擊以更改行為。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="173"/>
         <source>Save without asking</source>
         <comment>ID_SAVECONTEXT_SAVEWITHOUTASKING</comment>
-        <translation>Uložit bez dotazu</translation>
+        <translation>存就對了，別問</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="177"/>
         <source>Don&apos;t save</source>
         <comment>ID_SAVECONTEXT_DONTSAVEWITHOUTASKING</comment>
-        <translation>Neukládat ani se neptat</translation>
+        <translation>不要不問就先存</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="181"/>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
-        <translation>Vždy se zeptat</translation>
+        <translation>每次都詢問</translation>
     </message>
 </context>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="88"/>
+        <location filename="../DeepSkyStacker.cpp" line="127"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Platnost této beta verze DeepSkyStacker vypršela
-Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
+        <translation>DeepSkyStacker 測試版已過期
+您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="116"/>
+        <location filename="../DeepSkyStacker.cpp" line="155"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
-        <translation>Do you want DeepSkyStacker to check if a newer version is available at startup?
-(Tuto volbu můžete nastavit nebo vyřadit kdykoliv později v okně informace o programu)</translation>
+        <translation>您要DeepSkyStacker啟動時檢查是否有新版本嗎？
+（稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="444"/>
+        <location filename="../DeepSkyStacker.cpp" line="449"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 neexistuje nebo to není soubor</translation>
+        <translation>%1 不存在或不是文件</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="597"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -946,16 +944,14 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation>Přidání souborů...</translation>
+        <translation>加入檔案...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="86"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
         <translation>
-            <numerusform>Přidejte soubor jako</numerusform>
-            <numerusform>Přidejte %n soubory jako</numerusform>
-            <numerusform>Přidejte %n souborů jako</numerusform>
+            <numerusform>加入 %n 檔為</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -963,9 +959,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
         <translation>
-            <numerusform>Aktivní snímky</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>天體影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -973,9 +967,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
         <translation>
-            <numerusform>Temné pozadí</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>暗電流影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -983,9 +975,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
         <translation>
-            <numerusform>Snímky vyrovnání jasu</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>平場影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -993,9 +983,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
         <translation>
-            <numerusform>Vyrovnání temného pozadí</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>給平場的暗電流影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -1003,9 +991,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
         <translation>
-            <numerusform>Vyrovnání zkreslení snímků</numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>偏壓影像</numerusform>
         </translation>
     </message>
 </context>
@@ -1013,274 +999,268 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <name>ExplorerBar</name>
     <message>
         <location filename="../ExplorerBar.cpp" line="60"/>
-        <location filename="../ExplorerBar.cpp" line="452"/>
-        <location filename="../ExplorerBar.cpp" line="598"/>
+        <location filename="../ExplorerBar.cpp" line="443"/>
+        <location filename="../ExplorerBar.cpp" line="611"/>
         <source>deleted</source>
-        <translation>smazán</translation>
+        <translation>刪除</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="62"/>
-        <location filename="../ExplorerBar.cpp" line="454"/>
-        <location filename="../ExplorerBar.cpp" line="600"/>
+        <location filename="../ExplorerBar.cpp" line="445"/>
+        <location filename="../ExplorerBar.cpp" line="613"/>
         <source>kept</source>
-        <translation>zachován</translation>
+        <translation>保留</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="64"/>
-        <location filename="../ExplorerBar.cpp" line="456"/>
-        <location filename="../ExplorerBar.cpp" line="602"/>
+        <location filename="../ExplorerBar.cpp" line="447"/>
+        <location filename="../ExplorerBar.cpp" line="615"/>
         <source>Trace File will be %1</source>
-        <translation>Trasovací soubor bude %1</translation>
+        <translation>跟踪文件將被%1</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="261"/>
+        <location filename="../ExplorerBar.cpp" line="263"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation>Nastavení zpracování...</translation>
+        <translation>星點偵測設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="264"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation>Parametry slučování...</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="304"/>
-        <source>Restore Default settings</source>
-        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation>Obnovit výchozí nastavení</translation>
+        <translation>疊合設定...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="306"/>
+        <source>Restore Default settings</source>
+        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
+        <translation>還原為預設設定</translation>
+    </message>
+    <message>
+        <location filename="../ExplorerBar.cpp" line="308"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Načíst nastavení DeepSkyStacker Live</translation>
+        <translation>載入DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="310"/>
+        <location filename="../ExplorerBar.cpp" line="312"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation>Načíst...</translation>
+        <translation>載入...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="371"/>
+        <location filename="../ExplorerBar.cpp" line="373"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Uložit jako nastavení DeepSkyStacker Live</translation>
+        <translation>儲存為DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="375"/>
+        <location filename="../ExplorerBar.cpp" line="377"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation>Uložit jako...</translation>
+        <translation>儲存為...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="437"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="514"/>
+        <location filename="../ExplorerBar.cpp" line="527"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation>Načtení nastavení DeepSkyStacker</translation>
+        <translation>載入DeepSkyStacker設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="518"/>
+        <location filename="../ExplorerBar.cpp" line="531"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
+        <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="565"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>DSS Settings Files (*.dsssettings)</source>
-        <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
+        <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="561"/>
+        <location filename="../ExplorerBar.cpp" line="574"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation>Uložení nastavení DeepSkyStacker</translation>
+        <translation>儲存DeepSkyStacker設定</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation>Zarovnání a sloučení</translation>
+        <translation>偵測星點與疊合</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation>Otevřít obrazové soubory...</translation>
+        <translation>開啟影像檔...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation>temného pozadí...</translation>
+        <translation>暗電流檔...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation>vyrovnání jasu...</translation>
+        <translation>平場檔案...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation>vyrovnání temného pozadí...</translation>
+        <translation>平場暗電流檔...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation>vyrovnání zkreslení...</translation>
+        <translation>偏壓檔...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation>Otevřít seznam...</translation>
+        <translation>開啟檔案清單...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation>Uložit seznam...</translation>
+        <translation>儲存檔案清單...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation>Smazat seznam</translation>
+        <translation>清除影像清單</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation>Zvolit vše</translation>
+        <translation>勾選全部</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation>Volba dosažení prahu...</translation>
+        <translation>勾選高於某臨界值者...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation>Nic nezvolit</translation>
+        <translation>取消全部的勾選</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation>Zarovnat vybrané snímky...</translation>
+        <translation>偵測勾選影像中的星點...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation>Výpočet zkreslení...</translation>
+        <translation>計算位移量...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation>Sloučit zvolené obrazy...</translation>
+        <translation>疊合勾選之影像...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation>Skupinové sloučení...</translation>
+        <translation>批次疊合...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation>Zpracování</translation>
+        <translation>影像處理</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation>Otevřít obrazový soubor...</translation>
+        <translation>開啟影像檔...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation>Kopie aktuálního obrazu do schránky</translation>
+        <translation>將本照片覆製至暫存區</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation>Vytvoření masky hvězd...</translation>
+        <translation>製作星像遮罩...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation>Uložit obraz do souboru...</translation>
+        <translation>儲存影像...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation>Nastavení</translation>
+        <translation>選項</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation>Nastavení...</translation>
+        <translation>設定...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Nastavení Raw/FITS DDP...</translation>
+        <translation>Raw/FITS檔數位顯像設定...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation>Načíst...</translation>
+        <translation>載入...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation>Uložit...</translation>
+        <translation>儲存...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation>Doporučení...</translation>
+        <translation>建議值...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation>O programu DeepSkyStacker...</translation>
+        <translation>關於DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation>Nápověda programu DeepSkyStacker...</translation>
+        <translation>DeepSkyStacker說明...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="612"/>
         <source>Enable progress sounds</source>
-        <translation>Povolit zvuky postupu</translation>
+        <translation>啟用進度聲音</translation>
     </message>
 </context>
 <context>
@@ -1288,12 +1268,12 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation>DeepSkyStacker - Vlastnosti obrázku</translation>
+        <translation>DeepSkyStacker - 圖像屬性</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation>Soubor</translation>
+        <translation>檔案</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
@@ -1303,37 +1283,37 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation>Barevná hloubka</translation>
+        <translation>深度</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation>Expozice</translation>
+        <translation>曝光</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation>ISO/Citlivost</translation>
+        <translation>ISO/增益</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation>Velikost</translation>
+        <translation>大小</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation>Datum/Čas</translation>
+        <translation>日期/時間</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation>Typ</translation>
+        <translation>類別</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation>Informace</translation>
+        <translation>資訊</translation>
     </message>
 </context>
 <context>
@@ -1341,42 +1321,42 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation>Přenosné soubory</translation>
+        <translation>中介檔</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation>Parametry pro vytvoření souborů pro přenos</translation>
+        <translation>中介檔儲存設定</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation>Vytvořit a kalibrovat soubor pro každý aktivní snímek</translation>
+        <translation>每幅天體影像校正後都儲存校正結果</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation>Uložit interpolovaný obraz při zpracování RAW snímků</translation>
+        <translation>若為RAW檔則儲存解譯Bayer矩陣後的結果</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation>Vytvořit a zarovnat/kalibrovat soubor pro každý aktivní snímek</translation>
+        <translation>儲存每幅天體影像校正/星點對齊後的結果</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation>Formát přenosných souborů</translation>
+        <translation>中介檔格式</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation>Uložit přenosné soubory jako TIFF soubory</translation>
+        <translation>將中介檔存為TIFF格式</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation>Uložit přenosné soubory jako FITS soubory</translation>
+        <translation>將中介檔存為FITS格式FITS檔</translation>
     </message>
 </context>
 <context>
@@ -1384,82 +1364,82 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation>Výstup</translation>
+        <translation>輸出</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation>Nastavení výstupních souborů</translation>
+        <translation>輸出影像設定</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation>Tvorba výstupního souboru</translation>
+        <translation>產生輸出檔</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation>Tvorba HTML popisu souboru</translation>
+        <translation>產生HTML敘述檔</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation>Automat.tif/fits</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation>&lt;název seznamu&gt;.tif/fits</translation>
+        <translation>&lt;檔案清單名稱&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation>Přidat číslo pro zabránění přepsání souboru (001, 002, ...)</translation>
+        <translation>添附數字以避免檔案蓋寫 (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation>Vytvořit výstupní soubor ve složce souřadnicového systému</translation>
+        <translation>於參考影像所在的檔案夾產生輸出檔</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation>Vytvořit výstupní soubor ve složce seznamu souborů</translation>
+        <translation>於檔案清單所在的檔案夾產生輸出檔</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation>Vytvořit výstupní soubor ve</translation>
+        <translation>產生輸出檔於</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation>&lt;výstupní složka&gt;</translation>
+        <translation>&lt;輸出檔案夾&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation>Název výstupního souboru</translation>
+        <translation>輸出檔名</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation>Umístění výstupu</translation>
+        <translation>輸出位置</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="133"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation>Výběr výstupní složky</translation>
+        <translation>選擇輸出檔案夾</translation>
     </message>
 </context>
 <context>
@@ -1467,111 +1447,111 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation>Úpravy vzhledu</translation>
+        <translation>外觀修飾</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation>Nastavení úprav po kalibraci</translation>
+        <translation>影像校正後的外觀修飾設定</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation>Velikost filtru</translation>
+        <translation>濾波器大小</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation>Zjistit a odstranit zbývající přepálené body</translation>
+        <translation>偵測並移除殘餘的熱像元</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation>&lt;small&gt;Účinek slabý&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;效果較弱&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation>&lt;small&gt;Silný&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;較強&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation>Hranice detekce</translation>
+        <translation>偵測臨界值</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation>Zjistit a odstranit zbývající mrtvé body</translation>
+        <translation>偵測並移除殘餘的冷像元</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation>Nahradit hodnotu bodu hodnotou</translation>
+        <translation>取代像元值以</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation>Controla referenčního snímku...</translation>
+        <translation>用第一幅影像來測試</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation>Uložit obraz zobrazující odstraněné body pro každý aktivní snímek</translation>
+        <translation>每幅天體影像都儲存一幅顯示哪些像元被移除的影像</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="22"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation>střední</translation>
+        <translation>中位數</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="23"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation>gaussianského filtru</translation>
+        <translation>高斯濾波</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="349"/>
+        <location filename="../PostCalibration.cpp" line="347"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation>Výpočet úpravy vzhledu</translation>
+        <translation>計算外觀修飾</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="365"/>
+        <location filename="../PostCalibration.cpp" line="363"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>Načítání %1 bit/k %2 aktivního snímku
+        <translation>載入每色 %1 bit %2 之天體影像
 %3</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="367"/>
+        <location filename="../PostCalibration.cpp" line="365"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>Načítání %1 bitového %2 aktivního šedého snímku
+        <translation>載入 %1 bit %2 之灰階天體影像
 %3</translation>
     </message>
 </context>
 <context>
     <name>ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="814"/>
+        <location filename="../ProcessingDlg.cpp" line="815"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Uložení masky hvězd do %1</translation>
+        <translation>將星點遮罩儲存於 %1</translation>
     </message>
 </context>
 <context>
@@ -1579,12 +1559,12 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation></translation>
+        <translation>加工 ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="148"/>
         <source>Cancel</source>
-        <translation>Zrušení</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1592,151 +1572,151 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>Nastavení RAW/FITS digitálního zpracování</translation>
+        <translation>RAW/FITS 數位顯像設定</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation>RAW soubory</translation>
+        <translation>RAW檔</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation>Jas</translation>
+        <translation>亮度</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation>Červená stupnice</translation>
+        <translation>紅色比率</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation>Modrá stupnice</translation>
+        <translation>藍色比率</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation>Vyvážení bílé</translation>
+        <translation>白平衡</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation>Žádné zpracování vyvážení bílé</translation>
+        <translation>沒有白平衡處理</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation>Použít vyvážení bílé z kamery</translation>
+        <translation>使用相機白平衡</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation>Bayerova převodní matice</translation>
+        <translation>Bayer矩陣轉換</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation>Bilineární interpolace</translation>
+        <translation>雙線性內插</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation>Adaptivní Homogeneity-Directed (AHD) interpolace</translation>
+        <translation>自調適均質性導向(AHD)內插法</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation>Použít Bayerův algoritmus (bez interpolace a odmaticování)</translation>
+        <translation>使用Bayer Drizzle (無內插，不解譯Bayer矩陣)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation>Tato volba používá Bayerovu matici tak jak je. Neprovádí žádnou interpolaci a každý obrazový bod je součástí matice.</translation>
+        <translation>本選項不對Bayer矩陣作任何更動與內插，每個像元只取Bayer矩陣中原有的顏色。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation>Tato volba používá Bayerovu matici pro vytvoření jednoho super bodu ze skupiny 4 obrazových bodů (RGBG). Velikost výsledného obrazu je pak poloviční.</translation>
+        <translation>本選項將以Bayer矩陣中每四個GRGB像元合併成一個大像元，因此產生的影像長寬將各減半。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation>FITS soubory</translation>
+        <translation>FITS檔</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Jednobarevný 16ti bitový FITS a RAW soubor vytvořený DSLR nebo barevnou CCD kamerou.&lt;br&gt;Ponechte &lt;span style = &quot;font-style: italic;&quot;&gt;nezaškrtnuté&lt;/span&gt; a pokuste se o automatickou detekci na základě klíčových slov FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;單色16 bit FITS檔乃由DSLR或彩色CCD相機產生.&lt;br&gt;保留&lt;span style=“font-style:italic;”&gt;未选中&lt;/span&gt;尝试基于FITS关键字进行自动检测。&lt; p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation>Kamera:</translation>
+        <translation>相機:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation>Úprava barev</translation>
+        <translation>色彩調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation>Červená stupnice</translation>
+        <translation>紅色比率</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation>Modrá stupnice</translation>
+        <translation>藍色比率</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation>Použít Bayerův filtr</translation>
+        <translation>所使用的Bayer濾鏡配置</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation>Vytvoří super body přímo z RAW matice (bez interpolace)</translation>
+        <translation>自原始Bayer矩陣產生大像元 (無內插)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation>Nucené použití neoznačených hodnot, když označené hodnoty jsou uloženy</translation>
+        <translation>檔案中的數值有正負號時，強制忽略正負號。</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="18"/>
         <source>Generic RGGB</source>
-        <translation>Obecný RGGB</translation>
+        <translation>泛用RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="19"/>
         <source>Generic BGGR</source>
-        <translation>Obecný BGGR</translation>
+        <translation>泛用BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic GBRG</source>
-        <translation>Obecný GBRG</translation>
+        <translation>泛用GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic GRBG</source>
-        <translation>Obecný GRBG</translation>
+        <translation>泛用GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic</source>
-        <translation>Obecně</translation>
+        <translation>汎用的</translation>
     </message>
 </context>
 <context>
@@ -1744,233 +1724,233 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation>Doporučená nastavení</translation>
+        <translation>推薦設定值</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="41"/>
         <source>Show all recommendations</source>
-        <translation>Zobrazit všechna doporučení</translation>
+        <translation>顯示所有推薦內容</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="188"/>
+        <location filename="../RecommendedSettings.cpp" line="195"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation>Toto je doporučené nastavení.&lt;br&gt;Nemusí být vhodné ve všech případech, ale je to často dobré východisko.</translation>
+        <translation>此為推薦設定值&lt;br&gt;它們未必在各種情況下都有效，但在做初步嘗試時它們是不錯的起始點。</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="192"/>
+        <location filename="../RecommendedSettings.cpp" line="199"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation>Klikněte na navrženou položku pro změnu na toto nastavení</translation>
+        <translation>點選提示的聯結以改變相關設定</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="196"/>
+        <location filename="../RecommendedSettings.cpp" line="203"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation>Nyní zvolená nastavení jsou zobrazena zeleně</translation>
+        <translation>已設定完成並顯示成綠色</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="256"/>
-        <location filename="../RecommendedSettings.cpp" line="288"/>
+        <location filename="../RecommendedSettings.cpp" line="263"/>
+        <location filename="../RecommendedSettings.cpp" line="295"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
-        <translation>Při zpracování úzkopásmových snímků (zvláště H%1)</translation>
+        <translation>如果您要處理窄波段影像(尤其是H%1)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="261"/>
+        <location filename="../RecommendedSettings.cpp" line="268"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation>Použíte režim superbodu</translation>
+        <translation>使用大像元模式</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="293"/>
-        <location filename="../RecommendedSettings.cpp" line="663"/>
-        <location filename="../RecommendedSettings.cpp" line="709"/>
+        <location filename="../RecommendedSettings.cpp" line="300"/>
+        <location filename="../RecommendedSettings.cpp" line="670"/>
+        <location filename="../RecommendedSettings.cpp" line="716"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
-        <translation>Použíte kalibraci pozadí po kanálech</translation>
+        <translation>使用各色獨立背景校正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="315"/>
+        <location filename="../RecommendedSettings.cpp" line="322"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
-        <translation>Zpracování dlouhých expozic a možná dobrých SNR snímků</translation>
+        <translation>您處理的影像有著很長時間的曝光以及可能相當好的訊噪比</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="318"/>
+        <location filename="../RecommendedSettings.cpp" line="325"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>Použíte AHD interpolaci</translation>
+        <translation>使用AHD法解譯Bayer矩陣</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="324"/>
+        <location filename="../RecommendedSettings.cpp" line="331"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation>Zpracování krátkých expozic a možná nevýrazných SNR snímků</translation>
+        <translation>您處理的影像曝光時間不長，訊噪比較低</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="327"/>
+        <location filename="../RecommendedSettings.cpp" line="334"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation>Použíte bilineární interpolaci</translation>
+        <translation>使用雙線性法解譯Bayer矩陣</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="371"/>
+        <location filename="../RecommendedSettings.cpp" line="378"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation>Použití snímků s vyrovnaným zkreslením</translation>
+        <translation>您使用的是偏壓影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="374"/>
+        <location filename="../RecommendedSettings.cpp" line="381"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation>Pro lepší kalibraci nastavte černý bod na 0</translation>
+        <translation>將黑色的影像數值設為0以改進校正效果</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="383"/>
+        <location filename="../RecommendedSettings.cpp" line="390"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation>Použití snímků vyrovnání jasu bez aktivních snímků</translation>
+        <translation>您的平場影像沒有偏壓修正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="386"/>
+        <location filename="../RecommendedSettings.cpp" line="393"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
-        <translation>Černý bod není nastaven na 0</translation>
+        <translation>不要將黑色的影像數值歸零</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="407"/>
+        <location filename="../RecommendedSettings.cpp" line="414"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>Použití nízkého prahu detekce hvězd</translation>
+        <translation>您使用較低的星點偵測臨界值</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="410"/>
+        <location filename="../RecommendedSettings.cpp" line="417"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
-        <translation>Použíte filtr střední hodnoty na snímky před zarovnáním pro snížení šumu a zlepšení detekce hvězd</translation>
+        <translation>對齊影像前使用中位數濾波以降低雜訊並改進星點偵測</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="427"/>
+        <location filename="../RecommendedSettings.cpp" line="434"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
-        <translation>Pokud používáte DSLR režim</translation>
+        <translation>若您使用的是改裝過的DSLR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="430"/>
+        <location filename="../RecommendedSettings.cpp" line="437"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation>Obnovit všechna nastavení vyvážení bílé</translation>
+        <translation>還原所有白平衡設定</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="467"/>
+        <location filename="../RecommendedSettings.cpp" line="474"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation>Pokoušíte se vytvořit obrázek komety s rozmazanými hvězdami</translation>
+        <translation>您正要製作一幅恆星拖線的彗星影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="470"/>
-        <location filename="../RecommendedSettings.cpp" line="540"/>
+        <location filename="../RecommendedSettings.cpp" line="477"/>
+        <location filename="../RecommendedSettings.cpp" line="547"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
-        <translation>Použíte metodu slučování průměrů</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="481"/>
-        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
-        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation>Pokoušíte se vytvořit obrázek komety zarovnaný na hvězdách a kometě z %1 aktivních snímků</translation>
+        <translation>使用平均法來疊合影像</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="488"/>
-        <location filename="../RecommendedSettings.cpp" line="521"/>
+        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
+        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
+        <translation>您正要從%1幅曝光製作一恆星與彗星都對齊的影像</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="495"/>
+        <location filename="../RecommendedSettings.cpp" line="528"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
-        <translation>Použíte metodu Kappa-Sigma sloučení</translation>
+        <translation>使用Kappa-Sigma剪去法疊合影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="496"/>
-        <location filename="../RecommendedSettings.cpp" line="548"/>
-        <location filename="../RecommendedSettings.cpp" line="580"/>
-        <location filename="../RecommendedSettings.cpp" line="612"/>
-        <location filename="../RecommendedSettings.cpp" line="644"/>
+        <location filename="../RecommendedSettings.cpp" line="503"/>
+        <location filename="../RecommendedSettings.cpp" line="555"/>
+        <location filename="../RecommendedSettings.cpp" line="587"/>
+        <location filename="../RecommendedSettings.cpp" line="619"/>
+        <location filename="../RecommendedSettings.cpp" line="651"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
-        <translation>Použíte metodu středního sloučení</translation>
+        <translation>使用中位數疊合法</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="514"/>
+        <location filename="../RecommendedSettings.cpp" line="521"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
-        <translation>Skládání %1 aktivních snímků</translation>
+        <translation>您正要疊合 %1 幅天體曝光</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="530"/>
+        <location filename="../RecommendedSettings.cpp" line="537"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
-        <translation>Použíte metodu automatického přizpůsobení váženého průměru sloučení</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="564"/>
-        <source>You are creating a master dark from %1 dark frame(s)</source>
-        <comment>IDS_RECO_DARK_REASON</comment>
-        <translation>Skládání předlohy temného pozadí z %1 snímků temného pozadí</translation>
+        <translation>使用自動可調適加權平均</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="571"/>
-        <location filename="../RecommendedSettings.cpp" line="603"/>
-        <location filename="../RecommendedSettings.cpp" line="635"/>
+        <source>You are creating a master dark from %1 dark frame(s)</source>
+        <comment>IDS_RECO_DARK_REASON</comment>
+        <translation>您正要從%1幅暗電流影像製作一幅總和暗電流</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="578"/>
+        <location filename="../RecommendedSettings.cpp" line="610"/>
+        <location filename="../RecommendedSettings.cpp" line="642"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
-        <translation>Použíte metodu Středního Kappa-Sigma sloučení</translation>
+        <translation>使用Kappa-Sigma減去法與中位數疊合</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="596"/>
+        <location filename="../RecommendedSettings.cpp" line="603"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation>Vytváření základního aktivního snímku z %1 aktivních snímků</translation>
+        <translation>您正要從%1幅偏壓影像製作一幅總和偏壓</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="628"/>
+        <location filename="../RecommendedSettings.cpp" line="635"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
-        <translation>Vytváření předlohy vyrovnání jasu z %1 snímků vyrovnání jasu</translation>
+        <translation>您正要從%1幅平場影像製作一幅總和平場</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="660"/>
+        <location filename="../RecommendedSettings.cpp" line="667"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
-        <translation>Pokud jsou výsledné snímky příliš šedivé</translation>
+        <translation>若最終影像看來灰灰而無色彩</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="683"/>
+        <location filename="../RecommendedSettings.cpp" line="690"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
-        <translation>Pokud je vyvážení barev ve výsledných snímcích těžko opravitelné v následném zpracování</translation>
+        <translation>若最終影像的色平衡在後續處理中難以修正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="686"/>
+        <location filename="../RecommendedSettings.cpp" line="693"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
-        <translation>Použíte RGB kalibraci pozadí</translation>
+        <translation>使用同時校正RGB各色背景</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="706"/>
+        <location filename="../RecommendedSettings.cpp" line="713"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation>Skládání šedivých snímků které mají možná mírně rozdílné hodnoty pozadí</translation>
+        <translation>您正要疊合灰階影像，它們的背景亮度可能略微不同。</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="793"/>
+        <location filename="../RecommendedSettings.cpp" line="802"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation>nebo</translation>
+        <translation>或</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="854"/>
+        <location filename="../RecommendedSettings.cpp" line="863"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation>Nejprve musíte přidat snímky a zkontrolovat je</translation>
+        <translation>須先將影像加入清單中並勾選.</translation>
     </message>
 </context>
 <context>
@@ -1978,134 +1958,134 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation>Nastavení zpracování</translation>
+        <translation>星點偵測設定</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation>Činnosti</translation>
+        <translation>動作</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation>Parametry slučování...</translation>
+        <translation>疊合設定...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation>Doporučená nastavení...</translation>
+        <translation>推薦設定...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation>Zarovnání již zarovnaných obrazů</translation>
+        <translation>重新偵測已偵測星點的影像</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Automatické zjištění přepálených bodů</translation>
+        <translation>自動偵測熱像元</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation>Sloučení po zarovnání</translation>
+        <translation>偵測完星點後馬上疊合</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation>Vybrat nejlepších</translation>
+        <translation>選擇最好的</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation>% snímků a zarovnat je</translation>
+        <translation>% 照片並疊合之</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation>Pokročilé</translation>
+        <translation>進階設定</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation>Práh detekce hvězd</translation>
+        <translation>星點偵測臨界值</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="274"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation>Spočítat počet zjištěných hvězd</translation>
+        <translation>計算偵測到的恆星數目</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="317"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation>Snížení šumu použitím filtru střední hodnoty</translation>
+        <translation>用中位數濾波降低雜訊</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="157"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation>řed sloučením nezapomeňte přidat a zvolit temné pozadí, vyrovnání jasu a zkreslení.</translation>
+        <translation>疊合影像前請記得加進並勾選暗電流，平場，以及偏壓影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="160"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a vyrovnání jasu.</translation>
+        <translation>疊合影像前請記得加進並勾選暗電流以及平場影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="163"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a zkreslení.</translation>
+        <translation>疊合影像前請記得加進並勾選暗電流以及偏壓影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="166"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu a zkreslení.</translation>
+        <translation>疊合影像前請記得加進並勾選平場與偏壓影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí.</translation>
+        <translation>疊合影像前請記得加進並勾選暗電流影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu.</translation>
+        <translation>疊合影像前請記得加進並勾選平場影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation>Před sloučením nezapomeňte přidat a zvolit zkreslení.</translation>
+        <translation>疊合影像前請記得加進並勾選偏壓影像。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="199"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation>Temné pozadí, vyrovnání jasu a vyrovnání zkreslení zvoleno.</translation>
+        <translation>已勾選暗電流，平場，以及偏壓</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="263"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation>Zarovnávání %1</translation>
+        <translation>偵測星點中 %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="270"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation>%1 hvězd</translation>
+        <translation>%1 顆星</translation>
     </message>
 </context>
 <context>
@@ -2113,12 +2093,12 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation>Přejmenovat skupinu</translation>
+        <translation>重命名群組</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation>Skupinové jméno:</translation>
+        <translation>團隊名字：</translation>
     </message>
 </context>
 <context>
@@ -2126,63 +2106,63 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation>Výsledek</translation>
+        <translation>結果</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation>Normální režim</translation>
+        <translation>標準模式</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation>&quot;Mozaikový&quot; režim</translation>
+        <translation>馬賽克模式</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation>Křížový režim</translation>
+        <translation>交疊模式</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation>Volitelný obdelník</translation>
+        <translation>自訂方型區域</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation>Povolit 2x roztřesení</translation>
+        <translation>使用二倍Drizzle</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation>Povolit 3x roztřesení</translation>
+        <translation>使用三倍Drizzle</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation>Zarovnání RGB kanálů ve výsledném obraze</translation>
+        <translation>在最終影像中對齊RGB三色</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="68"/>
         <location filename="../ResultParameters.cpp" line="130"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation>Výsledek sloučení bude v rozměru referenčního aktivního snímku.</translation>
+        <translation>疊合結果的取景範圍與參考影像同。</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="78"/>
         <location filename="../ResultParameters.cpp" line="143"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation>Výsledek sloučení obsahuje všechny zarovnávané aktivní snímky.</translation>
+        <translation>疊合結果的取景範圍包含所有用於疊合的影像範圍。</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="88"/>
         <location filename="../ResultParameters.cpp" line="157"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation>Výsledek procesu skládání je snímek součinu všech snímků.</translation>
+        <translation>疊合結果僅限於各幅影像間的相交區域。</translation>
     </message>
 </context>
 <context>
@@ -2190,7 +2170,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation>Uložit změny?</translation>
+        <translation>要儲存已做的改變嗎?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -2198,39 +2178,39 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Byly provedeny nějaké změny (v polohách hvězd nebo komet)
+        <translation>恆星或彗星位置已被改變
 
-Chcete je uložit?</translation>
+您要儲存這些改變嗎？</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Příště provést...</translation>
+        <translation>下次...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation>Uložit bez dotazu</translation>
+        <translation>存就對了，別問</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation>Neukládat ani se neptat</translation>
+        <translation>不要不問就先存</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation>Zeptat se znovu</translation>
+        <translation>再問一次</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Toto nastavení můžete kdykoliv změnit pravým kliknutím na ikonu uložení.</translation>
+        <translation>以滑鼠右鍵點選&quot;&quot;儲存&quot;&quot;鍵可存取這些選項</translation>
     </message>
 </context>
 <context>
@@ -2238,338 +2218,338 @@ Chcete je uložit?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation>Kroky slučování</translation>
+        <translation>疊合步驟</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
-        <translation>Doporučená nastavení...</translation>
+        <translation>推薦設定...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="38"/>
         <source>Stacking Settings ...</source>
-        <translation>Parametry slučování...</translation>
+        <translation>疊合設定...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="176"/>
+        <location filename="../StackRecap.cpp" line="184"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation>ISO</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="177"/>
+        <location filename="../StackRecap.cpp" line="185"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation>Citlivost</translation>
+        <translation>增益</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="197"/>
+        <location filename="../StackRecap.cpp" line="203"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Ano</translation>
+        <translation>是</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="198"/>
+        <location filename="../StackRecap.cpp" line="204"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation>Ne</translation>
+        <translation>沒有</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="212"/>
+        <location filename="../StackRecap.cpp" line="218"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation>RGB kanály kalibrace pozadí: %1</translation>
+        <translation>RGB三色背景校正: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="217"/>
+        <location filename="../StackRecap.cpp" line="223"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Kalibrace pozadí kanálů: %1</translation>
+        <translation>各色獨立校正背景: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="222"/>
+        <location filename="../StackRecap.cpp" line="228"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation>Optimalizace temného pozadí: %1</translation>
+        <translation>暗電流最佳化: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="227"/>
+        <location filename="../StackRecap.cpp" line="233"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation>Koeficient zesílení temného pozadí: %1</translation>
+        <translation>暗電流乘算系數: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="231"/>
+        <location filename="../StackRecap.cpp" line="237"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation>Zjištění a odstranění přepálených bodů: %1</translation>
+        <translation>熱像元偵測與移除: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="240"/>
+        <location filename="../StackRecap.cpp" line="246"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation>Pro zpracování je třeba %1 volného odkládacího prostoru na disku %2.&lt;br&gt;Na tomto disku je dostupných jen %3.</translation>
+        <translation>此處理暫時需要 %1 的空間於 %2 碟。\n此碟目前只有 %3 可用空間。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="261"/>
+        <location filename="../StackRecap.cpp" line="268"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation>Varování: Používáte snímky temného pozadí, vyrovnání jasu nebo zkreslení s JPEG soubory.&lt;br&gt;Kvůli ztrátové kompresi nelze provést kalibraci na JPEG souborech.</translation>
+        <translation>警告: 您使用JPEG格式的暗電流，平場，或偏壓檔&lt;br&gt;因為JPEG的失真壓縮，這些校正將沒有效果。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="269"/>
+        <location filename="../StackRecap.cpp" line="276"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation>Způsob sloučení: </translation>
+        <translation>疊合模式: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="274"/>
+        <location filename="../StackRecap.cpp" line="281"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation>Normální</translation>
+        <translation>標準</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="277"/>
+        <location filename="../StackRecap.cpp" line="284"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation>Mozaika</translation>
+        <translation>馬賽克</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="280"/>
+        <location filename="../StackRecap.cpp" line="287"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation>Volitelný obdelník</translation>
+        <translation>自訂方型區域</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="283"/>
+        <location filename="../StackRecap.cpp" line="290"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation>Křížení</translation>
+        <translation>交疊</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="291"/>
+        <location filename="../StackRecap.cpp" line="298"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation>Způsob zarovnání: </translation>
+        <translation>星點對齊方法: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="299"/>
+        <location filename="../StackRecap.cpp" line="306"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation>Automatický</translation>
+        <translation>系統自動決定</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="302"/>
+        <location filename="../StackRecap.cpp" line="309"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation>Bilineární</translation>
+        <translation>雙線性</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="305"/>
+        <location filename="../StackRecap.cpp" line="312"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation>Bisquared</translation>
+        <translation>雙二次方</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="308"/>
+        <location filename="../StackRecap.cpp" line="315"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation>Bikubický</translation>
+        <translation>雙三次方</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="311"/>
+        <location filename="../StackRecap.cpp" line="318"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation>Nezarovnáno</translation>
+        <translation>不執行對齊各幅星點</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="322"/>
+        <location filename="../StackRecap.cpp" line="329"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation>Roztřeseni x%1 povoleno</translation>
+        <translation>使用%1倍Drizzle</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="328"/>
+        <location filename="../StackRecap.cpp" line="335"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation>Vybrané nastavení roztřesení není slučitelné s režimem Bayerova roztřesení.</translation>
+        <translation>本drizzle選項與Bayer Drizzle不相容.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="339"/>
+        <location filename="../StackRecap.cpp" line="346"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation>%1 zjištěno a zpracováno</translation>
+        <translation>偵測到並使用%1個處理器 &quot;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="342"/>
+        <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation>%ld zjištěno - jen jeden použit</translation>
+        <translation>偵測到%1個處理器 - 只使用一個</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="354"/>
+        <location filename="../StackRecap.cpp" line="361"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation>Zpracování komety : </translation>
+        <translation>彗星處理: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="359"/>
+        <location filename="../StackRecap.cpp" line="366"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation>Zarovnat na hvězdy (žádné speciální zpracovaní)</translation>
+        <translation>對齊星點 (無特殊處理)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="362"/>
+        <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation>Zarovnat kometu</translation>
+        <translation>對齊彗星</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="365"/>
+        <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation>Zarovnat na hvězdy a kometu</translation>
+        <translation>同時對齊星點與彗星</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="379"/>
+        <location filename="../StackRecap.cpp" line="386"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation>Úprava vzhledu přepálených bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
+        <translation>套用熱像元外觀修飾 (濾波器 = %1 像元, 偵測臨界值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="387"/>
+        <location filename="../StackRecap.cpp" line="394"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation>Úprava vzhledu mrtvých bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
+        <translation>套用冷像元外觀修飾 (濾波器 = %1 像元, 偵測臨界值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="416"/>
+        <location filename="../StackRecap.cpp" line="423"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation>Krok slučování %1&lt;br&gt;  -&gt;%2 snímků (%3: %4) - celková expozice: </translation>
+        <translation>疊合步驟 %1&lt;br&gt;  -&gt;%2 幅影像 (%3: %4) - 總曝光 : </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="434"/>
-        <location filename="../StackRecap.cpp" line="478"/>
-        <location filename="../StackRecap.cpp" line="533"/>
-        <location filename="../StackRecap.cpp" line="609"/>
-        <location filename="../StackRecap.cpp" line="664"/>
+        <location filename="../StackRecap.cpp" line="441"/>
+        <location filename="../StackRecap.cpp" line="485"/>
+        <location filename="../StackRecap.cpp" line="540"/>
+        <location filename="../StackRecap.cpp" line="616"/>
+        <location filename="../StackRecap.cpp" line="671"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation>Metoda: </translation>
+        <translation>方法: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="445"/>
+        <location filename="../StackRecap.cpp" line="452"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation>Varování: Zvolená volba Bayerova roztřesení při nastavení RAW DDP může často vést k nezvyklým výsledkům proti jiné průměrující metodě.</translation>
+        <translation>警告: 如果選取平均以外的方法，於RAW檔數位顯像設定中選擇的Bayer Drizzle選項，有可能產生怪異的結果。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="465"/>
+        <location filename="../StackRecap.cpp" line="472"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation>-&gt; Zkreslení: %1 snímků (%2: %3) expozice: %4</translation>
+        <translation>-&gt; 偏壓: %1 幅 (%2: %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="518"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation>-&gt; Bez vyrovnání zkreslení</translation>
+        <translation>-&gt; 無偏壓</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="520"/>
+        <location filename="../StackRecap.cpp" line="527"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation>-&gt; Temné pozadí: %1 snímků (%2 : %3) expozice: %4</translation>
+        <translation>-&gt; 暗電流: %1 幅 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="578"/>
+        <location filename="../StackRecap.cpp" line="585"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation>Varování: Expoziční čas neodpovídá aktivním snímkům</translation>
+        <translation>警告: 曝光時間與天體影像不幅</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="587"/>
+        <location filename="../StackRecap.cpp" line="594"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation>-&gt; Bez temného pozadí</translation>
+        <translation>-&gt; 無暗電流</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="596"/>
+        <location filename="../StackRecap.cpp" line="603"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation>-&gt; Vyrovnání jasu: %1 snímků (%2 : %3) expozice: %4</translation>
+        <translation>-&gt; 平場暗電流: %1 幅 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="652"/>
+        <location filename="../StackRecap.cpp" line="659"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation>-&gt; Vyrovnání jasu: %1 snímků (%2: %3) expozice: %4</translation>
+        <translation>-&gt; 平場: %1 幅 (%2: %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="490"/>
-        <location filename="../StackRecap.cpp" line="560"/>
-        <location filename="../StackRecap.cpp" line="676"/>
+        <location filename="../StackRecap.cpp" line="497"/>
+        <location filename="../StackRecap.cpp" line="567"/>
+        <location filename="../StackRecap.cpp" line="683"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation>Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
+        <translation>警告: ISO值與天體影像不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="500"/>
-        <location filename="../StackRecap.cpp" line="570"/>
-        <location filename="../StackRecap.cpp" line="686"/>
+        <location filename="../StackRecap.cpp" line="507"/>
+        <location filename="../StackRecap.cpp" line="577"/>
+        <location filename="../StackRecap.cpp" line="693"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation>Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
+        <translation>警告: 增益與影像檔的增益不相符</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="622"/>
+        <location filename="../StackRecap.cpp" line="629"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation>Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
+        <translation>警告: ISO值與平場不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="632"/>
+        <location filename="../StackRecap.cpp" line="639"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation>Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
+        <translation>警告: 平場暗電流檔的增益與平場檔的增益不相符</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="640"/>
+        <location filename="../StackRecap.cpp" line="647"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation>Varování: Expoziční čas neodpovídá snímkům vyrovnání jasu</translation>
+        <translation>警告: 曝光時間與平場不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="696"/>
+        <location filename="../StackRecap.cpp" line="703"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation>-&gt; Bez vyrovnání jasu</translation>
+        <translation>-&gt; 無平場</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="711"/>
+        <location filename="../StackRecap.cpp" line="718"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation>Odhadovaný celkový čas expozice: %1&lt;br&gt;(výpočet celkové expoziční doby je proveden z vybraných aktivních snímků použitých pro složení výsledného obrazu)</translation>
+        <translation>估計總曝光時間: %1&lt;br&gt;(此值假設所有勾選的天體影像都將用於疊合)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="721"/>
+        <location filename="../StackRecap.cpp" line="728"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation>Pro zpracování bude použito %1 odkládacího prostoru na disku %2 (%3 je volné).</translation>
+        <translation>本處理將暫時使用%1於%2槽 (%3 空間)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="250"/>
-        <location filename="../StackRecap.cpp" line="730"/>
+        <location filename="../StackRecap.cpp" line="256"/>
+        <location filename="../StackRecap.cpp" line="737"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation>Poznámka: Nezbytné místo na disku je spočítáno z velikosti snímku a jeho souřadnic. Závisí na celkové velikosti výsledného obrazu a možná bude třeba větší prostor.</translation>
+        <translation>注意: 所需的硬碟空間乃估計自參考影像的大小。視最終影像大小而定，有可能需要更大的空間。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="738"/>
+        <location filename="../StackRecap.cpp" line="745"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation>Varování: Je zvoleno uložení zarovnaných a kalibrovaných obrazů. Zkontrolujte prosím, zda máte pro tyto soubory na disku dostatek volného místa.</translation>
+        <translation>警告: 您選擇儲存對齊星點以及校正後的影像，請確認您有足夠的硬碟空間。</translation>
     </message>
 </context>
 <context>
@@ -2577,7 +2557,7 @@ Chcete je uložit?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation>Odkládací složka souborů :</translation>
+        <translation>暫存檔檔案夾:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
@@ -2587,52 +2567,52 @@ Chcete je uložit?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation>Snížit pracovní prioritu</translation>
+        <translation>降低執行緒的優先性</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation>Použít všechny dostupné metody</translation>
+        <translation>使用所有可用的處理器</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation>SIMD vektorizace</translation>
+        <translation>SIMD 矢量化</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation>Parametry slučování</translation>
+        <translation>疊合設定</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="47"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation>Aktivní</translation>
+        <translation>天體影像</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="48"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation>Temné pozadí</translation>
+        <translation>暗電流</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="49"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation>Vyrovnání jasu</translation>
+        <translation>平場</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation>Vyrovnání zkreslení</translation>
+        <translation>偏壓</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="187"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation>Vyberte prosím složku, která bude obsahovat všechny odkládací soubory</translation>
+        <translation>請選擇暫存檔用的檔案夾</translation>
     </message>
 </context>
 <context>
@@ -2641,19 +2621,19 @@ Chcete je uložit?</translation>
         <location filename="../StackingParameters.cpp" line="17"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation>Bez kalibrace pozadí</translation>
+        <translation>不作背景值校正</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Kalibrace pozadí kanálů</translation>
+        <translation>單獨校正每一色的背景</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation>Kalibrovat RGB kanály pozadí</translation>
+        <translation>RGB各色背景一起校正</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="58"/>
@@ -2663,11 +2643,10 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation>Obrazové body vně rozsahu:
-[Mean-%1*%2, Mean+%1*%2]
-jsou opakovaně odstraněny.
+        <translation>在[平均值-%1*%2, 平均值+%1*%2]
+範圍以外的像元經過重覆濾除。
 
-Zbývající body jsou zprůměrovány.</translation>
+剩餘的像元則取平均值。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="67"/>
@@ -2677,11 +2656,10 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation>Obrazové body vně rozsahu:
-[Mean-%1*%2 , Mean+%1*%2 ]
-jsou opakovaně nahrazeny střední hodnotou.
+        <translation>在[平均值-%1*%2, 平均值+%1*%2]
+範圍以外的像元重覆多次由中位數取代。
 
-Body jsou pak zprůměrovány.</translation>
+然後所有像元取平均。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="74"/>
@@ -2690,121 +2668,120 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation>&lt;b&gt;Vážený průměr&lt;/b&gt; je získaný
-opakovaným vážením každého obrazového
-bodu se střední odchylkou
-vztaženou na směrodatnou odchylku (%1).</translation>
+        <translation>&lt;b&gt;加權平均&lt;/b&gt; 乃以像元值偏離平均的量
+（相對於標準差%1），
+做權重並多次循環重復，
+以取得最終的加權平均值。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation>Nastavení...</translation>
+        <translation>選項...</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation>Slučování</translation>
+        <translation>疊合中</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation>Způsob slučování</translation>
+        <translation>疊合方式</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation>Počet opakování:</translation>
+        <translation>重覆次數:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation>Střední</translation>
+        <translation>中位數</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation>Kappa-Sigma ořezání</translation>
+        <translation>Kappa-Sigma剪去法</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation>Maximum</translation>
+        <translation>最大值</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation>Střední Kappa-Sigma ořezání</translation>
+        <translation>中位數Kappa-Sigma剪去法</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation>Autom. přizpůsobený vážený průměr</translation>
+        <translation>自動可調適式加權平均</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation>Průměr</translation>
+        <translation>平均</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation></translation>
+        <translation>Kappa值:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation>Entropicky vážený průměr
-(velký dynamický rozsah)</translation>
+        <translation>熵加權平均 (高動態範圍)</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation>Projasnit</translation>
+        <translation>移除CCD出血</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation>Nastavení...</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation>Optimalizace temného pozadí</translation>
+        <translation>暗電流最佳化</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation>Zjistit a odstranit vadné sloupce</translation>
+        <translation>壞像元列的偵測與移除</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Zjistit a odstranit přepálené body</translation>
+        <translation>熱像元的偵測與移除</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation>Koeficient zesílení temného pozadí:</translation>
+        <translation>暗電流乘算系數</translation>
     </message>
 </context>
 </TS>

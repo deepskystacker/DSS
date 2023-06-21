@@ -635,19 +635,20 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\StackSettings.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts" />
-    <QtTranslation Include="i18n\DSS.cs.ts" />
-    <QtTranslation Include="i18n\DSS.de.ts" />
-    <QtTranslation Include="i18n\DSS.en.ts" />
-    <QtTranslation Include="i18n\DSS.es.ts" />
-    <QtTranslation Include="i18n\DSS.fr.ts" />
-    <QtTranslation Include="i18n\DSS.it.ts" />
-    <QtTranslation Include="i18n\DSS.nl.ts" />
-    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
-    <QtTranslation Include="i18n\DSS.ro.ts" />
-    <QtTranslation Include="i18n\DSS.ru.ts" />
-    <QtTranslation Include="i18n\DSS.tr.ts" />
-    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSS_ca.ts" />
+    <QtTranslation Include="i18n\DSS_cs.ts" />
+    <QtTranslation Include="i18n\DSS_de.ts" />
+    <QtTranslation Include="i18n\DSS_en.ts" />
+    <QtTranslation Include="i18n\DSS_es.ts" />
+    <QtTranslation Include="i18n\DSS_fr.ts" />
+    <QtTranslation Include="i18n\DSS_it.ts" />
+    <QtTranslation Include="i18n\DSS_nl.ts" />
+    <QtTranslation Include="i18n\DSS_pt_BR.ts" />
+    <QtTranslation Include="i18n\DSS_ro.ts" />
+    <QtTranslation Include="i18n\DSS_ru.ts" />
+    <QtTranslation Include="i18n\DSS_tr.ts" />
+    <QtTranslation Include="i18n\DSS_zh_CN.ts" />
+    <QtTranslation Include="i18n\DSS_zh_TW.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

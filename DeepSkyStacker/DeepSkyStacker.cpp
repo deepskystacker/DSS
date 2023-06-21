@@ -958,7 +958,7 @@ bool LoadTranslations()
 	QSettings settings;
 	const QString language = settings.value("Language").toString();
 	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
-	LoadTranslationUnit(*qApp, theAppTranslator, "DSS.", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theAppTranslator, "DSS_", ":/i18n/", language);
 	LoadTranslationUnit(*qApp, theKernelTranslator, "DSSKernel_", ":/i18n/", language);
 	
 	return true;

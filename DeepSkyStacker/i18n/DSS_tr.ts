@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.1" language="tr_TR">
 <context>
     <name>About</name>
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation>Acerca do DeepSkyStacker</translation>
+        <translation>DerinUzayİstifleyicsi hakkında</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation>Lingua</translation>
+        <translation>Dil</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation>Selecione o idioma:</translation>
+        <translation>Dil Seçin:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation>Verifique nova versao disponivel ao comecar</translation>
+        <translation>Başlangıçta yeni bir sürümün olup olmadığını sorgula</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation>Acerca do &amp;Qt</translation>
+        <translation>&amp;Qt hakkında</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="75"/>
+        <location filename="../About.cpp" line="87"/>
         <source>Default</source>
-        <translation>Por defeito</translation>
+        <translation>Varsayılan</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="33"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation></translation>
+        <translation>DeepSkyStacker version %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="40"/>
         <source>(Now somewhat out of date)</source>
-        <translation>(Agora um tanto desatualizado)</translation>
+        <translation>(Şimdi biraz güncel değil)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="50"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>RAW files decoding by LibRaw (version %1)
+        <translation>RAW kod çözümü LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</translation>
     </message>
     <message>
@@ -57,52 +57,65 @@ Copyright © 1997-2022 LibRaw LLC</translation>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation></translation>
+        <translation>FITS kod çözümü CFitsIO (sürümü %1) ile
+Telif Hakkı: NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Spanish version: Ricardo Contreras and the team from</source>
-        <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation>Versao Espanhola: Ricardo Contreras e a equipa de</translation>
+        <location filename="../About.cpp" line="74"/>
+        <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
+Copyright 2004-2023 Exiv2 authors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Czech version:</source>
-        <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation>Versao Checa:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Italian version:</source>
-        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation>Versao Italiana:</translation>
+        <location filename="../About.cpp" line="80"/>
+        <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
+Copyright Tőkés Attila</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="101"/>
-        <source>Catalan version:</source>
-        <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation>Versao Castelhana:</translation>
+        <source>Spanish version: Ricardo Contreras and the team from</source>
+        <comment>IDS_ABOUT_LANG_SPANISH</comment>
+        <translation>İspanyolca Sürümü: Ricardo Contreras ve ekibi</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="105"/>
+        <source>Czech version:</source>
+        <comment>IDS_ABOUT_LANG_CZECH</comment>
+        <translation>Çekçe Sürümü:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="109"/>
+        <source>Italian version:</source>
+        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
+        <translation>İtalyanca Sürümü:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="113"/>
+        <source>Catalan version:</source>
+        <comment>IDS_ABOUT_LANG_CATALAN</comment>
+        <translation>Katalan Sürümü:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="117"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation>Versao Alema:</translation>
+        <translation>Almanca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="110"/>
+        <location filename="../About.cpp" line="122"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation>Versao Holandesa:</translation>
+        <translation>Hollandaca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="107"/>
-        <location filename="../About.cpp" line="111"/>
-        <location filename="../About.cpp" line="120"/>
-        <location filename="../About.cpp" line="124"/>
-        <location filename="../About.cpp" line="125"/>
+        <location filename="../About.cpp" line="119"/>
+        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="136"/>
+        <location filename="../About.cpp" line="137"/>
         <source>and</source>
-        <translation>e</translation>
+        <translation>ve</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="60"/>
@@ -110,39 +123,39 @@ Copyright NASA</source>
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>Codificação/decodificação de arquivo TIFF por LibTIFF (versão %1)
-Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+        <translation>TIFF dosyalrın kodlaması LibTIFF (sürüm %1) ile
+Telif Hakkı © 1988-1997 Sam Leffler
+Telif Hakkı © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="114"/>
+        <location filename="../About.cpp" line="126"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation>Versao Tradicional Chinesa:</translation>
+        <translation>Geleneksel Çince Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="118"/>
+        <location filename="../About.cpp" line="130"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Versao Portuguesa:</translation>
+        <translation>Portekizce Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="123"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation>Versão romeno:</translation>
+        <translation>Romen sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="128"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Versão em russo:</translation>
+        <translation>Rusça Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Versão turca:</translation>
+        <translation>Türkçe Sürümü:</translation>
     </message>
 </context>
 <context>
@@ -150,37 +163,37 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation>Alinhamento</translation>
+        <translation>Hizalama</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation>Transformacao usada no alinhamento</translation>
+        <translation>Hizalama sırasında kullanılan dönüşüm</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation>Automatico</translation>
+        <translation>Otomatik</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation>Bilinear</translation>
+        <translation>Çift çizgili</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation>Ao quadrado</translation>
+        <translation>Çift kareli</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation>Bicubico</translation>
+        <translation>Çift küplü</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation>Sem alinhamento</translation>
+        <translation>Hizalama yok</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="31"/>
@@ -188,9 +201,9 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation>Automatico
+        <translation>Otamatik
 
-Seleccao do metodo de alinhamento-automatico dependendo do numero de estrelas disponiveis.</translation>
+Hizalama yöntemi yıldızların sayısına bağlı olarak otamatik olarak seçilir.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="36"/>
@@ -198,9 +211,9 @@ Seleccao do metodo de alinhamento-automatico dependendo do numero de estrelas di
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation>Alinhamento Bilinear
+        <translation>İki Çizgili Hizalama
 
-O alinhamento bilinear e usado em todos os casos.</translation>
+İki Çizgili Hizalama her koşulda kullanılır.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="41"/>
@@ -208,9 +221,8 @@ O alinhamento bilinear e usado em todos os casos.</translation>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation>Alinhamento ao quadrado
-
-Alinhamento ao quadrado e usado quando 25 estrelas estao disponiveis, difere do metodo de alinhamento Bilinear.</translation>
+        <translation>İki Kareli Hizalama
+İki Kareli Hizalama en az 25 yıldızın olduğu durumda yapılabilir, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="47"/>
@@ -218,9 +230,9 @@ Alinhamento ao quadrado e usado quando 25 estrelas estao disponiveis, difere do 
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation>Alinhamento Bicubico
+        <translation>İki Küplüi Hizalama
 
-Metodo de alinhamento Bicubico e usado quando 40 estrelas estao disponiveis, difere do metodo ao quadrado que utiluliza de 25 a 39 estrelas disponiveis, e metodo Bilinear com 25 estrelas disponiveis.</translation>
+İki Küplü Hizalama en az 40 yıldızın olduğu durumda yapılabilir, 25-39 yıldız varsa İki kareli Yöntem, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
     </message>
 </context>
 <context>
@@ -228,7 +240,7 @@ Metodo de alinhamento Bicubico e usado quando 40 estrelas estao disponiveis, dif
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation>Fotograma- luz nao registado</translation>
+        <translation>Hizalanmamış görüntü karesi</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -236,25 +248,25 @@ Metodo de alinhamento Bicubico e usado quando 40 estrelas estao disponiveis, dif
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation>Fotograma - luz nao registado
-(as estrelas nao detectadas).
+        <translation>Bu görüntü hizalanmamış
+(yıldızlar tespit edilemedi). 
 
- quer...</translation>
+Hangisini yapmak istersiniz?</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation>registar este fotograma de luz</translation>
+        <translation>bu görüntü karesini hizala</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="73"/>
         <source>to register all the light frames</source>
-        <translation>registar todos os fotogramas de luz</translation>
+        <translation>bütün görüntü karelerini hizala</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="80"/>
         <source>to continue without registering the light frame</source>
-        <translation>continuar sem registo do fotograma de luz</translation>
+        <translation>görüntü karelerini hizalamadan devam et</translation>
     </message>
 </context>
 <context>
@@ -262,47 +274,47 @@ Do you want...</source>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation>Opcoes de Background</translation>
+        <translation>Arkaplan Seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation>Metodo de Calibragem</translation>
+        <translation>Kalibrasyon Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation>Linear</translation>
+        <translation>Doğrusal</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation>Racional</translation>
+        <translation>Kesirli</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation>RGB Background Metodo de Calibracao</translation>
+        <translation>KYM Arkaplan Kalibrasyon Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation>Nada</translation>
+        <translation>Yok</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation>Minimo</translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation>Metade</translation>
+        <translation>Orta</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation>Maximo</translation>
+        <translation>En yüksek değer</translation>
     </message>
 </context>
 <context>
@@ -310,7 +322,7 @@ Do you want...</source>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation>Integrando serie</translation>
+        <translation>Toplu istifleme</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -318,27 +330,26 @@ Do you want...</source>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation>Dialogo  no processo de lancamento - integracao imagens existentes em lista.
-
-Adicione 1º ficheiro da lista que voce quer integrar e clique OK para comecar processo integracao.</translation>
+        <translation>Bu diyalog var olan görüntü listesinden istifleme işlemini başlatmak için kullanılır.
+İstiflemek istediğin görüntü listesini ekleyin ve istifleme işlemini başlatmak için Tamam&apos;a basın.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation>Adicione o Ficheiro a Lista...</translation>
+        <translation>Dosya Listesini ekle...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation>Limpar Lista</translation>
+        <translation>Listeyi temizle</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="61"/>
+        <location filename="../BatchStacking.cpp" line="80"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Guardando imagem final em %1</translation>
+        <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
 </context>
 <context>
@@ -347,13 +358,13 @@ Adicione 1º ficheiro da lista que voce quer integrar e clique OK para comecar p
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Verificacao fotos mencionadas...</translation>
+        <translation>Üzerindeki bütün resimleri işaretle...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum score:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Cotacao de valor minimo:</translation>
+        <translation>En düşük değer:</translation>
     </message>
 </context>
 <context>
@@ -361,48 +372,48 @@ Adicione 1º ficheiro da lista que voce quer integrar e clique OK para comecar p
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation>Cometa</translation>
+        <translation>Kuyrukluyıldız</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation>Parametros integracao - cometas</translation>
+        <translation>Kuyrukluyıldız İstifleme Parametreleri</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation>Integracao Stand</translation>
+        <translation>Standart İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation>Posicao do cometa  ignorada.
-O cometa ficara irreconhecivel.</translation>
+        <translation>Kuyrukluyıldız konumu yok sayıldı.
+Kuyrukluyıldız bulanık olacak.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation>Usada a posicao do cometa.
-Cometa ficara com contraste e estrelas ficarao arrastadas.</translation>
+        <translation>Kuyrukluyıldız konumu kullanıldı.
+Kuyrukluyıldız keskin olacak ve yıldızlar iz bırakacak.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation>Posicao sinalizada-cometa.
-Cometa estrelas ficarao bem. 2 vezes + tempo.</translation>
+        <translation>Kuyrukluyıldız konumu kullanıldı.
+Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun sürer.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation>Integrando cometa</translation>
+        <translation>Kuyrukluyıldız İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation>Estrelas + Integracao Cometa</translation>
+        <translation>Yıldızlar + Kuyrukluyıldız İstifleme</translation>
     </message>
 </context>
 <context>
@@ -411,55 +422,55 @@ Cometa estrelas ficarao bem. 2 vezes + tempo.</translation>
         <location filename="../StackingDlg.cpp" line="117"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Lista de Ficheiros (*.dssfilelist)</translation>
+        <translation>Dosya Listesi (*.dssfilelist)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="118"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Lista de Ficheiros (*.txt)</translation>
+        <translation>Dosya Listesi (*.txt)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="119"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation>Todos Ficheiros (*)</translation>
+        <translation>Tüm Dosyalar (*)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="125"/>
-        <source>Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
+        <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Ficheiros Fotograficos (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Fichieros JPEG ou PNG (*.jpg *.jpeg *.png)</translation>
+        <translation>JPEG veya PNG Dosyaları (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="130"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Fichieros TIFF (*.tif *.tiff)</translation>
+        <translation>TIFF Dosyaları (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="131"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Fichieros RAW (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
+        <translation>RAW Dosyaları (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="134"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Fichieros FITS (*.fits *.fit *.fts)</translation>
+        <translation>FITS Dosyaları (*.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="135"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation>Todos Ficheiros (*)</translation>
+        <translation>Tüm Dosyalar (*)</translation>
     </message>
 </context>
 <context>
@@ -468,25 +479,25 @@ Cometa estrelas ficarao bem. 2 vezes + tempo.</translation>
         <location filename="../editstars.cpp" line="861"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
-        <translation>Clique para posicionar o cometa aqui</translation>
+        <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın.</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="863"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
-        <translation>Clique para adicionar esta estrela</translation>
+        <translation>Bu yıldızı eklemek için tıklayın.</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="870"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
-        <translation>Clique para remover o cometa</translation>
+        <translation>Kuyrukluyıldızı kaldırmak için tıklayın.</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="872"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
-        <translation>Clique para remover esta estrela</translation>
+        <translation>Bu yıldızı silmek için tıklayın.</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="920"/>
@@ -494,8 +505,8 @@ Cometa estrelas ficarao bem. 2 vezes + tempo.</translation>
 Score: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>#Estrelas: %1
-Contagem: %2
+        <translation>#Yıldızlar: %1
+Puan: %2
 FWHM: %3</translation>
     </message>
     <message>
@@ -504,13 +515,13 @@ FWHM: %3</translation>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
         <translation>
-Cometa:%1</translation>
+Kuyrukluyıldız:%1</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="927"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Sim</translation>
+        <translation>Evet</translation>
     </message>
 </context>
 <context>
@@ -519,90 +530,89 @@ Cometa:%1</translation>
         <location filename="../StackingDlg.cpp" line="674"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation></translation>
+        <translation>Siyah</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="676"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
-        <translation></translation>
+        <translation>Siyah Düz</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="675"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation></translation>
+        <translation>Düz</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="677"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation></translation>
+        <translation>Ofset</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="673"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation></translation>
+        <translation>Görüntü</translation>
     </message>
 </context>
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="72"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
 Ctrl+4 to toggle 4-Corners mode</source>
-        <translation>Ctrl++ ou Ctrl+= para ampliar
-Ctrl+- para diminuir o zoom
-ou use a roda do mouse para ampliar
-Ctrl+4 para alternar o modo de 4 cantos</translation>
+        <translation>Yakınlaştırmak için Ctrl++ veya Ctrl+=
+Uzaklaştırmak için Ctrl+-
+veya yakınlaştırmak için fare tekerleğini kullanın
+4-Köşe modunu değiştirmek için Ctrl+4</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="84"/>
+        <location filename="../progressdlg.cpp" line="152"/>
         <source>Are you sure you wish to cancel this operation?</source>
-        <translation>Tem certeza de que deseja cancelar esta operação?</translation>
+        <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="162"/>
+        <location filename="../progressdlg.cpp" line="226"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
-        <translation>Tempo estimado de:  %1 hr %2 mn %3 s </translation>
+        <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="165"/>
+        <location filename="../progressdlg.cpp" line="229"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
-        <translation>Tempo estimado de: %1 mn %2 s </translation>
+        <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="168"/>
+        <location filename="../progressdlg.cpp" line="232"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
-        <translation>Tempo estimado de: %1 s </translation>
+        <translation>Tahmin edilen kalan süre: %1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="171"/>
+        <location filename="../progressdlg.cpp" line="235"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
-        <translation>Tempo estimado de: &lt; 1 s </translation>
+        <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="178"/>
+        <location filename="../progressdlg.cpp" line="242"/>
         <source>Estimated remaining Time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Tempo estimado de: Desconhecido</translation>
+        <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
     </message>
     <message numerus="yes">
-        <location filename="../QtProgressDlg.cpp" line="192"/>
+        <location filename="../progressdlg.cpp" line="255"/>
         <source>%n Processor(s) Used</source>
         <translation>
-            <numerusform>%n Processador usado</numerusform>
-            <numerusform>%n Processadores usados</numerusform>
+            <numerusform>%n işlemci kullanıldı</numerusform>
         </translation>
     </message>
 </context>
@@ -611,7 +621,7 @@ Ctrl+4 para alternar o modo de 4 cantos</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="810"/>
         <source>Rename group</source>
-        <translation>Renomear grupo</translation>
+        <translation>Grubu Yeniden Adlandır</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="899"/>
@@ -619,47 +629,45 @@ Ctrl+4 para alternar o modo de 4 cantos</translation>
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
         <translation>
-            <numerusform>Quer mesmo apagar para sempre este ficheiro?
-Esta operacao nao e reversivel nem pode ser cancelada.</numerusform>
-            <numerusform>Quer mesmo apagar para sempre %n ficheiros?
-Esta operacao nao e reversivel nem pode ser cancelada.</numerusform>
+            <numerusform>Gerçekten bu dosyaları kalıcı olarak silmek istiyor musunuz? %n dosya?
+Bu işlem geri alınamaz veya iptal edilemez.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="650"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
-        <translation>Use o fotograma como referencia</translation>
+        <translation>Referans Kare olarak Kullan</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="654"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
-        <translation>Verificacao</translation>
+        <translation>İşaretle</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="656"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
-        <translation>Nao verificado</translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="659"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
-        <translation>Remover da lista</translation>
+        <translation>Listeden Kaldır</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="665"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
-        <translation>Copiar para o Clipboard</translation>
+        <translation>Panoya Kopyala</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="668"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
-        <translation>Apagar do disco...</translation>
+        <translation>Sürücüden sil...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="698"/>
@@ -667,179 +675,182 @@ Esta operacao nao e reversivel nem pode ser cancelada.</numerusform>
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
 Right mouse button to display the menu</source>
-        <translation>Barra de espaço para marcar/desmarcar as linhas selecionadas
-Ctrl-A ou equivalente para selecionar todas as linhas
-Tecla Delete para remover (não apagar) as linhas selecionadas
-Botão direito do mouse para exibir o menu</translation>
+        <translation>Seçili satırları işaretlemek/işaretini kaldırmak için Boşluk Çubuğu
+Tüm satırları seçmek için Ctrl-A veya eşdeğeri
+Seçili satırları kaldırmak (silmemek) için Sil tuşu
+Menüyü görüntülemek için farenin sağ tuşu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1453"/>
+        <location filename="../StackingDlg.cpp" line="1456"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 não existe ou não é um ficheiro</translation>
+        <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1462"/>
+        <location filename="../StackingDlg.cpp" line="1465"/>
         <source>Failed to load image %1</source>
-        <translation>Falha ao carregar a imagem %1</translation>
+        <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1766"/>
+        <location filename="../StackingDlg.cpp" line="1769"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
-        <translation></translation>
+        <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="705"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation>Clique duas vezes aqui para encaixar/desencaixar a lista de imagens</translation>
+        <translation>Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1418"/>
+        <location filename="../StackingDlg.cpp" line="1421"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
-        <translation>Carregando %1</translation>
+        <translation>Yükleniyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1516"/>
+        <location filename="../StackingDlg.cpp" line="1519"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
-        <translation>O arquivo %1 não foi carregado porque já foi carregado no grupo %2 (%3)</translation>
+        <translation>%1 dosyası, %2 (%3) grubunda zaten yüklü olduğu için yüklenmedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1540"/>
+        <location filename="../StackingDlg.cpp" line="1543"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
-        <translation>Abrir Light Frames</translation>
+        <translation>Görüntü Dosyalarını aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1544"/>
+        <location filename="../StackingDlg.cpp" line="1547"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
-        <translation>Abrir Dark Frames</translation>
+        <translation>Siyah Dosyaları aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1562"/>
+        <location filename="../StackingDlg.cpp" line="1565"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
-        <translation>Abrir Dark Flat Frames</translation>
+        <translation>Siyah Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1550"/>
+        <location filename="../StackingDlg.cpp" line="1553"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
-        <translation>Abrir Flat Frames...</translation>
+        <translation>Düz Kareleri Aç...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="662"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
-        <translation>Propriedades...</translation>
+        <translation>Özellikler...</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="980"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
-            <numerusform>%n ficheiro selecionado</numerusform>
-            <numerusform>%n ficheiros selecionados</numerusform>
+            <numerusform>%n dosya seçildi</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1556"/>
+        <location filename="../StackingDlg.cpp" line="1559"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
-        <translation>Abrir Bias Frames...</translation>
+        <translation>Ofset Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1779"/>
+        <location filename="../StackingDlg.cpp" line="1782"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
 Dark Flat Frames: %4
 Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO2</comment>
-        <translation></translation>
+        <translation>Görüntü Kareleri: %1
+Siyah Kareler: %2
+Düz Kareler: %3
+Siyah Düz Kareler: %4
+Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1862"/>
+        <location filename="../StackingDlg.cpp" line="1865"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
-        <translation>Abra outra Lista de Ficheiros...</translation>
+        <translation>Başka Bir Dosya Listesi Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2039"/>
+        <location filename="../StackingDlg.cpp" line="2042"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation>Versao do DeepSkyStacker %1 disponivel para baixar.</translation>
+        <translation>DeepSkyStacker Sürüm %s indirilebilir.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2055"/>
+        <location filename="../StackingDlg.cpp" line="2058"/>
         <source>Internet version check error code %1:
 %2</source>
-        <translation>Código de erro da Internet de verificação de versão %1:
+        <translation>Sürüm kontrolü İnternet hata kodu %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2171"/>
+        <location filename="../StackingDlg.cpp" line="2174"/>
         <source>Total registering time: %1 %2</source>
-        <translation>Tempo total de registro: %1 %2</translation>
+        <translation>Toplam kayıt süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2190"/>
+        <location filename="../StackingDlg.cpp" line="2193"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
-        <translation>Tem que verificar fotogramas-luz para registar.</translation>
+        <translation>Hizalama için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2248"/>
+        <location filename="../StackingDlg.cpp" line="2251"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
         <comment>IDS_WARNINGREADONLY</comment>
-        <translation>Os ficheiros sao apenas de leitura:
+        <translation>Aşağıdaki klasörler salt okunur:
 %1
-DeepSkyStacker precisa de criar ficheiros nesta pasta durante o processamento.</translation>
+DeepSkyStacker&apos;ın işlem sırasında bu klasörlere dosya oluşturması gerekiyor.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2272"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>As fotos verificadas nao sao compativeis: %1.</translation>
+        <translation>Seçilen resimler uyumlu değil: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2273"/>
+        <location filename="../StackingDlg.cpp" line="2276"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
-        <translation>Tem que verificar fotogramas d luz para integrar.</translation>
+        <translation>İstiflemek için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2321"/>
+        <location filename="../StackingDlg.cpp" line="2324"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
         <comment>IDS_WARNING_SAVECHANGES</comment>
-        <translation>Realizou algumas alteracoes nos %1 lista de ficheiros e/ou nas configuracoes.
+        <translation>%1 dosya listesi üzerinde değişiklikler yaptınız.
 
-Quer que guarde essas alteracoes?</translation>
+Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2437"/>
+        <location filename="../StackingDlg.cpp" line="2440"/>
         <source>Total stacking time: %1 %2</source>
-        <translation>Tempo total de empilhamento: %1 %2</translation>
+        <translation>Toplam istifleme süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2469"/>
+        <location filename="../StackingDlg.cpp" line="2471"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation>Guardando imagem final em %1</translation>
+        <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2533"/>
+        <location filename="../StackingDlg.cpp" line="2535"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
 %4</source>
-        <translation>Exceção capturada na função: %1
-%2 (linha %3):
+        <translation>İstisna şu işlevde yakalandı: %1
+%2 (satır %3):
 
 %4</translation>
     </message>
@@ -852,9 +863,9 @@ Quer que guarde essas alteracoes?</translation>
 This mode allows you to create or modify a Custom Rectangle
 defining the part of the images you wish to stack.</source>
         <comment>IDS_TOOLTIP_SELECTRECT</comment>
-        <translation>Modo do rectangulo usual
-Este modo pode ser usado para criar ou modificar
-modo do rectangulo usual.</translation>
+        <translation>Seçili Dikdörtgen
+YöntemiBu yöntem Seçili dikdörtgeni oluşturmak ve değiştirmek
+için kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="122"/>
@@ -862,9 +873,9 @@ modo do rectangulo usual.</translation>
 This mode shows the stars that have been detected in the image.
 You can add additional stars or remove incorrectly detected stars.</source>
         <comment>IDS_TOOLTIP_STAR</comment>
-        <translation>Modo de Edicao de Estrelas
-Este modo pode ser usado para adicionar/remover estrelas
-in da imagem.</translation>
+        <translation>Yıldızları Düzenle Yöntemi
+Bu yöntem görüntüye yıldız eklemek/görüntüden
+yıldız çıkarmak için kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="135"/>
@@ -872,9 +883,9 @@ in da imagem.</translation>
 This mode allows you to select and edit the location
 of the comet&apos;s nucleus in the image.</source>
         <comment>IDS_TOOLTIP_COMET</comment>
-        <translation>Modo de Edicao de Cometas
-Este modo pode ser usado para Editar a posicao
-do cometa da imagem.</translation>
+        <translation>Kuyrukluyıldız Yöntemi
+Bu yöntem kuyrukluyıldızın konumunu
+ düzenlemek için kullanılabilir.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="144"/>
@@ -884,51 +895,57 @@ in Edit Stars and Edit Comet modes.
 
 Right Click to change behaviour.</source>
         <comment>IDS_TOOLTIP_SAVE</comment>
-        <translation>Guardar alteracoes
-Guardar todas alteracoes ( Estrelas e Cometas ) desta imagem.
+        <translation>Değişiklikleri Kaydet
+Geçerli görüntü için bütün değişiklikleri (yıldızlar ve kuyrukluyıldız) kaydet.
 
-Clique com o botão direito para alterar o comportamento.</translation>
+Davranışı değiştirmek için sağ tıklayın.</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="173"/>
         <source>Save without asking</source>
         <comment>ID_SAVECONTEXT_SAVEWITHOUTASKING</comment>
-        <translation>Guarde sem perguntar</translation>
+        <translation>Sormadan kaydet</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="177"/>
         <source>Don&apos;t save</source>
         <comment>ID_SAVECONTEXT_DONTSAVEWITHOUTASKING</comment>
-        <translation>Nao guarde sem perguntar</translation>
+        <translation>Sormadan kaydetme</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="181"/>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
-        <translation>Perguntar sempre</translation>
+        <translation>Her Zaman Sor</translation>
     </message>
 </context>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="88"/>
+        <location filename="../DeepSkyStacker.cpp" line="127"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation>Esta versão beta do DeepSkyStacker expirou
-Você provavelmente pode obter outro ou baixar a versão final do site.</translation>
+        <translation>DeepSkyStacker&apos;ın bu beta sürümünün süresi doldu
+Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="116"/>
+        <location filename="../DeepSkyStacker.cpp" line="155"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
-        <translation>Quer que o DeepSkyStacker verifique ao iniciar se existe nova versao disponivel?
-(voce pode activar-desativar esta opcao mais tarde na janela respectiva)</translation>
+        <translation>Başlangıçta DeepSkyStacker&apos;ın yeni bir sürüm için kontrol etmesini istiyor musunuz?
+(Bu seçeneği daha sonra Hakkında kısmından uygulayabilir veya kaldırabilirsiniz)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="444"/>
+        <location filename="../DeepSkyStacker.cpp" line="449"/>
         <source>%1 does not exist or is not a file</source>
-        <translation>%1 não existe ou não é um ficheiro</translation>
+        <translation>%1 mevcut değil veya bir dosya değil</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="597"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -936,15 +953,14 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation>Adicionar ficheiro...</translation>
+        <translation>Dosyaları ekle...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="86"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
         <translation>
-            <numerusform>Adiciona um ficheiro como</numerusform>
-            <numerusform>Adiciona %n ficheiros como</numerusform>
+            <numerusform>%1 dosyayı şu şekilde ekle</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -952,8 +968,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
         <translation>
-            <numerusform>Fotograma de luz</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Resim dosyaları</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -961,8 +976,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
         <translation>
-            <numerusform>Fotograma Dark</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Siyah kareler</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -970,8 +984,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
         <translation>
-            <numerusform>Fotograma Flat</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Düz kareler</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -979,8 +992,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
         <translation>
-            <numerusform>Fotograma Dark Flat</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Siyah Düz Kareler</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -988,8 +1000,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
         <translation>
-            <numerusform>Fotograma Offset/Bias</numerusform>
-            <numerusform></numerusform>
+            <numerusform>Ofset(bias) kareler</numerusform>
         </translation>
     </message>
 </context>
@@ -997,274 +1008,268 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <name>ExplorerBar</name>
     <message>
         <location filename="../ExplorerBar.cpp" line="60"/>
-        <location filename="../ExplorerBar.cpp" line="452"/>
-        <location filename="../ExplorerBar.cpp" line="598"/>
+        <location filename="../ExplorerBar.cpp" line="443"/>
+        <location filename="../ExplorerBar.cpp" line="611"/>
         <source>deleted</source>
-        <translation>excluído</translation>
+        <translation>silinecek</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="62"/>
-        <location filename="../ExplorerBar.cpp" line="454"/>
-        <location filename="../ExplorerBar.cpp" line="600"/>
+        <location filename="../ExplorerBar.cpp" line="445"/>
+        <location filename="../ExplorerBar.cpp" line="613"/>
         <source>kept</source>
-        <translation>mantido</translation>
+        <translation>saklanacak</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="64"/>
-        <location filename="../ExplorerBar.cpp" line="456"/>
-        <location filename="../ExplorerBar.cpp" line="602"/>
+        <location filename="../ExplorerBar.cpp" line="447"/>
+        <location filename="../ExplorerBar.cpp" line="615"/>
         <source>Trace File will be %1</source>
-        <translation>O arquivo de rastreamento será %1</translation>
+        <translation>İzleme dosyası %1</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="261"/>
+        <location filename="../ExplorerBar.cpp" line="263"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation>Registar Configuracoes...</translation>
+        <translation>Ayarları Kaydet...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="264"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation>Integrando Configuracoes...</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="304"/>
-        <source>Restore Default settings</source>
-        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation>Restaurar configuracoes primarias por defeito</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="306"/>
+        <source>Restore Default settings</source>
+        <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
+        <translation>Varsayılan Ayarları Geriyükle</translation>
+    </message>
+    <message>
+        <location filename="../ExplorerBar.cpp" line="308"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Carregar configuracoes do DeepSkyStacker Live</translation>
+        <translation>DeepSkyStacker Canlı Ayarları&apos;nı Aç</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="310"/>
+        <location filename="../ExplorerBar.cpp" line="312"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation>Carga...</translation>
+        <translation>Aç...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="371"/>
+        <location filename="../ExplorerBar.cpp" line="373"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation>Guardar as configuracoes com o DeepSkyStacker Live</translation>
+        <translation>DeepSkyStacker Canlı olarak kaydet</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="375"/>
+        <location filename="../ExplorerBar.cpp" line="377"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation>Guardar como...</translation>
+        <translation>Farklı Kaydet...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="437"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation>DeepSkyStacker Ajuda.chm</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="514"/>
+        <location filename="../ExplorerBar.cpp" line="527"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation>Carregar configuracoes do DeepSkyStacker</translation>
+        <translation>DeepSkyStacker ayarları aç.</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="518"/>
+        <location filename="../ExplorerBar.cpp" line="531"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation>DeepSkyStacker Configuracoes (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Ayarları (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="565"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>DSS Settings Files (*.dsssettings)</source>
-        <translation>DeepSkyStacker Configuracoes (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Ayarları (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="561"/>
+        <location filename="../ExplorerBar.cpp" line="574"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation>Guardar configuracoes do DeepSkyStacker</translation>
+        <translation>DeepSkyStacker Ayarlarını Kaydet</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation>Registando e Integrando</translation>
+        <translation>Hizalıyor ve İstifliyor</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation>Abra suas fotos...</translation>
+        <translation>Resim dosyalarını aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation>ficheiros dark...</translation>
+        <translation>siyah kereler...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation>ficheiros flat...</translation>
+        <translation>düz dosyalar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation>ficheiros dark flat...</translation>
+        <translation>siyah düz kareler...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation>ficheiros offset/bias...</translation>
+        <translation>ofset dosyalar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation>Abra a lista de Ficheiros...</translation>
+        <translation>Bir dosya listesi aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation>Guarde a Lista de Ficheiros</translation>
+        <translation>Dosya Listesini kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation>Limpar Lista</translation>
+        <translation>Listeyi temizle</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation>Verificar tudo</translation>
+        <translation>Hepsini işaretle</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation>Verificar o threshold...</translation>
+        <translation>Eşik değerinin üzerindekileri işaretle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation>Nao verificar nenhum</translation>
+        <translation>İşaretleri kaldır</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation>Registar fotos que foram verificadas...</translation>
+        <translation>Seçilen resimleri hizala...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation>Offsets do computador...</translation>
+        <translation>Ofsetleri hesapla...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation>Integrar ficheiros verificados...</translation>
+        <translation>İşaretlenen dosyaları istifle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation>Integrando serie...</translation>
+        <translation>Toplu istifleme...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation>Processando</translation>
+        <translation>İşliyor</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation>Abrir ficheiro de foto...</translation>
+        <translation>Görüntü dosyasını aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation>Copia imagem para clipboard</translation>
+        <translation>Şu anki resmi panoya kopyala</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation>Criar Star Mask...</translation>
+        <translation>Yıldız maskesi yarat...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation>Guardar foto no ficheiro...</translation>
+        <translation>Görüntüyü dosyaya kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation>Opcoes</translation>
+        <translation>Seçenekler</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation>Configuracoes...</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Raw/FITS DDP Configuracoes...</translation>
+        <translation>Ham/FITS DDP ayarları...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation>Carga...</translation>
+        <translation>Aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation>Guarde...</translation>
+        <translation>Kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation>Recomendado...</translation>
+        <translation>Önerilen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation>Acerca do DeepSkyStacker...</translation>
+        <translation>DeepSkyStacker hakkında...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation>DeepSkyStacker&apos;s Ajuda ...</translation>
+        <translation>DeepSkyStacker&apos;nin yardımı...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="612"/>
         <source>Enable progress sounds</source>
-        <translation>Ativar sons de progresso</translation>
+        <translation>İlerleme seslerini etkinleştir</translation>
     </message>
 </context>
 <context>
@@ -1272,12 +1277,12 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation>DeepSkyStacker - Propriedades da Imagem</translation>
+        <translation>DeepSkyStacker - Görüntü Özellikleri</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation>Ficheiro</translation>
+        <translation>Dosya</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
@@ -1287,12 +1292,12 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation>Profundidade</translation>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation>Exposicao</translation>
+        <translation>Poz süresi</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
@@ -1302,22 +1307,22 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation>Tamanho</translation>
+        <translation>Boyut</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation>Data/Tempo</translation>
+        <translation>Tarih/Saat</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation>Tipo</translation>
+        <translation>Tür</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation>Informação</translation>
+        <translation>Bilgiler</translation>
     </message>
 </context>
 <context>
@@ -1325,42 +1330,42 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation>Ficheiros Intermedios</translation>
+        <translation>Ara dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation>Criacao e configuracao d ficheiros intermedios</translation>
+        <translation>Ara dosya oluşturma ayarları</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation>Calibracao por ficheiro com fotograma luz</translation>
+        <translation>Her resim karesi için bir kalibre edilmiş dosya oluştur</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation>Guardar imagem deBayerred quando processada em RAW</translation>
+        <translation>Ham dosyaları işlerken bayersizleştirilmiş bir görüntü kaydet</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation>Criar um registo/calibrado induvidual no fotograma d luz</translation>
+        <translation>Her bir resim karesi için hizalanmış/kalibre edilmiş dosya oluştur</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation>Intermediando e Finalizando o Formato de Imagem</translation>
+        <translation>Orta ve Son Görüntü Dosya Formatı</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation>Ficheiros TIFF</translation>
+        <translation>TIFF dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation>Ficheiros FITS</translation>
+        <translation>FITS dosyalar</translation>
     </message>
 </context>
 <context>
@@ -1368,82 +1373,82 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation>Producao</translation>
+        <translation>Çıktı</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation>Configuracao dos ficheiros produzidos</translation>
+        <translation>Çıkış Dosyaları Seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation>Criar um ficheiro produzido</translation>
+        <translation>Çıktı Dosyası Yarat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation>Criar a discricao de um ficheiro HTML</translation>
+        <translation>HTML tanım dosyası yarat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation>Guardar automaticamente.tif/fits</translation>
+        <translation>Otomatikkayıt.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation>&lt;lista de nome de ficheiro&gt;.tif/fits</translation>
+        <translation>&lt;dosya listesi adı&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation>Anexar numero para evitar gravar por cima  (001, 002, ...)</translation>
+        <translation>Üzerine yazmayı engellemek için numara tayin et (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation>Criar ficheiro saido na pasta de fotograma de referencia</translation>
+        <translation>Çıktı Dosyasını referans alınan karenin klasörüne kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation>Criar ficheiro produzido na pasta da lista ficheiros</translation>
+        <translation>Çıktı Dosyasını dosya listesinin bulunduğu klasöre kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation>Criar ficheiro produzido em</translation>
+        <translation>Çıktı Dosyasını Şuraya Kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation>&lt;Pasta de Producao&gt;</translation>
+        <translation>&lt;Çıktı Klasörü&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation>Nome do ficheiro produzido</translation>
+        <translation>Çıktı Dosyası Adı</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation>Localizacao dos Produzidos</translation>
+        <translation>Çıktı Konumu</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="133"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation>Selecionar Pasta de Ficheiros Produzidos</translation>
+        <translation>Çıktı Klasörünü Seçin</translation>
     </message>
 </context>
 <context>
@@ -1451,111 +1456,111 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation>Cosmetica</translation>
+        <translation>Kozmetik</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation>Colocar configuracoes de Calibracao Cosmetica</translation>
+        <translation>Kalibrasyon sonrası Kozmetik ayarları.</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation>Tamanho do Filtro</translation>
+        <translation>Filtre boyutu</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation>Detectar-Limpar PixelsQuentes que permanecem</translation>
+        <translation>Kalan Sıcak Gözeleri tespit et ve Temizle</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation>&lt;small&gt;Fraco Efeito&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Etki Zayıf&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation>&lt;small&gt;Forte&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Güçlü&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation>Deteccao de Threshold</translation>
+        <translation>Tespit etme eşik değeri</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation>Detectar- Limpar PixelsFrios que permanecem</translation>
+        <translation>Kalan soğuk gözeleri (pikselleri) tespit et ve temizle</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation>Subtituir valores do pixel com</translation>
+        <translation>Göze (piksel) değerini bununla değiştir</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation>Testar no primeiro fotograma...</translation>
+        <translation>İlk kare üzerinde dene...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation>Guarde imagem mostrando limpeza dos pixels por fotograma de luz</translation>
+        <translation>Her bir görüntü için temizlenen gözeleri gösteren bir dosya kaydet</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="22"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation>a media</translation>
+        <translation>Orta Değer (median)</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="23"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation>o filtro gaussian</translation>
+        <translation>Gauss Filtresi</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="349"/>
+        <location filename="../PostCalibration.cpp" line="347"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation>Avaliacao de niveis de cosmetica</translation>
+        <translation>Kozmetik hesaplanıyor</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="365"/>
+        <location filename="../PostCalibration.cpp" line="363"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation>Carregando %1 bit/ch %2 light frame
+        <translation>Yükleniyor %1 bit/ch %2 resim karesi
 %3</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="367"/>
+        <location filename="../PostCalibration.cpp" line="365"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation>Carregando %1 bits gray %2 light frame
+        <translation>Yükleniyor %1 bit gri %2 resim karesi
 %3</translation>
     </message>
 </context>
 <context>
     <name>ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="814"/>
+        <location filename="../ProcessingDlg.cpp" line="815"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Guardando mascara estrela em %1</translation>
+        <translation>Yıldız Maskesini Kaydediyor %1</translation>
     </message>
 </context>
 <context>
@@ -1563,12 +1568,12 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation>Em processamento ...</translation>
+        <translation>İşleme ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="148"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1576,151 +1581,151 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>RAW/FITS Configura Processo Desenvolvimento Digital</translation>
+        <translation>Ham/FITS Sayısal Geliştirme İşlemi Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation>Ficheiros RAW</translation>
+        <translation>Ham (RAW) dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation>Brilho</translation>
+        <translation>Parlaklık</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation>Escala de vermelhos</translation>
+        <translation>Kırmızı ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation>Escala de azuis</translation>
+        <translation>Mavi Ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation>Balanco de brancos</translation>
+        <translation>Beyaz Dengesi</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation>Sem processamento de balanço de branco</translation>
+        <translation>Beyaz Dengesi işlemesi yok</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation>Usar balanco brancos da camera</translation>
+        <translation>Kamera Beyaz Dengesini Kullan</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation>Transformacao da Matrix Bayer</translation>
+        <translation>Bayer Matris Dönüşümü</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation>Interpolacao bilinear</translation>
+        <translation>Çift Çizgili Ekleme</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation>Homogenuidade Adaptada-Directamente - Interpolacao (AHD)</translation>
+        <translation>Uyabilen Homojenlik Doğrultulu (AHD) Ara değeri</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation>Use o algaritmo Drizzle da Bayer (sem interpolacao,sem desBayerizacao)</translation>
+        <translation>Bayer Serpiştirme algoritmasını kullan( ekleme yok, bayersizleştirme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation>Opcao usa so a matrix Bayer. Sem interpolacao so o valor de cada pixel na componente matrix.</translation>
+        <translation>Bu seçenek Bayer matrisini olduğu gibi kullanır. Ekleme yapılmaz ve her göze (piksel) sadece matrisin temel bileşimlerinden verilir.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation>Opcao usa matrix Bayer para criar um superpixel - cada grupo 4 pixels (RGBG). Tamanhos no resultado da imagem sao divididos por dois.</translation>
+        <translation>Bu seçenek 4 gözeli (pikselli) gruplardan (KMYG) bir süper piksel yaratmak için Bayer Matrisi kullanır. Sonuçlanan görüntünün boyutları ikiye bölünür.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation>Ficheiros FITS</translation>
+        <translation>FITS dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monocromatico 16 bit FITS Ficheiros RAW ficheiros de DSLR ou camera CCD de cor.&lt;br&gt;Deixe &lt;span style=&quot;font-style: italic;&quot;&gt;desmarcado&lt;/span&gt; para tentar a detecção automática com base nas palavras-chave do FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Tekrenkli 16 bit FITS dosyaları DSLR veya renkli CCD kamera ile oluşturulmuş ham dosyalardır.&lt;br&gt;FITS anahtar sözcüklerine dayalı otomatik algılamayı denemek için &lt;span style=&quot; font-style:italic;&quot;&gt;seçmeyin.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation>Camera:</translation>
+        <translation>Kamera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation>Ajustar Cores</translation>
+        <translation>Renk Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation>Escala de vermelhos</translation>
+        <translation>Kırmızı ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation>Escala de azuis</translation>
+        <translation>Mavi Ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation>Marca de Filtro Usado Bayer</translation>
+        <translation>Bayer Doku Filtresi kullanıldı</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation>Crie superpixel do ficheiro raw por matrix Bayer (sem interpolacao)</translation>
+        <translation>Ham Bayer matrisinden süper gözeler oluştur (ekleme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation>Forcar uso valores nao reconhecidos quando avaliados e arquivados</translation>
+        <translation>İşaretlenen değerler hafızaya alındığında işaretlenmemiş değerler kullanmaya zorla</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="18"/>
         <source>Generic RGGB</source>
-        <translation>RGGB Generico</translation>
+        <translation>Kapsamlı KYYM</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="19"/>
         <source>Generic BGGR</source>
-        <translation>BGGR Generico</translation>
+        <translation>Kapsamlı MYYK</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic GBRG</source>
-        <translation>GBRG Generico</translation>
+        <translation>Kapsamlı YMKY</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic GRBG</source>
-        <translation>GRBG Generico</translation>
+        <translation>Kapsamlı YKMY</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic</source>
-        <translation>Generico</translation>
+        <translation>Kapsamlı</translation>
     </message>
 </context>
 <context>
@@ -1728,233 +1733,233 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation>Configuracoes Recomendadas</translation>
+        <translation>Önerilen Ayarlar</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="41"/>
         <source>Show all recommendations</source>
-        <translation>Mostre todas as recomendacoes</translation>
+        <translation>Bütün önerileri göster</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="188"/>
+        <location filename="../RecommendedSettings.cpp" line="195"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation>Estas configuracoes sao recomendadas.&lt;br&gt;Nao funcionam em todas as situacoes mas oferecem um bom comeco.</translation>
+        <translation>Bunlar önerilen ayarlar.&lt;br&gt;Her koşulda çalışmayabilirler fakat genelde iyi bir başlangıç noktasıdırlar.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="192"/>
+        <location filename="../RecommendedSettings.cpp" line="199"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation>Clique na ligacao proposta para mudar as configuracoes acordadas</translation>
+        <translation>Ayarı değiştirmek için önerilen bağlantıya tıklayın.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="196"/>
+        <location filename="../RecommendedSettings.cpp" line="203"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation>As disposicoes postas ja foram mostradas no verde</translation>
+        <translation>Seçilmiş olan ayarlar yeşil olarak gösterilir.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="256"/>
-        <location filename="../RecommendedSettings.cpp" line="288"/>
+        <location filename="../RecommendedSettings.cpp" line="263"/>
+        <location filename="../RecommendedSettings.cpp" line="295"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
-        <translation>Esta processando imagens de banda estreita (especialmente H%1)</translation>
+        <translation>Eğer dar bant görüntüler kullanıyorsanız (özellikle H%1)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="261"/>
+        <location filename="../RecommendedSettings.cpp" line="268"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation>Use o modo do super-pixel</translation>
+        <translation>Süper-Göze (piksel) yöntemini kullan.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="293"/>
-        <location filename="../RecommendedSettings.cpp" line="663"/>
-        <location filename="../RecommendedSettings.cpp" line="709"/>
+        <location filename="../RecommendedSettings.cpp" line="300"/>
+        <location filename="../RecommendedSettings.cpp" line="670"/>
+        <location filename="../RecommendedSettings.cpp" line="716"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
-        <translation>Usar a calibracao do background por canal</translation>
+        <translation>Her kanal için kalibrasyon yöntemini kullanın</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="315"/>
+        <location filename="../RecommendedSettings.cpp" line="322"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
-        <translation>Processo de longa exposicao -  boas imagens SNR</translation>
+        <translation>Uzun pozlu ve muhtmelen güzel sinyal/gürültü oranına sahip görüntüleri işliyorsunuz</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="318"/>
+        <location filename="../RecommendedSettings.cpp" line="325"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>Use AHD debayering</translation>
+        <translation>AHD bayersizleştirmeyi (Bayer Matrisi) kullan.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="324"/>
+        <location filename="../RecommendedSettings.cpp" line="331"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation>Processo de curtas exposicoes - fracas imagens de SNR</translation>
+        <translation>Kısa pozlu ve muhtemelen düşük sinyal/gürültü oranına sahip görüntüleri işliyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="327"/>
+        <location filename="../RecommendedSettings.cpp" line="334"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation>Use Bilinear debayering</translation>
+        <translation>Çift çizgili bayersizleştirmeyi (Bayer matrisi) kullan</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="371"/>
+        <location filename="../RecommendedSettings.cpp" line="378"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation>Esta usando o bias frame</translation>
+        <translation>Ofset kareler kullanıyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="374"/>
+        <location filename="../RecommendedSettings.cpp" line="381"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation>Aponte o valor 0 para um ponto negro para melhorar a calibracao</translation>
+        <translation>Kalibrasyonu iyileştirmek için siyah noktasını 0&apos;a çekin.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="383"/>
+        <location filename="../RecommendedSettings.cpp" line="390"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation>Esta usando fotogramas-flat sem fotogramas- bias</translation>
+        <translation>Düz kareleri siyah kareler olmadan kullanıyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="386"/>
+        <location filename="../RecommendedSettings.cpp" line="393"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
-        <translation>Nao aponte o valor 0 para um ponto negro</translation>
+        <translation>Siyah noktasını sıfıra çekmeyin.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="407"/>
+        <location filename="../RecommendedSettings.cpp" line="414"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>Esta usando estrela fraca para deteccao d threshold</translation>
+        <translation>Düşük yıldız tespit eşik değeri kullanıyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="410"/>
+        <location filename="../RecommendedSettings.cpp" line="417"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
-        <translation>Aplique filtro medio de reducao de ruido-deteccao-melhoramento das estrelas antes de registar as imagens</translation>
+        <translation>Görüntüleri hizalamadan önce gürültüyü azaltmak ve yıldız tespitini artırmak için orta değer filtresi uygula</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="427"/>
+        <location filename="../RecommendedSettings.cpp" line="434"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
-        <translation>Se esta usando um modelo de DSLR</translation>
+        <translation>Eğer modifiye bir DSLR kullanıyorsanız</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="430"/>
+        <location filename="../RecommendedSettings.cpp" line="437"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation>Anular a colocacao de todos os brancos</translation>
+        <translation>Bütün beyaz dengesini sıfırla.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="467"/>
+        <location filename="../RecommendedSettings.cpp" line="474"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation>Tentando criar imagem do cometa com arrastamento de estrelas</translation>
+        <translation>Yıldız izlerine sahip bir kuyrukluyıldız fotoğrafı oluşturmaya çalışıyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="470"/>
-        <location filename="../RecommendedSettings.cpp" line="540"/>
+        <location filename="../RecommendedSettings.cpp" line="477"/>
+        <location filename="../RecommendedSettings.cpp" line="547"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
-        <translation>Use a combinacao do metodo de proporcoes</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="481"/>
-        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
-        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation>Tentando criar imagem alinhada do cometa com estrelas e do cometa de %1 light frame(s)</translation>
+        <translation>Ortalama birleştirme yöntemini kullan</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="488"/>
-        <location filename="../RecommendedSettings.cpp" line="521"/>
+        <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
+        <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
+        <translation>%1 görüntü karesinden yıldızların ve kuyrukluyıldızın üzerine hizalı bir kuyrukluyıldız görüntüsü oluşturmaya çalışıyorsunuz.</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="495"/>
+        <location filename="../RecommendedSettings.cpp" line="528"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
-        <translation>Use o metodo de combinacao Kappa-Sigma-Clipping</translation>
+        <translation>Kappa-Sigma-Kırpma  birleştirme yöntemini kullan</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="496"/>
-        <location filename="../RecommendedSettings.cpp" line="548"/>
-        <location filename="../RecommendedSettings.cpp" line="580"/>
-        <location filename="../RecommendedSettings.cpp" line="612"/>
-        <location filename="../RecommendedSettings.cpp" line="644"/>
+        <location filename="../RecommendedSettings.cpp" line="503"/>
+        <location filename="../RecommendedSettings.cpp" line="555"/>
+        <location filename="../RecommendedSettings.cpp" line="587"/>
+        <location filename="../RecommendedSettings.cpp" line="619"/>
+        <location filename="../RecommendedSettings.cpp" line="651"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
-        <translation>Use o metdo da combinacao da Mediana</translation>
+        <translation>Orta değer birleştirme yöntemini kullan</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="514"/>
+        <location filename="../RecommendedSettings.cpp" line="521"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
-        <translation>Voce esta integrando %1 light frame(s)</translation>
+        <translation>%1 görüntü karesini birleştiriyorsunuz</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="530"/>
+        <location filename="../RecommendedSettings.cpp" line="537"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
-        <translation>Use a combinacao de avaliacao metodo de proporcao adaptada</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="564"/>
-        <source>You are creating a master dark from %1 dark frame(s)</source>
-        <comment>IDS_RECO_DARK_REASON</comment>
-        <translation>Criando um master dark proviniente %1 dark frame(s)</translation>
+        <translation>Otamatik Uyabilen Ağırlıklı Ortalama birleştirme yöntemini kullanın</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="571"/>
-        <location filename="../RecommendedSettings.cpp" line="603"/>
-        <location filename="../RecommendedSettings.cpp" line="635"/>
+        <source>You are creating a master dark from %1 dark frame(s)</source>
+        <comment>IDS_RECO_DARK_REASON</comment>
+        <translation>%1 siyah kareden bir Ana siyah oluşturuyorsunuz.</translation>
+    </message>
+    <message>
+        <location filename="../RecommendedSettings.cpp" line="578"/>
+        <location filename="../RecommendedSettings.cpp" line="610"/>
+        <location filename="../RecommendedSettings.cpp" line="642"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
-        <translation>Use o metodo Mediana de combinacao Kappa-Sigma-Clipping</translation>
+        <translation>Kappa-Sigma-Kırpma Orta Değer birleştirme yöntemini kullan</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="596"/>
+        <location filename="../RecommendedSettings.cpp" line="603"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation>Criando um master bias proviniente %1 bias frame(s)</translation>
+        <translation>%1 ofset kareden bir ana ofset oluşturuyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="628"/>
+        <location filename="../RecommendedSettings.cpp" line="635"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
-        <translation>Criando um master flat proviniente %1 flat frame(s)</translation>
+        <translation>%1 düz kareden ana düz oluşturuyorsunuz.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="660"/>
+        <location filename="../RecommendedSettings.cpp" line="667"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
-        <translation>Se o resultado das imagens parecer muito cinzento</translation>
+        <translation>Eğer ortaya çıkan görüntü çok gri görünüyorsa</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="683"/>
+        <location filename="../RecommendedSettings.cpp" line="690"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
-        <translation>Se balanco-cor no final das imagens for demasiado corrija no fim do processamento</translation>
+        <translation>Eğer işlem sonrasında ortaya çıkan görüntüde renk dengesini yapmak çok zorsa,</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="686"/>
+        <location filename="../RecommendedSettings.cpp" line="693"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
-        <translation>Use a calibracao RGB do background</translation>
+        <translation>KYM arkaplan kalibrasyonunu kullan</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="706"/>
+        <location filename="../RecommendedSettings.cpp" line="713"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation>Esta integrando imagens na escala de cinzentos e elas podem ter minimas diferencas de valores</translation>
+        <translation>Siyah-beyaz görüntüleri istifliyorsunuz, bunlar biraz farklı arkaplan değerinlerine sahip olabilir.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="793"/>
+        <location filename="../RecommendedSettings.cpp" line="802"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation>ou</translation>
+        <translation>veya</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="854"/>
+        <location filename="../RecommendedSettings.cpp" line="863"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation>Tem que adicionar as imagens na lista e verifica las.</translation>
+        <translation>Önce listeye görüntüleri eklemeli, ardından da onları işaretlemelisiniz.</translation>
     </message>
 </context>
 <context>
@@ -1962,134 +1967,134 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation>Registar Configuracoes</translation>
+        <translation>Hizalama seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation>Accoes</translation>
+        <translation>Hareketler</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation>Integrando Configuracoes...</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation>Confuguracoes recomendadas...</translation>
+        <translation>Önerilen ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation>Registo ja efectuado em imagens registadas</translation>
+        <translation>Daha önce hizalanan resimleri de hizala</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Auto detecao de pixels quentes</translation>
+        <translation>Sıcak gözelerin (piksellerin) otomatik tespiti</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation>Integrar depois do registo</translation>
+        <translation>Hizalamadan sonra istifle</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation>Selecionar o melhor</translation>
+        <translation>En iyi olanı seç</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation>% fotos e depois integra los.</translation>
+        <translation>% görüntü ve bunları istifle</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation>Avancado</translation>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation>Deteccao threshold da estrela</translation>
+        <translation>Yıldız tespiti için eşik değeri</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="274"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation>Computador detecta nº  estrelas</translation>
+        <translation>Tespit edilen yıldızların sayısını hesapla</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="317"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation>Reduzir ruido usando um filtro medio</translation>
+        <translation>Orta değer (median) Filtresi kullanarak gürültüyü azalt</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="157"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do dark, flat e offset antes d integrar.</translation>
+        <translation>İstiflemeden önce siyah, düz ve Ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="160"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do dark e flat antes d integrar.</translation>
+        <translation>İstiflemeden önce siyah ve düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="163"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do dark e offset antes d integrar.</translation>
+        <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="166"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do flat e offset antes d integrar.</translation>
+        <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do dark antes d integrar.</translation>
+        <translation>İstiflemeden önce siyah dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do flat antes d integrar.</translation>
+        <translation>İstiflemeden önce düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation>Nao esqueca adicionar-verificar fotogramas do offset antes d integrar.</translation>
+        <translation>İstiflemeden önce ofset dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="199"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation>darks, flats and offsets/bias verificados.</translation>
+        <translation>Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="263"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation>Registando %1</translation>
+        <translation>Hizalanıyor %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="270"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation>%1 estrela(s)</translation>
+        <translation>%1 yıldız</translation>
     </message>
 </context>
 <context>
@@ -2097,12 +2102,12 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation>Renomear grupo</translation>
+        <translation>Grubu Yeniden Adlandır</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation>Nome do grupo:</translation>
+        <translation>Grup ismi:</translation>
     </message>
 </context>
 <context>
@@ -2110,63 +2115,63 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation>Resultado</translation>
+        <translation>Sonuç</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation>Modo Stand</translation>
+        <translation>Standart Yöntem</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation>Modo &quot;Mosaico&quot;</translation>
+        <translation>&quot;Mozayik&quot; Yöntem</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation>Modo de Interseccao</translation>
+        <translation>Kesişim Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation>Norma rectangular</translation>
+        <translation>Seçilen diktörtgen</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation>Apto para 2x Drizzle</translation>
+        <translation>2x serpiştirmeyi uygula</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation>Apto para 3x Drizzle</translation>
+        <translation>3x serpiştirmeyi uygula</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation>Alinhar canais RGB-imagem final</translation>
+        <translation>Resmin son halinde KYM kanallarını hizala</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="68"/>
         <location filename="../ResultParameters.cpp" line="130"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation>Resultado processo-integracao detriorou em relacao fotograma de luminosidade</translation>
+        <translation>İstifleme işleminin sonucu referans görüntü karesi olarak çerçevelendi.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="78"/>
         <location filename="../ResultParameters.cpp" line="143"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation>Resultado da integracao contem os fotogramas de luminosidade.</translation>
+        <translation>İstifleme işleminin sonucu istiflin bütün görüntü karelerini içerir.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="88"/>
         <location filename="../ResultParameters.cpp" line="157"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation>Resultado processo dos fotogramas integrados por interseccao de todos fotogramas.</translation>
+        <translation>İstifleme işleminin sonucu bütün karelerin kesişimi ile çerçevelenir.</translation>
     </message>
 </context>
 <context>
@@ -2174,7 +2179,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation>Guardar alteracoes?</translation>
+        <translation>Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -2182,39 +2187,39 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Fez algumas alteracoes (estrelas ou posicao do cometa)
+        <translation>Bir kaç değişiklik yaptınız (yıldızların veya kuyrukluyıldızın konumu)
 
-Quer guardar?</translation>
+Bunları kaydetmek ister misiniz?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Na proxima vez...</translation>
+        <translation>Daha sonra...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation>Guarde sem perguntar</translation>
+        <translation>Sormadan kaydet</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation>Nao guarde sem perguntar</translation>
+        <translation>Sormadan kaydetme</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation>Pergunte de novo</translation>
+        <translation>Bir daha sor</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation>Aceder opcoes cliquando do lado direito no botao Guardar</translation>
+        <translation>Bu seçeneklere Kaydet tuşunun üzerine sağ tıklayarak ulaşabilirsiniz.</translation>
     </message>
 </context>
 <context>
@@ -2222,338 +2227,338 @@ Quer guardar?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation>Etapas de Integracao</translation>
+        <translation>İstifleme adımları</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
-        <translation>Confuguracoes recomendadas...</translation>
+        <translation>Önerilen ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="38"/>
         <source>Stacking Settings ...</source>
-        <translation>Integrando Configuracoes...</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="176"/>
+        <location filename="../StackRecap.cpp" line="184"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="177"/>
+        <location filename="../StackRecap.cpp" line="185"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="197"/>
+        <location filename="../StackRecap.cpp" line="203"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation>Sim</translation>
+        <translation>Evet</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="198"/>
+        <location filename="../StackRecap.cpp" line="204"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation>Nao</translation>
+        <translation>Hayır</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="212"/>
+        <location filename="../StackRecap.cpp" line="218"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation>Calibracao do Background nos Canais RGB: %1</translation>
+        <translation>KYM Kanalları Arkaplan Kalibrasyonu: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="217"/>
+        <location filename="../StackRecap.cpp" line="223"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Calibracao do Background por Canal: %1</translation>
+        <translation>Her bir Kanal için Arkaplan Kalibrasyonu: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="222"/>
+        <location filename="../StackRecap.cpp" line="228"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation>Optmizacao do Dark: %1</translation>
+        <translation>Siyah iyileştirmesi: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="227"/>
+        <location filename="../StackRecap.cpp" line="233"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation>Multiplicacao do Factor Dark: %1</translation>
+        <translation>Siyah çarpım Faktörü: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="231"/>
+        <location filename="../StackRecap.cpp" line="237"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation>Pixels Quentes detectados e removidos: %1</translation>
+        <translation>Sıcak Gözelerin tespit edilip kaldırılması: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="240"/>
+        <location filename="../StackRecap.cpp" line="246"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation>Preciso temporariamente %1 de espaco no(a) %2 drive.&lt;br&gt;Apenas %3 esta disponivel nesta drive.</translation>
+        <translation>Bu süreç geçici olarak %1 boş alana ihtiyaç duyuyor.&lt;br&gt;Kullanılacak olan %2 sürücüsünde sadece %3 boş alan var.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="261"/>
+        <location filename="../StackRecap.cpp" line="268"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation>Aviso: Voce esta usando dark, flat or bias frames com ficheiros JPEG.&lt;br&gt;Porque a perca da compressao e calibracao nao funciona com ficheiros JPEG.</translation>
+        <translation>Uyarı: Siyah, Düz veya ofset kareleri JPEG dosyaları ile kullanıyorsunuz.&lt;br&gt;Kayıplı sıkıştırmadan ötürü kalibrasyon JPEG dosyaları için çalışmıyor.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="269"/>
+        <location filename="../StackRecap.cpp" line="276"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation>Modo de Integracao: </translation>
+        <translation>İstifleme Yöntemi: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="274"/>
+        <location filename="../StackRecap.cpp" line="281"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation>Standard</translation>
+        <translation>Standart</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="277"/>
+        <location filename="../StackRecap.cpp" line="284"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation>Mosaico</translation>
+        <translation>Mozayik</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="280"/>
+        <location filename="../StackRecap.cpp" line="287"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation>Norma rectangular</translation>
+        <translation>Seçilen diktörtgen</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="283"/>
+        <location filename="../StackRecap.cpp" line="290"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation>Interseccao</translation>
+        <translation>Kesişim</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="291"/>
+        <location filename="../StackRecap.cpp" line="298"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation>Metodo de Alinhamento: </translation>
+        <translation>Hizalama Yöntemi: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="299"/>
+        <location filename="../StackRecap.cpp" line="306"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation>Automatico</translation>
+        <translation>Otomatik</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="302"/>
+        <location filename="../StackRecap.cpp" line="309"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation>Bilinear</translation>
+        <translation>Çift çizgili</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="305"/>
+        <location filename="../StackRecap.cpp" line="312"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation>Ao quadrado</translation>
+        <translation>Çift kareli</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="308"/>
+        <location filename="../StackRecap.cpp" line="315"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation>Bicubico</translation>
+        <translation>Çift küplü</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="311"/>
+        <location filename="../StackRecap.cpp" line="318"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation>Sem alinhamento</translation>
+        <translation>Hizalama yok</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="322"/>
+        <location filename="../StackRecap.cpp" line="329"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation>Drizzle x%1 activo</translation>
+        <translation>Serpiştirme x%1 geçerli</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="328"/>
+        <location filename="../StackRecap.cpp" line="335"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation>A opcao selecionada de drizzle nao e compativel com o modo do Bayer Drizzle.</translation>
+        <translation>Bu serpiştirme yöntemi Bayer Serpiştirme yöntemi ile uyumlu değil.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="339"/>
+        <location filename="../StackRecap.cpp" line="346"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation>%1 detectado e processadores em uso</translation>
+        <translation>%1 tespit edilen ve kullanılan işleyici</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="342"/>
+        <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation>%1 detectados processadores - apenas um em uso</translation>
+        <translation>%1 tespit edilen işleyici - sadece bir tane kullanıldı</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="354"/>
+        <location filename="../StackRecap.cpp" line="361"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation>Processamento - Cometa: </translation>
+        <translation>Kuyrukluyıldız İşleme: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="359"/>
+        <location filename="../StackRecap.cpp" line="366"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation>Alinhar as estrelas (sem processamento especifico)</translation>
+        <translation>Yıldızlar üzerinde hizala (özel bir işlem yok)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="362"/>
+        <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation>Alinhamentos no cometa</translation>
+        <translation>Kuyrukluyıldız üzerine hizala</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="365"/>
+        <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation>Alinhamentos nas estrelas e no cometa</translation>
+        <translation>Kuyrukluyıldız ve yıldızlar üzerine hizala</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="379"/>
+        <location filename="../StackRecap.cpp" line="386"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation>Cosmetica aplicada aos pixels quentes (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</translation>
+        <translation>Sıcak gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="387"/>
+        <location filename="../StackRecap.cpp" line="394"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation>Cosmetica aplicada aos pixels frios (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</translation>
+        <translation>Soğuk gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="416"/>
+        <location filename="../StackRecap.cpp" line="423"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation>Etapas de Integracao %1&lt;br&gt;  -&gt;%2 fotogramas (%3: %4) - exposicao total: </translation>
+        <translation>İstifleme adımı %1&lt;br&gt; -&gt;%2 kare (%3: %4) - toplam poz süresi: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="434"/>
-        <location filename="../StackRecap.cpp" line="478"/>
-        <location filename="../StackRecap.cpp" line="533"/>
-        <location filename="../StackRecap.cpp" line="609"/>
-        <location filename="../StackRecap.cpp" line="664"/>
+        <location filename="../StackRecap.cpp" line="441"/>
+        <location filename="../StackRecap.cpp" line="485"/>
+        <location filename="../StackRecap.cpp" line="540"/>
+        <location filename="../StackRecap.cpp" line="616"/>
+        <location filename="../StackRecap.cpp" line="671"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation>Metodo: </translation>
+        <translation>Yöntem: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="445"/>
+        <location filename="../StackRecap.cpp" line="452"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation>Aviso: opcao selecionada do Bayer Drizzle configurada modo RAW DDP levara a estranho resultado com metodo de outras proporcoes.</translation>
+        <translation>Uyarı: RAW DDP ayarlarında seçilen Bayer Serpiştirme seçeneği ortalama yöntemi haricinde garip sonuçlar ortaya çıkarabilir.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="465"/>
+        <location filename="../StackRecap.cpp" line="472"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation>-&gt; Offset: %1 fotogramas (%2: %4) exposicao: %4</translation>
+        <translation>-&gt; Ofset: %1 kare (%2: %3) poz süresi: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="518"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation>-&gt; Sem Offset</translation>
+        <translation>-&gt; Ofset yok</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="520"/>
+        <location filename="../StackRecap.cpp" line="527"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation>-&gt; Dark: %1 fotogramas (%2 : %3) exposicao: %4</translation>
+        <translation>-&gt; Siyah: %1 kare (%2 : %3) poz süresi: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="578"/>
+        <location filename="../StackRecap.cpp" line="585"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation>Aviso: tempo-exposicao nao corresponde com fotogramas- luz</translation>
+        <translation>Uyarı: Poz süresi görüntülerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="587"/>
+        <location filename="../StackRecap.cpp" line="594"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation>-&gt; Sem Dark</translation>
+        <translation>-&gt; Siyah yok</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="596"/>
+        <location filename="../StackRecap.cpp" line="603"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation>-&gt; Dark Flat: %1 fotogramas (%2 : %3) exposicao: %4</translation>
+        <translation>-&gt; Siyah Düz: %1 kare (%2 : %3) poz süresi: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="652"/>
+        <location filename="../StackRecap.cpp" line="659"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation>-&gt; Flat: %1 fotogramas (%2: %3) exposicao: %4</translation>
+        <translation>-&gt; Düz: %1 kare (%2: %3) poz süresi: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="490"/>
-        <location filename="../StackRecap.cpp" line="560"/>
-        <location filename="../StackRecap.cpp" line="676"/>
+        <location filename="../StackRecap.cpp" line="497"/>
+        <location filename="../StackRecap.cpp" line="567"/>
+        <location filename="../StackRecap.cpp" line="683"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation>Aviso: Velocidade ISO nao combina com fotogramas-luz</translation>
+        <translation>Uyarı: ISO hızı görüntülerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="500"/>
-        <location filename="../StackRecap.cpp" line="570"/>
-        <location filename="../StackRecap.cpp" line="686"/>
+        <location filename="../StackRecap.cpp" line="507"/>
+        <location filename="../StackRecap.cpp" line="577"/>
+        <location filename="../StackRecap.cpp" line="693"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation></translation>
+        <translation>Uyarı: Kazanç hızı görüntülerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="622"/>
+        <location filename="../StackRecap.cpp" line="629"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation>Aviso: Velocidade ISO nao corresponde-fotogramas flat</translation>
+        <translation>Uyarı: ISO hızı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="632"/>
+        <location filename="../StackRecap.cpp" line="639"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation>Warning: Dark Flat frame gain does not match Flat frame gain</translation>
+        <translation>Uyarı: Kazanç hızı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="640"/>
+        <location filename="../StackRecap.cpp" line="647"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation>Aviso: Tempo-exposicao nao corresponde com fotogramas flat</translation>
+        <translation>Uyarı: Poz Süresı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="696"/>
+        <location filename="../StackRecap.cpp" line="703"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation>-&gt; Sem Flat</translation>
+        <translation>-&gt; Düz Yok</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="711"/>
+        <location filename="../StackRecap.cpp" line="718"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation>Tempo Estimado d exposicao-Total: %1&lt;br&gt;(O pc considera o tempo total de exposicao todos os fotogramas- luz verificados e mantidos no processo de integracao)</translation>
+        <translation>Tahmin edilen toplam poz süresi: %1&lt;br&gt;(toplam poz süresi bütün görüntü kareleri birleştirilecekmiş gibi hesaplanır)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="721"/>
+        <location filename="../StackRecap.cpp" line="728"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation>O processo esta temporariamente usando %1 em %2 drive (%3 livre).</translation>
+        <translation>Bu işlem geçici olarak %1 kullanacak (kullanılacak olan %2 sürücüsünde %3 boşluk var)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="250"/>
-        <location filename="../StackRecap.cpp" line="730"/>
+        <location filename="../StackRecap.cpp" line="256"/>
+        <location filename="../StackRecap.cpp" line="737"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation>Nota: o espaco necessario em disco para o pc usar uma imagem do tamanho como este fotograma. No resultado da imagem-dimensao pode ser necessario mais espaco em disco.</translation>
+        <translation>Not: gerekli disk alanı referans karenin boyutundaki bir görüntü kullanılarak hesaplanır. Sonuç görüntünün toplam boyutuna bağlı olarak daha fazla alan gerekebilir.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="738"/>
+        <location filename="../StackRecap.cpp" line="745"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation>Aviso: verificadas-guardadas as opcoes de registo e calibracao de imagens. Verifique se tem espaco suficiente no disco para guardar estes ficheiros.</translation>
+        <translation>Uyarı: hizalanan ve kalibre edilen görüntüleri kaydet seçeği işaretlenmiş durumda. Lütfen bu dosyalar için yeterli disk alanı olup olmadığını kontrol edin.</translation>
     </message>
 </context>
 <context>
@@ -2561,7 +2566,7 @@ Quer guardar?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation>Pasta de Ficheiros Temporarios</translation>
+        <translation>Geçici Dosya Klasörü:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
@@ -2571,52 +2576,52 @@ Quer guardar?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation>Reduzindo prioridades no trabalho</translation>
+        <translation>Görev yürütme birimi önceliğini düşür</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation>Utilize processadores disponiveis</translation>
+        <translation>Uygulanabilir bütün işlemcileri kullan</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation>Vetorização SIMD</translation>
+        <translation>SIMD vektörleştirme</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation>Integrando Configuracoes</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="47"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation></translation>
+        <translation>Görüntü</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="48"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation></translation>
+        <translation>Siyah</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="49"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation></translation>
+        <translation>Düz</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation></translation>
+        <translation>Ofset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="187"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation>Por favor selecione a pasta que ira conter os ficheiros temporarios.</translation>
+        <translation>Lütfen bütün geçici dosyaları içerecek klasörü seçin.</translation>
     </message>
 </context>
 <context>
@@ -2625,19 +2630,19 @@ Quer guardar?</translation>
         <location filename="../StackingParameters.cpp" line="17"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation>Sem calibracao do background</translation>
+        <translation>Arkaplan kalibrasyonu yok</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation>Calibracao por Canal do Background</translation>
+        <translation>Her Kanal İçin Arkaplan Kalibrasyonu</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation>Calibracao Canais RGB do Background</translation>
+        <translation>KYM Kanalları Arkaplan Kalibrasyonu</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="58"/>
@@ -2647,11 +2652,11 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation>Extensao exterior dos pixels:
-[Mean-%1*%2, Mean+%1*%2]
-interaccao removida.
+        <translation>Hedef dışındaki gözeler (pikseller):
+[Ortalama-%1*%2, Ortalama+%1*%2]
+parçalar halinde kaldırıldı.
 
-Mantem se a proporcionalidade dos pixels.</translation>
+Kalan gözelerin ortalaması alındı.</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="67"/>
@@ -2661,11 +2666,11 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation>Extensao exterior dos pixeis:
-[Mean-%1*%2, Mean+%1*%2]
-interactividade subtituida por valores medios.
+        <translation>Hedefin dışında kalan gözeler (pikseller):
+[Ortalama-%1*%2, Ortalama+%1*%2]
+tekrarlı olarak orta değer ile değiştirilir.
 
-Os pixels estao proporcionais.</translation>
+Daha sonra gözelerin ortalaması alınır.</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="74"/>
@@ -2674,70 +2679,70 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation>A &lt;b&gt;avaliacao da proporcao&lt;/b&gt; e obtida por
-interactividade avaliada por cada pixell
-desde o desvio ate ao meio termo
-comparativamente ao desvio normalizado (%1).</translation>
+        <translation>&lt;b&gt;Ağırlıklı Ortalama&lt;/b&gt; şunların kullanılmasıyla elde edilir
+her gözenin (pikselin) tekrarlı olarak ağırlığı ile
+ortalamadan doğan sapma ile
+nispeten standart sapmadan (%1).</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation>Opcoes...</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation>Integrando</translation>
+        <translation>İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation>Modo de Integracao</translation>
+        <translation>İstifleme modu</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation>Numero de interaccoes:</translation>
+        <translation>Tekrar sayısı:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation>Media</translation>
+        <translation>Orta değer</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation>Kappa-Sigma aparando</translation>
+        <translation>Kappa-Sigma kırpımı</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation>Maximo</translation>
+        <translation>En yüksek değer</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation>Mediana Kappa-Sigma aparando</translation>
+        <translation>Orta Kappa-Sigma kırpımı</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation>Auto Avaliacao de Proporcoes Adaptadas</translation>
+        <translation>Otomatik Uyabilen Ağırlıklı Ortalama</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation>Proporcao</translation>
+        <translation>Ortalama</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
@@ -2750,7 +2755,8 @@ comparativamente ao desvio normalizado (%1).</translation>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation>Proporcoes Avaliadas  Entropia\n(High Dynamic Range)</translation>
+        <translation>Entropi Ağırlıklı ortalama
+(Yüksek Dinamik Alan (HDR))</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
@@ -2763,31 +2769,31 @@ comparativamente ao desvio normalizado (%1).</translation>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation>Configuracoes...</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation>Optimizacao do Dark</translation>
+        <translation>Siyah Optimizasyonu</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation>Deteccao Eliminacao d artefactos nefastos</translation>
+        <translation>Kötü sütun tespiti ve kaldırılması</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation>Pixels quentes detectados e removidos</translation>
+        <translation>Sıcak piksel tespiti ve yok edilmesi</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation>Factor de Multiplicacao Dark:</translation>
+        <translation>Siyah Çarpım Faktörü:</translation>
     </message>
 </context>
 </TS>
