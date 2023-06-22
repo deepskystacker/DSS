@@ -135,7 +135,9 @@ namespace DSS
 	void FileRegistrar::registerImage(fs::path file)
 	{
 		ZFUNCTRACE_RUNTIME();
-		ZTRACE_RUNTIME("Registering %s", file.filename().generic_string().c_str());
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
+
+		ZTRACE_RUNTIME("Registering %s", name.toUtf8().constData());
 		CBitmapInfo			bmpInfo;
 		bool result{ false };
 
@@ -143,7 +145,6 @@ namespace DSS
 		{
 			QString strText;
 			QString strDescription;
-			QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 			bmpInfo.GetDescription(strDescription);
 			if (bmpInfo.m_lNrChannels == 3)
@@ -179,7 +180,7 @@ namespace DSS
 				lfi->m_fExposure = bmpInfo.m_fExposure;
 
 				int count = static_cast<int>(lfi->m_vStars.size()); // Work round LUpdate bug
-				strText = tr("Image %L1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3\n", "IDS_LOG_REGISTERRESULTS", count)
+				strText = tr("Image %1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3\n", "IDS_LOG_REGISTERRESULTS", count)
 					.arg(name)
 					.arg(lfi->m_fFWHM, 0, 'f', 2)
 					.arg(lfi->m_fOverallQuality, 0, 'f', 2);

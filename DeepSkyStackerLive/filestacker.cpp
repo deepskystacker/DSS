@@ -370,6 +370,8 @@ namespace DSS
 				pProgress->Start2("Saving Stacked Image", 0);
 				WriteTIFF(file, pStackedImage.get(), pProgress, description, 0, -1, stackingEngine.GetTotalExposure(), 0.0);
 				pProgress->End2();
+				QString message{ tr("The stacked image has been saved", "IDS_STACKEDIMAGESAVED") + "\n" };
+				emit writeToLog(message, true);
 				emit stackedImageSaved();
 			}
 		}
@@ -380,6 +382,7 @@ namespace DSS
 	void FileStacker::emitStackedImage(const fs::path& file)
 	{
 		ZFUNCTRACE_RUNTIME();
+		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 		std::shared_ptr<CMemoryBitmap>	pStackedImage{ stackingEngine.getStackedImage() };
 
 		std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
@@ -393,7 +396,7 @@ namespace DSS
 		}
 
 		emit showStackedImage(loadedImage, stackingEngine.GetNrStackedImages(), stackingEngine.GetTotalExposure());
-
+		emit writeToLog(tr("Image %1 has been added to the stack\n").arg(name), true);
 		//
 		// If there's anything to save...
 		// 
