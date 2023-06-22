@@ -1364,13 +1364,6 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::copyLastImage()
-{
-	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
-}
-
-/* ------------------------------------------------------------------- */
-
 void DeepSkyStackerLive::fileNotStackable(fs::path file)
 {
 	QString name{ QString::fromStdU16String(file.filename().generic_u16string().c_str()) };

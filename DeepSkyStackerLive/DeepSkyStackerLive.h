@@ -124,7 +124,6 @@ protected slots:
 	void setImageOffsets(QString name, double dx, double dy, double angle);
 	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 	void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
-	void copyLastImage();
 
 private:
 	bool initialised;
