@@ -83,6 +83,7 @@ namespace DSS
 	public slots:
 		void dropPendingImages();
 		void clearStackedImage();
+		void saveStackedImage(const std::shared_ptr<CMemoryBitmap> pBitmap);
 
 	private:
 		std::atomic_bool stackingEnabled;
@@ -101,7 +102,6 @@ namespace DSS
 		bool imageWarning(const fs::path& file, double fdX, double fdY, double fAngle, QString& warning);
 		void emitStackedImage(const fs::path& file);
 		std::shared_ptr<QImage> makeQImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage);
-		void saveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
 
 
 	};

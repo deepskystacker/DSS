@@ -37,12 +37,15 @@
 //
 #include "stdafx.h"
 #include "imageviewer.h"
+#include "DeepSkyStackerLive.h"
+#include "LiveSettings.h"
 
 namespace DSS
 {
 	ImageViewer::ImageViewer(QWidget *parent)
 		: QWidget{ parent },
-		initialised{ false }
+		initialised{ false },
+		liveSettings{ DSSLive::instance()->liveSettings.get() }
 	{
 		setupUi(this);
 
@@ -65,6 +68,11 @@ namespace DSS
 		connect(fourCorners, SIGNAL(clicked(bool)), picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
 		connect(gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
+		connect(information, &QLabel::linkActivated,
+			this, &ImageViewer::saveClicked);
+		connect(copyToClipboard, &QLabel::linkActivated,
+			this, &ImageViewer::copyStackedImage);
+
 
 	}
 
@@ -191,4 +199,49 @@ namespace DSS
 			ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
 		picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));
 	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ImageViewer::saveClicked()
+	{
+		QString outputFolder{ liveSettings->GetStackedOutputFolder() };
+		if (!outputFolder.isEmpty())
+		{
+			information->setText(tr("The stacked image will be saved as soon as possible",
+				"IDS_STACKEDIMAGEWILLBESAVED"));
+			//
+			// Save the pointer to bitmap in a weak pointer, so that when it is saved
+			// we can check if we should update the message (if the pointer is still valid).
+			//
+			bitmapPendingSave = loadedImage.m_pBitmap;
+			emit saveStackedImage(loadedImage.m_pBitmap);
+		}
+		else
+		{
+			QMessageBox::information(this, "DeepSkyStackerLive",
+				tr("You must select an output folder first.\nGo to the Settings tab to select the Stacked Image Output Folder.",
+					"IDS_NOSTACKEDIMAGEFOLDER"));
+
+		}
+	}
+
+	void ImageViewer::stackedImageSaved()
+	{
+		if (!bitmapPendingSave.expired())
+		{
+			QString text{ tr("The stacked image has been saved", "IDS_STACKEDIMAGESAVED") };
+			information->setText(text);
+		}
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ImageViewer::copyStackedImage()
+	{
+		QGuiApplication::clipboard()->setImage(*(loadedImage.m_Image));
+	}
+
+	/* ------------------------------------------------------------------- */
+
+
 }

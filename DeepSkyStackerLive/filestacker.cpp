@@ -352,7 +352,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FileStacker::saveStackedImage(const std::shared_ptr<CMemoryBitmap>& pStackedImage)
+	void FileStacker::saveStackedImage(const std::shared_ptr<CMemoryBitmap> pStackedImage)
 	{
 		ZFUNCTRACE_RUNTIME();
 		if (pStackedImage)
@@ -363,13 +363,16 @@ namespace DSS
 				outputFile += "/Autostack.tif";
 
 				fs::path file{ outputFile.toStdU16String() };
-				fs::remove(file);
+				std::error_code ec;
+				fs::remove(file, ec);
 
 				const QString description("Autostacked Image");
+				pProgress->Start2("Saving Stacked Image", 0);
 				WriteTIFF(file, pStackedImage.get(), pProgress, description, 0, -1, stackingEngine.GetTotalExposure(), 0.0);
+				pProgress->End2();
+				emit stackedImageSaved();
 			}
-
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -402,8 +405,6 @@ namespace DSS
 			{
 				// Save the stacked image in the output folder
 				saveStackedImage(pStackedImage);
-				emit stackedImageSaved();
-
 
 				unsavedImageCount = 0;
 			}

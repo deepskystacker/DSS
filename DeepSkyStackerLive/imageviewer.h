@@ -43,11 +43,16 @@
 
 namespace DSS
 {
+	class LiveSettings;
+
 	class ImageViewer :
 		public QWidget,
 		public Ui_ImageViewer
 	{
 		Q_OBJECT
+
+	signals:
+		void saveStackedImage(const std::shared_ptr<CMemoryBitmap> pBitmap);
 
 	public:
 		ImageViewer(QWidget* parent = nullptr);
@@ -66,15 +71,25 @@ namespace DSS
 	public slots:
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
+		void stackedImageSaved();
+
 
 	private:
-
 		bool initialised;
+		LiveSettings* liveSettings;
 		fs::path fileToShow;
 		GammaTransformation	gammaTransformation;
 
 		LoadedImage		loadedImage;
+		std::weak_ptr<CMemoryBitmap> bitmapPendingSave;
 
 		void connectSignalsToSlots();
+
+	private slots:
+		void saveClicked();
+		void copyStackedImage();
+
+
+
 	};
 }

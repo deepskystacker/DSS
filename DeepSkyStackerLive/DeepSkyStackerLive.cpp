@@ -337,14 +337,6 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 		this, &DSSLive::progress);
 	connect(pProgress, &ProgressLive::endProgress,
 		this, &DSSLive::endProgress);
-
-	// Links in labels on stackedImage and lastImage tabs
-	connect(stackedImage->information, &QLabel::linkActivated,
-		this, &DSSLive::saveStackedImage);
-	connect(stackedImage->copyToClipboard, &QLabel::linkActivated,
-		this, &DSSLive::copyStackedImage);
-	connect(lastImage->copyToClipboard, &QLabel::linkActivated,
-		this, &DSSLive::copyLastImage);
 }
 
 void DeepSkyStackerLive::connectMonitorSignals()
@@ -401,8 +393,10 @@ void DeepSkyStackerLive::createFileStacker()
 		this, &DSSLive::handleWarning);
 	connect(fileStacker, &FileStacker::showStackedImage,
 		this, &DSSLive::showStackedImage);
+	connect(stackedImage, &ImageViewer::saveStackedImage,
+		fileStacker, &FileStacker::saveStackedImage);
 	connect(fileStacker, &FileStacker::stackedImageSaved,
-		this, &DSSLive::stackedImageSaved);
+		stackedImage, &ImageViewer::stackedImageSaved);
 	connect(this, &DSSLive::dropPendingImages,
 		fileStacker, &FileStacker::dropPendingImages);
 	connect(this, &DSSLive::clearStackedImage,
@@ -1211,7 +1205,7 @@ void DeepSkyStackerLive::showStackedImage(std::shared_ptr<LoadedImage> li, int c
 		stackedImage->copyToClipboard->setVisible(true);
 		stackedImage->information->setText(
 			QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>")
-			.arg(palette().color(QPalette::ColorRole::WindowText).name())
+			.arg(palette().color(QPalette::ColorRole::Link).name())
 			.arg(tr("Click here to save the stacked image to file", "IDS_SAVESTACKEDIMAGE")));
 	}
 	updateStatusMessage();
@@ -1370,30 +1364,9 @@ void DeepSkyStackerLive::fileStacked(std::shared_ptr<CLightFrameInfo> lfi)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::copyStackedImage()
-{
-	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
-}
-
-/* ------------------------------------------------------------------- */
-
-void DeepSkyStackerLive::saveStackedImage()
-{
-	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
-}
-
-/* ------------------------------------------------------------------- */
-
 void DeepSkyStackerLive::copyLastImage()
 {
 	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
-}
-
-/* ------------------------------------------------------------------- */
-void DeepSkyStackerLive::stackedImageSaved()
-{
-	QString text{ tr("The stacked image has been saved", "IDS_STACKEDIMAGESAVED") };
-	stackedImage->information->setText(text);
 }
 
 /* ------------------------------------------------------------------- */

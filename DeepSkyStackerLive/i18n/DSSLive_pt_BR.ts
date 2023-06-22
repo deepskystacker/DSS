@@ -212,6 +212,15 @@ Ctrl+4 to toggle 4-Corners mode</source>
     </message>
 </context>
 <context>
+    <name>DSS::ImageViewer</name>
+    <message>
+        <location filename="../imageviewer.cpp" line="214"/>
+        <source>The stacked image has been saved</source>
+        <comment>IDS_STACKEDIMAGESAVED</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DSS::RestartMonitoring</name>
     <message>
         <location filename="../ui/RestartMonitoring.ui" line="14"/>
@@ -797,13 +806,7 @@ Do you want to process them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1395"/>
-        <source>The stacked image has been saved</source>
-        <comment>IDS_STACKEDIMAGESAVED</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1429"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1415"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
         <translation type="unfinished"></translation>
     </message>
