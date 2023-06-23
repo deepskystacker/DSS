@@ -71,8 +71,8 @@ namespace DSS
 
 		m_dwStackingFlags = settings.value("StackingFlags", 0U).toUInt();
 		m_dwWarningFlags = settings.value("WarningFlags", 0U).toUInt();
-		m_dwWarningActions = settings.value("WarningActions", 0U).toUInt();
-		m_dwProcessFlags = settings.value("ProcessFlags", 0U).toUInt();
+		m_dwWarningActions = settings.value("WarningActions", LSWA_SOUND).toUInt();
+		m_dwProcessFlags = settings.value("ProcessFlags", LSPF_ALL).toUInt();
 		m_dwMinImages = settings.value("MinImages", 5U).toUInt();
 		m_dwScore = settings.value("Score", 1000U).toUInt();
 		m_dwStars = settings.value("Stars", 30U).toUInt();
