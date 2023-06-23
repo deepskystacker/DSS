@@ -80,6 +80,9 @@
               <height>30</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="0" column="4" colspan="3">
@@ -175,6 +178,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="2" column="4" colspan="3">
@@ -240,6 +246,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="3" column="4" colspan="3">
@@ -304,6 +313,9 @@
               <width>60</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -377,6 +389,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="5" column="4" colspan="2">
@@ -449,6 +464,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
            </widget>
           </item>
           <item row="6" column="4" colspan="2">
@@ -514,6 +532,9 @@
               <width>60</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -692,6 +713,9 @@
               <width>60</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>

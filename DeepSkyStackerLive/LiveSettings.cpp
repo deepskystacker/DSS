@@ -73,17 +73,15 @@ namespace DSS
 		m_dwWarningFlags = settings.value("WarningFlags", 0U).toUInt();
 		m_dwWarningActions = settings.value("WarningActions", 0U).toUInt();
 		m_dwProcessFlags = settings.value("ProcessFlags", 0U).toUInt();
-		m_dwMinImages = settings.value("MinImages", 0U).toUInt();
-		m_dwScore = settings.value("Score", 0U).toUInt();
-		ZTRACE_RUNTIME("Score is %d", m_dwScore);
-		m_dwStars = settings.value("Stars", 0U).toUInt();
-		m_dwFWHM = settings.value("FWHM", 0U).toUInt();
-		m_dwOffset = settings.value("Offset", 0U).toUInt();
-		m_dwAngle = settings.value("Angle", 0U).toUInt();
-		m_dwSkyBackground = settings.value("SkyBackground", 0U).toUInt();
-		m_dwSaveCount = settings.value("SaveCount", 0U).toUInt();
+		m_dwMinImages = settings.value("MinImages", 5U).toUInt();
+		m_dwScore = settings.value("Score", 1000U).toUInt();
+		m_dwStars = settings.value("Stars", 30U).toUInt();
+		m_dwFWHM = settings.value("FWHM", 50U).toUInt();
+		m_dwOffset = settings.value("Offset", 100U).toUInt();
+		m_dwAngle = settings.value("Angle", 20U).toUInt();
+		m_dwSkyBackground = settings.value("SkyBackground", 20U).toUInt();
+		m_dwSaveCount = settings.value("SaveCount", 10U).toUInt();
 
-		m_strFileFolder = settings.value("FileFolder", "").toString();
 		m_strWarnFileFolder = settings.value("WarningFileFolder", "").toString();
 		m_strStackedOutputFolder = settings.value("StackedOutputFolder", "").toString();
 
@@ -140,7 +138,6 @@ namespace DSS
 		settings.setValue("SkyBackground", m_dwSkyBackground);
 		settings.setValue("SaveCount", m_dwSaveCount);
 
-		settings.setValue("FileFolder", m_strFileFolder);
 		settings.setValue("WarningFileFolder", m_strWarnFileFolder);
 		settings.setValue("StackedOutputFolder", m_strStackedOutputFolder);
 
