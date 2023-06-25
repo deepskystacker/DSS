@@ -3,11 +3,12 @@
 #include <QWidget>
 #include "ui_ChartTab.h"
 #include <QLineSeries>
+#include <QValueAxis>
 #include <QScatterSeries>
 
 namespace DSS
 {
-	enum POINTTYPE : char
+	enum POINTTYPE
 	{
 		PT_REFERENCE = 1,
 		PT_OK = 2,
@@ -31,24 +32,41 @@ namespace DSS
 		Q_OBJECT
 
 	private:
-		std::deque<QString> files;
+		std::vector<QString> files;
+		std::map<QString, int> nameMap;
 		QChart::ChartTheme theme;
 		Qt::ColorScheme scheme;
 		QLineSeries* scoreSeries;
+		std::map<QString, int> scoreMap;
 		QChart* scoreChart;
 		QLineSeries* fwhmSeries;
+		std::map<QString, int> fwhmMap;
 		QChart* fwhmChart;
 		QLineSeries* starsSeries;
+		std::map<QString, int> starsMap;
 		QChart* starsChart;
 		QLineSeries* dXSeries;
 		QLineSeries* dYSeries;
+		std::map<QString, int> offsetMap;
 		QChart* offsetChart;
 		QLineSeries* angleSeries;
+		std::map<QString, int> angleMap;
 		QChart* angleChart;
 		QLineSeries* skybgSeries;
+		std::map<QString, int> skybgMap;
 		QChart* skybgChart;
 
 		void connectSignalsToSlots();
+
+		inline QValueAxis* axisX(QChart* chart)
+		{
+			return qobject_cast<QValueAxis*>(chart->axes(Qt::Horizontal)[0]);
+		}
+
+		inline QValueAxis* axisY(QChart* chart)
+		{
+			return qobject_cast<QValueAxis*>(chart->axes(Qt::Vertical)[0]);
+		}
 
 	private slots:
 		void scoreButtonClicked(bool checked);
@@ -69,6 +87,7 @@ namespace DSS
 
 	public slots:
 		void setImageInfo(QString name, STACKIMAGEINFO info);
+		void clear();
 
 	public:
 		ChartTab(QWidget* parent = nullptr);

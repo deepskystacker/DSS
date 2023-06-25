@@ -148,6 +148,8 @@ namespace DSS
 			smtpServer->text(), port, encryption,
 			emailAccount->text(), password);
 
+		liveSettings.SetWarning_SendMultipleEmails(!sendOnce->isChecked());
+
 		liveSettings.save();
 		accept();
 	}
@@ -169,58 +171,63 @@ namespace DSS
 			port = 587;
 			break;
 		}
+		QString account{ emailAccount->text() };
+		QString addressee{ emailTo->text() };
+		QString subject{ emailSubject->text() };
+		QString	server{ smtpServer->text() };
+		QString	password{};
 
 		SmtpClient::ConnectionType connectionType{ static_cast<SmtpClient::ConnectionType>(smtpEncryption->currentIndex()) };
 
 		MimeMessage message;
 
-		EmailAddress sender("david.partridge@perdrix.co.uk", "DeepSkyStackerLive");
+		EmailAddress sender(account, "DeepSkyStackerLive");
 		message.setSender(sender);
 
-		EmailAddress to(emailTo->text(), "");
+		EmailAddress to(addressee, "");
 		message.addRecipient(to);
 
-		message.setSubject(emailSubject->text());
+		message.setSubject(subject);
 
 		// Now add some text to the email.
 		// First we create a MimeText object.
 
 		MimeText text;
 
-		text.setText("Hi,\nThis is a simple email message.\n");
+		text.setText(subject);
 
 		// Now add it to the mail
 
 		message.addPart(&text);
 
 		// Now we can send the mail
-		SmtpClient smtp(smtpServer->text(), port, connectionType);
+		SmtpClient smtp(server, port, connectionType);
 
 		smtp.connectToHost();
 		if (!smtp.waitForReadyConnected())
 		{
-			QString errorMessage{ "Failed to connect to host %1 (%2)!" };
-			QMessageBox::warning(this, "SMTP", errorMessage.arg(smtpServer->text()).arg(port));
+			QString errorMessage{ tr("Failed to connect to email server %1 (%2)!").arg(server).arg(port)};
+			QMessageBox::warning(this, "SMTP", errorMessage);
 			return;
 		}
 
-		smtp.login(emailAccount->text(), emailPassword->text());
+		smtp.login(account, emailPassword->text());
 		if (!smtp.waitForAuthenticated())
 		{
-			QString errorMessage{ "Failed to login as %1!" };
+			QString errorMessage{ tr("Failed to login to email server as %1!").arg(account) };
 
-			QMessageBox::warning(this, "SMTP", errorMessage.arg(emailAccount->text()));
+			QMessageBox::warning(this, "SMTP", errorMessage);
 			return;
 		}
 
 		smtp.sendMail(message);
 		if (!smtp.waitForMailSent())
 		{
-			QMessageBox::warning(this, "SMTP", "Failed to send mail!");
+			QMessageBox::warning(this, "SMTP", tr("Failed to send mail!"));
 			return;
 		}
 
 		smtp.quit();
-		QMessageBox::information(this, "SMTP", "Test email sent OK!");
+		QMessageBox::information(this, "SMTP", tr("Test email sent OK!"));
 	}
 }

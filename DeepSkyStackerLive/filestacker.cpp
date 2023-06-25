@@ -44,6 +44,7 @@
 #include "Multitask.h"
 #include "BitmapIterator.h"
 #include "TIFFUtil.h"
+#include "dssliveenums.h"
 
 namespace DSS
 {
@@ -63,11 +64,14 @@ namespace DSS
 	{
 		{
 			//
-			// Wait for current image stack to complete
+			// Prevent new work being added to or removed from the queue
+			//
+			QMutexLocker lock(&mutex);
+			//
+			// Now it is safe to wait for the current image stack to complete (if one is active).
 			//
 			QMutexLocker stackLock(&stacking);
 
-			QMutexLocker lock(&mutex);
 
 			// Clear the work queue
 			if (!pending.empty())
@@ -94,9 +98,9 @@ namespace DSS
 			{
 				QMutexLocker lock(&mutex);
 				//
-				// Wait for work to arrive
+				// Wait for stacking to be be enabled, and if enabled, for work to arrive
 				//
-				if (pending.empty())
+				if (!stackingEnabled || pending.empty())
 					condvar.wait(&mutex);
 	
 				if (nullptr == pending.front()) break;
@@ -145,8 +149,8 @@ namespace DSS
 
 	void FileStacker::stackNextImage()
 	{
-		QMutexLocker stackLock(&stacking);		// Seize the mutex to show stacking is active
 		ZFUNCTRACE_RUNTIME();
+		QMutexLocker stackLock(&stacking);		// Seize the mutex to show stacking is active
 
 		if (!referenceFrameIsSet)
 		{
@@ -191,13 +195,13 @@ namespace DSS
 
 					stackingEngine.AddImage(*lfi, pProgress);
 					emit fileStacked(lfi);
-					emit setImageInfo(name, II_SETREFERENCE);
 					referenceFrameIsSet = true;
 					//
 					// Call the mf that will save the stacked image and emit a signal o
 					//
 					emitStackedImage(lfi->filePath);
 
+					emit setImageInfo(name, II_SETREFERENCE);
 				}
 
 			}
@@ -208,8 +212,7 @@ namespace DSS
 			QString					strError;
 			QString					strText;
 			bool					error = false;
-			bool					warning = false;
-			QString					strWarning;
+			QString					warning;
 
 			std::shared_ptr<CLightFrameInfo> pInfo;
 
@@ -230,9 +233,14 @@ namespace DSS
 				emit setImageOffsets(name, dX, dY, angle);
 				emit setImageInfo(name, II_DONTSTACK_NONE);
 
-				warning = imageWarning(lfi.filePath, dX, dY, angle, strWarning);
-				if (warning)
-					emit handleWarning(strWarning);
+				if(imageWarning(lfi.filePath, dX, dY, angle, warning))
+				{
+					strText = tr("Warning: Image %s -> %s\n", "IDS_LOG_WARNING")
+						.arg(name)
+						.arg(warning);
+					emit writeToLog(strText, true, false, true, QColorConstants::Svg::orange);
+					emit handleWarning(strText);
+				}
 
 				if (isImageStackable(lfi.filePath, dX, dY, angle, strError))
 				{
@@ -260,13 +268,6 @@ namespace DSS
 				error = true;
 			}
 
-			if (warning)
-			{
-				strText = tr("Warning: Image %s -> %s\n", "IDS_LOG_WARNING")
-					.arg(name)
-					.arg(strWarning);
-				emit writeToLog(strText, true, false, true, qRgb(208, 127, 0));
-			}
 			if (error)
 			{
 				strText = tr("Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(strError);

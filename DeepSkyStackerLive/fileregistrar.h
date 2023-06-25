@@ -57,6 +57,7 @@ namespace DSS
 		void addImageToList(fs::path file);
 		void fileLoaded(std::shared_ptr<LoadedImage> image);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
+		void addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi);
 		void fileNotStackable(fs::path file);
 		void setImageInfo(QString name, STACKIMAGEINFO info);
 		void handleWarning(QString text);

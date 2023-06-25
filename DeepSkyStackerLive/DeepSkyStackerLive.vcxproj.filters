@@ -28,6 +28,9 @@
     <Filter Include="Header Files\SmtpMime">
       <UniqueIdentifier>{ba1f9d69-a738-45e1-a63f-5e9ef2baf608}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SmtpMime">
+      <UniqueIdentifier>{85303d65-955b-4244-ad43-3022097627c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LiveSettings.cpp">

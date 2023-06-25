@@ -52,6 +52,9 @@ namespace DSS
 		SettingsTab(QWidget* parent = nullptr);
 		~SettingsTab();
 
+	public slots:
+		void showResetEmailCount();
+
 	private:
 		bool dirty;
 		LiveSettings& liveSettings;

@@ -67,6 +67,8 @@ signals:
 	void stopMonitor();
 	void clearStackedImage();
 	void dropPendingImages();
+	void showResetEmailCount();
+	void clearCharts();
 
 public:
 	DeepSkyStackerLive();
@@ -104,6 +106,7 @@ protected:
 
 public slots:
 	void help();
+	void resetEmailCount();
 
 protected slots:
 	// void updateStatus(const QString& text);
@@ -124,6 +127,7 @@ protected slots:
 	void setImageOffsets(QString name, double dx, double dy, double angle);
 	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
 	void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
+	void addToStackingQueue(std::shared_ptr<CLightFrameInfo> p);
 
 private:
 	bool initialised;
@@ -146,6 +150,7 @@ private:
 	DSS::ProgressLive* pProgress;
 	std::uint32_t stackedImageCnt;		// was m_lNrStacked
 	double totalExposure;
+	std::uint32_t emailsSent;
 
 	void connectSignalsToSlots();
 	void connectMonitorSignals();

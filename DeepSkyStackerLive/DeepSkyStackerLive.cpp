@@ -73,6 +73,7 @@
 #include "progresslive.h"
 #include "RegisterEngine.h"
 #include "RestartMonitoring.h"
+#include <SmtpMime/SmtpMime>
 
 using namespace DSS;
 using namespace std;
@@ -242,7 +243,8 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	progressLabel { new QLabel(this) },
 	pProgress {new DSS::ProgressLive(this)},
 	stackedImageCnt{ 0 },
-	totalExposure{ 0.0 }
+	totalExposure{ 0.0 },
+	emailsSent{ 0 }
 {
 	//
 	// Must set dssInstance before invoking setupUi 
@@ -331,6 +333,11 @@ void DeepSkyStackerLive::connectSignalsToSlots()
 		this, &DSSLive::stopPressed);
 	connect(settingsTab, &SettingsTab::settingsChanged,
 		this, &DSSLive::settingsChanged);
+	connect(this, &DSSLive::showResetEmailCount,
+		settingsTab, &SettingsTab::showResetEmailCount);
+
+	connect(this, &DSSLive::clearCharts,
+		chartTab, &ChartTab::clear);
 
 	// Progress signals
 	connect(pProgress, &ProgressLive::progress,
@@ -362,6 +369,8 @@ void DeepSkyStackerLive::createFileRegistrar()
 		this, &DSSLive::fileLoaded);
 	connect(fileRegistrar, &FileRegistrar::fileRegistered,
 		this, &DSSLive::fileRegistered);
+	connect(fileRegistrar, &FileRegistrar::addToStackingQueue,
+		this, &DSSLive::addToStackingQueue);
 	connect(fileRegistrar, &FileRegistrar::fileNotStackable,
 		this, &DSSLive::fileNotStackable);
 	connect(fileRegistrar, &FileRegistrar::setImageInfo,			// This goes to the chart handling code
@@ -885,6 +894,8 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 		RestartMonitoring dlg;
 		if ( QDialog::Accepted == dlg.exec())
 		{ 
+			emit clearCharts();
+
 			result = true;
 			if (dlg.clearStackedImage())
 			{
@@ -1294,12 +1305,6 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 	lfi->m_strInfos = temp;
 	temp = "";
 
-	//
-	// Add the file to the stacking work queue 
-	//
-	if (nullptr != fileStacker)
-		fileStacker->addFile(lfi);
-	
 	QLocale locale;
 	for (int row = 0; row < imageList->rowCount(); ++row)
 	{
@@ -1308,7 +1313,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(lfi->m_fExposure));
 			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
 			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 2));
-			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 0));
+			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_vStars.size()));
 			imageList->item(row, static_cast<int>(ImageListColumns::FWHM))->setText(locale.toString(lfi->m_fFWHM, 'f', 2));
 			//
 			imageList->item(row, static_cast<int>(ImageListColumns::dX))->setText("NC");
@@ -1345,7 +1350,15 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 
 	}
 	chartTab->addScoreFWHMStars(name, lfi->m_fOverallQuality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
+}
 
+void DeepSkyStackerLive::addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi)
+{
+	//
+	// Add the file to the stacking work queue 
+	//
+	if (nullptr != fileStacker)
+		fileStacker->addFile(lfi);
 	updateStatusMessage();
 
 }
@@ -1378,10 +1391,129 @@ void DeepSkyStackerLive::fileNotStackable(fs::path file)
 
 /* ------------------------------------------------------------------- */
 
+void DeepSkyStackerLive::resetEmailCount()
+{
+	emailsSent = 0;
+}
+
+/* ------------------------------------------------------------------- */
+
 void DSSLive::handleWarning(QString warning)
 {
-	ZFUNCTRACE_RUNTIME();
-	QMessageBox::information(this, "Work in progress", "To be written"); // TODO
+	if (!warning.isEmpty())
+	{
+		if (liveSettings->IsWarning_Flash())
+			QApplication::alert(this);
+		if (liveSettings->IsWarning_Sound())
+			QApplication::beep();
+		if (liveSettings->IsWarning_File())
+		{
+			QString folder{ liveSettings->GetWarning_FileFolder() };
+			if (!folder.isEmpty())
+			{
+				fs::path path(folder.toStdU16String());
+				if (is_directory(path))
+				{
+					path /= "DSSLiveWarning.txt";
+					QFile file(path);
+					if (file.open(QFile::WriteOnly | QFile::Append))
+					{
+						QTextStream stream{ &file };
+						stream << warning << Qt::endl;
+					}
+				}
+			}
+		}
+		if (liveSettings->IsWarning_Email())
+		{
+			bool sendEmail {false};
+
+			if (liveSettings->IsWarning_SendMultipleEmails())
+				sendEmail = true;
+			else if (!emailsSent)
+				sendEmail = true;
+
+			if (sendEmail)
+			{
+				QString	addressee{};
+				QString	subject{};
+				QString	server{};
+				int		port;
+				uint	encryption;
+				QString	account{};
+				QString	password{};
+
+				liveSettings->getEmailSettings(addressee, subject, server, port, encryption, account, password);
+
+				//
+				// De-obfuscate the password
+				//
+				for (auto& character : password)
+				{
+					character = QChar(static_cast<uint16_t>(character.unicode()) ^ 0x82U);
+				}
+
+				SmtpClient::ConnectionType connectionType { static_cast<SmtpClient::ConnectionType>(encryption) };
+
+				MimeMessage message;
+
+				EmailAddress sender(account, "DeepSkyStackerLive");
+				message.setSender(sender);
+
+				EmailAddress to(addressee, "");
+				message.addRecipient(to);
+
+				message.setSubject(subject);
+
+				// Now add some text to the email.
+				// First we create a MimeText object.
+
+				MimeText text;
+
+				text.setText(warning);
+
+				// Now add it to the mail
+
+				message.addPart(&text);
+
+				// Now we can send the mail
+				SmtpClient smtp(server, port, connectionType);
+
+				smtp.connectToHost();
+				if (!smtp.waitForReadyConnected())
+				{
+					QString errorMessage{ tr("Failed to connect to email server %1 (%2)!").arg(server).arg(port) };
+					errorMessage += "\n";
+					emit writeToLog(errorMessage, true, true, false, Qt::red);
+					return;
+				}
+
+				smtp.login(account, password);
+				if (!smtp.waitForAuthenticated())
+				{
+					QString errorMessage{ tr("Failed to login to email server as %1!").arg(account) };
+					errorMessage += "\n";
+					emit writeToLog(errorMessage, true, true, false, Qt::red);
+					return;
+				}
+
+				smtp.sendMail(message);
+				if (!smtp.waitForMailSent())
+				{
+					QString errorMessage{ "Failed to send mail!" };
+					errorMessage += "\n";
+					emit writeToLog(errorMessage, true, true, false, Qt::red);
+
+					return;
+				}
+
+				smtp.quit();
+				emailsSent++;
+				emit showResetEmailCount();
+
+			}
+		}
+	}
 }
 
 

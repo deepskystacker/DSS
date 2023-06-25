@@ -75,6 +75,7 @@ namespace DSS
 		// Initially invisible - until received initialised signal from liveSettings
 		setVisible(false);
 		setupUi(this);
+		resetEmailCount->setVisible(false);
 
 		connectSignalsToSlots();
 
@@ -145,6 +146,8 @@ namespace DSS
 		connect(warnEmail, &QCheckBox::clicked, this, &SettingsTab::warnEmail_Clicked);
 		connect(emailAddress, &QLabel::linkActivated,
 			this, &SettingsTab::setEmailAddress);
+		connect(resetEmailCount, &QPushButton::clicked,
+			DSSLive::instance(), &DSSLive::resetEmailCount);
 
 		connect(warnFlash, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(warnFile, &QCheckBox::clicked, this, &SettingsTab::warnFile_Clicked);
@@ -455,5 +458,8 @@ namespace DSS
 		settingChanged();
 	}
 
-
+	void SettingsTab::showResetEmailCount()
+	{
+		resetEmailCount->setVisible(true);
+	}
 }

@@ -605,6 +605,36 @@
           <string>Warnings</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="warnFlash">
+            <property name="text">
+             <string comment="IDC_WARN_FLASH">Flash Application</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>90</width>
+              <height>17</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2" colspan="2">
+           <widget class="QLabel" name="emailAddress">
+            <property name="toolTip">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string notr="true">Click here to set or change the email address</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="warnSound">
             <property name="text">
@@ -619,43 +649,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2" colspan="2">
-           <widget class="QLabel" name="emailAddress">
-            <property name="toolTip">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string notr="true">Click here to set or change the email address</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <spacer name="horizontalSpacer_10">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>90</width>
-              <height>17</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="warnFlash">
-            <property name="text">
-             <string comment="IDC_WARN_FLASH">Flash Application</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="warnFile">
-            <property name="text">
-             <string>Create warning file in:</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="2">
            <widget class="QLabel" name="warnFileFolder">
             <property name="toolTip">
@@ -666,7 +659,14 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="3" colspan="2">
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="warnFile">
+            <property name="text">
+             <string>Create warning file in:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3" colspan="3">
            <spacer name="horizontalSpacer_20">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -678,6 +678,13 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="0" column="6">
+           <widget class="QPushButton" name="resetEmailCount">
+            <property name="text">
+             <string comment="IDC_RESETEMAILCOUNT">Reset email count</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

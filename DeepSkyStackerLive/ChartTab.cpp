@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ChartTab.h"
 #include <QValueAxis>
+#include "dssliveenums.h"
 
 namespace DSS
 {
@@ -20,6 +21,9 @@ namespace DSS
 		skybgSeries{nullptr},
 		skybgChart{new QChart()}
 	{
+		QValueAxis* xAxis;
+		QValueAxis* yAxis;
+
 		setupUi(this);
 		theme = (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
 			? QChart::ChartTheme::ChartThemeBlueCerulean : QChart::ChartThemeBrownSand;
@@ -30,6 +34,105 @@ namespace DSS
 		offsetChart->setTheme(theme);
 		angleChart->setTheme(theme);
 		skybgChart->setTheme(theme);
+
+		scoreSeries = new QLineSeries(this);
+		scoreSeries->setName(tr("Score", "IDC_SCORE"));
+		scoreSeries->setPointsVisible(true);
+		scoreChart->addSeries(scoreSeries);
+		connect(scoreSeries, &QLineSeries::hovered,
+			this, &ChartTab::scoreHovered);
+
+		fwhmSeries = new QLineSeries(this);
+		fwhmSeries->setName(tr("FWHM", "IDC_FWHM"));
+		fwhmSeries->setPointsVisible(true);
+		fwhmChart->addSeries(fwhmSeries);
+		connect(fwhmSeries, &QLineSeries::hovered,
+			this, &ChartTab::fwhmHovered);
+
+		starsSeries = new QLineSeries(this);
+		starsSeries->setName(tr("#Stars", "IDC_STARS"));
+		starsSeries->setPointsVisible(true);
+		starsChart->addSeries(starsSeries);
+		connect(starsSeries, &QLineSeries::hovered,
+			this, &ChartTab::starsHovered);
+
+
+		dXSeries = new QLineSeries(this);
+		dXSeries->setColor(Qt::red);
+		dXSeries->setName("dX");
+		dXSeries->setPointsVisible(true);
+		offsetChart->addSeries(dXSeries);
+		connect(dXSeries, &QLineSeries::hovered,
+			this, &ChartTab::dXHovered);
+
+		dYSeries = new QLineSeries(this);
+		dYSeries->setColor(Qt::blue);
+		dYSeries->setName("dY");
+		dYSeries->setPointsVisible(true);
+		offsetChart->addSeries(dYSeries);
+		connect(dYSeries, &QLineSeries::hovered,
+			this, &ChartTab::dYHovered);
+
+		angleSeries = new QLineSeries(this);
+		angleSeries->setName(tr("Angle", "IDC_ANGLE"));
+		angleSeries->setPointsVisible(true);
+		angleChart->addSeries(angleSeries);
+		connect(angleSeries, &QLineSeries::hovered,
+			this, &ChartTab::angleHovered);
+
+
+		skybgSeries = new QLineSeries(this);
+		skybgSeries->setName(tr("Sky Background", "IDC_SKYBACKGROUND"));
+		skybgSeries->setPointsVisible(true);
+		skybgChart->addSeries(skybgSeries);
+		connect(skybgSeries, &QLineSeries::hovered,
+			this, &ChartTab::skybgHovered);
+
+		//
+		// Create default axes for all charts
+		//
+		scoreChart->createDefaultAxes();
+		fwhmChart->createDefaultAxes();
+		starsChart->createDefaultAxes();
+		offsetChart->createDefaultAxes();
+		angleChart->createDefaultAxes();
+		skybgChart->createDefaultAxes();
+
+		xAxis = axisX(scoreChart);
+		yAxis = axisY(scoreChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(0, 1000);
+
+		xAxis = axisX(fwhmChart);
+		yAxis = axisY(fwhmChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(5, 7);
+
+		xAxis = axisX(starsChart);
+		yAxis = axisY(starsChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(0, 1000);
+
+		xAxis = axisX(offsetChart);
+		yAxis = axisY(offsetChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(-1.0, 1.0);
+
+		xAxis = axisX(angleChart);
+		yAxis = axisY(angleChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(0.01, 0.01);
+
+		xAxis = axisX(skybgChart);
+		yAxis = axisY(skybgChart);
+		xAxis->setLabelFormat("%d");
+		xAxis->setTickType(QValueAxis::TicksDynamic);
+		yAxis->setRange(0, 1.0);
 
 		radioScore->setChecked(true);
 		chartView->setChart(scoreChart);
@@ -74,63 +177,113 @@ namespace DSS
 
 	void ChartTab::setPoint([[maybe_unused]] const QString& name, [[maybe_unused]] POINTTYPE pointType, [[maybe_unused]] CHARTTYPE chartType)
 	{
-		for (int i = 0; i < files.size(); i++)
+		qDebug() << __FUNCTION__ << " name " << name << Qt::endl
+			<< " pointType " << pointType << " chartType " << chartType;
+		//
+		// i is the index into the list of files
+		//
+		// Set up for the "OK" condition
+		//
+		QHash<QXYSeries::PointConfiguration, QVariant> conf;
+		conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Green;
+		conf[QXYSeries::PointConfiguration::Size] = 4;
+		switch (pointType)
 		{
-			if (files[i] == name)
+		case PT_REFERENCE:
+			conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Cyan;
+			conf[QXYSeries::PointConfiguration::Size] = 6;
+			break;
+		case PT_WRONG:
+			conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Red;
+			conf[QXYSeries::PointConfiguration::Size] = 6;
+			break;
+		case PT_WARNING:
+			conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Svg::orange;
+			conf[QXYSeries::PointConfiguration::Size] = 6;
+			break;
+		default:
+			break;
+		}
+
+		switch (chartType)
+		{
+		case CT_SCORE:
+			if (scoreSeries)
 			{
-				//
-				// i is the index into the list of files
-				//
-				// Set up for the "OK" condition
-				//
-				QHash<QXYSeries::PointConfiguration, QVariant> conf;
-				conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Green;
-				conf[QXYSeries::PointConfiguration::Size] = 4;
-				switch (pointType)
+				auto iter = scoreMap.find(name);
+				if (iter != scoreMap.end())
 				{
-				case PT_REFERENCE:
-					conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Cyan;
-					conf[QXYSeries::PointConfiguration::Size] = 6;
-					break;
-				case PT_WRONG:
-					conf[QXYSeries::PointConfiguration::Color] = QColorConstants::Red;;
-					conf[QXYSeries::PointConfiguration::Size] = 6;
-					break;
-				case PT_WARNING:
-					conf[QXYSeries::PointConfiguration::Color] = QColor(255, 190, 75);
-					conf[QXYSeries::PointConfiguration::Size] = 6;
-					break;
-				default:
-					break;
-				}
-
-				switch (chartType)
-				{
-				case CT_SCORE:
+					auto i = iter->second;
 					scoreSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_FWHM:
-					fwhmSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_STARS:
-					starsSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_DX:
-					dXSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_DY:
-					dYSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_ANGLE:
-					angleSeries->setPointConfiguration(i, conf);
-					break;
-				case CT_SKYBACKGROUND:
-					skybgSeries->setPointConfiguration(i, conf);
-					break;
 				}
-
-				break; // the necessary point has been updated
 			}
+			break;
+		case CT_FWHM:
+			if (fwhmSeries)
+			{
+				auto iter = fwhmMap.find(name);
+				if (iter != fwhmMap.end())
+				{
+					auto i = iter->second;
+					fwhmSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
+		case CT_STARS:
+			if (starsSeries)
+			{
+				auto iter = starsMap.find(name);
+				if (iter != starsMap.end())
+				{
+					auto i = iter->second;
+					starsSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
+		case CT_DX:
+			if (dXSeries)
+			{
+				auto iter = offsetMap.find(name);
+				if (iter != offsetMap.end())
+				{
+					auto i = iter->second;
+					dXSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
+		case CT_DY:
+			if (dYSeries)
+			{
+				auto iter = offsetMap.find(name);
+				if (iter != offsetMap.end())
+				{
+					auto i = iter->second;
+					dYSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
+		case CT_ANGLE:
+			if (angleSeries)
+			{
+				auto iter = angleMap.find(name);
+				if (iter != angleMap.end())
+				{
+					auto i = iter->second;
+					angleSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
+		case CT_SKYBACKGROUND:
+			if (skybgSeries)
+			{
+				auto iter = skybgMap.find(name);
+				if (iter != skybgMap.end())
+				{
+					auto i = iter->second;
+					skybgSeries->setPointConfiguration(i, conf);
+				}
+			}
+			break;
 		}
 	}
 
@@ -138,285 +291,254 @@ namespace DSS
 
 	void ChartTab::addScoreFWHMStars(const QString& name, double fScore, double fFWHM, double fStars, double fSkyBackground)
 	{
-		QList<QAbstractAxis*> axes;
+		QValueAxis* xAxis;
+		QValueAxis* yAxis;
 
 		// 
-		// Add the file to the list of known files.
+		// Add the file to the list of known files, and remember the index at which it was added
 		//
 		files.emplace_back(name);
-		auto x{ static_cast<qreal>(files.size()) };
+		auto size = static_cast<int>(files.size());
+		nameMap.emplace(name, size - 1);
+
+		auto x{ static_cast<qreal>(size) };
 
 		//
-		// Given the number of X values, choose a suitable interval for X axis tick marks
+		// Given the number of X values, choose a suitable interval and range 
+		// for X axis tick marks
 		//
-		int size = static_cast<int>(files.size());
 		qreal interval{ 10'000.0 };
-		if (size <= 20) interval = 1.0;
-		else if (size <= 100) interval = 5.0;
-		else if (size <= 200) interval = 10.0;
-		else if (size <= 1'000) interval = 50.0;
-		else if (size <= 2'000) interval = 100.0;
-		else if (size <= 10'000) interval = 500.0;
-		else if (size <= 20'000) interval = 1'000.0;
+		qreal rangeMax{ 200'000.0 };
 
-		QHash<QXYSeries::PointConfiguration, QVariant> conf;
-		conf[QXYSeries::PointConfiguration::Color] = QColor(Qt::green);
-		conf[QXYSeries::PointConfiguration::Size] = 4;
+		if (size <= 20)
+		{
+			interval = 1.0;
+			rangeMax = 20;
+		}
+		else if (size <= 100)
+		{
+			interval = 5.0;
+			rangeMax = 100;
+		}
+		else if (size <= 200)
+		{
+			interval = 10.0;
+			rangeMax = 200;
+		}
+		else if (size <= 1'000)
+		{
+			interval = 50.0;
+			rangeMax = 1'000;
+		}
+		else if (size <= 2'000)
+		{
+			interval = 100.0;
+			rangeMax = 2'000;
+		}
+		else if (size <= 10'000)
+		{
+			interval = 500.0;
+			rangeMax = 10'000;
+		}
+		else if (size <= 20'000)
+		{
+			interval = 1'000.0;
+			rangeMax = 20'000;
+		}
+
+		//
+		// Adjust score axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(scoreChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(scoreChart);
+		if (fScore > yAxis->max())
+			yAxis->setMax(fScore * 1.1);
+		if (fScore < yAxis->min())
+			yAxis->setMin(fScore);
 
 		//
 		// Add the score and update the score chart
 		//
-		if (nullptr != scoreSeries)
-			scoreChart->removeSeries(scoreSeries);
-		else
-		{
-			scoreSeries = new QLineSeries(this);
-			scoreSeries->setName(tr("Score", "IDC_SCORE"));
-			scoreSeries->setPointsVisible(true);
-			connect(scoreSeries, &QLineSeries::hovered,
-				this, &ChartTab::scoreHovered);
-		}
-
 		scoreSeries->append(x, fScore);
-		scoreSeries->setPointConfiguration(static_cast<int>(x) - 1, conf);
-		scoreChart->addSeries(scoreSeries);
+		scoreMap.emplace(name, size - 1);
+		yAxis->applyNiceNumbers();
 
-		scoreChart->createDefaultAxes();
-		axes = scoreChart->axes(Qt::Horizontal);
-		for (const auto& p : axes)
-		{
-			QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-			if (axis)
-			{
-				axis->setRange(1.0, size);
-				axis->setTickAnchor(1.0);
-				axis->setTickType(QValueAxis::TicksDynamic);
-				axis->setTickInterval(interval);
-			}
-		}
+		//
+		// Adjust FWHM axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(fwhmChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(fwhmChart);
+		if (fFWHM > yAxis->max())
+			yAxis->setMax(fFWHM * 1.1);
+		if (fFWHM < yAxis->min())
+			yAxis->setMin(fFWHM);
 
 		//
 		// Add the FWHM and update the FWHM chart
 		//
-		if (nullptr != fwhmSeries)
-			fwhmChart->removeSeries(fwhmSeries);
-		else
-		{
-			fwhmSeries = new QLineSeries(this);
-			fwhmSeries->setName(tr("FWHM", "IDC_FWHM"));
-			fwhmSeries->setPointsVisible(true);
-		}
-
 		fwhmSeries->append(x, fFWHM);
-		fwhmSeries->setPointConfiguration(static_cast<int>(x) - 1, conf);
-		fwhmChart->addSeries(fwhmSeries);
+		fwhmMap.emplace(name, size - 1);
+		yAxis->applyNiceNumbers();
 
-		fwhmChart->createDefaultAxes();
-		axes = fwhmChart->axes(Qt::Horizontal);
-		for (const auto& p : axes)
-		{
-			QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-			if (axis)
-			{
-				axis->setRange(1.0, size);
-				axis->setTickAnchor(1.0);
-				axis->setTickType(QValueAxis::TicksDynamic);
-				axis->setTickInterval(interval);
-			}
-		}
+		//
+		// Adjust stars axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(starsChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(starsChart);
+		if (fStars > yAxis->max())
+			yAxis->setMax(fStars * 1.1);
+		if (fStars < yAxis->min())
+			yAxis->setMin(fStars);
 
 		//
 		// Add the star count and update the stars chart
 		//
-		if (nullptr != starsSeries)
-			starsChart->removeSeries(starsSeries);
-		else
-		{
-			starsSeries = new QLineSeries(this);
-			starsSeries->setName(tr("#Stars", "IDC_STARS"));
-			starsSeries->setPointsVisible(true);
-		}
-
 		starsSeries->append(x, fStars);
-		starsSeries->setPointConfiguration(static_cast<int>(x) - 1, conf);
-		starsChart->addSeries(starsSeries);
+		starsMap.emplace(name, size - 1);
+		yAxis->applyNiceNumbers();
 
-		starsChart->createDefaultAxes();
-		axes = starsChart->axes(Qt::Horizontal);
-		for (const auto& p : axes)
-		{
-			QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-			if (axis)
-			{
-				axis->setRange(1.0, size);
-				axis->setTickAnchor(1.0);
-				axis->setTickType(QValueAxis::TicksDynamic);
-				axis->setTickInterval(interval);
-			}
-		}
+		//
+		// Adjust skybg axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(skybgChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(skybgChart);
+		if (fSkyBackground > yAxis->max())
+			yAxis->setMax(fSkyBackground * 1.1);
+		if (fSkyBackground < yAxis->min())
+			yAxis->setMin(fSkyBackground);
 
 		//
 		// Add the sky background and update the sky background chart
 		//
-		if (nullptr != skybgSeries)
-			skybgChart->removeSeries(skybgSeries);
-		else
-		{
-			skybgSeries = new QLineSeries(this);
-			skybgSeries->setName(tr("Sky Background", "IDC_SKYBACKGROUND"));
-			skybgSeries->setPointsVisible(true);
-		}
-
 		skybgSeries->append(x, fSkyBackground);
-		skybgSeries->setPointConfiguration(static_cast<int>(x) - 1, conf);
-		skybgChart->addSeries(skybgSeries);
-
-		skybgChart->createDefaultAxes();
-		axes = skybgChart->axes(Qt::Horizontal);
-		for (const auto& p : axes)
-		{
-			QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-			if (axis)
-			{
-				axis->setRange(1.0, size);
-				axis->setTickAnchor(1.0);
-				axis->setTickType(QValueAxis::TicksDynamic);
-				axis->setTickInterval(interval);
-			}
-		}
+		skybgMap.emplace(name, size - 1);
+		yAxis->applyNiceNumbers();
 	}
 
 	void ChartTab::addOffsetAngle(const QString& name, double fdX, double fdY, double fAngle)
 	{
-		QList<QAbstractAxis*> axes;
+		QValueAxis* xAxis;
+		QValueAxis* yAxis;
 
 		//
 		// Given the number of X values, choose a suitable interval for X axis tick marks
 		//
-		int size = static_cast<int>(files.size());
+		auto size = static_cast<int>(files.size());
+		//
+		// Given the number of X values, choose a suitable interval and range 
+		// for X axis tick marks
+		//
 		qreal interval{ 10'000.0 };
-		if (size <= 20) interval = 1.0;
-		else if (size <= 100) interval = 5.0;
-		else if (size <= 200) interval = 10.0;
-		else if (size <= 1'000) interval = 50.0;
-		else if (size <= 2'000) interval = 100.0;
-		else if (size <= 10'000) interval = 500.0;
-		else if (size <= 20'000) interval = 1'000.0;
+		qreal rangeMax{ 200'000.0 };
 
-		QHash<QXYSeries::PointConfiguration, QVariant> conf;
-		conf[QXYSeries::PointConfiguration::Color] = QColor(Qt::green);
-		conf[QXYSeries::PointConfiguration::Size] = 4;
-
-		for (int x = 0; x < files.size(); x++)
+		if (size <= 20)
 		{
-			if (files[x] == name)
-			{
-				//
-				// Add dX value 
-				//
-				if (nullptr != dXSeries)
-					offsetChart->removeSeries(dXSeries);
-				else
-				{
-					dXSeries = new QLineSeries(this);
-					dXSeries->setColor(Qt::red);
-					dXSeries->setName("dX");
-					dXSeries->setPointsVisible(true);
-				}
-
-				dXSeries->append(1.0 + x, fdX);
-				dXSeries->setPointConfiguration(x, conf);
-				offsetChart->addSeries(dXSeries);
-
-				//
-				// Add the dY value
-				//
-				if (nullptr != dYSeries)
-					offsetChart->removeSeries(dYSeries);
-				else
-				{
-					dYSeries = new QLineSeries(this);
-					dYSeries->setColor(Qt::blue);
-					dYSeries->setName("dY");
-					dYSeries->setPointsVisible(true);
-				}
-
-				dYSeries->append(1.0 + x, fdY);
-				dYSeries->setPointConfiguration(x, conf);
-				offsetChart->addSeries(dYSeries);
-
-				//
-				// Update the offset chart
-				//
-				offsetChart->createDefaultAxes();
-
-				axes = offsetChart->axes(Qt::Vertical);
-				for (const auto& p : axes)
-				{
-					QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-					if (axis)
-						axis->applyNiceNumbers();
-				}
-
-				axes = offsetChart->axes(Qt::Horizontal);
-				for (const auto& p : axes)
-				{
-					QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-					if (axis)
-					{
-						axis->setRange(1.0, size);
-						axis->setTickAnchor(1.0);
-						axis->setTickType(QValueAxis::TicksDynamic);
-						axis->setTickInterval(interval);
-					}
-				}
-
-				//
-				// Add angle value 
-				//
-				if (nullptr != angleSeries)
-					angleChart->removeSeries(angleSeries);
-				else
-				{
-					angleSeries = new QLineSeries(this);
-					angleSeries->setName("Angle");
-					angleSeries->setPointsVisible(true);
-				}
-
-				angleSeries->append(1.0 + x, fAngle);
-				angleSeries->setPointConfiguration(x, conf);
-				angleChart->addSeries(angleSeries);
-
-				//
-				// Update the angle chart
-				//
-				angleChart->createDefaultAxes();
-
-				axes = offsetChart->axes(Qt::Vertical);
-				for (const auto& p : axes)
-				{
-					QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-					if (axis)
-						axis->applyNiceNumbers();
-				}
-
-				axes = angleChart->axes(Qt::Horizontal);
-				for (const auto& p : axes)
-				{
-					QValueAxis* axis{ dynamic_cast<QValueAxis*>(p) };
-					if (axis)
-					{
-						axis->setRange(1.0, size);
-						axis->setTickAnchor(1.0);
-						axis->setTickType(QValueAxis::TicksDynamic);
-						axis->setTickInterval(interval);
-					}
-				}
-
-
-				break;
-			}
+			interval = 1.0;
+			rangeMax = 20;
 		}
+		else if (size <= 100)
+		{
+			interval = 5.0;
+			rangeMax = 100;
+		}
+		else if (size <= 200)
+		{
+			interval = 10.0;
+			rangeMax = 200;
+		}
+		else if (size <= 1'000)
+		{
+			interval = 50.0;
+			rangeMax = 1'000;
+		}
+		else if (size <= 2'000)
+		{
+			interval = 100.0;
+			rangeMax = 2'000;
+		}
+		else if (size <= 10'000)
+		{
+			interval = 500.0;
+			rangeMax = 10'000;
+		}
+		else if (size <= 20'000)
+		{
+			interval = 1'000.0;
+			rangeMax = 20'000;
+		}
+
+
+		// find the index into the vector of file names for this name
+		auto iter = nameMap.find(name);
+		ZASSERT(iter != nameMap.end());
+		size_t x = iter->second;
+		ZASSERT(files[x] == name);
+
+		//
+		// Adjust offset axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(offsetChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(offsetChart);
+		if (fdX > yAxis->max())
+			yAxis->setMax(fdX * 1.1);
+		if (fdX < yAxis->min())
+			yAxis->setMin(fdX);
+
+		if (fdY > yAxis->max())
+			yAxis->setMax(fdY * 1.1);
+		if (fdY < yAxis->min())
+			yAxis->setMin(fdY);
+
+		//
+		// Add dX and dY values and update the offset chart
+		//
+		dXSeries->append(1.0 + x, fdX);
+		dYSeries->append(1.0 + x, fdY);
+		// Remember where in the series the point for this name was inserted
+		offsetMap.emplace(name, dXSeries->count() - 1);
+		yAxis->applyNiceNumbers();
+
+		//
+		// Adjust angle axes if necessary (data won't display if we don't)
+		//
+		xAxis = axisX(angleChart);
+		xAxis->setRange(1.0, rangeMax);
+		xAxis->setTickAnchor(1.0);
+		xAxis->setTickInterval(interval);
+
+		yAxis = axisY(angleChart);
+		if (fAngle > yAxis->max())
+			yAxis->setMax(fAngle * 1.1);
+		if (fAngle < yAxis->min())
+			yAxis->setMin(fAngle);
+
+		//
+		// Add angle value 
+		//
+		angleSeries->append(1.0 + x, fAngle);
+		// Remember where in the series the point for this name was inserted
+		angleMap.emplace(name, angleSeries->count() - 1);
+		yAxis->applyNiceNumbers();
 	}
 
 
@@ -489,6 +611,29 @@ namespace DSS
 		};
 	}
 
+	void ChartTab::clear()
+	{
+		scoreChart->removeSeries(scoreSeries);
+		delete scoreSeries; scoreSeries = nullptr;
+		
+		fwhmChart->removeSeries(fwhmSeries);
+		delete fwhmSeries; fwhmSeries = nullptr;
+
+		starsChart->removeSeries(starsSeries);
+		delete starsSeries; starsSeries = nullptr;
+
+		offsetChart->removeSeries(dXSeries);
+		offsetChart->removeSeries(dYSeries);
+		delete dXSeries; dXSeries = nullptr;
+		delete dYSeries; dYSeries = nullptr;
+
+		angleChart->removeSeries(angleSeries);
+		delete angleSeries; angleSeries = nullptr;
+
+		skybgChart->removeSeries(skybgSeries);
+		delete skybgSeries; skybgSeries = nullptr;
+	}
+	
 	/* ------------------------------------------------------------------- */
 
 	void ChartTab::scoreButtonClicked(bool checked)

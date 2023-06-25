@@ -43,6 +43,7 @@
 #include "BitmapInfo.h"
 #include "RegisterEngine.h"
 #include "LiveSettings.h"
+#include "dssliveenums.h"
 
 namespace DSS
 {
@@ -189,29 +190,30 @@ namespace DSS
 				strText += "\n";
 				emit writeToLog(strText,
 					true);
+				emit fileRegistered(lfi);
 				emit setImageInfo(name, II_DONTSTACK_NONE);
 
 				QString warning;
 
-				if(imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
+				if (imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
 				{
 					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(name).arg(warning);
-					emit writeToLog(strText, true, false, false, qRgb(208, 127, 0));
-					emit handleWarning(warning);
+					emit writeToLog(strText, true, false, false, QColorConstants::Svg::orange);
+					emit handleWarning(strText);
 				};
-
+				
 				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
 				{
 					// Check against stacking conditions before adding it to
 					// the stack list
-					emit fileRegistered(lfi);
+					emit addToStackingQueue(lfi);
 				}
 				else
 				{
 					strText = tr("Image %1 is not stackable (%2)\n", "IDS_LOG_IMAGENOTSTACKABLE1").arg(name).arg(strText);
 					emit writeToLog(strText, true, true, false, Qt::red);
 					emit fileNotStackable(file);
-				};
+				}
 
 			}
 			else
@@ -283,7 +285,7 @@ namespace DSS
 		{
 			if (fScore < liveSettings->GetScore())
 			{
-				result = false;
+				result = true;
 				warning = tr("Score (%1) is less than %2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
 				emit setImageInfo(name, II_WARNING_SCORE);
 			};
@@ -293,7 +295,7 @@ namespace DSS
 		{
 			if (fStarCount < liveSettings->GetStars())
 			{
-				result = false;
+				result = true;
 				warning = tr("Star count(%1) is less than %2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
 				emit setImageInfo(name, II_WARNING_STARS);
 			};
@@ -303,7 +305,7 @@ namespace DSS
 		{
 			if (fFWHM > liveSettings->GetFWHM())
 			{
-				result = false;
+				result = true;
 				warning = tr("FWHM (%1 pixels) is greater than %2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_FWHM);
 			};
@@ -313,7 +315,7 @@ namespace DSS
 		{
 			if (fSkyBackground > liveSettings->GetSkyBackground())
 			{
-				result = false;
+				result = true;
 				warning = tr("Sky Background (%1%) is greater than %2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_SKYBACKGROUND);
 			};
