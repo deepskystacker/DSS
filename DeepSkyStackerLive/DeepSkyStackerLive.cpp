@@ -579,6 +579,16 @@ void DeepSkyStackerLive::onInitialise()
 	font.setWeight(QFont::Medium);
 	imageList->horizontalHeader()->setFont(font);
 
+	//
+	// Reduce the row height somewhat, as the default is a bit "fat"
+	//
+	QHeaderView* verticalHeader = imageList->verticalHeader();
+	double height = verticalHeader->defaultSectionSize();
+	height *= 0.734;		// reduce height (if the default is 30 this reduces it to 22)
+	// Need to set minimum size as well (otherwise default size may be smaller).
+	verticalHeader->setMinimumSectionSize(height);
+	verticalHeader->setDefaultSectionSize(height);
+
 	// 
 	// Set image list headers and their alignments
 	//
