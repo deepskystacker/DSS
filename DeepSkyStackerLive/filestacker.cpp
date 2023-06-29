@@ -231,7 +231,7 @@ namespace DSS
 				lfi.m_BilinearParameters.Offsets(dX, dY);
 				angle = lfi.m_BilinearParameters.Angle(lfi.RenderedWidth()) * 180.0 / M_PI;
 				emit setImageOffsets(name, dX, dY, angle);
-				emit setImageInfo(name, II_DONTSTACK_NONE);
+				emit setImageInfo(name, II_DONTSTACK_STACK);
 
 				if(imageWarning(lfi.filePath, dX, dY, angle, warning))
 				{

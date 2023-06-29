@@ -191,7 +191,7 @@ namespace DSS
 				emit writeToLog(strText,
 					true);
 				emit fileRegistered(lfi);
-				emit setImageInfo(name, II_DONTSTACK_NONE);
+				emit setImageInfo(name, II_DONTSTACK_REGISTER);
 
 				QString warning;
 

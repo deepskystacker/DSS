@@ -555,14 +555,16 @@ namespace DSS
 			setPoint(name, PT_REFERENCE, CT_DY);
 			setPoint(name, PT_REFERENCE, CT_ANGLE);
 			break;
-		case II_DONTSTACK_NONE:
+		case II_DONTSTACK_REGISTER:
 			setPoint(name, PT_OK, CT_SCORE);
 			setPoint(name, PT_OK, CT_FWHM);
 			setPoint(name, PT_OK, CT_STARS);
+			setPoint(name, PT_OK, CT_SKYBACKGROUND);
+			break;
+		case II_DONTSTACK_STACK:
 			setPoint(name, PT_OK, CT_DX);
 			setPoint(name, PT_OK, CT_DY);
 			setPoint(name, PT_OK, CT_ANGLE);
-			setPoint(name, PT_OK, CT_SKYBACKGROUND);
 			break;
 		case II_DONTSTACK_SCORE:
 			setPoint(name, PT_WRONG, CT_SCORE);
