@@ -278,7 +278,7 @@ namespace DSS
 		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
 
 		/*!
-        \fn void SelectRect::setGeometry(const QRect &rect)
+        \fn void EditStars::setGeometry(const QRect &rect)
 
         Sets the geometry of to \a rect, specified in the coordinate system
         of its parent widget.
