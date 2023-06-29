@@ -235,8 +235,6 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
 	linkColour{ palette().color(QPalette::ColorRole::Link).name() },
-	stackedImageViewer {nullptr},
-	lastImageViewer {nullptr},
 	folderMonitor { nullptr },
 	fileRegistrar { nullptr },
 	fileStacker{ nullptr },
@@ -545,6 +543,11 @@ void DeepSkyStackerLive::onInitialise()
 	//
 	stackedImage->information->setText(tr("No stacked image", "IDS_NOSTACKEDIMAGE"));
 	lastImage->information->setText(tr("No image loaded", "IDS_NOIMAGELOADED"));
+
+	//
+	// Enable footprint display for the stacked image viewer
+	//
+	stackedImage->enableFootprint();
 
 	//
 	// Similarly for the copy to clipboard messages in the image viewers
@@ -1271,9 +1274,9 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::setImageFootprint([[maybe_unused]] QPointF p1, [[maybe_unused]] QPointF p2, [[maybe_unused]] QPointF p3, [[maybe_unused]] QPointF p4)
+void DeepSkyStackerLive::setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4)
 {
-	// TODO
+	stackedImage->setFootprint(p1, p2, p3, p4);
 }
 
 

@@ -177,8 +177,8 @@ namespace DSS
 
 	void ChartTab::setPoint([[maybe_unused]] const QString& name, [[maybe_unused]] POINTTYPE pointType, [[maybe_unused]] CHARTTYPE chartType)
 	{
-		qDebug() << __FUNCTION__ << " name " << name << Qt::endl
-			<< " pointType " << pointType << " chartType " << chartType;
+		//qDebug() << __FUNCTION__ << " name " << name << Qt::endl
+		//	<< " pointType " << pointType << " chartType " << chartType;
 		//
 		// i is the index into the list of files
 		//

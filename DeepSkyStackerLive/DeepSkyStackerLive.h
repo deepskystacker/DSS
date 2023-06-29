@@ -139,8 +139,6 @@ private:
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
 	QShortcut* helpShortCut;
 	QString linkColour;
-	DSS::ImageViewer* stackedImageViewer;
-	DSS::ImageViewer* lastImageViewer;
 	QString monitoredFolder;
 	DSS::FolderMonitor* folderMonitor;
 	QStringList validExtensions;

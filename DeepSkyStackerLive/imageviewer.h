@@ -44,6 +44,7 @@
 namespace DSS
 {
 	class LiveSettings;
+	class Footprint;
 
 	class ImageViewer :
 		public QWidget,
@@ -72,13 +73,16 @@ namespace DSS
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
 		void stackedImageSaved();
-
+		void enableFootprint();
+		void setFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
+		void clearFootprint();
 
 	private:
 		bool initialised;
 		LiveSettings* liveSettings;
 		fs::path fileToShow;
 		GammaTransformation	gammaTransformation;
+		Footprint* footPrint;
 
 		LoadedImage		loadedImage;
 		std::weak_ptr<CMemoryBitmap> bitmapPendingSave;
@@ -88,8 +92,5 @@ namespace DSS
 	private slots:
 		void saveClicked();
 		void copyStackedImage();
-
-
-
 	};
 }

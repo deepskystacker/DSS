@@ -206,12 +206,12 @@
     <ClCompile Include="fileregistrar.cpp" />
     <ClCompile Include="filestacker.cpp" />
     <ClCompile Include="foldermonitor.cpp" />
+    <ClCompile Include="footprint.cpp" />
     <ClCompile Include="imageviewer.cpp" />
     <ClCompile Include="LiveSettings.cpp" />
     <ClCompile Include="progresslive.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
     <ClCompile Include="settingstab.cpp" />
-    <ClCompile Include="StackedSink.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -249,12 +249,12 @@
     <ClInclude Include="dssliveenums.h" />
     <QtMoc Include="filestacker.h" />
     <QtMoc Include="imageviewer.h" />
+    <QtMoc Include="footprint.h" />
     <ClInclude Include="LiveSettings.h" />
     <QtMoc Include="progresslive.h" />
     <ClInclude Include="resource.h" />
     <QtMoc Include="settingstab.h" />
     <QtMoc Include="RestartMonitoring.h" />
-    <ClInclude Include="StackedSink.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

@@ -36,9 +36,6 @@
     <ClCompile Include="LiveSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StackedSink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,6 +75,9 @@
     <ClCompile Include="ChartTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="footprint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -87,9 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StackedSink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LiveSettings.h">
@@ -261,6 +258,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ChartTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="footprint.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

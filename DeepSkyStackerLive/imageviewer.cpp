@@ -39,6 +39,7 @@
 #include "imageviewer.h"
 #include "DeepSkyStackerLive.h"
 #include "LiveSettings.h"
+#include "footprint.h"
 
 namespace DSS
 {
@@ -193,6 +194,7 @@ namespace DSS
 		if (loadedImage.m_Image->isNull())
 		{
 			picture->clear();
+			clearFootprint();
 			return;
 		}
 		if (gammaTransformation.isInitialized())
@@ -243,5 +245,23 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void ImageViewer::enableFootprint()
+	{
+		footPrint = new Footprint(picture);
+	}
 
-}
+	/* ------------------------------------------------------------------- */
+
+	void ImageViewer::setFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
+	{
+		if (footPrint)
+			footPrint->setFootprint(pt1, pt2, pt3, pt4);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void ImageViewer::clearFootprint()
+	{
+		if (footPrint)
+			footPrint->clearFootprint();
+	}; }
