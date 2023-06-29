@@ -192,7 +192,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>4</number>
      </property>
      <widget class="DSS::ImageViewer" name="stackedImage">
       <property name="sizePolicy">

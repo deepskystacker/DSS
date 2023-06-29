@@ -653,7 +653,11 @@ void DeepSkyStackerLive::onInitialise()
 	//
 	imageList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	tabWidget->setCurrentIndex(0);
+
+	//
+	// Set the active tab to be the message log.
+	//
+	tabWidget->setCurrentIndex(4);
 
 	//
 	// Finally create our worker threads
