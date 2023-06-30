@@ -89,5 +89,6 @@ namespace DSS
 		void applyChanges();
 		void cancelChanges();
 		void settingChanged();
+		void retainTraceFile_Clicked(bool checked);
 	};
 }

@@ -423,8 +423,6 @@ void DeepSkyStackerLive::makeLinks()
 void DeepSkyStackerLive::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-
-	traceControl.setDeleteOnExit(false);
 	//
 	// Connect Qt Signals to appropriate slots
 	//
@@ -1606,6 +1604,15 @@ int main(int argc, char* argv[])
 	QCoreApplication::setOrganizationName("DeepSkyStacker");
 	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 	QCoreApplication::setApplicationName("DeepSkyStacker5");
+
+	//
+	// Set up retention of the trace based on user settings
+	//
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	auto retainTrace{ settings.value("RetainTraceFile", false).toBool() };
+	traceControl.setDeleteOnExit(!retainTrace);
+	settings.endGroup();
 
 	//
 	// Set the Qt Application Style

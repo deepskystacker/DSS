@@ -39,6 +39,7 @@
 #include "LiveSettings.h"
 #include "settingstab.h"
 #include "emailsettings.h"
+#include "tracecontrol.h"
 
 namespace
 {
@@ -55,6 +56,8 @@ namespace
 		makeLink(label, color, label->text());
 	}
 }
+
+extern DSS::TraceControl traceControl;
 namespace DSS
 {
 	SettingsTab::SettingsTab(QWidget* parent)
@@ -160,6 +163,9 @@ namespace DSS
 			this, &SettingsTab::setStackedOutputFolder);
 		connect(resetOutputFolder, &QPushButton::pressed, this, &SettingsTab::resetOutputFolder_Pressed);
 
+		connect(retainTraceFile, &QCheckBox::clicked,
+			this, &SettingsTab::retainTraceFile_Clicked);
+
 		connect(processRaw, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(processTIFF, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(processFITS, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
@@ -262,6 +268,10 @@ namespace DSS
 			stackedOutputFolder->setText(strStackedOutputFolder);
 		else
 			stackedOutputFolder->setText(tr("Click here to select the stacked image output folder", "IDC_STACKEDOUTPUTFOLDER"));
+
+		QSettings settings;
+		auto retainTrace{ settings.value("DeepSkyStackerLive/RetainTraceFile", false).toBool() };
+		retainTraceFile->setChecked(retainTrace);
 
 		processRaw->setChecked(liveSettings.IsProcess_RAW());
 		processTIFF->setChecked(liveSettings.IsProcess_TIFF());
@@ -462,4 +472,14 @@ namespace DSS
 	{
 		resetEmailCount->setVisible(true);
 	}
+
+	void SettingsTab::retainTraceFile_Clicked(bool checked)
+	{
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		settings.setValue("RetainTraceFile", checked);
+		settings.endGroup();
+		traceControl.setDeleteOnExit(!checked);
+	}
+
 }

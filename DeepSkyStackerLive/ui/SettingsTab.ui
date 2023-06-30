@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>886</width>
-    <height>623</height>
+    <width>917</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,8 +36,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>750</width>
-        <height>603</height>
+        <width>764</width>
+        <height>623</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -700,19 +700,26 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>83</height>
+           <height>105</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>83</height>
+           <height>105</height>
           </size>
          </property>
          <property name="title">
           <string>Options</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="saveStackedImage">
+            <property name="text">
+             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="QLineEdit" name="imageCount">
             <property name="maximumSize">
@@ -726,10 +733,30 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0" colspan="2">
-           <widget class="QCheckBox" name="saveStackedImage">
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_8">
             <property name="text">
-             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
+             <string>images</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Output folder:</string>
             </property>
            </widget>
           </item>
@@ -756,30 +783,10 @@
             </property>
            </spacer>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_9">
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="retainTraceFile">
             <property name="text">
-             <string>Output folder:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="5">
-           <spacer name="horizontalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>images</string>
+             <string>Retain the trace file on exit</string>
             </property>
            </widget>
           </item>
