@@ -225,9 +225,6 @@
     <ClCompile Include="progressdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageListModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -930,9 +927,6 @@
       <Filter>Tools</Filter>
     </QtMoc>
     <QtMoc Include="progressdlg.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ImageListModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

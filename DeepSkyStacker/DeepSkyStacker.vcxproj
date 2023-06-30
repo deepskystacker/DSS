@@ -295,7 +295,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="editstars.cpp" />
-    <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="ImageProperties.cpp" />
     <ClCompile Include="ImageSinks.cpp">
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
@@ -433,7 +432,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="editstars.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
-    <QtMoc Include="ImageListModel.h" />
     <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="mrulist.h" />

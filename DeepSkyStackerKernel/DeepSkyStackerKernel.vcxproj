@@ -232,6 +232,7 @@
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
+    <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="imageloader.cpp" />
     <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
@@ -285,6 +286,7 @@
     <ClInclude Include=".\group.h" />
     <ClInclude Include=".\Histogram.h" />
     <ClInclude Include="ExceptionHandling.h" />
+    <QtMoc Include="ImageListModel.h" />
     <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
     <ClInclude Include=".\MasterFrames.h" />

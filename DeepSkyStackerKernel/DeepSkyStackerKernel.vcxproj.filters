@@ -200,6 +200,9 @@
     <ClCompile Include="StackWalker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ImageListModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -460,6 +463,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="imageloader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageListModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
