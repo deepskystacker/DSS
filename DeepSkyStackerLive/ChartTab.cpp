@@ -354,9 +354,9 @@ namespace DSS
 
 		yAxis = axisY(scoreChart);
 		if (fScore > yAxis->max())
-			yAxis->setMax(fScore * 1.1);
+			yAxis->setMax(fScore > 0 ? fScore * 1.1 : fScore * 0.9);
 		if (fScore < yAxis->min())
-			yAxis->setMin(fScore);
+			yAxis->setMin(fScore > 0 ? fScore * 0.9 : fScore * 1.1);
 
 		//
 		// Add the score and update the score chart
@@ -375,9 +375,9 @@ namespace DSS
 
 		yAxis = axisY(fwhmChart);
 		if (fFWHM > yAxis->max())
-			yAxis->setMax(fFWHM * 1.1);
+			yAxis->setMax(fFWHM > 0 ? fFWHM * 1.1 : fFWHM * 0.9);
 		if (fFWHM < yAxis->min())
-			yAxis->setMin(fFWHM);
+			yAxis->setMin(fFWHM > 0 ? fFWHM * 0.9 : fFWHM * 1.1);
 
 		//
 		// Add the FWHM and update the FWHM chart
@@ -396,9 +396,9 @@ namespace DSS
 
 		yAxis = axisY(starsChart);
 		if (fStars > yAxis->max())
-			yAxis->setMax(fStars * 1.1);
+			yAxis->setMax(fStars > 0 ? fStars * 1.1 : fStars * 0.9);
 		if (fStars < yAxis->min())
-			yAxis->setMin(fStars);
+			yAxis->setMin(fStars > 0 ? fStars * 0.9 : fStars * 1.1);
 
 		//
 		// Add the star count and update the stars chart
@@ -417,9 +417,9 @@ namespace DSS
 
 		yAxis = axisY(skybgChart);
 		if (fSkyBackground > yAxis->max())
-			yAxis->setMax(fSkyBackground * 1.1);
+			yAxis->setMax(fSkyBackground > 0 ? fSkyBackground * 1.1 : fSkyBackground * 0.9);
 		if (fSkyBackground < yAxis->min())
-			yAxis->setMin(fSkyBackground);
+			yAxis->setMin(fSkyBackground > 0 ? fSkyBackground * 0.9 : fSkyBackground * 1.1);
 
 		//
 		// Add the sky background and update the sky background chart
@@ -498,14 +498,14 @@ namespace DSS
 
 		yAxis = axisY(offsetChart);
 		if (fdX > yAxis->max())
-			yAxis->setMax(fdX * 1.1);
+			yAxis->setMax(fdX > 0 ? fdX * 1.1 : fdX * 0.9);
 		if (fdX < yAxis->min())
-			yAxis->setMin(fdX);
+			yAxis->setMin(fdX > 0 ? fdX * 0.9 : fdX * 1.1);
 
 		if (fdY > yAxis->max())
-			yAxis->setMax(fdY * 1.1);
+			yAxis->setMax(fdY > 0 ? fdY * 1.1 : fdY * 0.9);
 		if (fdY < yAxis->min())
-			yAxis->setMin(fdY);
+			yAxis->setMin(fdY > 0 ? fdY * 0.9 : fdY * 1.1);
 
 		//
 		// Add dX and dY values and update the offset chart
@@ -526,9 +526,9 @@ namespace DSS
 
 		yAxis = axisY(angleChart);
 		if (fAngle > yAxis->max())
-			yAxis->setMax(fAngle * 1.1);
+			yAxis->setMax(fAngle > 0 ? fAngle * 1.1 : fAngle * 0.9);
 		if (fAngle < yAxis->min())
-			yAxis->setMin(fAngle);
+			yAxis->setMin(fAngle > 0 ? fAngle * 0.9 : fAngle * 1.1);
 
 		//
 		// Add angle value 
