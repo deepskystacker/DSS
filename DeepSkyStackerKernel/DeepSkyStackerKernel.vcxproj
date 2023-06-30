@@ -215,10 +215,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include=".\ImageListModel.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include=".\MasterFrames.cpp" />
     <ClCompile Include=".\MatchingStars.cpp" />
     <ClCompile Include=".\MedianFilterEngine.cpp" />
@@ -291,7 +287,6 @@
     <ClInclude Include="ExceptionHandling.h" />
     <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
-    <QtMoc Include=".\ImageListModel.h" />
     <ClInclude Include=".\MasterFrames.h" />
     <ClInclude Include=".\MatchingStars.h" />
     <ClInclude Include=".\MemoryBitmap.h" />

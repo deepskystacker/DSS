@@ -125,9 +125,6 @@
     <ClCompile Include=".\FrameList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\ImageListModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\BitMapFiller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -462,9 +459,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include=".\ImageListModel.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="imageloader.h">
       <Filter>Header Files</Filter>
     </QtMoc>
