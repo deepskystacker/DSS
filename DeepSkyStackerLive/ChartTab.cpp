@@ -114,7 +114,7 @@ namespace DSS
 		yAxis = axisY(starsChart);
 		xAxis->setLabelFormat("%d");
 		xAxis->setTickType(QValueAxis::TicksDynamic);
-		yAxis->setRange(0, 1000);
+		yAxis->setRange(0, 250);
 
 		xAxis = axisX(offsetChart);
 		yAxis = axisY(offsetChart);
@@ -126,7 +126,7 @@ namespace DSS
 		yAxis = axisY(angleChart);
 		xAxis->setLabelFormat("%d");
 		xAxis->setTickType(QValueAxis::TicksDynamic);
-		yAxis->setRange(0.01, 0.01);
+		yAxis->setRange(-0.005, 0.005);
 
 		xAxis = axisX(skybgChart);
 		yAxis = axisY(skybgChart);
@@ -177,8 +177,6 @@ namespace DSS
 
 	void ChartTab::setPoint([[maybe_unused]] const QString& name, [[maybe_unused]] POINTTYPE pointType, [[maybe_unused]] CHARTTYPE chartType)
 	{
-		//qDebug() << __FUNCTION__ << " name " << name << Qt::endl
-		//	<< " pointType " << pointType << " chartType " << chartType;
 		//
 		// i is the index into the list of files
 		//
