@@ -797,7 +797,7 @@ void CStackingEngine::ComputeOffsets()
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
+bool	CStackingEngine::isLightFrameStackable(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -805,7 +805,7 @@ bool	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
 
 	for (int i = 0;i<m_vBitmaps.size() && !bResult;i++)
 	{
-		if (!m_vBitmaps[i].filePath.compare(szFile))
+		if (!m_vBitmaps[i].filePath.compare(file))
 		{
 			if (!m_vBitmaps[i].m_bDisabled)
 				bResult = true;
@@ -831,7 +831,7 @@ bool	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 			//for (j = 0; j < LightTask.m_vBitmaps.size(); j++)
 			for (const auto& bitmap : LightTask.m_vBitmaps)
 			{
-				if (IsLightFrameStackable(bitmap.filePath.c_str()))
+				if (isLightFrameStackable(bitmap.filePath))
 					vNewList.push_back(bitmap);
 			};
 
@@ -1046,13 +1046,13 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect & rc)
 };
 
 /* ------------------------------------------------------------------- */
-int CStackingEngine::FindBitmapIndex(LPCTSTR szFile)
+int CStackingEngine::findBitmapIndex(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	for (size_t i = 0; i < m_vBitmaps.size(); i++)
 	{
-		if (m_vBitmaps[i].filePath.compare(szFile) == 0)
+		if (m_vBitmaps[i].filePath.compare(file) == 0)
 		{
 			return static_cast<int>(i);
 		}
@@ -2151,7 +2151,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					{
 						if (lightTaskNdx >= pStackingInfo->m_pLightTask->m_vBitmaps.size())
 							return { {}, -1 };
-						const int bitmapNdx = FindBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightTaskNdx].filePath.c_str());
+						const int bitmapNdx = findBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightTaskNdx].filePath);
 						if (bitmapNdx < 0)
 							return { {}, -1 };
 						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
@@ -2214,9 +2214,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						}
 
 						if (lightframeInfo.m_lNrChannels == 3)
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(QString::fromStdU16String(lightframeInfo.filePath.generic_u16string()));
 						else
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(QString::fromStdU16String(lightframeInfo.filePath.generic_u16string()));
 
 						ZTRACE_RUNTIME(strText);
 						// First apply transformations

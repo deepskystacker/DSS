@@ -221,7 +221,7 @@ private:
 	bool	AddLightFramesToList(CAllStackingTasks & tasks);
 	void	ComputeMissingCometPositions();
 	void	ComputeOffsets();
-	bool	IsLightFrameStackable(LPCTSTR szFile);
+	bool	isLightFrameStackable(const fs::path& file);
 	bool	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
 	void	GetResultISOSpeed();
 	void	GetResultGain();
@@ -229,7 +229,7 @@ private:
 	void	GetResultExtraInfo();
 	DSSRect	computeLargestRectangle();
 	bool	computeSmallestRectangle(DSSRect & rc);
-	int	FindBitmapIndex(LPCTSTR szFile);
+	int	findBitmapIndex(const fs::path& file);
 	void	ComputeBitmap();
 	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
 	bool StackAll(CAllStackingTasks & tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap);
