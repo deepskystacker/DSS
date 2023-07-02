@@ -248,10 +248,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
-    <ClCompile Include="..\Tools\FolderDlg.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\Gradient.cpp" />
     <ClCompile Include="..\Tools\GradientCtrl.cpp" />
     <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
@@ -400,7 +396,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
     <ClInclude Include="..\Tools\EasySize.h" />
-    <ClInclude Include="..\Tools\FolderDlg.h" />
     <ClInclude Include="..\Tools\Gradient.h" />
     <ClInclude Include="..\Tools\gradientctrl.h" />
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />

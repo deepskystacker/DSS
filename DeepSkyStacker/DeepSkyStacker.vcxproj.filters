@@ -138,9 +138,6 @@
     <ClCompile Include="..\Tools\ControlPos.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\FolderDlg.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\Gradient.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -335,9 +332,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\EasySize.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\FolderDlg.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\Gradient.h">
