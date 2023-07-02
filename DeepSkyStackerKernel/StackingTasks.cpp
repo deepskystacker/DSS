@@ -334,7 +334,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 				if (!success)
 					continue;
 
-				strText = QCoreApplication::translate("StackingTasks", "Adding Offset frame %1 of %2", "IDS_ADDOFFSET").arg(static_cast<int>(i)).arg(m_pOffsetTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Offset frame %1 of %2", "IDS_ADDOFFSET").arg(static_cast<int>(1+i)).arg(m_pOffsetTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -496,7 +496,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 				if (!success)
 					continue;
 
-				strText = QCoreApplication::translate("StackingTasks", "Adding Dark frame %1 of %2", "IDS_ADDDARK").arg(static_cast<int>(i)).arg(m_pDarkTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Dark frame %1 of %2", "IDS_ADDDARK").arg(static_cast<int>(1+i)).arg(m_pDarkTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
@@ -659,7 +659,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 			{
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				strText = QCoreApplication::translate("StackingTasks", "Adding Dark Flat frame %1 of %2", "IDS_ADDDARKFLAT").arg(static_cast<int>(i)).arg(m_pDarkFlatTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Dark Flat frame %1 of %2", "IDS_ADDDARKFLAT").arg(static_cast<int>(1+i)).arg(m_pDarkFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
@@ -1083,7 +1083,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				if (!success)
 					continue;
 
-				strText = QCoreApplication::translate("StackingTasks", "Adding Flat frame %1 of %2", "IDS_ADDFLAT").arg(static_cast<int>(i)).arg(m_pFlatTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Flat frame %1 of %2", "IDS_ADDFLAT").arg(static_cast<int>(1+i)).arg(m_pFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 				if (pProgress)
