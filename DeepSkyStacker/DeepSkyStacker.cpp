@@ -37,6 +37,9 @@
 //
 #include <stdafx.h>
 #include <htmlhelp.h>
+#include <boost/interprocess/sync/named_mutex.hpp>
+
+namespace bip = boost::interprocess;
 
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
