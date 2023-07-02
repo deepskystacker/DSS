@@ -263,7 +263,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	dlg.Start1(string, 0, false);
 	dlg.SetJointProgress(true);
-	fi.RegisterPicture(CString(firstLightFrame.toStdWString().c_str()), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
+	fi.RegisterPicture(firstLightFrame, static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
 
 	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());

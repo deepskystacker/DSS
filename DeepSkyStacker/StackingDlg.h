@@ -209,7 +209,7 @@ namespace DSS
 			return frameList.checkedImageCount(t);
 		}
 
-		inline QString getFirstCheckedLightFrame()
+		inline fs::path getFirstCheckedLightFrame()
 		{
 			return frameList.getFirstCheckedLightFrame();
 		}
