@@ -89,10 +89,10 @@ namespace DSS
 	private:
 		QString progress1Text;
 		QString progress2Text;
-		LONG total1;
-		LONG total2;
-		LONG achieved1;
-		LONG achieved2;
+		int total1;
+		int total2;
+		int achieved1;
+		int achieved2;
 		QRecursiveMutex mutex;
 	};
 }

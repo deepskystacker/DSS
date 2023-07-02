@@ -51,7 +51,11 @@ namespace
 namespace DSS
 {
 	ProgressLive::ProgressLive(QObject* parent)
-		: QObject(parent)
+		: QObject(parent),
+		total1{ 0 },
+		total2{ 0 },
+		achieved1{ 0 },
+		achieved2{ 0 }
 	{}
 
 	ProgressLive::~ProgressLive()
@@ -76,7 +80,7 @@ namespace DSS
 	{
 		if (!text.isEmpty())
 			progress1Text = text;
-		if (((double)(lAchieved1 - achieved1) / (double)total1) > 0.10)
+		if ((static_cast<double>(lAchieved1) - static_cast<double>(achieved1)) / static_cast<double>(total1) > 0.10)
 		{
 			emit progress(progress1Text, lAchieved1, total1);
 			achieved1 = lAchieved1;
@@ -104,7 +108,7 @@ namespace DSS
 	{
 		if (!text.isEmpty())
 			progress2Text = text;
-		if ((((double)(lAchieved2 - achieved2) / (double)total2) > 0.10) ||
+		if ((static_cast<double>(lAchieved2) - static_cast<double>(achieved2)) / static_cast<double>(total2) > 0.10 ||
 			(lAchieved2 == total2))
 		{
 			emit progress(progress2Text, lAchieved2, total2);

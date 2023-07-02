@@ -721,7 +721,7 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 			selectedPeg = STARTPEG;
 			break;
 		default:
-			if (selectedPeg + 1 >= stops.size())
+			if (selectedPeg + 1 >= static_cast<int>(stops.size()))
 				selectedPeg = ENDPEG;
 			else selectedPeg++;
 		}
