@@ -357,7 +357,6 @@ public:
 
 private :
 	bool	AskToSave();
-	void	SaveDSImage();
 	void	ProcessAndShow(bool bSaveUndo = true);
 
 	void	ResetSliders();

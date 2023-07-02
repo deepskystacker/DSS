@@ -155,7 +155,6 @@ private :
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	bool	LoadDSImage(LPCTSTR szStackedFile, DSS::ProgressBase * pProgress = nullptr);
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 

@@ -286,83 +286,6 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, ProgressBase * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
-	FILE *			hFile;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
-
-	QString strText(QCoreApplication::translate("StackedBitmap", "Loading DSImage", "IDS_LOADDSIMAGE"));
-	if (pProgress)
-		pProgress->Start1(strText, 0, false);
-
-	hFile = _tfopen(szStackedFile, _T("rb"));
-	if (hFile)
-	{
-		HDSTACKEDBITMAPHEADER	Header;
-		int					lProgress = 0;
-
-		if (pProgress)
-		{
-			strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(szStackedFile);
-			pProgress->Progress1(strText, 0);
-		};
-
-		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSTACKEDBITMAP_MAGIC) &&
-			(Header.dwHeaderSize == sizeof(Header)))
-		{
-			m_lWidth	= Header.lWidth;
-			m_lHeight	= Header.lHeight;
-			m_lNrBitmaps= Header.lNrBitmaps;
-			m_lTotalTime= Header.lTotalTime;
-			m_lISOSpeed = Header.lISOSpeed;
-			m_lGain     = Header.lGain;
-
-			Allocate(Header.lWidth, Header.lHeight, false);
-
-			if (pProgress)
-				pProgress->Start1(m_lWidth * m_lHeight, false);
-
-			for (int i = 0;i<m_vRedPlane.size();i++)
-			{
-				lProgress++;
-				if (pProgress)
-					pProgress->Progress1(lProgress);
-
-				fread(&m_vRedPlane[i], sizeof(float), 1, hFile);
-				fread(&m_vGreenPlane[i], sizeof(float), 1, hFile);
-				fread(&m_vBluePlane[i], sizeof(float), 1, hFile);
-			};
-
-			bResult = true;
-			m_BezierAdjust.Reset();
-			m_HistoAdjust.Reset();
-		}
-		else
-		{
-
-			printf("Wrong header in %s\n", strFile);
-			ZTRACE_RUNTIME("Wrong header in %s", strFile);
-		};
-		fclose(hFile);
-	}
-	else
-	{
-		printf("Cannot open %s\n", strFile);
-		ZTRACE_RUNTIME("Cannot open%s", strFile);
-	}
-
-
-	if (pProgress)
-		pProgress->Close();
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
 void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -693,7 +616,7 @@ bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 			return false;
 	}
 	else
-		return LoadDSImage(szStackedFile, pProgress);
+		return false;
 };
 
 /* ------------------------------------------------------------------- */
