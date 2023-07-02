@@ -207,7 +207,7 @@ namespace DSS
 		return QString();
 	}
 
-	QString FrameList::getFirstCheckedLightFrame() const
+	fs::path FrameList::getFirstCheckedLightFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
@@ -215,12 +215,12 @@ namespace DSS
 			{
 				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked)
 				{
-					return QString::fromStdU16String(it->filePath.generic_u16string());
+					return it->filePath;
 				}
 			}
 		}
 
-		return QString();
+		return fs::path();
 	}
 
 	void FrameList::fillTasks(CAllStackingTasks& tasks)

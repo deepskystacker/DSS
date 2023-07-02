@@ -1192,11 +1192,11 @@ void CLightFrameInfo::RegisterPicture()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
+void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
-	filePath = fs::path(szBitmap);
+	filePath = bitmap;
 	m_fMinLuminancy		= fMinLuminancy;
 	m_fBackground		= 0.0;
 	m_bRemoveHotPixels  = bRemoveHotPixels;

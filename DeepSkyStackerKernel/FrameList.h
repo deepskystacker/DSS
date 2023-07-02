@@ -86,7 +86,7 @@ namespace DSS
 			return imageGroups.size();
 		}
 
-		QString getFirstCheckedLightFrame() const;
+		fs::path getFirstCheckedLightFrame() const;
 
 		inline QString groupName(const int id) const
 		{

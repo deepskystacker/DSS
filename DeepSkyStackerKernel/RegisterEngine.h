@@ -243,7 +243,7 @@ public:
 	}
 
 	void RegisterPicture(CMemoryBitmap* pBitmap);
-	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, DSS::ProgressBase* pProgress = nullptr);
+	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, DSS::ProgressBase* pProgress = nullptr);
 	void SaveRegisteringInfo();
 
 private:

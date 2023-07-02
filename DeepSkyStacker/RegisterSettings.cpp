@@ -61,7 +61,6 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	noOffsets(true),
 	detectionThreshold(0),
 	medianFilter(false),
-	firstLightFrame(""),
 	pStackingTasks(nullptr),
 	settingsOnly(false)
 {
@@ -139,7 +138,7 @@ void RegisterSettings::onInitDialog()
 	}
 
 	// Enable the computeDetected Stars button if there's a stackable light frame
-	ui->computeDetectedStars->setEnabled(!firstLightFrame.isEmpty());
+	ui->computeDetectedStars->setEnabled(!firstLightFrame.empty());
 	if (settingsOnly)
 	{
 		ui->recommendedSettings->setEnabled(false);
