@@ -1128,7 +1128,7 @@ bool CTIFFWriter::Write()
 			// int	rowProgress = 0;
 
 			std::atomic_bool stop{ false };
-#pragma omp parallel for default(none)
+#pragma omp parallel for default(none) if(nrProcessors > 1)
 			for (int row = 0; row < h; row++)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
