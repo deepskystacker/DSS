@@ -380,10 +380,15 @@ void PostCalibration::on_testCosmetic_clicked()
 						const double fHotPct = static_cast<double>(Stats.m_lNrDetectedHotPixels) / Stats.m_lNrTotalPixels * 100.0;
 						const double fColdPct = static_cast<double>(Stats.m_lNrDetectedColdPixels) / Stats.m_lNrTotalPixels * 100.0;
 
-						CString	strCosmeticStat;
-						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
-
-						AfxMessageBox(strCosmeticStat, MB_ICONINFORMATION | MB_OK);
+						QString message{ tr("Cosmetic\nDetected Hot Pixels: %L1 (%L2%)\nDetected Cold Pixels: %L3 (%L4%)\n",
+							"IDS_COSMETICSTATS")
+							.arg(Stats.m_lNrDetectedHotPixels)
+							.arg(fHotPct, 0, 'f', 2)
+							.arg(Stats.m_lNrDetectedColdPixels)
+							.arg(fColdPct, 0, 'f', 2)
+						};
+						
+						QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 					}
 
 					dlg.End2();
