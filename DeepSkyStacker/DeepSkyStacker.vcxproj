@@ -256,10 +256,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
       <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
     </ClCompile>
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
@@ -401,7 +397,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <ClInclude Include="..\Tools\Label.h" />
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />

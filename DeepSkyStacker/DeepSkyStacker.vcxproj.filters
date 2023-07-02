@@ -150,9 +150,6 @@
     <ClCompile Include="..\Tools\Label.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -344,9 +341,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\Label.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
