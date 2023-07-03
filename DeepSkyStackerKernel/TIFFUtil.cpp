@@ -1629,10 +1629,9 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		bResult = m_pBitmap->Init(w, h);
 
 		m_pBitmap->SetCFA(cfa);
-		if (cfatype != 0)
+		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
 		{
-			if (C16BitGrayBitmap* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap.get()))
-				pGray16Bitmap->SetCFAType(static_cast<CFATYPE>(cfatype));
+			if (0 != cfatype) pCFABitmapInfo->SetCFAType(static_cast<CFATYPE>(cfatype));
 		}
 
 		m_pBitmap->SetMaster(master);

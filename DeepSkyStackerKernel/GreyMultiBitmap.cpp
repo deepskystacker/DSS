@@ -152,5 +152,8 @@ template class CGrayMultiBitmapT<std::uint32_t>;
 template class CGrayMultiBitmapT<float>;
 template class CGrayMultiBitmapT<double>;
 
+template class CGrayMultiBitmapT<std::uint8_t, float>; 
+template class CGrayMultiBitmapT<std::uint16_t, float>; 
 template class CGrayMultiBitmapT<std::uint32_t, float>;
-template class CGrayMultiBitmapT<std::uint16_t, float>;
+template class CGrayMultiBitmapT<double, float>;
+

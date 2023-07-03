@@ -149,15 +149,18 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		// Check sizes
 		if ((lWidth != bmpInfo.m_lWidth) || (lHeight!=bmpInfo.m_lHeight))
 			bResult = false;
-		if ((lBitPerChannels != bmpInfo.m_lBitsPerChannel) || (lNrChannels != bmpInfo.m_lNrChannels))
+		//if ((lBitPerChannels != bmpInfo.m_lBitsPerChannel) || (lNrChannels != bmpInfo.m_lNrChannels))
+		//	bResult = false;
+		if (lNrChannels != bmpInfo.m_lNrChannels)
 			bResult = false;
+
 		if (!bmpInfo.m_bMaster)
 			bResult = false;
 
 		AddFileVariable(_T("Bitmap.FileName"), szFile);
 		AddVariable(_T("Bitmap.Width"), lWidth);
 		AddVariable(_T("Bitmap.Height"), lHeight);
-		AddVariable(_T("Bitmap.BitPerChannels"), lBitPerChannels);
+		AddVariable(_T("Bitmap.BitPerChannels"), bmpInfo.m_lBitsPerChannel);
 		AddVariable(_T("Bitmap.NrChannels"), lNrChannels);
 
 		if (bFITS)

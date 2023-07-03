@@ -194,9 +194,17 @@ void CColorBitmapT<TType>::Clear()
 template <typename TType>
 std::shared_ptr<CMultiBitmap> CColorBitmapT<TType>::CreateEmptyMultiBitmap() const
 {
-	std::shared_ptr<CColorMultiBitmapT<TType>> pResult = std::make_shared<CColorMultiBitmapT<TType>>();
-	pResult->SetBitmapModel(this);
-	return pResult;
+	std::shared_ptr<CMultiBitmap> result;
+	//
+	// If the input bitmap is 16 bit or 32 bit integer want the output type to be float
+	//
+	if (std::is_same_v<TType, std::uint32_t> || std::is_same_v<TType, std::uint16_t>)
+		result = std::make_shared<CColorMultiBitmapT<TType, float>>();
+	else
+		result = std::make_shared<CColorMultiBitmapT<TType>>();
+
+	result->SetBitmapModel(this);
+	return result;
 }
 
 template <typename TType>
@@ -287,4 +295,3 @@ template class CColorBitmapT<std::uint16_t>;
 template class CColorBitmapT<std::uint32_t>;
 template class CColorBitmapT<float>;
 template class CColorBitmapT<double>;
-template class CColorBitmapT<unsigned short>;
