@@ -2505,8 +2505,6 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	else
 	{
 		extension = ".fit";
-		if (m_vBitmaps.size())
-			extension = m_vBitmaps[0].filePath.extension();
 	}
 	fs::path outputFile{ folder };
 
