@@ -71,12 +71,12 @@ public:
 
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override;
 
-	virtual int BitPerSample() override
+	virtual int BitPerSample() const override
 	{
 		return sizeof(TType) * 8;
 	}
 
-	virtual int IsFloat() override
+	virtual bool IsFloat() const override
 	{
 		return m_bFloat;
 	}

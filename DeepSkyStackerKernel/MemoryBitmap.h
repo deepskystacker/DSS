@@ -131,8 +131,8 @@ public:
 
 	virtual int Width() const = 0;
 	virtual int Height() const = 0;
-	virtual int BitPerSample() = 0;
-	virtual int IsFloat() = 0;
+	virtual int BitPerSample() const = 0;
+	virtual bool IsFloat() const = 0;
 
 	virtual int RealWidth() const
 	{

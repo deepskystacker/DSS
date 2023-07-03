@@ -53,7 +53,7 @@ public:
 		return m_lNrChannels;
 	};
 
-	inline bool	IsFloat() noexcept
+	inline bool	IsFloat() const noexcept
 	{
 		return m_bFloat;
 	};

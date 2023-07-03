@@ -109,12 +109,12 @@ public:
 		return CCFABitmapInfo::GetCFAType();
 	}
 
-	virtual int BitPerSample() override
+	virtual int BitPerSample() const override
 	{
 		return sizeof(TType) * 8;
 	}
 
-	virtual int IsFloat() override
+	virtual bool IsFloat() const override
 	{
 		return m_bFloat;
 	}
