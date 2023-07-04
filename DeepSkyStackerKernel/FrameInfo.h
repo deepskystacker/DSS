@@ -25,12 +25,12 @@ public :
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
-	int				m_lBitPerChannels;
+	int				m_lBitsPerChannel;
 	int				m_lNrChannels;
-	CString				m_strDateTime;
+	QString				m_strDateTime;
 	QDateTime			m_DateTime;
 	bool				m_bMaster;
-	CString				m_strInfos;
+	QString				m_strInfos;
 	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
 	QString				m_filterName;
@@ -105,7 +105,7 @@ public :
 
 	bool IsCompatible(const CFrameInfo & cfi) const
 	{
-		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
+		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitsPerChannel, cfi.m_lNrChannels, cfi.m_CFAType);
 	};
 
 	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);

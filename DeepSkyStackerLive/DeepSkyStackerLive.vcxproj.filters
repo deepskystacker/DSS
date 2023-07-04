@@ -16,12 +16,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{84d72efc-2d1e-4b4c-bbcc-5548631dbce9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tools\ChartCtrl">
-      <UniqueIdentifier>{d16bcf5c-7ba8-426c-8511-b28330c8078d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tools\SMTP">
-      <UniqueIdentifier>{49f47abc-e9dd-4995-a63b-affee1bed0c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Qt">
       <UniqueIdentifier>{c5a27a9c-3aa3-4e06-85fa-10899ddf8ba8}</UniqueIdentifier>
     </Filter>
@@ -31,265 +25,130 @@
     <Filter Include="Qt\ui">
       <UniqueIdentifier>{4abe7899-f800-4251-9c3f-1ebce915fbfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SmtpMime">
+      <UniqueIdentifier>{ba1f9d69-a738-45e1-a63f-5e9ef2baf608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SmtpMime">
+      <UniqueIdentifier>{85303d65-955b-4244-ad43-3022097627c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DeepSkyStackerLive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DeepSkyStackerLiveDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EmailSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LiveEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LiveSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LogTab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RestartMonitoring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StackedSink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BtnST.cpp">
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\ControlPos.cpp">
+    <ClCompile Include="..\Tools\imageview.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\FolderDlg.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="imageviewer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\Gradient.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="settingstab.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrl.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="emailsettings.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="foldermonitor.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\Label.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="fileregistrar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="progresslive.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="DeepSkyStackerLive.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="filestacker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartAxis.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
+    <ClCompile Include="RestartMonitoring.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartAxisLabel.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
+    <ClCompile Include="ChartTab.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartCtrl.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartGrid.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartLegend.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartLineSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartPointsSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ChartCtrl\ChartTitle.cpp">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\Base64.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\PJNSMTP.cpp">
-      <Filter>Tools\SMTP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SMTP\SocMFC.cpp">
-      <Filter>Tools\SMTP</Filter>
+    <ClCompile Include="footprint.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\BtnST.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ControlPos.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\FolderDlg.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Gradient.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\gradientctrl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Label.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartAxis.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartAxisLabel.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartCtrl.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartGrid.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartLegend.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartLineSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartObject.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartPointsSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\ChartCtrl\ChartTitle.h">
-      <Filter>Tools\ChartCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\Base64.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNMD5.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNNTLMAuth.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\PJNSMTP.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SMTP\SocMFC.h">
-      <Filter>Tools\SMTP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeepSkyStackerLiveDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EmailSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LiveEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LiveSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogTab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MainBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RestartMonitoring.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StackedSink.h">
+    <ClInclude Include="LiveSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\emailaddress.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeattachment.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimefile.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimehtml.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimemessage.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimemultipart.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimepart.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\mimetext.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\quotedprintable.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </ClInclude>
+    <ClInclude Include="dssliveenums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\DeepSkyStackerLive.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Tools\hdrdown.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\Tools\hdrup.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\4Corners.png">
@@ -299,6 +158,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\DSS_Icon32%402x.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Monitor-Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Monitor-Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stack-Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stack-Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StopSign.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -347,45 +221,90 @@
     <QtMoc Include="DeepSkyStackerLive.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\imageview.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="imageviewer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="settingstab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </QtMoc>
+    <QtMoc Include="..\include\SmtpMime\smtpclient.h">
+      <Filter>Header Files\SmtpMime</Filter>
+    </QtMoc>
+    <QtMoc Include="emailsettings.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="foldermonitor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="fileregistrar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="progresslive.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="filestacker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RestartMonitoring.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ChartTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="footprint.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts">
+    <QtTranslation Include="i18n\DSSLive_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.cs.ts">
+    <QtTranslation Include="i18n\DSSLive_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.de.ts">
+    <QtTranslation Include="i18n\DSSLive_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.en.ts">
+    <QtTranslation Include="i18n\DSSLive_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.es.ts">
+    <QtTranslation Include="i18n\DSSLive_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.fr.ts">
+    <QtTranslation Include="i18n\DSSLive_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.it.ts">
+    <QtTranslation Include="i18n\DSSLive_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.nl.ts">
+    <QtTranslation Include="i18n\DSSLive_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.pt_BR.ts">
+    <QtTranslation Include="i18n\DSSLive_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ro.ts">
+    <QtTranslation Include="i18n\DSSLive_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ru.ts">
+    <QtTranslation Include="i18n\DSSLive_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.tr.ts">
+    <QtTranslation Include="i18n\DSSLive_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.zh_TW.ts">
+    <QtTranslation Include="i18n\DSSLive_zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>
@@ -401,5 +320,25 @@
     <QtUic Include="ui\DeepSkyStackerLive.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ImageViewer.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\SettingsTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\EmailSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\RestartMonitoring.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ChartTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\SmtpMime\SmtpMime">
+      <Filter>Header Files\SmtpMime</Filter>
+    </None>
   </ItemGroup>
 </Project>

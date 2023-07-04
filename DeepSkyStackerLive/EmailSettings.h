@@ -1,40 +1,37 @@
 #pragma once
-#include "LiveSettings.h"
 
-class CEmailSettings : public CDialog
+#include <QDialog>
+#include "ui_EmailSettings.h"
+
+namespace DSS
 {
-// Construction
-public:
-	CEmailSettings(CWnd* pParent = nullptr);	// standard constructor
+	class LiveSettings;
 
-// Dialog Data
-	enum { IDD = IDD_EMAILSETTINGS };
+	class EmailSettings : public QDialog,
+		public Ui_EmailSettings
+	{
+		Q_OBJECT
+
+			using Inherited = QDialog;
+
+	public:
+		EmailSettings(QWidget* parent);
+		~EmailSettings();
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+		void showEvent(QShowEvent* event) override;
 
-private :
-	CLiveSettings *			m_pLiveSettings;
+	private slots:
+		void showPasswordClicked(bool checked);
+		void save();
+		void test();
 
-	CEdit					m_Object;
-	CEdit					m_SendTo;
-	CEdit					m_SMTP;
-	CEdit					m_Account;
-	CButton					m_SendOnce;
+	private:
+		bool initialised;
+		LiveSettings& liveSettings;
 
-public :
-	void	SetLiveSettings(CLiveSettings * pLiveSettings)
-	{
-		m_pLiveSettings = pLiveSettings;
+		void connectSignalsToSlots();
+		void onInitDialog();
+
 	};
-
-// Implementation
-protected:
-	// Generated message map functions
-	virtual BOOL	OnInitDialog();
-	virtual void    OnOK();
-
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedTest();
-};
+}

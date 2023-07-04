@@ -22,6 +22,7 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
 	DSS::ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage);
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
 std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, DSS::ProgressBase* pProgress = nullptr);
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,7 +127,7 @@ public:
 };
 
 void CopyBitmapToClipboard(HBITMAP hBitmap);
-bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, DSS::ProgressBase* pProgress = nullptr);
+bool LoadPicture(const fs::path& file, CAllDepthBitmap & AllDepthBitmap, DSS::ProgressBase* pProgress = nullptr);
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::ProgressBase* pProgress);
 
 bool	ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);

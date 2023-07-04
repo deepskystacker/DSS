@@ -41,7 +41,7 @@
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "RecommendedSettings.h"
 #include "StackSettings.h"
 #include "RegisterEngine.h"
@@ -61,7 +61,6 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	noOffsets(true),
 	detectionThreshold(0),
 	medianFilter(false),
-	firstLightFrame(""),
 	pStackingTasks(nullptr),
 	settingsOnly(false)
 {
@@ -139,7 +138,7 @@ void RegisterSettings::onInitDialog()
 	}
 
 	// Enable the computeDetected Stars button if there's a stackable light frame
-	ui->computeDetectedStars->setEnabled(!firstLightFrame.isEmpty());
+	ui->computeDetectedStars->setEnabled(!firstLightFrame.empty());
 	if (settingsOnly)
 	{
 		ui->recommendedSettings->setEnabled(false);
@@ -254,7 +253,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::ProgressDlg				dlg;
+	DSS::ProgressDlg dlg{ this };
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);
@@ -264,7 +263,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	dlg.Start1(string, 0, false);
 	dlg.SetJointProgress(true);
-	fi.RegisterPicture(CString(firstLightFrame.toStdWString().c_str()), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
+	fi.RegisterPicture(firstLightFrame, static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
 
 	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());

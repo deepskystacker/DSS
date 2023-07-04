@@ -354,22 +354,32 @@ public:
 	int argumentStart2 = -1;
 	std::vector<int> argumentsAchieved2;
 public:
-	virtual void applyStart1Text(const QString&) override {}
-	virtual void applyStart2Text(const QString&) override {
+
+	virtual void Start1([[maybe_unused]] const QString& szTitle, [[maybe_unused]] int lTotal1, [[maybe_unused]] bool bEnableCancel = true) override {};
+	virtual void Progress1([[maybe_unused]] const QString& szText, [[maybe_unused]] int lAchieved1) override {};
+	virtual void Start2([[maybe_unused]] const QString& szText, [[maybe_unused]] int lTotal2) override {};
+	virtual void Progress2([[maybe_unused]] const QString& szText, [[maybe_unused]] int lAchieved2) override {};
+	virtual void End2() override {};
+	virtual void Close() override {};
+	virtual bool IsCanceled() const override { return false; }
+	virtual bool Warning([[maybe_unused]] const QString& szText) override { return true; };
+
+	virtual void applyStart1Text(const QString&) {}
+	virtual void applyStart2Text(const QString&) {
 		++nrCallsStart2;
 		argumentStart2 = m_total2;
 	}
-	virtual void applyProgress1(int) override {}
-	virtual void applyProgress2(int lAchieved) override {
+	virtual void applyProgress1(int) {}
+	virtual void applyProgress2(int lAchieved) {
 		++nrCallsProgress2;
 		argumentsAchieved2.push_back(lAchieved);
 	}
-	virtual void applyTitleText(const QString&) override {}
-	virtual void initialise() override {}
-	virtual void endProgress2() override {}
-	virtual bool hasBeenCanceled() override { return false; }
-	virtual void closeProgress() override { }
-	virtual bool doWarning(const QString&) override { return true; }
+	virtual void applyTitleText(const QString&) {}
+	virtual void initialise() {}
+	virtual void endProgress2() {}
+	virtual bool hasBeenCanceled() { return false; }
+	virtual void closeProgress() { }
+	virtual bool doWarning(const QString&) { return true; }
 	virtual void applyProcessorsUsed(int) override {};
 };
 

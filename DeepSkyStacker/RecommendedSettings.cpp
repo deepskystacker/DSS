@@ -69,13 +69,20 @@ RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	ui(new Ui::RecommendedSettings),
 	workspace(new Workspace()),
 	pStackingTasks(nullptr),
-	initialised(false)
+	initialised(false),
+	blueColour{ QColorConstants::Svg::deepskyblue }
 {
 	ui->setupUi(this);
 	//
 	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
 	//
 	ui->textBrowser->setOpenLinks(false);
+
+	//
+	// If Windows Dark Theme is active set blueColour to be lightskyblue instead of deepskyblue
+	// 
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+		blueColour = QColorConstants::Svg::lightskyblue;
 }
 
 RecommendedSettings::~RecommendedSettings()
@@ -725,11 +732,13 @@ void RecommendedSettings::fillWithRecommendedSettings()
 	QColor windowTextColour = palette.color(QPalette::WindowText);
 
 	clearText();
+
 	if (pStackingTasks && pStackingTasks->GetNrLightFrames())
 	{
 		size_t					lPosition;
 
 		insertHeader();
+
 		AddRegisterUseOfMedianFilter(vRecommendations);
 
 		lPosition = vRecommendations.size();
@@ -798,7 +807,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			bool				bDifferent = false;
 
 			if (recommendation.breakBefore)
-				insertHTML("<hr>");
+				insertHTML("<hr style=\"background-color:" + windowTextColour.name() + "\">");
 			for (size_t j = 0;j<recommendation.vRecommendations.size() && !bDifferent;j++)
 			{
 				bDifferent = recommendation.vRecommendations[j].differsFromWorkspace();
@@ -809,7 +818,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 				if (recommendation.isImportant)
 					crColor = Qt::darkRed;
 				else
-					crColor = QColor(qRgb(0, 0, 192));
+					crColor = blueColour;
 			}
 			else
 			{
@@ -842,7 +851,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 				{
 					lLastLinkID++;
 					lLinkID = lLastLinkID;
-					insertHTML(ri.recommendation, Qt::darkBlue , false, false, lLinkID);
+					insertHTML(ri.recommendation, blueColour , false, false, lLinkID);
 				};
 				ri.linkID = lLinkID;
 			};

@@ -58,7 +58,6 @@ public :
 		return bResult;
 	};
 
-	void	SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect = nullptr);
 	bool	LoadStackedInfo(LPCTSTR szStackedInfoFile);
 
 	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)

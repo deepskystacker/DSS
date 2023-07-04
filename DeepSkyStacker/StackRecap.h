@@ -36,13 +36,15 @@ private:
 	std::unique_ptr<Workspace> workspace;
 	CAllStackingTasks *pStackingTasks;
 	bool	initialised;
+	QColor windowTextColour;
+	QColor blueColour;
 
 	void CallStackingSettings(int tab = 0);
 
 	//void	clearText();
 
 	void	insertHeader(QString & strHTML);
-	void	insertHTML(QString & strHTML, const QString& szText, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, int lLinkID = -1);
+	void	insertHTML(QString & strHTML, const QString& szText, QColor colour = QColorConstants::Black, bool bBold = false, bool bItalic = false, int lLinkID = -1);
 	void	fillWithAllTasks();
 
 	void showEvent(QShowEvent *event) override;

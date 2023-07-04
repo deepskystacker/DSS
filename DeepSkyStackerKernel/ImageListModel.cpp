@@ -213,7 +213,7 @@ namespace DSS
                 };
                 break;
             case Column::FileTime:
-                return QString::fromWCharArray(file.m_strDateTime.GetString());
+                return file.m_strDateTime;
                 break;
             case Column::Size:
                 return file.m_strSizes;
@@ -224,7 +224,7 @@ namespace DSS
                 return file.m_strDepth;
                 break;
             case Column::Info:
-                return QString::fromWCharArray(file.m_strInfos.GetString());
+                return file.m_strInfos;
                 break;
             case Column::ISO:
                 // ISO value, of if ISO is not available then the Gain value
@@ -701,9 +701,9 @@ namespace DSS
             }
 
             if (lb.m_lNrChannels == 3)
-                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
+                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitsPerChannel);
             else
-                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
+                lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitsPerChannel);
 
             if (lb.GetCFAType() != CFATYPE_NONE)
                 lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");

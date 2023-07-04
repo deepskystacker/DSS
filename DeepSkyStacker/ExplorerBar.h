@@ -78,7 +78,6 @@ private slots:
 	void onRecommendedSettings();
 
     void onAbout();
-	void onHelp();
 
 	void onToggleDeletion();
 

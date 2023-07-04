@@ -23,10 +23,9 @@ public:
 
 	bool ComputeOffset(CLightFrameInfo& lfi);
 	bool AddImage(CLightFrameInfo& lfi, ProgressBase* pProgress);
-	bool GetStackedImage(std::shared_ptr<CMemoryBitmap>& rpBitmap)
+	std::shared_ptr<CMemoryBitmap> getStackedImage()
 	{
-		rpBitmap = m_pPublicBitmap;
-		return static_cast<bool>(m_pPublicBitmap);
+		return m_pPublicBitmap;
 	}
 
 	int	GetNrStackedImages() const

@@ -158,10 +158,10 @@ private :
 	};
 
 private :
-	bool	CheckForExistingOffset(CString & strMasterFile);
-	bool	CheckForExistingDark(CString & strMasterFile);
-	bool	CheckForExistingDarkFlat(CString & strMasterFile);
-	bool	CheckForExistingFlat(CString & strMasterFile);
+	bool	CheckForExistingOffset(fs::path& strMasterFile);
+	bool	CheckForExistingDark(fs::path& strMasterFile);
+	bool	CheckForExistingDarkFlat(fs::path& strMasterFile);
+	bool	CheckForExistingFlat(fs::path& strMasterFile);
 
 public :
 	CStackingInfo()
@@ -366,7 +366,7 @@ public :
 	void ResetTasksStatus();
 	void UpdateTasksMethods();
 
-	int FindStackID(LPCTSTR szLightFrame);
+	int FindStackID(const fs::path& szLightFrame);
 
 	STACKINGMODE getStackingMode() const;
 
@@ -378,11 +378,12 @@ public :
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();
-	std::int64_t AvailableDiskSpace(CString & strDrive);
+	std::int64_t AvailableDiskSpace(fs::path& strDrive);
 
 	bool	checkReadOnlyStatus(QStringList & folders);
 
 	static	QString GetTemporaryFilesFolder();
+	static	void GetTemporaryFilesFolder(fs::path& tempPath);
 	static	void SetTemporaryFilesFolder(QString strFolder);
 
 	static	void GetPostCalibrationSettings(CPostCalibrationSettings & pcs);

@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <algorithm>
 #include "GrayBitmap.h"
 #include "DSSProgress.h"
 #include "ColorHelpers.h"
@@ -13,17 +14,9 @@ using namespace DSS;
 template <typename T>
 CGrayBitmapT<T>::CGrayBitmapT() :
 	m_lWidth{ 0 },
-	m_lHeight{ 0 },
-	m_bWord{ std::is_same_v<T, std::uint16_t> },
-	m_bDouble{ std::is_same_v<T, double> },
-	m_bDWord{ std::is_same_v<T, std::uint32_t> },
-	m_bFloat{ std::is_same_v<T, float> },
-	m_fMultiplier{ 1.0 }
+	m_lHeight{ 0 }
 {
-	if (m_bWord || m_bDouble || m_bFloat)
-		m_fMultiplier = 256.0;
-	else if (m_bDWord)
-		m_fMultiplier = 256.0 * 65536.0;
+
 }
 
 template <typename T>
@@ -327,7 +320,7 @@ void CGrayBitmapT<T>::SetPixel(size_t i, size_t j, double fRed, double fGreen, d
 template <typename T>
 void CGrayBitmapT<T>::SetPixel(size_t i, size_t j, double fGray)
 {
-	SetValue(i, j, fGray * m_fMultiplier);
+	SetValue(i, j, std::clamp(fGray * m_fMultiplier, 0.0, clampValue));
 }
 
 template <typename T>
@@ -472,9 +465,17 @@ bool CGrayBitmapT<T>::SetScanLine(size_t j, void* pScanLine)
 template <typename T>
 std::shared_ptr<CMultiBitmap> CGrayBitmapT<T>::CreateEmptyMultiBitmap() const
 {
-	std::shared_ptr<CGrayMultiBitmapT<T>> pResult = std::make_shared<CGrayMultiBitmapT<T>>();
-	pResult->SetBitmapModel(this);
-	return pResult;
+	std::shared_ptr<CMultiBitmap> result;
+	//
+	// If the input bitmap is 16 bit or 32 bit integer want the output type to be float
+	//
+	if (std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::uint16_t>)
+		result = std::make_shared<CGrayMultiBitmapT<T,float>>();
+	else
+		result = std::make_shared<CGrayMultiBitmapT<T>>();
+	
+	result->SetBitmapModel(this);
+	return result;
 }
 
 template <typename T>
@@ -575,5 +576,4 @@ template class CGrayBitmapT<std::uint16_t>;
 template class CGrayBitmapT<std::uint32_t>;
 template class CGrayBitmapT<float>;
 template class CGrayBitmapT<double>;
-template class CGrayBitmapT<unsigned short>;
 

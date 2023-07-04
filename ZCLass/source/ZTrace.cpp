@@ -399,7 +399,7 @@ void ZTrace::dumpHex(const void* DataPointer, size_t DataLength)
                 p++;
             }
 
-            ZTrace::write(StringBuffer);
+            ZTrace::write(std::string(StringBuffer));
         }
     }
 }

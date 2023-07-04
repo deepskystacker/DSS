@@ -24,7 +24,7 @@ protected:
 	std::vector<int> m_vImageOrder;
 
 private:
-	void	DestroyTempFiles();
+	void	removeTempFiles();
 	void	InitParts();
 	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap, ProgressBase* const pProgress) const;
 
@@ -44,7 +44,7 @@ public:
 
 	virtual ~CMultiBitmap()
 	{
-		DestroyTempFiles();
+		removeTempFiles();
 	};
 
 	void SetBitmapModel(const CMemoryBitmap* pBitmap);

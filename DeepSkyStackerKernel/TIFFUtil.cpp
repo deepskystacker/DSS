@@ -190,13 +190,17 @@ bool CTIFFReader::Open()
 	//
 	TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
 	TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
-	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "r");
+#ifdef Q_OS_WIN
+	m_tiff = TIFFOpenW(file.wstring().c_str(), "r");
+#else
+	m_tiff = TIFFOpen(file.u8string.c_str(), "r");
+#endif
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
 
 	if (m_tiff)
 	{
-		ZTRACE_RUNTIME("Opened %s", (LPCSTR)CT2CA(m_strFileName, CP_ACP));
+		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
 		cfa = 0;
 		master = 0;
@@ -386,8 +390,7 @@ bool CTIFFReader::Open()
 		else
 		{
 			CBitmapInfo			BitmapInfo;
-			QString name{ QString::fromWCharArray(m_strFileName.GetString()) };
-			if (RetrieveEXIFInfo(name, BitmapInfo))
+			if (RetrieveEXIFInfo(file, BitmapInfo))
 			{
 				exposureTime = BitmapInfo.m_fExposure;
 				aperture	 = BitmapInfo.m_fAperture;
@@ -749,9 +752,9 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFWriter::CTIFFWriter(LPCTSTR szFileName, ProgressBase* pProgress) :
+CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
 	m_tiff{ nullptr },
-	m_strFileName{ szFileName },
+	file{ p },
 	m_pProgress{ pProgress },
 	m_Format{ TF_UNKNOWN }
 {
@@ -839,7 +842,11 @@ bool CTIFFWriter::Open()
 	uint64_t dir_offset_EXIF{ 0 };
 	uint16_t count{ 0 };
 
-	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "w");
+#ifdef Q_OS_WIN
+	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
+#else
+	m_tiff = TIFFOpen(file.u8string.c_str(), "w");
+#endif
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;
@@ -909,15 +916,12 @@ bool CTIFFWriter::Open()
 			//
 			// Set Software name in the same way we do elsewhere.
 			//
-			CStringA			strSoftware = "DeepSkyStacker ";
-			strSoftware += VERSION_DEEPSKYSTACKER;
+			const QString strSoftware(QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
+			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, strSoftware.toLatin1().constData());
 
-			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, (LPCSTR)strSoftware);
-
-			if (m_strDescription.GetLength())
+			if (m_strDescription.length())
 			{
-				CStringA temp{ CT2CA(m_strDescription) };
-				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCSTR)temp);
+				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, m_strDescription.toStdString().c_str());
 			}
 
 			if (m_DateTime.isValid())
@@ -984,12 +988,22 @@ bool CTIFFWriter::Open()
 			// of the base IFD won't change which in turn means it can be rewritten in 
 			// the same location as the file is closed.
 			// 
+			// Turn off the TIFF error handle while we do this, otherwise an error message
+			// 
+			//		ZIPEncode: Encoder error: buffer error.
 			//
+			// is issued for each empty strip.
+			//
+			TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
+			TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
 			ZTRACE_RUNTIME("Writing %d empty encoded strips", numStrips);
 			for (int strip = 0; strip < numStrips; ++strip)
 			{
 				TIFFWriteEncodedStrip(m_tiff, strip, nullptr, 0);
 			}
+			TIFFSetErrorHandler(oldHandler);
+			TIFFSetErrorHandlerExt(oldHandlerExt);
+
 
 			//***************************************************************************
 			// 
@@ -1077,8 +1091,8 @@ bool CTIFFWriter::Open()
 bool CTIFFWriter::Write()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool		bResult = false;
-	bool		bError = false;
+	bool		result = true;
+	bool		error = false;
 
 	//
     // Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
@@ -1113,16 +1127,24 @@ bool CTIFFWriter::Write()
 
 			// int	rowProgress = 0;
 
-#pragma omp parallel for default(none)
+			std::atomic_bool stop{ false };
+#pragma omp parallel for default(none) if(nrProcessors > 1)
 			for (int row = 0; row < h; row++)
 			{
+				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
 				for (int col = 0; col < w; col++)
 				{
+					if (stop.load()) break;	// OK to break from inner loop
 					int index = (row * w * spp) + (col * spp);
 
 					double		fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
 
-					OnWrite(col, row, fRed, fGreen, fBlue);
+					if (!OnWrite(col, row, fRed, fGreen, fBlue))
+					{
+						stop = true;
+						result = false;
+						break;
+					}
 
 					//
 					// If its a cfa bitmap, set grey level to maximum of RGB
@@ -1203,6 +1225,7 @@ bool CTIFFWriter::Write()
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
 
+			if (false == result) return false;
 
 			//
 			// Work out how many scanlines fit into the default strip
@@ -1232,15 +1255,15 @@ bool CTIFFWriter::Write()
 				if (bytesRemaining < stripSize)
 					size = bytesRemaining;
 
-				tsize_t result = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
-				if (-1 == result)
+				tsize_t written = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
+				if (-1 == written)
 				{
 					ZTRACE_RUNTIME("TIFFWriteEncodedStrip() failed");
-					bError = true;
+					error = true;
 					break;
 				}
-				curr += result;
-				bytesRemaining -= result;
+				curr += written;
+				bytesRemaining -= written;
 
 				if (m_pProgress != nullptr)
 					m_pProgress->Progress2((h/2) + ((percentStep * strip) / 2));
@@ -1250,10 +1273,10 @@ bool CTIFFWriter::Write()
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
-		bResult = (!bError) ? true : false;
+		result = (!error) ? true : false;
 	};
 
-	return bResult;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1296,7 +1319,7 @@ private :
 	TIFFFORMAT GetBestTiffFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CTIFFWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
 		CTIFFWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1309,7 +1332,7 @@ public :
 	virtual bool Close() { return OnClose(); }
 
 	virtual bool OnOpen() override;
-	void OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
+	bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -1378,9 +1401,9 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
-
+	bool result { true };
 	try
 	{
 		if (m_pMemoryBitmap)
@@ -1396,29 +1419,28 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			e.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap::OnWrite",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox);
+		result = false;
 	}
 
-	return;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1431,7 +1453,7 @@ bool CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1440,8 +1462,7 @@ bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 	{
 		CTIFFWriteFromMemoryBitmap tiff{ szFileName, pBitmap, pProgress };
 
-		if (szDescription)
-			tiff.SetDescription(szDescription);
+		tiff.SetDescription(szDescription);
 		if (lISOSpeed)
 			tiff.SetISOSpeed(lISOSpeed);
 		else
@@ -1470,16 +1491,19 @@ bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 };
 
 /* ------------------------------------------------------------------- */
-
-bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, LPCTSTR szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+{
+	return WriteTIFF(szFileName, pBitmap, pProgress, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
+}
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
-	LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
+	const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1488,8 +1512,7 @@ bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 	{
 		CTIFFWriteFromMemoryBitmap tiff(szFileName, pBitmap, pProgress);
 
-		if (szDescription)
-			tiff.SetDescription(szDescription);
+		tiff.SetDescription(szDescription);
 		if (lISOSpeed)
 			tiff.SetISOSpeed(lISOSpeed);
 		if (lGain >= 0)
@@ -1511,8 +1534,11 @@ bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 };
 
 /* ------------------------------------------------------------------- */
-
-bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
+{
+	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
+}
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
@@ -1526,7 +1552,7 @@ private :
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 
 public :
-	CTIFFReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress):
+	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress):
 		CTIFFReader(szFileName, pProgress),
 		m_outBitmap{ rpBitmap }
 	{}
@@ -1603,10 +1629,9 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		bResult = m_pBitmap->Init(w, h);
 
 		m_pBitmap->SetCFA(cfa);
-		if (cfatype != 0)
+		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
 		{
-			if (C16BitGrayBitmap* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap.get()))
-				pGray16Bitmap->SetCFAType(static_cast<CFATYPE>(cfatype));
+			if (0 != cfatype) pCFABitmapInfo->SetCFAType(static_cast<CFATYPE>(cfatype));
 		}
 
 		m_pBitmap->SetMaster(master);
@@ -1643,17 +1668,24 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-		
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical);
-
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}		
+		DSSBase::instance()->reportError( errorMessage, "", DSSBase::Severity::Critical);
 		result = false;
 	}
 	return result;
@@ -1676,7 +1708,7 @@ bool CTIFFReadInMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress)
+bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, pProgress);
@@ -1685,7 +1717,7 @@ bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, Prog
 
 /* ------------------------------------------------------------------- */
 
-bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1693,7 +1725,7 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	if (tiff.Open())
 	{
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileName	= szFileName;
 
 		QString makeModel{ tiff.getMakeModel() };
 		if (!makeModel.isEmpty())
@@ -1703,7 +1735,7 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
-		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();
+		BitmapInfo.m_lBitsPerChannel = tiff.BitPerChannels();
 		BitmapInfo.m_lNrChannels	= tiff.NrChannels();
 		BitmapInfo.m_bFloat			= tiff.IsFloat();
 		BitmapInfo.m_CFAType		= tiff.GetCFAType();
@@ -1722,14 +1754,14 @@ bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetTIFFInfo(szFileName, BitmapInfo);
 };
 
 
-int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1;		// -1 means not a TIFF file.

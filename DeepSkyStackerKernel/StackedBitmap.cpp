@@ -10,6 +10,7 @@
 #include "BitmapInfo.h"
 #include "tiffio.h"
 #include "FITSUtil.h"
+#include "BitmapExt.h"
 
 using namespace DSS;
 /* ------------------------------------------------------------------- */
@@ -263,203 +264,6 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 
 /* ------------------------------------------------------------------- */
 
-#pragma pack(push, HDSTACKEDBITMAP, 2)
-
-constexpr std::uint32_t HDSTACKEDBITMAP_MAGIC = 0x878A56E6U;
-
-typedef struct tagHDSTACKEDBITMAPHEADER
-{
-	std::uint32_t dwMagic;		// Magic number (always HDSTACKEDBITMAP_MAGIC)
-	std::uint32_t dwHeaderSize;	// Always sizeof(HDSTACKEDBITMAPHEADER);
-	int			lWidth;			// Width
-	int			lHeight;		// Height
-	int			lNrBitmaps;		// Number of bitmaps
-	std::uint32_t dwFlags;		// Flags
-	int			lTotalTime;		// Total Time
-	std::uint16_t lISOSpeed;		// ISO Speed of each frame
-	int			lGain;		// Camera gain of each frame
-	int			Reserved[22];	// Reserved (set to 0)
-} HDSTACKEDBITMAPHEADER;
-
-#pragma pack(pop, HDSTACKEDBITMAP)
-
-/* ------------------------------------------------------------------- */
-
-bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, ProgressBase * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
-	FILE *			hFile;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
-
-	QString strText(QCoreApplication::translate("StackedBitmap", "Loading DSImage", "IDS_LOADDSIMAGE"));
-	if (pProgress)
-		pProgress->Start1(strText, 0, false);
-
-	hFile = _tfopen(szStackedFile, _T("rb"));
-	if (hFile)
-	{
-		HDSTACKEDBITMAPHEADER	Header;
-		int					lProgress = 0;
-
-		if (pProgress)
-		{
-			strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(szStackedFile);
-			pProgress->Progress1(strText, 0);
-		};
-
-		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSTACKEDBITMAP_MAGIC) &&
-			(Header.dwHeaderSize == sizeof(Header)))
-		{
-			m_lWidth	= Header.lWidth;
-			m_lHeight	= Header.lHeight;
-			m_lNrBitmaps= Header.lNrBitmaps;
-			m_lTotalTime= Header.lTotalTime;
-			m_lISOSpeed = Header.lISOSpeed;
-			m_lGain     = Header.lGain;
-
-			Allocate(Header.lWidth, Header.lHeight, false);
-
-			if (pProgress)
-				pProgress->Start1(m_lWidth * m_lHeight, false);
-
-			for (int i = 0;i<m_vRedPlane.size();i++)
-			{
-				lProgress++;
-				if (pProgress)
-					pProgress->Progress1(lProgress);
-
-				fread(&m_vRedPlane[i], sizeof(float), 1, hFile);
-				fread(&m_vGreenPlane[i], sizeof(float), 1, hFile);
-				fread(&m_vBluePlane[i], sizeof(float), 1, hFile);
-			};
-
-			bResult = true;
-			m_BezierAdjust.Reset();
-			m_HistoAdjust.Reset();
-		}
-		else
-		{
-
-			printf("Wrong header in %s\n", strFile);
-			ZTRACE_RUNTIME("Wrong header in %s", strFile);
-		};
-		fclose(hFile);
-	}
-	else
-	{
-		printf("Cannot open %s\n", strFile);
-		ZTRACE_RUNTIME("Cannot open%s", strFile);
-	}
-
-
-	if (pProgress)
-		pProgress->Close();
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, ProgressBase * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	FILE *			hFile;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_ACP);  
-
-	printf("Saving Stacked Bitmap in %s\n", strFile);
-	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);
-	hFile = _tfopen(szStackedFile, _T("wb"));
-	if (hFile)
-	{
-		HDSTACKEDBITMAPHEADER	Header;
-
-		int		lWidth,
-					lHeight;
-		int		lStartX,
-					lStartY;
-		int		i, j;
-
-		int		lProgress = 0;
-
-		if (pRect)
-		{
-			pRect->left		= std::max(0L, pRect->left);
-			pRect->right = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
-			pRect->top		= std::max(0L, pRect->top);
-			pRect->bottom = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
-
-			lWidth			= (pRect->right-pRect->left);
-			lHeight			= (pRect->bottom-pRect->top);
-
-			lStartX = pRect->left;
-			lStartY = pRect->top;
-		}
-		else
-		{
-			lWidth			= m_lWidth;
-			lHeight			= m_lHeight;
-
-			lStartX = 0;
-			lStartY = 0;
-		};
-
-		if (pProgress)
-		{
-			QString strText(QCoreApplication::translate("StackedBitmap", "Saving DSImage File", "IDS_SAVINGDSIMAGE"));
-			pProgress->Start1(strText, lWidth * lHeight, false);
-			strText = QCoreApplication::translate("StackedBitmap", "Saving stacked picture in %1 (DSImage)", "IDS_SAVEDSIMAGE").arg(szStackedFile);
-			pProgress->Progress1(strText, 1);
-		};
-
-		memset(&Header, 0, sizeof(Header));
-		Header.dwMagic = HDSTACKEDBITMAP_MAGIC;
-		Header.dwHeaderSize = sizeof(HDSTACKEDBITMAPHEADER);
-		Header.lWidth		= lWidth;
-		Header.lHeight		= lHeight;
-		Header.lNrBitmaps	= m_lNrBitmaps;
-		Header.lTotalTime	= m_lTotalTime;
-		Header.lISOSpeed	= m_lISOSpeed;
-		Header.lGain		= m_lGain;
-
-		fwrite(&Header, sizeof(Header), 1, hFile);
-
-		for (j = lStartY;j<lStartY + lHeight;j++)
-		{
-			for (i = lStartX;i<lStartX + lWidth;i++)
-			{
-				lProgress++;
-
-				fwrite(&m_vRedPlane[m_lWidth * j + i], sizeof(float), 1, hFile);
-				if (!m_bMonochrome)
-				{
-					fwrite(&m_vGreenPlane[m_lWidth * j + i], sizeof(float), 1, hFile);
-					fwrite(&m_vBluePlane[m_lWidth * j + i], sizeof(float), 1, hFile);
-				}
-				else
-				{
-					fwrite(&m_vRedPlane[m_lWidth * j + i], sizeof(float), 1, hFile);
-					fwrite(&m_vRedPlane[m_lWidth * j + i], sizeof(float), 1, hFile);
-				};
-			};
-
-			if (pProgress)
-				pProgress->Progress1(lProgress);
-		};
-
-		fclose(hFile);
-
-		if (pProgress)
-			pProgress->Close();
-	}
-	else
-	{
-		printf("Error creating file %s!\n", strFile);
-		ZTRACE_RUNTIME("Error creating file %s!", strFile);
-	};
-};
-
 /* ------------------------------------------------------------------- */
 // 
 // class CPixel
@@ -692,7 +496,7 @@ bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 			return false;
 	}
 	else
-		return LoadDSImage(szStackedFile, pProgress);
+		return false;
 };
 
 /* ------------------------------------------------------------------- */
@@ -806,8 +610,8 @@ private :
 						m_lYStart;
 
 public :
-	CTIFFWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
-	   CTIFFWriter(szFileName, pProgress),
+	CTIFFWriterStacker(const fs::path& p, LPRECT lprc, ProgressBase *	pProgress) :
+	   CTIFFWriter(p, pProgress),
 		m_lprc { lprc },
 		m_pStackedBitmap{ nullptr },
 		m_bApplySettings { false },
@@ -840,7 +644,7 @@ public :
 	};
 
 	virtual bool OnOpen() override;
-	void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -890,7 +694,7 @@ bool CTIFFWriterStacker::OnOpen()
 		strText = QCoreApplication::translate("StackedBitmap", "Saving TIFF %1 bit", "IDS_SAVINGTIFF").arg(bps);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromStdU16String(file.generic_u16string()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -899,14 +703,14 @@ bool CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 	lX += m_lXStart;
 	lY += m_lYStart;
 
 	m_pStackedBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue, m_bApplySettings);
 
-	return;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -941,7 +745,7 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 	else
 		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
-	tiff.SetDescription(strText.toStdWString().c_str());
+	tiff.SetDescription(strText);
 	if (tiff.Open())
 	{
 		tiff.Write();
@@ -980,7 +784,7 @@ void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 	else
 		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
-	tiff.SetDescription(strText.toStdWString().c_str());
+	tiff.SetDescription(strText);
 	tiff.SetExposureTime(m_lTotalTime);
 	tiff.SetISOSpeed(m_lISOSpeed);
 	tiff.SetGain(m_lGain);
@@ -1083,7 +887,7 @@ bool CFITSWriterStacker::OnOpen()
 		strText = QCoreApplication::translate("StackedBitmap", "Saving FITS %1 bit", "IDS_SAVINGFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(file.generic_u16string().c_str());
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1135,7 +939,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 	else
 		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
-	fits.SetDescription(strText.toStdWString().c_str());
+	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
 	fits.m_lGain		= m_lGain;
@@ -1177,7 +981,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 	else
 		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
-	fits.SetDescription(strText.toStdWString().c_str());
+	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
 	fits.m_lGain		= m_lGain;
@@ -1234,7 +1038,7 @@ bool CTIFFReadStacker::OnOpen()
 			strText = QCoreApplication::translate("StackedBitmap", "Loading TIFF %1 bit/ch", "IDS_LOADRGBTIFF").arg(bps);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromStdU16String(file.generic_u16string()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1329,7 +1133,7 @@ bool CFITSReadStacker::OnOpen()
 			strText = QCoreApplication::translate("StackedBitmap", "Loading FITS %1 bit/ch", "IDS_LOADRGBFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start1(strText, 0, false);
-		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(file.generic_u16string().c_str());
 		m_pProgress->Progress1(strText, 0);
 	};
 

@@ -20,8 +20,6 @@ CRunningStackingEngine::CRunningStackingEngine() :
 
 void CRunningStackingEngine::CreatePublicBitmap()
 {
-	ZFUNCTRACE_RUNTIME();
-
 	if (static_cast<bool>(m_pStackedBitmap) && m_lNrStacked != 0)
 	{
 		const bool bMonochrome = m_pStackedBitmap->IsMonochrome();
@@ -90,26 +88,20 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgr
 
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			if (pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("RunningStackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-				pProgress->Start2(strText, 0);
-			};
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
 		};
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);
-		QString strDescription;
 		PIXELDISPATCHVECTOR vPixels;
 
 		vPixels.reserve(16);
 
-		strDescription = QString::fromWCharArray(lfi.m_strInfos.GetString());
+		QString name{ QString::fromStdU16String(lfi.filePath.filename().generic_u16string()) };
 		if (lfi.m_lNrChannels == 3)
-			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitsPerChannel).arg(lfi.m_strInfos).arg(name);
 		else
-			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitsPerChannel).arg(lfi.m_strInfos).arg(name);
 		
 		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);

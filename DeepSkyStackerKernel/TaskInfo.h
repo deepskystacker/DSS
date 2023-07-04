@@ -19,7 +19,7 @@ public:
 	double m_fAperture;
 	bool m_bUnmodified;
 	bool m_bDone;
-	CString m_strOutputFile;
+	fs::path m_strOutputFile;
 	FRAMEINFOVECTOR m_vBitmaps;
 	MULTIBITMAPPROCESSMETHOD m_Method;
 	double m_fKappa;

@@ -5,7 +5,7 @@
 #include "StackSettings.h"
 #include "ZExcept.h"
 #include "Ztrace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "MasterFrames.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
@@ -326,8 +326,6 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Keep Only the first light frame
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
 				const fs::path& filePath = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath;
-				const auto fileName = filePath.generic_wstring(); // Otherwise strFileName could be a dangling pointer.
-				const wchar_t* strFileName = fileName.c_str();
 
 				CMasterFrames	MasterFrames;
 
@@ -356,15 +354,15 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Load the image
 				CBitmapInfo		bmpInfo;
 				// Load the bitmap
-				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
+				if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 				{
 					QString	strDescription;
 					bmpInfo.GetDescription(strDescription);
-
+					QString name{ QString::fromStdU16String(filePath.generic_u16string()) };
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(strDescription).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;
@@ -382,10 +380,15 @@ void PostCalibration::on_testCosmetic_clicked()
 						const double fHotPct = static_cast<double>(Stats.m_lNrDetectedHotPixels) / Stats.m_lNrTotalPixels * 100.0;
 						const double fColdPct = static_cast<double>(Stats.m_lNrDetectedColdPixels) / Stats.m_lNrTotalPixels * 100.0;
 
-						CString	strCosmeticStat;
-						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
-
-						AfxMessageBox(strCosmeticStat, MB_ICONINFORMATION | MB_OK);
+						QString message{ tr("Cosmetic\nDetected Hot Pixels: %L1 (%L2%)\nDetected Cold Pixels: %L3 (%L4%)\n",
+							"IDS_COSMETICSTATS")
+							.arg(Stats.m_lNrDetectedHotPixels)
+							.arg(fHotPct, 0, 'f', 2)
+							.arg(Stats.m_lNrDetectedColdPixels)
+							.arg(fColdPct, 0, 'f', 2)
+						};
+						
+						QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 					}
 
 					dlg.End2();

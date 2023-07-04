@@ -114,14 +114,6 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 
 /* ------------------------------------------------------------------- */
 
-void CDeepStack::SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect)
-{
-	ZFUNCTRACE_RUNTIME();
-	m_StackedBitmap.SaveDSImage(szStackedInfoFile, pRect, m_pProgress);
-};
-
-/* ------------------------------------------------------------------- */
-
 bool CDeepStack::LoadStackedInfo(LPCTSTR szStackedInfoFile)
 {
 	ZFUNCTRACE_RUNTIME();

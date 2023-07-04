@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 //#include "resource.h"
 #include "Workspace.h"
 #include "FITSUtil.h"
@@ -54,8 +54,11 @@ CFITSHeader::~CFITSHeader()
 
 inline double AdjustColor(const double fColor)
 {
+	//
+	// Clamping is now down by the bitmap classes
+	// 
 	if (std::isfinite(fColor))
-		return std::clamp(fColor, 0.0, 255.0);
+		return fColor;	// Was return std::clamp(fColor, 0.0, 255.0);
 	else
 		return 0.0;
 };
@@ -190,13 +193,12 @@ void CFITSReader::ReadAllKeys()
 {
 	if (m_fits)
 	{
-		int					nKeywords;
-		int					nStatus = 0;
-		QSettings			settings;
-		CString				strPropagated;
+		int nKeywords;
+		int nStatus = 0;
+		QSettings settings;
+		QString strPropagated(settings.value("FitsDDP/Propagated", "").toString());
 
-		strPropagated = (LPCTSTR)settings.value("FitsDDP/Propagated", "").toString().utf16();
-		if ("" == strPropagated)
+		if (strPropagated.isEmpty())
 			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 
 
@@ -212,11 +214,11 @@ void CFITSReader::ReadAllKeys()
 			nKeyClass = fits_get_keyclass(szKeyName);
 			if ((nKeyClass == TYP_USER_KEY) || (nKeyClass == TYP_REFSYS_KEY))
 			{
-				bool		bPropagate = false;
-				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
+				bool bPropagate = false;
+				QString strKeyName;
+				strKeyName = QString("[%1]").arg(szKeyName);
 
-				if (strPropagated.Find(strKeyName) != -1)
+				if (strPropagated.indexOf(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
 					szKeyName,
@@ -236,33 +238,25 @@ bool CFITSReader::Open()
 	int					status = 0;
 	char error_text[31] = "";			// Error text for FITS errors.
 
-	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_ACP), READONLY, &status);
+	// Open filename as ascii - won't work with international characters but we are limited to char with fits library.
+	fits_open_diskfile(&m_fits, file.generic_string().c_str(), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		CString errorText{ &error_text[0] };
-		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
-			(LPCTSTR)m_strFileName, 
-			status,
-			(LPCTSTR)errorText);
-
-		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
-
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
-#endif
-
+		QString errorMessage(QCoreApplication::translate( "Kernel",
+														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
+															.arg(file.generic_u16string().c_str())
+															.arg(status)
+															.arg(error_text));
+		ZTRACE_RUNTIME(errorMessage);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
 	}
 
 
 	if (m_fits)
 	{
-		CStringA fileName(m_strFileName);
-		ZTRACE_RUNTIME("Opened %s", (LPCSTR)fileName);
+		ZTRACE_RUNTIME("Opened %s", file.generic_string().c_str());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -629,13 +623,8 @@ bool CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-			CStringA errMsg;
-			errMsg.Format(
-				"fits_read_pixll returned a status of %d, error text is \"%s\"",
-				status,
-				error_text);
-
-			ZException exc(errMsg, status, ZException::unrecoverable);
+			const QString errMsg(QString("fits_read_pixll returned a status of %1, error text is \"%2\"").arg(status).arg(error_text));
+			ZException exc(errMsg.toLatin1().constData(), status, ZException::unrecoverable);
 			exc.addLocation(ZEXCEPTION_LOCATION());
 			exc.logExceptionData();
 			throw exc;
@@ -812,7 +801,7 @@ private :
 	bool ignoreBrightness;
 
 public :
-	CFITSReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
+	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
 		CFITSReader{ szFileName, pProgress },
 		m_outBitmap{ rpBitmap },
 		ignoreBrightness{ ignoreBr }
@@ -906,7 +895,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
-			QString errorMessage{ QCoreApplication::translate("Kernel",
+			const QString errorMessage{ QCoreApplication::translate("Kernel",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
 			DSSBase::instance()->reportError(
@@ -1013,16 +1002,24 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 	catch (ZException& e)
 	{
-		QString errorMessage(QString("Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5").
-			arg(e.name()).
-			arg(e.locationAtIndex(0)->fileName()).
-			arg(e.locationAtIndex(0)->functionName()).
-			arg(e.text(0)));
-
-		DSSBase::instance()->reportError(
-			errorMessage,
-			"",
-			DSSBase::Severity::Critical);
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		result = false;
 	}
 	return result;
@@ -1044,7 +1041,7 @@ bool CFITSReadInMemoryBitmap::OnClose()
 }
 
 
-bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, ignoreBrightness, pProgress };
@@ -1052,23 +1049,22 @@ bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, cons
 }
 
 
-bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
 	bool					bContinue = true;
-	CFITSReader				fits(szFileName, nullptr);
+	CFITSReader				fits(path, nullptr);
 
 	// Require a fits file extension
 	{
-		TCHAR szExt[1+_MAX_EXT];
-		CString strExt;
-		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
-		strExt = szExt;
+		//TCHAR szExt[1+_MAX_EXT];
+		const QString strFilename(QString::fromStdU16String(path.generic_u16string().c_str()));
+		const QString strExt = QFileInfo(strFilename).suffix();
 
-		if (!(0 == strExt.CompareNoCase(_T(".FIT")) ||
-			  0 == strExt.CompareNoCase(_T(".FITS")) ||
-			  0 == strExt.CompareNoCase(_T(".FTS"))))
+		if (!(0 == strExt.compare("FIT", Qt::CaseInsensitive) ||
+			  0 == strExt.compare("FITS", Qt::CaseInsensitive) ||
+			  0 == strExt.compare("FTS", Qt::CaseInsensitive)))
 		{
 			bContinue = false;
 		}
@@ -1080,10 +1076,10 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		else 
 			BitmapInfo.m_strFileType = "FITS";
 
-		BitmapInfo.m_strFileName	= QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileName = path;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
-		BitmapInfo.m_lBitPerChannel = fits.BitPerChannels();
+		BitmapInfo.m_lBitsPerChannel = fits.BitPerChannels();
 		BitmapInfo.m_lNrChannels	= fits.NrChannels();
 		BitmapInfo.m_bFloat			= fits.IsFloat();
 		BitmapInfo.m_CFAType		= fits.GetCFAType();
@@ -1140,14 +1136,14 @@ bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment)
+bool	CFITSWriter::WriteKey(LPCSTR szKey, const QString& szValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TSTRING, szKey, (void*)szValue, szComment, &nStatus);
+		fits_write_key(m_fits, TSTRING, szKey, (void*)szValue.toUtf8().constData(), szComment, &nStatus);
 		if (!nStatus)
 			bResult = true;
 	};
@@ -1191,21 +1187,25 @@ void	CFITSWriter::WriteAllKeys()
 			CHAR szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
-			CString strName(ei.m_strName.toStdWString().c_str());
-			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(strName, CP_UTF8), szValue, nullptr, &nStatus);
+			fits_read_key(m_fits, TSTRING, ei.m_strName.toUtf8().constData(), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
 				CHAR		szCard[FLEN_CARD];
 				int			nType;
-				CString		strTemplate;
+				QString		strTemplate;
 
 				if (!ei.m_strComment.isEmpty())
-					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str(), ei.m_strComment.toStdWString().c_str());
+					strTemplate = QString("%1 = %2 / %3")
+						.arg(ei.m_strName)
+						.arg(ei.m_strValue)
+						.arg(ei.m_strComment);
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName.toStdWString().c_str(), ei.m_strValue.toStdWString().c_str());
+					strTemplate = QString("%1 = %2")
+					.arg(ei.m_strName)
+					.arg(ei.m_strValue);
 
-				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
+				fits_parse_template(strTemplate.toUtf8().data(), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
 			};
 		};
@@ -1267,15 +1267,12 @@ bool CFITSWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	CString			strFileName = m_strFileName;
-
-	// Close();
 
 	// Create a new fits file
 	int				nStatus = 0;
 
-	DeleteFile(strFileName.GetString());
-	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_ACP), &nStatus);
+	fs::remove(file);
+	fits_create_diskfile(&m_fits, file.generic_string().c_str(), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();
@@ -1316,7 +1313,7 @@ bool CFITSWriter::Open()
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_filterName != "")
-					bResult = bResult && WriteKey("FILTER", m_filterName.toStdWString().c_str());
+					bResult = bResult && WriteKey("FILTER", m_filterName);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1325,10 +1322,7 @@ bool CFITSWriter::Open()
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
 					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
 
-				CString			strSoftware = "DeepSkyStacker ";
-				strSoftware += VERSION_DEEPSKYSTACKER;
-
-				WriteKey("SOFTWARE", strSoftware.GetString());
+				WriteKey("SOFTWARE", QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
 				WriteAllKeys();
 			};
 
@@ -1415,7 +1409,8 @@ bool CFITSWriter::Write()
 					for (int i = 0; i < m_lWidth; i++)
 					{
 						double fRed, fGreen, fBlue;
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						double fGray;
 						if (m_CFAType != CFATYPE_NONE)
@@ -1483,7 +1478,8 @@ bool CFITSWriter::Write()
 					{
 						double fRed, fGreen, fBlue;
 
-						OnWrite(i, j, fRed, fGreen, fBlue);
+						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
+							return false;
 
 						if (m_lBitsPerPixel == 8)
 						{
@@ -1571,7 +1567,7 @@ private :
 	FITSFORMAT GetBestFITSFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CFITSWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
 		CFITSWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1657,6 +1653,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 
 bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue)
 {
+	bool result { true };
 	try
 	{
 		if (m_pMemoryBitmap)
@@ -1673,28 +1670,27 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 	}
 	catch (ZException& e)
 	{
-		CString errorMessage;
-		CString name(CA2CT(e.name()));
-		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(e.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			(LPCTSTR)name,
-			(LPCTSTR)fileName,
-			(LPCTSTR)functionName,
-			e.locationAtIndex(0)->lineNumber(),
-			(LPCTSTR)text);
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("Kernel",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		exit(1);
 	}
-
-	return true;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1706,7 +1702,7 @@ bool CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1717,8 +1713,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
-		if (szDescription)
-			fits.SetDescription(szDescription);
+		fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
@@ -1739,14 +1734,19 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, /*szDescription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
+
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1757,8 +1757,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
-		if (szDescription)
-			fits.SetDescription(szDescription);
+		fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
@@ -1776,21 +1775,25 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgre
 };
 
 /* ------------------------------------------------------------------- */
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, /*szDestription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, LPCTSTR szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 
-bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
 
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.
@@ -1819,31 +1822,26 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr
 	return result;
 }
 
-
-void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
+void GetFITSExtension(const QString& path, QString& strExtension)
 {
-	TCHAR szExt[1 + _MAX_EXT];
-	CString strExt;
+	QFileInfo fileInfo(path);
 
-	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
-
-	strExt = szExt;
-	if (!strExt.CompareNoCase(_T(".FITS")))
+	const QString strExt("." + fileInfo.suffix());
+	if (strExt.compare(".FITS", Qt::CaseInsensitive) == 0)
 		strExtension = strExt;
-	else if (!strExt.CompareNoCase(_T(".FIT")))
+	else if (strExt.compare(".FIT", Qt::CaseInsensitive) == 0)
 		strExtension = strExt;
 	else
 		strExtension = ".fts";
 }
 
-void GetFITSExtension(fs::path path, CString& strExtension)
+void GetFITSExtension(const fs::path& file, QString& strExtension)
 {
-	fs::path ext = path.extension();
+	GetFITSExtension(QString::fromStdU16String(file.generic_u16string().c_str()), strExtension);
+}
 
-	if (!ext.compare(".fits"))
-		strExtension = ext.c_str();
-	else if (!ext.compare(".fit"))
-		strExtension = ext.c_str();
-	else
-		strExtension = ".fts";
+void GetFITSExtension(fs::path path, QString& strExtension)
+{
+	QDir qPath(path);
+	GetFITSExtension(qPath.absolutePath(), strExtension);
 }

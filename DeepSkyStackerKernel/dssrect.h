@@ -57,8 +57,8 @@ public:
 
 	bool	contains(const QPointF& pt) const
 	{
-		return (pt.x() >= left) && (pt.x() <= right-1) &&
-			(pt.y() >= top) && (pt.y() <= bottom-1);
+		return (pt.x() >= left) && (pt.x() <= static_cast<qreal>(right)-1) &&
+			(pt.y() >= top) && (pt.y() <= static_cast<qreal>(bottom)-1);
 	};
 
 	void	setEmpty()

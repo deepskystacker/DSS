@@ -30,6 +30,9 @@
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="progressconsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -39,9 +42,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\dssbase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QtProgressConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
@@ -344,45 +344,51 @@
     <QtMoc Include="DeepSkyStackerCL.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="progressconsole.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts">
+    <QtTranslation Include="i18n\DSSCL_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.cs.ts">
+    <QtTranslation Include="i18n\DSSCL_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.de.ts">
+    <QtTranslation Include="i18n\DSSCL_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.en.ts">
+    <QtTranslation Include="i18n\DSSCL_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.es.ts">
+    <QtTranslation Include="i18n\DSSCL_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.fr.ts">
+    <QtTranslation Include="i18n\DSSCL_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.it.ts">
+    <QtTranslation Include="i18n\DSSCL_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.nl.ts">
+    <QtTranslation Include="i18n\DSSCL_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.pt_BR.ts">
+    <QtTranslation Include="i18n\DSSCL_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ro.ts">
+    <QtTranslation Include="i18n\DSSCL_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ru.ts">
+    <QtTranslation Include="i18n\DSSCL_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.tr.ts">
+    <QtTranslation Include="i18n\DSSCL_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.zh_TW.ts">
+    <QtTranslation Include="i18n\DSSCL_zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSCL_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

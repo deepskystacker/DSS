@@ -52,7 +52,7 @@ namespace DSS
 
 		void checkAllLights(bool check);
 
-		void checkImage(const QString& image, bool check);
+		void checkImage(const fs::path& image, bool check);
 
 		//
 		// Return address of the relevant ListBitMap in the current group
@@ -86,7 +86,7 @@ namespace DSS
 			return imageGroups.size();
 		}
 
-		QString getFirstCheckedLightFrame() const;
+		fs::path getFirstCheckedLightFrame() const;
 
 		inline QString groupName(const int id) const
 		{
@@ -99,9 +99,9 @@ namespace DSS
 
 		void fillTasks(CAllStackingTasks& tasks);
 
-		bool isLightFrame(const QString name) const;
+		bool isLightFrame(const fs::path& name) const;
 
-		bool isChecked(const QString name) const;
+		bool isChecked(const fs::path& name) const;
 
 		bool getTransformation(const QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const;
 
@@ -119,10 +119,9 @@ namespace DSS
 
 		void updateCheckedItemScores();
 
-		void updateItemScores(const QString& fileName);
+		void updateItemScores(const fs::path& fileName);
 
 		QString getReferenceFrame() const;
-		bool getReferenceFrame(CString& string) const;
 
 		void clearOffsets();
 

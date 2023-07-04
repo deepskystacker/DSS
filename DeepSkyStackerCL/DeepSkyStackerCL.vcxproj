@@ -37,12 +37,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -106,7 +106,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
@@ -122,6 +122,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
+      <NoObsolete>true</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,7 +147,7 @@
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>gdi32.lib;gdiplus.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
@@ -179,6 +180,7 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="progressconsole.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -189,7 +191,7 @@
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
     <ClInclude Include="..\dssbase.h" />
-    <ClInclude Include="QtProgressConsole.h" />
+    <QtMoc Include="progressconsole.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -309,19 +311,20 @@
     <Image Include="..\DeepSkyStacker\undo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts" />
-    <QtTranslation Include="i18n\DSS.cs.ts" />
-    <QtTranslation Include="i18n\DSS.de.ts" />
-    <QtTranslation Include="i18n\DSS.en.ts" />
-    <QtTranslation Include="i18n\DSS.es.ts" />
-    <QtTranslation Include="i18n\DSS.fr.ts" />
-    <QtTranslation Include="i18n\DSS.it.ts" />
-    <QtTranslation Include="i18n\DSS.nl.ts" />
-    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
-    <QtTranslation Include="i18n\DSS.ro.ts" />
-    <QtTranslation Include="i18n\DSS.ru.ts" />
-    <QtTranslation Include="i18n\DSS.tr.ts" />
-    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSSCL_ca.ts" />
+    <QtTranslation Include="i18n\DSSCL_cs.ts" />
+    <QtTranslation Include="i18n\DSSCL_de.ts" />
+    <QtTranslation Include="i18n\DSSCL_en.ts" />
+    <QtTranslation Include="i18n\DSSCL_es.ts" />
+    <QtTranslation Include="i18n\DSSCL_fr.ts" />
+    <QtTranslation Include="i18n\DSSCL_it.ts" />
+    <QtTranslation Include="i18n\DSSCL_nl.ts" />
+    <QtTranslation Include="i18n\DSSCL_pt_BR.ts" />
+    <QtTranslation Include="i18n\DSSCL_ro.ts" />
+    <QtTranslation Include="i18n\DSSCL_ru.ts" />
+    <QtTranslation Include="i18n\DSSCL_tr.ts" />
+    <QtTranslation Include="i18n\DSSCL_zh_CN.ts" />
+    <QtTranslation Include="i18n\DSSCL_zh_TW.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

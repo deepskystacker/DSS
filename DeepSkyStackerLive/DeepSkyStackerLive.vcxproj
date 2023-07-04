@@ -20,14 +20,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -35,13 +35,14 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -68,15 +69,21 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath />
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -86,7 +93,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);_AFXDLL;NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -99,27 +106,28 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;SmtpMime.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <Manifest>
       <OutputManifestFile />
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <ManifestResourceCompile>
       <ResourceOutputFileName />
     </ManifestResourceCompile>
     <QtTranslation>
-      <NoObsolete>false</NoObsolete>
+      <NoObsolete>true</NoObsolete>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
     </QtTranslation>
@@ -141,7 +149,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);_AFXDLL;NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -155,10 +163,10 @@
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;SmtpMime.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -167,7 +175,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <QtTranslation>
       <NoObsolete>true</NoObsolete>
@@ -185,55 +193,25 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\ChartCtrl\ChartAxis.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartAxisLabel.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartCtrl.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartGrid.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartLegend.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartLineSerie.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartPointsSerie.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartSerie.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp" />
-    <ClCompile Include="..\ChartCtrl\ChartTitle.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
-    <ClCompile Include="..\SMTP\Base64.cpp" />
-    <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp" />
-    <ClCompile Include="..\SMTP\PJNSMTP.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
+    <ClCompile Include="..\Tools\imageview.cpp" />
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
+    <ClCompile Include="ChartTab.cpp" />
+    <ClCompile Include="DeepSkyStackerLive.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="..\SMTP\SocMFC.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\BtnST.cpp" />
-    <ClCompile Include="..\Tools\ControlPos.cpp" />
-    <ClCompile Include="..\Tools\FolderDlg.cpp" />
-    <ClCompile Include="..\Tools\Gradient.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
-    <ClCompile Include="..\Tools\Label.cpp" />
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
-    <ClCompile Include="..\Tools\ToolTipButton.cpp" />
-    <ClCompile Include="..\Tools\WndImage.cpp" />
-    <ClCompile Include="DeepSkyStackerLive.cpp" />
-    <ClCompile Include="DeepSkyStackerLiveDlg.cpp" />
-    <ClCompile Include="EmailSettings.cpp" />
-    <ClCompile Include="GraphView.cpp" />
-    <ClCompile Include="ImageList.cpp" />
-    <ClCompile Include="ImageView.cpp" />
-    <ClCompile Include="LiveEngine.cpp" />
+    <ClCompile Include="emailsettings.cpp" />
+    <ClCompile Include="fileregistrar.cpp" />
+    <ClCompile Include="filestacker.cpp" />
+    <ClCompile Include="foldermonitor.cpp" />
+    <ClCompile Include="footprint.cpp" />
+    <ClCompile Include="imageviewer.cpp" />
     <ClCompile Include="LiveSettings.cpp" />
-    <ClCompile Include="LogTab.cpp" />
-    <ClCompile Include="MainBoard.cpp" />
+    <ClCompile Include="progresslive.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
-    <ClCompile Include="Settings.cpp">
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
-      <XMLDocumentationFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.xdc</XMLDocumentationFileName>
-    </ClCompile>
-    <ClCompile Include="StackedSink.cpp" />
+    <ClCompile Include="settingstab.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -241,58 +219,54 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\ChartCtrl\ChartAxis.h" />
-    <ClInclude Include="..\ChartCtrl\ChartAxisLabel.h" />
-    <ClInclude Include="..\ChartCtrl\ChartCtrl.h" />
-    <ClInclude Include="..\ChartCtrl\ChartGrid.h" />
-    <ClInclude Include="..\ChartCtrl\ChartLegend.h" />
-    <ClInclude Include="..\ChartCtrl\ChartLineSerie.h" />
-    <ClInclude Include="..\ChartCtrl\ChartObject.h" />
-    <ClInclude Include="..\ChartCtrl\ChartPointsSerie.h" />
-    <ClInclude Include="..\ChartCtrl\ChartSerie.h" />
-    <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h" />
-    <ClInclude Include="..\ChartCtrl\ChartTitle.h" />
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
-    <ClInclude Include="..\SMTP\Base64.h" />
-    <ClInclude Include="..\SMTP\PJNMD5.h" />
-    <ClInclude Include="..\SMTP\PJNNTLMAuth.h" />
-    <ClInclude Include="..\SMTP\PJNSMTP.h" />
-    <ClInclude Include="..\SMTP\SocMFC.h" />
-    <ClInclude Include="..\Tools\BtnST.h" />
-    <ClInclude Include="..\Tools\ControlPos.h" />
-    <ClInclude Include="..\Tools\FolderDlg.h" />
-    <ClInclude Include="..\Tools\Gradient.h" />
-    <ClInclude Include="..\Tools\gradientctrl.h" />
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
-    <ClInclude Include="..\Tools\Label.h" />
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
-    <ClInclude Include="..\Tools\ToolTipButton.h" />
-    <ClInclude Include="..\Tools\WndImage.h" />
+    <QtMoc Include="..\Tools\imageview.h" />
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />
-    <ClInclude Include="DeepSkyStackerLiveDlg.h" />
-    <ClInclude Include="EmailSettings.h" />
-    <ClInclude Include="GraphView.h" />
-    <ClInclude Include="ImageList.h" />
-    <ClInclude Include="ImageView.h" />
-    <ClInclude Include="LiveEngine.h" />
+    <ClInclude Include="..\include\SmtpMime\emailaddress.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeattachment.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h" />
+    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h" />
+    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimefile.h" />
+    <ClInclude Include="..\include\SmtpMime\mimehtml.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h" />
+    <ClInclude Include="..\include\SmtpMime\mimemessage.h" />
+    <ClInclude Include="..\include\SmtpMime\mimemultipart.h" />
+    <ClInclude Include="..\include\SmtpMime\mimepart.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h" />
+    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h" />
+    <ClInclude Include="..\include\SmtpMime\mimetext.h" />
+    <ClInclude Include="..\include\SmtpMime\quotedprintable.h" />
+    <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
+    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
+    <QtMoc Include="ChartTab.h" />
+    <QtMoc Include="emailsettings.h" />
+    <QtMoc Include="foldermonitor.h" />
+    <QtMoc Include="fileregistrar.h" />
+    <ClInclude Include="dssliveenums.h" />
+    <QtMoc Include="filestacker.h" />
+    <QtMoc Include="imageviewer.h" />
+    <QtMoc Include="footprint.h" />
     <ClInclude Include="LiveSettings.h" />
-    <ClInclude Include="LogTab.h" />
-    <ClInclude Include="MainBoard.h" />
+    <QtMoc Include="progresslive.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="RestartMonitoring.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="StackedSink.h" />
+    <QtMoc Include="settingstab.h" />
+    <QtMoc Include="RestartMonitoring.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\DeepSkyStacker\res\4Corners.bmp" />
-    <Image Include="..\Tools\hdrdown.bmp" />
-    <Image Include="..\Tools\hdrup.bmp" />
     <Image Include="res\4Corners.png" />
     <Image Include="res\DeepSkyStackerLive.ico" />
     <Image Include="res\DSS_Icon32%402x.png" />
     <Image Include="res\DSS_Icon32.png" />
+    <Image Include="res\Monitor-Down.png" />
+    <Image Include="res\Monitor-Up.png" />
+    <Image Include="res\Stack-Down.png" />
+    <Image Include="res\Stack-Up.png" />
+    <Image Include="res\StopSign.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStackerLive.rc" />
@@ -324,29 +298,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts" />
-    <QtTranslation Include="i18n\DSS.cs.ts" />
-    <QtTranslation Include="i18n\DSS.de.ts" />
-    <QtTranslation Include="i18n\DSS.en.ts">
+    <QtTranslation Include="i18n\DSSLive_ca.ts" />
+    <QtTranslation Include="i18n\DSSLive_cs.ts" />
+    <QtTranslation Include="i18n\DSSLive_de.ts" />
+    <QtTranslation Include="i18n\DSSLive_en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.es.ts" />
-    <QtTranslation Include="i18n\DSS.fr.ts" />
-    <QtTranslation Include="i18n\DSS.it.ts" />
-    <QtTranslation Include="i18n\DSS.nl.ts" />
-    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
-    <QtTranslation Include="i18n\DSS.ro.ts" />
-    <QtTranslation Include="i18n\DSS.ru.ts" />
-    <QtTranslation Include="i18n\DSS.tr.ts" />
-    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSSLive_es.ts" />
+    <QtTranslation Include="i18n\DSSLive_fr.ts" />
+    <QtTranslation Include="i18n\DSSLive_it.ts" />
+    <QtTranslation Include="i18n\DSSLive_nl.ts" />
+    <QtTranslation Include="i18n\DSSLive_pt_BR.ts" />
+    <QtTranslation Include="i18n\DSSLive_ro.ts" />
+    <QtTranslation Include="i18n\DSSLive_ru.ts" />
+    <QtTranslation Include="i18n\DSSLive_tr.ts" />
+    <QtTranslation Include="i18n\DSSLive_zh_TW.ts" />
+    <QtTranslation Include="i18n\DSSLive_zh_CN.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ui\ChartTab.ui" />
+    <QtUic Include="ui\EmailSettings.ui" />
+    <QtUic Include="ui\RestartMonitoring.ui" />
+    <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
+    <QtUic Include="ui\ImageViewer.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\SmtpMime\SmtpMime" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

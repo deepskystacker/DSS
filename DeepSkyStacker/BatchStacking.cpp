@@ -7,87 +7,12 @@
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 
-namespace
-{
-	static bool processList(const fs::path& fileList, QString& outputFile)
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool bResult = true;
-		Workspace workspace;
-		CAllStackingTasks tasks;
-		DSS::FrameList list;
 
-		workspace.Push();
-		list.loadFilesFromList(fileList);
-		list.fillTasks(tasks);
-		tasks.ResolveTasks();
-
-		if (!tasks.m_vStacks.empty())
-		{
-			bool bContinue = true;
-			DSS::ProgressDlg dlg;
-			CStackingEngine StackingEngine;
-			CString strReferenceFrame;
-
-			// First check that the images are registered
-			if (list.countUnregisteredCheckedLightFrames() != 0)
-			{
-				CRegisterEngine	RegisterEngine;
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
-			}
-
-			if (bContinue)
-			{
-				if (list.getReferenceFrame(strReferenceFrame))
-					StackingEngine.SetReferenceFrame(strReferenceFrame);
-
-				std::shared_ptr<CMemoryBitmap> pBitmap;
-				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
-				if (bContinue)
-				{
-					CString strFileName{ fileList.stem().c_str() };
-
-					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
-
-					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.c_str(), iff == IFF_TIFF))
-					{
-						StackingEngine.WriteDescription(tasks, strFileName);
-
-						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
-						dlg.Start2(strText, 0);
-
-						if (iff == IFF_TIFF)
-						{
-							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
-							else
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
-						}
-						else
-						{
-							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
-							else
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
-						}
-						dlg.End2();
-					}
-					outputFile = QString::fromWCharArray(strFileName.GetString());
-				}
-			}
-			dlg.Close();
-			bResult = bContinue;
-		}
-		workspace.Pop();
-
-		return bResult;
-	};
-}
 
 namespace DSS
 {
@@ -106,6 +31,80 @@ namespace DSS
 	BatchStacking::~BatchStacking()
 	{
 		delete ui;
+	}
+
+	bool BatchStacking::processList(const fs::path& fileList, QString& outputFile)
+	{
+		ZFUNCTRACE_RUNTIME();
+		bool bResult = true;
+		Workspace workspace;
+		CAllStackingTasks tasks;
+		DSS::FrameList list;
+
+		workspace.Push();
+		list.loadFilesFromList(fileList);
+		list.fillTasks(tasks);
+		tasks.ResolveTasks();
+
+		if (!tasks.m_vStacks.empty())
+		{
+			bool bContinue = true;
+			DSS::ProgressDlg dlg{ this };
+			CStackingEngine StackingEngine;
+
+			// First check that the images are registered
+			if (list.countUnregisteredCheckedLightFrames() != 0)
+			{
+				CRegisterEngine	RegisterEngine;
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+			}
+
+			if (bContinue)
+			{
+				const QString referenceFrame(list.getReferenceFrame());
+				if (!referenceFrame.isEmpty())
+					StackingEngine.SetReferenceFrame(referenceFrame.toStdU16String());
+
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
+				if (bContinue)
+				{
+					fs::path file;
+
+					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
+
+					if (StackingEngine.GetDefaultOutputFileName(file, fileList, iff == IFF_TIFF))
+					{
+						StackingEngine.WriteDescription(tasks, file);
+
+						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromStdU16String(file.generic_u16string())));
+						dlg.Start2(strText, 0);
+
+						if (iff == IFF_TIFF)
+						{
+							if (pBitmap->IsMonochrome())
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+							else
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+						}
+						else
+						{
+							if (pBitmap->IsMonochrome())
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
+							else
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
+						}
+						dlg.End2();
+					}
+					outputFile = QString::fromStdU16String(file.generic_u16string());
+				}
+			}
+			dlg.Close();
+			bResult = bContinue;
+		}
+		workspace.Pop();
+
+		return bResult;
 	}
 
 	void BatchStacking::accept()
@@ -175,7 +174,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromStdWString(path.native()));
+			filePaths.append(QString::fromWCharArray(path.native().c_str()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);

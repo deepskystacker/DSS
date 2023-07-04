@@ -161,9 +161,9 @@ namespace DSS
 			lb.m_strSizes = QString("%1 x %2").arg(lb.m_lWidth).arg(lb.m_lHeight);
 
 			if (lb.m_lNrChannels == 3)
-				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
+				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitsPerChannel);
 			else
-				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
+				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitsPerChannel);
 
 			if (lb.GetCFAType() != CFATYPE_NONE)
 				lb.m_strCFA = QCoreApplication::translate("DSS::Group", "Yes", "IDS_YES");

@@ -91,9 +91,7 @@ public:
 	void ReadFromFile(LPCTSTR name);
 	void ReadFromFile(const fs::path& file);
 	void SaveToFile(FILE* hFile);
-	void SaveToFile(LPCTSTR name);
 	void SaveToFile(const fs::path& file);
-	bool ReadFromString(LPCTSTR szString);
 	bool ReadFromString(const QString& string);
 	void ResetToDefault();
 
