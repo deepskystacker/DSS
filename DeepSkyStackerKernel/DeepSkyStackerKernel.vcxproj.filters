@@ -125,9 +125,6 @@
     <ClCompile Include=".\FrameList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\ImageListModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\BitMapFiller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,6 +194,15 @@
     <ClCompile Include="tracecontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ExceptionHandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StackWalker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageListModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -227,9 +233,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\DSSCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\DSSProgress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\DSSTools.h">
@@ -448,12 +451,21 @@
     <ClInclude Include="tracecontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ExceptionHandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackWalker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\DSSProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include=".\ImageListModel.h">
+    <QtMoc Include="imageloader.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="imageloader.h">
+    <QtMoc Include="ImageListModel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -463,43 +475,46 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\KernelDSS.ca.ts">
+    <QtTranslation Include="i18n\DSSKernel_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.cs.ts">
+    <QtTranslation Include="i18n\DSSKernel_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.de.ts">
+    <QtTranslation Include="i18n\DSSKernel_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.en.ts">
+    <QtTranslation Include="i18n\DSSKernel_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.es.ts">
+    <QtTranslation Include="i18n\DSSKernel_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.fr.ts">
+    <QtTranslation Include="i18n\DSSKernel_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.it.ts">
+    <QtTranslation Include="i18n\DSSKernel_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.nl.ts">
+    <QtTranslation Include="i18n\DSSKernel_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.pt_BR.ts">
+    <QtTranslation Include="i18n\DSSKernel_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.ro.ts">
+    <QtTranslation Include="i18n\DSSKernel_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.ru.ts">
+    <QtTranslation Include="i18n\DSSKernel_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.tr.ts">
+    <QtTranslation Include="i18n\DSSKernel_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\KernelDSS.zh_TW.ts">
+    <QtTranslation Include="i18n\DSSKernel_zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSKernel_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

@@ -37,12 +37,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.4.0_msvc2019_64</QtInstall>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -215,10 +215,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include=".\ImageListModel.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include=".\MasterFrames.cpp" />
     <ClCompile Include=".\MatchingStars.cpp" />
     <ClCompile Include=".\MedianFilterEngine.cpp" />
@@ -235,9 +231,12 @@
     <ClCompile Include=".\Workspace.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="dss_settings.cpp" />
+    <ClCompile Include="ExceptionHandling.cpp" />
+    <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="imageloader.cpp" />
     <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
+    <ClCompile Include="StackWalker.cpp" />
     <ClCompile Include="StarMask.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -286,8 +285,10 @@
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
     <ClInclude Include=".\Histogram.h" />
+    <ClInclude Include="ExceptionHandling.h" />
+    <QtMoc Include="ImageListModel.h" />
+    <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
-    <QtMoc Include=".\ImageListModel.h" />
     <ClInclude Include=".\MasterFrames.h" />
     <ClInclude Include=".\MatchingStars.h" />
     <ClInclude Include=".\MemoryBitmap.h" />
@@ -347,19 +348,20 @@
     <QtRcc Include="i18n\translations_kernel.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\KernelDSS.ca.ts" />
-    <QtTranslation Include="i18n\KernelDSS.cs.ts" />
-    <QtTranslation Include="i18n\KernelDSS.de.ts" />
-    <QtTranslation Include="i18n\KernelDSS.en.ts" />
-    <QtTranslation Include="i18n\KernelDSS.es.ts" />
-    <QtTranslation Include="i18n\KernelDSS.fr.ts" />
-    <QtTranslation Include="i18n\KernelDSS.it.ts" />
-    <QtTranslation Include="i18n\KernelDSS.nl.ts" />
-    <QtTranslation Include="i18n\KernelDSS.pt_BR.ts" />
-    <QtTranslation Include="i18n\KernelDSS.ro.ts" />
-    <QtTranslation Include="i18n\KernelDSS.ru.ts" />
-    <QtTranslation Include="i18n\KernelDSS.tr.ts" />
-    <QtTranslation Include="i18n\KernelDSS.zh_TW.ts" />
+    <QtTranslation Include="i18n\DSSKernel_ca.ts" />
+    <QtTranslation Include="i18n\DSSKernel_cs.ts" />
+    <QtTranslation Include="i18n\DSSKernel_de.ts" />
+    <QtTranslation Include="i18n\DSSKernel_en.ts" />
+    <QtTranslation Include="i18n\DSSKernel_es.ts" />
+    <QtTranslation Include="i18n\DSSKernel_fr.ts" />
+    <QtTranslation Include="i18n\DSSKernel_it.ts" />
+    <QtTranslation Include="i18n\DSSKernel_nl.ts" />
+    <QtTranslation Include="i18n\DSSKernel_pt_BR.ts" />
+    <QtTranslation Include="i18n\DSSKernel_ro.ts" />
+    <QtTranslation Include="i18n\DSSKernel_ru.ts" />
+    <QtTranslation Include="i18n\DSSKernel_tr.ts" />
+    <QtTranslation Include="i18n\DSSKernel_zh_CN.ts" />
+    <QtTranslation Include="i18n\DSSKernel_zh_TW.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -256,7 +256,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 bool CMultitask::GetUseSimd() { return true; }
 int CMultitask::GetNrCurrentOmpThreads() { return 1; } // Placeholder!!!
 
-void CMultiBitmap::DestroyTempFiles() {}
+void CMultiBitmap::removeTempFiles() {}
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
 bool CMultiBitmap::AddBitmap(CMemoryBitmap*, ProgressBase*) { return true; }
 std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase*) { return std::shared_ptr<CMemoryBitmap>{}; }

@@ -33,17 +33,14 @@
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
+void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szName[1+_MAX_FNAME];
 
-	_tsplitpath(szReferenceFrame, szDrive, szDir, szName, nullptr);
+	const QFileInfo fileInfo(path);
 
-	m_strReferenceFrame = szReferenceFrame;
-	m_strStackingFileInfo = QString("%1%2%3.stackinfo.txt").arg(szDrive).arg(szDir).arg(szName);
+	referenceFrame = path;
+	m_strStackingFileInfo = QDir::toNativeSeparators(QString("%1%2%3.stackinfo.txt").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName()));
 
 	unsigned int dwAlignmentTransformation = 2;
 	Workspace workspace;
@@ -87,11 +84,11 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 		}
 		else
 		{
-			CString		strInfoFileName;
-			CString		strStoredInfoFileName(currentLine.toStdWString().c_str());
+			QString strInfoFileName;
+			const QString strStoredInfoFileName(currentLine);
 
-			GetInfoFileName((LPCTSTR)m_strReferenceFrame, strInfoFileName);
-			if (strInfoFileName.CompareNoCase(strStoredInfoFileName))
+			GetInfoFileName(referenceFrame, strInfoFileName);
+			if (strInfoFileName.compare(strStoredInfoFileName, Qt::CaseInsensitive))
 				bEnd = true;
 		}
 	};
@@ -108,7 +105,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 		}
 		else
 		{
-			lfsi.m_strInfoFileName = currentLine.toStdWString().c_str();
+			lfsi.m_strInfoFileName = currentLine;
 		}
 
 		currentLine = file.readLine(nMaxRead).simplified();
@@ -118,7 +115,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 		}
 		else
 		{
-			lfsi.m_strFileName = currentLine.toStdWString().c_str();
+			lfsi.file = currentLine.toStdU16String().c_str();
 		}
 
 		currentLine = file.readLine(nMaxRead).simplified();
@@ -142,15 +139,12 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& strInfoFileName)
+void	CLightFramesStackingInfo::GetInfoFileName(const fs::path& lightFrame, QString& strInfoFileName)
 {
 	//ZFUNCTRACE_RUNTIME();
-	fs::path file{ szLightFrame };
+	fs::path file{ lightFrame };
 	file.replace_extension(".info.txt");
-
-	QString infoFileName{ QString::fromStdU16String(file.generic_u16string()) };
-
-	QFileInfo info{ infoFileName };
+	QFileInfo info{ file };
 
 	//
 	// Get the file creation date/time if possible. If not get the last modified date/time
@@ -165,26 +159,25 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& st
 	// File doesn't exist
 	// 
 	if (!birthTime.isValid())
-		strInfoFileName.Empty();
+		strInfoFileName.clear();
 	else
 	{
-		QString temp = QString{ "%1 [%2]" }.arg(infoFileName).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
-		strInfoFileName = temp.toStdWString().c_str();
+		strInfoFileName = QString{ "%1 [%2]" }.arg(file.generic_u16string().c_str()).arg(birthTime.toString("yyyy/MM/dd hh:mm:ss"));
 	}
 }
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBilinearParameters& bp)
+void	CLightFramesStackingInfo::AddLightFrame(const fs::path& szLightFrame, const CBilinearParameters & bp)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	CLightFrameStackingInfo lfsi(szLightFrame);
-	CString strInfoFileName;
+	QString strInfoFileName;
 
 	GetInfoFileName(szLightFrame, strInfoFileName);
 	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), lfsi);
-	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.CompareNoCase(szLightFrame))
+	if (it != m_vLightFrameStackingInfo.end() && !it->file.compare(szLightFrame))
 	{
 		// There is already this light frame
 		it->m_strInfoFileName = strInfoFileName;
@@ -203,18 +196,18 @@ void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBiline
 
 /* ------------------------------------------------------------------- */
 
-bool CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearParameters& bp)
+bool CLightFramesStackingInfo::GetParameters(const fs::path& szLightFrame, CBilinearParameters & bp)
 {
 	// ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
 	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), CLightFrameStackingInfo(szLightFrame));
-	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.CompareNoCase(szLightFrame))
+	if (it != m_vLightFrameStackingInfo.end() && !it->file.compare(szLightFrame))
 	{
-		CString strInfoFileName;
+		QString strInfoFileName;
 		GetInfoFileName(szLightFrame, strInfoFileName);
 
-		if (!strInfoFileName.CompareNoCase(it->m_strInfoFileName))
+		if (!strInfoFileName.compare(it->m_strInfoFileName, Qt::CaseInsensitive))
 		{
 			bp = it->m_BilinearParameters;
 			bResult = true;
@@ -230,7 +223,7 @@ void CLightFramesStackingInfo::Save()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (m_strReferenceFrame.GetLength() && m_strStackingFileInfo.length())
+	if (!referenceFrame.empty() && !m_strStackingFileInfo.isEmpty())
 	{
 		QFile file(m_strStackingFileInfo);
 		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
@@ -244,14 +237,14 @@ void CLightFramesStackingInfo::Save()
 		dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 		stream << dwAlignmentTransformation << Qt::endl;
 
-		CString strInfoFileName;
-		GetInfoFileName((LPCTSTR)m_strReferenceFrame, strInfoFileName);
-		stream << QString::fromWCharArray(strInfoFileName.GetString()) << Qt::endl;
+		QString strInfoFileName;
+		GetInfoFileName(referenceFrame, strInfoFileName);
+		stream << strInfoFileName << Qt::endl;
 
 		for (const auto& stackingInfo : m_vLightFrameStackingInfo)
 		{
-			stream << QString::fromWCharArray(stackingInfo.m_strInfoFileName.GetString()) << Qt::endl;
-			stream << QString::fromWCharArray(stackingInfo.m_strFileName.GetString()) << Qt::endl;
+			stream << stackingInfo.m_strInfoFileName << Qt::endl;
+			stream << QString::fromStdU16String(stackingInfo.file.generic_u16string().c_str()) << Qt::endl;
 
 			QString strParameters;
 			stackingInfo.m_BilinearParameters.ToText(strParameters);
@@ -438,7 +431,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 	ZFUNCTRACE_RUNTIME();
 
 	bool bReferenceFrameFound;
-	if (m_strReferenceFrame.GetLength())
+	if (!referenceFrame.empty())
 		bReferenceFrameFound = false;
 	else
 		bReferenceFrameFound = true;
@@ -452,7 +445,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 			for (auto& bitmap : task.m_vBitmaps)
 			{
 				CLightFrameInfo lfi;
-				lfi.SetBitmap(bitmap.filePath.c_str(), false, false);
+				lfi.SetBitmap(bitmap.filePath, false, false);
 
 				if (lfi.IsRegistered())
 				{
@@ -463,7 +456,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 					// m_strReferenceFrame is a CString but contains the reference frame path
 					// with / separators rather than \\
 					//
-					if (!m_strReferenceFrame.CompareNoCase(lfi.filePath.generic_wstring().c_str()))
+					if (!referenceFrame.compare(lfi.filePath))
 					{
 						lfi.m_bStartingFrame = true;
 						bReferenceFrameFound = true;
@@ -479,10 +472,9 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		// Look for the reference frame and add it to the list
 		CLightFrameInfo			lfi;
 		CFrameInfo				fi;
-		fs::path path { m_strReferenceFrame.GetString() };
-		if (fi.InitFromFile(path, PICTURETYPE_LIGHTFRAME))
+		if (fi.InitFromFile(referenceFrame, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(path , false, false);
+			lfi.SetBitmap(referenceFrame, false, false);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;
@@ -805,7 +797,7 @@ void CStackingEngine::ComputeOffsets()
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
+bool	CStackingEngine::isLightFrameStackable(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -813,7 +805,7 @@ bool	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
 
 	for (int i = 0;i<m_vBitmaps.size() && !bResult;i++)
 	{
-		if (!m_vBitmaps[i].filePath.compare(szFile))
+		if (!m_vBitmaps[i].filePath.compare(file))
 		{
 			if (!m_vBitmaps[i].m_bDisabled)
 				bResult = true;
@@ -839,7 +831,7 @@ bool	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 			//for (j = 0; j < LightTask.m_vBitmaps.size(); j++)
 			for (const auto& bitmap : LightTask.m_vBitmaps)
 			{
-				if (IsLightFrameStackable(bitmap.filePath.c_str()))
+				if (isLightFrameStackable(bitmap.filePath))
 					vNewList.push_back(bitmap);
 			};
 
@@ -1054,13 +1046,13 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect & rc)
 };
 
 /* ------------------------------------------------------------------- */
-int CStackingEngine::FindBitmapIndex(LPCTSTR szFile)
+int CStackingEngine::findBitmapIndex(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	for (size_t i = 0; i < m_vBitmaps.size(); i++)
 	{
-		if (m_vBitmaps[i].filePath.compare(szFile) == 0)
+		if (m_vBitmaps[i].filePath.compare(file) == 0)
 		{
 			return static_cast<int>(i);
 		}
@@ -1332,36 +1324,33 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 
 	bool				bResult = false;
 
-	if (m_strCurrentLightFrame.GetLength() != 0 && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(currentLightFrame);		
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
+		QString strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += ".reg.tif";
+			strOutputFile = strPath + strBaseName + ".reg.tif";
 		else
 		{
-			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".reg" + CString(strExt.toStdWString().c_str());
-		};
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strOutputFile = strPath + strBaseName + ".reg" + strFitsExt;
+		}
+		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(strOutputFile));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Registered and Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1377,31 +1366,26 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 
 	bool				bResult = false;
 
-	if (m_strCurrentLightFrame.GetLength() != 0 && static_cast<bool>(pBitmap))
+	if (!currentLightFrame.empty() && static_cast<bool>(pBitmap))
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(currentLightFrame);
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
+		QString strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += ".cal.tif";
+			strOutputFile = strPath + strBaseName + ".cal.tif";
 		else
 		{
-			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cal" + CString(strExt.toStdWString().c_str());
-		};
-
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strOutputFile = strPath + strBaseName + ".cal" + strFitsExt;
+		}
+		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(strOutputFile));
 			m_pProgress->Start2(strText, 0);
 		};
 
@@ -1425,10 +1409,11 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			if (CFATransform == CFAT_SUPERPIXEL)
 				pCFABitmapInfo->UseBilinear(true);
 		}
+		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(true);
@@ -1447,33 +1432,31 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 
 	bool				bResult = false;
 
-	if (m_strCurrentLightFrame.GetLength() != 0 && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(currentLightFrame);
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
+		QString strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += ".cosmetic.tif";
+			strOutputFile = strPath + strBaseName + ".cosmetic.tif";
 		else
 		{
-			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += ".cosmetic" + CString(strExt.toStdWString().c_str());
-		};
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strOutputFile = strPath + strBaseName + ".cosmetic" + strFitsExt;
+		}
+		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
 		if (m_pProgress)
 			m_pProgress->Start2(0);
+		
+		const QString description("Delta Cosmetic Image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1489,35 +1472,33 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 
 	bool bResult = false;
 
-	if (m_strCurrentLightFrame.GetLength() != 0 && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(currentLightFrame);
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
+		QString strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += "Comet.tif";
+			strOutputFile = strPath + strBaseName + ".Comet.tif";
 		else
 		{
-			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += "Comet" + CString(strExt.toStdWString().c_str());
-		};
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strOutputFile = strPath + strBaseName + ".Comet" + strFitsExt;
+		}
+		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(strOutputFile));
 			m_pProgress->Start2(strText, 0);
 		};
+		const QString description("Comet alone");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Comet alone"));
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1533,36 +1514,34 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 
 	bool bResult = false;
 
-	if (m_strCurrentLightFrame.GetLength() != 0 && pBitmap != nullptr)
+	if (!currentLightFrame.empty() && pBitmap != nullptr)
 	{
-		TCHAR			szDrive[1 + _MAX_DRIVE];
-		TCHAR			szDir[1 + _MAX_DIR];
-		TCHAR			szName[1 + _MAX_FNAME];
-		CString			strOutputFile;
+		const QFileInfo fileInfo(currentLightFrame);
+		const QString strPath(fileInfo.path() + QDir::separator());
+		const QString strBaseName(fileInfo.baseName());
+		QString strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
-
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += "Cometless.tif";
+			strOutputFile = strPath + strBaseName + ".Cometless.tif";
 		else
 		{
-			QString strExt;
-			GetFITSExtension(m_strCurrentLightFrame, strExt);
-			strOutputFile += "Cometless" + CString(strExt.toStdWString().c_str());
+			QString strFitsExt;
+			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
+			strOutputFile = strPath + strBaseName + ".Cometless" + strFitsExt;
 		}
+		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
 		if (m_pProgress)
 		{
-			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(strOutputFile));
 			m_pProgress->Start2(strText, 0);
 		}
 
+		const QString description("Cometless image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Cometless image"));
+			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 
 		if (m_pProgress)
 			m_pProgress->End2();
@@ -2051,7 +2030,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		{
 		case SM_MOSAIC:
 		{
-			CString strDrive;
+			fs::path strDrive;
 			QString strFreeSpace;
 			QString strNeededSpace;
 
@@ -2071,7 +2050,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				SpaceToQString(ulFreeSpace, strFreeSpace);
 				SpaceToQString(ulNeededSpace, strNeededSpace);
 
-				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive)).arg(strFreeSpace) +
+				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive.wstring().c_str())).arg(strFreeSpace) +
 									  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 				bContinue = m_pProgress->Warning(strText);
 			}
@@ -2172,7 +2151,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					{
 						if (lightTaskNdx >= pStackingInfo->m_pLightTask->m_vBitmaps.size())
 							return { {}, -1 };
-						const int bitmapNdx = FindBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightTaskNdx].filePath.c_str());
+						const int bitmapNdx = findBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightTaskNdx].filePath);
 						if (bitmapNdx < 0)
 							return { {}, -1 };
 						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
@@ -2234,18 +2213,17 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								.arg(lightframeInfo.m_fAngle * 180 / M_PI, 0, 'f', 1), m_lNrStacked + 1);
 						}
 
-						const auto strDescription = lightframeInfo.m_strInfos;
 						if (lightframeInfo.m_lNrChannels == 3)
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(QString::fromStdU16String(lightframeInfo.filePath.generic_u16string()));
 						else
-							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lightframeInfo.filePath.c_str()));
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lightframeInfo.m_lBitsPerChannel).arg(lightframeInfo.m_strInfos).arg(QString::fromStdU16String(lightframeInfo.filePath.generic_u16string()));
 
 						ZTRACE_RUNTIME(strText);
 						// First apply transformations
 						MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lightframeInfo.m_vStars), m_pProgress);
 
 						// Here save the calibrated light frame if needed
-						m_strCurrentLightFrame = lightframeInfo.filePath.c_str();
+						currentLightFrame = lightframeInfo.filePath;
 
 						std::shared_ptr<CMemoryBitmap> pDelta = ApplyCosmetic(pBitmap, m_PostCalibrationSettings, m_pProgress);
 						if (m_bSaveCalibrated)
@@ -2309,50 +2287,34 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(CA2CT(e.what()));
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
+		const QString errorMessage(e.what());
+		DSSBase::instance()->reportError(errorMessage, "");
 	}
-#if !defined(_CONSOLE)
-	catch (CException & e)
+	catch (ZException& e)
 	{
-		e.ReportError();
-		e.Delete();
-	}
-#endif
-	catch (ZException & ze)
-	{
-		CString errorMessage;
-		CString name(CA2CT(ze.name()));
-		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(ze.text(0)));
-
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name.GetString(),
-			fileName.GetString(),
-			functionName.GetString(),
-			ze.locationAtIndex(0)->lineNumber(),
-			text.GetString());
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("CStackingEngine::StackAll",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("CStackingEngine::StackAll",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 	}
 	catch (...)
 	{
-		CString errorMessage(_T("Unknown exception caught"));
-#if defined(_CONSOLE)
-		std::wcerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-
+		const QString errorMessage(QCoreApplication::translate("CStackingEngine::StackAll", "Unknown exception caught"));
+		DSSBase::instance()->reportError(errorMessage, "");
 	}
 
 	// Clear everything
@@ -2495,106 +2457,83 @@ void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pPr
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR szFileList, bool bTIFF)
+bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& fileList, bool bTIFF)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult;
 	// Retrieve the first light frame
-	COutputSettings		OutputSettings;
-
+	COutputSettings OutputSettings;
 	CAllStackingTasks::GetOutputSettings(OutputSettings);
-
-	bResult = OutputSettings.m_bOutput;
-
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szName[1+_MAX_FNAME];
-	CString				strBaseName = strFileName;
-	CString				strFileList = szFileList;
-	CString				strOutputFolder;
-
-	// By default use the folder of the first light frame
+	bool bResult = OutputSettings.m_bOutput;
+	fs::path folder;
 	if (m_vBitmaps.size())
 	{
 		// Use the folder of the first light frame
-		_tsplitpath(m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
-
-		strOutputFolder = szDrive;
-		strOutputFolder += szDir;
-	};
+		folder = m_vBitmaps[0].filePath;
+	}
 
 	if (OutputSettings.m_bOtherFolder && OutputSettings.m_strFolder.length())
 	{
-		strOutputFolder = CString((LPCTSTR)OutputSettings.m_strFolder.utf16());
-	};
+		folder = OutputSettings.m_strFolder.toStdU16String();
+	}
 
-	if (OutputSettings.m_bFileListFolder && strFileList.GetLength())
+	if (OutputSettings.m_bFileListFolder && !fileList.empty())
 	{
-		_tsplitpath(strFileList, szDrive, szDir, nullptr, nullptr);
+		folder = fileList;
+	}
 
-		strOutputFolder = szDrive;
-		strOutputFolder += szDir;
-	};
+	folder.remove_filename();
 
-	if (!strBaseName.GetLength())
+	fs::path name{ file.stem() };
+	if (name.empty())
 	{
-		if (OutputSettings.m_bAutosave || !strFileList.GetLength())
-			strBaseName = _T("Autosave");
+		if (OutputSettings.m_bAutosave || fileList.empty())
+			name = "Autosave";
 		else
 		{
-			_tsplitpath(szFileList, nullptr, nullptr, szName, nullptr);
-			strBaseName = szName;
-			if (!strBaseName.GetLength())
-				strBaseName = _T("Autosave");
-		};
-	};
-
-	{
-		CString			strBasePath;
-		QString			strExt;
-		bool			bFileExists = false;
-		int			lNumber = 0;
-
-		strBasePath = strOutputFolder;
-		// Add trailing backslash
-		if (strBasePath.Right(1) != _T("\\") && strBasePath.Right(1) != _T("/"))
-			strBasePath += _T("\\");
-
-		if (bTIFF)
-		{
-			strExt = ".tif";
-			strFileName = strBasePath+strBaseName+".tif";
+			name = fileList.stem();
+			if (name.empty())
+				name = "Autosave";
 		}
-		else
-		{
-			strExt = ".fit";
-			if (m_vBitmaps.size())
-				GetFITSExtension(m_vBitmaps[0].filePath, strExt);
-			strFileName = strBasePath+strBaseName + CString(strExt.toStdWString().c_str());;
-		};
+	}
 
-		if (OutputSettings.m_bAppend)
+	fs::path extension;
+	if (bTIFF)
+	{
+		extension = ".tif";
+	}
+	else
+	{
+		extension = ".fit";
+	}
+	fs::path outputFile{ folder };
+
+	if (OutputSettings.m_bAppend)
+	{
+		int i = 0;
+		bool fileExists = false;
+		QString suffix;
+		do
 		{
-			do
+			fs::path newName{ name };
+			if (i > 0)
 			{
-				FILE *		hFile;
-
-				hFile = _tfopen(strFileName, _T("rb"));
-				if (hFile)
-				{
-					fclose(hFile);
-					lNumber++;
-					bFileExists = true;
-					strFileName.Format(_T("%s%s%03ld%s"), (LPCTSTR)strBasePath, (LPCTSTR)strBaseName, lNumber, strExt.toStdWString().c_str());
-				}
-				else
-					bFileExists = false;
+				suffix = QString("%1").arg(i, 3, 10, QLatin1Char('0'));
+				newName += suffix.toStdU16String();
 			}
-			while (bFileExists && (lNumber<1000));
-		};
-	};
+			outputFile.replace_filename(newName.replace_extension(extension));
 
+			fileExists = exists(outputFile);
+			if (!fileExists) break;
+			++i;
+		}
+		while (fileExists && (i<1000));
+	}
+	else
+	{
+		outputFile.replace_filename(name.replace_extension(extension));
+	}
+	file = outputFile;
 	return bResult;
 };
 
@@ -2613,422 +2552,400 @@ static void GetISOGainStrings(CTaskInfo *pTask, const QString& strISO, const QSt
 	}
 }
 
-void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutputFile)
+void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path& outputFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	COutputSettings		OutputSettings;
-	CString				strOutputFile = szOutputFile;
-
+	COutputSettings	OutputSettings;
 	tasks.GetOutputSettings(OutputSettings);
+	if (!OutputSettings.m_bOutputHTML)
+		return;
 
-	if (OutputSettings.m_bOutputHTML)
+	const QFileInfo fileInfo(outputFile);
+	const QString strOutputFile(QDir::toNativeSeparators(QString("%1%2%3.html").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName())));
+
+	QFile file(strOutputFile);
+	if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
+		return;
+	QTextStream stream(&file);
+
+	QString strTempText;
+
+	stream << "<html>" << Qt::endl;
+	stream << "<head>" << Qt::endl;
+	stream << "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">";
+	stream << "<title>DeepSkyStacker - " << fileInfo.baseName() << "</title>";
+	stream << "</head>" << Qt::endl;
+	stream << "<body>" << Qt::endl;
+	stream << "-> " << fileInfo.baseName() << "<br><br>" << Qt::endl;
+
+	// Stacking Mode
+	stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
+	switch (tasks.getStackingMode())
 	{
-		TCHAR			szDrive[1+_MAX_DRIVE];
-		TCHAR			szDir[1+_MAX_DIR];
-		TCHAR			szName[1+_MAX_FNAME];
+	case SM_NORMAL :
+		stream << QCoreApplication::translate("StackRecap", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
+		break;
+	case SM_MOSAIC :
+		stream << QCoreApplication::translate("StackRecap", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
+		break;
+	case SM_INTERSECTION :
+		stream << QCoreApplication::translate("StackRecap", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
+		break;
+	case SM_CUSTOM :
+		stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
+		break;
+	};
 
-		_tsplitpath(szOutputFile, szDrive, szDir, szName, nullptr);
-		strOutputFile = szDrive;
-		strOutputFile += szDir;
-		strOutputFile += szName;
-		strOutputFile += _T(".html");
+	stream << "<br>";
 
-		QFile file(QString::fromWCharArray(strOutputFile.GetString()));
-		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
-			return;
-		QTextStream stream(&file);
+	// Alignment method
+	stream << QCoreApplication::translate("StackRecap", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
 
+	switch (tasks.GetAlignmentMethod())
+	{
+	case 0 :
+	case 1 :
+		stream << QCoreApplication::translate("StackRecap", "Automatic", "IDS_ALIGN_AUTO");
+		break;
+	case 2 :
+		stream << QCoreApplication::translate("StackRecap", "Bilinear", "IDS_ALIGN_BILINEAR");
+		break;
+	case 3 :
+		stream << QCoreApplication::translate("StackRecap", "Bisquared", "IDS_ALIGN_BISQUARED");
+		break;
+	case 4 :
+		stream << QCoreApplication::translate("StackRecap", "Bicubic", "IDS_ALIGN_BICUBIC");
+		break;
+	case 5 :
+		stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
+		break;
+	};
+	stream << "<br>" << Qt::endl;
+
+	// Drizzle ?
+	const int dwDrizzle = tasks.GetPixelSizeMultiplier();
+	if (dwDrizzle > 1)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
+		stream << "<br>" << Qt::endl;
+	};
+
+	// Comet
+	if (tasks.IsCometAvailable())
+	{
+		COMETSTACKINGMODE	CometStackingMode;
+
+		CometStackingMode = tasks.GetCometStackingMode();
+		stream << QCoreApplication::translate("StackRecap", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
+		switch (CometStackingMode)
 		{
-			QString strTempText;
+		case CSM_STANDARD :
+			stream << QCoreApplication::translate("StackRecap", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
+			break;
+		case CSM_COMETONLY :
+			stream << QCoreApplication::translate("StackRecap", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
+			break;
+		case CSM_COMETSTAR :
+			stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
+			break;
+		};
+		stream << "<br>" << Qt::endl;
+	};
 
-			_tsplitpath(strOutputFile, nullptr, nullptr, szName, nullptr);
+	// Post calibration settings
+	CPostCalibrationSettings		pcs;
 
-			stream << "<html>" << Qt::endl;
+	tasks.GetPostCalibrationSettings(pcs);
+	if (pcs.m_bHot)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
+		stream << "<br>" << Qt::endl;
+	};
+	if (pcs.m_bCold)
+	{
+		stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
+		stream << "<br>" << Qt::endl;
+	};
 
-			stream << "<head>" << Qt::endl;
-			stream << "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">";
-			stream << "<title>DeepSkyStacker - " << szName << "</title>";
-			stream << "</head>" << Qt::endl;
+	if (pcs.m_bHot || pcs.m_bCold)
+		stream << "<br><br>";
 
+	// Now the list of tasks
+	int				i, j;
+	int				lTotalExposure = 0;
+	QString				strBackgroundCalibration;
+	QString				strPerChannelBackgroundCalibration;
+	QString				strExposure;
+	QString				strISOGainValue;
+	QString				strISOGainText;
+	QString				strISOText;
+	QString				strGainText;
+	QString				strYesNo;
+	QString strYes(QCoreApplication::translate("StackingEngine", "Yes", "IDS_YES"));
+	QString strNo(QCoreApplication::translate("StackingEngine", "No", "IDS_NO"));
+	BACKGROUNDCALIBRATIONMODE	CalibrationMode;
 
-			stream << "<body>" << Qt::endl;
-			stream << "-> " << szName << "<br><br>" << Qt::endl;
+	CalibrationMode = tasks.GetBackgroundCalibrationMode();
 
-			// Stacking Mode
-			stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
-			switch (tasks.getStackingMode())
+	strISOText = QCoreApplication::translate("StackRecap", "ISO", "IDS_ISO");
+	strGainText = QCoreApplication::translate("StackRecap", "Gain", "IDS_GAIN");
+	strBackgroundCalibration = QCoreApplication::translate("StackRecap", "RGB Channels Background Calibration: %1", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
+	strPerChannelBackgroundCalibration = QCoreApplication::translate("StackRecap", "Per Channel Background Calibration: %1", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
+
+	for (i = 0;i<tasks.m_vStacks.size();i++)
+	{
+		CStackingInfo& si = tasks.m_vStacks[i];
+
+		if (si.m_pLightTask)
+		{
+			stream << "<table border='1px' cellspacing=0 cellpadding=5 width=100%%><tr><td>";
+			int			lTaskExposure = 0;
+
+			for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
+				lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
+
+			lTotalExposure += lTaskExposure;
+
+			strExposure = exposureToString(lTaskExposure);
+			GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+			QString strText(QCoreApplication::translate("StackRecap", "Stacking step %1<br>  ->%2 frames (%3: %4) - total exposure: ",
+				"IDS_RECAP_STEP")
+							.arg(i + 1)
+							.arg(si.m_pLightTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue));
+
+			stream << "<a href=\"#Task" << i << "\">" << strText << "</a>";
+			stream << strExposure << "<br>";
+			stream << "<ul>" << strBackgroundCalibration << "<br>" << strPerChannelBackgroundCalibration << "</ul>";
+
+			if (si.m_pLightTask->m_vBitmaps.size()>1)
 			{
-			case SM_NORMAL :
-				stream << QCoreApplication::translate("StackRecap", "Standard", "IDS_RECAP_STACKINGMODE_NORMAL");
-				break;
-			case SM_MOSAIC :
-				stream << QCoreApplication::translate("StackRecap", "Mosaic", "IDS_RECAP_STACKINGMODE_MOSAIC");
-				break;
-			case SM_INTERSECTION :
-				stream << QCoreApplication::translate("StackRecap", "Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
-				break;
-			case SM_CUSTOM :
-				stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
-				break;
-			};
+				FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);						
+				stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
 
-			stream << "<br>";
-
-			// Alignment method
-			stream << QCoreApplication::translate("StackRecap", "Alignment method: ", "IDS_RECAP_ALIGNMENT");
-
-			switch (tasks.GetAlignmentMethod())
-			{
-			case 0 :
-			case 1 :
-				stream << QCoreApplication::translate("StackRecap", "Automatic", "IDS_ALIGN_AUTO");
-				break;
-			case 2 :
-				stream << QCoreApplication::translate("StackRecap", "Bilinear", "IDS_ALIGN_BILINEAR");
-				break;
-			case 3 :
-				stream << QCoreApplication::translate("StackRecap", "Bisquared", "IDS_ALIGN_BISQUARED");
-				break;
-			case 4 :
-				stream << QCoreApplication::translate("StackRecap", "Bicubic", "IDS_ALIGN_BICUBIC");
-				break;
-			case 5 :
-				stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
-				break;
-			};
-			stream << "<br>" << Qt::endl;
-
-			// Drizzle ?
-			const int dwDrizzle = tasks.GetPixelSizeMultiplier();
-			if (dwDrizzle > 1)
-			{
-				stream << QCoreApplication::translate("StackRecap", "Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE").arg(dwDrizzle);
-				stream << "<br>" << Qt::endl;
-			};
-
-			// Comet
-			if (tasks.IsCometAvailable())
-			{
-				COMETSTACKINGMODE	CometStackingMode;
-
-				CometStackingMode = tasks.GetCometStackingMode();
-				stream << QCoreApplication::translate("StackRecap", "Comet processing: ", "IDS_RECAP_COMETSTACKING");
-				switch (CometStackingMode)
+				if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
+					(IsRawBayer() || IsFITSRawBayer()))
 				{
-				case CSM_STANDARD :
-					stream << QCoreApplication::translate("StackRecap", "Align on stars (no specific processing)", "IDS_RECAP_COMETSTACKING_NONE");
-					break;
-				case CSM_COMETONLY :
-					stream << QCoreApplication::translate("StackRecap", "Align on comet", "IDS_RECAP_COMETSTACKING_COMET");
-					break;
-				case CSM_COMETSTAR :
-					stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
-					break;
+					stream << "<br>" << QCoreApplication::translate("StackRecap", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
 				};
-				stream << "<br>" << Qt::endl;
 			};
 
-			// Post calibration settings
-			CPostCalibrationSettings		pcs;
+			stream << "<hr>";
+			if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
+				stream << "<ul>";
 
-			tasks.GetPostCalibrationSettings(pcs);
-			if (pcs.m_bHot)
+			if (si.m_pOffsetTask)
 			{
-				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICHOT").arg(pcs.m_lHotFilter).arg(pcs.m_fHotDetection);
-				stream << "<br>" << Qt::endl;
-			};
-			if (pcs.m_bCold)
-			{
-				stream << QCoreApplication::translate("StackRecap", "Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)<br>", "IDS_RECAP_COSMETICCOLD").arg(pcs.m_lColdFilter).arg(pcs.m_fColdDetection);
-				stream << "<br>" << Qt::endl;
-			};
+				strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
+				GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-			if (pcs.m_bHot || pcs.m_bCold)
-				stream << "<br><br>";
+				stream << QCoreApplication::translate("StackRecap", "-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
+							.arg(si.m_pOffsetTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
 
-			// Now the list of tasks
-			int				i, j;
-			int				lTotalExposure = 0;
-			QString				strBackgroundCalibration;
-			QString				strPerChannelBackgroundCalibration;
-			CString				strDarkOptimization;
-			CString				strDarkFactor;
-			QString				strExposure;
-			QString				strISOGainValue;
-			QString				strISOGainText;
-			QString				strISOText;
-			QString				strGainText;
-			CString				strHotPixels;
-			QString				strYesNo;
-			QString strYes(QCoreApplication::translate("StackingEngine", "Yes", "IDS_YES"));
-			QString strNo(QCoreApplication::translate("StackingEngine", "No", "IDS_NO"));
-			BACKGROUNDCALIBRATIONMODE	CalibrationMode;
-
-			CalibrationMode = tasks.GetBackgroundCalibrationMode();
-
-			strISOText = QCoreApplication::translate("StackRecap", "ISO", "IDS_ISO");
-			strGainText = QCoreApplication::translate("StackRecap", "Gain", "IDS_GAIN");
-			strBackgroundCalibration = QCoreApplication::translate("StackRecap", "RGB Channels Background Calibration: %1", "IDS_RECAP_BACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_RGB) ? strYes : strNo);
-			strPerChannelBackgroundCalibration = QCoreApplication::translate("StackRecap", "Per Channel Background Calibration: %1", "IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION").arg((CalibrationMode == BCM_PERCHANNEL) ? strYes : strNo);
-
-			for (i = 0;i<tasks.m_vStacks.size();i++)
-			{
-				CStackingInfo& si = tasks.m_vStacks[i];
-
-				if (si.m_pLightTask)
+				if (si.m_pOffsetTask->m_vBitmaps.size()>1)
 				{
-					stream << "<table border='1px' cellspacing=0 cellpadding=5 width=100%%><tr><td>";
-					int			lTaskExposure = 0;
-
-					for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
-						lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
-
-					lTotalExposure += lTaskExposure;
-
-					strExposure = exposureToString(lTaskExposure);
-					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-					QString strText(QCoreApplication::translate("StackRecap", "Stacking step %1<br>  ->%2 frames (%3: %4) - total exposure: ",
-						"IDS_RECAP_STEP")
-									.arg(i + 1)
-									.arg(si.m_pLightTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue));
-
-					stream << "<a href=\"#Task" << i << "\">" << strText << "</a>";
-					stream << strExposure << "<br>";
-					stream << "<ul>" << strBackgroundCalibration << "<br>" << strPerChannelBackgroundCalibration << "</ul>";
-
-					if (si.m_pLightTask->m_vBitmaps.size()>1)
-					{
-						FormatFromMethod(strTempText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);						
-						stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";					
-
-						if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
-							(IsRawBayer() || IsFITSRawBayer()))
-						{
-							stream << "<br>" << QCoreApplication::translate("StackRecap", "Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.", "IDS_RECAP_WARNINGBAYERDRIZZLE");
-						};
-					};
-
-					stream << "<hr>";
-					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
-						stream << "<ul>";
-
-					if (si.m_pOffsetTask)
-					{
-						strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
-						GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
-									.arg(si.m_pOffsetTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pOffsetTask->m_vBitmaps.size()>1)
-						{
-							FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);							
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
-						}
-						else
-							stream << "<br>";
-
-						if (si.m_pOffsetTask->HasISOSpeed())
-						{
-							if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-						}
-						else
-						{
-							if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-						};
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Offset", "IDS_RECAP_NOOFFSET");
-					}
-
-					if (si.m_pDarkTask)
-					{
-						strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
-						GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
-									.arg(si.m_pDarkTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pDarkTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD");
-							FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-
-						stream << "<ul>" << strDarkOptimization << strHotPixels;
-						if (strDarkFactor.GetLength())
-							stream << strDarkFactor << "<br>";
-
-						if (si.m_pDarkTask->HasISOSpeed())
-						{
-							if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING") << "<br>";
-						}
-						else
-						{
-							if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING") << "<br>";
-						}
-						if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
-							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
-					}
-
-					if (si.m_pDarkFlatTask && si.m_pFlatTask)
-					{
-						strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
-						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
-									.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
-							FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-						else
-							stream << "<br>";
-
-						if (si.m_pDarkFlatTask->HasISOSpeed())
-						{
-							if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
-						}
-						else
-						{
-							if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
-						}
-						if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
-							stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
-						stream << "</ul>";
-					}
-
-					if (si.m_pFlatTask)
-					{
-						strExposure = exposureToString(si.m_pFlatTask->m_fExposure);
-						GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-						stream << QCoreApplication::translate("StackRecap", "-> Flat: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLAT")
-									.arg(si.m_pFlatTask->m_vBitmaps.size())
-									.arg(strISOGainText)
-									.arg(strISOGainValue)
-									.arg(strExposure);
-
-						if (si.m_pFlatTask->m_vBitmaps.size()>1)
-						{
-							stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
-							FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
-							stream << strTempText << "</ul>";
-						}
-
-						if (si.m_pFlatTask->HasISOSpeed())
-						{
-							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-								stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-						}
-						else
-						{
-							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
-								stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-						}
-						stream << "</ul>";
-					}
-					else
-					{
-						stream << QCoreApplication::translate("StackRecap", "-> No Flat", "IDS_RECAP_NOFLAT");
-					}
-
-					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
-						stream << "</ul>";
-					stream << "</td></tr></table><br>";
+					FormatFromMethod(strTempText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);							
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
 				}
+				else
+					stream << "<br>";
+
+				if (si.m_pOffsetTask->HasISOSpeed())
+				{
+					if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
+				}
+				else
+				{
+					if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
+				};
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Offset", "IDS_RECAP_NOOFFSET");
 			}
 
-			if (m_vBitmaps.size())
+			if (si.m_pDarkTask)
 			{
-				for (i = 0;i<tasks.m_vStacks.size();i++)
+				strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
+				GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
+							.arg(si.m_pDarkTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pDarkTask->m_vBitmaps.size()>1)
 				{
-					CStackingInfo &			si = tasks.m_vStacks[i];
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD");
+					FormatFromMethod(strTempText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
 
-					if (si.m_pLightTask)
-					{
-						stream << "<hr><br>" << Qt::endl;
-						stream << "<a name=\"Task" << i << "\"></a>";
+				stream << "<ul>";
+				if (si.m_pDarkTask->HasISOSpeed())
+				{
+					if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING") << "<br>";
+				}
+				else
+				{
+					if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING") << "<br>";
+				}
+				if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
+					stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING") << "<br>";
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
+			}
+
+			if (si.m_pDarkFlatTask && si.m_pFlatTask)
+			{
+				strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
+				GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
+							.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
+				{
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+					FormatFromMethod(strTempText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
+				else
+					stream << "<br>";
+
+				if (si.m_pDarkFlatTask->HasISOSpeed())
+				{
+					if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+				}
+				else
+				{
+					if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+				}
+				if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
+					stream << QCoreApplication::translate("StackRecap", "Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
+				stream << "</ul>";
+			}
+
+			if (si.m_pFlatTask)
+			{
+				strExposure = exposureToString(si.m_pFlatTask->m_fExposure);
+				GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				// SCS: I think is an error - if nothing else si.m_pDarkFlatTask can be NULL if you have a flat but no dark flat!
+				//GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Flat: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLAT")
+							.arg(si.m_pFlatTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pFlatTask->m_vBitmaps.size()>1)
+				{
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << "<br>";
+					FormatFromMethod(strTempText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
+					stream << strTempText << "</ul>";
+				}
+
+				if (si.m_pFlatTask->HasISOSpeed())
+				{
+					if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
+				}
+				else
+				{
+					if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
+				}
+				stream << "</ul>";
+			}
+			else
+			{
+				stream << QCoreApplication::translate("StackRecap", "-> No Flat", "IDS_RECAP_NOFLAT");
+			}
+
+			if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
+				stream << "</ul>";
+			stream << "</td></tr></table><br>";
+		}
+	}
+
+	if (m_vBitmaps.size())
+	{
+		for (i = 0;i<tasks.m_vStacks.size();i++)
+		{
+			CStackingInfo &			si = tasks.m_vStacks[i];
+
+			if (si.m_pLightTask)
+			{
+				stream << "<hr><br>" << Qt::endl;
+				stream << "<a name=\"Task" << i << "\"></a>";
 						
-						stream << "<b>" << QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
-						for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
-							stream << si.m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
+				stream << "<b>" << QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT")  << "</b><br>\n";
+				for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
+					stream << si.m_pLightTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
 
-						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
-							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile << "<br>";
-							for (j = 0; j < si.m_pOffsetTask->m_vBitmaps.size(); j++)
-								stream << si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						}
+				if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET") << "</b><br>\n";							
+					if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pOffsetTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0; j < si.m_pOffsetTask->m_vBitmaps.size(); j++)
+						stream << si.m_pOffsetTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				}
 
-						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
-							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
-								stream << si.m_pDarkTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						}
+				if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") << "</b><br>\n";
+					if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Dark", "IDS_TYPE_MASTERDARK") << " -> " << si.m_pDarkTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
+						stream << si.m_pDarkTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				}
 
-						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
-							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
-								stream << si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						};
-						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
-						{
-							stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
-							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath.c_str())
-								stream << QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile << "<br>";
-							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
-								stream << si.m_pFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str() << "<br>";
-						};
-					};
+				if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") << "</b><br>\n";
+					if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Dark Flat", "IDS_TYPE_MASTERDARKFLAT") << " -> " << si.m_pDarkFlatTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
+						stream << si.m_pDarkFlatTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+				};
+				if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") << "</b><br>\n";
+					if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Flat", "IDS_TYPE_MASTERFLAT") << " -> " << si.m_pFlatTask->m_strOutputFile.string().c_str() << "<br>";
+					for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
+						stream << si.m_pFlatTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
 				};
 			};
-
-			stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
-			stream << "</body>" << Qt::endl;
-			stream << "</html>" << Qt::endl;
 		};
 	};
-};
+
+	stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
+	stream << "</body>" << Qt::endl;
+	stream << "</html>" << Qt::endl;
+}
 
 /* ------------------------------------------------------------------- */

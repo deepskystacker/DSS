@@ -24,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>285</width>
+    <width>290</width>
     <height>524287</height>
    </size>
   </property>
@@ -1034,22 +1034,6 @@
     <hint type="sourcelabel">
      <x>122</x>
      <y>566</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>help</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onHelp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>583</y>
     </hint>
     <hint type="destinationlabel">
      <x>122</x>

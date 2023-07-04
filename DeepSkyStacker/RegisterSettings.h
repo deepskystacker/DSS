@@ -110,7 +110,7 @@ private:
 	bool					noOffsets;
 	uint					detectionThreshold;
 	bool					medianFilter;
-	QString					firstLightFrame;
+	fs::path				firstLightFrame;
 	CAllStackingTasks *		pStackingTasks;
 	bool					settingsOnly;
 	QValidator *			perCentValidator;

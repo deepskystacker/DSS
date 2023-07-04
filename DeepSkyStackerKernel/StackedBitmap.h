@@ -3,12 +3,9 @@
 #include "Histogram.h"
 #include "ColorRef.h"
 
-//#ifndef _CONSOLE
-#include "BitmapExt.h"
-//#endif//_CONSOLE
-
 namespace DSS { class ProgressBase; }
-
+class C32BitsBitmap;
+class CMemoryBitmap;
 /* ------------------------------------------------------------------- */
 
 #pragma pack(push, HDPIXELINFO, 4)
@@ -158,7 +155,6 @@ private :
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	bool	LoadDSImage(LPCTSTR szStackedFile, DSS::ProgressBase * pProgress = nullptr);
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 
@@ -301,7 +297,6 @@ public :
 	};
 
 	bool	Load(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
-	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr);
 	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
 	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
 	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);

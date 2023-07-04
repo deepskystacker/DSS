@@ -31,14 +31,22 @@ StackRecap::StackRecap(QWidget *parent) :
 	QDialog(parent),
 	ui{ new Ui::StackRecap() },
 	workspace { std::make_unique<Workspace>() },
-	pStackingTasks(nullptr),
-	initialised(false)
+	pStackingTasks { nullptr },
+	initialised{ false },
+	windowTextColour{ palette().color(QPalette::ColorRole::WindowText) },
+	blueColour { QColorConstants::Svg::deepskyblue }
 {
 	ui->setupUi(this);
 	//
 	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
 	//
 	ui->textBrowser->setOpenLinks(false);
+
+	//
+	// If Windows Dark Theme is active set blueColour to be lightskyblue instead of deepskyblue
+	// 
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+		blueColour = QColorConstants::Svg::lightskyblue;
 }
 
 StackRecap::~StackRecap()
@@ -179,16 +187,14 @@ void StackRecap::fillWithAllTasks()
 		int				lTotalExposure = 0;
 		__int64				ulNeededSpace;
 		__int64				ulFreeSpace;
-		QString				strDrive;
 		QString				strFreeSpace;
 		QString				strNeededSpace;
 		STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
-		CString				strDriveCString;
-		strDriveCString = CString((wchar_t*)strDrive.utf16());
-		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
+		fs::path drive;
+		ulFreeSpace = pStackingTasks->AvailableDiskSpace(drive);
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
 		SpaceToQString(ulFreeSpace, strFreeSpace);
@@ -235,20 +241,21 @@ void StackRecap::fillWithAllTasks()
 		{
 			// Warning about the available space on drive
 			strHTML +=
-				"<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0 bgcolor=#ffffc0"
+				"<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0"
 					"bordercolordark=#ffffc0 cellspacing=0 width='100%'><tr><td>";
 			strText = tr("The process temporarily requires %1 of free space on the %2 drive.<br>"
 					"Only %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
 				.arg(strNeededSpace)
-				.arg(strDrive)
+				.arg(drive.wstring().c_str())
 				.arg(strFreeSpace);
-			insertHTML(strHTML, strText, QColor(Qt::red), true, false);
+			insertHTML(strHTML, strText, QColorConstants::Red, true, false);
 			if (ResultMode == SM_MOSAIC)
 			{
 				strHTML += "<br>";
 				insertHTML(strHTML, 
 					tr("Note: the necessary disk space is computed using an image the size of the reference frame. "
-						"Depending of the resulting image total size more space may be necessary.", "IDS_RECAP_MOSAICWARNING"));
+						"Depending of the resulting image total size more space may be necessary.", "IDS_RECAP_MOSAICWARNING"),
+					windowTextColour);
 			};
 			strHTML += "</td></tr></table>";
 		};
@@ -256,18 +263,18 @@ void StackRecap::fillWithAllTasks()
 		if (pStackingTasks->AreCalibratingJPEGFiles())
 		{
 			strHTML +=
-				"<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0 bgcolor=#ffffc0"
+				"<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0"
 					"bordercolordark=#ffffc0 cellspacing=0 width='100%'><tr><td>";
 			strText = tr("Warning: you are using dark, flat or bias frames with JPEG files.<br>"
 				"Because of the lossy compression, calibration doesn't work with JPEG files.", "IDS_RECAP_WARNINGJPEG");
-			insertHTML(strHTML, strText, QColor(Qt::red), true, false);
+			insertHTML(strHTML, strText, QColorConstants::Red, true, false);
 			strHTML += "</td></tr></table>";
 		};
 
 		strHTML += "<table border=0 valign=middle cellspacing=0 width='100%'><tr>";
 		strHTML += "<td width='48%'>";
 		strText = tr("Stacking mode: ", "IDS_RECAP_STACKINGMODE");
-		insertHTML(strHTML, strText, QColor(Qt::black), true);
+		insertHTML(strHTML, strText, windowTextColour, true);
 		switch (ResultMode)
 		{
 		case SM_NORMAL :
@@ -284,13 +291,13 @@ void StackRecap::fillWithAllTasks()
 			break;
 		};
 
-		insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_RESULT);
+		insertHTML(strHTML, strText, blueColour, false, false, SSTAB_RESULT);
 
 		const auto dwAlignment = pStackingTasks->GetAlignmentMethod();
 
 		strText = tr("Alignment method: ", "IDS_RECAP_ALIGNMENT");
 		strHTML += "</td><td width='48%'>";
-		insertHTML(strHTML, strText, QColor(Qt::black), true);
+		insertHTML(strHTML, strText, windowTextColour, true);
 
 		switch (dwAlignment)
 		{
@@ -312,7 +319,7 @@ void StackRecap::fillWithAllTasks()
 			break;
 		};
 
-		insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_ALIGNMENT);
+		insertHTML(strHTML, strText, blueColour, false, false, SSTAB_ALIGNMENT);
 		strHTML += "</td>";
 		strHTML += "</tr></table><br>";
 
@@ -321,13 +328,13 @@ void StackRecap::fillWithAllTasks()
 		{
 			strText = tr("Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE")
 				.arg(dwDrizzle);
-			insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_RESULT);
+			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_RESULT);
 			strHTML += "<br>";
 			if (IsRawBayer() || IsFITSRawBayer())
 			{
 				strText = tr("The selected drizzle option is not compatible with Bayer Drizzle mode.",
 					"IDS_RECAP_WARNINGDRIZZLE");
-				insertHTML(strHTML, strText, QColor(Qt::red), true);
+				insertHTML(strHTML, strText, QColorConstants::Red, true);
 				strHTML += "<br>";
 			};
 		};
@@ -341,7 +348,7 @@ void StackRecap::fillWithAllTasks()
 			else
 				strText = tr("%1 processors detected - only one used", "IDS_RECAP_DETECTEDNOTUSEDPROCESSORS")
 				.arg(lNrProcessors);
-			insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, true);
+			insertHTML(strHTML, strText, blueColour, false, true);
 			strHTML +=  "<br>";
 		};
 
@@ -352,7 +359,7 @@ void StackRecap::fillWithAllTasks()
 
 			CometStackingMode = pStackingTasks->GetCometStackingMode();
 			strText = tr("Comet processing : ", "IDS_RECAP_COMETSTACKING");
-			insertHTML(strHTML, strText, QColor(Qt::black), true, false);
+			insertHTML(strHTML, strText, windowTextColour, true, false);
 			switch (CometStackingMode)
 			{
 			case CSM_STANDARD :
@@ -365,7 +372,7 @@ void StackRecap::fillWithAllTasks()
 				strText = tr("Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
 				break;
 			};
-			insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_COMET);
+			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_COMET);
 			strHTML += "<br>";
 		};
 		strHTML += "<br>";
@@ -380,7 +387,7 @@ void StackRecap::fillWithAllTasks()
 					"IDS_RECAP_COSMETICHOT")
 				.arg(pcs.m_lHotFilter)
 				.arg(pcs.m_fHotDetection, 0, 'f', 1);
-			insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_POSTCALIBRATION);
+			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_POSTCALIBRATION);
 		};
 		if (pcs.m_bCold)
 		{
@@ -388,7 +395,7 @@ void StackRecap::fillWithAllTasks()
 					"IDS_RECAP_COSMETICCOLD")
 				.arg(pcs.m_lColdFilter)
 				.arg(pcs.m_fColdDetection, 0, 'f', 1);
-			insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_POSTCALIBRATION);
+			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_POSTCALIBRATION);
 		};
 
 		if (pcs.m_bHot || pcs.m_bCold)
@@ -401,7 +408,7 @@ void StackRecap::fillWithAllTasks()
 			if (si.m_pLightTask)
 			{
 				strHTML +=
-					"<table border='1px' bgcolorleft=#fff9fa bgcolorright=#f9fbff bgcolor=#fafafa bordercolordark=#fafafa"
+					"<table border='1px' bgcolorleft=#fff9fa bgcolorright=#f9fbff bordercolordark=#fafafa"
 					"bordercolor=#c0c0c0 bordercolorlight=#c0c0c0  cellspacing=0 cellpadding=5 width='100%'><tr><td>";
 				int			lTaskExposure = 0;
 
@@ -419,22 +426,22 @@ void StackRecap::fillWithAllTasks()
 					.arg(si.m_pLightTask->m_vBitmaps.size())
 					.arg(strISOGainText)
 					.arg(strISOGainValue);
-				insertHTML(strHTML, strText, QColor(Qt::black), true);
-				insertHTML(strHTML, strExposure, QColor(Qt::darkGreen), true);
+				insertHTML(strHTML, strText, windowTextColour, true);
+				insertHTML(strHTML, strExposure, QColorConstants::DarkGreen, true);
 				strHTML += "<ul style=\"list-style: none; \">";
 				strHTML += "<li>";
-				insertHTML(strHTML, strBackgroundCalibration, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
+				insertHTML(strHTML, strBackgroundCalibration, blueColour, false, false, SSTAB_LIGHT);
 				strHTML += "</li>";
 				strHTML += "<li>";
-				insertHTML(strHTML, strPerChannelBackgroundCalibration, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
+				insertHTML(strHTML, strPerChannelBackgroundCalibration, blueColour, false, false, SSTAB_LIGHT);
 				strHTML += "</li>";
 				if (si.m_pLightTask->m_vBitmaps.size()>1)
 				{
 					strHTML += "<li>";
 					strText = tr("Method: ", "IDS_RECAP_METHOD");
-					insertHTML(strHTML, strText);
+					insertHTML(strHTML, strText, windowTextColour);
 					FormatMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
-					insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
+					insertHTML(strHTML, strText, blueColour, false, false, SSTAB_LIGHT);
 					strHTML += "</li>";
 
 					if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
@@ -445,13 +452,13 @@ void StackRecap::fillWithAllTasks()
 						strText = tr(
 							"Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.",
 							"IDS_RECAP_WARNINGBAYERDRIZZLE");
-						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+						insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 						strHTML += "</li>";
 					};
 				};
 				strHTML += "</ul>";
 
-				strHTML += "<hr>";
+				strHTML += "<hr style=\"background-color:" + windowTextColour.name() + "\">";
 				strHTML += "<ul style=\"list-style: none; \">";
 
 				//if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
@@ -467,7 +474,7 @@ void StackRecap::fillWithAllTasks()
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
-					insertHTML(strHTML, strText);
+					insertHTML(strHTML, strText, windowTextColour);
 					strHTML += "</li>";
 
 					strHTML += "<ul style=\"list-style: none; \">";
@@ -476,9 +483,9 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
-						insertHTML(strHTML, strText);
+						insertHTML(strHTML, strText, windowTextColour);
 						FormatMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
-						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_OFFSET);
+						insertHTML(strHTML, strText, blueColour, false, false, SSTAB_OFFSET);
 						strHTML += "</li>";
 					};
 
@@ -488,7 +495,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					}
@@ -498,7 +505,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 
 						};
@@ -509,7 +516,7 @@ void StackRecap::fillWithAllTasks()
 				{
 					strHTML += "<li>";
 					strText = tr("-> No Offset", "IDS_RECAP_NOOFFSET");
-					insertHTML(strHTML, strText, QColor(Qt::darkRed));
+					insertHTML(strHTML, strText, QColorConstants::DarkRed);
 					strHTML += "</li>";
 				};
 				if (si.m_pDarkTask)
@@ -522,7 +529,7 @@ void StackRecap::fillWithAllTasks()
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
-					insertHTML(strHTML, strText);
+					insertHTML(strHTML, strText, windowTextColour);
 					strHTML += "</li>";
 
 					strHTML += "<ul style=\"list-style: none; \">";
@@ -531,24 +538,24 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
-						insertHTML(strHTML, strText);
+						insertHTML(strHTML, strText, windowTextColour);
 						FormatMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
-						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
+						insertHTML(strHTML, strText, blueColour, false, false, SSTAB_DARK);
 						strHTML += "</li>";
 					};
 
 					strHTML += "<li>";
-					insertHTML(strHTML, strDarkOptimization, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
+					insertHTML(strHTML, strDarkOptimization, blueColour, false, false, SSTAB_DARK);
 					strHTML += "</li>";
 					strHTML += "<li>";
-					insertHTML(strHTML, strHotPixels, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
+					insertHTML(strHTML, strHotPixels, blueColour, false, false, SSTAB_DARK);
 					strHTML += "</li>";
 
 
 					if (!strDarkFactor.isEmpty())
 					{
 						strHTML += "<li>";
-						insertHTML(strHTML, strDarkFactor, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
+						insertHTML(strHTML, strDarkFactor, blueColour, false, false, SSTAB_DARK);
 						strHTML += "</li>";
 					};
 
@@ -558,7 +565,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					}
@@ -568,7 +575,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					};
@@ -576,7 +583,7 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING");
-						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+						insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 						strHTML += "</li>";
 					};
 					strHTML += "</ul>";
@@ -585,7 +592,7 @@ void StackRecap::fillWithAllTasks()
 				{
 					strHTML += "<li>";
 					strText = tr("-> No Dark", "IDS_RECAP_NODARK");
-					insertHTML(strHTML, strText, QColor(Qt::darkRed));
+					insertHTML(strHTML, strText, QColorConstants::DarkRed);
 					strHTML += "</li>";
 				};
 				if (si.m_pDarkFlatTask && si.m_pFlatTask)
@@ -598,7 +605,7 @@ void StackRecap::fillWithAllTasks()
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
-					insertHTML(strHTML, strText);
+					insertHTML(strHTML, strText, windowTextColour);
 					strHTML += "</li>";
 
 					strHTML += "<ul style=\"list-style: none; \">";
@@ -607,10 +614,10 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
-						insertHTML(strHTML, strText);
+						insertHTML(strHTML, strText, windowTextColour);
 						strHTML += "</li>";
 						FormatMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
-						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
+						insertHTML(strHTML, strText, blueColour, false, false, SSTAB_DARK);
 						strHTML += "</li>";
 					};
 
@@ -620,7 +627,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					}
@@ -630,7 +637,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					};
@@ -638,7 +645,7 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
-						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+						insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 						strHTML += "</li>";
 					};
 					strHTML += "</ul>";
@@ -654,7 +661,7 @@ void StackRecap::fillWithAllTasks()
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
-					insertHTML(strHTML, strText);
+					insertHTML(strHTML, strText, windowTextColour);
 					strHTML += "</li>";
 
 					strHTML += "<ul style=\"list-style: none; \">";
@@ -662,9 +669,9 @@ void StackRecap::fillWithAllTasks()
 					{
 						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
-						insertHTML(strHTML, strText);
+						insertHTML(strHTML, strText, windowTextColour);
 						FormatMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
-						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_FLAT);
+						insertHTML(strHTML, strText, blueColour, false, false, SSTAB_FLAT);
 						strHTML +=  "</li>";
 					};
 
@@ -674,7 +681,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					}
@@ -684,7 +691,7 @@ void StackRecap::fillWithAllTasks()
 						{
 							strHTML += "<li>";
 							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+							insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
 							strHTML += "</li>";
 						};
 					};
@@ -694,7 +701,7 @@ void StackRecap::fillWithAllTasks()
 				{
 					strHTML += "<li>";
 					strText = tr("-> No Flat", "IDS_RECAP_NOFLAT");
-					insertHTML(strHTML, strText, QColor(Qt::darkRed));
+					insertHTML(strHTML, strText, QColorConstants::DarkRed);
 					strHTML += "</li>";
 
 				};
@@ -712,7 +719,7 @@ void StackRecap::fillWithAllTasks()
 			"Estimated Total exposure time: %1<br>(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)",
 			"IDS_RECAP_TOTALEXPOSURETIME")
 			.arg(strExposure);
-		insertHTML(strHTML, strText, QColor(Qt::black), true, true);
+		insertHTML(strHTML, strText, windowTextColour, true, true);
 		strHTML += "<br>";
 
 		if (ulFreeSpace > ulNeededSpace)
@@ -721,16 +728,16 @@ void StackRecap::fillWithAllTasks()
 			strText = tr("The process will temporarily use %1 on the %2 drive (%3 free).",
 				"IDS_RECAP_INFODISKSPACE")
 				.arg(strNeededSpace)
-				.arg(strDrive)
+				.arg(drive.wstring().c_str())
 				.arg(strFreeSpace);
-			insertHTML(strHTML, strText);
+			insertHTML(strHTML, strText, windowTextColour);
 			if (ResultMode == SM_MOSAIC)
 			{
 				strHTML += "<br>";
 				strText = tr("Note: the necessary disk space is computed using an image the size of the reference frame. "
 					"Depending of the resulting image total size more space may be necessary.",
 					"IDS_RECAP_MOSAICWARNING");
-				insertHTML(strHTML, strText);
+				insertHTML(strHTML, strText, windowTextColour);
 			};
 			if (bSaveIntermediates)
 			{
@@ -738,7 +745,7 @@ void StackRecap::fillWithAllTasks()
 				strText = tr("Warning: the save registered and calibrated images option is checked. "
 					"Please check that you have enough free disk space to store these files.",
 					"IDS_RECAP_WARNINGINTERMEDIATESAVE");
-				insertHTML(strHTML, strText, QColor(Qt::darkRed));
+				insertHTML(strHTML, strText, QColorConstants::DarkRed);
 			};
 		};
 		ui->textBrowser->setHtml(strHTML);

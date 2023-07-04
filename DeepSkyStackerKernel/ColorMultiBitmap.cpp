@@ -216,5 +216,7 @@ template class CColorMultiBitmapT<std::uint32_t>;
 template class CColorMultiBitmapT<float>;
 template class CColorMultiBitmapT<double>;
 
-template class CColorMultiBitmapT<std::uint32_t, float>;
+template class CColorMultiBitmapT<std::uint8_t, float>; 
 template class CColorMultiBitmapT<std::uint16_t, float>;
+template class CColorMultiBitmapT<std::uint32_t, float>;
+template class CColorMultiBitmapT<double, float>;

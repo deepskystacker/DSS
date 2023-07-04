@@ -36,6 +36,11 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
+#include <htmlhelp.h>
+#include <boost/interprocess/sync/named_mutex.hpp>
+
+namespace bip = boost::interprocess;
+
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -55,8 +60,6 @@
 
 
 CString OUTPUTFILE_FILTERS;
-CString	OUTPUTLIST_FILTERS;
-CString SETTINGFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
 
@@ -64,7 +67,44 @@ bool	g_bShowRefStars = false;
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+namespace
+{
+#ifndef NDEBUG
+	QtMessageHandler originalHandler;
+	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+	{
+		QByteArray localMsg = msg.toLocal8Bit();
+		const char* file = context.file ? context.file : "";
+		const char* function = context.function ? context.function : "";
+		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
+		strcpy(name, file);
+		if (0 != strlen(name))
+		{
+			fs::path path{ name };
+			strcpy(name, path.filename().string().c_str());
+		}
 
+		switch (type) {
+		case QtDebugMsg:
+			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			break;
+		case QtInfoMsg:
+			ZTRACE_RUNTIME("Qt Info: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			break;
+		case QtWarningMsg:
+			ZTRACE_RUNTIME("Qt Warn: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			break;
+		case QtCriticalMsg:
+			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			break;
+		case QtFatalMsg:
+			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			break;
+		}
+		originalHandler(type, context, msg);
+	}
+#endif
+}
 bool	hasExpired()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -202,9 +242,14 @@ DeepSkyStacker::DeepSkyStacker() :
 	m_DeepStack{ std::make_unique<CDeepStack>() },
 	m_ImageProcessingSettings{ std::make_unique<CDSSSettings>() },
 	errorMessageDialog{ new QErrorMessage(this) },
-	eMDI{ nullptr }		// errorMessageDialogIcon pointer
+	eMDI{ nullptr },		// errorMessageDialogIcon pointer
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
+	//
+	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
 }
@@ -213,7 +258,6 @@ DeepSkyStacker::~DeepSkyStacker()
 {
 }
 
-
 void DeepSkyStacker::createStatusBar()
 {
 	statusBarText->setAlignment(Qt::AlignHCenter);
@@ -221,67 +265,26 @@ void DeepSkyStacker::createStatusBar()
 	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
 }
 
-void DeepSkyStacker::updateStatus(const QString& text)
-{
-	statusBarText->setText(text);
-}
-
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
 	if (Method::QMessageBox == method)
 	{
-		QMetaObject::invokeMethod(this, "qMessageBox", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qMessageBox", Qt::AutoConnection,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 	else
 	{
-		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::QueuedConnection,
+		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::AutoConnection,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 }
 
-
-void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
-{
-	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
-	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
-}
-
-void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
-{
-	//
-	// Hack to access the Icon displayed by QErrorMessage
-	//
-	if (nullptr == eMDI)
-	{
-		eMDI = errorMessageDialog->findChild<QLabel*>();
-	}
-
-	if (eMDI != nullptr)
-	{
-		switch (icon)
-		{
-		case (QMessageBox::Information):
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
-			break;
-		case (QMessageBox::Critical):
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
-			break;
-		case (QMessageBox::Warning):
-		default:
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
-			break;
-		}
-	}
-	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
-}
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
 {
@@ -298,6 +301,7 @@ void DeepSkyStacker::dropEvent(QDropEvent* e)
 	stackingDlg->dropFiles(e);
 }
 
+/* ------------------------------------------------------------------- */
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
 	if (!event->spontaneous())
@@ -314,6 +318,7 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
+	connect(helpShortCut, &QShortcut::activated, this, &DeepSkyStacker::help);
 	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
 
 	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
@@ -376,6 +381,7 @@ void DeepSkyStacker::onInitialise()
 		int lastErr = GetLastError();
 		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
 	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
 
 	HWND hwnd{ processingDlg->GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);
@@ -582,6 +588,66 @@ void DeepSkyStacker::updateTab()
 	explorerBar->update();
 };
 
+/* ------------------------------------------------------------------- */
+/* Slots                                                               */
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::help()
+{
+	ZFUNCTRACE_RUNTIME();
+	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate)
+{
+	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
+	msgBox.exec();
+	if (terminate) QCoreApplication::exit(1);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate)
+{
+	//
+	// Hack to access the Icon displayed by QErrorMessage
+	//
+	if (nullptr == eMDI)
+	{
+		eMDI = errorMessageDialog->findChild<QLabel*>();
+	}
+
+	if (eMDI != nullptr)
+	{
+		switch (icon)
+		{
+		case (QMessageBox::Information):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxInformation));
+			break;
+		case (QMessageBox::Critical):
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxCritical));
+			break;
+		case (QMessageBox::Warning):
+		default:
+			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
+			break;
+		}
+	}
+	errorMessageDialog->showMessage(message, type);
+	if (terminate) QCoreApplication::exit(1);
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
+
 BOOL DeepSkyStackerApp::InitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -637,8 +703,6 @@ BOOL DeepSkyStackerApp::InitInstance()
 
 
 	OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);
-	OUTPUTLIST_FILTERS.LoadString(IDS_LISTFILTER_OUTPUT);
-	SETTINGFILE_FILTERS.LoadString(IDS_FILTER_SETTINGFILE);
 	STARMASKFILE_FILTERS.LoadString(IDS_FILTER_MASK);
 
 	return TRUE;
@@ -893,8 +957,8 @@ bool LoadTranslations()
 	QSettings settings;
 	const QString language = settings.value("Language").toString();
 	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
-	LoadTranslationUnit(*qApp, theAppTranslator, "DSS.", ":/i18n/", language);
-	LoadTranslationUnit(*qApp, theKernelTranslator, "KernelDSS.", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theAppTranslator, "DSS_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theKernelTranslator, "DSSKernel_", ":/i18n/", language);
 	
 	return true;
 }
@@ -906,6 +970,13 @@ int main(int argc, char* argv[])
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console known how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+#ifndef NDEBUG
+	//
+	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	//
+	originalHandler = qInstallMessageHandler(qtMessageLogger);
 #endif
 
 	//
@@ -1106,7 +1177,9 @@ int main(int argc, char* argv[])
 	theApp.ExitInstance();
 	return result;
 }
+
 /* ------------------------------------------------------------------- */
+
 void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath)
 {
 	ZFUNCTRACE_RUNTIME();

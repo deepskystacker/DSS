@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2022 David C. Partridge
+** Copyright (C) 2023 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -37,17 +37,38 @@
 // DeepSkyStackerLive.h : main header file for DeepSkyStackerLive
 //
 #include "dssbase.h"
+#include "ui/ui_DeepSkyStackerLive.h"
+#include <QStyledItemDelegate>
 
 class QWinHost;
+class CLightFrameInfo;
+
+namespace DSS
+{
+	class ImageViewer;
+	class GraphViewer;
+	class LiveSettings;
+	class FolderMonitor;
+	class FileRegistrar;
+	class FileStacker;
+	class ProgressLive;
+}
 
 class DeepSkyStackerLive :
-	public QMainWindow,
+	public QWidget,
+	public Ui_DeepSkyStackerLive,
 	public DSSBase
 {
-	typedef QMainWindow
-		Inherited;
-
+	using Inherited = QWidget;
+	
 	Q_OBJECT
+
+signals:
+	void stopMonitor();
+	void clearStackedImage();
+	void dropPendingImages();
+	void showResetEmailCount();
+	void clearCharts();
 
 public:
 	DeepSkyStackerLive();
@@ -62,40 +83,111 @@ public:
 	DeepSkyStackerLive& operator=(DeepSkyStackerLive&& rhs) = delete;
 
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
+	void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
 
-	inline qreal pixelRatio() { return devicePixelRatioF(); }
+	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
+
+	inline static DeepSkyStackerLive* instance()
+	{
+		return dssInstance;
+	}
+
+	inline std::uint32_t stackedImageCount() { return stackedImageCnt; }
+
+	std::unique_ptr<DSS::LiveSettings> liveSettings;
+
+protected:
+	void closeEvent(QCloseEvent* e) override;
+	void showEvent(QShowEvent* event) override;
+
+	void onInitialise();
+
+	void moveToNonStackable(fs::path& file);
+
+public slots:
+	void help();
+	void resetEmailCount();
 
 protected slots:
-	void updateStatus(const QString& text);
+	// void updateStatus(const QString& text);
 	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
 	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
+	void writeLogMessage(const QString& message, bool addTimeStamp, bool bold, bool italic, QColor colour);
+
+	void progress(const QString& str, int achieved, int total);
+	void endProgress();
+	void addImageToList(fs::path path);
+	void fileLoaded(std::shared_ptr<LoadedImage> image);
+	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
+	void fileNotStackable(fs::path file);
+	void fileStacked(std::shared_ptr<CLightFrameInfo> p);
+	void changeImageStatus(const QString& name, ImageStatus status);
+	void updateStatusMessage();
+	void handleWarning(QString text);
+	void setImageOffsets(QString name, double dx, double dy, double angle);
+	void setImageFootprint(QPointF p1, QPointF p2, QPointF p3, QPointF p4);
+	void showStackedImage(std::shared_ptr<LoadedImage> li, int count, double exposure);
+	void addToStackingQueue(std::shared_ptr<CLightFrameInfo> p);
 
 private:
 	bool initialised;
+	static inline DeepSkyStackerLive* dssInstance{ nullptr };
 	QWinHost* winHost;
 	QStringList args;
 	QString baseTitle;
-	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
+	QShortcut* helpShortCut;
+	QString linkColour;
+	QString monitoredFolder;
+	DSS::FolderMonitor* folderMonitor;
+	QStringList validExtensions;
+	DSS::FileRegistrar* fileRegistrar;
+	DSS::FileStacker* fileStacker;
+	QLabel* progressLabel;
+	DSS::ProgressLive* pProgress;
+	std::uint32_t stackedImageCnt;		// was m_lNrStacked
+	double totalExposure;
+	std::uint32_t emailsSent;
 
-	void createStatusBar();
+	void connectSignalsToSlots();
+	void connectMonitorSignals();
+	void createFileRegistrar();
+	void createFileStacker();
+	void makeLinks();
+	void startMonitoring();
+	void stopMonitoring();
+	void stopStacking();
+	bool checkRestartMonitor();
+	void removeFromListIfStatusIs(const QString& status);
+	bool canWriteToMonitoredFolder();
+
+	inline QString isoToString(int lISOSpeed) const
+	{
+		if (lISOSpeed)
+			return QString::number(lISOSpeed);
+		else
+			return QString("-");
+	}
+
+	inline QString gainToString(int lGain) const
+	{
+		if (lGain >= 0)
+			return QString::number(lGain);
+		else
+			return QString("-");
+	}
+
+private slots:
+	bool setMonitoredFolder(const QString& link);
+	void monitorPressed(bool checked);
+	void stackPressed(bool checked);
+	void stopPressed();
+
+	void settingsChanged();
+
+	void onExistingFiles(const std::vector<fs::path>&);
+	void onNewFile(const fs::path& file);
 };
-
-class CDeepSkyStackerLiveApp : public CWinApp
-{
-public:
-	CDeepSkyStackerLiveApp();
-
-// Overrides
-	public:
-	virtual BOOL InitInstance();
-
-// Implementation
-
-	DECLARE_MESSAGE_MAP()
-};
-
-extern CDeepSkyStackerLiveApp theApp;
-
-CDeepSkyStackerLiveApp *		GetDSSLiveApp();
+using DeepSkyStacker = DeepSkyStackerLive;
+using DSSLive = DeepSkyStackerLive;

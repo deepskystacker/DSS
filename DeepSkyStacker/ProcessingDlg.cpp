@@ -7,7 +7,7 @@
 #include "DeepStack.h"
 #include "SettingsDlg.h"
 #include "Ztrace.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StarMaskDlg.h"
 #include "StarMask.h"
 #include "FITSUtil.h"
@@ -523,7 +523,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	DSS::ProgressDlg		dlg;
+	DSS::ProgressDlg dlg{ parentWidget };
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -581,7 +581,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ parentWidget };
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -672,75 +672,6 @@ bool CProcessingDlg::AskToSave()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::SaveDSImage()
-{
-	QSettings			settings;
-
-	CString strBaseDirectory = (LPCTSTR)settings.value("Folders/SaveDSIFolder", "").toString().utf16();
-	CString strBaseExtension = (LPCTSTR)settings.value("Folders/SaveDSIExtension", "").toString().utf16();
-	uint filterIndex = settings.value("Folders/SaveDSIIndex", 0).toUInt();
-
-	if (!strBaseExtension.GetLength())
-		strBaseExtension = _T(".DSImage");
-
-	CFileDialog			dlgOpen(false,
-								_T(".DSImage"),
-								nullptr,
-								OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								_T("DeepSkyStacker Image (.DSImage)|*.DSImage||"),
-								this);
-
-	if (strBaseDirectory.GetLength())
-		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-	dlgOpen.m_ofn.nFilterIndex = filterIndex;
-
-	TCHAR				szBigBuffer[20000] = _T("");
-	DSS::ProgressDlg		dlg;
-
-	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-	if (dlgOpen.DoModal() == IDOK)
-	{
-		POSITION		pos;
-
-		pos = dlgOpen.GetStartPosition();
-		if (pos)
-		{
-			CString		strFile;
-			CRect		rcSelect;
-
-			BeginWaitCursor();
-			strFile = dlgOpen.GetNextPathName(pos);
-			dssApp->deepStack().SetProgress(&dlg);
-
-			if (m_SelectRectSink.GetSelectRect(rcSelect))
-				dssApp->deepStack().SaveStackedInfo(strFile, &rcSelect);
-			else
-				dssApp->deepStack().SaveStackedInfo(strFile);
-			dssApp->deepStack().SetProgress(nullptr);
-
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
-
-			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
-			strBaseDirectory = szDrive;
-			strBaseDirectory += szDir;
-			strBaseExtension = szExt;
-
-			filterIndex = dlgOpen.m_ofn.nFilterIndex;
-			settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-			settings.setValue("Folders/SaveDSIExtension", QString::fromWCharArray(strBaseExtension.GetString()));
-			settings.setValue("Folders/SaveDSIIndex", filterIndex);
-
-			EndWaitCursor();
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
 void CProcessingDlg::ProcessAndShow(bool bSaveUndo)
 {
 	UpdateHistogramAdjust();
@@ -796,7 +727,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			DSS::ProgressDlg dlg;
+			DSS::ProgressDlg dlg{ parentWidget };
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -809,14 +740,15 @@ void CProcessingDlg::CreateStarMask()
 				bool bFits;
 
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
+				const QString description(QString::fromWCharArray(strDescription.GetString())); // TODO: Should be loading direct.
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
 				const QString strText(QCoreApplication::translate("ProcessingDlg", "Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(QString::fromWCharArray(strFileName.GetString())));
 				dlg.Start2(strText, 0);
 				if (bFits)
-					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+					WriteFITS(strFileName.GetString(), pStarMask.get(), &dlg, description);
 				else
-					WriteTIFF(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+					WriteTIFF(strFileName.GetString(), pStarMask.get(), &dlg, description);
 			}
 		}
 		SetTimer(1, 100, nullptr);
@@ -868,7 +800,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ parentWidget };
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);

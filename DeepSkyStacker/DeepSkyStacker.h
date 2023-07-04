@@ -57,6 +57,9 @@ class DeepSkyStacker :
 
 	Q_OBJECT
 
+public slots:
+	void help();
+
 protected slots:
 	void updateStatus(const QString& text);
 	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
@@ -80,7 +83,7 @@ private:
 	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
-
+	QShortcut* helpShortCut;
 
 	void createStatusBar();
 	void updateTab();

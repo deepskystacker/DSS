@@ -322,6 +322,12 @@ ASALocalRun/
 # Line Endings Unifier VS plugin
 *.leu
 
+# Visual Source Safe scc files
+*.scc 
+
+# Canon ZoomBrowser Ex thumbnails
+ZbThumbnail.info
+
 # CodeMaid settings
 CodeMaid.config
 /DeepSkyStacker/My Inspector Results - DeepSkyStacker

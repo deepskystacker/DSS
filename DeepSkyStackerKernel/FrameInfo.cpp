@@ -18,23 +18,21 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 
 	CBitmapInfo			bmpInfo;
 
-	bResult = GetPictureInfo(file.c_str() ,bmpInfo);
+	bResult = GetPictureInfo(file ,bmpInfo);
 
 	if (bResult)
 	{
 		m_lWidth			= bmpInfo.m_lWidth;
 		m_lHeight			= bmpInfo.m_lHeight;
-		m_lBitPerChannels	= bmpInfo.m_lBitPerChannel;
+		m_lBitsPerChannel	= bmpInfo.m_lBitsPerChannel;
 		m_lNrChannels		= bmpInfo.m_lNrChannels;
 		m_CFAType			= bmpInfo.m_CFAType;
 		m_bFITS16bit		= bmpInfo.m_bFITS16bit;
 		m_DateTime			= bmpInfo.m_DateTime;
-		m_strDateTime		= bmpInfo.m_strDateTime.toStdWString().c_str();
+		m_strDateTime		= bmpInfo.m_strDateTime;
 		m_ExtraInfo			= bmpInfo.m_ExtraInfo;
 
-		QString strInfo;
-		bmpInfo.GetDescription(strInfo);
-		m_strInfos = strInfo.toStdWString().c_str();
+		bmpInfo.GetDescription(m_strInfos);
 
 		m_lISOSpeed			= bmpInfo.m_lISOSpeed;
 		m_lGain				= bmpInfo.m_lGain;
@@ -61,7 +59,7 @@ void CFrameInfo::CopyFrom(const CFrameInfo& cfi)
 	m_fAperture = cfi.m_fAperture;
 	m_PictureType = cfi.m_PictureType;
 	m_CFAType = cfi.m_CFAType;
-	m_lBitPerChannels = cfi.m_lBitPerChannels;
+	m_lBitsPerChannel = cfi.m_lBitsPerChannel;
 	m_lNrChannels = cfi.m_lNrChannels;
 	m_strDateTime = cfi.m_strDateTime;
 	m_DateTime = cfi.m_DateTime;
@@ -82,7 +80,7 @@ void CFrameInfo::Reset()
 	m_PictureType = PICTURETYPE_LIGHTFRAME;
 	m_CFAType = CFATYPE_NONE;
 	m_lNrChannels = 3;
-	m_lBitPerChannels = 16;
+	m_lBitsPerChannel = 16;
 	m_bMaster = false;
 	m_bFITS16bit = false;
 	m_bSuperPixel = false;
@@ -105,7 +103,7 @@ bool CFrameInfo::IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int 
 		incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Height mismatch");
 		return false;
 	}
-	if (m_lBitPerChannels != lBitPerChannels)
+	if (m_lBitsPerChannel != lBitPerChannels)
 	{
 		incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Colour depth mismatch");
 		return false;

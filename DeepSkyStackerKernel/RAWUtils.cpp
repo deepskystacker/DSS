@@ -196,14 +196,15 @@ namespace { // Only use in this .cpp file
 		BitmapFillerInterface* pDSSBitMapFiller = nullptr;
 	};
 
-	DSSLibRaw rawProcessor;
-
 	/* ------------------------------------------------------------------- */
 
 	class CRawDecod
 	{
 	private:
-		CString			m_strFileName;
+		std::unique_ptr<DSSLibRaw> pLibRaw;
+		DSSLibRaw& rawProcessor;
+
+		fs::path		file;
 		QString			m_strModel;
 		QString			m_strMake;
 		int				m_lISOSpeed;
@@ -236,8 +237,10 @@ namespace { // Only use in this .cpp file
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 	public:
-		CRawDecod(LPCTSTR szFile) :
-			m_strFileName(szFile),
+		CRawDecod(fs::path path) :
+			pLibRaw {std::make_unique<DSSLibRaw>()},
+			rawProcessor{ *pLibRaw },
+			file{ path },
 			m_bColorRAW{ false },
 			m_CFAType{ CFATYPE_NONE },
 			m_lISOSpeed{ 0 },
@@ -245,7 +248,7 @@ namespace { // Only use in this .cpp file
 			m_fAperture{ 0.0 },
 			m_lHeight{ 0 },
 			m_lWidth{ 0 },
-			m_isRawFile{ rawProcessor.open_file(szFile) == LIBRAW_SUCCESS }
+			m_isRawFile{ rawProcessor.open_file(file.wstring().c_str()) == LIBRAW_SUCCESS }
 		{
 			ZFUNCTRACE_RUNTIME();
 
@@ -393,7 +396,7 @@ namespace { // Only use in this .cpp file
 
 		if (supportedCameras.empty())
 		{
-			const char** cameraList = ::rawProcessor.cameraList();
+			const char** cameraList = rawProcessor.cameraList();
 			const size_t count = rawProcessor.cameraCount();
 			supportedCameras.reserve(count);
 
@@ -447,11 +450,7 @@ namespace { // Only use in this .cpp file
 		if (false == result)
 		{
 			const QString errorMessage(QCoreApplication::translate("RawUtils", "Sorry, LibRaw doesn't support your %1 camera", "IDS_CAMERA_NOT_SUPPORTED").arg(strModel));
-#if defined(_CONSOLE)
-			std::wcerr << errorMessage.toStdWString().c_str();
-#else
-			AfxMessageBox(errorMessage.toStdWString().c_str(), MB_OK | MB_ICONWARNING);
-#endif
+			DSSBase::instance()->reportError(errorMessage, "");
 		}
 
 		return;
@@ -545,7 +544,7 @@ namespace { // Only use in this .cpp file
 			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 			{
 				bResult = false;
-				ZTRACE_RUNTIME("Cannot unpack %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
+				ZTRACE_RUNTIME("Cannot unpack %s: %s", file.generic_u8string().c_str(), libraw_strerror(ret));
 			}
 			if (!bResult)
 				break;
@@ -861,7 +860,7 @@ namespace { // Only use in this .cpp file
 				//
 				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
 				{
-					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", (LPCSTR)CT2CA(m_strFileName), libraw_strerror(ret));
+					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", file.generic_u8string().c_str(), libraw_strerror(ret));
 					if (LIBRAW_FATAL_ERROR(ret))
 						bResult = false;
 				}
@@ -895,7 +894,6 @@ namespace { // Only use in this .cpp file
 
 	bool CRawDecod::IsRawFile() const
 	{
-		ZFUNCTRACE_RUNTIME();
 		return m_isRawFile;
 	}
 
@@ -903,7 +901,7 @@ namespace { // Only use in this .cpp file
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
+bool IsRAWPicture(const fs::path& szFileName, QString& strModel)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -920,17 +918,17 @@ bool IsRAWPicture(LPCTSTR szFileName, QString& strModel)
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
+bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	CRawDecod dcr(szFileName);
+	CRawDecod dcr(path);
 	bResult = dcr.IsRawFile();
 
 	if (bResult)
 	{
-		BitmapInfo.m_strFileName	 = QString::fromWCharArray(szFileName);
+		BitmapInfo.m_strFileName	 = path;
 		BitmapInfo.m_strFileType	 = "RAW";
 		if (dcr.IsColorRAW())
 			BitmapInfo.m_CFAType	 = CFATYPE_NONE;
@@ -938,7 +936,7 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			BitmapInfo.m_CFAType	 = dcr.GetCFAType();
 		BitmapInfo.m_lWidth			 = dcr.Width();
 		BitmapInfo.m_lHeight		 = dcr.Height();
-		BitmapInfo.m_lBitPerChannel  = 16;
+		BitmapInfo.m_lBitsPerChannel  = 16;
 		BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
 		BitmapInfo.m_bCanLoad		 = true;
 		BitmapInfo.m_strModel = dcr.getModel();
@@ -953,12 +951,12 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+bool LoadRAWPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
-	CRawDecod dcr(szFileName);
+	CRawDecod dcr(file);
     if (dcr.IsRawFile())
     {
         std::shared_ptr<CMemoryBitmap> pBitmap;
@@ -967,12 +965,12 @@ bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap
         if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
         {
 			pBitmap = std::make_shared<C16BitGrayBitmap>();
-            ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.get(), szFileName);
+            ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
         }
         else
         {
 			pBitmap = std::make_shared<C48BitColorBitmap>();
-            ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), szFileName);
+            ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
         }
 
         bResult = dcr.LoadRawFile(pBitmap.get(), ignoreBrightness, pProgress);

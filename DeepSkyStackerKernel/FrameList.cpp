@@ -206,26 +206,8 @@ namespace DSS
 		}
 		return QString();
 	}
-	
-	bool FrameList::getReferenceFrame(CString& string) const
-	{
-		bool result = false;
-		for (const auto& group : imageGroups)
-		{
-			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
-			{
-				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && it->m_bUseAsStarting)
-				{
-					result = true;
-					string = it->filePath.generic_wstring().c_str();
-					return result;
-				}
-			}
-		}
-		return result;
-	}
 
-	QString FrameList::getFirstCheckedLightFrame() const
+	fs::path FrameList::getFirstCheckedLightFrame() const
 	{
 		for (const auto& group : imageGroups)
 		{
@@ -233,12 +215,12 @@ namespace DSS
 			{
 				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked)
 				{
-					return QString::fromStdU16String(it->filePath.generic_u16string());
+					return it->filePath;
 				}
 			}
 		}
 
-		return QString();
+		return fs::path();
 	}
 
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
@@ -501,11 +483,7 @@ namespace DSS
 										.arg(groupId)
 										.arg(groupName(groupId)));
 
-#if defined(_CONSOLE)
-									std::cerr << errorMessage.toUtf8().constData();
-#else
-									QMessageBox::warning(nullptr, "DeepSkyStacker", errorMessage, QMessageBox::Ok);
-#endif
+									DSSBase::instance()->reportError(errorMessage, "");
 									return *this;
 								}
 								else
@@ -625,14 +603,14 @@ namespace DSS
 		}
 	}
 
-	void FrameList::updateItemScores(const QString& fileName)
+	void FrameList::updateItemScores(const fs::path& fileName)
 	{
 		int row = 0;
 		auto& group = imageGroups[index];
 
 		for (auto it = group.pictures->begin(); it != group.pictures->end(); ++it)
 		{
-			if (it->filePath == fs::path(fileName.toStdString()) && it->IsLightFrame())
+			if (it->filePath == fileName && it->IsLightFrame())
 			{
 				CLightFrameInfo bmpInfo;
 				bmpInfo.SetBitmap(it->filePath, false, false);
@@ -817,10 +795,10 @@ namespace DSS
 		//}
 	}
 
-	void FrameList::checkImage(const QString& image, bool check)
+	void FrameList::checkImage(const fs::path& image, bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check, const QString& image) {
-			return std::make_pair(image == file.m_strFile && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
+		constexpr auto Selector = [](const auto& file, const bool check, const fs::path& image) {
+			return std::make_pair(image == file.filePath && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
 		};
 		checkSelective<Selector, true>(check, image);
 		//for (auto& group : imageGroups)
@@ -964,12 +942,12 @@ namespace DSS
 		return imageGroups[id].size();
 	}
 
-	bool FrameList::isLightFrame(const QString name) const
+	bool FrameList::isLightFrame(const fs::path& name) const
 	{
 		return imageGroups[index].pictures->isLightFrame(name);
 	}
 
-	bool FrameList::isChecked(const QString name) const
+	bool FrameList::isChecked(const fs::path& name) const
 	{
 		return imageGroups[index].pictures->isChecked(name);
 	}

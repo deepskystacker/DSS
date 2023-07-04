@@ -150,11 +150,12 @@ private:
 	CAllStackingTasks stackingTasks;
 	CAllStackingTasks *pStackingTasks;
 	bool	initialised;
+	QColor blueColour;
 
 	void	clearText();
 
 	void	insertHeader();
-	void	insertHTML(const QString& html, const QColor& colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, int lLinkID = -1);
+	void	insertHTML(const QString& html, const QColor& colour = QColorConstants::Black, bool bBold = false, bool bItalic = false, int lLinkID = -1);
 	void	fillWithRecommendedSettings();
 
 	void	setSetting(int lID = 0);

@@ -13,7 +13,7 @@
 /* #undef EXV_ENABLE_NLS */
 
 // Define if you want to enable the decoding of video metadata
-#define EXV_ENABLE_VIDEO
+/* #undef EXV_ENABLE_VIDEO */
 
 // Define if you want BMFF support.
 /* #undef EXV_ENABLE_BMFF */
@@ -42,7 +42,7 @@
 /* #undef EXV_HAVE_BROTLI */
 
 /* Define if you have (Exiv2/xmpsdk) Adobe XMP Toolkit. */
-/* #undef EXV_HAVE_XMP_TOOLKIT */
+#define EXV_HAVE_XMP_TOOLKIT
 
 /* Define to the full name of this package. */
 #define EXV_PACKAGE_NAME "exiv2"

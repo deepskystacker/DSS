@@ -93,8 +93,8 @@ void BitmapFillerBase::setWidth(int w)
 void BitmapFillerBase::setHeight(int h)
 {
 	this->height = h;
-	if (pProgress != nullptr)
-		pProgress->Start2(pBitmap->Height());
+	//if (pProgress != nullptr)					// Commented out as no matching End2()
+	//	pProgress->Start2(pBitmap->Height());
 }
 
 void BitmapFillerBase::setMaxColors(int maxcolors)

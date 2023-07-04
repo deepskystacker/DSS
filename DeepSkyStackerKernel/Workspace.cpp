@@ -53,7 +53,6 @@ public:
 	void	ReadFromFile(const fs::path& fileName);
 	void	SaveToFile(FILE * hFile);
 	void	SaveToFile(const fs::path& fileName);
-	bool	ReadFromString(LPCTSTR szString);
 	bool	ReadFromString(const QString& theString);
 	void	ResetToDefault();
 };
@@ -289,12 +288,12 @@ void	WorkspaceSettings::saveSettings()
 
 /* ------------------------------------------------------------------- */
 
-void	WorkspaceSettings::ReadFromFile(FILE * hFile)
+void	WorkspaceSettings::ReadFromFile(std::FILE * hFile)
 {
-	CHAR				szString[1000];
+	char szString[1000];
 
 	while (fgets(szString, sizeof(szString), hFile))
-		ReadFromString((LPCTSTR)CA2CTEX<sizeof(szString)>(szString));
+		ReadFromString(QString::fromUtf8(szString));
 };
 
 /* ------------------------------------------------------------------- */
@@ -429,18 +428,6 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 };
 
 /* ------------------------------------------------------------------- */
-bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
-{
-	//
-	// Convert the line to a QString and strip leading and trailing white space
-	//
-	QString	theString = QString::fromWCharArray(szString).trimmed();
-	
-	return ReadFromString(theString);
-
-};
-
-/* ------------------------------------------------------------------- */
 
 void	WorkspaceSettings::ResetToDefault()
 {
@@ -543,22 +530,9 @@ void Workspace::SaveToFile(FILE * hFile)
 	pSettings->SaveToFile(hFile);
 }
 
-void Workspace::SaveToFile(LPCTSTR name)
-{
-	fs::path file(name);
-	pSettings->SaveToFile(file);
-}
-
-
 void Workspace::SaveToFile(const fs::path& file)
 {
 	pSettings->SaveToFile(file);
-}
-
-
-bool Workspace::ReadFromString(LPCTSTR szString)
-{
-	return pSettings->ReadFromString(szString);
 }
 
 bool Workspace::ReadFromString(const QString& string)

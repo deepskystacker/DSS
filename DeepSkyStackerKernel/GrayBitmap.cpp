@@ -465,9 +465,17 @@ bool CGrayBitmapT<T>::SetScanLine(size_t j, void* pScanLine)
 template <typename T>
 std::shared_ptr<CMultiBitmap> CGrayBitmapT<T>::CreateEmptyMultiBitmap() const
 {
-	std::shared_ptr<CGrayMultiBitmapT<T>> pResult = std::make_shared<CGrayMultiBitmapT<T>>();
-	pResult->SetBitmapModel(this);
-	return pResult;
+	std::shared_ptr<CMultiBitmap> result;
+	//
+	// If the input bitmap is 16 bit or 32 bit integer want the output type to be float
+	//
+	if (std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::uint16_t>)
+		result = std::make_shared<CGrayMultiBitmapT<T,float>>();
+	else
+		result = std::make_shared<CGrayMultiBitmapT<T>>();
+	
+	result->SetBitmapModel(this);
+	return result;
 }
 
 template <typename T>
@@ -568,5 +576,4 @@ template class CGrayBitmapT<std::uint16_t>;
 template class CGrayBitmapT<std::uint32_t>;
 template class CGrayBitmapT<float>;
 template class CGrayBitmapT<double>;
-template class CGrayBitmapT<unsigned short>;
 

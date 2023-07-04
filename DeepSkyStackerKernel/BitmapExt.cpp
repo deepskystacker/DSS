@@ -19,10 +19,6 @@
 #include "omp.h"
 #include "dssbase.h"
 
-#ifndef _CONSOLE
-#include "DeepSkyStacker.h"
-#endif//_CONSOLE
-
 using namespace DSS;
 
 const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
@@ -223,7 +219,7 @@ bool	CAllDepthBitmap::initQImage()
 };
 
 
-bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
+bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -232,7 +228,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(fs::path{ szFileName }, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
+		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -302,34 +298,25 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 		//
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
 	}
-#if defined _WINDOWS
-	catch (CException & e)
+	catch (ZException& e)
 	{
-		TCHAR msg[225]{ 0 };
-		e.GetErrorMessage(msg, sizeof(msg)/sizeof(TCHAR));
-		e.Delete();
-		QString errorMessage{ QString::fromWCharArray(msg) };
-
-		//
-		// Report the error and terminate 
-		//
-		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true);
-
-	}
-#endif
-	catch (ZException & ze)
-	{
-		const QString name(ze.name());
-		const QString fileName(ze.locationAtIndex(0)->fileName());
-		const QString functionName(ze.locationAtIndex(0)->functionName());
-		const QString text(ze.text(0));
-
-		const QString errorMessage = QString("Exception %1 thrown from %2 Function: %3() Line: %4\n\n%5")
-			.arg(name)
-			.arg(fileName)
-			.arg(functionName)
-			.arg(ze.locationAtIndex(0)->lineNumber())
-			.arg(text);
+		QString errorMessage;
+		if (e.locationAtIndex(0))
+		{
+			errorMessage = QCoreApplication::translate("BitmapExt",
+				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
+				.arg(e.name())
+				.arg(e.locationAtIndex(0)->fileName())
+				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.text(0));
+		}
+		else
+		{
+			errorMessage = QCoreApplication::translate("BitmapExt",
+				"Exception %1 thrown from an unknown Function.\n\n%2")
+				.arg(e.name())
+				.arg(e.text(0));
+		}
 
 		//
 		// Report the error and terminate 
@@ -338,7 +325,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 	}
 	catch (...)
 	{
-		const QString errorMessage("Unknown exception caught");
+		const QString errorMessage(QCoreApplication::translate("BitmapExt", "Unknown exception caught"));
 
 		//
 		// Report the error and terminate 
@@ -349,13 +336,14 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, ProgressBa
 }
 
 
-bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
+bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
 	std::shared_ptr<QImage>& pQImage )
 {
 	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	ZFUNCTRACE_RUNTIME();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
 	bool result = false;
+	const QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 	//
 	// pQImage better be a nullptr
@@ -373,11 +361,11 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 	switch (bits)
 	{
 	case 24:
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
+		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
 		pBitmap = std::make_shared<C24BitColorBitmap>();
 		break;
 	case 48:
-		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), name.toUtf8().constData());
+		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
 		pBitmap = std::make_shared<C48BitColorBitmap>();
 		break;
 	default:
@@ -454,7 +442,7 @@ bool LoadOtherPicture(QString name, std::shared_ptr<CMemoryBitmap>& rpBitmap, Pr
 	rpBitmap = pBitmap;
 
 	CBitmapInfo bmpInfo;
-	if (RetrieveEXIFInfo(name, bmpInfo))
+	if (RetrieveEXIFInfo(file, bmpInfo))
 		pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
 	result = true;
@@ -934,7 +922,7 @@ namespace {
 	{
 		size_t operator()(const CBitmapInfo& other) const
 		{
-			const auto& str = other.m_strFileName;
+			const auto& str = QString::fromStdU16String(other.m_strFileName.generic_u16string().c_str());
 			const QByteArray data = str.toUtf8();
 			const void* pRawData = data.constData();
 			return fnv1a_hash(reinterpret_cast<const unsigned char*>(pRawData), data.length());
@@ -988,10 +976,16 @@ namespace big_endian {
 
 bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
+	const fs::path strFilename(szFileName);
+	return GetPictureInfo(strFilename, BitmapInfo);
+}
+bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
+{
 	ZFUNCTRACE_RUNTIME();
-	QString name{ QString::fromWCharArray(szFileName) };
 
-	ZTRACE_RUNTIME("Getting image information for %s", name.toUtf8().data());
+	//const QString name = QString::fromStdU16String(path.generic_u16string());
+
+	ZTRACE_RUNTIME("Getting image information for %s", path.generic_string().c_str());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
 
@@ -1010,7 +1004,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		else
 		{
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
-			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
+			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
 			if (it != g_sBitmapInfoCache.cend())
 			{
 				BitmapInfo = *it;
@@ -1019,7 +1013,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		}
 	}
 
-	QFileInfo info{ name };
+	QFileInfo info{ path };
 	QString extension{ info.suffix().toLower() }; 
 
 	if (!bResult)
@@ -1041,15 +1035,15 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 		//
 		// Check RAW image file types
 		//
-		if (rawFileExtensions.contains(extension) && IsRAWPicture(szFileName, BitmapInfo))
+		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/tiff") && IsTIFFPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/fits") && IsFITSPicture(szFileName, BitmapInfo))
+		else if (mime.inherits("image/fits") && IsFITSPicture(path, BitmapInfo))
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
-			QFile file{ name };
+			QFile file{ path };
 			file.open(QIODevice::ReadOnly);
 			if (file.isOpen())
 			{
@@ -1078,7 +1072,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 						if ((0xC0 <= b) and (b <= 0xCF) and (b != 0xC4) and (b != 0xC8) and (b != 0xCC))
 						{
 							f.seekg(2, std::ios::cur);
-							BitmapInfo.m_lBitPerChannel = f.get();
+							BitmapInfo.m_lBitsPerChannel = f.get();
 							BitmapInfo.m_lHeight = big_endian::read_word(f);
 							BitmapInfo.m_lWidth = big_endian::read_word(f);
 							BitmapInfo.m_lNrChannels = f.get();
@@ -1117,7 +1111,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 					BitmapInfo.m_lWidth = big_endian::read_dword(f);
 					BitmapInfo.m_lHeight = big_endian::read_dword(f);
-					BitmapInfo.m_lBitPerChannel = f.get();
+					BitmapInfo.m_lBitsPerChannel = f.get();
 
 					char colorType = f.get();
 					switch (colorType)
@@ -1134,11 +1128,11 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 						return false;
 					}
 				}
-				BitmapInfo.m_strFileName = name;
+				BitmapInfo.m_strFileName = path;
 				BitmapInfo.m_CFAType = CFATYPE_NONE;
 				BitmapInfo.m_bCanLoad = true;
 				bResult = true;
-				RetrieveEXIFInfo(name, BitmapInfo);
+				RetrieveEXIFInfo(path, BitmapInfo);
 			}
 			else return false;
 		}
@@ -1189,15 +1183,14 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_string().c_str());
 	bool result{ false };
 	QString name{ QString::fromStdU16String(filePath.generic_u16string().c_str()) };
-	const auto fileName = filePath.generic_wstring(); // Otherwise szFileName could be a dangling pointer.
-	const wchar_t* szFileName = fileName.c_str();
+	//const auto fileName = filePath.generic_u16string(); // Otherwise szFileName could be a dangling pointer.
 
 	if (fs::status(filePath).type() != fs::file_type::regular)
 	{
-		ZTRACE_RUNTIME("File %s not found", filePath.generic_string().c_str());
-		QString errorMessage{ QCoreApplication::translate(
-			"DSS::StackingDlg",
-			"%1 does not exist or is not a file").arg(QString::fromStdWString(fileName)) };
+		ZTRACE_RUNTIME("File %s not found", filePath.generic_u8string().c_str());
+		const QString errorMessage{ QCoreApplication::translate(
+									"BitmapExt",
+									"%1 does not exist or is not a file").arg(name) };
 
 		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 
@@ -1220,7 +1213,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		if (rawFileExtensions.contains(extension))			// No need to call IsRawPicture here
 		{
-			result = LoadRAWPicture(szFileName, rpBitmap, ignoreBrightness, pProgress);
+			result = LoadRAWPicture(filePath, rpBitmap, ignoreBrightness, pProgress);
 			break;
 		}
 
@@ -1237,7 +1230,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			//
 			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
 
-			loadResult = LoadTIFFPicture(szFileName, BitmapInfo, rpBitmap, pProgress);
+			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1251,7 +1244,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		else if (mime.inherits("image/fits"))
 		{
-			loadResult = LoadFITSPicture(szFileName, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1263,7 +1256,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		// It wasn't a FITS file, so try to load other stuff ...
 		//
-		else result = LoadOtherPicture(name, rpBitmap, pProgress, pQImage);
+		else result = LoadOtherPicture(filePath, rpBitmap, pProgress, pQImage);
 
 	} while (false);
 	return result;
@@ -1795,10 +1788,10 @@ CBitmapInfo::CBitmapInfo(const CBitmapInfo& bi)
 	CopyFrom(bi);
 }
 
-CBitmapInfo::CBitmapInfo(LPCTSTR szFileName)
+CBitmapInfo::CBitmapInfo(const fs::path& fileName)
 {
 	Init();
-	m_strFileName = QString::fromStdWString(szFileName);
+	m_strFileName = fileName;
 }
 
 void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
@@ -1812,7 +1805,7 @@ void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
 	m_fAperture = bi.m_fAperture;
 	m_lWidth = bi.m_lWidth;
 	m_lHeight = bi.m_lHeight;
-	m_lBitPerChannel = bi.m_lBitPerChannel;
+	m_lBitsPerChannel = bi.m_lBitsPerChannel;
 	m_lNrChannels = bi.m_lNrChannels;
 	m_bCanLoad = bi.m_bCanLoad;
 	m_bFloat = bi.m_bFloat;
@@ -1832,7 +1825,7 @@ void CBitmapInfo::Init()
 {
 	m_lWidth = 0;
 	m_lHeight = 0;
-	m_lBitPerChannel = 0;
+	m_lBitsPerChannel = 0;
 	m_lNrChannels = 0;
 	m_bCanLoad = false;
 	m_CFAType = CFATYPE_NONE;
@@ -1855,12 +1848,12 @@ CBitmapInfo& CBitmapInfo::operator=(const CBitmapInfo& bi)
 
 bool CBitmapInfo::operator<(const CBitmapInfo& other) const
 {
-	return (m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) < 0);
+	return (m_strFileName.compare(other.m_strFileName) < 0);
 }
 
 bool CBitmapInfo::operator==(const CBitmapInfo& other) const
 {
-	return this->m_strFileName.compare(other.m_strFileName, Qt::CaseInsensitive) == 0;
+	return this->m_strFileName.compare(other.m_strFileName) == 0;
 }
 bool CBitmapInfo::CanLoad() const
 {

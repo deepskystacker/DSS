@@ -41,7 +41,7 @@
 class CBitmapInfo
 {
 public:
-	QString m_strFileName;
+	fs::path m_strFileName;
 	QString m_strFileType;
 	QString m_strModel;
 	int m_lISOSpeed;
@@ -50,7 +50,7 @@ public:
 	double m_fAperture;
 	int m_lWidth;
 	int m_lHeight;
-	int m_lBitPerChannel;
+	int m_lBitsPerChannel;
 	int m_lNrChannels;
 	bool m_bCanLoad;
 	bool m_bFloat;
@@ -72,7 +72,7 @@ private:
 public:
 	CBitmapInfo();
 	CBitmapInfo(const CBitmapInfo& bi);
-	CBitmapInfo(LPCTSTR szFileName);
+	CBitmapInfo(const fs::path& fileName);
 
 	virtual ~CBitmapInfo() = default;
 
@@ -87,4 +87,4 @@ public:
 	bool IsInitialized();
 };
 
-bool RetrieveEXIFInfo(const QString& name, CBitmapInfo& BitmapInfo);
+bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo);
