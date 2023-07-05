@@ -91,6 +91,16 @@ void CColorBitmapT<TType>::GetValue(size_t i, size_t j, double& fRed, double& fG
 }
 
 template <typename TType>
+std::tuple<double, double, double> CColorBitmapT<TType>::getValues(size_t i, size_t j) const
+{
+	CheckXY(i, j);
+
+	const size_t lOffset = GetOffset(i, j);
+
+	return { m_Red.m_vPixels[lOffset], m_Green.m_vPixels[lOffset], m_Blue.m_vPixels[lOffset] };
+}
+
+template <typename TType>
 void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue)
 {
 	CheckXY(i, j);

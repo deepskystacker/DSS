@@ -343,9 +343,12 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 				// Load the bitmap
 				if (!m_pOffsetTask->m_pMaster)
 					m_pOffsetTask->CreateEmptyMaster(pBitmap.get());
+				
+				//qDebug() << "Input bitmap" << (1 + i) 
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
 
 				m_pOffsetTask->AddToMaster(pBitmap.get(), pProgress);
-
 				if (pProgress)
 					bResult = !pProgress->IsCanceled();
 			}
@@ -372,6 +375,10 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pOffsetBitmap))
 				{
+					//qDebug() << "Master Offset bitmap output" 
+					//	<< pOffsetBitmap->getValue(0, 0) << pOffsetBitmap->getValue(1, 0) << pOffsetBitmap->getValue(2, 0) << pOffsetBitmap->getValue(3, 0) << pOffsetBitmap->getValue(4, 0)
+					//	<< pOffsetBitmap->getValue(5, 0) << pOffsetBitmap->getValue(6, 0) << pOffsetBitmap->getValue(7, 0) << pOffsetBitmap->getValue(8, 0) << pOffsetBitmap->getValue(9, 0);
+
 					const QString strInfo{ tr("Master Offset created from %n picture(s) (%1)",
 						"IDS_MEDIANOFFSETINFO",
 						static_cast<int>(m_pOffsetTask->m_vBitmaps.size()))
@@ -476,6 +483,10 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 			if (m_pOffsetTask)
 				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
 
+			//qDebug() << "Master Offset"
+			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+
 			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
@@ -505,6 +516,10 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 				if (!m_pDarkTask->m_pMaster)
 					m_pDarkTask->CreateEmptyMaster(pBitmap.get());
 
+				//qDebug() << "Input bitmap" << (1 + i) << "before calibration"
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+
 				// Subtract the offset frame from the dark frame
 				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 				{
@@ -517,6 +532,10 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					}
 					Subtract(pBitmap, pMasterOffset, pProgress);
 				}
+
+				//qDebug() << "Input bitmap" << (1 + i) << "after subtracting offset"
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
 
 				// Add the dark frame
 				m_pDarkTask->AddToMaster(pBitmap.get(), pProgress);
@@ -547,6 +566,10 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pDarkBitmap))
 				{
+					//qDebug() << "Master Dark Output bitmap"
+					//	<< pDarkBitmap->getValue(0, 0) << pDarkBitmap->getValue(1, 0) << pDarkBitmap->getValue(2, 0) << pDarkBitmap->getValue(3, 0) << pDarkBitmap->getValue(4, 0)
+					//	<< pDarkBitmap->getValue(5, 0) << pDarkBitmap->getValue(6, 0) << pDarkBitmap->getValue(7, 0) << pDarkBitmap->getValue(8, 0) << pDarkBitmap->getValue(9, 0);
+
 					const QString strInfo{ tr("Master Dark created from %n picture(s) (%1)",
 						"IDS_MEDIANDARKINFO",
 						static_cast<int>(m_pDarkTask->m_vBitmaps.size()))
@@ -654,6 +677,10 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 			if (m_pOffsetTask)
 				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
 
+			//qDebug() << "Master Offset"
+			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+
 			// First Add Dark flat frame
 			for (size_t i = 0; i < m_pDarkFlatTask->m_vBitmaps.size() && bResult; i++)
 			{
@@ -673,6 +700,10 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					// Subtract the offset frame from the dark frame
 					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 					{
+						//qDebug() << "Input bitmap" << (1 + i) << "before calibration"
+						//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+						//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+
 						if (pProgress != nullptr)
 						{
 							strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
@@ -682,6 +713,10 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 						}
 						Subtract(pBitmap, pMasterOffset, pProgress);
 					}
+
+					//qDebug() << "Input bitmap" << (1 + i) << "after subtracting offset"
+					//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+					//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
 
 					// Add the dark frame
 					m_pDarkFlatTask->AddToMaster(pBitmap.get(), pProgress);
@@ -714,6 +749,10 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 					pProgress->SetJointProgress(false);
 				if (static_cast<bool>(pDarkFlatBitmap))
 				{
+					//qDebug() << "Master DarkFlat Output bitmap"
+					//	<< pDarkFlatBitmap->getValue(0, 0) << pDarkFlatBitmap->getValue(1, 0) << pDarkFlatBitmap->getValue(2, 0) << pDarkFlatBitmap->getValue(3, 0) << pDarkFlatBitmap->getValue(4, 0)
+					//	<< pDarkFlatBitmap->getValue(5, 0) << pDarkFlatBitmap->getValue(6, 0) << pDarkFlatBitmap->getValue(7, 0) << pDarkFlatBitmap->getValue(8, 0) << pDarkFlatBitmap->getValue(9, 0);
+
 					const QString strInfo{ tr("Master Dark Flat created from %n picture(s) (%1)",
 						"IDS_MEDIANDARKFLATINFO",
 						static_cast<int>(m_pDarkFlatTask->m_vBitmaps.size()))
@@ -1061,8 +1100,17 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 			// First load the master offset if available
 			if (m_pOffsetTask != nullptr)
 				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
+
+			//qDebug() << "Master Offset"
+			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+
 			if (m_pDarkFlatTask != nullptr)
 				g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
+
+			//qDebug() << "Master DarkFlat"
+			//	<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
+			//	<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
 
 			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
@@ -1092,6 +1140,10 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				if (!m_pFlatTask->m_pMaster)
 					m_pFlatTask->CreateEmptyMaster(pBitmap.get());
 
+				//qDebug() << "Input bitmap" << (1 + i) << "before calibration" 
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+
 				// Subtract the offset frame from the dark frame
 				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 				{
@@ -1113,6 +1165,10 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					Subtract(pBitmap, pMasterDarkFlat, pProgress);
 				}
 
+				//qDebug() << "Input bitmap" << (1 + i) << "after subtracting offset & dark flat"
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+
 				if (!fcpBase.IsInitialized())
 				{
 					// This is the first flat
@@ -1124,6 +1180,10 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					fcpBitmap.ComputeParameters(pBitmap.get(), pProgress);
 					fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
 				}
+
+				//qDebug() << "Input bitmap" << (1 + i) << "after calibration"
+				//	<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//	<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
 
 				// Add the dark frame
 				m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
@@ -1156,6 +1216,10 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 				if (static_cast<bool>(pFlatBitmap))
 				{
+					//qDebug() << "Master Flat Output bitmap"
+					//	<< pFlatBitmap->getValue(0, 0) << pFlatBitmap->getValue(1, 0) << pFlatBitmap->getValue(2, 0) << pFlatBitmap->getValue(3, 0) << pFlatBitmap->getValue(4, 0)
+					//	<< pFlatBitmap->getValue(5, 0) << pFlatBitmap->getValue(6, 0) << pFlatBitmap->getValue(7, 0) << pFlatBitmap->getValue(8, 0) << pFlatBitmap->getValue(9, 0);
+
 					const QString strInfo{ tr("Master Flat created from %n picture(s) (%1)",
 						"IDS_MEDIANFLATINFO",
 						static_cast<int>(m_pFlatTask->m_vBitmaps.size()))

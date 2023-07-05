@@ -137,11 +137,11 @@ class CFITSWriter;
 
 class CStackedBitmap
 {
-private :
+private:
 	int						m_lWidth;
 	int						m_lHeight;
 	int						m_lOutputWidth,
-								m_lOutputHeight;
+		m_lOutputHeight;
 	int						m_lNrBitmaps;
 	CPixelVector				m_vRedPlane;
 	CPixelVector				m_vGreenPlane;
@@ -154,25 +154,25 @@ private :
 	CBezierAdjust				m_BezierAdjust;
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
-private :
+private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 
 	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
-public :
-	void	ReadSpecificTags(CTIFFReader * tiffReader);
-	void	ReadSpecificTags(CFITSReader * fitsReader);
-	void	WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySettings);
-	void	WriteSpecificTags(CFITSWriter * fitsWriter, bool bApplySettings);
+public:
+	void	ReadSpecificTags(CTIFFReader* tiffReader);
+	void	ReadSpecificTags(CFITSReader* fitsReader);
+	void	WriteSpecificTags(CTIFFWriter* tiffWriter, bool bApplySettings);
+	void	WriteSpecificTags(CFITSWriter* fitsWriter, bool bApplySettings);
 
-public :
-	CStackedBitmap() ;
+public:
+	CStackedBitmap();
 	virtual ~CStackedBitmap() {};
 
 	void	SetOutputSizes(int lWidth, int lHeight)
 	{
-		m_lOutputWidth  = lWidth;
+		m_lOutputWidth = lWidth;
 		m_lOutputHeight = lHeight;
 	};
 
@@ -180,7 +180,7 @@ public :
 	{
 		size_t			lSize;
 
-		m_lWidth  = lWidth;
+		m_lWidth = lWidth;
 		m_lHeight = lHeight;
 
 		m_bMonochrome = bMonochrome;
@@ -200,26 +200,26 @@ public :
 			return (m_vRedPlane.size() == lSize);
 		else
 			return (m_vRedPlane.size() == lSize) &&
-				   (m_vGreenPlane.size() == lSize) &&
-				   (m_vBluePlane.size() == lSize);
+			(m_vGreenPlane.size() == lSize) &&
+			(m_vBluePlane.size() == lSize);
 	};
 
-	void		SetHistogramAdjust(const CRGBHistogramAdjust & HistoAdjust)
+	void		SetHistogramAdjust(const CRGBHistogramAdjust& HistoAdjust)
 	{
 		m_HistoAdjust = HistoAdjust;
 	};
 
-	void	SetBezierAdjust(const CBezierAdjust & BezierAdjust)
+	void	SetBezierAdjust(const CBezierAdjust& BezierAdjust)
 	{
 		m_BezierAdjust = BezierAdjust;
 	};
 
-	void		GetBezierAdjust(CBezierAdjust & BezierAdjust)
+	void		GetBezierAdjust(CBezierAdjust& BezierAdjust)
 	{
 		BezierAdjust = m_BezierAdjust;
 	};
 
-	void		GetHistogramAdjust(CRGBHistogramAdjust & HistoAdjust)
+	void		GetHistogramAdjust(CRGBHistogramAdjust& HistoAdjust)
 	{
 		HistoAdjust = m_HistoAdjust;
 	};
@@ -228,10 +228,25 @@ public :
 	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
 	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
 
-
-	void		SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
+	std::tuple<double, double, double> getValues(size_t X, size_t Y) const
 	{
-		size_t		lOffset = m_lWidth * Y + X;
+		const size_t lOffset { m_lWidth * Y + X };
+
+		return {
+			m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0,
+			m_vGreenPlane[lOffset] / m_lNrBitmaps * 256.0,
+			m_vBluePlane[lOffset] / m_lNrBitmaps * 256.0 };
+	}
+
+	double getValue(size_t X, size_t Y) const
+	{
+		const size_t lOffset {m_lWidth * Y + X };
+		return  m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0;
+	}
+
+	void SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
+	{
+		const size_t lOffset {m_lWidth * (size_t)Y + (size_t)X };
 
 		m_vRedPlane[lOffset]	= fRed * m_lNrBitmaps;
 		if (!m_bMonochrome)
@@ -249,19 +264,19 @@ public :
 
 	double		GetRedValue(int X, int Y)
 	{
-		return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
+		return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
 	};
 	double		GetGreenValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
-			return m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
+			return m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
 		else
 			return GetRedValue(X, Y);
 	};
 	double		GetBlueValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
-			return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*255.0;
+			return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
 		else
 			return GetRedValue(X, Y);
 	};
