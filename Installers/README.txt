@@ -3,8 +3,6 @@ Welcome to DeepSkyStacker 5.1.4
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
 Changes since the last release:
 
 1. Upgrade CFISTIO library to 4.2.0
@@ -34,6 +32,8 @@ The trace file will be deleted on normal application exit, but an option is prov
 9. Change compression of TIFF format master files to use PKZIP Deflate instead of no compression.
 
 10. Change default compression for saving images to PKZIP Deflate (was NONE).
+
+11. Convert DeepSkyStackerLive to Qt.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
