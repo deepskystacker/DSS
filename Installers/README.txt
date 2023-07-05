@@ -5,7 +5,7 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Changes since the last release:
 
-1. Upgrade CFISTIO library to 4.2.0
+1. Upgrade CFITSIO library to 4.2.0
 
 2. Always create a tracefile in DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
 
@@ -15,7 +15,7 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 3. Add both Main Group and Group 1 at startup.
 
-4. Initial code changes for Qt 6.5.0 Dark/Light Theme support
+4. Initial code changes for Qt 6.5.1 Dark/Light Theme support
 
 5. Add an option to turn off beeps on cmpletion of registering/stacking.
 
