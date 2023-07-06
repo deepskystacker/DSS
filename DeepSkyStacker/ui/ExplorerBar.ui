@@ -587,9 +587,14 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLabel" name="traceFileDisposition">
+            <widget class="QCheckBox" name="keepTracefile">
+             <property name="toolTip">
+              <string>The trace file is normally written to the DeepSkyStacker directory in the users
+&quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
+Tick this box to keep the trace file.</string>
+             </property>
              <property name="text">
-              <string/>
+              <string>Retain the trace file on exit</string>
              </property>
             </widget>
            </item>
@@ -1038,22 +1043,6 @@
     <hint type="destinationlabel">
      <x>122</x>
      <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>traceFileDisposition</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onToggleDeletion()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>137</x>
-     <y>726</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>137</x>
-     <y>381</y>
     </hint>
    </hints>
   </connection>

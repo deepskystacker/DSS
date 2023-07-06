@@ -52,7 +52,7 @@ namespace DSS
 		fs::path path{ fileName }; path = path.stem();	// only want the name
 
 		//
-		// et the start of the filename of the trace file based on whether
+		// Set the start of the filename of the trace file based on whether
 		// we are being used in DSS, DSSCL or DSSLive
 		//
 		QString start{  };

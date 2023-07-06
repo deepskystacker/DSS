@@ -79,8 +79,7 @@ private slots:
 
     void onAbout();
 
-	void onToggleDeletion();
-
+	void keepTraceChanged(int);
 	void onEnableSoundsStateChanged(int);
 
 #if QT_VERSION >= 0x060500

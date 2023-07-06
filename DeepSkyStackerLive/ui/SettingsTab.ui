@@ -785,6 +785,11 @@
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="retainTraceFile">
+            <property name="toolTip">
+             <string>The trace file is normally written to the DeepSkyStacker directory in the users
+&quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
+Tick this box to keep the trace file.</string>
+            </property>
             <property name="text">
              <string>Retain the trace file on exit</string>
             </property>

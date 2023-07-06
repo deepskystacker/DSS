@@ -54,15 +54,6 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 
-	bool value{ traceControl.deleteOnExit() };
-	QString disposition;
-	if (value)
-		disposition = tr("deleted");
-	else
-		disposition = tr("kept");
-
-	ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
-
 	makeLinks();
 
 	connect(ui->help, &QLabel::linkActivated, DeepSkyStacker::instance(), &DeepSkyStacker::help);
@@ -107,11 +98,13 @@ void ExplorerBar::onInitDialog()
 
 	ui->about->setFont(font);
 	ui->help->setFont(font);
-	ui->traceFileDisposition->setFont(font);
 
+	ui->keepTracefile->setChecked(!traceControl.deleteOnExit());
 	ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
-
-	connect(ui->enableSounds, &QCheckBox::stateChanged, this, &ExplorerBar::onEnableSoundsStateChanged);
+	connect(ui->keepTracefile, &QCheckBox::stateChanged,
+		this, &ExplorerBar::keepTraceChanged);
+	connect(ui->enableSounds, &QCheckBox::stateChanged,
+		this, &ExplorerBar::onEnableSoundsStateChanged);
 }
 
 void ExplorerBar::makeLinks()
@@ -152,7 +145,6 @@ void ExplorerBar::makeLinks()
 	makeLink(ui->recommendedSettings, redColour);
 	makeLink(ui->about, defColour);
 	makeLink(ui->help, defColour);
-	makeLink(ui->traceFileDisposition, blueColour);
 	update();
 }
 
@@ -433,20 +425,11 @@ void ExplorerBar::onAbout()
 	dlg.exec();
 }
 
-void ExplorerBar::onToggleDeletion()
+void ExplorerBar::keepTraceChanged(int state)
 {
-	bool value{ !traceControl.deleteOnExit() };
-	traceControl.setDeleteOnExit(value);
+	bool retainTrace{ Qt::Checked == static_cast<Qt::CheckState>(state) };
 
-	QString disposition;
-	if (value)
-		disposition = tr("deleted");
-	else
-		disposition = tr("kept");
-
-	ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
-	QString blueColour = QColor(Qt::blue).name();
-	makeLink(ui->traceFileDisposition, blueColour);
+	traceControl.setDeleteOnExit(!retainTrace);
 
 	update();
 }
@@ -604,15 +587,6 @@ void ExplorerBar::changeEvent(QEvent* event)
 	if (event->type() == QEvent::LanguageChange)
 	{
 		ui->retranslateUi(this);
-
-		bool value{ traceControl.deleteOnExit() };
-		QString disposition;
-		if (value)
-			disposition = tr("deleted");
-		else
-			disposition = tr("kept");
-
-		ui->traceFileDisposition->setText(tr("Trace File will be %1").arg(disposition));
 
 		//
 		// The Labels are now plain text labels, so make them into links

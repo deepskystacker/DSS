@@ -1005,11 +1005,6 @@ int main(int argc, char* argv[])
 #endif
 #endif
 
-	//
-	// Set things up to capture terminal errors
-	//
-	setDssExceptionHandling();
-
 //#if defined(_WINDOWS)
 
 //#else
@@ -1041,7 +1036,6 @@ int main(int argc, char* argv[])
 	}
 	// initialize all the windows stuff we need for now
 	theApp.InitInstance();
-
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -1080,6 +1074,11 @@ int main(int argc, char* argv[])
 	bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
 	const bool firstInstance{ lk.try_lock() };
 	ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
+
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
 
 	askIfVersionCheckWanted();
 	if (firstInstance)
