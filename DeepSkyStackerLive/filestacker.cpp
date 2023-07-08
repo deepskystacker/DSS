@@ -303,7 +303,7 @@ namespace DSS
 			if (fabs(angle) > maxAngle)
 			{
 				result = false;
-				error = tr("Angle (%L1\xc2\xba) is greater than %L2\xc2\xba", "IDS_NOSTACK_ANGLE")
+				error = tr("Angle (%L1\xc2\xb0) is greater than %L2\xc2\xb0", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
 				emit setImageInfo(name, II_DONTSTACK_ANGLE);
 			}
