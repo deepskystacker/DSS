@@ -342,7 +342,7 @@ namespace DSS
 			if (fabs(angle) > maxAngle)
 			{
 				result = true;
-				warning = tr("Angle (%1\xc2\xb0) is greater than %2\xc2\xb0", "IDS_NOSTACK_ANGLE")
+				warning = tr("Angle (%L1\xc2\xb0) is greater than %L2\xc2\xb0", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_ANGLE);
 			};
