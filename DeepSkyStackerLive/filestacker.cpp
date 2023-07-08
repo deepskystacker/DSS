@@ -235,7 +235,7 @@ namespace DSS
 
 				if(imageWarning(lfi.filePath, dX, dY, angle, warning))
 				{
-					strText = tr("Warning: Image %s -> %s\n", "IDS_LOG_WARNING")
+					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING")
 						.arg(name)
 						.arg(warning);
 					emit writeToLog(strText, true, false, true, QColorConstants::Svg::orange);
