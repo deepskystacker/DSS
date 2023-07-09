@@ -631,7 +631,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true">Click here to set or change the email address</string>
+             <string notr="true" comment="IDC_EMAIL">Click here to set or change the email address</string>
             </property>
            </widget>
           </item>
@@ -655,7 +655,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true" comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the output folder</string>
+             <string notr="true">Click here to select the warning file folder</string>
             </property>
            </widget>
           </item>
@@ -710,7 +710,7 @@
           </size>
          </property>
          <property name="title">
-          <string>Options</string>
+          <string comment="IDC_OPTIONS">Options</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0" colspan="2">
@@ -766,7 +766,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true">Click here to select the output folder</string>
+             <string notr="true">Click here to select the stacked image output folder</string>
             </property>
            </widget>
           </item>
@@ -832,7 +832,7 @@ Tick this box to keep the trace file.</string>
           <string notr="true"/>
          </property>
          <property name="title">
-          <string>Filters</string>
+          <string comment="IDC_FILTERS">Filters</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
@@ -934,14 +934,14 @@ Tick this box to keep the trace file.</string>
       <item>
        <widget class="QPushButton" name="Apply">
         <property name="text">
-         <string>Apply changes</string>
+         <string comment="IDC_APPLYCHANGES">Apply changes</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="Cancel">
         <property name="text">
-         <string>Cancel changes</string>
+         <string comment="IDC_CANCELCHANGES">Cancel changes</string>
         </property>
        </widget>
       </item>

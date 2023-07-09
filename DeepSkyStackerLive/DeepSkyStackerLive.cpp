@@ -1094,7 +1094,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 	if (0 == fileRegistrar->pendingImageCount() && 0 == stackedImageCnt && !filteredFiles.empty())
 	{
 		if (QMessageBox::Yes == QMessageBox::question(this, "DeepSkyStackerLive",
-			tr("You have %n images(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
+			tr("You have %n image(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
 				static_cast<int>(filteredFiles.size())),
 			QMessageBox::Yes | QMessageBox::No,
 			QMessageBox::Yes))

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>417</width>
-    <height>272</height>
+    <width>491</width>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Email Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -69,7 +69,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>SMTP:</string>
+         <string>SMTP server:</string>
         </property>
        </widget>
       </item>
@@ -149,7 +149,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Account:</string>
+         <string>Account (From):</string>
         </property>
         <property name="wordWrap">
          <bool>false</bool>

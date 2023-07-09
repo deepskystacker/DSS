@@ -84,7 +84,7 @@ namespace DSS
 
 		setValidators();
 
-		emailAddress->setToolTip(tr("Click here to set or change the email address"));
+		emailAddress->setToolTip(tr("Click here to set or change the email address", "IDC_EMAIL"));
 		warnFileFolder->setToolTip(tr("Click here to select the warning file folder", "IDC_WARNINGFILEFOLDER"));
 		stackedOutputFolder->setToolTip(tr("Click here to select the stacked image output folder", "IDC_STACKEDOUTPUTFOLDER"));
 
@@ -248,7 +248,7 @@ namespace DSS
 		}
 		else
 		{
-			emailAddress->setText(tr("Click here to set or change the email address"));
+			emailAddress->setText(tr("Click here to set or change the email address", "IDC_EMAIL"));
 			warnEmail->setChecked(false);
 			warnEmail->setEnabled(false);
 		}
@@ -402,7 +402,7 @@ namespace DSS
 			}
 			else
 			{
-				emailAddress->setText(tr("Click here to set or change the email address"));
+				emailAddress->setText(tr("Click here to set or change the email address", "IDC_EMAIL"));
 				warnEmail->setChecked(false);
 				warnEmail->setEnabled(false);
 			}
@@ -446,7 +446,7 @@ namespace DSS
 		if (!checked)
 		{
 			strEmailAddress = "";
-			emailAddress->setText(tr("Click here to set or change the email address"));
+			emailAddress->setText(tr("Click here to set or change the email address", "IDC_EMAIL"));
 			makeLink(emailAddress, linkColour);
 		}
 
