@@ -35,6 +35,8 @@ The trace file will be deleted on normal application exit, but an option is prov
 
 11. Convert DeepSkyStackerLive to Qt.
 
+12. Prevent undocked sidebar and image list windows from being closed (never to be seen again).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
