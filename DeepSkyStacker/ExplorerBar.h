@@ -45,6 +45,7 @@ signals:
 protected:
 	void mousePressEvent(QMouseEvent*) override;
 	void showEvent(QShowEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
 
 private slots:
 	void onOpenLights();

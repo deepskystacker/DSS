@@ -611,6 +611,15 @@ void ExplorerBar::showEvent(QShowEvent* event)
 	// Invoke base class showEvent()
 	return Inherited::showEvent(event);
 }
+
+//
+// The user may not close the undocked window
+//
+void ExplorerBar::closeEvent(QCloseEvent* event)
+{
+	event->ignore();
+}
+
 void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())

@@ -10,4 +10,12 @@ namespace DSS
 
 	PictureList::~PictureList()
 	{}
+
+	//
+	// The user may not close the undocked window
+	//
+	void PictureList::closeEvent(QCloseEvent* event)
+	{
+		event->ignore();
+	}
 }
