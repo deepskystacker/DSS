@@ -467,6 +467,13 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
+	//
+	// DSS is now closing, tell the two dock widgets that they must now accept
+	// close event requests otherwise DSS nevers closes down.
+	//
+	explorerBar->setDSSClosing();
+	pictureList->setDSSClosing();
+
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
 	QSettings settings;

@@ -3,7 +3,8 @@
 namespace DSS
 {
 	PictureList::PictureList(QWidget* parent)
-		: QDockWidget(parent)
+		: QDockWidget(parent),
+		dssClosing { false }
 	{
 		setupUi(this);
 	}
@@ -12,10 +13,12 @@ namespace DSS
 	{}
 
 	//
-	// The user may not close the undocked window
+	// The user may not close the undocked window, but once DSS has set the 
+	// closing flag a closeEvent must be accepted (default) otherwise DSS 
+	// shutdown never completes.
 	//
 	void PictureList::closeEvent(QCloseEvent* event)
 	{
-		event->ignore();
+		if (!dssClosing) event->ignore();
 	}
 }

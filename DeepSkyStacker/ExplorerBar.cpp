@@ -35,7 +35,8 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	initialised{ false },
 	ui(new Ui::ExplorerBar),
 	windowColourName{ palette().color(QPalette::ColorRole::Window).name()},	// Default base window colour
-	activeGroupColourName { "lightcyan" }
+	activeGroupColourName { "lightcyan" },
+	dssClosing { false }
 {
 	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
@@ -613,11 +614,13 @@ void ExplorerBar::showEvent(QShowEvent* event)
 }
 
 //
-// The user may not close the undocked window
+// The user may not close the undocked window, but once DSS has set the 
+// closing flag a closeEvent must be accepted (default) otherwise DSS 
+// shutdown never completes.
 //
 void ExplorerBar::closeEvent(QCloseEvent* event)
 {
-	event->ignore();
+	if (!dssClosing) event->ignore();
 }
 
 void ExplorerBar::mousePressEvent(QMouseEvent *event)

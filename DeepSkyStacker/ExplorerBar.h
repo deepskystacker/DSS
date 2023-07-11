@@ -17,6 +17,8 @@ public:
     explicit ExplorerBar(QWidget *parent = nullptr);
     ~ExplorerBar();
 
+	inline void setDSSClosing() { dssClosing = true; }
+
 signals:
 	void addImages(PICTURETYPE type);
 
@@ -94,6 +96,7 @@ private:
 	MRUPath	mruPath;
 	QString windowColourName;
 	QString activeGroupColourName;
+	bool dssClosing;
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();
