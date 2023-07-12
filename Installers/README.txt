@@ -11,14 +11,14 @@ Changes since the last release:
 
 	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT time.
 
-The trace file will be deleted on normal application exit, but retained in the event of an exception.
-An option is provided to keep the file.
+	The trace file will be deleted on normal application exit, but retained in the event of an exception.
+	An option is provided to keep the file.
 
 3. Add both Main Group and Group 1 at startup.
 
 4. Initial code changes for Qt 6.5.1 Dark/Light Theme support
 
-5. Add an option to turn off beeps on cmpletion of registering/stacking.
+5. Add an option to turn off beeps on completion of registering/stacking.
 
 6. Toolbar display improved (no square boxes round active/hovered buttons).
 
