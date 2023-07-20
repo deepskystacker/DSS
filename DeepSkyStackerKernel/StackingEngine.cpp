@@ -2182,6 +2182,29 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							continue;
 
 						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
+
+						if (pBitmap->IsMonochrome())
+						{
+							auto deb{ qDebug() };
+							if (pBitmap->IsCFA())
+								deb.nospace() << "CFA light frame: ";
+							else
+								deb.nospace() << "Mono light frame: ";
+							deb << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							for (size_t ix = 0; ix < 12; ix++)
+								deb << " " << pBitmap->getValue(ix, 0);
+						}
+						else
+						{
+							auto deb{ qDebug() };
+							deb.nospace() << "RGB light frame: " << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							for (size_t ix = 0; ix < 4; ix++)
+							{
+								auto [r, g, b] = pBitmap->getValues(ix, 0);
+								deb << r << " " << g << " " << b << Qt::endl;
+							}
+						}
+
 						CPixelTransform PixTransform{ lightframeInfo.m_BilinearParameters };
 
 						bool doStack = true;
@@ -2230,6 +2253,23 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							SaveCalibratedLightFrame(pBitmap);
 						if (static_cast<bool>(pDelta))
 							SaveDeltaImage(pDelta.get());
+
+						qDebug() << "Calibrated light:";
+						if (pBitmap->IsMonochrome())
+						{
+							auto deb{ qDebug() };
+							deb.nospace();
+							for (size_t ix = 0; ix < 12; ix++)
+								deb << " " << pBitmap->getValue(ix, 0);
+						}
+						else
+						{
+							for (size_t ix = 0; ix < 4; ix++)
+							{
+								auto [r, g, b] = pBitmap->getValues(ix, 0);
+								qDebug().nospace() << r << " " << g << " " << b;
+							}
+						}
 
 						if (m_pProgress != nullptr)
 							m_pProgress->Start2(strText, 0);

@@ -2472,23 +2472,22 @@ namespace DSS
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 
+					auto deb{ qDebug() }; deb.nospace();
+					deb << "Final stacked image:" << Qt::endl;
+
 
 					if (pBitmap->IsMonochrome())
 					{
-						qDebug() << "Final stacked image"
-							<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0)
-							<< pBitmap->getValue(4, 0) << pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0)
-							<< pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0) << pBitmap->getValue(10, 0) << pBitmap->getValue(11, 0);
+						for (size_t ix = 0; ix < 12; ix++)
+							deb << " " << pBitmap->getValue(ix, 0);
 					}
 					else
 					{
-						qDebug() << "Final stacked image";
 						for (size_t i = 0; i < 4; i++)
 						{
 							auto [r, g, b] = pBitmap->getValues(i, 0);
-							qDebug() << r << g << b;
+							deb << " " << r << " " << g << " " << b << Qt::endl;
 						}
-
 					}
 
 					if (iff == IFF_TIFF)

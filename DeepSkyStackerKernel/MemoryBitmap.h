@@ -129,6 +129,7 @@ public:
 		ZASSERTSTATE(false);
 		return { 0.0, 0.0, 0.0 };
 	};
+ 	
 	virtual void	SetValue(size_t, size_t, double, double, double) {};
 	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {};
 	virtual void	SetValue(size_t, size_t, double) {};
