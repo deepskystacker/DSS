@@ -507,23 +507,21 @@ namespace DSS
 
 		mruPath.readSettings();
 
-		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
-		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
-		connect(&imageLoader, SIGNAL(imageLoadFailed()), this, SLOT(imageLoadFailed()));
-		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
-		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
+		connect(ui->fourCorners, &QToolButton::clicked, ui->picture, &DSS::ImageView::on_fourCorners_clicked);
+		connect(&imageLoader, &ImageLoader::imageLoaded, this, &StackingDlg::imageLoad);
+		connect(&imageLoader, &ImageLoader::imageLoadFailed, this, &StackingDlg::imageLoadFailed);
+		connect(ui->gamma, &QLinearGradientCtrl::pegMove, this, &StackingDlg::gammaChanging);
+		connect(ui->gamma, &QLinearGradientCtrl::pegMoved, this, &StackingDlg::gammaChanged);
 		//
 		// If user changes tab need to switch groups and table model
 		//
-		connect(pictureList->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
+		connect(pictureList->tabBar, &QTabBar::currentChanged, this, &StackingDlg::tabBar_currentChanged);
 
 		//
 		// Handle Menu requests for PictureList tableView and tabBar controls
 		//
-		connect(pictureList->tableView, SIGNAL(customContextMenuRequested(const QPoint&)),
-			this, SLOT(tableView_customContextMenuRequested(const QPoint&)));
-		connect(pictureList->tabBar, SIGNAL(customContextMenuRequested(const QPoint&)),
-			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
+		connect(pictureList->tableView, &QTableView::customContextMenuRequested, this, &StackingDlg::tableView_customContextMenuRequested);
+		connect(pictureList->tabBar, &QTabBar::customContextMenuRequested, this, &StackingDlg::tabBar_customContextMenuRequested);
 
 		retrieveLatestVersionInfo();
 	}
@@ -1063,8 +1061,7 @@ namespace DSS
 		//
 		// If the model data changes let me know
 		//
-		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
-			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
 		
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
@@ -1125,8 +1122,7 @@ namespace DSS
 		pictureList->tableView->installEventFilter(this);
 
 		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
+		connect(qsm, &QItemSelectionModel::selectionChanged, this, &StackingDlg::tableView_selectionChanged);
 
 		//
 		// Add the Grey Point stop to the gradient 
@@ -2752,8 +2748,7 @@ namespace DSS
 	{
 		frameList.setGroup(index);
 		auto model{ frameList.currentTableModel() };
-		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
-			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
 		proxyModel->setSourceModel(model);
 	}
 
