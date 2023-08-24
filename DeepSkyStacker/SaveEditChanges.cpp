@@ -45,7 +45,7 @@ namespace DSS
 		QDialog(parent)
 	{
 		setupUi(this);
-		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton*)));
+		connect(buttonBox, &QDialogButtonBox::clicked, this, &SaveEditChanges::buttonClicked);
 
 		switch (getSaveEditMode())
 		{

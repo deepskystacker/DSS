@@ -74,7 +74,7 @@ bool DeepSkyStackerCommandLine::Run()
 	}
 
 	StackingTask* task = new StackingTask(this, Process, GetStackingParams(), ConsoleOut());
-	connect(task, SIGNAL(finished()), this, SLOT(quit()));
+	connect(task, &StackingTask::finished, this, &DeepSkyStackerCommandLine::quit);
 	QTimer::singleShot(0, task, SLOT(run()));
 	exec();
 

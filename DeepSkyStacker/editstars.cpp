@@ -287,11 +287,11 @@ namespace DSS
 
 	void EditStars::starsButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, & EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, & EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, & EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, & EditStars::resizeMe);
 		m_bCometMode = false;
 		show();
 		raise();
@@ -300,11 +300,11 @@ namespace DSS
 
 	void EditStars::cometButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe);
 		m_bCometMode = true;
 		show();
 		raise();

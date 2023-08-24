@@ -66,7 +66,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	//
 	// If the user selects a tab we want to know.
 	//
-	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+	connect(ui->tabWidget, &QTabWidget::currentChanged, this, & StackSettings::tabChanged);
 
 	Workspace workspace;
 	workspace.Push();
