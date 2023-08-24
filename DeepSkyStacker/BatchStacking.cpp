@@ -24,6 +24,10 @@ namespace DSS
 		m_fileListModel(new QStandardItemModel(this))
 	{
 		ui->setupUi(this);
+		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+		connect(ui->addLists, &QAbstractButton::clicked, this, &BatchStacking::addLists);
+		connect(ui->clearLists, &QAbstractButton::clicked, this, &BatchStacking::clearLists);
 
 		ui->fileLists->setModel(m_fileListModel);
 	}

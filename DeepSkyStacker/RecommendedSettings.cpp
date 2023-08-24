@@ -73,6 +73,9 @@ RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	blueColour{ QColorConstants::Svg::deepskyblue }
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 	//
 	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
 	//

@@ -285,6 +285,9 @@ RawDDPSettings::RawDDPSettings(QWidget *parent) :
 	initialised(false)
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 
 	//
 	// Create a validator for the scale values

@@ -2076,7 +2076,7 @@ namespace DSS
 		{
 			networkManager = new QNetworkAccessManager();
 
-			QObject::connect(networkManager, &QNetworkAccessManager::finished,
+			connect(networkManager, &QNetworkAccessManager::finished,
 				[this](QNetworkReply* reply) { this->versionInfoReceived(reply); });
 
 			QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));

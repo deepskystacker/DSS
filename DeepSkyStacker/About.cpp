@@ -84,6 +84,13 @@ About::About(QWidget *parent) :
     strHTML += strText;
 
     ui->setupUi(this);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, qOverload<>(&QDialog::accept));
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, qOverload<>(&QDialog::reject));
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &About::storeSettings);
+    connect(ui->comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &About::selectLanguage);
+    connect(ui->cbCheckUpdate, &QCheckBox::toggled, this, &About::setCheck);
+    connect(ui->aboutQt, &QPushButton::clicked, this, &About::aboutQt);
+
     ui->comboBox->addItem(tr("Default"), "");
     QDir dir(":/i18n/", "DSS_*.qm");
     for(auto it: dir.entryList())
