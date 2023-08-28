@@ -65,6 +65,9 @@ Do you want...</string>
        <property name="text">
         <string>to register this light frame</string>
        </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>

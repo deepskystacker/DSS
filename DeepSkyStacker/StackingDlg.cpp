@@ -2283,31 +2283,24 @@ namespace DSS
 
 	void StackingDlg::checkAskRegister()
 	{
-		// Check that the current light frame is registered (or not)
-		// and ask accordingly
-		CLightFrameInfo			lfi;
-
+		// Check that the current light frame is registered (or not) and ask accordingly
+		CLightFrameInfo lfi;
 		lfi.SetBitmap(fileToShow, false, false);
 		if (!lfi.IsRegistered())
 		{
-			CAskRegistering		dlg;
-
-			if (dlg.DoModal() == IDOK)
+			AskRegistering dlg;
+			dlg.exec();
+			switch (dlg.desiredAction())
 			{
-				if (dlg.GetAction() == ARA_ONE)
-				{
-					// Register only this light frame
-					frameList.checkAllLights(false);
-					frameList.checkImage(fileToShow, true);
-					registerCheckedImages();
-				}
-				else if (dlg.GetAction() == ARA_ALL)
-				{
-					// Register all the checked light frames (including this one).
-					frameList.checkImage(fileToShow, true);
-					registerCheckedImages();
-				};
-			};
+			case AskRegistering::Answer::ARA_ONE:
+				frameList.checkAllLights(false);// Register only this light frame (unchek the others
+			case AskRegistering::Answer::ARA_ALL:
+				frameList.checkImage(fileToShow, true);// Register all the checked light frames (including this one).
+				registerCheckedImages();
+				break;
+			default:
+				break;
+			}
 		};
 	};
 
