@@ -18,7 +18,7 @@ AskRegistering::~AskRegistering()
 
 void AskRegistering::reject()
 {
-	ui->registerNone->setChecked(true);// so that GetAction return Answer::ARA_CONTINUE
+	ui->registerNone->setChecked(true);// so that ::desiredAction return Answer::ARA_CONTINUE
 	QDialog::reject();
 }
 
