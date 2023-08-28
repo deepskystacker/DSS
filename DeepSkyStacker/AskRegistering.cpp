@@ -4,8 +4,8 @@
 
 /*
 don't forget to make connections when you port it to Qt GUI (make it not use SIGNAL and SLOT macros)
-connect(ui->buttonBox, &QDialogButtonBox::accepted, this, qOverload<>(&QDialog::accept));
-connect(ui->buttonBox, &QDialogButtonBox::rejected, this, qOverload<>(&QDialog::reject));
+connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 connect(ui->registerOne, SIGNAL(clicked()), this, SLOT(onRegisterOne()));
 connect(ui->registerAll, SIGNAL(clicked()), this, SLOT(onRegisterAll()));
 connect(ui->registerNone, SIGNAL(clicked()), this, SLOT(onRegisterNone()));
