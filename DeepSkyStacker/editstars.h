@@ -174,7 +174,6 @@ namespace DSS
 
     private:
         ImageView* imageView;
-		QPixmap pixmap;
         QString fileName;
         STARVECTOR	stars;
         STARVECTOR	refStars;
@@ -184,7 +183,6 @@ namespace DSS
 		QPointF					m_ptCursor;
 		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 		EditStarAction				m_Action;
-		//QPixmap pixmap;
 		CStar						m_AddedStar;
 		int							m_lRemovedIndice;
 		bool						m_bRemoveComet;
@@ -273,7 +271,7 @@ namespace DSS
 
 		void computeBackgroundValue();
 
-		void drawOnPixmap();
+		void draw();
 
 		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
 
