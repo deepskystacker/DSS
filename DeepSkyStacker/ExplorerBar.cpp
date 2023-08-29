@@ -40,6 +40,32 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 {
 	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
+	connect(ui->openLights, &QLabel::linkActivated, this, &ExplorerBar::onOpenLights);
+	connect(ui->openDarks, &QLabel::linkActivated, this, &ExplorerBar::onOpenDarks);
+	connect(ui->openFlats, &QLabel::linkActivated, this, &ExplorerBar::onOpenFlats);
+	connect(ui->openDarkFlats, &QLabel::linkActivated, this, &ExplorerBar::onOpenDarkFlats);
+	connect(ui->openBias, &QLabel::linkActivated, this, &ExplorerBar::onOpenBias);
+	connect(ui->openFilelist, &QLabel::linkActivated, this, &ExplorerBar::onOpenFilelist);
+	connect(ui->saveFilelist, &QLabel::linkActivated, this, &ExplorerBar::onSaveFilelist);
+	connect(ui->clearList, &QLabel::linkActivated, this, &ExplorerBar::onClearList);
+	connect(ui->checkAll, &QLabel::linkActivated, this, &ExplorerBar::onCheckAll);
+	connect(ui->checkAbove, &QLabel::linkActivated, this, &ExplorerBar::onCheckAbove);
+	connect(ui->unCheckAll, &QLabel::linkActivated, this, &ExplorerBar::onUncheckAll);
+	connect(ui->registerChecked, &QLabel::linkActivated, this, &ExplorerBar::onRegisterChecked);
+	connect(ui->computeOffsets, &QLabel::linkActivated, this, &ExplorerBar::onComputeOffsets);
+	connect(ui->stackChecked, &QLabel::linkActivated, this, &ExplorerBar::onStackChecked);
+	connect(ui->batchStacking, &QLabel::linkActivated, this, &ExplorerBar::onBatchStacking);
+	connect(ui->openPicture, &QLabel::linkActivated, this, &ExplorerBar::onOpenPicture);
+	connect(ui->copyPicture, &QLabel::linkActivated, this, &ExplorerBar::onCopyPicture);
+	connect(ui->doStarMask, &QLabel::linkActivated, this, &ExplorerBar::onDoStarMask);
+	connect(ui->savePicture, &QLabel::linkActivated, this, &ExplorerBar::onSavePicture);
+	connect(ui->settings, &QLabel::linkActivated, this, &ExplorerBar::onSettings);
+	connect(ui->ddpSettings, &QLabel::linkActivated, this, &ExplorerBar::onDDPSettings);
+	connect(ui->loadSettings, &QLabel::linkActivated, this, &ExplorerBar::onLoadSettings);
+	connect(ui->saveSettings, &QLabel::linkActivated, this, &ExplorerBar::onSaveSettings);
+	connect(ui->recommendedSettings, &QLabel::linkActivated, this, &ExplorerBar::onRecommendedSettings);
+	connect(ui->about, &QLabel::linkActivated, this, &ExplorerBar::onAbout);
+
 #if QT_VERSION >= 0x060500
 	//
 	// Dark colour scheme?

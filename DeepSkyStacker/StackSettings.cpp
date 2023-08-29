@@ -29,6 +29,8 @@ StackSettings::StackSettings(QWidget *parent) :
 	startingTab(-1)
 {
     ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 	m_resultParameters = new ResultParameters(this);
 	m_cometStacking = new CometStacking(this);
