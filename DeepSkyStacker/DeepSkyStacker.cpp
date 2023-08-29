@@ -261,7 +261,7 @@ void DeepSkyStacker::createStatusBar()
 {
 	statusBarText->setAlignment(Qt::AlignHCenter);
 	statusBar()->addWidget(statusBarText, 1);
-	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+	connect(stackingDlg, &DSS::StackingDlg::statusMessage, this, &DeepSkyStacker::updateStatus);
 }
 
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -318,20 +318,20 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 void DeepSkyStacker::connectSignalsToSlots()
 {
 	connect(helpShortCut, &QShortcut::activated, this, &DeepSkyStacker::help);
-	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
+	connect(explorerBar, &ExplorerBar::addImages, stackingDlg, &DSS::StackingDlg::onAddImages);
 
-	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
-	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
-	connect(explorerBar, SIGNAL(clearList()), stackingDlg, SLOT(clearList()));
+	connect(explorerBar, &ExplorerBar::loadList, stackingDlg, static_cast<void(DSS::StackingDlg::*)(const QPoint&)>(&DSS::StackingDlg::loadList));
+	connect(explorerBar, &ExplorerBar::saveList, stackingDlg, static_cast<void(DSS::StackingDlg::*)()>(&DSS::StackingDlg::saveList));
+	connect(explorerBar, &ExplorerBar::clearList, stackingDlg, &DSS::StackingDlg::clearList);
 
-	connect(explorerBar, SIGNAL(checkAbove()), stackingDlg, SLOT(checkAbove()));
-	connect(explorerBar, SIGNAL(checkAll()), stackingDlg, SLOT(checkAll()));
-	connect(explorerBar, SIGNAL(unCheckAll()), stackingDlg, SLOT(unCheckAll()));
+	connect(explorerBar, &ExplorerBar::checkAbove, stackingDlg, &DSS::StackingDlg::checkAbove);
+	connect(explorerBar, &ExplorerBar::checkAll, stackingDlg, &DSS::StackingDlg::checkAll);
+	connect(explorerBar, &ExplorerBar::unCheckAll, stackingDlg, &DSS::StackingDlg::unCheckAll);
 
-	connect(explorerBar, SIGNAL(registerCheckedImages()), stackingDlg, SLOT(registerCheckedImages()));
-	connect(explorerBar, SIGNAL(computeOffsets()), stackingDlg, SLOT(computeOffsets()));
-	connect(explorerBar, SIGNAL(stackCheckedImages()), stackingDlg, SLOT(stackCheckedImages()));
-	connect(explorerBar, SIGNAL(batchStack()), stackingDlg, SLOT(batchStack()));
+	connect(explorerBar, &ExplorerBar::registerCheckedImages, stackingDlg, &DSS::StackingDlg::registerCheckedImages);
+	connect(explorerBar, &ExplorerBar::computeOffsets, stackingDlg, &DSS::StackingDlg::computeOffsets);
+	connect(explorerBar, &ExplorerBar::stackCheckedImages, stackingDlg, &DSS::StackingDlg::stackCheckedImages);
+	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 }
 
 void DeepSkyStacker::onInitialise()

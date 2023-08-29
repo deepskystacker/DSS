@@ -66,15 +66,11 @@ namespace DSS
 
 	void ImageViewer::connectSignalsToSlots()
 	{
-		connect(fourCorners, SIGNAL(clicked(bool)), picture, SLOT(on_fourCorners_clicked(bool)));
-		connect(gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
-		connect(gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
-		connect(information, &QLabel::linkActivated,
-			this, &ImageViewer::saveClicked);
-		connect(copyToClipboard, &QLabel::linkActivated,
-			this, &ImageViewer::copyStackedImage);
-
-
+		connect(fourCorners, &QToolButton::clicked, picture, &DSS::ImageView::on_fourCorners_clicked);
+		connect(gamma, &QLinearGradientCtrl::pegMove, this, &ImageViewer::gammaChanging);
+		connect(gamma, &QLinearGradientCtrl::pegMoved, this, &ImageViewer::gammaChanged);
+		connect(information, &QLabel::linkActivated, this, &ImageViewer::saveClicked);
+		connect(copyToClipboard, &QLabel::linkActivated, this, &ImageViewer::copyStackedImage);
 	}
 
 	/* ------------------------------------------------------------------- */
