@@ -235,7 +235,7 @@ namespace DSS
 
 				if(imageWarning(lfi.filePath, dX, dY, angle, warning))
 				{
-					strText = tr("Warning: Image %s -> %s\n", "IDS_LOG_WARNING")
+					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING")
 						.arg(name)
 						.arg(warning);
 					emit writeToLog(strText, true, false, true, QColorConstants::Svg::orange);
@@ -303,7 +303,7 @@ namespace DSS
 			if (fabs(angle) > maxAngle)
 			{
 				result = false;
-				error = tr("Angle (%L1°) is greater than %L2°", "IDS_NOSTACK_ANGLE")
+				error = tr("Angle (%L1\xc2\xb0) is greater than %L2\xc2\xb0", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
 				emit setImageInfo(name, II_DONTSTACK_ANGLE);
 			}
@@ -323,7 +323,7 @@ namespace DSS
 			if ((fabs(dX) > maxOffset) || (fabs(dY) > maxOffset))
 			{
 				result = true;
-				warning = tr("dX (%1 pixels) or dY (%2 pixels) is greater than %3f pixels", "IDS_NOSTACK_OFFSET")
+				warning = tr("dX (%L1 pixels) or dY (%L2 pixels) is greater than %L3 pixels", "IDS_NOSTACK_OFFSET")
 					.arg(dX, 0, 'f', 2).arg(dX, 0, 'f', 2).arg(maxOffset, 0, 'f', 2);
 			};
 			if (fabs(dX) > maxOffset)
@@ -342,7 +342,7 @@ namespace DSS
 			if (fabs(angle) > maxAngle)
 			{
 				result = true;
-				warning = tr("Angle (%1°) is greater than %2°", "IDS_NOSTACK_ANGLE")
+				warning = tr("Angle (%L1\xc2\xb0) is greater than %L2\xc2\xb0", "IDS_NOSTACK_ANGLE")
 					.arg(angle, 0, 'f', 2).arg(maxAngle, 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_ANGLE);
 			};

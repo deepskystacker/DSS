@@ -64,56 +64,58 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="74"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Metadades d&apos;imatge Exif, IPTC, XMP i ICC per Exiv2 - Versió 0.28.0
+Copyright 2004-2023 Exiv2 authors</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="80"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>Suport SMTP del client SMTP per a Qt (C++) - Versió 0.27.6
+Copyright Tőkés Attila</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="108"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="105"/>
+        <location filename="../About.cpp" line="112"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Versió en Txec:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
+        <location filename="../About.cpp" line="116"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Versió en Italià:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="120"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Versió en Català:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="124"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Versió Alemanya:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="122"/>
+        <location filename="../About.cpp" line="129"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Versió Holandesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="119"/>
-        <location filename="../About.cpp" line="123"/>
-        <location filename="../About.cpp" line="132"/>
-        <location filename="../About.cpp" line="136"/>
-        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="126"/>
+        <location filename="../About.cpp" line="130"/>
+        <location filename="../About.cpp" line="139"/>
+        <location filename="../About.cpp" line="143"/>
+        <location filename="../About.cpp" line="144"/>
         <source>and</source>
         <translation>i</translation>
     </message>
@@ -128,31 +130,31 @@ Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="126"/>
+        <location filename="../About.cpp" line="133"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Versió Xinès Tradicional:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="130"/>
+        <location filename="../About.cpp" line="137"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Versió en Portugès:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="135"/>
+        <location filename="../About.cpp" line="142"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Versió Romanesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="140"/>
+        <location filename="../About.cpp" line="147"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Versió en Rus:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="151"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Versió Turca:</translation>
@@ -439,7 +441,7 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../StackingDlg.cpp" line="125"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Arxius d&apos;imatge (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
@@ -843,7 +845,7 @@ Vol desar els canvis?</translation>
         <translation>Guardant imatge Final en %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2535"/>
+        <location filename="../StackingDlg.cpp" line="2554"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -944,7 +946,7 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished">Ayuda DeepSkyStacker.chm</translation>
+        <translation>Ayuda DeepSkyStacker.chm</translation>
     </message>
 </context>
 <context>
@@ -1012,87 +1014,66 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="60"/>
-        <location filename="../ExplorerBar.cpp" line="443"/>
-        <location filename="../ExplorerBar.cpp" line="611"/>
-        <source>deleted</source>
-        <translation>se suprimirà</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="62"/>
-        <location filename="../ExplorerBar.cpp" line="445"/>
-        <location filename="../ExplorerBar.cpp" line="613"/>
-        <source>kept</source>
-        <translation>es conservarà</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="64"/>
-        <location filename="../ExplorerBar.cpp" line="447"/>
-        <location filename="../ExplorerBar.cpp" line="615"/>
-        <source>Trace File will be %1</source>
-        <translation>El fitxer de traça %1</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="263"/>
+        <location filename="../ExplorerBar.cpp" line="255"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Configuració de registre...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="264"/>
+        <location filename="../ExplorerBar.cpp" line="256"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="306"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaura configuració per defecte</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="308"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Carrega configuració de DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="312"/>
+        <location filename="../ExplorerBar.cpp" line="304"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Carrega...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="373"/>
+        <location filename="../ExplorerBar.cpp" line="365"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Desa com a configuració de DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="377"/>
+        <location filename="../ExplorerBar.cpp" line="369"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Desa com...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="527"/>
+        <location filename="../ExplorerBar.cpp" line="510"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Carrega configuració de DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="531"/>
+        <location filename="../ExplorerBar.cpp" line="514"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Configuració de DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="578"/>
+        <location filename="../ExplorerBar.cpp" line="561"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>Configuració de DeepSkyStacke</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="574"/>
+        <location filename="../ExplorerBar.cpp" line="557"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Desa configuració de Save DeepSkyStacker</translation>
@@ -1272,7 +1253,21 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <translation>Ajuda de DeepSkyStacker...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="612"/>
+        <location filename="../ui/ExplorerBar.ui" line="592"/>
+        <source>The trace file is normally written to the DeepSkyStacker directory in the users
+&quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
+Tick this box to keep the trace file.</source>
+        <translation>El fitxer de traça normalment s&apos;escriu al directori DeepSkyStacker dels usuaris
+Directori &quot;Documents&quot; i s&apos;elimina en sortir (tret que l&apos;aplicació es bloquegi).
+Marqueu aquesta casella per mantenir el fitxer de traça.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="597"/>
+        <source>Retain the trace file on exit</source>
+        <translation>Conserveu el fitxer de traça a la sortida</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
         <translation>Activa els sons de progrés</translation>
     </message>
@@ -1558,11 +1553,22 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <translation>Carregant %1 bits gray %2 light frame
 %3</translation>
     </message>
+    <message>
+        <location filename="../PostCalibration.cpp" line="383"/>
+        <source>Cosmetic
+Detected Hot Pixels: %L1 (%L2%)
+Detected Cold Pixels: %L3 (%L4%)
+</source>
+        <comment>IDS_COSMETICSTATS</comment>
+        <translation>Cosmètica
+Píxels calents detectats: %L1 (%L2%)
+Píxels freds detectats: %L3 (%L4%)</translation>
+    </message>
 </context>
 <context>
     <name>ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="815"/>
+        <location filename="../ProcessingDlg.cpp" line="746"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
@@ -2042,61 +2048,61 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <translation>Redueix el soroll usant el Filtre de Mediana</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="157"/>
+        <location filename="../RegisterSettings.cpp" line="156"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark, flat i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="160"/>
+        <location filename="../RegisterSettings.cpp" line="159"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark i flat abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="163"/>
+        <location filename="../RegisterSettings.cpp" line="162"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="166"/>
+        <location filename="../RegisterSettings.cpp" line="165"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxiu flat i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="169"/>
+        <location filename="../RegisterSettings.cpp" line="168"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="172"/>
+        <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>No oblidi agregar i seleccionar els arxius flat abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="175"/>
+        <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="199"/>
+        <location filename="../RegisterSettings.cpp" line="198"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats i offsets/bias seleccionats.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="263"/>
+        <location filename="../RegisterSettings.cpp" line="262"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrant %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="270"/>
+        <location filename="../RegisterSettings.cpp" line="269"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 estrella/es</translation>

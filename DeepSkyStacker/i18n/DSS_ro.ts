@@ -73,47 +73,47 @@ Copyright Tőkés Attila</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="108"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Versiune spaniolă: Ricardo Contreras și echipa</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="105"/>
+        <location filename="../About.cpp" line="112"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Versiune cehă:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
+        <location filename="../About.cpp" line="116"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Versiune italiană:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="120"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Versiune catalană:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="124"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Versiune germană:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="122"/>
+        <location filename="../About.cpp" line="129"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Versiune olandeză:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="119"/>
-        <location filename="../About.cpp" line="123"/>
-        <location filename="../About.cpp" line="132"/>
-        <location filename="../About.cpp" line="136"/>
-        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="126"/>
+        <location filename="../About.cpp" line="130"/>
+        <location filename="../About.cpp" line="139"/>
+        <location filename="../About.cpp" line="143"/>
+        <location filename="../About.cpp" line="144"/>
         <source>and</source>
         <translation>și</translation>
     </message>
@@ -128,31 +128,31 @@ Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="126"/>
+        <location filename="../About.cpp" line="133"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Versiunea Chineză Tradițională:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="130"/>
+        <location filename="../About.cpp" line="137"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Versiunea portugheză:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="135"/>
+        <location filename="../About.cpp" line="142"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>&quot;Versiunea română:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="140"/>
+        <location filename="../About.cpp" line="147"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Versiunea rusă:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="151"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Versiunea Turcă:</translation>
@@ -852,7 +852,7 @@ Vreți să salvați modificările?</translation>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2535"/>
+        <location filename="../StackingDlg.cpp" line="2554"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1028,87 +1028,66 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="60"/>
-        <location filename="../ExplorerBar.cpp" line="443"/>
-        <location filename="../ExplorerBar.cpp" line="611"/>
-        <source>deleted</source>
-        <translation>șters</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="62"/>
-        <location filename="../ExplorerBar.cpp" line="445"/>
-        <location filename="../ExplorerBar.cpp" line="613"/>
-        <source>kept</source>
-        <translation>păstrat</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="64"/>
-        <location filename="../ExplorerBar.cpp" line="447"/>
-        <location filename="../ExplorerBar.cpp" line="615"/>
-        <source>Trace File will be %1</source>
-        <translation>Fișierul de urmărire va fi %1</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="263"/>
+        <location filename="../ExplorerBar.cpp" line="255"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Setari Inregistrare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="264"/>
+        <location filename="../ExplorerBar.cpp" line="256"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Setari Stackare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="306"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurează setările implicite</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="308"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Încarcă setările pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="312"/>
+        <location filename="../ExplorerBar.cpp" line="304"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Încarcă...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="373"/>
+        <location filename="../ExplorerBar.cpp" line="365"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Salvează ca setări pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="377"/>
+        <location filename="../ExplorerBar.cpp" line="369"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Salvează ca...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="527"/>
+        <location filename="../ExplorerBar.cpp" line="510"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Încarcă setări pentru DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="531"/>
+        <location filename="../ExplorerBar.cpp" line="514"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="578"/>
+        <location filename="../ExplorerBar.cpp" line="561"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="574"/>
+        <location filename="../ExplorerBar.cpp" line="557"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Salvează Setări DeepSkyStacker</translation>
@@ -1288,7 +1267,19 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <translation>Ajutor DeepSkyStacker...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="612"/>
+        <location filename="../ui/ExplorerBar.ui" line="592"/>
+        <source>The trace file is normally written to the DeepSkyStacker directory in the users
+&quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
+Tick this box to keep the trace file.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="597"/>
+        <source>Retain the trace file on exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
         <translation>Activați sunetele de progres</translation>
     </message>
@@ -1574,11 +1565,20 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <translation>Încarcă %1 biți gri %2 cadru light
 %3</translation>
     </message>
+    <message>
+        <location filename="../PostCalibration.cpp" line="383"/>
+        <source>Cosmetic
+Detected Hot Pixels: %L1 (%L2%)
+Detected Cold Pixels: %L3 (%L4%)
+</source>
+        <comment>IDS_COSMETICSTATS</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="815"/>
+        <location filename="../ProcessingDlg.cpp" line="746"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Salvează Mască Stea în %1</translation>
@@ -2058,61 +2058,61 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <translation>Redu zgomotul folosind un filtru median</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="157"/>
+        <location filename="../RegisterSettings.cpp" line="156"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark, flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="160"/>
+        <location filename="../RegisterSettings.cpp" line="159"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="163"/>
+        <location filename="../RegisterSettings.cpp" line="162"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="166"/>
+        <location filename="../RegisterSettings.cpp" line="165"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="169"/>
+        <location filename="../RegisterSettings.cpp" line="168"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="172"/>
+        <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="175"/>
+        <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="199"/>
+        <location filename="../RegisterSettings.cpp" line="198"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats si offset/bias selectate.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="263"/>
+        <location filename="../RegisterSettings.cpp" line="262"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Inregistrez %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="270"/>
+        <location filename="../RegisterSettings.cpp" line="269"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 stele</translation>

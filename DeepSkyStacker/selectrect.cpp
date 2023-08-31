@@ -68,8 +68,7 @@ namespace DSS
         setAttribute(Qt::WA_WState_ExplicitShowHide);
  
         StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
-        connect(this, SIGNAL(selectRectChanged(QRectF)),
-            &stackingDlg, SLOT(setSelectionRect(QRectF)));
+        connect(this, &SelectRect::selectRectChanged, &stackingDlg, &StackingDlg::setSelectionRect);
     }
 
     /*!
@@ -296,10 +295,10 @@ namespace DSS
 
     void SelectRect::rectButtonPressed()
     {
-        connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+        connect(imageView, &ImageView::Image_mousePressEvent, this, &SelectRect::mousePressEvent);
+        connect(imageView, &ImageView::Image_mouseMoveEvent, this, &SelectRect::mouseMoveEvent);
+        connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &SelectRect::mouseReleaseEvent);
+        connect(imageView, &ImageView::Image_resizeEvent, this, &SelectRect::resizeMe);
         show();
         raise();
         activateWindow();

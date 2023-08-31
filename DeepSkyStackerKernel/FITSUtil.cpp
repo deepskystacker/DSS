@@ -1343,12 +1343,6 @@ bool CFITSWriter::Write()
 {
 	bool bResult = false;
 
-	//
-	// Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
-	// pixel being written with a value of zero because the value overflowed the data type 
-	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
-	//
-
 	if (m_fits != nullptr)
 	{
 		int lScanLineSize;
@@ -1420,7 +1414,7 @@ bool CFITSWriter::Write()
 						}
 						else
 						{
-							constexpr double scalingFactor = 255.0;
+							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
 							// Convert to gray scale
 							double H, S, L;
 							ToHSL(fRed, fGreen, fBlue, H, S, L);
@@ -1433,19 +1427,19 @@ bool CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							constexpr double scalingFactor = double{ UCHAR_MAX };
+							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
 							*pWORDLine++ = static_cast<std::uint16_t>(fGray * scalingFactor);
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								constexpr double scalingFactor = 1.0 + double{ UCHAR_MAX };
+								constexpr double scalingFactor { 1.0 + UCHAR_MAX };
 								*pFLOATLine++ = static_cast<float>(fGray / scalingFactor);
 							}
 							else
 							{
-								constexpr double scalingFactor = double{ UCHAR_MAX } *double{ USHRT_MAX };
+								constexpr double scalingFactor { (1.0 + UCHAR_MAX) * (1.0 + USHRT_MAX) };
 								*pDWORDLine++ = static_cast<std::uint32_t>(fGray * scalingFactor);
 							};
 						};
@@ -1489,7 +1483,7 @@ bool CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							constexpr double scalingFactor = double{ UCHAR_MAX };
+							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
 							*pWORDLineRed++ = static_cast<std::uint16_t>(fRed * scalingFactor);
 							*pWORDLineGreen++ = static_cast<std::uint16_t>(fGreen * scalingFactor);
 							*pWORDLineBlue++ = static_cast<std::uint16_t>(fBlue * scalingFactor);
@@ -1498,14 +1492,14 @@ bool CFITSWriter::Write()
 						{
 							if (m_bFloat)
 							{
-								constexpr double scalingFactor = 1.0 + double{ UCHAR_MAX };
+								constexpr double scalingFactor { 1.0 + UCHAR_MAX };
 								*pFLOATLineRed++ = static_cast<float>(fRed / scalingFactor);
 								*pFLOATLineGreen++ = static_cast<float>(fGreen / scalingFactor);
 								*pFLOATLineBlue++ = static_cast<float>(fBlue / scalingFactor);
 							}
 							else
 							{
-								constexpr double scalingFactor = double{ UCHAR_MAX } * double{ USHRT_MAX };
+								constexpr double scalingFactor{ (1.0 + UCHAR_MAX) * (1.0 + USHRT_MAX) };
 								*pDWORDLineRed++ = static_cast<std::uint32_t>(fRed * scalingFactor);
 								*pDWORDLineGreen++ = static_cast<std::uint32_t>(fGreen * scalingFactor);
 								*pDWORDLineBlue++ = static_cast<std::uint32_t>(fBlue * scalingFactor);

@@ -287,11 +287,11 @@ namespace DSS
 
 	void EditStars::starsButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, & EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, & EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, & EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, & EditStars::resizeMe);
 		m_bCometMode = false;
 		show();
 		raise();
@@ -300,11 +300,11 @@ namespace DSS
 
 	void EditStars::cometButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe);
 		m_bCometMode = true;
 		show();
 		raise();
@@ -318,7 +318,6 @@ namespace DSS
 
 	void EditStars::resizeMe(QResizeEvent* e)
 	{
-		pixmap = QPixmap(e->size());
 		resize(e->size());
 	}
 
@@ -328,28 +327,13 @@ namespace DSS
 	void EditStars::showEvent(QShowEvent* e)
 	{
 		resize(imageView->size());
-		pixmap = QPixmap(imageView->size());
 		raise();
 		Inherited::showEvent(e);
 	}
 
 	void EditStars::paintEvent([[maybe_unused]] QPaintEvent* event)
 	{
-		//event->ignore();
-		QPainter painter(this);
-
-		drawOnPixmap();
-		//
-		// Draw the stuff we drew onto the working pixmap onto the screen
-		//
-		painter.setBackgroundMode(Qt::TransparentMode);
-		//painter.eraseRect(rect());
-		painter.drawPixmap(0, 0, pixmap);
-
-		//imageView->setOverlayPixmap(pixmap);
-		//imageView->update();
-		painter.end();
-		//Inherited::paintEvent(event);
+		draw();
 	}
 
 	void EditStars::mouseMoveEvent([[maybe_unused]] QMouseEvent* e)
@@ -492,7 +476,7 @@ namespace DSS
 		vStars.assign(starsInRect.cbegin(), starsInRect.cend());
 	}
 
-	void EditStars::drawOnPixmap()
+	void EditStars::draw()
 	{
 		//
 		// Note this creates the star/comet overlay pixmap the same size as the
@@ -505,8 +489,7 @@ namespace DSS
 		//
 		// Fill the pixmap with transparency
 		//
-		pixmap.fill(Qt::transparent);
-		QPainter painter(&pixmap);
+		QPainter painter(this);
 		painter.setClipRect(imageView->displayRect);
 		QBrush brush{ Qt::transparent };
 
@@ -928,21 +911,23 @@ namespace DSS
 
 					strText += strComet;
 				}
+				constexpr auto txtMargin = 6;
+				constexpr auto borderMargin = 2;
 
 				QSizeF size{ fontMetrics.size(0, strText) };
-				size.rheight() += 12;
-				size.rwidth() += 12;
+				size.rheight() += txtMargin * 2;
+				size.rwidth() += txtMargin * 2;
 
 				if ((mouseLocation.x() >= rcClient.right() - 150) &&
 					(mouseLocation.y() <= 150))
 				{
 					// Draw the rectangle at the left bottom
 					rcText.setLeft(2);
-					rcText.setTop(rcClient.bottom() - (size.height() + 2));
+					rcText.setTop(rcClient.bottom() - (size.height() + borderMargin));
 				}
 				else
 				{
-					rcText.setLeft(rcClient.right() - (size.width() + 2));
+					rcText.setLeft(rcClient.right() - (size.width() + borderMargin));
 					rcText.setTop(2);
 				}
 				rcText.setRight(rcText.left() + size.width());
@@ -955,11 +940,11 @@ namespace DSS
 				pen.setColor(qRgba(0, 0, 0, 200)); pen.setWidthF(1.0);
 				painter.setPen(pen);
 
-				painter.drawRect(rcText.adjusted(2, 2, -4, - 4));
+				painter.drawRect(rcText.adjusted(borderMargin, borderMargin, -borderMargin, -borderMargin));
 
 				brush.setColor(qRgb(0, 0, 0)); painter.setBrush(brush);
 
-				QRectF rect(QPointF(rcText.left() + 6, rcText.top() + 6), size);
+				QRectF rect(QPointF(rcText.left() + txtMargin, rcText.top() + txtMargin), size);
 				painter.drawText(rect, strText, Qt::AlignLeft | Qt:: AlignTop);
 			}
 		}

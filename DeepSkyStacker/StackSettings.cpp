@@ -29,6 +29,8 @@ StackSettings::StackSettings(QWidget *parent) :
 	startingTab(-1)
 {
     ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 	m_resultParameters = new ResultParameters(this);
 	m_cometStacking = new CometStacking(this);
@@ -66,7 +68,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	//
 	// If the user selects a tab we want to know.
 	//
-	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+	connect(ui->tabWidget, &QTabWidget::currentChanged, this, & StackSettings::tabChanged);
 
 	Workspace workspace;
 	workspace.Push();

@@ -119,6 +119,17 @@ public:
 	virtual void	GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) = 0;
 	virtual void	GetPixel(size_t i, size_t j, double& fGray) = 0;
 
+	virtual double getValue(size_t, size_t) const
+	{
+		ZASSERTSTATE(false);
+		return 0.0;
+	};
+	virtual std::tuple<double, double, double> getValues(size_t, size_t) const
+	{
+		ZASSERTSTATE(false);
+		return { 0.0, 0.0, 0.0 };
+	};
+ 	
 	virtual void	SetValue(size_t, size_t, double, double, double) {};
 	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {};
 	virtual void	SetValue(size_t, size_t, double) {};

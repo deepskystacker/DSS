@@ -17,6 +17,8 @@ public:
     explicit ExplorerBar(QWidget *parent = nullptr);
     ~ExplorerBar();
 
+	inline void setDSSClosing() { dssClosing = true; }
+
 signals:
 	void addImages(PICTURETYPE type);
 
@@ -45,6 +47,7 @@ signals:
 protected:
 	void mousePressEvent(QMouseEvent*) override;
 	void showEvent(QShowEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
 
 private slots:
 	void onOpenLights();
@@ -79,8 +82,7 @@ private slots:
 
     void onAbout();
 
-	void onToggleDeletion();
-
+	void keepTraceChanged(int);
 	void onEnableSoundsStateChanged(int);
 
 #if QT_VERSION >= 0x060500
@@ -94,6 +96,7 @@ private:
 	MRUPath	mruPath;
 	QString windowColourName;
 	QString activeGroupColourName;
+	bool dssClosing;
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();
