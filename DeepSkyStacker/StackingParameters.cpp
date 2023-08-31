@@ -26,7 +26,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
     ui->setupUi(this);
 
-//	connect(ui->backgroundCalibration, SIGNAL(linkActivated(const QString &)), this, SLOT(on_backgroundCalibration_linkActivated(const QString &)));
+	//connect(ui->backgroundCalibration, &QPushButton::linkActivated, this, &StackingParameters::on_backgroundCalibration_linkActivated);
 	//
 	// Make all the "optional" controls invisible
 	// 
@@ -80,8 +80,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
 	createActions().createMenus();
 
-	connect(this, SIGNAL(methodChanged(MULTIBITMAPPROCESSMETHOD)),
-		this, SLOT(updateControls(MULTIBITMAPPROCESSMETHOD)));
+	connect(this, &StackingParameters::methodChanged, this, &StackingParameters::updateControls);
 }
 
 StackingParameters & StackingParameters::createActions()
@@ -105,7 +104,7 @@ StackingParameters & StackingParameters::createActions()
 		[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
 
 	bgCalOptions = new QAction(tr("Options...", "ID_CALIBRATIONMENU_OPTIONS"), this);
-	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions()));
+	connect(bgCalOptions, &QAction::triggered, this, &StackingParameters::backgroundCalibrationOptions);
 
 	return *this;
 }

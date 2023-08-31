@@ -98,6 +98,8 @@ public:
 		return false;
 	}
 
+	virtual std::tuple<double, double, double> getValues(size_t, size_t) const override;
+
 	virtual void SetValue(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;

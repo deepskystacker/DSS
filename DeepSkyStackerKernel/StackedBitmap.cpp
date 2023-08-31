@@ -91,17 +91,17 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	Red   = fRed/m_lNrBitmaps*255.0;
-	Green = fGreen/m_lNrBitmaps*255.0;
-	Blue  = fBlue/m_lNrBitmaps*255.0;
+	Red   = fRed/m_lNrBitmaps*256.0;
+	Green = fGreen/m_lNrBitmaps*256.0;
+	Blue  = fBlue/m_lNrBitmaps*256.0;
 
 	if (bApplySettings)
 	{
 		m_HistoAdjust.Adjust(Red, Green, Blue);
 
-		Red		/= 255.0;
-		Green	/= 255.0;
-		Blue	/= 255.0;
+		Red		/= 256.0;
+		Green	/= 256.0;
+		Blue	/= 256.0;
 
 		if (Red > 255)
 			Red = 255;
@@ -124,7 +124,7 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 	}
 	else
 	{
-		crResult = RGB(Red/255.0, Green/255.0, Blue/255.0);
+		crResult = RGB(Red/256.0, Green/256.0, Blue/256.0);
 	};
 
 	return crResult;
@@ -1085,6 +1085,23 @@ bool CStackedBitmap::LoadTIFF(LPCTSTR szStackedFile, ProgressBase * pProgress)
 		bResult = true;
 	};
 
+	if (IsMonochrome())
+	{
+		qDebug() << "Final stacked image read back in"
+			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
+			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
+			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+	}
+	else
+	{
+		qDebug() << "Final stacked image read back in:";
+		for (size_t i = 0; i < 4; i++)
+		{
+			auto [r, g, b] = getValues(i, 0);
+			qDebug() << r << g << b;
+		}
+	}
+
 	return bResult;
 };
 
@@ -1180,6 +1197,24 @@ bool CStackedBitmap::LoadFITS(LPCTSTR szStackedFile, ProgressBase * pProgress)
 		fits.Close();
 		bResult = true;
 	};
+	if (IsMonochrome())
+	{
+		qDebug() << "Final stacked image read back in"
+			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
+			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
+			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+	}
+	else
+	{
+
+		qDebug() << "Final stacked image read back in:";
+		for (size_t i = 0; i < 4; i++)
+		{
+			auto [r, g, b] = getValues(i, 0);
+			qDebug() << r << g << b;
+		}
+	}
+
 
 	return bResult;
 };

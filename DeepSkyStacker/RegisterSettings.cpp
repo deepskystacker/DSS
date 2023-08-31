@@ -65,6 +65,8 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	settingsOnly(false)
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 	perCentValidator = new QIntValidator(0, 100, this);
 	ui->percentStack->setValidator(perCentValidator);

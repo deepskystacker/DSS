@@ -161,6 +161,12 @@ public:
 		fGray = m_vPixels[GetOffset(i, j)];
 	}
 
+	virtual double getValue(size_t i, size_t j) const override
+	{
+		CheckXY(i, j);
+		return m_vPixels[GetOffset(i, j)];
+	}
+
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	inline virtual void SetPixel(size_t i, size_t j, double fGray) override;
 	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override;

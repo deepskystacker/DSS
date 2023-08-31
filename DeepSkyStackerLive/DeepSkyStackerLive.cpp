@@ -96,8 +96,7 @@ namespace
 	{
 		QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file ? context.file : "";
-		const char* function = context.function ? context.function : "";
-		char* name{ static_cast<char *>(_alloca(1 + strlen(file))) };
+		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
 		strcpy(name, file);
 		if (0 != strlen(name))
 		{
@@ -107,19 +106,19 @@ namespace
 
 		switch (type) {
 		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		}
 		originalHandler(type, context, msg);
@@ -1095,7 +1094,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 	if (0 == fileRegistrar->pendingImageCount() && 0 == stackedImageCnt && !filteredFiles.empty())
 	{
 		if (QMessageBox::Yes == QMessageBox::question(this, "DeepSkyStackerLive",
-			tr("You have %n images(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
+			tr("You have %n image(s) in the monitored folder.\nDo you want to process them?", "IDS_USEEXISTINGIMAGES",
 				static_cast<int>(filteredFiles.size())),
 			QMessageBox::Yes | QMessageBox::No,
 			QMessageBox::Yes))

@@ -285,18 +285,21 @@ RawDDPSettings::RawDDPSettings(QWidget *parent) :
 	initialised(false)
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 
 	//
 	// Create a validator for the scale values
 	//
 	scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
 
-	connect(ui->brightness, SIGNAL(editingFinished()), this, SLOT(brightness_editingFinished()));
-	connect(ui->redScale, SIGNAL(editingFinished()), this, SLOT(redScale_editingFinished()));
-	connect(ui->blueScale, SIGNAL(editingFinished()), this, SLOT(blueScale_editingFinished()));
-	connect(ui->brightness_2, SIGNAL(editingFinished()), this, SLOT(brightness_2_editingFinished()));
-	connect(ui->redScale_2, SIGNAL(editingFinished()), this, SLOT(redScale_2_editingFinished()));
-	connect(ui->blueScale_2, SIGNAL(editingFinished()), this, SLOT(blueScale_2_editingFinished()));
+	connect(ui->brightness, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_editingFinished);
+	connect(ui->redScale, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_editingFinished);
+	connect(ui->blueScale, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_editingFinished);
+	connect(ui->brightness_2, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_2_editingFinished);
+	connect(ui->redScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_2_editingFinished);
+	connect(ui->blueScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_2_editingFinished);
 
 	//
 	// forceUnsigned is no longer used
@@ -433,7 +436,7 @@ void RawDDPSettings::onInitDialog()
 		}
 	}
 
-	connect(ui->DSLRs, SIGNAL(currentIndexChanged(int)), this, SLOT(DSLRs_currentIndexChanged(int)));
+	connect(ui->DSLRs, &QComboBox::currentIndexChanged, this, &RawDDPSettings::DSLRs_currentIndexChanged);
 
 	updateBayerPattern().updateControls();
 

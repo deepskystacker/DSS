@@ -3,23 +3,22 @@ Welcome to DeepSkyStacker 5.1.4
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
 Changes since the last release:
 
-1. Upgrade CFISTIO library to 4.2.0
+1. Upgrade CFITSIO library to 4.2.0
 
-2. Always create a tracefile in DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
+2. Always create a tracefile in the DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
 
 	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT time.
 
-The trace file will be deleted on normal application exit, but an option is provided to keep the file.
+	The trace file will be deleted on normal application exit, but retained in the event of an exception.
+	An option is provided to keep the file.
 
 3. Add both Main Group and Group 1 at startup.
 
-4. Initial code changes for Qt 6.5.0 Dark/Light Theme support
+4. Initial code changes for Qt 6.5.1 Dark/Light Theme support
 
-5. Add an option to turn off beeps on cmpletion of registering/stacking.
+5. Add an option to turn off beeps on completion of registering/stacking.
 
 6. Toolbar display improved (no square boxes round active/hovered buttons).
 
@@ -34,6 +33,16 @@ The trace file will be deleted on normal application exit, but an option is prov
 9. Change compression of TIFF format master files to use PKZIP Deflate instead of no compression.
 
 10. Change default compression for saving images to PKZIP Deflate (was NONE).
+
+11. Convert DeepSkyStackerLive to Qt.
+
+12. Use floating point instead of 16-bit fixed point for master files.  Old master files will still work.
+
+13. Prevent undocked sidebar and image list windows from being closed (never to be seen again).
+
+14. Suppress warning message "ZIPEncode: Encoder error: buffer error." when writing TIFF files.
+
+15. Remove Microsoft CGI+ dependency for loading jpeg and png images.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

@@ -10,6 +10,8 @@ BackgroundOptions::BackgroundOptions(QWidget *parent) :
     ui(new Ui::BackgroundOptions)
 {
     ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 	m_CalibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
 	m_RGBCalibrationMethod = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();

@@ -74,6 +74,7 @@ using std::max;
 
 // Windows Files (eventually to go!)
 #define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT _WIN32_WINNT_WIN7	// Want to support Windows XP and up
+#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
 
 #include <afx.h>
+#include <zexcept.h>

@@ -75,7 +75,6 @@ namespace
 	{
 		QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file ? context.file : "";
-		const char* function = context.function ? context.function : "";
 		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
 		strcpy(name, file);
 		if (0 != strlen(name))
@@ -86,19 +85,19 @@ namespace
 
 		switch (type) {
 		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: %s (%s:%u) %s", function, name, context.line, localMsg.constData());
+			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
 		}
 		originalHandler(type, context, msg);
@@ -262,7 +261,7 @@ void DeepSkyStacker::createStatusBar()
 {
 	statusBarText->setAlignment(Qt::AlignHCenter);
 	statusBar()->addWidget(statusBarText, 1);
-	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+	connect(stackingDlg, &DSS::StackingDlg::statusMessage, this, &DeepSkyStacker::updateStatus);
 }
 
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -319,20 +318,20 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 void DeepSkyStacker::connectSignalsToSlots()
 {
 	connect(helpShortCut, &QShortcut::activated, this, &DeepSkyStacker::help);
-	connect(explorerBar, SIGNAL(addImages(PICTURETYPE)), stackingDlg, SLOT(onAddImages(PICTURETYPE)));
+	connect(explorerBar, &ExplorerBar::addImages, stackingDlg, &DSS::StackingDlg::onAddImages);
 
-	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
-	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
-	connect(explorerBar, SIGNAL(clearList()), stackingDlg, SLOT(clearList()));
+	connect(explorerBar, &ExplorerBar::loadList, stackingDlg, static_cast<void(DSS::StackingDlg::*)(const QPoint&)>(&DSS::StackingDlg::loadList));
+	connect(explorerBar, &ExplorerBar::saveList, stackingDlg, static_cast<void(DSS::StackingDlg::*)()>(&DSS::StackingDlg::saveList));
+	connect(explorerBar, &ExplorerBar::clearList, stackingDlg, &DSS::StackingDlg::clearList);
 
-	connect(explorerBar, SIGNAL(checkAbove()), stackingDlg, SLOT(checkAbove()));
-	connect(explorerBar, SIGNAL(checkAll()), stackingDlg, SLOT(checkAll()));
-	connect(explorerBar, SIGNAL(unCheckAll()), stackingDlg, SLOT(unCheckAll()));
+	connect(explorerBar, &ExplorerBar::checkAbove, stackingDlg, &DSS::StackingDlg::checkAbove);
+	connect(explorerBar, &ExplorerBar::checkAll, stackingDlg, &DSS::StackingDlg::checkAll);
+	connect(explorerBar, &ExplorerBar::unCheckAll, stackingDlg, &DSS::StackingDlg::unCheckAll);
 
-	connect(explorerBar, SIGNAL(registerCheckedImages()), stackingDlg, SLOT(registerCheckedImages()));
-	connect(explorerBar, SIGNAL(computeOffsets()), stackingDlg, SLOT(computeOffsets()));
-	connect(explorerBar, SIGNAL(stackCheckedImages()), stackingDlg, SLOT(stackCheckedImages()));
-	connect(explorerBar, SIGNAL(batchStack()), stackingDlg, SLOT(batchStack()));
+	connect(explorerBar, &ExplorerBar::registerCheckedImages, stackingDlg, &DSS::StackingDlg::registerCheckedImages);
+	connect(explorerBar, &ExplorerBar::computeOffsets, stackingDlg, &DSS::StackingDlg::computeOffsets);
+	connect(explorerBar, &ExplorerBar::stackCheckedImages, stackingDlg, &DSS::StackingDlg::stackCheckedImages);
+	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 }
 
 void DeepSkyStacker::onInitialise()
@@ -467,6 +466,13 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 		return;
 	}
 	e->accept();
+
+	//
+	// DSS is now closing, tell the two dock widgets that they must now accept
+	// close event requests otherwise DSS nevers closes down.
+	//
+	explorerBar->setDSSClosing();
+	pictureList->setDSSClosing();
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
@@ -1006,11 +1012,6 @@ int main(int argc, char* argv[])
 #endif
 #endif
 
-	//
-	// Set things up to capture terminal errors
-	//
-	setDssExceptionHandling();
-
 //#if defined(_WINDOWS)
 
 //#else
@@ -1042,7 +1043,6 @@ int main(int argc, char* argv[])
 	}
 	// initialize all the windows stuff we need for now
 	theApp.InitInstance();
-
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -1081,6 +1081,11 @@ int main(int argc, char* argv[])
 	bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
 	const bool firstInstance{ lk.try_lock() };
 	ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
+
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
 
 	askIfVersionCheckWanted();
 	if (firstInstance)

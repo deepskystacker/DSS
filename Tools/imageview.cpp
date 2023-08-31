@@ -378,9 +378,12 @@ namespace DSS
         painter.drawPixmap(where, *pPixmap, sourceRect);
         painter.restore();
 
+        painter.setClipping(false);
+        painter.setRenderHint(QPainter::RenderHint::Antialiasing);
+
         //
         // Draw a white circle around the zoomed area
-        QPen pen(Qt::white, 5.0);
+        QPen pen(Qt::white, 2);
         painter.setPen(pen);
         painter.drawEllipse(rect);
 

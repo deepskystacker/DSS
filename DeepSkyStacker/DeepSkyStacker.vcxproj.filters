@@ -289,9 +289,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AskRegistering.h">
-      <Filter>Dialogs\Registering</Filter>
-    </ClInclude>
     <ClInclude Include="LuminanceTab.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
@@ -916,6 +913,9 @@
     </QtMoc>
     <QtMoc Include="progressdlg.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AskRegistering.h">
+      <Filter>Dialogs\Registering</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

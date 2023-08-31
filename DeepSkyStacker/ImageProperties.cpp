@@ -6,6 +6,8 @@ namespace DSS {
 		: QDialog(parent)
 	{
 		setupUi(this);
+		connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+		connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 	}
 
 ImageProperties::~ImageProperties()
