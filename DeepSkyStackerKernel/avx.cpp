@@ -20,7 +20,7 @@ AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBi
 	bluePixels{},
 	inputBitmap{ inputbm },
 	tempBitmap{ tempbm },
-	avxCfa{ lStart, lEnd, inputbm },
+	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
 	entropyData{ entrdat }
 {
 	if (width < 0 || height < 0)
