@@ -28,7 +28,7 @@
 //***************************************************************************/
 
 #if defined(_MSC_VER)
-#include <xstddef>               // Need to include this before disabling warnings
+//#include <xstddef>               // Need to include this before disabling warnings
 /////////////////////////////////////////////////////////////////////////////
 // Turn off warnings for /W4
 // To resume any of these warning: #pragma warning(default: 4xxx)
