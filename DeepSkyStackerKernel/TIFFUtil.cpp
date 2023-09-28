@@ -435,7 +435,7 @@ bool CTIFFReader::Open()
 			// Set CFA type to none even if the TIFF tags specified otherwise
 			//
 			cfatype = CFATYPE_NONE; cfa = false;
-			QString errorMessage{ QCoreApplication::translate("Kernel",
+			QString errorMessage{ QCoreApplication::translate("TIFFUtil",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
 			DSSBase::instance()->reportError(
@@ -1422,7 +1422,7 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap",
+			errorMessage = QCoreApplication::translate("TIFFUtil",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -1431,7 +1431,7 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("CTIFFWriteFromMemoryBitmap::OnWrite",
+			errorMessage = QCoreApplication::translate("TIFFUtil",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
@@ -1671,7 +1671,7 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+			errorMessage = QCoreApplication::translate("TIFFUtil",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -1680,7 +1680,7 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("CTIFFReadInMemoryBitmap::OnRead",
+			errorMessage = QCoreApplication::translate("TIFFUtil",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
