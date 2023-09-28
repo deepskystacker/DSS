@@ -44,6 +44,8 @@ Changes since the last release:
 
 15. Remove Microsoft CGI+ dependency for loading jpeg and png images.
 
+16. FITS output files didn't contain number of images in the stack.  Save this value using the NCOMBINE keyword in the FITS header, also report the number of images when loading FITS images.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 

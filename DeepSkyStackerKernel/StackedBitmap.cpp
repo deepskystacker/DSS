@@ -560,7 +560,14 @@ void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 		m_lISOSpeed  = fitsReader->m_lISOSpeed;
 		m_lGain      = fitsReader->m_lGain;
 		m_lTotalTime = fitsReader->m_fExposureTime;
-		m_lNrBitmaps = 1;
+
+		//
+		// If the FITS file keyword NCOMBINE was present use the value from that for
+		// the number of images in the stack.  If zero report as 1.
+		//
+		m_lNrBitmaps = fitsReader->m_nrframes;
+		if (0 == m_lNrBitmaps) m_lNrBitmaps = 1;
+
 
 		m_BezierAdjust.Reset(true);
 		m_HistoAdjust.Reset();

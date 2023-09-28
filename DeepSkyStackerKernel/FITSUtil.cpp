@@ -39,8 +39,7 @@ CFITSHeader::CFITSHeader()
 	m_xBayerOffset = 0;
 	m_yBayerOffset = 0;
 	m_bitPix = 0;
-
-	
+	m_nrframes = 0;	
 };
 
 /* ------------------------------------------------------------------- */
@@ -55,7 +54,7 @@ CFITSHeader::~CFITSHeader()
 inline double AdjustColor(const double fColor)
 {
 	//
-	// Clamping is now down by the bitmap classes
+	// Clamping is now done by the bitmap classes
 	// 
 	if (std::isfinite(fColor))
 		return fColor;	// Was return std::clamp(fColor, 0.0, 255.0);
@@ -309,6 +308,11 @@ bool CFITSReader::Open()
 				fExposureTime /= 1000000.0;
 			}
 
+			//
+			// Number of frames in stack
+			//
+			bResult = ReadKey("NCOMBINE", m_nrframes);
+
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
 			{
@@ -322,7 +326,7 @@ bool CFITSReader::Open()
 
 			bResult = ReadKey("GAIN", lGain);
 
-			ReadKey("FILTER", filterName);
+			bResult = ReadKey("FILTER", filterName);
 
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
@@ -1319,6 +1323,10 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
 					bResult = bResult && WriteKey("EXPOSURE", m_fExposureTime, "Exposure time (in seconds)");
 				};
+				if (m_nrframes)
+				{
+					bResult = bResult && WriteKey("NCOMBINE", m_nrframes, "Number of stacked frames");
+				}
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
 					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
 
@@ -1638,6 +1646,8 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
+		if (!m_nrframes)
+			m_nrframes = m_pMemoryBitmap->GetNrFrames();
 	};
 
 	return true;
