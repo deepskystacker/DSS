@@ -71,45 +71,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>227</x>
-     <y>194</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>211</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>289</x>
-     <y>200</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>211</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>onLights()</slot>
-  <slot>onDarks()</slot>
-  <slot>onFlats()</slot>
-  <slot>onDarkFlats()</slot>
-  <slot>onBias()</slot>
- </slots>
+ <connections/>
 </ui>

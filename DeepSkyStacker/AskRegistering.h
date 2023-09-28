@@ -1,59 +1,28 @@
 #pragma once
-#include "commonresource.h"
+#include <QDialog>
 
-typedef enum tagASKREGISTERINGANSWER
+namespace Ui {
+	class AskRegistering;
+}
+
+class AskRegistering : public QDialog
 {
-	ARA_ONE			= 1,
-	ARA_ALL			= 2,
-	ARA_CONTINUE	= 3
-}ASKREGISTERINGANSWER;
+	Q_OBJECT
+	Ui::AskRegistering* ui;
 
-
-class CAskRegistering : public CDialog
-{
-// Construction
 public:
-	CAskRegistering(CWnd* pParent = nullptr);   // standard constructor
+	explicit AskRegistering(QWidget* parent = nullptr);
+	~AskRegistering() override;
 
-// Dialog Data
-	//{{AFX_DATA(CAskRegistering)
-	enum { IDD = IDD_ASKREGISTERING };
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CAskRegistering)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-
-
-// Implementation
-protected :
-	ASKREGISTERINGANSWER			m_Result;
-	CButton							m_RegisterOne;
-	CButton							m_RegisterAll;
-	CButton							m_RegisterNone;
-
-	void	UpdateControls();
-
-public :
-	ASKREGISTERINGANSWER	GetAction()
-	{
-		return m_Result;
+	enum class Answer {
+		ARA_ONE = 1, //!< register the current frame
+		ARA_ALL = 2, //!< register this frame and all other checked ones
+		ARA_CONTINUE = 3, //!< do nothing
 	};
 
-protected:
+	//! represent the choice at any point even if the window was aborted or closed
+	Answer desiredAction() const;
 
-	// Generated message map functions
-	//{{AFX_MSG(CAskRegistering)
-	virtual BOOL	OnInitDialog();
-	virtual void	OnOK();
-	afx_msg void	OnRegisterOne();
-	afx_msg void	OnRegisterAll();
-	afx_msg void	OnRegisterNone();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+protected:
+	void reject() override;
 };

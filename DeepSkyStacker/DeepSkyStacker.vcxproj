@@ -403,7 +403,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="About.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
     <QtMoc Include="AlignmentParameters.h" />
-    <ClInclude Include="AskRegistering.h" />
+    <QtMoc Include="AskRegistering.h" />
     <QtMoc Include="BackgroundOptions.h" />
     <QtMoc Include="BatchStacking.h" />
     <QtMoc Include="BaseDialog.h" />
