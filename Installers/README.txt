@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.4
+Welcome to DeepSkyStacker 5.1.4 Beta 1
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -9,7 +9,7 @@ Changes since the last release:
 
 2. Always create a tracefile in the DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
 
-	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT time.
+	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT (UTC) time.
 
 	The trace file will be deleted on normal application exit, but retained in the event of an exception.
 	An option is provided to keep the file.
@@ -45,6 +45,8 @@ Changes since the last release:
 15. Remove Microsoft CGI+ dependency for loading jpeg and png images.
 
 16. FITS output files didn't contain number of images in the stack.  Save this value using the NCOMBINE keyword in the FITS header, also report the number of images when loading FITS images.
+
+17. Bug fix: Correct code for reading floating point FITS files (the value was incorrectly normalised - e.g. 256.0 was read back as 259.996).
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
