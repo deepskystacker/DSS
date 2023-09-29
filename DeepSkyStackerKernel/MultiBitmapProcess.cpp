@@ -219,7 +219,7 @@ void CCombineTask::process()
 			QString errorMessage;
 			if (e.locationAtIndex(0))
 			{
-				errorMessage = QCoreApplication::translate("CCombineTask",
+				errorMessage = QCoreApplication::translate("Kernel",
 														"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 															.arg(e.name())
 															.arg(e.locationAtIndex(0)->fileName())
@@ -228,7 +228,7 @@ void CCombineTask::process()
 			}
 			else
 			{
-				errorMessage = QCoreApplication::translate("CCombineTask",
+				errorMessage = QCoreApplication::translate("Kernel",
 														"Exception %1 thrown from an unknown Function.\n\n%2")
 															.arg(e.name())
 															.arg(e.text(0));
@@ -237,7 +237,7 @@ void CCombineTask::process()
 		}
 		catch (...)
 		{
-			const QString errorMessage(QCoreApplication::translate("CCombineTask", "Unknown exception caught"));
+			const QString errorMessage(QCoreApplication::translate("Kernel", "Unknown exception caught"));
 			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical);
 		}
 	}

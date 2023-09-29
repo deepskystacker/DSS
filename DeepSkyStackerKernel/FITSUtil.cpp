@@ -242,7 +242,7 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		QString errorMessage(QCoreApplication::translate( "Kernel",
+		QString errorMessage(QCoreApplication::translate("FITSUtil",
 														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
 															.arg(file.generic_u16string().c_str())
 															.arg(status)
@@ -906,7 +906,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
-			const QString errorMessage{ QCoreApplication::translate("Kernel",
+			const QString errorMessage{ QCoreApplication::translate("FITSUtil",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
 			DSSBase::instance()->reportError(

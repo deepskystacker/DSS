@@ -7,7 +7,7 @@
         <location filename="../BackgroundCalibration.cpp" line="99"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calculando parámetros de Calibración de Fondo</translation>
+        <translation>Calculando parámetros de Calibración de Fondo</translation>
     </message>
 </context>
 <context>
@@ -28,28 +28,9 @@
         <translation>Aplicando cosmética - Hot Pixels</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="306"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="315"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="328"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../BitmapExt.cpp" line="1191"/>
         <source>%1 does not exist or is not a file</source>
-        <translation type="unfinished">%1 no existe o no es un archivo</translation>
+        <translation>%1 no existe o no es un archivo</translation>
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="1559"/>
@@ -92,28 +73,6 @@
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Median Kappa-Sigma (Kappa = %1, Iteraciones = %2)</translation>
-    </message>
-</context>
-<context>
-    <name>CCombineTask</name>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="222"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="231"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="240"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -482,6 +441,25 @@
     </message>
 </context>
 <context>
+    <name>FITSUtil</name>
+    <message>
+        <location filename="../FITSUtil.cpp" line="245"/>
+        <source>fits_open_diskfile %1
+returned a status of %2, error text is:
+&quot;%3&quot;</source>
+        <translation>%1
+fits_open_diskfile %1
+devolvió un estado de %2, el texto de error es:
+&quot;%3&quot;</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="909"/>
+        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
+        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
+        <translation>DeepSkyStacker no se des-Bayer imágenes de 8 bits</translation>
+    </message>
+</context>
+<context>
     <name>FlatFrame</name>
     <message>
         <location filename="../FlatFrame.cpp" line="34"/>
@@ -544,33 +522,41 @@
 <context>
     <name>Kernel</name>
     <message>
-        <location filename="../FITSUtil.cpp" line="245"/>
-        <source>fits_open_diskfile %1
-returned a status of %2, error text is:
-&quot;%3&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="902"/>
-        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
-        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation>DeepSkyStacker no se des-Bayer imágenes de 8 bits</translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="1012"/>
-        <location filename="../FITSUtil.cpp" line="1680"/>
+        <location filename="../BitmapExt.cpp" line="306"/>
+        <location filename="../FITSUtil.cpp" line="1019"/>
+        <location filename="../FITSUtil.cpp" line="1687"/>
+        <location filename="../MultiBitmapProcess.cpp" line="222"/>
+        <location filename="../StackingEngine.cpp" line="2338"/>
+        <location filename="../TIFFUtil.cpp" line="1425"/>
+        <location filename="../TIFFUtil.cpp" line="1674"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
 
  %5</source>
-        <translation type="unfinished"></translation>
+        <translation>Excepción %1 lanzada desde %2 Función: %3() Línea: %4
+
+  %5</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1021"/>
-        <location filename="../FITSUtil.cpp" line="1689"/>
+        <location filename="../BitmapExt.cpp" line="315"/>
+        <location filename="../FITSUtil.cpp" line="1028"/>
+        <location filename="../FITSUtil.cpp" line="1696"/>
+        <location filename="../MultiBitmapProcess.cpp" line="231"/>
+        <location filename="../StackingEngine.cpp" line="2347"/>
+        <location filename="../TIFFUtil.cpp" line="1434"/>
+        <location filename="../TIFFUtil.cpp" line="1683"/>
         <source>Exception %1 thrown from an unknown Function.
 
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Excepción %1 lanzada desde una función desconocida.
+
+%2</translation>
+    </message>
+    <message>
+        <location filename="../BitmapExt.cpp" line="328"/>
+        <location filename="../MultiBitmapProcess.cpp" line="240"/>
+        <location filename="../StackingEngine.cpp" line="2356"/>
+        <source>Unknown exception caught</source>
+        <translation>Se detectó una excepción desconocida</translation>
     </message>
 </context>
 <context>
@@ -1222,25 +1208,6 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2338"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2347"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2356"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingEngine.cpp" line="2391"/>
         <source>Only one frame (out of %1) will be stacked.
 
@@ -1539,23 +1506,7 @@ y ayudar a DeepSkyStacker a encontrar una transformación entre el cuadro de ref
         <location filename="../TIFFUtil.cpp" line="438"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation type="unfinished">DeepSkyStacker no se des-Bayer imágenes de 8 bits</translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1425"/>
-        <location filename="../TIFFUtil.cpp" line="1674"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1434"/>
-        <location filename="../TIFFUtil.cpp" line="1683"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker no se des-Bayer imágenes de 8 bits</translation>
     </message>
 </context>
 </TS>

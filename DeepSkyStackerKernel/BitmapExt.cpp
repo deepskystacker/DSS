@@ -303,7 +303,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("BitmapExt",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -312,7 +312,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("BitmapExt",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
@@ -325,7 +325,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 	}
 	catch (...)
 	{
-		const QString errorMessage(QCoreApplication::translate("BitmapExt", "Unknown exception caught"));
+		const QString errorMessage(QCoreApplication::translate("Kernel", "Unknown exception caught"));
 
 		//
 		// Report the error and terminate 

@@ -7,7 +7,7 @@
         <location filename="../BackgroundCalibration.cpp" line="99"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">計算背景校正參數</translation>
+        <translation>計算背景校正參數</translation>
     </message>
 </context>
 <context>
@@ -28,28 +28,9 @@
         <translation>套用外觀修飾 - 熱像元</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="306"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="315"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="328"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../BitmapExt.cpp" line="1191"/>
         <source>%1 does not exist or is not a file</source>
-        <translation type="unfinished">%1 不存在或不是文件</translation>
+        <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="1559"/>
@@ -92,28 +73,6 @@
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>中位數Kappa-Sigma (Kappa = %1, 重覆次數 = %2)</translation>
-    </message>
-</context>
-<context>
-    <name>CCombineTask</name>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="222"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="231"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="240"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -482,6 +441,24 @@
     </message>
 </context>
 <context>
+    <name>FITSUtil</name>
+    <message>
+        <location filename="../FITSUtil.cpp" line="245"/>
+        <source>fits_open_diskfile %1
+returned a status of %2, error text is:
+&quot;%3&quot;</source>
+        <translation>fits_open_diskfile %1
+返回狀態 %2，錯誤文字為：
+“%3”</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="909"/>
+        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
+        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
+        <translation>DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
+    </message>
+</context>
+<context>
     <name>FlatFrame</name>
     <message>
         <location filename="../FlatFrame.cpp" line="34"/>
@@ -544,33 +521,41 @@
 <context>
     <name>Kernel</name>
     <message>
-        <location filename="../FITSUtil.cpp" line="245"/>
-        <source>fits_open_diskfile %1
-returned a status of %2, error text is:
-&quot;%3&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="902"/>
-        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
-        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation>DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="1012"/>
-        <location filename="../FITSUtil.cpp" line="1680"/>
+        <location filename="../BitmapExt.cpp" line="306"/>
+        <location filename="../FITSUtil.cpp" line="1019"/>
+        <location filename="../FITSUtil.cpp" line="1687"/>
+        <location filename="../MultiBitmapProcess.cpp" line="222"/>
+        <location filename="../StackingEngine.cpp" line="2338"/>
+        <location filename="../TIFFUtil.cpp" line="1425"/>
+        <location filename="../TIFFUtil.cpp" line="1674"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
 
  %5</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 函數拋出例外 %1：%3() 行：%4
+
+.%5</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1021"/>
-        <location filename="../FITSUtil.cpp" line="1689"/>
+        <location filename="../BitmapExt.cpp" line="315"/>
+        <location filename="../FITSUtil.cpp" line="1028"/>
+        <location filename="../FITSUtil.cpp" line="1696"/>
+        <location filename="../MultiBitmapProcess.cpp" line="231"/>
+        <location filename="../StackingEngine.cpp" line="2347"/>
+        <location filename="../TIFFUtil.cpp" line="1434"/>
+        <location filename="../TIFFUtil.cpp" line="1683"/>
         <source>Exception %1 thrown from an unknown Function.
 
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>未知函數引發異常 %1。
+
+%2</translation>
+    </message>
+    <message>
+        <location filename="../BitmapExt.cpp" line="328"/>
+        <location filename="../MultiBitmapProcess.cpp" line="240"/>
+        <location filename="../StackingEngine.cpp" line="2356"/>
+        <source>Unknown exception caught</source>
+        <translation>捕獲到未知異常</translation>
     </message>
 </context>
 <context>
@@ -1223,25 +1208,6 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2338"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2347"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2356"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingEngine.cpp" line="2391"/>
         <source>Only one frame (out of %1) will be stacked.
 
@@ -1536,23 +1502,7 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         <location filename="../TIFFUtil.cpp" line="438"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation type="unfinished">DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1425"/>
-        <location filename="../TIFFUtil.cpp" line="1674"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1434"/>
-        <location filename="../TIFFUtil.cpp" line="1683"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
     </message>
 </context>
 </TS>

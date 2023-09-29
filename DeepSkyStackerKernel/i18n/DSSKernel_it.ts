@@ -7,7 +7,7 @@
         <location filename="../BackgroundCalibration.cpp" line="99"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calcolo i parametri di calibrazione dello sfondo</translation>
+        <translation>Calcolo i parametri di calibrazione dello sfondo</translation>
     </message>
 </context>
 <context>
@@ -28,28 +28,9 @@
         <translation>Applico i cosmetici - pixel caldi</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="306"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="315"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../BitmapExt.cpp" line="328"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../BitmapExt.cpp" line="1191"/>
         <source>%1 does not exist or is not a file</source>
-        <translation type="unfinished">%1 non esiste o non è un file</translation>
+        <translation>%1 non esiste o non è un file</translation>
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="1559"/>
@@ -92,28 +73,6 @@
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>&quot;Kappa-Sigma Mediana (Kappa = %1,Iterazioni = %2)</translation>
-    </message>
-</context>
-<context>
-    <name>CCombineTask</name>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="222"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="231"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MultiBitmapProcess.cpp" line="240"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -482,6 +441,24 @@
     </message>
 </context>
 <context>
+    <name>FITSUtil</name>
+    <message>
+        <location filename="../FITSUtil.cpp" line="245"/>
+        <source>fits_open_diskfile %1
+returned a status of %2, error text is:
+&quot;%3&quot;</source>
+        <translation>fits_open_diskfile %1
+restituito uno stato di %2, il testo dell&apos;errore è:
+&quot;%3&quot;</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="909"/>
+        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
+        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
+        <translation>DeepSkyStacker non de-Bayer immagini a 8 bit</translation>
+    </message>
+</context>
+<context>
     <name>FlatFrame</name>
     <message>
         <location filename="../FlatFrame.cpp" line="34"/>
@@ -544,33 +521,41 @@
 <context>
     <name>Kernel</name>
     <message>
-        <location filename="../FITSUtil.cpp" line="245"/>
-        <source>fits_open_diskfile %1
-returned a status of %2, error text is:
-&quot;%3&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="902"/>
-        <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
-        <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation>DeepSkyStacker non de-Bayer immagini a 8 bit</translation>
-    </message>
-    <message>
-        <location filename="../FITSUtil.cpp" line="1012"/>
-        <location filename="../FITSUtil.cpp" line="1680"/>
+        <location filename="../BitmapExt.cpp" line="306"/>
+        <location filename="../FITSUtil.cpp" line="1019"/>
+        <location filename="../FITSUtil.cpp" line="1687"/>
+        <location filename="../MultiBitmapProcess.cpp" line="222"/>
+        <location filename="../StackingEngine.cpp" line="2338"/>
+        <location filename="../TIFFUtil.cpp" line="1425"/>
+        <location filename="../TIFFUtil.cpp" line="1674"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
 
  %5</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione %1 generata dalla funzione %2: %3() Riga: %4
+
+  %5</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1021"/>
-        <location filename="../FITSUtil.cpp" line="1689"/>
+        <location filename="../BitmapExt.cpp" line="315"/>
+        <location filename="../FITSUtil.cpp" line="1028"/>
+        <location filename="../FITSUtil.cpp" line="1696"/>
+        <location filename="../MultiBitmapProcess.cpp" line="231"/>
+        <location filename="../StackingEngine.cpp" line="2347"/>
+        <location filename="../TIFFUtil.cpp" line="1434"/>
+        <location filename="../TIFFUtil.cpp" line="1683"/>
         <source>Exception %1 thrown from an unknown Function.
 
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Eccezione %1 generata da una funzione sconosciuta.
+
+%2</translation>
+    </message>
+    <message>
+        <location filename="../BitmapExt.cpp" line="328"/>
+        <location filename="../MultiBitmapProcess.cpp" line="240"/>
+        <location filename="../StackingEngine.cpp" line="2356"/>
+        <source>Unknown exception caught</source>
+        <translation>È stata rilevata un&apos;eccezione sconosciuta</translation>
     </message>
 </context>
 <context>
@@ -1113,49 +1098,49 @@ returned a status of %2, error text is:
         <location filename="../StackingEngine.cpp" line="771"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
-        <translation type="unfinished">Calcolo degli offsets</translation>
+        <translation>Calcolo degli offsets</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1077"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
-        <translation type="unfinished">Calcolo l&apos;immagine finale (%1)</translation>
+        <translation>Calcolo l&apos;immagine finale (%1)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1178"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished">Combinazione - Sistemazione Bayer - Calcolo sistemazione</translation>
+        <translation>Combinazione - Sistemazione Bayer - Calcolo sistemazione</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1188"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished">Calcolo sistemazione %1 su %2</translation>
+        <translation>Calcolo sistemazione %1 su %2</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1243"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
-        <translation type="unfinished">Combinazione - Sistemazione Bayer - Applico sistemazione</translation>
+        <translation>Combinazione - Sistemazione Bayer - Applico sistemazione</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1245"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
-        <translation type="unfinished">Calcolo la massima sistemazione</translation>
+        <translation>Calcolo la massima sistemazione</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1280"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
-        <translation type="unfinished">Applico sistemazione</translation>
+        <translation>Applico sistemazione</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1346"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
-        <translation type="unfinished">Salvataggio immagine combinata e calibrata in %1</translation>
+        <translation>Salvataggio immagine combinata e calibrata in %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1388"/>
@@ -1163,32 +1148,32 @@ returned a status of %2, error text is:
         <location filename="../StackingEngine.cpp" line="1536"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation type="unfinished">Salvataggio immagine calibrata in %1</translation>
+        <translation>Salvataggio immagine calibrata in %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1766"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
-        <translation type="unfinished">Interpolazione con la Direzione Adattativa Omogenea (AHD)</translation>
+        <translation>Interpolazione con la Direzione Adattativa Omogenea (AHD)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1809"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
-        <translation type="unfinished">Calcolo l&apos;entropia</translation>
+        <translation>Calcolo l&apos;entropia</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1821"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calcolo i parametri di calibrazione dello sfondo</translation>
+        <translation>Calcolo i parametri di calibrazione dello sfondo</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2053"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">L&apos;operazione necessita di %1 di spazio libero temporaneo sul disco %2 .
+        <translation>L&apos;operazione necessita di %1 di spazio libero temporaneo sul disco %2 .
 Ci sono solamente %3 disponibili su questo disco.</translation>
     </message>
     <message>
@@ -1197,7 +1182,7 @@ Ci sono solamente %3 disponibili su questo disco.</translation>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
-        <translation type="unfinished">
+        <translation>
 Vuoi veramente continuare?</translation>
     </message>
     <message>
@@ -1211,7 +1196,7 @@ Vuoi veramente continuare?</translation>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
-        <translation type="unfinished">Combinazione %1 bit/can %2 immagine
+        <translation>Combinazione %1 bit/can %2 immagine
 %3</translation>
     </message>
     <message>
@@ -1219,27 +1204,8 @@ Vuoi veramente continuare?</translation>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation type="unfinished">Combinazione %1 bits grigi %2 immagine
+        <translation>Combinazione %1 bits grigi %2 immagine
 %3</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2338"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2347"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="2356"/>
-        <source>Unknown exception caught</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2391"/>
@@ -1249,7 +1215,7 @@ You should check/change the star detection threshold to detect more stars
 and help DeepSkyStacker find a transformation between the reference frame and the others.
 </source>
         <comment>IDS_WARNING_ONLYONEFRAME</comment>
-        <translation type="unfinished">Solo un&apos;immagine (su %1) verr elaborata.
+        <translation>Solo un&apos;immagine (su %1) verr elaborata.
 
 Dovresti controllare/modificare la soglia di rilevamento stelle per rilevarne
 di pi e aiutare DeepSkyStacker a trovare le differenze tra l&apos;immagine di riferimento e le altre.
@@ -1259,19 +1225,19 @@ di pi e aiutare DeepSkyStacker a trovare le differenze tra l&apos;immagine di ri
         <location filename="../StackingEngine.cpp" line="2402"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
-        <translation type="unfinished">Combinazione</translation>
+        <translation>Combinazione</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2725"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Sì</translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2726"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
 </context>
 <context>
@@ -1540,23 +1506,7 @@ di pi e aiutare DeepSkyStacker a trovare le differenze tra l&apos;immagine di ri
         <location filename="../TIFFUtil.cpp" line="438"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
-        <translation type="unfinished">DeepSkyStacker non de-Bayer immagini a 8 bit</translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1425"/>
-        <location filename="../TIFFUtil.cpp" line="1674"/>
-        <source>Exception %1 thrown from %2 Function : %3() Line : %4
-
- %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../TIFFUtil.cpp" line="1434"/>
-        <location filename="../TIFFUtil.cpp" line="1683"/>
-        <source>Exception %1 thrown from an unknown Function.
-
-%2</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker non de-Bayer immagini a 8 bit</translation>
     </message>
 </context>
 </TS>
