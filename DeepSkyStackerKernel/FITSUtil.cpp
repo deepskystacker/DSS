@@ -695,7 +695,14 @@ bool CFITSReader::Read()
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
-			constexpr double scaleFactor = double{ std::numeric_limits<std::uint16_t>::max() } / 256.0;
+			//
+			// Correct the scale factor: It was set to double{ std::numeric_limits<std::uint16_t>::max() } / 256.0 
+			// which resolved to 255.996 and change - this resulted in incorrect round tripping of image data
+			// written to a FITS file and then read back in again.
+			//
+			// The correct value is 256.0
+			//
+			constexpr double scaleFactor = 1.0 + std::numeric_limits<std::uint8_t>::max();
 			const double normalizationFactor = scaleFactor / (fMax - fMin);
 			return (value - fMin) * normalizationFactor;
 		};
