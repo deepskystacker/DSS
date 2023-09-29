@@ -62,13 +62,15 @@ Copyright NASA</source>
         <location filename="../About.cpp" line="74"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Exiv2 的 Exif、IPTC、XMP 和 ICC 影像元資料 - 版本 0.28.0
+版權所有 2004-2023 Exiv2 作者</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="80"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt (C++) 的 SMTP 用戶端支援 SMTP - 版本 0.27.6
+版權所有 Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="108"/>
@@ -432,7 +434,7 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../StackingDlg.cpp" line="125"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>圖片檔案 (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
@@ -936,7 +938,7 @@ You can probably get another one or download the final release from the web site
         <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1241,12 +1243,14 @@ You can probably get another one or download the final release from the web site
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>追蹤檔案通常寫入使用者中的 DeepSkyStacker 目錄中
+「Documents」目錄，並在退出時被刪除（除非應用程式崩潰）。
+勾選此方塊以保留追蹤檔案。</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>退出時保留追蹤文件</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
@@ -1542,7 +1546,9 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>化妝品
+偵測到的熱像素：%L1 (%L2%)
+偵測到的冷像素：%L3 (%L4%)</translation>
     </message>
 </context>
 <context>
