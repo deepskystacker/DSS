@@ -682,8 +682,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 	}
 
 	// Jump to the first [Star#]
-	if (GetNextValue(&fileIn, strVariable, strValue) == false || strVariable.compare("Star#", Qt::CaseInsensitive) != 0) // Did not find "Star#".
-		return unsuccessfulReturn();
+	GetNextValue(&fileIn, strVariable, strValue);
 	bEnd = false;
 	for (int i = 0; i < lNrStars && !bEnd; i++)
 	{
