@@ -50,6 +50,8 @@ Changes since the last release:
 
 18. Bug fix: Value of FITS SOFTWARE keyword in output file truncated after first character.
 
+19. Bug fix: Unable to stack images with no stars when using Alignment set to "No Alignment".
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
