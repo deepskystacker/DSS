@@ -36,6 +36,6 @@ AskRegistering::Answer AskRegistering::desiredAction() const
 		}
 	}
 
-	assert(false & "Something went wrong...");
+	ZASSERT(false);
 	return Answer::ARA_CONTINUE;
 }

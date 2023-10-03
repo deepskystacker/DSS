@@ -29,6 +29,7 @@ public:
 	int				m_yBayerOffset;
 	int				m_bitPix;
 	QString			m_filterName;
+	int				m_nrframes;
 
 	CFITSHeader();
 	virtual ~CFITSHeader();

@@ -39,8 +39,7 @@ CFITSHeader::CFITSHeader()
 	m_xBayerOffset = 0;
 	m_yBayerOffset = 0;
 	m_bitPix = 0;
-
-	
+	m_nrframes = 0;	
 };
 
 /* ------------------------------------------------------------------- */
@@ -55,7 +54,7 @@ CFITSHeader::~CFITSHeader()
 inline double AdjustColor(const double fColor)
 {
 	//
-	// Clamping is now down by the bitmap classes
+	// Clamping is now done by the bitmap classes
 	// 
 	if (std::isfinite(fColor))
 		return fColor;	// Was return std::clamp(fColor, 0.0, 255.0);
@@ -243,7 +242,7 @@ bool CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		QString errorMessage(QCoreApplication::translate( "Kernel",
+		QString errorMessage(QCoreApplication::translate("FITSUtil",
 														  "fits_open_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
 															.arg(file.generic_u16string().c_str())
 															.arg(status)
@@ -309,6 +308,11 @@ bool CFITSReader::Open()
 				fExposureTime /= 1000000.0;
 			}
 
+			//
+			// Number of frames in stack
+			//
+			bResult = ReadKey("NCOMBINE", m_nrframes);
+
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
 			{
@@ -322,7 +326,7 @@ bool CFITSReader::Open()
 
 			bResult = ReadKey("GAIN", lGain);
 
-			ReadKey("FILTER", filterName);
+			bResult = ReadKey("FILTER", filterName);
 
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
@@ -691,7 +695,14 @@ bool CFITSReader::Read()
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
-			constexpr double scaleFactor = double{ std::numeric_limits<std::uint16_t>::max() } / 256.0;
+			//
+			// Correct the scale factor: It was set to double{ std::numeric_limits<std::uint16_t>::max() } / 256.0 
+			// which resolved to 255.996 and change - this resulted in incorrect round tripping of image data
+			// written to a FITS file and then read back in again.
+			//
+			// The correct value is 256.0
+			//
+			constexpr double scaleFactor = 1.0 + std::numeric_limits<std::uint8_t>::max();
 			const double normalizationFactor = scaleFactor / (fMax - fMin);
 			return (value - fMin) * normalizationFactor;
 		};
@@ -895,7 +906,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			// Set CFA type to none even if the FITS header specified a value
 			//
 			m_CFAType = CFATYPE_NONE;
-			const QString errorMessage{ QCoreApplication::translate("Kernel",
+			const QString errorMessage{ QCoreApplication::translate("FITSUtil",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
 			DSSBase::instance()->reportError(
@@ -1319,10 +1330,14 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
 					bResult = bResult && WriteKey("EXPOSURE", m_fExposureTime, "Exposure time (in seconds)");
 				};
+				if (m_nrframes)
+				{
+					bResult = bResult && WriteKey("NCOMBINE", m_nrframes, "Number of stacked frames");
+				}
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
 					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
 
-				WriteKey("SOFTWARE", QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
+				WriteKey("SOFTWARE", QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER).toUtf8());
 				WriteAllKeys();
 			};
 
@@ -1638,6 +1653,8 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
+		if (!m_nrframes)
+			m_nrframes = m_pMemoryBitmap->GetNrFrames();
 	};
 
 	return true;

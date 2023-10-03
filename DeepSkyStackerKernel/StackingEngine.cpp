@@ -2455,7 +2455,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("StackingEngine",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -2464,7 +2464,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("StackingEngine",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
@@ -2473,7 +2473,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	}
 	catch (...)
 	{
-		const QString errorMessage(QCoreApplication::translate("StackingEngine", "Unknown exception caught"));
+		const QString errorMessage(QCoreApplication::translate("Kernel", "Unknown exception caught"));
 		DSSBase::instance()->reportError(errorMessage, "");
 	}
 
