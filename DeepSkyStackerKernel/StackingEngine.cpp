@@ -908,8 +908,8 @@ void CStackingEngine::ComputeOffsets()
 
 		if (computeOffsets(this, this->m_pProgress, lLast)) // Offset calculation was successful (not stopped by pressing "Cancel")
 		{
-			interpolateCometPositions(*this);
-//			ComputeMissingCometPositions();
+//			interpolateCometPositions(*this);
+			ComputeMissingCometPositions();
 			m_StackingInfo.Save();
 		}
 	}
