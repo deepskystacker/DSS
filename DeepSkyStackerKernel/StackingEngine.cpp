@@ -570,6 +570,125 @@ inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFr
 	return (plfi2->m_DateTime > plfi1->m_DateTime);
 };
 
+bool interpolateCometPositions(CStackingEngine& stackingEngine)
+{
+	ZFUNCTRACE_RUNTIME();
+
+	if (stackingEngine.LightFrames().empty())
+		return false;
+
+	using ValT = double;
+	using VecT = std::vector<ValT>;
+
+	VecT times;
+	VecT xPositions;
+	VecT yPositions;
+	times.reserve(8);
+	xPositions.reserve(8);
+	yPositions.reserve(8);
+
+	const CLightFrameInfo& firstLightframe = stackingEngine.getBitmap(0);
+
+	std::for_each(stackingEngine.LightFrames().cbegin(), stackingEngine.LightFrames().cend(),
+		[&times, &xPositions, &yPositions, &firstLightframe](const CLightFrameInfo& lightframe) {
+			if (!lightframe.m_bDisabled && lightframe.m_bComet)
+			{
+				const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
+				times.emplace_back(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
+				xPositions.push_back(position.x());
+				yPositions.push_back(position.y());
+			}
+		}
+	);
+
+	if (times.size() < 2)
+		return false;
+
+	const auto average = [](const VecT& vec) {
+		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [](const ValT accu, const ValT value) { return accu + value; }) / static_cast<ValT>(vec.size());
+	};
+	const auto secondMoment = [](const VecT& vec, const ValT average) {
+		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [average](const ValT accu, const ValT value) { const ValT y = value - average; return accu + y * y; });
+	};
+	const auto crossCorrelation = [](const VecT& r, const ValT rMean, const VecT& s, const ValT sMean) {
+		return std::inner_product(r.cbegin(), r.cend(), s.cbegin(), 0.0,
+			[](const ValT product, const ValT accu) { return accu + product; },
+			[rMean, sMean](const ValT rVal, const ValT sVal) { return (rVal - rMean) * (sVal - sMean); }
+		);
+	};
+
+	const ValT tAvg = average(times);
+	const ValT xAvg = average(xPositions);
+	const ValT yAvg = average(yPositions);
+	const ValT tSecondMoment = secondMoment(times, tAvg);
+
+	if (tSecondMoment == 0.0) // All elapsed times are equal?
+		return false;
+
+	const ValT xGradient = crossCorrelation(times, tAvg, xPositions, xAvg) / tSecondMoment;
+	const ValT xOffset = xAvg - xGradient * tAvg;
+
+	const ValT yGradient = crossCorrelation(times, tAvg, yPositions, yAvg) / tSecondMoment;
+	const ValT yOffset = yAvg - yGradient * tAvg;
+
+	// Check if the deviations of the given comet positions is within +- 3*sigma of the linear regression.
+	// Works with at least 3 positions.
+	// TO DO: What shall we do if a deviation is too large?
+	//        This would be an indication of an incorrectly marked comet position.
+	if (times.size() > 2)
+	{
+		VecT deviations{ times };
+		auto vIt = deviations.begin();
+		auto tIt = times.cbegin();
+		for (const ValT val : xPositions)
+			*vIt++ = val - (*tIt++ * xGradient) - xOffset; // Given x-pos minus estimation_from_linear_regression (= time * gradient + offset)
+		const ValT xVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of x-deviations
+		if (xVariance > 25)
+		{
+			// TO DO
+			// Shall we throw an error if the standard deviation is larger than 5 pixels?
+		}
+		for (const ValT d : deviations)
+			if ((d * d) > 9 * xVariance)
+			{
+				// TO DO
+				// Shall we throw an error if the x-deviation of this position is larger than 3*sigma?
+			}
+		vIt = deviations.begin();
+		tIt = times.cbegin();
+		for (const ValT val : yPositions)
+			*vIt++ = val - (*tIt++ * yGradient) - yOffset; // Given y-pos minus estimation_from_linear_regression (= time * gradient + offset)
+		const ValT yVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of y-deviations
+		if (yVariance > 25)
+		{
+			// TO DO
+			// Shall we throw an error if the standard deviation is larger than 5 pixels?
+		}
+		for (const ValT d : deviations)
+			if ((d * d) > 9 * yVariance)
+			{
+				// TO DO
+				// Shall we throw an error if the y-deviation of this position is larger than 3*sigma?
+			}
+	}
+
+	for (int i = 0; CLightFrameInfo& lightframe : stackingEngine.LightFrames())
+	{
+		if (!lightframe.m_bComet && !lightframe.m_bDisabled)
+		{
+			const ValT time = static_cast<ValT>(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
+			lightframe.m_fXComet = xGradient * time + xOffset;
+			lightframe.m_fYComet = yGradient * time + yOffset;
+			lightframe.m_bTransformedCometPosition = true;
+			lightframe.m_bComet = true;
+			stackingEngine.incCometStackableIfBitmapHasComet(i);
+		}
+		++i;
+	}
+
+	return true;
+}
+
 void CStackingEngine::ComputeMissingCometPositions()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -789,7 +908,8 @@ void CStackingEngine::ComputeOffsets()
 
 		if (computeOffsets(this, this->m_pProgress, lLast)) // Offset calculation was successful (not stopped by pressing "Cancel")
 		{
-			ComputeMissingCometPositions();
+			interpolateCometPositions(*this);
+//			ComputeMissingCometPositions();
 			m_StackingInfo.Save();
 		}
 	}
