@@ -64,13 +64,15 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="74"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Exif-, IPTC-, XMP- und ICC-Bildmetadaten von Exiv2 – Version 0.28.0
+Copyright 2004-2023 Exiv2-Autoren</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="80"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>SMTP-Unterstützung durch SMTP-Client für Qt (C++) – Version 0.27.6
+Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="108"/>
@@ -441,7 +443,7 @@ Sowohl Komet als auch Sterne werden scharf. Dieser Prozess dauert doppelt so lan
         <location filename="../StackingDlg.cpp" line="125"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bilddateien (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
@@ -951,7 +953,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished">DeepSkyStacker Help.chm</translation>
+        <translation>DeepSkyStacker Hilfe.chm</translation>
     </message>
 </context>
 <context>
@@ -1262,12 +1264,14 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Trace-Datei wird normalerweise in das DeepSkyStacker-Verzeichnis im Benutzerverzeichnis geschrieben
+Verzeichnis „Dokumente“ und wird beim Beenden gelöscht (es sei denn, die Anwendung stürzt ab).
+Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Behalten Sie die Trace-Datei beim Beenden bei</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
@@ -1563,7 +1567,9 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kosmetik
+Erkannte Hotpixel: %L1 (%L2%)
+Erkannte kalte Pixel: %L3 (%L4%)</translation>
     </message>
 </context>
 <context>

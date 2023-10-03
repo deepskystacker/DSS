@@ -64,13 +64,15 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="74"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Metadatele imaginii Exif, IPTC, XMP și ICC de la Exiv2 - Versiunea 0.28.0
+Copyright 2004-2023 Exiv2 autori</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="80"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>Suport SMTP de către Client SMTP pentru Qt (C++) - Versiunea 0.27.6
+Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="108"/>
@@ -441,7 +443,7 @@ Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
         <location filename="../StackingDlg.cpp" line="125"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fișiere imagine (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
@@ -954,7 +956,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1271,12 +1273,14 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fișierul de urmărire este în mod normal scris în directorul DeepSkyStacker din utilizatori
+Directorul „Documente” și este șters la ieșire (cu excepția cazului în care aplicația se blochează).
+Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Păstrați fișierul de urmărire la ieșire</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
@@ -1572,7 +1576,9 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cosmetic
+Pixeli fierbinți detectați: %L1 (%L2%)
+Pixeli reci detectați: %L3 (%L4%)</translation>
     </message>
 </context>
 <context>

@@ -1422,7 +1422,7 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("TIFFUtil",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -1431,7 +1431,7 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("TIFFUtil",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
@@ -1671,7 +1671,7 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 		QString errorMessage;
 		if (e.locationAtIndex(0))
 		{
-			errorMessage = QCoreApplication::translate("TIFFUtil",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5")
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
@@ -1680,7 +1680,7 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 		}
 		else
 		{
-			errorMessage = QCoreApplication::translate("TIFFUtil",
+			errorMessage = QCoreApplication::translate("Kernel",
 				"Exception %1 thrown from an unknown Function.\n\n%2")
 				.arg(e.name())
 				.arg(e.text(0));
