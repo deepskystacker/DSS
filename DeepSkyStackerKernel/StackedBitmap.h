@@ -2,6 +2,8 @@
 #include "BezierAdjust.h"
 #include "Histogram.h"
 #include "ColorRef.h"
+#include "BitmapInfo.h"
+
 
 namespace DSS { class ProgressBase; }
 class C32BitsBitmap;
@@ -153,6 +155,7 @@ private:
 
 	CBezierAdjust				m_BezierAdjust;
 	CRGBHistogramAdjust 		m_HistoAdjust;
+	CBitmapInfo	bmpInfo;
 
 private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
