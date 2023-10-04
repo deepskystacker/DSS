@@ -62,6 +62,8 @@ Changes since the last release:
 
 24. Update build to use Qt 6.5.3
 
+25. Work around for Qt bug (QTBUG-46620) with restoring application position and size when re-opening the application after it was closed when maximised.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
