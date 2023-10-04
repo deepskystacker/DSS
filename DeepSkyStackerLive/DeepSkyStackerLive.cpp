@@ -278,7 +278,7 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	delete fileStacker; fileStacker = nullptr;
 	delete fileRegistrar; fileRegistrar = nullptr;
 
-	ZTRACE_RUNTIME("Saving Window State and Position");
+	ZTRACE_RUNTIME("Saving Window Geometry");
 
 	QSettings settings;
 	settings.beginGroup("DeepSkyStackerLive/MainWindow");
@@ -288,6 +288,7 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	ZTRACE_RUNTIME("Hex dump of geometry:");
 	ZTrace::dumpHex(geometry.constData(), geometry.length());
 #endif 
+	settings.setValue("maximised", isMaximized());
 
 	settings.endGroup();
 	settings.beginGroup("DeepSkyStackerLive/ImageList");
@@ -497,7 +498,13 @@ void DeepSkyStackerLive::onInitialise()
 	}
 #endif
 
-	restoreGeometry(geometry);
+	if (settings.value("maximised").toBool())
+	{
+		showMaximized();
+		setGeometry(screen()->availableGeometry());
+	}
+	else restoreGeometry(geometry);
+
 	settings.endGroup();
 
 	//
@@ -507,9 +514,6 @@ void DeepSkyStackerLive::onInitialise()
 	imageList->horizontalHeader()->restoreState(
 		settings.value("HorizontalHeader/windowState").toByteArray());
 	settings.endGroup();
-
-
-
 
 	Workspace workspace;
 	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5

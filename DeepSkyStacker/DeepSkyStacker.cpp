@@ -428,7 +428,13 @@ void DeepSkyStacker::onInitialise()
 	}
 #endif
 
-	restoreGeometry(geometry);
+	if (settings.value("maximised").toBool())
+	{
+		showMaximized();
+		setGeometry(screen()->availableGeometry());
+	}
+	else restoreGeometry(geometry);
+
 	restoreState(windowState);
 	settings.endGroup();
 
@@ -469,7 +475,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 
 	//
 	// DSS is now closing, tell the two dock widgets that they must now accept
-	// close event requests otherwise DSS nevers closes down.
+	// close event requests otherwise DSS never closes down.
 	//
 	explorerBar->setDSSClosing();
 	pictureList->setDSSClosing();
@@ -491,6 +497,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	ZTRACE_RUNTIME("Hex dump of windowState:");
 	ZTrace::dumpHex(windowState.constData(), windowState.length());
 #endif
+	settings.setValue("maximised", isMaximized());
 
 	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
