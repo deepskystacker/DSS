@@ -21,26 +21,26 @@ Building DeepSkyStacker:
 ------------------------
 
 To work on the current development codebase which uses a VS solution file called DeepSkyStacker.VS2022.sln,
-you will need to install Visual Studio 2022 (17.5.3).   For earlier code versions either VS2019 or VS2022 will work.
+you will need to install Visual Studio 2022 (17.7.2).   For earlier code versions either VS2019 or VS2022 will work.
 
-If you open DeepSkyStacker.VS2019.sln (for an earlier level) using VS2022, please **do not** accept VS2022's offer to upgrade the build environment the first time you open the
+If you open DeepSkyStacker.VS2019.sln (or an earlier level) using VS2022, please **do not** accept VS2022's offer to upgrade the build environment the first time you open the
 DeepSkyStacker.VS2019.sln file.
 
-In addition to Visual Studio, you will need to install Boost 1.80.0  Qt 6.4.0, Qt 6.5.1 and Qt VS Tools 2.10.1 (rev 2), and Visual Leak Detector.
+In addition to Visual Studio, you will need to install Boost 1.80.0  Qt 6.4.0, Qt 6.5.3 and Qt VS Tools 2.10.1 (rev 2), and Visual Leak Detector.
 
 ### Boost
 Install Boost 1.80.0.  Once you have done that, you need to create an environment
 variable called Boost_1_80_0 with the location of the Boost installation directory e.g.:
 C:\Boost_1_80_0
 
-### Qt 6.4.0, Qt 6.5.1, Qt VS Tools
-Qt 6.4.0 is needed to build DeepSkyStacker 5.1.0 through 5.1.3.  Qt 6.5.1 is needed for the current development build which includes support for WIndows Themes.
+### Qt 6.4.0, Qt 6.5.3, Qt VS Tools
+Qt 6.4.0 is needed to build DeepSkyStacker 5.1.0 through 5.1.3.  Qt 6.5.3 is needed for the current development build which includes support for WIndows Themes.
 In addition to you you will also need to install the Visual Studio Extension *Qt VS Tools* : (Extensions/Manage Extensions).
 
 You will need to use *Extensions/Qt VS Tools/Qt Versions* to set up two named Qt Installations called:
 
 *6.4.0_msvc2019_64* and<br>
-*6.5.1_msvc2019_64*
+*6.5.3_msvc2019_64*
 	
 pointing to the msvc2019_64 sub-directory of your Qt installations (for example C:\Qt\6.4.0\msvc2019_64).
 

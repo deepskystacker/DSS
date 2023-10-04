@@ -52,6 +52,16 @@ Changes since the last release:
 
 19. Bug fix: Unable to stack images with no stars when using Alignment set to "No Alignment".
 
+20. Improve handling for FITS DATE-OBS keyword.  DATE-OBS in the output file will now be set to the value of DATE-OBS from the first input file or, failing that, the creation timestamp or last modification timestamp of the file whichever is earlier.
+
+21. Processing/Save picture to file... did not preserve FITS keywords when the final autosave file was written as a FITS file.
+
+22. Bug fix: Delete key to delete images from the list didn't update the information lines.
+
+23. Bug fix: Clear list didn't reset the status bar message.
+
+24. Update build to use Qt 6.5.3
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
