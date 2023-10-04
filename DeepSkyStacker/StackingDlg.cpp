@@ -619,6 +619,7 @@ namespace DSS
 						imageModel->removeRows(row, 1);
 						imageModel->endRemoveRows();
 					}
+					updateListInfo();
 					return true;
 				}
 			}
@@ -1791,6 +1792,7 @@ namespace DSS
 
 	void StackingDlg::clearList()
 	{
+		emit statusMessage("");		// Clear status bar message
 		if (checkEditChanges() && checkWorkspaceChanges())
 		{
 			// Select the main group tab which will in turn select group 0
