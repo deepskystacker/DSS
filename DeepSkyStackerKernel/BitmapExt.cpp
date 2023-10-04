@@ -1148,13 +1148,14 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 				// on Unix like systems so now the code has changed again to use the last modification
 				// time if the creation time is unavailable.
 				//
-				QDateTime birthTime{ info.birthTime() };
-				if (!birthTime.isValid())
+				QDateTime fileTime{ info.birthTime() };
+				QDateTime lastModified{ info.lastModified() };
+				if (!fileTime.isValid() || fileTime > lastModified)
 				{
-					birthTime = info.lastModified();
+					fileTime = lastModified;
 				}
 
-				BitmapInfo.m_DateTime = birthTime;
+				BitmapInfo.m_DateTime = fileTime;
 			};
 
 			BitmapInfo.m_InfoTime = now;

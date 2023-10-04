@@ -7,7 +7,6 @@
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include "omp.h"
-#include "BitmapInfo.h"
 #include "tiffio.h"
 #include "FITSUtil.h"
 #include "BitmapExt.h"
@@ -482,7 +481,6 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CBitmapInfo		bmpInfo;
 
 	if (GetPictureInfo(szStackedFile, bmpInfo) && bmpInfo.CanLoad())
 	{
@@ -936,6 +934,8 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 
 	fits.SetStackedBitmap(this);
 	fits.SetApplySettings(bApplySettings);
+	fits.m_ExtraInfo = bmpInfo.m_ExtraInfo;
+
 	if (m_bMonochrome)
 		fits.SetFITSFormat(FF_16BITGRAY);
 	else
@@ -967,6 +967,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 
 	fits.SetStackedBitmap(this);
 	fits.SetApplySettings(bApplySettings);
+	fits.m_ExtraInfo = bmpInfo.m_ExtraInfo;
 
 	if (m_bMonochrome)
 	{
