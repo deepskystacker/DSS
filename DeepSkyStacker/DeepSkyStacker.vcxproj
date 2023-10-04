@@ -55,7 +55,7 @@
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.5.3_msvc2019_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
