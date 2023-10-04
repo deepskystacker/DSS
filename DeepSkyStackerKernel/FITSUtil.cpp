@@ -695,14 +695,7 @@ bool CFITSReader::Read()
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
-			//
-			// Correct the scale factor: It was set to double{ std::numeric_limits<std::uint16_t>::max() } / 256.0 
-			// which resolved to 255.996 and change - this resulted in incorrect round tripping of image data
-			// written to a FITS file and then read back in again.
-			//
-			// The correct value is 256.0
-			//
-			constexpr double scaleFactor = 1.0 + std::numeric_limits<std::uint8_t>::max();
+			constexpr double scaleFactor = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 256.0;
 			const double normalizationFactor = scaleFactor / (fMax - fMin);
 			return (value - fMin) * normalizationFactor;
 		};
@@ -1377,6 +1370,15 @@ bool CFITSWriter::Write()
 			blueBuffer = std::make_unique<std::uint8_t[]>(lScanLineSize);
 		};
 		// If we ran out of memory here, an exception was thrown, just let it crash.
+
+		constexpr double scalingFactor16Bit = 1.0 + std::numeric_limits<std::uint8_t>::max();
+		constexpr double scalingFactor32Bit = (1.0 + std::numeric_limits<std::uint8_t>::max()) * (1.0 + std::numeric_limits<std::uint16_t>::max()); // identical to (1 << 24).
+		constexpr double scalingFactorFloat = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 256.0;
+		// This was 1.0 + std::numeric_limits<std::uint8_t>::max().
+		// Change from 256.0 to 255.996, so that writing an image to a FITS file and then read back in again
+		// results in identical values. The scaling in function CFITSReader::Read() is done with 255.996 to
+		// avoid overflow issues which could result in values that were 0 instead of 65535.
+
 		{
 			bResult = true;
 			int			datatype = 0;
@@ -1429,36 +1431,35 @@ bool CFITSWriter::Write()
 						}
 						else
 						{
-							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
+							constexpr double scalingFactor { 1.0 + std::numeric_limits<std::uint8_t>::max() };
 							// Convert to gray scale
 							double H, S, L;
 							ToHSL(fRed, fGreen, fBlue, H, S, L);
 							fGray = L * scalingFactor;
 						};
 
+						// fGray should be in the range [0.0, 256.0), 256 exclusive, so the maximum value is 255.996.
+
 						if (m_lBitsPerPixel == 8)
 						{
-							*pBYTELine++ = static_cast<std::uint8_t>(fGray);
+							*pBYTELine++ = static_cast<std::uint8_t>(fGray); // 0..255
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
-							*pWORDLine++ = static_cast<std::uint16_t>(fGray * scalingFactor);
+							*pWORDLine++ = static_cast<std::uint16_t>(fGray * scalingFactor16Bit); // 0..65535
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								constexpr double scalingFactor { 1.0 + UCHAR_MAX };
-								*pFLOATLine++ = static_cast<float>(fGray / scalingFactor);
+								*pFLOATLine++ = static_cast<float>(fGray / scalingFactorFloat); // [0.0, 1.0], 1.0 inclusive
 							}
 							else
 							{
-								constexpr double scalingFactor { (1.0 + UCHAR_MAX) * (1.0 + USHRT_MAX) };
-								*pDWORDLine++ = static_cast<std::uint32_t>(fGray * scalingFactor);
-							};
-						};
-					};
+								*pDWORDLine++ = static_cast<std::uint32_t>(fGray * scalingFactor32Bit); // 0..255, shifted left by 24 bits
+							}
+						}
+					}
 
 					pfPixel[0] = 1;
 					pfPixel[1] = j + 1;
@@ -1490,37 +1491,36 @@ bool CFITSWriter::Write()
 						if (false == OnWrite(i, j, fRed, fGreen, fBlue))
 							return false;
 
+						// fRed, fGreen, fBlue should be in the range [0.0, 256.0), 256 exclusive, so the maximum value is 255.996.
+
 						if (m_lBitsPerPixel == 8)
 						{
-							*pBYTELineRed++ = static_cast<std::uint8_t>(fRed);
+							*pBYTELineRed++ = static_cast<std::uint8_t>(fRed); // 0..255
 							*pBYTELineGreen++ = static_cast<std::uint8_t>(fGreen);
 							*pBYTELineBlue++ = static_cast<std::uint8_t>(fBlue);
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							constexpr double scalingFactor { 1.0 + UCHAR_MAX };
-							*pWORDLineRed++ = static_cast<std::uint16_t>(fRed * scalingFactor);
-							*pWORDLineGreen++ = static_cast<std::uint16_t>(fGreen * scalingFactor);
-							*pWORDLineBlue++ = static_cast<std::uint16_t>(fBlue * scalingFactor);
+							*pWORDLineRed++ = static_cast<std::uint16_t>(fRed * scalingFactor16Bit); // 0..65535
+							*pWORDLineGreen++ = static_cast<std::uint16_t>(fGreen * scalingFactor16Bit);
+							*pWORDLineBlue++ = static_cast<std::uint16_t>(fBlue * scalingFactor16Bit);
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								constexpr double scalingFactor { 1.0 + UCHAR_MAX };
-								*pFLOATLineRed++ = static_cast<float>(fRed / scalingFactor);
-								*pFLOATLineGreen++ = static_cast<float>(fGreen / scalingFactor);
-								*pFLOATLineBlue++ = static_cast<float>(fBlue / scalingFactor);
+								*pFLOATLineRed++ = static_cast<float>(fRed / scalingFactorFloat); // [0.0, 1.0], 1.0 inclusive
+								*pFLOATLineGreen++ = static_cast<float>(fGreen / scalingFactorFloat);
+								*pFLOATLineBlue++ = static_cast<float>(fBlue / scalingFactorFloat);
 							}
 							else
 							{
-								constexpr double scalingFactor{ (1.0 + UCHAR_MAX) * (1.0 + USHRT_MAX) };
-								*pDWORDLineRed++ = static_cast<std::uint32_t>(fRed * scalingFactor);
-								*pDWORDLineGreen++ = static_cast<std::uint32_t>(fGreen * scalingFactor);
-								*pDWORDLineBlue++ = static_cast<std::uint32_t>(fBlue * scalingFactor);
-							};
-						};
-					};
+								*pDWORDLineRed++ = static_cast<std::uint32_t>(fRed * scalingFactor32Bit); // 0..255, shifted left by 24 bits
+								*pDWORDLineGreen++ = static_cast<std::uint32_t>(fGreen * scalingFactor32Bit);
+								*pDWORDLineBlue++ = static_cast<std::uint32_t>(fBlue * scalingFactor32Bit);
+							}
+						}
+					}
 
 					pfPixel[0] = 1;
 					pfPixel[1] = j + 1;
@@ -1530,19 +1530,19 @@ bool CFITSWriter::Write()
 					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, greenBuffer.get(), &nStatus);
 					pfPixel[2] = 3;
 					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, blueBuffer.get(), &nStatus);
-				};
+				}
 
 				if (m_pProgress)
 					m_pProgress->Progress2(j + 1);
-			};
+			}
 
 			if (m_pProgress)
 				m_pProgress->End2();
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
