@@ -198,7 +198,7 @@ void CFITSReader::ReadAllKeys()
 		QString strPropagated(settings.value("FitsDDP/Propagated", "").toString());
 
 		if (strPropagated.isEmpty())
-			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
+			strPropagated = "[DATE-OBS][CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 
 
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
