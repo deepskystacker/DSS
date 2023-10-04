@@ -52,6 +52,14 @@ Changes since the last release:
 
 19. Bug fix: Unable to stack images with no stars when using Alignment set to "No Alignment".
 
+20. Processing/Save picture to file... did not preserve FITS keywords when the final autosave file was written as a FITS file.
+
+21. Bug fix: Delete key to delete images from the list didn't update the information lines.
+
+22. Bug fix: Clear list didn't reset the status bar message.
+
+23. Update build to use Qt 6.5.3
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
