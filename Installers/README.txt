@@ -64,6 +64,8 @@ Changes since the last release:
 
 25. Work around for Qt bug (QTBUG-46620) with restoring application position and size when re-opening the application after it was closed when maximised.
 
+26. Mouse wheel zooming worked the opposite way from most other applications, now changed to be compatible.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
