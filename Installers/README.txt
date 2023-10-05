@@ -66,6 +66,8 @@ Changes since the last release:
 
 26. Mouse wheel zooming worked the opposite way from most other applications, now changed to be compatible.
 
+27. Extend exposure time edit control to 4 decimal places instead of 3
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
