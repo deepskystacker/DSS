@@ -28,46 +28,20 @@ public:
 	virtual ~CColorBitmapT() = default;
 
 private:
-	static consteval double initMultiplier()
-	{
-		if (std::is_same_v<TType, std::uint16_t> || std::is_same_v<TType, double> || std::is_same_v<TType, float>)
-			return 256.0;			// Range of [0.0, 65535.0]
-		else if (std::is_same_v<TType, std::uint32_t>)
-			return 256.0 * 65536.0;	// Range of [0.0, 65535.0]
-		else
-			return 1.0;				// Range of [0.0, 255.0]
-	};
-
-	static consteval double initClamp()
-	{
-		if (std::is_same_v<TType, double>)
-			return std::numeric_limits<double>::max();
-		else if (std::is_same_v<TType, float>)
-			return std::numeric_limits<float>::max();
-		else if (std::is_same_v<TType, std::uint16_t>)
-			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
-		else if (std::is_same_v<TType, std::uint32_t>)
-			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4294967295.0 ] 
-		else
-			return static_cast<double>(std::numeric_limits<std::uint8_t>::max());	// Range of [0.0, 255.0]
-	};
-
 	int m_lHeight;
 	int m_lWidth;
-	constinit inline static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
-	constinit inline static bool m_bDouble{ std::is_same_v<TType, double> };
-	constinit inline static bool m_bDWord{ std::is_same_v<TType, std::uint32_t> };
-	constinit inline static bool m_bFloat{ std::is_same_v<TType, float> };
-	double m_fMultiplier{ initMultiplier() };
-	constexpr static double clampValue{ initClamp() };
+	constexpr static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
+	constexpr static bool m_bDouble{ std::is_same_v<TType, double> };
+	constexpr static bool m_bDWord{ std::is_same_v<TType, std::uint32_t> };
+	constexpr static bool m_bFloat{ std::is_same_v<TType, float> };
+	constexpr static double m_fMultiplier{ initMultiplier<TType>() };
+	constexpr static double clampValue{ initClamp<TType>() };
 
 public:
 	void CheckXY(size_t x, size_t y) const;
 
 	size_t GetOffset(const size_t x, const size_t y) const;
 	size_t GetOffset(int x, int y) const;
-
-
 
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override;
 
@@ -141,7 +115,7 @@ public:
 		return &m_Blue;
 	}
 
-	double GetMultiplier()
+	constexpr double GetMultiplier() const
 	{
 		return m_fMultiplier;
 	}

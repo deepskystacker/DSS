@@ -29,10 +29,10 @@ std::unique_ptr<CMemoryBitmap> CGrayBitmapT<T>::Clone(bool bEmpty/*=false*/) con
 		pResult->m_lWidth = m_lWidth;
 		pResult->m_lHeight = m_lHeight;
 	}
-	pResult->m_bWord = m_bWord;
-	pResult->m_bDouble = m_bDouble;
-	pResult->m_bDWord = m_bDWord;
-	pResult->m_bFloat = m_bFloat;
+	ZASSERT(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
+	ZASSERT(pResult->m_bDouble == m_bDouble);
+	ZASSERT(pResult->m_bDWord == m_bDWord);
+	ZASSERT(pResult->m_bFloat == m_bFloat);
 	pResult->m_CFATransform = m_CFATransform;
 	pResult->m_CFAType = m_CFAType;
 	pResult->m_bCYMG = m_bCYMG;
