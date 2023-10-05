@@ -349,7 +349,7 @@ namespace DSS
 		case Column::Exposure:
 			{
 				QTimeEdit* editor = new QTimeEdit(parent);
-				editor->setDisplayFormat("hh:mm:ss.zzz");
+				editor->setDisplayFormat("hh:mm:ss.zzzz");
 				//
 				// Commented out as parent class already sets an eventFilter up!
 				//
