@@ -46,10 +46,10 @@ std::unique_ptr<CMemoryBitmap> CColorBitmapT<TType>::Clone(bool bEmpty/*=false*/
 		pResult->m_Green.m_vPixels = m_Green.m_vPixels;
 		pResult->m_Blue.m_vPixels = m_Blue.m_vPixels;
 	}
-	pResult->m_bWord = m_bWord;
-	pResult->m_bDouble = m_bDouble;
-	pResult->m_bDWord = m_bDWord;
-	pResult->m_bFloat = m_bFloat;
+	ZASSERT(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
+	ZASSERT(pResult->m_bDouble == m_bDouble);
+	ZASSERT(pResult->m_bDWord == m_bDWord);
+	ZASSERT(pResult->m_bFloat == m_bFloat);
 
 	pResult->CopyFrom(*this);
 
