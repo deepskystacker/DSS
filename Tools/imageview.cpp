@@ -463,7 +463,13 @@ namespace DSS
 #if QT_CONFIG(wheelevent)
     void ImageView::wheelEvent(QWheelEvent* e)
     {
-        const qreal degrees = -e->angleDelta().y() / 8.0;
+        //
+        // This use to read degrees = -e->angleDelta().y() / 8.0; 
+        // 
+        // Discussion on the mailing list concluded the this resulted in mousewheel
+        // zoom operated the "wrong way" compared to other applications
+        // 
+        const qreal degrees = e->angleDelta().y() / 8.0;
         const qreal steps = degrees / 60.0;
 
         //
