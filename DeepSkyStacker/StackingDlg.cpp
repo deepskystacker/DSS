@@ -315,18 +315,6 @@ namespace DSS
 		const QStyleOptionViewItem& option,
 		const QModelIndex& index) const
 	{
-		//if (types.isEmpty())
-		//	types << 
-		//		QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
-		//		QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
-		//		QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
-		//		QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
-		//		QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
-
-		//if (isos.isEmpty())
-		//	isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
-		//		"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
-		//		"6400" << "12800";
 
 		switch (static_cast<Column>(index.column()))
 		{
