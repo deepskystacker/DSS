@@ -357,7 +357,7 @@ namespace DSS
 				
 				return editor;
 			}
-		break;
+			break;
 		}
 		//
 		// Not one we want to handle so return the default
