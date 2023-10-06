@@ -1228,8 +1228,7 @@ namespace DSS
 				// Make the dropped files act the same as using the file open dialogue
 				// All except light frames should be checked
 				//
-				bool checked{ true };		// Check all dropped files with the 
-				if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
+				bool checked{ true };		// Check all dropped files  
 
 				//
 				// Before attempting to add the files prune out those that have already been loaded
@@ -1521,12 +1520,11 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		bool				checked{ true };  // Automatically check all frames except lights
+		bool				checked{ true };  // Automatically check all frames
 		switch (type)
 		{
 		case PICTURETYPE_LIGHTFRAME:
 			fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
-			checked = false;			// Don't check light frames
 			break;
 		case PICTURETYPE_DARKFRAME:
 			fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
