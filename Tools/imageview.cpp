@@ -55,6 +55,12 @@ namespace DSS
         setAttribute(Qt::WA_MouseTracking);
         setFocusPolicy(Qt::StrongFocus);
         setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        setToolTip(tr(
+            "Ctrl++ or Ctrl+= to zoom in\n"
+            "Ctrl+- to zoom out\n"
+            " or use the mouse wheel to zoom\n"
+            "Ctrl+4 to toggle 4-Corners mode"
+        ));
      }
 
     void ImageView::changeEvent(QEvent* event)
