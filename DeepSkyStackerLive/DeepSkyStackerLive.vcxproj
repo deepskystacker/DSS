@@ -41,7 +41,7 @@
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.3_msvc2019_64</QtInstall>
+    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
