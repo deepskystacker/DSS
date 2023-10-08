@@ -520,6 +520,21 @@ void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
 }
 #endif
 
+void ExplorerBar::tabChanged()
+{
+	const auto dwTabID = dssApp->tab();
+	if (dwTabID == IDD_PROCESSING)
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+	}
+	else if (dwTabID == IDD_REGISTERING)
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+	}
+}
+
 void ExplorerBar::LoadSettingFile()
 {
 	ZFUNCTRACE_RUNTIME();

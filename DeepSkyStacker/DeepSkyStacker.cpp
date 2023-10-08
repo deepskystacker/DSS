@@ -332,6 +332,8 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::computeOffsets, stackingDlg, &DSS::StackingDlg::computeOffsets);
 	connect(explorerBar, &ExplorerBar::stackCheckedImages, stackingDlg, &DSS::StackingDlg::stackCheckedImages);
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
+
+	connect(this, &DeepSkyStacker::tabChanged, explorerBar, &ExplorerBar::tabChanged);
 }
 
 void DeepSkyStacker::onInitialise()
@@ -557,14 +559,11 @@ QString DeepSkyStacker::statusMessage()
 
 void DeepSkyStacker::setTab(std::uint32_t dwTabID)
 {
-	if (dwTabID == IDD_REGISTERING)
-		dwTabID = IDD_STACKING;
-	//#ifdef DSSBETA
-	//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
-	//		dwTabID = IDD_LIBRARY;
-	//#endif
+	if (dwTabID == IDD_STACKING)
+		dwTabID = IDD_REGISTERING;
 	currTab = dwTabID;
 	updateTab();
+	emit tabChanged();
 }
 
 ExplorerBar& DeepSkyStacker::GetExplorerBar()
