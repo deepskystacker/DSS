@@ -198,9 +198,6 @@
     <ClCompile Include="toolbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExplorerBar.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="ImageProperties.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -218,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="progressdlg.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerBar.cpp">
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -878,9 +878,6 @@
     <QtMoc Include="BaseDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="BatchStacking.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="selectrect.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -894,9 +891,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ImageProperties.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="ExplorerBar.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="SaveEditChanges.h">
@@ -916,6 +910,12 @@
     </QtMoc>
     <QtMoc Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
+    </QtMoc>
+    <QtMoc Include="ExplorerBar.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="BatchStacking.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
