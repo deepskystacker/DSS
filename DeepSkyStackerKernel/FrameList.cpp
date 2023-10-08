@@ -475,16 +475,18 @@ namespace DSS
 								if (groupId = Group::whichGroupContains(filePath); groupId >= 0)
 								{
 									//
-									// If the file has already been loaded complain
+									// If the file has already been loaded and we are not running BatchStacking, complain
 									//
-									QString errorMessage(
-										QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
-										.arg(filePath.generic_string().c_str())
-										.arg(groupId)
-										.arg(groupName(groupId)));
+									if (!batchStacking_)
+									{
+										QString errorMessage(
+											QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
+											.arg(filePath.generic_string().c_str())
+											.arg(groupId)
+											.arg(groupName(groupId)));
 
-									DSSBase::instance()->reportError(errorMessage, "");
-									return *this;
+										DSSBase::instance()->reportError(errorMessage, "");
+									}
 								}
 								else
 								{

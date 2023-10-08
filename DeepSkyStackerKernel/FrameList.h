@@ -13,9 +13,10 @@ namespace DSS
 
 	private:
 		std::vector<Group> imageGroups;
+		bool batchStacking_;	// Is batch stacking in progress?
 
 	public:
-		FrameList()
+		FrameList() : batchStacking_ {false}
 		{
 			//
 			// Add Main Group AND Group 1 (user enhancement request)
@@ -32,6 +33,9 @@ namespace DSS
 		auto groups_cend() const { return imageGroups.cend(); }
 
 		void changePictureType(int nItem, PICTURETYPE PictureType);
+
+		void setBatchStacking(bool v) { batchStacking_ = v; }
+		bool batchStacking() { return batchStacking_; }
 
 	private:
 		template <auto Selector, bool, typename... Args>
