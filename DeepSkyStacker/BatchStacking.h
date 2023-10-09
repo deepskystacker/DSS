@@ -19,7 +19,7 @@ namespace DSS
 			Inherited;
 
 	public:
-		BatchStacking(QWidget* parent = nullptr);
+		BatchStacking(QWidget* parent);
 		virtual ~BatchStacking();
 
 		void setMRUPaths(const std::vector<fs::path>& mruPaths);

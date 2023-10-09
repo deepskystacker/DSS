@@ -37,12 +37,13 @@ namespace DSS
 
 	extern QStringList OUTPUTLIST_FILTERS;
 
-	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+	BatchStacking::BatchStacking(QWidget* parent) :
 		stackingDlg { dynamic_cast<StackingDlg*>(parent) },
 		Inherited(Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
+		ZASSERT(nullptr != stackingDlg);
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
