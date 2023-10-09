@@ -57,6 +57,9 @@ class DeepSkyStacker :
 
 	Q_OBJECT
 
+signals:
+	void tabChanged();
+
 public slots:
 	void help();
 

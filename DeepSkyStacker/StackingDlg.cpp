@@ -462,6 +462,8 @@ namespace DSS
 		painter->restore();
 	}
 
+	FrameList frameList;
+
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
 
@@ -2295,6 +2297,11 @@ namespace DSS
 		if (!fileList.empty() || Group::fileCount())
 		{
 			Workspace workspace;
+
+			//
+			// Don't ask to save the the file list if a batch stacking operation is in progress.
+			//
+			if (frameList.batchStacking()) return true;			
 
 			if (frameList.dirty() || workspace.isDirty())
 			{

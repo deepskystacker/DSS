@@ -15,10 +15,30 @@
 
 
 namespace DSS
+
 {
+	extern FrameList frameList;
+	class BatchMode
+	{
+	public: 
+		BatchMode()
+		{
+			frameList.setBatchStacking(true);
+		};
+		~BatchMode()
+		{
+			frameList.setBatchStacking(false);
+		}
+		BatchMode(const BatchMode&) = delete;
+		BatchMode(BatchMode&&) = delete;
+		BatchMode& operator=(const BatchMode&) = delete;
+		BatchMode& operator=(BatchMode&&) = delete;
+	};
+
 	extern QStringList OUTPUTLIST_FILTERS;
 
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+		stackingDlg { dynamic_cast<StackingDlg*>(parent) },
 		Inherited(Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
@@ -43,11 +63,11 @@ namespace DSS
 		bool bResult = true;
 		Workspace workspace;
 		CAllStackingTasks tasks;
-		DSS::FrameList list;
+		stackingDlg->clearList();		// Clear groups etc. for next filelist.
 
 		workspace.Push();
-		list.loadFilesFromList(fileList);
-		list.fillTasks(tasks);
+		frameList.loadFilesFromList(fileList);
+		frameList.fillTasks(tasks);
 		tasks.ResolveTasks();
 
 		if (!tasks.m_vStacks.empty())
@@ -57,7 +77,7 @@ namespace DSS
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered
-			if (list.countUnregisteredCheckedLightFrames() != 0)
+			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -65,7 +85,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				const QString referenceFrame(list.getReferenceFrame());
+				const QString referenceFrame(frameList.getReferenceFrame());
 				if (!referenceFrame.isEmpty())
 					StackingEngine.SetReferenceFrame(referenceFrame.toStdU16String());
 
@@ -114,6 +134,11 @@ namespace DSS
 	void BatchStacking::accept()
 	{
 		ZFUNCTRACE_RUNTIME();
+		//
+		// Tell the frameList it is doing batch processing.
+		//
+		BatchMode batchMode;
+
 		long processedListCount = 0;
 		bool successfulProcessing = true;
 

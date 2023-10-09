@@ -19,6 +19,9 @@ public:
 
 	inline void setDSSClosing() { dssClosing = true; }
 
+public slots:
+	void tabChanged();
+
 signals:
 	void addImages(PICTURETYPE type);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseDialog.h"
+#include "StackingDlg.h"
 
 class QStandardItemModel;
 
@@ -29,6 +30,7 @@ namespace DSS
 		void addLists();
 
 	private:
+		StackingDlg* stackingDlg;
 		void addItemsFor(const QStringList& paths, bool checked);
 		QStringList getFilePaths() const;
 
