@@ -396,25 +396,25 @@ Mergeti la meniul Setari pentru a selecta directorul in care se va salva imagine
         <location filename="../ui/SettingsTab.ui" line="648"/>
         <source>Send email to:</source>
         <comment>IDC_WARN_EMAIL</comment>
-        <translation>Trimite email la</translation>
+        <translation>Trimite email la:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="835"/>
         <source>Filters</source>
         <comment>IDC_FILTERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtre</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="937"/>
         <source>Apply changes</source>
         <comment>IDC_APPLYCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplica modificarile</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="944"/>
         <source>Cancel changes</source>
         <comment>IDC_CANCELCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Anuleaza modificarile</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="611"/>
@@ -447,13 +447,13 @@ Mergeti la meniul Setari pentru a selecta directorul in care se va salva imagine
         <location filename="../ui/SettingsTab.ui" line="685"/>
         <source>Reset email count</source>
         <comment>IDC_RESETEMAILCOUNT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reseteaza contorul email-urilor</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="713"/>
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="719"/>
@@ -466,12 +466,14 @@ Mergeti la meniul Setari pentru a selecta directorul in care se va salva imagine
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fișierul de urmărire este în mod normal scris în directorul DeepSkyStacker din utilizatori
+Directorul „Documente” și este șters la ieșire (cu excepția cazului în care aplicația se blochează).
+Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="794"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Păstrați fișierul de urmărire la ieșire</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="804"/>
@@ -481,31 +483,31 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/SettingsTab.ui" line="841"/>
         <source>Process only ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Proceseaza doar...</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="848"/>
         <source>RAW images (CR2, NEF, ORF, DNG...)</source>
         <comment>IDC_PROCESS_RAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagini RAW (CR2, NEF, ORF, DNG...)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="855"/>
         <source>TIFF images</source>
         <comment>IDC_PROCESS_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagini TIFF</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="875"/>
         <source>FITS images</source>
         <comment>IDC_PROCESS_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagini FITS</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Alte imagini (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
@@ -539,13 +541,13 @@ Tick this box to keep the trace file.</source>
         <location filename="../settingstab.cpp" line="356"/>
         <source>Select Warning File Folder</source>
         <comment>IDS_SELECTWARNINGFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Selectati directorul pentru fisierele cu avertismente</translation>
     </message>
     <message>
         <location filename="../settingstab.cpp" line="375"/>
         <source>Select Stacked Image Output Folder</source>
         <comment>IDS_SELECTSTACKEDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Selectati directorul de salvare a imaginilor stackate</translation>
     </message>
 </context>
 <context>

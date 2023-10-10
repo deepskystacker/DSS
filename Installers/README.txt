@@ -72,6 +72,8 @@ Changes since the last release:
 
 29. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
 
+30. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file. 
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
