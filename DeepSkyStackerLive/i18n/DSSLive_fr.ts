@@ -395,25 +395,25 @@ Allez dans l&apos;onglet Paramètres pour sélectionner le répertoire de sortie
         <location filename="../ui/SettingsTab.ui" line="648"/>
         <source>Send email to:</source>
         <comment>IDC_WARN_EMAIL</comment>
-        <translation>Envoyer un email à</translation>
+        <translation>Envoyer un email à:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="835"/>
         <source>Filters</source>
         <comment>IDC_FILTERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtres</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="937"/>
         <source>Apply changes</source>
         <comment>IDC_APPLYCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les modifications</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="944"/>
         <source>Cancel changes</source>
         <comment>IDC_CANCELCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Annuler les modifications</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="611"/>
@@ -424,7 +424,7 @@ Allez dans l&apos;onglet Paramètres pour sélectionner le répertoire de sortie
     <message>
         <location filename="../ui/SettingsTab.ui" line="665"/>
         <source>Create warning file in:</source>
-        <translation type="unfinished">Enregistrer le fichier d&apos;avertissement dans:</translation>
+        <translation>Enregistrer le fichier d&apos;avertissement dans:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="759"/>
@@ -446,13 +446,13 @@ Allez dans l&apos;onglet Paramètres pour sélectionner le répertoire de sortie
         <location filename="../ui/SettingsTab.ui" line="685"/>
         <source>Reset email count</source>
         <comment>IDC_RESETEMAILCOUNT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Remettre à zéro le compte d&apos;emails</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="713"/>
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="719"/>
@@ -465,12 +465,14 @@ Allez dans l&apos;onglet Paramètres pour sélectionner le répertoire de sortie
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier de trace est normalement écrit dans le répertoire DeepSkyStacker du dossier des utilisateurs.
+Répertoire &quot;Documents&quot;, et est supprimé à la sortie (sauf si l&apos;application plante).
+Cochez cette case pour conserver le fichier de trace.</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="794"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver le fichier de trace à la sortie</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="804"/>
@@ -480,31 +482,31 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/SettingsTab.ui" line="841"/>
         <source>Process only ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Traiter uniquement...</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="848"/>
         <source>RAW images (CR2, NEF, ORF, DNG...)</source>
         <comment>IDC_PROCESS_RAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>Images RAW (CR2, NEF, ORF, DNG...)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="855"/>
         <source>TIFF images</source>
         <comment>IDC_PROCESS_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Images TIFF</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="875"/>
         <source>FITS images</source>
         <comment>IDC_PROCESS_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Images FITS</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Autres images (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
@@ -538,13 +540,13 @@ Tick this box to keep the trace file.</source>
         <location filename="../settingstab.cpp" line="356"/>
         <source>Select Warning File Folder</source>
         <comment>IDS_SELECTWARNINGFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez le répertoire pour le fichier d&apos;avertissement</translation>
     </message>
     <message>
         <location filename="../settingstab.cpp" line="375"/>
         <source>Select Stacked Image Output Folder</source>
         <comment>IDS_SELECTSTACKEDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionnez le répertoire de sortie pour l&apos;image empilée</translation>
     </message>
 </context>
 <context>

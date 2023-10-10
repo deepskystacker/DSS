@@ -397,25 +397,25 @@ Jděte na záložku &apos;Nastavení&apos; a vyberte zde výstupní složku slou
         <location filename="../ui/SettingsTab.ui" line="648"/>
         <source>Send email to:</source>
         <comment>IDC_WARN_EMAIL</comment>
-        <translation>Poslat e-mail</translation>
+        <translation>Poslat e-mail:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="835"/>
         <source>Filters</source>
         <comment>IDC_FILTERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtry</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="937"/>
         <source>Apply changes</source>
         <comment>IDC_APPLYCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použít změny</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="944"/>
         <source>Cancel changes</source>
         <comment>IDC_CANCELCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zrušit změny</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="611"/>
@@ -442,19 +442,19 @@ Jděte na záložku &apos;Nastavení&apos; a vyberte zde výstupní složku slou
         <location filename="../ui/SettingsTab.ui" line="455"/>
         <source>... dX or dY is greater than</source>
         <comment>IDC_DONTSTACK_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>...dX nebo dY je větší než</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="685"/>
         <source>Reset email count</source>
         <comment>IDC_RESETEMAILCOUNT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit seznam e-mailů</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="713"/>
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="719"/>
@@ -467,12 +467,14 @@ Jděte na záložku &apos;Nastavení&apos; a vyberte zde výstupní složku slou
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Trasovací soubor se normálně zapisuje do adresáře DeepSkyStacker v uživatelích
+adresář &quot;Documents&quot; a je odstraněn při ukončení (pokud se aplikace nezhroutí).
+Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="794"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ponechejte trasovací soubor při ukončení</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="804"/>
@@ -482,31 +484,31 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/SettingsTab.ui" line="841"/>
         <source>Process only ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Jen zpracování...</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="848"/>
         <source>RAW images (CR2, NEF, ORF, DNG...)</source>
         <comment>IDC_PROCESS_RAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>RAW obrazy (CR2, NEF, ORF, DNG...)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="855"/>
         <source>TIFF images</source>
         <comment>IDC_PROCESS_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF obrazy</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="875"/>
         <source>FITS images</source>
         <comment>IDC_PROCESS_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS obrazy</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Jiné obrazy (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
@@ -540,13 +542,13 @@ Tick this box to keep the trace file.</source>
         <location filename="../settingstab.cpp" line="356"/>
         <source>Select Warning File Folder</source>
         <comment>IDS_SELECTWARNINGFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výběr složky pro soubor varování</translation>
     </message>
     <message>
         <location filename="../settingstab.cpp" line="375"/>
         <source>Select Stacked Image Output Folder</source>
         <comment>IDS_SELECTSTACKEDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výběr výstupní složky pro sloučený obraz</translation>
     </message>
 </context>
 <context>

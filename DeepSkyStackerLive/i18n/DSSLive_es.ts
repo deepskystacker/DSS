@@ -395,25 +395,25 @@ Abra la pestaña de Ajustes para seleccionar la Carpeta de Salida de la Imagen A
         <location filename="../ui/SettingsTab.ui" line="648"/>
         <source>Send email to:</source>
         <comment>IDC_WARN_EMAIL</comment>
-        <translation>Enviar email a</translation>
+        <translation>Enviar email a:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="835"/>
         <source>Filters</source>
         <comment>IDC_FILTERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtros</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="937"/>
         <source>Apply changes</source>
         <comment>IDC_APPLYCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar cambios</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="944"/>
         <source>Cancel changes</source>
         <comment>IDC_CANCELCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar cambios</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="611"/>
@@ -446,13 +446,13 @@ Abra la pestaña de Ajustes para seleccionar la Carpeta de Salida de la Imagen A
         <location filename="../ui/SettingsTab.ui" line="685"/>
         <source>Reset email count</source>
         <comment>IDC_RESETEMAILCOUNT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reinicializar la cantidad de email</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="713"/>
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Opciones</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="719"/>
@@ -465,12 +465,14 @@ Abra la pestaña de Ajustes para seleccionar la Carpeta de Salida de la Imagen A
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>El archivo de seguimiento normalmente se escribe en el directorio DeepSkyStacker en la carpeta de usuarios.
+Directorio &quot;Documentos&quot; y se elimina al salir (a menos que la aplicación falle).
+Marque esta casilla para conservar el archivo de seguimiento.</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="794"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Conservar el archivo de seguimiento al salir</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="804"/>
@@ -480,31 +482,31 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/SettingsTab.ui" line="841"/>
         <source>Process only ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Procesar solamente...</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="848"/>
         <source>RAW images (CR2, NEF, ORF, DNG...)</source>
         <comment>IDC_PROCESS_RAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes RAW (CR2, NEF, ORF, DNG...)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="855"/>
         <source>TIFF images</source>
         <comment>IDC_PROCESS_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes TIFF</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="875"/>
         <source>FITS images</source>
         <comment>IDC_PROCESS_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imágenes FITS</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otras Imágenes (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
@@ -538,13 +540,13 @@ Tick this box to keep the trace file.</source>
         <location filename="../settingstab.cpp" line="356"/>
         <source>Select Warning File Folder</source>
         <comment>IDS_SELECTWARNINGFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar la Carpeta de Archivos de Notificación</translation>
     </message>
     <message>
         <location filename="../settingstab.cpp" line="375"/>
         <source>Select Stacked Image Output Folder</source>
         <comment>IDS_SELECTSTACKEDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar la Carpeta de Salida de la Imagen Apilada</translation>
     </message>
 </context>
 <context>

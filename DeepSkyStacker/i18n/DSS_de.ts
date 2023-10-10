@@ -1271,7 +1271,7 @@ Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</tran
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation>Behalten Sie die Trace-Datei beim Beenden bei</translation>
+        <translation type="unfinished">Behalten Sie die Trace-Datei beim Beenden</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>

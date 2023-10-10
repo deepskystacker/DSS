@@ -297,7 +297,7 @@ Va configuracoes aba e selecione ficheiro produzido par imagem integrada.</trans
     <message>
         <location filename="../ui/SettingsTab.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="65"/>
@@ -390,25 +390,25 @@ Va configuracoes aba e selecione ficheiro produzido par imagem integrada.</trans
         <location filename="../ui/SettingsTab.ui" line="648"/>
         <source>Send email to:</source>
         <comment>IDC_WARN_EMAIL</comment>
-        <translation>Enviar e-mail para</translation>
+        <translation>Enviar e-mail para:</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="835"/>
         <source>Filters</source>
         <comment>IDC_FILTERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Filtros</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="937"/>
         <source>Apply changes</source>
         <comment>IDC_APPLYCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar as modificacoes</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="944"/>
         <source>Cancel changes</source>
         <comment>IDC_CANCELCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar as modificaes</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="611"/>
@@ -441,13 +441,13 @@ Va configuracoes aba e selecione ficheiro produzido par imagem integrada.</trans
         <location filename="../ui/SettingsTab.ui" line="685"/>
         <source>Reset email count</source>
         <comment>IDC_RESETEMAILCOUNT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apagar o e-mail</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="713"/>
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Opcoes</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="719"/>
@@ -460,12 +460,14 @@ Va configuracoes aba e selecione ficheiro produzido par imagem integrada.</trans
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>O arquivo de rastreamento normalmente é gravado no diretório DeepSkyStacker nos usuários
+Diretório &quot;Documentos&quot; e é excluído ao sair (a menos que o aplicativo trave).
+Marque esta caixa para manter o arquivo de rastreamento.</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="794"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Retenha o arquivo de rastreamento ao sair</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="804"/>
@@ -475,31 +477,31 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/SettingsTab.ui" line="841"/>
         <source>Process only ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Processar apenas...</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="848"/>
         <source>RAW images (CR2, NEF, ORF, DNG...)</source>
         <comment>IDC_PROCESS_RAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagens RAW (CR2, NEF, ORF, DNG...)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="855"/>
         <source>TIFF images</source>
         <comment>IDC_PROCESS_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagens TIFF</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="875"/>
         <source>FITS images</source>
         <comment>IDC_PROCESS_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagens FITS</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Outras imagens (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
@@ -533,13 +535,13 @@ Tick this box to keep the trace file.</source>
         <location filename="../settingstab.cpp" line="356"/>
         <source>Select Warning File Folder</source>
         <comment>IDS_SELECTWARNINGFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Selecione Aviso Pasta do Ficheiro</translation>
     </message>
     <message>
         <location filename="../settingstab.cpp" line="375"/>
         <source>Select Stacked Image Output Folder</source>
         <comment>IDS_SELECTSTACKEDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Selecione Imagem integrada na Pasta Producao</translation>
     </message>
 </context>
 <context>

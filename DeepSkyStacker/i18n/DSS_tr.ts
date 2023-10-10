@@ -440,7 +440,7 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
         <location filename="../StackingDlg.cpp" line="125"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Resim Dosyaları (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="129"/>
@@ -945,7 +945,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1250,12 +1250,14 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished"></translation>
+        <translation>İzleme dosyası normalde kullanıcılardaki DeepSkyStacker dizinine yazılır.
+&quot;Belgeler&quot; dizini ve çıkışta silinir (uygulama çökmediği sürece).
+İzleme dosyasını saklamak için bu kutuyu işaretleyin.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Çıkışta izleme dosyasını sakla</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
@@ -1551,7 +1553,9 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kozmetik
+Algılanan Sıcak Pikseller: %L1 (%L2%)
+Algılanan Soğuk Pikseller: %L3 (%L4%)</translation>
     </message>
 </context>
 <context>
