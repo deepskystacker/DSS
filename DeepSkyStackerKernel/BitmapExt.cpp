@@ -82,6 +82,15 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
 		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pInBitmap);
 
+		struct thread_vars {
+			CMemoryBitmap* bitmap;
+			BitmapIterator<CMemoryBitmap*> pixelIt;
+			explicit thread_vars(CMemoryBitmap* pb) : bitmap{ pb }, pixelIt{ pb }
+			{}
+			thread_vars(const thread_vars& rhs) : bitmap{ rhs.bitmap }, pixelIt{ rhs.bitmap }
+			{}
+		};
+
 		ZASSERTSTATE(nullptr != pCFABitmapInfo);
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 		{
@@ -95,16 +104,17 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			const int lHeight = pInBitmap->Height();
 			std::shared_ptr<C48BitColorBitmap> pColorBitmap = std::make_shared<C48BitColorBitmap>();
 			pColorBitmap->Init(lWidth, lHeight);
-			BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ pColorBitmap };
+			thread_vars threadVars{ pColorBitmap.get() };
 
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(none) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
 			for (int j = 0; j < lHeight; j++)
 			{
-				for (int i = 0; i < lWidth; i++, ++it)
+				threadVars.pixelIt.Reset(0, j);
+				for (int i = 0; i < lWidth; ++i, ++threadVars.pixelIt)
 				{
 					double fRed, fGreen, fBlue;
 					pInBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-					it.SetPixel(fRed, fGreen, fBlue);
+					threadVars.pixelIt.SetPixel(fRed, fGreen, fBlue);
 				}
 			}
 
