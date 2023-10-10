@@ -144,11 +144,11 @@ namespace DSS
 		long processedListCount = 0;
 		bool successfulProcessing = true;
 
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows && successfulProcessing; ++i) {
 			auto item = m_fileListModel->item(i);
-			Q_ASSERT(item);
+			ZASSERT(nullptr != item);
 			if (item->checkState() == Qt::Checked) {
 				const auto& file = item->text();
 				QString outputFile;
@@ -173,7 +173,7 @@ namespace DSS
 
 	void BatchStacking::clearLists()
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		m_fileListModel->clear();
 	}
 
@@ -213,7 +213,7 @@ namespace DSS
 
 	void BatchStacking::addItemsFor(const QStringList& paths, bool checked)
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		for (const auto& path : paths) {
 			QStandardItem* item = new QStandardItem(path);
 			item->setCheckable(true);
@@ -225,12 +225,12 @@ namespace DSS
 
 	QStringList BatchStacking::getFilePaths() const
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		QStringList filePaths;
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows; ++i) {
 			auto item = m_fileListModel->item(i);
-			Q_ASSERT(item);
+			ZASSERT(nullptr != item);
 			filePaths.append(item->text());
 		}
 		return filePaths;
