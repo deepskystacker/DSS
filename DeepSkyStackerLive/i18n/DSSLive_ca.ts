@@ -218,7 +218,8 @@
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../../Tools/imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="58"/>
+        <location filename="../../Tools/imageview.cpp" line="78"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
@@ -232,13 +233,13 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
 <context>
     <name>DSS::ImageViewer</name>
     <message>
-        <location filename="../imageviewer.cpp" line="212"/>
+        <location filename="../imageviewer.cpp" line="208"/>
         <source>The stacked image will be saved as soon as possible</source>
         <comment>IDS_STACKEDIMAGEWILLBESAVED</comment>
         <translation>La imatge apilada serà guardada tan aviat com sigui possible</translation>
     </message>
     <message>
-        <location filename="../imageviewer.cpp" line="224"/>
+        <location filename="../imageviewer.cpp" line="220"/>
         <source>You must select an output folder first.
 Go to the Settings tab to select the Stacked Image Output Folder.</source>
         <comment>IDS_NOSTACKEDIMAGEFOLDER</comment>
@@ -246,7 +247,7 @@ Go to the Settings tab to select the Stacked Image Output Folder.</source>
 Vagi a les opcions d&apos;Ajustaments per a seleccionar el Directori de Sortida d&apos;Imatges Apilades.</translation>
     </message>
     <message>
-        <location filename="../imageviewer.cpp" line="234"/>
+        <location filename="../imageviewer.cpp" line="230"/>
         <source>The stacked image has been saved</source>
         <comment>IDS_STACKEDIMAGESAVED</comment>
         <translation>La imatge apilada ha estat guardada</translation>
@@ -360,12 +361,6 @@ Vagi a les opcions d&apos;Ajustaments per a seleccionar el Directori de Sortida 
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/SettingsTab.ui" line="455"/>
-        <source>... dX or dY is greater than </source>
-        <comment>IDC_DONTSTACK_OFFSET</comment>
-        <translation>...dX o dY és més gran que </translation>
-    </message>
-    <message>
         <location filename="../ui/SettingsTab.ui" line="524"/>
         <source>... angle is greater than</source>
         <translation>...L&apos;angle és més gran que</translation>
@@ -432,12 +427,6 @@ Vagi a les opcions d&apos;Ajustaments per a seleccionar el Directori de Sortida 
         <translation>Crear fitxer d&apos;avisos a:</translation>
     </message>
     <message>
-        <location filename="../ui/SettingsTab.ui" line="719"/>
-        <source>Save stacked image to file each </source>
-        <comment>IDC_SAVESTACKEDIMAGE</comment>
-        <translation>Guarda la imatge apilada a cada fitxer </translation>
-    </message>
-    <message>
         <location filename="../ui/SettingsTab.ui" line="759"/>
         <source>Output folder:</source>
         <translation>Directori de sortida:</translation>
@@ -446,6 +435,12 @@ Vagi a les opcions d&apos;Ajustaments per a seleccionar el Directori de Sortida 
         <location filename="../ui/SettingsTab.ui" line="739"/>
         <source>images</source>
         <translation>imatge(s)</translation>
+    </message>
+    <message>
+        <location filename="../ui/SettingsTab.ui" line="455"/>
+        <source>... dX or dY is greater than</source>
+        <comment>IDC_DONTSTACK_OFFSET</comment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="685"/>
@@ -458,6 +453,12 @@ Vagi a les opcions d&apos;Ajustaments per a seleccionar el Directori de Sortida 
         <source>Options</source>
         <comment>IDC_OPTIONS</comment>
         <translation>Opcions</translation>
+    </message>
+    <message>
+        <location filename="../ui/SettingsTab.ui" line="719"/>
+        <source>Save stacked image to file every</source>
+        <comment>IDC_SAVESTACKEDIMAGE</comment>
+        <translation>Guarda la imatge apilada a cada fitxer</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="789"/>
@@ -508,6 +509,7 @@ Marqueu aquesta casella per mantenir el fitxer de traça.</translation>
         <translation>Altres imatges (JPEG, PNG)</translation>
     </message>
     <message>
+        <location filename="../ui/SettingsTab.ui" line="658"/>
         <location filename="../settingstab.cpp" line="88"/>
         <location filename="../settingstab.cpp" line="262"/>
         <location filename="../settingstab.cpp" line="464"/>
@@ -516,6 +518,7 @@ Marqueu aquesta casella per mantenir el fitxer de traça.</translation>
         <translation>Feu clic aquí per seleccionar el direcotri del fitxer d&apos;advertència</translation>
     </message>
     <message>
+        <location filename="../ui/SettingsTab.ui" line="634"/>
         <location filename="../settingstab.cpp" line="87"/>
         <location filename="../settingstab.cpp" line="251"/>
         <location filename="../settingstab.cpp" line="405"/>
@@ -525,6 +528,7 @@ Marqueu aquesta casella per mantenir el fitxer de traça.</translation>
         <translation>Fes click aquí per a entrar una adreça de correu electrònic</translation>
     </message>
     <message>
+        <location filename="../ui/SettingsTab.ui" line="769"/>
         <location filename="../settingstab.cpp" line="89"/>
         <location filename="../settingstab.cpp" line="270"/>
         <location filename="../settingstab.cpp" line="435"/>
@@ -555,7 +559,7 @@ You can probably get another one or download the final release from the web site
 Probablement en podeu obtenir un altre o descarregar la versió final del lloc web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="463"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="464"/>
         <source>
 How to use  DeepSkyStacker Live ?
 </source>
@@ -565,7 +569,7 @@ Com usar el DeepSkyStacker Live?
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="466"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="467"/>
         <source>Step 1
 Check the Settings tabs for all the stacking and warning settings
 
@@ -577,7 +581,7 @@ Comprovi la pestanya de Configuració per a tot el procés d&apos;apilat i els a
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="469"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="470"/>
         <source>Step 2
 Click on the Monitor button to start monitoring the folder
 When monitoring is active incoming images are only registered but not stacked.
@@ -590,7 +594,7 @@ Faci click en el botó Supervisar per a començar a supervisar el directori\nQua
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="473"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="474"/>
         <source>Step 3
 To start stacking the images click on the Stack button
 At this point all the incoming (and all previously registered) images will be stacked.
@@ -601,7 +605,7 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="477"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="478"/>
         <source>You can pause/restart the stacking process by clicking on the Stack button.
 </source>
         <comment>IDS_LOG_STARTING_4</comment>
@@ -609,7 +613,7 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="480"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="481"/>
         <source>To stop monitoring and stacking click on the Stop button.
 
 </source>
@@ -619,120 +623,120 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="541"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1223"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="545"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1227"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
         <translation>No hi ha cap imatge apilada</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="542"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="546"/>
         <source>No image loaded</source>
         <comment>IDS_NOIMAGELOADED</comment>
         <translation>No hi ha cap imatge carregada</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="600"/>
         <source>Status</source>
         <translation>Condició</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="601"/>
         <source>File</source>
         <comment>IDS_COLUMN_FILE</comment>
         <translation>Arxiu</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="598"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="602"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
         <translation>Exposició</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="599"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="603"/>
         <source>Aperture</source>
         <comment>IDS_COLUMN_APERTURE</comment>
         <translation>Obertura</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="600"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="604"/>
         <source>Score</source>
         <comment>IDS_COLUMN_SCORE</comment>
         <translation>Puntuació</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="601"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="605"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
         <translation># Estrelles</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="602"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="606"/>
         <source>FWHM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="603"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="607"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="604"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="608"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="605"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="609"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
         <translation>Àngle</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="606"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="610"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
         <translation>Data/Hora</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="607"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="611"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
         <translation>Grandària</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="608"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="612"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="609"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="613"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="610"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="614"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
         <translation>Informació</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="611"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="615"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="612"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="616"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
         <translation>Fons de cel</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="714"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="718"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
         <translation>55 / 5,000
 Translation results
@@ -740,7 +744,7 @@ Translation result
 %1 no és un directori. Seleccioneu un directori vàlid.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="724"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="728"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -748,64 +752,64 @@ Translation result
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="737"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="741"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
         <translation>Aturar la supervisió del directori %1</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="748"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="752"/>
         <source>Stop Stacking files</source>
         <comment>IDS_LOG_STOPSTACKING</comment>
         <translation>Parar d&apos;Apilar Arxius</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="764"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="768"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>Ayuda DeepSkyStacker.chm</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="869"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="873"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
         <translation>Vostè no pot canviar el directori supervisat mentre s&apos;està supervisant.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="881"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="885"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
         <translation>Seleccioni la carpeta supervisada</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="917"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1262"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="921"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1266"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
         <translation>Apilat</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="922"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1180"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="926"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1184"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1251"/>
         <source>Pending</source>
         <translation>Pendents</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="923"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1253"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="927"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1257"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
         <translation>Registrat</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1032"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1036"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
         <translation>Començar a Apilar Arxius</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1097"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1101"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -817,7 +821,7 @@ Vol processar-les?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1108"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1112"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -829,60 +833,60 @@ Vol processar-les?</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1234"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
         <translation>Faci click aquí per a guardar la imatge apilada a un arxiu</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1250"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1254"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
         <translation>Carregat</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1256"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1260"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
         <translation>Apilat ajornat</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1259"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1263"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
         <translation>No apilable</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1341"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1345"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>No</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1343"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1347"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Si</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1346"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1350"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1348"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1352"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
         <translation>Gris %1 bit</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1360"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1364"/>
         <source>%1%</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1541"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1545"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
         <translation>Pendent: %1 - Registrat: %2 - Apilat: %3 - Temps d&apos;exposició total: %4</translation>
     </message>

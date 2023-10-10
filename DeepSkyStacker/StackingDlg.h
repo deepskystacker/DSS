@@ -74,8 +74,6 @@ class Workspace;
 
 namespace DSS
 {
-	extern FrameList frameList;
-
 	class IconSizeDelegate : public QStyledItemDelegate
 	{
 		Q_OBJECT
@@ -137,6 +135,8 @@ namespace DSS
 			Inherited;
 
 		Q_OBJECT
+
+		friend class BatchStacking;
 
 	signals:
 		void statusMessage(const QString& text);
@@ -243,6 +243,7 @@ namespace DSS
 		fs::path fileToShow;
 		GammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
+		FrameList		frameList;
 		IconSizeDelegate* iconSizeDelegate;
 		ItemEditDelegate* itemEditDelegate;
 		QSortFilterProxyModel* proxyModel;

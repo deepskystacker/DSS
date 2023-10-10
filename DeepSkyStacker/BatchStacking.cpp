@@ -17,32 +17,34 @@
 namespace DSS
 
 {
-	extern FrameList frameList;
 	class BatchMode
 	{
 	public: 
-		BatchMode()
+		BatchMode(FrameList* fl) : frameList{fl}
 		{
-			frameList.setBatchStacking(true);
+			frameList->setBatchStacking(true);
 		};
 		~BatchMode()
 		{
-			frameList.setBatchStacking(false);
+			frameList->setBatchStacking(false);
 		}
 		BatchMode(const BatchMode&) = delete;
 		BatchMode(BatchMode&&) = delete;
 		BatchMode& operator=(const BatchMode&) = delete;
 		BatchMode& operator=(BatchMode&&) = delete;
+	private:
+		FrameList* frameList;
 	};
 
 	extern QStringList OUTPUTLIST_FILTERS;
 
-	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+	BatchStacking::BatchStacking(QWidget* parent) :
 		stackingDlg { dynamic_cast<StackingDlg*>(parent) },
 		Inherited(Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
+		ZASSERT(nullptr != stackingDlg);
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -66,8 +68,8 @@ namespace DSS
 		stackingDlg->clearList();		// Clear groups etc. for next filelist.
 
 		workspace.Push();
-		frameList.loadFilesFromList(fileList);
-		frameList.fillTasks(tasks);
+		stackingDlg->frameList.loadFilesFromList(fileList);
+		stackingDlg->frameList.fillTasks(tasks);
 		tasks.ResolveTasks();
 
 		if (!tasks.m_vStacks.empty())
@@ -77,7 +79,7 @@ namespace DSS
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered
-			if (frameList.countUnregisteredCheckedLightFrames() != 0)
+			if (stackingDlg->frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -85,7 +87,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				const QString referenceFrame(frameList.getReferenceFrame());
+				const QString referenceFrame(stackingDlg->frameList.getReferenceFrame());
 				if (!referenceFrame.isEmpty())
 					StackingEngine.SetReferenceFrame(referenceFrame.toStdU16String());
 
@@ -137,7 +139,7 @@ namespace DSS
 		//
 		// Tell the frameList it is doing batch processing.
 		//
-		BatchMode batchMode;
+		BatchMode batchMode(&stackingDlg->frameList);
 
 		long processedListCount = 0;
 		bool successfulProcessing = true;

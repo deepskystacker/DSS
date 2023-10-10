@@ -452,7 +452,7 @@
           <item row="6" column="2">
            <widget class="QCheckBox" name="dontStackOffset">
             <property name="text">
-             <string comment="IDC_DONTSTACK_OFFSET">... dX or dY is greater than </string>
+             <string comment="IDC_DONTSTACK_OFFSET">... dX or dY is greater than</string>
             </property>
            </widget>
           </item>
@@ -631,7 +631,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true" comment="IDC_EMAIL">Click here to set or change the email address</string>
+             <string comment="IDC_EMAIL">Click here to set or change the email address</string>
             </property>
            </widget>
           </item>
@@ -655,7 +655,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true">Click here to select the warning file folder</string>
+             <string comment="IDC_WARNINGFILEFOLDER">Click here to select the warning file folder</string>
             </property>
            </widget>
           </item>
@@ -716,7 +716,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="saveStackedImage">
             <property name="text">
-             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file each </string>
+             <string comment="IDC_SAVESTACKEDIMAGE">Save stacked image to file every</string>
             </property>
            </widget>
           </item>
@@ -766,7 +766,7 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string notr="true">Click here to select the stacked image output folder</string>
+             <string comment="IDC_STACKEDOUTPUTFOLDER">Click here to select the stacked image output folder</string>
             </property>
            </widget>
           </item>

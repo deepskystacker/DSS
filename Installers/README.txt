@@ -70,6 +70,8 @@ Changes since the last release:
 
 28. Check lights when loaded using either "Open picture files" or using Drag/Drop.
 
+29. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
