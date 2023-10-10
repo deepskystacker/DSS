@@ -507,7 +507,7 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <location filename="../ui/SettingsTab.ui" line="882"/>
         <source>Other images (JPEG, PNG)</source>
         <comment>IDC_PROCESS_OTHERS</comment>
-        <translation type="unfinished">Alte imagini (JPEG, PNG)</translation>
+        <translation>Alte imagini (JPEG, PNG)</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="634"/>
