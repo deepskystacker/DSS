@@ -565,7 +565,9 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 How to use  DeepSkyStacker Live ?
 </source>
         <comment>IDS_LOG_STARTING</comment>
-        <translation type="unfinished"></translation>
+        <translation>
+Cum se utilizeaza DeepStackerLive?
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="467"/>
@@ -574,7 +576,10 @@ Check the Settings tabs for all the stacking and warning settings
 
 </source>
         <comment>IDS_LOG_STARTING_1</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasul 1
+Verificati tabul Setari pentru setarile de stackare si de avertisment
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="470"/>
@@ -584,7 +589,11 @@ When monitoring is active incoming images are only registered but not stacked.
 
 </source>
         <comment>IDS_LOG_STARTING_2</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasul2
+Apasati pe butonul Monitorizez pentru a porni monitorizarea directorului
+Cand monitorizarea e pornita imaginile sunt doar inregistrate nu si stackate.
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="474"/>
@@ -593,14 +602,18 @@ To start stacking the images click on the Stack button
 At this point all the incoming (and all previously registered) images will be stacked.
 </source>
         <comment>IDS_LOG_STARTING_3</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pasul 3
+Pentru a porni stackarea imaginlor apasati butonul Stackare.
+In acest moment toate imaginile (inclusiv cele inregistrate anterior) vor fi stackate.
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="478"/>
         <source>You can pause/restart the stacking process by clicking on the Stack button.
 </source>
         <comment>IDS_LOG_STARTING_4</comment>
-        <translation type="unfinished"></translation>
+        <translation>Puteti opri/porni din nou procesul de stackare apasand butonul Stack.
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="481"/>
@@ -608,201 +621,205 @@ At this point all the incoming (and all previously registered) images will be st
 
 </source>
         <comment>IDS_LOG_STARTING_5</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pentru oprirea monitorizarii si stackarii apasati butonul Stop.
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="545"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1227"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nici o imagine stackata</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="546"/>
         <source>No image loaded</source>
         <comment>IDS_NOIMAGELOADED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nici o imagine incarcata</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="600"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stare</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="601"/>
         <source>File</source>
         <comment>IDS_COLUMN_FILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fisier</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="602"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Expunere</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="603"/>
         <source>Aperture</source>
         <comment>IDS_COLUMN_APERTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Deschidere</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="604"/>
         <source>Score</source>
         <comment>IDS_COLUMN_SCORE</comment>
-        <translation type="unfinished">Scor</translation>
+        <translation>Scor</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="605"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
-        <translation type="unfinished">#Stele</translation>
+        <translation>#Stele</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="606"/>
         <source>FWHM</source>
-        <translation type="unfinished"></translation>
+        <translation>FWHM</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="607"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
-        <translation type="unfinished"></translation>
+        <translation>dX</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="608"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
-        <translation type="unfinished"></translation>
+        <translation>dY</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="609"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
-        <translation type="unfinished">Unghi</translation>
+        <translation>Unghi</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="610"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
-        <translation type="unfinished"></translation>
+        <translation>Data/Ora</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="611"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiune</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="612"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="613"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adancime</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="614"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Informatii</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="615"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO/Gain</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="616"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
-        <translation type="unfinished">Fundal cer</translation>
+        <translation>Fundal cer</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="718"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 nu este un director. Vă rugăm să selectați un director valid.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="728"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Începe monitorizare director %1
+        <translation>Începe monitorizare director %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="741"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Oprește monitorizare director %1
- {1?}</translation>
+        <translation>Oprește monitorizare director %1</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="752"/>
         <source>Stop Stacking files</source>
         <comment>IDS_LOG_STOPSTACKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Opreste stackarea fisierelor</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="768"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker Help.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="873"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nu puteti schimba directorul monitorizat cat timp ce monitorizarea este activa.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="885"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Selecteaza directorul monitorizat</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="921"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1266"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stackat</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="926"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1184"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1251"/>
         <source>Pending</source>
-        <translation type="unfinished"></translation>
+        <translation>In asteptarea</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="927"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1257"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Inregistrat</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1036"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Porneste stacarea fisierelor</translation>
     </message>
     <message numerus="yes">
         <location filename="../DeepSkyStackerLive.cpp" line="1101"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Aveți %n imagine în folderul monitorizat.
+Doriți să o procesați?</numerusform>
+            <numerusform>Aveți %n imagini în folderul monitorizat.
+Doriți să le procesați?</numerusform>
+            <numerusform>Aveți %n de imagini în folderul monitorizat.
+Doriți să le procesați?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -810,59 +827,62 @@ Do you want to process them?</source>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n fișier nou găsit
+</numerusform>
+            <numerusform>%n fișiere noi găsite
+</numerusform>
+            <numerusform>%n de fișiere noi găsite
+</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Clic aici pentru a salva imaginea stackata intr-un fisier</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1254"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Incarcat</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1260"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stackare intarziata</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1263"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ne-stackabil</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1345"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nu</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1347"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Da</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1350"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB %1 biti/canal</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1352"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
-        <translation type="unfinished"></translation>
+        <translation>A-N %1 biti</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1364"/>
@@ -872,77 +892,77 @@ Do you want to process them?</source>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1545"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Astepta: %1 - Inregistrate: %2 - Stackate: %3 - Timp total expunere: %4</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="49"/>
         <source>Monitoring</source>
         <comment>IDC_MONITORINGRECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Monitorizez</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="56"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="62"/>
         <source>Click here to select the Monitored Folder</source>
         <comment>IDC_MONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Clic aici pt. a selecta directorul monitorizat</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="205"/>
         <source>Stacked Image</source>
         <comment>IDC_STACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine stackata</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="216"/>
         <source>Last Image</source>
         <comment>IDC_LASTIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ultima imagine</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="221"/>
         <source>Graphs</source>
         <comment>IDC_GRAPHS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Grafice</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="235"/>
         <source>Image List</source>
         <comment>IDC_IMAGELIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Lista imagini</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="259"/>
         <source>Log</source>
         <comment>IDC_LOGLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Log</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="264"/>
         <source>Settings</source>
         <comment>IDC_WARNINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Setări</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="280"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="283"/>
         <source>Monitor</source>
         <comment>IDC_MONITOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>Monitorizați</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="296"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="299"/>
         <source>Stack</source>
         <comment>IDC_STACK_DSSLIVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stack</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="308"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="311"/>
         <source>Stop</source>
         <comment>IDC_STOP</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stop</translation>
     </message>
 </context>
 <context>
@@ -950,38 +970,38 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="20"/>
         <source>Sent email settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite setarile e-mail</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="26"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite catre:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="33"/>
         <source>Send an Email only for the first warning</source>
         <comment>IDC_SENDONCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trimite email doar pentru prima atentionare</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="43"/>
         <source>Subject:</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiect:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="66"/>
         <source>Email Account settings</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="14"/>
         <source>Email Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setari e-mail</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="72"/>
         <source>SMTP server:</source>
-        <translation type="unfinished"></translation>
+        <translation>Server SMTP:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
@@ -1007,43 +1027,43 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptare:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="134"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Niciuna</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="139"/>
         <source>SSL/TLS</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL/TLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="144"/>
         <source>STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>STARTTLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="152"/>
         <source>Account (From):</source>
-        <translation type="unfinished"></translation>
+        <translation>Cont (De la):</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="165"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parola:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="179"/>
         <source>Show password</source>
-        <translation type="unfinished"></translation>
+        <translation>Arata parola</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="189"/>
         <source>Test</source>
         <comment>IDC_TEST</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Test</translation>
     </message>
 </context>
 <context>
@@ -1052,7 +1072,7 @@ Do you want to process them?</source>
         <location filename="../ui/ImageViewer.ui" line="89"/>
         <source>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copy current picture to clipboard&lt;/a&gt;</source>
         <comment>IDC_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copiaza imaginea curenta in clipboard&lt;/a&gt;</translation>
     </message>
 </context>
 </TS>
