@@ -829,7 +829,7 @@ Do you want to process them?</source>
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
         <translation>
-            <numerusform>Найдено %n новый файл
+            <numerusform>Найден %n новый файл
 </numerusform>
             <numerusform>найдено %n новых файла
 </numerusform>
