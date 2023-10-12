@@ -70,6 +70,21 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 	};
 };
 
+namespace
+{
+
+	template <template<class> class It, class BitmapPtr>
+	struct ThreadVars
+	{
+		BitmapPtr bitmap; // E.g.: CMemoryBitmap*, std::shared_ptr<CMemoryBitmap>
+		It<BitmapPtr> pixelIt;
+		explicit ThreadVars(BitmapPtr pb) : bitmap{ pb }, pixelIt{ pb } {}
+		ThreadVars(const ThreadVars& rhs) : bitmap{ rhs.bitmap }, pixelIt{ rhs.bitmap } {}
+		ThreadVars& operator=(const ThreadVars&) = delete;
+	};
+
+}
+
 /* ------------------------------------------------------------------- */
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase* pProgress)
 {
@@ -81,15 +96,6 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 		std::shared_ptr<CMemoryBitmap> pOutBitmap;
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
 		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pInBitmap);
-
-		struct thread_vars {
-			CMemoryBitmap* bitmap;
-			BitmapIterator<CMemoryBitmap*> pixelIt;
-			explicit thread_vars(CMemoryBitmap* pb) : bitmap{ pb }, pixelIt{ pb }
-			{}
-			thread_vars(const thread_vars& rhs) : bitmap{ rhs.bitmap }, pixelIt{ rhs.bitmap }
-			{}
-		};
 
 		ZASSERTSTATE(nullptr != pCFABitmapInfo);
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
@@ -104,7 +110,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			const int lHeight = pInBitmap->Height();
 			std::shared_ptr<C48BitColorBitmap> pColorBitmap = std::make_shared<C48BitColorBitmap>();
 			pColorBitmap->Init(lWidth, lHeight);
-			thread_vars threadVars{ pColorBitmap.get() };
+			ThreadVars<BitmapIterator, CMemoryBitmap*> threadVars{ pColorBitmap.get() };
 
 #pragma omp parallel for default(none) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
 			for (int j = 0; j < lHeight; j++)
@@ -132,19 +138,11 @@ bool	CAllDepthBitmap::initQImage()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	size_t			width = m_pBitmap->Width(), height = m_pBitmap->Height();
+	const int width = m_pBitmap->Width();
+	const int height = m_pBitmap->Height();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
 
-	m_Image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
-
-	struct thread_vars {
-		const CMemoryBitmap* source;
-		BitmapIteratorConst<const CMemoryBitmap*> pixelItSrc;
-		explicit thread_vars(const CMemoryBitmap* s) : source{ s }, pixelItSrc{ source }
-		{}
-		thread_vars(const thread_vars& rhs) : source{ rhs.source }, pixelItSrc{ rhs.source }
-		{}
-	};
+	m_Image = std::make_shared<QImage>(width, height, QImage::Format_RGB32);
 
 	//
 	//				**** W A R N I N G ***
@@ -203,30 +201,30 @@ bool	CAllDepthBitmap::initQImage()
 
 		auto pImageData = m_Image->bits();
 		auto bytes_per_line = m_Image->bytesPerLine();
-		thread_vars threadVars(m_pBitmap.get());
+		ThreadVars<BitmapIteratorConst, const CMemoryBitmap*> threadVars{ m_pBitmap.get() };
 
-#pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
-			threadVars.pixelItSrc.Reset(0, j);
+			threadVars.pixelIt.Reset(0, j);
 
-			for (int i = 0; i < width; i++, ++threadVars.pixelItSrc, ++pOutPixel)
+			for (int i = 0; i < width; i++, ++threadVars.pixelIt, ++pOutPixel)
 			{
-				double			fRed, fGreen, fBlue;
-				threadVars.pixelItSrc.GetPixel(fRed, fGreen, fBlue);
+				double fRed, fGreen, fBlue;
+				threadVars.pixelIt.GetPixel(fRed, fGreen, fBlue);
 
 				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
 					std::clamp(fBlue, 0.0, 255.0));
 			}
 		}
-	};
+	}
 
 	bResult = true;
 
 	return bResult;
-};
+}
 
 
 bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
@@ -1350,19 +1348,6 @@ public :
 	void process();
 };
 
-template <class T>
-struct thread_init {
-	T* target;
-	const T* source;
-	BitmapIterator<CMemoryBitmap*> PixelItTgt;
-	BitmapIteratorConst<const CMemoryBitmap*> PixelItSrc;
-
-	explicit thread_init(T* t, const T* s) : target{ t }, source{ s }, PixelItTgt{ target }, PixelItSrc{ source }
-	{}
-	thread_init(const thread_init& rhs) : target{ rhs.target }, source{ rhs.source }, PixelItTgt{ rhs.target }, PixelItSrc{ rhs.source }
-	{}
-};
-
 void CSubtractTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1375,9 +1360,10 @@ void CSubtractTask::process()
 	const int extraWidth = m_fXShift == 0 ? 0 : static_cast<int>(std::abs(m_fXShift) + 0.5);
 	const int width = m_pTarget->RealWidth() - extraWidth;
 
-	thread_init threadVars(m_pTarget.get(), m_pSource.get());
+	ThreadVars<BitmapIteratorConst, const CMemoryBitmap*> sourceIt{ m_pSource.get() };
+	ThreadVars<BitmapIterator, CMemoryBitmap*> targetIt{ m_pTarget.get() };
 
-#pragma omp parallel for schedule(guided, 50) default(none) firstprivate(threadVars) if(nrProcessors > 1)
+#pragma omp parallel for default(none) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;
@@ -1403,28 +1389,28 @@ void CSubtractTask::process()
 			lSrcStartY += std::abs(m_fYShift) + 0.5;
 		}
 
-		threadVars.PixelItTgt.Reset(lTgtStartX, lTgtStartY);
-		threadVars.PixelItSrc.Reset(lSrcStartX, lSrcStartY);
+		targetIt.pixelIt.Reset(lTgtStartX, lTgtStartY);
+		sourceIt.pixelIt.Reset(lSrcStartX, lSrcStartY);
 
 		for (int col = 0; col < width; ++col)
 		{
 			if (m_bMonochrome)
 			{
-				double fTgtGray = threadVars.PixelItTgt.GetPixel();
-				double fSrcGray = threadVars.PixelItSrc.GetPixel();
+				double fTgtGray = targetIt.pixelIt.GetPixel();
+				double fSrcGray = sourceIt.pixelIt.GetPixel();
 
 				if (m_bAddMode)
 					fTgtGray = std::min(std::max(0.0, fTgtGray + fSrcGray * m_fGrayFactor), 256.0);
 				else
 					fTgtGray = std::max(m_fMinimum, fTgtGray - fSrcGray * m_fGrayFactor);
-				threadVars.PixelItTgt.SetPixel(fTgtGray);
+				targetIt.pixelIt.SetPixel(fTgtGray);
 			}
 			else
 			{
 				double fSrcRed, fSrcGreen, fSrcBlue;
 				double fTgtRed, fTgtGreen, fTgtBlue;
-				threadVars.PixelItTgt.GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-				threadVars.PixelItSrc.GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
+				targetIt.pixelIt.GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+				sourceIt.pixelIt.GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
 
 				if (m_bAddMode)
 				{
@@ -1438,14 +1424,14 @@ void CSubtractTask::process()
 					fTgtGreen = std::max(m_fMinimum, fTgtGreen - fSrcGreen * m_fGreenFactor);
 					fTgtBlue = std::max(m_fMinimum, fTgtBlue - fSrcBlue * m_fBlueFactor);
 				}
-				threadVars.PixelItTgt.SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+				targetIt.pixelIt.SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
 			}
 
-			++threadVars.PixelItTgt;
-			++threadVars.PixelItSrc;
+			++targetIt.pixelIt;
+			++sourceIt.pixelIt;
 		}
-		threadVars.PixelItTgt += extraWidth;
-		threadVars.PixelItSrc += extraWidth;
+		targetIt.pixelIt += extraWidth;
+		sourceIt.pixelIt += extraWidth;
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			m_pProgress->Progress2(row);
