@@ -564,7 +564,9 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
 How to use  DeepSkyStacker Live ?
 </source>
         <comment>IDS_LOG_STARTING</comment>
-        <translation type="unfinished"></translation>
+        <translation>
+Comment utiliser DeepSkyStacker Live ?
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="467"/>
@@ -573,7 +575,10 @@ Check the Settings tabs for all the stacking and warning settings
 
 </source>
         <comment>IDS_LOG_STARTING_1</comment>
-        <translation type="unfinished"></translation>
+        <translation>Etape 1
+Vérifiez l&apos;onglet Paramètres pour les paramètres d&apos;empilement et d&apos;avertissement
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="470"/>
@@ -583,7 +588,11 @@ When monitoring is active incoming images are only registered but not stacked.
 
 </source>
         <comment>IDS_LOG_STARTING_2</comment>
-        <translation type="unfinished"></translation>
+        <translation>Etape 2
+Cliquez sur le bonton Surveiller pour démarrer la surveillance du répertoire
+Quand la surveillance est active toutes les images entrantes sont enregistrées mais pas empilées.
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="474"/>
@@ -592,14 +601,18 @@ To start stacking the images click on the Stack button
 At this point all the incoming (and all previously registered) images will be stacked.
 </source>
         <comment>IDS_LOG_STARTING_3</comment>
-        <translation type="unfinished"></translation>
+        <translation>Etape 3
+Pour démarrer l&apos;empilement cliquez sur le bouton Empiler
+A partir de ce moment toutes les images entrantes (et celles déjà enregistrées) vont être empilées.
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="478"/>
         <source>You can pause/restart the stacking process by clicking on the Stack button.
 </source>
         <comment>IDS_LOG_STARTING_4</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vous pouvez arrêter/redémarrer l&apos;empilement en cliquant sur le bouton Empiler.
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="481"/>
@@ -607,200 +620,203 @@ At this point all the incoming (and all previously registered) images will be st
 
 </source>
         <comment>IDS_LOG_STARTING_5</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pour arrêter la surveillance et l&apos;empilement cliquez sur le bouton Stop.
+
+</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="545"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1227"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pas d&apos;image empilée</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="546"/>
         <source>No image loaded</source>
         <comment>IDS_NOIMAGELOADED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aucune image chargée</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="600"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Statut</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="601"/>
         <source>File</source>
         <comment>IDS_COLUMN_FILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Fichier</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="602"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Temps de pose</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="603"/>
         <source>Aperture</source>
         <comment>IDS_COLUMN_APERTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="604"/>
         <source>Score</source>
         <comment>IDS_COLUMN_SCORE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Score</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="605"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
-        <translation type="unfinished">#Etoiles</translation>
+        <translation>#Etoiles</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="606"/>
         <source>FWHM</source>
-        <translation type="unfinished"></translation>
+        <translation>FWHM</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="607"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
-        <translation type="unfinished"></translation>
+        <translation>dX</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="608"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
-        <translation type="unfinished"></translation>
+        <translation>dY</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="609"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Angle</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="610"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
-        <translation type="unfinished"></translation>
+        <translation>Date/Heure</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="611"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Taille</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="612"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="613"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
-        <translation type="unfinished"></translation>
+        <translation>Profondeur</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="614"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Infos</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="615"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO/Gain</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="616"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
-        <translation type="unfinished">Fond du ciel</translation>
+        <translation>Fond du ciel</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="718"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 n&apos;est pas un répertoire. Veuillez sélectionner un répertoire valide.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="728"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished">Début de la surveillance du répertoire %1
+        <translation>Début de la surveillance du répertoire %1
 </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="741"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished">Arrêt de la surveillance du répertoire %1
- {1?}</translation>
+        <translation>Arrêt de la surveillance du répertoire %1</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="752"/>
         <source>Stop Stacking files</source>
         <comment>IDS_LOG_STOPSTACKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Arrêt de l&apos;empilement des fichiers</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="768"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aide DeepSkyStacker.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="873"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vous ne pouvez pas changer le répertoire de surveillance pendant la surveillance.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="885"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le répertoire à surveiller</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="921"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1266"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Empilée</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="926"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1184"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1251"/>
         <source>Pending</source>
-        <translation type="unfinished"></translation>
+        <translation>En instance</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="927"/>
         <location filename="../DeepSkyStackerLive.cpp" line="1257"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Enregistrée</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1036"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Début de l&apos;empilement des fichiers</translation>
     </message>
     <message numerus="yes">
         <location filename="../DeepSkyStackerLive.cpp" line="1101"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Vous avez %n image dans le répertoire surveillé.
+Voulez-vous le traiter?</numerusform>
+            <numerusform>Vous avez %n images dans le répertoire surveillé.
+Voulez-vous les traiter?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -808,58 +824,60 @@ Do you want to process them?</source>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n nouveau fichier trouvé
+</numerusform>
+            <numerusform>%n nouveaux fichiers trouvés
+</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez ici pour enregistrer l&apos;image empilée dans un fichier</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1254"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chargée</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1260"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Empilement retardé</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1263"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Non empilable</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1345"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Non</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1347"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished"></translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1350"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB %1 bits/ch</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1352"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Monochrome %1 bits</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1364"/>
@@ -869,77 +887,77 @@ Do you want to process them?</source>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1545"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>En attente : %1 - Enregistrées: %2 - Empilées: %3 - Temps total d&apos;exposition: %4</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="49"/>
         <source>Monitoring</source>
         <comment>IDC_MONITORINGRECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Surveillance</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="56"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="62"/>
         <source>Click here to select the Monitored Folder</source>
         <comment>IDC_MONITOREDFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cliquez ici pour sélectionner le répertoire à surveiller</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="205"/>
         <source>Stacked Image</source>
         <comment>IDC_STACKEDIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Image Empilée</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="216"/>
         <source>Last Image</source>
         <comment>IDC_LASTIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dernière Image</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="221"/>
         <source>Graphs</source>
         <comment>IDC_GRAPHS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Graphiques</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="235"/>
         <source>Image List</source>
         <comment>IDC_IMAGELIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Liste d&apos;images</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="259"/>
         <source>Log</source>
         <comment>IDC_LOGLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Journal</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="264"/>
         <source>Settings</source>
         <comment>IDC_WARNINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="280"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="283"/>
         <source>Monitor</source>
         <comment>IDC_MONITOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>Surveiller</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="296"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="299"/>
         <source>Stack</source>
         <comment>IDC_STACK_DSSLIVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Empiler</translation>
     </message>
     <message>
         <location filename="../ui/DeepSkyStackerLive.ui" line="308"/>
         <location filename="../ui/DeepSkyStackerLive.ui" line="311"/>
         <source>Stop</source>
         <comment>IDC_STOP</comment>
-        <translation type="unfinished"></translation>
+        <translation>Stop</translation>
     </message>
 </context>
 <context>

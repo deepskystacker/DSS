@@ -793,7 +793,7 @@ Do you want to process them?</numerusform>
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
         <translation>
-            <numerusform>%n new files found
+            <numerusform>%n new file found
 </numerusform>
             <numerusform>%n new files found
 </numerusform>
