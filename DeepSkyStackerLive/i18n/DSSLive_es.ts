@@ -965,38 +965,39 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="20"/>
         <source>Sent email settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de email enviado</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="26"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar a:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="33"/>
         <source>Send an Email only for the first warning</source>
         <comment>IDC_SENDONCE</comment>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Enviar email sólo por el primer alerta</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="43"/>
         <source>Subject:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tema:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="66"/>
         <source>Email Account settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuración de la Cuenta</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="14"/>
         <source>Email Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de email</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="72"/>
         <source>SMTP server:</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor SMTP:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
@@ -1022,43 +1023,43 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cifrada:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="134"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Ninguna</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="139"/>
         <source>SSL/TLS</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL/TLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="144"/>
         <source>STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>STARTTLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="152"/>
         <source>Account (From):</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuenta (De):</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="165"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contraseña:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="179"/>
         <source>Show password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar contraseña</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="189"/>
         <source>Test</source>
         <comment>IDC_TEST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Prueba</translation>
     </message>
 </context>
 <context>
@@ -1067,7 +1068,7 @@ Do you want to process them?</source>
         <location filename="../ui/ImageViewer.ui" line="89"/>
         <source>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copy current picture to clipboard&lt;/a&gt;</source>
         <comment>IDC_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copiar la imagen al portapapeles&lt;/a&gt;</translation>
     </message>
 </context>
 </TS>

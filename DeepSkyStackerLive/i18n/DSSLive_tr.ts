@@ -958,38 +958,38 @@ Bunları işlemek ister misiniz?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="20"/>
         <source>Sent email settings</source>
-        <translation type="unfinished"></translation>
+        <translation>E-posta ayarlarını yolla</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="26"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gönderilecek:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="33"/>
         <source>Send an Email only for the first warning</source>
         <comment>IDC_SENDONCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sadece ilk uyarı için e-posta yolla</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="43"/>
         <source>Subject:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nesne:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="66"/>
         <source>Email Account settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Hesap Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="14"/>
         <source>Email Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>E-posta ayarları</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="72"/>
         <source>SMTP server:</source>
-        <translation type="unfinished"></translation>
+        <translation>SMTP Sunucusu:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
@@ -1015,43 +1015,43 @@ Bunları işlemek ister misiniz?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="134"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Hiçbiri</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="139"/>
         <source>SSL/TLS</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL/TLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="144"/>
         <source>STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>STARTTLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="152"/>
         <source>Account (From):</source>
-        <translation type="unfinished"></translation>
+        <translation>Hesap (kimden):</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="165"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifre:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="179"/>
         <source>Show password</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreyi göster</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="189"/>
         <source>Test</source>
         <comment>IDC_TEST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Test</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1060,7 @@ Bunları işlemek ister misiniz?</numerusform>
         <location filename="../ui/ImageViewer.ui" line="89"/>
         <source>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copy current picture to clipboard&lt;/a&gt;</source>
         <comment>IDC_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Şu anki resmi panoya kopyala&lt;/a&gt;</translation>
     </message>
 </context>
 </TS>

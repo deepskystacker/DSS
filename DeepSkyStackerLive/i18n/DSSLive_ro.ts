@@ -970,38 +970,38 @@ Doriți să le procesați?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="20"/>
         <source>Sent email settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite setarile e-mail</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="26"/>
         <source>To:</source>
-        <translation type="unfinished"></translation>
+        <translation>Trimite catre:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="33"/>
         <source>Send an Email only for the first warning</source>
         <comment>IDC_SENDONCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Trimite email doar pentru prima atentionare</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="43"/>
         <source>Subject:</source>
-        <translation type="unfinished"></translation>
+        <translation>Obiect:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="66"/>
         <source>Email Account settings</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="14"/>
         <source>Email Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Setari e-mail</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="72"/>
         <source>SMTP server:</source>
-        <translation type="unfinished"></translation>
+        <translation>Server SMTP:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
@@ -1027,43 +1027,43 @@ Doriți să le procesați?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
-        <translation type="unfinished"></translation>
+        <translation>Criptare:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="134"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Niciuna</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="139"/>
         <source>SSL/TLS</source>
-        <translation type="unfinished"></translation>
+        <translation>SSL/TLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="144"/>
         <source>STARTTLS</source>
-        <translation type="unfinished"></translation>
+        <translation>STARTTLS</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="152"/>
         <source>Account (From):</source>
-        <translation type="unfinished"></translation>
+        <translation>Cont (De la):</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="165"/>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Parola:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="179"/>
         <source>Show password</source>
-        <translation type="unfinished"></translation>
+        <translation>Arata parola</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="189"/>
         <source>Test</source>
         <comment>IDC_TEST</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Test</translation>
     </message>
 </context>
 <context>
@@ -1072,7 +1072,7 @@ Doriți să le procesați?</numerusform>
         <location filename="../ui/ImageViewer.ui" line="89"/>
         <source>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copy current picture to clipboard&lt;/a&gt;</source>
         <comment>IDC_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&apos;.&apos; style=&apos;text-decoration: none;&apos;&gt;Copiaza imaginea curenta in clipboard&lt;/a&gt;</translation>
     </message>
 </context>
 </TS>
