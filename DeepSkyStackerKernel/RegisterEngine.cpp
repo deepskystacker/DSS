@@ -668,7 +668,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 			if (items.count() == 2)
 			{
 				m_fXComet = items[0].toDouble();
-				m_fXComet = items[1].toDouble();
+				m_fYComet = items[1].toDouble();
 				m_bComet = true;
 			}
 		}
