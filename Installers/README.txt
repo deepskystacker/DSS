@@ -66,21 +66,19 @@ Changes since the last release:
 
 23. Bug fix: Clear list didn't reset the status bar message.
 
-24. Update build to use Qt 6.5.3
+24. Work around for Qt bug (QTBUG-46620) with restoring application position and size when re-opening the application after it was closed when maximised.
 
-25. Work around for Qt bug (QTBUG-46620) with restoring application position and size when re-opening the application after it was closed when maximised.
+25. Mouse wheel zooming worked the opposite way from most other applications, now changed to be compatible.
 
-26. Mouse wheel zooming worked the opposite way from most other applications, now changed to be compatible.
+26. Extend exposure time edit control to 4 decimal places instead of 3.
 
-27. Extend exposure time edit control to 4 decimal places instead of 3.
+27. Check lights when loaded using either "Open picture files" or using Drag/Drop.
 
-28. Check lights when loaded using either "Open picture files" or using Drag/Drop.
+28. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
 
-29. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
+29. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file.
 
-30. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file.
-
-31. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).
+30. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
