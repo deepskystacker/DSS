@@ -3,6 +3,12 @@ Welcome to DeepSkyStacker 5.1.4 Beta 1
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
+Known problems:
+
+1. When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
+
+2. The progress dialogue Cancel button isn't always enabled.
+
 Changes since the last release:
 
 1. Upgrade CFITSIO library to 4.2.0
@@ -72,7 +78,9 @@ Changes since the last release:
 
 29. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
 
-30. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file. 
+30. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file.
+
+31. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
