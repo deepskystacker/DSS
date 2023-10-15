@@ -78,7 +78,11 @@ Changes since the last release:
 
 29. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file.
 
-30. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).
+30. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).  Now you need only to:
+
+    o Mark the position of the centre of the comet in 2 lightframes with a large temporal distance (ideally the first and the last lightframe in chronological order).
+
+    o Marking the comet centre in additional light frames can potentially improve the results.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

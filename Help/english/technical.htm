@@ -334,8 +334,8 @@ The main goal of this optimization is the possibility to use dark frames not
 taken in optimal conditions (especially concerning temperature).<br>
 </font></font><font size="2" face="Arial"><br>
 For more information about this method you can consult the following document:<br>
-<a target="_blank" href="https://www.cs.ubc.ca/labs/imager/tr/2001/goesele2001a/goesele.2001a.pdf">
-Entropy-Based Dark Frame Subtraction</a></font></p>
+<A href="https://www.cs.ubc.ca/labs/imager/tr/2001/goesele2001a/goesele.2001a.pdf" target=_blank>
+Entropy-Based Dark Frame Subtraction</A></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-FAMILY: Arial">Stacking 
@@ -633,19 +633,29 @@ Last, the final image is obtained by inserting the comet back in the image.</fon
     <td width="59%" align="center">
     <IMG id = COMETSTACK border = 0 name=COMETSTACK src="../images/FuzzyComet.jpg" width=472 height=366></td>
   </tr>
-</table>
-<p align="justify"><font face="Arial" size="2"><br>
+</table><font face="Arial" size="2">
+<p align="justify"><br>
 If you plan to align the image on the stars, you don't need to do what is 
 described in the following paragraphs since it's the default behavior.<br>
 <br>
 </font><font face="Arial"><b><font size="2">What you need to do <br>
 Step 1: Register the comet center</font><br>
-</b></font><font face="Arial" size="2">DeepSkyStacker can not automatically 
-detect the comet center in the light frames.<br>
-<br>
-First, you must set the comet position <b>in all your light frames</b>. It is 
-done only once.</font></p>
-<p align="justify"><font face="Arial" size="2">To do this, just select a light frame in the list and using the
+</b></font><font face="Arial" size="2">DeepSkyStacker can not automatically detect the comet center 
+in the light frames. So, you need to:<br>   
+  </font></P><font face="Arial" size="2">
+<UL>
+  <LI>
+  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px" 
+  align="justify" data-stringify-indent="0" 
+  data-stringify-border="0">Mark the position of the centre of the comet in 2 
+  lightframes with a large temporal distance (ideally the first and the last 
+  lightframe in chronological order).</p>
+  <LI>
+  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px" 
+  align="justify" data-stringify-indent="0" 
+  data-stringify-border="0">Marking the comet centre in additional light frames 
+  can potentially improve the results.</p></LI></UL>
+<p align="justify"></font><font face="Arial" size="2">To do this, just select a light frame in the list and using the
 <A href="userguide.htm#imagepreview">Edit Comet Mode</A> set the comet center.<br>
 If the comet center is too faint or too bright you can force DeepSkyStacker to 
 accept any position by holding down the Shift key while positioning the comet 
@@ -658,7 +668,7 @@ changes automatically.<br>
 Once the comet position is set and saved you will see a +(C) added to the star 
 count in the #Stars column of the list.<br>
 <br>
-You must repeat the operation for each light frame. </font></p>
+You must repeat the operation for each light frame. </font></P>
 <table border="1" cellspacing="1" width="100%" id="AutoNumber6" cellpadding="10">
   <tr>
   <span>
