@@ -673,7 +673,7 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 			// Show a warning if the standard deviation is larger than 5 pixels
 			const QString errorMessage{ QCoreApplication::translate(
 				"StackingEngine",
-				"The x- or y-deviations of the marked comet positions are unusually large (x: %1 pixels, y: %2 pixels). It should be smaller than %3 pixels, so please check the defined comet centers.")
+				"The variances (X or Y) of the marked comet positions are unusually large (x: %L1 pixels, y: %L2 pixels). It should be smaller than %L3 pixels, so please check the defined comet centres.")
 				.arg(std::sqrt(xVariance), 0, 'f', 1)
 				.arg(std::sqrt(yVariance), 0, 'f', 1)
 				.arg(std::sqrt(MaxVariance), 0, 'f', 1) };
