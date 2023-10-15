@@ -591,7 +591,8 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 
 	std::for_each(stackingEngine.LightFrames().cbegin(), stackingEngine.LightFrames().cend(),
 		[&times, &xPositions, &yPositions, &firstLightframe](const CLightFrameInfo& lightframe) {
-			if (!lightframe.m_bDisabled && lightframe.m_bComet)
+			// We use all lightframes (even those that are below a possible quality threshold), so there's no check for !lightframe.m_bDisabled.
+			if (lightframe.m_bComet)
 			{
 				const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
 				times.emplace_back(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
@@ -633,8 +634,8 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 
 	// Check if the deviations of the given comet positions is within +- 3*sigma of the linear regression.
 	// Works with at least 3 positions.
-	// TO DO: What shall we do if a deviation is too large?
-	//        This would be an indication of an incorrectly marked comet position.
+	// It is an indication of an incorrectly marked comet position if the deviation is too large.
+	// So we present a warning.
 	if (times.size() > 2)
 	{
 		VecT deviations{ times };
@@ -643,42 +644,46 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 		for (const ValT val : xPositions)
 			*vIt++ = val - (*tIt++ * xGradient) - xOffset; // Given x-pos minus estimation_from_linear_regression (= time * gradient + offset)
 		const ValT xVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of x-deviations
-		constexpr ValT MaxVariance = 25;
-		if (xVariance > MaxVariance)
-		{
-			// TO DO
-			// Shall we throw an error if the standard deviation is larger than 5 pixels?
 
-			static_assert(std::is_floating_point_v<ValT>); // For the formatted output below.
-			ZTRACE_RUNTIME("***** WARNING ***** interpolateCometPositions: x-variance very large! stddev(x-Pos) = %.1f. The limit is %.1f.", std::sqrt(xVariance), std::sqrt(MaxVariance));
-		}
 		for (const ValT d : deviations)
 			if ((d * d) > 9 * xVariance)
 			{
 				// TO DO
-				// Shall we throw an error if the x-deviation of this position is larger than 3*sigma?
+				// Shall we show a warning if the x-deviation of this position is larger than 3*sigma?
 			}
+
 		vIt = deviations.begin();
 		tIt = times.cbegin();
 		for (const ValT val : yPositions)
 			*vIt++ = val - (*tIt++ * yGradient) - yOffset; // Given y-pos minus estimation_from_linear_regression (= time * gradient + offset)
 		const ValT yVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of y-deviations
-		if (yVariance > MaxVariance)
-		{
-			// TO DO
-			// Shall we throw an error if the standard deviation is larger than 5 pixels?
-			ZTRACE_RUNTIME("***** WARNING ***** interpolateCometPositions: y-variance very large! stddev(y-Pos) = %.1f. The limit is %.1f.", std::sqrt(yVariance), std::sqrt(MaxVariance));
-		}
+
 		for (const ValT d : deviations)
 			if ((d * d) > 9 * yVariance)
 			{
 				// TO DO
-				// Shall we throw an error if the y-deviation of this position is larger than 3*sigma?
+				// Shall we show a warning if the y-deviation of this position is larger than 3*sigma?
 			}
+
+		constexpr ValT MaxVariance = 25;
+		ZTRACE_RUNTIME("interpolateCometPositions: x-stddev=%.1f, y-stddev=%.1f", std::sqrt(xVariance), std::sqrt(yVariance));
+
+		if (xVariance > MaxVariance || yVariance > MaxVariance)
+		{
+			// Show a warning if the standard deviation is larger than 5 pixels
+			const QString errorMessage{ QCoreApplication::translate(
+				"StackingEngine",
+				"The x- or y-deviations of the marked comet positions are unusually large (x: %1 pixels, y: %2 pixels). It should be smaller than %3 pixels, so please check the defined comet centers.")
+				.arg(std::sqrt(xVariance), 0, 'f', 1)
+				.arg(std::sqrt(yVariance), 0, 'f', 1)
+				.arg(std::sqrt(MaxVariance), 0, 'f', 1) };
+			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+		}
 	}
 
 	for (int i = 0; CLightFrameInfo& lightframe : stackingEngine.LightFrames())
 	{
+		// All active lightframes (those that are NOT disabled) without a comet position will get one using the linear regression.
 		if (!lightframe.m_bComet && !lightframe.m_bDisabled)
 		{
 			const ValT time = static_cast<ValT>(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
