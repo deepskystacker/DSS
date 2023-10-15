@@ -643,10 +643,14 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 		for (const ValT val : xPositions)
 			*vIt++ = val - (*tIt++ * xGradient) - xOffset; // Given x-pos minus estimation_from_linear_regression (= time * gradient + offset)
 		const ValT xVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of x-deviations
-		if (xVariance > 25)
+		constexpr ValT MaxVariance = 25;
+		if (xVariance > MaxVariance)
 		{
 			// TO DO
 			// Shall we throw an error if the standard deviation is larger than 5 pixels?
+
+			static_assert(std::is_floating_point_v<ValT>); // For the formatted output below.
+			ZTRACE_RUNTIME("***** WARNING ***** interpolateCometPositions: x-variance very large! stddev(x-Pos) = %.1f. The limit is %.1f.", std::sqrt(xVariance), std::sqrt(MaxVariance));
 		}
 		for (const ValT d : deviations)
 			if ((d * d) > 9 * xVariance)
@@ -659,10 +663,11 @@ bool interpolateCometPositions(CStackingEngine& stackingEngine)
 		for (const ValT val : yPositions)
 			*vIt++ = val - (*tIt++ * yGradient) - yOffset; // Given y-pos minus estimation_from_linear_regression (= time * gradient + offset)
 		const ValT yVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of y-deviations
-		if (yVariance > 25)
+		if (yVariance > MaxVariance)
 		{
 			// TO DO
 			// Shall we throw an error if the standard deviation is larger than 5 pixels?
+			ZTRACE_RUNTIME("***** WARNING ***** interpolateCometPositions: y-variance very large! stddev(y-Pos) = %.1f. The limit is %.1f.", std::sqrt(yVariance), std::sqrt(MaxVariance));
 		}
 		for (const ValT d : deviations)
 			if ((d * d) > 9 * yVariance)
@@ -908,8 +913,8 @@ void CStackingEngine::ComputeOffsets()
 
 		if (computeOffsets(this, this->m_pProgress, lLast)) // Offset calculation was successful (not stopped by pressing "Cancel")
 		{
-//			interpolateCometPositions(*this);
-			ComputeMissingCometPositions();
+			interpolateCometPositions(*this);
+//			ComputeMissingCometPositions();
 			m_StackingInfo.Save();
 		}
 	}
