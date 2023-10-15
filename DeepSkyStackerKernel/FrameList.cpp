@@ -226,7 +226,7 @@ namespace DSS
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
 	{
 		size_t				comets = 0;
-		bool				bReferenceFrameHasComet = false;
+//		bool				bReferenceFrameHasComet = false;
 		bool				bReferenceFrameSet = false;
 		double				fMaxScore = -1.0;
 
@@ -241,12 +241,12 @@ namespace DSS
 					if (it->m_bUseAsStarting)
 					{
 						bReferenceFrameSet = true;
-						bReferenceFrameHasComet = it->m_bComet;
+//						bReferenceFrameHasComet = it->m_bComet;
 					}
 					if (!bReferenceFrameSet && (it->m_fOverallQuality > fMaxScore))
 					{
 						fMaxScore = it->m_fOverallQuality;
-						bReferenceFrameHasComet = it->m_bComet;
+//						bReferenceFrameHasComet = it->m_bComet;
 					}
 					tasks.AddFileToTask(*it, group);
 					if (it->m_bComet)
@@ -255,7 +255,8 @@ namespace DSS
 			}
 		}
 
-		if (comets > 1 && bReferenceFrameHasComet)
+		// 15-Oct-2023, Martin Toeltsch: It is not required for the comet mode that the reference frame has a comet position set.
+		if (comets > 1 /* && bReferenceFrameHasComet */)
 			tasks.SetCometAvailable(true);
 		tasks.ResolveTasks();
 	}
