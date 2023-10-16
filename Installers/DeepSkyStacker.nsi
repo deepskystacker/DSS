@@ -148,8 +148,12 @@ Section
   File "..\x64\Release\Qt6Core.dll"
   File "..\x64\Release\Qt6Gui.dll"
   File "..\x64\Release\Qt6Network.dll"
-  File "..\x64\Release\Qt6Svg.dll"
+  # File "..\x64\Release\Qt6Svg.dll"
   File "..\x64\Release\Qt6Widgets.dll"
+  File "..\x64\Release\Qt6Charts.dll"
+  File "..\x64\Release\Qt6OpenGL.dll"
+  File "..\x64\Release\Qt6OpenGLWidgets.dll"
+ 
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
