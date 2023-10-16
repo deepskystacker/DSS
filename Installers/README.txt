@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.4 Beta 1
+Welcome to DeepSkyStacker 5.1.4 Beta 2
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -80,9 +80,11 @@ Changes since the last release:
 
 30. The comet position interpolation code has been re-written by Martin Toeltsch (thank you Martin).  Now you need only to:
 
-    o Mark the position of the centre of the comet in 2 lightframes with a large temporal distance (ideally the first and the last lightframe in chronological order).
+    o Mark the position of the centre of the comet in 2 light frames with a large temporal distance (ideally the first and the last light frame in chronological order).
 
     o Marking the comet centre in additional light frames can potentially improve the results.
+
+31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
