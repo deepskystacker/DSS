@@ -13,7 +13,7 @@ Changes since the last release:
 
 1. Upgrade CFITSIO library to 4.2.0
 
-2. Always create a tracefile in the DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
+2. Always create a trace file in the DeepSkyStacker sub-folder of the user's Documents folder.  The file will be called e.g.
 
 	DSSTrace_yyyy-mm-ddThh-hh-ssZ.log where the timestamp is GMT (UTC) time.
 
@@ -52,7 +52,7 @@ Changes since the last release:
 
 16. FITS output files didn't contain the number of images in the stack.  Save this using FITS keyword NCOMBINE, also report the number of images when loading FITS images.
 
-17. Bug fix: Correct code for reading floating point FITS files (the value was incorrectly normalised - e.g. 256.0 was read back as 259.996).
+17. Bug fix: Correct code for reading floating point FITS files (the value was incorrectly normalised - e.g.: 256.0 was read back as 259.996).
 
 18. Bug fix: Value of FITS SOFTWARE keyword in output file truncated after first character.
 
@@ -74,7 +74,7 @@ Changes since the last release:
 
 27. Check lights when loaded using either "Open picture files" or using Drag/Drop.
 
-28. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertantly switched when porting the code for version 5.
+28. Correct Intermediate Files tab of Stacking parameters.  "Create a calibrated file ..." and "Create a registered/calibrated file ..." were inadvertently switched when porting the code for version 5.
 
 29. Bug fix: Saving the intermediate calibrated image in de-Bayered format resulted in a corrupt file.
 
