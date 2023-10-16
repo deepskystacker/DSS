@@ -180,17 +180,17 @@ void RegisterSettings::onInitDialog()
 			{
 			case 3:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 64, 64)) }" );
 				break;
 			case 2:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 171, 63)) }" );
 				break;
 			case 1:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 234, 63)) }" );
 				break;
 			};
@@ -200,7 +200,7 @@ void RegisterSettings::onInitDialog()
 			string = tr("darks, flats and offsets/bias checked.",
 				"IDS_CHECK_ALLOK");
 			ui->stackWarning->setStyleSheet(
-				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+				"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 				"stop:0 rgb(229, 255, 193), stop:1 rgb(21, 223, 33)) }" );
 		};
 		ui->stackWarning->setText(string);
