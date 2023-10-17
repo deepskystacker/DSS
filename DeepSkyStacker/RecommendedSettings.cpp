@@ -733,6 +733,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 {
 	QPalette palette;
 	QColor windowTextColour = palette.color(QPalette::WindowText);
+	bool darkScheme{ Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme() };
 
 	clearText();
 
@@ -819,7 +820,12 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			if (bDifferent)
 			{
 				if (recommendation.isImportant)
-					crColor = Qt::darkRed;
+				{
+					if (darkScheme)
+						crColor = Qt::red;
+					else
+						crColor = Qt::darkRed;
+				}
 				else
 					crColor = blueColour;
 			}

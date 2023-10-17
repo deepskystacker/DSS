@@ -140,6 +140,14 @@ void ExplorerBar::makeLinks()
 	QString redColour = QColorConstants::Red.name();
 	QString blueColour = QColorConstants::Blue.name();
 
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+	{
+		redColour = QColorConstants::Svg::gold.name();
+	}
+
 	makeLink(ui->openLights, redColour);
 	makeLink(ui->openDarks, defColour);
 	makeLink(ui->openFlats, defColour);
