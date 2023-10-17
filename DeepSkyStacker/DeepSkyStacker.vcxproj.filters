@@ -717,6 +717,9 @@
     <Image Include="res\ButtonStar_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\Heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="QWinHost">

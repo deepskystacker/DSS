@@ -29,7 +29,7 @@
         <translation>關於&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="87"/>
+        <location filename="../About.cpp" line="94"/>
         <source>Default</source>
         <translation>預設</translation>
     </message>
@@ -73,47 +73,47 @@ Copyright Tőkés Attila</source>
 版權所有 Tőkés Attila</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="108"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="112"/>
+        <location filename="../About.cpp" line="119"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="116"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="120"/>
+        <location filename="../About.cpp" line="127"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="131"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="136"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="126"/>
-        <location filename="../About.cpp" line="130"/>
-        <location filename="../About.cpp" line="139"/>
-        <location filename="../About.cpp" line="143"/>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="150"/>
+        <location filename="../About.cpp" line="151"/>
         <source>and</source>
         <translation>以及</translation>
     </message>
@@ -128,31 +128,31 @@ Copyright © 1991-1997 Silicon Graphics, Inc.</source>
 版權所有 © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>繁体中文版本：</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="149"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="158"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation></translation>
@@ -255,12 +255,12 @@ Do you want...</source>
         <translation>偵測本幅影像中的星點</translation>
     </message>
     <message>
-        <location filename="../ui/AskRegistering.ui" line="73"/>
+        <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
         <translation>偵測所有影像中的星點</translation>
     </message>
     <message>
-        <location filename="../ui/AskRegistering.ui" line="80"/>
+        <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
         <translation>繼續處理但不偵測本幅影像中的星點</translation>
     </message>
@@ -343,7 +343,7 @@ Add the file lists you want to stack and click OK to start the stacking processe
         <translation>清除影像清單</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="80"/>
+        <location filename="../BatchStacking.cpp" line="106"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>儲存最終影像於 %1</translation>
@@ -472,31 +472,31 @@ JPEG 或 PNG 文件 (*.jpg *.jpeg *.png)</translation>
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="861"/>
+        <location filename="../editstars.cpp" line="844"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>點選以設定彗星於此</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="863"/>
+        <location filename="../editstars.cpp" line="846"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>點此以加入此星</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="870"/>
+        <location filename="../editstars.cpp" line="853"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>點此以移除彗星</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="872"/>
+        <location filename="../editstars.cpp" line="855"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>點此以移除此星</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="920"/>
+        <location filename="../editstars.cpp" line="903"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -506,7 +506,7 @@ FWHM: %3</source>
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="927"/>
+        <location filename="../editstars.cpp" line="910"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -514,7 +514,7 @@ Comet:%1</source>
 彗星:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="927"/>
+        <location filename="../editstars.cpp" line="910"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是</translation>
@@ -523,31 +523,31 @@ Comet:%1</source>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="674"/>
+        <location filename="../StackingDlg.cpp" line="661"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="676"/>
+        <location filename="../StackingDlg.cpp" line="663"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="675"/>
+        <location filename="../StackingDlg.cpp" line="662"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="677"/>
+        <location filename="../StackingDlg.cpp" line="664"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="673"/>
+        <location filename="../StackingDlg.cpp" line="660"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
@@ -556,7 +556,8 @@ Comet:%1</source>
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../../Tools/imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="58"/>
+        <location filename="../../Tools/imageview.cpp" line="78"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
@@ -615,12 +616,12 @@ Ctrl+4 切換四角模式</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="810"/>
+        <location filename="../StackingDlg.cpp" line="797"/>
         <source>Rename group</source>
         <translation>重命名群組</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="899"/>
+        <location filename="../StackingDlg.cpp" line="886"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -630,43 +631,43 @@ This operation cannot be reversed or cancelled.</source>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="650"/>
+        <location filename="../StackingDlg.cpp" line="637"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>以此為基準影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="654"/>
+        <location filename="../StackingDlg.cpp" line="641"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>勾選</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="656"/>
+        <location filename="../StackingDlg.cpp" line="643"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>取消勾選</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="659"/>
+        <location filename="../StackingDlg.cpp" line="646"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>從清單中移除</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="665"/>
+        <location filename="../StackingDlg.cpp" line="652"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>複製至暫存區</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="668"/>
+        <location filename="../StackingDlg.cpp" line="655"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>從硬碟裡刪除</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="698"/>
+        <location filename="../StackingDlg.cpp" line="685"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -677,69 +678,69 @@ Ctrl-A 或相當於選擇所有行
 鼠標右鍵顯示菜單</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1456"/>
+        <location filename="../StackingDlg.cpp" line="1440"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1465"/>
+        <location filename="../StackingDlg.cpp" line="1449"/>
         <source>Failed to load image %1</source>
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1769"/>
+        <location filename="../StackingDlg.cpp" line="1752"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="705"/>
+        <location filename="../StackingDlg.cpp" line="692"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>雙擊此處停靠/取消停靠圖像列表</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1421"/>
+        <location filename="../StackingDlg.cpp" line="1405"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>載入 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1519"/>
+        <location filename="../StackingDlg.cpp" line="1503"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1543"/>
+        <location filename="../StackingDlg.cpp" line="1527"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>開啟天體影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1547"/>
+        <location filename="../StackingDlg.cpp" line="1530"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>開啟暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1565"/>
+        <location filename="../StackingDlg.cpp" line="1548"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>開起平場暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1553"/>
+        <location filename="../StackingDlg.cpp" line="1536"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>開啟平場影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="662"/>
+        <location filename="../StackingDlg.cpp" line="649"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>屬性...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="980"/>
+        <location filename="../StackingDlg.cpp" line="967"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -747,13 +748,13 @@ Ctrl-A 或相當於選擇所有行
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1559"/>
+        <location filename="../StackingDlg.cpp" line="1542"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>開啟偏壓影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1782"/>
+        <location filename="../StackingDlg.cpp" line="1765"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -767,37 +768,37 @@ Offset/Bias Frames: %5</source>
 偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1865"/>
+        <location filename="../StackingDlg.cpp" line="1849"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>開啟另一個檔案清單</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2042"/>
+        <location filename="../StackingDlg.cpp" line="2026"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>第%1版DeepSkyStacker已可下載。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2058"/>
+        <location filename="../StackingDlg.cpp" line="2042"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>版本檢查 Internet 錯誤代碼 %1：
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2174"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>Total registering time: %1 %2</source>
         <translation>總註冊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2193"/>
+        <location filename="../StackingDlg.cpp" line="2177"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>偵測星點前需先勾選天體影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2251"/>
+        <location filename="../StackingDlg.cpp" line="2235"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -807,19 +808,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker需要在執行中存取這些檔案夾。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2272"/>
+        <location filename="../StackingDlg.cpp" line="2256"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>勾选的图片不相容: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2276"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>疊合前需先勾選天體影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2324"/>
+        <location filename="../StackingDlg.cpp" line="2306"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -829,18 +830,18 @@ Do you want to save the changes?</source>
 要儲存這些變定嗎？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2440"/>
+        <location filename="../StackingDlg.cpp" line="2422"/>
         <source>Total stacking time: %1 %2</source>
         <translation>總堆疊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2471"/>
+        <location filename="../StackingDlg.cpp" line="2453"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>儲存最終影像於 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2554"/>
+        <location filename="../StackingDlg.cpp" line="2535"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -930,12 +931,17 @@ You can probably get another one or download the final release from the web site
 （稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="449"/>
+        <location filename="../DeepSkyStacker.cpp" line="267"/>
+        <source>Sponsor DeepSkyStacker</source>
+        <translation>贊助 DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="468"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="597"/>
+        <location filename="../DeepSkyStacker.cpp" line="621"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
@@ -949,7 +955,7 @@ You can probably get another one or download the final release from the web site
         <translation>加入檔案...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="86"/>
+        <location filename="../DropFilesDlg.cpp" line="88"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
         <translation>
@@ -957,7 +963,7 @@ You can probably get another one or download the final release from the web site
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="87"/>
+        <location filename="../DropFilesDlg.cpp" line="89"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
         <translation>
@@ -965,7 +971,7 @@ You can probably get another one or download the final release from the web site
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="88"/>
+        <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
         <translation>
@@ -973,7 +979,7 @@ You can probably get another one or download the final release from the web site
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="89"/>
+        <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
         <translation>
@@ -981,7 +987,7 @@ You can probably get another one or download the final release from the web site
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="90"/>
+        <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
         <translation>
@@ -989,7 +995,7 @@ You can probably get another one or download the final release from the web site
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="91"/>
+        <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
         <translation>
@@ -1000,66 +1006,66 @@ You can probably get another one or download the final release from the web site
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="255"/>
+        <location filename="../ExplorerBar.cpp" line="290"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>星點偵測設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="256"/>
+        <location filename="../ExplorerBar.cpp" line="291"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>疊合設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="298"/>
+        <location filename="../ExplorerBar.cpp" line="333"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>還原為預設設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="335"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>載入DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="304"/>
+        <location filename="../ExplorerBar.cpp" line="339"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>載入...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="365"/>
+        <location filename="../ExplorerBar.cpp" line="400"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>儲存為DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="369"/>
+        <location filename="../ExplorerBar.cpp" line="404"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>儲存為...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="510"/>
+        <location filename="../ExplorerBar.cpp" line="560"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>載入DeepSkyStacker設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="514"/>
+        <location filename="../ExplorerBar.cpp" line="564"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="561"/>
+        <location filename="../ExplorerBar.cpp" line="611"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="557"/>
+        <location filename="../ExplorerBar.cpp" line="607"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>儲存DeepSkyStacker設定</translation>
@@ -1324,7 +1330,7 @@ Tick this box to keep the trace file.</source>
         <translation>中介檔儲存設定</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="91"/>
+        <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
         <translation>每幅天體影像校正後都儲存校正結果</translation>
     </message>
@@ -1334,7 +1340,7 @@ Tick this box to keep the trace file.</source>
         <translation>若為RAW檔則儲存解譯Bayer矩陣後的結果</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="38"/>
+        <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
         <translation>儲存每幅天體影像校正/星點對齊後的結果</translation>
     </message>
@@ -1738,222 +1744,222 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>顯示所有推薦內容</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="195"/>
+        <location filename="../RecommendedSettings.cpp" line="191"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
         <translation>此為推薦設定值&lt;br&gt;它們未必在各種情況下都有效，但在做初步嘗試時它們是不錯的起始點。</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="199"/>
+        <location filename="../RecommendedSettings.cpp" line="195"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
         <translation>點選提示的聯結以改變相關設定</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="203"/>
+        <location filename="../RecommendedSettings.cpp" line="199"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
         <translation>已設定完成並顯示成綠色</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="263"/>
-        <location filename="../RecommendedSettings.cpp" line="295"/>
+        <location filename="../RecommendedSettings.cpp" line="259"/>
+        <location filename="../RecommendedSettings.cpp" line="291"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
         <translation>如果您要處理窄波段影像(尤其是H%1)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="268"/>
+        <location filename="../RecommendedSettings.cpp" line="264"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
         <translation>使用大像元模式</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="300"/>
-        <location filename="../RecommendedSettings.cpp" line="670"/>
-        <location filename="../RecommendedSettings.cpp" line="716"/>
+        <location filename="../RecommendedSettings.cpp" line="296"/>
+        <location filename="../RecommendedSettings.cpp" line="666"/>
+        <location filename="../RecommendedSettings.cpp" line="712"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
         <translation>使用各色獨立背景校正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="322"/>
+        <location filename="../RecommendedSettings.cpp" line="318"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
         <translation>您處理的影像有著很長時間的曝光以及可能相當好的訊噪比</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="325"/>
+        <location filename="../RecommendedSettings.cpp" line="321"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
         <translation>使用AHD法解譯Bayer矩陣</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="331"/>
+        <location filename="../RecommendedSettings.cpp" line="327"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
         <translation>您處理的影像曝光時間不長，訊噪比較低</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="334"/>
+        <location filename="../RecommendedSettings.cpp" line="330"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
         <translation>使用雙線性法解譯Bayer矩陣</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="378"/>
+        <location filename="../RecommendedSettings.cpp" line="374"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
         <translation>您使用的是偏壓影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="381"/>
+        <location filename="../RecommendedSettings.cpp" line="377"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
         <translation>將黑色的影像數值設為0以改進校正效果</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="390"/>
+        <location filename="../RecommendedSettings.cpp" line="386"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
         <translation>您的平場影像沒有偏壓修正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="393"/>
+        <location filename="../RecommendedSettings.cpp" line="389"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
         <translation>不要將黑色的影像數值歸零</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="414"/>
+        <location filename="../RecommendedSettings.cpp" line="410"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
         <translation>您使用較低的星點偵測臨界值</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="417"/>
+        <location filename="../RecommendedSettings.cpp" line="413"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
         <translation>對齊影像前使用中位數濾波以降低雜訊並改進星點偵測</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="434"/>
+        <location filename="../RecommendedSettings.cpp" line="430"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
         <translation>若您使用的是改裝過的DSLR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="437"/>
+        <location filename="../RecommendedSettings.cpp" line="433"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
         <translation>還原所有白平衡設定</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="474"/>
+        <location filename="../RecommendedSettings.cpp" line="470"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
         <translation>您正要製作一幅恆星拖線的彗星影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="477"/>
-        <location filename="../RecommendedSettings.cpp" line="547"/>
+        <location filename="../RecommendedSettings.cpp" line="473"/>
+        <location filename="../RecommendedSettings.cpp" line="543"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
         <translation>使用平均法來疊合影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="488"/>
+        <location filename="../RecommendedSettings.cpp" line="484"/>
         <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
         <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
         <translation>您正要從%1幅曝光製作一恆星與彗星都對齊的影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="495"/>
-        <location filename="../RecommendedSettings.cpp" line="528"/>
+        <location filename="../RecommendedSettings.cpp" line="491"/>
+        <location filename="../RecommendedSettings.cpp" line="524"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
         <translation>使用Kappa-Sigma剪去法疊合影像</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="503"/>
-        <location filename="../RecommendedSettings.cpp" line="555"/>
-        <location filename="../RecommendedSettings.cpp" line="587"/>
-        <location filename="../RecommendedSettings.cpp" line="619"/>
-        <location filename="../RecommendedSettings.cpp" line="651"/>
+        <location filename="../RecommendedSettings.cpp" line="499"/>
+        <location filename="../RecommendedSettings.cpp" line="551"/>
+        <location filename="../RecommendedSettings.cpp" line="583"/>
+        <location filename="../RecommendedSettings.cpp" line="615"/>
+        <location filename="../RecommendedSettings.cpp" line="647"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
         <translation>使用中位數疊合法</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="521"/>
+        <location filename="../RecommendedSettings.cpp" line="517"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
         <translation>您正要疊合 %1 幅天體曝光</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="537"/>
+        <location filename="../RecommendedSettings.cpp" line="533"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
         <translation>使用自動可調適加權平均</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="571"/>
+        <location filename="../RecommendedSettings.cpp" line="567"/>
         <source>You are creating a master dark from %1 dark frame(s)</source>
         <comment>IDS_RECO_DARK_REASON</comment>
         <translation>您正要從%1幅暗電流影像製作一幅總和暗電流</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="578"/>
-        <location filename="../RecommendedSettings.cpp" line="610"/>
-        <location filename="../RecommendedSettings.cpp" line="642"/>
+        <location filename="../RecommendedSettings.cpp" line="574"/>
+        <location filename="../RecommendedSettings.cpp" line="606"/>
+        <location filename="../RecommendedSettings.cpp" line="638"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
         <translation>使用Kappa-Sigma減去法與中位數疊合</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="603"/>
+        <location filename="../RecommendedSettings.cpp" line="599"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
         <translation>您正要從%1幅偏壓影像製作一幅總和偏壓</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="635"/>
+        <location filename="../RecommendedSettings.cpp" line="631"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
         <translation>您正要從%1幅平場影像製作一幅總和平場</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="667"/>
+        <location filename="../RecommendedSettings.cpp" line="663"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
         <translation>若最終影像看來灰灰而無色彩</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="690"/>
+        <location filename="../RecommendedSettings.cpp" line="686"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
         <translation>若最終影像的色平衡在後續處理中難以修正</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="693"/>
+        <location filename="../RecommendedSettings.cpp" line="689"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
         <translation>使用同時校正RGB各色背景</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="713"/>
+        <location filename="../RecommendedSettings.cpp" line="709"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
         <translation>您正要疊合灰階影像，它們的背景亮度可能略微不同。</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="802"/>
+        <location filename="../RecommendedSettings.cpp" line="796"/>
         <source>or</source>
         <comment>IDS_OR</comment>
         <translation>或</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="863"/>
+        <location filename="../RecommendedSettings.cpp" line="862"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
         <translation>須先將影像加入清單中並勾選.</translation>
@@ -2034,61 +2040,61 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>用中位數濾波降低雜訊</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="156"/>
+        <location filename="../RegisterSettings.cpp" line="158"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>疊合影像前請記得加進並勾選暗電流，平場，以及偏壓影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="159"/>
+        <location filename="../RegisterSettings.cpp" line="161"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>疊合影像前請記得加進並勾選暗電流以及平場影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="162"/>
+        <location filename="../RegisterSettings.cpp" line="164"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>疊合影像前請記得加進並勾選暗電流以及偏壓影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="165"/>
+        <location filename="../RegisterSettings.cpp" line="167"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>疊合影像前請記得加進並勾選平場與偏壓影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="168"/>
+        <location filename="../RegisterSettings.cpp" line="170"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>疊合影像前請記得加進並勾選暗電流影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="171"/>
+        <location filename="../RegisterSettings.cpp" line="173"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>疊合影像前請記得加進並勾選平場影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="174"/>
+        <location filename="../RegisterSettings.cpp" line="176"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>疊合影像前請記得加進並勾選偏壓影像。</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="198"/>
+        <location filename="../RegisterSettings.cpp" line="200"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>已勾選暗電流，平場，以及偏壓</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="262"/>
+        <location filename="../RegisterSettings.cpp" line="264"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>偵測星點中 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="269"/>
+        <location filename="../RegisterSettings.cpp" line="271"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 顆星</translation>
@@ -2237,322 +2243,322 @@ Do you want to save them?</source>
         <translation>疊合設定...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="184"/>
+        <location filename="../StackRecap.cpp" line="186"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="185"/>
+        <location filename="../StackRecap.cpp" line="187"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation>增益</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="203"/>
+        <location filename="../StackRecap.cpp" line="205"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="204"/>
+        <location filename="../StackRecap.cpp" line="206"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>沒有</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="218"/>
+        <location filename="../StackRecap.cpp" line="220"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
         <translation>RGB三色背景校正: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="223"/>
+        <location filename="../StackRecap.cpp" line="225"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation>各色獨立校正背景: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="228"/>
+        <location filename="../StackRecap.cpp" line="230"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
         <translation>暗電流最佳化: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="233"/>
+        <location filename="../StackRecap.cpp" line="235"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
         <translation>暗電流乘算系數: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="237"/>
+        <location filename="../StackRecap.cpp" line="239"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
         <translation>熱像元偵測與移除: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="246"/>
+        <location filename="../StackRecap.cpp" line="248"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
         <translation>此處理暫時需要 %1 的空間於 %2 碟。\n此碟目前只有 %3 可用空間。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="268"/>
+        <location filename="../StackRecap.cpp" line="270"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
         <translation>警告: 您使用JPEG格式的暗電流，平場，或偏壓檔&lt;br&gt;因為JPEG的失真壓縮，這些校正將沒有效果。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="276"/>
+        <location filename="../StackRecap.cpp" line="278"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation>疊合模式: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="281"/>
+        <location filename="../StackRecap.cpp" line="283"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation>標準</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="284"/>
+        <location filename="../StackRecap.cpp" line="286"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation>馬賽克</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="287"/>
+        <location filename="../StackRecap.cpp" line="289"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation>自訂方型區域</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="290"/>
+        <location filename="../StackRecap.cpp" line="292"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation>交疊</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="298"/>
+        <location filename="../StackRecap.cpp" line="300"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation>星點對齊方法: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="306"/>
+        <location filename="../StackRecap.cpp" line="308"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation>系統自動決定</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="309"/>
+        <location filename="../StackRecap.cpp" line="311"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation>雙線性</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="312"/>
+        <location filename="../StackRecap.cpp" line="314"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation>雙二次方</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="315"/>
+        <location filename="../StackRecap.cpp" line="317"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation>雙三次方</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="318"/>
+        <location filename="../StackRecap.cpp" line="320"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation>不執行對齊各幅星點</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="329"/>
+        <location filename="../StackRecap.cpp" line="331"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation>使用%1倍Drizzle</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="335"/>
+        <location filename="../StackRecap.cpp" line="337"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
         <translation>本drizzle選項與Bayer Drizzle不相容.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="346"/>
+        <location filename="../StackRecap.cpp" line="348"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
         <translation>偵測到並使用%1個處理器 &quot;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="349"/>
+        <location filename="../StackRecap.cpp" line="351"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
         <translation>偵測到%1個處理器 - 只使用一個</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="361"/>
+        <location filename="../StackRecap.cpp" line="363"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation>彗星處理: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="366"/>
+        <location filename="../StackRecap.cpp" line="368"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation>對齊星點 (無特殊處理)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="369"/>
+        <location filename="../StackRecap.cpp" line="371"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation>對齊彗星</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="372"/>
+        <location filename="../StackRecap.cpp" line="374"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation>同時對齊星點與彗星</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="386"/>
+        <location filename="../StackRecap.cpp" line="388"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation>套用熱像元外觀修飾 (濾波器 = %1 像元, 偵測臨界值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="394"/>
+        <location filename="../StackRecap.cpp" line="396"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation>套用冷像元外觀修飾 (濾波器 = %1 像元, 偵測臨界值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="423"/>
+        <location filename="../StackRecap.cpp" line="425"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation>疊合步驟 %1&lt;br&gt;  -&gt;%2 幅影像 (%3: %4) - 總曝光 : </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="441"/>
-        <location filename="../StackRecap.cpp" line="485"/>
-        <location filename="../StackRecap.cpp" line="540"/>
-        <location filename="../StackRecap.cpp" line="616"/>
-        <location filename="../StackRecap.cpp" line="671"/>
+        <location filename="../StackRecap.cpp" line="443"/>
+        <location filename="../StackRecap.cpp" line="487"/>
+        <location filename="../StackRecap.cpp" line="542"/>
+        <location filename="../StackRecap.cpp" line="618"/>
+        <location filename="../StackRecap.cpp" line="673"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation>方法: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="452"/>
+        <location filename="../StackRecap.cpp" line="454"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation>警告: 如果選取平均以外的方法，於RAW檔數位顯像設定中選擇的Bayer Drizzle選項，有可能產生怪異的結果。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="472"/>
+        <location filename="../StackRecap.cpp" line="474"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation>-&gt; 偏壓: %1 幅 (%2: %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="518"/>
+        <location filename="../StackRecap.cpp" line="520"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation>-&gt; 無偏壓</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="527"/>
+        <location filename="../StackRecap.cpp" line="529"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation>-&gt; 暗電流: %1 幅 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="585"/>
+        <location filename="../StackRecap.cpp" line="587"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation>警告: 曝光時間與天體影像不幅</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="594"/>
+        <location filename="../StackRecap.cpp" line="596"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation>-&gt; 無暗電流</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="603"/>
+        <location filename="../StackRecap.cpp" line="605"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation>-&gt; 平場暗電流: %1 幅 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="659"/>
+        <location filename="../StackRecap.cpp" line="661"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; 平場: %1 幅 (%2: %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="497"/>
-        <location filename="../StackRecap.cpp" line="567"/>
-        <location filename="../StackRecap.cpp" line="683"/>
+        <location filename="../StackRecap.cpp" line="499"/>
+        <location filename="../StackRecap.cpp" line="569"/>
+        <location filename="../StackRecap.cpp" line="685"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>警告: ISO值與天體影像不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="507"/>
-        <location filename="../StackRecap.cpp" line="577"/>
-        <location filename="../StackRecap.cpp" line="693"/>
+        <location filename="../StackRecap.cpp" line="509"/>
+        <location filename="../StackRecap.cpp" line="579"/>
+        <location filename="../StackRecap.cpp" line="695"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation>警告: 增益與影像檔的增益不相符</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="629"/>
+        <location filename="../StackRecap.cpp" line="631"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation>警告: ISO值與平場不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="639"/>
+        <location filename="../StackRecap.cpp" line="641"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation>警告: 平場暗電流檔的增益與平場檔的增益不相符</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="647"/>
+        <location filename="../StackRecap.cpp" line="649"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation>警告: 曝光時間與平場不同</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="703"/>
+        <location filename="../StackRecap.cpp" line="705"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation>-&gt; 無平場</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="718"/>
+        <location filename="../StackRecap.cpp" line="720"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
         <translation>估計總曝光時間: %1&lt;br&gt;(此值假設所有勾選的天體影像都將用於疊合)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="728"/>
+        <location filename="../StackRecap.cpp" line="730"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
         <translation>本處理將暫時使用%1於%2槽 (%3 空間)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="256"/>
-        <location filename="../StackRecap.cpp" line="737"/>
+        <location filename="../StackRecap.cpp" line="258"/>
+        <location filename="../StackRecap.cpp" line="739"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
         <translation>注意: 所需的硬碟空間乃估計自參考影像的大小。視最終影像大小而定，有可能需要更大的空間。</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="745"/>
+        <location filename="../StackRecap.cpp" line="747"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
         <translation>警告: 您選擇儲存對齊星點以及校正後的影像，請確認您有足夠的硬碟空間。</translation>
@@ -2591,31 +2597,31 @@ Do you want to save them?</source>
         <translation>疊合設定</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="47"/>
+        <location filename="../StackSettings.cpp" line="49"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>天體影像</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="48"/>
+        <location filename="../StackSettings.cpp" line="50"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>暗電流</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="49"/>
+        <location filename="../StackSettings.cpp" line="51"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>平場</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="50"/>
+        <location filename="../StackSettings.cpp" line="52"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>偏壓</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="187"/>
+        <location filename="../StackSettings.cpp" line="189"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>請選擇暫存檔用的檔案夾</translation>
@@ -2680,7 +2686,7 @@ compared to the standard deviation (%1).</source>
 以取得最終的加權平均值。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="106"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>選項...</translation>
