@@ -70,7 +70,11 @@ RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	workspace(new Workspace()),
 	pStackingTasks(nullptr),
 	initialised(false),
-	blueColour{ QColorConstants::Svg::deepskyblue }
+	darkTheme { Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme() },
+	//
+	// If Windows Dark Theme is active set blueColour to be lightskyblue instead of deepskyblue
+	// 
+	blueColour{ darkTheme ? QColorConstants::Svg::lightskyblue : QColorConstants::Svg::deepskyblue }
 {
 	ui->setupUi(this);
 	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
@@ -80,12 +84,6 @@ RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
 	//
 	ui->textBrowser->setOpenLinks(false);
-
-	//
-	// If Windows Dark Theme is active set blueColour to be lightskyblue instead of deepskyblue
-	// 
-	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
-		blueColour = QColorConstants::Svg::lightskyblue;
 }
 
 RecommendedSettings::~RecommendedSettings()
@@ -175,24 +173,17 @@ void RecommendedSettings::reject()
 
 /* ------------------------------------------------------------------- */
 
-void RecommendedSettings::clearText()
-{
-	QPalette palette;
-	QColor	colour = palette.color(QPalette::Window);
-
-	QString strText = QString("<body link=#0000ff bgcolor=%1></body>")
-		.arg(colour.name());
-	vRecommendations.clear();
-	ui->textBrowser->setHtml(strText);
-};
-
 /* ------------------------------------------------------------------- */
 
 void RecommendedSettings::insertHeader()
 {
-	QString					strHTML;
+	QPalette palette;
+	QColor	colour{ darkTheme ? Qt::gray : Qt::lightGray };
 
-	strHTML = "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
+	QString	strHTML{ QString("<body bgcolor=%1>")
+							.arg(colour.name()) };
+
+	strHTML += "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
 	strHTML += "<td>";
 
 	strHTML += tr("These are recommended settings.<br>"
@@ -218,6 +209,7 @@ void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, 
 {
 	QString					strText;
 	QString					strInputText(html);
+	QColor	linkColour{ darkTheme ? Qt::cyan : Qt::darkBlue };
 
 	if (bBold && bItalic)
 	{
@@ -240,8 +232,9 @@ void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, 
 	
 	if (-1 != lLinkID)
 	{
-		strText = QString("<a href = \"%1\">%2</a>")
+		strText = QString("<a href = \"%1\"><span style=\"color: %2;\">%3</span></a>")
 			.arg(lLinkID)
+			.arg(linkColour.name())
 			.arg(strInputText);
 		strInputText = strText;
 	};
@@ -370,7 +363,6 @@ static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fEx
 
 /* ------------------------------------------------------------------- */
 
-#if (0)
 static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
 {
 	RecommendationItem			ri;
@@ -402,7 +394,6 @@ static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat
 	};
 
 };
-#endif
 
 /* ------------------------------------------------------------------- */
 
@@ -733,9 +724,6 @@ void RecommendedSettings::fillWithRecommendedSettings()
 {
 	QPalette palette;
 	QColor windowTextColour = palette.color(QPalette::WindowText);
-	bool darkScheme{ Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme() };
-
-	clearText();
 
 	if (pStackingTasks && pStackingTasks->GetNrLightFrames())
 	{
@@ -752,8 +740,8 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime(), pStackingTasks->AreFITSImageUsed());
 			AddModdedDSLR(vRecommendations, pStackingTasks->AreFITSImageUsed());
 			AddRAWNarrowBandRecommendation(vRecommendations, pStackingTasks->AreFITSImageUsed());
-			// if (!pStackingTasks->AreFITSImageUsed())
-			//	AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
+			if (!pStackingTasks->AreFITSImageUsed())
+				AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
 		};
 
 		if (pStackingTasks->AreColorImageUsed())
@@ -821,8 +809,8 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			{
 				if (recommendation.isImportant)
 				{
-					if (darkScheme)
-						crColor = Qt::red;
+					if (darkTheme)
+						crColor = Qt::yellow;
 					else
 						crColor = Qt::darkRed;
 				}
@@ -851,7 +839,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 					insertHTML(strOr+"<br>", windowTextColour, false, true);
 				};
 
-				insertHTML("->  ");
+				insertHTML("->  ", windowTextColour);
 				if (bAlreadySet)
 				{
 					insertHTML(ri.recommendation, qRgb(86, 170, 86));
@@ -871,6 +859,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 	{
 		insertHTML(tr("You must first add images to the list and check them.", "IDS_RECO_PREREQUISITES"), Qt::red, true);
 	};
+	insertHTML("</body>");
 };
 
 /* ------------------------------------------------------------------- */
