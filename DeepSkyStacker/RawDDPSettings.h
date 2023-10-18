@@ -34,6 +34,7 @@ private slots:
 	void on_AHD_clicked();
 	void on_rawBayer_clicked();
 	void on_superPixels_clicked();
+	void on_blackPointToZero_clicked(bool);
 
 	// Slots for FITS Files tab
 	void on_isFITSRaw_clicked(bool);

@@ -392,6 +392,9 @@ void RawDDPSettings::onInitDialog()
 	else if (string == "AHD")
 		ui->AHD->setChecked(true);
 
+
+	ui->blackPointToZero->setChecked(workspace->value("RawDDP/BlackPointTo0", false).toBool());
+
 	//
 	// Now populate the FITS Files tab controls
 	//
@@ -650,6 +653,11 @@ void RawDDPSettings::on_superPixels_clicked()
 	workspace->setValue("RawDDP/Interpolation", "");
 	workspace->setValue("RawDDP/RawBayer", false);
 	workspace->setValue("RawDDP/SuperPixels", true);
+}
+
+void RawDDPSettings::on_blackPointToZero_clicked(bool checked)
+{
+	workspace->setValue("RawDDP/BlackPointTo0", checked);
 }
 
 // Slots for FITS Files tab
