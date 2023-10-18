@@ -276,7 +276,7 @@ void DeepSkyStacker::createStatusBar()
 
 	statusBarText->setAlignment(Qt::AlignHCenter);
 
-	statusBar()->addPermanentWidget(sponsorText, 1);
+	statusBar()->addPermanentWidget(sponsorText, 0);
 	statusBar()->addWidget(statusBarText, 1);
 	connect(stackingDlg, &DSS::StackingDlg::statusMessage, this, &DeepSkyStacker::updateStatus);
 }
