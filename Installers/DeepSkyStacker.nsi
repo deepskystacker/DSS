@@ -36,7 +36,7 @@ FunctionEnd
 
 !define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
 !define DSS_VERSION        "5.1.4"                         # For control panel
-!define DSS_VERSION_SUFFIX " Beta 1"		               # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX " Beta 2"		               # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -248,6 +248,10 @@ Section "Uninstall"
   Delete "$INSTDIR\Qt6Network.dll"
   Delete "$INSTDIR\Qt6Svg.dll"
   Delete "$INSTDIR\Qt6Widgets.dll"
+  Delete "$INSTDIR\Qt6Charts.dll"
+  Delete "$INSTDIR\Qt6OpenGL.dll"
+  Delete "$INSTDIR\Qt6OpenGLWidgets.dll"
+
   
   Delete "$INSTDIR\iconengines\*"
   Delete "$INSTDIR\imageformats\*"
