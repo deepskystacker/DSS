@@ -260,13 +260,15 @@ DeepSkyStacker::~DeepSkyStacker()
 
 void DeepSkyStacker::createStatusBar()
 {
-	QString text{ "<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"15\" >&nbsp;"
-		"<a style=\"font-size:16px;\" href=\"https://github.com/sponsors/deepskystacker\""
-		"<span>" };
-		
-	text += tr("Sponsor DeepSkyStacker");
-	text += "</span></a>";
+	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
 
+	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
+		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
+		"<span>%2</span></a>")
+		.arg(linkColour.name())
+		.arg(tr("Sponsor DeepSkyStacker"))
+	};
+		
 	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	sponsorText->setTextFormat(Qt::RichText);
 	sponsorText->setOpenExternalLinks(true);
