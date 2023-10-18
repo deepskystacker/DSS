@@ -356,10 +356,6 @@ void DeepSkyStacker::connectSignalsToSlots()
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-	//
-	// Force setting of blackPointToZero as initially false
-	//
-	Workspace{}.setValue("RawDDP/BlackPointTo0", false);
 
 	//
 	// Set the Docking Area Corner Configuration so that the
