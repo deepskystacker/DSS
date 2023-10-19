@@ -9,6 +9,9 @@ Known problems:
 
 2. The progress dialogue Cancel button isn't always enabled.
 
+3. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+   This requires too much work to fix in this release, as we will need to implement our own edit control.
+
 Changes since the last release:
 
 1. Upgrade CFITSIO library to 4.2.0
