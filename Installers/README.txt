@@ -7,7 +7,8 @@ Known problems:
 
 1. When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
 
-2. The progress dialogue Cancel button isn't always enabled.
+2. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+   This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
 
@@ -85,6 +86,14 @@ Changes since the last release:
     o Marking the comet centre in additional light frames can potentially improve the results.
 
 31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
+
+32. Revert change made for #26 - QTimeEdit doesn't work right with 4 decimals.
+
+33. Bug fix: Magnifying glass over image area was still displayed when mouse was moved directly to another window.
+
+34. Bug fix: Selecting/Deselecting "Create a calibrated file for each light frame" should also Enable/Disable "Save a debayered image..."
+
+35. Bug fix: Unable to cancel Registering or Stacking because the ProgressDlg was disabled (it had the wrong parent).
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

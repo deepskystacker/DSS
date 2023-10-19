@@ -3,6 +3,7 @@
         <file alias="logo.png">res/logo.png</file>
         <file alias="DSSIcon.png">Icon/DSS_Icon32.png</file>
         <file alias="DSSIcon@2x.png">Icon/DSS_Icon32@2x.png</file>
+        <file alias="Heart.png">res/Heart.png</file>
     </qresource>
     <qresource prefix="/calibration">
         <file alias="rational.bmp">res/Calibration_Rational.bmp</file>

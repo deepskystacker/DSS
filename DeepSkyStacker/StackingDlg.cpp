@@ -337,7 +337,7 @@ namespace DSS
 		case Column::Exposure:
 			{
 				QTimeEdit* editor = new QTimeEdit(parent);
-				editor->setDisplayFormat("hh:mm:ss.zzzz");
+				editor->setDisplayFormat("hh:mm:ss.zzz");
 				//
 				// Commented out as parent class already sets an eventFilter up!
 				//
@@ -2072,7 +2072,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::ProgressDlg dlg{ this };
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
@@ -2206,7 +2206,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::ProgressDlg dlg{ this };
+						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2385,7 +2385,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::ProgressDlg dlg{ this };
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2563,7 +2563,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::ProgressDlg dlg{ this };
+				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2573,7 +2573,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::ProgressDlg dlg{ this };
+				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

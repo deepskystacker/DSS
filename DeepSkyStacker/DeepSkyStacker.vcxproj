@@ -530,6 +530,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\German.png" />
     <Image Include="res\hdrdown.bmp" />
     <Image Include="res\hdrup.bmp" />
+    <Image Include="res\Heart.png" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\ImageList_CFA_CYMG.bmp" />
     <Image Include="res\ImageList_CFA_RGB.bmp" />

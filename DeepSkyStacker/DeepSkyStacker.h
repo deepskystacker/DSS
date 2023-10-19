@@ -83,6 +83,7 @@ private:
 	QString baseTitle;
 	QString currentPathName;
 	bool m_progress;
+	QLabel* sponsorText;
 	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
@@ -112,6 +113,7 @@ public:
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 	inline std::uint32_t tab() { return currTab; }
+
 
 	QString statusMessage();
 	CDeepStack& deepStack();

@@ -29,7 +29,7 @@
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="87"/>
+        <location filename="../About.cpp" line="94"/>
         <source>Default</source>
         <translation>Voreinstellung</translation>
     </message>
@@ -75,47 +75,47 @@ Copyright Tőkés Attila</source>
 Copyright Tőkés Attila</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="108"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Spanische Version: Ricardo Contreras und sein Team</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="112"/>
+        <location filename="../About.cpp" line="119"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Tschechische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="116"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Italienische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="120"/>
+        <location filename="../About.cpp" line="127"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Katalanische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="131"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Deutsche Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="136"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Holländische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="126"/>
-        <location filename="../About.cpp" line="130"/>
-        <location filename="../About.cpp" line="139"/>
-        <location filename="../About.cpp" line="143"/>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="150"/>
+        <location filename="../About.cpp" line="151"/>
         <source>and</source>
         <translation>und</translation>
     </message>
@@ -130,31 +130,31 @@ Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Traditionell Chinesische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portugiesische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="149"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Rumänische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Russische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="158"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Türkische Version:</translation>
@@ -262,12 +262,12 @@ Möchten Sie...</translation>
         <translation>diesen Lightframe registrieren</translation>
     </message>
     <message>
-        <location filename="../ui/AskRegistering.ui" line="73"/>
+        <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
         <translation>alle Lightframes registrieren</translation>
     </message>
     <message>
-        <location filename="../ui/AskRegistering.ui" line="80"/>
+        <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
         <translation>fortfahren ohne Registrierung des Lightframes</translation>
     </message>
@@ -349,7 +349,7 @@ Fügen Sie die zu stackenden Bilderlisten im Auswahlfeld hinzu, und klicken Sie 
         <translation>Liste löschen</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="80"/>
+        <location filename="../BatchStacking.cpp" line="106"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Fertiges Bild speichern in %1</translation>
@@ -479,31 +479,31 @@ Sowohl Komet als auch Sterne werden scharf. Dieser Prozess dauert doppelt so lan
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="861"/>
+        <location filename="../editstars.cpp" line="844"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klicken, um den Kometen hier festzulegen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="863"/>
+        <location filename="../editstars.cpp" line="846"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Zum Hinzufügen dieses Sterns anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="870"/>
+        <location filename="../editstars.cpp" line="853"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Zum Entfernen des Kometen anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="872"/>
+        <location filename="../editstars.cpp" line="855"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Zum Entfernen des Sterns anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="920"/>
+        <location filename="../editstars.cpp" line="903"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -513,7 +513,7 @@ Score: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="927"/>
+        <location filename="../editstars.cpp" line="910"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -521,7 +521,7 @@ Comet:%1</source>
 Komet:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="927"/>
+        <location filename="../editstars.cpp" line="910"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ja</translation>
@@ -530,31 +530,31 @@ Komet:%1</translation>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="674"/>
+        <location filename="../StackingDlg.cpp" line="661"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="676"/>
+        <location filename="../StackingDlg.cpp" line="663"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="675"/>
+        <location filename="../StackingDlg.cpp" line="662"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>Flat</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="677"/>
+        <location filename="../StackingDlg.cpp" line="664"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="673"/>
+        <location filename="../StackingDlg.cpp" line="660"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Light</translation>
@@ -563,7 +563,8 @@ Komet:%1</translation>
 <context>
     <name>DSS::ImageView</name>
     <message>
-        <location filename="../../Tools/imageview.cpp" line="72"/>
+        <location filename="../../Tools/imageview.cpp" line="58"/>
+        <location filename="../../Tools/imageview.cpp" line="78"/>
         <source>Ctrl++ or Ctrl+= to zoom in
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
@@ -623,12 +624,12 @@ Strg+4 zum Umschalten des 4-Ecken-Modus</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="810"/>
+        <location filename="../StackingDlg.cpp" line="797"/>
         <source>Rename group</source>
         <translation>Gruppe umbenennen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="899"/>
+        <location filename="../StackingDlg.cpp" line="886"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -640,43 +641,43 @@ Dieser Vorgang kann nicht rückgängig gemacht werden.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="650"/>
+        <location filename="../StackingDlg.cpp" line="637"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Als Referenzbild verwenden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="654"/>
+        <location filename="../StackingDlg.cpp" line="641"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="656"/>
+        <location filename="../StackingDlg.cpp" line="643"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Deselektieren</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="659"/>
+        <location filename="../StackingDlg.cpp" line="646"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Von der Liste entfernen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="665"/>
+        <location filename="../StackingDlg.cpp" line="652"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="668"/>
+        <location filename="../StackingDlg.cpp" line="655"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Von der Festplatte löschen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="698"/>
+        <location filename="../StackingDlg.cpp" line="685"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -687,69 +688,69 @@ Entfernen-Taste, um ausgewählte Zeilen zu entfernen (nicht zu löschen).
 Rechte Maustaste, um das Menü anzuzeigen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1456"/>
+        <location filename="../StackingDlg.cpp" line="1440"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 existiert nicht oder ist keine Datei</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1465"/>
+        <location filename="../StackingDlg.cpp" line="1449"/>
         <source>Failed to load image %1</source>
         <translation>Bild %1 konnte nicht geladen werden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1769"/>
+        <location filename="../StackingDlg.cpp" line="1752"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Lightframes: %1      -      Darkframes: %2      -      Flatframes: %3      -   Dark-Flatframes: %4   -      Offset/Biasframes: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="705"/>
+        <location filename="../StackingDlg.cpp" line="692"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Doppelklicken Sie hier, um die Bildliste anzudocken/zu lösen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1421"/>
+        <location filename="../StackingDlg.cpp" line="1405"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Lade %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1519"/>
+        <location filename="../StackingDlg.cpp" line="1503"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Datei %1 wurde nicht geladen, da sie bereits in Gruppe %2 (%3) geladen war</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1543"/>
+        <location filename="../StackingDlg.cpp" line="1527"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Lightframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1547"/>
+        <location filename="../StackingDlg.cpp" line="1530"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Darkframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1565"/>
+        <location filename="../StackingDlg.cpp" line="1548"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Dark-Flatframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1553"/>
+        <location filename="../StackingDlg.cpp" line="1536"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Flatframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="662"/>
+        <location filename="../StackingDlg.cpp" line="649"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Eigenschaften...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="980"/>
+        <location filename="../StackingDlg.cpp" line="967"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -758,13 +759,13 @@ Rechte Maustaste, um das Menü anzuzeigen</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1559"/>
+        <location filename="../StackingDlg.cpp" line="1542"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Biasframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1782"/>
+        <location filename="../StackingDlg.cpp" line="1765"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -778,37 +779,37 @@ Dark-Flatframes: %4
 Offset/Biasframes: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1865"/>
+        <location filename="../StackingDlg.cpp" line="1849"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Andere Dateiliste öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2042"/>
+        <location filename="../StackingDlg.cpp" line="2026"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Version %1 zum Download verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2058"/>
+        <location filename="../StackingDlg.cpp" line="2042"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Internet-Fehlercode %1 der Versionsprüfung:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2174"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>Total registering time: %1 %2</source>
         <translation>Gesamtzeit für Registrierung: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2193"/>
+        <location filename="../StackingDlg.cpp" line="2177"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Bitte Lightframes zum Registrieren auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2251"/>
+        <location filename="../StackingDlg.cpp" line="2235"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -818,19 +819,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker benötigt sie zum Erstellen von Dateien während des Prozesses.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2272"/>
+        <location filename="../StackingDlg.cpp" line="2256"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Die selektierten Bilder sind inkompatibel: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2276"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Bitte Lightframes zum Stacken auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2324"/>
+        <location filename="../StackingDlg.cpp" line="2306"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -840,18 +841,18 @@ Do you want to save the changes?</source>
 Wollen Sie die Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2440"/>
+        <location filename="../StackingDlg.cpp" line="2422"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Gesamtzeit für Stapeln: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2471"/>
+        <location filename="../StackingDlg.cpp" line="2453"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Fertiges Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2554"/>
+        <location filename="../StackingDlg.cpp" line="2535"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -945,12 +946,17 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 (Sie können diese Option später in der Über DeepSkyStacker Dialogbox an und abschalten)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="449"/>
+        <location filename="../DeepSkyStacker.cpp" line="267"/>
+        <source>Sponsor DeepSkyStacker</source>
+        <translation>Sponsern Sie DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="468"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 existiert nicht oder ist keine Datei</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="597"/>
+        <location filename="../DeepSkyStacker.cpp" line="621"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Hilfe.chm</translation>
@@ -964,7 +970,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         <translation>Dateien hinzufügen...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="86"/>
+        <location filename="../DropFilesDlg.cpp" line="88"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
         <translation>
@@ -973,7 +979,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="87"/>
+        <location filename="../DropFilesDlg.cpp" line="89"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
         <translation>
@@ -982,7 +988,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="88"/>
+        <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
         <translation>
@@ -991,7 +997,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="89"/>
+        <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
         <translation>
@@ -1000,7 +1006,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="90"/>
+        <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
         <translation>
@@ -1009,7 +1015,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DropFilesDlg.cpp" line="91"/>
+        <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
         <translation>
@@ -1021,66 +1027,66 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="255"/>
+        <location filename="../ExplorerBar.cpp" line="290"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Registrierungs-Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="256"/>
+        <location filename="../ExplorerBar.cpp" line="291"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="298"/>
+        <location filename="../ExplorerBar.cpp" line="333"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Standardeinstellungen wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="335"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Live Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="304"/>
+        <location filename="../ExplorerBar.cpp" line="339"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Lade...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="365"/>
+        <location filename="../ExplorerBar.cpp" line="400"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Als DeepSkyStacker Live Einstellung speichern</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="369"/>
+        <location filename="../ExplorerBar.cpp" line="404"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Speichern als...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="510"/>
+        <location filename="../ExplorerBar.cpp" line="560"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>DeepSkyStacker Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="514"/>
+        <location filename="../ExplorerBar.cpp" line="564"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="561"/>
+        <location filename="../ExplorerBar.cpp" line="611"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="557"/>
+        <location filename="../ExplorerBar.cpp" line="607"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>DeepSkyStacker Einstellungen speichern</translation>
@@ -1345,7 +1351,7 @@ Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</tran
         <translation>Einstellungen für die Zwischenbilder</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="91"/>
+        <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
         <translation>Erstelle eine kalibrierte Datei für jeden Lightframe</translation>
     </message>
@@ -1355,7 +1361,7 @@ Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</tran
         <translation>Ein interpoliertes Bild speichern bei RAW-Bild Verarbeitung</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="38"/>
+        <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
         <translation>Erstelle eine registrierte/kalibrierte Datei für jeden Lightframe</translation>
     </message>
@@ -1759,222 +1765,222 @@ Erkannte kalte Pixel: %L3 (%L4%)</translation>
         <translation>Alle Empfehlungen anzeigen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="195"/>
+        <location filename="../RecommendedSettings.cpp" line="191"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
         <translation>Dies sind empfohlene Einstellungen.&lt;br&gt;Sie funktionieren nicht in allen Situationen, sind aber ein guter Ausgangspunkt.</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="199"/>
+        <location filename="../RecommendedSettings.cpp" line="195"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
         <translation>Klicken Sie auf den vorgeschlagenen Link, um die Einstellungen zu übernehmen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="203"/>
+        <location filename="../RecommendedSettings.cpp" line="199"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
         <translation>Einstellungen, die bereits gewählt sind, werden grün angezeigt</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="263"/>
-        <location filename="../RecommendedSettings.cpp" line="295"/>
+        <location filename="../RecommendedSettings.cpp" line="259"/>
+        <location filename="../RecommendedSettings.cpp" line="291"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
         <translation>Wenn Sie Schmalband-Aufnahmen verarbeiten (speziell H%1)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="268"/>
+        <location filename="../RecommendedSettings.cpp" line="264"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
         <translation>Super-Pixel-Modus verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="300"/>
-        <location filename="../RecommendedSettings.cpp" line="670"/>
-        <location filename="../RecommendedSettings.cpp" line="716"/>
+        <location filename="../RecommendedSettings.cpp" line="296"/>
+        <location filename="../RecommendedSettings.cpp" line="666"/>
+        <location filename="../RecommendedSettings.cpp" line="712"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
         <translation>Hintergrund-Kalibrierung pro Kanal verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="322"/>
+        <location filename="../RecommendedSettings.cpp" line="318"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
         <translation>Sie verarbeiten langbelichtete Bilder wahrscheinlich mit gutem SNR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="325"/>
+        <location filename="../RecommendedSettings.cpp" line="321"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
         <translation>AHD De-Bayering verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="331"/>
+        <location filename="../RecommendedSettings.cpp" line="327"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
         <translation>Sie verarbeiten kurzbelichtete Bilder möglicherweise mit niedrigem SNR</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="334"/>
+        <location filename="../RecommendedSettings.cpp" line="330"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
         <translation>Bilineares De-Bayering verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="378"/>
+        <location filename="../RecommendedSettings.cpp" line="374"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
         <translation>Sie verwenden Biasframes</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="381"/>
+        <location filename="../RecommendedSettings.cpp" line="377"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
         <translation>Zur Verbesserung der Kalibrierung setzen Sie den Schwarzpunkt auf 0</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="390"/>
+        <location filename="../RecommendedSettings.cpp" line="386"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
         <translation>Sie verwenden Flatframes ohne Biasframes</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="393"/>
+        <location filename="../RecommendedSettings.cpp" line="389"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
         <translation>Schwarzpunkt nicht auf 0 setzen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="414"/>
+        <location filename="../RecommendedSettings.cpp" line="410"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
         <translation>Sie verwenden einen niedrigen Sternerkennungs-Schwellenwert</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="417"/>
+        <location filename="../RecommendedSettings.cpp" line="413"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
         <translation>Verwenden Sie vor der Registrierung einen Median-Filter, um das Rauschen zu reduzieren und die Sternerkennung zu verbessern</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="434"/>
+        <location filename="../RecommendedSettings.cpp" line="430"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
         <translation>Wenn Sie eine modifizierte DSLR verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="437"/>
+        <location filename="../RecommendedSettings.cpp" line="433"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
         <translation>Alle Weißabgleich-Einstellungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="474"/>
+        <location filename="../RecommendedSettings.cpp" line="470"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
         <translation>Sie versuchen ein Kometenbild mit Stern-Strichspuren zu erstellen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="477"/>
-        <location filename="../RecommendedSettings.cpp" line="547"/>
+        <location filename="../RecommendedSettings.cpp" line="473"/>
+        <location filename="../RecommendedSettings.cpp" line="543"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
         <translation>Verwenden Sie die Durchschnitts-Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="488"/>
+        <location filename="../RecommendedSettings.cpp" line="484"/>
         <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
         <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
         <translation>Sie versuchen ein Kometenbild, ausgerichtet auf Komet und Sterne, aus %1 Lightframe(s) zu erstellen</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="495"/>
-        <location filename="../RecommendedSettings.cpp" line="528"/>
+        <location filename="../RecommendedSettings.cpp" line="491"/>
+        <location filename="../RecommendedSettings.cpp" line="524"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
         <translation>Verwenden Sie die Kappa-Sigma-Clipping Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="503"/>
-        <location filename="../RecommendedSettings.cpp" line="555"/>
-        <location filename="../RecommendedSettings.cpp" line="587"/>
-        <location filename="../RecommendedSettings.cpp" line="619"/>
-        <location filename="../RecommendedSettings.cpp" line="651"/>
+        <location filename="../RecommendedSettings.cpp" line="499"/>
+        <location filename="../RecommendedSettings.cpp" line="551"/>
+        <location filename="../RecommendedSettings.cpp" line="583"/>
+        <location filename="../RecommendedSettings.cpp" line="615"/>
+        <location filename="../RecommendedSettings.cpp" line="647"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
         <translation>Verwenden Sie die Median Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="521"/>
+        <location filename="../RecommendedSettings.cpp" line="517"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
         <translation>Sie stacken %1 Lightframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="537"/>
+        <location filename="../RecommendedSettings.cpp" line="533"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
         <translation>Verwenden Sie die Auto Adaptive Weighted Average Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="571"/>
+        <location filename="../RecommendedSettings.cpp" line="567"/>
         <source>You are creating a master dark from %1 dark frame(s)</source>
         <comment>IDS_RECO_DARK_REASON</comment>
         <translation>Sie erstellen ein Master-Dark aus %1 Darkframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="578"/>
-        <location filename="../RecommendedSettings.cpp" line="610"/>
-        <location filename="../RecommendedSettings.cpp" line="642"/>
+        <location filename="../RecommendedSettings.cpp" line="574"/>
+        <location filename="../RecommendedSettings.cpp" line="606"/>
+        <location filename="../RecommendedSettings.cpp" line="638"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
         <translation>Verwenden Sie die Median-Kappa-Sigma-Clipping Kombinations-Methode</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="603"/>
+        <location filename="../RecommendedSettings.cpp" line="599"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
         <translation>Sie erstellen ein Master-Bias aus %1 Biasframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="635"/>
+        <location filename="../RecommendedSettings.cpp" line="631"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
         <translation>Sie erstellen ein Master-Flat aus %1 Flatframe(s)</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="667"/>
+        <location filename="../RecommendedSettings.cpp" line="663"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
         <translation>Wenn das resultierende Bild zu grau aussieht</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="690"/>
+        <location filename="../RecommendedSettings.cpp" line="686"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
         <translation>Wenn die Farbbalance im fertigen Bild in der Nachbearbeitung schwierig zu korrigieren ist</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="693"/>
+        <location filename="../RecommendedSettings.cpp" line="689"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
         <translation>RGB Hintergrund-Kalibrierung verwenden</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="713"/>
+        <location filename="../RecommendedSettings.cpp" line="709"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
         <translation>Sie stacken Graustufenbilder mit leicht unterschiedlichen Hintergrundwerten</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="802"/>
+        <location filename="../RecommendedSettings.cpp" line="796"/>
         <source>or</source>
         <comment>IDS_OR</comment>
         <translation>oder</translation>
     </message>
     <message>
-        <location filename="../RecommendedSettings.cpp" line="863"/>
+        <location filename="../RecommendedSettings.cpp" line="862"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
         <translation>Sie müssen zuerst Bilder zur Liste hinzufügen und auswählen.</translation>
@@ -2055,61 +2061,61 @@ Erkannte kalte Pixel: %L3 (%L4%)</translation>
         <translation>Medianfilter zur Rauschreduzierung verwenden</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="156"/>
+        <location filename="../RegisterSettings.cpp" line="158"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Vergessen Sie nicht, Dark-, Flat- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="159"/>
+        <location filename="../RegisterSettings.cpp" line="161"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Vergessen Sie nicht, Dark- und Flatframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="162"/>
+        <location filename="../RegisterSettings.cpp" line="164"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Vergessen Sie nicht, Dark- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="165"/>
+        <location filename="../RegisterSettings.cpp" line="167"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Vergessen Sie nicht, Flat- und Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="168"/>
+        <location filename="../RegisterSettings.cpp" line="170"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Vergessen Sie nicht, Darkframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="171"/>
+        <location filename="../RegisterSettings.cpp" line="173"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Vergessen Sie nicht, Flatframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="174"/>
+        <location filename="../RegisterSettings.cpp" line="176"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Vergessen Sie nicht, Offsetframes vor dem Stacken hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="198"/>
+        <location filename="../RegisterSettings.cpp" line="200"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>Darks, Flats und Offsets/Bias ausgewählt.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="262"/>
+        <location filename="../RegisterSettings.cpp" line="264"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrierung %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="269"/>
+        <location filename="../RegisterSettings.cpp" line="271"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 Stern(e)</translation>
@@ -2258,322 +2264,322 @@ Wollen sie diese speichern?</translation>
         <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="184"/>
+        <location filename="../StackRecap.cpp" line="186"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation>ISO</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="185"/>
+        <location filename="../StackRecap.cpp" line="187"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation>Gain</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="203"/>
+        <location filename="../StackRecap.cpp" line="205"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ja</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="204"/>
+        <location filename="../StackRecap.cpp" line="206"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>Nein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="218"/>
+        <location filename="../StackRecap.cpp" line="220"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
         <translation>RGB Hintergrund Kalibrierung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="223"/>
+        <location filename="../StackRecap.cpp" line="225"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation>Hintergrund-Kalibrierung pro Kanal : %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="228"/>
+        <location filename="../StackRecap.cpp" line="230"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
         <translation>Dark Optimierung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="233"/>
+        <location filename="../StackRecap.cpp" line="235"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
         <translation>Dark Multiplikationsfaktor: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="237"/>
+        <location filename="../StackRecap.cpp" line="239"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
         <translation>Hot Pixel Erkennung und Entfernung: %1</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="246"/>
+        <location filename="../StackRecap.cpp" line="248"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
         <translation>Dieser Prozess benötigt vorübergehend %1 freien Speicherplatz auf dem %2 Laufwerk.&lt;br&gt;Es sind nur %3 auf diesem Laufwerk verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="268"/>
+        <location filename="../StackRecap.cpp" line="270"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
         <translation>Warnung: Sie verwenden als Dark, Flat oder Biasframes JPEG-Dateien.&lt;br&gt;Aufgrund des verlustbehafteten Komprimierung ist eine Kalibrierung von JPEG-Dateien nicht möglich.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="276"/>
+        <location filename="../StackRecap.cpp" line="278"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation>Stacking Modus: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="281"/>
+        <location filename="../StackRecap.cpp" line="283"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="284"/>
+        <location filename="../StackRecap.cpp" line="286"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation>Mosaik</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="287"/>
+        <location filename="../StackRecap.cpp" line="289"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation>Auswahlrechteck</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="290"/>
+        <location filename="../StackRecap.cpp" line="292"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation>Schnittmenge</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="298"/>
+        <location filename="../StackRecap.cpp" line="300"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation>Ausrichtungsmethode: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="306"/>
+        <location filename="../StackRecap.cpp" line="308"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation>Automatisch</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="309"/>
+        <location filename="../StackRecap.cpp" line="311"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation>Bilinear</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="312"/>
+        <location filename="../StackRecap.cpp" line="314"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation>Bisquared</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="315"/>
+        <location filename="../StackRecap.cpp" line="317"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation>Bikubisch</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="318"/>
+        <location filename="../StackRecap.cpp" line="320"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation>Keine Ausrichtung</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="329"/>
+        <location filename="../StackRecap.cpp" line="331"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation>%1x Drizzle aktiviert</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="335"/>
+        <location filename="../StackRecap.cpp" line="337"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
         <translation>Die ausgewählte Drizzle-Option ist mit dem Bayer-Drizzle Modus nicht kompatibel.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="346"/>
+        <location filename="../StackRecap.cpp" line="348"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
         <translation>%1 Prozessoren gefunden und verwendet</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="349"/>
+        <location filename="../StackRecap.cpp" line="351"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
         <translation>%1 Prozessor(en) gefunden - nur einen verwendet</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="361"/>
+        <location filename="../StackRecap.cpp" line="363"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation>Kometen-Verarbeitung : </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="366"/>
+        <location filename="../StackRecap.cpp" line="368"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation>Auf Sterne ausrichten (keine spezifische Verarbeitung)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="369"/>
+        <location filename="../StackRecap.cpp" line="371"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation>Auf Komet ausrichten</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="372"/>
+        <location filename="../StackRecap.cpp" line="374"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation>Auf Sterne und Komet ausrichten</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="386"/>
+        <location filename="../StackRecap.cpp" line="388"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation>Kosmetische Korrektur der Hot Pixel (Filter = %1 Px, Erkennungs-Schwellenwert = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="394"/>
+        <location filename="../StackRecap.cpp" line="396"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation>Kosmetische Korrektur der Cold Pixel (Filter = %1 Px, Erkennungs-Schwellenwert = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="423"/>
+        <location filename="../StackRecap.cpp" line="425"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation>Stacking Schritt %1&lt;br&gt;  -&gt;%2 Bilder (%3: %4) - Gesamtbelichtung: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="441"/>
-        <location filename="../StackRecap.cpp" line="485"/>
-        <location filename="../StackRecap.cpp" line="540"/>
-        <location filename="../StackRecap.cpp" line="616"/>
-        <location filename="../StackRecap.cpp" line="671"/>
+        <location filename="../StackRecap.cpp" line="443"/>
+        <location filename="../StackRecap.cpp" line="487"/>
+        <location filename="../StackRecap.cpp" line="542"/>
+        <location filename="../StackRecap.cpp" line="618"/>
+        <location filename="../StackRecap.cpp" line="673"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation>Methode: </translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="452"/>
+        <location filename="../StackRecap.cpp" line="454"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation>Warnung: Die ausgewählte Bayer-Drizzle Option in den RAW DDP Einstellungen kann mit einer anderen als der Durchschnittsmethode zu ungewöhnlichen Resultaten führen.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="472"/>
+        <location filename="../StackRecap.cpp" line="474"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation>-&gt; Offset: %2 Bilder (%2: %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="518"/>
+        <location filename="../StackRecap.cpp" line="520"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation>-&gt; Kein Offset</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="527"/>
+        <location filename="../StackRecap.cpp" line="529"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation>-&gt; Dark: %1 Bilder (%2 : %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="585"/>
+        <location filename="../StackRecap.cpp" line="587"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation>Achtung: Belichtungszeit passt nicht zu Lightframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="594"/>
+        <location filename="../StackRecap.cpp" line="596"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation>-&gt; Kein Dark</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="603"/>
+        <location filename="../StackRecap.cpp" line="605"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation>-&gt; Dark Flat: %1 Bilder (%2 : %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="659"/>
+        <location filename="../StackRecap.cpp" line="661"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; Flat: %1 Bilder (%2: %3) Belichtungszeit: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="497"/>
-        <location filename="../StackRecap.cpp" line="567"/>
-        <location filename="../StackRecap.cpp" line="683"/>
+        <location filename="../StackRecap.cpp" line="499"/>
+        <location filename="../StackRecap.cpp" line="569"/>
+        <location filename="../StackRecap.cpp" line="685"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>Achtung: ISO Wert passt nicht zu Lightframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="507"/>
-        <location filename="../StackRecap.cpp" line="577"/>
-        <location filename="../StackRecap.cpp" line="693"/>
+        <location filename="../StackRecap.cpp" line="509"/>
+        <location filename="../StackRecap.cpp" line="579"/>
+        <location filename="../StackRecap.cpp" line="695"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation>Achtung: Gain stimmt nicht mit dem Gain der Lightframes überein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="629"/>
+        <location filename="../StackRecap.cpp" line="631"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation>Achtung: ISO Wert passt nicht zu Flatframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="639"/>
+        <location filename="../StackRecap.cpp" line="641"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation>Achtung: Gain des Dark Flats stimmt nicht mit dem Gain der Flats überein</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="647"/>
+        <location filename="../StackRecap.cpp" line="649"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation>Achtung: Belichtungszeit passt nicht zu Flatframes</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="703"/>
+        <location filename="../StackRecap.cpp" line="705"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation>-&gt; Kein Flat</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="718"/>
+        <location filename="../StackRecap.cpp" line="720"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
         <translation>Geschätzte Gesamt-Belichtungszeit: %1&lt;br&gt;(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle gewählten Lightframes für den Stacking-Prozess verwendet werden)</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="728"/>
+        <location filename="../StackRecap.cpp" line="730"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
         <translation>Der Prozess wird vorübergehend %1 auf dem %2 Laufwerk benötigen (%3 frei).</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="256"/>
-        <location filename="../StackRecap.cpp" line="737"/>
+        <location filename="../StackRecap.cpp" line="258"/>
+        <location filename="../StackRecap.cpp" line="739"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
         <translation>Hinweis: Der benötigte Speicherplatz ist aus der Größe des Referenzbildes errechnet. Je nach Größe des Summenbildes kann mehr Speicherplatz erforderlich sein.</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="745"/>
+        <location filename="../StackRecap.cpp" line="747"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
         <translation>Warnung: Die Option Speichern der registrierten und kalibrierten Bilder ist aktiviert. Bitte überprüfen Sie zuerst, ob Sie genügend freien Festplatten-Speicher zur Verfügung haben.</translation>
@@ -2612,31 +2618,31 @@ Wollen sie diese speichern?</translation>
         <translation>Stacking Einstellungen</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="47"/>
+        <location filename="../StackSettings.cpp" line="49"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Light</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="48"/>
+        <location filename="../StackSettings.cpp" line="50"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="49"/>
+        <location filename="../StackSettings.cpp" line="51"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>Flat</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="50"/>
+        <location filename="../StackSettings.cpp" line="52"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="187"/>
+        <location filename="../StackSettings.cpp" line="189"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Wählen Sie einen Ordner für die temporären Dateien</translation>
@@ -2702,7 +2708,7 @@ der iterativ angewendet wird, wobei die Gewichte mit steigender Abweichung vom l
 im Verhältnis zur Standardabweichung (%1) kleiner werden.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="106"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Optionen...</translation>
