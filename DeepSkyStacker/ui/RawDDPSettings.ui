@@ -283,13 +283,6 @@
          </layout>
         </widget>
        </item>
-       <item>
-         <widget class="QCheckBox" name="blackPointToZero">
-           <property name="text">
-             <string>Set the black point to 0</string>
-           </property>
-         </widget>
-       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="fitsFilesTab">
