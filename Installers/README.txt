@@ -7,9 +7,7 @@ Known problems:
 
 1. When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
 
-2. The progress dialogue Cancel button isn't always enabled.
-
-3. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+2. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
