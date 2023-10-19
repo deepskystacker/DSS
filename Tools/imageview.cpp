@@ -85,6 +85,7 @@ namespace DSS
 
     void ImageView::leaveEvent(QEvent* e)
     {
+        update();                   // Redraw the image without magnifying glass.
         emit Image_leaveEvent(e);
         Inherited::leaveEvent(e);
     }
@@ -332,8 +333,11 @@ namespace DSS
         const QPoint globalMouseLocation(QCursor::pos());
         const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
 
-        // If the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
-        if (!displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse())) return;
+        //
+        // If the mouse isn't over theis control there's nothing to do, if it is over the control, then
+        // if the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
+        //
+        if (!underMouse() || !displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse())) return;
 
         //QPoint where{ static_cast<int>(mouseLocation.x() - diameter / 2), static_cast<int>(mouseLocation.y() - diameter / 2) };
         QPoint where(std::max(0.0, mouseLocation.x() - diameter), 0);
