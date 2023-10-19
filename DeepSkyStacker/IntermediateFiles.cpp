@@ -64,9 +64,11 @@ void IntermediateFiles::on_saveCalibrated_stateChanged(int state)
 	{
 	case Qt::Unchecked:
 		workspace->setValue("Stacking/SaveCalibrated", false);
+		ui->saveDebayered->setEnabled(false);
 		break;
 	case Qt::Checked:
 		workspace->setValue("Stacking/SaveCalibrated", true);
+		ui->saveDebayered->setEnabled(true);
 		break;
 	}
 }

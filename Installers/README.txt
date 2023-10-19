@@ -93,6 +93,8 @@ Changes since the last release:
 
 33. Bug fix: Magnifying glass over image area was still displayed when mouse was moved directly to another window.
 
+34. Bug fix: Selecting/Deselecting "Create a calibrated file for each light frame" should also Enable/Disable "Save a debayered image..."
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
