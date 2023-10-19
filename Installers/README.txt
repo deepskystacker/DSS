@@ -86,8 +86,6 @@ Changes since the last release:
 
 31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
 
-32. Remove automatic "Set Black Point to Zero" when bias frames are used, and reinstate "Set Black Point to Zero" tick box in RAW/DDP Settings
-
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
