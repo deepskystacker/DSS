@@ -255,7 +255,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::ProgressDlg dlg{ this };
+	DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);
