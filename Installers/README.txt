@@ -95,6 +95,8 @@ Changes since the last release:
 
 34. Bug fix: Selecting/Deselecting "Create a calibrated file for each light frame" should also Enable/Disable "Save a debayered image..."
 
+35. Bug fix: Unable to cancel Registering or Stacking because the ProgressDlg was disabled (it had the wrong parent).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
