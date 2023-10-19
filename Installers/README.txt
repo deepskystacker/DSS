@@ -86,6 +86,8 @@ Changes since the last release:
 
 31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
 
+32. Revert change made for 26 - QTimeEdit doesn't work right with 4 decimals
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
