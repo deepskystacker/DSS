@@ -13,6 +13,7 @@
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
 #include "SavePicture.h"
+#include "qwinhost.h"
 
 #define dssApp DeepSkyStacker::instance()
 extern CString OUTPUTFILE_FILTERS;
@@ -80,6 +81,14 @@ BOOL CProcessingDlg::OnInitDialog()
  	CRect			rc;
 
 	CSize	size;
+
+	QWinHost* winHost{ dynamic_cast<QWinHost*>(parentWidget) };
+	ZASSERT(nullptr != winHost);
+
+	HWND hwnd{ GetSafeHwnd() };
+	ZASSERT(NULL != hwnd);
+	winHost->setWindow(hwnd);
+
 	m_Info.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
 	m_Picture.CreateFromStatic(&m_PictureStatic);
