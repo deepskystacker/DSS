@@ -97,6 +97,8 @@ Changes since the last release:
 
 36. Bug fix: Save/Restore of docked window sizes (Explorer Bar, Picture List) wasn't working.
 
+37. Update zlib to 1.3 (from 1.2.11).
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
