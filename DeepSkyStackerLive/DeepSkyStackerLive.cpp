@@ -284,13 +284,9 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	settings.beginGroup("DeepSkyStackerLive/MainWindow");
 	auto geometry{ saveGeometry() };
 	settings.setValue("geometry", geometry);
-#ifndef NDEBUG	
-	ZTRACE_RUNTIME("Hex dump of geometry:");
-	ZTrace::dumpHex(geometry.constData(), geometry.length());
-#endif 
 	settings.setValue("maximised", isMaximized());
-
 	settings.endGroup();
+
 	settings.beginGroup("DeepSkyStackerLive/ImageList");
 	settings.setValue("HorizontalHeader/windowState",
 		imageList->horizontalHeader()->saveState());
@@ -487,24 +483,21 @@ void DeepSkyStackerLive::onInitialise()
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 
 	settings.beginGroup("DeepSkyStackerLive/MainWindow");
-
-	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
-
-#ifndef NDEBUG
-	if (geometry.length())
+	if (settings.contains("geometry") && settings.contains("maximised"))
 	{
-		ZTRACE_RUNTIME("Hex dump of geometry:");
-		ZTrace::dumpHex(geometry.constData(), geometry.length());
-	}
-#endif
+		const QByteArray geometry{ settings.value("geometry").toByteArray() };
+		const bool maximised{ settings.value("maximised").toBool() };
 
-	if (settings.value("maximised").toBool())
-	{
-		showMaximized();
-		setGeometry(screen()->availableGeometry());
+		if (maximised)
+		{
+			showMaximized();
+			setGeometry(screen()->availableGeometry());
+		}
+		else
+		{
+			restoreGeometry(geometry);
+		}
 	}
-	else restoreGeometry(geometry);
-
 	settings.endGroup();
 
 	//
