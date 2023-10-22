@@ -95,6 +95,8 @@ Changes since the last release:
 
 35. Bug fix: Unable to cancel Registering or Stacking because the ProgressDlg was disabled (it had the wrong parent).
 
+36. Bug fix: Save/Restore of docked window sizes (Explorer Bar, Picture List) wasn't working.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
