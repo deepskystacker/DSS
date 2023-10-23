@@ -14,6 +14,7 @@ OutputTab::OutputTab(QWidget *parent) :
 	// Set the text colour as for a Hyper-Link
 	// 
 	ui->outputFolder->setForegroundRole(QPalette::Link);
+	CAllStackingTasks::GetOutputSettings(os);
 }
 
 OutputTab::~OutputTab()
@@ -23,7 +24,6 @@ OutputTab::~OutputTab()
 
 void OutputTab::onSetActive()
 {
-	CAllStackingTasks::GetOutputSettings(os);
 
 	bool enable = os.m_bOutput;
 

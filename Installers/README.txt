@@ -99,6 +99,8 @@ Changes since the last release:
 
 37. Update zlib to 1.3 (from 1.2.11).
 
+38. Bug fix: Switching away from Settings/Output tab and then switching back reset the values to status quo ante.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
