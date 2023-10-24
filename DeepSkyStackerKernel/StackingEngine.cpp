@@ -2655,13 +2655,17 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	folder.remove_filename();
 
 	fs::path name{ file.stem() };
+
 	if (name.empty())
 	{
 		if (OutputSettings.m_bAutosave || fileList.empty())
 			name = "Autosave";
 		else
 		{
-			name = fileList.stem();
+			//
+			// Change to use filename() instead of .stem() so we handle filelist names such as Batch1.xxxx.dssfilelist properly
+			//
+			name = fileList.filename();
 			if (name.empty())
 				name = "Autosave";
 		}
