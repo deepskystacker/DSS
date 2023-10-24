@@ -252,6 +252,61 @@ DeepSkyStacker::DeepSkyStacker() :
 	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
+
+	//
+	// Force setting of blackPointToZero as initially false
+	//
+	Workspace{}.setValue("RawDDP/BlackPointTo0", false);
+
+	//
+	// Set the Docking Area Corner Configuration so that the
+	// Explorer Bar takes the full left side docking area
+	//
+	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
+	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
+	explorerBar = new ExplorerBar(this);
+	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
+
+	ZTRACE_RUNTIME("Creating pictureList");
+	pictureList = new DSS::PictureList(this);
+	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
+
+	//
+	// Set initial size of the bottom dock widget (pictureList)
+	//
+	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
+
+	ZTRACE_RUNTIME("Restoring Window State and Position");
+	QSettings settings{};
+	settings.beginGroup("MainWindow");
+
+	if (settings.contains("geometry") && settings.contains("maximised"))
+	{
+		const QByteArray geometry{ settings.value("geometry").toByteArray() };
+		const bool maximised{ settings.value("maximised").toBool() };
+
+		if (maximised)
+		{
+			showMaximized();
+			setGeometry(screen()->availableGeometry());
+		}
+		else
+		{
+			restoreGeometry(geometry);
+		}
+	}
+
+	if (settings.contains("windowState"))
+	{
+		auto windowState{ settings.value("windowState").toByteArray() };
+
+		restoreState(windowState);
+	}
+
+	settings.endGroup();
+
 }
 
 DeepSkyStacker::~DeepSkyStacker()
@@ -356,25 +411,6 @@ void DeepSkyStacker::connectSignalsToSlots()
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-	//
-	// Force setting of blackPointToZero as initially false
-	//
-	Workspace{}.setValue("RawDDP/BlackPointTo0", false);
-
-	//
-	// Set the Docking Area Corner Configuration so that the
-	// Explorer Bar takes the full left side docking area
-	//
-	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-
-	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
-	explorerBar = new ExplorerBar(this);
-	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
-
-	ZTRACE_RUNTIME("Creating pictureList");
-	pictureList = new DSS::PictureList(this);
-	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
 	stackedWidget = new QStackedWidget(this);
@@ -421,41 +457,6 @@ void DeepSkyStacker::onInitialise()
 	// Set up the status bar
 	//
 	createStatusBar();
-
-	//
-	// Set initial size of the bottom dock widget (pictureList)
-	//
-	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
-
-	ZTRACE_RUNTIME("Restoring Window State and Position");
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-
-	auto geometry{ settings.value("geometry", QByteArray()).toByteArray() };
-	auto windowState{ settings.value("windowState", QByteArray()).toByteArray() };
-
-#ifndef NDEBUG
-	if (geometry.length())
-	{
-		ZTRACE_RUNTIME("Hex dump of geometry:");
-		ZTrace::dumpHex(geometry.constData(), geometry.length());
-	}
-	if (windowState.length())
-	{
-		ZTRACE_RUNTIME("Hex dump of windowState:");
-		ZTrace::dumpHex(windowState.constData(), windowState.length());
-	}
-#endif
-
-	if (settings.value("maximised").toBool())
-	{
-		showMaximized();
-		setGeometry(screen()->availableGeometry());
-	}
-	else restoreGeometry(geometry);
-
-	restoreState(windowState);
-	settings.endGroup();
 
 	//
 	// Check to see if we were passed a filelist file to open
