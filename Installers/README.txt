@@ -101,6 +101,10 @@ Changes since the last release:
 
 38. Bug fix: Switching away from Settings/Output tab and then switching back reset the values to status quo ante.
 
+39. Bug fix: Output file name when using file list name as the output name was incorrectly set to (e.g.) Batch1.tif when using a file list with a name Batch1.xxx.dssfilelist
+
+40. Clear image list at end of batch stacking.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
