@@ -512,7 +512,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 #endif 
 
 	auto windowState{ saveState()};
-	settings.setValue("windowState", saveState());
+	settings.setValue("windowState", windowState);
 #ifndef NDEBUG	
 	ZTRACE_RUNTIME("Hex dump of windowState:");
 	ZTrace::dumpHex(windowState.constData(), windowState.length());
