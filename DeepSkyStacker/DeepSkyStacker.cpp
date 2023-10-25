@@ -246,6 +246,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
 {
 	ZFUNCTRACE_RUNTIME();
+	DSSBase::setInstance(this);
+	
 	//
 	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
 	//
@@ -272,6 +274,52 @@ DeepSkyStacker::DeepSkyStacker() :
 	ZTRACE_RUNTIME("Creating pictureList");
 	pictureList = new DSS::PictureList(this);
 	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
+
+	ZTRACE_RUNTIME("Creating stackedWidget");
+	stackedWidget = new QStackedWidget(this);
+	stackedWidget->setObjectName("stackedWidget");
+	setCentralWidget(stackedWidget);
+
+	ZTRACE_RUNTIME("Creating Stacking Panel");
+	stackingDlg = new DSS::StackingDlg(this, pictureList);
+	stackingDlg->setObjectName("stackingDlg");
+
+	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
+	stackedWidget->addWidget(stackingDlg);
+
+	winHost = new QWinHost(stackedWidget);
+	winHost->setObjectName("winHost");
+	stackedWidget->addWidget(winHost);
+
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	auto result = processingDlg->Create(IDD_PROCESSING);
+	if (FALSE == result)
+	{
+		int lastErr = GetLastError();
+		ZTRACE_RUNTIME("lastErr = %d", lastErr);
+	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
+
+	HWND hwnd{ processingDlg->GetSafeHwnd() };
+	Q_ASSERT(NULL != hwnd);
+	winHost->setWindow(hwnd);
+	
+	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	//
+	// Connect Qt Signals to appropriate slots
+	//
+	connectSignalsToSlots();
+
+	setWindowIcon(QIcon(":/DSSIcon.png"));
+
+	setWindowTitle(baseTitle);
+
+	//
+	// Set up the status bar
+	//
+	createStatusBar();
 
 	//
 	// Set initial size of the bottom dock widget (pictureList)
@@ -306,6 +354,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	}
 
 	settings.endGroup();
+
 
 }
 
@@ -412,52 +461,6 @@ void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	ZTRACE_RUNTIME("Creating stackedWidget");
-	stackedWidget = new QStackedWidget(this);
-	stackedWidget->setObjectName("stackedWidget");
-	setCentralWidget(stackedWidget);
-
-	ZTRACE_RUNTIME("Creating Stacking Panel");
-	stackingDlg = new DSS::StackingDlg(this, pictureList);
-	stackingDlg->setObjectName("stackingDlg");
-
-	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
-	stackedWidget->addWidget(stackingDlg);
-
-	winHost = new QWinHost(stackedWidget);
-	winHost->setObjectName("winHost");
-	stackedWidget->addWidget(winHost);
-
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg->Create(IDD_PROCESSING);
-	if (FALSE == result)
-	{
-		int lastErr = GetLastError();
-		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
-	}
-	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
-
-	HWND hwnd{ processingDlg->GetSafeHwnd() };
-	Q_ASSERT(NULL != hwnd);
-	winHost->setWindow(hwnd);
-	
-	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-	//
-	// Connect Qt Signals to appropriate slots
-	//
-	connectSignalsToSlots();
-
-	setWindowIcon(QIcon(":/DSSIcon.png"));
-
-	setWindowTitle(baseTitle);
-
-	//
-	// Set up the status bar
-	//
-	createStatusBar();
-
 	//
 	// Check to see if we were passed a filelist file to open
 	//
@@ -512,7 +515,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 #endif 
 
 	auto windowState{ saveState()};
-	settings.setValue("windowState", saveState());
+	settings.setValue("windowState", windowState);
 #ifndef NDEBUG	
 	ZTRACE_RUNTIME("Hex dump of windowState:");
 	ZTrace::dumpHex(windowState.constData(), windowState.length());
@@ -1098,7 +1101,6 @@ int main(int argc, char* argv[])
 
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStacker mainWindow;
-	DSSBase::setInstance(&mainWindow);
 
 	ZTRACE_RUNTIME("Checking Mutex");
 	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };

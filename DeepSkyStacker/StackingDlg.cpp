@@ -2611,6 +2611,10 @@ namespace DSS
 		DSS::BatchStacking dlg(this);
 		dlg.setMRUPaths(mruPath.paths);
 		dlg.exec();
+		//
+		// Clear the image list at the end of batch stacking.
+		//
+		clearList();
 	};
 
 	void StackingDlg::gammaChanging(int peg)
