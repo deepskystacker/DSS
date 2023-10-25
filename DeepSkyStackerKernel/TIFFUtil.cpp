@@ -846,7 +846,6 @@ bool CTIFFWriter::Open()
 	bool bResult = false;
 	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
 	uint64_t dir_offset_EXIF{ 0 };
-	uint16_t count{ 0 };
 
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
@@ -1051,7 +1050,7 @@ bool CTIFFWriter::Open()
 			if (0 != isospeed)
 			{
 				// EXIFTAG_ISOSPEEDRATINGS is array of uint16 according to the EXIF spec
-				count = 1;
+				constexpr uint16_t count = 1U;
 				const uint16_t iso_setting = static_cast<uint16_t>(isospeed);
 				TIFFSetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, count, &iso_setting);
 			}
@@ -1062,7 +1061,7 @@ bool CTIFFWriter::Open()
 			//
 			if (cfa)
 			{
-				count = sizeof(cfaDimPat.dim + sizeof(cfaDimPat.cfa.cfa4));
+				constexpr uint16_t count = sizeof(cfaDimPat.dim) + sizeof(cfaDimPat.cfa.cfa4);
 				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
 			}
 			
