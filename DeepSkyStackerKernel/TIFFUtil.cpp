@@ -960,8 +960,6 @@ bool CTIFFWriter::Open()
 			if (nrframes)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
 
-            TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
-
 			tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
 			ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
 
@@ -1075,6 +1073,9 @@ bool CTIFFWriter::Open()
 			TIFFSetDirectory(m_tiff, currentIFD);
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
 			TIFFCheckpointDirectory(m_tiff);
+
+			// The ZIP compression level must be set after the ZIP state has been re-initialised by TIFFSetDirectory().
+			TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED);
 		}
 		else
 		{
