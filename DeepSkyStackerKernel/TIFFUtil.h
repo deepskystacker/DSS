@@ -43,130 +43,131 @@ protected:
 	uint32_t	nrframes;	// TIFF_LONG
 	QDateTime	m_DateTime;
 
-public :
+public:
 	CTIFFHeader();
 	virtual ~CTIFFHeader() = default;
+	CTIFFHeader(const CTIFFHeader&) = delete;
+	CTIFFHeader& operator=(const CTIFFHeader&) = delete;
+	CTIFFHeader(CTIFFHeader&&) = delete;
 
-public :
-	bool	IsCFA()
+public:
+	bool IsCFA() const
 	{
 		return cfa;
-	};
+	}
 
-	CFATYPE GetCFAType()
+	CFATYPE GetCFAType() const
 	{
 		return static_cast<CFATYPE>(cfatype);
-	};
+	}
 
-	bool	IsMaster()
+	bool IsMaster() const
 	{
 		return master;
-	};
+	}
 
-	bool IsFloat();
+	bool IsFloat() const;
 
-	int	Height()
+	int Height() const
 	{
 		return h;
-	};
+	}
 
-	int	GetISOSpeed()
+	int GetISOSpeed() const
 	{
 		return isospeed;
-	};
+	}
 
-	void	SetISOSpeed(int lISOSpeed)
+	void SetISOSpeed(int lISOSpeed)
 	{
 		isospeed = lISOSpeed;
-	};
+	}
 
-	int	GetGain()
+	int GetGain() const
 	{
 		return gain;
-	};
+	}
 
-	void	SetGain(int lGain)
+	void SetGain(int lGain)
 	{
 		gain = lGain;
-	};
+	}
 
-	double	GetExposureTime()
+	double GetExposureTime() const
 	{
 		return exposureTime;
-	};
+	}
 
-	void	SetExposureTime(double fExposureTime)
+	void SetExposureTime(double fExposureTime)
 	{
 		exposureTime = fExposureTime;
-	};
+	}
 
-	double	GetAperture()
+	double GetAperture() const
 	{
 		return aperture;
-	};
+	}
 
-	void	SetAperture(double fAperture)
+	void SetAperture(double fAperture)
 	{
 		aperture = fAperture;
-	};
+	}
 
-	void	SetNrFrames(int lNrFrames)
+	void SetNrFrames(int lNrFrames)
 	{
 		nrframes = lNrFrames;
-	};
+	}
 
-	int	Width()
+	int Width() const
 	{
 		return w;
-	};
+	}
 
-	bool	IsGray()
+	bool IsGray() const
 	{
 		return (spp == 1);
-	};
+	}
 
-	bool	Is8Bits()
+	bool Is8Bits() const
 	{
 		return (bps == 8);
-	};
+	}
 
-	bool	Is16Bits()
+	bool Is16Bits() const
 	{
 		return (bps == 16);
-	};
+	}
 
-	bool	Is32Bits()
+	bool Is32Bits() const
 	{
 		return (bps == 32);
-	};
+	}
 
-	int	BitPerChannels()
+	int BitPerChannels() const
 	{
 		return bps;
-	};
+	}
 
-	int	NrChannels()
+	int NrChannels() const
 	{
-		if (spp==1)
-			return spp;
-		else
-			return 3;
-	};
+		return spp == 1 ? 1 : 3;
+	}
 
-	QString	getMakeModel()
+	QString	getMakeModel() const
 	{
 		return strMakeModel;
-	};
+	}
 
-	QDateTime GetDateTime()
+	QDateTime GetDateTime() const
 	{
 		return m_DateTime;
-	};
+	}
 };
 
-typedef struct tiff TIFF;
 namespace DSS { class ProgressBase; }
-using namespace DSS;
+using ProgressBase = DSS::ProgressBase;
+using TIFF = struct tiff;
+
 class CTIFFReader : public CTIFFHeader
 {
 public :
@@ -207,6 +208,7 @@ class CTIFFWriter : public CTIFFHeader
 {
 public:
 	TIFF* m_tiff;
+protected:
 	fs::path file;
 	ProgressBase* m_pProgress;
 	QString m_strDescription;
@@ -218,6 +220,9 @@ protected:
 
 public:
 	CTIFFWriter(const fs::path& szFileName, ProgressBase* pProgress);
+	CTIFFWriter(const CTIFFWriter&) = delete;
+	CTIFFWriter& operator=(const CTIFFWriter&) = delete;
+	CTIFFWriter(CTIFFWriter&&) = delete;
 
 	virtual ~CTIFFWriter()
 	{
@@ -229,14 +234,12 @@ public:
 		m_strDescription = szDescription;
 	}
 
-	void SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
-	{
-		m_Format = TIFFFormat;
-		SetCompression(TIFFCompression);
-	}
+	void SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression);
 
 	bool Open();
 	bool Write();
+
+private:
 	bool Close();
 
 	virtual bool OnOpen() { return true; };

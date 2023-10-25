@@ -816,11 +816,11 @@ void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFAT
 		samplemin    = 0;
 		samplemax    = 1.0;
 		break;
-	};
+	}
 }
+
 void CTIFFWriter::SetCompression(TIFFCOMPRESSION tiffcomp)
 {
-	compression = COMPRESSION_NONE;
 	switch (tiffcomp)
 	{
 	case TC_LZW:
@@ -829,15 +829,21 @@ void CTIFFWriter::SetCompression(TIFFCOMPRESSION tiffcomp)
 	case TC_DEFLATE:
 		compression = COMPRESSION_DEFLATE;
 		break;
-	};
-};
+	default:
+		compression = COMPRESSION_NONE;
+	}
+}
 
-/* ------------------------------------------------------------------- */
+void CTIFFWriter::SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
+{
+	m_Format = TIFFFormat;
+	SetCompression(TIFFCompression);
+}
 
 bool CTIFFWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
 	uint64_t dir_offset_EXIF{ 0 };
 	uint16_t count{ 0 };
@@ -847,7 +853,7 @@ bool CTIFFWriter::Open()
 #else
 	m_tiff = TIFFOpen(file.u8string.c_str(), "w");
 #endif
-	if (m_tiff)
+	if (m_tiff != nullptr)
 	{
 		photo = PHOTOMETRIC_RGB;
 
@@ -861,6 +867,7 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_BITSPERSAMPLE, bps);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLESPERPIXEL, spp);
 			TIFFSetField(m_tiff, TIFFTAG_PLANARCONFIG, PLANARCONFIG_CONTIG);
+
 			if (spp == 1)
 			{
 				//
@@ -907,19 +914,19 @@ bool CTIFFWriter::Open()
 			//
 			//if (IsFloat()) TIFFSetField(m_tiff, TIFFTAG_PREDICTOR, PREDICTOR_FLOATINGPOINT);
 
-			if (samplemax-samplemin)
+			if (samplemax != samplemin)
 			{
 				TIFFSetField(m_tiff, TIFFTAG_SMINSAMPLEVALUE, samplemin);
 				TIFFSetField(m_tiff, TIFFTAG_SMAXSAMPLEVALUE, samplemax);
-			};
+			}
 
 			//
 			// Set Software name in the same way we do elsewhere.
 			//
-			const QString strSoftware(QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER));
+			const QString strSoftware{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) };
 			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, strSoftware.toLatin1().constData());
 
-			if (m_strDescription.length())
+			if (!m_strDescription.isEmpty())
 			{
 				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, m_strDescription.toStdString().c_str());
 			}
@@ -930,7 +937,7 @@ bool CTIFFWriter::Open()
 				QString strDateTime = m_DateTime.toString("yyyy:MM:dd hh:mm:ss");
 
 				TIFFSetField(m_tiff, TIFFTAG_DATETIME, strDateTime.toStdString().c_str());
-			};
+			}
 
 			/* It is good to set resolutions too (but it is not nesessary) */
 			TIFFSetField(m_tiff, TIFFTAG_XRESOLUTION, 100.0f);
@@ -960,7 +967,7 @@ bool CTIFFWriter::Open()
 			if (nrframes)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
 
-			tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
+			const tmsize_t scanLineSize = TIFFScanlineSize(m_tiff);
 			ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
 
 			//
@@ -976,7 +983,7 @@ bool CTIFFWriter::Open()
 			// If it wasn't an exact division (IOW there's a remainder), add one
 			// for the final (short) strip.
 			//
-			if (0 != h % rowsPerStrip)
+			if (0 != (h % rowsPerStrip))
 				++numStrips;
 
 			//
@@ -992,8 +999,8 @@ bool CTIFFWriter::Open()
 			//
 			// is issued for each empty strip.
 			//
-			TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
-			TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
+			TIFFErrorHandler    oldHandler = TIFFSetErrorHandler(nullptr);
+			TIFFErrorHandlerExt oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
 			ZTRACE_RUNTIME("Writing %d empty encoded strips", numStrips);
 			for (int strip = 0; strip < numStrips; ++strip)
 			{
@@ -1026,7 +1033,7 @@ bool CTIFFWriter::Open()
 			//
 			// Get current TIFF Directory so we can return to it
 			//
-			auto currentIFD = TIFFCurrentDirectory(m_tiff);
+			const auto currentIFD = TIFFCurrentDirectory(m_tiff);
 			TIFFCreateEXIFDirectory(m_tiff);
 			TIFFSetField(m_tiff, EXIFTAG_EXIFVERSION, exifVersion);
 
@@ -1045,7 +1052,7 @@ bool CTIFFWriter::Open()
 			{
 				// EXIFTAG_ISOSPEEDRATINGS is array of uint16 according to the EXIF spec
 				count = 1;
-				uint16_t iso_setting{ static_cast<uint16_t>(isospeed) };
+				const uint16_t iso_setting = static_cast<uint16_t>(isospeed);
 				TIFFSetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, count, &iso_setting);
 			}
 			
@@ -1081,19 +1088,19 @@ bool CTIFFWriter::Open()
 		{
 			TIFFClose(m_tiff);
 			m_tiff = nullptr;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 bool CTIFFWriter::Write()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool		result = true;
-	bool		error = false;
+	bool result = true;
+	bool error = false;
 
 	//
     // Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
@@ -1101,24 +1108,23 @@ bool CTIFFWriter::Write()
 	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
 	//
 
-	if (m_tiff)
+	if (m_tiff != nullptr)
 	{
-		tmsize_t scanLineSize{ TIFFScanlineSize(m_tiff) };
-		tdata_t			buff;
+		tmsize_t scanLineSize = TIFFScanlineSize(m_tiff);
 
 		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
 
 		//
         // Allocate enough to hold the entire image
         //
-		tmsize_t buffSize = scanLineSize * h;
+		const tmsize_t buffSize = scanLineSize * h;
 		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		buff = static_cast<tdata_t>(malloc(buffSize));
+		const tdata_t buff = static_cast<tdata_t>(malloc(buffSize));
 
 		if (buff != nullptr)
 		{
 			const int nrProcessors = CMultitask::GetNrProcessors();
-			if (m_pProgress)
+			if (m_pProgress != nullptr)
 				m_pProgress->Start2(h);
 
 			auto* byteBuff = static_cast<std::uint8_t*>(buff);
@@ -1132,13 +1138,15 @@ bool CTIFFWriter::Write()
 #pragma omp parallel for default(none) if(nrProcessors > 1)
 			for (int row = 0; row < h; row++)
 			{
-				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+				if (stop.load())
+					continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
 				for (int col = 0; col < w; col++)
 				{
-					if (stop.load()) break;	// OK to break from inner loop
+					if (stop.load())
+						break;	// OK to break from inner loop
 					int index = (row * w * spp) + (col * spp);
 
-					double		fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
+					double fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
 
 					if (!OnWrite(col, row, fRed, fGreen, fBlue))
 					{
@@ -1153,7 +1161,7 @@ bool CTIFFWriter::Write()
 					// 
 					if (cfa)
 					{
-						fGrey = max(fRed, max(fGreen, fBlue));
+						fGrey = std::max(fRed, std::max(fGreen, fBlue));
 					}
 					else
 					{
@@ -1224,14 +1232,15 @@ bool CTIFFWriter::Write()
 				}
 				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
-			};
+			}
 
-			if (false == result) return false;
+			if (false == result)
+				return false;
 
 			//
 			// Work out how many scanlines fit into the default strip
 			//
-			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
+			const unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			
 			//
 			// From that we derive the number of strips
@@ -1241,7 +1250,7 @@ bool CTIFFWriter::Write()
 			// If it wasn't an exact division (IOW there's a remainder), add one
 			// for the final (short) strip.
 			//
-			if (0 != h % rowsPerStrip)
+			if (0 != (h % rowsPerStrip))
 				++numStrips;
 
 			ZTRACE_RUNTIME("Number of strips is %u", numStrips);
@@ -1256,7 +1265,7 @@ bool CTIFFWriter::Write()
 				if (bytesRemaining < stripSize)
 					size = bytesRemaining;
 
-				tsize_t written = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
+				const tsize_t written = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
 				if (-1 == written)
 				{
 					ZTRACE_RUNTIME("TIFFWriteEncodedStrip() failed");
@@ -1273,12 +1282,12 @@ bool CTIFFWriter::Write()
 			free(buff);
 			if (m_pProgress)
 				m_pProgress->End2();
-		};
-		result = (!error) ? true : false;
-	};
+		}
+		result = (!error);
+	}
 
 	return result;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1333,7 +1342,7 @@ public :
 	virtual bool Close() { return OnClose(); }
 
 	virtual bool OnOpen() override;
-	bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
+	virtual bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual bool OnClose() override;
 };
 
@@ -1819,7 +1828,8 @@ CTIFFHeader::CTIFFHeader()
 	sampleformat = 0;
 	master = 0;
 }
-bool CTIFFHeader::IsFloat()
+
+bool CTIFFHeader::IsFloat() const
 {
 	return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
-};
+}

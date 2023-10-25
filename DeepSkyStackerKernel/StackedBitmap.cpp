@@ -649,7 +649,7 @@ public :
 	};
 
 	virtual bool OnOpen() override;
-	bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
 	virtual bool OnClose() override;
 };
 
