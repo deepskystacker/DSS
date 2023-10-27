@@ -28,48 +28,48 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1200"/>
+        <location filename="../BitmapExt.cpp" line="1201"/>
         <source>%1 does not exist or is not a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1556"/>
+        <location filename="../BitmapExt.cpp" line="1557"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1559"/>
+        <location filename="../BitmapExt.cpp" line="1560"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1562"/>
+        <location filename="../BitmapExt.cpp" line="1563"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1565"/>
+        <location filename="../BitmapExt.cpp" line="1566"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1568"/>
+        <location filename="../BitmapExt.cpp" line="1569"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1571"/>
+        <location filename="../BitmapExt.cpp" line="1572"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1574"/>
+        <location filename="../BitmapExt.cpp" line="1575"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation type="unfinished"></translation>
@@ -113,7 +113,7 @@
     <name>DSS::Group</name>
     <message>
         <location filename="../group.cpp" line="120"/>
-        <location filename="../StackingEngine.cpp" line="3089"/>
+        <location filename="../StackingEngine.cpp" line="3093"/>
         <location filename="../ImageListModel.cpp" line="466"/>
         <location filename="../ImageListModel.cpp" line="692"/>
         <source>Dark</source>
@@ -122,7 +122,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="122"/>
-        <location filename="../StackingEngine.cpp" line="3098"/>
+        <location filename="../StackingEngine.cpp" line="3102"/>
         <location filename="../ImageListModel.cpp" line="476"/>
         <location filename="../ImageListModel.cpp" line="694"/>
         <source>Dark Flat</source>
@@ -131,7 +131,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="124"/>
-        <location filename="../StackingEngine.cpp" line="3106"/>
+        <location filename="../StackingEngine.cpp" line="3110"/>
         <location filename="../ImageListModel.cpp" line="471"/>
         <location filename="../ImageListModel.cpp" line="696"/>
         <source>Flat</source>
@@ -140,7 +140,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="126"/>
-        <location filename="../StackingEngine.cpp" line="3080"/>
+        <location filename="../StackingEngine.cpp" line="3084"/>
         <location filename="../ImageListModel.cpp" line="481"/>
         <location filename="../ImageListModel.cpp" line="698"/>
         <source>Bias/Offset</source>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="128"/>
-        <location filename="../StackingEngine.cpp" line="3074"/>
+        <location filename="../StackingEngine.cpp" line="3078"/>
         <location filename="../ImageListModel.cpp" line="462"/>
         <location filename="../ImageListModel.cpp" line="700"/>
         <source>Light</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="109"/>
-        <location filename="../StackingEngine.cpp" line="3091"/>
+        <location filename="../StackingEngine.cpp" line="3095"/>
         <location filename="../ImageListModel.cpp" line="681"/>
         <source>Master Dark</source>
         <comment>IDS_TYPE_MASTERDARK</comment>
@@ -180,7 +180,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="111"/>
-        <location filename="../StackingEngine.cpp" line="3100"/>
+        <location filename="../StackingEngine.cpp" line="3104"/>
         <location filename="../ImageListModel.cpp" line="683"/>
         <source>Master Dark Flat</source>
         <comment>IDS_TYPE_MASTERDARKFLAT</comment>
@@ -188,7 +188,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="113"/>
-        <location filename="../StackingEngine.cpp" line="3108"/>
+        <location filename="../StackingEngine.cpp" line="3112"/>
         <location filename="../ImageListModel.cpp" line="685"/>
         <source>Master Flat</source>
         <comment>IDS_TYPE_MASTERFLAT</comment>
@@ -196,7 +196,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="115"/>
-        <location filename="../StackingEngine.cpp" line="3082"/>
+        <location filename="../StackingEngine.cpp" line="3086"/>
         <location filename="../ImageListModel.cpp" line="687"/>
         <source>Master Offset</source>
         <comment>IDS_TYPE_MASTEROFFSET</comment>
@@ -524,28 +524,28 @@ returned a status of %2, error text is:
         <location filename="../FITSUtil.cpp" line="1687"/>
         <location filename="../MultiBitmapProcess.cpp" line="222"/>
         <location filename="../StackingEngine.cpp" line="2468"/>
-        <location filename="../TIFFUtil.cpp" line="1425"/>
-        <location filename="../TIFFUtil.cpp" line="1674"/>
+        <location filename="../TIFFUtil.cpp" line="1434"/>
+        <location filename="../TIFFUtil.cpp" line="1683"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
 
  %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="323"/>
+        <location filename="../BitmapExt.cpp" line="324"/>
         <location filename="../FITSUtil.cpp" line="1021"/>
         <location filename="../FITSUtil.cpp" line="1696"/>
         <location filename="../MultiBitmapProcess.cpp" line="231"/>
         <location filename="../StackingEngine.cpp" line="2477"/>
-        <location filename="../TIFFUtil.cpp" line="1434"/>
-        <location filename="../TIFFUtil.cpp" line="1683"/>
+        <location filename="../TIFFUtil.cpp" line="1443"/>
+        <location filename="../TIFFUtil.cpp" line="1692"/>
         <source>Exception %1 thrown from an unknown Function.
 
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="336"/>
+        <location filename="../BitmapExt.cpp" line="337"/>
         <location filename="../MultiBitmapProcess.cpp" line="240"/>
         <location filename="../StackingEngine.cpp" line="2486"/>
         <source>Unknown exception caught</source>
@@ -681,43 +681,43 @@ returned a status of %2, error text is:
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1585"/>
+        <location filename="../BitmapExt.cpp" line="1586"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1588"/>
+        <location filename="../BitmapExt.cpp" line="1589"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1591"/>
+        <location filename="../BitmapExt.cpp" line="1592"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1594"/>
+        <location filename="../BitmapExt.cpp" line="1595"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1600"/>
+        <location filename="../BitmapExt.cpp" line="1601"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1606"/>
+        <location filename="../BitmapExt.cpp" line="1607"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1611"/>
+        <location filename="../BitmapExt.cpp" line="1612"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation></translation>
@@ -766,237 +766,237 @@ returned a status of %2, error text is:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2753"/>
+        <location filename="../StackingEngine.cpp" line="2757"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2757"/>
+        <location filename="../StackingEngine.cpp" line="2761"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2760"/>
+        <location filename="../StackingEngine.cpp" line="2764"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2763"/>
+        <location filename="../StackingEngine.cpp" line="2767"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2766"/>
+        <location filename="../StackingEngine.cpp" line="2770"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2773"/>
+        <location filename="../StackingEngine.cpp" line="2777"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2779"/>
+        <location filename="../StackingEngine.cpp" line="2783"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2782"/>
+        <location filename="../StackingEngine.cpp" line="2786"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2785"/>
+        <location filename="../StackingEngine.cpp" line="2789"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2788"/>
+        <location filename="../StackingEngine.cpp" line="2792"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2791"/>
+        <location filename="../StackingEngine.cpp" line="2795"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2800"/>
+        <location filename="../StackingEngine.cpp" line="2804"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2810"/>
+        <location filename="../StackingEngine.cpp" line="2814"/>
         <source>Comet processing: </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2814"/>
+        <location filename="../StackingEngine.cpp" line="2818"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2817"/>
+        <location filename="../StackingEngine.cpp" line="2821"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2820"/>
+        <location filename="../StackingEngine.cpp" line="2824"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2832"/>
+        <location filename="../StackingEngine.cpp" line="2836"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2837"/>
+        <location filename="../StackingEngine.cpp" line="2841"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2861"/>
+        <location filename="../StackingEngine.cpp" line="2865"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2862"/>
+        <location filename="../StackingEngine.cpp" line="2866"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2863"/>
+        <location filename="../StackingEngine.cpp" line="2867"/>
         <source>RGB Channels Background Calibration: %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2864"/>
+        <location filename="../StackingEngine.cpp" line="2868"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2883"/>
+        <location filename="../StackingEngine.cpp" line="2887"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2897"/>
-        <location filename="../StackingEngine.cpp" line="2924"/>
-        <location filename="../StackingEngine.cpp" line="2959"/>
-        <location filename="../StackingEngine.cpp" line="2997"/>
-        <location filename="../StackingEngine.cpp" line="3035"/>
+        <location filename="../StackingEngine.cpp" line="2901"/>
+        <location filename="../StackingEngine.cpp" line="2928"/>
+        <location filename="../StackingEngine.cpp" line="2963"/>
+        <location filename="../StackingEngine.cpp" line="3001"/>
+        <location filename="../StackingEngine.cpp" line="3039"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2902"/>
+        <location filename="../StackingEngine.cpp" line="2906"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2915"/>
+        <location filename="../StackingEngine.cpp" line="2919"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2932"/>
-        <location filename="../StackingEngine.cpp" line="2968"/>
-        <location filename="../StackingEngine.cpp" line="3043"/>
+        <location filename="../StackingEngine.cpp" line="2936"/>
+        <location filename="../StackingEngine.cpp" line="2972"/>
+        <location filename="../StackingEngine.cpp" line="3047"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2937"/>
-        <location filename="../StackingEngine.cpp" line="2973"/>
-        <location filename="../StackingEngine.cpp" line="3048"/>
+        <location filename="../StackingEngine.cpp" line="2941"/>
+        <location filename="../StackingEngine.cpp" line="2977"/>
+        <location filename="../StackingEngine.cpp" line="3052"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2976"/>
+        <location filename="../StackingEngine.cpp" line="2980"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="3007"/>
+        <location filename="../StackingEngine.cpp" line="3011"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="3012"/>
+        <location filename="../StackingEngine.cpp" line="3016"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="3015"/>
+        <location filename="../StackingEngine.cpp" line="3019"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2943"/>
+        <location filename="../StackingEngine.cpp" line="2947"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2951"/>
+        <location filename="../StackingEngine.cpp" line="2955"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2981"/>
+        <location filename="../StackingEngine.cpp" line="2985"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2989"/>
+        <location filename="../StackingEngine.cpp" line="2993"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="3027"/>
+        <location filename="../StackingEngine.cpp" line="3031"/>
         <source>-&gt; Flat: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="3054"/>
+        <location filename="../StackingEngine.cpp" line="3058"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation type="unfinished"></translation>
@@ -1214,13 +1214,13 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2855"/>
+        <location filename="../StackingEngine.cpp" line="2859"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2856"/>
+        <location filename="../StackingEngine.cpp" line="2860"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation type="unfinished"></translation>
