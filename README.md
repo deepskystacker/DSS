@@ -34,13 +34,13 @@ variable called Boost_1_80_0 with the location of the Boost installation directo
 C:\Boost_1_80_0
 
 ### Qt 6.4.0, Qt 6.5.3, Qt VS Tools
-Qt 6.4.0 is needed to build DeepSkyStacker 5.1.0 through 5.1.3.  Qt 6.5.3 is needed for the current development build which includes support for WIndows Themes.
+Qt 6.4.0 is needed to build DeepSkyStacker 5.1.0 through 5.1.3.  Qt 6.5.1 is needed for the current development build which includes support for WIndows Themes.
 In addition to you you will also need to install the Visual Studio Extension *Qt VS Tools* : (Extensions/Manage Extensions).
 
 You will need to use *Extensions/Qt VS Tools/Qt Versions* to set up two named Qt Installations called:
 
 *6.4.0_msvc2019_64* and<br>
-*6.5.3_msvc2019_64*
+*6.5.1_msvc2019_64*
 	
 pointing to the msvc2019_64 sub-directory of your Qt installations (for example C:\Qt\6.4.0\msvc2019_64).
 
