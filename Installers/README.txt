@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.4 Beta 2
+Welcome to DeepSkyStacker 5.1.4 Beta 3
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -104,6 +104,8 @@ Changes since the last release:
 39. Bug fix: Output file name when using file list name as the output name was incorrectly set to (e.g.) Batch1.tif when using a file list with a name Batch1.xxx.dssfilelist
 
 40. Clear image list at end of batch stacking.
+
+41. Upgrade CFITSIO library to 4.3.0
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

@@ -316,6 +316,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 				.arg(e.name())
 				.arg(e.locationAtIndex(0)->fileName())
 				.arg(e.locationAtIndex(0)->functionName())
+				.arg(e.locationAtIndex(0)->lineNumber())
 				.arg(e.text(0));
 		}
 		else
