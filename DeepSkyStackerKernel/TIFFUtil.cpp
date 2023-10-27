@@ -22,27 +22,27 @@ constexpr size_t NRCUSTOMTIFFTAGS = 12;
 
 constexpr std::array<TIFFFieldInfo, NRCUSTOMTIFFTAGS> DssTiffFieldTable {
 {
-    { TIFFTAG_DSS_NRFRAMES,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
+	{ TIFFTAG_DSS_NRFRAMES,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSNumberOfFrames") },
-    { TIFFTAG_DSS_TOTALEXPOSUREOLD, 1, 1, TIFF_LONG, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_TOTALEXPOSUREOLD, 1, 1, TIFF_LONG, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSTotalExposureOld") },
-    { TIFFTAG_DSS_TOTALEXPOSURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_TOTALEXPOSURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSTotalExposure") },
-    { TIFFTAG_DSS_ISO,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
+	{ TIFFTAG_DSS_ISO,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSISO") },
-    { TIFFTAG_DSS_GAIN,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
+	{ TIFFTAG_DSS_GAIN,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSGain") },
-    { TIFFTAG_DSS_SETTINGSAPPLIED,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
+	{ TIFFTAG_DSS_SETTINGSAPPLIED,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSSettingsApplied") },
-    { TIFFTAG_DSS_BEZIERSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_BEZIERSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSBezierSettings") },
-    { TIFFTAG_DSS_ADJUSTSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_ADJUSTSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSAdjustSettings") },
-    { TIFFTAG_DSS_CFA,	1, 1, TIFF_LONG, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_CFA,	1, 1, TIFF_LONG, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSCFA") },
-    { TIFFTAG_DSS_MASTER,	1, 1, TIFF_LONG, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_MASTER,	1, 1, TIFF_LONG, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSMaster") },
-    { TIFFTAG_DSS_CFATYPE,	1, 1, TIFF_LONG, FIELD_CUSTOM,
+	{ TIFFTAG_DSS_CFATYPE,	1, 1, TIFF_LONG, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSCFATYPE") },
 	{ TIFFTAG_DSS_APERTURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
 	  false,	false,	const_cast<char*>("DSSAperture") }
@@ -97,7 +97,7 @@ void DSSTIFFInitialize()
 	{
 	    /* Grab the inherited method and install */
 		g_TIFFParentExtender = TIFFSetTagExtender(DSSTIFFDefaultDirectory);
-}
+	}
 }
 
 
@@ -208,7 +208,7 @@ bool CTIFFReader::Open()
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
 
-	if (m_tiff)
+	if (m_tiff != nullptr)
 	{
 		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
@@ -258,7 +258,7 @@ bool CTIFFReader::Open()
 			int			lExposure;
 			if (TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSUREOLD, &lExposure))
 				exposureTime = lExposure;
-		};
+		}
 
 		// Check that this is a compatible TIFF format
 		// Support is :
@@ -464,11 +464,11 @@ bool CTIFFReader::Open()
 		{
 			TIFFClose(m_tiff);
 			m_tiff = nullptr;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -739,7 +739,7 @@ bool CTIFFReader::Read()
 	if (stop.load()) return false;
 
 	return true;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -747,18 +747,18 @@ bool CTIFFReader::Close()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	if (m_tiff)
+	if (m_tiff != nullptr)
 	{
 		bResult = OnClose();
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
 			m_tiff = nullptr;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1305,7 +1305,7 @@ bool CTIFFWriter::Close()
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
 
-	if (m_tiff)
+	if (m_tiff != nullptr)
 	{
 		bResult = OnClose();
 		//
@@ -1320,11 +1320,11 @@ bool CTIFFWriter::Close()
 		{
 			TIFFClose(m_tiff);
 			m_tiff = nullptr;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -1413,10 +1413,10 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 			nrframes = m_pMemoryBitmap->GetNrFrames();
 		m_DateTime = m_pMemoryBitmap->m_DateTime;
 		bResult = true;
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1460,7 +1460,7 @@ bool CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 	}
 
 	return result;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1503,11 +1503,11 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 		{
 			bResult = tiff.Write();
 			tiff.Close();
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
@@ -1546,11 +1546,11 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 		{
 			bResult = tiff.Write();
 			tiff.Close();
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
@@ -1766,10 +1766,10 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_fAperture		= tiff.GetAperture();
 		BitmapInfo.m_DateTime		= tiff.GetDateTime();
 		bResult = true; //tiff.Close();
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1777,7 +1777,7 @@ bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetTIFFInfo(szFileName, BitmapInfo);
-};
+}
 
 
 int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
