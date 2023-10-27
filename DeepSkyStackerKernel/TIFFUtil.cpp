@@ -15,45 +15,48 @@
 
 using namespace DSS;
 
-#define NRCUSTOMTIFFTAGS		12
+namespace
+{
 
-static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
+constexpr size_t NRCUSTOMTIFFTAGS = 12;
+
+constexpr std::array<TIFFFieldInfo, NRCUSTOMTIFFTAGS> DssTiffFieldTable {
 {
     { TIFFTAG_DSS_NRFRAMES,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSNumberOfFrames") },
+	  false,	false,	const_cast<char*>("DSSNumberOfFrames") },
     { TIFFTAG_DSS_TOTALEXPOSUREOLD, 1, 1, TIFF_LONG, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSTotalExposureOld") },
+	  false,	false,	const_cast<char*>("DSSTotalExposureOld") },
     { TIFFTAG_DSS_TOTALEXPOSURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSTotalExposure") },
+	  false,	false,	const_cast<char*>("DSSTotalExposure") },
     { TIFFTAG_DSS_ISO,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSISO") },
+	  false,	false,	const_cast<char*>("DSSISO") },
     { TIFFTAG_DSS_GAIN,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSGain") },
+	  false,	false,	const_cast<char*>("DSSGain") },
     { TIFFTAG_DSS_SETTINGSAPPLIED,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSSettingsApplied") },
+	  false,	false,	const_cast<char*>("DSSSettingsApplied") },
     { TIFFTAG_DSS_BEZIERSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSBezierSettings") },
+	  false,	false,	const_cast<char*>("DSSBezierSettings") },
     { TIFFTAG_DSS_ADJUSTSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSAdjustSettings") },
+	  false,	false,	const_cast<char*>("DSSAdjustSettings") },
     { TIFFTAG_DSS_CFA,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSCFA") },
+	  false,	false,	const_cast<char*>("DSSCFA") },
     { TIFFTAG_DSS_MASTER,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSMaster") },
+	  false,	false,	const_cast<char*>("DSSMaster") },
     { TIFFTAG_DSS_CFATYPE,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      false,	false,	const_cast<char *>("DSSCFATYPE") },
+	  false,	false,	const_cast<char*>("DSSCFATYPE") },
 	{ TIFFTAG_DSS_APERTURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
-	  false,	false,	const_cast<char *>("DSSAperture") },
+	  false,	false,	const_cast<char*>("DSSAperture") }
+} };
 
-};
+constexpr std::array<uint8_t, 4> TIFF_CFAPattern_RGGB{ 0, 1, 1, 2 };
+constexpr std::array<uint8_t, 4> TIFF_CFAPattern_BGGR{ 2, 1, 1, 0 };
+constexpr std::array<uint8_t, 4> TIFF_CFAPattern_GRBG{ 1, 0, 2, 1 };
+constexpr std::array<uint8_t, 4> TIFF_CFAPattern_GBRG{ 1, 2, 0, 1 };
 
-constexpr uint8_t TIFF_CFAPattern_RGGB[] { 0,1,1,2 };
-constexpr uint8_t TIFF_CFAPattern_BGGR[] { 2,1,1,0 };
-constexpr uint8_t TIFF_CFAPattern_GRBG[] { 1,0,2,1 };
-constexpr uint8_t TIFF_CFAPattern_GBRG[] { 1,2,0,1 };
 //
 // Write the image out as Strips (i.e. not scanline by scanline)
 // 
-constexpr unsigned int STRIP_SIZE_DEFAULT = 16'777'216UL;	// 16MB
+constexpr unsigned int STRIP_SIZE_DEFAULT = 16 * 1024 * 1024;	// 16MB
 
 struct
 {
@@ -66,36 +69,37 @@ struct
 	} cfa { 0 };
 } cfaDimPat;
 
-static TIFFExtendProc	g_TIFFParentExtender = nullptr;
-static bool				g_TIFFInitialized = false;
+constinit TIFFExtendProc g_TIFFParentExtender = nullptr;
 
 /* ------------------------------------------------------------------- */
 
-static void DSSTIFFDefaultDirectory(TIFF *tif)
+void DSSTIFFDefaultDirectory(TIFF *tif)
 {
+	static_assert(DssTiffFieldTable.size() == NRCUSTOMTIFFTAGS);
+
     /* Install the extended Tag field info */
-    TIFFMergeFieldInfo(tif, DSStiffFieldInfo, NRCUSTOMTIFFTAGS);
+    TIFFMergeFieldInfo(tif, DssTiffFieldTable.data(), NRCUSTOMTIFFTAGS);
 
     /* Since an XTIFF client module may have overridden
      * the default directory method, we call it now to
      * allow it to set up the rest of its own methods.
      */
 
-    if (g_TIFFParentExtender)
-        (*g_TIFFParentExtender)(tif);
+    if (g_TIFFParentExtender != nullptr)
+        g_TIFFParentExtender(tif);
 }
 
-/* ------------------------------------------------------------------- */
+} // anonymous namespace
 
 void DSSTIFFInitialize()
 {
-    if (!g_TIFFInitialized)
+    if (g_TIFFParentExtender == nullptr)
 	{
-		g_TIFFInitialized = true;
 	    /* Grab the inherited method and install */
 		g_TIFFParentExtender = TIFFSetTagExtender(DSSTIFFDefaultDirectory);
-	};
 }
+}
+
 
 /* ------------------------------------------------------------------- */
 
@@ -110,25 +114,25 @@ void CTIFFReader::decodeCfaDimPat(int patternSize)
 			cfaDimPat.cfa.cfa4[1],
 			cfaDimPat.cfa.cfa4[2],
 			cfaDimPat.cfa.cfa4[3]);
-		if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, 4))
+		if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to RGGB");
 			cfa = 1;
 			cfatype = CFATYPE_RGGB;
 		}
-		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, 4))
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to BGGR");
 			cfa = 1;
 			cfatype = CFATYPE_BGGR;
 		}
-		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, 4))
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to GRBG");
 			cfa = 1;
 			cfatype = CFATYPE_GRBG;
 		}
-		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, 4))
+		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to GBRG");
 			cfa = 1;
@@ -259,7 +263,7 @@ bool CTIFFReader::Open()
 			((compression == COMPRESSION_NONE) ||
 			 (compression == COMPRESSION_LZW) ||
 			 (compression == COMPRESSION_DEFLATE) ||
-			 (compression == COMPRESSION_ADOBE_DEFLATE))&&
+			 (compression == COMPRESSION_ADOBE_DEFLATE)) &&
 			((spp == 3) || (spp==4) || (spp == 1)))
 		{
 			if ((bps == 8) || (bps == 16))
@@ -278,8 +282,8 @@ bool CTIFFReader::Open()
 					// Read min/max values
 					TIFFGetField(m_tiff, TIFFTAG_SMINSAMPLEVALUE, &samplemin);
 					TIFFGetField(m_tiff, TIFFTAG_SMAXSAMPLEVALUE, &samplemax);
-				};
-			};
+				}
+			}
 
 			if (bResult)
 			{
@@ -287,8 +291,8 @@ bool CTIFFReader::Open()
 					bResult = (PHOTOMETRIC_RGB == photo);
 				else if (spp == 1)
 					bResult = (PHOTOMETRIC_MINISBLACK == photo || PHOTOMETRIC_CFA == photo);
-			};
-		};
+			}
+		}
 
 		// Retrieve the Date/Time as in the TIFF TAG
 		char* szDateTime;
@@ -303,8 +307,8 @@ bool CTIFFReader::Open()
 			if (strDateTime.length() >= 19)
 			{
 				m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
-			};
-		};
+			}
+		}
 
 		//
 		// Attempt to read the CFA from the root IFD if this is could be a CFA image
@@ -384,8 +388,8 @@ bool CTIFFReader::Open()
 					// Revert IFD to status quo ante TIFFReadEXIFDirectory
 					//
 					TIFFSetDirectory(m_tiff, currentIFD);
-				};
-			};
+				}
+			}
 		}
 		else
 		{
@@ -397,7 +401,7 @@ bool CTIFFReader::Open()
 				isospeed	 = BitmapInfo.m_lISOSpeed;
 				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
-			};
+			}
 		}
 
 		//
@@ -885,16 +889,16 @@ bool CTIFFWriter::Open()
 					switch (cfatype)
 					{
 					case CFATYPE_BGGR:
-						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR, sizeof(cfaDimPat.cfa.cfa4));
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR.data(), sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_GRBG:
-						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG, sizeof(cfaDimPat.cfa.cfa4));
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG.data(), sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_GBRG:
-						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG, sizeof(cfaDimPat.cfa.cfa4));
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG.data(), sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					case CFATYPE_RGGB:
-						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB, sizeof(cfaDimPat.cfa.cfa4));
+						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB.data(), sizeof(cfaDimPat.cfa.cfa4));
 						break;
 					}
 					TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, cfaDimPat.cfa.cfa4);

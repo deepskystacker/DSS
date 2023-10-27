@@ -4,26 +4,27 @@
 #include "cfa.h"
 #include "DSSCommon.h"
 
-const int	TIFFTAG_DSS_BASE			= 50000;
-const int	TIFFTAG_DSS_NRFRAMES		= (TIFFTAG_DSS_BASE + 0);
-const int	TIFFTAG_DSS_TOTALEXPOSUREOLD= (TIFFTAG_DSS_BASE + 1);
-const int	TIFFTAG_DSS_ISO				= (TIFFTAG_DSS_BASE + 2);
-const int	TIFFTAG_DSS_SETTINGSAPPLIED	= (TIFFTAG_DSS_BASE + 3);
-const int	TIFFTAG_DSS_BEZIERSETTINGS	= (TIFFTAG_DSS_BASE + 4);
-const int	TIFFTAG_DSS_ADJUSTSETTINGS	= (TIFFTAG_DSS_BASE + 5);
-const int	TIFFTAG_DSS_CFA				= (TIFFTAG_DSS_BASE + 6);
-const int	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
-const int	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
-const int	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
-const int   TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
-const int	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
+constexpr int TIFFTAG_DSS_BASE             = 50000;
+constexpr int TIFFTAG_DSS_NRFRAMES         = (TIFFTAG_DSS_BASE + 0);
+constexpr int TIFFTAG_DSS_TOTALEXPOSUREOLD = (TIFFTAG_DSS_BASE + 1);
+constexpr int TIFFTAG_DSS_ISO              = (TIFFTAG_DSS_BASE + 2);
+constexpr int TIFFTAG_DSS_SETTINGSAPPLIED  = (TIFFTAG_DSS_BASE + 3);
+constexpr int TIFFTAG_DSS_BEZIERSETTINGS   = (TIFFTAG_DSS_BASE + 4);
+constexpr int TIFFTAG_DSS_ADJUSTSETTINGS   = (TIFFTAG_DSS_BASE + 5);
+constexpr int TIFFTAG_DSS_CFA              = (TIFFTAG_DSS_BASE + 6);
+constexpr int TIFFTAG_DSS_MASTER           = (TIFFTAG_DSS_BASE + 7);
+constexpr int TIFFTAG_DSS_TOTALEXPOSURE    = (TIFFTAG_DSS_BASE + 8);
+constexpr int TIFFTAG_DSS_CFATYPE          = (TIFFTAG_DSS_BASE + 9);
+constexpr int TIFFTAG_DSS_APERTURE         = (TIFFTAG_DSS_BASE + 10);
+constexpr int TIFFTAG_DSS_GAIN             = (TIFFTAG_DSS_BASE + 11);
 
 void DSSTIFFInitialize();
 
 class CTIFFHeader
 {
 protected:
-	uint32_t	w, h;		// TIFF_LONG
+	uint32_t	w;			// TIFF_LONG
+	uint32_t	h;
     uint16_t	spp,		// TIFF_SHORT
 				bps,
 				photo,
@@ -34,8 +35,8 @@ protected:
 	uint32_t	cfatype;	// TIFF_LONG
 	uint32_t	master;		// TIFF_LONG
 	QString		strMakeModel;
-	double		samplemin,	// TIFF_DOUBLE
-				samplemax;
+	double		samplemin;	// TIFF_DOUBLE
+	double		samplemax;
 	float		exposureTime;	// TIFF_FLOAT
 	float		aperture;	// TIFF_FLOAT
 	uint32_t	isospeed;	// TIFF_LONG
@@ -188,15 +189,15 @@ public :
 		Close();
 	};
 
-	bool	Open();
-	bool	Read();
-	bool	Close();
+	bool Open();
+	bool Read();
+	bool Close();
 
 	// bool getInfo();
 
-	virtual bool	OnOpen() { return true; };
-	virtual bool	OnRead(int, int, double, double, double) { return true; }
-	virtual bool	OnClose() { return true; };
+	virtual bool OnOpen() { return true; }
+	virtual bool OnRead(int, int, double, double, double) { return true; }
+	virtual bool OnClose() { return true; };
 
 private:
 	void decodeCfaDimPat(int patternSize);
