@@ -103,6 +103,12 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
+CTIFFReader::CTIFFReader(const fs::path& p, ProgressBase* pProgress) :
+	m_tiff{ nullptr },
+	file{ p },
+	m_pProgress{ pProgress }
+{}
+
 void CTIFFReader::decodeCfaDimPat(int patternSize)
 {
 	ZTRACE_RUNTIME("CFA pattern dimension: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
@@ -1333,7 +1339,7 @@ private :
 
 public :
 	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
-		CTIFFWriter(szFileName, pProgress),
+		CTIFFWriter{ szFileName, pProgress },
 		m_pMemoryBitmap{ pBitmap }
 	{}
 
@@ -1343,7 +1349,7 @@ public :
 	}
 
 	virtual bool Close() { return OnClose(); }
-
+private:
 	virtual bool OnOpen() override;
 	virtual bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual bool OnClose() override;
@@ -1571,7 +1577,7 @@ public :
 	{}
 
 	virtual ~CTIFFReadInMemoryBitmap() { Close(); };
-
+private:
 	virtual bool Close() { return OnClose(); };
 
 	virtual bool OnOpen() override;
@@ -1805,31 +1811,31 @@ int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 	return result;
 }
 
-CTIFFHeader::CTIFFHeader()
+CTIFFHeader::CTIFFHeader() :
+	samplemax{ 1.0 },
+	samplemin{ 0.0 },
+	exposureTime{ 0.0f },
+	aperture{ 0.0f },
+	isospeed{ 0 },
+	gain{ -1 },
+	cfatype{ 0 },
+	cfa{ false },
+	nrframes{ 0 },
+	w{ 0 },
+	h{ 0 },
+	spp{ 0 },
+	bps{ 0 },
+	photo{ 0 },
+	compression{ 0 },
+	planarconfig{ 0 },
+	sampleformat{ 0 },
+	master{ 0 }
 {
 	TIFFSetWarningHandler(nullptr);
 	TIFFSetWarningHandlerExt(nullptr);
 	//TIFFSetErrorHandler(nullptr);
 	//TIFFSetErrorHandlerExt(nullptr);
 	DSSTIFFInitialize();
-	samplemax = 1.0;
-	samplemin = 0.0;
-	exposureTime = 0.0;
-	aperture = 0.0;
-	isospeed = 0;
-	gain = -1;
-	cfatype = 0;
-	cfa = false;
-	nrframes = 0;
-	w = 0;
-	h = 0;
-	spp = 0;
-	bps = 0;
-	photo = 0;
-	compression = 0;
-	planarconfig = 0;
-	sampleformat = 0;
-	master = 0;
 }
 
 bool CTIFFHeader::IsFloat() const

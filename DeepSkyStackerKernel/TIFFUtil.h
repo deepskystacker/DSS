@@ -171,28 +171,25 @@ using TIFF = struct tiff;
 
 class CTIFFReader : public CTIFFHeader
 {
-public :
+public:
 	TIFF* m_tiff;
+protected:
 	fs::path file;
 	ProgressBase* m_pProgress;
 
-public :
-	CTIFFReader(const fs::path& p, ProgressBase *	pProgress)
-	{
-		m_tiff		  = nullptr;
-		file = p;
-		m_pProgress   = pProgress;
-	};
+public:
+	CTIFFReader(const fs::path& p, ProgressBase* pProgress);
 
 	virtual ~CTIFFReader()
 	{
 		Close();
-	};
+	}
 
 	bool Open();
 	bool Read();
 	bool Close();
 
+private:
 	// bool getInfo();
 
 	virtual bool OnOpen() { return true; }
