@@ -70,6 +70,7 @@ struct
 } cfaDimPat;
 
 constinit TIFFExtendProc g_TIFFParentExtender = nullptr;
+constinit bool			 g_TIFFInitialized = false;
 
 /* ------------------------------------------------------------------- */
 
@@ -93,8 +94,9 @@ void DSSTIFFDefaultDirectory(TIFF *tif)
 
 void DSSTIFFInitialize()
 {
-    if (g_TIFFParentExtender == nullptr)
+    if (!g_TIFFInitialized)
 	{
+		g_TIFFInitialized = true;
 	    /* Grab the inherited method and install */
 		g_TIFFParentExtender = TIFFSetTagExtender(DSSTIFFDefaultDirectory);
 	}
