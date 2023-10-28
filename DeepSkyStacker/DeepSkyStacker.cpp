@@ -327,7 +327,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
 
 	ZTRACE_RUNTIME("Restoring Window State and Position");
-	QSettings settings{};
+	QSettings settings;
 	settings.beginGroup("MainWindow");
 
 	if (settings.contains("geometry") && settings.contains("maximised"))
@@ -337,8 +337,8 @@ DeepSkyStacker::DeepSkyStacker() :
 
 		if (maximised)
 		{
-			showMaximized();
 			setGeometry(screen()->availableGeometry());
+			showMaximized();
 		}
 		else
 		{
@@ -349,9 +349,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	if (settings.contains("windowState"))
 	{
 		auto windowState{ settings.value("windowState").toByteArray() };
-
 		restoreState(windowState);
 	}
+
 
 	settings.endGroup();
 

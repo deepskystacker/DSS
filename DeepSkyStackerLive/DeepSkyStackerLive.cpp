@@ -490,8 +490,8 @@ void DeepSkyStackerLive::onInitialise()
 
 		if (maximised)
 		{
-			showMaximized();
 			setGeometry(screen()->availableGeometry());
+			showMaximized();
 		}
 		else
 		{
