@@ -107,6 +107,8 @@ Changes since the last release:
 
 41. Upgrade CFITSIO library to 4.3.0
 
+42. Bug fix: If a recommended setting is clicked to activate it the revised recommendations are appended to the browser when it should be cleared before they are displayed.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
