@@ -883,7 +883,11 @@ void RecommendedSettings::setSetting(int lID)
 	};
 
 	if (bFound)
+	{
+		ui->textBrowser->clear();
+		vRecommendations.clear();
 		fillWithRecommendedSettings();
+	}
 };
 
 /* ------------------------------------------------------------------- */
