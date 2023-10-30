@@ -1,5 +1,5 @@
-Welcome to DeepSkyStacker 5.1.4 Beta 3
-======================================
+Welcome to DeepSkyStacker 5.1.4
+===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
@@ -107,7 +107,7 @@ Changes since the last release:
 
 42. Bug fix: If a recommended setting is clicked to activate it the revised recommendations are appended to the browser when it should be cleared before they are displayed.
 
-43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is ommited, it will generate a unique output file instead.
+43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is omitted, it will generate a unique output file instead.
 
 44. Bug fix: DSS-CL: If the compression level for a TIFF file is set via the /OCx parameter, this is now honoured.
 
