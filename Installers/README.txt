@@ -1,5 +1,5 @@
 Welcome to DeepSkyStacker 5.1.4 Beta 3
-===============================
+======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
