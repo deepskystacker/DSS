@@ -109,6 +109,8 @@ Changes since the last release:
 
 42. Bug fix: If a recommended setting is clicked to activate it the revised recommendations are appended to the browser when it should be cleared before they are displayed.
 
+43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is ommited, it will generate a unique output file instead.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
