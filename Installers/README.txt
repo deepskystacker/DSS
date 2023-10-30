@@ -5,7 +5,7 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Known problems:
 
-1. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
