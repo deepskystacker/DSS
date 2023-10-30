@@ -85,7 +85,7 @@ Changes since the last release:
 
 31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
 
-32. Revert change made for #26 - QTimeEdit doesn't work right with 4 decimals.
+32. Revert change made for number 26 - QTimeEdit doesn't work right with 4 decimals.
 
 33. Bug fix: Magnifying glass over image area was still displayed when mouse was moved directly to another window.
 
@@ -111,7 +111,7 @@ Changes since the last release:
 
 44. Bug fix: DSS-CL: If the compression level for a TIFF file is set via the /OCx parameter, this is now honoured.
 
-45. Bug fix: When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
+45. Bug fix: When registering a set of images with different exposure times, the progress dialogue restarted counting at 1 and the progress bar was reset to 0 for each different exposure. The estimated time for completion got completely confused, and the progress bar reached 100% a number of times.
 
 
 Welcome to DeepSkyStacker 5.1.3
