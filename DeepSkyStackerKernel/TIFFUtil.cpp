@@ -768,7 +768,8 @@ CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
 	m_tiff{ nullptr },
 	file{ p },
 	m_pProgress{ pProgress },
-	m_Format{ TF_UNKNOWN }
+	m_Format{ TF_UNKNOWN },
+	m_Compression{ TC_DEFLATE }
 {
 	compression = COMPRESSION_NONE;
 }
@@ -849,7 +850,8 @@ void CTIFFWriter::SetCompression(TIFFCOMPRESSION tiffcomp)
 void CTIFFWriter::SetFormatAndCompression(TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
 {
 	m_Format = TIFFFormat;
-	SetCompression(TIFFCompression);
+	m_Compression = TIFFCompression;
+	SetCompression(m_Compression);
 }
 
 bool CTIFFWriter::Open()
@@ -1402,7 +1404,7 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 	if (m_Format != TF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, CFAType, bMaster);
-		SetCompression(TC_DEFLATE);
+		SetCompression(m_Compression);
 		if (!isospeed)
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)

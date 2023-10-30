@@ -111,6 +111,8 @@ Changes since the last release:
 
 43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is ommited, it will generate a unique output file instead.
 
+44. Bug fix: DSS-CL: If the compression level for a TIFF file is set via the /OCx parameter, this is now honoured.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 

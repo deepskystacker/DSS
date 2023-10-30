@@ -211,6 +211,7 @@ protected:
 	ProgressBase* m_pProgress;
 	QString m_strDescription;
 	TIFFFORMAT m_Format;
+	TIFFCOMPRESSION	m_Compression;
 
 protected:
 	void SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster);
