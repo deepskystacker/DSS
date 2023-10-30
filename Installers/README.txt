@@ -5,9 +5,7 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Known problems:
 
-1. When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
-
-2. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+1. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
@@ -112,6 +110,9 @@ Changes since the last release:
 43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is ommited, it will generate a unique output file instead.
 
 44. Bug fix: DSS-CL: If the compression level for a TIFF file is set via the /OCx parameter, this is now honoured.
+
+45. Bug fix: When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
+
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

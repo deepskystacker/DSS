@@ -1343,6 +1343,11 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 	if (pProgress != nullptr)
 		pProgress->Start1(strText, nrRegisteredPictures, true);
 
+	//
+	// Number of image being registered.  Starts at 1 - goes up to nrRegisteredPictures
+	//
+	int imageNumber = 1;
+
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
 		if (it->m_pLightTask == nullptr)
@@ -1375,7 +1380,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 		auto future = std::async(std::launch::deferred, readTask, 0, pProgress);
 
-		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++)
+		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
 		{
 			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
 
@@ -1384,8 +1389,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			if (pProgress != nullptr)
 			{
-				const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(nrRegisteredPictures);
-				pProgress->Progress1(strText1, static_cast<int>(j));
+				const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(imageNumber).arg(nrRegisteredPictures);
+				pProgress->Progress1(strText1, (imageNumber - 1));
 			}
 
 			if (!success)
