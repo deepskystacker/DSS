@@ -113,6 +113,7 @@ Changes since the last release:
 
 45. Bug fix: When registering a set of images with different exposure times, the progress dialogue restarted counting at 1 and the progress bar was reset to 0 for each different exposure. The estimated time for completion got completely confused, and the progress bar reached 100% a number of times.
 
+46. Bug fix: Prevent TIFF code issuing TIFFSetField: D:/dss.tif: Unknown pseudo-tag 65557, by only setting TIFFTAG_ZIPQUALITY if compression is set to COMPRESSION_DEFLATE.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

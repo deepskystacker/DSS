@@ -1094,8 +1094,10 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
 			TIFFCheckpointDirectory(m_tiff);
 
+			//
 			// The ZIP compression level must be set after the ZIP state has been re-initialised by TIFFSetDirectory().
-			TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED);
+			//
+			if (COMPRESSION_DEFLATE == compression) TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED);
 		}
 		else
 		{
