@@ -301,7 +301,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
 
 	HWND hwnd{ processingDlg->GetSafeHwnd() };
-	Q_ASSERT(NULL != hwnd);
+	ZASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
 	
 	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
