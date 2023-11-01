@@ -115,6 +115,8 @@ Changes since the last release:
 
 46. Bug fix: Prevent TIFF code issuing TIFFSetField: D:/dss.tif: Unknown pseudo-tag 65557, by only setting TIFFTAG_ZIPQUALITY if compression is set to COMPRESSION_DEFLATE.
 
+47. Change the minumum update interval for the progress dialog to 0.1s (was 1s)
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
