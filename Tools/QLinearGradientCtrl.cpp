@@ -938,8 +938,8 @@ int QLinearGradientCtrl::setSelected(int iSel)
 	if (selectedPeg != iSel)
 	{
 		QRect lastRect, selRect;
-		Q_ASSERT(iSel >= STARTPEG); //Nothing smaller than -3 ok?
-		Q_ASSERT(iSel < endPegStop); //Make sure things are in range
+		ZASSERT(iSel >= STARTPEG); //Nothing smaller than -3 ok?
+		ZASSERT(iSel < endPegStop); //Make sure things are in range
 		lastSelectedPeg = selectedPeg;
 		selectedPeg = iSel;
 		emit pegSelChanged(selectedPeg);
@@ -1009,7 +1009,7 @@ QGradientStop QLinearGradientCtrl::selectedStop() const
 		return stops[endPegStop];
 	if (selectedPeg == NONE)
 		return nullStop;
-	Q_ASSERT(selectedPeg > startPegStop && selectedPeg < endPegStop);
+	ZASSERT(selectedPeg > startPegStop && selectedPeg < endPegStop);
 	return stops[selectedPeg];
 }
 
@@ -1154,7 +1154,7 @@ QPolygon QLinearGradientCtrl::getPegPoly(int i)
 	int drawwidth = getDrawWidth();
 	bool vertical = isVertical();
 
-	Q_ASSERT(i > 0 && i < endPegStop);
+	ZASSERT(i > 0 && i < endPegStop);
 
 	QVector<QPoint> points;
 
@@ -1213,7 +1213,7 @@ QRegion QLinearGradientCtrl::getPegRegion(short peg)
 {
 	QRect rect;
 
-	Q_ASSERT(peg >= STARTPEG && peg <= endPegStop);
+	ZASSERT(peg >= STARTPEG && peg <= endPegStop);
 	if (STARTPEG == peg)
 	{
 		getPegRect(STARTPEG, &rect, m_RightUpSide);

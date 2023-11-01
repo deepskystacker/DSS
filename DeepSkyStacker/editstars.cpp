@@ -169,7 +169,7 @@ namespace DSS
 		m_tipShowCount{ 0 }
 	{
 		imageView = dynamic_cast<ImageView*>(parent);
-		Q_ASSERT(nullptr != imageView);
+		ZASSERT(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
 		setAttribute(Qt::WA_NoSystemBackground);
 		setAttribute(Qt::WA_TranslucentBackground);

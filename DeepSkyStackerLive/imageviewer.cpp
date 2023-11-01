@@ -87,7 +87,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		Q_ASSERT(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -165,7 +165,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		Q_ASSERT(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
