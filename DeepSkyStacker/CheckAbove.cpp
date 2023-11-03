@@ -26,7 +26,7 @@ namespace DSS
 	{
 		QString			strValue = ui->lineEdit->text();
 		
-		Q_ASSERT(ui->lineEdit->validator());
+		ZASSERT(ui->lineEdit->validator());
 		if (strValue.endsWith(ui->lineEdit->validator()->locale().percent()))
 		{
 			m_bPercent = true;

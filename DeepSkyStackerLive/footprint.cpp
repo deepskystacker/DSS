@@ -9,7 +9,7 @@ namespace DSS
         QWidget(parent)
     {
         imageView = dynamic_cast<ImageView*>(parent);
-        Q_ASSERT(nullptr != imageView);
+        ZASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);

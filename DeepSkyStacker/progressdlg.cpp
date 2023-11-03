@@ -296,10 +296,10 @@ void ProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel
 
 void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
 {
-	// Always update on first loop, then only if a second has passed or a min progress has occurred.
+	// Always update on first loop, then only if 100ms has passed or a min progress has occurred.
 	if (!(m_firstProgress ||
 		(static_cast<double>(lAchieved1 - m_lastTotal1) > (m_total1 / 100.0) * m_minProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
-		(m_timer.elapsed() > 1000)
+		(m_timer.elapsed() > 100)		// Was 1s (1000)
 		))
 		return;
 

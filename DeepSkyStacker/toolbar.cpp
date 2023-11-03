@@ -47,7 +47,7 @@ namespace DSS
         selectionGroup(this)
     {
         StackingDlg* stackingDlg = dynamic_cast<StackingDlg*>(parent);
-        Q_ASSERT(nullptr != stackingDlg);
+        ZASSERT(nullptr != stackingDlg);
 
         constexpr int iconpixels = 48;
         constexpr int radius = 27;

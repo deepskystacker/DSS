@@ -1,13 +1,11 @@
-Welcome to DeepSkyStacker 5.1.4 Beta 3
+Welcome to DeepSkyStacker 5.1.4
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Known problems:
 
-1. When registering a set of images with different exposure times, the progress dialogue restarts counting at 1 and the progress bar is reset to 0 for each different exposure. The estimated time for completion gets completely confused, and the progress bar reaches 100% a number of times.
-
-2. When the image exposure is less than 1ms and the double-click to edit is used, and the user then clicks away from the editor, then the exposure is set to zero.
+1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
@@ -87,7 +85,7 @@ Changes since the last release:
 
 31. Change some of the colours used when the Windows Dark Theme is in use so that they are easier to read.
 
-32. Revert change made for #26 - QTimeEdit doesn't work right with 4 decimals.
+32. Revert change made for number 26 - QTimeEdit doesn't work right with 4 decimals.
 
 33. Bug fix: Magnifying glass over image area was still displayed when mouse was moved directly to another window.
 
@@ -108,6 +106,18 @@ Changes since the last release:
 41. Upgrade CFITSIO library to 4.3.0
 
 42. Bug fix: If a recommended setting is clicked to activate it the revised recommendations are appended to the browser when it should be cleared before they are displayed.
+
+43. Bug fix: DSS-CL: If an output file is named specifically with the /O: parameter, this output file is always used. If it is omitted, it will generate a unique output file instead.
+
+44. Bug fix: DSS-CL: If the compression level for a TIFF file is set via the /OCx parameter, this is now honoured.
+
+45. Bug fix: When registering a set of images with different exposure times, the progress dialogue restarted counting at 1 and the progress bar was reset to 0 for each different exposure. The estimated time for completion got completely confused, and the progress bar reached 100% a number of times.
+
+46. Bug fix: Prevent TIFF code issuing TIFFSetField: D:/dss.tif: Unknown pseudo-tag 65557, by only setting TIFFTAG_ZIPQUALITY if compression is set to COMPRESSION_DEFLATE.
+
+47. Change the minumum update interval for the progress dialog to 0.1s (was 1s).
+
+48. Bug fix: Units on the Processing pane's Luminance tab were displayed incorrectly as Å° instead of °.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

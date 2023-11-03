@@ -770,7 +770,7 @@ CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
 	m_pProgress{ pProgress },
 	m_Format{ TF_UNKNOWN }
 {
-	compression = COMPRESSION_NONE;
+	compression = COMPRESSION_DEFLATE;
 }
 
 void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster)
@@ -1092,8 +1092,10 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_EXIFIFD, dir_offset_EXIF);
 			TIFFCheckpointDirectory(m_tiff);
 
+			//
 			// The ZIP compression level must be set after the ZIP state has been re-initialised by TIFFSetDirectory().
-			TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED);
+			//
+			if (COMPRESSION_DEFLATE == compression) TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED);
 		}
 		else
 		{
@@ -1402,7 +1404,6 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 	if (m_Format != TF_UNKNOWN)
 	{
 		SetFormat(lWidth, lHeight, m_Format, CFAType, bMaster);
-		SetCompression(TC_DEFLATE);
 		if (!isospeed)
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)

@@ -107,19 +107,19 @@ void CLuminanceTab::UpdateTexts()
 	lPos1 = m_DarkAngle.GetPos();
 	lPos2 = m_DarkPower.GetPos();
 
-	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Darkness.SetText(strText);
 
 	lPos1 = m_MidAngle.GetPos();
 	lPos2 = m_MidTone.GetPos();
 
-	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Midtone.SetText(strText);
 
 	lPos1 = m_HighAngle.GetPos();
 	lPos2 = m_HighPower.GetPos();
 
-	strText.Format(_T(" %ld \xc2\xb0\n %.1f"), lPos1, lPos2/10.0);
+	strText.Format(_T(" %ld °\n %.1f"), lPos1, lPos2/10.0);
 	m_ST_Highlight.SetText(strText);
 };
 

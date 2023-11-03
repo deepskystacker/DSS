@@ -134,12 +134,12 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 		if (bContinue)
 		{
 			fs::path outputPath(stackingParams.GetOutputFilename().toStdU16String());
-			if (StackingEngine.GetDefaultOutputFileName(outputPath, stackingParams.GetFileList().toStdU16String().c_str(), !bUseFits))
-			{
-				stackingParams.SetOutputFile(QString::fromStdU16String(outputPath.generic_u16string().c_str()));
-				StackingEngine.WriteDescription(tasks, outputPath);
-				SaveBitmap(stackingParams, pBitmap);
-			}
+			if (outputPath.empty())
+				StackingEngine.GetDefaultOutputFileName(outputPath, stackingParams.GetFileList().toStdU16String().c_str(), !bUseFits);
+
+			stackingParams.SetOutputFile(QString::fromStdU16String(outputPath.generic_u16string().c_str()));
+			StackingEngine.WriteDescription(tasks, outputPath);
+			SaveBitmap(stackingParams, pBitmap);
 		}
 	}
 	consoleOut << Qt::endl;
@@ -314,11 +314,14 @@ bool DeepSkyStackerCommandLine::fileExists(const QString& path)
 bool DeepSkyStackerCommandLine::checkFileCanBeWrittenTo(const QString& path)
 {
 	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly))
+	bool bAlreadyExsits = file.exists();
+	if (!bAlreadyExsits)
+		return true;
+
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
 		return false;
 
 	file.close();
-	file.remove();
 	return true;
 }
 
