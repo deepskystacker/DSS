@@ -67,9 +67,9 @@ bool	g_bShowRefStars = false;
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+
 namespace
 {
-#ifndef NDEBUG
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
@@ -102,8 +102,8 @@ namespace
 		}
 		originalHandler(type, context, msg);
 	}
-#endif
 }
+
 bool	hasExpired()
 {
 	ZFUNCTRACE_RUNTIME();

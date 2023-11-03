@@ -89,8 +89,6 @@ void reportCpuType();
 
 namespace
 {
-
-#ifndef NDEBUG
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
@@ -123,7 +121,6 @@ namespace
 		}
 		originalHandler(type, context, msg);
 	}
-#endif
 
 	//
 	// Convert a QLabel with "plain text" to a hyperlink

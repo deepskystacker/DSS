@@ -20,7 +20,6 @@ DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
 namespace
 {
-#ifndef NDEBUG
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
@@ -53,7 +52,6 @@ namespace
 		}
 		originalHandler(type, context, msg);
 	}
-#endif
 }
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
