@@ -122,7 +122,7 @@ QWinWidget::QWinWidget(CWnd *parentWnd, QObject *parent, Qt::WindowFlags f)
 
 void QWinWidget::init() 
 {
-    ZASSERT(hParent);
+    Q_ASSERT(hParent);
 
     if (hParent) {
 #if QT_VERSION >= 0x050000
