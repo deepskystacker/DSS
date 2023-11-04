@@ -121,6 +121,8 @@ Changes since the last release:
 
 49. Bug fix: Opening a filelist by double-clicking was broken by the updates for number 36.
 
+50. Bug fix: Deadlock in DSSLive when stacking FITS files because CFITSReader::Read() didn't issue an End2() call to match the Start2() call.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
