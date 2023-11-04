@@ -322,6 +322,23 @@ DeepSkyStacker::DeepSkyStacker() :
 	createStatusBar();
 
 	//
+	// Check to see if we were passed a filelist file to open
+	//
+	if (2 <= args.size())
+	{
+		QString name{ args[1] };
+		fs::path file{ name.toStdU16String() };
+		if (fs::file_type::regular == status(file).type())
+		{
+			stackingDlg->setFileList(file);
+		}
+		else
+			QMessageBox::warning(this,
+				"DeepSkyStacker",
+				tr("%1 does not exist or is not a file").arg(name));
+	}
+
+	//
 	// Set initial size of the bottom dock widget (pictureList)
 	//
 	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
@@ -422,19 +439,6 @@ void DeepSkyStacker::dropEvent(QDropEvent* e)
 }
 
 /* ------------------------------------------------------------------- */
-void DeepSkyStacker::showEvent(QShowEvent* event)
-{
-	if (!event->spontaneous())
-	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitialise();
-		}
-	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
-}
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
@@ -455,29 +459,6 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 
 	connect(this, &DeepSkyStacker::tabChanged, explorerBar, &ExplorerBar::tabChanged);
-}
-
-void DeepSkyStacker::onInitialise()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	//
-	// Check to see if we were passed a filelist file to open
-	//
-	if (2 <= args.size())
-	{
-		QString name{ args[1] };
-		fs::path file{ name.toStdU16String() };
-		if (fs::file_type::regular == status(file).type())
-		{
-			stackingDlg->setFileList(file);
-		}
-		else
-			QMessageBox::warning(this,
-				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(name));
-	}
-
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)

@@ -119,6 +119,8 @@ Changes since the last release:
 
 48. Bug fix: Units on the Processing pane's Luminance tab were displayed incorrectly as Å° instead of °.
 
+49. Bug fix: Opening a filelist by double-clicking was broken by the updates for number 36.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 

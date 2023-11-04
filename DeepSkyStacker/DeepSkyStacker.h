@@ -98,9 +98,6 @@ protected:
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e);
 	void dropEvent(QDropEvent* e);
-	void showEvent(QShowEvent* event) override;
-
-	void onInitialise();
 
 public:
 	inline static DeepSkyStacker* instance()
