@@ -119,9 +119,9 @@ Changes since the last release:
 
 48. Bug fix: Units on the Processing pane's Luminance tab were displayed incorrectly as Å° instead of °.
 
-49. Bug fix: Opening a filelist by double-clicking was broken by the updates for number 36.
+49. Bug fix: Deadlock in DSSLive when stacking FITS files because CFITSReader::Read() didn't issue an End2() call to match the Start2() call.
 
-50. Bug fix: Deadlock in DSSLive when stacking FITS files because CFITSReader::Read() didn't issue an End2() call to match the Start2() call.
+50. Bug fix: Null pointer error passed to XYSeries::append() by ChartTab.cpp.  Some code tidyups as well.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
