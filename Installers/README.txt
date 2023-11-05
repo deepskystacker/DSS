@@ -121,7 +121,7 @@ Changes since the last release:
 
 49. Bug fix: Deadlock in DSSLive when stacking FITS files because CFITSReader::Read() didn't issue an End2() call to match the Start2() call.
 
-50. Bug fix: Null pointer error passed to XYSeries::append() by ChartTab.cpp.  Some code tidyups as well.
+50. Bug fix: Null pointer passed to XYSeries::append() by ChartTab.cpp.  Some code tidyups as well.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================
