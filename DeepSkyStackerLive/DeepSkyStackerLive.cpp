@@ -902,7 +902,6 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 		RestartMonitoring dlg;
 		if ( QDialog::Accepted == dlg.exec())
 		{ 
-			emit clearCharts();
 
 			result = true;
 			if (dlg.clearStackedImage())
@@ -912,6 +911,7 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 			}
 			if (dlg.dropPendingImages())
 			{
+				emit clearCharts();
 				emit dropPendingImages();
 				removeFromListIfStatusIs(tr("Pending"));
 				removeFromListIfStatusIs(tr("Registered", "IDS_STATUS_REGISTERED"));
