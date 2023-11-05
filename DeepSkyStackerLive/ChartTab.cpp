@@ -613,25 +613,21 @@ namespace DSS
 
 	void ChartTab::clear()
 	{
-		scoreChart->removeSeries(scoreSeries);
-		delete scoreSeries; scoreSeries = nullptr;
-		
-		fwhmChart->removeSeries(fwhmSeries);
-		delete fwhmSeries; fwhmSeries = nullptr;
+		files.clear();
+		nameMap.clear();
 
-		starsChart->removeSeries(starsSeries);
-		delete starsSeries; starsSeries = nullptr;
+		scoreSeries->clear();
 
-		offsetChart->removeSeries(dXSeries);
-		offsetChart->removeSeries(dYSeries);
-		delete dXSeries; dXSeries = nullptr;
-		delete dYSeries; dYSeries = nullptr;
+		fwhmSeries->clear();
 
-		angleChart->removeSeries(angleSeries);
-		delete angleSeries; angleSeries = nullptr;
+		starsSeries->clear();
 
-		skybgChart->removeSeries(skybgSeries);
-		delete skybgSeries; skybgSeries = nullptr;
+		dXSeries->clear();
+		dYSeries->clear();
+
+		angleSeries->clear();
+
+		skybgSeries->clear();
 	}
 	
 	/* ------------------------------------------------------------------- */
