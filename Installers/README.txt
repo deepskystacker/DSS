@@ -123,6 +123,8 @@ Changes since the last release:
 
 50. Bug fix: Null pointer passed to XYSeries::append() by ChartTab.cpp.  Some code tidyups as well.
 
+51. Add "How To" information to the help for the image editor built into DeepSkyStacker. This includes a short screen capture movie.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
