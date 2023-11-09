@@ -263,6 +263,9 @@
     <ResourceCompile Include="DeepSkyStackerTR.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerJP.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SetUILanguage.h">

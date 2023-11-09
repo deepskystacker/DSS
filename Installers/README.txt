@@ -125,6 +125,8 @@ Changes since the last release:
 
 51. Add "How To" information to the help for the image editor built into DeepSkyStacker. This includes a short screen capture movie.
 
+52. Resolve problem of clipped controls on processing page when the native language is set to Japanese.
+
 Welcome to DeepSkyStacker 5.1.3
 ===============================
 
