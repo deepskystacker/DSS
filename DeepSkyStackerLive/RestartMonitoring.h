@@ -37,7 +37,6 @@
 // RestartMonitoring.h : Dialog header
 //
 
-#include <QDialog>
 #include "ui_RestartMonitoring.h"
 
 namespace DSS

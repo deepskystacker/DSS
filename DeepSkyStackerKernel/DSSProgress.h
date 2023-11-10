@@ -36,8 +36,6 @@
 ****************************************************************************/
 // DSSProgress.h : Header file
 //
-#include <QObject>
-#include <QString>
 namespace DSS
 {
 	class ProgressBase

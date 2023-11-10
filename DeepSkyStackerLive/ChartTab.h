@@ -1,10 +1,6 @@
 #pragma once
 
-#include <QWidget>
 #include "ui_ChartTab.h"
-#include <QLineSeries>
-#include <QValueAxis>
-#include <QScatterSeries>
 
 namespace DSS
 {
