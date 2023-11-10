@@ -37,6 +37,7 @@
 #include "stdafx.h"
 #include "DeepSkyStackerLive.h"
 #include "progresslive.h"
+#include <Ztrace.h>
 
 namespace
 {
@@ -91,6 +92,7 @@ namespace DSS
 
 	void	ProgressLive::Start2(const QString& text, int lTotal2)
 	{
+		ZFUNCTRACE_RUNTIME();
 		mutex.lock();
 		if (!text.isEmpty())
 		{
@@ -120,6 +122,7 @@ namespace DSS
 
 	void	ProgressLive::End2()
 	{
+		ZFUNCTRACE_RUNTIME();
 		emit endProgress();
 		mutex.unlock();
 	};

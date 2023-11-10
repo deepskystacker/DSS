@@ -67,9 +67,9 @@ bool	g_bShowRefStars = false;
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+
 namespace
 {
-#ifndef NDEBUG
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
@@ -102,8 +102,8 @@ namespace
 		}
 		originalHandler(type, context, msg);
 	}
-#endif
 }
+
 bool	hasExpired()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -290,19 +290,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	winHost = new QWinHost(stackedWidget);
 	winHost->setObjectName("winHost");
 	stackedWidget->addWidget(winHost);
-
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg->Create(IDD_PROCESSING);
-	if (FALSE == result)
-	{
-		int lastErr = GetLastError();
-		ZTRACE_RUNTIME("lastErr = %d", lastErr);
-	}
-	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
-
-	HWND hwnd{ processingDlg->GetSafeHwnd() };
-	ZASSERT(NULL != hwnd);
-	winHost->setWindow(hwnd);
 	
 	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -320,6 +307,23 @@ DeepSkyStacker::DeepSkyStacker() :
 	// Set up the status bar
 	//
 	createStatusBar();
+
+	//
+	// Check to see if we were passed a filelist file to open
+	//
+	if (2 <= args.size())
+	{
+		QString name{ args[1] };
+		fs::path file{ name.toStdU16String() };
+		if (fs::file_type::regular == status(file).type())
+		{
+			stackingDlg->setFileList(file);
+		}
+		else
+			QMessageBox::warning(this,
+				"DeepSkyStacker",
+				tr("%1 does not exist or is not a file").arg(name));
+	}
 
 	//
 	// Set initial size of the bottom dock widget (pictureList)
@@ -360,6 +364,47 @@ DeepSkyStacker::DeepSkyStacker() :
 
 DeepSkyStacker::~DeepSkyStacker()
 {
+	hostWnd.Detach();
+}
+
+void DeepSkyStacker::showEvent(QShowEvent* event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitialise();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
+
+void DeepSkyStacker::onInitialise()
+{
+	ZFUNCTRACE_RUNTIME();
+	//
+	// Attach the hwnd of the stacked widget to a CWnd that we use as the parent for the 
+	// processing dialog.   This code can't be in the ctor because stackedWidget doesn't
+	// have an HWND at that point, whereas it does when Qt inokes the showEvent handler.
+	//
+	HWND hwnd{ reinterpret_cast<HWND>(stackedWidget->effectiveWinId()) };
+	hostWnd.Attach(hwnd);
+
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	auto result = processingDlg->Create(IDD_PROCESSING, &hostWnd);
+	if (FALSE == result)
+	{
+		int lastErr = GetLastError();
+		ZTRACE_RUNTIME("lastErr = %d", lastErr);
+	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
+
+	hwnd = processingDlg->GetSafeHwnd();
+	ZASSERT(NULL != hwnd);
+	winHost->setWindow(hwnd);
+
 }
 
 void DeepSkyStacker::createStatusBar()
@@ -422,19 +467,6 @@ void DeepSkyStacker::dropEvent(QDropEvent* e)
 }
 
 /* ------------------------------------------------------------------- */
-void DeepSkyStacker::showEvent(QShowEvent* event)
-{
-	if (!event->spontaneous())
-	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitialise();
-		}
-	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
-}
 
 void DeepSkyStacker::connectSignalsToSlots()
 {
@@ -455,29 +487,6 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 
 	connect(this, &DeepSkyStacker::tabChanged, explorerBar, &ExplorerBar::tabChanged);
-}
-
-void DeepSkyStacker::onInitialise()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	//
-	// Check to see if we were passed a filelist file to open
-	//
-	if (2 <= args.size())
-	{
-		QString name{ args[1] };
-		fs::path file{ name.toStdU16String() };
-		if (fs::file_type::regular == status(file).type())
-		{
-			stackingDlg->setFileList(file);
-		}
-		else
-			QMessageBox::warning(this,
-				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(name));
-	}
-
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)

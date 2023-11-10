@@ -115,9 +115,17 @@ Changes since the last release:
 
 46. Bug fix: Prevent TIFF code issuing TIFFSetField: D:/dss.tif: Unknown pseudo-tag 65557, by only setting TIFFTAG_ZIPQUALITY if compression is set to COMPRESSION_DEFLATE.
 
-47. Change the minumum update interval for the progress dialog to 0.1s (was 1s).
+47. Change the minimum update interval for the progress dialog to 0.1s (was 1s).
 
 48. Bug fix: Units on the Processing pane's Luminance tab were displayed incorrectly as Å° instead of °.
+
+49. Bug fix: Deadlock in DSSLive when stacking FITS files because CFITSReader::Read() didn't issue an End2() call to match the Start2() call.
+
+50. Bug fix: Null pointer passed to XYSeries::append() by ChartTab.cpp.  Some code tidyups as well.
+
+51. Add "How To" information to the help for the image editor built into DeepSkyStacker. This includes a short screen capture movie.
+
+52. Resolve problem of clipped controls on processing page when the native language is set to Japanese.
 
 Welcome to DeepSkyStacker 5.1.3
 ===============================

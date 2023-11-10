@@ -380,6 +380,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ResourceCompile Include="DeepSkyStackerES.rc" />
     <ResourceCompile Include="DeepSkyStackerFR.rc" />
     <ResourceCompile Include="DeepSkyStackerIT.rc" />
+    <ResourceCompile Include="DeepSkyStackerJP.rc" />
     <ResourceCompile Include="DeepSkyStackerNL.rc" />
     <ResourceCompile Include="DeepSkyStackerPTB.rc" />
     <ResourceCompile Include="DeepSkyStackerRO.rc" />

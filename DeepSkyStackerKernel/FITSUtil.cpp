@@ -770,7 +770,8 @@ bool CFITSReader::Read()
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
 		}
-
+		if (m_pProgress)
+			m_pProgress->End2();
 	}
 	return result;
 };

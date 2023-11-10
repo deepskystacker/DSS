@@ -159,9 +159,6 @@
     <ClCompile Include="DeepSkyStacker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="About.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BaseDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -219,6 +216,9 @@
     <ClCompile Include="OutputTab.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
+    <ClCompile Include="About.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -261,6 +261,9 @@
       <Filter>Source Files</Filter>
     </ResourceCompile>
     <ResourceCompile Include="DeepSkyStackerTR.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerJP.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -866,9 +869,6 @@
     <QtMoc Include="editstars.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="About.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="ImageProperties.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -919,6 +919,9 @@
     </QtMoc>
     <QtMoc Include="OutputTab.h">
       <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="About.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

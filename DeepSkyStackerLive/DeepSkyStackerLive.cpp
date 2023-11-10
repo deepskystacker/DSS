@@ -89,8 +89,6 @@ void reportCpuType();
 
 namespace
 {
-
-#ifndef NDEBUG
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
@@ -123,7 +121,6 @@ namespace
 		}
 		originalHandler(type, context, msg);
 	}
-#endif
 
 	//
 	// Convert a QLabel with "plain text" to a hyperlink
@@ -905,7 +902,6 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 		RestartMonitoring dlg;
 		if ( QDialog::Accepted == dlg.exec())
 		{ 
-			emit clearCharts();
 
 			result = true;
 			if (dlg.clearStackedImage())
@@ -915,6 +911,7 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 			}
 			if (dlg.dropPendingImages())
 			{
+				emit clearCharts();
 				emit dropPendingImages();
 				removeFromListIfStatusIs(tr("Pending"));
 				removeFromListIfStatusIs(tr("Registered", "IDS_STATUS_REGISTERED"));
