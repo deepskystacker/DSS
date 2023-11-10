@@ -36,6 +36,7 @@
 ****************************************************************************/
 // ImageViewer.h : Declares the class behaviors for the application.
 //
+#include <QWidget>
 #include "ui_ImageViewer.h"
 #include "BitmapExt.h"
 #include "imageloader.h"

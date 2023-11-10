@@ -38,6 +38,7 @@
 //
 #include "dssbase.h"
 #include "ui/ui_DeepSkyStackerLive.h"
+#include <QStyledItemDelegate>
 
 class QWinHost;
 class CLightFrameInfo;

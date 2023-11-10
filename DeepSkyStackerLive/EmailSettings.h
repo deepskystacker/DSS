@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QDialog>
 #include "ui_EmailSettings.h"
 
 namespace DSS

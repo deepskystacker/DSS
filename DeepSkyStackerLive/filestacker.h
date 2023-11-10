@@ -36,6 +36,8 @@
 ****************************************************************************/
 // FileStacker.h : Header file
 //
+#include <deque>
+#include <QThread>
 #include "RunningStackingEngine.h"
 
 class CLightFrameInfo;
