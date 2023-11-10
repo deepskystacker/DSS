@@ -11,6 +11,16 @@ assignees: ''
 **Check the Wiki**
 Before you report any issues it is worth checking the DeepSkyStacker Wiki: <https://groups.io/g/DeepSkyStacker/wiki>
 
+If you aren't a member the DeepSkyStacker mailing list, please join my sending an email to:
+
+mailto:DeepSkyStacker+subscribe@groups.io 
+
+Once you have successfully joined the mailing list please reprot the problem on the mailing list by sending an email to:
+
+mailto:DeepSkyStacker@groups.io
+
+Your email should contain the following information:
+
 **Describe the bug**
 A clear and concise description of what the bug is.  Please specify the version of DeepSkyStacker and if relevant whether the problem is with DeepSkyStacker Live or DeepSkyStacker Command Line
 
