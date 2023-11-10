@@ -290,19 +290,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	winHost = new QWinHost(stackedWidget);
 	winHost->setObjectName("winHost");
 	stackedWidget->addWidget(winHost);
-
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg->Create(IDD_PROCESSING);
-	if (FALSE == result)
-	{
-		int lastErr = GetLastError();
-		ZTRACE_RUNTIME("lastErr = %d", lastErr);
-	}
-	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
-
-	HWND hwnd{ processingDlg->GetSafeHwnd() };
-	ZASSERT(NULL != hwnd);
-	winHost->setWindow(hwnd);
 	
 	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -377,6 +364,46 @@ DeepSkyStacker::DeepSkyStacker() :
 
 DeepSkyStacker::~DeepSkyStacker()
 {
+	hostWnd.Detach();
+}
+
+void DeepSkyStacker::showEvent(QShowEvent* event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitialise();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
+
+void DeepSkyStacker::onInitialise()
+{
+	ZFUNCTRACE_RUNTIME();
+	//
+	// Attach the hwnd of the stacked widget to a CWnd that we use as the parent for the 
+	// processing dialog
+	//
+	HWND hwnd{ reinterpret_cast<HWND>(stackedWidget->effectiveWinId()) };
+	hostWnd.Attach(hwnd);
+
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	auto result = processingDlg->Create(IDD_PROCESSING, &hostWnd);
+	if (FALSE == result)
+	{
+		int lastErr = GetLastError();
+		ZTRACE_RUNTIME("lastErr = %d", lastErr);
+	}
+	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
+
+	hwnd = processingDlg->GetSafeHwnd();
+	ZASSERT(NULL != hwnd);
+	winHost->setWindow(hwnd);
+
 }
 
 void DeepSkyStacker::createStatusBar()

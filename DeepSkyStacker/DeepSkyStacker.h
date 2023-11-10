@@ -75,6 +75,7 @@ private:
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	QWinHost* winHost;
+	CWnd hostWnd;
 	std::unique_ptr<CProcessingDlg>	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
 	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
@@ -96,8 +97,11 @@ private:
 
 protected:
 	void closeEvent(QCloseEvent* e) override;
-	void dragEnterEvent(QDragEnterEvent* e);
-	void dropEvent(QDropEvent* e);
+	void dragEnterEvent(QDragEnterEvent* e) override;
+	void dropEvent(QDropEvent* e) override;
+	void showEvent(QShowEvent* event) override;
+
+	void onInitialise();
 
 public:
 	inline static DeepSkyStacker* instance()
