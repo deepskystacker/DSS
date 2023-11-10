@@ -386,7 +386,8 @@ void DeepSkyStacker::onInitialise()
 	ZFUNCTRACE_RUNTIME();
 	//
 	// Attach the hwnd of the stacked widget to a CWnd that we use as the parent for the 
-	// processing dialog
+	// processing dialog.   This code can't be in the ctor because stackedWidget doesn't
+	// have an HWND at that point, whereas it does when Qt inokes the showEvent handler.
 	//
 	HWND hwnd{ reinterpret_cast<HWND>(stackedWidget->effectiveWinId()) };
 	hostWnd.Attach(hwnd);
