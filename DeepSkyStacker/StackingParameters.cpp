@@ -1,28 +1,12 @@
-﻿#include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
+#include "stdafx.h"
+#include "StackingParameters.h"
 #include "ui/ui_StackingParameters.h"
-
-#include <QAction>
-#include <QCursor>
-#include <QDoubleValidator>
-#include <QIntValidator>
-#include <QMenu>
-#include <QSettings>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include "BackgroundOptions.h"
-#include "DSSCommon.h"
-#include "StackSettings.h"
-#include "StackingTasks.h"
 #include "Workspace.h"
+#include "StackSettings.h"
+#include "ZExcept.h"
+#include "StackingTasks.h"
+#include "BackgroundOptions.h"
+
 
 StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
     QWidget(parent),
@@ -42,7 +26,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
     ui->setupUi(this);
 
-//	connect(ui->backgroundCalibration, SIGNAL(linkActivated(const QString &)), this, SLOT(on_backgroundCalibration_linkActivated(const QString &)));
+	//connect(ui->backgroundCalibration, &QPushButton::linkActivated, this, &StackingParameters::on_backgroundCalibration_linkActivated);
 	//
 	// Make all the "optional" controls invisible
 	// 
@@ -96,8 +80,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
 	createActions().createMenus();
 
-	connect(this, SIGNAL(methodChanged(MULTIBITMAPPROCESSMETHOD)),
-		this, SLOT(updateControls(MULTIBITMAPPROCESSMETHOD)));
+	connect(this, &StackingParameters::methodChanged, this, &StackingParameters::updateControls);
 }
 
 StackingParameters & StackingParameters::createActions()
@@ -121,7 +104,7 @@ StackingParameters & StackingParameters::createActions()
 		[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
 
 	bgCalOptions = new QAction(tr("Options...", "ID_CALIBRATIONMENU_OPTIONS"), this);
-	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions()));
+	connect(bgCalOptions, &QAction::triggered, this, &StackingParameters::backgroundCalibrationOptions);
 
 	return *this;
 }

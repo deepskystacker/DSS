@@ -24,6 +24,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+#include <windows.h>
 
 #include "ButtonToolbar.h"
 
@@ -53,12 +54,12 @@ public :
 	};
 
 	virtual bool	Image_OnMouseLeave() { return false; };
-	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) { return false; };
-	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) { return false; };
-	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY) { return false; };
-	virtual bool	Image_OnRButtonDown(LONG lX, LONG lY) { return false; };
+	virtual bool	Image_OnMouseMove([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY) { return false; };
+	virtual bool	Image_OnLButtonDown([[maybe_unused]] LONG lX,[[maybe_unused]] LONG lY) { return false; };
+	virtual bool	Image_OnLButtonUp([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY) { return false; };
+	virtual bool	Image_OnRButtonDown([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY) { return false; };
 
-	virtual Image *	GetOverlayImage(CRect & rcClient) { return nullptr; };
+	virtual Image *	GetOverlayImage([[maybe_unused]] CRect & rcClient) { return nullptr; };
 };
 
 // ------------------------------------------------------------------

@@ -1,52 +1,67 @@
-#ifndef __RESTARTMONITORING_H__
-#define __RESTARTMONITORING_H__
+#pragma once
+/****************************************************************************
+**
+** Copyright (C) 2023 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+// RestartMonitoring.h : Dialog header
+//
 
-class CRestartMonitoring : public CDialog
+#include <QDialog>
+#include "ui_RestartMonitoring.h"
+
+namespace DSS
 {
-// Construction
-public:
-	CRestartMonitoring(CWnd* pParent = nullptr);	// standard constructor
-
-// Dialog Data
-	enum { IDD = IDD_RESTARTMONITORING };
-
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-
-private :
-	CButton					m_CreateNewEmpty;
-	CButton					m_StartFromCurrent;
-	CButton					m_DropPending;
-	CButton					m_UsePending;
-
-	BOOL					m_bClearStacked;
-	BOOL					m_bDropPending;
-
-public :
-	BOOL	IsClearStackedImage()
+	class RestartMonitoring : public QDialog, public Ui::RestartMonitoring
 	{
-		return m_bClearStacked;
+		Q_OBJECT
+
+	public:
+		RestartMonitoring(QWidget* parent = nullptr);
+		~RestartMonitoring();
+		bool clearStackedImage() { return clearStackedImage_; }
+		bool dropPendingImages() { return dropPendingImages_; }
+
+	private slots:
+		void newToggled(bool checked);
+		void dropToggled(bool checked);
+
+	private:
+		bool clearStackedImage_;
+		bool dropPendingImages_;
+
+		void connectSignalsToSlots();
+
+
 	};
-
-	BOOL	IsDropPending()
-	{
-		return m_bDropPending;
-	};
-
-// Implementation
-protected:
-	// Generated message map functions
-	virtual BOOL	OnInitDialog();
-	virtual void    OnOK();
-
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedTest();
-	afx_msg void OnBnClickedCreatenewstackedimage();
-	afx_msg void OnBnClickedStartfromcurrentstackedimage();
-	afx_msg void OnBnClickedDroppendingimages();
-	afx_msg void OnBnClickedUsependingimages();
-};
-
-
-#endif // __RESTARTMONITORING_H__
+}

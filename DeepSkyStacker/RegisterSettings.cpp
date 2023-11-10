@@ -35,46 +35,18 @@
 ****************************************************************************/
 // RegisterSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxdlgs.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QDialog>
-#include <QFileInfo>
-#include <QIntValidator>
-#include <QSettings>
-#include <QShowEvent>
-#include <QString>
-
-#include "commonresource.h"
-
+#include "stdafx.h"
 #include "RegisterSettings.h"
 #include "ui/ui_RegisterSettings.h"
+#include "Workspace.h"
+#include "DeepSkyStacker.h"
+#include "StackingDlg.h"
+#include "progressdlg.h"
+#include "RecommendedSettings.h"
+#include "StackSettings.h"
+#include "RegisterEngine.h"
 
 extern bool		g_bShowRefStars;
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "QtProgressDlg.h"
-#include "RegisterEngine.h"
-#include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "StackSettings.h"
-
-#include "Workspace.h"
-
-#include "RecommendedSettings.h"
 
 RegisterSettings::RegisterSettings(QWidget *parent) :
 	QDialog(parent),
@@ -89,11 +61,12 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	noOffsets(true),
 	detectionThreshold(0),
 	medianFilter(false),
-	firstLightFrame(""),
 	pStackingTasks(nullptr),
 	settingsOnly(false)
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 	perCentValidator = new QIntValidator(0, 100, this);
 	ui->percentStack->setValidator(perCentValidator);
@@ -110,7 +83,7 @@ void RegisterSettings::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	bool checked = false;
+	// bool checked = false;
 
 	//
 	// Restore Window position etc..
@@ -128,8 +101,8 @@ void RegisterSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 	string = workspace->value("Register/PercentStack", "80").toString();
@@ -160,14 +133,14 @@ void RegisterSettings::onInitDialog()
 	{
 		firstLightFrame = stackingDlg.getFirstCheckedLightFrame();
 
-		forceRegister = !stackingDlg.countUnregisteredCheckedLightFrames();
-		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
-		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
-		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;
+		forceRegister = stackingDlg.countUnregisteredCheckedLightFrames() == 0;
+		noDarks = stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME) == 0;
+		noFlats = stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME) == 0;
+		noOffsets = stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME) == 0;
 	}
 
 	// Enable the computeDetected Stars button if there's a stackable light frame
-	ui->computeDetectedStars->setEnabled(!firstLightFrame.isEmpty());
+	ui->computeDetectedStars->setEnabled(!firstLightFrame.empty());
 	if (settingsOnly)
 	{
 		ui->recommendedSettings->setEnabled(false);
@@ -207,17 +180,17 @@ void RegisterSettings::onInitDialog()
 			{
 			case 3:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 64, 64)) }" );
 				break;
 			case 2:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 171, 63)) }" );
 				break;
 			case 1:
 				ui->stackWarning->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 234, 63)) }" );
 				break;
 			};
@@ -227,7 +200,7 @@ void RegisterSettings::onInitDialog()
 			string = tr("darks, flats and offsets/bias checked.",
 				"IDS_CHECK_ALLOK");
 			ui->stackWarning->setStyleSheet(
-				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+				"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 				"stop:0 rgb(229, 255, 193), stop:1 rgb(21, 223, 33)) }" );
 		};
 		ui->stackWarning->setText(string);
@@ -271,7 +244,7 @@ void RegisterSettings::on_percentStack_editingFinished()
 
 void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 {
-	if (detectionThreshold != newValue)
+	if (detectionThreshold != static_cast<uint>(newValue))
 	{
 		detectionThreshold = newValue;
 		// Display new value
@@ -282,7 +255,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::ProgressDlg				dlg;
+	DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);
@@ -292,7 +265,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	dlg.Start1(string, 0, false);
 	dlg.SetJointProgress(true);
-	fi.RegisterPicture(CString(firstLightFrame.toStdWString().c_str()), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
+	fi.RegisterPicture(firstLightFrame, static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
 
 	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());

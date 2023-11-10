@@ -1,18 +1,12 @@
-#ifndef RESULTPARAMETERS_H
-#define RESULTPARAMETERS_H
-#include <memory>
-
-#include <QWidget>
-#include <QPicture>
-
-#include "StackingTasks.h"
-
+#pragma once
+#include "dssrect.h"
 class Workspace;
 
 namespace Ui {
 class ResultParameters;
 }
 
+class CAllStackingTasks;
 class ResultParameters : public QWidget
 {
 	Q_OBJECT
@@ -24,11 +18,7 @@ public:
 	explicit ResultParameters(QWidget *parent = nullptr);
 	~ResultParameters();
 
-	inline void setStackingTasks(CAllStackingTasks * pTasks)
-	{
-		pStackingTasks = pTasks;
-		customRectEnabled = pTasks->getCustomRectangle(customRect);
-	}
+	void setStackingTasks(CAllStackingTasks* pTasks);
 
 public slots:
 	void onSetActive();
@@ -54,4 +44,3 @@ private slots:
 	void	on_alignRGB_clicked();
 
 };
-#endif // RESULTPARAMETERS_H

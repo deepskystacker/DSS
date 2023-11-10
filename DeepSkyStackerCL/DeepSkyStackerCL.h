@@ -1,4 +1,7 @@
 #pragma once
+#include "dssbase.h"
+#include "DSSCommon.h"
+class CMemoryBitmap;
 
 class StackingParams
 {
@@ -76,7 +79,9 @@ protected:
 	QTextStream& m_consoleOut;
 };
 
-class DeepSkyStackerCommandLine : public QCoreApplication
+class DeepSkyStackerCommandLine : 
+	public QCoreApplication,
+	public DSSBase
 {
 	Q_OBJECT
 
@@ -86,6 +91,8 @@ public:
 
 	bool Initialise();
 	bool Run();
+
+	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 
 protected:
 	void SetOption(StackingParams::eStackingOption option) { stackingParams.SetOption(option); }

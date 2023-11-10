@@ -117,7 +117,7 @@ void CChartLegend::Draw(CDC *pDC)
 	if (!m_bIsVisible)
 		return;
 
-	int YPos = 2;
+	// int YPos = 2;
 	int MaxBitmapWidth = 0;
 	bool bDraw = false;
 

@@ -33,31 +33,11 @@
 **
 **
 ****************************************************************************/
-#include <QDebug>
-#include <QGuiApplication> 
-#include <QMouseEvent>
-#include <QPainter>
-#include <QPen>
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-
-#include "ZTrace.h"
-
-extern bool		g_bShowRefStars;
-
-#include "imageview.h"
+#include "stdafx.h"
 #include "selectrect.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "DeepSkyStacker.h"
+#include "imageview.h"
 #include "StackingDlg.h"
+#include "DeepSkyStacker.h"
 
 enum class SelectionMode : quint8
 {
@@ -82,14 +62,13 @@ namespace DSS
         selecting(false)
     {
         imageView = dynamic_cast<ImageView*>(parent);
-        Q_ASSERT(nullptr != imageView);
+        ZASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
  
         StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
-        connect(this, SIGNAL(selectRectChanged(QRectF)),
-            &stackingDlg, SLOT(setSelectionRect(QRectF)));
+        connect(this, &SelectRect::selectRectChanged, &stackingDlg, &StackingDlg::setSelectionRect);
     }
 
     /*!
@@ -316,10 +295,10 @@ namespace DSS
 
     void SelectRect::rectButtonPressed()
     {
-        connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+        connect(imageView, &ImageView::Image_mousePressEvent, this, &SelectRect::mousePressEvent);
+        connect(imageView, &ImageView::Image_mouseMoveEvent, this, &SelectRect::mouseMoveEvent);
+        connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &SelectRect::mouseReleaseEvent);
+        connect(imageView, &ImageView::Image_resizeEvent, this, &SelectRect::resizeMe);
         show();
         raise();
         activateWindow();

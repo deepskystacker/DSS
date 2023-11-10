@@ -28,8 +28,6 @@
 
 #include "ChartObject.h"
 
-#include <string>
-
 class CChartSerie;
 
 class CChartLegend : public CChartObject  

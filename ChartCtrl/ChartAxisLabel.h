@@ -18,17 +18,9 @@
  *
  *
  */
-
-#if !defined(AFX_CHARTAXISLABEL_H__0E5519C8_A2F4_4CED_9681_32A56B25D0C5__INCLUDED_)
-#define AFX_CHARTAXISLABEL_H__0E5519C8_A2F4_4CED_9681_32A56B25D0C5__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "ChartObject.h"
-#include <string>
-
 
 class CChartAxis;
 
@@ -59,5 +51,3 @@ private:
 	std::string m_strFontName;
 	std::string m_strLabelText;
 };
-
-#endif // !defined(AFX_CHARTAXISLABEL_H__0E5519C8_A2F4_4CED_9681_32A56B25D0C5__INCLUDED_)

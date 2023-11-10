@@ -26,7 +26,7 @@
 // mailto:sjaak@sjaakpriester.nl
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Delaunay.h"
 
 const float sqrt3 = 1.732050808F;
@@ -212,7 +212,7 @@ protected:
 	edgeSet& m_Edges;
 };
 
-void Delaunay::Triangulate(const vertexSet& vertices, triangleSet& output)
+void Delaunay::Triangulate(const vertexSet& vertices, [[maybe_unused]]triangleSet& output)
 {
 	if (vertices.size() < 3) return;	// nothing to handle
 

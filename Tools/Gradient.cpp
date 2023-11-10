@@ -5,9 +5,6 @@
 #include "stdafx.h"
 #include "Gradient.h"
 
-#include <math.h>
-#include <algorithm>
-
 IMPLEMENT_SERIAL(CGradient, CObject, 0)
 
 UINT CPeg::uniqueID = 250000;
@@ -85,7 +82,7 @@ int CGradient::AddPeg(CPeg const& peg)
 }
 
 //----- Assorted short functions -----//
-void CGradient::RemovePeg(int iIndex) {/*pegs.RemoveAt(iIndex);*/}
+void CGradient::RemovePeg([[maybe_unused]] int iIndex) {/*pegs.RemoveAt(iIndex);*/}
 void CGradient::SortPegs() {std::sort(pegs.begin(), pegs.end());}
 int CGradient::GetPegCount() const {return (int)pegs.size();}
 

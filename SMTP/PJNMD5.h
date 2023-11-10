@@ -34,7 +34,6 @@ to maintain a single distribution point for the source code.
 ////////////////////////////// Includes ///////////////////////////////////////
 
 #ifndef __WINCRYPT_H__
-#pragma message("To avoid this message, put wincrypt.h in your pre compiled header (usually stdafx.h)")
 #include <wincrypt.h>
 #endif
 

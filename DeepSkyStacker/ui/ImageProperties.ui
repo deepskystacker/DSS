@@ -82,7 +82,7 @@
         <enum>QDateTimeEdit::HourSection</enum>
        </property>
        <property name="displayFormat">
-        <string>hh:mm:ss.zzz</string>
+        <string notr="true">hh:mm:ss.zzz</string>
        </property>
       </widget>
      </item>
@@ -258,38 +258,5 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>ImageProperties</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>246</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>ImageProperties</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>354</x>
-     <y>246</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>238</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -35,7 +35,7 @@
         <item>
          <widget class="QCheckBox" name="saveCalibrated">
           <property name="text">
-           <string>Create a registered/calibrated file for each light frame</string>
+           <string>Create a calibrated file for each light frame</string>
           </property>
          </widget>
         </item>
@@ -88,7 +88,7 @@
         <item>
          <widget class="QCheckBox" name="saveIntermediate">
           <property name="text">
-           <string>Create a calibrated file for each light frame</string>
+           <string>Create a registered/calibrated file for each light frame</string>
           </property>
          </widget>
         </item>

@@ -1,42 +1,66 @@
 ﻿// RecommendedSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-#include <vector>
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QColor>
-#include <QMessageBox>
-#include <QPalette>
-#include <QSettings>
-#include <QShowEvent>
-#include <QTextBrowser>
-#include <Qt>
-#include <QUrl>
-#include <QWidget>
-
-extern bool	g_bShowRefStars;
-
-#include "commonresource.h"
-#include "DSSCommon.h"
-#include "DeepSkyStacker.h"
-#include "Multitask.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
-
-/* ------------------------------------------------------------------- */
-
+#include "stdafx.h"
 #include "RecommendedSettings.h"
 #include "ui/ui_RecommendedSettings.h"
+#include "DeepSkyStacker.h"
+#include "StackingDlg.h"
+
+
+bool RecommendationItem::differsFromWorkspace()
+{
+	bool					bResult = false;
+	Workspace				workspace;
+
+	// Check that the current values are (or not)
+	for (const auto setting : vSettings)
+	{
+		QString				keyName;
+		QVariant			value;
+		QVariant			currentValue;
+
+
+		keyName = setting.key();
+
+		currentValue = workspace.value(keyName);
+		value = setting.value();
+
+		switch (static_cast<QMetaType::Type>(value.typeId()))
+		{
+		case QMetaType::Bool:
+			bResult = value.toBool() != currentValue.toBool();
+			break;
+		case QMetaType::Double:
+			bResult = value.toDouble() != currentValue.toDouble();
+			break;
+		default:
+			bResult = value.toString() != currentValue.toString();
+		}
+
+		//
+		// If different, no need to check any more
+		//
+		if (bResult) break;
+	};
+	return bResult;
+}
+
+void RecommendationItem::applySettings()
+{
+	Workspace				workspace;
+
+	for (size_t i = 0; i < vSettings.size(); i++)
+	{
+		QString				keyName;
+		QVariant			value;
+
+		keyName = vSettings[i].key();
+		value = vSettings[i].value();
+
+		workspace.setValue(keyName, value);
+	};
+}
+
 
 // RecommendedSettings dialog
 
@@ -45,9 +69,17 @@ RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	ui(new Ui::RecommendedSettings),
 	workspace(new Workspace()),
 	pStackingTasks(nullptr),
-	initialised(false)
+	initialised(false),
+	darkTheme { Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme() },
+	//
+	// If Windows Dark Theme is active set blueColour to be lightskyblue instead of deepskyblue
+	// 
+	blueColour{ darkTheme ? QColorConstants::Svg::lightskyblue : QColorConstants::Svg::deepskyblue }
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 	//
 	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
 	//
@@ -93,8 +125,8 @@ void RecommendedSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 
@@ -141,24 +173,17 @@ void RecommendedSettings::reject()
 
 /* ------------------------------------------------------------------- */
 
-void RecommendedSettings::clearText()
-{
-	QPalette palette;
-	QColor	colour = palette.color(QPalette::Window);
-
-	QString strText = QString("<body link=#0000ff bgcolor=%1></body>")
-		.arg(colour.name());
-	vRecommendations.clear();
-	ui->textBrowser->setHtml(strText);
-};
-
 /* ------------------------------------------------------------------- */
 
 void RecommendedSettings::insertHeader()
 {
-	QString					strHTML;
+	QPalette palette;
+	QColor	colour{ darkTheme ? Qt::gray : Qt::lightGray };
 
-	strHTML = "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
+	QString	strHTML{ QString("<body bgcolor=%1>")
+							.arg(colour.name()) };
+
+	strHTML += "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
 	strHTML += "<td>";
 
 	strHTML += tr("These are recommended settings.<br>"
@@ -184,6 +209,7 @@ void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, 
 {
 	QString					strText;
 	QString					strInputText(html);
+	QColor	linkColour{ darkTheme ? Qt::cyan : Qt::darkBlue };
 
 	if (bBold && bItalic)
 	{
@@ -206,8 +232,9 @@ void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, 
 	
 	if (-1 != lLinkID)
 	{
-		strText = QString("<a href = \"%1\">%2</a>")
+		strText = QString("<a href = \"%1\"><span style=\"color: %2;\">%3</span></a>")
 			.arg(lLinkID)
+			.arg(linkColour.name())
 			.arg(strInputText);
 		strInputText = strText;
 	};
@@ -335,8 +362,7 @@ static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fEx
 };
 
 /* ------------------------------------------------------------------- */
-
-#if (0)
+#if(0)
 static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
 {
 	RecommendationItem			ri;
@@ -369,7 +395,6 @@ static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat
 
 };
 #endif
-
 /* ------------------------------------------------------------------- */
 
 static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations)
@@ -700,12 +725,12 @@ void RecommendedSettings::fillWithRecommendedSettings()
 	QPalette palette;
 	QColor windowTextColour = palette.color(QPalette::WindowText);
 
-	clearText();
 	if (pStackingTasks && pStackingTasks->GetNrLightFrames())
 	{
 		size_t					lPosition;
 
 		insertHeader();
+
 		AddRegisterUseOfMedianFilter(vRecommendations);
 
 		lPosition = vRecommendations.size();
@@ -715,8 +740,8 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime(), pStackingTasks->AreFITSImageUsed());
 			AddModdedDSLR(vRecommendations, pStackingTasks->AreFITSImageUsed());
 			AddRAWNarrowBandRecommendation(vRecommendations, pStackingTasks->AreFITSImageUsed());
-			// if (!pStackingTasks->AreFITSImageUsed())
-			//	AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
+		//	if (!pStackingTasks->AreFITSImageUsed())
+		//		AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
 		};
 
 		if (pStackingTasks->AreColorImageUsed())
@@ -774,7 +799,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			bool				bDifferent = false;
 
 			if (recommendation.breakBefore)
-				insertHTML("<hr>");
+				insertHTML("<hr style=\"background-color:" + windowTextColour.name() + "\">");
 			for (size_t j = 0;j<recommendation.vRecommendations.size() && !bDifferent;j++)
 			{
 				bDifferent = recommendation.vRecommendations[j].differsFromWorkspace();
@@ -783,9 +808,14 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			if (bDifferent)
 			{
 				if (recommendation.isImportant)
-					crColor = Qt::darkRed;
+				{
+					if (darkTheme)
+						crColor = Qt::yellow;
+					else
+						crColor = Qt::darkRed;
+				}
 				else
-					crColor = QColor(qRgb(0, 0, 192));
+					crColor = blueColour;
 			}
 			else
 			{
@@ -809,7 +839,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 					insertHTML(strOr+"<br>", windowTextColour, false, true);
 				};
 
-				insertHTML("->  ");
+				insertHTML("->  ", windowTextColour);
 				if (bAlreadySet)
 				{
 					insertHTML(ri.recommendation, qRgb(86, 170, 86));
@@ -818,7 +848,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 				{
 					lLastLinkID++;
 					lLinkID = lLastLinkID;
-					insertHTML(ri.recommendation, Qt::darkBlue , false, false, lLinkID);
+					insertHTML(ri.recommendation, blueColour , false, false, lLinkID);
 				};
 				ri.linkID = lLinkID;
 			};
@@ -829,6 +859,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 	{
 		insertHTML(tr("You must first add images to the list and check them.", "IDS_RECO_PREREQUISITES"), Qt::red, true);
 	};
+	insertHTML("</body>");
 };
 
 /* ------------------------------------------------------------------- */
@@ -852,7 +883,11 @@ void RecommendedSettings::setSetting(int lID)
 	};
 
 	if (bFound)
+	{
+		ui->textBrowser->clear();
+		vRecommendations.clear();
 		fillWithRecommendedSettings();
+	}
 };
 
 /* ------------------------------------------------------------------- */

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -34,9 +34,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Kernel">
-      <UniqueIdentifier>{5dd1951e-d858-4df9-92a8-647fe6af8ebe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Qt Porting">
       <UniqueIdentifier>{db9eb54e-7edb-4ace-9ead-2b1cc7cb7fb2}</UniqueIdentifier>
     </Filter>
@@ -51,23 +48,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DeepSkyStacker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SetUILanguage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="About.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="ExplorerBar.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="AlignmentParameters.cpp">
-      <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundOptions.cpp">
       <Filter>Dialogs\Stacking</Filter>
@@ -78,31 +63,10 @@
     <ClCompile Include="CheckAbove.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="CometStacking.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="DropFilesDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="IntermediateFiles.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputTab.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="PostCalibration.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="ResultParameters.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="StackingParameters.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="StackRecap.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="StackSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
     <ClCompile Include="AskRegistering.cpp">
@@ -138,31 +102,16 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BitmapSlider.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\BtnST.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ButtonToolbar.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRot90DC.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ControlPos.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\CustomTabCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\FolderDlg.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\Gradient.cpp">
@@ -177,118 +126,10 @@
     <ClCompile Include="..\Tools\Label.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\RichToolTipCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ScrollDialog.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ThemeUtil.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="AHDDemosaicing.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="BackgroundCalibration.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="BitmapExt.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="ChannelAlign.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="CosmeticEngine.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="DarkFrame.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="DeBloom.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="DeepSkyStacker.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="DeepStack.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="EntropyInfo.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="Filters.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="FITSUtil.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="FlatFrame.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameInfo.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="FrameList.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="Library.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="MasterFrames.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="MatchingStars.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="MultiBitmapProcess.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="Multitask.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="RAWUtils.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="RegisterEngine.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="RunningStackingEngine.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="StackedBitmap.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="StackingEngine.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="StackingTasks.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="StarMask.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="TIFFUtil.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="Workspace.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="Delaunay.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="PCLTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="qwinwidget.cpp">
@@ -296,18 +137,6 @@
     </ClCompile>
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="QLinearGradientCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="imageview.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="editstars.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="selectrect.cpp">
-      <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\WndImage.cpp">
       <Filter>Tools</Filter>
@@ -318,95 +147,77 @@
     <ClCompile Include="ImageSinks.cpp">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
-    <ClCompile Include="avx.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_avg.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_output.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_filter.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_luminance.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_cfa.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_histogram.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_entropy.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_support.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="avx_bitmap_filler.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="BitMapFiller.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="BitmapBase.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="MedianFilterEngine.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageListModel.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="group.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="imageloader.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="toolbar.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="StackingDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="dss_settings.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
-    <ClCompile Include="mrulist.cpp">
-      <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="RenameGroup.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="QtProgressDlg.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveEditChanges.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="BaseDialog.cpp">
-      <Filter>Kernel</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\StackWalker.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="editstars.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExceptionHandling.cpp">
-      <Filter>Tools</Filter>
+    <ClCompile Include="selectrect.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DSSProgress.cpp">
-      <Filter>Kernel</Filter>
+    <ClCompile Include="toolbar.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageProperties.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\imageview.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\QElidedLabel.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="progressdlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerBar.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="QElidedLabel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="IntermediateFiles.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="StackSettings.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="CometStacking.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingParameters.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultParameters.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="AlignmentParameters.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="PostCalibration.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputTab.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="About.cpp">
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,6 +263,9 @@
     <ResourceCompile Include="DeepSkyStackerTR.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerJP.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SetUILanguage.h">
@@ -475,11 +289,8 @@
     <ClInclude Include="resourceIT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StdAfx.h">
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AskRegistering.h">
-      <Filter>Dialogs\Registering</Filter>
     </ClInclude>
     <ClInclude Include="LuminanceTab.h">
       <Filter>Dialogs\Processing</Filter>
@@ -505,19 +316,10 @@
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\BitmapSlider.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\BtnST.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ButtonToolbar.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\cdxCRot90DC.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\cdxCRotBevelLine.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\childprop.h">
@@ -526,13 +328,7 @@
     <ClInclude Include="..\Tools\ControlPos.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\CustomTabCtrl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\EasySize.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\FolderDlg.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\Gradient.h">
@@ -547,148 +343,13 @@
     <ClInclude Include="..\Tools\Label.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\memdc.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Schemadef.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ThemeUtil.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Tmschema.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
       <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="AHDDemosaicing.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BackgroundCalibration.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BezierAdjust.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BitmapExt.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="ChannelAlign.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="CosmeticEngine.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DarkFrame.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DeBloom.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DeepStack.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSCommon.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSTools.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSVersion.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="EntropyInfo.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Filters.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="FITSUtil.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="FlatFrame.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameInfo.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameList.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Histogram.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Library.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="MasterFrames.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchingStars.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="MedianFilterEngine.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="MultiBitmapProcess.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Multitask.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelTransform.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="RAWUtils.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="RegisterEngine.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="RunningStackingEngine.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="StackedBitmap.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="StackingEngine.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="StackingTasks.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="StarMask.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Stars.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="TIFFUtil.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="Workspace.h">
-      <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="DSSMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Delaunay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PCLTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DSS-versionhelpers.h">
@@ -706,86 +367,14 @@
     <ClInclude Include="ImageSinks.h">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
-    <ClInclude Include="dss_settings.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_avg.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_output.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_filter.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_luminance.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_cfa.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_histogram.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_median.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_entropy.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BitmapBase.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_support.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BitMapFiller.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="avx_bitmap_filler.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskInfo.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="FrameInfoSupport.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="mrupath.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="group.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BitmapIterator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="qmfcapp.h">
       <Filter>Qt Porting</Filter>
-    </ClInclude>
-    <ClInclude Include="SkyBackground.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dssrect.h">
+    <ClInclude Include="dslr.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\StackWalker.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Toolhelp.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ExceptionHandling.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSProgress.h">
-      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1131,11 +720,9 @@
     <Image Include="res\ButtonStar_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
-      <Filter>Tools</Filter>
-    </CustomBuild>
+    <Image Include="res\Heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="QWinHost">
@@ -1234,34 +821,7 @@
     <QtMoc Include="qwinwidget.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
-    <QtMoc Include="StackSettings.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="About.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
-    <QtMoc Include="ResultParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="CometStacking.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="StackingParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="PostCalibration.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
     <QtMoc Include="BackgroundOptions.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="AlignmentParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="IntermediateFiles.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="OutputTab.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="StackRecap.h">
@@ -1273,38 +833,14 @@
     <QtMoc Include="RawDDPSettings.h">
       <Filter>Dialogs\Settings</Filter>
     </QtMoc>
-    <QtMoc Include="ExplorerBar.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="QLinearGradientCtrl.h">
-      <Filter>Tools</Filter>
-    </QtMoc>
-    <QtMoc Include="imageview.h">
-      <Filter>Kernel</Filter>
-    </QtMoc>
-    <QtMoc Include="editstars.h">
-      <Filter>Kernel</Filter>
-    </QtMoc>
-    <QtMoc Include="selectrect.h">
-      <Filter>Kernel</Filter>
-    </QtMoc>
-    <QtMoc Include="toolbar.h">
-      <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="qwinhost.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
-    <QtMoc Include="ImageListModel.h">
-      <Filter>Kernel</Filter>
-    </QtMoc>
     <QtMoc Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="imageloader.h">
-      <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="DeepSkyStacker.h">
       <Filter>Header Files</Filter>
@@ -1315,9 +851,6 @@
     <QtMoc Include="RenameGroup.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="SaveEditChanges.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="CheckAbove.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -1327,57 +860,111 @@
     <QtMoc Include="BaseDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="BatchStacking.h">
+    <QtMoc Include="selectrect.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtProgressDlg.h">
-      <Filter>Dialogs</Filter>
+    <QtMoc Include="toolbar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="editstars.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ImageProperties.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="SaveEditChanges.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QLinearGradientCtrl.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\imageview.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\QElidedLabel.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AskRegistering.h">
+      <Filter>Dialogs\Registering</Filter>
+    </QtMoc>
+    <QtMoc Include="ExplorerBar.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
-    <QtMoc Include="QElidedLabel.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="BatchStacking.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="IntermediateFiles.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="StackSettings.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="CometStacking.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="StackingParameters.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="ResultParameters.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="AlignmentParameters.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="PostCalibration.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="OutputTab.h">
+      <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="About.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS.ca.ts">
+    <QtTranslation Include="i18n\DSS_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.cs.ts">
+    <QtTranslation Include="i18n\DSS_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.de.ts">
+    <QtTranslation Include="i18n\DSS_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.en.ts">
+    <QtTranslation Include="i18n\DSS_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.es.ts">
+    <QtTranslation Include="i18n\DSS_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.fr.ts">
+    <QtTranslation Include="i18n\DSS_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.it.ts">
+    <QtTranslation Include="i18n\DSS_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.nl.ts">
+    <QtTranslation Include="i18n\DSS_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.pt_BR.ts">
+    <QtTranslation Include="i18n\DSS_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ro.ts">
+    <QtTranslation Include="i18n\DSS_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.ru.ts">
+    <QtTranslation Include="i18n\DSS_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.tr.ts">
+    <QtTranslation Include="i18n\DSS_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS.zh_TW.ts">
+    <QtTranslation Include="i18n\DSS_zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSS_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

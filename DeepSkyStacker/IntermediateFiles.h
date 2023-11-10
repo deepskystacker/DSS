@@ -1,7 +1,4 @@
-#ifndef INTERMEDIATEFILES_H
-#define INTERMEDIATEFILES_H
-
-#include <QWidget>
+#pragma once
 
 class Workspace;
 
@@ -37,5 +34,3 @@ private slots:
 	void on_saveDebayered_stateChanged(int state);
 	void on_saveIntermediate_stateChanged(int state);
 };
-
-#endif // INTERMEDIATEFILES_H

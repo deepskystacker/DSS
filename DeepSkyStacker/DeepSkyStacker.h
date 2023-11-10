@@ -1,4 +1,3 @@
-
 #pragma once
 /****************************************************************************
 **
@@ -35,36 +34,39 @@
 **
 **
 ****************************************************************************/
-#include <list>
-#include <QMainWindow>
-#include <QMessageBox>
-#include <QLabel>
-
-#include "ExplorerBar.h"
-class QSplitter;
-class QStackedWidget;
-#include "StackingDlg.h"
-class QWinHost;
-
+#include "dssbase.h"
+#include "dss_settings.h"
 namespace DSS
 {
 	class PictureList;
+	class StackingDlg;
 }
-
-#include "ProcessingDlg.h"
-#include "dss_settings.h"
+class ExplorerBar;
+class QStackedWidget;
+class QWinHost;
+class CProcessingDlg;
+class CDSSSettings;
+class CDeepStack;
 
 class DeepSkyStacker :
-	public QMainWindow
+	public QMainWindow,
+	public DSSBase
 {
 	typedef QMainWindow
 		Inherited;
 
 	Q_OBJECT
 
+signals:
+	void tabChanged();
+
+public slots:
+	void help();
+
 protected slots:
 	void updateStatus(const QString& text);
-	void displayMessageBox(const QString& message, QMessageBox::Icon icon);
+	void qMessageBox(const QString& message, QMessageBox::Icon icon, bool terminate);
+	void qErrorMessage(const QString& message, const QString& type, QMessageBox::Icon icon, bool terminate);
 
 private:
 	bool initialised;
@@ -73,18 +75,20 @@ private:
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	QWinHost* winHost;
-
-	CProcessingDlg	processingDlg;
-
-	CDeepStack				m_DeepStack;
-	CDSSSettings			m_Settings;
-	std::uint32_t			currTab;
-	QStringList				args;
-	QString					baseTitle;
+	CWnd hostWnd;
+	std::unique_ptr<CProcessingDlg>	processingDlg;
+	std::unique_ptr<CDeepStack> m_DeepStack;
+	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
+	std::uint32_t currTab;
+	QStringList args;
+	QString baseTitle;
 	QString currentPathName;
-	//ITaskbarList3* m_taskbarList;
-	bool                    m_progress;
-	QLabel*	statusBarText;
+	bool m_progress;
+	QLabel* sponsorText;
+	QLabel* statusBarText;
+	QErrorMessage* errorMessageDialog;
+	QLabel* eMDI;		// errorMessageDialogIcon pointer
+	QShortcut* helpShortCut;
 
 	void createStatusBar();
 	void updateTab();
@@ -93,8 +97,8 @@ private:
 
 protected:
 	void closeEvent(QCloseEvent* e) override;
-	void dragEnterEvent(QDragEnterEvent* e);
-	void dropEvent(QDropEvent* e);
+	void dragEnterEvent(QDragEnterEvent* e) override;
+	void dropEvent(QDropEvent* e) override;
 	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();
@@ -102,103 +106,27 @@ protected:
 public:
 	inline static DeepSkyStacker* instance()
 	{
-		return theMainWindow;
-	}
-
-	inline static void setInstance(DeepSkyStacker* instance)
-	{
-		ZASSERT(nullptr == theMainWindow);
-		theMainWindow = instance;
+		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
 	}
 
 	DeepSkyStacker();
+	~DeepSkyStacker();
 
-	~DeepSkyStacker()
-	{
-	}
-
-	inline QString statusMessage()
-	{
-		return statusBarText->text();
-	}
-
-	CDeepStack& deepStack()
-	{
-		return m_DeepStack;
-	};
-
-	qreal pixelRatio()
-	{
-		return devicePixelRatioF();
-	}
-
-	void	setTab(std::uint32_t dwTabID)
-	{
-		if (dwTabID == IDD_REGISTERING)
-			dwTabID = IDD_STACKING;
-		//#ifdef DSSBETA
-		//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
-		//		dwTabID = IDD_LIBRARY;
-		//#endif
-		currTab = dwTabID;
-		updateTab();
-	};
-
-	std::uint32_t tab()
-	{
-		return currTab;
-	};
-
-	inline void disableSubDialogs()
-	{
-		stackingDlg->setEnabled(false);
-		processingDlg.EnableWindow(false);
-		//m_dlgLibrary.EnableWindow(false);
-		explorerBar->setEnabled(false);
-	};
-
-	inline void enableSubDialogs()
-	{
-		stackingDlg->setEnabled(true);
-		processingDlg.EnableWindow(true);
-		//m_dlgLibrary.EnableWindow(true);
-		explorerBar->setEnabled(true);
-	};
-
-	CDSSSettings& settings()
-	{
-		if (!m_Settings.IsLoaded())
-			m_Settings.Load();
-
-		return m_Settings;
-	};
-
-	DSS::StackingDlg& getStackingDlg()
-	{
-		return *stackingDlg;
-	};
-
-	CProcessingDlg& getProcessingDlg()
-	{
-		return processingDlg;
-	};
+	inline qreal pixelRatio() { return devicePixelRatioF(); }
+	inline std::uint32_t tab() { return currTab; }
 
 
-	ExplorerBar& GetExplorerBar()
-	{
-		return *explorerBar;
-	};
-
-	inline void setWindowFilePath(const QString& name)
-	{
-		if (currentPathName == name) return;
-		currentPathName = name;
-		if (!name.isEmpty())
-			setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
-		else
-			setWindowTitle(baseTitle);
-	}
-
+	QString statusMessage();
+	CDeepStack& deepStack();
+	void setTab(std::uint32_t dwTabID);
+	void disableSubDialogs();
+	void enableSubDialogs();
+	CDSSSettings& imageProcessingSettings();
+	DSS::StackingDlg& getStackingDlg();
+	CProcessingDlg& getProcessingDlg();
+	ExplorerBar& GetExplorerBar();
+	void setWindowFilePath(const QString& name);
+	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 };
 
 
@@ -208,16 +136,8 @@ public :
 	CWnd *				m_pMainDlg;
 
 public :
-	DeepSkyStackerApp() :
-		m_pMainDlg{ nullptr }
-	{
-        
-	};
-
-	virtual ~DeepSkyStackerApp()
-	{
-
-	};
+	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
+	virtual ~DeepSkyStackerApp() = default;
 
 	virtual BOOL InitInstance( ) override;
 	virtual int ExitInstance() override;

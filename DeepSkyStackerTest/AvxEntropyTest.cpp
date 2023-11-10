@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/avx_entropy.h"
+#include "avx_entropy.h"
+#include "ColorBitmap.h"
+#include "Multitask.h"
+#include "AvxEntropyTest.h"
 
 std::tuple<float, float> calcEntropy(const std::vector<int>& incidences)
 {
@@ -42,7 +45,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -68,7 +71,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -104,7 +107,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -138,7 +141,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -176,7 +179,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -216,7 +219,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
 		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
 		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
@@ -247,26 +250,27 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 }
 
 int CMultitask::GetNrProcessors(bool) { return 1; }
-void CEntropyInfo::InitSquareEntropies()
-{
-	const int yoff = m_lWindowSize == 10 ? 100 : 10;
-	const int xoff = m_lWindowSize == 10 ? 1 : 10;
-	m_lWindowSize = 10;
-	const int lSquareSize = m_lWindowSize * 2 + 1;
 
-	m_lNrSquaresX = m_pBitmap->Width() / lSquareSize;
-	m_lNrSquaresY = m_pBitmap->Height() / lSquareSize;
-
-	if (m_pBitmap->RealWidth() % lSquareSize)
-		m_lNrSquaresX++;
-	if (m_pBitmap->RealHeight() % lSquareSize)
-		m_lNrSquaresY++;
-
-	m_vRedEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
-	m_vGreenEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
-	m_vBlueEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
-
-	for (int y = 0; y < m_lNrSquaresY; ++y)
-		for (int x = 0; x < m_lNrSquaresX; ++x)
-			m_vRedEntropies[y * m_lNrSquaresX + x] = m_vGreenEntropies[y * m_lNrSquaresX + x] = m_vBlueEntropies[y * m_lNrSquaresX + x] = static_cast<float>(y * yoff + x + xoff);
-}
+ void TestEntropyInfo::InitSquareEntropies()
+ {
+ 	const int yoff = m_lWindowSize == 10 ? 100 : 10;
+ 	const int xoff = m_lWindowSize == 10 ? 1 : 10;
+ 	m_lWindowSize = 10;
+ 	const int lSquareSize = m_lWindowSize * 2 + 1;
+ 
+ 	m_lNrSquaresX = m_pBitmap->Width() / lSquareSize;
+ 	m_lNrSquaresY = m_pBitmap->Height() / lSquareSize;
+ 
+ 	if (m_pBitmap->RealWidth() % lSquareSize)
+ 		m_lNrSquaresX++;
+ 	if (m_pBitmap->RealHeight() % lSquareSize)
+ 		m_lNrSquaresY++;
+ 
+ 	m_vRedEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+ 	m_vGreenEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+ 	m_vBlueEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+ 
+ 	for (int y = 0; y < m_lNrSquaresY; ++y)
+ 		for (int x = 0; x < m_lNrSquaresX; ++x)
+ 			m_vRedEntropies[y * m_lNrSquaresX + x] = m_vGreenEntropies[y * m_lNrSquaresX + x] = m_vBlueEntropies[y * m_lNrSquaresX + x] = static_cast<float>(y * yoff + x + xoff);
+ }

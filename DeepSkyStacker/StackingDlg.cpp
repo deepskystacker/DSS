@@ -37,71 +37,33 @@
 //
 
 #include "stdafx.h"
-
-#include <chrono>
-#include <QAction>
-#include <QDropEvent>
-#include <QClipboard>
-#include <QComboBox>
-#include <QDebug>
-#include <QErrorMessage>
-#include <QLocale>
-#include <QMenu>
-#include <QMessageBox>
-#include <QMimeData>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-#include <QTreeWidget>
-#include <QPainter>
-#include <QTextLayout>
-#include <QShowEvent>
-#include <QSettings>
-#include <QSortFilterProxyModel>
-#include <QStyledItemDelegate>
-#include <QStyleOptionViewItem>
-#include <QStyleOptionButton>
-#include <QTableWidgetItem>
-#include <QTimeEdit>
-#include <QTimer>
-#include <QToolTip>
-#include <QUrl>
-
-#include <filesystem>
-
-#include "mrupath.h"
-
-#include "DeepSkyStacker.h"
-#include "dssrect.h"
 #include "StackingDlg.h"
-#include "ProcessingDlg.h"
-#include "DeepStack.h"
-#include "imageproperties.h"
-#include "FrameInfoSupport.h"
-#include "QtProgressDlg.h"
-#include "CheckAbove.h"
-#include "RegisterSettings.h"
-#include "StackRecap.h"
-#include "TIFFUtil.h"
-#include "RegisterEngine.h"
-#include "StackingEngine.h"
+#include "ui_StackingDlg.h"
+#include "picturelist.h"
+#include "Ztrace.h"
 #include "DropFilesDlg.h"
-#include "SaveEditChanges.h"
-#include "AskRegistering.h"
-#include "BatchStacking.h"
-#include "DSSVersion.h"
-#include "group.h"
+#include "RenameGroup.h"
+#include "toolbar.h"
 #include "editstars.h"
 #include "selectrect.h"
-#include "toolbar.h"
+#include "SaveEditChanges.h"
+#include "RegisterEngine.h"
+#include "StackingEngine.h"
+#include "DeepSkyStacker.h"
+#include "CheckAbove.h"
+#include "Workspace.h"
+#include "progressdlg.h"
+#include "RegisterSettings.h"
 #include "avx_support.h"
-#include "ui/ui_StackingDlg.h"
-#include "picturelist.h"
-#include "RenameGroup.h"
-
-#include <ZExcept.h>
-
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "FrameInfoSupport.h"
+#include "AskRegistering.h"
+#include "FITSUtil.h"
+#include "TIFFUtil.h"
+#include "BatchStacking.h"
+#include "StackRecap.h"
+#include "ProcessingDlg.h"
+#include "ZExcept.h"
+#include "ImageProperties.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -161,10 +123,9 @@ namespace DSS
 
 	static struct { const char* const source; const char* comment; } INPUTFILE_FILTER_SOURCES [] {
 		QT_TRANSLATE_NOOP3("DSS",
-			"Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+			"Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
 			"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
 			"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-		QT_TRANSLATE_NOOP3("DSS", "Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS",
@@ -178,7 +139,7 @@ namespace DSS
 
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
-		Qt::TextElideMode textElideMode, int flags,
+		Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 		bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const
 	{
 		QTextLayout textLayout(text, font);
@@ -226,15 +187,15 @@ namespace DSS
 					elideLastVisibleLine = true;
 			}
 
-			QString text = textLayout.text().mid(start, length);
+			QString text1 = textLayout.text().mid(start, length);
 			if (drawElided || elideLastVisibleLine) {
 				if (elideLastVisibleLine) {
-					if (text.endsWith(QChar::LineSeparator))
-						text.chop(1);
-					text += QChar(0x2026);
+					if (text1.endsWith(QChar::LineSeparator))
+						text1.chop(1);
+					text1 += QChar(0x2026);
 				}
 				QFontMetrics fontMetrics(font);
-				ret += fontMetrics.elidedText(text, textElideMode, textRect.width());
+				ret += fontMetrics.elidedText(text1, textElideMode, textRect.width());
 
 				// no newline for the last line (last visible or real)
 				// sometimes drawElided is true but no eliding is done so the text ends
@@ -245,7 +206,7 @@ namespace DSS
 					ret += QChar::LineSeparator;
 			}
 			else {
-				ret += text;
+				ret += text1;
 			}
 
 			// below visible text, can stop
@@ -259,7 +220,7 @@ namespace DSS
 
 	void IconSizeDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 	{
-		Q_ASSERT(index.isValid());
+		ZASSERT(index.isValid());
 		QStyleOptionViewItem opt{ option };
 		initStyleOption(&opt, index);
 
@@ -278,7 +239,7 @@ namespace DSS
 		//
 		QStyleOptionButton checkBoxStyle;
 		//constexpr int size = 17;
-		constexpr int space = 6;
+		//constexpr int space = 6;
 		checkBoxStyle.rect = checkRect;
 		
 		checkBoxStyle.state = (Qt::Checked == opt.checkState) ? QStyle::State_On : QStyle::State_Off;
@@ -354,18 +315,6 @@ namespace DSS
 		const QStyleOptionViewItem& option,
 		const QModelIndex& index) const
 	{
-		//if (types.isEmpty())
-		//	types << 
-		//		QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
-		//		QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
-		//		QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
-		//		QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
-		//		QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
-
-		//if (isos.isEmpty())
-		//	isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
-		//		"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
-		//		"6400" << "12800";
 
 		switch (static_cast<Column>(index.column()))
 		{
@@ -396,7 +345,7 @@ namespace DSS
 				
 				return editor;
 			}
-		break;
+			break;
 		}
 		//
 		// Not one we want to handle so return the default
@@ -416,7 +365,7 @@ namespace DSS
 			{
 				QString type{ index.model()->data(index).toString() };
 				combo = qobject_cast<QComboBox*>(editor);
-				Q_ASSERT(combo);
+				ZASSERT(combo);
 				combo->setCurrentIndex(combo->findText(type));
 			}
 			break;
@@ -424,9 +373,9 @@ namespace DSS
 			{
 				QString value{ index.model()->data(index, Qt::EditRole).toString() };
 				combo = qobject_cast<QComboBox*>(editor);
-				Q_ASSERT(combo);
-				if (int index = combo->findText(value))
-					combo->setCurrentIndex(index);
+				ZASSERT(combo);
+				if (int idx = combo->findText(value))
+					combo->setCurrentIndex(idx);
 				else
 					combo->setCurrentText(value);
 			}
@@ -438,7 +387,7 @@ namespace DSS
 				if (secs > 86399.999) secs = 86399.999;		// 24 hours less 1 ms
 				double msecs = secs * 1000.0;
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
-				Q_ASSERT(timeEdit);
+				ZASSERT(timeEdit);
 				QTime time{ QTime(0, 0) };
 				time = time.addMSecs(msecs);
 				timeEdit->setTime(time);
@@ -465,21 +414,21 @@ namespace DSS
 		case Column::Type:
 			{
 				combo = qobject_cast<QComboBox*>(editor);
-				Q_ASSERT(combo);
+				ZASSERT(combo);
 				model->setData(index, combo->currentIndex());
 			}
 			break;
 		case Column::ISO:
 			{
 				combo = qobject_cast<QComboBox*>(editor);
-				Q_ASSERT(combo);
+				ZASSERT(combo);
 				model->setData(index, combo->currentText());
 			}
 			break;
 		case Column::Exposure:
 			{
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
-				Q_ASSERT(timeEdit);
+				ZASSERT(timeEdit);
 				QTime time{ timeEdit->time() };
 				double secs = (static_cast<double>(time.hour()) * 3600) +
 					(static_cast<double>(time.minute()) * 60) +
@@ -520,7 +469,6 @@ namespace DSS
 		QWidget(parent),
 		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
-		workspace { std::make_unique<Workspace>() },
 		initialised(false),
 		markAsReference{ nullptr },
 		check{ nullptr },
@@ -536,8 +484,7 @@ namespace DSS
 		erase{ nullptr },
 		networkManager{ nullptr },
 		m_tipShowCount{ 0 },
-		dockTitle{ new QLabel(this) },
-		errorMessageDialog { new QErrorMessage(this) }
+		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -548,35 +495,23 @@ namespace DSS
 
 		mruPath.readSettings();
 
-		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
-		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
-		connect(&imageLoader, SIGNAL(imageLoadFailed()), this, SLOT(imageLoadFailed()));
-		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
-		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
+		connect(ui->fourCorners, &QToolButton::clicked, ui->picture, &DSS::ImageView::on_fourCorners_clicked);
+		connect(&imageLoader, &ImageLoader::imageLoaded, this, &StackingDlg::imageLoad);
+		connect(&imageLoader, &ImageLoader::imageLoadFailed, this, &StackingDlg::imageLoadFailed);
+		connect(ui->gamma, &QLinearGradientCtrl::pegMove, this, &StackingDlg::gammaChanging);
+		connect(ui->gamma, &QLinearGradientCtrl::pegMoved, this, &StackingDlg::gammaChanged);
 		//
 		// If user changes tab need to switch groups and table model
 		//
-		connect(pictureList->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
+		connect(pictureList->tabBar, &QTabBar::currentChanged, this, &StackingDlg::tabBar_currentChanged);
 
 		//
 		// Handle Menu requests for PictureList tableView and tabBar controls
 		//
-		connect(pictureList->tableView, SIGNAL(customContextMenuRequested(const QPoint&)),
-			this, SLOT(tableView_customContextMenuRequested(const QPoint&)));
-		connect(pictureList->tabBar, SIGNAL(customContextMenuRequested(const QPoint&)),
-			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
+		connect(pictureList->tableView, &QTableView::customContextMenuRequested, this, &StackingDlg::tableView_customContextMenuRequested);
+		connect(pictureList->tabBar, &QTabBar::customContextMenuRequested, this, &StackingDlg::tabBar_customContextMenuRequested);
 
 		retrieveLatestVersionInfo();
-
-		errorMessageDialog->setWindowTitle("DeepSkyStacker");
-
-		//
-		// Hack to access the Icon displayed by QErrorMessage
-		//
-		if (QLabel * eMDI{ errorMessageDialog->findChild<QLabel*>() }; eMDI != nullptr)
-		{
-			eMDI->setPixmap(style()->standardPixmap(QStyle::SP_MessageBoxWarning));
-		}
 	}
 
 	StackingDlg::~StackingDlg()
@@ -672,6 +607,7 @@ namespace DSS
 						imageModel->removeRows(row, 1);
 						imageModel->endRemoveRows();
 					}
+					updateListInfo();
 					return true;
 				}
 			}
@@ -735,7 +671,7 @@ namespace DSS
 			OUTPUTLIST_FILTERS.append(
 				qApp->translate("DSS", OUTPUTLIST_FILTER_SOURCES[i].source, OUTPUTLIST_FILTER_SOURCES[i].comment));
 		}
-		Q_ASSERT(OUTPUTLIST_FILTERS.size() == count);
+		ZASSERT(OUTPUTLIST_FILTERS.size() == count);
 
 		count = sizeof(INPUTFILE_FILTER_SOURCES) / sizeof(INPUTFILE_FILTER_SOURCES[0]);
 		INPUTFILE_FILTERS.clear();
@@ -744,7 +680,7 @@ namespace DSS
 			INPUTFILE_FILTERS.append(
 				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
 		}
-		Q_ASSERT(INPUTFILE_FILTERS.size() == count);
+		ZASSERT(INPUTFILE_FILTERS.size() == count);
 
 		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
 			"Ctrl-A or equivalent to select all rows\n"
@@ -854,7 +790,7 @@ namespace DSS
 	void StackingDlg::tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		auto tab = pictureList->tabBar->tabAt(pos);
+		int tab = pictureList->tabBar->tabAt(pos);
 		if (tab > 0)
 		{
 			QMenu tabMenu;
@@ -888,12 +824,11 @@ namespace DSS
 			ndx = proxyModel->mapToSource(ndx);
 
 		ImageListModel* imageModel = frameList.currentTableModel();
-		int row = ndx.row();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
 		{
-			if (imageModel->mydata[row].m_bUseAsStarting)
+			if (imageModel->mydata[ndx.row()].m_bUseAsStarting)
 				markAsReference->setChecked(true);
 			else
 				markAsReference->setChecked(false);
@@ -996,6 +931,8 @@ namespace DSS
 					{
 						fs::remove(imageModel->mydata[row].filePath); // erase the file
 					}
+					break;
+				default:
 					break;
 				}
 			}
@@ -1113,8 +1050,7 @@ namespace DSS
 		//
 		// If the model data changes let me know
 		//
-		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
-			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
 		
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
@@ -1175,8 +1111,7 @@ namespace DSS
 		pictureList->tableView->installEventFilter(this);
 
 		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
+		connect(qsm, &QItemSelectionModel::selectionChanged, this, &StackingDlg::tableView_selectionChanged);
 
 		//
 		// Add the Grey Point stop to the gradient 
@@ -1204,7 +1139,7 @@ namespace DSS
 		pictureList->tabBar->setShape(QTabBar::TriangularSouth);
 		pictureList->tabBar->setExpanding(false);
 		pictureList->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-		pictureList->tabBar->setCurrentIndex(pictureList->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
+		updateGroupTabs();
 
 		if (!fileList.empty())
 			openFileList(fileList);			// Will call updateListInfo()
@@ -1238,7 +1173,7 @@ namespace DSS
 			if (!ignoreExtensions.contains(extension) && !stem.startsWith("autosave"))
 			{
 				// Try to load image info to check it is a valid image
-				if (GetPictureInfo(file.generic_wstring().c_str(), bitmapInfo))
+				if (GetPictureInfo(file, bitmapInfo))
 				{
 					//
 					// It is a valid image
@@ -1293,8 +1228,7 @@ namespace DSS
 				// Make the dropped files act the same as using the file open dialogue
 				// All except light frames should be checked
 				//
-				bool checked{ true };		// Check all dropped files with the 
-				if (PICTURETYPE_LIGHTFRAME == type) checked = false;	// exception of light frames.
+				bool checked{ true };		// Check all dropped files  
 
 				//
 				// Before attempting to add the files prune out those that have already been loaded
@@ -1321,8 +1255,7 @@ namespace DSS
 
 	}
 
-	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first,
-		[[maybe_unused]] const QModelIndex& last, [[maybe_unused]] const QList<int>&)
+	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex&, const QList<int>&)
 	{
 		//
 		// Only interested if the user has ticked the check box in column 0
@@ -1354,20 +1287,20 @@ namespace DSS
 
 			if (ndx.isValid())
 			{
-				QString  fileName;
+				fs::path  file;
 				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
-				fileName = model->selectedFileName(row);
+				file = model->selectedFile(row);
 				//
 				// If the filename has changed but we have changes to the stars that need to be saved
 				//
-				if (fileName != m_strShowFile && checkEditChanges())
+				if (file != fileToShow && checkEditChanges())
 				{
-					ui->information->setText(m_strShowFile);
+					ui->information->setText(QString::fromStdU16String(fileToShow.generic_u16string()));
 					ui->information->setTextFormat(Qt::PlainText);
 					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 					ui->information->setOpenExternalLinks(false);
-					m_strShowFile = fileName;
+					fileToShow = file;
 					imageLoad();
 				}
 			}
@@ -1400,9 +1333,12 @@ namespace DSS
 	{
 		std::shared_ptr<CMemoryBitmap>	pBitmap;
 		std::shared_ptr<QImage>	pImage;
+		QString fileName;
+		if (!fileToShow.empty()) fileName = QString::fromStdU16String(fileToShow.generic_u16string());
+
 		try
 		{
-			if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
+			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
 			{
 				pictureList->tableView->setEnabled(true);
 				//
@@ -1415,13 +1351,13 @@ namespace DSS
 				//
 				m_LoadedImage.m_Image = pImage;
 				m_LoadedImage.m_pBitmap = pBitmap;
-				if (m_GammaTransformation.IsInitialized())
+				if (m_GammaTransformation.isInitialized())
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 
-				if (frameList.isLightFrame(m_strShowFile))
+				if (frameList.isLightFrame(fileToShow))
 				{
-					editStarsPtr->setLightFrame(m_strShowFile);
+					editStarsPtr->setLightFrame(fileName);
 					editStarsPtr->setBitmap(pBitmap);
 					if (pToolBar->rectAction->isChecked())
 					{
@@ -1450,24 +1386,24 @@ namespace DSS
 				CBilinearParameters		Transformation;
 				VOTINGPAIRVECTOR		vVotedPairs;
 
-				if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
+				if (frameList.getTransformation(fileName, Transformation, vVotedPairs))
 					editStarsPtr->setTransformation(Transformation, vVotedPairs);
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-				ui->information->setText(m_strShowFile);
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
+				ui->information->setText(fileName);
 			}
-			else if (!m_strShowFile.isEmpty())
+			else if (!fileToShow.empty())
 			{
 				pictureList->tableView->setEnabled(false);
 				//
 				// Display the "Loading filename" with red background gradient while loading in background
 				//
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(252, 251, 222, 0), stop:1 rgba(255, 151, 154, 255)) }");
 				ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-					.arg(m_strShowFile));
+					.arg(fileName));
 				//
 				// No longer interested in signals from the imageView object
 				//
@@ -1496,12 +1432,12 @@ namespace DSS
 				editStarsPtr->setBitmap(nullptr);
 			}
 		}
-		catch ([[maybe_unused]] ZAccessError& ze)
+		catch (ZAccessError&)
 		{
 			QApplication::beep();
 			QMessageBox::warning(this,
 				"DeepSkyStacker",
-				tr("%1 does not exist or is not a file").arg(m_strShowFile));
+				tr("%1 does not exist or is not a file").arg(fileName));
 		}
 	};
 
@@ -1510,7 +1446,13 @@ namespace DSS
 		QApplication::beep();
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
-			tr("Failed to load image %1").arg(m_strShowFile));
+			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
+		pictureList->tableView->setEnabled(true);
+		//
+		// Disabling the tableview resulted in it loosing focus
+		// so put the focus back
+		//
+		pictureList->tableView->setFocus(Qt::OtherFocusReason);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
@@ -1538,7 +1480,7 @@ namespace DSS
 		editStarsPtr->saveRegisterSettings();
 		pToolBar->setSaveEnabled(false);
 		// Update the list with the new info
-		frameList.updateItemScores(m_strShowFile);
+		frameList.updateItemScores(fileToShow);
 	}
 
 	void StackingDlg::pictureChanged()
@@ -1555,20 +1497,15 @@ namespace DSS
 		//
 		if (auto groupId = Group::whichGroupContains(file); groupId != -1)
 		{
-				//
-				// If the file has already been loaded complain
-				//
-			    QString errorMessage = QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
-					.arg(file.generic_string().c_str())
-					.arg(groupId)
-					.arg(frameList.groupName(groupId));
-
-	#if defined(_CONSOLE)
-				std::cerr << errorMessage.toUtf8().constData();
-	#else
-				errorMessageDialog->showMessage(errorMessage, "Already loaded");
-	#endif
-				return true;
+			//
+			// If the file has already been loaded complain
+			//
+			QString errorMessage{ tr("File %1 was not loaded because it was already loaded in group %2 (%3)")
+				.arg(file.generic_string().c_str())
+				.arg(groupId)
+				.arg(frameList.groupName(groupId)) };
+			DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
+			return true;
 		}
 		return false;
 	}
@@ -1583,12 +1520,11 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		bool				checked{ true };  // Automatically check all frames except lights
+		bool				checked{ true };  // Automatically check all frames
 		switch (type)
 		{
 		case PICTURETYPE_LIGHTFRAME:
 			fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
-			checked = false;			// Don't check light frames
 			break;
 		case PICTURETYPE_DARKFRAME:
 			fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
@@ -1613,6 +1549,8 @@ namespace DSS
 			directory = settings.value("Folders/AddDarkFlatFolder").toString();
 			extension = settings.value("Folders/AddDarkFlatExtension").toString();
 			filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
+			break;
+		default:
 			break;
 		}
 
@@ -1729,6 +1667,8 @@ namespace DSS
 				settings.setValue("Folders/AddDarkFlatExtension", extension);
 				settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
 				break;
+			default:
+				break;
 			}
 
 			updateGroupTabs();
@@ -1755,7 +1695,7 @@ namespace DSS
 				editStarsPtr->saveRegisterSettings();
 				pToolBar->setSaveEnabled(false);
 				// Update the list with the new info
-				frameList.updateItemScores(m_strShowFile);
+				frameList.updateItemScores(fileToShow);
 			}
 			else if (dlgResult == QDialogButtonBox::DestructiveRole)
 			{
@@ -1838,6 +1778,7 @@ namespace DSS
 
 	void StackingDlg::clearList()
 	{
+		emit statusMessage("");		// Clear status bar message
 		if (checkEditChanges() && checkWorkspaceChanges())
 		{
 			// Select the main group tab which will in turn select group 0
@@ -1845,8 +1786,8 @@ namespace DSS
 			frameList.clear();
 			selectRectPtr->reset();
 			editStarsPtr->setBitmap(nullptr);
-			m_strShowFile.clear();
-			ui->information->setText(m_strShowFile);
+			fileToShow.clear();
+			ui->information->setText("");
 			imageLoader.clearCache();
 			m_LoadedImage.reset();
 			updateGroupTabs();
@@ -1889,7 +1830,7 @@ namespace DSS
 			if (mruPath.paths.size())
 			{
 				openAnother = false;
-				QMenu menu(this);
+				QMenu filelistMenu(this);
 
 				for (uint32_t i = 0; i < mruPath.paths.size(); i++)
 				{
@@ -1900,14 +1841,14 @@ namespace DSS
 
 					QString name{ QString::fromStdU16String(display.generic_u16string()) };
 
-					QAction* action = menu.addAction(name);
+					QAction* action = filelistMenu.addAction(name);
 					action->setData(i);		// Index into the list of files
 
 				};
-				menu.addSeparator();
-				QAction* loadAnother = menu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
+				filelistMenu.addSeparator();
+				QAction* loadAnother = filelistMenu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
-				QAction* a = menu.exec(pt);
+				QAction* a = filelistMenu.exec(pt);
 				if (a)
 				{
 					if (loadAnother == a)
@@ -1939,7 +1880,7 @@ namespace DSS
 		raise(); show();
 	}
 
-	void StackingDlg::loadList(MRUPath& MRUList, QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1947,7 +1888,6 @@ namespace DSS
 		QString	extension;
 
 		QFileDialog			fileDialog;
-		Workspace			workspace;
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
@@ -1959,7 +1899,7 @@ namespace DSS
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file open dlg");
@@ -2003,7 +1943,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUPath& MRUList, QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings					settings;
@@ -2011,7 +1951,6 @@ namespace DSS
 		QString	extension;
 
 		QFileDialog			fileDialog;
-		Workspace			workspace;
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
@@ -2024,7 +1963,7 @@ namespace DSS
 		fileDialog.setFileMode(QFileDialog::AnyFile);
 		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file save dlg");
@@ -2111,7 +2050,7 @@ namespace DSS
 
 	void StackingDlg::retrieveLatestVersionInfo()
 	{
-		//#ifndef DSSBETA
+		#ifndef DSSBETA
 		ZFUNCTRACE_RUNTIME();
 
 		QSettings			settings;
@@ -2121,27 +2060,27 @@ namespace DSS
 		{
 			networkManager = new QNetworkAccessManager();
 
-			QObject::connect(networkManager, &QNetworkAccessManager::finished,
+			connect(networkManager, &QNetworkAccessManager::finished,
 				[this](QNetworkReply* reply) { this->versionInfoReceived(reply); });
 
 			QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));
 			req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 			networkManager->get(req);
 		}
-		//#endif
+		#endif
 	}
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::ProgressDlg			dlg;
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
 
 
-		bool					bFound = false;
+		//bool					bFound = false;
 
-		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
 		{
 			emit statusMessage("");
 			//CString				strFirstLightFrame;
@@ -2199,12 +2138,12 @@ namespace DSS
 
 						frameList.updateCheckedItemScores();
 						// Update the current image score if necessary
-						if (!m_strShowFile.isEmpty()
-							&& frameList.isLightFrame(m_strShowFile)
-							&& frameList.isChecked(m_strShowFile))
+						if (!fileToShow.empty()
+							&& frameList.isLightFrame(fileToShow)
+							&& frameList.isChecked(fileToShow))
 						{
 							// Update the registering info
-							editStarsPtr->setLightFrame(m_strShowFile);
+							editStarsPtr->setLightFrame(QString::fromStdU16String(fileToShow.generic_u16string()));
 							ui->picture->update();
 						};
 
@@ -2220,7 +2159,7 @@ namespace DSS
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
 					emit statusMessage(message);
-					QApplication::beep();
+					if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 					ZTRACE_RUNTIME(message);
 
 					if (bContinue && bStackAfter)
@@ -2264,10 +2203,10 @@ namespace DSS
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 					imageLoader.clearCache();
-					if (frameList.countUnregisteredCheckedLightFrames())
+					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::ProgressDlg	dlg;
+						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2307,7 +2246,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	bool StackingDlg::checkStacking(CAllStackingTasks& tasks)
+	bool StackingDlg::checkStacking([[maybe_unused]] CAllStackingTasks& tasks)
 	{
 		bool result = false;
 		QString reason;
@@ -2316,7 +2255,7 @@ namespace DSS
 			QMessageBox::critical(this, "DeepSkyStacker",
 				tr("The checked pictures are not compatible: %1.",
 					"IDS_ERROR_NOTCOMPATIBLE").arg(reason));
-		else if (!frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+		else if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) == 0)
 			QMessageBox::critical(this, "DeepSkyStacker",
 				tr("You must check light frames to stack them.",
 					"IDS_ERROR_NOTLIGHTCHECKED"));
@@ -2328,31 +2267,24 @@ namespace DSS
 
 	void StackingDlg::checkAskRegister()
 	{
-		// Check that the current light frame is registered (or not)
-		// and ask accordingly
-		CLightFrameInfo			lfi;
-
-		lfi.SetBitmap(m_strShowFile.toStdU16String(), false, false);
+		// Check that the current light frame is registered (or not) and ask accordingly
+		CLightFrameInfo lfi;
+		lfi.SetBitmap(fileToShow, false, false);
 		if (!lfi.IsRegistered())
 		{
-			CAskRegistering		dlg;
-
-			if (dlg.DoModal() == IDOK)
+			AskRegistering dlg;
+			dlg.exec();
+			switch (dlg.desiredAction())
 			{
-				if (dlg.GetAction() == ARA_ONE)
-				{
-					// Register only this light frame
-					frameList.checkAllLights(false);
-					frameList.checkImage(m_strShowFile, true);
-					registerCheckedImages();
-				}
-				else if (dlg.GetAction() == ARA_ALL)
-				{
-					// Register all the checked light frames (including this one).
-					frameList.checkImage(m_strShowFile, true);
-					registerCheckedImages();
-				};
-			};
+			case AskRegistering::Answer::ARA_ONE:
+				frameList.checkAllLights(false);// Register only this light frame (unchek the others
+			case AskRegistering::Answer::ARA_ALL:
+				frameList.checkImage(fileToShow, true);// Register all the checked light frames (including this one).
+				registerCheckedImages();
+				break;
+			default:
+				break;
+			}
 		};
 	};
 
@@ -2362,7 +2294,12 @@ namespace DSS
 
 		if (!fileList.empty() || Group::fileCount())
 		{
-			Workspace				workspace;
+			Workspace workspace;
+
+			//
+			// Don't ask to save the the file list if a batch stacking operation is in progress.
+			//
+			if (frameList.batchStacking()) return true;			
 
 			if (frameList.dirty() || workspace.isDirty())
 			{
@@ -2416,7 +2353,7 @@ namespace DSS
 
 	void StackingDlg::reloadCurrentImage()
 	{
-		if (!m_strShowFile.isEmpty())
+		if (!fileToShow.empty())
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			imageLoader.clearCache();
@@ -2448,7 +2385,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::ProgressDlg dlg;
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2500,44 +2437,61 @@ namespace DSS
 				statusMsg.append(" : ").append(message);
 				emit statusMessage(statusMsg);
 			}
-			QApplication::beep();
+			if (QSettings{}.value("Beep", false).toBool()) QApplication::beep();
 
 			updateCheckedAndOffsets(StackingEngine);
 
 			if (bContinue)
 			{
-				CString strFileName;
 				Workspace workspace;
 				const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
-
-				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.generic_wstring().c_str(), iff == IFF_TIFF))
+				fs::path strFileName;
+				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList, iff == IFF_TIFF))
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromStdU16String(strFileName.generic_u16string())));
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
+
+					auto deb{ qDebug() }; deb.nospace();
+					deb << "Final stacked image:" << Qt::endl;
+
+
+					if (pBitmap->IsMonochrome())
+					{
+						for (size_t ix = 0; ix < 12; ix++)
+							deb << " " << pBitmap->getValue(ix, 0);
+					}
+					else
+					{
+						for (size_t i = 0; i < 4; i++)
+						{
+							auto [r, g, b] = pBitmap->getValues(i, 0);
+							deb << " " << r << " " << g << " " << b << Qt::endl;
+						}
+					}
 
 					if (iff == IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
 						else
-							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
 					}
 					else
 					{
 						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
 						else
-							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
 					}
 
 					dlg.End2();
 					dlg.SetJointProgress(false);
 					dlg.Close();
 
-					dssApp->getProcessingDlg().LoadFile(strFileName);
+					dssApp->getProcessingDlg().LoadFile(strFileName.wstring().c_str());
 
 					// Change tab to processing
 					dssApp->setTab(IDD_PROCESSING);
@@ -2585,13 +2539,11 @@ namespace DSS
 				.arg(__LINE__)
 				.arg(e.what())
 			);
-#if defined(_CONSOLE)
-			std::cerr << errorMessage.toUtf8().constData();
-#else
-			int ret = QMessageBox::warning(this, "DeepSkyStacker",
+
+			QMessageBox::warning(this, "DeepSkyStacker",
 				errorMessage,
 				QMessageBox::Ok);
-#endif
+
 		}
 		QGuiApplication::restoreOverrideCursor();
 	};
@@ -2608,10 +2560,10 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			if (frameList.countUnregisteredCheckedLightFrames())
+			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::ProgressDlg	dlg;
+				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -2621,7 +2573,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::ProgressDlg			dlg;
+				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };
@@ -2659,6 +2611,10 @@ namespace DSS
 		DSS::BatchStacking dlg(this);
 		dlg.setMRUPaths(mruPath.paths);
 		dlg.exec();
+		//
+		// Clear the image list at the end of batch stacking.
+		//
+		clearList();
 	};
 
 	void StackingDlg::gammaChanging(int peg)
@@ -2673,7 +2629,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		Q_ASSERT(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -2736,7 +2692,7 @@ namespace DSS
 	{
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
-		// on final time
+		// one final time
 		//
 		gammaChanging(peg);
 
@@ -2749,14 +2705,14 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		Q_ASSERT(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
 		whitePoint = stops[3].first;
 
 		// Adjust Gamma
-		m_GammaTransformation.InitTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
+		m_GammaTransformation.initTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
 
 		if (m_LoadedImage.m_pBitmap)
 		{
@@ -2782,8 +2738,7 @@ namespace DSS
 	{
 		frameList.setGroup(index);
 		auto model{ frameList.currentTableModel() };
-		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
-			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
 		proxyModel->setSourceModel(model);
 	}
 
@@ -2804,7 +2759,7 @@ namespace DSS
 		//
 		if (frameList.groupSize(frameList.lastGroupId()) != 0)
 		{
-			static_cast<void>(frameList.addGroup());
+			frameList.addGroup();
 		}
 
 		//
@@ -2833,6 +2788,6 @@ namespace DSS
 	{
 		CBitmapInfo			BitmapInfo;
 
-		return (GetPictureInfo(path.generic_wstring().c_str(), BitmapInfo));
+		return (GetPictureInfo(path, BitmapInfo));
 	}
 }

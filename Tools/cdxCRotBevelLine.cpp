@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "cdxCRotBevelLine.h"
-#include	"cdxCRot90DC.h"
+#include "cdxCRot90DC.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // cdxCRotBevelLine
@@ -247,7 +247,7 @@ void cdxCRotBevelLine::OnEnable(BOOL bEnable)
 	Invalidate();
 }
 
-BOOL cdxCRotBevelLine::OnEraseBkgnd(CDC* pDC)
+BOOL cdxCRotBevelLine::OnEraseBkgnd([[maybe_unused]] CDC* pDC)
 {
 	return TRUE;
 }

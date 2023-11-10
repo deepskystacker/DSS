@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../DeepSkyStacker/DSSCommon.h"
-#include "../DeepSkyStacker/dssrect.h"
+#include "DSSCommon.h"
+#include "dssrect.h"
 
 class CAllStackingTasks
 {

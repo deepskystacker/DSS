@@ -1,7 +1,7 @@
-#ifndef __BATCHSTACKING_H__
-#define __BATCHSTACKING_H__
+#pragma once
 
 #include "BaseDialog.h"
+#include "StackingDlg.h"
 
 class QStandardItemModel;
 
@@ -19,7 +19,7 @@ namespace DSS
 			Inherited;
 
 	public:
-		BatchStacking(QWidget* parent = nullptr);
+		BatchStacking(QWidget* parent);
 		virtual ~BatchStacking();
 
 		void setMRUPaths(const std::vector<fs::path>& mruPaths);
@@ -30,6 +30,7 @@ namespace DSS
 		void addLists();
 
 	private:
+		StackingDlg* stackingDlg;
 		void addItemsFor(const QStringList& paths, bool checked);
 		QStringList getFilePaths() const;
 
@@ -38,9 +39,8 @@ namespace DSS
 		QStandardItemModel*	m_fileListModel{ nullptr };
 
 	private:
+		bool processList(const fs::path& fileList, QString& outputFile);
 		Q_DISABLE_COPY(BatchStacking)
 	};
 }
 
-
-#endif

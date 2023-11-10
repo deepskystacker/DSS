@@ -10,9 +10,8 @@
 //		--------	----------	----	---------------------
 //		1.01  	07/11/2000	PRW	Original creation.
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ControlPos.h"
-#include <vector>
 
 //------------------------------------------------------------------------------
 // CControlPos::initialise

@@ -13,9 +13,9 @@ Bitmap *	GetBitmapFromIcon(int nBitmap, int nMask)
 	Bitmap				bmpMask(hMask, nullptr);
 
 	pResult = bmp.Clone(0, 0, BUTTONTOOLBARSIZE, BUTTONTOOLBARSIZE, PixelFormat32bppARGB);
-	for (LONG i = 0;i<bmp.GetWidth();i++)
+	for (UINT i = 0;i<bmp.GetWidth();i++)
 	{
-		for (LONG j = 0;j<bmp.GetHeight();j++)
+		for (UINT j = 0;j<bmp.GetHeight();j++)
 		{
 			Color		color,
 						tmpcolor;
@@ -212,7 +212,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
+BOOL	CButtonToolbar::OnMouseEnter([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -288,7 +288,7 @@ BOOL	CButtonToolbar::OnMouseLeave()
 BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
-	BOOL				bFound = FALSE;
+	// BOOL				bFound = FALSE;
 	LONG				lIndice;
 
 	m_bButtonDown = TRUE;
@@ -316,7 +316,7 @@ BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
+BOOL	CButtonToolbar::OnLButtonUp([[maybe_unused]] LONG lX, [[maybe_unused]] LONG lY)
 {
 	BOOL				bResult = FALSE;
 

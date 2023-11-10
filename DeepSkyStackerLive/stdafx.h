@@ -1,58 +1,51 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently,
-// but are changed infrequently
-
-#if !defined(AFX_STDAFX_H_)
-#define AFX_STDAFX_H_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-//
-// Want to support Windows XP and up
-//
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-
+#if defined(_WINDOWS)
 //
 // Visual Leak Detector
 //
 #include <vld.h>
+#endif
 
+// Windows Files (eventually to go!)
+#if defined (_WINDOWS)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
 #include <afx.h>
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
-#include <afxcview.h>
-#include <afxpriv.h>
-#include <afxsock.h>
-#include <WinDNS.h>
-#include <WinCrypt.h>
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
+#endif
 
-#include <atlbase.h>
+// Qt Files
+#include <QtWidgets>
+#include <QNetworkReply>
 
-#include <windows.h>
+// ZClass Files
+#include <zexcept.h>
+#include <Ztrace.h>
 
+// Dependency Libraries
+#include <exiv2/exiv2.hpp>
+#include <exiv2/exif.hpp>
+#include <exiv2/easyaccess.hpp>
+
+// Standard Libraries
+#include <omp.h>
+#include <concurrent_unordered_set.h>
+#include <shared_mutex>
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <mutex>
+#include <deque>
+#include <set>
+#include <tuple>
+#include <inttypes.h>
+#include <filesystem>
+namespace fs = std::filesystem;
+namespace chr = std::chrono;
 
-#include "DSSCommon.h"
-#include "DSSMemory.h"
-#include "Ztrace.h"
+#include "dssbase.h"
 
-//#define NOGDIPLUS
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+using std::min;
+using std::max;
 
-#include <afxdlgs.h>
+#include "dssliveenums.h"
 
-#endif // !defined(AFX_STDAFX_H_)

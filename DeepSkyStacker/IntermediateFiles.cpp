@@ -1,19 +1,8 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
+#include "stdafx.h"
 #include "IntermediateFiles.h"
 #include "ui/ui_IntermediateFiles.h"
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include "DSSCommon.h"
 #include "Workspace.h"
-
+#include "DSSCommon.h"
 
 IntermediateFiles::IntermediateFiles(QWidget *parent, bool regOnly) :
 	QWidget(parent),
@@ -75,9 +64,11 @@ void IntermediateFiles::on_saveCalibrated_stateChanged(int state)
 	{
 	case Qt::Unchecked:
 		workspace->setValue("Stacking/SaveCalibrated", false);
+		ui->saveDebayered->setEnabled(false);
 		break;
 	case Qt::Checked:
 		workspace->setValue("Stacking/SaveCalibrated", true);
+		ui->saveDebayered->setEnabled(true);
 		break;
 	}
 }

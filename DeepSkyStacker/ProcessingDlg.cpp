@@ -2,23 +2,20 @@
 //
 
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "QtProgressDlg.h"
-#include <algorithm>
+#include "DeepSkyStacker.h"
+#include "DeepStack.h"
 #include "SettingsDlg.h"
-
-#include "SavePicture.h"
+#include "Ztrace.h"
+#include "progressdlg.h"
+#include "StarMaskDlg.h"
 #include "StarMask.h"
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
-#include "StarMaskDlg.h"
-
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "SavePicture.h"
 
 #define dssApp DeepSkyStacker::instance()
-
+extern CString OUTPUTFILE_FILTERS;
 constexpr unsigned int WM_INITNEWPICTURE = WM_USER + 1;
 
 /* ------------------------------------------------------------------- */
@@ -389,7 +386,7 @@ void CProcessingDlg::OnRedo()
 void CProcessingDlg::OnSettings()
 {
 	CSettingsDlg			dlg;
-	CDSSSettings &			Settings = dssApp->settings();
+	CDSSSettings &			Settings = dssApp->imageProcessingSettings();
 
 	KillTimer(1);
 	dlg.SetDSSSettings(&Settings, m_ProcessParams);
@@ -484,7 +481,7 @@ void CProcessingDlg::UpdateInfos()
 			strFrames.Format(IDS_NRFRAMES, lNrFrames);
 		};
 
-		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile, strISO, strGain, strTime, strFrames);
+		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
 	}
 	else
 		strText = m_strCurrentFile;
@@ -526,7 +523,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	DSS::ProgressDlg		dlg;
+	DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -584,7 +581,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -675,75 +672,6 @@ bool CProcessingDlg::AskToSave()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::SaveDSImage()
-{
-	QSettings			settings;
-
-	CString strBaseDirectory = (LPCTSTR)settings.value("Folders/SaveDSIFolder", "").toString().utf16();
-	CString strBaseExtension = (LPCTSTR)settings.value("Folders/SaveDSIExtension", "").toString().utf16();
-	uint filterIndex = settings.value("Folders/SaveDSIIndex", 0).toUInt();
-
-	if (!strBaseExtension.GetLength())
-		strBaseExtension = _T(".DSImage");
-
-	CFileDialog			dlgOpen(false,
-								_T(".DSImage"),
-								nullptr,
-								OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								_T("DeepSkyStacker Image (.DSImage)|*.DSImage||"),
-								this);
-
-	if (strBaseDirectory.GetLength())
-		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-	dlgOpen.m_ofn.nFilterIndex = filterIndex;
-
-	TCHAR				szBigBuffer[20000] = _T("");
-	DSS::ProgressDlg		dlg;
-
-	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-	if (dlgOpen.DoModal() == IDOK)
-	{
-		POSITION		pos;
-
-		pos = dlgOpen.GetStartPosition();
-		if (pos)
-		{
-			CString		strFile;
-			CRect		rcSelect;
-
-			BeginWaitCursor();
-			strFile = dlgOpen.GetNextPathName(pos);
-			dssApp->deepStack().SetProgress(&dlg);
-
-			if (m_SelectRectSink.GetSelectRect(rcSelect))
-				dssApp->deepStack().SaveStackedInfo(strFile, &rcSelect);
-			else
-				dssApp->deepStack().SaveStackedInfo(strFile);
-			dssApp->deepStack().SetProgress(nullptr);
-
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
-
-			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
-			strBaseDirectory = szDrive;
-			strBaseDirectory += szDir;
-			strBaseExtension = szExt;
-
-			filterIndex = dlgOpen.m_ofn.nFilterIndex;
-			settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-			settings.setValue("Folders/SaveDSIExtension", QString::fromWCharArray(strBaseExtension.GetString()));
-			settings.setValue("Folders/SaveDSIIndex", filterIndex);
-
-			EndWaitCursor();
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
 void CProcessingDlg::ProcessAndShow(bool bSaveUndo)
 {
 	UpdateHistogramAdjust();
@@ -791,8 +719,6 @@ void CProcessingDlg::CopyPictureToClipboard()
 
 void CProcessingDlg::CreateStarMask()
 {
-	bool bResult = false;
-
 	if (dssApp->deepStack().IsLoaded())
 	{
 		KillTimer(1);
@@ -801,7 +727,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			DSS::ProgressDlg dlg;
+			DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -814,14 +740,15 @@ void CProcessingDlg::CreateStarMask()
 				bool bFits;
 
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
+				const QString description(QString::fromWCharArray(strDescription.GetString())); // TODO: Should be loading direct.
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
 				const QString strText(QCoreApplication::translate("ProcessingDlg", "Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(QString::fromWCharArray(strFileName.GetString())));
 				dlg.Start2(strText, 0);
 				if (bFits)
-					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+					WriteFITS(strFileName.GetString(), pStarMask.get(), &dlg, description);
 				else
-					WriteTIFF(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+					WriteTIFF(strFileName.GetString(), pStarMask.get(), &dlg, description);
 			}
 		}
 		SetTimer(1, 100, nullptr);
@@ -873,7 +800,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg		dlg;
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -1061,7 +988,6 @@ public :
 
 void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
 {
-	HPEN						hOldPen	= nullptr;
 	std::vector<CColorOrder>	vColors;
 	int						lLastHeight = 0;
 
@@ -1482,55 +1408,55 @@ void CProcessingDlg::OnReset()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR *, LRESULT *)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyRedPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyRedPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMove(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();
 };
 
-void CProcessingDlg::OnNotifyBluePegMoved(NMHDR * pNotifyStruct, LRESULT *result)
+void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
 	ShowOriginalHistogram();

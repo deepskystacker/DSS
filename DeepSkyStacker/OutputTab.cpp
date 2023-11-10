@@ -1,19 +1,4 @@
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QString>
-#include <QFileDialog>
-#include <QSettings>
-#include <QStandardPaths>
-
 #include "OutputTab.h"
 #include "ui/ui_OutputTab.h"
 
@@ -29,6 +14,7 @@ OutputTab::OutputTab(QWidget *parent) :
 	// Set the text colour as for a Hyper-Link
 	// 
 	ui->outputFolder->setForegroundRole(QPalette::Link);
+	CAllStackingTasks::GetOutputSettings(os);
 }
 
 OutputTab::~OutputTab()
@@ -38,10 +24,8 @@ OutputTab::~OutputTab()
 
 void OutputTab::onSetActive()
 {
-	CAllStackingTasks::GetOutputSettings(os);
 
 	bool enable = os.m_bOutput;
-	bool temp = false;
 
 	ui->createOutput->setChecked(enable);
 	ui->createHTML->setEnabled(enable);

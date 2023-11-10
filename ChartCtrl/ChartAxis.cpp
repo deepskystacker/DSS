@@ -30,8 +30,7 @@
 #include "ChartAxisLabel.h"
 #include "ChartGrid.h"
 #include "ChartCtrl.h"
-
-#include "Math.h"
+#include "ChartSerie.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

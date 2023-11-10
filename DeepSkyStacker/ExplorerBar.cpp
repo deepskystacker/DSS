@@ -1,38 +1,22 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <QMenu>
-#include <QAction>
-#include <QMouseEvent>
-#include <QStandardPaths>
-
-#include <Ztrace.h>
-#include <zexcept.h>
-
-extern bool		g_bShowRefStars;
-
-#include "DSSCommon.h"
-#include "commonresource.h"
-#include "About.h"
-#include "DSSVersion.h"
-#include "DeepSkyStacker.h"
-
-//#include "FrameList.h"
-#include "RawDDPSettings.h"
-#include "RecommendedSettings.h"
-#include "RegisterSettings.h"
-#include "StackSettings.h"
-#include "Workspace.h"
-
+#include "stdafx.h"
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
+
+#include "Ztrace.h"
+#include "zexcept.h"
+#include "DeepSkyStacker.h"
+#include "ProcessingDlg.h"
+#include "Workspace.h"
+#include "RegisterSettings.h"
+#include "StackSettings.h"
+#include "RawDDPSettings.h"
+#include "RecommendedSettings.h"
+#include "About.h"
+#include "tracecontrol.h"
+
+extern bool		g_bShowRefStars;
+extern DSS::TraceControl traceControl;
+
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -49,17 +33,63 @@ static void makeLink(QLabel *label, QString color)
 ExplorerBar::ExplorerBar(QWidget *parent) :
 	QDockWidget(parent),
 	initialised{ false },
-	ui(new Ui::ExplorerBar)
+	ui(new Ui::ExplorerBar),
+	windowColourName{ palette().color(QPalette::ColorRole::Window).name()},	// Default base window colour
+	activeGroupColourName { "lightcyan" },
+	dssClosing { false }
 {
-	ZTRACE_RUNTIME("Creating Left Panel");
+	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
+	connect(ui->openLights, &QLabel::linkActivated, this, &ExplorerBar::onOpenLights);
+	connect(ui->openDarks, &QLabel::linkActivated, this, &ExplorerBar::onOpenDarks);
+	connect(ui->openFlats, &QLabel::linkActivated, this, &ExplorerBar::onOpenFlats);
+	connect(ui->openDarkFlats, &QLabel::linkActivated, this, &ExplorerBar::onOpenDarkFlats);
+	connect(ui->openBias, &QLabel::linkActivated, this, &ExplorerBar::onOpenBias);
+	connect(ui->openFilelist, &QLabel::linkActivated, this, &ExplorerBar::onOpenFilelist);
+	connect(ui->saveFilelist, &QLabel::linkActivated, this, &ExplorerBar::onSaveFilelist);
+	connect(ui->clearList, &QLabel::linkActivated, this, &ExplorerBar::onClearList);
+	connect(ui->checkAll, &QLabel::linkActivated, this, &ExplorerBar::onCheckAll);
+	connect(ui->checkAbove, &QLabel::linkActivated, this, &ExplorerBar::onCheckAbove);
+	connect(ui->unCheckAll, &QLabel::linkActivated, this, &ExplorerBar::onUncheckAll);
+	connect(ui->registerChecked, &QLabel::linkActivated, this, &ExplorerBar::onRegisterChecked);
+	connect(ui->computeOffsets, &QLabel::linkActivated, this, &ExplorerBar::onComputeOffsets);
+	connect(ui->stackChecked, &QLabel::linkActivated, this, &ExplorerBar::onStackChecked);
+	connect(ui->batchStacking, &QLabel::linkActivated, this, &ExplorerBar::onBatchStacking);
+	connect(ui->openPicture, &QLabel::linkActivated, this, &ExplorerBar::onOpenPicture);
+	connect(ui->copyPicture, &QLabel::linkActivated, this, &ExplorerBar::onCopyPicture);
+	connect(ui->doStarMask, &QLabel::linkActivated, this, &ExplorerBar::onDoStarMask);
+	connect(ui->savePicture, &QLabel::linkActivated, this, &ExplorerBar::onSavePicture);
+	connect(ui->settings, &QLabel::linkActivated, this, &ExplorerBar::onSettings);
+	connect(ui->ddpSettings, &QLabel::linkActivated, this, &ExplorerBar::onDDPSettings);
+	connect(ui->loadSettings, &QLabel::linkActivated, this, &ExplorerBar::onLoadSettings);
+	connect(ui->saveSettings, &QLabel::linkActivated, this, &ExplorerBar::onSaveSettings);
+	connect(ui->recommendedSettings, &QLabel::linkActivated, this, &ExplorerBar::onRecommendedSettings);
+	connect(ui->about, &QLabel::linkActivated, this, &ExplorerBar::onAbout);
+
+#if QT_VERSION >= 0x060500
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+		activeGroupColourName = "darkcyan";
+
+	connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
+		this, &ExplorerBar::onColorSchemeChanged);
+#endif
+
+	ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+	ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+	ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+
 	makeLinks();
+
+	connect(ui->help, &QLabel::linkActivated, DeepSkyStacker::instance(), &DeepSkyStacker::help);
 
 	raise();
 	show();
 	activateWindow();
 
-	ZTRACE_RUNTIME("Creating Left Panel - ok");
+	ZTRACE_RUNTIME("Creating Explorer Bar - ok");
 }
 
 ExplorerBar::~ExplorerBar()
@@ -75,30 +105,10 @@ void ExplorerBar::onInitDialog()
 
 	ui->registerAndStack->setFont(bold);
 	ui->frame_1->setFont(font);
-	/*
-	ui->openLights->setFont(font);
-	ui->openDarks->setFont(font);
-	ui->openFlats->setFont(font);
-	ui->openDarkFlats->setFont(font);
-	ui->openBias->setFont(font);
-	ui->openFilelist->setFont(font);
-	ui->saveFilelist->setFont(font);
-	ui->clearList->setFont(font);
-	*/
 
 	ui->frame_2->setFont(font);
-	/*
-	ui->checkAll->setFont(font);
-	ui->checkAbove->setFont(font);
-	ui->unCheckAll->setFont(font);
-	*/
 
 	ui->frame_3->setFont(font);
-	/*ui->registerChecked->setFont(font);
-	ui->computeOffsets->setFont(font);
-	ui->stackChecked->setFont(font);
-	ui->batchStacking->setFont(font);
-	*/
 
 	ui->processing->setFont(bold);
 	ui->openPicture->setFont(font);
@@ -115,12 +125,28 @@ void ExplorerBar::onInitDialog()
 
 	ui->about->setFont(font);
 	ui->help->setFont(font);
+
+	ui->keepTracefile->setChecked(!traceControl.deleteOnExit());
+	ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
+	connect(ui->keepTracefile, &QCheckBox::stateChanged,
+		this, &ExplorerBar::keepTraceChanged);
+	connect(ui->enableSounds, &QCheckBox::stateChanged,
+		this, &ExplorerBar::onEnableSoundsStateChanged);
 }
 
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
-	QString redColour = QColor(Qt::red).name();
+	QString redColour = QColorConstants::Red.name();
+	QString blueColour = QColorConstants::Blue.name();
+
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme())
+	{
+		redColour = QColorConstants::Svg::gold.name();
+	}
 
 	makeLink(ui->openLights, redColour);
 	makeLink(ui->openDarks, defColour);
@@ -154,6 +180,7 @@ void ExplorerBar::makeLinks()
 	makeLink(ui->recommendedSettings, redColour);
 	makeLink(ui->about, defColour);
 	makeLink(ui->help, defColour);
+	update();
 }
 
 //void ExplorerBar::linkActivated()
@@ -341,7 +368,7 @@ void ExplorerBar::onLoadSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Loading settings file: %s", a->text().toLocal8Bit());
+			ZTRACE_RUNTIME("Loading settings file: %s", a->text().toLocal8Bit().constData());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
@@ -382,7 +409,7 @@ void ExplorerBar::onSaveSettings()
 	{
 		if (a == saveLiveSettings)
 		{
-			// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+			// Save the DSSLive setting file to the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 			QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
 			fs::path fileName(directory.toStdU16String());
@@ -399,7 +426,7 @@ void ExplorerBar::onSaveSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Saving settings to file: %s", a->text().toLocal8Bit());
+			ZTRACE_RUNTIME("Saving settings to file: %s", a->text().toLocal8Bit().constData());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
@@ -433,15 +460,87 @@ void ExplorerBar::onAbout()
 	dlg.exec();
 }
 
-void ExplorerBar::onHelp()
+void ExplorerBar::keepTraceChanged(int state)
 {
-	QString helpFile = QCoreApplication::applicationDirPath() + 
-		"/" + tr("DeepSkyStacker Help.chm", "IDS_HELPFILE");
+	bool retainTrace{ Qt::Checked == static_cast<Qt::CheckState>(state) };
+
+	traceControl.setDeleteOnExit(!retainTrace);
+
+	update();
+}
+
+void ExplorerBar::onEnableSoundsStateChanged(int state)
+{
+	Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
+	QSettings{}.setValue("Beep", (Qt::Checked == checked));
+
+}
+
+#if QT_VERSION >= 0x060500
+void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
+{
+	//
+	// Dark colour scheme?
+	//
+	if (Qt::ColorScheme::Dark == scheme)
+	{
+		activeGroupColourName = "darkcyan";
+	}
+	else
+	{
+		activeGroupColourName = "lightcyan";
+	}
 
 	//
-	// Invoking HtmlHelp works fine on Windows but ...
+	// The following code was placed into a single shot lambda to work round a Qt 6.5.0 bug
+	// which means that the new colour values for (e.g.) Window colour have not been set
+	// when this code is invoked as a result of the ColorSchemeChanged signal.
+	// 
+	// Once Qt have issued a bug fix for this the code can be reverted to call everything
+	// directly from here.
 	//
-	::HtmlHelp(::GetDesktopWindow(), CString((wchar_t*)helpFile.utf16()), HH_DISPLAY_TOPIC, 0);
+	QTimer::singleShot(100,
+		[this]()
+		{
+			this->windowColourName = palette().color(QPalette::ColorRole::Window).name();	// Default base window colour
+
+			const auto tabID = dssApp->tab();
+			if (IDD_REGISTERING == tabID)
+			{
+				this->ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+				this->ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+			}
+			else
+			{
+				this->ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+				this->ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+			}
+			this->ui->options->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+
+			//
+			// Hack to restore the original text for makeLinks to modify ...
+			// 
+			this->ui->retranslateUi(this);
+
+			this->makeLinks();
+		});
+
+}
+#endif
+
+void ExplorerBar::tabChanged()
+{
+	const auto dwTabID = dssApp->tab();
+	if (dwTabID == IDD_PROCESSING)
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+	}
+	else if (dwTabID == IDD_REGISTERING)
+	{
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+	}
 }
 
 void ExplorerBar::LoadSettingFile()
@@ -476,7 +575,7 @@ void ExplorerBar::LoadSettingFile()
 			fs::path fileName(files.at(0).toStdU16String());		// as UTF-16
 			if (status(fileName).type() == fs::file_type::regular)
 			{
-				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string());
+				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string().c_str());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 				workspace.ReadFromFile(fileName);
@@ -520,7 +619,7 @@ void ExplorerBar::SaveSettingFile()
 		if (!file.isEmpty())
 		{
 			fs::path fileName(file.toStdU16String());		// as UTF-16
-			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
+			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string().c_str());
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			workspace.SaveToFile(fileName);
@@ -562,6 +661,17 @@ void ExplorerBar::showEvent(QShowEvent* event)
 	// Invoke base class showEvent()
 	return Inherited::showEvent(event);
 }
+
+//
+// The user may not close the undocked window, but once DSS has set the 
+// closing flag a closeEvent must be accepted (default) otherwise DSS 
+// shutdown never completes.
+//
+void ExplorerBar::closeEvent(QCloseEvent* event)
+{
+	if (!dssClosing) event->ignore();
+}
+
 void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
@@ -569,15 +679,15 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 		const auto dwTabID = dssApp->tab();
 		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 		{
-			ui->registerAndStack->setStyleSheet("background-color: lightcyan");
-			ui->processing->setStyleSheet("background-color: rgb(240, 240, 240)");
+			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+			ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 			// Change tab to stacking
 			dssApp->setTab(IDD_STACKING);
 		}
 		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
 		{
-			ui->registerAndStack->setStyleSheet("background-color: rgb(240, 240, 240)");
-			ui->processing->setStyleSheet("background-color: lightcyan");
+			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+			ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 			// Change tab to processing
 			dssApp->setTab(IDD_PROCESSING);
 		};

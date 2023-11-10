@@ -1,39 +1,14 @@
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-#include <QDir>
-#include <QLibraryInfo>
-#include <QSettings>
-#include <QString>
-#include <QDebug>
-#include <QTranslator>
-#include <QShowEvent>
-
-#include "commonresource.h"
-#include "DSSCommon.h"
+#include "stdafx.h"
 #include "About.h"
 #include "ui/ui_About.h"
-
-extern bool		g_bShowRefStars;
-extern QTranslator theAppTranslator;
-extern QTranslator theQtTranslator;
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "commonresource.h"
 #include "DSSVersion.h"
-#include <fitsio.h>
-#include <tiffio.h>
-#include <libraw/libraw_version.h>
+#include "libraw/libraw_version.h"
+#include "fitsio.h"
+#include "tiffio.h"
+#include "DeepSkyStacker.h"
+
+extern bool	g_bShowRefStars;
+extern bool LoadTranslations();
 
 #define xstr(s) str(s)
 #define str(s) #s
@@ -65,7 +40,7 @@ About::About(QWidget *parent) :
     strText += tr("(Now somewhat out of date)") += "<br><br>";
     strHTML += strText;
 
-	strText = "Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd.";
+	strText = "Qt Application Framework 6.5.1\nCopyright © 2023 The Qt Company Ltd.";
 	strText += "<br>";
 	strText = strText.replace("\n", "<br>");
 	strHTML += strText;
@@ -82,28 +57,54 @@ About::About(QWidget *parent) :
     copyright = TIFFGetVersion();
     copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
     copyright = copyright.left(copyright.indexOf("Copyright")-1);
-    strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.",
+    strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1997 Sam Leffler\nCopyright © 1991-1997 Silicon Graphics, Inc.",
 				"IDS_ABOUT_TIFF").arg(copyright);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
-    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.remotesensing.org/libtiff/");
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.simplesystems.org/libtiff/");
     strHTML += strText;
 
     strText = tr("FITS decoding by CFitsIO (version %1)\nCopyright NASA",
 				"IDS_ABOUT_FITS").arg(xstr(CFITSIO_VERSION));
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
-    strText = QString("<a href=\"%1\">%1</a><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
+    strHTML += strText;
+
+    strText = tr("Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0\nCopyright 2004-2023 Exiv2 authors");
+    strText = strText.replace("\n", "<br>");
+    strHTML += strText + "<br>";
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://github.com/Exiv2/exiv2");
+    strHTML += strText;
+
+    strText = tr("SMTP support by SMTP Client for Qt (C++) - Version 0.27.6\nCopyright Tőkés Attila");
+    strText = strText.replace("\n", "<br>");
+    strHTML += strText + "<br>";
+    strText = QString("<a href=\"%1\">%1</a><br>").arg("https://github.com/bluetiger9/SmtpClient-for-Qt");
     strHTML += strText;
 
     ui->setupUi(this);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &About::storeSettings);
+    connect(ui->comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &About::selectLanguage);
+    connect(ui->cbCheckUpdate, &QCheckBox::toggled, this, &About::setCheck);
+    connect(ui->aboutQt, &QPushButton::clicked, this, &About::aboutQt);
+
     ui->comboBox->addItem(tr("Default"), "");
-    QDir dir(":/i18n/", "DSS.*.qm");
+    QDir dir(":/i18n/", "DSS_*.qm");
     for(auto it: dir.entryList())
     {
-		QString lang = it.section(".", 1, 1);
-        QString langName = QLocale(lang).nativeLanguageName();
-        langName[0] = langName[0].toUpper();
+        QString lang{ it.section('_', 1) };
+        lang = lang.section('.', 0, 0);
+        QLocale locale{ lang };
+        QString variant{ lang.section('_', 1) };
+        QString langName = locale.nativeLanguageName();
+        if ("en" == lang) langName = "English";
+        if (!variant.isEmpty())
+        {
+            langName += " " + locale.nativeCountryName();
+        }
         ui->comboBox->addItem(langName, lang);
     }
     setLanguage(settings.value("Language", "").toString());
@@ -201,8 +202,8 @@ void About::onInitDialog()
         const QRect r{ DeepSkyStacker::instance()->rect() };
         QSize size = this->size();
 
-        int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-        int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+        int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+        int left = (r.left() + (r.width() / 2) - (size.width() / 2));
         move(left, top);
 	}
 }
@@ -247,42 +248,8 @@ void About::storeSettings()
     QSettings settings;
 
 	settings.setValue("Dialogs/About/geometry", saveGeometry());
-
     settings.setValue("Language", m_Language);
-
-	
-	//
-	// Retrieve the Qt language name (e.g.) en_GB
-	//
-	QString language = settings.value("Language").toString();
-
-	//
-	// Language was not defined in our preferences, so select the system default
-	//
-	if (language == "")
-	{
-		language = QLocale::system().name();
-	}
-
-    //
-    // Install the language if it actually exists.
-    //
-    if (theAppTranslator.load("DSS." + language, ":/i18n/"))
-    {
-        qApp->installTranslator(&theAppTranslator);
-    }
-
-	//
-	// Install the system language ...
-	// 
-    QString translatorFileName = QLatin1String("qt_");
-    translatorFileName += language;
-#if QT_VERSION >= 0x060000
-    if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-    if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
-        qApp->installTranslator(&theQtTranslator);
-
     settings.setValue("InternetCheck", m_InternetCheck);
+
+    LoadTranslations();
 }

@@ -35,8 +35,7 @@
 //		21019 Somma Lombardo (VA)
 //		Italy
 //
-#ifndef _BTNST_H
-#define _BTNST_H
+#pragma once
 
 // Uncomment the following 2 lines to enable support for BCMenu class
 //#define	BTNST_USE_BCMENU
@@ -308,4 +307,3 @@ private:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif

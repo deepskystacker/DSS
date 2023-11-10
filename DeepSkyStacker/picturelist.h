@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QDockWidget>
 #include "ui/ui_PictureList.h"
 
 namespace DSS
@@ -18,7 +17,13 @@ namespace DSS
 		PictureList(QWidget* parent = nullptr);
 		~PictureList();
 
+		inline void setDSSClosing() { dssClosing = true; }
+
+	protected:
+		void closeEvent(QCloseEvent* event);
+
 	private:
+		bool dssClosing;
 
 	};
 }

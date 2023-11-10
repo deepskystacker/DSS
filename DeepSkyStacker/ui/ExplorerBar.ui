@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>275</width>
-    <height>763</height>
+    <width>290</width>
+    <height>810</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>260</width>
+    <width>290</width>
     <height>454</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>275</width>
+    <width>290</width>
     <height>524287</height>
    </size>
   </property>
@@ -94,14 +94,20 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>263</width>
-         <height>727</height>
+         <width>261</width>
+         <height>775</height>
         </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
          <width>230</width>
-         <height>700</height>
+         <height>775</height>
         </size>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -113,8 +119,14 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>228</width>
+            <height>382</height>
+           </size>
+          </property>
           <property name="styleSheet">
-           <string notr="true">background-color: lightcyan</string>
+           <string notr="true"/>
           </property>
           <property name="title">
            <string comment="IDC_STACKING_TITLE">Registering and Stacking</string>
@@ -392,7 +404,7 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(240, 240, 240)</string>
+           <string notr="true"/>
           </property>
           <property name="title">
            <string comment="IDC_PROCESSING_TITLE">Processing</string>
@@ -453,7 +465,7 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: lightcyan</string>
+           <string notr="true"/>
           </property>
           <property name="title">
            <string comment="IDC_OPTIONS_TITLE">Options</string>
@@ -561,6 +573,54 @@
              </property>
             </widget>
            </item>
+           <item>
+            <spacer name="verticalSpacer_6">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="keepTracefile">
+             <property name="toolTip">
+              <string>The trace file is normally written to the DeepSkyStacker directory in the users
+&quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
+Tick this box to keep the trace file.</string>
+             </property>
+             <property name="text">
+              <string>Retain the trace file on exit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="enableSounds">
+             <property name="text">
+              <string>Enable progress sounds</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -585,451 +645,5 @@
   </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>openLights</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenLights()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>46</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openDarks</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenDarks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>63</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openFlats</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenFlats()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>80</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openDarkFlats</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenDarkFlats()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>97</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openBias</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenBias()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>114</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openFilelist</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenFilelist()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>140</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>saveFilelist</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onSaveFilelist()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>157</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clearList</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onClearList()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>188</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkAll</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onCheckAll()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkAbove</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onCheckAbove()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>235</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>unCheckAll</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onUncheckAll()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>registerChecked</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onRegisterChecked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>282</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>computeOffsets</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onComputeOffsets()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>299</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>stackChecked</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onStackChecked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>316</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>batchStacking</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onBatchStacking()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>333</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>openPicture</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onOpenPicture()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>384</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>copyPicture</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onCopyPicture()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>401</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>doStarMask</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onDoStarMask()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>418</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>savePicture</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onSavePicture()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>435</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>settings</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>481</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ddpSettings</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onDDPSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>loadSettings</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onLoadSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>515</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>saveSettings</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onSaveSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>532</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>recommendedSettings</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onRecommendedSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>549</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>about</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onAbout()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>566</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>help</sender>
-   <signal>linkActivated(QString)</signal>
-   <receiver>ExplorerBar</receiver>
-   <slot>onHelp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>122</x>
-     <y>583</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>122</x>
-     <y>320</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
- <slots>
-  <slot>linkActivated()</slot>
-  <slot>onAbout()</slot>
-  <slot>onSettings()</slot>
-  <slot>onDDPSettings()</slot>
-  <slot>onLoadSettings()</slot>
-  <slot>onSaveSettings()</slot>
-  <slot>onHelp()</slot>
-  <slot>onRecommendedSettings()</slot>
-  <slot>onOpenPicture()</slot>
-  <slot>onCopyPicture()</slot>
-  <slot>onDoStarMask()</slot>
-  <slot>onSavePicture()</slot>
-  <slot>onStackChecked()</slot>
-  <slot>onBatchStacking()</slot>
-  <slot>onComputeOffsets()</slot>
-  <slot>onRegisterChecked()</slot>
-  <slot>onUncheckAll()</slot>
-  <slot>onCheckAbove()</slot>
-  <slot>onCheckAll()</slot>
-  <slot>onClearList()</slot>
-  <slot>onSaveFilelist()</slot>
-  <slot>onOpenFilelist()</slot>
-  <slot>onOpenLights()</slot>
-  <slot>onOpenDarks()</slot>
-  <slot>onOpenFlats()</slot>
-  <slot>onOpenBias()</slot>
-  <slot>onOpenDarkFlats()</slot>
- </slots>
+ <connections/>
 </ui>

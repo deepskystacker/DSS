@@ -1,11 +1,8 @@
+#include "stdafx.h"
 #include "AlignmentParameters.h"
 #include "ui/ui_AlignmentParameters.h"
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include "DSSCommon.h"
 #include "Workspace.h"
+#include "DSSCommon.h"
 
 AlignmentParameters::AlignmentParameters(QWidget *parent) :
 	QWidget(parent),
@@ -13,7 +10,7 @@ AlignmentParameters::AlignmentParameters(QWidget *parent) :
 	workspace(new Workspace())
 {
     ui->setupUi(this);
-	m_Alignment = workspace->value("Stacking/AlignmentTransformation", uint(1)).toUInt();
+	m_Alignment = workspace->value("Stacking/AlignmentTransformation", uint(0)).toUInt();
 }
 
 AlignmentParameters::~AlignmentParameters()

@@ -1,112 +1,55 @@
 // BatchStacking.cpp : implementation file
 //
-
 #include "stdafx.h"
 #include "BatchStacking.h"
-
-
 #include "ui/ui_BatchStacking.h"
-
-#include "StackingTasks.h"
+#include "Ztrace.h"
 #include "Workspace.h"
+#include "StackingTasks.h"
 #include "FrameList.h"
-#include "QtProgressDlg.h"
+#include "progressdlg.h"
 #include "StackingEngine.h"
-#include "DeepSkyStacker.h"
+#include "TIFFUtil.h"
+#include "FITSUtil.h"
 
-#include <QStandardItemModel>
-#include <QFileDialog>
-#include <QDir>
-#include <QSettings>
-#include <QShowEvent>
 
-namespace
-{
-	static bool processList(const fs::path& fileList, QString& outputFile)
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool bResult = true;
-		Workspace workspace;
-		CAllStackingTasks tasks;
-		DSS::FrameList list;
-
-		workspace.Push();
-		list.loadFilesFromList(fileList);
-		list.fillTasks(tasks);
-		tasks.ResolveTasks();
-
-		if (!tasks.m_vStacks.empty())
-		{
-			bool bContinue = true;
-			DSS::ProgressDlg dlg;
-			CStackingEngine StackingEngine;
-			CString strReferenceFrame;
-
-			// First check that the images are registered
-			if (list.countUnregisteredCheckedLightFrames() != 0)
-			{
-				CRegisterEngine	RegisterEngine;
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
-			}
-
-			if (bContinue)
-			{
-				if (list.getReferenceFrame(strReferenceFrame))
-					StackingEngine.SetReferenceFrame(strReferenceFrame);
-
-				std::shared_ptr<CMemoryBitmap> pBitmap;
-				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
-				if (bContinue)
-				{
-					CString strFileName{ fileList.stem().c_str() };
-
-					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
-
-					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.c_str(), iff == IFF_TIFF))
-					{
-						StackingEngine.WriteDescription(tasks, strFileName);
-
-						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
-						dlg.Start2(strText, 0);
-
-						if (iff == IFF_TIFF)
-						{
-							if (pBitmap->IsMonochrome())
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
-							else
-								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
-						}
-						else
-						{
-							if (pBitmap->IsMonochrome())
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
-							else
-								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
-						}
-						dlg.End2();
-					}
-					outputFile = QString::fromWCharArray(strFileName.GetString());
-				}
-			}
-			dlg.Close();
-			bResult = bContinue;
-		}
-		workspace.Pop();
-
-		return bResult;
-	};
-}
 
 namespace DSS
+
 {
+	class BatchMode
+	{
+	public: 
+		BatchMode(FrameList* fl) : frameList{fl}
+		{
+			frameList->setBatchStacking(true);
+		};
+		~BatchMode()
+		{
+			frameList->setBatchStacking(false);
+		}
+		BatchMode(const BatchMode&) = delete;
+		BatchMode(BatchMode&&) = delete;
+		BatchMode& operator=(const BatchMode&) = delete;
+		BatchMode& operator=(BatchMode&&) = delete;
+	private:
+		FrameList* frameList;
+	};
+
 	extern QStringList OUTPUTLIST_FILTERS;
 
-	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+	BatchStacking::BatchStacking(QWidget* parent) :
+		stackingDlg { dynamic_cast<StackingDlg*>(parent) },
 		Inherited(Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
+		ZASSERT(nullptr != stackingDlg);
 		ui->setupUi(this);
+		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+		connect(ui->addLists, &QAbstractButton::clicked, this, &BatchStacking::addLists);
+		connect(ui->clearLists, &QAbstractButton::clicked, this, &BatchStacking::clearLists);
 
 		ui->fileLists->setModel(m_fileListModel);
 	}
@@ -116,17 +59,96 @@ namespace DSS
 		delete ui;
 	}
 
+	bool BatchStacking::processList(const fs::path& fileList, QString& outputFile)
+	{
+		ZFUNCTRACE_RUNTIME();
+		bool bResult = true;
+		Workspace workspace;
+		CAllStackingTasks tasks;
+		stackingDlg->clearList();		// Clear groups etc. for next filelist.
+
+		workspace.Push();
+		stackingDlg->frameList.loadFilesFromList(fileList);
+		stackingDlg->frameList.fillTasks(tasks);
+		tasks.ResolveTasks();
+
+		if (!tasks.m_vStacks.empty())
+		{
+			bool bContinue = true;
+			DSS::ProgressDlg dlg{ this };
+			CStackingEngine StackingEngine;
+
+			// First check that the images are registered
+			if (stackingDlg->frameList.countUnregisteredCheckedLightFrames() != 0)
+			{
+				CRegisterEngine	RegisterEngine;
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+			}
+
+			if (bContinue)
+			{
+				const QString referenceFrame(stackingDlg->frameList.getReferenceFrame());
+				if (!referenceFrame.isEmpty())
+					StackingEngine.SetReferenceFrame(referenceFrame.toStdU16String());
+
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
+				if (bContinue)
+				{
+					fs::path file;
+
+					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
+
+					if (StackingEngine.GetDefaultOutputFileName(file, fileList, iff == IFF_TIFF))
+					{
+						StackingEngine.WriteDescription(tasks, file);
+
+						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromStdU16String(file.generic_u16string())));
+						dlg.Start2(strText, 0);
+
+						if (iff == IFF_TIFF)
+						{
+							if (pBitmap->IsMonochrome())
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+							else
+								WriteTIFF(file, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+						}
+						else
+						{
+							if (pBitmap->IsMonochrome())
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT);
+							else
+								WriteFITS(file, pBitmap.get(), &dlg, FF_32BITRGBFLOAT);
+						}
+						dlg.End2();
+					}
+					outputFile = QString::fromStdU16String(file.generic_u16string());
+				}
+			}
+			dlg.Close();
+			bResult = bContinue;
+		}
+		workspace.Pop();
+
+		return bResult;
+	}
+
 	void BatchStacking::accept()
 	{
 		ZFUNCTRACE_RUNTIME();
+		//
+		// Tell the frameList it is doing batch processing.
+		//
+		BatchMode batchMode(&stackingDlg->frameList);
+
 		long processedListCount = 0;
 		bool successfulProcessing = true;
 
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows && successfulProcessing; ++i) {
 			auto item = m_fileListModel->item(i);
-			Q_ASSERT(item);
+			ZASSERT(nullptr != item);
 			if (item->checkState() == Qt::Checked) {
 				const auto& file = item->text();
 				QString outputFile;
@@ -151,7 +173,7 @@ namespace DSS
 
 	void BatchStacking::clearLists()
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		m_fileListModel->clear();
 	}
 
@@ -183,7 +205,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromStdWString(path.native()));
+			filePaths.append(QString::fromWCharArray(path.native().c_str()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);
@@ -191,7 +213,7 @@ namespace DSS
 
 	void BatchStacking::addItemsFor(const QStringList& paths, bool checked)
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		for (const auto& path : paths) {
 			QStandardItem* item = new QStandardItem(path);
 			item->setCheckable(true);
@@ -203,12 +225,12 @@ namespace DSS
 
 	QStringList BatchStacking::getFilePaths() const
 	{
-		Q_ASSERT(m_fileListModel);
+		ZASSERT(nullptr != m_fileListModel);
 		QStringList filePaths;
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows; ++i) {
 			auto item = m_fileListModel->item(i);
-			Q_ASSERT(item);
+			ZASSERT(nullptr != item);
 			filePaths.append(item->text());
 		}
 		return filePaths;

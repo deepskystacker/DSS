@@ -1,4 +1,7 @@
 #pragma once
+#include "Stars.h"
+#include "MatchingStars.h"
+#include "GrayBitmap.h"
 /****************************************************************************
 **
 ** Copyright (C) 2020 David C. Partridge
@@ -35,14 +38,9 @@
 **
 ****************************************************************************/
 class QMouseEvent;
-
-#include <QWidget>
-#include "DSSCommon.h"
-#include "DSSTools.h"
-#include "Stars.h"
-#include "MatchingStars.h"
-
 class CMemoryBitmap;
+class CBilinearParameters;
+extern bool g_bShowRefStars;
 
 namespace DSS
 {
@@ -144,39 +142,10 @@ namespace DSS
 			return m_bDirty;
 		};
 
-        void setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP)
-        {
-            if (g_bShowRefStars)
-            {
-                transformation = Tr;
-                vVotedPairs = vVP;
-            };
-        };
-
-		void setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
-		{
-			m_pBitmap = bmp;
-			m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
-			m_bDirty = false;
-			m_fBackground = 0;
-			if (static_cast<bool>(m_pBitmap))
-				computeBackgroundValue();
-		}
-
-		void setRefStars(STARVECTOR const& Stars)
-		{
-			if (g_bShowRefStars)
-			{
-				refStars = Stars;
-				std::sort(refStars.begin(), refStars.end(), CompareStarLuminancy);
-			};
-		};
-
-		void	clearRefStars()
-		{
-			refStars.clear();
-		};
-
+		void setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP);
+		void setBitmap(std::shared_ptr<CMemoryBitmap> bmp);
+		void setRefStars(STARVECTOR const& Stars);
+		void clearRefStars();
 		void saveRegisterSettings();
 
     public slots:
@@ -205,7 +174,6 @@ namespace DSS
 
     private:
         ImageView* imageView;
-		QPixmap pixmap;
         QString fileName;
         STARVECTOR	stars;
         STARVECTOR	refStars;
@@ -215,7 +183,6 @@ namespace DSS
 		QPointF					m_ptCursor;
 		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 		EditStarAction				m_Action;
-		//QPixmap pixmap;
 		CStar						m_AddedStar;
 		int							m_lRemovedIndice;
 		bool						m_bRemoveComet;
@@ -304,12 +271,12 @@ namespace DSS
 
 		void computeBackgroundValue();
 
-		void drawOnPixmap();
+		void draw();
 
 		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
 
 		/*!
-        \fn void SelectRect::setGeometry(const QRect &rect)
+        \fn void EditStars::setGeometry(const QRect &rect)
 
         Sets the geometry of to \a rect, specified in the coordinate system
         of its parent widget.

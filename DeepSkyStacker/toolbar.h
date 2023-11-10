@@ -34,10 +34,6 @@
 **
 **
 ****************************************************************************/
-#include <QToolBar>
-#include <QActionGroup>
-#include <QGraphicsOpacityEffect>
-
 class QMouseEvent;
 
 namespace DSS
@@ -74,11 +70,7 @@ namespace DSS
         }
 
     protected:
-#if QT_VERSION < 0x060000
-        inline void enterEvent([[maybe_unused]] QEvent* e) override
-#else
         inline void enterEvent([[maybe_unused]] QEnterEvent* e) override
-#endif
         {
             Inherited::enterEvent(e);
             setOpacity(1.0, true);

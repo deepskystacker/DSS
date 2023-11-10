@@ -2,12 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_CHARTSURFACESERIE_H__28A77823_43BD_4502_9AA7_A2B227454035__INCLUDED_)
-#define AFX_CHARTSURFACESERIE_H__28A77823_43BD_4502_9AA7_A2B227454035__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #include "ChartSerie.h"
 
@@ -69,5 +64,3 @@ private:
 	// the curve and the corresponding vertical axis)
 	bool m_bHorizontal;
 };
-
-#endif // !defined(AFX_CHARTSURFACESERIE_H__28A77823_43BD_4502_9AA7_A2B227454035__INCLUDED_)

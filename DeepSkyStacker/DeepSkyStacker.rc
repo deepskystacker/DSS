@@ -126,7 +126,7 @@ IDB_COMETFREEZE         BITMAP                  "res\\Comet_Freeze.bmp"
 
 IDB_COMETNORMAL         BITMAP                  "res\\Comet_Normal.bmp"
 
-IDB_4CORNERS            BITMAP                  "res\\4Corners.bmp"
+//IDB_4CORNERS            BITMAP                  "res\\4Corners.bmp"
 
 IDB_INTERSECTIONMODE    BITMAP                  "res\\intersectionmode.bmp"
 
@@ -234,19 +234,19 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,168,-22,50,14
 END
 
-IDD_PROGRESS DIALOGEX 0, 0, 337, 118
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
-CAPTION "Processing ..."
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
-BEGIN
-    CTEXT           "",IDC_PROCESS_TEXT1,7,7,323,24
-    CTEXT           "",IDC_PROCESS_TEXT2,7,34,323,24
-    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,66,286,9
-    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,79,286,9
-    PUSHBUTTON      "Stop",IDC_STOP,281,96,50,14
-    LTEXT           "",IDC_TIMEREMAINING,14,96,137,8
-    LTEXT           "",IDC_NRPROCESSORS,154,96,124,8
-END
+// IDD_PROGRESS DIALOGEX 0, 0, 337, 118
+// STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+// CAPTION "Processing ..."
+// FONT 8, "MS Shell Dlg", 0, 0, 0x0
+// BEGIN
+//     CTEXT           "",IDC_PROCESS_TEXT1,7,7,323,24
+//     CTEXT           "",IDC_PROCESS_TEXT2,7,34,323,24
+//     CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,66,286,9
+//     CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,79,286,9
+//     PUSHBUTTON      "Stop",IDC_STOP,281,96,50,14
+//     LTEXT           "",IDC_TIMEREMAINING,14,96,137,8
+//     LTEXT           "",IDC_NRPROCESSORS,154,96,124,8
+// END
 
 IDD_LIBRARY DIALOGEX 0, 0, 438, 433
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPCHILDREN
@@ -298,10 +298,10 @@ BEGIN
     BEGIN
     END
 
-    IDD_PROGRESS, DIALOG
-    BEGIN
-        BOTTOMMARGIN, 117
-    END
+//     IDD_PROGRESS, DIALOG
+//     BEGIN
+//         BOTTOMMARGIN, 117
+//     END
 
     IDD_LIBRARY, DIALOG
     BEGIN
@@ -321,10 +321,10 @@ BEGIN
     0
 END
 
-IDD_PROGRESS AFX_DIALOG_LAYOUT
-BEGIN
-    0
-END
+// IDD_PROGRESS AFX_DIALOG_LAYOUT
+// BEGIN
+//     0
+// END
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////

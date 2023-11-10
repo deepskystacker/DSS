@@ -27,6 +27,7 @@
 #ifndef	TTS_BALLOON
 #define	TTS_BALLOON		0x40
 #endif
+#pragma warning (disable:4100)
 
 CButtonST::CButtonST()
 {

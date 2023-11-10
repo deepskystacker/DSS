@@ -1,5 +1,11 @@
-#ifndef __IMAGESINKS_H__
-#define __IMAGESINKS_H__
+#pragma once
+
+#include "WndImage.h"
+#include "Stars.h"
+#include "BilinearParameters.h"
+#include "MatchingStars.h"
+#include "GrayBitmap.h"
+#include "DSSCommon.h"
 
 /* ------------------------------------------------------------------- */
 extern bool     g_bShowRefStars;
@@ -60,7 +66,7 @@ public :
 	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
 	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
-	virtual Image *	GetOverlayImage(CRect & rcClient);
+	virtual Image *	GetOverlayImage(CRect & rcClient) override;
 
 	bool	GetSelectRect(CRect & rcSelect)
 	{
@@ -69,11 +75,6 @@ public :
 		return !rcSelect.IsRectEmpty();
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-#include "Stars.h"
-#include "MatchingStars.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -193,6 +194,7 @@ private:
 			if (!m_vVotedPairs.empty())
 			{
 				//for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
+#pragma warning (suppress:4189)
 				for (const auto& votedPair : m_vVotedPairs)
 				{
 					if constexpr (Refstar)
@@ -360,11 +362,7 @@ public :
 	virtual bool	Image_OnMouseLeave() override;
 	virtual bool	Image_OnMouseMove(long lX, long lY) override;
 	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
-	virtual bool	Image_OnLButtonUp(long lX, long lY);
+	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };
-
-/* ------------------------------------------------------------------- */
-
-#endif // __IMAGESINKS_H__

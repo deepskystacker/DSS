@@ -1,12 +1,18 @@
 #include "stdafx.h"
-#include <QCoreApplication>
 #include "catch.h"
 
 #define UNIT_TESTS
 
 #include "AvxAccumulateTest.h"
-#include "../DeepSkyStacker/avx.h"
-#include "../DeepSkyStacker/avx_median.h"
+#include "AvxEntropyTest.h"
+#include "avx.h"
+#include "avx_median.h"
+#include "GrayBitmap.h"
+#include "EntropyInfo.h"
+#include "TaskInfo.h"
+#include "PixelTransform.h"
+#include "avx_entropy.h"
+#include "BackgroundCalibration.h"
 
 
 TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
@@ -204,12 +210,14 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 			for (int x = 0; x < W; ++x)
 			{
 				const int yn = y + 1;
-				const int xn = x - 4;
+				const float xf = x - 3.5f;
+				const int xn = static_cast<int>(std::floor(xf));
 				// a0 is -3.5, so 1/2 is added to (x-4), the other half is added to (x-3)
-				if (yn >= 0 && yn < H && xn >= 0 && xn < W)
+				if (yn >= 0 && yn <= (H - 1) && xf >= 0 && xf <= (W - 1))
+				{
 					expected[yn * W + xn] += 0.5f * pGray->m_vPixels[y * W + x];
-				if (yn >= 0 && yn < H && (xn + 1) >= 0 && (xn + 1) < W)
 					expected[yn * W + xn + 1] += 0.5f * pGray->m_vPixels[y * W + x];
+				}
 			}
 		REQUIRE(memcmp(expected.data(), pOut->m_vPixels.data(), W * H * sizeof(T)) == 0);
 	}
@@ -252,8 +260,11 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		{
 			const float xf = 1.0f - std::abs(xc - xn);
 			const float yf = 1.0f - std::abs(yc - yn);
-			if (yn >= 0 && yn < H && xn >= 0 && xn < W)
+			if (xc >= 0 && xc <= (W - 1) && yc >= 0 && yc <= (H - 1)
+				&& xn >= 0 && xn < W && yn >= 0 && yn < H)
+			{
 				expected[yn * W + xn] += xf * yf * pGray->m_vPixels[y * W + x];
+			}
 		};
 		for (int y = 0; y < H; ++y)
 			for (int x = 0; x < W; ++x)
@@ -267,7 +278,6 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 				calcFrac(xc, yc, xn, yn + 1, x, y);
 				calcFrac(xc, yc, xn + 1, yn + 1, x, y);
 			}
-		bool OK = true;
 		for (int i = 0; i < W * H; ++i)
 		{
 			REQUIRE(pOut->m_vPixels[i] == Approx(expected[i]).epsilon(1e-5));
@@ -388,7 +398,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		std::shared_ptr<CMemoryBitmap> pEntropyCoverage = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 
@@ -447,7 +457,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		CBackgroundCalibration backgroundCalib;
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
-		CEntropyInfo entropyInfo;
+		TestEntropyInfo entropyInfo;
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 

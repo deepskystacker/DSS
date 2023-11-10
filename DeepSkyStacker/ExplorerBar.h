@@ -1,9 +1,6 @@
-#ifndef EXPLORERBAR_H
-#define EXPLORERBAR_H
-
-#include <QDockWidget>
+#pragma once
 #include "mrupath.h"
-//#include "ClickLabel.h"
+#include "DSSCommon.h"
 
 namespace Ui {
 class ExplorerBar;
@@ -19,6 +16,11 @@ typedef QWidget
 public:
     explicit ExplorerBar(QWidget *parent = nullptr);
     ~ExplorerBar();
+
+	inline void setDSSClosing() { dssClosing = true; }
+
+public slots:
+	void tabChanged();
 
 signals:
 	void addImages(PICTURETYPE type);
@@ -48,6 +50,7 @@ signals:
 protected:
 	void mousePressEvent(QMouseEvent*) override;
 	void showEvent(QShowEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
 
 private slots:
 	void onOpenLights();
@@ -81,13 +84,22 @@ private slots:
 	void onRecommendedSettings();
 
     void onAbout();
-	void onHelp();
+
+	void keepTraceChanged(int);
+	void onEnableSoundsStateChanged(int);
+
+#if QT_VERSION >= 0x060500
+	void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+#endif
 
 
 private:
     Ui::ExplorerBar *ui;
 	bool initialised;
 	MRUPath	mruPath;
+	QString windowColourName;
+	QString activeGroupColourName;
+	bool dssClosing;
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();
@@ -98,4 +110,3 @@ private:
 	void onInitDialog();
 };
 
-#endif // EXPLORERBAR_H

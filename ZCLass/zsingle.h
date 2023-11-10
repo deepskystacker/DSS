@@ -1,5 +1,4 @@
-#ifndef ZSINGLE_INCLUDED
-#define ZSINGLE_INCLUDED
+#pragma once
 //***************************************************************************
 // Project : Z Class Library
 // $Workfile$
@@ -72,5 +71,3 @@ public:
 //
 // -MH-
 #endif
-
-#endif // !ZSINGLE_INCLUDED

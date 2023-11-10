@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-
 #include "CheckAbove.h"
 #include "ui/ui_CheckAbove.h"
 
@@ -13,6 +12,8 @@ namespace DSS
 		ui(new Ui::CheckAbove)
 	{
 		ui->setupUi(this);
+		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 		ui->lineEdit->setValidator(new CheckAboveValidator(this));
 	}
 
@@ -25,7 +26,7 @@ namespace DSS
 	{
 		QString			strValue = ui->lineEdit->text();
 		
-		Q_ASSERT(ui->lineEdit->validator());
+		ZASSERT(ui->lineEdit->validator());
 		if (strValue.endsWith(ui->lineEdit->validator()->locale().percent()))
 		{
 			m_bPercent = true;

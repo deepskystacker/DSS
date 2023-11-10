@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DeepSkyStackerLive</class>
+ <widget class="QWidget" name="DeepSkyStackerLive">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>757</width>
+    <height>748</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>757</width>
+    <height>748</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">DeepSkyStackerLive</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>138</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="monitorText">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+          </property>
+          <property name="text">
+           <string comment="IDC_MONITORINGRECT">Monitoring</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="folderName">
+          <property name="toolTip">
+           <string comment="IDC_MONITOREDFOLDER">Click here to select the Monitored Folder</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+          </property>
+          <property name="text">
+           <string comment="IDC_MONITOREDFOLDER">Click here to select the Monitored Folder</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QToolBar" name="toolbar">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+          </property>
+          <property name="movable">
+           <bool>false</bool>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextUnderIcon</enum>
+          </property>
+          <property name="floatable">
+           <bool>false</bool>
+          </property>
+          <addaction name="actionMonitor"/>
+          <addaction name="actionStack"/>
+          <addaction name="actionStop"/>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>11</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QProgressBar" name="progressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>36</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+            <property name="format">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="statusMessage">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background: qcolor(rgba(0,0,0,0))</string>
+            </property>
+            <property name="text">
+             <string notr="true" comment="IDC_STATS"/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>730</width>
+       <height>598</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>4</number>
+     </property>
+     <widget class="DSS::ImageViewer" name="stackedImage">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string comment="IDC_STACKEDIMAGE">Stacked Image</string>
+      </attribute>
+     </widget>
+     <widget class="DSS::ImageViewer" name="lastImage">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="title">
+       <string comment="IDC_LASTIMAGE">Last Image</string>
+      </attribute>
+     </widget>
+     <widget class="DSS::ChartTab" name="chartTab">
+      <attribute name="title">
+       <string comment="IDC_GRAPHS">Graphs</string>
+      </attribute>
+     </widget>
+     <widget class="QTableWidget" name="imageList">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string comment="IDC_IMAGELIST">Image List</string>
+      </attribute>
+     </widget>
+     <widget class="QTextEdit" name="messageLog">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="html">
+       <string notr="true">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <attribute name="title">
+       <string comment="IDC_LOGLIST">Log</string>
+      </attribute>
+     </widget>
+     <widget class="DSS::SettingsTab" name="settingsTab">
+      <attribute name="title">
+       <string comment="IDC_WARNINGS">Settings</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionMonitor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/Monitor-Up.png</normaloff>
+     <normalon>:/Monitor-Down.png</normalon>:/Monitor-Up.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_MONITOR">Monitor</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_MONITOR">Monitor</string>
+   </property>
+  </action>
+  <action name="actionStack">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/Stack-Up.png</normaloff>
+     <normalon>:/Stack-Down.png</normalon>:/Stack-Up.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_STACK_DSSLIVE">Stack</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_STACK_DSSLIVE">Stack</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/StopSign.png</normaloff>:/StopSign.png</iconset>
+   </property>
+   <property name="text">
+    <string comment="IDC_STOP">Stop</string>
+   </property>
+   <property name="iconText">
+    <string comment="IDC_STOP">Stop</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DSS::ImageViewer</class>
+   <extends>QWidget</extends>
+   <header>imageviewer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DSS::SettingsTab</class>
+   <extends>QWidget</extends>
+   <header>settingstab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DSS::ChartTab</class>
+   <extends>QWidget</extends>
+   <header location="global">ChartTab.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

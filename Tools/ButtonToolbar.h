@@ -1,8 +1,4 @@
-#ifndef __BUTTONTOOLBAR_H__
-#define __BUTTONTOOLBAR_H__
-
-#include <gdiplus.h>
-using namespace Gdiplus;
+#pragma once
 
 const		LONG				BUTTONTOOLBARSIZE = 48;
 
@@ -118,9 +114,9 @@ public :
 	CButtonToolbarSink() {};
 	virtual ~CButtonToolbarSink() {};
 
-	virtual void ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
-	virtual void ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
-	virtual void ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnCheck([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnClick([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
+	virtual void ButtonToolbar_OnRClick([[maybe_unused]] DWORD dwID, [[maybe_unused]] CButtonToolbar * pButtonToolbar) {};
 };
 
 class CButtonToolbar
@@ -329,4 +325,3 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-#endif

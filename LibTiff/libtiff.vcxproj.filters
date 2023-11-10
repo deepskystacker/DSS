@@ -125,18 +125,30 @@
     <ClCompile Include="tif_unix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tif_hash_set.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_jpeg_12.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_lerc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_webp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_zstd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_stream.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="t4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tif_config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tif_config.vc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tif_config.wince.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tif_dir.h">
@@ -173,6 +185,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="uvcode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tif_hash_set.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

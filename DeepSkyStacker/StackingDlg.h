@@ -36,27 +36,17 @@
 ****************************************************************************/
 // StackingDlg.h : header file
 //
-
-#include "mrupath.h"
-#include <CtrlCache.h>
-#include <WndImage.h>
-#include <BtnST.h>
-#include "Label.h"
-#include "StackingTasks.h"
-#include "DeepStack.h"
-#include <BitmapSlider.h>
-#include <CustomTabCtrl.h>
-#include "StackingEngine.h"
-#include "imageloader.h"
+#include "DSSCommon.h"
+#include "BitmapExt.h"
 #include "FrameList.h"
+#include "dssrect.h"
+#include "mrupath.h"
+#include "imageloader.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
-
-#include <QDialog>
-#include <QFileDialog>
-#include <QMenu>
-#include <QStyledItemDelegate>
+class CAllStackingTasks;
+class CStackingEngine;
 
 namespace DSS
 {
@@ -80,12 +70,10 @@ class QErrorMessage;
 class QTextOption;
 class QSortFilterProxyModel;
 class QLabel;
-
-namespace fs = std::filesystem;
+class Workspace;
 
 namespace DSS
 {
-
 	class IconSizeDelegate : public QStyledItemDelegate
 	{
 		Q_OBJECT
@@ -105,7 +93,7 @@ namespace DSS
 
 		QString calculateElidedText(const QString& text, const QTextOption& textOption,
 			const QFont& font, const QRect& textRect, const Qt::Alignment valign,
-			Qt::TextElideMode textElideMode, int flags,
+			Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 			bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const;
 
 	};
@@ -147,6 +135,8 @@ namespace DSS
 			Inherited;
 
 		Q_OBJECT
+
+		friend class BatchStacking;
 
 	signals:
 		void statusMessage(const QString& text);
@@ -220,12 +210,12 @@ namespace DSS
 			return frameList.checkedImageCount(t);
 		}
 
-		inline QString getFirstCheckedLightFrame()
+		inline fs::path getFirstCheckedLightFrame()
 		{
 			return frameList.getFirstCheckedLightFrame();
 		}
 
-		inline size_t countUnregisteredCheckedLightFrames(int id = -1) const
+		inline size_t countUnregisteredCheckedLightFrames(const int id = -1) const
 		{
 			return frameList.countUnregisteredCheckedLightFrames(id);
 		}
@@ -249,18 +239,15 @@ namespace DSS
 	private:
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
-		std::unique_ptr<Workspace> workspace;
 		bool initialised;
-		QString			m_strShowFile;
-		CGammaTransformation	m_GammaTransformation;
+		fs::path fileToShow;
+		GammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
 		IconSizeDelegate* iconSizeDelegate;
 		ItemEditDelegate* itemEditDelegate;
 		QSortFilterProxyModel* proxyModel;
 		uint m_tipShowCount;
-
-		QErrorMessage* errorMessageDialog;
 
 		bool fileAlreadyLoaded(const fs::path& file);
 
@@ -309,7 +296,7 @@ namespace DSS
 
 		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
 
-		bool checkStacking(CAllStackingTasks& tasks);
+		bool checkStacking([[maybe_unused]] CAllStackingTasks& tasks);
 
 		bool showRecap(CAllStackingTasks& tasks);
 
@@ -327,9 +314,9 @@ namespace DSS
 
 		void switchGroup(int);
 
-		void loadList(MRUPath& MRUList, QString& strFileList);
+		void loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
 
-		void saveList(MRUPath& MRUList, QString& strFileList);
+		void saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
 
 		bool isValidImage(const fs::path& path);
 

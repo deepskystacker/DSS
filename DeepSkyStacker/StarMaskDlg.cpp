@@ -1,12 +1,10 @@
 // StarMaskDlg.cpp : implementation file
 //
-
 #include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "StarMaskDlg.h"
+#include "DSSCommon.h"
 
-#include <QSettings>
-
+extern CString STARMASKFILE_FILTERS;
 // CStarMaskDlg dialog
 /* ------------------------------------------------------------------- */
 

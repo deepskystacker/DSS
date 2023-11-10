@@ -36,11 +36,6 @@
 ****************************************************************************/
 class QMouseEvent;
 
-#include <QObject>
-#include <QWidget>
-#include <QRect>
-#include <QString>
-
 enum class SelectionMode : quint8;
 
 namespace DSS

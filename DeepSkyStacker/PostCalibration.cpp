@@ -1,33 +1,18 @@
 #include "stdafx.h"
-#include <algorithm>
-using std::min;
-using std::max;
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QAction>
-#include <QMenu>
-#include <QPalette>
-#include <QSettings>
-#include <QString>
-#include <QSlider>
-
 #include "PostCalibration.h"
 #include "ui/ui_PostCalibration.h"
-
-extern bool	g_bShowRefStars;
-
-#include "resource.h"
-#include "commonresource.h"
+#include "Workspace.h"
+#include "StackSettings.h"
+#include "ZExcept.h"
+#include "Ztrace.h"
+#include "progressdlg.h"
+#include "MasterFrames.h"
+#include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "CosmeticEngine.h"
-#include "MasterFrames.h"
-#include "DSSProgress.h"
-#include "QtProgressDlg.h"
-#include "StackSettings.h"
-#include "StackingTasks.h"
-#include "Workspace.h"
+#include "commonresource.h"
+
+extern bool	g_bShowRefStars;
 
 PostCalibration::PostCalibration(QWidget *parent) :
     QWidget(parent),
@@ -341,8 +326,6 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Keep Only the first light frame
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
 				const fs::path& filePath = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath;
-				const auto fileName = filePath.generic_wstring(); // Otherwise strFileName could be a dangling pointer.
-				const wchar_t* strFileName = fileName.c_str();
 
 				CMasterFrames	MasterFrames;
 
@@ -371,20 +354,20 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Load the image
 				CBitmapInfo		bmpInfo;
 				// Load the bitmap
-				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
+				if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 				{
-					CString						strDescription;
-
+					QString	strDescription;
 					bmpInfo.GetDescription(strDescription);
-
+					QString name{ QString::fromStdU16String(filePath.generic_u16string()) };
 					if (bmpInfo.m_lNrChannels == 3)
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					else
-						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName));
+						strText = QCoreApplication::translate("PostCalibration", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(name);
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;
-					if (::FetchPicture(filePath, pBitmap, &dlg))
+					std::shared_ptr<QImage> pQImage;
+					if (::FetchPicture(filePath, pBitmap, false, &dlg, pQImage))
 					{
 						// Apply offset, dark and flat to lightframe
 						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
@@ -397,10 +380,15 @@ void PostCalibration::on_testCosmetic_clicked()
 						const double fHotPct = static_cast<double>(Stats.m_lNrDetectedHotPixels) / Stats.m_lNrTotalPixels * 100.0;
 						const double fColdPct = static_cast<double>(Stats.m_lNrDetectedColdPixels) / Stats.m_lNrTotalPixels * 100.0;
 
-						CString	strCosmeticStat;
-						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
-
-						AfxMessageBox(strCosmeticStat, MB_ICONINFORMATION | MB_OK);
+						QString message{ tr("Cosmetic\nDetected Hot Pixels: %L1 (%L2%)\nDetected Cold Pixels: %L3 (%L4%)\n",
+							"IDS_COSMETICSTATS")
+							.arg(Stats.m_lNrDetectedHotPixels)
+							.arg(fHotPct, 0, 'f', 2)
+							.arg(Stats.m_lNrDetectedColdPixels)
+							.arg(fColdPct, 0, 'f', 2)
+						};
+						
+						QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 					}
 
 					dlg.End2();

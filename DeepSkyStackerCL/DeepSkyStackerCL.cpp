@@ -2,19 +2,64 @@
 //
 
 #include <stdafx.h>
+#include <QtLogging>
 #include "DeepSkyStackerCL.h"
-#include "QtProgressConsole.h"
+#include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "SetUILanguage.h"
+#include "tracecontrol.h"
+#include "Ztrace.h"
+
+//
+// Set up tracing and manage trace file deletion
+//
+DSS::TraceControl traceControl{ std::source_location::current().file_name() };
+
+namespace
+{
+	QtMessageHandler originalHandler;
+	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+	{
+		QByteArray localMsg = msg.toLocal8Bit();
+		const char* file = context.file ? context.file : "";
+		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
+		strcpy(name, file);
+		if (0 != strlen(name))
+		{
+			fs::path path{ name };
+			strcpy(name, path.filename().string().c_str());
+		}
+
+		switch (type) {
+		case QtDebugMsg:
+			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
+			break;
+		case QtInfoMsg:
+			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
+			break;
+		case QtWarningMsg:
+			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
+			break;
+		case QtCriticalMsg:
+			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
+			break;
+		case QtFatalMsg:
+			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
+			break;
+		}
+		originalHandler(type, context, msg);
+	}
+}
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
 	m_consoleOut{ stdout }
 {
-
+	ZFUNCTRACE_RUNTIME();
+	DSSBase::setInstance(this);
 }
 
 bool DeepSkyStackerCommandLine::Run()
@@ -27,11 +72,18 @@ bool DeepSkyStackerCommandLine::Run()
 	}
 
 	StackingTask* task = new StackingTask(this, Process, GetStackingParams(), ConsoleOut());
-	connect(task, SIGNAL(finished()), this, SLOT(quit()));
+	connect(task, &StackingTask::finished, this, &DeepSkyStackerCommandLine::quit);
 	QTimer::singleShot(0, task, SLOT(run()));
 	exec();
 
 	return true;
+}
+
+void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unused]] const QString& type, [[maybe_unused]] Severity severity, [[maybe_unused]] Method method, bool terminate)
+{
+	if (terminate) traceControl.setDeleteOnExit(false);
+	std::cerr << message.toUtf8().constData() << std::endl;
+	if (terminate) QCoreApplication::exit(1);
 }
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
@@ -79,13 +131,13 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 		bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
 		if (bContinue)
 		{
-			CString cstrOutputPath(stackingParams.GetOutputFilename().toStdWString().c_str());
-			if (StackingEngine.GetDefaultOutputFileName(cstrOutputPath, stackingParams.GetFileList().toStdWString().c_str(), !bUseFits))
-			{
-				stackingParams.SetOutputFile(QString::fromStdWString(cstrOutputPath.GetString()));
-				StackingEngine.WriteDescription(tasks, stackingParams.GetOutputFilename().toStdWString().c_str());
-				SaveBitmap(stackingParams, pBitmap);
-			}
+			fs::path outputPath(stackingParams.GetOutputFilename().toStdU16String());
+			if (outputPath.empty())
+				StackingEngine.GetDefaultOutputFileName(outputPath, stackingParams.GetFileList().toStdU16String().c_str(), !bUseFits);
+
+			stackingParams.SetOutputFile(QString::fromStdU16String(outputPath.generic_u16string().c_str()));
+			StackingEngine.WriteDescription(tasks, outputPath);
+			SaveBitmap(stackingParams, pBitmap);
 		}
 	}
 	consoleOut << Qt::endl;
@@ -260,11 +312,14 @@ bool DeepSkyStackerCommandLine::fileExists(const QString& path)
 bool DeepSkyStackerCommandLine::checkFileCanBeWrittenTo(const QString& path)
 {
 	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly))
+	bool bAlreadyExsits = file.exists();
+	if (!bAlreadyExsits)
+		return true;
+
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Append))
 		return false;
 
 	file.close();
-	file.remove();
 	return true;
 }
 
@@ -295,7 +350,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 			fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
 			break;
 		}
-		WriteFITS(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, fitsformat, nullptr);
+		WriteFITS(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, fitsformat, nullptr);
 	}
 	else
 	{
@@ -316,7 +371,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 				break;
 			}
 		}
-		WriteTIFF(stackingParams.GetOutputFilename().toStdWString().c_str(), pBitmap.get(), &progress, tiffFormat, stackingParams.GetTiffCompression(), nullptr);
+		WriteTIFF(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, tiffFormat, stackingParams.GetTiffCompression(), nullptr);
 	}
 }
 
@@ -324,9 +379,28 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 
 int main(int argc, char* argv[])
 {
+	ZFUNCTRACE_RUNTIME();
+
 #if defined(_WINDOWS)
 	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
+#endif
+
+#ifndef NDEBUG
+	//
+	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	//
+	originalHandler = qInstallMessageHandler(qtMessageLogger);
+#endif
+
+	//
+	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	//
+#if defined(_WINDOWS)
+	_CrtSetDbgFlag(0);
+#if !defined(NDEBUG)
+	AfxEnableMemoryLeakDump(false);
+#endif
 #endif
 
 #ifndef NOGDIPLUS
@@ -342,6 +416,16 @@ int main(int argc, char* argv[])
 #endif
 
 	SetUILanguage();
+
+	Exiv2::XmpParser::initialize();
+	::atexit(Exiv2::XmpParser::terminate);
+
+	//
+	// Increase maximum size of QImage from the default of 128MB to 1GB
+	//
+	constexpr int oneGB{ 1024 * 1024 * 1024 };
+	QImageReader::setAllocationLimit(oneGB);
+
 	DeepSkyStackerCommandLine process(argc, argv);
 
 	process.Run();

@@ -40,6 +40,9 @@
 #include "ChartLineSerie.h"
 #include "ChartPointsSerie.h"
 #include "ChartSurfaceSerie.h"
+#include "ChartLegend.h"
+#include "ChartTitle.h"
+#include "ChartAxis.h"
 
 #define CHARTCTRL_CLASSNAME    "ChartCtrl"  // Window class name
 
@@ -157,7 +160,7 @@ void CChartCtrl::OnPaint()
 	}
 }
 
-BOOL CChartCtrl::OnEraseBkgnd(CDC* pDC) 
+BOOL CChartCtrl::OnEraseBkgnd([[maybe_unused]] CDC* pDC) 
 {
 	// To avoid flickering
 //	return CWnd::OnEraseBkgnd(pDC);
@@ -403,7 +406,7 @@ CDC* CChartCtrl::GetDC()
 	return &m_BackgroundDC;
 }
 
-void CChartCtrl::ReleaseDC(CDC* pDC)
+void CChartCtrl::ReleaseDC([[maybe_unused]]CDC* pDC)
 {
     //CWnd::ReleaseDC(pDC);
 //	delete pDC;

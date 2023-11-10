@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="DSSIcon.png">res/DSS_Icon32.png</file>
+        <file alias="DSSIcon@2x.png">res/DSS_Icon32@2x.png</file>
+        <file alias="4Corners.png">res/4Corners.png</file>
+        <file alias="Monitor-Down.png">res/Monitor-Down.png</file>
+        <file alias="Monitor-Up.png">res/Monitor-Up.png</file>
+        <file alias="Stack-Down.png">res/Stack-Down.png</file>
+        <file alias="Stack-Up.png">res/Stack-Up.png</file>
+        <file alias="StopSign.png">res/StopSign.png</file>
+    </qresource>
+</RCC>

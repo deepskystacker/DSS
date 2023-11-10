@@ -16,7 +16,7 @@ SetCompressor /SOLID lzma
 Function .onInit
 ${IfNot} ${AtLeastWin10}
 ${OrIfNot} ${RunningX64}
-	MessageBox mb_iconStop "Windows 10 x64 is required to install DeepSkyStacker 5.1.0"
+	MessageBox mb_iconStop "Windows 10 x64 is required to install DeepSkyStacker 5.1.2"
 	Abort
 ${EndIf}
 FunctionEnd
@@ -35,7 +35,7 @@ FunctionEnd
 !define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
 !define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
-!define DSS_VERSION        "5.1.3"                         # For control panel
+!define DSS_VERSION        "5.1.4"                         # For control panel
 !define DSS_VERSION_SUFFIX ""		               # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
@@ -148,8 +148,12 @@ Section
   File "..\x64\Release\Qt6Core.dll"
   File "..\x64\Release\Qt6Gui.dll"
   File "..\x64\Release\Qt6Network.dll"
-  File "..\x64\Release\Qt6Svg.dll"
+  # File "..\x64\Release\Qt6Svg.dll"
   File "..\x64\Release\Qt6Widgets.dll"
+  File "..\x64\Release\Qt6Charts.dll"
+  File "..\x64\Release\Qt6OpenGL.dll"
+  File "..\x64\Release\Qt6OpenGLWidgets.dll"
+ 
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
@@ -244,6 +248,10 @@ Section "Uninstall"
   Delete "$INSTDIR\Qt6Network.dll"
   Delete "$INSTDIR\Qt6Svg.dll"
   Delete "$INSTDIR\Qt6Widgets.dll"
+  Delete "$INSTDIR\Qt6Charts.dll"
+  Delete "$INSTDIR\Qt6OpenGL.dll"
+  Delete "$INSTDIR\Qt6OpenGLWidgets.dll"
+
   
   Delete "$INSTDIR\iconengines\*"
   Delete "$INSTDIR\imageformats\*"

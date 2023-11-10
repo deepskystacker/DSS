@@ -36,9 +36,6 @@
 // BaseDialog.cpp : implementation file
 //
 #include "stdafx.h"
-#include <QShowEvent>
-#include <QSettings>
-
 #include "DeepSkyStacker.h"
 #include "BaseDialog.h"
 
@@ -75,7 +72,7 @@ namespace DSS
 		//
 		// Restore Window position etc..
 		//
-		Q_ASSERT(!objectName().isEmpty());
+		ZASSERT(!objectName().isEmpty());
 		bool geometryRestored = false;
 		if (hasPersistentGeometry()) {
 			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(objectName())).toByteArray();
@@ -92,8 +89,8 @@ namespace DSS
 			const QRect r{ DeepSkyStacker::instance()->rect() };
 			const QSize size = this->size();
 
-			int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-			int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+			int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+			int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 			move(left, top);
 		}
 	}

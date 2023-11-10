@@ -1,10 +1,6 @@
 #include <stdafx.h>
 #include "SetUILanguage.h"
-
 #include "DSS-VersionHelpers.h"
-#include <QCoreApplication>
-#include <QLocale>
-#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 
@@ -227,31 +223,56 @@ void	SetUILanguage()
 	//
 	if (language.length())
 	{
-		if (!language.compare("fr_FR", Qt::CaseInsensitive))
+		if (
+			!language.compare("fr", Qt::CaseInsensitive) ||
+			!language.compare("fr_FR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_FRENCH;
-		else if (!language.compare("en_GB", Qt::CaseInsensitive))
+		else if (
+			!language.compare("en", Qt::CaseInsensitive) ||
+			!language.compare("en_GB", Qt::CaseInsensitive) ||
+			!language.compare("en_US", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ENGLISH;
-		else if (!language.compare("es_ES", Qt::CaseInsensitive))
+		else if (
+			!language.compare("es", Qt::CaseInsensitive) ||
+			!language.compare("es_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_SPANISH;
-		else if (!language.compare("cs_CZ", Qt::CaseInsensitive))
+		else if (
+			!language.compare("cs", Qt::CaseInsensitive) ||
+			!language.compare("cs_CZ", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CZECH;
-		else if (!language.compare("it_IT", Qt::CaseInsensitive))
+		else if (
+			!language.compare("it", Qt::CaseInsensitive) ||
+			!language.compare("it_IT", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ITALIAN;
-		else if (!language.compare("ca_ES", Qt::CaseInsensitive))
+		else if (
+			!language.compare("ca", Qt::CaseInsensitive) ||
+			!language.compare("ca_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CATALAN;
-		else if (!language.compare("de_DE", Qt::CaseInsensitive))
+		else if (
+			!language.compare("de", Qt::CaseInsensitive) ||
+			!language.compare("de_DE", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_GERMAN;
-		else if (!language.compare("nl_NL", Qt::CaseInsensitive))
+		else if (
+			!language.compare("nl", Qt::CaseInsensitive) ||
+			!language.compare("nl_NL", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_DUTCH;
 		else if (!language.compare("zh_TW", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CHINESE;
-		else if (!language.compare("pt_BR", Qt::CaseInsensitive))
+		else if (
+			!language.compare("pt", Qt::CaseInsensitive) ||
+			!language.compare("pt_BR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_PORTUGUESE;
-		else if (!language.compare("ro_RO", Qt::CaseInsensitive))
+		else if (
+			!language.compare("ro", Qt::CaseInsensitive) ||
+			!language.compare("ro_RO", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ROMANIAN;
-		else if (!language.compare("ru_RU", Qt::CaseInsensitive))
+		else if (
+			!language.compare("ru", Qt::CaseInsensitive) ||
+			!language.compare("ru_RU", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_RUSSIAN;
-		else if (!language.compare("tr_TR", Qt::CaseInsensitive))
+		else if (
+			!language.compare("tr", Qt::CaseInsensitive) ||
+			!language.compare("tr_TR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_TURKISH;
 	};
 

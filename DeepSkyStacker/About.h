@@ -1,8 +1,4 @@
-#ifndef ABOUT_H
-#define ABOUT_H
-
-#include <QDialog>
-
+#pragma once
 namespace Ui {
 class About;
 }
@@ -10,8 +6,8 @@ class About;
 class About : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged);
-    Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged);
+    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
+    Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged)
 
 typedef QDialog
 		Inherited;
@@ -57,5 +53,3 @@ private:
 
 	void onInitDialog();
 };
-
-#endif // ABOUT_H

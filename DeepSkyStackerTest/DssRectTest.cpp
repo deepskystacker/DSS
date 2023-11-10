@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/DSSTools.h"
-#include "../DeepSkyStacker/dssrect.h"
+#include "DSSTools.h"
+#include "dssrect.h"
 
 
 // Old CPointExt class
@@ -169,8 +169,6 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
 	}
 }
-
-#include <atltypes.h>
 
 TEST_CASE("CRect", "[CRect]")
 {

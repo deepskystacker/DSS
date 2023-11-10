@@ -1,8 +1,5 @@
 #pragma once
 
-#include <QDialog>
-#include <QValidator>
-
 namespace Ui {
 	class CheckAbove;
 }

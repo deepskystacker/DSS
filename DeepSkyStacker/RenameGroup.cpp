@@ -36,8 +36,6 @@
 // RenameGroup.cpp : implementation file
 //
 #include "stdafx.h"
-#include <QPushButton>
-#include <QRegularExpressionValidator>
 #include "RenameGroup.h"
 
 namespace DSS
@@ -46,6 +44,9 @@ namespace DSS
 		QDialog(parent)
 	{
 		setupUi(this);
+		connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+		connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 		lineEdit->setText(name);
 		QRegularExpression regExp("[A-Z][A-Za-z0-9 ]{0,11}");
 		lineEdit->setValidator(new QRegularExpressionValidator(regExp, this));

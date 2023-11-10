@@ -21,49 +21,25 @@
     <ClCompile Include="AvxCfaTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BitMapFillerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AvxHistogramTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AvxEntropyTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AvxAccumulateTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OpenMpTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AvxStackingTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\avx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PixelIteratorTest.cpp">
@@ -73,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkyBackGroupTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,8 +62,8 @@
     <ClInclude Include="AvxAccumulateTest.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AvxEntropyTest.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,32 +1,16 @@
-#if !defined(AFX_PROCESSINGDLG_H__744333B6_CE01_4CA9_B554_4EB7D98B544D__INCLUDED_)
-#define AFX_PROCESSINGDLG_H__744333B6_CE01_4CA9_B554_4EB7D98B544D__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// ProcessingDlg.h : header file
-//
-
-#include <ControlPos.h>
-#include <BtnST.h>
-#include <WndImage.h>
-#include "DeepStack.h"
-#include <GradientCtrl.h>
+#include "dss_settings.h"
+#include "ControlPos.h"
+#include "ProcessSettingsSheet.h"
+#include "RGBTab.h"
+#include "LuminanceTab.h"
+#include "SaturationTab.h"
 #include "ImageSinks.h"
-#include <algorithm>
-#include <list>
-#include "Label.h"
-
 #include "commonresource.h"
 
-#include "ProcessSettingsSheet.h"
-#include "dss_settings.h"
-
-#include <gdiplus.h>
-
-using namespace Gdiplus;
-
 /* ------------------------------------------------------------------- */
+
+class QWidget;
 
 class CValuedRect
 {
@@ -277,7 +261,7 @@ public :
 	{
 		bool					bResult = false;
 		PROCESSPARAMITERATOR    it;
-		bool					bFound = false;
+		//bool					bFound = false;
 
 		if (!(lIndice >= 0) && (lIndice < size()))
 			return false;
@@ -339,10 +323,12 @@ private :
 	bool					m_bDirty;
 
 	CSelectRectSink			m_SelectRectSink;
+	QWidget* parentWidget;
 
 // Construction
 public:
 	CProcessingDlg(CWnd* pParent = nullptr);   // standard constructor
+	void setParent(QWidget* p) { parentWidget = p; };
 
 	bool	SaveOnClose();
 
@@ -371,7 +357,6 @@ public:
 
 private :
 	bool	AskToSave();
-	void	SaveDSImage();
 	void	ProcessAndShow(bool bSaveUndo = true);
 
 	void	ResetSliders();
@@ -441,8 +426,3 @@ inline CProcessingDlg * GetParentProcessingDlg(CWnd * pWnd)
 
 	return pResult;
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_PROCESSINGDLG_H__744333B6_CE01_4CA9_B554_4EB7D98B544D__INCLUDED_)

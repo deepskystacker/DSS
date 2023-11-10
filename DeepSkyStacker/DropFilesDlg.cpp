@@ -36,15 +36,11 @@
 // DropFilesDlg.cpp : implementation file
 //
 #include "stdafx.h"
-#include <QShowEvent>
-
-
-//#include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "DropFilesDlg.h"
 #include "ui/ui_DropFilesDlg.h"
-
-//#include "BitmapExt.h"
+#include "BitmapInfo.h"
+#include "BitmapExt.h"
+#include "DeepSkyStacker.h"
 
 DropFilesDlg::DropFilesDlg(QWidget* parent) :
 	QDialog(parent),
@@ -53,6 +49,8 @@ DropFilesDlg::DropFilesDlg(QWidget* parent) :
 	type{ PICTURETYPE_UNKNOWN }
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
 }
 
@@ -65,7 +63,6 @@ void DropFilesDlg::onInitDialog()
 {
 	QSettings settings;
 	QString string;
-	bool checked = false;
 
 	//
 	// Restore Window position etc..
@@ -83,8 +80,8 @@ void DropFilesDlg::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 

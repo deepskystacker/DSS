@@ -35,14 +35,9 @@
 **
 ****************************************************************************/
 
-#include <memory>
-
 class Workspace;
 class CAllStackingTasks;
 class QValidator;
-
-#include "DSSCommon.h"
-#include <QDialog>
 
 namespace Ui {
 	class RegisterSettings;
@@ -115,7 +110,7 @@ private:
 	bool					noOffsets;
 	uint					detectionThreshold;
 	bool					medianFilter;
-	QString					firstLightFrame;
+	fs::path				firstLightFrame;
 	CAllStackingTasks *		pStackingTasks;
 	bool					settingsOnly;
 	QValidator *			perCentValidator;

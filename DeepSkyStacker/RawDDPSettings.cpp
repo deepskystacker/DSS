@@ -1,82 +1,14 @@
 // RawDDPSettings.cpp : implementation file
 //
-
-#include <algorithm>
-using std::min;
-using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
-
-
-//#include <afxdlgs.h>
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QDoubleValidator>
-#include <QSettings>
-#include <QShowEvent>
-#include <QString>
-
+#include "stdafx.h"
 #include "RawDDPSettings.h"
-#include "ui/ui_RawDDPSettings.h"
-
-extern bool		g_bShowRefStars;
-#include "commonresource.h"
-#include "resource.h"
-
-#include "DeepSkyStacker.h"
-#include "DSSCommon.h"
-#include "BitmapExt.h"
-#include "QtProgressDlg.h"
-#include "RegisterEngine.h"
-#include "StackingDlg.h"
-#include "StackSettings.h"
-
+#include "dslr.h"
+#include "Ztrace.h"
+#include "ui_RawDDPSettings.h"
 #include "Workspace.h"
-
-class CDSLR
-{
-public:
-	QString				m_strName;
-	CFATYPE				m_CFAType;
-
-private:
-	void	CopyFrom(const CDSLR & cd)
-	{
-		m_strName = cd.m_strName;
-		m_CFAType = cd.m_CFAType;
-	};
-
-public:
-	CDSLR(QString name, CFATYPE CFAType) :
-		m_strName(name),
-		m_CFAType(CFAType)
-	{
-	};
-
-	CDSLR(const CDSLR & cd)
-	{
-		CopyFrom(cd);
-	};
-
-	virtual ~CDSLR()
-	{
-	};
-
-	const CDSLR & operator = (const CDSLR & cd)
-	{
-		CopyFrom(cd);
-		return *this;
-	};
-};
-
+#include "DeepSkyStacker.h"
+#include "ZExcept.h"
+#include "StackingDlg.h"
 
 void	RawDDPSettings::fillDSLRList(std::vector<CDSLR> & vDSLRs)
 {
@@ -353,18 +285,21 @@ RawDDPSettings::RawDDPSettings(QWidget *parent) :
 	initialised(false)
 {
 	ui->setupUi(this);
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
 
 	//
 	// Create a validator for the scale values
 	//
 	scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
 
-	connect(ui->brightness, SIGNAL(editingFinished()), this, SLOT(brightness_editingFinished()));
-	connect(ui->redScale, SIGNAL(editingFinished()), this, SLOT(redScale_editingFinished()));
-	connect(ui->blueScale, SIGNAL(editingFinished()), this, SLOT(blueScale_editingFinished()));
-	connect(ui->brightness_2, SIGNAL(editingFinished()), this, SLOT(brightness_2_editingFinished()));
-	connect(ui->redScale_2, SIGNAL(editingFinished()), this, SLOT(redScale_2_editingFinished()));
-	connect(ui->blueScale_2, SIGNAL(editingFinished()), this, SLOT(blueScale_2_editingFinished()));
+	connect(ui->brightness, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_editingFinished);
+	connect(ui->redScale, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_editingFinished);
+	connect(ui->blueScale, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_editingFinished);
+	connect(ui->brightness_2, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_2_editingFinished);
+	connect(ui->redScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_2_editingFinished);
+	connect(ui->blueScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_2_editingFinished);
 
 	//
 	// forceUnsigned is no longer used
@@ -419,8 +354,8 @@ void RawDDPSettings::onInitDialog()
 		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+		int top = (r.top() + (r.height() / 2) - (size.height() / 2));
+		int left = (r.left() + (r.width() / 2) - (size.width() / 2));
 		move(left, top);
 	}
 
@@ -501,7 +436,7 @@ void RawDDPSettings::onInitDialog()
 		}
 	}
 
-	connect(ui->DSLRs, SIGNAL(currentIndexChanged(int)), this, SLOT(DSLRs_currentIndexChanged(int)));
+	connect(ui->DSLRs, &QComboBox::currentIndexChanged, this, &RawDDPSettings::DSLRs_currentIndexChanged);
 
 	updateBayerPattern().updateControls();
 

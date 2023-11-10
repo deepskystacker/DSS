@@ -1,0 +1,18 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+    <file>DSSCL_ca.qm</file>
+    <file>DSSCL_cs.qm</file>
+    <file>DSSCL_de.qm</file>
+    <file>DSSCL_en.qm</file>
+    <file>DSSCL_es.qm</file>
+    <file>DSSCL_fr.qm</file>
+    <file>DSSCL_it.qm</file>
+    <file>DSSCL_nl.qm</file>
+    <file>DSSCL_pt_BR.qm</file>
+    <file>DSSCL_ro.qm</file>
+    <file>DSSCL_ru.qm</file>
+    <file>DSSCL_tr.qm</file>
+    <file>DSSCL_zh_CN.qm</file>
+    <file>DSSCL_zh_TW.qm</file>
+</qresource>
+</RCC>

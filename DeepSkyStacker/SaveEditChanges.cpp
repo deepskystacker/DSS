@@ -39,14 +39,13 @@
 #include "stdafx.h"
 #include "SaveEditChanges.h"
 
-#include <QSettings>
 namespace DSS
 {
 	SaveEditChanges::SaveEditChanges(QWidget* parent) :
 		QDialog(parent)
 	{
 		setupUi(this);
-		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton*)));
+		connect(buttonBox, &QDialogButtonBox::clicked, this, &SaveEditChanges::buttonClicked);
 
 		switch (getSaveEditMode())
 		{

@@ -33,31 +33,16 @@
 **
 **
 ****************************************************************************/
-#include "StdAfx.h"
-
-#include <QDebug>
-#include <QGuiApplication>
-#include <QMouseEvent>
-#include <QPainter>
-#include <QToolBar>
-#include <QToolTip>
-#include <omp.h>
-
-#if QT_VERSION < 0x060000
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
-
-#include "DeepSkyStacker.h"
-#include "dssrect.h"
+#include "stdafx.h"
 #include "editstars.h"
-#include "imageview.h"
 #include "Delaunay.h"
-#include "Stars.h"
-#include "MatchingStars.h"
+#include "imageview.h"
+#include "DSSCommon.h"
+#include "StackingDlg.h"
 #include "RegisterEngine.h"
 #include "BackgroundCalibration.h"
-#include "StackingDlg.h"
+#include "DeepSkyStacker.h"
+#include "ZExcept.h"
 
 // Classes etc. private to this file
 namespace
@@ -133,6 +118,10 @@ namespace DSS
 			Delaunay delaunay;
 			triangleSet sTriangles;
 
+			//
+			// ### To Do
+			// March 2023: Delaunay::Triangulate() does nothing. sTriangles will be empty.
+			//
 			delaunay.Triangulate(sVertices, sTriangles);
 
 			triangles.reserve(sTriangles.size());
@@ -180,7 +169,7 @@ namespace DSS
 		m_tipShowCount{ 0 }
 	{
 		imageView = dynamic_cast<ImageView*>(parent);
-		Q_ASSERT(nullptr != imageView);
+		ZASSERT(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
 		setAttribute(Qt::WA_NoSystemBackground);
 		setAttribute(Qt::WA_TranslucentBackground);
@@ -190,10 +179,43 @@ namespace DSS
 		//));
 
 	}
-
-	void EditStars::leaveEvent([[maybe_unused]] QEvent* e)
+	void EditStars::setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP)
 	{
-		m_ptCursor.setX(-1); m_ptCursor.setY(-1);
+		if (g_bShowRefStars)
+		{
+			transformation = Tr;
+			vVotedPairs = vVP;
+		};
+	}
+
+	void EditStars::clearRefStars()
+	{
+		refStars.clear();
+	};
+
+	void EditStars::setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
+	{
+		m_pBitmap = bmp;
+		m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
+		m_bDirty = false;
+		m_fBackground = 0;
+		if (static_cast<bool>(m_pBitmap))
+			computeBackgroundValue();
+	}
+
+	void EditStars::setRefStars(STARVECTOR const& Stars)
+	{
+		if (g_bShowRefStars)
+		{
+			refStars = Stars;
+			std::sort(refStars.begin(), refStars.end(), CompareStarLuminancy);
+		};
+	}
+
+	void EditStars::leaveEvent(QEvent*)
+	{
+		m_ptCursor.setX(-1);
+		m_ptCursor.setY(-1);
 	}
 
 	void EditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
@@ -265,11 +287,11 @@ namespace DSS
 
 	void EditStars::starsButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, & EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, & EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, & EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, & EditStars::resizeMe);
 		m_bCometMode = false;
 		show();
 		raise();
@@ -278,11 +300,11 @@ namespace DSS
 
 	void EditStars::cometButtonPressed()
 	{
-		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
-		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent);
+		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe);
 		m_bCometMode = true;
 		show();
 		raise();
@@ -296,7 +318,6 @@ namespace DSS
 
 	void EditStars::resizeMe(QResizeEvent* e)
 	{
-		pixmap = QPixmap(e->size());
 		resize(e->size());
 	}
 
@@ -306,28 +327,13 @@ namespace DSS
 	void EditStars::showEvent(QShowEvent* e)
 	{
 		resize(imageView->size());
-		pixmap = QPixmap(imageView->size());
 		raise();
 		Inherited::showEvent(e);
 	}
 
 	void EditStars::paintEvent([[maybe_unused]] QPaintEvent* event)
 	{
-		//event->ignore();
-		QPainter painter(this);
-
-		drawOnPixmap();
-		//
-		// Draw the stuff we drew onto the working pixmap onto the screen
-		//
-		painter.setBackgroundMode(Qt::TransparentMode);
-		//painter.eraseRect(rect());
-		painter.drawPixmap(0, 0, pixmap);
-
-		//imageView->setOverlayPixmap(pixmap);
-		//imageView->update();
-		painter.end();
-		//Inherited::paintEvent(event);
+		draw();
 	}
 
 	void EditStars::mouseMoveEvent([[maybe_unused]] QMouseEvent* e)
@@ -342,12 +348,7 @@ namespace DSS
 			//
 			// Get the mouse location and convert to image coordinates
 			//
-#if QT_VERSION >= 0x060000
 			QPointF pt{ e->position() };
-#else
-			QPointF pt{ static_cast<qreal>(e->x()),
-				static_cast<qreal>(e->y()) };
-#endif
 			pt = imageView->screenToImage(pt);
 
 			if (pt.x() >= 0 && pt.x() < imageView->imageWidth() &&
@@ -467,15 +468,15 @@ namespace DSS
 		CRegisteredFrame regFrame;
 		DSSRect	rcReg{ STARMAXSIZE, STARMAXSIZE, 
 			rcCheck.width() - (STARMAXSIZE + 1), rcCheck.height() - (STARMAXSIZE + 1) };
-		STARSET stars;
+		STARSET starsInRect;
 
 		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
+		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, starsInRect);
 
-		vStars.assign(stars.cbegin(), stars.cend());
+		vStars.assign(starsInRect.cbegin(), starsInRect.cend());
 	}
 
-	void EditStars::drawOnPixmap()
+	void EditStars::draw()
 	{
 		//
 		// Note this creates the star/comet overlay pixmap the same size as the
@@ -483,13 +484,12 @@ namespace DSS
 		// scaling has to done here.
 		//
 		QRect rcClient{ rect() };
-		size_t	width = rcClient.width(), height = rcClient.height();
+		// size_t	width = rcClient.width(), height = rcClient.height();
 
 		//
 		// Fill the pixmap with transparency
 		//
-		pixmap.fill(Qt::transparent);
-		QPainter painter(&pixmap);
+		QPainter painter(this);
 		painter.setClipRect(imageView->displayRect);
 		QBrush brush{ Qt::transparent };
 
@@ -787,18 +787,18 @@ namespace DSS
 			for (int i = 0; i < vStars.size(); i++)
 			{
 				QRect		rc;
-				CStar& star = vStars[i];
+				CStar& theStar = vStars[i];
 
 				double		fX, fY;
 
-				fX = star.m_fX - star.m_fMeanRadius + 0.5 + rcCheck.left();
-				fY = star.m_fY - star.m_fMeanRadius + 0.5 + rcCheck.top();
+				fX = theStar.m_fX - theStar.m_fMeanRadius + 0.5 + rcCheck.left();
+				fY = theStar.m_fY - theStar.m_fMeanRadius + 0.5 + rcCheck.top();
 				imageView->imageToScreen(fX, fY);
 				rc.setLeft(fX);
 				rc.setTop(fY);
 
-				fX = star.m_fX + star.m_fMeanRadius + 0.5 + rcCheck.left();
-				fY = star.m_fY + star.m_fMeanRadius + 0.5 + rcCheck.top();
+				fX = theStar.m_fX + theStar.m_fMeanRadius + 0.5 + rcCheck.left();
+				fY = theStar.m_fY + theStar.m_fMeanRadius + 0.5 + rcCheck.top();
 				imageView->imageToScreen(fX, fY);
 				rc.setRight(fX);
 				rc.setBottom(fY);
@@ -813,8 +813,8 @@ namespace DSS
 
 				if (rc.width() > 10 && rc.height() > 10)
 				{
-					fX = star.m_fX + 0.5 + rcCheck.left();
-					fY = star.m_fY + 0.5 + rcCheck.top();
+					fX = theStar.m_fX + 0.5 + rcCheck.left();
+					fY = theStar.m_fY + 0.5 + rcCheck.top();
 					imageView->imageToScreen(fX, fY);
 					painter.drawLine(QPointF(fX - 5, fY), QPointF(fX + 6, fY));
 					painter.drawLine(QPointF(fX, fY - 5), QPointF(fX, fY + 6));
@@ -831,11 +831,12 @@ namespace DSS
 				QBrush		brushAction;
 				QPen		penAction;
 
-				if (auto zoom = imageView->zoom() > 1)
+				auto zoom = imageView->zoom();
+				if (zoom > 1)
 				{
 					fRectSize *= zoom;
 					fDiameter *= zoom;
-				};
+				}
 
 				if (bAdd)
 				{
@@ -910,21 +911,23 @@ namespace DSS
 
 					strText += strComet;
 				}
+				constexpr auto txtMargin = 6;
+				constexpr auto borderMargin = 2;
 
 				QSizeF size{ fontMetrics.size(0, strText) };
-				size.rheight() += 12;
-				size.rwidth() += 12;
+				size.rheight() += txtMargin * 2;
+				size.rwidth() += txtMargin * 2;
 
 				if ((mouseLocation.x() >= rcClient.right() - 150) &&
 					(mouseLocation.y() <= 150))
 				{
 					// Draw the rectangle at the left bottom
 					rcText.setLeft(2);
-					rcText.setTop(rcClient.bottom() - (size.height() + 2));
+					rcText.setTop(rcClient.bottom() - (size.height() + borderMargin));
 				}
 				else
 				{
-					rcText.setLeft(rcClient.right() - (size.width() + 2));
+					rcText.setLeft(rcClient.right() - (size.width() + borderMargin));
 					rcText.setTop(2);
 				}
 				rcText.setRight(rcText.left() + size.width());
@@ -937,11 +940,11 @@ namespace DSS
 				pen.setColor(qRgba(0, 0, 0, 200)); pen.setWidthF(1.0);
 				painter.setPen(pen);
 
-				painter.drawRect(rcText.adjusted(2, 2, -4, - 4));
+				painter.drawRect(rcText.adjusted(borderMargin, borderMargin, -borderMargin, -borderMargin));
 
 				brush.setColor(qRgb(0, 0, 0)); painter.setBrush(brush);
 
-				QRectF rect(QPointF(rcText.left() + 6, rcText.top() + 6), size);
+				QRectF rect(QPointF(rcText.left() + txtMargin, rcText.top() + txtMargin), size);
 				painter.drawText(rect, strText, Qt::AlignLeft | Qt:: AlignTop);
 			}
 		}
@@ -951,7 +954,8 @@ namespace DSS
 		//imageView->update();
 	}
 
-	void	EditStars::drawQualityGrid(QPainter& painter, const QRect& rcClient)
+	//void	EditStars::drawQualityGrid(QPainter& painter, const QRect& rcClient)
+	void	EditStars::drawQualityGrid(QPainter&, const QRect&)
 	{
 #if (0)
 		// Find the first top/left point in the image
@@ -1113,7 +1117,7 @@ namespace DSS
 			std::sort(stars.begin(), stars.end());
 
 			fs::path file{ fileName.toStdU16String() };
-			file.replace_extension(".Info.txt");
+			file.replace_extension(".info.txt");
 
 			regFrame.SaveRegisteringInfo(file.generic_wstring().c_str());
 
