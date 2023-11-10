@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QWidget>
+
 namespace DSS
 {
 	class ImageView;

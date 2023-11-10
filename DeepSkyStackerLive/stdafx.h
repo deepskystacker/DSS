@@ -14,14 +14,8 @@
 #endif
 
 // Qt Files
-#include <QDialog>
 #include <QtWidgets>
 #include <QNetworkReply>
-#include <QLineSeries>
-#include <QValueAxis>
-#include <QScatterSeries>
-#include <QStyledItemDelegate>
-#include <QThread>
 
 // ZClass Files
 #include <zexcept.h>

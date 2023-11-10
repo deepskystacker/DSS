@@ -36,6 +36,7 @@
 ****************************************************************************/
 // ProgressLive.h : Defines the DSS Live Progress class
 //
+#include <QObject>
 #include "DSSProgress.h"
 
 namespace DSS
