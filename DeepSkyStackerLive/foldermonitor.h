@@ -36,7 +36,6 @@
 ****************************************************************************/
 // FolderMonitor.h : Header file
 //
-#include <QObject>
 namespace DSS
 {
 	class FolderMonitor : public QObject, public QRunnable
