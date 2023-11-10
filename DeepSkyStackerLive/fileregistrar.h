@@ -36,9 +36,6 @@
 ****************************************************************************/
 // FileRegistrar.h : Header file
 //
-#include <deque>
-#include <QObject>
-
 class CMemoryBitmap;
 class CLightFrameInfo;
 class LoadedImage;
