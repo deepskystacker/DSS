@@ -13,11 +13,11 @@ Before you report any issues it is worth checking the DeepSkyStacker Wiki: <http
 
 If you aren't a member the DeepSkyStacker mailing list, please join by sending an email to:
 
-mailto:DeepSkyStacker+subscribe@groups.io 
+[DeepSkyStacker+subscribe@groups.io](mailto:DeepSkyStacker+subscribe@groups.io)
 
 Once you have successfully joined the mailing list please report the problem on the mailing list by sending an email to:
 
-mailto:DeepSkyStacker@groups.io
+[DeepSkyStacker@groups.io](mailto:DeepSkyStacker@groups.io)
 
 Your email should contain the following information:
 
