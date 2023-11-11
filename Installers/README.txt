@@ -1,3 +1,12 @@
+Welcome to DeepSkyStacker 5.1.5 Beta 1
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since the last release:
+
+1. Write Intermediate TIFF format files with COMPRESSION_NONE.
+
 Welcome to DeepSkyStacker 5.1.4
 ===============================
 
