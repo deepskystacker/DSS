@@ -41,10 +41,11 @@ private slots:
 	void brightness_2_editingFinished();
 	void redScale_2_editingFinished();
 	void blueScale_2_editingFinished();
-	void on_bilinear_2_toggled(bool);
-	void on_AHD_2_toggled(bool);
-	void on_rawBayer_2_toggled(bool);
-	void on_superPixels_2_toggled(bool);
+	void on_bilinear_2_clicked();
+	void on_AHD_2_clicked();
+	void on_rawBayer_2_clicked();
+	void on_superPixels_2_clicked();
+
 private:
 	Ui::RawDDPSettings *ui;
 	std::unique_ptr<Workspace> workspace;
