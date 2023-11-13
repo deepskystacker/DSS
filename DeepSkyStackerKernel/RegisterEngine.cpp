@@ -1380,6 +1380,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 		auto future = std::async(std::launch::deferred, readTask, 0, pProgress);
 
+		int numberOfRegisteredLightframes = 0;
+
 		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
 		{
 			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
@@ -1419,6 +1421,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			lfInfo->RegisterPicture(pBitmap.get());
 			lfInfo->SaveRegisteringInfo();
 
+			++numberOfRegisteredLightframes;
+
 			if (strCalibratedFile.length())
 			{
 				fs::path file{ strCalibratedFile.toStdU16String().c_str() };
@@ -1429,6 +1433,26 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			{
 				pProgress->End2();
 				bResult = !pProgress->IsCanceled();
+			}
+		}
+
+		//
+		// If at least one lightframe has been registered, then remove ALL stackinfo.txt files 
+		// from that folder. This avoids alignment issues, because the stackinfo-file might 
+		// contain invalid (not matching new registration info) alignment (=offset) parameters.
+		//
+		ZTRACE_RUNTIME("Number of actually registered lightframes = %d", numberOfRegisteredLightframes);
+		if (numberOfRegisteredLightframes > 0)
+		{
+			for (const CFrameInfo& bitmap : it->m_pLightTask->m_vBitmaps)
+			{
+				fs::path toRemove{ bitmap.filePath };
+				toRemove.replace_extension("stackinfo.txt");
+				if (fs::exists(toRemove))
+				{
+					ZTRACE_RUNTIME("Removing stackinfo-file %s", toRemove.generic_u8string().c_str());
+					fs::remove(toRemove);
+				}
 			}
 		}
 	}

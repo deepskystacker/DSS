@@ -444,17 +444,6 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		{
 			for (auto& bitmap : task.m_vBitmaps)
 			{
-				//
-				// Prior to stacking remove any "stackinfo.txt" file associated with this light frame
-				//
-				fs::path toRemove{ bitmap.filePath };
-				toRemove.replace_extension("stackinfo.txt");
-				if (fs::exists(toRemove))
-				{
-					ZTRACE_RUNTIME("Removing file %s", toRemove.generic_u8string().c_str());
-					fs::remove(toRemove);
-				}
-
 				CLightFrameInfo lfi;
 				lfi.SetBitmap(bitmap.filePath, false, false);
 
