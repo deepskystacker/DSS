@@ -80,25 +80,23 @@ CFATYPE GetFITSCFATYPE()
 
 bool IsFITSRawBayer()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
-	return (0 == interpolation.compare("RawBayer", Qt::CaseInsensitive));
+	return Workspace{}.value("RawDDP/RawBayer", false).toBool();
 }
 
 bool IsFITSSuperPixels()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
-	return (0 == interpolation.compare("SuperPixels", Qt::CaseInsensitive));
+	return Workspace{}.value("RawDDP/SuperPixels", false).toBool();
 }
 
 bool IsFITSBilinear()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
+	const QString interpolation = Workspace{}.value("RawDDP/Interpolation").toString();
 	return (0 == interpolation.compare("Bilinear", Qt::CaseInsensitive));
 }
 
 bool IsFITSAHD()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
+	const QString interpolation = Workspace{}.value("RawDDP/Interpolation").toString();
 	return (0 == interpolation.compare("AHD", Qt::CaseInsensitive));
 }
 

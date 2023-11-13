@@ -384,13 +384,25 @@ void RawDDPSettings::onInitDialog()
 	string = workspace->value("RawDDP/Interpolation", "Bilinear").toString();
 
 	if (isRawBayer)
+	{
 		ui->rawBayer->setChecked(true);
+		ui->rawBayer_2->setChecked(true);
+	}
 	else if (isSuperPixels)
+	{
 		ui->superPixels->setChecked(true);
+		ui->superPixels_2->setChecked(true);
+	}
 	else if (string == "Bilinear")
+	{
 		ui->bilinear->setChecked(true);
+		ui->bilinear_2->setChecked(true);
+	}
 	else if (string == "AHD")
+	{
 		ui->AHD->setChecked(true);
+		ui->AHD_2->setChecked(true);
+	}
 
 	//
 	// Now populate the FITS Files tab controls
@@ -405,17 +417,6 @@ void RawDDPSettings::onInitDialog()
 
 	value = workspace->value("FitsDDP/BlueScale", "1.0").toDouble();
 	ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-
-	string = workspace->value("FitsDDP/Interpolation", "Bilinear").toString();
-
-	if (string == "Bilinear")
-		ui->bilinear_2->setChecked(true);
-	else if (string == "RawBayer")
-		ui->rawBayer_2->setChecked(true);
-	else if (string == "AHD")
-		ui->AHD_2->setChecked(true);
-	else
-		ui->superPixels_2->setChecked(true);
 
 	fillDSLRList(vector_DSLRs);
 
@@ -628,6 +629,7 @@ void RawDDPSettings::on_cameraWB_stateChanged()
 
 void RawDDPSettings::on_bilinear_clicked()
 {
+	ui->bilinear_2->setChecked(true);
 	workspace->setValue("RawDDP/Interpolation", "Bilinear");
 	workspace->setValue("RawDDP/RawBayer", false);
 	workspace->setValue("RawDDP/SuperPixels", false);
@@ -635,18 +637,21 @@ void RawDDPSettings::on_bilinear_clicked()
 
 void RawDDPSettings::on_AHD_clicked()
 {
+	ui->AHD_2->setChecked(true);
 	workspace->setValue("RawDDP/Interpolation", "AHD");
 	workspace->setValue("RawDDP/RawBayer", false);
 	workspace->setValue("RawDDP/SuperPixels", false);
 }
 void RawDDPSettings::on_rawBayer_clicked()
 {
+	ui->rawBayer_2->setChecked(true);
 	workspace->setValue("RawDDP/Interpolation", "");
 	workspace->setValue("RawDDP/RawBayer", true);
 	workspace->setValue("RawDDP/SuperPixels", false);
 }
 void RawDDPSettings::on_superPixels_clicked()
 {
+	ui->superPixels_2->setChecked(true);
 	workspace->setValue("RawDDP/Interpolation", "");
 	workspace->setValue("RawDDP/RawBayer", false);
 	workspace->setValue("RawDDP/SuperPixels", true);
@@ -723,50 +728,28 @@ void RawDDPSettings::blueScale_2_editingFinished()
 	}
 }
 
-/**********************************************************************************/
-/*                           ***** NOTE WELL *****                                */
-/*                                                                                */
-/*   The following four slots that process the Bayer Matrix Transformation Radio  */  
-/* Buttons of the FITS Files tab all set the value of "RawDDP/SuperPixels" in the */
-/* workspace (which is what the original pre-Qt code did).                        */
-/*                                                                                */
-/*               AS FAR AS I CAN DETERMINE THIS IS NOT A BUG                      */
-/*                                                                                */
-/**********************************************************************************/
-void RawDDPSettings::on_bilinear_2_toggled(bool checked)
+void RawDDPSettings::on_bilinear_2_clicked()
 {
-	if (checked)
-	{
-		workspace->setValue("FitsDDP/Interpolation", "Bilinear");
-		workspace->setValue("RawDDP/SuperPixels", false);
-	}
+	ui->bilinear->setChecked(true);
+	on_bilinear_clicked();
 }
 
-void RawDDPSettings::on_AHD_2_toggled(bool checked)
+void RawDDPSettings::on_AHD_2_clicked()
 {
-	if (checked)
-	{
-		workspace->setValue("FitsDDP/Interpolation", "AHD");
-		workspace->setValue("RawDDP/SuperPixels", false);
-	}
+	ui->AHD->setChecked(true);
+	on_AHD_clicked();
 }
 
-void RawDDPSettings::on_rawBayer_2_toggled(bool checked)
+void RawDDPSettings::on_rawBayer_2_clicked()
 {
-	if (checked)
-	{
-		workspace->setValue("FitsDDP/Interpolation", "RawBayer");
-		workspace->setValue("RawDDP/SuperPixels", false);
-	}
+	ui->rawBayer->setChecked(true);
+	on_rawBayer_clicked();
 }
 
-void RawDDPSettings::on_superPixels_2_toggled(bool checked)
+void RawDDPSettings::on_superPixels_2_clicked()
 {
-	if (checked)
-	{
-		workspace->setValue("FitsDDP/Interpolation", "SuperPixels");
-		workspace->setValue("RawDDP/SuperPixels", true);
-	}
+	ui->superPixels->setChecked(true);
+	on_superPixels_clicked();
 }
 
 void RawDDPSettings::on_buttonBox_clicked(QAbstractButton *button)

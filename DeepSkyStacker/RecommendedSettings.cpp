@@ -251,7 +251,7 @@ void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-static void AddRAWNarrowBandRecommendation(RECOMMENDATIONVECTOR & vRecommendations, bool bFITS)
+static void AddRAWNarrowBandRecommendation(RECOMMENDATIONVECTOR & vRecommendations)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -265,16 +265,11 @@ static void AddRAWNarrowBandRecommendation(RECOMMENDATIONVECTOR & vRecommendatio
 		"Use super-pixel mode",
 		"IDS_RECO_RAWNARROWBAND_TEXT"));
 
-	if (bFITS)
-	{
-		ri.addSetting("FitsDDP/Interpolation", "SuperPixels");
-	}
-	else
-	{
-		ri.addSetting("RawDDP/SuperPixels", true);
-		ri.addSetting("RawDDP/RawBayer", false);
-		ri.addSetting("RawDDP/AHD", false);
-	};
+
+	ri.addSetting("RawDDP/SuperPixels", true);
+	ri.addSetting("RawDDP/RawBayer", false);
+	ri.addSetting("RawDDP/AHD", false);
+
 	rec.isImportant = false;
 	rec.addItem(ri);
 
@@ -308,7 +303,7 @@ static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMENDATIONVECTOR & 
 
 /* ------------------------------------------------------------------- */
 
-static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fExposureTime, bool bFITS)
+static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fExposureTime)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -332,30 +327,20 @@ static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fEx
 			"IDS_RECO_RAWLOWSNR_TEXT"));
 	};
 
-	if (bFITS)
+	if (fExposureTime > 4*60.0)
 	{
-		if (fExposureTime > 4*60.0)
-			ri.addSetting("FitsDDP/Interpolation", "AHD");
-		else
-			ri.addSetting("FitsDDP/Interpolation", "Bilinear");
+		ri.addSetting("RawDDP/SuperPixels", false);
+		ri.addSetting("RawDDP/RawBayer", false);
+		ri.addSetting("RawDDP/Interpolation", "AHD");
+		ri.addSetting("RawDDP/AHD", true);
 	}
 	else
 	{
-		if (fExposureTime > 4*60.0)
-		{
-			ri.addSetting("RawDDP/SuperPixels", false);
-			ri.addSetting("RawDDP/RawBayer", false);
-			ri.addSetting("RawDDP/Interpolation", "AHD");
-			ri.addSetting("RawDDP/AHD", true);
-		}
-		else
-		{
-			ri.addSetting("RawDDP/SuperPixels", false);
-			ri.addSetting("RawDDP/RawBayer", false);
-			ri.addSetting("RawDDP/Interpolation", "Bilinear");
-			ri.addSetting("RawDDP/AHD", false);
-		};
-	};
+		ri.addSetting("RawDDP/SuperPixels", false);
+		ri.addSetting("RawDDP/RawBayer", false);
+		ri.addSetting("RawDDP/Interpolation", "Bilinear");
+		ri.addSetting("RawDDP/AHD", false);
+	}
 
 	rec.addItem(ri);
 	vRecommendations.push_back(rec);
@@ -737,9 +722,9 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 		if (pStackingTasks->AreBayerImageUsed())
 		{
-			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime(), pStackingTasks->AreFITSImageUsed());
+			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime());
 			AddModdedDSLR(vRecommendations, pStackingTasks->AreFITSImageUsed());
-			AddRAWNarrowBandRecommendation(vRecommendations, pStackingTasks->AreFITSImageUsed());
+			AddRAWNarrowBandRecommendation(vRecommendations);
 		//	if (!pStackingTasks->AreFITSImageUsed())
 		//		AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
 		};
