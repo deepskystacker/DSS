@@ -206,10 +206,10 @@ std::shared_ptr<CMultiBitmap> CColorBitmapT<TType>::CreateEmptyMultiBitmap() con
 	//
 	// If the input bitmap is 16 bit or 32 bit integer want the output type to be float
 	//
-	if (std::is_same_v<TType, std::uint32_t> || std::is_same_v<TType, std::uint16_t>)
-		result = std::make_shared<CColorMultiBitmapT<TType, float>>();
-	else
-		result = std::make_shared<CColorMultiBitmapT<TType>>();
+	//if (std::is_same_v<TType, std::uint32_t> || std::is_same_v<TType, std::uint16_t>)
+	//	result = std::make_shared<CColorMultiBitmapT<TType, float>>();
+	//else
+	result = std::make_shared<CColorMultiBitmapT<TType>>();
 
 	result->SetBitmapModel(this);
 	return result;
