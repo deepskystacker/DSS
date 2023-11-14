@@ -10,16 +10,16 @@ Known problems:
 
 Changes since the last release:
 
-1. Write Intermediate TIFF format files with COMPRESSION_NONE.
+1. Write Intermediate TIFF format files with COMPRESSION_NONE.  Final output files will still be compressed.
 
 2. Remove any .stackinfo.txt files that already exist when re-registering images.
    This prevents incorrect registration of images when changing stacking settings and de-Bayer settings.
 
 3. Change Raw/FITS DDP settings so that the Bayer transformation (Bilinear/AHD/Drizzle/SuperPixel) on the two tabs “mirror one another”.
    That’s to say if you change those settings on the FITS tab, then the RAW tab is also changed and vice-versa.
-   There are no longer separate settings for the the Bayer transofmation for RAW and FITS (which has caused problems in the past).
+   There are no longer separate settings for the Bayer transformation for RAW and FITS (which has caused problems in the past).
 
-4. Bug fix: Revert change to create masters as float - it caused incompatability problems.
+4. Bug fix: Revert change to create masters as float - it caused incompatibility problems.
 
 Welcome to DeepSkyStacker 5.1.4
 ===============================
