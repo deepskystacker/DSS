@@ -12,7 +12,8 @@ Changes since the last release:
 
 1. Write Intermediate TIFF format files with COMPRESSION_NONE.
 
-2. Remove any .stackinfo.txt files that already exist when re-registering images.  This prevents incorrect registration of images when changing stacking settings and debayer settings.
+2. Remove any .stackinfo.txt files that already exist when re-registering images.
+   This prevents incorrect registration of images when changing stacking settings and de-Bayer settings.
 
 3. Change Raw/FITS DDP settings so that the Bayer transformation (Bilinear/AHD/Drizzle/SuperPixel) on the two tabs “mirror one another”.
    That’s to say if you change those settings on the FITS tab, then the RAW tab is also changed and vice-versa.
