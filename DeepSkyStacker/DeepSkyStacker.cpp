@@ -1109,9 +1109,6 @@ int main(int argc, char* argv[])
 
 	reportCpuType();
 
-	ZTRACE_RUNTIME("Creating Main Window");
-	DeepSkyStacker mainWindow;
-
 	//
 	// Set things up to capture terminal errors
 	//
@@ -1134,6 +1131,9 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
+		ZTRACE_RUNTIME("Creating Main Window");
+		DeepSkyStacker mainWindow;
+
 		ZTRACE_RUNTIME("Checking Mutex");
 		bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
 		bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
