@@ -37,8 +37,9 @@
 //
 #include <stdafx.h>
 #include <htmlhelp.h>
-#include <boost/interprocess/sync/named_mutex.hpp>
-#include <boost/interprocess/exceptions.hpp>
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <fstream>
 
 namespace bip = boost::interprocess;
 
@@ -1135,9 +1136,11 @@ int main(int argc, char* argv[])
 		DeepSkyStacker mainWindow;
 
 		ZTRACE_RUNTIME("Checking Mutex");
-		bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
-		bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
-		const bool firstInstance{ lk.try_lock() };
+		constexpr const char* mutexFileName = "DeepSkyStacker.Interprocess.Mutex";
+		auto newFile = std::ofstream(mutexFileName); // This creates the file for locking in the directory of the exe. By intention, the file will not be deleted.
+		bip::file_lock dssSecureMutex{ mutexFileName }; // Advantage of file_lock over named_mutex: The OS removes the lock in case of an unexpected termination.
+		bip::scoped_lock<bip::file_lock> lock{ dssSecureMutex, bip::try_to_lock };
+		const bool firstInstance = lock.owns();
 		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
 
 		if (firstInstance)
