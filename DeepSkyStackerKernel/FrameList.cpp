@@ -373,7 +373,7 @@ namespace DSS
 			else
 			{
 				ZTRACE_RUNTIME("fs::current_path(%s) failed with error code %ld, %s",
-					directory.generic_string().c_str(), ec.value(), ec.message().c_str());
+					directory.generic_u8string().c_str(), ec.value(), ec.message().c_str());
 				bContinue = false;
 			}
 
@@ -482,7 +482,7 @@ namespace DSS
 									{
 										QString errorMessage(
 											QCoreApplication::translate("DSS::StackingDlg", "File %1 was not loaded because it was already loaded in group %2 (%3)")
-											.arg(filePath.generic_string().c_str())
+											.arg(filePath.generic_u8string().c_str())
 											.arg(groupId)
 											.arg(groupName(groupId)));
 

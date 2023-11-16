@@ -1501,7 +1501,7 @@ namespace DSS
 			// If the file has already been loaded complain
 			//
 			QString errorMessage{ tr("File %1 was not loaded because it was already loaded in group %2 (%3)")
-				.arg(file.generic_string().c_str())
+				.arg(file.generic_u8string().c_str())
 				.arg(groupId)
 				.arg(frameList.groupName(groupId)) };
 			DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);

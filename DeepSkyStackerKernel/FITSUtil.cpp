@@ -253,7 +253,7 @@ bool CFITSReader::Open()
 
 	if (m_fits)
 	{
-		ZTRACE_RUNTIME("Opened %s", file.generic_string().c_str());
+		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -1275,7 +1275,7 @@ bool CFITSWriter::Open()
 	int				nStatus = 0;
 
 	fs::remove(file);
-	fits_create_diskfile(&m_fits, file.generic_string().c_str(), &nStatus);
+	fits_create_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();

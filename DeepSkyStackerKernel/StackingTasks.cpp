@@ -1881,7 +1881,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 #if defined _WINDOWS
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_string().c_str(), "wt")
+			std::fopen(file.generic_u8string().c_str(), "wt")
 #endif
 			)
 		{

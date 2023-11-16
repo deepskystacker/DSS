@@ -2288,7 +2288,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						if (lightframeInfo.m_bDisabled)
 							return { {}, -1 };
 
-						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_string().c_str());
+						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_u8string().c_str());
 
 						std::shared_ptr<CMemoryBitmap> rpBitmap;
 						if (::LoadFrame(lightframeInfo.filePath, PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap))
@@ -2320,14 +2320,14 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								deb.nospace() << "CFA light frame: ";
 							else
 								deb.nospace() << "Mono light frame: ";
-							deb << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							deb << lightframeInfo.filePath.generic_u8string().c_str() << Qt::endl;
 							for (size_t ix = 0; ix < 12; ix++)
 								deb << " " << pBitmap->getValue(ix, 0);
 						}
 						else
 						{
 							auto deb{ qDebug() };
-							deb.nospace() << "RGB light frame: " << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							deb.nospace() << "RGB light frame: " << lightframeInfo.filePath.generic_u8string().c_str() << Qt::endl;
 							for (size_t ix = 0; ix < 4; ix++)
 							{
 								auto [r, g, b] = pBitmap->getValues(ix, 0);

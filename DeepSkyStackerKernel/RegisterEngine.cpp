@@ -833,7 +833,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		++nrSubrects;
 		if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
 		{
-			const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.filename().generic_string().c_str()).arg(nStars.load()));
+			const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.filename().generic_u8string().c_str()).arg(nStars.load()));
 			m_pProgress->Progress2(strText, nrSubrects.load());
 		}
 	};
@@ -1384,7 +1384,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
 		{
-			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
+			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 
 			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
 			future = std::async(std::launch::async, readTask, j + 1, nullptr);
