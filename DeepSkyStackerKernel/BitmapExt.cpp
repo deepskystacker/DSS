@@ -994,7 +994,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 	//const QString name = QString::fromStdU16String(path.generic_u16string());
 
-	ZTRACE_RUNTIME("Getting image information for %s", path.generic_string().c_str());
+	ZTRACE_RUNTIME("Getting image information for %s", path.generic_u8string().c_str());
 	bool bResult = false;
 	auto now{ QDateTime::currentDateTime() };	// local time
 
