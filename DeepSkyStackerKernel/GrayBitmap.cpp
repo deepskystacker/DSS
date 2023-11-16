@@ -467,10 +467,10 @@ std::shared_ptr<CMultiBitmap> CGrayBitmapT<T>::CreateEmptyMultiBitmap() const
 	//
 	// If the input bitmap is 16 bit or 32 bit integer want the output type to be float
 	//
-	if (std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::uint16_t>)
-		result = std::make_shared<CGrayMultiBitmapT<T,float>>();
-	else
-		result = std::make_shared<CGrayMultiBitmapT<T>>();
+	//if (std::is_same_v<T, std::uint32_t> || std::is_same_v<T, std::uint16_t>)
+	//	result = std::make_shared<CGrayMultiBitmapT<T,float>>();
+	//else
+	result = std::make_shared<CGrayMultiBitmapT<T>>();
 	
 	result->SetBitmapModel(this);
 	return result;

@@ -101,12 +101,7 @@ public :
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	bool IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType) const;
-
-	bool IsCompatible(const CFrameInfo & cfi) const
-	{
-		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitsPerChannel, cfi.m_lNrChannels, cfi.m_CFAType);
-	};
+	bool IsCompatible(const CFrameInfo& cfi) const;
 
 	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);
 

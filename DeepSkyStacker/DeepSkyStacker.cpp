@@ -38,6 +38,7 @@
 #include <stdafx.h>
 #include <htmlhelp.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
+#include <boost/interprocess/exceptions.hpp>
 
 namespace bip = boost::interprocess;
 
@@ -1108,23 +1109,12 @@ int main(int argc, char* argv[])
 
 	reportCpuType();
 
-	ZTRACE_RUNTIME("Creating Main Window");
-	DeepSkyStacker mainWindow;
-
-	ZTRACE_RUNTIME("Checking Mutex");
-	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
-	bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
-	const bool firstInstance{ lk.try_lock() };
-	ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
-
 	//
 	// Set things up to capture terminal errors
 	//
 	setDssExceptionHandling();
 
 	askIfVersionCheckWanted();
-	if (firstInstance)
-		deleteRemainingTempFiles();
 
 	//
 	// Register PICTURETYPE and QMessageBox::Icon enums as meta types
@@ -1141,12 +1131,36 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
+		ZTRACE_RUNTIME("Creating Main Window");
+		DeepSkyStacker mainWindow;
+
+		ZTRACE_RUNTIME("Checking Mutex");
+		bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
+		bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
+		const bool firstInstance{ lk.try_lock() };
+		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
+
+		if (firstInstance)
+			deleteRemainingTempFiles();
+
 		Exiv2::XmpParser::initialize();
 		::atexit(Exiv2::XmpParser::terminate);
 
 		mainWindow.show();
 		//result = app.run(&theApp);
 		result = app.exec();
+	}
+	catch (bip::interprocess_exception& e)
+	{
+		ZTRACE_RUNTIME("boost::interprocess_exception caught: %s", e.what());
+		traceControl.setDeleteOnExit(false);
+		QString errorMessage(e.what());
+#if defined(_CONSOLE)
+		std::cerr << errorMessage.toUtf8().constData();
+#else
+		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
+#endif
+
 	}
 	catch (std::exception& e)
 	{

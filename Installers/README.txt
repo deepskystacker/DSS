@@ -1,15 +1,4 @@
-Welcome to DeepSkyStacker 5.1.5 Beta 1
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-Changes since the last release:
-
-1. Write Intermediate TIFF format files with COMPRESSION_NONE.
-
-2. Remove any .stackinfo.txt files that already exist for the light frames involved in this stack.  This prevents incorrect registration of images when changing stacking settings and debayer settings.
-
-Welcome to DeepSkyStacker 5.1.4
+Welcome to DeepSkyStacker 5.1.5
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -18,6 +7,24 @@ Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
+
+Changes since the last release:
+
+1. Write Intermediate TIFF format files with COMPRESSION_NONE.  Final output files will still be compressed.
+
+2. Remove any .stackinfo.txt files that already exist when re-registering images.
+   This prevents incorrect registration of images when changing stacking settings and de-Bayer settings.
+
+3. Change Raw/FITS DDP settings so that the Bayer transformation (Bilinear/AHD/Drizzle/SuperPixel) on the two tabs “mirror one another”.
+   That’s to say if you change those settings on the FITS tab, then the RAW tab is also changed and vice-versa.
+   There are no longer separate settings for the Bayer transformation for RAW and FITS (which has caused problems in the past).
+
+4. Bug fix: Revert change to create masters as float - it caused incompatibility problems.
+
+Welcome to DeepSkyStacker 5.1.4
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Changes since the last release:
 

@@ -89,21 +89,25 @@ void CFrameInfo::Reset()
 	m_lHeight = 0;
 }
 
-bool CFrameInfo::IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType) const
+bool CFrameInfo::IsCompatible(const CFrameInfo& cfi) const
 {
+	int width{ cfi.m_lWidth }, height{ cfi.m_lHeight }, bitsPerChannel{ cfi.m_lBitsPerChannel },
+		nrChannels{ cfi.m_lNrChannels };
+	CFATYPE CFAType{ cfi.m_CFAType };
+
 	bool			result = true;
 
-	if (m_lWidth != lWidth)
+	if (m_lWidth != width)
 	{
 		incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Width mismatch");
 		return false;
 	}
-	if (m_lHeight != lHeight)
+	if (m_lHeight != height)
 	{
 		incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Height mismatch");
 		return false;
 	}
-	if (m_lBitsPerChannel != lBitPerChannels)
+	if (! cfi.m_bMaster && m_lBitsPerChannel != bitsPerChannel)
 	{
 		incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Colour depth mismatch");
 		return false;
@@ -111,7 +115,7 @@ bool CFrameInfo::IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int 
 
 	if (result)
 	{
-		result = (m_lNrChannels == lNrChannels) && (m_CFAType == CFAType);
+		result = (m_lNrChannels == nrChannels) && (m_CFAType == CFAType);
 		if (!result)
 		{
 			// Check that if CFA if Off then the number of channels may be
@@ -121,8 +125,8 @@ bool CFrameInfo::IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int 
 				if (m_CFAType != CFAType)
 				{
 					if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels == 1))
-						result = (CFAType != CFATYPE_NONE) && (lNrChannels == 3);
-					else if ((CFAType == CFATYPE_NONE) && (lNrChannels == 1))
+						result = (CFAType != CFATYPE_NONE) && (nrChannels == 3);
+					else if ((CFAType == CFATYPE_NONE) && (nrChannels == 1))
 						result = (m_CFAType == CFATYPE_NONE) && (m_lNrChannels == 3);
 				};
 				if (false == result)
@@ -133,6 +137,7 @@ bool CFrameInfo::IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int 
 
 	return  result;
 }
+
 
 CFATYPE	CFrameInfo::GetCFAType() const
 {

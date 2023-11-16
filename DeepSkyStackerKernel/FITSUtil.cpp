@@ -236,7 +236,7 @@ bool CFITSReader::Open()
 	char error_text[31] = "";			// Error text for FITS errors.
 
 	// Open filename as ascii - won't work with international characters but we are limited to char with fits library.
-	fits_open_diskfile(&m_fits, file.generic_string().c_str(), READONLY, &status);
+	fits_open_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
