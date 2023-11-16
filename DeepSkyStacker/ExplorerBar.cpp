@@ -357,7 +357,7 @@ void ExplorerBar::onLoadSettings()
 			create_directories(fileName);		// In case they don't exist
 
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
-			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
+			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
 			workspace.ReadFromFile(fileName);
 			workspace.saveSettings();
 		}
@@ -416,7 +416,7 @@ void ExplorerBar::onSaveSettings()
 			create_directories(fileName);		// In case they don't exist
 
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
-			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_string().c_str());
+			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_u8string().c_str());
 			workspace.SaveToFile(fileName);
 		}
 		else if (a == saveAnother)
@@ -575,7 +575,7 @@ void ExplorerBar::LoadSettingFile()
 			fs::path fileName(files.at(0).toStdU16String());		// as UTF-16
 			if (status(fileName).type() == fs::file_type::regular)
 			{
-				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string().c_str());
+				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_u8string().c_str());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 				workspace.ReadFromFile(fileName);
@@ -619,7 +619,7 @@ void ExplorerBar::SaveSettingFile()
 		if (!file.isEmpty())
 		{
 			fs::path fileName(file.toStdU16String());		// as UTF-16
-			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string().c_str());
+			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_u8string().c_str());
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			workspace.SaveToFile(fileName);

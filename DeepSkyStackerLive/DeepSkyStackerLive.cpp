@@ -513,7 +513,7 @@ void DeepSkyStackerLive::onInitialise()
 	create_directories(fileName);		// In case they don't exist
 
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
-	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
+	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
 	workspace.ReadFromFile(fileName);
 
 	if (liveSettings->IsProcess_RAW()) validExtensions += rawExtensions;
@@ -941,7 +941,7 @@ bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 #if defined _WINDOWS
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_string().c_str(), "wt")
+			std::fopen(file.generic_u8string().c_str(), "wt")
 #endif
 			)
 		{
@@ -1113,7 +1113,7 @@ void DeepSkyStackerLive::onExistingFiles(const std::vector<fs::path>& files)
 
 void DeepSkyStackerLive::onNewFile(const fs::path& file)
 {
-	ZTRACE_RUNTIME("New file created in watched folder: %s", file.generic_string().c_str());
+	ZTRACE_RUNTIME("New file created in watched folder: %s", file.generic_u8string().c_str());
 	QString extension{ QString::fromStdU16String(file.extension().u16string()).toLower() };
 	if (validExtensions.contains(extension))
 	{

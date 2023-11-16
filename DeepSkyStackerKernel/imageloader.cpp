@@ -80,7 +80,7 @@ bool ImageLoader::load(const fs::path& p, std::shared_ptr<CMemoryBitmap>& pBitma
 	// Did we find the image in our cache?
 	if (found)
 	{
-		ZTRACE_RUNTIME("Image file %s found in image cache", p.generic_string().c_str());
+		ZTRACE_RUNTIME("Image file %s found in image cache", p.generic_u8string().c_str());
 		result = true;
 		if (imageVector.size() > MAXIMAGESINCACHE)
 		{
@@ -91,7 +91,7 @@ bool ImageLoader::load(const fs::path& p, std::shared_ptr<CMemoryBitmap>& pBitma
 	}
 	else
 	{
-		ZTRACE_RUNTIME("Loading image file %s in thread", p.generic_string().c_str());
+		ZTRACE_RUNTIME("Loading image file %s in thread", p.generic_u8string().c_str());
 		fileToLoad = p;
 		ThreadLoader* threadLoader(new ThreadLoader(this));
 		QThreadPool::globalInstance()->start(threadLoader);
