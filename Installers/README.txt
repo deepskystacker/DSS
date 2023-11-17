@@ -24,8 +24,6 @@ Changes since the last release:
 Welcome to DeepSkyStacker 5.1.4
 ===============================
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
 Changes since the last release:
 
 1. Upgrade CFITSIO library to 4.2.0
