@@ -52,11 +52,12 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 	//
 	// Use Exiv2 C++ class library to retrieve the EXIF information we want
 	//
-	auto image = ImageFactory::open(fileName.generic_string());
+	std::string temp{ reinterpret_cast<const char*>(fileName.generic_u8string().c_str()) };
+	auto image = ImageFactory::open(temp);
 	ZASSERT(image.get() != nullptr);
 	image->readMetadata();
 	auto& exifData{ image->exifData() };
-	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", fileName.generic_string().c_str());
+	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", fileName.generic_u8string().c_str());
 	if (exifData.empty())
 	{
 		ZTRACE_RUNTIME("No EXIF data found in file");

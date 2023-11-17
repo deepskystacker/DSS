@@ -80,25 +80,23 @@ CFATYPE GetFITSCFATYPE()
 
 bool IsFITSRawBayer()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
-	return (0 == interpolation.compare("RawBayer", Qt::CaseInsensitive));
+	return Workspace{}.value("RawDDP/RawBayer", false).toBool();
 }
 
 bool IsFITSSuperPixels()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
-	return (0 == interpolation.compare("SuperPixels", Qt::CaseInsensitive));
+	return Workspace{}.value("RawDDP/SuperPixels", false).toBool();
 }
 
 bool IsFITSBilinear()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
+	const QString interpolation = Workspace{}.value("RawDDP/Interpolation").toString();
 	return (0 == interpolation.compare("Bilinear", Qt::CaseInsensitive));
 }
 
 bool IsFITSAHD()
 {
-	const QString interpolation = Workspace{}.value("FitsDDP/Interpolation").toString();
+	const QString interpolation = Workspace{}.value("RawDDP/Interpolation").toString();
 	return (0 == interpolation.compare("AHD", Qt::CaseInsensitive));
 }
 
@@ -238,7 +236,7 @@ bool CFITSReader::Open()
 	char error_text[31] = "";			// Error text for FITS errors.
 
 	// Open filename as ascii - won't work with international characters but we are limited to char with fits library.
-	fits_open_diskfile(&m_fits, file.generic_string().c_str(), READONLY, &status);
+	fits_open_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
@@ -255,7 +253,7 @@ bool CFITSReader::Open()
 
 	if (m_fits)
 	{
-		ZTRACE_RUNTIME("Opened %s", file.generic_string().c_str());
+		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
 		// File ok - move to the first image HDU
 		QString			strSimple;
@@ -1277,7 +1275,7 @@ bool CFITSWriter::Open()
 	int				nStatus = 0;
 
 	fs::remove(file);
-	fits_create_diskfile(&m_fits, file.generic_string().c_str(), &nStatus);
+	fits_create_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &nStatus);
 	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();

@@ -1478,7 +1478,7 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 		};
 		const QString description("Registered and Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, TF_UNKNOWN, TC_NONE, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
 			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
@@ -1541,7 +1541,7 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 		}
 		const QString description("Calibrated light frame");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, TF_UNKNOWN, TC_NONE, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
 			bResult = WriteFITS(strOutputFile.toStdU16String(), pOutBitmap.get(), m_pProgress, description, m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
@@ -1584,7 +1584,7 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 		
 		const QString description("Delta Cosmetic Image");
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
+			bResult = WriteTIFF(strOutputFile.toStdU16String(), pBitmap, m_pProgress, TF_UNKNOWN, TC_NONE, description);
 		else
 			bResult = WriteFITS(strOutputFile.toStdU16String(), pBitmap, m_pProgress, description);
 		if (m_pProgress)
@@ -2288,7 +2288,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						if (lightframeInfo.m_bDisabled)
 							return { {}, -1 };
 
-						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_string().c_str());
+						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_u8string().c_str());
 
 						std::shared_ptr<CMemoryBitmap> rpBitmap;
 						if (::LoadFrame(lightframeInfo.filePath, PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap))
@@ -2320,14 +2320,14 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								deb.nospace() << "CFA light frame: ";
 							else
 								deb.nospace() << "Mono light frame: ";
-							deb << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							deb << lightframeInfo.filePath.generic_u8string().c_str() << Qt::endl;
 							for (size_t ix = 0; ix < 12; ix++)
 								deb << " " << pBitmap->getValue(ix, 0);
 						}
 						else
 						{
 							auto deb{ qDebug() };
-							deb.nospace() << "RGB light frame: " << lightframeInfo.filePath.generic_string().c_str() << Qt::endl;
+							deb.nospace() << "RGB light frame: " << lightframeInfo.filePath.generic_u8string().c_str() << Qt::endl;
 							for (size_t ix = 0; ix < 4; ix++)
 							{
 								auto [r, g, b] = pBitmap->getValues(ix, 0);
