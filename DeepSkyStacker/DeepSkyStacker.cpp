@@ -37,8 +37,11 @@
 //
 #include <stdafx.h>
 #include <htmlhelp.h>
-#include <boost/interprocess/sync/named_mutex.hpp>
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/exceptions.hpp>
+
+#include <fstream>
 
 namespace bip = boost::interprocess;
 
@@ -1135,9 +1138,31 @@ int main(int argc, char* argv[])
 		DeepSkyStacker mainWindow;
 
 		ZTRACE_RUNTIME("Checking Mutex");
-		bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
-		bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
-		const bool firstInstance{ lk.try_lock() };
+		//
+		// Get the name of the writable local applicaiton data directory
+		// and create the directories if necessary
+		//
+
+		QString mutexFileName{ QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) };
+		fs::path file{ mutexFileName.toStdU16String() };
+		create_directories(file);
+
+		//
+		// Append the file name to the directory name
+		//
+		mutexFileName += "/DeepSkyStacker.Interprocess.Mutex";
+
+		//
+		// Create the file it doesn't exist.  It is intentionally never deleted.
+		//
+		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());	
+
+		//
+		// Use a boost::interprocess::file_lock as unlike a named_mutex, the OS removes the lock in the case of abnormal termination
+		//
+		bip::file_lock dssMutex{ mutexFileName.toUtf8().constData() };
+		bip::scoped_lock<bip::file_lock> lock(dssMutex, bip::try_to_lock);
+		const bool firstInstance{ lock.owns() };
 		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
 
 		if (firstInstance)
