@@ -1139,10 +1139,9 @@ int main(int argc, char* argv[])
 
 		ZTRACE_RUNTIME("Checking Mutex");
 		//
-		// Get the name of the writable local applicaiton data directory
+		// Get the name of the writable local application data directory
 		// and create the directories if necessary
 		//
-
 		QString mutexFileName{ QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) };
 		fs::path file{ mutexFileName.toStdU16String() };
 		create_directories(file);
@@ -1153,7 +1152,7 @@ int main(int argc, char* argv[])
 		mutexFileName += "/DeepSkyStacker.Interprocess.Mutex";
 
 		//
-		// Create the file it doesn't exist.  It is intentionally never deleted.
+		// Create the file if it doesn't exist.  It is intentionally never deleted.
 		//
 		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());	
 
