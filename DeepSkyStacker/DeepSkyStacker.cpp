@@ -235,7 +235,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
 	winHost{ nullptr },
-	currTab{ 0 },
+	currTab{ IDD_REGISTERING },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -362,8 +362,6 @@ DeepSkyStacker::DeepSkyStacker() :
 
 
 	settings.endGroup();
-
-
 }
 
 DeepSkyStacker::~DeepSkyStacker()
@@ -373,6 +371,8 @@ DeepSkyStacker::~DeepSkyStacker()
 
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
+	// Invoke base class showEvent()
+	Inherited::showEvent(event);
 	if (!event->spontaneous())
 	{
 		if (!initialised)
@@ -381,8 +381,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 			onInitialise();
 		}
 	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
 }
 
 void DeepSkyStacker::onInitialise()
@@ -408,6 +406,18 @@ void DeepSkyStacker::onInitialise()
 	hwnd = processingDlg->GetSafeHwnd();
 	ZASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
+
+	//
+	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
+	// may not be visible now.  We want it to be visible.
+	//
+	QTimer::singleShot(20,
+		[this]()
+		{
+			this->stackingDlg->setVisible(true);
+			this->setTab(IDD_REGISTERING);
+			this->update();
+		});
 
 }
 
