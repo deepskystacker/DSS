@@ -1,3 +1,12 @@
+Welcome to DeepSkyStacker 5.1.6 Beta 1
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+Changes since the last release:
+
+1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
