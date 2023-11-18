@@ -39,6 +39,8 @@
 #include <htmlhelp.h>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/interprocess/exceptions.hpp>
+
 #include <fstream>
 
 namespace bip = boost::interprocess;
@@ -233,7 +235,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
 	winHost{ nullptr },
-	currTab{ 0 },
+	currTab{ IDD_REGISTERING },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -360,8 +362,6 @@ DeepSkyStacker::DeepSkyStacker() :
 
 
 	settings.endGroup();
-
-
 }
 
 DeepSkyStacker::~DeepSkyStacker()
@@ -371,6 +371,8 @@ DeepSkyStacker::~DeepSkyStacker()
 
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
+	// Invoke base class showEvent()
+	Inherited::showEvent(event);
 	if (!event->spontaneous())
 	{
 		if (!initialised)
@@ -379,8 +381,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 			onInitialise();
 		}
 	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
 }
 
 void DeepSkyStacker::onInitialise()
@@ -406,6 +406,18 @@ void DeepSkyStacker::onInitialise()
 	hwnd = processingDlg->GetSafeHwnd();
 	ZASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
+
+	//
+	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
+	// may not be visible now.  We want it to be visible.
+	//
+	QTimer::singleShot(20,
+		[this]()
+		{
+			this->stackingDlg->setVisible(true);
+			this->setTab(IDD_REGISTERING);
+			this->update();
+		});
 
 }
 
@@ -1136,11 +1148,30 @@ int main(int argc, char* argv[])
 		DeepSkyStacker mainWindow;
 
 		ZTRACE_RUNTIME("Checking Mutex");
-		constexpr const char* mutexFileName = "DeepSkyStacker.Interprocess.Mutex";
-		auto newFile = std::ofstream(mutexFileName); // This creates the file for locking in the directory of the exe. By intention, the file will not be deleted.
-		bip::file_lock dssSecureMutex{ mutexFileName }; // Advantage of file_lock over named_mutex: The OS removes the lock in case of an unexpected termination.
-		bip::scoped_lock<bip::file_lock> lock{ dssSecureMutex, bip::try_to_lock };
-		const bool firstInstance = lock.owns();
+		//
+		// Get the name of the writable local application data directory
+		// and create the directories if necessary
+		//
+		QString mutexFileName{ QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) };
+		fs::path file{ mutexFileName.toStdU16String() };
+		create_directories(file);
+
+		//
+		// Append the file name to the directory name
+		//
+		mutexFileName += "/DeepSkyStacker.Interprocess.Mutex";
+
+		//
+		// Create the file if it doesn't exist.  It is intentionally never deleted.
+		//
+		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());	
+
+		//
+		// Use a boost::interprocess::file_lock as unlike a named_mutex, the OS removes the lock in the case of abnormal termination
+		//
+		bip::file_lock dssMutex{ mutexFileName.toUtf8().constData() };
+		bip::scoped_lock<bip::file_lock> lock(dssMutex, bip::try_to_lock);
+		const bool firstInstance{ lock.owns() };
 		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
 
 		if (firstInstance)
