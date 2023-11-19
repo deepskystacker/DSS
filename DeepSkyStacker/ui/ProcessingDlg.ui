@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>ProcessingDlg</class>
+ <widget class="QWidget" name="ProcessingDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>640</height>
+    <height>788</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,9 +17,31 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">ProcessingDlg</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="information">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>275</width>
+       <height>38</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
+     </property>
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="DSS::ImageView" name="picture" native="true">
      <property name="sizePolicy">
@@ -77,11 +99,11 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="rgbTab">
           <attribute name="title">
-           <string>RGB/K Levels</string>
+           <string comment="IDD_RGB">RGB/K Levels</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
@@ -122,7 +144,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QGradientCtrl" name="redGradient" native="true">
+              <widget class="QLinearGradientCtrl" name="redGradient" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -177,7 +199,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QGradientCtrl" name="widget_2" native="true">
+              <widget class="QLinearGradientCtrl" name="widget_2" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -232,7 +254,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QGradientCtrl" name="blueGradient" native="true">
+              <widget class="QLinearGradientCtrl" name="blueGradient" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -252,7 +274,7 @@
            <item>
             <widget class="QCheckBox" name="checkBox">
              <property name="text">
-              <string>Linked settings</string>
+              <string comment="IDC_LINK">Linked settings</string>
              </property>
             </widget>
            </item>
@@ -260,7 +282,7 @@
          </widget>
          <widget class="QWidget" name="lumTab">
           <attribute name="title">
-           <string>Luminance</string>
+           <string comment="IDD_LUMINANCE">Luminance</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
@@ -281,7 +303,7 @@
               <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
              </property>
              <property name="text">
-              <string>Darkness</string>
+              <string comment="IDC_TEXT_DARKNESS">Darkness</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -292,8 +314,14 @@
             <layout class="QHBoxLayout" name="horizontalLayout_6">
              <item>
               <widget class="QLabel" name="darkLabel">
+               <property name="minimumSize">
+                <size>
+                 <width>49</width>
+                 <height>37</height>
+                </size>
+               </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string notr="true">TextLabel</string>
                </property>
               </widget>
              </item>
@@ -335,7 +363,7 @@
               <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
              </property>
              <property name="text">
-              <string>Midtone</string>
+              <string comment="IDC_TEXT_MIDTONE">Midtone</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -346,8 +374,14 @@
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
               <widget class="QLabel" name="midLabel">
+               <property name="minimumSize">
+                <size>
+                 <width>49</width>
+                 <height>37</height>
+                </size>
+               </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string notr="true">TextLabel</string>
                </property>
               </widget>
              </item>
@@ -389,7 +423,7 @@
               <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
              </property>
              <property name="text">
-              <string>Highlight</string>
+              <string comment="IDC_TEXT_HIGHLIGHT">Highlight</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -400,8 +434,14 @@
             <layout class="QHBoxLayout" name="horizontalLayout_8">
              <item>
               <widget class="QLabel" name="highLabel">
+               <property name="minimumSize">
+                <size>
+                 <width>49</width>
+                 <height>37</height>
+                </size>
+               </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string notr="true">TextLabel</string>
                </property>
               </widget>
              </item>
@@ -429,7 +469,7 @@
          </widget>
          <widget class="QWidget" name="satTab">
           <attribute name="title">
-           <string>Saturation</string>
+           <string comment="IDD_SATURATION">Saturation</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <item>
@@ -450,7 +490,7 @@
               <string notr="true">background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))</string>
              </property>
              <property name="text">
-              <string>Saturation shift</string>
+              <string comment="IDC_TEXT_SATURATION">Saturation shift</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -477,8 +517,14 @@
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
               <widget class="QLabel" name="darkLabel_2">
+               <property name="minimumSize">
+                <size>
+                 <width>49</width>
+                 <height>18</height>
+                </size>
+               </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string notr="true">TextLabel</string>
                </property>
               </widget>
              </item>
@@ -513,7 +559,7 @@
          <item>
           <widget class="QPushButton" name="applyButton">
            <property name="text">
-            <string>Apply</string>
+            <string comment="IDC_PROCESS">Apply</string>
            </property>
           </widget>
          </item>
@@ -574,7 +620,7 @@
          <item>
           <widget class="QPushButton" name="resetButton">
            <property name="text">
-            <string>Reset</string>
+            <string comment="IDC_RESET">Reset</string>
            </property>
           </widget>
          </item>
@@ -638,9 +684,9 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>QGradientCtrl</class>
+   <class>QLinearGradientCtrl</class>
    <extends>QWidget</extends>
-   <header>qgradientctrl.h</header>
+   <header>QLinearGradientCtrl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -478,18 +478,18 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::Load(LPCTSTR szStackedFile, ProgressBase * pProgress)
+bool CStackedBitmap::Load(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (GetPictureInfo(szStackedFile, bmpInfo) && bmpInfo.CanLoad())
+	if (GetPictureInfo(file, bmpInfo) && bmpInfo.CanLoad())
 	{
 		QString strFileType = bmpInfo.m_strFileType.left(4);
 
 		if (strFileType == "TIFF")
-			return LoadTIFF(szStackedFile, pProgress);
+			return LoadTIFF(file, pProgress);
 		else if (strFileType == "FITS")
-			return LoadFITS(szStackedFile, pProgress);
+			return LoadFITS(file, pProgress);
 		else
 			return false;
 	}
@@ -813,8 +813,8 @@ private :
 						m_lYStart;
 
 public :
-	CFITSWriterStacker(LPCTSTR szFileName, LPRECT lprc, ProgressBase *	pProgress) :
-	   CFITSWriter(szFileName, pProgress)
+	CFITSWriterStacker(const fs::path& file, LPRECT lprc, ProgressBase *	pProgress) :
+	   CFITSWriter(file, pProgress)
 	{
 		m_lprc = lprc;
 		m_bApplySettings = false;
@@ -1010,8 +1010,8 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CTIFFReadStacker(LPCTSTR szFileName, ProgressBase *	pProgress)
-		: CTIFFReader(szFileName, pProgress)
+	CTIFFReadStacker(const fs::path& file, ProgressBase *	pProgress)
+		: CTIFFReader(file, pProgress)
 	{
         m_pStackedBitmap = NULL;
 	};
@@ -1079,11 +1079,11 @@ bool CTIFFReadStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadTIFF(LPCTSTR szStackedFile, ProgressBase * pProgress)
+bool CStackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
-	CTIFFReadStacker	tiff(szStackedFile, pProgress);
+	CTIFFReadStacker	tiff(file, pProgress);
 
 	tiff.SetStackedBitmap(this);
 	if (tiff.Open())
@@ -1122,8 +1122,8 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CFITSReadStacker(LPCTSTR szFileName, ProgressBase *	pProgress)
-		: CFITSReader(szFileName, pProgress)
+	CFITSReadStacker(const fs::path& file, ProgressBase *	pProgress)
+		: CFITSReader(file, pProgress)
 	{
         m_pStackedBitmap = NULL;
 	};
@@ -1192,11 +1192,11 @@ bool CFITSReadStacker::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadFITS(LPCTSTR szStackedFile, ProgressBase * pProgress)
+bool CStackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
-	CFITSReadStacker	fits(szStackedFile, pProgress);
+	CFITSReadStacker	fits(file, pProgress);
 
 	fits.SetStackedBitmap(this);
 	if (fits.Open())

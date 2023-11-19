@@ -58,7 +58,7 @@ public :
 		return bResult;
 	};
 
-	bool	LoadStackedInfo(LPCTSTR szStackedInfoFile);
+	bool	LoadStackedInfo(const fs::path& file);
 
 	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)
 	{

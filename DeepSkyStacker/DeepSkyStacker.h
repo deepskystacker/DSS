@@ -35,16 +35,16 @@
 **
 ****************************************************************************/
 #include "dssbase.h"
+#include "DeepStack.h"
 #include "dss_settings.h"
 namespace DSS
 {
 	class PictureList;
+	class ProcessingDlg;
 	class StackingDlg;
 }
 class ExplorerBar;
 class QStackedWidget;
-class QWinHost;
-class CProcessingDlg;
 class CDSSSettings;
 class CDeepStack;
 
@@ -74,9 +74,7 @@ private:
 	DSS::PictureList* pictureList;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
-	QWinHost* winHost;
-	CWnd hostWnd;
-	std::unique_ptr<CProcessingDlg>	processingDlg;
+	DSS::ProcessingDlg*	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
 	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
 	std::uint32_t currTab;
@@ -110,7 +108,7 @@ public:
 	}
 
 	DeepSkyStacker();
-	~DeepSkyStacker();
+	~DeepSkyStacker() {};
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 	inline std::uint32_t tab() { return currTab; }
@@ -123,7 +121,7 @@ public:
 	void enableSubDialogs();
 	CDSSSettings& imageProcessingSettings();
 	DSS::StackingDlg& getStackingDlg();
-	CProcessingDlg& getProcessingDlg();
+	DSS::ProcessingDlg& getProcessingDlg();
 	ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;

@@ -5,6 +5,7 @@
 #include "Ztrace.h"
 #include "zexcept.h"
 #include "DeepSkyStacker.h"
+#include "commonresource.h"
 #include "ProcessingDlg.h"
 #include "Workspace.h"
 #include "RegisterSettings.h"
@@ -262,19 +263,19 @@ void ExplorerBar::onBatchStacking()
 
 void ExplorerBar::onOpenPicture()
 {
-	dssApp->getProcessingDlg().OnLoaddsi();
+	dssApp->getProcessingDlg().loadImage();
 }
 void ExplorerBar::onCopyPicture()
 {
-	dssApp->getProcessingDlg().CopyPictureToClipboard();
+	dssApp->getProcessingDlg().copyToClipboard();
 }
 void ExplorerBar::onDoStarMask()
 {
-	dssApp->getProcessingDlg().CreateStarMask();
+	dssApp->getProcessingDlg().createStarMask();
 }
 void ExplorerBar::onSavePicture()
 {
-	dssApp->getProcessingDlg().SavePictureToFile();
+	dssApp->getProcessingDlg().saveImage();
 }
 
 /************************************************************************************/

@@ -114,12 +114,12 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 
 /* ------------------------------------------------------------------- */
 
-bool CDeepStack::LoadStackedInfo(LPCTSTR szStackedInfoFile)
+bool CDeepStack::LoadStackedInfo(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult;
 
-	bResult = m_StackedBitmap.Load(szStackedInfoFile, m_pProgress);
+	bResult = m_StackedBitmap.Load(file, m_pProgress);
 
 	if (bResult)
 		ComputeOriginalHistogram(m_OriginalHisto);

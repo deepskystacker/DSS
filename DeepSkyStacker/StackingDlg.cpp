@@ -64,6 +64,7 @@
 #include "ProcessingDlg.h"
 #include "ZExcept.h"
 #include "ImageProperties.h"
+#include "commonresource.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -2491,7 +2492,7 @@ namespace DSS
 					dlg.SetJointProgress(false);
 					dlg.Close();
 
-					dssApp->getProcessingDlg().LoadFile(strFileName.wstring().c_str());
+					dssApp->getProcessingDlg().loadFile(strFileName);
 
 					// Change tab to processing
 					dssApp->setTab(IDD_PROCESSING);

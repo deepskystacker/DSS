@@ -57,7 +57,6 @@ namespace bip = boost::interprocess;
 #include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
 #include "SetUILanguage.h"
-#include "qwinhost.h"
 #include "DeepStack.h"
 #include "tracecontrol.h"
 #include "Workspace.h"
@@ -234,7 +233,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
-	winHost{ nullptr },
 	currTab{ IDD_REGISTERING },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
@@ -242,7 +240,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	m_progress{ false },
 	sponsorText{ new QLabel("") },
 	statusBarText{ new QLabel("") },
-	processingDlg{ std::make_unique<CProcessingDlg>() },
 	m_DeepStack{ std::make_unique<CDeepStack>() },
 	m_ImageProcessingSettings{ std::make_unique<CDSSSettings>() },
 	errorMessageDialog{ new QErrorMessage(this) },
@@ -290,13 +287,15 @@ DeepSkyStacker::DeepSkyStacker() :
 
 	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
 	stackedWidget->addWidget(stackingDlg);
-
-	winHost = new QWinHost(stackedWidget);
-	winHost->setObjectName("winHost");
-	stackedWidget->addWidget(winHost);
 	
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	processingDlg = new DSS::ProcessingDlg(this);
+	processingDlg->setObjectName("processingDlg");
+
+	ZTRACE_RUNTIME("Adding Processing Panel to stackedWidget");
+	stackedWidget->addWidget(processingDlg);
+
 	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	//
 	// Connect Qt Signals to appropriate slots
@@ -364,11 +363,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	settings.endGroup();
 }
 
-DeepSkyStacker::~DeepSkyStacker()
-{
-	hostWnd.Detach();
-}
-
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
 	// Invoke base class showEvent()
@@ -386,26 +380,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-	//
-	// Attach the hwnd of the stacked widget to a CWnd that we use as the parent for the 
-	// processing dialog.   This code can't be in the ctor because stackedWidget doesn't
-	// have an HWND at that point, whereas it does when Qt inokes the showEvent handler.
-	//
-	HWND hwnd{ reinterpret_cast<HWND>(stackedWidget->effectiveWinId()) };
-	hostWnd.Attach(hwnd);
-
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg->Create(IDD_PROCESSING, &hostWnd);
-	if (FALSE == result)
-	{
-		int lastErr = GetLastError();
-		ZTRACE_RUNTIME("lastErr = %d", lastErr);
-	}
-	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
-
-	hwnd = processingDlg->GetSafeHwnd();
-	ZASSERT(NULL != hwnd);
-	winHost->setWindow(hwnd);
 
 	//
 	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
@@ -506,12 +480,11 @@ void DeepSkyStacker::connectSignalsToSlots()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (false == processingDlg->SaveOnClose())
+	if (false == processingDlg->saveOnClose())
 	{
 		e->ignore();
 		return;
 	}
-	processingDlg->DestroyWindow();
 	if (false == stackingDlg->saveOnClose())
 	{
 		e->ignore();
@@ -560,7 +533,7 @@ ULONG_PTR gdiHookToken{ 0ULL };
 void DeepSkyStacker::disableSubDialogs()
 {
 	stackingDlg->setEnabled(false);
-	processingDlg->EnableWindow(false);
+	processingDlg->setEnabled(false);
 	//m_dlgLibrary.EnableWindow(false);
 	explorerBar->setEnabled(false);
 }
@@ -568,7 +541,7 @@ void DeepSkyStacker::disableSubDialogs()
 void DeepSkyStacker::enableSubDialogs()
 {
 	stackingDlg->setEnabled(true);
-	processingDlg->EnableWindow(true);
+	processingDlg->setEnabled(true);
 	//m_dlgLibrary.EnableWindow(true);
 	explorerBar->setEnabled(true);
 }
@@ -586,9 +559,9 @@ DSS::StackingDlg& DeepSkyStacker::getStackingDlg()
 	return *stackingDlg;
 }
 
-CProcessingDlg& DeepSkyStacker::getProcessingDlg()
+DSS::ProcessingDlg& DeepSkyStacker::getProcessingDlg()
 {
-	return *processingDlg.get();
+	return *processingDlg;
 }
 
 CDeepStack& DeepSkyStacker::deepStack()
@@ -638,7 +611,7 @@ void DeepSkyStacker::updateTab()
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
 		stackingDlg->showImageList(false);
-		processingDlg->ShowWindow(SW_SHOW);
+		processingDlg->update();
 		break;
 	};
 	explorerBar->update();

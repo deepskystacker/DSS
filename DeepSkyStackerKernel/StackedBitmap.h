@@ -158,8 +158,8 @@ private:
 	CBitmapInfo	bmpInfo;
 
 private:
-	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
-	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
+	bool	LoadTIFF(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
+	bool	LoadFITS(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
 
 	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
@@ -314,7 +314,7 @@ public:
 		return m_lNrBitmaps;
 	};
 
-	bool	Load(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
+	bool	Load(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
 	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
 	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
 	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);

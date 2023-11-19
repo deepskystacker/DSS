@@ -34,9 +34,6 @@
     <Filter Include="Tools">
       <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Qt Porting">
-      <UniqueIdentifier>{db9eb54e-7edb-4ace-9ead-2b1cc7cb7fb2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Qt">
       <UniqueIdentifier>{31a4e7c2-73e1-42fc-a635-0db545d92d41}</UniqueIdentifier>
     </Filter>
@@ -75,19 +72,7 @@
     <ClCompile Include="RegisterSettings.cpp">
       <Filter>Dialogs\Registering</Filter>
     </ClCompile>
-    <ClCompile Include="LuminanceTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessingDlg.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
     <ClCompile Include="ProcessSettingsSheet.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="RGBTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SaturationTab.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
     <ClCompile Include="SavePicture.cpp">
@@ -132,17 +117,11 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="qwinwidget.cpp">
-      <Filter>Qt Porting</Filter>
-    </ClCompile>
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\WndImage.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="qwinhost.cpp">
-      <Filter>Qt Porting</Filter>
     </ClCompile>
     <ClCompile Include="ImageSinks.cpp">
       <Filter>Dialogs\ImageSinks</Filter>
@@ -219,6 +198,9 @@
     <ClCompile Include="About.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessingDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -292,19 +274,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LuminanceTab.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessingDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="ProcessSettingsSheet.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="RGBTab.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SaturationTab.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
     <ClInclude Include="SavePicture.h">
@@ -366,9 +336,6 @@
     </ClInclude>
     <ClInclude Include="ImageSinks.h">
       <Filter>Dialogs\ImageSinks</Filter>
-    </ClInclude>
-    <ClInclude Include="qmfcapp.h">
-      <Filter>Qt Porting</Filter>
     </ClInclude>
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
@@ -725,14 +692,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="QWinHost">
-      <Filter>Qt Porting</Filter>
-    </None>
-    <None Include="QWinWidget">
-      <Filter>Qt Porting</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
@@ -821,9 +780,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="qwinwidget.h">
-      <Filter>Qt Porting</Filter>
-    </QtMoc>
     <QtMoc Include="BackgroundOptions.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -838,9 +794,6 @@
     </QtMoc>
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="qwinhost.h">
-      <Filter>Qt Porting</Filter>
     </QtMoc>
     <QtMoc Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
@@ -925,6 +878,9 @@
     </QtMoc>
     <QtMoc Include="About.h">
       <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="ProcessingDlg.h">
+      <Filter>Dialogs\Processing</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
