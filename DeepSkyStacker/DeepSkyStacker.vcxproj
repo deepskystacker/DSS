@@ -334,6 +334,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="selectrect.cpp" />
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="SetUILanguage.cpp" />
+    <ClCompile Include="RGBTab.cpp" />
     <ClCompile Include="StackingDlg.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>

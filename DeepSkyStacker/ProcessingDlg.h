@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include "dssrect.h"
+#include "Histogram.h"
 #include "ui_ProcessingDlg.h"
 
 namespace DSS {
@@ -169,6 +170,7 @@ namespace DSS {
 		}
 	};
 
+
 	class ProcessingDlg : public QDialog, public Ui::ProcessingDlg
 	{
 		Q_OBJECT
@@ -188,13 +190,57 @@ namespace DSS {
 
 		bool saveOnClose();
 
+		HistogramAdjustmentCurve redAdjustmentCurve() const { return redAdjustmentCurve_; }
+		HistogramAdjustmentCurve greenAdjustmentCurve() const { return greenAdjustmentCurve_; }
+		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
+
 	private:
 		ProcessRect			rectToProcess;
 		bool dirty_;
 		fs::path currentFile;
-
+		QString iconModifier;
+		QMenu hacMenu;		// Menu to display when the adjustment curve button is pressed
+		QAction* linearAction;
+		QAction* cubeRootAction;
+		QAction* squareRootAction;
+		QAction* logAction;
+		QAction* logLogAction;
+		QAction* logSquareRootAction;
+		QAction* asinHAction;
+		inline static const QStringList iconNames{ "linear", "cuberoot", "sqrt", "log", "loglog", "logsqrt", "asinh" };
 		double gradientOffset;
 		double gradientRange;
+
+		HistogramAdjustmentCurve redAdjustmentCurve_;
+		HistogramAdjustmentCurve greenAdjustmentCurve_;
+		HistogramAdjustmentCurve blueAdjustmentCurve_;
+
+		void connectSignalsToSlots();
+		void setButtonIcons();
+		void setRedButtonIcon();
+		void setGreenButtonIcon();
+		void setBlueButtonIcon();
+
+
+	private slots:
+		void redChanging(int peg);
+		void redChanged(int peg);
+
+		void greenChanging(int peg);
+		void greenChanged(int peg);
+
+		void blueChanging(int peg);
+		void blueChanged(int peg);
+
+		inline void setRedAdjustmentCurve(HistogramAdjustmentCurve hac) { redAdjustmentCurve_ = hac; };
+		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac) { greenAdjustmentCurve_ = hac; };
+		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac) { blueAdjustmentCurve_ = hac; };
+
+		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+
+		void redButtonPressed();
+		void greenButtonPressed();
+		void blueButtonPressed();
 
 #if (0)
 		void	ProcessAndShow(bool bSaveUndo = true);

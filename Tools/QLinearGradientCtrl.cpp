@@ -933,6 +933,13 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	return index;
 }
 
+int QLinearGradientCtrl::setPeg(int index, qreal position)
+{
+	QColor colour{ stops[index].second };
+	return setPeg(index, colour, position);
+}
+
+
 int QLinearGradientCtrl::setSelected(int iSel)
 {
 	if (selectedPeg != iSel)

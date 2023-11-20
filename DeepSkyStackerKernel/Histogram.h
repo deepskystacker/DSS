@@ -60,41 +60,40 @@ inline double AsinHAdjust(double fValue)
 	return fValue;
 };
 
-typedef enum HISTOADJUSTTYPE
+enum class HistogramAdjustmentCurve
 {
-	HAT_LINEAR			= 1,
-	HAT_CUBEROOT		= 2,
-	HAT_SQUAREROOT		= 3,
-	HAT_LOG				= 4,
-	HAT_LOGLOG			= 5,
-	HAT_LOGSQUAREROOT	= 6,
-	HAT_ASINH			= 7
-}HISTOADJUSTTYPE;
+	Linear = 0,
+	CubeRoot = 1,
+	SquareRoot = 2,
+	Log = 3,
+	LogLog = 4,
+	LogSquareRoot = 5,
+	ASinH = 6
+};
 
-
-inline QString HistoAdjustTypeText(HISTOADJUSTTYPE hat)
+inline QString HistoAdjustTypeText(HistogramAdjustmentCurve hat)
 {
 	switch (hat)
 	{
-	case HAT_LINEAR	:
+	case HistogramAdjustmentCurve::Linear:
 		return QCoreApplication::translate("Histogram", "Linear", "IDS_HAT_LINEAR");
 		break;
-	case HAT_CUBEROOT :
+	case HistogramAdjustmentCurve::CubeRoot:
 		return QCoreApplication::translate("Histogram", "Cube Root", "IDS_HAT_CUBEROOT");
 		break;
-	case HAT_SQUAREROOT :
+	case HistogramAdjustmentCurve::SquareRoot:
 		return QCoreApplication::translate("Histogram", "Square Root", "IDS_HAT_SQUAREROOT");
 		break;
-	case HAT_LOG :
+	case HistogramAdjustmentCurve::Log:
 		return QCoreApplication::translate("Histogram", "Logarithm", "IDS_HAT_LOG");
 		break;
-	case HAT_LOGLOG :
+	case HistogramAdjustmentCurve::LogLog:
 		return QCoreApplication::translate("Histogram", "Log(Log)", "IDS_HAT_LOGLOG");
 		break;
-	case HAT_LOGSQUAREROOT :
+	case HistogramAdjustmentCurve::LogSquareRoot:
 		return QCoreApplication::translate("Histogram", "Log(Square Root)", "IDS_HAT_LOGSQUAREROOT");
 		break;
-	case HAT_ASINH :
+	case HistogramAdjustmentCurve::ASinH:
 		return QCoreApplication::translate("Histogram", "ASinH", "IDS_HAT_ASINH");
 		break;
 	};
@@ -114,7 +113,7 @@ private :
 	double					m_fUsedMin;
 	double					m_fUsedMax;
 
-	HISTOADJUSTTYPE			m_HAT;
+	HistogramAdjustmentCurve m_HAT;
 
 private :
 	void	CopyFrom(const CHistogramAdjust & ha)
@@ -139,25 +138,25 @@ private :
 
 		switch (m_HAT)
 		{
-		case HAT_CUBEROOT :
+		case HistogramAdjustmentCurve::CubeRoot:
 			return CubeRootAdjust(fValue);
 			break;
-		case HAT_SQUAREROOT :
+		case HistogramAdjustmentCurve::SquareRoot:
 			return SquareRootAdjust(fValue);
 			break;
-		case HAT_LOG :
+		case HistogramAdjustmentCurve::Log:
 			return LogAdjust(fValue);
 			break;
-		case HAT_LOGLOG	:
+		case HistogramAdjustmentCurve::LogLog:
 			return LogLogAdjust(fValue);
 			break;
-		case HAT_LOGSQUAREROOT :
+		case HistogramAdjustmentCurve::LogSquareRoot:
 			return LogSquareRootAdjust(fValue);
 			break;
-		case HAT_ASINH :
+		case HistogramAdjustmentCurve::ASinH:
 			return AsinHAdjust(fValue);
 			break;
-		case HAT_LINEAR	:
+		case HistogramAdjustmentCurve::Linear:
 		default :
 			return LinearAdjust(fValue);
 			break;
@@ -184,7 +183,7 @@ private :
 public :
 	CHistogramAdjust()
 	{
-		m_HAT = HAT_LOGSQUAREROOT;
+		m_HAT = HistogramAdjustmentCurve::LogSquareRoot;
 		SetOrgValues(0.0, 65535.0);
 
         m_fMin = 0;
@@ -196,7 +195,7 @@ public :
 
 	void	Reset()
 	{
-		m_HAT = HAT_LOGSQUAREROOT;
+		m_HAT = HistogramAdjustmentCurve::LogSquareRoot;
 		SetOrgValues(0.0, 65535.0);
 		SetNewValues(0.0, 65535.0, 0.0);
 	};
@@ -227,12 +226,12 @@ public :
 		m_fShift = fShift;
 	};
 
-	void	SetAdjustMethod(HISTOADJUSTTYPE hat)
+	void	SetAdjustMethod(HistogramAdjustmentCurve hat)
 	{
 		m_HAT = hat;
 	};
 
-	HISTOADJUSTTYPE GetAdjustMethod() const
+	HistogramAdjustmentCurve GetAdjustMethod() const
 	{
 		return m_HAT;
 	};
@@ -309,7 +308,7 @@ public :
 			.arg(m_fOrgMax, 0, 'f', 2)
 			.arg(m_fUsedMin, 0, 'f', 2)
 			.arg(m_fUsedMax, 0, 'f', 2)
-			.arg(m_HAT);
+			.arg(static_cast<int>(m_HAT));
 	};
 
 	void	FromText(const QString& szParameters)
@@ -325,7 +324,7 @@ public :
 		int				lValue;
 
 		lValue = ExtractValue(szParameters, "HAT");
-		m_HAT = (HISTOADJUSTTYPE)lValue;
+		m_HAT = (HistogramAdjustmentCurve)lValue;
 	};
 };
 

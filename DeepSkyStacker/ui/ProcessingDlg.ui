@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>788</height>
+    <height>684</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -99,7 +99,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="rgbTab">
           <attribute name="title">
@@ -109,7 +109,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QPushButton" name="redHat">
+              <widget class="QPushButton" name="redHAC">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -128,6 +128,9 @@
                  <height>48</height>
                 </size>
                </property>
+               <property name="toolTip">
+                <string comment="IDS_TT_REDADJUST">Set Red Histogram Adjustment curve</string>
+               </property>
                <property name="text">
                 <string notr="true"/>
                </property>
@@ -140,6 +143,9 @@
                  <width>40</width>
                  <height>40</height>
                 </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -164,7 +170,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QPushButton" name="greenHat">
+              <widget class="QPushButton" name="greenHAC">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -183,6 +189,9 @@
                  <height>48</height>
                 </size>
                </property>
+               <property name="toolTip">
+                <string comment="IDS_TT_GREENADJUST">Set Green Histogram Adjustment curve</string>
+               </property>
                <property name="text">
                 <string notr="true"/>
                </property>
@@ -196,10 +205,13 @@
                  <height>40</height>
                 </size>
                </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
-              <widget class="QLinearGradientCtrl" name="widget_2" native="true">
+              <widget class="QLinearGradientCtrl" name="greenGradient" native="true">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -219,7 +231,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QPushButton" name="blueHat">
+              <widget class="QPushButton" name="blueHAC">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -238,6 +250,9 @@
                  <height>48</height>
                 </size>
                </property>
+               <property name="toolTip">
+                <string comment="IDS_TT_BLUEADJUST">Set Blue Histogram Adjustment curve</string>
+               </property>
                <property name="text">
                 <string notr="true"/>
                </property>
@@ -250,6 +265,9 @@
                  <width>40</width>
                  <height>40</height>
                 </size>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -272,7 +290,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="linkedSettings">
              <property name="text">
               <string comment="IDC_LINK">Linked settings</string>
              </property>
@@ -565,6 +583,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="undoButton">
+           <property name="toolTip">
+            <string comment="IDS_UNDOLASTSETTINGS">Undo last applied settings</string>
+           </property>
            <property name="text">
             <string notr="true"/>
            </property>
@@ -584,6 +605,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string comment="IDS_MANAGESETTINGS">Save, Load, Manage settings ...</string>
            </property>
            <property name="text">
             <string notr="true"/>
@@ -605,6 +629,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="redoButton">
+           <property name="toolTip">
+            <string comment="IDS_REDOLASTSETTINGS">Redo last applied settings</string>
+           </property>
            <property name="text">
             <string notr="true"/>
            </property>

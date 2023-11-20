@@ -11,16 +11,73 @@
 namespace DSS {
 	ProcessingDlg::ProcessingDlg(QWidget *parent)
 		: QDialog(parent),
-		dirty_ { false }
+		dirty_ { false },
+		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
+		greenAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
+		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
+		hacMenu{ this }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
 		tabWidget->setCurrentIndex(0);	// Position on the RGB/K tab
+
+		redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
+		redGradient->setColorAt(0.999, Qt::red);
+		redGradient->setColorAt(1.0, Qt::red);
+
+		greenGradient->setColorAt(0.5, QColor(qRgb(0, 128, 0)));
+		greenGradient->setColorAt(0.999, Qt::green);
+		greenGradient->setColorAt(1.0, Qt::green);
+
+		blueGradient->setColorAt(0.5, QColor(qRgb(0, 0, 128)));
+		blueGradient->setColorAt(0.999, Qt::blue);
+		blueGradient->setColorAt(1.0, Qt::blue);
+
+		connectSignalsToSlots();
+
+		Qt::ColorScheme colorScheme { QGuiApplication::styleHints()->colorScheme() };
+		if (Qt::ColorScheme::Dark == colorScheme)
+			iconModifier = "-dark";
+
+		setButtonIcons();
+
+		linearAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Linear));
+		cubeRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::CubeRoot));
+		squareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::SquareRoot));
+		logAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Log));
+		logLogAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogLog));
+		logSquareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogSquareRoot));
+		asinHAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::ASinH));
 	}
 
 	ProcessingDlg::~ProcessingDlg()
 	{
 		ZFUNCTRACE_RUNTIME();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::connectSignalsToSlots()
+	{
+		connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
+			this, &ProcessingDlg::onColorSchemeChanged);
+
+		//
+		// The source for the slots below are in RGBTab.cpp
+		//
+		connect(redGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::redChanging);
+		connect(redGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::redChanged);
+
+		connect(greenGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::greenChanging);
+		connect(greenGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::greenChanged);
+
+		connect(blueGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::blueChanging);
+		connect(blueGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::blueChanged);
+
+		connect(redHAC, &QPushButton::pressed, this, &ProcessingDlg::redButtonPressed);
+		connect(greenHAC, &QPushButton::pressed, this, &ProcessingDlg::greenButtonPressed);
+		connect(blueHAC, &QPushButton::pressed, this, &ProcessingDlg::blueButtonPressed);
+
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -112,6 +169,25 @@ namespace DSS {
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Save image to file";
+	}
+
+	//
+	// Slots
+	//
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::onColorSchemeChanged(Qt::ColorScheme colorScheme)
+	{
+		iconModifier.clear();
+		//
+		// Dark colour scheme?
+		//
+		if (Qt::ColorScheme::Dark == colorScheme)
+			iconModifier = "-dark";
+
+		setButtonIcons();		// in RGBTab.cpp
+		update();
 	}
 
 } // namespace DSS

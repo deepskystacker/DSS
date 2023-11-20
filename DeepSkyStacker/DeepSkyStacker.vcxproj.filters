@@ -201,6 +201,9 @@
     <ClCompile Include="ProcessingDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="RGBTab.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
