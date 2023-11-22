@@ -59,6 +59,11 @@ namespace DSS
             selectRect = QRectF();
             emit selectRectChanged(selectRect);
         }
+        inline void setShowDrizzle(bool show = true)
+        {
+            showDrizzle_ = show;
+        };
+
 
     protected:
         void paintEvent(QPaintEvent*) override;
@@ -75,7 +80,7 @@ namespace DSS
         void starsButtonPressed();
         void cometButtonPressed();
         void saveButtonPressed();
-
+ 
     signals:
         void selectRectChanged(QRectF rect);
 
@@ -85,6 +90,7 @@ namespace DSS
         QRectF  selectRect;             // In image coordinates
         QRectF  startRect;              // In image coordinates
         bool    selecting;
+        bool    showDrizzle_;            // To display the drizzle rectangles or not
         QPointF startPos;
         QPointF endPos;
         QRegion clipping;
