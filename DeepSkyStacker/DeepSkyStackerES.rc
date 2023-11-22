@@ -20,7 +20,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ESN)
 LANGUAGE LANG_SPANISH, SUBLANG_SPANISH_MODERN
-#pragma code_page(1252)
+#pragma code_page(65001)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -49,14 +49,14 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Ajustes para los Archivos de Salida",IDC_TITLE,7,7,294,8
     CONTROL         "Crear Archivo de Salida",IDC_CREATEOUTPUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,20,87,10
-    CONTROL         "Crear archivo de descripciÛn de HTML",IDC_CREATEHTML,
+    CONTROL         "Crear archivo de descripci√≥n de HTML",IDC_CREATEHTML,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,34,133,10
     GROUPBOX        "Nombre de Archivo de Salida",IDC_STATIC,7,46,294,41
     CONTROL         "Autosave.tif",IDC_AUTOSAVE,"Button",BS_AUTORADIOBUTTON,17,58,56,10
     CONTROL         "<lista de archivos>.tif",IDC_FILELIST,"Button",BS_AUTORADIOBUTTON,153,58,84,10
-    CONTROL         "Agregar un n˙mero para evitar sobreescribir el archivo (001,002,...)",IDC_APPENDNUMBER,
+    CONTROL         "Agregar un n√∫mero para evitar sobreescribir el archivo (001,002,...)",IDC_APPENDNUMBER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,73,232,10
-    GROUPBOX        "UbicaciÛn de Salida",IDC_STATIC,7,89,294,56
+    GROUPBOX        "Ubicaci√≥n de Salida",IDC_STATIC,7,89,294,56
     CONTROL         "Crear un archivo de Salida en la carpeta del cuadro de referencia",IDC_USEREFERENCEFRAMEFOLDER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,103,221,10
     CONTROL         "Crear un archivo de Salida en la carpeta de la lista de archivos",IDC_USEFILELISTFOLDER,
@@ -85,14 +85,14 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,118,178,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,174,178,50,14
-    GROUPBOX        "MÈtodo de CalibraciÛn",IDC_STATIC,7,7,217,82
+    GROUPBOX        "M√©todo de Calibraci√≥n",IDC_STATIC,7,7,217,82
     CONTROL         "Linear",IDC_LINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,30,35,10
     CONTROL         "Racional",IDC_RATIONAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,50,42,10
-    GROUPBOX        "MÈtodo de CalibraciÛn de Fondo RGB",IDC_STATIC,7,93,217,80
+    GROUPBOX        "M√©todo de Calibraci√≥n de Fondo RGB",IDC_STATIC,7,93,217,80
     CONTROL         "Ninguna",IDC_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,39,10
-    CONTROL         "MÌnimo",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,126,43,10
+    CONTROL         "M√≠nimo",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,126,43,10
     CONTROL         "Medio",IDC_MIDDLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,140,36,10
-    CONTROL         "M·ximo",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,154,45,10
+    CONTROL         "M√°ximo",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,154,45,10
     CONTROL         "",IDC_RGBCALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,75,105,143,64
     CONTROL         "",IDC_CALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,75,18,143,64
 END
@@ -103,11 +103,11 @@ CAPTION "Acerca de DeepSkyStacker"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,240,315,50,14
-    CONTROL         "Verificar si existe una nueva versiÛn disponible al comenzar",IDC_CHECKVERSION,
+    CONTROL         "Verificar si existe una nueva versi√≥n disponible al comenzar",IDC_CHECKVERSION,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,319,201,10
     GROUPBOX        "Idioma",IDC_STATIC,7,187,283,119
     COMBOBOX        IDC_LANGUAGE,158,201,126,115,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Utilice el siguiente idioma la prÛxima vez que se inicia el programa",IDC_STATIC,15,200,137,16
+    LTEXT           "Utilice el siguiente idioma la pr√≥xima vez que se inicia el programa",IDC_STATIC,15,200,137,16
     CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_CREDITS,
                     "QHTM_Window_Class_001",WS_TABSTOP,7,4,283,180
     CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_LANGCREDITS,
@@ -116,14 +116,14 @@ END
 
 IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "AlineaciÛn"
+CAPTION "Alineaci√≥n"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "TransformaciÛn utilizada durante el alineado",IDC_TITLE,7,7,294,8
-    CONTROL         "Autom·tico",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,22,49,10
+    LTEXT           "Transformaci√≥n utilizada durante el alineado",IDC_TITLE,7,7,294,8
+    CONTROL         "Autom√°tico",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,22,49,10
     CONTROL         "Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,46,39,10
     CONTROL         "Bicuadrada",IDC_BISQUARED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,70,48,10
-    CONTROL         "Bic˙bica",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,94,38,10
+    CONTROL         "Bic√∫bica",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,94,38,10
     LTEXT           "",IDC_ALIGNMENTTEXT,156,22,145,94
     CONTROL         "Sin Alineado",IDC_NOALIGNMENT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,118,58,10
 END
@@ -133,7 +133,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Verificar todas las imagenes..."
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    LTEXT           "Valor mÌnimo de puntaje:",IDC_STATIC,7,11,81,11
+    LTEXT           "Valor m√≠nimo de puntaje:",IDC_STATIC,7,11,81,11
     EDITTEXT        IDC_THRESHOLD,91,9,54,14,ES_RIGHT | ES_AUTOHSCROLL
     DEFPUSHBUTTON   "Aceptar",IDOK,36,36,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,94,36,50,14
@@ -162,15 +162,15 @@ BEGIN
     LTEXT           "",IDC_PROCESSING_RECT,7,253,14,69,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Registrando y Apilando",IDC_STACKING_TITLE,9,9,111,8
     LTEXT           "Procesando",IDC_PROCESSING_TITLE,9,255,121,8
-    LTEXT           "ConfiguraciÛn Raw/FITS DDP...",IDC_OPTIONS_RAWDDPSETTINGS,33,359,118,8
-    LTEXT           "Registrar im·genes seleccionadas...",IDC_REGISTERING_REGISTERCHECKED,14,181,123,8
+    LTEXT           "Configuraci√≥n Raw/FITS DDP...",IDC_OPTIONS_RAWDDPSETTINGS,33,359,118,8
+    LTEXT           "Registrar im√°genes seleccionadas...",IDC_REGISTERING_REGISTERCHECKED,14,181,123,8
     LTEXT           "Abrir archivos de imagen...",IDC_STACKING_OPENFILES,14,25,104,8
     LTEXT           "archivos dark...",IDC_STACKING_OPENDARKS,33,37,51,8
     LTEXT           "Limpiar lista",IDC_STACKING_CLEARLIST,14,117,37,8
     LTEXT           "Seleccionar todo",IDC_STACKING_CHECKALL,14,135,53,8
     LTEXT           "Seleccionar por encima del umbral...",IDC_STACKING_CHECKABOVE,14,147,115,8
     LTEXT           "Deseleccionar todo",IDC_STACKING_UNCHECKALL,14,161,61,8
-    LTEXT           "Apilar im·genes seleccionadas...",IDC_STACKING_STACKCHECKED,14,216,115,8
+    LTEXT           "Apilar im√°genes seleccionadas...",IDC_STACKING_STACKCHECKED,14,216,115,8
     LTEXT           "Abrir archivo de imagen...",IDC_PROCESSING_OPENFILE,14,269,83,8
     LTEXT           "Copiar la imagen al portapapeles",IDC_PROCESSING_COPYTOCLIPBOARD,14,282,106,8
     LTEXT           "Guardar la imagen a un archivo...",IDC_PROCESSING_SAVEFILE,14,307,107,8
@@ -186,7 +186,7 @@ BEGIN
     LTEXT           "",IDC_STACKING_SUBRECT2,14,132,14,39,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "",IDC_STACKING_SUBRECT3,14,176,14,63,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Ayuda de DeepSkyStacker...",IDC_CONTEXTHELP,14,430,110,8
-    LTEXT           "Crear una M·scara de Estrellas...",IDC_PROCESSING_CREATESTARMASK,14,294,107,8
+    LTEXT           "Crear una M√°scara de Estrellas...",IDC_PROCESSING_CREATESTARMASK,14,294,107,8
     LTEXT           "Apilado por lotes...",IDC_STACKING_BATCHSTACK,14,228,61,8
     LTEXT           "archivos dark flat...",IDC_STACKING_OPENDARKFLATS,33,59,63,8
     LTEXT           "Ajustes...",IDC_OPTIONS_SETTINGS,18,346,110,8
@@ -200,9 +200,9 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMEN
 CAPTION "Archivos FITS"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "Los archivos FITS Monocrom·ticos de 16 bit son archivos RAW\ncreados con una DSLR o con una c·mara CCD color",IDC_FITSISRAW,
+    CONTROL         "Los archivos FITS Monocrom√°ticos de 16 bit son archivos RAW\ncreados con una DSLR o con una c√°mara CCD color",IDC_FITSISRAW,
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,6,8,264,23
-    LTEXT           "C·mara:",IDC_TEXT1,13,37,27,8
+    LTEXT           "C√°mara:",IDC_TEXT1,13,37,27,8
     COMBOBOX        IDC_DSLR,42,34,228,241,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Ajuste de Colores",IDC_STATIC,6,52,128,64
     LTEXT           "Brillo",IDC_TEXT2,14,66,34,8
@@ -211,18 +211,18 @@ BEGIN
     EDITTEXT        IDC_REDSCALE,72,79,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Escala de Azul",IDC_TEXT4,14,98,45,8
     EDITTEXT        IDC_BLUESCALE,72,95,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    LTEXT           "Filtro de PatrÛn de Bayer utilizado",IDC_TEXT5,143,56,108,8
+    LTEXT           "Filtro de Patr√≥n de Bayer utilizado",IDC_TEXT5,143,56,108,8
     CONTROL         "",IDC_BAYERPATTERN,"Static",SS_BITMAP | SS_CENTERIMAGE,144,66,126,50
-    CONTROL         "InterpolaciÛn Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,131,79,10
-    CONTROL         "InterpolaciÛn Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
+    CONTROL         "Interpolaci√≥n Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,131,79,10
+    CONTROL         "Interpolaci√≥n Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,147,180,10
-    CONTROL         "Usar algoritmo Bayer Drizzle (sin interpolaciÛn, sin debayerizaciÛn)",IDC_RAWBAYER,
+    CONTROL         "Usar algoritmo Bayer Drizzle (sin interpolaci√≥n, sin debayerizaci√≥n)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,165,224,10
-    LTEXT           "Esta opciÛn utiliza la Matriz Bayer tal cu·l es. No se hacen interpolaciones y a cada pÌxel sÛlo se les da los componentes primarios de la matriz",IDC_TEXT7,33,176,221,25
-    CONTROL         "Crear super-pixeles de la Matriz Bayer en crudo (sin interpolaciÛn)",IDC_SUPERPIXELS,
+    LTEXT           "Esta opci√≥n utiliza la Matriz Bayer tal cu√°l es. No se hacen interpolaciones y a cada p√≠xel s√≥lo se les da los componentes primarios de la matriz",IDC_TEXT7,33,176,221,25
+    CONTROL         "Crear super-pixeles de la Matriz Bayer en crudo (sin interpolaci√≥n)",IDC_SUPERPIXELS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,200,223,10
-    LTEXT           "Esta opciÛn utiliza la Matriz Bayer para crear un s˙per pÌxel desde cada grupo de 4 pÌxeles (RGBG). El tamaÒo de la imagen resultante ser· dividida en dos partes",IDC_TEXT6,33,212,221,24
-    GROUPBOX        "TransformaciÛn de Matriz Bayer",IDC_STATIC,6,119,264,126
+    LTEXT           "Esta opci√≥n utiliza la Matriz Bayer para crear un s√∫per p√≠xel desde cada grupo de 4 p√≠xeles (RGBG). El tama√±o de la imagen resultante ser√° dividida en dos partes",IDC_TEXT6,33,212,221,24
+    GROUPBOX        "Transformaci√≥n de Matriz Bayer",IDC_STATIC,6,119,264,126
     CONTROL         "Forzar el uso de valores sin signo cuando se almacenan valores con signo",IDC_FORCEUNSIGNED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,255,247,10
 END
@@ -260,8 +260,8 @@ BEGIN
     LTEXT           "Nombre del archivo",IDC_FILENAME,70,9,185,8,SS_NOPREFIX | SS_PATHELLIPSIS
     LTEXT           "Fecha/Hora",IDC_STATIC,7,26,51,8
     LTEXT           "Fecha/Hora",IDC_DATETIME,71,26,184,8
-    LTEXT           "TamaÒo",IDC_STATIC,7,43,44,8
-    LTEXT           "TamaÒos",IDC_SIZES,70,43,79,8
+    LTEXT           "Tama√±o",IDC_STATIC,7,43,44,8
+    LTEXT           "Tama√±os",IDC_SIZES,70,43,79,8
     LTEXT           "CFA",IDC_STATIC,162,43,14,8
     LTEXT           "CFA",IDC_CFA,182,43,66,8
     LTEXT           "Profundidad",IDC_STATIC,7,60,53,8
@@ -272,7 +272,7 @@ BEGIN
     COMBOBOX        IDC_TYPE,70,92,79,98,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Sensibilidad ISO",IDC_STATIC,7,111,56,9
     COMBOBOX        IDC_ISOSPEED,70,109,79,136,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Tiempo de ExposiciÛn",IDC_STATIC,7,125,48,17
+    LTEXT           "Tiempo de Exposici√≥n",IDC_STATIC,7,125,48,17
     EDITTEXT        IDC_EXPOSURE,70,125,79,14,ES_RIGHT | ES_NUMBER,WS_EX_RIGHT
     LTEXT           "s",IDC_STATIC,154,128,8,8
     DEFPUSHBUTTON   "Aceptar",IDOK,147,151,50,14
@@ -281,7 +281,7 @@ END
 
 IDD_RAWSETTINGS DIALOGEX 0, 0, 291, 318
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "ConfiguraciÛn del Proceso de Desarrollo Digital RAW/FITS"
+CAPTION "Configuraci√≥n del Proceso de Desarrollo Digital RAW/FITS"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,117,298,50,14
@@ -305,30 +305,30 @@ BEGIN
     GROUPBOX        "Balance de Blancos",IDC_STATIC,140,7,131,64
     CONTROL         "Sin procesamiento de balance de blancos",IDC_NOWB,
                     "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
-    CONTROL         "Utilizar Balance de Blancos de la C·mara",IDC_CAMERAWB,
+    CONTROL         "Utilizar Balance de Blancos de la C√°mara",IDC_CAMERAWB,
                     "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
-    CONTROL         "InterpolaciÛn Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,251,10
-    CONTROL         "InterpolaciÛn Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
+    CONTROL         "Interpolaci√≥n Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,251,10
+    CONTROL         "Interpolaci√≥n Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,251,10
-    LTEXT           "Esta opciÛn utiliza la Matriz Bayer para crear un s˙per pÌxel desde cada grupo de 4 pÌxeles (RGBG). El tamaÒo de la imagen resultante ser· dividida en dos partes",IDC_STATIC,37,193,229,27
-    LTEXT           "Esta opciÛn utiliza la Matriz Bayer tal cu·l es. No se hacen interpolaciones y a cada pÌxel sÛlo se les da los componentes primarios de la matriz",IDC_STATIC,37,149,229,27
-    CONTROL         "Usar algoritmo Bayer Drizzle (sin interpolaciÛn, sin debayerizaciÛn)",IDC_RAWBAYER,
+    LTEXT           "Esta opci√≥n utiliza la Matriz Bayer para crear un s√∫per p√≠xel desde cada grupo de 4 p√≠xeles (RGBG). El tama√±o de la imagen resultante ser√° dividida en dos partes",IDC_STATIC,37,193,229,27
+    LTEXT           "Esta opci√≥n utiliza la Matriz Bayer tal cu√°l es. No se hacen interpolaciones y a cada p√≠xel s√≥lo se les da los componentes primarios de la matriz",IDC_STATIC,37,149,229,27
+    CONTROL         "Usar algoritmo Bayer Drizzle (sin interpolaci√≥n, sin debayerizaci√≥n)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,135,251,10
-    CONTROL         "Crear super-pixeles de la Matriz Bayer en crudo (sin interpolaciÛn)",IDC_SUPERPIXELS,
+    CONTROL         "Crear super-pixeles de la Matriz Bayer en crudo (sin interpolaci√≥n)",IDC_SUPERPIXELS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,179,251,10
-    GROUPBOX        "TransformaciÛn de Matriz Bayer",IDC_STATIC,7,76,263,150
+    GROUPBOX        "Transformaci√≥n de Matriz Bayer",IDC_STATIC,7,76,263,150
     CONTROL         "Poner el punto negro a 0",IDC_BLACKPOINTTO0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,236,153,10
 END
 
 IDD_REGISTERSETTINGS DIALOGEX 0, 0, 232, 177
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "ConfiguraciÛn de Registrado"
+CAPTION "Configuraci√≥n de Registrado"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,175,157,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,175,137,50,14
     LTEXT           "",IDC_SHEETRECT,7,8,218,123,SS_SUNKEN | NOT WS_VISIBLE
-    PUSHBUTTON      "Par·metros de apilado...",IDC_STACKINGPARAMETERS,7,157,105,14
+    PUSHBUTTON      "Par√°metros de apilado...",IDC_STACKINGPARAMETERS,7,157,105,14
     PUSHBUTTON      "Ajustes Recomendados...",IDC_RECOMMANDEDSETTINGS,7,137,105,14
 END
 
@@ -338,10 +338,10 @@ CAPTION "Avanzado"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,38,17,136,15
-    PUSHBUTTON      "Calcular el n˙mero de estrellas detectadas",IDC_COMPUTEDETECTEDSTARS,37,48,138,14
+    PUSHBUTTON      "Calcular el n√∫mero de estrellas detectadas",IDC_COMPUTEDETECTEDSTARS,37,48,138,14
     CTEXT           "%ld estrella/s",IDC_NRSTARS,38,68,136,8
     RTEXT           "10%",IDC_LUMINANCETHRESHOLDTEXT,13,21,25,8
-    GROUPBOX        "Umbral de detecciÛn de estrellas",-1,7,3,195,102
+    GROUPBOX        "Umbral de detecci√≥n de estrellas",-1,7,3,195,102
     CONTROL         "Reducir el ruido utilizando un Filtro de Media",IDC_MEDIANFILTER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,88,179,10
 END
@@ -351,16 +351,16 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Acciones"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "Registrar im·genes ya registradas",IDC_FORCEREGISTER,
+    CONTROL         "Registrar im√°genes ya registradas",IDC_FORCEREGISTER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,7,189,10
-    CONTROL         "DetecciÛn autom·tica de hot pixels",IDC_HOTPIXELS,
+    CONTROL         "Detecci√≥n autom√°tica de hot pixels",IDC_HOTPIXELS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,23,189,10
     GROUPBOX        "",IDC_STATIC,7,41,195,64
     CONTROL         "Apilar luego de registrar",IDC_STACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,40,99,10
     LTEXT           "Seleccionar el mejor ",IDC_STATIC,14,58,65,9
     EDITTEXT        IDC_PERCENT,81,55,20,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "% de las fotos y apilarlas.",IDC_STATIC,104,58,87,9
-    CTEXT           "No olvides aÒadir los dark frames\nen la pestaÒa de apilado.",IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
+    CTEXT           "No olvides a√±adir los dark frames\nen la pesta√±a de apilado.",IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
 END
 
 IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
@@ -368,9 +368,9 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resultado"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "Modo Est·ndar",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,12,65,10
+    CONTROL         "Modo Est√°ndar",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,12,65,10
     CONTROL         "Modo ""Mosaico""",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,35,63,10
-    CONTROL         "Modo IntesecciÛn",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,58,76,10
+    CONTROL         "Modo Intesecci√≥n",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,58,76,10
     LTEXT           "",IDC_MODE_TEXT,165,114,139,26
     CONTROL         "",IDC_MODEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,166,7,135,106
     CONTROL         "Habilitar Drizzle 2x",IDC_ENABLE2XDRIZZLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,109,71,10
@@ -401,10 +401,10 @@ END
 
 IDD_SATURATION DIALOGEX 0, 0, 164, 126
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION
-CAPTION "SaturaciÛn"
+CAPTION "Saturaci√≥n"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CTEXT           "Modificar saturaciÛn",IDC_TEXT_SATURATION,0,3,163,8
+    CTEXT           "Modificar saturaci√≥n",IDC_TEXT_SATURATION,0,3,163,8
     CONTROL         "Slider1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,22,125,9
     PUSHBUTTON      "Aplicar",IDC_PROCESS,0,112,48,14
     PUSHBUTTON      "Reiniciar",IDC_RESET,116,112,48,14
@@ -418,7 +418,7 @@ IDD_SAVEPICTURE DIALOGEX 0, 0, 273, 101
 STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "CompresiÛn",IDC_STATIC,7,7,259,25
+    GROUPBOX        "Compresi√≥n",IDC_STATIC,7,7,259,25
     CONTROL         "Ninguna",IDC_COMPRESSION_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,17,39,10
     CONTROL         "ZIP (Comprimir)",IDC_COMPRESSION_ZIP,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,69,18,93,10
     CONTROL         "LZW (Obsoleto)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,195,17,66,10
@@ -427,13 +427,13 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,50,215,10
     CONTROL         "Agregar los ajustes en la imagen guardada pero no aplicarlos",IDC_EMBEDDED,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,64,253,10
-    CONTROL         "Crear una imagen a partir del rect·ngulo seleccionado",IDC_USERECT,
+    CONTROL         "Crear una imagen a partir del rect√°ngulo seleccionado",IDC_USERECT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,80,253,10
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 229, 162
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "AdministraciÛn de Configuraciones"
+CAPTION "Administraci√≥n de Configuraciones"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "Cerrar",IDOK,172,141,50,14
@@ -449,14 +449,14 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Cometa"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Par·metros de apilado para cometas",IDC_TITLE,7,7,294,8
-    CONTROL         "Apilado est·ndar",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,20,74,10
+    LTEXT           "Par√°metros de apilado para cometas",IDC_TITLE,7,7,294,8
+    CONTROL         "Apilado est√°ndar",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,20,74,10
     CONTROL         "Apilado para cometas",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,53,133,10
     CONTROL         "Apilado de estrellas + cometa",IDC_ADVANCEDSTACKING,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,95,133,10
-    LTEXT           "La posiciÛn del cometa es ignorada.\nEl cometa ser· borroso.",IDC_STATIC,17,32,123,19
-    LTEXT           "La posiciÛn del cometa es utilizada. \n El cometa y las estrellas se ver·n nÌtidos. Este proceso lleva el doble de tiempo.",IDC_STATIC,17,107,123,36
-    LTEXT           "La posiciÛn de cometa es utilizada. \nEl cometa se ver· nÌtido y las estrellas tendr·n trazas.",IDC_STATIC,17,64,123,27
+    LTEXT           "La posici√≥n del cometa es ignorada.\nEl cometa ser√° borroso.",IDC_STATIC,17,32,123,19
+    LTEXT           "La posici√≥n del cometa es utilizada. \n El cometa y las estrellas se ver√°n n√≠tidos. Este proceso lleva el doble de tiempo.",IDC_STATIC,17,107,123,36
+    LTEXT           "La posici√≥n de cometa es utilizada. \nEl cometa se ver√° n√≠tido y las estrellas tendr√°n trazas.",IDC_STATIC,17,64,123,27
     CONTROL         "",IDC_COMETSAMPLE,"Static",SS_BITMAP | SS_CENTERIMAGE,150,19,151,124
 END
 
@@ -465,7 +465,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Archivos Intermedios"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Par·metros de creaciÛn de archivos temporarios",IDC_TITLE,7,7,294,8
+    LTEXT           "Par√°metros de creaci√≥n de archivos temporarios",IDC_TITLE,7,7,294,8
     CONTROL         "Crear un archivo calibrado por cada light frame",IDC_SAVECALIBRATED,
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,19,272,18
     CONTROL         "Crear un archivo calibrado/registrado por cada light frame",IDC_CREATEINTERMEDIATE,
@@ -476,7 +476,7 @@ BEGIN
     CONTROL         "Guardar Archivos Intermedios como archivos FITS",IDC_SAVEASFITS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,103,275,10
     LTEXT           "",IDC_SAVEASEXPLANATION,17,125,284,18
-    CONTROL         "Guardar una imagen debayerizada cuando se procesan im·genes RAW",IDC_SAVEDEBAYERED,
+    CONTROL         "Guardar una imagen debayerizada cuando se procesan im√°genes RAW",IDC_SAVEDEBAYERED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,36,239,10
 END
 
@@ -492,27 +492,27 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP | WS_TABSTOP,7,80,119,17
     CONTROL         "Auto Adaptive Weighted Average",IDC_AUTOADAPTIVEAVERAGE,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,101,124,10
-    CONTROL         "Entropy Weighted Average\n(Alto rango din·mico)",IDC_ENTROPYAVERAGE,
+    CONTROL         "Entropy Weighted Average\n(Alto rango din√°mico)",IDC_ENTROPYAVERAGE,
                     "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP | WS_TABSTOP,140,17,161,17
-    CONTROL         "M·ximo",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,140,42,45,10
+    CONTROL         "M√°ximo",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,140,42,45,10
     GROUPBOX        "",IDC_KAPPAFRAME,140,56,161,57
     LTEXT           "Kappa:",IDC_STATICKAPPA,145,70,24,8
     EDITTEXT        IDC_KAPPA,223,67,40,14,ES_RIGHT,WS_EX_RIGHT
     GROUPBOX        "",IDC_AUTOADAPTIVEFRAME,140,82,161,31
-    LTEXT           "N˙mero de iteraciones:",IDC_STATICITERATION,145,96,74,8
+    LTEXT           "N√∫mero de iteraciones:",IDC_STATICITERATION,145,96,74,8
     EDITTEXT        IDC_ITERATION,223,93,40,14,ES_RIGHT | ES_NUMBER,WS_EX_RIGHT
     LTEXT           "Modo de apilado",IDC_TITLE,7,7,294,8
     CONTROL         "Promedio",IDC_AVERAGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,20,43,10
-    CONTROL         "OptimizaciÛn de Darks",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,133,83,10
-    CONTROL         "DetecciÛn y eliminado de hot pixels",IDC_HOTPIXELS,
+    CONTROL         "Optimizaci√≥n de Darks",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,133,83,10
+    CONTROL         "Detecci√≥n y eliminado de hot pixels",IDC_HOTPIXELS,
                     "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,119,127,10
-    CONTROL         "DetecciÛn y eliminado de columnas defectuosas",IDC_BADCOLUMNREMOVAL,
+    CONTROL         "Detecci√≥n y eliminado de columnas defectuosas",IDC_BADCOLUMNREMOVAL,
                     "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,119,164,10
-    CONTROL         "Factor de multiplicaciÛn de Dark:",IDC_USEDARKFACTOR,
+    CONTROL         "Factor de multiplicaci√≥n de Dark:",IDC_USEDARKFACTOR,
                     "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,133,116,10
     EDITTEXT        IDC_DARKMULTIPLICATIONFACTOR,258,133,31,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_VISIBLE | NOT WS_BORDER
     CONTROL         "Debloom",IDC_DEBLOOM,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,133,43,10
-    LTEXT           "Sin CalibraciÛn de Fondo",IDC_BACKGROUNDCALIBRATION,8,133,129,8,NOT WS_VISIBLE | NOT WS_GROUP
+    LTEXT           "Sin Calibraci√≥n de Fondo",IDC_BACKGROUNDCALIBRATION,8,133,129,8,NOT WS_VISIBLE | NOT WS_GROUP
     PUSHBUTTON      "Ajustes...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
@@ -523,7 +523,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,294,228,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,294,209,50,14
-    PUSHBUTTON      "Par·metros de apilado...",IDC_STACKINGPARAMETERS,7,228,105,14
+    PUSHBUTTON      "Par√°metros de apilado...",IDC_STACKINGPARAMETERS,7,228,105,14
     PUSHBUTTON      "Ajustes Recomendados...",IDC_RECOMMANDEDSETTINGS,7,210,105,14
     CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_RECAPHTML,
                     "QHTM_Window_Class_001",WS_TABSTOP,7,4,337,200
@@ -531,7 +531,7 @@ END
 
 IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Par·metros de apilado"
+CAPTION "Par√°metros de apilado"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,266,207,50,14
@@ -542,43 +542,43 @@ BEGIN
     LTEXT           "Static",IDC_TEMPFOLDER,124,178,173,9,SS_PATHELLIPSIS
     CONTROL         "Usar todos los procesadores disponibles",IDC_USEALLPROCESSORS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,211,160,10
-    CONTROL         "Reducir la prioridad de ejecuciÛn",IDC_REDUCEWORKERTHREADS,
+    CONTROL         "Reducir la prioridad de ejecuci√≥n",IDC_REDUCEWORKERTHREADS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,184,10
 END
 
 IDD_STARMASK DIALOGEX 0, 0, 267, 227
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Crear una M·scara de Estrellas"
+CAPTION "Crear una M√°scara de Estrellas"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,151,206,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,208,206,50,14
-    LTEXT           "Umbral de detecciÛn de estrellas",IDC_STATIC,16,83,98,17
-    LTEXT           "Medida MÌnima de una Estrella",IDC_STATIC,16,118,98,8
-    LTEXT           "Medida M·xima de una Estrella",IDC_STATIC,16,132,98,8
-    CONTROL         "DetecciÛn de Hot Pixels",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,103,107,10
+    LTEXT           "Umbral de detecci√≥n de estrellas",IDC_STATIC,16,83,98,17
+    LTEXT           "Medida M√≠nima de una Estrella",IDC_STATIC,16,118,98,8
+    LTEXT           "Medida M√°xima de una Estrella",IDC_STATIC,16,132,98,8
+    CONTROL         "Detecci√≥n de Hot Pixels",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,103,107,10
     CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,84,98,10
     CONTROL         "",IDC_MINSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,116,98,10
     CONTROL         "",IDC_MAXSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,132,98,10
     LTEXT           "%ld%%",IDC_STARTHRESHOLDTEXT,123,86,28,8
-    LTEXT           "%ld pÌxeles",IDC_MINSIZETEXT,123,118,37,8
-    LTEXT           "%ld pÌxeles",IDC_MAXSIZETEXT,123,132,37,8
-    GROUPBOX        "DetecciÛn de Estrellas",IDC_STATIC,7,71,249,81
+    LTEXT           "%ld p√≠xeles",IDC_MINSIZETEXT,123,118,37,8
+    LTEXT           "%ld p√≠xeles",IDC_MAXSIZETEXT,123,132,37,8
+    GROUPBOX        "Detecci√≥n de Estrellas",IDC_STATIC,7,71,249,81
     GROUPBOX        "Agrandar/Reducir",IDC_STATIC,7,156,249,44
-    LTEXT           "Porcentual del tamaÒo de la estrella",IDC_STATIC,16,167,98,16
+    LTEXT           "Porcentual del tama√±o de la estrella",IDC_STATIC,16,167,98,16
     LTEXT           "pixeles",IDC_STATIC,16,186,60,8
     CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,170,98,10
     CONTROL         "",IDC_PIXELS,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,186,98,10
     LTEXT           "%ld %%",IDC_PERCENTTEXT,122,170,30,8
     LTEXT           "%ld pixel(s)",IDC_PIXELSTEXT,122,186,39,8
     CONTROL         "",IDC_STARSHAPEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,160,7,98,63
-    LTEXT           "Forma de las estrellas en la m·scara",IDC_STATIC,16,7,144,8
+    LTEXT           "Forma de las estrellas en la m√°scara",IDC_STATIC,16,7,144,8
     COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_ASKREGISTERING DIALOGEX 0, 0, 213, 121
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Light Frame sin RegistraciÛn"
+CAPTION "Light Frame sin Registraci√≥n"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,99,100,50,14
@@ -593,50 +593,50 @@ END
 
 IDD_SAVEEDITCHANGES DIALOGEX 0, 0, 236, 139
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "øGuarda los cambios?"
+CAPTION "¬øGuarda los cambios?"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Si",IDYES,7,118,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,179,118,50,14
     PUSHBUTTON      "No",IDNO,64,118,50,14
-    CTEXT           "Ud. ha hecho algunos cambios (posiciÛn de estrellas o cometas)\n\nøDesea guardarlos?",IDC_STATIC,7,7,222,31
-    GROUPBOX        "La prÛxima vez...",IDC_STATIC,7,37,222,75
+    CTEXT           "Ud. ha hecho algunos cambios (posici√≥n de estrellas o cometas)\n\n¬øDesea guardarlos?",IDC_STATIC,7,7,222,31
+    GROUPBOX        "La pr√≥xima vez...",IDC_STATIC,7,37,222,75
     CONTROL         "Guardar sin preguntar",IDC_SAVEWITHOUTASKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,51,170,10
     CONTROL         "No guardar sin preguntar",IDC_DONTSAVEWITHOUTASKING,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,67,171,10
     CONTROL         "Pregunte nuevamente",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,83,140,10
-    LTEXT           "Ud. puede acceder a estas opciones haciendo click con el botÛn derecho en el boton de Guardar",IDC_STATIC,15,94,210,17
+    LTEXT           "Ud. puede acceder a estas opciones haciendo click con el bot√≥n derecho en el boton de Guardar",IDC_STATIC,15,94,210,17
 END
 
 IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "CosmÈtica"
+CAPTION "Cosm√©tica"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Ajustes de CosmÈtica de post-calibrado",IDC_TITLE,7,7,294,8
+    LTEXT           "Ajustes de Cosm√©tica de post-calibrado",IDC_TITLE,7,7,294,8
     GROUPBOX        "",IDC_STATIC,7,21,294,44
-    LTEXT           "TamaÒo del Filtro",IDC_STATIC,17,37,80,9
+    LTEXT           "Tama√±o del Filtro",IDC_STATIC,17,37,80,9
     RTEXT           "%ld px",IDC_HOTFILTERSTATIC,102,36,33,8
     CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,35,157,10
-    LTEXT           "Umbral de DetecciÛn",IDC_STATIC,17,53,78,8
+    LTEXT           "Umbral de Detecci√≥n",IDC_STATIC,17,53,78,8
     RTEXT           "%.1f%%",IDC_HOTDETECTIONSTATIC,102,53,33,8
     CONTROL         "",IDC_HOTDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,52,157,10
     GROUPBOX        "",IDC_STATIC,7,71,294,44
     CONTROL         "Detectar y Limpiar los Cold Pixels restantes",IDC_DETECTCLEANCOLD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,71,150,10
-    LTEXT           "TamaÒo del Filtro",IDC_STATIC,17,86,77,9
+    LTEXT           "Tama√±o del Filtro",IDC_STATIC,17,86,77,9
     RTEXT           "%ld px",IDC_COLDFILTERSTATIC,102,86,33,8
     CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,85,157,10
-    LTEXT           "Umbral de DetecciÛn",IDC_STATIC,17,103,77,8
+    LTEXT           "Umbral de Detecci√≥n",IDC_STATIC,17,103,77,8
     RTEXT           "%.1f%%",IDC_COLDDETECTIONSTATIC,102,103,33,8
     CONTROL         "",IDC_COLDDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,102,157,10
     CONTROL         "Detectar y Limpiar los Hot Pixels restantes",IDC_DETECTCLEANHOT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,21,148,10
     CONTROL         "Guardar una imagen que muestre los pixeles limpiados para cada light frame",IDC_SAVEDELTAIMAGE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,133,255,10
-    LTEXT           "Efecto DÈbil",IDC_WEAK1,135,45,39,8
+    LTEXT           "Efecto D√©bil",IDC_WEAK1,135,45,39,8
     LTEXT           "Fuerte",IDC_STRONG1,270,45,22,8
-    LTEXT           "Efecto DÈbil",IDC_WEAK2,135,95,39,8
+    LTEXT           "Efecto D√©bil",IDC_WEAK2,135,95,39,8
     LTEXT           "Fuerte",IDC_STRONG2,270,95,22,8
     LTEXT           "Prueba en el primer frame...",IDC_TESTCOSMETIC,208,120,95,9
     LTEXT           "Reemplazar el valor del pixel con",IDC_REPLACETEXT,11,120,104,9
@@ -650,7 +650,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Aceptar",IDOK,146,158,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,203,158,50,14
-    LTEXT           "Esta ventana es utilizada para iniciar el proceso de apilado para listas de im·genes existentes\nAgregue las listas de archivos que desea apilar y pinche Aceptar para iniciar los procesos de apilado.",IDC_STATIC,7,7,246,36
+    LTEXT           "Esta ventana es utilizada para iniciar el proceso de apilado para listas de im√°genes existentes\nAgregue las listas de archivos que desea apilar y pinche Aceptar para iniciar los procesos de apilado.",IDC_STATIC,7,7,246,36
     PUSHBUTTON      "Agregar Listas de Archivos...",IDC_ADDLISTS,5,46,112,14
     LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     PUSHBUTTON      "Limpiar lista",IDC_CLEARLIST,203,46,50,14
@@ -698,11 +698,11 @@ END
 
 IDR_CALIBRATION MENU
 BEGIN
-    POPUP "Men˙ CalibraciÛn"
+    POPUP "Men√∫ Calibraci√≥n"
     BEGIN
-        MENUITEM "Sin CalibraciÛn de Fondo",    ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION
-        MENUITEM "CalibraciÛn de Fondo por cada Canal", ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION
-        MENUITEM "CalibraciÛn de Fondo de Canales RGB", ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION
+        MENUITEM "Sin Calibraci√≥n de Fondo",    ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION
+        MENUITEM "Calibraci√≥n de Fondo por cada Canal", ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION
+        MENUITEM "Calibraci√≥n de Fondo de Canales RGB", ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION
         MENUITEM SEPARATOR
         MENUITEM "Opciones...",                 ID_CALIBRATIONMENU_OPTIONS
     END
@@ -745,7 +745,7 @@ END
 
 IDR_COSMETICMETHOD MENU
 BEGIN
-    POPUP "MÈtodo CosmÈtico"
+    POPUP "M√©todo Cosm√©tico"
     BEGIN
         MENUITEM "la media",                    ID_COSMETICMETHOD_MEDIAN
         MENUITEM "el filtro gaussiano",         ID_COSMETICMETHOD_GAUSSIAN
@@ -1098,26 +1098,26 @@ BEGIN
     IDS_STACKINGMODE_NORMAL "El resultado del proceso de apilado esta encuadrado por el light frame de referencia ."
     IDS_STACKINGMODE_MOSAIC "El resultado del proceso de apilado contiene todos los light frames del apilado"
     IDS_STACKINGMODE_INTERSECTION 
-                            "El resultado del proceso de apilado es encuadrado por la intersecciÛn de todos los cuadros."
+                            "El resultado del proceso de apilado es encuadrado por la intersecci√≥n de todos los cuadros."
 END
 
 STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
-    IDS_ABOUT_LANG_PORTUGUESE "VersiÛn en portugÈs:"
+    IDS_ABOUT_LANG_PORTUGUESE "Versi√≥n en portug√©s:"
     IDS_ABOUT_LANG_PORTUGUESE_LINK "Manuel Fernandes"
-    IDS_ABOUT_LANG_ROMANIAN "VersiÛn rumana:"
+    IDS_ABOUT_LANG_ROMANIAN "Versi√≥n rumana:"
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Kolbert y Valentin Stoica"
-    IDS_ABOUT_LANG_RUSSIAN  "VersiÛn en ruso:"
+    IDS_ABOUT_LANG_RUSSIAN  "Versi√≥n en ruso:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-    IDS_ABOUT_LANG_TURKISH  "VersiÛn turca:"
+    IDS_ABOUT_LANG_TURKISH  "Versi√≥n turca:"
     IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
 STRINGTABLE
 BEGIN
     IDS_SELECTOUTPUTFOLDER  "Seleccionar Carpeta de Salida"
-    IDS_RECAP_STACKINGMODE_INTERSECTION "IntersecciÛn"
+    IDS_RECAP_STACKINGMODE_INTERSECTION "Intersecci√≥n"
 END
 
 STRINGTABLE
@@ -1125,25 +1125,25 @@ BEGIN
     IDS_RECO_DISCLAIMER     "Estos son los ajustes recomendados.\nPueden no funcionar en todos los casos pero son a menudo un buen punto de partida."
     IDS_RECO_CLICKTOSET     "Haga click en el enlace propuesto para cambiar los ajustes respectivamente"
     IDS_RECO_ALREADYSET     "Los ajustes ya realizados se muestran en verde"
-    IDS_RECO_PREREQUISITES  "Primero debe agregar im·genes a la lista para chequearlas."
+    IDS_RECO_PREREQUISITES  "Primero debe agregar im√°genes a la lista para chequearlas."
     IDS_RECO_RAWNARROWBAND_TEXT "Usar modo super-pixel"
     IDS_RECO_RAWNARROWBAND_REASON 
-                            "Si esta procesando im·genes narrowband (especialmente Ha)"
+                            "Si esta procesando im√°genes narrowband (especialmente Ha)"
     IDS_RECO_RAWHIGHSNR_TEXT "Utilizar debayerizado AHD"
     IDS_RECO_RAWHIGHSNR_REASON 
-                            "Ud. esta procesando im·genes de larga exposiciÛn y posiblemente buen SNR"
+                            "Ud. esta procesando im√°genes de larga exposici√≥n y posiblemente buen SNR"
     IDS_RECO_RAWLOWSNR_TEXT "Utilizar debayerizado Bilinear"
     IDS_RECO_RAWLOWSNR_REASON 
-                            "Ud. esta procesando im·genes de exposiciÛn corta y probablemente bajo SNR"
-    IDS_RECO_RAWSETBP_TEXT  "Ajustar el punto negro a 0 para mejorar la calibraciÛn"
+                            "Ud. esta procesando im√°genes de exposici√≥n corta y probablemente bajo SNR"
+    IDS_RECO_RAWSETBP_TEXT  "Ajustar el punto negro a 0 para mejorar la calibraci√≥n"
     IDS_RECO_RAWSETBP_REASON "Ud. esta utilizando archivos de imagen bias"
     IDS_RECO_RAWCLEARBP_TEXT "No ajustar el punto negro a 0"
     IDS_RECO_RAWCLEARBP_REASON 
                             "Ud. esta utilizando archivos flat sin archivos bias"
     IDS_RECO_MEDIANFILTER_TEXT 
-                            "Aplicar el filtro Media antes de registrar las im·genes para reducir el ruido y mejorar la detecciÛn de estrellas"
+                            "Aplicar el filtro Media antes de registrar las im√°genes para reducir el ruido y mejorar la detecci√≥n de estrellas"
     IDS_RECO_MEDIANFILTER_REASON 
-                            "Ud. esta utilizando un umbral de detecciÛn de estrellas bajo"
+                            "Ud. esta utilizando un umbral de detecci√≥n de estrellas bajo"
 END
 
 STRINGTABLE
@@ -1151,72 +1151,72 @@ BEGIN
     IDS_RECO_MODDEDDSLR_TEXT 
                             "Reiniciar todos los ajustes de balance de blancos"
     IDS_RECO_MODDEDDSLR_REASON "Si Ud. esta utilizando una DSLR modificada"
-    IDS_RECO_USEAVERAGECOMBINE "Utilizar el mÈtodo de combinado Average"
+    IDS_RECO_USEAVERAGECOMBINE "Utilizar el m√©todo de combinado Average"
     IDS_RECO_COMETSTARTRAILS_REASON 
                             "Ud. esta tratando de crear la imagen de un cometa con trazas de estrellas"
-    IDS_RECO_USESIGMACLIPPING "Utilizar el mÈtodo de combinado Sigma-Clipping"
+    IDS_RECO_USESIGMACLIPPING "Utilizar el m√©todo de combinado Sigma-Clipping"
     IDS_RECO_COMETSTARSMANY_REASON 
                             "Ud. esta intentando crear la imagen de un cometa alineado con las estrellas y el cometa de %ld archivo(s) de imagen"
-    IDS_RECO_USEMEDIAN      "Utilizar el mÈtodo de combinado Media"
+    IDS_RECO_USEMEDIAN      "Utilizar el m√©todo de combinado Media"
     IDS_RECO_DARK_REASON    "Ud. esta creando un archivo dark maestro a partir de %ld archivo(s) dark"
-    IDS_RECO_USESIGMAMEDIAN "Utilizar el mÈtodo de combinado Sigma-Clipping Media"
+    IDS_RECO_USESIGMAMEDIAN "Utilizar el m√©todo de combinado Sigma-Clipping Media"
     IDS_RECO_BIAS_REASON    "Ud. esta creando un archivo master bias a partir de %ld archivo(s) flat"
     IDS_RECO_FLAT_REASON    "Ud. esta creando un archivo master flat a partir de %ld archivo(s) flat"
     IDS_RECO_PERCHANNELCALIBRATION_REASON 
-                            "Si las im·genes resultantes parecen demasiado grises"
-    IDS_RECO_USEPERCHANNEL  "Utilizar calibraciÛn de fondo para Cada Canal"
+                            "Si las im√°genes resultantes parecen demasiado grises"
+    IDS_RECO_USEPERCHANNEL  "Utilizar calibraci√≥n de fondo para Cada Canal"
     IDS_RECO_RGBCALIBRATION_REASON 
-                            "Si el balance de color en la imagen resultante es difÌcil de corregir en el post-procesamiento"
-    IDS_RECO_USERGBCALIBRATION "Utilizar calibraciÛn de fondo RGB"
+                            "Si el balance de color en la imagen resultante es dif√≠cil de corregir en el post-procesamiento"
+    IDS_RECO_USERGBCALIBRATION "Utilizar calibraci√≥n de fondo RGB"
     IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON 
-                            "Ud. esta apilando im·genes en escala de gris y pueden tener valores de fondo apenas diferentes"
+                            "Ud. esta apilando im√°genes en escala de gris y pueden tener valores de fondo apenas diferentes"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUT_DSS           "DeepSkyStacker versiÛn %s"
+    IDS_ABOUT_DSS           "DeepSkyStacker versi√≥n %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "DecodificaciÛn de archivos RAW con LibRaw (versiÛn %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "Decodificaci√≥n de archivos RAW con LibRaw (versi√≥n %s)\nCopyright ¬© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "CodificaciÛn y DecodificaciÛn de archivos TIFF con LibTIFF (versiÛn %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "Codificaci√≥n y Decodificaci√≥n de archivos TIFF con LibTIFF (versi√≥n %s)\nCopyright ¬© 1988-1996 Sam Leffler\nCopyright ¬© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
-    IDS_ABOUT_FITS          "DecodificaciÛn de archivos FITS con CFitsIO (versiÛn %s)\nCopyright NASA"
+    IDS_ABOUT_FITS          "Decodificaci√≥n de archivos FITS con CFitsIO (versi√≥n %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "Biblioteca QHTM Copyright © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "Biblioteca QHTM Copyright ¬© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUT_LANG_SPANISH  "VersiÛn en EspaÒol: Ricardo Contreras y su equipo del sitio"
+    IDS_ABOUT_LANG_SPANISH  "Versi√≥n en Espa√±ol: Ricardo Contreras y su equipo del sitio"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
-    IDS_ABOUT_LANG_CZECH    "VersiÛn en Checo:"
-    IDS_ABOUT_LANG_CZECH_LINK "Lukavsk˝ Premysl"
-    IDS_ABOUT_LANG_ITALIAN  "VersiÛn en Italiano:"
+    IDS_ABOUT_LANG_CZECH    "Versi√≥n en Checo:"
+    IDS_ABOUT_LANG_CZECH_LINK "Lukavsk√Ω Premysl"
+    IDS_ABOUT_LANG_ITALIAN  "Versi√≥n en Italiano:"
     IDS_ABOUT_LANG_ITALIAN_LINK "Fabio Papa"
-    IDS_ABOUT_LANG_CATALAN  "VersiÛn en Catala:"
+    IDS_ABOUT_LANG_CATALAN  "Versi√≥n en Catala:"
     IDS_ABOUT_LANG_CATALAN_LINK "Francesc Pruneda"
-    IDS_ABOUT_LANG_GERMAN   "VersiÛn en alem·n:"
+    IDS_ABOUT_LANG_GERMAN   "Versi√≥n en alem√°n:"
     IDS_ABOUT_LANG_GERMAN_LINK "Wilhelm-Michael Kasakow"
-    IDS_ABOUT_LANG_DUTCH    "versiÛn holandesa:"
+    IDS_ABOUT_LANG_DUTCH    "versi√≥n holandesa:"
     IDS_ABOUT_LANG_DUTCH_LINK1 "Eelko Gielis"
     IDS_ABOUT_LANG_DUTCH_LINK2 "Inge van de Stadt"
-    IDS_ABOUT_LANG_CHINESET "VersiÛn en Chino Tradicional:"
+    IDS_ABOUT_LANG_CHINESET "Versi√≥n en Chino Tradicional:"
 END
 
 STRINGTABLE
 BEGIN
     IDS_RECO_LIGHT_REASON   "Ud. esta apilando %ld archivo(s) de imagen"
     IDS_RECO_USEAUTOADAPTIVEAVERAGE 
-                            "Utilizar el mÈtodo de combinado Auto Adaptive Weighted Average"
+                            "Utilizar el m√©todo de combinado Auto Adaptive Weighted Average"
 END
 
 STRINGTABLE
 BEGIN
     IDS_SHOWREGISTEREDSTARS "Mostrar Estrellas Registradas"
     IDS_HIDEREGISTEREDSTARS "Ocultar Estrellas Registradas"
-    IDS_UNDOLASTSETTINGS    "Deshacer los ˙ltimos ajustes realizados"
-    IDS_REDOLASTSETTINGS    "Rehacer los ˙ltimos ajustes realizados"
+    IDS_UNDOLASTSETTINGS    "Deshacer los √∫ltimos ajustes realizados"
+    IDS_REDOLASTSETTINGS    "Rehacer los √∫ltimos ajustes realizados"
     IDS_MANAGESETTINGS      "Guardar, Cargar, Administrar Configuraciones ..."
 END
 
@@ -1234,12 +1234,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_COLUMN_SIZES        "TamaÒo"
+    IDS_COLUMN_SIZES        "Tama√±o"
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profundidad"
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
-    IDS_COLUMN_EXPOSURE     "ExposiciÛn"
+    IDS_COLUMN_EXPOSURE     "Exposici√≥n"
 	IDS_COLUMN_APERTURE		"Apertura"
 	IDS_COLUMN_FILTER		"Filtrar"
     IDS_COLUMN_STARS        "#Estrellas"
@@ -1270,12 +1270,12 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_EXPOSURE0           "ExposiciÛn: < 1 seg. "
-    IDS_EXPOSURE1           "ExposiciÛn: %ld seg. "
-    IDS_EXPOSURE2           "ExposiciÛn: %ld min. %ld seg. "
-    IDS_EXPOSURE3           "ExposiciÛn: %ld hr. %ld min. %ld seg. "
+    IDS_EXPOSURE0           "Exposici√≥n: < 1 seg. "
+    IDS_EXPOSURE1           "Exposici√≥n: %ld seg. "
+    IDS_EXPOSURE2           "Exposici√≥n: %ld min. %ld seg. "
+    IDS_EXPOSURE3           "Exposici√≥n: %ld hr. %ld min. %ld seg. "
     IDS_NRFRAMES            "(%ld frames)"
-    IDS_NOINFO              "Sin informaciÛn disponible"
+    IDS_NOINFO              "Sin informaci√≥n disponible"
     IDS_ESTIMATED0          "Tiempo restante: < 1 seg. "
     IDS_ESTIMATED1          "Tiempo restante: %ld seg. "
     IDS_ESTIMATED2          "Tiempo restante: %ld min. %ld seg. "
@@ -1290,17 +1290,17 @@ BEGIN
     IDS_FILTER_OUTPUT       "Imagen TIFF (16 bit/ch)|*.TIF|Imagen TIFF (32 bit/ch - integer)|*.TIF|Imagen TIFF (32 bit/ch - rational)|*.TIF|Imagen FITS (16 bit/ch)|*.FTS|Imagen FITS (32 bit/ch - integer)|*.FTS|Imagen FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista de Archivos (*.txt)|*.txt|Lista de Archivos (*.dssfilelist)|*.dssfilelist|Todos Los Archivos|*.*||"
     IDS_FILTER_MASK         "Imagen TIFF|*.tif;*.tiff|Imagen FITS|*.fits;*.fts;*.fit||"
-    IDS_TITLE_MASK          "Guardar la M·scara de Estrellas como ..."
+    IDS_TITLE_MASK          "Guardar la M√°scara de Estrellas como ..."
     IDS_TITLE_OPENLIGHTFRAMES "Abrir Light Frames..."
     IDS_TITLE_OPENDARKFRAMES "Abrir Dark Frames..."
 END
 
 STRINGTABLE
 BEGIN
-    IDS_MSG_SAVEMODIFICATIONS "øDesea guardar las modificaciones?"
+    IDS_MSG_SAVEMODIFICATIONS "¬øDesea guardar las modificaciones?"
     IDS_MSG_NOPICTURETOSAVE "No hay una imagen para guardar."
     IDS_MSG_NOPICTUREFORSTARMASK 
-                            "Para crear una M·scara de Estrellas se debe cargar una imagen."
+                            "Para crear una M√°scara de Estrellas se debe cargar una imagen."
 END
 
 STRINGTABLE
@@ -1318,31 +1318,31 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_TT_REDADJUST        "Seleccionar el MÈtodo de Ajuste de Histograna Rojo"
-    IDS_TT_GREENADJUST      "Seleccionar el MÈtodo de Ajuste de Histograna Verde"
-    IDS_TT_BLUEADJUST       "Seleccionar el MÈtodo de Ajuste de Histograna Azul"
-    IDS_TT_APPLIED          "Esta opciÛn guarda la imagen tal como la visualiza\nUtilicela si planea realizar un procesamiento posterior con otro programa"
-    IDS_TT_EMBEDDED         "Esta opciÛn guarda la imagen sin procesar pero le adjunta los ajustes de procesamiento\nUtilice esta opciÛn si planea hacer todo el procesamiento en otro programa o si planea reabrir la imagen con DeepSkyStacker"
+    IDS_TT_REDADJUST        "Seleccionar el M√©todo de Ajuste de Histograna Rojo"
+    IDS_TT_GREENADJUST      "Seleccionar el M√©todo de Ajuste de Histograna Verde"
+    IDS_TT_BLUEADJUST       "Seleccionar el M√©todo de Ajuste de Histograna Azul"
+    IDS_TT_APPLIED          "Esta opci√≥n guarda la imagen tal como la visualiza\nUtilicela si planea realizar un procesamiento posterior con otro programa"
+    IDS_TT_EMBEDDED         "Esta opci√≥n guarda la imagen sin procesar pero le adjunta los ajustes de procesamiento\nUtilice esta opci√≥n si planea hacer todo el procesamiento en otro programa o si planea reabrir la imagen con DeepSkyStacker"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ASK_DELETESETTINGS  "øRealmente desea remover los %s ajustes?"
+    IDS_ASK_DELETESETTINGS  "¬øRealmente desea remover los %s ajustes?"
     IDS_ASK_NODARK          "Ud. no ha seleccionado archivos dark.\n"
     IDS_ASK_NOFLAT          "Ud. no ha seleccionado archivos flat.\n"
     IDS_ASK_NOOFFSET        "Ud. no ha seleccionado archivos offset.\n"
-    IDS_ASK_CONTINUE        "\nøDesea continuar?"
+    IDS_ASK_CONTINUE        "\n¬øDesea continuar?"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ERROR_NOTCOMPATIBLE "Las im·genes seleccionadas no son compatibles (ancho, altura, cantidad de colores, cantidad de canales, solo un dark, offset y flat maestro)."
+    IDS_ERROR_NOTCOMPATIBLE "Las im√°genes seleccionadas no son compatibles (ancho, altura, cantidad de colores, cantidad de canales, solo un dark, offset y flat maestro)."
     IDS_ERROR_NOTLIGHTCHECKED 
                             "Ud. debe seleccionar light frames para apilarlos."
     IDS_ERROR_NOTLIGHTCHECKED2 
                             "Ud. debe seleccionar light frames para registrarlos."
     IDS_ERROR_NOTENOUGHFREESPACE 
-                            "La creaciÛn de los Maestros (dark, flat, offset) necesitÛ %ld Kb.\nSolo %ld Kb hay disponibles en su unidad %s\nøDesea proceder de todos modos?"
+                            "La creaci√≥n de los Maestros (dark, flat, offset) necesit√≥ %ld Kb.\nSolo %ld Kb hay disponibles en su unidad %s\n¬øDesea proceder de todos modos?"
 	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker no puede escribir archivos en el directorio %s"
 END
 
@@ -1368,7 +1368,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_REGISTERING         "Registrando im·genes"
+    IDS_REGISTERING         "Registrando im√°genes"
     IDS_REGISTERINGPICTURE  "Registando %ld de %ld"
     IDS_REGISTERINGNAME     "Registrando %s"
     IDS_REGISTERINGNAMEPLUSTARS "Registrando %s (%ld estrellas)"
@@ -1391,16 +1391,16 @@ BEGIN
     IDS_COMPUTINGSTACKINGINFO "Calculando info de apilado para %s"
     IDS_STACKING_COMPUTINGOFFSET "Apilando ... calculando offsets"
     IDS_STACKING            "Apilando"
-    IDS_STACKING_PICTURE    "Apilando %ld en %ld - Offset [%.1f,%.1f] - Angulo : %.1f∞"
+    IDS_STACKING_PICTURE    "Apilando %ld en %ld - Offset [%.1f,%.1f] - Angulo : %.1f¬∞"
     IDS_LOADRGBLIGHT        "Cargando %ld bit/ch %s light frame\n%s"
     IDS_LOADGRAYLIGHT       "Cargando %ld bits gray %s light frame\n%s"
     IDS_STACKRGBLIGHT       "Apilando %ld bit/ch %s light frame\n%s"
     IDS_STACKGRAYLIGHT      "Apilando %ld bits gray %s light frame\n%s"
     IDS_STACKING_COMPUTINGADJUSTMENT 
-                            "Apilando - Ajuste Bayer - C·lculo del Ajuste"
+                            "Apilando - Ajuste Bayer - C√°lculo del Ajuste"
     IDS_COMPUTINGADJUSTMENT "Calcular ajuste %ld en %ld"
     IDS_STACKING_APPLYINGADJUSTMENT "Apilando - Ajuste Bayer - Aplicar Ajuste"
-    IDS_STACKING_COMPUTEMAXADJUSTMENT "Calcular ajuste m·ximo"
+    IDS_STACKING_COMPUTEMAXADJUSTMENT "Calcular ajuste m√°ximo"
     IDS_STACKING_APPLYADJUSTMENT "Aplicando ajuste"
     IDS_COMPUTINGMEDIANOFFSET "Calculando offset maestro (%s)"
     IDS_COMPUTINGMEDIANDARK "Calculando dark maestro (%s)"
@@ -1430,11 +1430,11 @@ END
 STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Linear"
-    IDS_HAT_CUBEROOT        "RaÌz C˙bica"
-    IDS_HAT_SQUAREROOT      "RaÌz Cuadrada"
+    IDS_HAT_CUBEROOT        "Ra√≠z C√∫bica"
+    IDS_HAT_SQUAREROOT      "Ra√≠z Cuadrada"
     IDS_HAT_LOG             "Logaritmo"
     IDS_HAT_LOGLOG          "Log(Log)"
-    IDS_HAT_LOGSQUAREROOT   "Log(RaÌz Cuadrada)"
+    IDS_HAT_LOGSQUAREROOT   "Log(Ra√≠z Cuadrada)"
     IDS_HAT_ASINH           "ASinH"
 END
 
@@ -1444,19 +1444,19 @@ BEGIN
     IDS_LOADGRAYFLAT        "Cargando %ld bits gray %s flat frame\n%s"
     IDS_ADDRGBFLAT          "Agregando %ld bit/ch %s flat frame\n%s"
     IDS_ADDGRAYFLAT         "Agregando %ld bits gray %s flat frame\n%s"
-    IDS_MEDIANDARKINFO      "Dark Maestro creado a partir de %ld im·genes (%s)"
-    IDS_MEDIANOFFSETINFO    "Offset Maestro creado a partir de %ld im·genes (%s)"
-    IDS_MEDIANFLATINFO      "Flat Maestro creado a partir de %ld im·genes (%s)"
+    IDS_MEDIANDARKINFO      "Dark Maestro creado a partir de %ld im√°genes (%s)"
+    IDS_MEDIANOFFSETINFO    "Offset Maestro creado a partir de %ld im√°genes (%s)"
+    IDS_MEDIANFLATINFO      "Flat Maestro creado a partir de %ld im√°genes (%s)"
     IDS_SUBSTRACTINGOFFSET  "Sustrayendo Offset Frame"
     IDS_SUBSTRACTINGDARK    "Sustrayendo Dark Frame"
     IDS_APPLYINGFLAT        "Aplicando Flat Frame"
     IDS_NORMALIZINGMASTERFLAT "Calibrando Flat Maestro"
-    IDS_COMPUTINGMINLUMINANCE "C·lculo autom·tico de luminancia mÌnima"
-    IDS_COMPUTINGENTROPY    "Calculando EntropÌa"
+    IDS_COMPUTINGMINLUMINANCE "C√°lculo autom√°tico de luminancia m√≠nima"
+    IDS_COMPUTINGENTROPY    "Calculando Entrop√≠a"
     IDS_COMPUTINGBACKGROUNDCALIBRATION 
-                            "Calculando par·metros de CalibraciÛn de Fondo"
+                            "Calculando par√°metros de Calibraci√≥n de Fondo"
     IDS_COMPUTINGDARKOPTIMIZATIONFACTOR 
-                            "Calculando par·metros de OptimizaciÛn de Darks"
+                            "Calculando par√°metros de Optimizaci√≥n de Darks"
     IDS_REMOVINGHOTPIXELS   "Detectando hot pixels"
 END
 
@@ -1471,15 +1471,15 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CHECKVERSION        "øDesea que DeepSkyStacker verifique si hay una nueva version disponible al iniciarse?\n(Ud. puede habilitar o deshabilitar esta opciÛn m·s tarde en la ventana de Acerca de)"
-    IDS_VERSIONAVAILABLE    "La versiÛn %s de DeepSkyStacker  esta disponible para descargar."
-    IDS_TEMPFILEREMOVAL     "Uno o m·s archivos temporarios creados por DeepSkyStacker a˙n se encuentran en el directorio de trabajo.\n\nøDesea removerlos?\n\n(%ld archivo(s) utilizando %s)"
-    IDS_WARNING_ERASEFILES  "øRealmente desea eliminar permanentemente  %ld archivo(s)?\nEsta operaciÛn no puede revertirse o cancelarse."
-    IDS_WANTTOCONTINUE      "\nøRealmente desea continuar?"
-    IDS_WARNINGREADONLY     "La siguiente carpeta(s) son de sÛlo lectura:\n%s\nDeepSkyStacker necesita crear archivos en estas carpetas durante el procesamiento."
+    IDS_CHECKVERSION        "¬øDesea que DeepSkyStacker verifique si hay una nueva version disponible al iniciarse?\n(Ud. puede habilitar o deshabilitar esta opci√≥n m√°s tarde en la ventana de Acerca de)"
+    IDS_VERSIONAVAILABLE    "La versi√≥n %s de DeepSkyStacker  esta disponible para descargar."
+    IDS_TEMPFILEREMOVAL     "Uno o m√°s archivos temporarios creados por DeepSkyStacker a√∫n se encuentran en el directorio de trabajo.\n\n¬øDesea removerlos?\n\n(%ld archivo(s) utilizando %s)"
+    IDS_WARNING_ERASEFILES  "¬øRealmente desea eliminar permanentemente  %ld archivo(s)?\nEsta operaci√≥n no puede revertirse o cancelarse."
+    IDS_WANTTOCONTINUE      "\n¬øRealmente desea continuar?"
+    IDS_WARNINGREADONLY     "La siguiente carpeta(s) son de s√≥lo lectura:\n%s\nDeepSkyStacker necesita crear archivos en estas carpetas durante el procesamiento."
     IDS_WARNING_SAVECHANGES "Realizo algunos cambios al archivo %s y/o a los ajustes.\n\nDesea guardar los cambios?"
     IDS_WARNING_ONLYONEFRAME 
-                            "Solo un cuadro (de %ld) sera apilado.\n\nDeberÌa chequear/cambiar el umbral de detecciÛn de estrellas para detectar mas estrellas\ny ayudar a DeepSkyStacker a encontrar una transformaciÛn entre el cuadro de referencia y los dem·s.\n"
+                            "Solo un cuadro (de %ld) sera apilado.\n\nDeber√≠a chequear/cambiar el umbral de detecci√≥n de estrellas para detectar mas estrellas\ny ayudar a DeepSkyStacker a encontrar una transformaci√≥n entre el cuadro de referencia y los dem√°s.\n"
 END
 
 STRINGTABLE
@@ -1492,31 +1492,31 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Apilado Paso %ld\n  ->%ld frames (%s: %s) - exposiciÛn total: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposiciÛn: %s\n"
-    IDS_RECAP_ISOWARNING    "\t\tPrecauciÛn: la sensibilidad ISO no coincide con la de los light frames\n"
+    IDS_RECAP_STEP          "Apilado Paso %ld\n  ->%ld frames (%s: %s) - exposici√≥n total: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposici√≥n: %s\n"
+    IDS_RECAP_ISOWARNING    "\t\tPrecauci√≥n: la sensibilidad ISO no coincide con la de los light frames\n"
     IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Sin Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposiciÛn: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposici√≥n: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
-                            "\t\tPrecauciÛn: el tiempo de exposiciÛn no coincide con el de los light frames\n"
+                            "\t\tPrecauci√≥n: el tiempo de exposici√≥n no coincide con el de los light frames\n"
     IDS_RECAP_NODARK        "\t-> Sin Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (%s: %s) exposiciÛn: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (%s: %s) exposici√≥n: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Sin Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
-                            "\nTiempo de ExposiciÛn Total estimado: %s\n(el total de tiempo de exposiciÛn es calculado teniendo en cuenta que todos los light frames seleccionados son utilizados en el proceso de apilado)\n"
+                            "\nTiempo de Exposici√≥n Total estimado: %s\n(el total de tiempo de exposici√≥n es calculado teniendo en cuenta que todos los light frames seleccionados son utilizados en el proceso de apilado)\n"
     IDS_RECAP_WARNINGBAYERDRIZZLE 
-                            "AtenciÛn: La opciÛn Bayer Drizzle seleccionada en los ajustes RAW DDP pueden llevar a resultados extraÒos con otro mÈtodo distinto a Average."
+                            "Atenci√≥n: La opci√≥n Bayer Drizzle seleccionada en los ajustes RAW DDP pueden llevar a resultados extra√±os con otro m√©todo distinto a Average."
     IDS_RECAP_BACKGROUNDCALIBRATION 
-                            "CalibraciÛn de Fondo de Canales RGB: %s\n"
-    IDS_RECAP_DARKOPTIMIZATION "OptimizaciÛn de Darks: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposiciÛn: %s\n"
+                            "Calibraci√≥n de Fondo de Canales RGB: %s\n"
+    IDS_RECAP_DARKOPTIMIZATION "Optimizaci√≥n de Darks: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposici√≥n: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
-                            "\t\tPrecauciÛn: La sensibilidad ISO no coincide con la de los flat frames\n"
+                            "\t\tPrecauci√≥n: La sensibilidad ISO no coincide con la de los flat frames\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
                             "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
-                            "\t\tPrecauciÛn: el tiempo de exposiciÛn no coincide con el de los flat frames\n"
+                            "\t\tPrecauci√≥n: el tiempo de exposici√≥n no coincide con el de los flat frames\n"
 END
 
 STRINGTABLE
@@ -1526,16 +1526,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_METHOD        "MÈtodo: "
+    IDS_RECAP_METHOD        "M√©todo: "
     IDS_RECAP_AVERAGE       "Promedio"
     IDS_RECAP_MEDIAN        "Media"
-    IDS_RECAP_MAXIMUM       "M·ximo"
+    IDS_RECAP_MAXIMUM       "M√°ximo"
     IDS_RECAP_KAPPASIGMA    "Kappa-Sigma (Kappa = %.2f, Iteraciones = %ld)"
     IDS_RECAP_AUTOADAPTIVE  "Auto Adaptive Weighted Average (Iteraciones = %ld)"
     IDS_RECAP_ENTROPYAVERAGE "Entropy Weighted Average"
     IDS_RECAP_MEDIANSIGMACLIP 
                             "Median Kappa-Sigma (Kappa = %.2f, Iteraciones = %ld)"
-    IDS_RECAP_ALIGNMENT     "MÈtodo de Alineado: "
+    IDS_RECAP_ALIGNMENT     "M√©todo de Alineado: "
 END
 
 STRINGTABLE
@@ -1548,14 +1548,14 @@ END
 STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
-                            "El proceso necesita temporariamente %s de espacio libre en la unidad %s.\nSÛlo %s est·n disponibles en esta unidad."
-    IDS_RECAP_INFODISKSPACE "El proceso utilizar· temporariamente %s en la unidad %s (%s libres)."
+                            "El proceso necesita temporariamente %s de espacio libre en la unidad %s.\nS√≥lo %s est√°n disponibles en esta unidad."
+    IDS_RECAP_INFODISKSPACE "El proceso utilizar√° temporariamente %s en la unidad %s (%s libres)."
     IDS_RECAP_SELECTTEMPFOLDER 
                             "Por favor seleccione la carpeta que contiene los archivos temporarios."
     IDS_RECAP_MOSAIC        "Modo Mosaico: "
-    IDS_RECAP_MOSAICWARNING "Nota: el espacio de disco necesario es calculado utilizando el tamaÒo de la imagen del cuadro de referencia. Dependiendo del tamaÒo de la imagen resultante puede requerirse m·s espacio."
+    IDS_RECAP_MOSAICWARNING "Nota: el espacio de disco necesario es calculado utilizando el tama√±o de la imagen del cuadro de referencia. Dependiendo del tama√±o de la imagen resultante puede requerirse m√°s espacio."
     IDS_RECAP_WARNINGINTERMEDIATESAVE 
-                            "AtenciÛn: la opciÛn de guardar las im·genes registradas y calibradas esta seleccionada. Verifique por favor que tiene suficiente espacio libre en el disco para alojar estos archivos."
+                            "Atenci√≥n: la opci√≥n de guardar las im√°genes registradas y calibradas esta seleccionada. Verifique por favor que tiene suficiente espacio libre en el disco para alojar estos archivos."
 END
 
 STRINGTABLE
@@ -1565,30 +1565,30 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_LISTINFO            "Im·genes:%ld      -      Darks: %ld      -      Flats:%ld      -      Dark Flats:%ld     -      Offset/Bias: %ld"
-    IDS_LISTINFO2           "Im·genes: %ld\nDarks: %ld\nFlats: %ld\nDark Flats:%ld\nOffset/Bias: %ld"
+    IDS_LISTINFO            "Im√°genes:%ld      -      Darks: %ld      -      Flats:%ld      -      Dark Flats:%ld     -      Offset/Bias: %ld"
+    IDS_LISTINFO2           "Im√°genes: %ld\nDarks: %ld\nFlats: %ld\nDark Flats:%ld\nOffset/Bias: %ld"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_TOOLTIP_KAPPASIGMA  "Los pÌxeles fuera del rango:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nson removidos iterativamente.\n\nLos pÌxeles restantes son promediados."
+    IDS_TOOLTIP_KAPPASIGMA  "Los p√≠xeles fuera del rango:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nson removidos iterativamente.\n\nLos p√≠xeles restantes son promediados."
     IDS_TOOLTIP_AUTOADAPTIVE 
-                            "El <b>promedio ponderado</b> se obtiene mediante\nla ponderaciÛn iterativa de cada pixel\npartiendo de la desviaciÛn de la media\ncomparativamente a la desviaciÛn est·ndar ([sigma])."
+                            "El <b>promedio ponderado</b> se obtiene mediante\nla ponderaci√≥n iterativa de cada pixel\npartiendo de la desviaci√≥n de la media\ncomparativamente a la desviaci√≥n est√°ndar ([sigma])."
     IDS_TOOLTIP_MEDIANKAPPASIGMA 
-                            "Los pÌxeles fuera del rango:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nson reemplazados iterativamente por el valor medio.\n\nLos pÌxeles son luego promediados."
-    IDS_TOOLTIP_SELECTRECT  "Modo Rect·ngulo a Medida\nEste modo puede ser utilizado para crear y modificar\nel Rect·ngulo a Medida."
-    IDS_TOOLTIP_STAR        "Modo EdiciÛn de Estrellas\nEste modo puede ser utilizado para agregar/remover estrellas\nen la imagen."
-    IDS_TOOLTIP_COMET       "Modo EdiciÛn de Cometas\nEste modo puede ser utilizado par editar la posiciÛn\ndel cometa en la imagen."
+                            "Los p√≠xeles fuera del rango:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nson reemplazados iterativamente por el valor medio.\n\nLos p√≠xeles son luego promediados."
+    IDS_TOOLTIP_SELECTRECT  "Modo Rect√°ngulo a Medida\nEste modo puede ser utilizado para crear y modificar\nel Rect√°ngulo a Medida."
+    IDS_TOOLTIP_STAR        "Modo Edici√≥n de Estrellas\nEste modo puede ser utilizado para agregar/remover estrellas\nen la imagen."
+    IDS_TOOLTIP_COMET       "Modo Edici√≥n de Cometas\nEste modo puede ser utilizado par editar la posici√≥n\ndel cometa en la imagen."
     IDS_TOOLTIP_SAVE        "Guardar cambios\nGuardar todos los cambios (Estrellas y Cometa) para la imagen actual."
 END
 
 STRINGTABLE
 BEGIN
-    IDS_GENERIC_RGGB        "RGGB GenÈrico"
-    IDS_GENERIC_BGGR        "BGGR GenÈrico"
-    IDS_GENERIC_GRBG        "GRBG GenÈrico"
-    IDS_GENERIC_GBRG        "GBRG GenÈrico"
-    IDS_GENERIC             "GenÈrico"
+    IDS_GENERIC_RGGB        "RGGB Gen√©rico"
+    IDS_GENERIC_BGGR        "BGGR Gen√©rico"
+    IDS_GENERIC_GRBG        "GRBG Gen√©rico"
+    IDS_GENERIC_GBRG        "GBRG Gen√©rico"
+    IDS_GENERIC             "Gen√©rico"
 END
 
 STRINGTABLE
@@ -1599,43 +1599,43 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ALIGNMENT_AUTO      "Autom·tico\n\nEl mÈtodo de alineado es seleccionado automaticamente dependiendo de la cantidad de estrellas disponibles."
+    IDS_ALIGNMENT_AUTO      "Autom√°tico\n\nEl m√©todo de alineado es seleccionado automaticamente dependiendo de la cantidad de estrellas disponibles."
     IDS_ALIGNMENT_BILINEAR  "Alineado Bilinearm\n\nEl Alineado Bilinear es utilizado en todos los casos."
-    IDS_ALIGNMENT_BISQUARED "Alineado Bicuadrado\n\nEl Alineado Bicuadrado es utilizado cuando hay al menos 25 estrellas disponibles, de otro modo se utiliza el mÈtodo de Alineado Bilinear."
-    IDS_ALIGNMENT_BICUBIC   "Alineado Bic˙bico\n\nEl mÈtodo de Alineado Bic˙bico es utilizado cuando hay al menos 40 estrellas disponibles, si hay de 25 a 39 estrellas disponibles se utiliza el mÈtodo Bicuadrado, de otro modo se utiliza el mÈtodo Bilinear cuando hay menos de 25 estrellas disponibles."
+    IDS_ALIGNMENT_BISQUARED "Alineado Bicuadrado\n\nEl Alineado Bicuadrado es utilizado cuando hay al menos 25 estrellas disponibles, de otro modo se utiliza el m√©todo de Alineado Bilinear."
+    IDS_ALIGNMENT_BICUBIC   "Alineado Bic√∫bico\n\nEl m√©todo de Alineado Bic√∫bico es utilizado cuando hay al menos 40 estrellas disponibles, si hay de 25 a 39 estrellas disponibles se utiliza el m√©todo Bicuadrado, de otro modo se utiliza el m√©todo Bilinear cuando hay menos de 25 estrellas disponibles."
 END
 
 STRINGTABLE
 BEGIN
-    IDS_ALIGN_AUTO          "Autom·tico"
+    IDS_ALIGN_AUTO          "Autom√°tico"
     IDS_ALIGN_BILINEAR      "Bilineal"
     IDS_ALIGN_BISQUARED     "Bicuadrada"
-    IDS_ALIGN_BICUBIC       "Bic˙bica"
+    IDS_ALIGN_BICUBIC       "Bic√∫bica"
     IDS_ALIGN_NONE          "Sin Alineado"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_HOTPIXELS     "DetecciÛn y eliminado de Hot Pixels: %s\n"
+    IDS_RECAP_HOTPIXELS     "Detecci√≥n y eliminado de Hot Pixels: %s\n"
     IDS_RECAP_DETECTEDANDUSEDPROCESSORS 
                             "%ld procesadores detectados y utilizados "
     IDS_RECAP_DETECTEDNOTUSEDPROCESSORS 
-                            "%ld procesadores detectados - sÛlo uno utilizado"
+                            "%ld procesadores detectados - s√≥lo uno utilizado"
     IDS_RECAP_DRIZZLE       "Drizzle x%ld habilitado"
     IDS_RECAP_WARNINGDRIZZLE 
-                            "La opciÛn de drizzle seleccionada no es compatible con el modo Bayer Drizzle."
-    IDS_RECAP_WARNINGJPEG   "AtenciÛn: Ud. esta utilizando archivos dark, flat o bias con archivos JPEG.\nDebido a la compresiÛn con pÈrdida de datos la calibraciÛn no funciona con archivos JPEG."
+                            "La opci√≥n de drizzle seleccionada no es compatible con el modo Bayer Drizzle."
+    IDS_RECAP_WARNINGJPEG   "Atenci√≥n: Ud. esta utilizando archivos dark, flat o bias con archivos JPEG.\nDebido a la compresi√≥n con p√©rdida de datos la calibraci√≥n no funciona con archivos JPEG."
     IDS_RECAP_STACKINGMODE  "Modo de Apilado: "
-    IDS_RECAP_STACKINGMODE_NORMAL "Est·ndar"
+    IDS_RECAP_STACKINGMODE_NORMAL "Est√°ndar"
     IDS_RECAP_STACKINGMODE_MOSAIC "Mosaico"
     IDS_RECAP_STACKINGMODE_CUSTOM "Rectangulo a medida"
     IDS_RECAP_COMETSTACKING "Procesamiento de Cometas : "
     IDS_RECAP_COMETSTACKING_NONE 
-                            "Alinear con estrellas (sin procesamiento especÌfico)"
+                            "Alinear con estrellas (sin procesamiento espec√≠fico)"
     IDS_RECAP_COMETSTACKING_COMET "Alinear con cometa"
     IDS_RECAP_COMETSTACKING_BOTH "Alinear con estrellas y cometa"
-    IDS_RECAP_COSMETICHOT   "CosmÈtica aplicada a los hot pixels (Filtro = %ld px, Umbral de DetecciÛn = %.1f%%)\n"
-    IDS_RECAP_COSMETICCOLD  "CosmÈtica aplicada a los cold pixels (Filtro = %ld px, Umbral de DetecciÛn = %.1f%%)\n"
+    IDS_RECAP_COSMETICHOT   "Cosm√©tica aplicada a los hot pixels (Filtro = %ld px, Umbral de Detecci√≥n = %.1f%%)\n"
+    IDS_RECAP_COSMETICCOLD  "Cosm√©tica aplicada a los cold pixels (Filtro = %ld px, Umbral de Detecci√≥n = %.1f%%)\n"
 END
 
 STRINGTABLE
@@ -1643,20 +1643,20 @@ BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detectando Hot Pixels (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detectando Hot Pixels (2/2)"
     IDS_COMPUTINGFLATCALIBRATION 
-                            "Calculando Par·metros de CalibraciÛn de Flats"
-    IDS_APPLYINGFLATCALIBRATION "Aplicando Par·metros de CalibraciÛn de Flats"
+                            "Calculando Par√°metros de Calibraci√≥n de Flats"
+    IDS_APPLYINGFLATCALIBRATION "Aplicando Par√°metros de Calibraci√≥n de Flats"
     IDS_AHDDEMOSAICING      "Interpolando con Adaptive Homogeneity Directed (AHD)"
     IDS_PROCESSINGIMAGE     "Procesando Imagen..."
-    IDS_CREATINGSTARMASK    "Creando la M·scara de Estrellas..."
-    IDS_SAVINGSTARMASK      "Guardando la M·scara de Estrellas en %s"
-    IDS_APPLYINGCOSMETIC_HOT "Aplicando cosmÈtica - Hot Pixels"
-    IDS_APPLYINGCOSMETIC_COLD "Aplicando cosmÈtica - Cold Pixels"
+    IDS_CREATINGSTARMASK    "Creando la M√°scara de Estrellas..."
+    IDS_SAVINGSTARMASK      "Guardando la M√°scara de Estrellas en %s"
+    IDS_APPLYINGCOSMETIC_HOT "Aplicando cosm√©tica - Hot Pixels"
+    IDS_APPLYINGCOSMETIC_COLD "Aplicando cosm√©tica - Cold Pixels"
     IDS_CREATINGMEDIANIMAGE "Creando Imagen Filtrada por la Media"
     IDS_OPTIMIZINGDARKMATCHING "Optimizando el emparejado de Darks"
     IDS_LOADRGBDARKFLAT     "Cargando %ld bit/ch %s dark flat frame\n%s"
     IDS_LOADGRAYDARKFLAT    "Cargando %ld bits gris %s dark flat frame\n%s"
     IDS_COMPUTINGMEDIANDARKFLAT "Calculando el dark flat maestro (%s)"
-    IDS_MEDIANDARKFLATINFO  "Dark Flat Maestro creado a partir de %ld im·genes (%s)"
+    IDS_MEDIANDARKFLATINFO  "Dark Flat Maestro creado a partir de %ld im√°genes (%s)"
 END
 
 STRINGTABLE
@@ -1666,9 +1666,9 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_LOADGRAYFITS        "Cargando FITS %ld bit monocrom·tica"
+    IDS_LOADGRAYFITS        "Cargando FITS %ld bit monocrom√°tica"
     IDS_SAVINGFITS          "Guardando FITS %ld bit"
-    IDS_STARMASKDESCRIPTION "M·scara de Estrellas creada por DeepSkyStacker"
+    IDS_STARMASKDESCRIPTION "M√°scara de Estrellas creada por DeepSkyStacker"
 END
 
 STRINGTABLE
@@ -1685,14 +1685,14 @@ STRINGTABLE
 BEGIN
     IDS_TIP_ADDSTAR         "Clickee para agregar esta estrella"
     IDS_TIP_REMOVESTAR      "Clickee para remover esta estrella"
-    IDS_TIP_SETCOMET        "Clickee para marcar el cometa aquÌ"
+    IDS_TIP_SETCOMET        "Clickee para marcar el cometa aqu√≠"
     IDS_TIP_REMOVECOMET     "Clickee para remover el cometa"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_COSMETICSTATS       "CosmÈtica\nHot Pixels Detectados: %ld (%.2f%%)\nCold Pixels Detectados: %ld (%.2f%%)\n"
-    IDS_COMPUTINGCOSMETICSTATS "Calculando CosmÈtica"
+    IDS_COSMETICSTATS       "Cosm√©tica\nHot Pixels Detectados: %ld (%.2f%%)\nCold Pixels Detectados: %ld (%.2f%%)\n"
+    IDS_COMPUTINGCOSMETICSTATS "Calculando Cosm√©tica"
     IDS_LIGHTFRAMEINFO      "# Estrellas: %ld\nPuntaje: %.2f\nFWHM: %.2f"
     IDS_LIGHTFRAMEINFOCOMET "\nCometa:%s"
     IDS_ALIGNINGCHANNEL     "Alineando Canal"
@@ -1706,15 +1706,15 @@ END
 STRINGTABLE
 BEGIN
     IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
-                            "CalibraciÛn de Fondo por cada Canal: %s\n"
+                            "Calibraci√≥n de Fondo por cada Canal: %s\n"
     IDS_RECAP_DARKMULTIPLICATIONFACTOR 
-                            "Factor de multiplicaciÛn de Dark: %.2f\n"
+                            "Factor de multiplicaci√≥n de Dark: %.2f\n"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Lo sentimos, Libraw no reconoce la c·mara %s"
-	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker no se des-Bayer im·genes de 8 bits"
+    IDS_CAMERA_NOT_SUPPORTED "Lo sentimos, Libraw no reconoce la c√°mara %s"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker no se des-Bayer im√°genes de 8 bits"
 END
 
 #endif    // Spanish (Spain, International Sort) resources
