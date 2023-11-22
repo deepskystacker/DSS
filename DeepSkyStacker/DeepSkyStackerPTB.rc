@@ -7,7 +7,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB)
 LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
-#pragma code_page(1252)
+#pragma code_page(65001)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -324,7 +324,7 @@ CAPTION "Avancado"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,38,17,136,15
-    PUSHBUTTON      "Computador detecta nº  estrelas",IDC_COMPUTEDETECTEDSTARS,37,48,137,14
+    PUSHBUTTON      "Computador detecta nÂº  estrelas",IDC_COMPUTEDETECTEDSTARS,37,48,137,14
     CTEXT           "%ld estrela(s)",IDC_NRSTARS,38,68,136,8
     RTEXT           "10%",IDC_LUMINANCETHRESHOLDTEXT,13,21,25,8
     GROUPBOX        "Deteccao threshold da estrela",-1,7,3,195,102
@@ -345,7 +345,7 @@ BEGIN
     LTEXT           "Escala de azuis",IDC_STATIC,15,53,48,8
     EDITTEXT        IDC_BLUESCALE,83,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balanco de brancos",IDC_STATIC,140,7,131,64
-    CONTROL         "Sem processamento de balanço de branco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
+    CONTROL         "Sem processamento de balanÃ§o de branco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
     CONTROL         "Usar balanco brancos da camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,113,17
     CONTROL         "Interpolacao bilinear",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Homogenuidade Adaptada-Directamente - Interpolacao (AHD)",IDC_AHD,
@@ -560,7 +560,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,146,158,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,203,158,50,14
-    LTEXT           "Dialogo  no processo de lancamento - integracao imagens existentes em lista\n\nAdicione 1º ficheiro da lista que voce quer integrar e clique OK para comecar processo integracao.",IDC_STATIC,7,7,246,36
+    LTEXT           "Dialogo  no processo de lancamento - integracao imagens existentes em lista\n\nAdicione 1Âº ficheiro da lista que voce quer integrar e clique OK para comecar processo integracao.",IDC_STATIC,7,7,246,36
     PUSHBUTTON      "Adicione o Ficheiro a Lista",IDC_ADDLISTS,5,46,112,14
     LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     PUSHBUTTON      "Limpar Lista",IDC_CLEARLIST,203,46,50,14
@@ -966,7 +966,7 @@ BEGIN
                             "Tem que verificar fotogramas-luz para registar."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "OS Masters (dark, flat, offset) criados requerem %ld Kb.\nApenas %ld Kb estao disponiveis drive %s\nQualquer das formas quer continuar?"
-	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker não pode gravar arquivos no diretório %s"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker nÃ£o pode gravar arquivos no diretÃ³rio %s"
 END
 
 STRINGTABLE
@@ -1014,7 +1014,7 @@ BEGIN
     IDS_COMPUTINGSTACKINGINFO "Informacao-Integracao do PC para %s"
     IDS_STACKING_COMPUTINGOFFSET "Integrando ... offsets do computador"
     IDS_STACKING            "Integrando"
-    IDS_STACKING_PICTURE    "Integrando %ld on %ld - Offset [%.1f,%.1f] - Ângulo : %.1f°"
+    IDS_STACKING_PICTURE    "Integrando %ld on %ld - Offset [%.1f,%.1f] - Ã‚ngulo : %.1fÂ°"
     IDS_LOADRGBLIGHT        "Carregando %ld bit/ch %s light frame\n%s"
     IDS_LOADGRAYLIGHT       "Carregando %ld bits gray %s light frame\n%s"
     IDS_STACKRGBLIGHT       "Integrando %ld bit/ch %s light frame\n%s"
@@ -1391,13 +1391,13 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW files decoding by LibRaw (version %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "RAW files decoding by LibRaw (version %s)\nCopyright Â© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "TIFF files encoding/decoding by LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "TIFF files encoding/decoding by LibTIFF (version %s)\nCopyright Â© 1988-1996 Sam Leffler\nCopyright Â© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS decoding by CFitsIO (version %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "QHTM Library Copyright © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "QHTM Library Copyright Â© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
@@ -1431,11 +1431,11 @@ BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
     IDS_ABOUT_LANG_PORTUGUESE "Versao Portuguesa:"
     IDS_ABOUT_LANG_PORTUGUESE_LINK "Manuel Fernandes"
-    IDS_ABOUT_LANG_ROMANIAN "Versão romeno:"
+    IDS_ABOUT_LANG_ROMANIAN "VersÃ£o romeno:"
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Kolbert e Valentin Stoica"
-    IDS_ABOUT_LANG_RUSSIAN  "Versão em russo:"
+    IDS_ABOUT_LANG_RUSSIAN  "VersÃ£o em russo:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-    IDS_ABOUT_LANG_TURKISH  "Versão turca:"
+    IDS_ABOUT_LANG_TURKISH  "VersÃ£o turca:"
     IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
@@ -1455,8 +1455,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Desculpe, LibRaw não suporta % modelo de câmera"
-	IDS_8BIT_FITS_NODEBAYER "O DeepSkyStacker não fará o processamento de-Bayer de imagens de 8 bits"
+    IDS_CAMERA_NOT_SUPPORTED "Desculpe, LibRaw nÃ£o suporta % modelo de cÃ¢mera"
+	IDS_8BIT_FITS_NODEBAYER "O DeepSkyStacker nÃ£o farÃ¡ o processamento de-Bayer de imagens de 8 bits"
 END
 
 #endif    // Portuguese (Brazil) resources
