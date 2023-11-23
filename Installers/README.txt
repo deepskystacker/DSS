@@ -9,6 +9,8 @@ Changes since the last release:
 
 2. Bug fix: Monochrome JPEG and PNG images wouldn't load.
 
+3. Modified version of CFITSIO 4.3.0 to support use of UTF-8 filenames on Windows. This has been submitted to the CFITSIO team.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
