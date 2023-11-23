@@ -68,12 +68,7 @@ namespace DSS
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
- 
-        StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
-        ProcessingDlg& processingDlg{ DeepSkyStacker::instance()->getProcessingDlg() };
-        connect(this, &SelectRect::selectRectChanged, &stackingDlg, &StackingDlg::setSelectionRect);
-        connect(this, &SelectRect::selectRectChanged, &processingDlg, &ProcessingDlg::setSelectionRect);
-    }
+     }
 
     /*!
         \reimp

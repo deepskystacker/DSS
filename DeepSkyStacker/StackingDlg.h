@@ -228,7 +228,7 @@ namespace DSS
 
 		inline bool customRectangleIsValid() const
 		{
-			return !selectRect.isEmpty();
+			return !selectionRect.isEmpty();
 		}
 
 	protected:
@@ -251,11 +251,11 @@ namespace DSS
 
 		bool fileAlreadyLoaded(const fs::path& file);
 
-		EditStars* editStarsPtr;
-		SelectRect* selectRectPtr;
+		EditStars* editStars;
+		SelectRect* selectRect;
 		ToolBar* pToolBar;
 
-		DSSRect	selectRect;
+		DSSRect	selectionRect;
 
 		//QFileDialog			fileDialog;
 

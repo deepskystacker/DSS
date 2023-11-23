@@ -4,14 +4,52 @@
 #include "progressdlg.h"
 #include <Ztrace.h>
 
+#define dssApp DeepSkyStacker::instance()
+
 namespace DSS
 {
-
 	void ProcessingDlg::setButtonIcons()
 	{
 		setRedButtonIcon();
 		setGreenButtonIcon();
 		setBlueButtonIcon();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	//
+	// If the image is monochrome only show one gradient slider control in 
+	// shades of grey.  Otherwise show all three as R, G, B
+	//
+	void ProcessingDlg::modifyRGBKGradientControls()
+	{
+		if (dssApp->deepStack().IsLoaded())
+		{
+			bool monochrome{ dssApp->deepStack().GetStackedBitmap().IsMonochrome() };
+
+			greenHAC->setVisible(monochrome ? false : true);
+			greenGradient->setVisible(monochrome ? false : true);
+			blueHAC->setVisible(monochrome ? false : true);
+			blueGradient->setVisible(monochrome ? false : true);
+			linkedSettings->setVisible(monochrome ? false : true); 
+
+			if (monochrome)
+			{
+				// Change the colors of the red gradient to grey
+				linkedSettings->setChecked(true);
+				redGradient->setColorAt(0.5, QColor(qRgb(128, 128, 128)));
+				redGradient->setColorAt(0.999, Qt::white);
+				redGradient->setColorAt(1.0, Qt::white);
+			}
+			else
+			{
+				// Change the colors of the red gradient
+				redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
+				redGradient->setColorAt(0.999, Qt::red);
+				redGradient->setColorAt(1.0, Qt::red);
+			}
+			redGradient->update();
+		}
 	}
 
 	//
@@ -114,6 +152,18 @@ namespace DSS
 			redGradient->update();
 		};
 
+		//
+		// If the settings are linked, the green and blue pegs also need to move
+		// 
+		if (linkedSettings->isChecked())
+		{
+			greenGradient->setPeg(peg, stops[peg].first);
+			blueGradient->setPeg(peg, stops[peg].first);
+		}
+
+		setDirty();
+		emit showOriginalHistogram();
+
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -141,6 +191,9 @@ namespace DSS
 			greenGradient->setPeg(peg, stops[peg].first);
 			blueGradient->setPeg(peg, stops[peg].first);
 		}
+
+		setDirty();
+		emit showOriginalHistogram();
 
 		qDebug() << "red sliders changed";
 
@@ -218,6 +271,17 @@ namespace DSS
 			greenGradient->update();
 		}
 
+		//
+		// If the settings are linked, the red and blue pegs also need to move
+		// 
+		if (linkedSettings->isChecked())
+		{
+			redGradient->setPeg(peg, stops[peg].first); redGradient->update();
+			blueGradient->setPeg(peg, stops[peg].first); blueGradient->update();
+		}
+
+		setDirty();
+		emit showOriginalHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -248,6 +312,8 @@ namespace DSS
 
 		qDebug() << "green sliders changed";
 
+		setDirty();
+		emit showOriginalHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -322,6 +388,17 @@ namespace DSS
 			blueGradient->update();
 		}
 
+		//
+		// If the settings are linked, the red and green pegs also need to move
+		// 
+		if (linkedSettings->isChecked())
+		{
+			redGradient->setPeg(peg, stops[peg].first);
+			greenGradient->setPeg(peg, stops[peg].first);
+		}
+
+		setDirty();
+		emit showOriginalHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -349,6 +426,9 @@ namespace DSS
 			redGradient->setPeg(peg, stops[peg].first);
 			greenGradient->setPeg(peg, stops[peg].first);
 		}
+
+		setDirty();
+		emit showOriginalHistogram();
 
 		qDebug() << "blue sliders changed";
 

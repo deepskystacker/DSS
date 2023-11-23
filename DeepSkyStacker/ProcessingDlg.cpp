@@ -2,6 +2,7 @@
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
 #include "progressdlg.h"
+#include "selectrect.h"
 #include <Ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
@@ -48,6 +49,14 @@ namespace DSS {
 		logLogAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogLog));
 		logSquareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogSquareRoot));
 		asinHAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::ASinH));
+
+		//
+		// Allow selection of partial image, don't display "Drizzle" rectangles.
+		//
+		selectRect = new SelectRect(picture);
+		selectRect->setShowDrizzle(false);
+
+		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
 	}
 
 	ProcessingDlg::~ProcessingDlg()
@@ -122,13 +131,14 @@ namespace DSS {
 		dssApp->deepStack().SetProgress(nullptr);
 		QGuiApplication::restoreOverrideCursor();
 
-/*		if (ok)
+		if (ok)
 		{
 			currentFile = file;
 
-			UpdateMonochromeControls();
-			UpdateInfos();
+			modifyRGBKGradientControls();
+			updateInformation();
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			/*
 			dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
 			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
 
@@ -143,12 +153,12 @@ namespace DSS {
 			m_lProcessParams.clear();
 			m_Picture.SetImg((HBITMAP)nullptr);
 			ProcessAndShow(true);
+			*/
 			QGuiApplication::restoreOverrideCursor();
 			setDirty(false);
 		};
 
 		//SetTimer(1, 100, nullptr);
-*/
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -171,9 +181,83 @@ namespace DSS {
 		qDebug() << "Save image to file";
 	}
 
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::updateInformation()
+	{
+		int		isoSpeed;
+		int		gain;
+		int		totalTime;
+		int		nrFrames;
+		QString text{ tr("No information available", "IDS_NOINFO") };
+
+		CStackedBitmap& bmp { dssApp->deepStack().GetStackedBitmap() };
+		isoSpeed = bmp.GetISOSpeed();
+		gain = bmp.GetGain();
+		totalTime = bmp.GetTotalTime();
+		nrFrames = bmp.GetNrStackedFrames();
+		/*
+		if (isoSpeed || gain >= 0 || totalTime || nrFrames)
+		{
+			CString		strISO;
+			CString		strGain;
+			CString		strTime;
+			CString		strFrames;
+
+			if (isoSpeed)
+			{
+				strISO.Format(_T("%ld ISO - "), isoSpeed);
+			};
+
+			if (gain >= 0)
+			{
+				strGain.Format(_T("%ld Gain - "), gain);
+			};
+
+			if (totalTime)
+			{
+				std::uint32_t	dwHour,
+					dwMin,
+					dwSec;
+
+				dwHour = totalTime / 3600;
+				totalTime -= dwHour * 3600;
+				dwMin = totalTime / 60;
+				totalTime -= dwMin * 60;
+				dwSec = totalTime;
+
+				if (dwHour)
+					strTime.Format(IDS_EXPOSURE3, dwHour, dwMin, dwSec);
+				else if (dwMin)
+					strTime.Format(IDS_EXPOSURE2, dwMin, dwSec);
+				else if (dwSec)
+					strTime.Format(IDS_EXPOSURE1, dwSec);
+				else
+					strTime.Format(IDS_EXPOSURE0);
+			};
+
+			if (nrFrames)
+			{
+				strFrames.Format(IDS_NRFRAMES, nrFrames);
+			};
+
+			strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
+		}
+		else
+			strText = m_strCurrentFile;
+
+		m_Info.SetText(strText);
+		*/
+	}
+
 	//
 	// Slots
 	//
+
+	void ProcessingDlg::setSelectionRect(const QRectF& rect)
+	{
+		selectionRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -409,48 +493,6 @@ void CProcessingDlg::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::UpdateMonochromeControls()
-{
-	if (dssApp->deepStack().IsLoaded())
-	{
-		bool			bMonochrome;
-
-		bMonochrome = dssApp->deepStack().GetStackedBitmap().IsMonochrome();
-
-		m_tabRGB.m_GreenGradient.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
-		m_tabRGB.m_BlueGradient.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
-		m_tabRGB.m_GreenHAT.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
-		m_tabRGB.m_BlueHAT.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
-		m_tabRGB.m_LinkSettings.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
-
-		CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-
-		if (bMonochrome)
-		{
-			// Change the colors of the red gradient
-			m_tabRGB.m_LinkSettings.SetCheck(true);
-			RedGradient.SetStartPegColour(RGB(0, 0, 0));
-			RedGradient.SetPeg(RedGradient.IndexFromId(0), RGB(0, 0, 0));
-			RedGradient.SetPeg(RedGradient.IndexFromId(1), RGB(128, 128, 128));
-			RedGradient.SetPeg(RedGradient.IndexFromId(2), RGB(255, 255, 255));
-			RedGradient.SetEndPegColour(RGB(255, 255, 255));
-			RedGradient.SetBackgroundColour(RGB(255, 255, 255));
-		}
-		else
-		{
-			// Change the colors of the red gradient
-			RedGradient.SetStartPegColour(RGB(0, 0, 0));
-			RedGradient.SetPeg(RedGradient.IndexFromId(0), RGB(0, 0, 0));
-			RedGradient.SetPeg(RedGradient.IndexFromId(1), RGB(128, 0, 0));
-			RedGradient.SetPeg(RedGradient.IndexFromId(2), RGB(255, 0, 0));
-			RedGradient.SetEndPegColour(RGB(255, 0, 0));
-			RedGradient.SetBackgroundColour(RGB(255, 255, 255));
-		};
-		m_tabRGB.m_RedGradient.Invalidate(true);
-	};
-};
-
-/* ------------------------------------------------------------------- */
 
 void CProcessingDlg::UpdateControlsFromParams()
 {
@@ -596,74 +638,6 @@ void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::UpdateInfos()
-{
-	int		lISOSpeed;
-	int		lGain;
-	int		lTotalTime;
-	int		lNrFrames;
-	CString		strText;
-
-	strText.LoadString(IDS_NOINFO);
-
-	lISOSpeed = dssApp->deepStack().GetStackedBitmap().GetISOSpeed();
-	lGain = dssApp->deepStack().GetStackedBitmap().GetGain();
-	lTotalTime = dssApp->deepStack().GetStackedBitmap().GetTotalTime();
-	lNrFrames = dssApp->deepStack().GetStackedBitmap().GetNrStackedFrames();
-
-	if (lISOSpeed || lGain >= 0 || lTotalTime || lNrFrames)
-	{
-		CString		strISO;
-		CString		strGain;
-		CString		strTime;
-		CString		strFrames;
-
-		if (lISOSpeed)
-		{
-			strISO.Format(_T("%ld ISO - "), lISOSpeed);
-		};
-
-		if (lGain >= 0)
-		{
-			strGain.Format(_T("%ld Gain - "), lGain);
-		};
-
-		if (lTotalTime)
-		{
-			std::uint32_t	dwHour,
-				dwMin,
-				dwSec;
-
-			dwHour = lTotalTime / 3600;
-			lTotalTime -= dwHour * 3600;
-			dwMin = lTotalTime / 60;
-			lTotalTime -= dwMin * 60;
-			dwSec = lTotalTime;
-
-			if (dwHour)
-				strTime.Format(IDS_EXPOSURE3, dwHour, dwMin, dwSec);
-			else if (dwMin)
-				strTime.Format(IDS_EXPOSURE2, dwMin, dwSec);
-			else if (dwSec)
-				strTime.Format(IDS_EXPOSURE1, dwSec);
-			else
-				strTime.Format(IDS_EXPOSURE0);
-		};
-
-		if (lNrFrames)
-		{
-			strFrames.Format(IDS_NRFRAMES, lNrFrames);
-		};
-
-		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
-	}
-	else
-		strText = m_strCurrentFile;
-
-	m_Info.SetText(strText);
-};
-
-/* ------------------------------------------------------------------- */
 
 LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 {

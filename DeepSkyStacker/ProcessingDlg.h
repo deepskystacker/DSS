@@ -5,7 +5,9 @@
 #include "Histogram.h"
 #include "ui_ProcessingDlg.h"
 
-namespace DSS {
+namespace DSS
+{
+	class SelectRect;
 
 	class ValuedRect final
 	{
@@ -211,6 +213,10 @@ namespace DSS {
 		double gradientOffset;
 		double gradientRange;
 
+		SelectRect* selectRect;
+		DSSRect	selectionRect;
+
+
 		HistogramAdjustmentCurve redAdjustmentCurve_;
 		HistogramAdjustmentCurve greenAdjustmentCurve_;
 		HistogramAdjustmentCurve blueAdjustmentCurve_;
@@ -221,6 +227,15 @@ namespace DSS {
 		void setGreenButtonIcon();
 		void setBlueButtonIcon();
 
+		void modifyRGBKGradientControls();
+
+		void updateInformation();
+
+	signals:
+		void showOriginalHistogram();
+
+	public slots:
+		void setSelectionRect(const QRectF& rect);
 
 	private slots:
 		void redChanging(int peg);
@@ -259,7 +274,6 @@ namespace DSS {
 		void	UpdateControlsFromParams();
 		void	UpdateMonochromeControls();
 
-		void	UpdateInfos();
 
 		// Implementation
 	public:
@@ -273,11 +287,7 @@ namespace DSS {
 		void	CreateStarMask();
 
 		void	LoadFile(LPCTSTR szFileName);
-		void	SetCurrentFileName(LPCTSTR szFileName)
-		{
-			m_strCurrentFile = szFileName;
-			UpdateInfos();
-		};
+
 
 #endif
 	 
