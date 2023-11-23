@@ -614,6 +614,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PictureList.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\ProcessingDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
