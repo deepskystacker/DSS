@@ -1913,15 +1913,6 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase* 
 			::Subtract(pTarget, m_pAmpGlow, pProgress, fAmpGlow, fAmpGlow, fAmpGlow);
 			::Subtract(pTarget, m_pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);
 		}
-		else if (m_fDarkFactor != 1.0)
-		{
-			if (pProgress != nullptr)
-			{
-				const QString strText(QCoreApplication::translate("DarkFrame", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK"));
-				pProgress->Start2(strText, 0);
-			}
-			::Subtract(pTarget, m_pMasterDark, pProgress, m_fDarkFactor, m_fDarkFactor, m_fDarkFactor);
-		}
 		else
 		{
 			if (pProgress != nullptr)
@@ -1929,7 +1920,7 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase* 
 				const QString strText(QCoreApplication::translate("DarkFrame", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK"));
 				pProgress->Start2(strText, 0);
 			}
-			::Subtract(pTarget, m_pMasterDark, pProgress);
+			::Subtract(pTarget, m_pMasterDark, pProgress, m_fDarkFactor, m_fDarkFactor, m_fDarkFactor);
 		}
 	}
 
