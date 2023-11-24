@@ -123,7 +123,7 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fGray)
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue)
+void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const
 {
 	fRed = fGreen = fBlue = 0.0;
 
@@ -137,7 +137,7 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fG
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray)
+void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray) const
 {
 	double fRed, fGreen, fBlue;
 	fGray = 0.0;

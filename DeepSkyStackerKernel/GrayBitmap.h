@@ -80,10 +80,10 @@ private:
 
 	TType GetPrimary(int x, int y, const COLORREF16& crColor);
 	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue);
-	double InterpolateGreen(size_t x, size_t y, TType* pValue = nullptr);
-	double InterpolateBlue(size_t x, size_t y, TType* pValue = nullptr);
-	double InterpolateRed(size_t x, size_t y, TType* pValue = nullptr);
-	void InterpolateAll(double* pfValues, size_t x, size_t y);
+	double InterpolateGreen(size_t x, size_t y, const TType* pValue = nullptr) const;
+	double InterpolateBlue(size_t x, size_t y, const TType* pValue = nullptr) const;
+	double InterpolateRed(size_t x, size_t y, const TType* pValue = nullptr) const;
+	void InterpolateAll(double* pfValues, size_t x, size_t y) const;
 
 protected:
 	virtual void SetCFA(bool bCFA) override
@@ -173,8 +173,8 @@ public:
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	inline virtual void SetPixel(size_t i, size_t j, double fGray) override;
-	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override;
-	virtual void inline GetPixel(size_t i, size_t j, double& fGray) override;
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
+	virtual void inline GetPixel(size_t i, size_t j, double& fGray) const override;
 	virtual bool GetScanLine(size_t j, void* pScanLine) override;
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;

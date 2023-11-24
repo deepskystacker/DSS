@@ -116,8 +116,8 @@ public:
 
 	virtual void	SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) = 0;
 	virtual void	SetPixel(size_t i, size_t j, double fGray) = 0;
-	virtual void	GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) = 0;
-	virtual void	GetPixel(size_t i, size_t j, double& fGray) = 0;
+	virtual void	GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const = 0;
+	virtual void	GetPixel(size_t i, size_t j, double& fGray) const = 0;
 
 	virtual double getValue(size_t, size_t) const
 	{

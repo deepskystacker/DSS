@@ -76,8 +76,8 @@ public:
 	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	virtual void SetPixel(size_t i, size_t j, double fGray) override;
-	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override;
-	virtual void GetPixel(size_t i, size_t j, double& fGray) override;
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
+	virtual void GetPixel(size_t i, size_t j, double& fGray) const override;
 	virtual bool GetScanLine(size_t j, void* pScanLine) override;
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	void Clear();
