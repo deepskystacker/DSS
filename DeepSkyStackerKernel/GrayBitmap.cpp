@@ -433,7 +433,7 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fGray) const
 }
 
 template <typename T>
-bool CGrayBitmapT<T>::GetScanLine(size_t j, void* pScanLine)
+bool CGrayBitmapT<T>::GetScanLine(size_t j, void* pScanLine) const
 {
 	bool bResult = false;
 

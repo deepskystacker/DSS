@@ -34,82 +34,82 @@ public:
 	CMemoryBitmap();
 	virtual ~CMemoryBitmap() = default;
 
-	virtual double	GetExposure()
+	double GetExposure() const
 	{
 		return m_fExposure;
-	};
+	}
 
-	virtual CMemoryBitmap& SetExposure(double fExposure)
+	CMemoryBitmap& SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
 		return *this;
-	};
+	}
 
-	virtual double	GetAperture()
+	double GetAperture() const
 	{
 		return m_fAperture;
-	};
+	}
 
-	virtual CMemoryBitmap& SetAperture(double fAperture)
+	CMemoryBitmap& SetAperture(double fAperture)
 	{
 		m_fAperture = fAperture;
 		return *this;
-	};
+	}
 
-	virtual int GetISOSpeed()
+	int GetISOSpeed() const
 	{
 		return m_lISOSpeed;
-	};
+	}
 
-	virtual CMemoryBitmap& SetISOSpeed(int lISOSpeed)
+	CMemoryBitmap& SetISOSpeed(int lISOSpeed)
 	{
 		m_lISOSpeed = lISOSpeed;
 		return *this;
-	};
+	}
 
-	virtual int GetGain()
+	int GetGain() const
 	{
 		return m_lGain;
-	};
+	}
 
-	virtual CMemoryBitmap& SetGain(int lGain)
+	CMemoryBitmap& SetGain(int lGain)
 	{
 		m_lGain = lGain;
 		return *this;
-	};
+	}
 
-	virtual int GetNrFrames()
+	int GetNrFrames() const
 	{
 		return m_lNrFrames;
-	};
+	}
 
-	virtual CMemoryBitmap& SetNrFrames(int lNrFrames)
+	CMemoryBitmap& SetNrFrames(int lNrFrames)
 	{
 		m_lNrFrames = lNrFrames;
 		return *this;
-	};
+	}
 
-	virtual CMemoryBitmap& SetDescription(const QString& description)
-	{
-		m_strDescription = description;
-		return *this;
-	};
-
-	virtual CMemoryBitmap& GetDescription(QString& strDescription)
+	const CMemoryBitmap& GetDescription(QString& strDescription) const
 	{
 		strDescription = m_strDescription;
 		return *this;
-	};
+	}
 
-	virtual CMemoryBitmap& setFilterName(const QString& name)
+	CMemoryBitmap& SetDescription(const QString& description)
 	{
-		m_filterName = name;
+		m_strDescription = description;
 		return *this;
 	}
 
-	virtual QString filterName()
+	const QString& filterName() const
 	{
 		return m_filterName;
+	}
+
+	CMemoryBitmap& setFilterName(const QString& name)
+	{
+		m_filterName = name;
+		return *this;
 	}
 
 	virtual bool	Init(int lWidth, int lHeight) = 0;
@@ -123,22 +123,22 @@ public:
 	{
 		ZASSERTSTATE(false);
 		return 0.0;
-	};
+	}
 	virtual std::tuple<double, double, double> getValues(size_t, size_t) const
 	{
 		ZASSERTSTATE(false);
 		return { 0.0, 0.0, 0.0 };
-	};
+	}
  	
 	virtual void	SetValue(size_t, size_t, double, double, double) {};
 	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {};
 	virtual void	SetValue(size_t, size_t, double) {};
 	virtual void	GetValue(size_t, size_t, double&) const {};
 
-	virtual bool	GetScanLine(size_t j, void* pScanLine) = 0;
+	virtual bool	GetScanLine(size_t j, void* pScanLine) const = 0;
 	virtual bool	SetScanLine(size_t j, void* pScanLine) = 0;
 
-	void GetPixel16(const size_t i, const size_t j, COLORREF16& crResult);
+	void GetPixel16(const size_t i, const size_t j, COLORREF16& crResult) const;
 
 	virtual int Width() const = 0;
 	virtual int Height() const = 0;
@@ -162,17 +162,17 @@ public:
 
 	virtual bool	IsMonochrome() const = 0;
 
-	virtual void	SetMaster(bool bMaster)
+	void SetMaster(bool bMaster)
 	{
 		m_bMaster = bMaster;
 	}
 
-	virtual bool	IsMaster()
+	bool IsMaster() const
 	{
 		return m_bMaster;
 	}
 
-	virtual bool isTopDown()
+	bool isTopDown() const
 	{
 		return m_bTopDown;
 	}
@@ -182,7 +182,7 @@ public:
 		m_bCFA = bCFA;
 	}
 
-	virtual bool	IsCFA() const
+	bool IsCFA() const
 	{
 		return m_bCFA;
 	}
@@ -192,7 +192,7 @@ public:
 		return BAYER_UNKNOWN;
 	}
 
-	bool	IsOk()
+	bool	IsOk() const
 	{
 		return (Width() > 0) && (Height() > 0);
 	}

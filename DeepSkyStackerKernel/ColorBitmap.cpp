@@ -150,7 +150,7 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray) const
 }
 
 template <typename TType>
-bool CColorBitmapT<TType>::GetScanLine(size_t j, void* pScanLine)
+bool CColorBitmapT<TType>::GetScanLine(size_t j, void* pScanLine) const
 {
 	bool bResult = false;
 
