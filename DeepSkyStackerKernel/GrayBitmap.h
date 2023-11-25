@@ -60,7 +60,7 @@ private:
 
 	inline bool	IsXYOk(size_t x, size_t y) const
 	{
-		return (x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
+		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	}
 
 	size_t GetOffset(const size_t x, const size_t y) const
@@ -78,8 +78,8 @@ private:
 		return true;
 	}
 
-	TType GetPrimary(int x, int y, const COLORREF16& crColor);
-	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue);
+	TType GetPrimary(int x, int y, const COLORREF16& crColor) const;
+	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue) const;
 	double InterpolateGreen(size_t x, size_t y, const TType* pValue = nullptr) const;
 	double InterpolateBlue(size_t x, size_t y, const TType* pValue = nullptr) const;
 	double InterpolateRed(size_t x, size_t y, const TType* pValue = nullptr) const;
@@ -181,7 +181,7 @@ public:
 
 	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
 
-	TType* GetGrayPixel(int i, int j)
+	TType* GetGrayPixel(const int i, const int j)
 	{
 		return m_vPixels.data() + GetOffset(i, j);
 	}

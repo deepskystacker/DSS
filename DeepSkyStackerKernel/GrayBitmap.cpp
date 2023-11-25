@@ -62,7 +62,7 @@ inline void	CGrayBitmapT<T>::CheckXY(size_t x, size_t y) const
 }
 
 template <typename T>
-T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor)
+T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor) const
 {
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{
@@ -81,7 +81,7 @@ T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor)
 }
 
 template <typename T>
-double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue)
+double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue) const
 {
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{

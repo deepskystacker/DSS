@@ -698,7 +698,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 					unsigned char value = 0;
 
 					for (int i = 0; i < width; i++)
@@ -738,7 +738,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 					unsigned char value = 0;
 
 					for (int i = 0; i < width; i++)
@@ -846,7 +846,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 
 					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
 					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
