@@ -1,87 +1,91 @@
 #pragma once
 
 class Workspace;
-class StackSettings;
 class QAction;
 class QMenu;
 class QValidator;
 
 #include "DSSCommon.h"
 
-namespace Ui {
-class StackingParameters;
-}
-
-class StackingParameters : public QWidget
+namespace DSS
 {
-    Q_OBJECT
+	class StackSettings;
 
-typedef QWidget
-		Inherited;
+	namespace Ui {
+		class StackingParameters;
+	}
 
-public:
-    explicit StackingParameters(QWidget *parent = nullptr, PICTURETYPE = PICTURETYPE_UNKNOWN);
-    ~StackingParameters();
+	class StackingParameters : public QWidget
+	{
+		Q_OBJECT
 
-public slots:
-	void onSetActive();
+			typedef QWidget
+			Inherited;
 
-private:
-    Ui::StackingParameters *ui;
-	std::unique_ptr<Workspace> workspace;
-	StackSettings * pStackSettings;
-	PICTURETYPE type;
-	BACKGROUNDCALIBRATIONMODE mode;
-	MULTIBITMAPPROCESSMETHOD method;
-	double	kappa;
-	uint	iteration;
-	QString kappaSigmaTip;
-	QString medianKappaSigmaTip;
-	QString nobgCalString;
-	QString pcbgCalString;
-	QString rgbbgCalString;
-	QAction * nobgCal;
-	QAction * pcbgCal;
-	QAction * rgbbgCal;
-	QAction * bgCalOptions;
-	QMenu   * backgroundCalibrationMenu;
+	public:
+		explicit StackingParameters(QWidget* parent = nullptr, PICTURETYPE = PICTURETYPE_UNKNOWN);
+		~StackingParameters();
 
-	QValidator * darkFactorValidator;
-	QValidator * iterationValidator;
-	QValidator * kappaValidator;
+	public slots:
+		void onSetActive();
 
-	StackingParameters & setControls();
-	StackingParameters & createActions();
-	StackingParameters & createMenus();
+	private:
+		Ui::StackingParameters* ui;
+		std::unique_ptr<Workspace> workspace;
+		StackSettings* pStackSettings;
+		PICTURETYPE type;
+		BACKGROUNDCALIBRATIONMODE mode;
+		MULTIBITMAPPROCESSMETHOD method;
+		double	kappa;
+		uint	iteration;
+		QString kappaSigmaTip;
+		QString medianKappaSigmaTip;
+		QString nobgCalString;
+		QString pcbgCalString;
+		QString rgbbgCalString;
+		QAction* nobgCal;
+		QAction* pcbgCal;
+		QAction* rgbbgCal;
+		QAction* bgCalOptions;
+		QMenu* backgroundCalibrationMenu;
 
-	void setMethod(MULTIBITMAPPROCESSMETHOD method);
-	void setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode);
+		QValidator* darkFactorValidator;
+		QValidator* iterationValidator;
+		QValidator* kappaValidator;
 
-signals:
-	void methodChanged(MULTIBITMAPPROCESSMETHOD newMethod);
+		StackingParameters& setControls();
+		StackingParameters& createActions();
+		StackingParameters& createMenus();
 
-private slots:
-	void on_modeAverage_clicked();
-	void on_modeMedian_clicked();
-	void on_modeKS_clicked();
-	void on_modeMKS_clicked();
-	void on_modeAAWA_clicked();
-	void on_modeEWA_clicked();
-	void on_modeMaximum_clicked();
+		void setMethod(MULTIBITMAPPROCESSMETHOD method);
+		void setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode);
 
-	void on_backgroundCalibration_clicked();
-	void backgroundCalibrationOptions();
+	signals:
+		void methodChanged(MULTIBITMAPPROCESSMETHOD newMethod);
 
-	void on_iterations_editingFinished();
-	void on_kappa_editingFinished();
+	private slots:
+		void on_modeAverage_clicked();
+		void on_modeMedian_clicked();
+		void on_modeKS_clicked();
+		void on_modeMKS_clicked();
+		void on_modeAAWA_clicked();
+		void on_modeEWA_clicked();
+		void on_modeMaximum_clicked();
 
-	void on_debloom_stateChanged(int);
-	void on_hotPixels_stateChanged(int);
-	void on_badColumns_stateChanged(int);
-	void on_darkOptimisation_stateChanged(int);
-	void on_useDarkFactor_stateChanged(int);
-	void on_darkMultiplicationFactor_editingFinished();
+		void on_backgroundCalibration_clicked();
+		void backgroundCalibrationOptions();
 
-	void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
+		void on_iterations_editingFinished();
+		void on_kappa_editingFinished();
 
-};
+		void on_debloom_stateChanged(int);
+		void on_hotPixels_stateChanged(int);
+		void on_badColumns_stateChanged(int);
+		void on_darkOptimisation_stateChanged(int);
+		void on_useDarkFactor_stateChanged(int);
+		void on_darkMultiplicationFactor_editingFinished();
+
+		void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
+
+	};
+}

@@ -39,11 +39,11 @@
 #include "dss_settings.h"
 namespace DSS
 {
+	class ExplorerBar;
 	class PictureList;
 	class ProcessingDlg;
 	class StackingDlg;
 }
-class ExplorerBar;
 class QStackedWidget;
 class CDSSSettings;
 class CDeepStack;
@@ -70,7 +70,7 @@ protected slots:
 
 private:
 	bool initialised;
-	ExplorerBar* explorerBar;
+	DSS::ExplorerBar* explorerBar;
 	DSS::PictureList* pictureList;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
@@ -122,7 +122,7 @@ public:
 	CDSSSettings& imageProcessingSettings();
 	DSS::StackingDlg& getStackingDlg();
 	DSS::ProcessingDlg& getProcessingDlg();
-	ExplorerBar& GetExplorerBar();
+	DSS::ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 };

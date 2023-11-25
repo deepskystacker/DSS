@@ -39,5 +39,4 @@
 
 		};
 #endif // #ifndef _GDIPLUSBASE_H
-		}
 #endif // #ifdef _DEBUG

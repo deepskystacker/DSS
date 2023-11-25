@@ -1,11 +1,11 @@
 #pragma once
 
-namespace Ui {
-	class CheckAbove;
-}
-
 namespace DSS
 {
+	namespace Ui {
+		class CheckAbove;
+	}
+
 	class CheckAbove : public QDialog
 	{
 		Q_OBJECT

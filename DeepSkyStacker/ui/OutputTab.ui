@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OutputTab</class>
- <widget class="QWidget" name="OutputTab">
+ <class>DSS::OutputTab</class>
+ <widget class="QWidget" name="DSS::OutputTab">
   <property name="geometry">
    <rect>
     <x>0</x>

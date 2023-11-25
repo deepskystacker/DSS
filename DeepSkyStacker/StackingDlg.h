@@ -56,11 +56,6 @@ namespace DSS
 	class ToolBar;
 }
 
-namespace Ui
-{
-	class StackingDlg;
-}
-
 namespace std::filesystem
 {
 	class path;
@@ -74,6 +69,11 @@ class Workspace;
 
 namespace DSS
 {
+	namespace Ui
+	{
+		class StackingDlg;
+	}
+
 	class IconSizeDelegate : public QStyledItemDelegate
 	{
 		Q_OBJECT

@@ -4,39 +4,41 @@ class QPixmap;
 
 #include "DSSCommon.h"
 
-namespace Ui {
-class CometStacking;
-}
-
 class Workspace;
-
-class CometStacking : public QWidget
+namespace DSS
 {
-    Q_OBJECT
+	namespace Ui {
+		class CometStacking;
+	}
 
-typedef QWidget
-		Inherited;
-public:
-    explicit CometStacking(QWidget *parent = nullptr);
-    ~CometStacking();
+	class CometStacking : public QWidget
+	{
+		Q_OBJECT
 
-	void setCometStackingMode(COMETSTACKINGMODE);
+			typedef QWidget
+			Inherited;
+	public:
+		explicit CometStacking(QWidget* parent = nullptr);
+		~CometStacking();
 
-public slots:
-	void onSetActive();
+		void setCometStackingMode(COMETSTACKINGMODE);
 
-private slots:
-    void on_modeStandard_clicked();
-	void on_modeComet_clicked();
-	void on_modeAdvanced_clicked();
+	public slots:
+		void onSetActive();
 
-private:
-    Ui::CometStacking *ui;
-	std::unique_ptr<Workspace> workspace;
-    COMETSTACKINGMODE m_CometStackingMode;
-	QPixmap standardPix;
-	QPixmap cometPix;
-	QPixmap advancedPix;
+	private slots:
+		void on_modeStandard_clicked();
+		void on_modeComet_clicked();
+		void on_modeAdvanced_clicked();
 
-    void updateImage();
-};
+	private:
+		Ui::CometStacking* ui;
+		std::unique_ptr<Workspace> workspace;
+		COMETSTACKINGMODE m_CometStackingMode;
+		QPixmap standardPix;
+		QPixmap cometPix;
+		QPixmap advancedPix;
+
+		void updateImage();
+	};
+}

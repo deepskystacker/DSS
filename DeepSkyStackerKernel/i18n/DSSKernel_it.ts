@@ -28,48 +28,48 @@
         <translation>Applico i cosmetici - pixel caldi</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1201"/>
+        <location filename="../BitmapExt.cpp" line="1244"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 non esiste o non è un file</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1557"/>
+        <location filename="../BitmapExt.cpp" line="1600"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1560"/>
+        <location filename="../BitmapExt.cpp" line="1603"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Mediano</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1563"/>
+        <location filename="../BitmapExt.cpp" line="1606"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Massima</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1566"/>
+        <location filename="../BitmapExt.cpp" line="1609"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1,Iterazioni = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1569"/>
+        <location filename="../BitmapExt.cpp" line="1612"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Media soppesata auto adattiva (Iterazioni = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1572"/>
+        <location filename="../BitmapExt.cpp" line="1615"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Media soppesata dall&apos;entropia</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1575"/>
+        <location filename="../BitmapExt.cpp" line="1618"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>&quot;Kappa-Sigma Mediana (Kappa = %1,Iterazioni = %2)</translation>
@@ -379,22 +379,22 @@
         <translation>Gruppo %1</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="98"/>
+        <location filename="../FrameInfo.cpp" line="102"/>
         <source>Width mismatch</source>
         <translation>La larghezza è disuguale</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="103"/>
+        <location filename="../FrameInfo.cpp" line="107"/>
         <source>Height mismatch</source>
         <translation>La altezza è disuguale</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="108"/>
+        <location filename="../FrameInfo.cpp" line="112"/>
         <source>Colour depth mismatch</source>
         <translation>La profondità di colore è disuguale</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="129"/>
+        <location filename="../FrameInfo.cpp" line="133"/>
         <source>Number of channels mismatch</source>
         <translation>Numero di canali è disuguale</translation>
     </message>
@@ -443,7 +443,7 @@
 <context>
     <name>FITSUtil</name>
     <message>
-        <location filename="../FITSUtil.cpp" line="245"/>
+        <location filename="../FITSUtil.cpp" line="243"/>
         <source>fits_open_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -452,7 +452,7 @@ restituito uno stato di %2, il testo dell&apos;errore è:
 &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="902"/>
+        <location filename="../FITSUtil.cpp" line="901"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker non de-Bayer immagini a 8 bit</translation>
@@ -476,43 +476,43 @@ restituito uno stato di %2, il testo dell&apos;errore è:
 <context>
     <name>Histogram</name>
     <message>
-        <location filename="../Histogram.h" line="80"/>
+        <location filename="../Histogram.h" line="79"/>
         <source>Linear</source>
         <comment>IDS_HAT_LINEAR</comment>
         <translation>Lineare</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="83"/>
+        <location filename="../Histogram.h" line="82"/>
         <source>Cube Root</source>
         <comment>IDS_HAT_CUBEROOT</comment>
         <translation>Radice cubica</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="86"/>
+        <location filename="../Histogram.h" line="85"/>
         <source>Square Root</source>
         <comment>IDS_HAT_SQUAREROOT</comment>
         <translation>Radice quadrata</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="89"/>
+        <location filename="../Histogram.h" line="88"/>
         <source>Logarithm</source>
         <comment>IDS_HAT_LOG</comment>
         <translation>Logaritmo</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="92"/>
+        <location filename="../Histogram.h" line="91"/>
         <source>Log(Log)</source>
         <comment>IDS_HAT_LOGLOG</comment>
         <translation>Log(Log)</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="95"/>
+        <location filename="../Histogram.h" line="94"/>
         <source>Log(Square Root)</source>
         <comment>IDS_HAT_LOGSQUAREROOT</comment>
         <translation>Log(Radice quadrata)</translation>
     </message>
     <message>
-        <location filename="../Histogram.h" line="98"/>
+        <location filename="../Histogram.h" line="97"/>
         <source>ASinH</source>
         <comment>IDS_HAT_ASINH</comment>
         <translation>ASinH</translation>
@@ -522,12 +522,12 @@ restituito uno stato di %2, il testo dell&apos;errore è:
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="314"/>
-        <location filename="../FITSUtil.cpp" line="1012"/>
-        <location filename="../FITSUtil.cpp" line="1687"/>
+        <location filename="../FITSUtil.cpp" line="1011"/>
+        <location filename="../FITSUtil.cpp" line="1686"/>
         <location filename="../MultiBitmapProcess.cpp" line="222"/>
         <location filename="../StackingEngine.cpp" line="2468"/>
-        <location filename="../TIFFUtil.cpp" line="1434"/>
-        <location filename="../TIFFUtil.cpp" line="1683"/>
+        <location filename="../TIFFUtil.cpp" line="1447"/>
+        <location filename="../TIFFUtil.cpp" line="1696"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
 
  %5</source>
@@ -537,12 +537,12 @@ restituito uno stato di %2, il testo dell&apos;errore è:
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="324"/>
-        <location filename="../FITSUtil.cpp" line="1021"/>
-        <location filename="../FITSUtil.cpp" line="1696"/>
+        <location filename="../FITSUtil.cpp" line="1020"/>
+        <location filename="../FITSUtil.cpp" line="1695"/>
         <location filename="../MultiBitmapProcess.cpp" line="231"/>
         <location filename="../StackingEngine.cpp" line="2477"/>
-        <location filename="../TIFFUtil.cpp" line="1443"/>
-        <location filename="../TIFFUtil.cpp" line="1692"/>
+        <location filename="../TIFFUtil.cpp" line="1456"/>
+        <location filename="../TIFFUtil.cpp" line="1705"/>
         <source>Exception %1 thrown from an unknown Function.
 
 %2</source>
@@ -631,13 +631,13 @@ restituito uno stato di %2, il testo dell&apos;errore è:
         <translation>Allineamento immagini</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1387"/>
+        <location filename="../RegisterEngine.cpp" line="1394"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Allineo %1 su %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1398"/>
+        <location filename="../RegisterEngine.cpp" line="1405"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -645,7 +645,7 @@ restituito uno stato di %2, il testo dell&apos;errore è:
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1400"/>
+        <location filename="../RegisterEngine.cpp" line="1407"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -693,43 +693,43 @@ restituito uno stato di %2, il testo dell&apos;errore è:
         <translation></translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1586"/>
+        <location filename="../BitmapExt.cpp" line="1629"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1589"/>
+        <location filename="../BitmapExt.cpp" line="1632"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Mediano</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1592"/>
+        <location filename="../BitmapExt.cpp" line="1635"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Massima</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1595"/>
+        <location filename="../BitmapExt.cpp" line="1638"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1,Iterazioni = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1601"/>
+        <location filename="../BitmapExt.cpp" line="1644"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Media soppesata auto adattiva (Iterazioni = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1607"/>
+        <location filename="../BitmapExt.cpp" line="1650"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Media soppesata dall&apos;entropia</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1612"/>
+        <location filename="../BitmapExt.cpp" line="1655"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>&quot;Kappa-Sigma Mediana (Kappa = %1,Iterazioni = %2)</translation>
@@ -1500,17 +1500,17 @@ di pi e aiutare DeepSkyStacker a trovare le differenze tra l&apos;immagine di ri
 <context>
     <name>TIFFUtil</name>
     <message>
-        <location filename="../TIFFUtil.cpp" line="140"/>
+        <location filename="../TIFFUtil.cpp" line="152"/>
         <source>CFA pattern: %1%2%3%4 is not supported</source>
         <translation>Modello CFA: %1%2%3%4 non è supportato</translation>
     </message>
     <message>
-        <location filename="../TIFFUtil.cpp" line="154"/>
+        <location filename="../TIFFUtil.cpp" line="166"/>
         <source>CFA pattern dimension: %1x%2 found is not supported</source>
         <translation>La dimensione del modello CFA: %1x%2 trovato non è supportato</translation>
     </message>
     <message>
-        <location filename="../TIFFUtil.cpp" line="438"/>
+        <location filename="../TIFFUtil.cpp" line="450"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker non de-Bayer immagini a 8 bit</translation>

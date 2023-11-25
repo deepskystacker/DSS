@@ -2,45 +2,49 @@
 #include "dssrect.h"
 class Workspace;
 
-namespace Ui {
-class ResultParameters;
-}
-
 class CAllStackingTasks;
-class ResultParameters : public QWidget
+namespace DSS
 {
-	Q_OBJECT
+	namespace Ui
+	{
+		class ResultParameters;
+	}
 
-typedef QWidget
-		Inherited;
+	class ResultParameters : public QWidget
+	{
+		Q_OBJECT
 
-public:
-	explicit ResultParameters(QWidget *parent = nullptr);
-	~ResultParameters();
+			typedef QWidget
+			Inherited;
 
-	void setStackingTasks(CAllStackingTasks* pTasks);
+	public:
+		explicit ResultParameters(QWidget* parent = nullptr);
+		~ResultParameters();
 
-public slots:
-	void onSetActive();
+		void setStackingTasks(CAllStackingTasks* pTasks);
 
-private:
-	Ui::ResultParameters *ui;
-	std::unique_ptr<Workspace> workspace;
-	QPixmap normalPix;
-	QPixmap mosaicPix;
-	QPixmap intersectionPix;
-	QPixmap customPix;
-	CAllStackingTasks* pStackingTasks;
-	bool customRectEnabled;
-	DSSRect customRect;
+	public slots:
+		void onSetActive();
 
-private slots:
-	void	on_normalMode_clicked();
-	void	on_mosaicMode_clicked();
-	void	on_intersectionMode_clicked();
-	void	on_customMode_clicked();
-	void	on_drizzle2x_clicked();
-	void	on_drizzle3x_clicked();
-	void	on_alignRGB_clicked();
+	private:
+		Ui::ResultParameters* ui;
+		std::unique_ptr<Workspace> workspace;
+		QPixmap normalPix;
+		QPixmap mosaicPix;
+		QPixmap intersectionPix;
+		QPixmap customPix;
+		CAllStackingTasks* pStackingTasks;
+		bool customRectEnabled;
+		DSSRect customRect;
 
-};
+	private slots:
+		void	on_normalMode_clicked();
+		void	on_mosaicMode_clicked();
+		void	on_intersectionMode_clicked();
+		void	on_customMode_clicked();
+		void	on_drizzle2x_clicked();
+		void	on_drizzle3x_clicked();
+		void	on_alignRGB_clicked();
+
+	};
+}

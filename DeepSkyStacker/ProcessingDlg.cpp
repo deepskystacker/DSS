@@ -3,6 +3,7 @@
 #include "ProcessingDlg.h"
 #include "progressdlg.h"
 #include "selectrect.h"
+#include "FrameInfoSupport.h"
 #include <Ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
@@ -191,63 +192,28 @@ namespace DSS {
 		int		nrFrames;
 		QString text{ tr("No information available", "IDS_NOINFO") };
 
-		CStackedBitmap& bmp { dssApp->deepStack().GetStackedBitmap() };
-		isoSpeed = bmp.GetISOSpeed();
-		gain = bmp.GetGain();
-		totalTime = bmp.GetTotalTime();
-		nrFrames = bmp.GetNrStackedFrames();
-		/*
-		if (isoSpeed || gain >= 0 || totalTime || nrFrames)
+		if (!currentFile.empty())
 		{
-			CString		strISO;
-			CString		strGain;
-			CString		strTime;
-			CString		strFrames;
+			CStackedBitmap& bmp{ dssApp->deepStack().GetStackedBitmap() };
+			isoSpeed = bmp.GetISOSpeed();
+			gain = bmp.GetGain();
+			totalTime = bmp.GetTotalTime();
+			nrFrames = bmp.GetNrStackedFrames();
+			QString isoText, gainText, timeText, framesText;
 
-			if (isoSpeed)
-			{
-				strISO.Format(_T("%ld ISO - "), isoSpeed);
-			};
+			if (isoSpeed) isoText = QString("%1 ISO - ").arg(isoSpeed);
+			if (gain >= 0) gainText = QString("%1 Gain - ").arg(gain);
+			if (totalTime) timeText = tr("Exposure %1 "), exposureToString(totalTime);
+			if (nrFrames) framesText = tr("%1 frames", "IDS_NRFRAMES").arg(nrFrames);
 
-			if (gain >= 0)
-			{
-				strGain.Format(_T("%ld Gain - "), gain);
-			};
-
-			if (totalTime)
-			{
-				std::uint32_t	dwHour,
-					dwMin,
-					dwSec;
-
-				dwHour = totalTime / 3600;
-				totalTime -= dwHour * 3600;
-				dwMin = totalTime / 60;
-				totalTime -= dwMin * 60;
-				dwSec = totalTime;
-
-				if (dwHour)
-					strTime.Format(IDS_EXPOSURE3, dwHour, dwMin, dwSec);
-				else if (dwMin)
-					strTime.Format(IDS_EXPOSURE2, dwMin, dwSec);
-				else if (dwSec)
-					strTime.Format(IDS_EXPOSURE1, dwSec);
-				else
-					strTime.Format(IDS_EXPOSURE0);
-			};
-
-			if (nrFrames)
-			{
-				strFrames.Format(IDS_NRFRAMES, nrFrames);
-			};
-
-			strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile.GetString(), strISO.GetString(), strGain.GetString(), strTime.GetString(), strFrames.GetString());
+			text = QString("%1\n%2%3%4%5").arg(currentFile.generic_u8string().c_str())
+				.arg(isoText)
+				.arg(gainText)
+				.arg(timeText)
+				.arg(framesText);
 		}
-		else
-			strText = m_strCurrentFile;
 
-		m_Info.SetText(strText);
-		*/
+		information->setText(text);
 	}
 
 	//

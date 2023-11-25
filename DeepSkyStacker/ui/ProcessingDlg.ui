@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ProcessingDlg</class>
- <widget class="QWidget" name="ProcessingDlg">
+ <class>DSS::ProcessingDlg</class>
+ <widget class="QWidget" name="DSS::ProcessingDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
