@@ -187,7 +187,7 @@ public:
 		return m_bCFA;
 	}
 
-	virtual BAYERCOLOR GetBayerColor(int, int)
+	virtual BAYERCOLOR GetBayerColor(int, int) const
 	{
 		return BAYER_UNKNOWN;
 	}
@@ -210,7 +210,7 @@ public:
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 
 	virtual double GetMaximumValue() const = 0;
-	virtual void GetCharacteristics(CBitmapCharacteristics& bc) = 0;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const = 0;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) = 0;
 	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const = 0;

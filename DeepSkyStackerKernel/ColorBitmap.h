@@ -124,7 +124,7 @@ public:
 	}
 
 	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
-	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const override;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override;
 	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const override;

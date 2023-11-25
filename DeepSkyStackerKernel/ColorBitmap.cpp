@@ -232,7 +232,7 @@ void CColorBitmapT<TType>::RemoveHotPixels(ProgressBase* pProgress/*=nullptr*/)
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetCharacteristics(CBitmapCharacteristics& bc)
+void CColorBitmapT<TType>::GetCharacteristics(CBitmapCharacteristics& bc) const
 {
 	bc.m_bFloat = m_bFloat;
 	bc.m_dwHeight = m_lHeight;

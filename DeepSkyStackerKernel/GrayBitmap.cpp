@@ -40,7 +40,7 @@ std::unique_ptr<CMemoryBitmap> CGrayBitmapT<T>::Clone(bool bEmpty/*=false*/) con
 }
 
 template <typename T>
-BAYERCOLOR CGrayBitmapT<T>::GetBayerColor(int x, int y)
+BAYERCOLOR CGrayBitmapT<T>::GetBayerColor(int x, int y) const
 {
 	return ::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset);
 }
@@ -503,7 +503,7 @@ void CGrayBitmapT<T>::InitIterator(const void*& pRed, const void*& pGreen, const
 }
 
 template <typename T>
-void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc)
+void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 {
 	bc.m_bFloat = m_bFloat;
 	bc.m_dwHeight = m_lHeight;
