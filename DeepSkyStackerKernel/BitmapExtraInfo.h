@@ -4,53 +4,32 @@
 class CBitmapExtraInfo
 {
 public:
-	EXTRAINFOVECTOR m_vExtras;
+	std::vector<ExtraInfo> m_vExtras;
 
 public:
-	CBitmapExtraInfo() {};
-	~CBitmapExtraInfo() {};
+	CBitmapExtraInfo() = default;
+	~CBitmapExtraInfo() = default;
 
-	void AddInfo(const CExtraInfo& ei)
+	void AddInfo(const ExtraInfo& ei)
 	{
 		m_vExtras.push_back(ei);
-	};
+	}
 
 	void AddInfo(const QString& szName, const QString& szValue, const QString& szComment, bool bPropagate = false)
 	{
-		CExtraInfo		ei;
-
-		ei.m_Type = EIT_STRING;
-		ei.m_strName = szName;
-		ei.m_strComment = szComment;
-		ei.m_strValue = szValue;
-		ei.m_bPropagate = bPropagate;
-		m_vExtras.push_back(ei);
-	};
+		m_vExtras.emplace_back(ExtraInfo{ .m_Type = ExtraInfo::EIT_STRING, .m_strName = szName, .m_strValue = szValue, .m_strComment = szComment, .m_bPropagate = bPropagate });
+	}
 	void AddInfo(const QString& szName, int lValue, const QString& szComment, bool bPropagate = false)
 	{
-		CExtraInfo		ei;
-
-		ei.m_Type = EIT_LONG;
-		ei.m_strName = szName;
-		ei.m_lValue = lValue;
-		ei.m_strComment = szComment;
-		ei.m_bPropagate = bPropagate;
-		m_vExtras.push_back(ei);
-	};
+		m_vExtras.emplace_back(ExtraInfo{ .m_Type = ExtraInfo::EIT_LONG, .m_strName = szName, .m_strComment = szComment, .m_lValue = lValue, .m_bPropagate = bPropagate });
+	}
 	void AddInfo(const QString& szName, double fValue, const QString& szComment = nullptr, bool bPropagate = false)
 	{
-		CExtraInfo		ei;
-
-		ei.m_Type = EIT_DOUBLE;
-		ei.m_strName = szName;
-		ei.m_fValue = fValue;
-		ei.m_strComment = szComment;
-		ei.m_bPropagate = bPropagate;
-		m_vExtras.push_back(ei);
-	};
+		m_vExtras.emplace_back(ExtraInfo{ .m_Type = ExtraInfo::EIT_DOUBLE, .m_strName = szName, .m_strComment = szComment, .m_fValue = fValue, .m_bPropagate = bPropagate });
+	}
 
 	void Clear()
 	{
 		m_vExtras.clear();
-	};
+	}
 };

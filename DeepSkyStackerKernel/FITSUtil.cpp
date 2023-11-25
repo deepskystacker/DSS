@@ -1161,7 +1161,7 @@ void	CFITSWriter::WriteAllKeys()
 	bool bFound = false;
 
 	// Check if DATE-OBS is already in the list of Extra Info
-	for (const CExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
+	for (const ExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
 	{
 		if (extraInfo.m_strName.compare("DATE-OBS", Qt::CaseInsensitive) == 0)
 		{
@@ -1186,7 +1186,7 @@ void	CFITSWriter::WriteAllKeys()
 
 		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
-			const CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
+			const ExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
 			CHAR szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
