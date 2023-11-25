@@ -480,6 +480,21 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
+
+	ZTRACE_RUNTIME("Saving Window State and Position");
+
+	//
+	// Colossal Cave is now closing, tell the two dock widgets that they must now accept
+	// close event requests otherwise DSS never closes down.
+	// Before saving the window state which saves the state the dock widgets, it is necessary to 
+	// make the image list dock widget visible.   As we want the stacking dialog to be visible 
+	// when opening again, make that visible too.
+	//
+	explorerBar->setDSSClosing();
+	pictureList->setDSSClosing();
+
+
+
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
 	//

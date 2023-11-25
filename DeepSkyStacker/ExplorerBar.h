@@ -19,6 +19,8 @@ namespace DSS
 		explicit ExplorerBar(QWidget* parent = nullptr);
 		~ExplorerBar();
 
+		inline void setDSSClosing() { dssClosing = true; }
+
 	public slots:
 		void panelChanged(ActivePanel panel);
 
@@ -50,6 +52,7 @@ namespace DSS
 	protected:
 		void mousePressEvent(QMouseEvent*) override;
 		void showEvent(QShowEvent* event) override;
+		void closeEvent(QCloseEvent* event) override;
 
 	private slots:
 		void onOpenLights();
@@ -98,6 +101,8 @@ namespace DSS
 		MRUPath	mruPath;
 		QString windowColourName;
 		QString activeGroupColourName;
+
+		bool dssClosing;
 
 		void	LoadSettingFile();
 		void	SaveSettingFile();
