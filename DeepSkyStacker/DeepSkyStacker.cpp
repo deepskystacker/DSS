@@ -233,7 +233,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
-	currTab{ IDD_REGISTERING },
+	activePanel{ ActivePanel::StackingPanel },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -270,10 +270,12 @@ DeepSkyStacker::DeepSkyStacker() :
 
 	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
 	explorerBar = new ExplorerBar(this);
+	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
 
 	ZTRACE_RUNTIME("Creating pictureList");
 	pictureList = new DSS::PictureList(this);
+	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
@@ -379,20 +381,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 
 void DeepSkyStacker::onInitialise()
 {
-	ZFUNCTRACE_RUNTIME();
-
-	//
-	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
-	// may not be visible now.  We want it to be visible.
-	//
-	QTimer::singleShot(20,
-		[this]()
-		{
-			this->stackingDlg->setVisible(true);
-			this->setTab(IDD_REGISTERING);
-			this->update();
-		});
-
 }
 
 void DeepSkyStacker::createStatusBar()
@@ -474,7 +462,7 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::stackCheckedImages, stackingDlg, &DSS::StackingDlg::stackCheckedImages);
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 
-	connect(this, &DeepSkyStacker::tabChanged, explorerBar, &ExplorerBar::tabChanged);
+	connect(this, &DeepSkyStacker::panelChanged, explorerBar, &ExplorerBar::panelChanged);
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
@@ -492,14 +480,15 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
-	//
-	// DSS is now closing, tell the two dock widgets that they must now accept
-	// close event requests otherwise DSS never closes down.
-	//
-	explorerBar->setDSSClosing();
-	pictureList->setDSSClosing();
-
 	ZTRACE_RUNTIME("Saving Window State and Position");
+
+	//
+	// Before saving the window state which saves the state the dock widgets, it is necessary to 
+	// make the image list dock widget visible.   As we want the stacking dialog to be visible 
+	// when opening again, make that visible too.
+	//
+	stackedWidget->setCurrentIndex(static_cast<int>(ActivePanel::StackingPanel));
+	stackingDlg->showImageList();
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -574,13 +563,11 @@ QString DeepSkyStacker::statusMessage()
 	return statusBarText->text();
 }
 
-void DeepSkyStacker::setTab(std::uint32_t dwTabID)
+void DeepSkyStacker::setPanel(ActivePanel panel)
 {
-	if (dwTabID == IDD_STACKING)
-		dwTabID = IDD_REGISTERING;
-	currTab = dwTabID;
-	updateTab();
-	emit tabChanged();
+	activePanel = panel;
+	updatePanel ();
+	emit panelChanged(panel);
 }
 
 ExplorerBar& DeepSkyStacker::GetExplorerBar()
@@ -598,18 +585,17 @@ void DeepSkyStacker::setWindowFilePath(const QString& name)
 		setWindowTitle(baseTitle);
 }
 
-void DeepSkyStacker::updateTab()
+void DeepSkyStacker::updatePanel()
 {
-	switch (currTab)
+	stackedWidget->setCurrentIndex(static_cast<int>(activePanel));
+
+	switch (activePanel)
 	{
-	case IDD_REGISTERING:
-	case IDD_STACKING:
-		stackedWidget->setCurrentIndex(0);
+	case ActivePanel::StackingPanel:
 		stackingDlg->showImageList();
 		stackingDlg->update();
 		break;
-	case IDD_PROCESSING:
-		stackedWidget->setCurrentIndex(1);
+	case ActivePanel::ProcessingPanel:
 		stackingDlg->showImageList(false);
 		processingDlg->update();
 		break;

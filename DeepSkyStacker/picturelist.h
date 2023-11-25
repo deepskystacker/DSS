@@ -16,14 +16,5 @@ namespace DSS
 	public:
 		PictureList(QWidget* parent = nullptr);
 		~PictureList();
-
-		inline void setDSSClosing() { dssClosing = true; }
-
-	protected:
-		void closeEvent(QCloseEvent* event);
-
-	private:
-		bool dssClosing;
-
 	};
 }

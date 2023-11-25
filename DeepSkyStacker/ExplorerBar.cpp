@@ -36,8 +36,7 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	initialised{ false },
 	ui(new Ui::ExplorerBar),
 	windowColourName{ palette().color(QPalette::ColorRole::Window).name()},	// Default base window colour
-	activeGroupColourName { "lightcyan" },
-	dssClosing { false }
+	activeGroupColourName { "lightcyan" }
 {
 	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
@@ -505,8 +504,8 @@ void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
 		{
 			this->windowColourName = palette().color(QPalette::ColorRole::Window).name();	// Default base window colour
 
-			const auto tabID = dssApp->tab();
-			if (IDD_REGISTERING == tabID)
+			const auto panel = dssApp->panel();
+			if (ActivePanel::StackingPanel == panel)
 			{
 				this->ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 				this->ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
@@ -529,18 +528,18 @@ void ExplorerBar::onColorSchemeChanged(Qt::ColorScheme scheme)
 }
 #endif
 
-void ExplorerBar::tabChanged()
+void ExplorerBar::panelChanged(ActivePanel panel)
 {
-	const auto dwTabID = dssApp->tab();
-	if (dwTabID == IDD_PROCESSING)
+	switch (panel)
 	{
-		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
-		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
-	}
-	else if (dwTabID == IDD_REGISTERING)
-	{
+	case ActivePanel::StackingPanel:
 		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 		ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+		break;
+	case ActivePanel::ProcessingPanel:
+		ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
+		ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
+		break;
 	}
 }
 
@@ -663,35 +662,26 @@ void ExplorerBar::showEvent(QShowEvent* event)
 	return Inherited::showEvent(event);
 }
 
-//
-// The user may not close the undocked window, but once DSS has set the 
-// closing flag a closeEvent must be accepted (default) otherwise DSS 
-// shutdown never completes.
-//
-void ExplorerBar::closeEvent(QCloseEvent* event)
-{
-	if (!dssClosing) event->ignore();
-}
-
 void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
 	{
-		const auto dwTabID = dssApp->tab();
-		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
+		const auto panel = dssApp->panel();
+		if ((ui->registerAndStack->underMouse()) && (panel != ActivePanel::StackingPanel))
 		{
 			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 			ui->processing->setStyleSheet(QString("background-color: %1").arg(windowColourName));
-			// Change tab to stacking
-			dssApp->setTab(IDD_STACKING);
+			// Switch to stacking panel
+			dssApp->setPanel(ActivePanel::StackingPanel);
 		}
-		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
+		else if (ui->processing->underMouse() && (panel != ActivePanel::ProcessingPanel))
 		{
 			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 			ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
-			// Change tab to processing
-			dssApp->setTab(IDD_PROCESSING);
-		};
+			// Switch to processing panel
+			dssApp->setPanel(ActivePanel::ProcessingPanel);
+
+		}
 	}
 	Inherited::mousePressEvent(event);
 }

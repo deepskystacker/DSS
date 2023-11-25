@@ -2498,7 +2498,7 @@ namespace DSS
 					dssApp->getProcessingDlg().loadFile(strFileName);
 
 					// Change tab to processing
-					dssApp->setTab(IDD_PROCESSING);
+					dssApp->setPanel(ActivePanel::ProcessingPanel);
 				}
 				// Total elapsed time
 

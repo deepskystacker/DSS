@@ -58,7 +58,7 @@ class DeepSkyStacker :
 	Q_OBJECT
 
 signals:
-	void tabChanged();
+	void panelChanged(ActivePanel panel);
 
 public slots:
 	void help();
@@ -77,7 +77,7 @@ private:
 	DSS::ProcessingDlg*	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
 	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
-	std::uint32_t currTab;
+	ActivePanel activePanel;
 	QStringList args;
 	QString baseTitle;
 	QString currentPathName;
@@ -89,7 +89,7 @@ private:
 	QShortcut* helpShortCut;
 
 	void createStatusBar();
-	void updateTab();
+	void updatePanel();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 	void connectSignalsToSlots();
 
@@ -111,12 +111,12 @@ public:
 	~DeepSkyStacker() {};
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
-	inline std::uint32_t tab() { return currTab; }
+	inline ActivePanel panel() const { return activePanel; }
 
 
 	QString statusMessage();
 	CDeepStack& deepStack();
-	void setTab(std::uint32_t dwTabID);
+	void setPanel(ActivePanel panel);
 	void disableSubDialogs();
 	void enableSubDialogs();
 	CDSSSettings& imageProcessingSettings();
