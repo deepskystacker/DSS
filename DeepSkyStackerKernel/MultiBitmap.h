@@ -52,25 +52,25 @@ public:
 	virtual std::shared_ptr<CMemoryBitmap> CreateNewMemoryBitmap() const = 0;
 	virtual std::shared_ptr<CMemoryBitmap> CreateOutputMemoryBitmap() const = 0;
 
-	virtual void	SetNrBitmaps(int lNrBitmaps)
+	void SetNrBitmaps(int lNrBitmaps)
 	{
 		m_lNrBitmaps = lNrBitmaps;
-	};
+	}
 
-	int GetNrBitmaps()
+	int GetNrBitmaps() const
 	{
 		return m_lNrBitmaps;
-	};
+	}
 
-	int GetNrAddedBitmaps()
+	int GetNrAddedBitmaps() const
 	{
 		return m_lNrAddedBitmaps;
-	};
+	}
 
 	void SetImageOrder(const std::vector<int>& vImageOrder)
 	{
 		m_vImageOrder = vImageOrder;
-	};
+	}
 
 	const std::vector<int>& GetImageOrder() const
 	{
@@ -87,12 +87,12 @@ public:
 		m_Method = Method;
 		m_fKappa = fKappa;
 		m_lNrIterations = lNrIterations;
-	};
+	}
 
 	void SetHomogenization(bool bSet)
 	{
 		m_bHomogenization = bSet;
-	};
+	}
 
 	bool GetHomogenization() const
 	{
