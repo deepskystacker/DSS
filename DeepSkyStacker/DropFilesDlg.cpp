@@ -88,11 +88,11 @@ namespace DSS
 		}
 
 		ui->dropFiles->setTitle(tr("Add %n file(s) as", "IDC_DROPFILESTEXT", static_cast<int>(fileCount)));
-		ui->lightFrames->setText(tr("Light Frames", "IDC_LIGHTFRAMES", static_cast<int>(fileCount)));
-		ui->darkFrames->setText(tr("Dark Frames", "IDC_DARKFRAMES", static_cast<int>(fileCount)));
-		ui->flatFrames->setText(tr("Flat Frames", "IDC_FLATFRAMES", static_cast<int>(fileCount)));
-		ui->darkFlatFrames->setText(tr("Dark Flat Frames", "IDC_DARKFLATFRAMES", static_cast<int>(fileCount)));
-		ui->biasFrames->setText(tr("Offset/Bias Frames", "IDC_BIASFRAMES", static_cast<int>(fileCount)));
+		ui->lightFrames->setText(tr("Light Frames", "IDC_LIGHTFRAMES"));
+		ui->darkFrames->setText(tr("Dark Frames", "IDC_DARKFRAMES"));
+		ui->flatFrames->setText(tr("Flat Frames", "IDC_FLATFRAMES"));
+		ui->darkFlatFrames->setText(tr("Dark Flat Frames", "IDC_DARKFLATFRAMES"));
+		ui->biasFrames->setText(tr("Offset/Bias Frames", "IDC_BIASFRAMES"));
 
 		ui->lightFrames->setChecked(true);
 
