@@ -339,7 +339,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 
-	if (settings.contains("geometry") && settings.contains("maximised"))
+	if (settings.contains("geometry"))
 	{
 		const QByteArray geometry{ settings.value("geometry").toByteArray() };
 
