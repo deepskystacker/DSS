@@ -36,8 +36,12 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	initialised{ false },
 	ui(new Ui::ExplorerBar),
 	windowColourName{ palette().color(QPalette::ColorRole::Window).name()},	// Default base window colour
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	activeGroupColourName { "lightcyan" },
 	dssClosing{ false }
+#else
+	activeGroupColourName{ "lightcyan" }
+#endif
 {
 	ZTRACE_RUNTIME("Creating Explorer Bar");
 	ui->setupUi(this);
