@@ -19,7 +19,9 @@ namespace DSS
 		explicit ExplorerBar(QWidget* parent = nullptr);
 		~ExplorerBar();
 
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 		inline void setDSSClosing() { dssClosing = true; }
+#endif
 
 	public slots:
 		void panelChanged(ActivePanel panel);
@@ -52,7 +54,9 @@ namespace DSS
 	protected:
 		void mousePressEvent(QMouseEvent*) override;
 		void showEvent(QShowEvent* event) override;
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 		void closeEvent(QCloseEvent* event) override;
+#endif
 
 	private slots:
 		void onOpenLights();
@@ -102,7 +106,9 @@ namespace DSS
 		QString windowColourName;
 		QString activeGroupColourName;
 
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 		bool dssClosing;
+#endif
 
 		void	LoadSettingFile();
 		void	SaveSettingFile();

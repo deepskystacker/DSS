@@ -664,6 +664,7 @@ void ExplorerBar::showEvent(QShowEvent* event)
 	return Inherited::showEvent(event);
 }
 
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 //
 // The user may not close the undocked window, but once DSS has set the 
 // closing flag a closeEvent must be accepted (default) otherwise DSS 
@@ -673,6 +674,7 @@ void ExplorerBar::closeEvent(QCloseEvent* event)
 {
 	if (!dssClosing) event->ignore();
 }
+#endif
 
 void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {

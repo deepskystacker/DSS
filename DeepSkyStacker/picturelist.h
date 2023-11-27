@@ -16,7 +16,7 @@ namespace DSS
 	public:
 		PictureList(QWidget* parent = nullptr);
 		~PictureList();
-
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	inline void setDSSClosing() { dssClosing = true; }
 
 	protected:
@@ -24,6 +24,7 @@ namespace DSS
 
 	private:
 		bool dssClosing;
+#endif
 
 	};
 }

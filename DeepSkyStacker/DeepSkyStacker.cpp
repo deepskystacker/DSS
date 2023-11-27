@@ -342,17 +342,27 @@ DeepSkyStacker::DeepSkyStacker() :
 	if (settings.contains("geometry") && settings.contains("maximised"))
 	{
 		const QByteArray geometry{ settings.value("geometry").toByteArray() };
-		const bool maximised{ settings.value("maximised").toBool() };
 
-		if (maximised)
+#if QT_VERSION < 0x060601
+		// Shouldn't need this in 6.6.1 or above
+		if (settings.contains("maximised"))
 		{
-			setGeometry(screen()->availableGeometry());
-			showMaximized();
+			const bool maximised{ settings.value("maximised").toBool() };
+
+			if (maximised)
+			{
+				setGeometry(screen()->availableGeometry());
+				showMaximized();
+			}
 		}
 		else
 		{
 			restoreGeometry(geometry);
 		}
+#else
+		restoreGeometry(geometry);
+#endif
+
 	}
 
 	if (settings.contains("windowState"))
@@ -483,15 +493,14 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
 	// Colossal Cave is now closing, tell the two dock widgets that they must now accept
 	// close event requests otherwise DSS never closes down.
-	// Before saving the window state which saves the state the dock widgets, it is necessary to 
-	// make the image list dock widget visible.   As we want the stacking dialog to be visible 
-	// when opening again, make that visible too.
 	//
 	explorerBar->setDSSClosing();
 	pictureList->setDSSClosing();
+#endif
 
 
 
