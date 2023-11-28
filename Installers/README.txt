@@ -11,6 +11,8 @@ Changes since the last release:
 
 3. Modified version of CFITSIO 4.3.0 to support use of UTF-8 filenames on Windows. This has been submitted to the CFITSIO team.
 
+4. Update build to use Qt 6.6.1.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
