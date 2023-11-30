@@ -10,6 +10,7 @@
 #include "tiffio.h"
 #include "FITSUtil.h"
 #include "BitmapExt.h"
+#include "Multitask.h"
 
 using namespace DSS;
 /* ------------------------------------------------------------------- */
@@ -82,33 +83,37 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 
 /* ------------------------------------------------------------------- */
 
+void limitColorValues(double& red, double& green, double& blue)
+{
+	constexpr double Limit = 255.0;
+	if (red > Limit)
+		red = Limit;
+	if (green > Limit)
+		green = Limit;
+	if (blue > Limit)
+		blue = Limit;
+}
+
 COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
 {
-	COLORREF			crResult;
-	double				Red, Green, Blue;
-
-	double		H, S, L;
-
-	// Adjust beetween 0 and 65535.0
-	Red   = fRed/m_lNrBitmaps*256.0;
-	Green = fGreen/m_lNrBitmaps*256.0;
-	Blue  = fBlue/m_lNrBitmaps*256.0;
+	constexpr double ScalingFactor = 256.0;
 
 	if (bApplySettings)
 	{
+		double H, S, L;
+
+		// Adjust beetween 0 and 65535.0
+		double Red = fRed / m_lNrBitmaps * ScalingFactor;
+		double Green = fGreen / m_lNrBitmaps * ScalingFactor;
+		double Blue = fBlue / m_lNrBitmaps * ScalingFactor;
+
 		m_HistoAdjust.Adjust(Red, Green, Blue);
 
-		Red		/= 256.0;
-		Green	/= 256.0;
-		Blue	/= 256.0;
+		Red		/= ScalingFactor;
+		Green	/= ScalingFactor;
+		Blue	/= ScalingFactor;
 
-		if (Red > 255)
-			Red = 255;
-		if (Green > 255)
-			Green = 255;
-		if (Blue > 255)
-			Blue = 255;
-
+//		limitColorValues(Red, Green, Blue);
 		ToHSL(Red, Green, Blue, H, S, L);
 
 		// adjust luminance
@@ -119,15 +124,15 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 
 		ToRGB(H, S, L, Red, Green, Blue);
 
-		crResult = RGB(Red, Green, Blue);
+		limitColorValues(Red, Green, Blue);
+
+		return static_cast<COLORREF>(RGB(Red, Green, Blue));
 	}
 	else
 	{
-		crResult = RGB(Red/256.0, Green/256.0, Blue/256.0);
-	};
-
-	return crResult;
-};
+		return static_cast<COLORREF>(RGB(fRed / m_lNrBitmaps, fGreen / m_lNrBitmaps, fBlue / m_lNrBitmaps));
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -142,7 +147,7 @@ COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
 };
 
 /* ------------------------------------------------------------------- */
-
+/*
 COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 {
 	COLORREF16			crResult;
@@ -200,9 +205,9 @@ COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 
 	return crResult;
 };
-
+*/
 /* ------------------------------------------------------------------- */
-
+/*
 COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 {
 	COLORREF32			crResult;
@@ -260,7 +265,7 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 
 	return crResult;
 };
-
+*/
 /* ------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------- */
@@ -316,59 +321,57 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 	if (!Bitmap.IsEmpty())
 	{
-		int		lXMin = 0,
-					lYMin = 0,
-					lXMax = m_lWidth,
-					lYMax = m_lHeight;
+		int lXMin = 0;
+		int lYMin = 0;
+		int lXMax = m_lWidth;
+		int lYMax = m_lHeight;
 
-		if (pRect)
+		if (pRect != nullptr)
 		{
-			lXMin	= std::max(0L, pRect->left);
-			lYMin	= std::max(0L, pRect->top);
+			lXMin = std::max(0L, pRect->left);
+			lYMin = std::max(0L, pRect->top);
 			lXMax = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
 			lYMax = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
-		};
+		}
 
 		/*PIXELSET		sPixels;
 		PIXELITERATOR	it;*/
 
-		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = nullptr;
-		float *				pBaseBluePixel  = nullptr;
+		float* pBaseRedPixel = &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
+		float* pBaseGreenPixel = nullptr;
+		float* pBaseBluePixel  = nullptr;
 
-		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
 		if (!m_bMonochrome)
 		{
 			pBaseGreenPixel = &(m_vGreenPlane[m_lWidth * lYMin + lXMin]);
 			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
-		};
+		}
 
-#pragma omp parallel for schedule(dynamic, 50) default(none) shared(lYMin)
-		for (int j = lYMin;j<lYMax;j++)
+		const int nrProcessors = CMultitask::GetNrProcessors();
+
+#pragma omp parallel for default(none) shared(lYMin, lYMax) if(nrProcessors > 1)
+		for (int j = lYMin; j < lYMax; j++)
 		{
 			std::uint8_t* lpOut = Bitmap.GetPixelBase(lXMin, j);
 			LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
-			float* pRedPixel = nullptr;;
-			float* pGreenPixel = nullptr;
-			float* pBluePixel = nullptr;
-
 			//
 			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
 			//
-			pRedPixel	= pBaseRedPixel + (m_lWidth * (j - lYMin));
+			float* pRedPixel = pBaseRedPixel + (m_lWidth * (j - lYMin));
+			float* pGreenPixel = nullptr;
+			float* pBluePixel = nullptr;
+
 			if (!m_bMonochrome)
 			{
 				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
 				pBluePixel  = pBaseBluePixel + (m_lWidth * (j - lYMin));
-			};
-			for (int i = lXMin;i<lXMax;i++)
-			{
-				COLORREF		crColor;
+			}
 
-				if (!m_bMonochrome)
-					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
-				else
-					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true);
+			for (int i = lXMin; i < lXMax; i++)
+			{
+				const COLORREF crColor = m_bMonochrome
+					? GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true)
+					: GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
 
 				/*CPixel			px(*pRedPixel, *pGreenPixel, *pBluePixel);
 
@@ -387,17 +390,17 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 				{
 					pGreenPixel++;
 					pBluePixel++;
-				};
+				}
 				lpOut += 4;
-			};
-		};
+			}
+		}
 
 		/*int				lNrPixels = sPixels.size();
 		printf("%ld", lNrPixels);*/
-	};
+	}
 
 	return Bitmap.GetHBITMAP();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
