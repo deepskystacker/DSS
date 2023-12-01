@@ -188,9 +188,6 @@
     <ClCompile Include="StarMask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dss_settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tracecontrol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -212,9 +209,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\BackgroundCalibration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\BezierAdjust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\BitmapExt.h">
@@ -254,9 +248,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\FrameList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\Histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\MasterFrames.h">
@@ -443,9 +434,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StarMask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dss_settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tracecontrol.h">

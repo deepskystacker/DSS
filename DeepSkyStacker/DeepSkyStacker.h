@@ -36,7 +36,8 @@
 ****************************************************************************/
 #include "dssbase.h"
 #include "DeepStack.h"
-#include "dss_settings.h"
+#include "ProcessingSettings.h"
+
 namespace DSS
 {
 	class ExplorerBar;
@@ -45,8 +46,6 @@ namespace DSS
 	class StackingDlg;
 }
 class QStackedWidget;
-class CDSSSettings;
-class CDeepStack;
 
 class DeepSkyStacker :
 	public QMainWindow,
@@ -76,7 +75,7 @@ private:
 	DSS::StackingDlg* stackingDlg;
 	DSS::ProcessingDlg*	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
-	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
+	std::unique_ptr<DSS::ProcessingSettingsSet> processingSettingsSet_;
 	ActivePanel activePanel;
 	QStringList args;
 	QString baseTitle;
@@ -119,7 +118,7 @@ public:
 	void setPanel(ActivePanel panel);
 	void disableSubDialogs();
 	void enableSubDialogs();
-	CDSSSettings& imageProcessingSettings();
+	DSS::ProcessingSettingsSet& processingSettingsSet();
 	DSS::StackingDlg& getStackingDlg();
 	DSS::ProcessingDlg& getProcessingDlg();
 	DSS::ExplorerBar& GetExplorerBar();

@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "dssrect.h"
 #include "Histogram.h"
+#include "ProcessingSettings.h"
 #include "ui_ProcessingDlg.h"
 
 namespace DSS
@@ -197,7 +198,8 @@ namespace DSS
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
 
 	private:
-		ProcessRect			rectToProcess;
+		ProcessingSettings	processParms;
+		ProcessRect		rectToProcess;
 		bool dirty_;
 		fs::path currentFile;
 		QString iconModifier;
@@ -228,6 +230,8 @@ namespace DSS
 		void setBlueButtonIcon();
 
 		void modifyRGBKGradientControls();
+
+		void	updateControlsFromParams();
 
 		void updateInformation();
 
@@ -262,16 +266,15 @@ namespace DSS
 
 		void	ResetSliders();
 		void	DrawHistoBar(Graphics* pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
-		void	ShowHistogram(CWndImage& wndImage, CRGBHistogram& Histogram, bool bLog = false);
+		void	ShowHistogram(CWndImage& wndImage, RGBHistogram& Histogram, bool bLog = false);
 		void	ShowOriginalHistogram(bool bLog = false);
 
-		void	DrawGaussCurves(Graphics* pGraphics, CRGBHistogram& Histogram, int lWidth, int lHeight);
+		void	DrawGaussCurves(Graphics* pGraphics, RGBHistogram& Histogram, int lWidth, int lHeight);
 
 		void	UpdateHistogramAdjust();
 		void	DrawBezierCurve(Graphics* pGraphics, int lWidth, int lHeight);
 
 		void	UpdateControls();
-		void	UpdateControlsFromParams();
 		void	UpdateMonochromeControls();
 
 

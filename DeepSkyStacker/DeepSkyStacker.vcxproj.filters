@@ -72,13 +72,7 @@
     <ClCompile Include="RegisterSettings.cpp">
       <Filter>Dialogs\Registering</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessSettingsSheet.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
     <ClCompile Include="SavePicture.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
     <ClCompile Include="StarMaskDlg.cpp">
@@ -106,9 +100,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Label.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
@@ -204,6 +195,12 @@
     <ClCompile Include="RGBTab.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessingSettings.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessingSettingsDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -277,13 +274,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessSettingsSheet.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="SavePicture.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
     <ClInclude Include="StarMaskDlg.h">
@@ -311,9 +302,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\GradientCtrlImpl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Label.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
@@ -345,6 +333,15 @@
     </ClInclude>
     <ClInclude Include="dslr.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessingSettings.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Histogram.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierAdjust.h">
+      <Filter>Dialogs\Processing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -781,6 +778,9 @@
     <QtUic Include="ui\ProcessingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ProcessingSettingsDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -883,6 +883,9 @@
       <Filter>Dialogs</Filter>
     </QtMoc>
     <QtMoc Include="ProcessingDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="ProcessingSettingsDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
   </ItemGroup>

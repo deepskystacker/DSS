@@ -88,7 +88,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -131,7 +131,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -230,7 +230,6 @@
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
     <ClCompile Include="DeepStack.cpp" />
-    <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
     <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="imageloader.cpp" />
@@ -258,7 +257,6 @@
     <ClInclude Include=".\avx_support.h" />
     <ClInclude Include=".\BackgroundCalibration.h" />
     <ClInclude Include=".\Bayer.h" />
-    <ClInclude Include=".\BezierAdjust.h" />
     <ClInclude Include=".\BitmapBase.h" />
     <ClInclude Include=".\BitmapExt.h" />
     <ClInclude Include=".\BitMapFiller.h" />
@@ -284,7 +282,6 @@
     <ClInclude Include=".\GrayBitmap.h" />
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
-    <ClInclude Include=".\Histogram.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <ClInclude Include="StackWalker.h" />
@@ -315,7 +312,6 @@
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="dssbase.h" />
     <ClInclude Include="DSSVersion.h" />
-    <ClInclude Include="dss_settings.h" />
     <ClInclude Include="DynamicStats.h" />
     <ClInclude Include="ExtraInfo.h" />
     <ClInclude Include="FlatPart.h" />

@@ -1066,7 +1066,7 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 {
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
-	CRGBHistogram		RGBHistogram;
+	RGBHistogram		RGBHistogram;
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
 
@@ -1581,7 +1581,7 @@ void CDarkFrame::FindBadVerticalLines(ProgressBase*)
 class CFindHotPixelTask1
 {
 public:
-	CRGBHistogram m_RGBHistogram;
+	RGBHistogram m_RGBHistogram;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	ProgressBase* m_pProgress;
 
@@ -1601,7 +1601,7 @@ public:
 template <class T> struct threadLocals {
 	const T* bitmap;
 	BitmapIteratorConst<const CMemoryBitmap*> PixelIt;
-	CRGBHistogram RGBHistogram;
+	RGBHistogram RGBHistogram;
 
 	explicit threadLocals(const T* bm) : bitmap{ bm }, PixelIt{ bm }
 	{
@@ -1698,7 +1698,7 @@ void CDarkFrame::FindHotPixels(ProgressBase* pProgress)
 	m_vHotPixels.clear();
 	if (static_cast<bool>(m_pMasterDark))
 	{
-		CRGBHistogram RGBHistogram;
+		RGBHistogram RGBHistogram;
 		const bool bMonochrome = m_pMasterDark->IsMonochrome();
 
 		if (pProgress)

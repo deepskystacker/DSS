@@ -58,4 +58,5 @@ using std::min;
 using std::max;
 
 #include <zexcept.h>
+#include <Ztrace.h>
 

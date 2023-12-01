@@ -78,3 +78,4 @@ using std::max;
 
 #include <afx.h>
 #include <zexcept.h>
+#include <Ztrace.h>

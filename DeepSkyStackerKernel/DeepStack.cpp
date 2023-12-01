@@ -7,7 +7,7 @@
 
 using namespace DSS;
 
-void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
+void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 {
 	ZFUNCTRACE_RUNTIME();
 	double fMax = 0;
@@ -20,7 +20,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 	const auto& greenPixels = m_StackedBitmap.getGreenPixels();
 	const auto& bluePixels = m_StackedBitmap.getBluePixels();
 
-	Histo.Clear();
+	Histo.clear();
 
 #pragma omp parallel default(none) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 	{
@@ -77,10 +77,10 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 
 /* ------------------------------------------------------------------- */
 
-void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust)
+void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHisto, const RGBHistogramAdjust & histogramAdjust)
 {
 	ZFUNCTRACE_RUNTIME();
-	tgtHisto.Clear();
+	tgtHisto.clear();
 	bool				bMonochrome;
 
 	bMonochrome = m_StackedBitmap.IsMonochrome();
@@ -97,12 +97,12 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 		{
 			fGreen	= srcHisto.GetGreenHistogram().GetComponentValue(i);
 			fBlue	= srcHisto.GetBlueHistogram().GetComponentValue(i);
-			HistogramAdjust.Adjust(fRed, fGreen, fBlue);
+			histogramAdjust.Adjust(fRed, fGreen, fBlue);
 		}
 		else
 		{
 			fGreen = fBlue = fRed;
-			HistogramAdjust.Adjust(fRed, fGreen, fBlue);
+			histogramAdjust.Adjust(fRed, fGreen, fBlue);
 			fGreen = fBlue = fRed;
 		};
 

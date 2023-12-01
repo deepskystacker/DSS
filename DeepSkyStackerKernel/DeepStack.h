@@ -6,8 +6,8 @@ namespace DSS { class ProgressBase; }
 class CDeepStack
 {
 private :
-	CStackedBitmap m_StackedBitmap;
-	CRGBHistogram m_OriginalHisto;
+	DSS::StackedBitmap m_StackedBitmap;
+	DSS::RGBHistogram m_OriginalHisto;
 	C32BitsBitmap m_Bitmap;
 	bool m_bNewStackedBitmap;
 	DSS::ProgressBase* m_pProgress;
@@ -24,7 +24,7 @@ public :
 	{
 		m_StackedBitmap.Clear();
 		m_Bitmap.Free();
-		m_OriginalHisto.Clear();
+		m_OriginalHisto.clear();
 		m_bNewStackedBitmap = false;
 	};
 
@@ -39,8 +39,8 @@ public :
 	};
 
 private :
-	void	ComputeOriginalHistogram(CRGBHistogram & Histo);
-	void	AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust);
+	void	ComputeOriginalHistogram(DSS::RGBHistogram & Histo);
+	void	AdjustHistogram(DSS::RGBHistogram & srcHisto, DSS::RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust);
 
 public :
 	void	SetProgress(DSS::ProgressBase *	pProgress)
@@ -60,17 +60,17 @@ public :
 
 	bool	LoadStackedInfo(const fs::path& file);
 
-	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)
+	HBITMAP PartialProcess(RECT rcProcess, const DSS::BezierAdjust & BezierAdjust, const DSS::RGBHistogramAdjust & histogramAdjust)
 	{
 		if (m_Bitmap.IsEmpty())
 			m_Bitmap.Create(GetWidth(), GetHeight());
 
 		m_StackedBitmap.SetBezierAdjust(BezierAdjust);
-		m_StackedBitmap.SetHistogramAdjust(HistogramAdjust);
+		m_StackedBitmap.SetHistogramAdjust(histogramAdjust);
 		return m_StackedBitmap.GetHBitmap(m_Bitmap, &rcProcess);
 	};
 
-	CStackedBitmap& GetStackedBitmap()
+	DSS::StackedBitmap& GetStackedBitmap()
 	{
 		return m_StackedBitmap;
 	}
@@ -80,15 +80,15 @@ public :
 		return m_Bitmap;
 	}
 
-	void AdjustOriginalHistogram(CRGBHistogram & Histo, const CRGBHistogramAdjust & HistogramAdjust)
+	void AdjustOriginalHistogram(DSS::RGBHistogram & Histo, const DSS::RGBHistogramAdjust & histogramAdjust)
 	{
 		if (!m_OriginalHisto.IsInitialized())
 			ComputeOriginalHistogram(m_OriginalHisto);
 
-		AdjustHistogram(m_OriginalHisto, Histo, HistogramAdjust);
+		AdjustHistogram(m_OriginalHisto, Histo, histogramAdjust);
 	};
 
-	CRGBHistogram & GetOriginalHistogram()
+	DSS::RGBHistogram & GetOriginalHistogram()
 	{
 		if (!m_OriginalHisto.IsInitialized())
 			ComputeOriginalHistogram(m_OriginalHisto);

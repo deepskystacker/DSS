@@ -136,219 +136,221 @@ class CFITSReader;
 class CFITSWriter;
 
 /* ------------------------------------------------------------------- */
-
-class CStackedBitmap
+namespace DSS
 {
-private:
-	int						m_lWidth;
-	int						m_lHeight;
-	int						m_lOutputWidth,
-		m_lOutputHeight;
-	int						m_lNrBitmaps;
-	CPixelVector				m_vRedPlane;
-	CPixelVector				m_vGreenPlane;
-	CPixelVector				m_vBluePlane;
-	int						m_lISOSpeed;
-	int						m_lGain;
-	int						m_lTotalTime;
-	bool						m_bMonochrome;
-
-	CBezierAdjust				m_BezierAdjust;
-	CRGBHistogramAdjust 		m_HistoAdjust;
-	CBitmapInfo	bmpInfo;
-
-private:
-	bool	LoadTIFF(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
-	bool	LoadFITS(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
-
-	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
-
-public:
-	void	ReadSpecificTags(CTIFFReader* tiffReader);
-	void	ReadSpecificTags(CFITSReader* fitsReader);
-	void	WriteSpecificTags(CTIFFWriter* tiffWriter, bool bApplySettings);
-	void	WriteSpecificTags(CFITSWriter* fitsWriter, bool bApplySettings);
-
-public:
-	CStackedBitmap();
-	virtual ~CStackedBitmap() {};
-
-	void	SetOutputSizes(int lWidth, int lHeight)
+	class StackedBitmap
 	{
-		m_lOutputWidth = lWidth;
-		m_lOutputHeight = lHeight;
-	};
+	private:
+		int						m_lWidth;
+		int						m_lHeight;
+		int						m_lOutputWidth,
+			m_lOutputHeight;
+		int						m_lNrBitmaps;
+		CPixelVector				m_vRedPlane;
+		CPixelVector				m_vGreenPlane;
+		CPixelVector				m_vBluePlane;
+		int						m_lISOSpeed;
+		int						m_lGain;
+		int						m_lTotalTime;
+		bool						m_bMonochrome;
 
-	bool	Allocate(int lWidth, int lHeight, bool bMonochrome)
-	{
-		size_t			lSize;
+		BezierAdjust			m_BezierAdjust;
+		RGBHistogramAdjust 		m_HistoAdjust;
+		CBitmapInfo	bmpInfo;
 
-		m_lWidth = lWidth;
-		m_lHeight = lHeight;
+	private:
+		bool	LoadTIFF(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
+		bool	LoadFITS(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
 
-		m_bMonochrome = bMonochrome;
-		lSize = m_lWidth * m_lHeight;
-		m_vRedPlane.clear();
-		m_vGreenPlane.clear();
-		m_vBluePlane.clear();
+		COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
-		m_vRedPlane.resize(lSize);
-		if (!m_bMonochrome)
+	public:
+		void	ReadSpecificTags(CTIFFReader* tiffReader);
+		void	ReadSpecificTags(CFITSReader* fitsReader);
+		void	WriteSpecificTags(CTIFFWriter* tiffWriter, bool bApplySettings);
+		void	WriteSpecificTags(CFITSWriter* fitsWriter, bool bApplySettings);
+
+	public:
+		StackedBitmap();
+		virtual ~StackedBitmap() {};
+
+		void	SetOutputSizes(int lWidth, int lHeight)
 		{
-			m_vGreenPlane.resize(lSize);
-			m_vBluePlane.resize(lSize);
+			m_lOutputWidth = lWidth;
+			m_lOutputHeight = lHeight;
 		};
 
-		if (m_bMonochrome)
-			return (m_vRedPlane.size() == lSize);
-		else
-			return (m_vRedPlane.size() == lSize) &&
-			(m_vGreenPlane.size() == lSize) &&
-			(m_vBluePlane.size() == lSize);
-	};
-
-	void		SetHistogramAdjust(const CRGBHistogramAdjust& HistoAdjust)
-	{
-		m_HistoAdjust = HistoAdjust;
-	};
-
-	void	SetBezierAdjust(const CBezierAdjust& BezierAdjust)
-	{
-		m_BezierAdjust = BezierAdjust;
-	};
-
-	void		GetBezierAdjust(CBezierAdjust& BezierAdjust)
-	{
-		BezierAdjust = m_BezierAdjust;
-	};
-
-	void		GetHistogramAdjust(CRGBHistogramAdjust& HistoAdjust)
-	{
-		HistoAdjust = m_HistoAdjust;
-	};
-
-	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
-	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
-	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
-
-	std::tuple<double, double, double> getValues(size_t X, size_t Y) const
-	{
-		const size_t lOffset { m_lWidth * Y + X };
-
-		return {
-			m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0,
-			m_vGreenPlane[lOffset] / m_lNrBitmaps * 256.0,
-			m_vBluePlane[lOffset] / m_lNrBitmaps * 256.0 };
-	}
-
-	double getValue(size_t X, size_t Y) const
-	{
-		const size_t lOffset {m_lWidth * Y + X };
-		return  m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0;
-	}
-
-	void SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
-	{
-		const size_t lOffset {m_lWidth * (size_t)Y + (size_t)X };
-
-		m_vRedPlane[lOffset]	= fRed * m_lNrBitmaps;
-		if (!m_bMonochrome)
+		bool	Allocate(int lWidth, int lHeight, bool bMonochrome)
 		{
-			m_vGreenPlane[lOffset]	= fGreen * m_lNrBitmaps;
-			m_vBluePlane[lOffset]	= fBlue * m_lNrBitmaps;
+			size_t			lSize;
+
+			m_lWidth = lWidth;
+			m_lHeight = lHeight;
+
+			m_bMonochrome = bMonochrome;
+			lSize = m_lWidth * m_lHeight;
+			m_vRedPlane.clear();
+			m_vGreenPlane.clear();
+			m_vBluePlane.clear();
+
+			m_vRedPlane.resize(lSize);
+			if (!m_bMonochrome)
+			{
+				m_vGreenPlane.resize(lSize);
+				m_vBluePlane.resize(lSize);
+			};
+
+			if (m_bMonochrome)
+				return (m_vRedPlane.size() == lSize);
+			else
+				return (m_vRedPlane.size() == lSize) &&
+				(m_vGreenPlane.size() == lSize) &&
+				(m_vBluePlane.size() == lSize);
+		};
+
+		void		SetHistogramAdjust(const RGBHistogramAdjust& HistoAdjust)
+		{
+			m_HistoAdjust = HistoAdjust;
+		};
+
+		void	SetBezierAdjust(const DSS::BezierAdjust& BezierAdjust)
+		{
+			m_BezierAdjust = BezierAdjust;
+		};
+
+		void		GetBezierAdjust(DSS::BezierAdjust& BezierAdjust)
+		{
+			BezierAdjust = m_BezierAdjust;
+		};
+
+		void		GetHistogramAdjust(RGBHistogramAdjust& HistoAdjust)
+		{
+			HistoAdjust = m_HistoAdjust;
+		};
+
+		COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
+		COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
+		COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
+
+		std::tuple<double, double, double> getValues(size_t X, size_t Y) const
+		{
+			const size_t lOffset{ m_lWidth * Y + X };
+
+			return {
+				m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0,
+				m_vGreenPlane[lOffset] / m_lNrBitmaps * 256.0,
+				m_vBluePlane[lOffset] / m_lNrBitmaps * 256.0 };
+		}
+
+		double getValue(size_t X, size_t Y) const
+		{
+			const size_t lOffset{ m_lWidth * Y + X };
+			return  m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0;
+		}
+
+		void SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
+		{
+			const size_t lOffset{ m_lWidth * (size_t)Y + (size_t)X };
+
+			m_vRedPlane[lOffset] = fRed * m_lNrBitmaps;
+			if (!m_bMonochrome)
+			{
+				m_vGreenPlane[lOffset] = fGreen * m_lNrBitmaps;
+				m_vBluePlane[lOffset] = fBlue * m_lNrBitmaps;
+			};
+		};
+
+		void		GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings);
+
+		const auto& getRedPixels() const { return this->m_vRedPlane; }
+		const auto& getGreenPixels() const { return this->m_vGreenPlane; }
+		const auto& getBluePixels() const { return this->m_vBluePlane; }
+
+		double		GetRedValue(int X, int Y)
+		{
+			return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+		};
+		double		GetGreenValue(int X, int Y)
+		{
+			if (!m_bMonochrome)
+				return m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+			else
+				return GetRedValue(X, Y);
+		};
+		double		GetBlueValue(int X, int Y)
+		{
+			if (!m_bMonochrome)
+				return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+			else
+				return GetRedValue(X, Y);
+		};
+
+		void	SetISOSpeed(int lISOSpeed)
+		{
+			m_lISOSpeed = lISOSpeed;
+		};
+
+		std::uint16_t GetISOSpeed()
+		{
+			return static_cast<std::uint16_t>(m_lISOSpeed);
+		};
+
+		void	SetGain(int lGain)
+		{
+			m_lGain = lGain;
+		};
+
+		int	GetGain()
+		{
+			return m_lGain;
+		};
+
+		int	GetTotalTime()
+		{
+			return m_lTotalTime;
+		};
+
+		int	GetNrStackedFrames()
+		{
+			return m_lNrBitmaps;
+		};
+
+		bool	Load(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
+		void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
+		void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
+		void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
+		void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
+		HBITMAP	GetHBitmap(C32BitsBitmap& Bitmap, RECT* pRect = nullptr);
+		std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
+
+		void Clear()
+		{
+			m_lNrBitmaps = 0;
+			m_lHeight = 0;
+			m_lWidth = 0;
+			m_lOutputWidth = 0;
+			m_lOutputHeight = 0;
+			m_vRedPlane.clear();
+			m_vGreenPlane.clear();
+			m_vBluePlane.clear();
+			m_lTotalTime = 0;
+			m_lISOSpeed = 0;
+			m_lGain = -1;
+		};
+
+		int	GetWidth()
+		{
+			return m_lWidth;
+		};
+
+		int	GetHeight()
+		{
+			return m_lHeight;
+		};
+
+		bool	IsMonochrome()
+		{
+			return m_bMonochrome;
 		};
 	};
-
-	void		GetPixel(int X, int Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings);
-
-	const auto& getRedPixels() const { return this->m_vRedPlane; }
-	const auto& getGreenPixels() const { return this->m_vGreenPlane; }
-	const auto& getBluePixels() const { return this->m_vBluePlane; }
-
-	double		GetRedValue(int X, int Y)
-	{
-		return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
-	};
-	double		GetGreenValue(int X, int Y)
-	{
-		if (!m_bMonochrome)
-			return m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
-		else
-			return GetRedValue(X, Y);
-	};
-	double		GetBlueValue(int X, int Y)
-	{
-		if (!m_bMonochrome)
-			return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)]/m_lNrBitmaps*256.0;
-		else
-			return GetRedValue(X, Y);
-	};
-
-	void	SetISOSpeed(int lISOSpeed)
-	{
-		m_lISOSpeed = lISOSpeed;
-	};
-
-	std::uint16_t GetISOSpeed()
-	{
-		return static_cast<std::uint16_t>(m_lISOSpeed);
-	};
-
-	void	SetGain(int lGain)
-	{
-		m_lGain = lGain;
-	};
-
-	int	GetGain()
-	{
-		return m_lGain;
-	};
-
-	int	GetTotalTime()
-	{
-		return m_lTotalTime;
-	};
-
-	int	GetNrStackedFrames()
-	{
-		return m_lNrBitmaps;
-	};
-
-	bool	Load(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
-	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
-	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
-	HBITMAP	GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
-	std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
-
-	void Clear()
-	{
-		m_lNrBitmaps = 0;
-		m_lHeight = 0;
-		m_lWidth  = 0;
-		m_lOutputWidth = 0;
-		m_lOutputHeight = 0;
-		m_vRedPlane.clear();
-		m_vGreenPlane.clear();
-		m_vBluePlane.clear();
-		m_lTotalTime = 0;
-		m_lISOSpeed  = 0;
-		m_lGain  = -1;
-	};
-
-	int	GetWidth()
-	{
-		return m_lWidth;
-	};
-
-	int	GetHeight()
-	{
-		return m_lHeight;
-	};
-
-	bool	IsMonochrome()
-	{
-		return m_bMonochrome;
-	};
-};
+} // namespace DSS

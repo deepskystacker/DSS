@@ -14,7 +14,7 @@
 using namespace DSS;
 /* ------------------------------------------------------------------- */
 
-CStackedBitmap::CStackedBitmap()
+StackedBitmap::StackedBitmap()
 {
 	m_lNrBitmaps	= 0;
 	m_lWidth		= 0;
@@ -30,7 +30,7 @@ CStackedBitmap::CStackedBitmap()
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
+void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
 {
 	int				lOffset = m_lWidth * Y + X;
 
@@ -82,7 +82,7 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 
 /* ------------------------------------------------------------------- */
 
-COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
+COLORREF StackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
 {
 	COLORREF			crResult;
 	double				Red, Green, Blue;
@@ -131,7 +131,7 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 
 /* ------------------------------------------------------------------- */
 
-COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
+COLORREF StackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
 {
 	int				lOffset = m_lWidth * Y + X;
 
@@ -143,7 +143,7 @@ COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
 
 /* ------------------------------------------------------------------- */
 
-COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
+COLORREF16	StackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 {
 	COLORREF16			crResult;
 
@@ -203,7 +203,7 @@ COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 
 /* ------------------------------------------------------------------- */
 
-COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
+COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 {
 	COLORREF32			crResult;
 
@@ -309,7 +309,7 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 // 	};
 // };
 
-HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
+HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 {
 	if (Bitmap.IsEmpty())
 		Bitmap.Create(m_lWidth, m_lHeight);
@@ -401,7 +401,7 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pProgress)
+std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -478,7 +478,7 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::Load(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::Load(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -499,7 +499,7 @@ bool CStackedBitmap::Load(const fs::path& file, ProgressBase * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
+void StackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 {
 	uint32_t				nrbitmaps = 1,
 						settingsapplied = 0;
@@ -521,23 +521,23 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 
 		if (settingsapplied)
 		{
-			m_BezierAdjust.Reset(true);
-			m_HistoAdjust.Reset();
+			m_BezierAdjust.reset(true);
+			m_HistoAdjust.reset();
 		}
 		else
 		{
 			char* szBezierParameters = nullptr;
 			char* szAdjustParameters = nullptr;
 
-			m_BezierAdjust.Reset();
+			m_BezierAdjust.reset();
 			if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, &szBezierParameters))
 			{
 				QString strBezierParameters(szBezierParameters);
 				if (strBezierParameters.length())
-					m_BezierAdjust.FromText(strBezierParameters);
+					m_BezierAdjust.fromString(strBezierParameters);
 			};
 
-			m_HistoAdjust.Reset();
+			m_HistoAdjust.reset();
 			if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, &szAdjustParameters))
 			{
 				QString strAdjustParameters(szAdjustParameters);
@@ -550,7 +550,7 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
+void StackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 {
 	if (fitsReader)
 	{
@@ -567,14 +567,14 @@ void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 		if (0 == m_lNrBitmaps) m_lNrBitmaps = 1;
 
 
-		m_BezierAdjust.Reset(true);
-		m_HistoAdjust.Reset();
+		m_BezierAdjust.reset(true);
+		m_HistoAdjust.reset();
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySettings)
+void StackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySettings)
 {
 	if (tiffWriter)
 	{
@@ -582,10 +582,9 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySett
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_NRFRAMES, m_lNrBitmaps);
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_SETTINGSAPPLIED, bApplySettings);
 
-		QString strBezierParameters;
+		const QString strBezierParameters{ m_BezierAdjust.toString() };
 		QString	strHistoParameters;
 
-		m_BezierAdjust.ToText(strBezierParameters);
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, strBezierParameters.toUtf8().constData());
 		m_HistoAdjust.ToText(strHistoParameters);
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, strHistoParameters.toUtf8().constData());
@@ -594,7 +593,7 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySett
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
+void StackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
 {
 	if (fitsWriter)
 	{}
@@ -607,7 +606,7 @@ class CTIFFWriterStacker : public CTIFFWriter
 {
 private :
 	LPRECT				m_lprc;
-	CStackedBitmap *	m_pStackedBitmap;
+	StackedBitmap *	m_pStackedBitmap;
 	bool				m_bApplySettings;
 	TIFFFORMAT			m_TiffFormat;
 	TIFFCOMPRESSION		m_TiffComp;
@@ -632,7 +631,7 @@ public :
 		OnClose();
 	};
 
-	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
+	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
 	};
@@ -731,7 +730,7 @@ bool CTIFFWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
@@ -760,7 +759,7 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
@@ -806,7 +805,7 @@ class CFITSWriterStacker : public CFITSWriter
 {
 private :
 	LPRECT				m_lprc;
-	CStackedBitmap *	m_pStackedBitmap;
+	StackedBitmap *	m_pStackedBitmap;
 	bool				m_bApplySettings;
 	FITSFORMAT			m_FitsFormat;
 	int				m_lXStart,
@@ -828,7 +827,7 @@ public :
 	{
 	};
 
-	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
+	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
 	};
@@ -926,7 +925,7 @@ bool CFITSWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings)
+void StackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
@@ -959,7 +958,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
+void StackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
@@ -1007,7 +1006,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progre
 class CTIFFReadStacker : public CTIFFReader
 {
 private :
-	CStackedBitmap *		m_pStackedBitmap;
+	StackedBitmap *		m_pStackedBitmap;
 
 public :
 	CTIFFReadStacker(const fs::path& file, ProgressBase *	pProgress)
@@ -1018,7 +1017,7 @@ public :
 
 	virtual ~CTIFFReadStacker() {};
 
-	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
+	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
 	};
@@ -1079,7 +1078,7 @@ bool CTIFFReadStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
@@ -1119,7 +1118,7 @@ bool CStackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 class CFITSReadStacker : public CFITSReader
 {
 private :
-	CStackedBitmap *		m_pStackedBitmap;
+	StackedBitmap *		m_pStackedBitmap;
 
 public :
 	CFITSReadStacker(const fs::path& file, ProgressBase *	pProgress)
@@ -1130,7 +1129,7 @@ public :
 
 	virtual ~CFITSReadStacker() {};
 
-	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
+	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
 	};
@@ -1192,7 +1191,7 @@ bool CFITSReadStacker::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
