@@ -82,16 +82,16 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 };
 
 /* ------------------------------------------------------------------- */
-
+namespace
+{
 void limitColorValues(double& red, double& green, double& blue)
 {
-	constexpr double Limit = 255.0;
-	if (red > Limit)
-		red = Limit;
-	if (green > Limit)
-		green = Limit;
-	if (blue > Limit)
-		blue = Limit;
+	constexpr double UpperLimit = 255.0;
+
+	red = std::min(red, UpperLimit);
+	green = std::min(green, UpperLimit);
+	blue = std::min(blue, UpperLimit);
+}
 }
 
 COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
@@ -113,7 +113,7 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 		Green	/= ScalingFactor;
 		Blue	/= ScalingFactor;
 
-//		limitColorValues(Red, Green, Blue);
+		limitColorValues(Red, Green, Blue);
 		ToHSL(Red, Green, Blue, H, S, L);
 
 		// adjust luminance
@@ -124,7 +124,9 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 
 		ToRGB(H, S, L, Red, Green, Blue);
 
-		limitColorValues(Red, Green, Blue);
+		// The colour value can be out of range [0, 255] here. If we want to avoid black star centers, we should limit them here.
+		// This can e.g. happen when the user applies to aggressive Luminance settings in the color editor.
+//		limitColorValues(Red, Green, Blue);
 
 		return static_cast<COLORREF>(RGB(Red, Green, Blue));
 	}
