@@ -40,7 +40,7 @@ std::unique_ptr<CMemoryBitmap> CGrayBitmapT<T>::Clone(bool bEmpty/*=false*/) con
 }
 
 template <typename T>
-BAYERCOLOR CGrayBitmapT<T>::GetBayerColor(int x, int y)
+BAYERCOLOR CGrayBitmapT<T>::GetBayerColor(int x, int y) const
 {
 	return ::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset);
 }
@@ -62,7 +62,7 @@ inline void	CGrayBitmapT<T>::CheckXY(size_t x, size_t y) const
 }
 
 template <typename T>
-T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor)
+T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor) const
 {
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{
@@ -81,7 +81,7 @@ T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor)
 }
 
 template <typename T>
-double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue)
+double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue) const
 {
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{
@@ -100,7 +100,7 @@ double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGree
 }
 
 template <typename T>
-double CGrayBitmapT<T>::InterpolateGreen(size_t x, size_t y, T* pValue/*=nullptr*/)
+double CGrayBitmapT<T>::InterpolateGreen(size_t x, size_t y, const T* pValue/*=nullptr*/) const
 {
 	double fResult = 0.0;
 	int lNrValues = 0;
@@ -133,7 +133,7 @@ double CGrayBitmapT<T>::InterpolateGreen(size_t x, size_t y, T* pValue/*=nullptr
 }
 
 template <typename T>
-double CGrayBitmapT<T>::InterpolateBlue(size_t x, size_t y, T* pValue/*=nullptr*/)
+double CGrayBitmapT<T>::InterpolateBlue(size_t x, size_t y, const T* pValue/*=nullptr*/) const
 {
 	double fResult = 0.0;
 	int lNrValues = 0;
@@ -198,7 +198,7 @@ double CGrayBitmapT<T>::InterpolateBlue(size_t x, size_t y, T* pValue/*=nullptr*
 }
 
 template <typename T>
-double CGrayBitmapT<T>::InterpolateRed(size_t x, size_t y, T* pValue/*=nullptr*/)
+double CGrayBitmapT<T>::InterpolateRed(size_t x, size_t y, const T* pValue/*=nullptr*/) const
 {
 	double fResult = 0.0;
 	int lNrValues = 0;
@@ -263,7 +263,7 @@ double CGrayBitmapT<T>::InterpolateRed(size_t x, size_t y, T* pValue/*=nullptr*/
 }
 
 template <typename T>
-void CGrayBitmapT<T>::InterpolateAll(double* pfValues, size_t x, size_t y)
+void CGrayBitmapT<T>::InterpolateAll(double* pfValues, size_t x, size_t y) const
 {
 	size_t lIndice;
 	size_t lNrValues[4] = { 0 };
@@ -322,7 +322,7 @@ void CGrayBitmapT<T>::SetPixel(size_t i, size_t j, double fGray)
 }
 
 template <typename T>
-void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue)
+void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const
 {
 	CheckXY(i, j);
 	fRed = fGreen = fBlue = 0.0;
@@ -332,7 +332,7 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 		assert(m_bWord);
 		if (IsXYOk((i - 1) * 2, (j - 1) * 2) && IsXYOk((i + 1) * 2 + 1, (j + 1) * 2 + 1))
 		{
-			T* pValue = &(m_vPixels[GetOffset(i * 2, j * 2)]);
+			const T* pValue = &(m_vPixels[GetOffset(i * 2, j * 2)]);
 
 			switch (m_CFAType)
 			{
@@ -362,7 +362,7 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 	else if (m_CFATransform == CFAT_RAWBAYER)
 	{
 		assert(m_bWord);
-		T* pValue = &(m_vPixels[GetOffset(i, j)]);
+		const T* pValue = &(m_vPixels[GetOffset(i, j)]);
 
 		switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
@@ -394,7 +394,7 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 		}
 		else
 		{
-			T* pValue = &(m_vPixels[GetOffset(i, j)]);
+			const T* pValue = &(m_vPixels[GetOffset(i, j)]);
 			switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 			{
 			case BAYER_RED:
@@ -426,14 +426,14 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 }
 
 template <typename T>
-void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fGray)
+void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fGray) const
 {
 	GetValue(i, j, fGray);
 	fGray /= m_fMultiplier;
 }
 
 template <typename T>
-bool CGrayBitmapT<T>::GetScanLine(size_t j, void* pScanLine)
+bool CGrayBitmapT<T>::GetScanLine(size_t j, void* pScanLine) const
 {
 	bool bResult = false;
 
@@ -503,7 +503,7 @@ void CGrayBitmapT<T>::InitIterator(const void*& pRed, const void*& pGreen, const
 }
 
 template <typename T>
-void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc)
+void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 {
 	bc.m_bFloat = m_bFloat;
 	bc.m_dwHeight = m_lHeight;

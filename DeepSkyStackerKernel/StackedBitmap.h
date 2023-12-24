@@ -226,11 +226,11 @@ public:
 	{
 		HistoAdjust = m_HistoAdjust;
 	};
-
+private:
 	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
-	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
-	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
-
+//	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
+//	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
+public:
 	std::tuple<double, double, double> getValues(size_t X, size_t Y) const
 	{
 		const size_t lOffset { m_lWidth * Y + X };

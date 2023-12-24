@@ -123,7 +123,7 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fGray)
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue)
+void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const
 {
 	fRed = fGreen = fBlue = 0.0;
 
@@ -137,7 +137,7 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fG
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray)
+void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray) const
 {
 	double fRed, fGreen, fBlue;
 	fGray = 0.0;
@@ -150,7 +150,7 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fGray)
 }
 
 template <typename TType>
-bool CColorBitmapT<TType>::GetScanLine(size_t j, void* pScanLine)
+bool CColorBitmapT<TType>::GetScanLine(size_t j, void* pScanLine) const
 {
 	bool bResult = false;
 
@@ -232,7 +232,7 @@ void CColorBitmapT<TType>::RemoveHotPixels(ProgressBase* pProgress/*=nullptr*/)
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::GetCharacteristics(CBitmapCharacteristics& bc)
+void CColorBitmapT<TType>::GetCharacteristics(CBitmapCharacteristics& bc) const
 {
 	bc.m_bFloat = m_bFloat;
 	bc.m_dwHeight = m_lHeight;

@@ -31,7 +31,7 @@ void CMemoryBitmap::CopyFrom(const CMemoryBitmap& mb)
 	m_filterName = mb.m_filterName;
 }
 
-void CMemoryBitmap::GetPixel16(const size_t i, const size_t j, COLORREF16& crResult)
+void CMemoryBitmap::GetPixel16(const size_t i, const size_t j, COLORREF16& crResult) const
 {
 	constexpr double scalingFactor = double{ 1. + std::numeric_limits<unsigned char>::max() };
 	constexpr double maxValue = double{ std::numeric_limits<unsigned short>::max() };

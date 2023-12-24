@@ -46,7 +46,8 @@ inline double LogLogAdjust(double fValue)
 inline double LogSquareRootAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-	fValue = log(pow(fValue, 1/2.0)*1.7+1);
+//	fValue = log(pow(fValue, 1/2.0)*1.7+1);
+	fValue = std::log(std::sqrt(fValue) * 1.7 + 1.0); // Displaying the entire picture is about 1.5 x faster when using sqrt(x) instead of pow(x, 0.5).
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };

@@ -60,7 +60,7 @@ private:
 
 	inline bool	IsXYOk(size_t x, size_t y) const
 	{
-		return (x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
+		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	}
 
 	size_t GetOffset(const size_t x, const size_t y) const
@@ -78,12 +78,12 @@ private:
 		return true;
 	}
 
-	TType GetPrimary(int x, int y, const COLORREF16& crColor);
-	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue);
-	double InterpolateGreen(size_t x, size_t y, TType* pValue = nullptr);
-	double InterpolateBlue(size_t x, size_t y, TType* pValue = nullptr);
-	double InterpolateRed(size_t x, size_t y, TType* pValue = nullptr);
-	void InterpolateAll(double* pfValues, size_t x, size_t y);
+	TType GetPrimary(int x, int y, const COLORREF16& crColor) const;
+	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue) const;
+	double InterpolateGreen(size_t x, size_t y, const TType* pValue = nullptr) const;
+	double InterpolateBlue(size_t x, size_t y, const TType* pValue = nullptr) const;
+	double InterpolateRed(size_t x, size_t y, const TType* pValue = nullptr) const;
+	void InterpolateAll(double* pfValues, size_t x, size_t y) const;
 
 protected:
 	virtual void SetCFA(bool bCFA) override
@@ -106,7 +106,7 @@ public:
 	}
 
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override;
-	virtual BAYERCOLOR GetBayerColor(int x, int y) override;
+	virtual BAYERCOLOR GetBayerColor(int x, int y) const override;
 
 	virtual CFATYPE	GetCFAType() const override
 	{
@@ -173,15 +173,15 @@ public:
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	inline virtual void SetPixel(size_t i, size_t j, double fGray) override;
-	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override;
-	virtual void inline GetPixel(size_t i, size_t j, double& fGray) override;
-	virtual bool GetScanLine(size_t j, void* pScanLine) override;
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
+	virtual void inline GetPixel(size_t i, size_t j, double& fGray) const override;
+	virtual bool GetScanLine(size_t j, void* pScanLine) const override;
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;
 
 	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
 
-	TType* GetGrayPixel(int i, int j)
+	TType* GetGrayPixel(const int i, const int j)
 	{
 		return m_vPixels.data() + GetOffset(i, j);
 	}
@@ -202,7 +202,7 @@ public:
 		return (m_fMultiplier * 256.0) - 1;
 	}
 
-	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const override;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override;
 	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const override;
