@@ -203,6 +203,9 @@
     <ClCompile Include="ImageListModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QEventLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -466,6 +469,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ImageListModel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QEventLogger.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
