@@ -1344,12 +1344,6 @@ namespace DSS
 		{
 			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
 			{
-				pictureList->tableView->setEnabled(true);
-				//
-				// Disabling the tableview resulted in it loosing focus
-				// so put the focus back
-				//
-				pictureList->tableView->setFocus(Qt::OtherFocusReason);
 				//
 				// The image we want is available in the cache
 				//
@@ -1399,7 +1393,6 @@ namespace DSS
 			}
 			else if (!fileToShow.empty())
 			{
-				pictureList->tableView->setEnabled(false);
 				//
 				// Display the "Loading filename" with red background gradient while loading in background
 				//
@@ -1451,12 +1444,6 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
-		pictureList->tableView->setEnabled(true);
-		//
-		// Disabling the tableview resulted in it loosing focus
-		// so put the focus back
-		//
-		pictureList->tableView->setFocus(Qt::OtherFocusReason);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
