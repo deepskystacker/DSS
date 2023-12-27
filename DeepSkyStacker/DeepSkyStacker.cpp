@@ -1168,12 +1168,20 @@ int main(int argc, char* argv[])
 		//
 		// Create the file if it doesn't exist.  It is intentionally never deleted.
 		//
-		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());	
+#ifdef _WINDOWS
+		auto newFile = std::ofstream(mutexFileName.toStdWString().c_str());
+#else
+		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());
+#endif
 
 		//
 		// Use a boost::interprocess::file_lock as unlike a named_mutex, the OS removes the lock in the case of abnormal termination
 		//
+#ifdef _WINDOWS
+		bip::file_lock dssMutex{ mutexFileName.toStdWString().c_str() };
+#else
 		bip::file_lock dssMutex{ mutexFileName.toUtf8().constData() };
+#endif
 		bip::scoped_lock<bip::file_lock> lock(dssMutex, bip::try_to_lock);
 		const bool firstInstance{ lock.owns() };
 		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
