@@ -18,6 +18,8 @@
 #define HOVER 2
 #define FOCUS 3
 
+class QTableView;
+
 class QEventLogger : public QObject {
     Q_OBJECT
 
@@ -37,5 +39,6 @@ private:
     QTextStream* log;
     QElapsedTimer* timer;
     QHash<QString, QHash<QObject*, uint> > widgetPointerToID;
+    QTableView* tableView;
 };
 

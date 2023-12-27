@@ -1,10 +1,16 @@
 #include "stdafx.h"
 #include "QEventLogger.h"
+#include <QApplication>
+#include <QTableView>
 
 QEventLogger::QEventLogger(const QString& logFileBaseName,
     QWidget* mainWidget,
     bool screenshotsEnabled,
-    QObject* parent) : QObject(parent), mainWidget(mainWidget), screenshotsEnabled(screenshotsEnabled)
+    QObject* parent) :
+    QObject(parent),
+    mainWidget(mainWidget),
+    screenshotsEnabled(screenshotsEnabled),
+    tableView{ mainWidget->findChild<QTableView*>("tableView") }
 {
     // Build log file name.
     QDateTime now = QDateTime::currentDateTime();
@@ -31,7 +37,8 @@ QEventLogger::QEventLogger(const QString& logFileBaseName,
     // Start timer.
     this->timer = new QElapsedTimer();
     this->timer->start();
-}
+
+    }
 
 QEventLogger::~QEventLogger()
 {
@@ -193,6 +200,42 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
             details += "Other";
             break;
         }
+
+        //
+        // Add the value of QApplication::focusWidget()
+        //
+        QObject* object{ nullptr };
+        object = QApplication::focusWidget();
+        if (nullptr != object)
+        {
+            className = object->metaObject()->className();
+            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
+            {
+                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
+            }
+            id = this->widgetPointerToID[className][object];
+            className += " " + QString::number(id);
+            details += ";" + className;
+        }
+        else details += ";nullptr";
+
+        //
+        // Add the value of tableView->focusWidget
+        //
+        object = this->tableView->focusWidget();
+        if (nullptr != object)
+        {
+            className = object->metaObject()->className();
+            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
+            {
+                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
+            }
+            id = this->widgetPointerToID[className][object];
+            className += " " + QString::number(id);
+            details += ";" + className;
+        }
+        else details += ";nullptr";
+
 
         // qDebug() << focusEvent << obj->metaObject()->className();
     }
