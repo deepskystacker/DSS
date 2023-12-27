@@ -1148,8 +1148,8 @@ int main(int argc, char* argv[])
 		ZTRACE_RUNTIME("Creating Main Window");
 		DeepSkyStacker mainWindow;
 
-		//QEventLogger eventLogger("C:/DSSEvents", &mainWindow, false);
-		//app.installEventFilter(&eventLogger);
+		QEventLogger eventLogger("C:/temp/DSSEvents", &mainWindow, false);
+		app.installEventFilter(&eventLogger);
 
 		ZTRACE_RUNTIME("Checking Mutex");
 		//
