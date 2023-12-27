@@ -717,7 +717,59 @@ void  ZTrace :: writeString(const char* pszString)
            if (index < (strTraceOutputFile.length() - 1))
              strTraceOutputFile.erase(1+index);
 
-           FILE *fp = fopen(strTraceOutputFile.c_str(), "a");
+           FILE* fp{ nullptr };
+#if defined(_WIN32)
+
+           /* Windows
+           *
+           *  Assume that the input filename is in UTF-8 encoding and convert to UTF-16.
+           */
+           {
+               UINT inputCodePage = CP_UTF8;
+               /*
+               *  For UTF-8, dwFlags must be set to either 0 or
+               *  MB_ERR_INVALID_CHARS.
+               */
+               DWORD flags = 0;
+               int outputLength = 0, rc = 0;
+
+               /*
+               *  Call MultiByteToWideChar with an output buffer size of zero to determine
+               *  how large an output buffer is actually necessary.
+               */
+               outputLength = MultiByteToWideChar(
+                   inputCodePage,
+                   flags,
+                   strTraceOutputFile.c_str(),
+                   -1,
+                   NULL,
+                   0
+               );
+
+               /*
+               *  Actually convert the file name to UTF-16
+               */
+               wchar_t* wideFilename = (wchar_t*)_alloca(sizeof(wchar_t) * outputLength);
+
+               rc = MultiByteToWideChar(
+                   inputCodePage,
+                   flags,
+                   strTraceOutputFile.c_str(),
+                   -1,
+                   wideFilename,
+                   outputLength
+               );
+
+               /*
+               *  If the conversion worked, open the file.
+               */
+               if (0 != rc)
+                   fp = _wfopen(wideFilename, L"a");
+           }
+#else
+           fp = fopen(strTraceOutputFile.c_str(), mode);
+#endif
+
            if (fp)
            {
              fprintf(fp, "%s", pszString);
