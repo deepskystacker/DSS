@@ -686,88 +686,76 @@ void  ZTrace :: writeString(const char* pszString)
 
      case ZTrace::file :
        {
-         // check to see whether the environment variable
-         // is defined
-         char * envptr = getenv("Z_TRACEFILE");
-
-         // If (environment variable defined) {
-         //   - strip the leading and trailing blanks from the value
-         //   - use the value as filename
-         //   - open the file
-         //   - if (open successful) {
-         //       - append the provided string the file
-         //       - close the file
-         //     } else {
-         //       - do nothing
-         //     }
-         // } else {
-         //   - do nothing
-         // }
-         if (envptr)
-         {
-           std::string strTraceOutputFile(envptr);
-
-           // Strip leading and trailing blanks
-           std::string::size_type index = 
-             strTraceOutputFile.find_first_not_of(' ');
-           if (0 != index && std::string::npos != index)
-             strTraceOutputFile.erase(0, index);
-           index =
-             strTraceOutputFile.find_last_not_of(' ');
-           if (index < (strTraceOutputFile.length() - 1))
-             strTraceOutputFile.erase(1+index);
-
            FILE* fp{ nullptr };
 #if defined(_WIN32)
 
-           /* Windows
-           *
-           *  Assume that the input filename is in UTF-8 encoding and convert to UTF-16.
-           */
+           // check to see whether the environment variable
+           // is defined
+           wchar_t* envptr = _wgetenv(L"Z_TRACEFILE");
+
+           // If (environment variable defined) {
+           //   - strip the leading and trailing blanks from the value
+           //   - use the value as filename
+           //   - open the file
+           //   - if (open successful) {
+           //       - append the provided string the file
+           //       - close the file
+           //     } else {
+           //       - do nothing
+           //     }
+           // } else {
+           //   - do nothing
+           // }
+           if (envptr)
            {
-               UINT inputCodePage = CP_UTF8;
-               /*
-               *  For UTF-8, dwFlags must be set to either 0 or
-               *  MB_ERR_INVALID_CHARS.
-               */
-               DWORD flags = 0;
-               int outputLength = 0, rc = 0;
+               std::wstring strTraceOutputFile(envptr);
 
-               /*
-               *  Call MultiByteToWideChar with an output buffer size of zero to determine
-               *  how large an output buffer is actually necessary.
-               */
-               outputLength = MultiByteToWideChar(
-                   inputCodePage,
-                   flags,
-                   strTraceOutputFile.c_str(),
-                   -1,
-                   NULL,
-                   0
-               );
+               // Strip leading and trailing blanks
+               std::wstring::size_type index =
+                   strTraceOutputFile.find_first_not_of(L' ');
+               if (0 != index && std::wstring::npos != index)
+                   strTraceOutputFile.erase(0, index);
+               index =
+                   strTraceOutputFile.find_last_not_of(L' ');
+               if (index < (strTraceOutputFile.length() - 1))
+                   strTraceOutputFile.erase(1 + index);
 
-               /*
-               *  Actually convert the file name to UTF-16
-               */
-               wchar_t* wideFilename = (wchar_t*)_alloca(sizeof(wchar_t) * outputLength);
-
-               rc = MultiByteToWideChar(
-                   inputCodePage,
-                   flags,
-                   strTraceOutputFile.c_str(),
-                   -1,
-                   wideFilename,
-                   outputLength
-               );
-
-               /*
-               *  If the conversion worked, open the file.
-               */
-               if (0 != rc)
-                   fp = _wfopen(wideFilename, L"a");
+               fp = _wfopen(strTraceOutputFile.c_str(), L"a");
            }
 #else
-           fp = fopen(strTraceOutputFile.c_str(), mode);
+           // check to see whether the environment variable
+           // is defined
+           char* envptr = getenv("Z_TRACEFILE");
+
+           // If (environment variable defined) {
+           //   - strip the leading and trailing blanks from the value
+           //   - use the value as filename
+           //   - open the file
+           //   - if (open successful) {
+           //       - append the provided string the file
+           //       - close the file
+           //     } else {
+           //       - do nothing
+           //     }
+           // } else {
+           //   - do nothing
+           // }
+           if (envptr)
+           {
+               std::string strTraceOutputFile(envptr);
+
+               // Strip leading and trailing blanks
+               std::string::size_type index =
+                   strTraceOutputFile.find_first_not_of(' ');
+               if (0 != index && std::string::npos != index)
+                   strTraceOutputFile.erase(0, index);
+               index =
+                   strTraceOutputFile.find_last_not_of(' ');
+               if (index < (strTraceOutputFile.length() - 1))
+                   strTraceOutputFile.erase(1 + index);
+
+               fp = fopen(strTraceOutputFile.c_str(), mode);
+           }
 #endif
 
            if (fp)
@@ -775,9 +763,8 @@ void  ZTrace :: writeString(const char* pszString)
              fprintf(fp, "%s", pszString);
              fclose(fp);
            }
-         }
-         break;
        }
+       break;
    }
 }
 
