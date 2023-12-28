@@ -754,7 +754,7 @@ void  ZTrace :: writeString(const char* pszString)
                if (index < (strTraceOutputFile.length() - 1))
                    strTraceOutputFile.erase(1 + index);
 
-               fp = fopen(strTraceOutputFile.c_str(), mode);
+               fp = fopen(strTraceOutputFile.c_str(), "a");
            }
 #endif
 
