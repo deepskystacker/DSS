@@ -295,7 +295,6 @@ namespace DSS
 		m_bCometMode = false;
 		show();
 		raise();
-		activateWindow();
 	}
 
 	void EditStars::cometButtonPressed()
@@ -308,7 +307,6 @@ namespace DSS
 		m_bCometMode = true;
 		show();
 		raise();
-		activateWindow();
 	}
 
 	void EditStars::saveButtonPressed()
