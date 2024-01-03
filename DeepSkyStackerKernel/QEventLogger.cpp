@@ -23,9 +23,9 @@ QEventLogger::QEventLogger(const QString& logFileBaseName,
     this->log = new QTextStream(this->logFile);
 
     // Write header to log file.
-    *log << "; Date and time are: " << now.toString(Qt::ISODate) << '\n';
-    *log << "; Resolution: " << mainWidget->size().width() << 'x' << mainWidget->size().height() << '\n';
-    *log << "time,input type,event type,target widget class,details\n";
+    //*log << "# Date and time are: " << now.toString(Qt::ISODate) << '\n';
+    //*log << "# Resolution: " << mainWidget->size().width() << 'x' << mainWidget->size().height() << '\n';
+    *log << "time;input type;event type;target widget class;details;QApplication::focusWidget;tableView->focusWidget()\n";
     log->flush();
 
     // Create the dir in which screenshots will be stored, if requested.
@@ -134,8 +134,8 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
         else
         {
             // Build the details string.
-            details += QString::number(mouseEvent->x()) + ';' + QString::number(mouseEvent->y());
-            details += ';' + buttonsPressed;
+            details += "X="+ QString::number(mouseEvent->x()) + ',' + "Y=" + QString::number(mouseEvent->y());
+            details += ',' + "Buttons=" + buttonsPressed;
         }
 
         inputTypeAsString = "Mouse";
@@ -208,14 +208,10 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
         object = QApplication::focusWidget();
         if (nullptr != object)
         {
-            className = object->metaObject()->className();
-            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
-            {
-                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
-            }
-            id = this->widgetPointerToID[className][object];
-            className += " " + QString::number(id);
-            details += ";" + className;
+            QString temp;
+            QDebug deb{ &temp };
+            deb << object;
+            details += ";" + temp;
         }
         else details += ";nullptr";
 
@@ -225,14 +221,10 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
         object = this->tableView->focusWidget();
         if (nullptr != object)
         {
-            className = object->metaObject()->className();
-            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
-            {
-                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
-            }
-            id = this->widgetPointerToID[className][object];
-            className += " " + QString::number(id);
-            details += ";" + className;
+            QString temp;
+            QDebug deb{ &temp };
+            deb << object;
+            details += ";" + temp;
         }
         else details += ";nullptr";
 
@@ -263,7 +255,7 @@ void QEventLogger::appendToLog(const QString& inputType, const QString& eventTyp
     if (this->screenshotsEnabled && eventType.compare("MouseMove") != 0)
         mainWidget->grab().save(screenshotDirName + "/" + QString::number(elapsedTime) + ".png", "PNG");
 
-    *(this->log) << elapsedTime << ',' << inputType << ',' << eventType << ',' << targetWidget << ',' << details << '\n';
+    *(this->log) << elapsedTime << ';' << inputType << ';' << eventType << ';' << targetWidget << ';' << details << '\n';
     //qDebug() << elapsedTime << inputType << eventType << targetWidget << details;
     this->log->flush();
 }
