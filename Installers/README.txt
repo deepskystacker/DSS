@@ -13,6 +13,8 @@ Changes since the last release:
 
 4. Update build to use Qt 6.6.1.
 
+5. Change FITSUtil::Open() so that it will correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
