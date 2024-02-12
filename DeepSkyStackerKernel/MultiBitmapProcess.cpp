@@ -14,7 +14,10 @@ namespace
 {
 	fs::path tempFile()
 	{
-		QString name{ CAllStackingTasks::GetTemporaryFilesFolder() }; name += "DSSXXXXXX.tmp";
+		fs::path path;
+		CAllStackingTasks::GetTemporaryFilesFolder(path);
+		path /= "DSSXXXXXX.tmp";
+		QString name{ QString::fromStdU16String(path.u16string()) };
 		QTemporaryFile tempFile{ name };
 		tempFile.open();
 		tempFile.setAutoRemove(false);
