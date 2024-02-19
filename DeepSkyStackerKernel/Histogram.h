@@ -253,6 +253,11 @@ public :
 		return m_fShift;
 	};
 
+	double GetOrgMin() const { return m_fOrgMin; }
+	double GetOrgMax() const { return m_fOrgMax; }
+	double GetUsedMin() const { return m_fUsedMin; }
+	double GetUsedMax() const { return m_fUsedMax; }
+
 	double	Adjust(double fValue) const
 	{
 		double		fResult;
@@ -391,20 +396,23 @@ public :
 		fBlue	= m_BlueAdjust.Adjust(fBlue);
 	};
 
-	CHistogramAdjust & GetRedAdjust()
+	const CHistogramAdjust& GetRedAdjust() const
 	{
 		return m_RedAdjust;
-	};
+	}
+	CHistogramAdjust& GetRedAdjust() { return m_RedAdjust; }
 
-	CHistogramAdjust & GetGreenAdjust()
+	const CHistogramAdjust& GetGreenAdjust() const
 	{
 		return m_GreenAdjust;
-	};
+	}
+	CHistogramAdjust& GetGreenAdjust() { return m_GreenAdjust; }
 
-	CHistogramAdjust & GetBlueAdjust()
+	const CHistogramAdjust& GetBlueAdjust() const
 	{
 		return m_BlueAdjust;
-	};
+	}
+	CHistogramAdjust& GetBlueAdjust() { return m_BlueAdjust; }
 
 	bool	Load(FILE * hFile)
 	{

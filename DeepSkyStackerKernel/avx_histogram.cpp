@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "avx_histogram.h"
+#include "avx_support.h"
+#include "Histogram.h"
+#include <immintrin.h>
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
 	avxReady{ AvxSupport::checkSimdAvailability() },
@@ -31,104 +34,8 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
 	if (!avxReady)
 		return rval(1);
 
-	int rv = 1;
-	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0
-		|| doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0
-		|| doCalcHistogram<float>(lineStart, lineEnd) == 0
-		|| doCalcHistogram<double>(lineStart, lineEnd) == 0)
-	{
-		rv = 0;
-	}
+	const int rv = Avx256Histogram{ *this }.calcHistogram(lineStart, lineEnd);
 	return AvxSupport::zeroUpper(rval(rv));
-}
-
-template <class T>
-int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
-{
-	// Check input bitmap.
-	const AvxSupport avxInputSupport{ inputBitmap };
-	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
-		return 1;
-
-	constexpr size_t vectorLen = 16;
-	const size_t width = inputBitmap.Width();
-	const size_t nrVectors = width / vectorLen;
-
-	// AVX makes no sense for super-small arrays.
-	if (width < 256 || inputBitmap.Height() < 32)
-		return 1;
-
-	const auto calcHistoOfTwoVectorsEpi32 = [](const std::tuple<__m256i, __m256i>& twoVectors, auto& histogram) -> void
-	{
-		const auto [lo, hi] = twoVectors;
-		calcHistoOfVectorEpi32(lo, histogram);
-		calcHistoOfVectorEpi32(hi, histogram);
-	};
-
-	const bool isCFA = avxInputSupport.isMonochromeCfaBitmapOfType<T>();
-
-	// Color bitmap (incl. CFA)
-	// ------------------------
-	if (avxInputSupport.isColorBitmapOfType<T>() || isCFA)
-	{
-		if constexpr (std::is_same<T, double>::value) // color-double not supported.
-			return 1;
-		else
-		{
-			if (isCFA)
-			{
-				avxCfa.init(lineStart, lineEnd);
-				avxCfa.interpolate(lineStart, lineEnd, 1);
-			}
-
-			for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
-			{
-				const T* pRedPixels = isCFA ? avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
-				const T* pGreenPixels = isCFA ? avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
-				const T* pBluePixels = isCFA ? avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
-
-				for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
-				{
-					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), redHisto);
-					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), greenHisto);
-					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), blueHisto);
-				}
-				for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
-				{
-					addToHisto(redHisto, *pRedPixels);
-					addToHisto(greenHisto, *pGreenPixels);
-					addToHisto(blueHisto, *pBluePixels);
-				}
-			}
-			return 0;
-		}
-	}
-
-	// Note:
-	// Gray input bitmaps of type double use a fix scaling factor of 256.
-	// This is for the histogram in the registering process, where the color values come from the luminance calculation. They are in the range [0, 256).
-	// Thus, they need up-scaling by a factor of 256.
-	if (avxInputSupport.isMonochromeBitmapOfType<T>())
-	{
-		for (size_t row = lineStart; row < lineEnd; ++row)
-		{
-			const T* pGrayPixels = &avxInputSupport.grayPixels<T>().at(row * width);
-			for (size_t counter = 0; counter < nrVectors; ++counter, pGrayPixels += vectorLen)
-			{
-				if constexpr (std::is_same<T, double>::value)
-					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels, _mm256_set1_pd(256.0)), redHisto);
-				else
-					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels), redHisto);
-			}
-			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pGrayPixels)
-			{
-				addToHisto(redHisto, *pGrayPixels);
-			}
-		}
-		return 0;
-	}
-
-	return 1;
 }
 
 int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
@@ -170,3 +77,470 @@ bool AvxHistogram::histogramSuccessful() const
 {
 	return allRunsSuccessful;
 };
+
+// *****************
+// AVX-256 Histogram
+// *****************
+
+int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
+{
+
+	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0)
+		return 0;
+	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
+		return 0;
+	if (doCalcHistogram<float>(lineStart, lineEnd) == 0)
+		return 0;
+	if (doCalcHistogram<double>(lineStart, lineEnd) == 0)
+		return 0;
+
+	return 1;
+}
+
+template <class T>
+int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
+{
+	// Check input bitmap.
+	const AvxSupport avxInputSupport{ histoData.inputBitmap };
+	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
+		return 1;
+
+	constexpr size_t vectorLen = 16;
+	const size_t width = histoData.inputBitmap.Width();
+	const size_t nrVectors = width / vectorLen;
+
+	// AVX makes no sense for super-small arrays.
+	if (width < 256 || histoData.inputBitmap.Height() < 32)
+		return 1;
+
+	const auto calcHistoOfTwoVectorsEpi32 = [](const std::tuple<__m256i, __m256i>& twoVectors, auto& histogram) -> void
+	{
+		const auto [lo, hi] = twoVectors;
+		calcHistoOfVectorEpi32(lo, histogram);
+		calcHistoOfVectorEpi32(hi, histogram);
+	};
+
+	const bool isCFA = avxInputSupport.isMonochromeCfaBitmapOfType<T>();
+
+	// Color bitmap (incl. CFA)
+	// ------------------------
+	if (avxInputSupport.isColorBitmapOfType<T>() || isCFA)
+	{
+		if constexpr (std::is_same<T, double>::value) // color-double not supported. 
+			return 1;
+		else
+		{
+			if (isCFA)
+			{
+				histoData.avxCfa.init(lineStart, lineEnd);
+				histoData.avxCfa.interpolate(lineStart, lineEnd, 1);
+			}
+
+			for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
+			{
+				const T* pRedPixels = isCFA ? histoData.avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
+				const T* pGreenPixels = isCFA ? histoData.avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
+				const T* pBluePixels = isCFA ? histoData.avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
+
+				for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
+				{
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), histoData.redHisto);
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), histoData.greenHisto);
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), histoData.blueHisto);
+				}
+				for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
+				{
+					addToHisto(histoData.redHisto, *pRedPixels);
+					addToHisto(histoData.greenHisto, *pGreenPixels);
+					addToHisto(histoData.blueHisto, *pBluePixels);
+				}
+			}
+			return 0;
+		}
+	}
+
+	// Note:
+	// Gray input bitmaps of type double use a fix scaling factor of 256.
+	// This is for the histogram in the registering process, where the color values come from the luminance calculation. They are in the range [0, 256).
+	// Thus, they need up-scaling by a factor of 256.
+	if (avxInputSupport.isMonochromeBitmapOfType<T>())
+	{
+		for (size_t row = lineStart; row < lineEnd; ++row)
+		{
+			const T* pGrayPixels = &avxInputSupport.grayPixels<T>().at(row * width);
+			for (size_t counter = 0; counter < nrVectors; ++counter, pGrayPixels += vectorLen)
+			{
+				if constexpr (std::is_same<T, double>::value)
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels, _mm256_set1_pd(256.0)), histoData.redHisto);
+				else
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels), histoData.redHisto);
+			}
+			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pGrayPixels)
+			{
+				addToHisto(histoData.redHisto, *pGrayPixels);
+			}
+		}
+		return 0;
+	}
+
+	return 1;
+}
+
+// *************
+// Bezier class
+// *************
+namespace {
+
+	void adjust(const CHistogramAdjust& hadj, float* const p, const size_t len)
+	{
+		using VecType = __m256;
+		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+		const VecType mn = _mm256_set1_ps(hadj.GetMin());
+		const VecType mx = _mm256_set1_ps(hadj.GetMax());
+		const VecType sh = _mm256_set1_ps(hadj.GetShift());
+		const VecType omn = _mm256_set1_ps(hadj.GetOrgMin());
+		const VecType omx = _mm256_set1_ps(hadj.GetOrgMax());
+		const VecType umn = _mm256_set1_ps(hadj.GetUsedMin());
+		const VecType umx = _mm256_set1_ps(hadj.GetUsedMax());
+		const VecType usedMinusOrgMin = _mm256_sub_ps(umn, omn);
+		const VecType orgMinusUsedMax = _mm256_sub_ps(omx, umx);
+		const VecType minMinusOrgMin = _mm256_sub_ps(mn, omn);
+		const VecType orgMaxMinusMax = _mm256_sub_ps(omx, mx);
+		const VecType usedMaxMinusMin = _mm256_sub_ps(umx, umn);
+
+		const auto a1 = [&](const VecType value) -> VecType
+		{
+			const VecType valMinusMax = _mm256_sub_ps(value, mx);
+
+			const VecType v1 = _mm256_fmadd_ps(_mm256_div_ps(value, _mm256_max_ps(_mm256_set1_ps(1.0f), minMinusOrgMin)), usedMinusOrgMin, omn); // m_fOrgMin + fValue / std::max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin)
+			const VecType v2 = _mm256_fnmadd_ps(_mm256_div_ps(valMinusMax, _mm256_max_ps(_mm256_set1_ps(1.0f), orgMaxMinusMax)), orgMinusUsedMax, omx); // m_fOrgMax - (fValue - m_fMax) / std::max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax)
+			const VecType v3 = _mm256_div_ps(_mm256_sub_ps(value, mn), _mm256_max_ps(_mm256_set1_ps(1.0f), _mm256_sub_ps(mx, mn)));
+			const VecType adjusted = _mm256_log_ps(_mm256_fmadd_ps(_mm256_sqrt_ps(v3), _mm256_set1_ps(1.7f), _mm256_set1_ps(1.0f))); // log(pow(fValue, 1/2.0)*1.7+1);
+			const VecType v4 = _mm256_fmadd_ps(adjusted, usedMaxMinusMin, umn); // m_fUsedMin + AdjustValue((fValue - m_fMin) / std::max(1.0, (m_fMax - m_fMin))) * (m_fUsedMax - m_fUsedMin)
+			const VecType v5 = _mm256_fmadd_ps(usedMaxMinusMin, sh, _mm256_blendv_ps(_mm256_blendv_ps(v4, v2, _mm256_cmp_ps(value, mx, _CMP_GT_OQ)), v1, _mm256_cmp_ps(value, mn, _CMP_LT_OQ)));
+
+			return _mm256_blendv_ps(_mm256_blendv_ps(v5, v2, _mm256_cmp_ps(v5, omx, _CMP_GT_OQ)), v1, _mm256_cmp_ps(v5, omn, _CMP_LT_OQ));
+		};
+
+		for (size_t n = 0; n < len / VecLen; ++n)
+		{
+			const VecType v = a1(_mm256_loadu_ps(p + n * VecLen));
+			_mm256_storeu_ps(p + n * VecLen, v);
+		}
+
+		// mask: Set lower N epi32 to -1, remaining higher epi32 to 0. N = static_cast<int>(len % VecLen)
+		const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+		_mm256_maskstore_ps( // store int[n] IF maskbit[31] == 1
+			p + (len / VecLen) * VecLen,
+			mask,
+			a1(_mm256_maskload_ps(p + (len / VecLen) * VecLen, mask)) // maskload: element is zeroed out when the high bit of mask[n] == 0.
+		);
+		// len   mask
+		//   8   0  0  0  0  0  0  0  0
+		//   9   0  0  0  0  0  0  0 -1
+		//  10   0  0  0  0  0  0 -1 -1
+		//  ...
+		//  15   0 -1 -1 -1 -1 -1 -1 -1
+	}
+
+	inline void finalScale(float* const p, const size_t len)
+	{
+		using VecType = __m256;
+		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+		const auto scale = [factor = _mm256_set1_ps(1.0f / 255.0f)](const VecType x) -> VecType
+		{
+			return _mm256_min_ps(_mm256_mul_ps(x, factor), _mm256_set1_ps(255.0f));
+		};
+
+		for (size_t n = 0; n < len / VecLen; ++n)
+		{
+			const VecType v = scale(_mm256_loadu_ps(p + n * VecLen));
+			_mm256_storeu_ps(p + n * VecLen, v);
+		}
+
+		const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+		_mm256_maskstore_ps(
+			p + (len / VecLen) * VecLen,
+			mask,
+			scale(_mm256_maskload_ps(p + (len / VecLen) * VecLen, mask)) // maskload sets non-loaded elements to zero.
+		);
+	}
+}
+
+
+void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const bool monochrome)
+{
+	const size_t bufferLen = this->redBuffer.size();
+	memcpy(this->redBuffer.data(), pRedPixel, bufferLen * sizeof(float));
+	memcpy(this->greenBuffer.data(), monochrome ? pRedPixel : pGreenPixel, bufferLen * sizeof(float));
+	memcpy(this->blueBuffer.data(), monochrome ? pRedPixel : pBluePixel, bufferLen * sizeof(float));
+}
+
+std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
+{
+	return { this->redBuffer.data(), this->greenBuffer.data(), this->blueBuffer.data() };
+}
+
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
+{
+	return Avx256BezierAndSaturation{ *this }.avxAdjustRGB(nBitmaps, histoAdjust);
+}
+
+int AvxBezierAndSaturation::avxToRgb()
+{
+	return Avx256BezierAndSaturation{ *this }.avxToRgb();
+}
+
+int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
+{
+	return Avx256BezierAndSaturation{ *this }.avxBezierAdjust(len);
+}
+
+int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
+{
+	return Avx256BezierAndSaturation{ *this }.avxBezierSaturation(len, saturationShift);
+}
+
+// ----------------------------------------------------------------------------------
+// AVX-256 Bezier functions
+// ----------------------------------------------------------------------------------
+
+#pragma warning (disable: 4100)
+
+// static
+__m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal)
+{
+	__m256i notYetFound = _mm256_set1_epi32(-1); // 0xffff
+	__m256i n = _mm256_set1_epi32(N);
+	__m256i first = _mm256_setzero_si256();
+
+	do
+	{
+		const __m256i n2 = _mm256_srli_epi32(n, 1); // n/2
+		const __m256i m = _mm256_add_epi32(first, n2);
+		const __m256 v = _mm256_i32gather_ps(pValues, m, sizeof(float));
+		const __m256i isSmaller = _mm256_and_si256(notYetFound, _mm256_castps_si256(_mm256_cmp_ps(v, refVal, _CMP_LT_OQ))); // smaller = notFound && value[m] < refVal;
+		n = _mm256_blendv_epi8(n2, _mm256_sub_epi32(n, _mm256_sub_epi32(n2, _mm256_set1_epi32(-1))), isSmaller); // if (smaller) n = n-(n2+1); else n = n2;  => n = n/2-1 OR n/2
+		first = _mm256_blendv_epi8(first, _mm256_sub_epi32(m, _mm256_set1_epi32(-1)), isSmaller); // if (smaller) first = m+1;
+		notYetFound = _mm256_cmpgt_epi32(n, _mm256_setzero_si256()); // if (n > 0) -> result not found.
+	} while (_mm256_testc_si256(_mm256_setzero_si256(), notYetFound) == 0); // testc(0, b): if (b == 0) return 1; else return 0;  ==> iterates while notYetFound != 0
+
+	return first;
+}
+
+int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
+{
+	if (!this->histoData.avxSupported)
+		return AvxSupport::zeroUpper(1);
+
+	const size_t len = this->histoData.redBuffer.size();
+
+	const float scale = 255.0f / static_cast<float>(nBitmaps);
+	const auto redAdjust = histoAdjust.GetRedAdjust();
+	const auto greenAdjust = histoAdjust.GetGreenAdjust();
+	const auto blueAdjust = histoAdjust.GetBlueAdjust();
+
+	if (redAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || greenAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || blueAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT)
+		return AvxSupport::zeroUpper(2);
+
+	for (size_t n = 0; n < len; ++n)
+	{
+		this->histoData.redBuffer[n] *= scale;
+		this->histoData.greenBuffer[n] *= scale;
+		this->histoData.blueBuffer[n] *= scale;
+	}
+
+	adjust(redAdjust, this->histoData.redBuffer.data(), len);
+	adjust(greenAdjust, this->histoData.greenBuffer.data(), len);
+	adjust(blueAdjust, this->histoData.blueBuffer.data(), len);
+
+	finalScale(this->histoData.redBuffer.data(), len);
+	finalScale(this->histoData.greenBuffer.data(), len);
+	finalScale(this->histoData.blueBuffer.data(), len);
+
+	return AvxSupport::zeroUpper(0);
+}
+
+int Avx256BezierAndSaturation::avxToHsl()
+{
+	if (!this->histoData.avxSupported)
+		return AvxSupport::zeroUpper(1);
+
+	const size_t len = this->histoData.redBuffer.size();
+
+	using VecType = __m256;
+	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+	const auto toHSL = [](const VecType r, const VecType g, const VecType b) -> std::tuple<VecType, VecType, VecType>
+	{
+		const VecType mn = _mm256_min_ps(_mm256_min_ps(r, g), b);
+		const VecType mx = _mm256_max_ps(_mm256_max_ps(r, g), b);
+		const VecType diff = _mm256_sub_ps(mx, mn);
+		const VecType sum = _mm256_add_ps(mx, mn);
+
+		const VecType l = _mm256_div_ps(sum, _mm256_set1_ps(510.0f));
+
+		const VecType s1 = _mm256_div_ps(diff, sum);
+		const VecType s2 = _mm256_div_ps(diff, _mm256_sub_ps(_mm256_set1_ps(510.0f), sum));
+		const VecType s = _mm256_blendv_ps(s2, s1, _mm256_cmp_ps(l, _mm256_set1_ps(0.5f), _CMP_LE_OQ)); // S = (L <= 0.5f) ? (mdiff / msum) : (mdiff / (510.0f - msum));
+
+		const VecType rn = _mm256_div_ps(_mm256_sub_ps(mx, r), diff);
+		const VecType gn = _mm256_div_ps(_mm256_sub_ps(mx, g), diff);
+		const VecType bn = _mm256_div_ps(_mm256_sub_ps(mx, b), diff);
+		const VecType h1 = _mm256_fmadd_ps(_mm256_set1_ps(60.0f), _mm256_sub_ps(bn, gn), _mm256_set1_ps(360.0f)); // 60.0f * (6.0f + bnorm - gnorm); // = 60*(bn-gn) + 360
+		const VecType h2 = _mm256_fmadd_ps(_mm256_set1_ps(60.0f), _mm256_sub_ps(rn, bn), _mm256_set1_ps(120.0f)); // 60.0f * (2.0f + rnorm - bnorm); // = 60*(rn-bn) + 120
+		const VecType h3 = _mm256_fmadd_ps(_mm256_set1_ps(60.0f), _mm256_sub_ps(gn, rn), _mm256_set1_ps(240.0f)); // 60.0f * (4.0f + gnorm - rnorm); // = 60*(gn-rn) + 240
+		const VecType h4 = _mm256_blendv_ps(_mm256_blendv_ps(h1, h2, _mm256_cmp_ps(g, mx, _CMP_EQ_OQ)), h3, _mm256_cmp_ps(b, mx, _CMP_EQ_OQ));
+		const VecType h = _mm256_blendv_ps(h4, _mm256_sub_ps(h4, _mm256_set1_ps(360.0f)), _mm256_cmp_ps(h4, _mm256_set1_ps(360.0f), _CMP_GT_OQ)); // if (H > 360.0f) H = H - 360.0f;
+
+		const VecType minNeqMax = _mm256_cmp_ps(mn, mx, _CMP_NEQ_OQ); // minval != maxval ? mask=0xff...f : mask=0
+
+		return { _mm256_and_ps(h, minNeqMax), _mm256_and_ps(s, minNeqMax), l }; // if (maxval == minval) {0,0,l} else {h,s,l}
+	};
+
+	const auto [pr, pg, pb] = this->histoData.getBufferPtr();
+
+	for (size_t n = 0; n < len / VecLen; ++n)
+	{
+		const auto [h, s, l] = toHSL(_mm256_loadu_ps(pr + n * VecLen), _mm256_loadu_ps(pg + n * VecLen), _mm256_loadu_ps(pb + n * VecLen));
+		_mm256_storeu_ps(pr + n * VecLen, h);
+		_mm256_storeu_ps(pg + n * VecLen, s);
+		_mm256_storeu_ps(pb + n * VecLen, l);
+	}
+
+	const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+	const auto [h, s, l] = toHSL(
+		_mm256_maskload_ps(pr + (len / VecLen) * VecLen, mask), // maskload sets non-loaded elements to zero.
+		_mm256_maskload_ps(pg + (len / VecLen) * VecLen, mask),
+		_mm256_maskload_ps(pb + (len / VecLen) * VecLen, mask)
+	);
+	_mm256_maskstore_ps(pr + (len / VecLen) * VecLen, mask, h);
+	_mm256_maskstore_ps(pg + (len / VecLen) * VecLen, mask, s);
+	_mm256_maskstore_ps(pb + (len / VecLen) * VecLen, mask, l);
+
+	return AvxSupport::zeroUpper(0);
+}
+
+int Avx256BezierAndSaturation::avxToRgb()
+{
+	if (!this->histoData.avxSupported)
+		return AvxSupport::zeroUpper(1);
+
+	const size_t len = this->histoData.redBuffer.size();
+	using VecType = __m256;
+	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+	const auto rgb1 = [](const VecType rm1, const VecType rm2, const VecType rmdiff, const VecType rh) -> VecType
+	{
+		const VecType rh1 = _mm256_blendv_ps(rh, _mm256_sub_ps(rh, _mm256_set1_ps(360.0f)), _mm256_cmp_ps(rh, _mm256_set1_ps(360.0f), _CMP_GT_OQ)); // rh>360 ? rh-360 : rh;
+		const VecType rh2 = _mm256_blendv_ps(rh1, _mm256_add_ps(rh, _mm256_set1_ps(360.0f)), _mm256_cmp_ps(rh, _mm256_setzero_ps(), _CMP_LT_OQ)); // rh<0   ? rh+360 : rh1;
+
+		const VecType rm11 = _mm256_fmadd_ps(rmdiff, _mm256_div_ps(rh2, _mm256_set1_ps(60.0f)), rm1); // rm1 + (rm2 - rm1) * rh / 60.0f;
+		const VecType rm12 = _mm256_fmadd_ps(rmdiff, _mm256_div_ps(_mm256_sub_ps(_mm256_set1_ps(240.0f), rh), _mm256_set1_ps(60.0f)), rm1); // rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;
+
+		const VecType r1 = _mm256_blendv_ps(rm1, rm12, _mm256_cmp_ps(rh2, _mm256_set1_ps(240.0f), _CMP_LT_OQ)); //_mm512_mask_blend_ps(_mm512_cmplt_ps_mask(rh2, _mm512_set1_ps(240.0f)), rm1, rm12); // if (rh < 240.0f) rm1 = rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;
+		const VecType r2 = _mm256_blendv_ps(r1, rm2, _mm256_cmp_ps(rh2, _mm256_set1_ps(180.0f), _CMP_LT_OQ)); //_mm512_mask_blend_ps(_mm512_cmplt_ps_mask(rh2, _mm512_set1_ps(180.0f)), r1, rm2); // if (rh < 180.0f) rm1 = rm2;
+		const VecType r3 = _mm256_blendv_ps(r2, rm11, _mm256_cmp_ps(rh2, _mm256_set1_ps(60.0f), _CMP_LT_OQ)); //_mm512_mask_blend_ps(_mm512_cmplt_ps_mask(rh2, _mm512_set1_ps(60.0f)), r2, rm11); // if (rh < 60.0f) rm1 = rm1 + (rm2 - rm1) * rh / 60.0f;
+
+		return _mm256_mul_ps(r3, _mm256_set1_ps(255.0f)); //_mm512_mul_ps(r3, _mm512_set1_ps(255.0f));
+	};
+
+	const auto toRGB = [&rgb1](const VecType h, const VecType s, const VecType l) -> std::tuple<VecType, VecType, VecType>
+	{
+		const VecType rm21 = _mm256_fmadd_ps(l, s, l); // L + L * S
+		const VecType rm22 = _mm256_fnmadd_ps(l, s, _mm256_add_ps(l, s)); // L + S - L * S
+		const VecType rm2 = _mm256_blendv_ps(rm22, rm21, _mm256_cmp_ps(l, _mm256_set1_ps(0.5f), _CMP_LE_OQ)); // if (L <= 0.5f) { rm2 = L + L * S; } else { rm2 = L + S - L * S; }
+		const VecType rm1 = _mm256_fmsub_ps(_mm256_set1_ps(2.0f), l, rm2); // rm1 = (2.0 * L - rm2);
+		const VecType rmdiff = _mm256_sub_ps(rm2, rm1);
+
+		const VecType l255 = _mm256_mul_ps(l, _mm256_set1_ps(255.0f)); // L * 255
+		const auto sequ0 = _mm256_cmp_ps(s, _mm256_setzero_ps(), _CMP_EQ_OQ); // S == 0 ?
+
+		return {
+			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_add_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), // if (S == 0) R = L * 255; else R = rgb1(...,h+120);
+			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, h), l255, sequ0), // if (S == 0) G = L * 255; else G = rgb1(...,h);
+			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0) // if (S == 0) B = L * 255; else B = rgb1(...,h-120);
+		};
+	};
+
+	const auto [pr, pg, pb] = this->histoData.getBufferPtr();
+
+	for (size_t n = 0; n < len / VecLen; ++n)
+	{
+		const auto [r, g, b] = toRGB(_mm256_loadu_ps(pr + n * VecLen), _mm256_loadu_ps(pg + n * VecLen), _mm256_loadu_ps(pb + n * VecLen));
+		_mm256_storeu_ps(pr + n * VecLen, r);
+		_mm256_storeu_ps(pg + n * VecLen, g);
+		_mm256_storeu_ps(pb + n * VecLen, b);
+	}
+
+	const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+	const auto [r, g, b] = toRGB(
+		_mm256_maskload_ps(pr + (len / VecLen) * VecLen, mask), // maskload sets non-loaded elements to zero.
+		_mm256_maskload_ps(pg + (len / VecLen) * VecLen, mask),
+		_mm256_maskload_ps(pb + (len / VecLen) * VecLen, mask)
+	);
+	_mm256_maskstore_ps(pr + (len / VecLen) * VecLen, mask, r);
+	_mm256_maskstore_ps(pg + (len / VecLen) * VecLen, mask, g);
+	_mm256_maskstore_ps(pb + (len / VecLen) * VecLen, mask, b);
+
+	return AvxSupport::zeroUpper(0);
+}
+
+int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
+{
+	if (!this->histoData.avxSupported)
+		return AvxSupport::zeroUpper(1);
+
+	using VecType = __m256;
+	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+	float* const pBlue = this->histoData.blueBuffer.data();
+	const int nBezier = static_cast<int>(this->histoData.bezierX.size());
+
+	const auto gatherBezierData = [this, pBlue, nBezier](const VecType arg) -> VecType
+	{
+		const __m256i ndx = avx256LowerBoundPs(this->histoData.bezierX.data(), nBezier, arg);
+		return _mm256_mask_i32gather_ps(arg, this->histoData.bezierY.data(), ndx, _mm256_castsi256_ps(_mm256_cmpgt_epi32(_mm256_set1_epi32(nBezier), ndx)), sizeof(float));
+	};
+
+	for (size_t n = 0; n < len / VecLen; ++n)
+	{
+		const VecType values = gatherBezierData(_mm256_loadu_ps(pBlue + n * VecLen));
+		_mm256_storeu_ps(pBlue + n * VecLen, values);
+	}
+
+	const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+	const VecType values = gatherBezierData(_mm256_maskload_ps(pBlue + (len / VecLen) * VecLen, mask)); // maskload sets non-loaded elements to zero.
+	_mm256_maskstore_ps(pBlue + (len / VecLen) * VecLen, mask, values);
+
+	return AvxSupport::zeroUpper(0);
+}
+
+int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
+{
+	if (saturationShift == 0)
+		return AvxSupport::zeroUpper(0);
+	if (!this->histoData.avxSupported)
+		return AvxSupport::zeroUpper(1);
+
+	using VecType = __m256;
+	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
+
+	const auto satShift = [shiftVal = _mm256_set1_ps(saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift)](const VecType v) -> VecType
+	{
+		return _mm256_pow_ps(v, shiftVal);
+	};
+
+	float* const pGreen = this->histoData.greenBuffer.data();
+
+	for (size_t n = 0; n < len / VecLen; ++n) {
+		_mm256_storeu_ps(pGreen + n * VecLen, satShift(_mm256_loadu_ps(pGreen + n * VecLen)));
+	}
+
+	const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
+	_mm256_maskstore_ps(pGreen + (len / VecLen) * VecLen, mask, satShift(_mm256_maskload_ps(pGreen + (len / VecLen) * VecLen, mask)));
+
+	return AvxSupport::zeroUpper(0);
+}

@@ -77,12 +77,12 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 			for (int n = 0; n < nrVectors; ++n, p += vectorLen)
 			{
 				const auto [lo, hi] = AvxSupport::read16PackedInt(p);
-				AvxHistogram::calcHistoOfVectorEpi32(lo, histogram);
-				AvxHistogram::calcHistoOfVectorEpi32(hi, histogram);
+				Avx256Histogram::calcHistoOfVectorEpi32(lo, histogram);
+				Avx256Histogram::calcHistoOfVectorEpi32(hi, histogram);
 			}
 			// Rest of line
 			for (int x = xmin + nrVectors * vectorLen; x < xmax; ++x, ++p)
-				AvxHistogram::addToHisto(histogram, *p);
+				Avx256Histogram::addToHisto(histogram, *p);
 		}
 
 		const float N = static_cast<float>(nx * (ymax - ymin));

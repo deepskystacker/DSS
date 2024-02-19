@@ -424,6 +424,44 @@ public:
 	{
 		return shiftRightEpi8<4 * N>(x);
 	}
+	inline static __m256i shiftRightVarEpi8(const __m256i x, const int N) noexcept
+	{
+		switch (N) {
+		case 0: return x;
+		case 1: return shiftRightEpi8<1>(x);
+		case 2: return shiftRightEpi8<2>(x);
+		case 3: return shiftRightEpi8<3>(x);
+		case 4: return shiftRightEpi8<4>(x);
+		case 5: return shiftRightEpi8<5>(x);
+		case 6: return shiftRightEpi8<6>(x);
+		case 7: return shiftRightEpi8<7>(x);
+		case 8: return shiftRightEpi8<8>(x);
+		case 9: return shiftRightEpi8<9>(x);
+		case 10: return shiftRightEpi8<10>(x);
+		case 11: return shiftRightEpi8<11>(x);
+		case 12: return shiftRightEpi8<12>(x);
+		case 13: return shiftRightEpi8<13>(x);
+		case 14: return shiftRightEpi8<14>(x);
+		case 15: return shiftRightEpi8<15>(x);
+		case 16: return shiftRightEpi8<16>(x);
+		case 17: return shiftRightEpi8<17>(x);
+		case 18: return shiftRightEpi8<18>(x);
+		case 19: return shiftRightEpi8<19>(x);
+		case 20: return shiftRightEpi8<20>(x);
+		case 21: return shiftRightEpi8<21>(x);
+		case 22: return shiftRightEpi8<22>(x);
+		case 23: return shiftRightEpi8<23>(x);
+		case 24: return shiftRightEpi8<24>(x);
+		case 25: return shiftRightEpi8<25>(x);
+		case 26: return shiftRightEpi8<26>(x);
+		case 27: return shiftRightEpi8<27>(x);
+		case 28: return shiftRightEpi8<28>(x);
+		case 29: return shiftRightEpi8<29>(x);
+		case 30: return shiftRightEpi8<30>(x);
+		case 31: return shiftRightEpi8<31>(x);
+		}
+		return _mm256_setzero_si256();
+	}
 
 	template <int N>
 	inline static __m256i shiftLeftEpi8(const __m256i x) noexcept
