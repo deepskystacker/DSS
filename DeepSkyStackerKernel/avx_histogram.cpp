@@ -283,6 +283,11 @@ std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 	return { this->redBuffer.data(), this->greenBuffer.data(), this->blueBuffer.data() };
 }
 
+int AvxBezierAndSaturation::toHsl()
+{
+	return Avx256BezierAndSaturation{ *this }.avxToHsl();
+}
+
 int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
 {
 	return Avx256BezierAndSaturation{ *this }.avxAdjustRGB(nBitmaps, histoAdjust);
