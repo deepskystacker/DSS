@@ -462,11 +462,20 @@ int Avx256BezierAndSaturation::avxToRgb()
 
 		const VecType l255 = _mm256_mul_ps(l, _mm256_set1_ps(255.0f)); // L * 255
 		const auto sequ0 = _mm256_cmp_ps(s, _mm256_setzero_ps(), _CMP_EQ_OQ); // S == 0 ?
+		const auto notoverexposed = _mm256_cmp_ps(l255, _mm256_set1_ps(255.0f), _CMP_LE_OQ); // L <= 255 ?
+		const auto notunderexposed = _mm256_cmp_ps(l255, _mm256_set1_ps(2.0f), _CMP_GT_OQ); // L > 2 ?
 
 		return {
-			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_add_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), // if (S == 0) R = L * 255; else R = rgb1(...,h+120);
-			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, h), l255, sequ0), // if (S == 0) G = L * 255; else G = rgb1(...,h);
-			_mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0) // if (S == 0) B = L * 255; else B = rgb1(...,h-120);
+			// if (S == 0) R = L * 255; else R = rgb1(...,h+120);
+			_mm256_and_ps(notunderexposed,
+				_mm256_blendv_ps(_mm256_set1_ps(255.0f), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_add_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), notoverexposed)
+			),
+			// if (S == 0) G = L * 255; else G = rgb1(...,h);
+			_mm256_and_ps(_mm256_and_ps(notoverexposed, notunderexposed), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, h), l255, sequ0)),
+			// if (S == 0) B = L * 255; else B = rgb1(...,h-120);
+			_mm256_and_ps(notoverexposed,
+				_mm256_blendv_ps(_mm256_set1_ps(255.0f), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), notunderexposed)
+			)
 		};
 	};
 
