@@ -364,6 +364,12 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, m_bMonochrome);
 			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
 
+			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			avxBezierAndSaturation.avxToRgb();
+/*
 			if (avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust) != 0)
 			{
 				const float scale = 255.0f / static_cast<float>(m_lNrBitmaps);
@@ -382,16 +388,11 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 					blueBuffer[n] = std::min(static_cast<float>(b) / 255.0f, 255.0f);
 				}
 			}
+
 			if (avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints) == 0)
 			{
 				avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 				avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-/*				for (size_t n = 0; n < bufferLen; ++n)
-				{
-					greenBuffer[n] = m_BezierAdjust.AdjustSaturation(greenBuffer[n]);
-					blueBuffer[n] = m_BezierAdjust.GetValue(blueBuffer[n]);
-				} */
-
 				avxBezierAndSaturation.avxToRgb();
 			}
 			else
@@ -409,7 +410,7 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 					blueBuffer[n] = b;
 				}
 			}
-
+*/
 			for (size_t n = 0; n < bufferLen; ++n, lpOut += 4)
 			{
 				const COLORREF crColor = RGB(redBuffer[n], greenBuffer[n], blueBuffer[n]);
