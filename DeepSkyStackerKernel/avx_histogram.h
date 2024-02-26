@@ -137,6 +137,7 @@ class AvxBezierAndSaturation
 {
 private:
 	friend class Avx256BezierAndSaturation;
+	friend class NonAvxBezierAndSaturation;
 
 	std::vector<float> redBuffer;
 	std::vector<float> greenBuffer;
@@ -182,15 +183,40 @@ public:
 };
 
 
-class Avx256BezierAndSaturation
+class Avx256BezierAndSaturation : public SimdFactory<Avx256BezierAndSaturation>
 {
 private:
 	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<Avx256BezierAndSaturation>;
 
 	AvxBezierAndSaturation& histoData;
 	Avx256BezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
+public:
+	Avx256BezierAndSaturation(const Avx256BezierAndSaturation&) = delete;
+	Avx256BezierAndSaturation& operator=(const Avx256BezierAndSaturation&) = delete;
+public: // for unit tests
+	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
+private:
+	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxToHsl();
+	int avxToRgb();
+	int avxBezierAdjust(const size_t len);
+	int avxBezierSaturation(const size_t len, const float saturationShift);
+};
 
-public: // for unit tests 
+
+class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
+{
+private:
+	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<NonAvxBezierAndSaturation>;
+
+	AvxBezierAndSaturation& histoData;
+	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
+public:
+	NonAvxBezierAndSaturation(const NonAvxBezierAndSaturation&) = delete;
+	NonAvxBezierAndSaturation& operator=(const NonAvxBezierAndSaturation&) = delete;
+public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
 	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);

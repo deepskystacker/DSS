@@ -2,6 +2,8 @@
 #include "avx_histogram.h"
 #include "avx_support.h"
 #include "Histogram.h"
+#include "BezierAdjust.h"
+#include "ColorHelpers.h"
 #include <immintrin.h>
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
@@ -283,29 +285,30 @@ std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 	return { this->redBuffer.data(), this->greenBuffer.data(), this->blueBuffer.data() };
 }
 
+
 int AvxBezierAndSaturation::toHsl()
 {
-	return Avx256BezierAndSaturation{ *this }.avxToHsl();
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
 }
 
-int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
 {
-	return Avx256BezierAndSaturation{ *this }.avxAdjustRGB(nBitmaps, histoAdjust);
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
 }
 
 int AvxBezierAndSaturation::avxToRgb()
 {
-	return Avx256BezierAndSaturation{ *this }.avxToRgb();
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToRgb(); });
 }
 
 int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
 {
-	return Avx256BezierAndSaturation{ *this }.avxBezierAdjust(len);
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len](auto&& o) { return o.avxBezierAdjust(len); });
 }
 
 int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
-	return Avx256BezierAndSaturation{ *this }.avxBezierSaturation(len, saturationShift);
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len, saturationShift](auto&& o) { return o.avxBezierSaturation(len, saturationShift); });
 }
 
 // ----------------------------------------------------------------------------------
@@ -557,4 +560,89 @@ int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float
 	_mm256_maskstore_ps(pGreen + (len / VecLen) * VecLen, mask, satShift(_mm256_maskload_ps(pGreen + (len / VecLen) * VecLen, mask)));
 
 	return AvxSupport::zeroUpper(0);
+}
+
+// ------------------------
+// Non AVX Bezier functions
+// ------------------------
+
+int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
+{
+	const float scale = 255.0f / static_cast<float>(nBitmaps);
+
+	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
+	{
+		this->histoData.redBuffer[n] *= scale;
+		this->histoData.greenBuffer[n] *= scale;
+		this->histoData.blueBuffer[n] *= scale;
+
+		double r = this->histoData.redBuffer[n];
+		double g = this->histoData.greenBuffer[n];
+		double b = this->histoData.blueBuffer[n];
+		histoAdjust.Adjust(r, g, b);
+
+		this->histoData.redBuffer[n] = std::min(static_cast<float>(r) / 255.0f, 255.0f);
+		this->histoData.greenBuffer[n] = std::min(static_cast<float>(g) / 255.0f, 255.0f);
+		this->histoData.blueBuffer[n] = std::min(static_cast<float>(b) / 255.0f, 255.0f);
+	}
+
+	return 0;
+}
+
+int NonAvxBezierAndSaturation::avxToHsl()
+{
+	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
+	{
+		double h, s, l;
+		ToHSL(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], this->histoData.blueBuffer[n], h, s, l);
+		this->histoData.redBuffer[n] = h;
+		this->histoData.greenBuffer[n] = s;
+		this->histoData.blueBuffer[n] = l;
+	}
+	return 0;
+}
+
+int NonAvxBezierAndSaturation::avxBezierAdjust(const size_t len)
+{
+	for (size_t n = 0, bufferLen = this->histoData.blueBuffer.size(); n < bufferLen; ++n)
+	{
+		const auto it = std::lower_bound(this->histoData.bezierX.cbegin(), this->histoData.bezierX.cend(), this->histoData.blueBuffer[n]);
+		const auto ndx = it - this->histoData.bezierX.cbegin();
+		if (ndx < this->histoData.bezierX.size())
+			this->histoData.blueBuffer[n] = this->histoData.bezierY[ndx];
+	}
+	return 0;
+}
+
+int NonAvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
+{
+	if (saturationShift == 0)
+		return 0;
+
+	const auto satShift = [shiftVal = saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift](const float v) -> float
+	{
+		return std::pow(v, shiftVal);
+	};
+
+	std::transform(std::cbegin(this->histoData.greenBuffer), std::cend(this->histoData.greenBuffer), std::begin(this->histoData.greenBuffer), satShift);
+
+	return 0;
+}
+
+int NonAvxBezierAndSaturation::avxToRgb()
+{
+	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
+	{
+		const float l = this->histoData.blueBuffer[n];
+		const bool notoverexposed = (l * 255.0f) <= 255.0f;
+		const bool notunderexposed = (l * 255.0f) > 2.0f;
+
+		double r, g, b;
+		ToRGB(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], l, r, g, b);
+
+		this->histoData.redBuffer[n] = notoverexposed ? (notunderexposed ? r : 0.0f) : 255.0f;
+		this->histoData.greenBuffer[n] = (notoverexposed && notunderexposed) ? g : 0.0f;
+		this->histoData.blueBuffer[n] = notunderexposed ? (notoverexposed ? b : 0.0f) : 255.0f;
+	}
+	return 0;
 }
