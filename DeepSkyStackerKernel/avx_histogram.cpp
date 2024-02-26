@@ -575,15 +575,41 @@ int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGB
 		this->histoData.redBuffer[n] *= scale;
 		this->histoData.greenBuffer[n] *= scale;
 		this->histoData.blueBuffer[n] *= scale;
-
+	}
+	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
+	{
 		double r = this->histoData.redBuffer[n];
 		double g = this->histoData.greenBuffer[n];
 		double b = this->histoData.blueBuffer[n];
 		histoAdjust.Adjust(r, g, b);
 
-		this->histoData.redBuffer[n] = std::min(static_cast<float>(r) / 255.0f, 255.0f);
-		this->histoData.greenBuffer[n] = std::min(static_cast<float>(g) / 255.0f, 255.0f);
-		this->histoData.blueBuffer[n] = std::min(static_cast<float>(b) / 255.0f, 255.0f);
+		this->histoData.redBuffer[n] = static_cast<float>(r);
+		this->histoData.greenBuffer[n] = static_cast<float>(g);
+		this->histoData.blueBuffer[n] = static_cast<float>(b);
+	}
+
+	constexpr size_t VecLen = sizeof(__m128) / sizeof(float);
+	constexpr float scalingFactor = static_cast<float>(1.0 / 255.0);
+
+	// SSE2 code is OK, because every x64 CPU supports it.
+	const auto loadAndScale = [scalingVector = _mm_set1_ps(scalingFactor), minVal = _mm_set1_ps(255.0f)](const float* pValue) -> __m128 {
+		return _mm_min_ps(_mm_mul_ps(_mm_loadu_ps(pValue), scalingVector), minVal);
+	};
+
+	for (size_t n = 0, nVecs = this->histoData.redBuffer.size() / VecLen; n < nVecs; ++n)
+	{
+		__m128 r = loadAndScale(this->histoData.redBuffer.data() + n * 4);
+		__m128 g = loadAndScale(this->histoData.greenBuffer.data() + n * 4);
+		__m128 b = loadAndScale(this->histoData.blueBuffer.data() + n * 4);
+		_mm_storeu_ps(this->histoData.redBuffer.data() + n * 4,   r);
+		_mm_storeu_ps(this->histoData.greenBuffer.data() + n * 4, g);
+		_mm_storeu_ps(this->histoData.blueBuffer.data() + n * 4,  b);
+	}
+	for (size_t n = (this->histoData.redBuffer.size() / VecLen) * VecLen, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
+	{
+		this->histoData.redBuffer[n] = std::min(this->histoData.redBuffer[n] * scalingFactor, 255.0f);
+		this->histoData.greenBuffer[n] = std::min(this->histoData.greenBuffer[n] * scalingFactor, 255.0f);
+		this->histoData.blueBuffer[n] = std::min(this->histoData.blueBuffer[n] * scalingFactor, 255.0f);
 	}
 
 	return 0;
@@ -634,8 +660,8 @@ int NonAvxBezierAndSaturation::avxToRgb()
 	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
 	{
 		const float l = this->histoData.blueBuffer[n];
-		const bool notoverexposed = (l * 255.0f) <= 255.0f;
-		const bool notunderexposed = (l * 255.0f) > 2.0f;
+		const bool notoverexposed = l <= 1.0f;
+		const bool notunderexposed = l > (2.0f / 255.0f);
 
 		double r, g, b;
 		ToRGB(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], l, r, g, b);
