@@ -116,7 +116,7 @@ void CEntropyInfo::Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize 
 	InitSquareEntropies();
 }
 
-void CEntropyInfo::GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult)
+void CEntropyInfo::GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult) const
 {
 	int lSquareX, lSquareY;
 
