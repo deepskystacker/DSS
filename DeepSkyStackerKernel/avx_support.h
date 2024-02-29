@@ -534,5 +534,5 @@ int SimdSelector(auto* pDataClass, auto&& Caller)
 	if constexpr (sizeof...(OtherSimdClasses) == 0)
 		return rv;
 	else
-		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, Caller);
+		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, std::forward<decltype(Caller)>(Caller));
 }
