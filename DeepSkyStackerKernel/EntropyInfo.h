@@ -71,7 +71,7 @@ protected:
 private:
 	virtual void InitSquareEntropies();
 	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy);
-	QPointF GetSquareCenter(int lX, int lY)
+	QPointF GetSquareCenter(int lX, int lY) const
 	{
 		return QPointF{
 			static_cast<qreal>(lX * (m_lWindowSize * 2 + 1) + m_lWindowSize),
@@ -79,7 +79,7 @@ private:
 		};
 	}
 
-	void AddSquare(CEntropySquare& Square, int lX, int lY)
+	void AddSquare(CEntropySquare& Square, int lX, int lY) const
 	{
 		Square.m_ptCenter = GetSquareCenter(lX, lY);
 		Square.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
@@ -103,6 +103,6 @@ public:
 	const int windowSize() const { return m_lWindowSize; }
 
 	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, DSS::ProgressBase* pProgress = nullptr);
-	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult);
+	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult) const;
 };
 
