@@ -1721,8 +1721,6 @@ public:
 	{}
 
 	void process();
-private:
-	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
 void CStackTask::process()
@@ -1741,112 +1739,16 @@ void CStackTask::process()
 	{
 		const int endRow = std::min(row + lineBlockSize, height);
 		avxStacking.init(row, endRow);
-		// First try AVX version, if it cannot run then process without AVX.
-		if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
-		{
-			this->processNonAvx(row, endRow);
-		}
-		else {
-			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
-				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
-		}
+		avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_pOutput, m_lPixelSizeMultiplier);
+
+		if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
+			ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 	}
 }
 
-void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
-{
-	const int width = m_pBitmap->Width();
-	PIXELDISPATCHVECTOR vPixels;
-	vPixels.reserve(16);
-
-	for (int j = lineStart; j < lineEnd; ++j)
-	{
-		for (int i = 0; i < width; ++i)
-		{
-			const QPointF ptOut = m_PixTransform.transform(QPointF(i, j));
-
-			COLORREF16 crColor;
-			double fRedEntropy = 1.0, fGreenEntropy = 1.0, fBlueEntropy = 1.0;
-
-			if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
-				m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
-			else
-				m_pBitmap->GetPixel16(i, j, crColor);
-
-			float Red = crColor.red;
-			float Green = crColor.green;
-			float Blue = crColor.blue;
-
-			if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
-				m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
-
-			if ((0 != Red || 0 != Green || 0 != Blue) &&
-				DSSRect { 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
-			{
-				vPixels.resize(0);
-				ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
-
-				for (CPixelDispatch& Pixel : vPixels)
-				{
-					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 &&
-						Pixel.m_lX < m_rcResult.width() &&
-						Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.height())
-					{
-						// Special case for entropy average
-						if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
-						{
-							if (m_bColor)
-							{
-								double fOldRed, fOldGreen, fOldBlue;
-
-								m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-								fOldRed += Pixel.m_fPercentage * fRedEntropy;
-								fOldGreen += Pixel.m_fPercentage * fGreenEntropy;
-								fOldBlue += Pixel.m_fPercentage * fBlueEntropy;
-								m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-
-								m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-								fOldRed += Red * Pixel.m_fPercentage * fRedEntropy;
-								fOldGreen += Green * Pixel.m_fPercentage * fGreenEntropy;
-								fOldBlue += Blue * Pixel.m_fPercentage * fBlueEntropy;
-								m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-							}
-							else
-							{
-								double fOldGray;
-
-								m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-								fOldGray += Pixel.m_fPercentage * fRedEntropy;
-								m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-
-								m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-								fOldGray += Red * Pixel.m_fPercentage * fRedEntropy;
-								m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-							}
-						}
-
-						double fPreviousRed, fPreviousGreen, fPreviousBlue;
-
-						m_pTempBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-						fPreviousRed += static_cast<double>(Red) / 256.0 * Pixel.m_fPercentage;
-						fPreviousGreen += static_cast<double>(Green) / 256.0 * Pixel.m_fPercentage;
-						fPreviousBlue += static_cast<double>(Blue) / 256.0 * Pixel.m_fPercentage;
-						fPreviousRed = std::min(fPreviousRed, 255.0);
-						fPreviousGreen = std::min(fPreviousGreen, 255.0);
-						fPreviousBlue = std::min(fPreviousBlue, 255.0);
-						m_pTempBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-					}
-				}
-			}
-		}
-	}
-}
-
-/* ------------------------------------------------------------------- */
 
 std::shared_ptr<CMultiBitmap> CStackingEngine::CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor)
 {

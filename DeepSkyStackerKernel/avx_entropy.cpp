@@ -5,7 +5,7 @@
 #include "avx_histogram.h"
 #include "Multitask.h"
 
-AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
+AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
 	pEntropyCoverage{ entropycov },
@@ -15,8 +15,8 @@ AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMe
 	{
 		const size_t width = pEntropyCoverage->Width();
 		const size_t height = pEntropyCoverage->Height();
-		static_assert(std::is_same_v<EntropyLayerVectorType::value_type, __m256> && std::is_same_v<EntropyVectorType::value_type, float>);
-		const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
+		static_assert(std::is_same<__m512&, decltype(redEntropyLayer[0])>::value);
+		const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m512>(width);
 		redEntropyLayer.resize(height * nrVectors);
 		if (AvxSupport{ *pEntropyCoverage }.isColorBitmap())
 		{
