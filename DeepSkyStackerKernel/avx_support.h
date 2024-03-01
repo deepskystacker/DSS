@@ -7,13 +7,13 @@
 class AvxSupport
 {
 private:
-	// Unfortunately, we cannot use const here, because the member function are hardly never const declared. :-(
-	CMemoryBitmap& bitmap;
+	const CMemoryBitmap& bitmap;
+	CMemoryBitmap* pBitmap;
 
 	template <class T>
-	auto* getColorPtr() { return dynamic_cast<CColorBitmapT<T>*>(&bitmap); }
+	auto* getColorPtr() { return dynamic_cast<CColorBitmapT<T>*>(pBitmap); }
 	template <class T>
-	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(&bitmap); }
+	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(pBitmap); }
 	template <class T>
 	const auto* getColorPtr() const { return dynamic_cast<const CColorBitmapT<T>*>(&bitmap); }
 	template <class T>
@@ -22,6 +22,7 @@ private:
 	int getNrChannels() const;
 public:
 	AvxSupport(CMemoryBitmap& b) noexcept;
+	AvxSupport(const CMemoryBitmap& b) noexcept;
 
 	bool isColorBitmap() const;
 	template <class T> bool isColorBitmapOfType() const;
@@ -321,10 +322,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -348,10 +349,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -373,10 +374,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = color;
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = color;
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -473,7 +474,14 @@ public:
 	inline static __m256i shiftLeftEpi32(const __m256i x) noexcept
 	{
 		static_assert(N == 1);
-		return _mm256_permutevar8x32_epi32(x, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6));
+		return _mm256_permutevar8x32_epi32(x, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6)); // permutevar8x32: dst[0] = x[idx[0]]; dst[1] = x[idx[1]]; ...
+	}
+
+	template <int N>
+	inline static __m256 shiftRightPs(const __m256 x) noexcept
+	{
+		static_assert(N == 1);
+		return _mm256_castsi256_ps(shiftRightEpi32<1>(_mm256_castps_si256(x)));
 	}
 
 	inline static __m256i shl1Epi16(const __m256i x, const int value) noexcept // CPU cycles: 2/2 + 3/1 + 1/1 = 6/4
@@ -489,9 +497,12 @@ public:
 		return _mm256_alignr_epi8(a, x, 2); // [a, x] >> (2 bytes) lane-by-lane
 	}
 
+
 	template <int N>
 	inline static __m256i rotateRightEpi8(const __m256i x) noexcept
 	{
+		if constexpr (N == 0 || N == 32)
+			return x;
 		if constexpr (N > 16)
 			return _mm256_alignr_epi8(x, _mm256_permute2x128_si256(x, x, 1), N - 16);
 		else
@@ -501,6 +512,13 @@ public:
 	inline static __m256i rotateRightEpi32(const __m256i x) noexcept
 	{
 		return rotateRightEpi8<4 * N>(x);
+	}
+	template <int N>
+	inline static __m256 rotateRightPs(const __m256 x) noexcept
+	{
+		if constexpr (N == 0 || N == 8)
+			return x;
+		return _mm256_castsi256_ps(rotateRightEpi32<N>(_mm256_castps_si256(x)));
 	}
 
 	// Extract for PS has a strange signature (returns int), so we write an own version.

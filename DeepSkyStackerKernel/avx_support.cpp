@@ -3,17 +3,23 @@
 #include "BitmapCharacteristics.h" 
 #include "Multitask.h" 
 #include "Ztrace.h"
- 
- 
- 
-AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept : 
-	bitmap{ b }
+#include <immintrin.h>
+
+
+AvxSupport::AvxSupport(const CMemoryBitmap& b) noexcept :
+	bitmap{ b },
+	pBitmap{ nullptr }
+{};
+
+AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept :
+	bitmap{ b },
+	pBitmap{ &b }
 {};
 
 int AvxSupport::getNrChannels() const
 {
 	CBitmapCharacteristics bitmapCharacteristics;
-	const_cast<CMemoryBitmap&>(bitmap).GetCharacteristics(bitmapCharacteristics);
+	bitmap.GetCharacteristics(bitmapCharacteristics);
 	return bitmapCharacteristics.m_lNrChannels;
 };
 
@@ -25,7 +31,7 @@ bool AvxSupport::isColorBitmap() const
 template <class T>
 bool AvxSupport::isColorBitmapOfType() const
 {
-	auto* const p = const_cast<AvxSupport*>(this)->getColorPtr<T>();
+	const auto* const p = this->getColorPtr<T>();
 	const bool isColor = p != nullptr && p->isTopDown();
 	if constexpr (std::is_same<T, float>::value)
 		return isColor && p->IsFloat() && p->GetMultiplier() == 256.0;
@@ -41,7 +47,7 @@ bool AvxSupport::isMonochromeBitmap() const
 template <class T>
 bool AvxSupport::isMonochromeBitmapOfType() const
 {
-	if (auto* const p = const_cast<AvxSupport*>(this)->getGrayPtr<T>())
+	if (const auto* const p = this->getGrayPtr<T>())
 	{
 		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
 		if constexpr (std::is_same_v<T, float>)
@@ -61,7 +67,7 @@ bool AvxSupport::isMonochromeCfaBitmapOfType() const
 	// CFA only supported for T=16 bits unsigned
 	if constexpr (std::is_same<T, std::uint16_t>::value)
 	{
-		auto* const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
+		const auto* const pGray = this->getGrayPtr<T>();
 		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.
 		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->xOffset() == 0 && pGray->yOffset() == 0
 			&& (pGray->GetCFAType() == CFATYPE_RGGB || pGray->GetCFAType() == CFATYPE_GBRG));
@@ -77,7 +83,7 @@ bool AvxSupport::isColorBitmapOrCfa() const
 
 CFATYPE AvxSupport::getCfaType() const
 {
-	if (auto* pGray = const_cast<AvxSupport*>(this)->getGrayPtr<std::uint16_t>()) // GetCFAType is a non-const funtion :-(
+	if (auto* pGray = this->getGrayPtr<std::uint16_t>())
 		return pGray->GetCFAType();
 	else
 		return CFATYPE_NONE;
@@ -105,6 +111,7 @@ bool AvxSupport::checkAvx2CpuSupport()
 
 	__cpuidex(cpuid, 1, 0);
 	const bool FMAsupported = ((cpuid[2] & (1 << 12)) != 0);
+	const bool POPCNTsupported = ((cpuid[2] & (1 << 23)) != 0);
 	const bool XSAVEsupported = ((cpuid[2] & (1 << 26)) != 0);
 	const bool OSXSAVEsupported = ((cpuid[2] & (1 << 27)) != 0);
 
@@ -113,7 +120,7 @@ bool AvxSupport::checkAvx2CpuSupport()
 	//const bool BMI1supported = ((cpuid[1] & (1 << 3) != 0);
 	//const bool BMI2supported = ((cpuid[1] & (1 << 8)) != 0);
 
-	const bool RequiredCpuFlags = FMAsupported && AVX2supported && XSAVEsupported && OSXSAVEsupported;
+	const bool RequiredCpuFlags = FMAsupported && POPCNTsupported && XSAVEsupported && OSXSAVEsupported && AVX2supported;
 
 	// OS supports AVX (YMM registers) - Note: XGETBV may only be executed on CPUs with XSAVE flag set.
 	const bool AVXenabledOS = RequiredCpuFlags ? ((_xgetbv(0) & 6) == 6) : false; // 6 = SSE (0x2) + YMM (0x4)
@@ -140,29 +147,29 @@ void AvxSupport::reportCpuType()
 	SYSTEM_INFO info;
 
 	const auto getArchitectureString = [&architecture](const auto architectureId) -> void
-	{
-		constexpr auto maxSize = sizeof(architecture);
-		switch (architectureId)
 		{
-		case PROCESSOR_ARCHITECTURE_INTEL:
-			strcpy_s(architecture, maxSize, "x86");
-			break;
-		case PROCESSOR_ARCHITECTURE_ARM:
-			strcpy_s(architecture, maxSize, "ARM");
-			break;
-		case PROCESSOR_ARCHITECTURE_IA64:
-			strcpy_s(architecture, maxSize, "IA64");
-			break;
-		case PROCESSOR_ARCHITECTURE_AMD64:
-			strcpy_s(architecture, maxSize, "x64");
-			break;
-		case PROCESSOR_ARCHITECTURE_ARM64:
-			strcpy_s(architecture, maxSize, "ARM64");
-			break;
-		default:
-			strcpy_s(architecture, maxSize, "Unknown");
-		}
-	};
+			constexpr auto maxSize = sizeof(architecture);
+			switch (architectureId)
+			{
+			case PROCESSOR_ARCHITECTURE_INTEL:
+				strcpy_s(architecture, maxSize, "x86");
+				break;
+			case PROCESSOR_ARCHITECTURE_ARM:
+				strcpy_s(architecture, maxSize, "ARM");
+				break;
+			case PROCESSOR_ARCHITECTURE_IA64:
+				strcpy_s(architecture, maxSize, "IA64");
+				break;
+			case PROCESSOR_ARCHITECTURE_AMD64:
+				strcpy_s(architecture, maxSize, "x64");
+				break;
+			case PROCESSOR_ARCHITECTURE_ARM64:
+				strcpy_s(architecture, maxSize, "ARM64");
+				break;
+			default:
+				strcpy_s(architecture, maxSize, "Unknown");
+			}
+		};
 
 	GetNativeSystemInfo(&info);
 	const auto nativeArchitecture = info.wProcessorArchitecture;
