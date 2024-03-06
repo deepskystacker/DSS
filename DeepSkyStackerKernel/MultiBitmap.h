@@ -67,9 +67,9 @@ public:
 		return m_lNrAddedBitmaps;
 	}
 
-	void SetImageOrder(const std::vector<int>& vImageOrder)
+	void SetImageOrder(std::vector<int>&& vImageOrder)
 	{
-		m_vImageOrder = vImageOrder;
+		m_vImageOrder = std::move(vImageOrder);
 	}
 
 	const std::vector<int>& GetImageOrder() const

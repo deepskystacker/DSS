@@ -1211,14 +1211,17 @@ void CStackingEngine::ComputeBitmap()
 			m_pProgress->SetJointProgress(true);
 		}
 
+		const auto imageIndexVector = [](const auto& cometShifts) {
+			std::vector<int> vImageOrder(cometShifts.size(), 0);
+			std::ranges::transform(cometShifts, std::begin(vImageOrder), &CImageCometShift::m_lImageIndex);
+			return vImageOrder;
+		};
+
 		ZTRACE_RUNTIME("Compute resulting bitmap");
 		if (!m_vCometShifts.empty())
 		{
-			std::sort(m_vCometShifts.begin(), m_vCometShifts.end());
-
-			std::vector<int> vImageOrder;
-			std::transform(m_vCometShifts.cbegin(), m_vCometShifts.cend(), std::back_inserter(vImageOrder), [](const auto& cometShift) -> int { return cometShift.m_lImageIndex; });
-			m_pMasterLight->SetImageOrder(vImageOrder);
+			std::ranges::sort(m_vCometShifts, std::less{});
+			m_pMasterLight->SetImageOrder(imageIndexVector(m_vCometShifts));
 
 			const double	fX1 = m_vCometShifts.cbegin()->m_fXShift, // First one
 							fY1 = m_vCometShifts.cbegin()->m_fYShift,
