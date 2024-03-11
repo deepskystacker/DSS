@@ -227,7 +227,7 @@ public:
 		HistoAdjust = m_HistoAdjust;
 	};
 private:
-	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
+//	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
 //	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
 //	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
 public:

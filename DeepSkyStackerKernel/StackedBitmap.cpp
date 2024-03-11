@@ -30,8 +30,14 @@ CStackedBitmap::CStackedBitmap()
 	DSSTIFFInitialize();
 };
 
-/* ------------------------------------------------------------------- */
 
+//
+// MT, 11-March-2024
+// This function is used in
+//     *) CTIFFWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue);
+//     *) CFITSWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue);
+// for saving displayed (stacked or loaded) picture to file.
+//
 void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
 {
 	int				lOffset = m_lWidth * Y + X;
@@ -95,6 +101,10 @@ void limitColorValues(double& red, double& green, double& blue)
 }
 }
 
+//
+// MT, 11-March-2024
+// This function is only used in CStackedBitmap::GetBitmap() for creating star masks.
+//
 COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
 {
 	constexpr double ScalingFactor = 256.0;
@@ -139,15 +149,15 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 
 /* ------------------------------------------------------------------- */
 
-COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
-{
-	int				lOffset = m_lWidth * Y + X;
-
-	if (m_bMonochrome)
-		return GetPixel(m_vRedPlane[lOffset], m_vRedPlane[lOffset], m_vRedPlane[lOffset], bApplySettings);
-	else
-		return GetPixel(m_vRedPlane[lOffset], m_vGreenPlane[lOffset], m_vBluePlane[lOffset], bApplySettings);
-};
+//COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
+//{
+//	int				lOffset = m_lWidth * Y + X;
+//
+//	if (m_bMonochrome)
+//		return GetPixel(m_vRedPlane[lOffset], m_vRedPlane[lOffset], m_vRedPlane[lOffset], bApplySettings);
+//	else
+//		return GetPixel(m_vRedPlane[lOffset], m_vGreenPlane[lOffset], m_vBluePlane[lOffset], bApplySettings);
+//};
 
 /* ------------------------------------------------------------------- */
 /*
@@ -317,6 +327,11 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 // 	};
 // };
 
+
+//
+// MT, 11-March-2024
+// This function is only called from DeepStack::PartialProcess() to display the picture.
+//
 HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 {
 	if (Bitmap.IsEmpty())
@@ -449,8 +464,11 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 	return Bitmap.GetHBITMAP();
 }
 
-/* ------------------------------------------------------------------- */
 
+//
+// MT, 11-March-2024
+// This function is only used for creating star masks.
+//
 std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
