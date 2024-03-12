@@ -161,7 +161,7 @@ private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 
-	COLORREF	GetPixel(float fRed, float fGreen, float fBlue);
+//	COLORREF	GetPixel(float fRed, float fGreen, float fBlue);
 
 public:
 	void	ReadSpecificTags(CTIFFReader* tiffReader);

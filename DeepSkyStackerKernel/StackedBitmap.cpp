@@ -105,6 +105,7 @@ void limitColorValues(double& red, double& green, double& blue)
 // MT, 11-March-2024
 // This function is only used in CStackedBitmap::GetBitmap() for creating star masks.
 //
+/*
 COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue)
 {
 	constexpr double ScalingFactor = 256.0;
@@ -135,10 +136,6 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue)
 
 		ToRGB(H, S, L, Red, Green, Blue);
 
-		// The colour value can be out of range [0, 255] here. If we want to avoid black star centers, we should limit them here.
-		// This can e.g. happen when the user applies to aggressive Luminance settings in the color editor.
-//		limitColorValues(Red, Green, Blue);
-
 		return static_cast<COLORREF>(RGB(Red, Green, Blue));
 	}
 	else
@@ -146,7 +143,7 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue)
 		return static_cast<COLORREF>(RGB(fRed / m_lNrBitmaps, fGreen / m_lNrBitmaps, fBlue / m_lNrBitmaps));
 	}
 }
-
+*/
 /* ------------------------------------------------------------------- */
 
 //COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
