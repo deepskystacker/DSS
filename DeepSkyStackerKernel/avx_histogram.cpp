@@ -48,9 +48,11 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 		}
 	};
 
+	const bool isColor = AvxSupport{ inputBitmap }.isColorBitmapOrCfa();
+
 	mergeHisto(red, redHisto);
-	mergeHisto(green, greenHisto.empty() ? redHisto : greenHisto);
-	mergeHisto(blue, blueHisto.empty() ? redHisto : blueHisto);
+	mergeHisto(green, isColor ? greenHisto : redHisto);
+	mergeHisto(blue, isColor ? blueHisto : redHisto);
 
 	return this->avxReady ? AvxSupport::zeroUpper(0) : 0;
 }
