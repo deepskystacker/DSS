@@ -182,7 +182,7 @@ private:
 	}
 	int toHsl();
 public:
-	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const bool monochrome);
+	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome);
 	std::tuple<float*, float*, float*> getBufferPtr();
 	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
 	int avxToHsl(const auto& bezierPoints)

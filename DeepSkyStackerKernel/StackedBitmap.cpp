@@ -28,7 +28,13 @@ CStackedBitmap::CStackedBitmap()
 	m_lTotalTime	= 0;
 	m_bMonochrome   = false;
 	DSSTIFFInitialize();
-};
+}
+
+CStackedBitmap::~CStackedBitmap() = default;
+
+namespace {
+	thread_local constinit int lastY = -1;
+}
 
 
 //
@@ -42,7 +48,7 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 {
 	int				lOffset = m_lWidth * Y + X;
 
-	double		H, S, L;
+//	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
 	fRed   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
@@ -64,6 +70,31 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 
 	if (bApplySettings)
 	{
+		const size_t bufferLen = this->m_lWidth;
+		if (!static_cast<bool>(this->pAvxBezierAndSaturation))
+			this->pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
+
+		if (lastY != Y) // New row (lastY is thread_local and initialised to -1, see above).
+		{
+			lastY = Y;
+
+			const float* const pRed = m_vRedPlane.data() + lOffset;
+			const float* const pGreen = m_bMonochrome ? pRed : m_vGreenPlane.data() + lOffset;
+			const float* const pBlue = m_bMonochrome ? pRed : m_vBluePlane.data() + lOffset;
+			pAvxBezierAndSaturation->copyData(pRed, pGreen, pBlue, bufferLen, m_bMonochrome);
+
+			pAvxBezierAndSaturation->avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			pAvxBezierAndSaturation->avxToHsl(m_BezierAdjust.m_vPoints);
+			pAvxBezierAndSaturation->avxBezierAdjust(bufferLen);
+			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			pAvxBezierAndSaturation->avxToRgb(true);
+		}
+
+		const auto [redBuffer, greenBuffer, blueBuffer] = pAvxBezierAndSaturation->getBufferPtr();
+		fRed = redBuffer[X];
+		fGreen = greenBuffer[X];
+		fBlue = blueBuffer[X];
+/*
 		m_HistoAdjust.Adjust(fRed, fGreen, fBlue);
 
 		fRed	/= 256.0;
@@ -79,6 +110,7 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 		S = m_BezierAdjust.AdjustSaturation(S);
 
 		ToRGB(H, S, L, fRed, fGreen, fBlue);
+*/
 	}
 	else
 	{
@@ -357,8 +389,6 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 		const float* const pBaseBluePixel = m_bMonochrome ? nullptr : m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
 
 		const size_t bufferLen = lXMax - lXMin;
-		//		std::vector<float> redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen);
-		//		std::vector<float> bezierX, bezierY;
 		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
 #pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
@@ -373,7 +403,7 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 			const float* const pGreenPixel = m_bMonochrome ? nullptr : pBaseGreenPixel + m_lWidth * (j - lYMin);
 			const float* const pBluePixel = m_bMonochrome ? nullptr : pBaseBluePixel + m_lWidth * (j - lYMin);
 
-			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, m_bMonochrome);
+			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
 			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
 
 			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
@@ -516,7 +546,7 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 			float* pGreenPixel = m_bMonochrome ? pRedPixel : pBaseGreenPixel + (m_lWidth * (j - lYMin));
 			float* pBluePixel = m_bMonochrome ? pRedPixel : pBaseBluePixel + (m_lWidth * (j - lYMin));
 
-			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, m_bMonochrome);
+			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
 
 			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
 			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);

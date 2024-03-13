@@ -282,9 +282,14 @@ namespace {
 }
 
 
-void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const bool monochrome)
+void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome)
 {
-	const size_t bufferLen = this->redBuffer.size();
+	if (bufferLen != this->redBuffer.size())
+	{
+		this->redBuffer.resize(bufferLen);
+		this->greenBuffer.resize(bufferLen);
+		this->blueBuffer.resize(bufferLen);
+	}
 	memcpy(this->redBuffer.data(), pRedPixel, bufferLen * sizeof(float));
 	memcpy(this->greenBuffer.data(), monochrome ? pRedPixel : pGreenPixel, bufferLen * sizeof(float));
 	memcpy(this->blueBuffer.data(), monochrome ? pRedPixel : pBluePixel, bufferLen * sizeof(float));

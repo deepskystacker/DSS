@@ -137,7 +137,7 @@ class CFITSWriter;
 
 /* ------------------------------------------------------------------- */
 
-class CStackedBitmap
+class CStackedBitmap final
 {
 private:
 	int						m_lWidth;
@@ -157,6 +157,8 @@ private:
 	CRGBHistogramAdjust 		m_HistoAdjust;
 	CBitmapInfo	bmpInfo;
 
+	std::unique_ptr<class AvxBezierAndSaturation> pAvxBezierAndSaturation{};
+
 private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
@@ -171,7 +173,7 @@ public:
 
 public:
 	CStackedBitmap();
-	virtual ~CStackedBitmap() {};
+	~CStackedBitmap();
 
 	void	SetOutputSizes(int lWidth, int lHeight)
 	{
