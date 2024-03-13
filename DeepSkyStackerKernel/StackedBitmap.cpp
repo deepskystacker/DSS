@@ -383,7 +383,7 @@ HBITMAP CStackedBitmap::GetHBitmap(C32BitsBitmap& Bitmap, const RECT* pRect)
 			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			avxBezierAndSaturation.avxToRgb();
+			avxBezierAndSaturation.avxToRgb(true);
 /*
 			if (avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust) != 0)
 			{

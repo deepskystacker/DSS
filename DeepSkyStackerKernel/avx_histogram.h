@@ -190,7 +190,7 @@ public:
 		const int rv = this->toHsl();
 		return rv == 0 ? this->fillBezierBuffer(bezierPoints) : rv;
 	}
-	int avxToRgb();
+	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);
 };
@@ -212,6 +212,7 @@ public: // for unit tests
 private:
 	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
+	template <bool MarkOverAndUnderExposure>
 	int avxToRgb();
 	int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);
@@ -234,6 +235,7 @@ public: // for unit tests
 private:
 	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
+	template <bool MarkOverAndUnderExposure>
 	int avxToRgb();
 	int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);

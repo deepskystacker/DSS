@@ -19,7 +19,7 @@ AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
 
 int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
-	return SimdSelector<Avx512Histogram, Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
+	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
 }
 
 int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
@@ -304,9 +304,14 @@ int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogram
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
 }
 
-int AvxBezierAndSaturation::avxToRgb()
+int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToRgb(); });
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(
+		this,
+		[markOverAndUnderExposure](auto&& o) {
+			return markOverAndUnderExposure ? o.avxToRgb<true>() : o.avxToRgb<false>();
+		}
+	);
 }
 
 int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
@@ -439,6 +444,7 @@ int Avx256BezierAndSaturation::avxToHsl()
 	return AvxSupport::zeroUpper(0);
 }
 
+template <bool MarkOverAndUnderExposure>
 int Avx256BezierAndSaturation::avxToRgb()
 {
 	if (!this->histoData.avxSupported)
@@ -476,17 +482,18 @@ int Avx256BezierAndSaturation::avxToRgb()
 		const auto notoverexposed = _mm256_cmp_ps(l255, _mm256_set1_ps(255.0f), _CMP_LE_OQ); // L <= 255 ?
 		const auto notunderexposed = _mm256_cmp_ps(l255, _mm256_set1_ps(2.0f), _CMP_GT_OQ); // L > 2 ?
 
+		const VecType rResult = _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_add_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0); // if (S == 0) R = L * 255; else R = rgb1(...,h+120);
+		const VecType gResult = _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, h), l255, sequ0); // if (S == 0) G = L * 255; else G = rgb1(...,h);
+		const VecType bResult = _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0); // if (S == 0) B = L * 255; else B = rgb1(...,h-120);
+
 		return {
-			// if (S == 0) R = L * 255; else R = rgb1(...,h+120);
-			_mm256_and_ps(notunderexposed,
-				_mm256_blendv_ps(_mm256_set1_ps(255.0f), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_add_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), notoverexposed)
-			),
-			// if (S == 0) G = L * 255; else G = rgb1(...,h);
-			_mm256_and_ps(_mm256_and_ps(notoverexposed, notunderexposed), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, h), l255, sequ0)),
-			// if (S == 0) B = L * 255; else B = rgb1(...,h-120);
-			_mm256_and_ps(notoverexposed,
-				_mm256_blendv_ps(_mm256_set1_ps(255.0f), _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0), notunderexposed)
-			)
+			MarkOverAndUnderExposure ? _mm256_and_ps(notunderexposed,
+				_mm256_blendv_ps(_mm256_set1_ps(255.0f), rResult, notoverexposed)
+			) : rResult,
+			MarkOverAndUnderExposure ? _mm256_and_ps(_mm256_and_ps(notoverexposed, notunderexposed), gResult) : gResult,
+			MarkOverAndUnderExposure ? _mm256_and_ps(notoverexposed,
+				_mm256_blendv_ps(_mm256_set1_ps(255.0f), bResult, notunderexposed)
+			) : bResult
 		};
 	};
 
@@ -512,6 +519,11 @@ int Avx256BezierAndSaturation::avxToRgb()
 
 	return AvxSupport::zeroUpper(0);
 }
+
+template
+int Avx256BezierAndSaturation::avxToRgb<true>();
+template
+int Avx256BezierAndSaturation::avxToRgb<false>();
 
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
@@ -663,20 +675,36 @@ int NonAvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float
 	return 0;
 }
 
+template <bool MarkOverAndUnderExposure>
 int NonAvxBezierAndSaturation::avxToRgb()
 {
 	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
 	{
 		const float l = this->histoData.blueBuffer[n];
-		const bool notoverexposed = l <= 1.0f;
-		const bool notunderexposed = l > (2.0f / 255.0f);
 
 		double r, g, b;
 		ToRGB(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], l, r, g, b);
 
-		this->histoData.redBuffer[n] = notoverexposed ? (notunderexposed ? r : 0.0f) : 255.0f;
-		this->histoData.greenBuffer[n] = (notoverexposed && notunderexposed) ? g : 0.0f;
-		this->histoData.blueBuffer[n] = notunderexposed ? (notoverexposed ? b : 0.0f) : 255.0f;
+		if constexpr (MarkOverAndUnderExposure)
+		{
+			const bool notoverexposed = l <= 1.0f;
+			const bool notunderexposed = l > (2.0f / 255.0f);
+
+			this->histoData.redBuffer[n] = notoverexposed ? (notunderexposed ? r : 0.0f) : 255.0f;
+			this->histoData.greenBuffer[n] = (notoverexposed && notunderexposed) ? g : 0.0f;
+			this->histoData.blueBuffer[n] = notunderexposed ? (notoverexposed ? b : 0.0f) : 255.0f;
+		}
+		else
+		{
+			this->histoData.redBuffer[n] = r;
+			this->histoData.greenBuffer[n] = g;
+			this->histoData.blueBuffer[n] = b;
+		}
 	}
 	return 0;
 }
+
+template
+int NonAvxBezierAndSaturation::avxToRgb<true>();
+template
+int NonAvxBezierAndSaturation::avxToRgb<false>();
