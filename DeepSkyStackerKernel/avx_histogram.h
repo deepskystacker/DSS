@@ -8,9 +8,9 @@ public:
 	typedef std::vector<int> HistogramVectorType;
 private:
 	friend class Avx256Histogram;
+	friend class NonAvxHistogram;
 
 	bool avxReady;
-	bool allRunsSuccessful;
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -23,23 +23,23 @@ public:
 	AvxHistogram(AvxHistogram&&) = delete;
 	AvxHistogram& operator=(const AvxHistogram&) = delete;
 
-	int calcHistogram(const size_t lineStart, const size_t lineEnd);
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
 	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
-	bool histogramSuccessful() const;
 	inline bool isAvxReady() const { return this->avxReady; }
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };
 
-class Avx256Histogram
+class Avx256Histogram : public SimdFactory<Avx256Histogram>
 {
 private:
 	friend class AvxHistogram;
+	friend class SimdFactory<Avx256Histogram>;
 
 	AvxHistogram& histoData;
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
 
-	int calcHistogram(const size_t lineStart, const size_t lineEnd);
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double);
 
 	template <class T>
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
@@ -129,9 +129,22 @@ public:
 };
 
 
-// --------------------------- 
-// For the image colour editor 
-// --------------------------- 
+class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
+{
+private:
+	friend class AvxHistogram;
+	friend class SimdFactory<NonAvxHistogram>;
+
+	AvxHistogram& histoData;
+	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
+
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
+};
+
+
+// ---------------------------
+// For the image colour editor
+// ---------------------------
 
 class AvxBezierAndSaturation
 {

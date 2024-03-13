@@ -8,62 +8,42 @@
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
 	avxReady{ AvxSupport::checkSimdAvailability() },
-	allRunsSuccessful{ true },
-	redHisto(avxReady ? HistogramSize() : 0, 0),
-	greenHisto{},
-	blueHisto{},
+	redHisto(HistogramSize(), 0),
+	greenHisto(HistogramSize(), 0),
+	blueHisto(HistogramSize(), 0),
 	avxCfa{ 0, 0, inputbm },
 	inputBitmap{ inputbm }
 {
-	if (avxReady && AvxSupport{ inputBitmap }.isColorBitmapOrCfa())
-	{
-		greenHisto.resize(HistogramSize(), 0);
-		blueHisto.resize(HistogramSize(), 0);
-	}
-
 	static_assert(sizeof(HistogramVectorType::value_type) == sizeof(int));
 }
 
-int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
+int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
-	const auto rval = [this](const int rv) -> int
-	{
-		if (rv != 0)
-			this->allRunsSuccessful = false;
-		return rv;
-	};
-
-	if (!avxReady)
-		return rval(1);
-
-	const int rv = Avx256Histogram{ *this }.calcHistogram(lineStart, lineEnd);
-	return AvxSupport::zeroUpper(rval(rv));
+	return SimdSelector<Avx512Histogram, Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
 }
 
 int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
 {
-	if (!avxReady)
-		return 1;
-
-	const auto mergeHisto = [](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
+	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
 	{
-		if (targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
+		if (this->avxReady && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
 		{
-			constexpr size_t nrVectors = HistogramSize() / 8;
-			auto* pTarget{ &*targetHisto.begin() };
-			const auto* pSource{ &*sourceHisto.begin() };
+			constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
+			constexpr size_t nrVectors = HistogramSize() / VecLen;
+			auto* pTarget = targetHisto.data();
+			const auto* pSource = sourceHisto.data();
 
-			for (size_t n = 0; n < nrVectors; ++n, pTarget += 8, pSource += 8)
+			for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
 			{
 				const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
 				_mm256_storeu_si256((__m256i*)pTarget, tgt);
 			}
-			for (size_t n = nrVectors * 8; n < HistogramSize(); ++n)
+			for (size_t n = nrVectors * VecLen; n < HistogramSize(); ++n)
 				targetHisto[n] += sourceHisto[n];
 		}
-		else // Why do we get here?
+		else // !avxReady
 		{
-			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is larger in size than the sourceHisto.
+			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
 				targetHisto[n] += sourceHisto[n];
 		}
 	};
@@ -72,29 +52,26 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 	mergeHisto(green, greenHisto.empty() ? redHisto : greenHisto);
 	mergeHisto(blue, blueHisto.empty() ? redHisto : blueHisto);
 
-	return AvxSupport::zeroUpper(0);
+	return this->avxReady ? AvxSupport::zeroUpper(0) : 0;
 }
-
-bool AvxHistogram::histogramSuccessful() const
-{
-	return allRunsSuccessful;
-};
 
 // *****************
 // AVX-256 Histogram
 // *****************
 
-int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
+int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double)
 {
+	if (!this->histoData.avxReady)
+		return 1;
 
 	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<float>(lineStart, lineEnd) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<double>(lineStart, lineEnd) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 
 	return 1;
 }
@@ -187,6 +164,37 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 
 	return 1;
 }
+
+
+// *****************
+// Non-AVX Histogram
+// *****************
+
+int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
+{
+	constexpr double Maxvalue = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
+	const size_t width = histoData.inputBitmap.Width();
+	const double fMultiplier = multiplier * 256.0;
+
+	for (size_t row = lineStart; row < lineEnd; ++row)
+	{
+		for (size_t col = 0; col < width; ++col)
+		{
+			double fRed, fGreen, fBlue;
+			this->histoData.inputBitmap.GetPixel(col, row, fRed, fGreen, fBlue);
+
+			const auto colorToIndex = [](const double color) { return static_cast<size_t>(std::min(color, Maxvalue)); };
+
+			++this->histoData.redHisto[colorToIndex(fRed * fMultiplier)];
+			++this->histoData.greenHisto[colorToIndex(fGreen * fMultiplier)];
+			++this->histoData.blueHisto[colorToIndex(fBlue * fMultiplier)];
+		}
+	}
+
+	return 0;
+}
+
+
 
 // *************
 // Bezier class
