@@ -105,11 +105,11 @@ void limitColorValues(double& red, double& green, double& blue)
 // MT, 11-March-2024
 // This function is only used in CStackedBitmap::GetBitmap() for creating star masks.
 //
-COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
+COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue)
 {
 	constexpr double ScalingFactor = 256.0;
 
-	if (bApplySettings)
+	if (true)
 	{
 		double H, S, L;
 
@@ -482,7 +482,10 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 
 	if (static_cast<bool>(pBitmap))
 	{
-		const int lXMin = 0, lYMin = 0, lXMax = m_lWidth, lYMax = m_lHeight;
+		constexpr int lXMin = 0;
+		constexpr int lYMin = 0;
+		const int lXMax = m_lWidth;
+		const int lYMax = m_lHeight;
 
 		float* pBaseRedPixel;
 		float* pBaseGreenPixel = nullptr;
@@ -503,8 +506,11 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 			pBaseBluePixel = m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
 		}
 
-#pragma omp parallel for default(none) schedule(static, 100)
-		for (int j = lYMin; j < lYMax; j++)
+		const size_t bufferLen = lXMax - lXMin;
+		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
+
+#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+		for (int j = lYMin; j < lYMax; ++j)
 		{
 			//
 			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
@@ -513,25 +519,43 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(ProgressBase* const pPr
 			float* pGreenPixel = m_bMonochrome ? pRedPixel : pBaseGreenPixel + (m_lWidth * (j - lYMin));
 			float* pBluePixel = m_bMonochrome ? pRedPixel : pBaseBluePixel + (m_lWidth * (j - lYMin));
 
+			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, m_bMonochrome);
+
+			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			avxBezierAndSaturation.avxToRgb(true);
+
+			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
+
+			for (size_t n = 0; n < bufferLen; ++n)
+			{
+				if (this->m_bMonochrome)
+					pBitmap->SetPixel(n + lXMin, j, redBuffer[n]);
+				else
+					pBitmap->SetPixel(n + lXMin, j, redBuffer[n], greenBuffer[n], blueBuffer[n]);
+			}
+/*
 			for (int i = lXMin; i < lXMax; i++)
 			{
 				COLORREF crColor;
 
 				if (!m_bMonochrome)
 				{
-					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
+					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel);
 					pBitmap->SetPixel(i, j, GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
 				}
 				else
 				{
-					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true);
+					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel);
 					pBitmap->SetPixel(i, j, GetRValue(crColor));
 				}
 
 				pRedPixel++;
 				pGreenPixel++; // Incrementing the pointers is harmless, even if we don't use them due to monochrome image.
 				pBluePixel++;
-			}
+			} */
 			if (pProgress != nullptr && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();
