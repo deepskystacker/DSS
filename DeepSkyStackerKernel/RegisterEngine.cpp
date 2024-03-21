@@ -100,11 +100,11 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 
 			for (const CPixelDispatch& pixel : vPixels)
 			{
-				const size_t x = static_cast<size_t>(std::clamp(pixel.m_lX, 0, width - 1));
-				const size_t y = static_cast<size_t>(std::clamp(pixel.m_lY, 0, height - 1));
+				if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
+					continue;
 
 				double fValue;
-				pBitmap->GetPixel(x, y, fValue);
+				pBitmap->GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), fValue);
 				fLuminance += fValue * pixel.m_fPercentage;
 			}
 			fSquareSum += fPos * fPos * fLuminance * 2;
