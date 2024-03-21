@@ -16,43 +16,22 @@
 
 /* ------------------------------------------------------------------- */
 
-class CStarAxisInfo
+class CStarAxisInfo final
 {
 public :
-	int					m_lAngle;
-	double					m_fRadius;
-	double					m_fSum;
+	int m_lAngle{ 0 };
+	double m_fRadius{ 0.0 };
+	double m_fSum{ 0.0 };
 
-private :
-	void	CopyFrom(const CStarAxisInfo & ai)
-	{
-		m_lAngle	= ai.m_lAngle;
-		m_fRadius	= ai.m_fRadius;
-		m_fSum		= ai.m_fSum;
-	};
-
-public :
-	CStarAxisInfo()
-	{
-        m_lAngle = 0;
-        m_fRadius = 0;
-        m_fSum = 0;
-	};
-
-	CStarAxisInfo(const CStarAxisInfo & ai)
-	{
-		CopyFrom(ai);
-	};
-
-	virtual ~CStarAxisInfo()
-	{
-	};
-
-	const CStarAxisInfo & operator = (const CStarAxisInfo & ai)
-	{
-		CopyFrom(ai);
-		return *this;
-	};
+public:
+	CStarAxisInfo(const int angle, const double rad, const double sum):
+		m_lAngle{ angle },
+		m_fRadius{ rad },
+		m_fSum{ sum }
+	{}
+	CStarAxisInfo(const CStarAxisInfo&) = default;
+	~CStarAxisInfo() = default;
+	CStarAxisInfo& operator=(const CStarAxisInfo&) = default;
 };
 
 inline	void NormalizeAngle(int & lAngle)
@@ -94,57 +73,57 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 	double						fMaxHalfRadius = 0.0;
 	double						fMaxCumulated  = 0.0;
 	int						lMaxHalfRadiusAngle = 0.0;
-	int						lAngle;
 
 	// Preallocate the vector for the inner loop.
 	PIXELDISPATCHVECTOR		vPixels;
 	vPixels.reserve(10);
 
-	for (lAngle = 0;lAngle<360;lAngle+=10)
+	const int width = pBitmap->Width();
+	const int height = pBitmap->Height();
+
+	for (int lAngle = 0; lAngle < 360; lAngle += 10)
 	{
-		CStarAxisInfo			ai;
 		double					fSquareSum = 0.0;
 		double					fSum	   = 0.0;
 		double					fNrValues  = 0.0;
-		double					fStdDev	   = 0.0;
 
-		ai.m_lAngle = lAngle;
-		for (double fPos = 0.0;fPos<=star.m_fMeanRadius*2.0;fPos+=0.10)
+		for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
 		{
-			double		fX = star.m_fX + cos(lAngle*M_PI/180.0)*fPos,
-						fY = star.m_fY + sin(lAngle*M_PI/180.0)*fPos;
-			double		fLuminance = 0;
+			constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
+			const double fX = star.m_fX + std::cos(lAngle * GradRadFactor) * fPos;
+			const double fY = star.m_fY + std::sin(lAngle * GradRadFactor) * fPos;
+			double fLuminance = 0;
 
 			// Compute luminance at fX, fY
 			vPixels.resize(0);
 			ComputePixelDispatch(QPointF(fX, fY), vPixels);
 
-			for (int k = 0;k<vPixels.size();k++)
+			for (const CPixelDispatch& pixel : vPixels)
 			{
-				double				fValue;
+				const size_t x = static_cast<size_t>(std::clamp(pixel.m_lX, 0, width - 1));
+				const size_t y = static_cast<size_t>(std::clamp(pixel.m_lY, 0, height - 1));
 
-				pBitmap->GetPixel(vPixels[k].m_lX, vPixels[k].m_lY, fValue);
-				fLuminance += fValue * vPixels[k].m_fPercentage;
-			};
-			fSquareSum	+= pow(fPos, 2) * fLuminance * 2;
-			fSum		+= fLuminance;
-			fNrValues	+= fLuminance * 2;
-		};
+				double fValue;
+				pBitmap->GetPixel(x, y, fValue);
+				fLuminance += fValue * pixel.m_fPercentage;
+			}
+			fSquareSum += fPos * fPos * fLuminance * 2;
+			fSum += fLuminance;
+			fNrValues += fLuminance * 2;
+		}
 
-		if (fNrValues)
-			fStdDev = sqrt(fSquareSum/fNrValues);
-		ai.m_fRadius = fStdDev * 1.5;
-		ai.m_fSum    = fSum;
+		const double fStdDev = fNrValues > 0.0 ? std::sqrt(fSquareSum / fNrValues) : 0.0;
+		CStarAxisInfo ai{ lAngle, fStdDev * 1.5, fSum };
 
 		if (ai.m_fSum > fMaxCumulated)
 		{
 			fMaxCumulated		= ai.m_fSum;
 			fMaxHalfRadius		= ai.m_fRadius;
 			lMaxHalfRadiusAngle = ai.m_lAngle;
-		};
+		}
 
-		vStarAxises.push_back(ai);
-	};
+		vStarAxises.push_back(std::move(ai));
+	}
 
 	// Get the biggest value - this is the major axis
 	star.m_fLargeMajorAxis = fMaxHalfRadius;
@@ -162,8 +141,8 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fSmallMajorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 90;
@@ -175,8 +154,8 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fLargeMinorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 210;
@@ -188,11 +167,11 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
