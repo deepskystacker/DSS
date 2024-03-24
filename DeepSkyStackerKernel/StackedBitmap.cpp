@@ -34,6 +34,7 @@ CStackedBitmap::~CStackedBitmap() = default;
 
 namespace {
 	thread_local constinit int lastY = -1;
+	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
 }
 
 
@@ -71,8 +72,8 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 	if (bApplySettings)
 	{
 		const size_t bufferLen = this->m_lWidth;
-		if (!static_cast<bool>(this->pAvxBezierAndSaturation))
-			this->pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
+		if (!static_cast<bool>(pAvxBezierAndSaturation))
+			pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
 
 		if (lastY != Y) // New row (lastY is thread_local and initialised to -1, see above).
 		{

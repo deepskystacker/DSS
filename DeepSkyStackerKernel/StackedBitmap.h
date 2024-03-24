@@ -157,8 +157,6 @@ private:
 	CRGBHistogramAdjust 		m_HistoAdjust;
 	CBitmapInfo	bmpInfo;
 
-	std::unique_ptr<class AvxBezierAndSaturation> pAvxBezierAndSaturation{};
-
 private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
