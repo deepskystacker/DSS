@@ -197,7 +197,7 @@ private:
 	virtual bool OnClose() { return true; };
 
 private:
-	void decodeCfaDimPat(int patternSize);
+	void decodeCfaDimPat(int patternSize, const char* tagName);
 };
 
 /* ------------------------------------------------------------------- */

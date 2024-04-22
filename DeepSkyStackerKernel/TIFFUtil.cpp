@@ -111,40 +111,39 @@ CTIFFReader::CTIFFReader(const fs::path& p, ProgressBase* pProgress) :
 	m_pProgress{ pProgress }
 {}
 
-void CTIFFReader::decodeCfaDimPat(int patternSize)
+void CTIFFReader::decodeCfaDimPat(int patternSize, const char* tagName)
 {
-	ZTRACE_RUNTIME("CFA pattern dimension: %hhux%hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
+	ZTRACE_RUNTIME("TIFF - Get CFA type from %s", tagName);
+	ZTRACE_RUNTIME("CFA pattern dimension: %hhu x %hhu", cfaDimPat.dim[0], cfaDimPat.dim[1]);
+
+	const auto setCfaType = [this](const decltype(CTIFFHeader::cfatype) type) {
+		this->cfatype = type;
+		this->cfa = (type != CFATYPE_NONE);
+	};
 
 	if (4 == patternSize)
 	{
-		ZTRACE_RUNTIME("CFAPATTERN: %hhu%hhu%hhu%hhu",
-			cfaDimPat.cfa.cfa4[0],
-			cfaDimPat.cfa.cfa4[1],
-			cfaDimPat.cfa.cfa4[2],
-			cfaDimPat.cfa.cfa4[3]);
+		ZTRACE_RUNTIME("CFAPATTERN: %hhu%hhu%hhu%hhu", cfaDimPat.cfa.cfa4[0], cfaDimPat.cfa.cfa4[1], cfaDimPat.cfa.cfa4[2], cfaDimPat.cfa.cfa4[3]);
+
 		if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to RGGB");
-			cfa = 1;
-			cfatype = CFATYPE_RGGB;
+			setCfaType(CFATYPE_RGGB);
 		}
 		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_BGGR.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to BGGR");
-			cfa = 1;
-			cfatype = CFATYPE_BGGR;
+			setCfaType(CFATYPE_BGGR);
 		}
 		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GRBG.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to GRBG");
-			cfa = 1;
-			cfatype = CFATYPE_GRBG;
+			setCfaType(CFATYPE_GRBG);
 		}
 		else if (0 == memcmp(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_GBRG.data(), sizeof(cfaDimPat.cfa.cfa4)))
 		{
 			ZTRACE_RUNTIME("CFAType set to GBRG");
-			cfa = 1;
-			cfatype = CFATYPE_GBRG;
+			setCfaType(CFATYPE_GBRG);
 		}
 		else
 		{
@@ -214,14 +213,14 @@ bool CTIFFReader::Open()
 	{
 		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
-		cfa = 0;
+		cfa = false;
+		cfatype = CFATYPE_NONE;
 		master = 0;
 		samplemin = 0;
 		samplemax = 1.0;
 		exposureTime = 0.0;
 		isospeed = 0;
 		gain = -1;
-		cfatype = CFATYPE_NONE;
 
 		TIFFGetField(m_tiff,TIFFTAG_IMAGEWIDTH, &w);
         TIFFGetField(m_tiff,TIFFTAG_IMAGELENGTH, &h);
@@ -343,12 +342,12 @@ bool CTIFFReader::Open()
 					count = unionLong.Short1;
 					ZASSERT(count == patternSize && count <= sizeof(cfaDimPat.cfa));
 					memcpy(&cfaDimPat.cfa, pVoidArray, count);
-					decodeCfaDimPat(patternSize);
+					decodeCfaDimPat(patternSize, "TIFFTAG_CFAPATTERN");
 				}
 			}
 		}
 
-		if (!dwSkipExifInfo)
+		if (dwSkipExifInfo == 0)
 		{
 			// Try to read EXIF data
 			uint64_t ExifID;
@@ -382,14 +381,14 @@ bool CTIFFReader::Open()
 					//
 					// If we've not yet detected a cfa pattern interrogate EXIFTAG_CFAPATTERN
 					//
-					if (!cfa)
+					if (!cfa && spp == 1)
 					{
 						ZTRACE_RUNTIME("Checking for EXIF_CFAPATTERN tag");
 
 						if (TIFFGetField(m_tiff, EXIFTAG_CFAPATTERN, &unionLong, &pVoidArray))
 						{
 							memcpy(&cfaDimPat, pVoidArray, unionLong.Short1);
-							decodeCfaDimPat(cfaDimPat.dim[0] * cfaDimPat.dim[1]);
+							decodeCfaDimPat(cfaDimPat.dim[0] * cfaDimPat.dim[1], "EXIFTAG_CFAPATTERN");
 						}
 					}
 
@@ -416,13 +415,15 @@ bool CTIFFReader::Open()
 		// If we have not yet found a setting for the CFA look to see if
 		// it is recorded in our private TIFF tags.
 		//
-		if (!cfa)
+		if (!cfa && spp == 1)
 		{
 			ZTRACE_RUNTIME("CFAType not yet set: Checking DSS private TIFF tags");
-			int32_t cfaValue{ 0 };
+			int32_t cfaValue = 0;
+
 			if (!TIFFGetField(m_tiff, TIFFTAG_DSS_CFA, &cfaValue))
 				cfaValue = 0;
-			if (0 != cfaValue) cfa = true;
+			if (0 != cfaValue)
+				cfa = true;
 			if (TIFFGetField(m_tiff, TIFFTAG_DSS_CFATYPE, &cfatype))
 			{
 				ZTRACE_RUNTIME("CFAType set to %u", cfatype);
@@ -439,14 +440,13 @@ bool CTIFFReader::Open()
 		// If this file is an eight bit TIFF, and purports to have a Bayer pattern
 		// inform the the user that we aren't going to play
 		//
-		if ((1 == spp) &&
-			(8 == bps) &&
-			(CFATYPE_NONE != cfa))
+		if ((1 == spp) && (8 == bps) && cfa)
 		{
 			// 
 			// Set CFA type to none even if the TIFF tags specified otherwise
 			//
-			cfatype = CFATYPE_NONE; cfa = false;
+			cfatype = CFATYPE_NONE;
+			cfa = false;
 			QString errorMessage{ QCoreApplication::translate("TIFFUtil",
 									"DeepSkyStacker will not de-Bayer 8 bit images",
 									"IDS_8BIT_FITS_NODEBAYER") };
