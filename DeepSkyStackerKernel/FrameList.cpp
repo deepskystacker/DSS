@@ -934,8 +934,9 @@ namespace DSS
 		{
 			group.pictures->clear();
 		}
-		imageGroups.resize(2);
+		imageGroups.resize(1);
 		Group::reset();
+		addGroup();
 	}
 
 	size_t FrameList::groupSize(const int id) const

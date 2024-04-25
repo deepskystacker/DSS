@@ -50,7 +50,7 @@ namespace DSS
 		//
 		// Initial group id is zero
 		//
-		inline static IndexType nextIndex{ 0 };
+		inline static constinit IndexType nextIndex{ 0 };
 		//
 		// Map of files to group id - used to check which group refers to a file (maybe none)
 		//
