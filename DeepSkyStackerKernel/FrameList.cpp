@@ -914,7 +914,7 @@ namespace DSS
 	// Change the name of the specified group
 	void FrameList::setGroupName(int id, const QString& name)
 	{
-		ZASSERTSTATE(id >= 0 && id < imageGroups.size());
+		ZASSERTSTATE(id == -1 || id < imageGroups.size()); // MT, April 2024: Note: Be very careful with signed/unsigned comparisons! -1 < imageGroups.size() IS FALSE!
 		if (-1 == id)
 			id = index;	// set to current group
 
