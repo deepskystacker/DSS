@@ -237,6 +237,9 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private:
+
+		static constexpr const char FileListExtension[] = ".dssfilelist";
+
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
 		bool initialised;
@@ -314,9 +317,9 @@ namespace DSS
 
 		void switchGroup(int);
 
-		void loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
+		void loadList(MRUPath& MRUList, const QString&);
 
-		void saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
+		void saveList(MRUPath& MRUList, const QString&);
 
 		bool isValidImage(const fs::path& path);
 

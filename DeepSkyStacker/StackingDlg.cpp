@@ -1158,7 +1158,7 @@ namespace DSS
 		QLocale locale;
 		std::vector<fs::path> files;
 		std::vector<fs::path> masters;
-		const QStringList ignoreExtensions{ "txt", "html", "dssfilelist" };
+		const QStringList ignoreExtensions{ "txt", "html", FileListExtension };
 
 		size_t fileCount{ 0 };
 
@@ -1814,7 +1814,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		if (checkWorkspaceChanges())
 		{
-			if (mruPath.paths.size())
+			if (!mruPath.paths.empty())
 			{
 				openAnother = false;
 				QMenu filelistMenu(this);
@@ -1830,13 +1830,12 @@ namespace DSS
 
 					QAction* action = filelistMenu.addAction(name);
 					action->setData(i);		// Index into the list of files
-
-				};
+				}
 				filelistMenu.addSeparator();
 				QAction* loadAnother = filelistMenu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
 				QAction* a = filelistMenu.exec(pt);
-				if (a)
+				if (a != nullptr)
 				{
 					if (loadAnother == a)
 						openAnother = true;
@@ -1861,13 +1860,15 @@ namespace DSS
 			QString name;
 			loadList(mruPath, name);
 			dssApp->setWindowFilePath(name);
-		};
+		}
+
 		updateGroupTabs();
 		updateListInfo();
-		raise(); show();
+		raise();
+		show();
 	}
 
-	void StackingDlg::loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, const QString&)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1881,7 +1882,7 @@ namespace DSS
 		extension = settings.value("Folders/ListExtension").toString();
 
 		if (extension.isEmpty())
-			extension = ".dssfilelist";
+			extension = FileListExtension;
 
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
@@ -1895,12 +1896,14 @@ namespace DSS
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			QStringList files = fileDialog.selectedFiles();
 
-			for (int i = 0; i < files.size(); i++)
+			for (qsizetype i = 0; i < files.size(); i++)
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				const fs::path file{ files.at(i).toStdU16String() }; // as UTF-16
 
 				frameList.loadFilesFromList(file);
 				MRUList.Add(file);
+				if (i == 0)
+					fileList = file; // The first selected file-list will be remembered.
 
 				if (file.has_parent_path())
 					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
@@ -1926,16 +1929,16 @@ namespace DSS
 
 		saveList(mruPath, name);
 		dssApp->setWindowFilePath(name);
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, const QString&)
 	{
 		ZFUNCTRACE_RUNTIME();
-		QSettings					settings;
+		QSettings settings;
 		QString directory;
-		QString	extension;
+		QString extension;
 
 		QFileDialog			fileDialog;
 
@@ -1944,7 +1947,7 @@ namespace DSS
 		extension = settings.value("Folders/ListExtension").toString();
 
 		if (extension.isEmpty())
-			extension = ".dssfilelist";
+			extension = FileListExtension;
 
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::AnyFile);
@@ -1962,21 +1965,18 @@ namespace DSS
 
 			ZASSERTSTATE(1 == files.size());
 
-			for (int i = 0; i < files.size(); i++)
-			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
-				fileList = file;		// save this filelist
+			const fs::path file(files.at(0).toStdU16String()); // as UTF-16
+			fileList = file;		// save this filelist
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+			if (file.has_parent_path())
+				directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+			else
+				directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+			extension = QString::fromStdU16String(file.extension().generic_u16string());
 
-				frameList.saveListToFile(file);
-				MRUList.Add(file);
-			}
+			frameList.saveListToFile(file);
+			MRUList.Add(file);
 
 			QGuiApplication::restoreOverrideCursor();
 
@@ -1984,10 +1984,7 @@ namespace DSS
 			settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
 			settings.setValue("Folders/ListExtension", extension);
 		}
-
 	}
-
-	/* ------------------------------------------------------------------- */
 
 	/* ------------------------------------------------------------------- */
 
@@ -2279,14 +2276,15 @@ namespace DSS
 	{
 		bool						bResult = false;
 
-		if (!fileList.empty() || Group::fileCount())
+		if (!fileList.empty() || Group::fileCount() != 0)
 		{
 			Workspace workspace;
 
 			//
 			// Don't ask to save the the file list if a batch stacking operation is in progress.
 			//
-			if (frameList.batchStacking()) return true;			
+			if (frameList.batchStacking())
+				return true;			
 
 			if (frameList.dirty() || workspace.isDirty())
 			{
@@ -2388,6 +2386,7 @@ namespace DSS
 		}
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 		{
 			// Stack registered light frames
 			CStackingEngine StackingEngine;
