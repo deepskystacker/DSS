@@ -2536,6 +2536,8 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 {
 	ZFUNCTRACE_RUNTIME();
 
+	constexpr const char* AutoSave = "Autosafe";
+
 	// Retrieve the first light frame
 	COutputSettings OutputSettings;
 	CAllStackingTasks::GetOutputSettings(OutputSettings);
@@ -2559,20 +2561,17 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 
 	folder.remove_filename();
 
-	fs::path name{ file.stem() };
+	fs::path name{ file.stem() }; // Filename of the output file WITHOUT EXTENSION.
 
 	if (name.empty())
 	{
 		if (OutputSettings.m_bAutosave || fileList.empty())
-			name = "Autosave";
+			name = AutoSave;
 		else
 		{
-			//
-			// Change to use filename() instead of .stem() so we handle filelist names such as Batch1.xxxx.dssfilelist properly
-			//
-			name = fileList.filename();
+			name = fileList.stem();
 			if (name.empty())
-				name = "Autosave";
+				name = AutoSave;
 		}
 	}
 
@@ -2594,13 +2593,13 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 		QString suffix;
 		do
 		{
-			fs::path newName{ name };
+			fs::path newName{ name }; // newName does not yet have an extension.
 			if (i > 0)
 			{
 				suffix = QString("%1").arg(i, 3, 10, QLatin1Char('0'));
 				newName += suffix.toStdU16String();
 			}
-			outputFile.replace_filename(newName.replace_extension(extension));
+			outputFile.replace_filename(newName += extension);
 
 			fileExists = exists(outputFile);
 			if (!fileExists) break;
