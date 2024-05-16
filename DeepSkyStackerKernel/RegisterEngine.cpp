@@ -817,21 +817,31 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		}
 	};
 
-	const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars) -> void
+	std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
+
+	const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
+		const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer) -> void
 	{
-		const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
-
-		for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+		try
 		{
-			const int top = StarMaxSize + rowNdx * stepSize;
-			const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
+			const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
 
-			for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-				nStars += RegisterSubRect(&Bitmap, DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+			for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+			{
+				const int top = StarMaxSize + rowNdx * stepSize;
+				const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
+
+				for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
+					nStars += RegisterSubRect(&Bitmap, DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+			}
+		}
+		catch (...)
+		{
+			ePointer = std::current_exception();
 		}
 	};
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
 #pragma omp master // There is no implied barrier.
 		ZTRACE_RUNTIME("Registering with %d OpenMP threads.", omp_get_num_threads());
@@ -839,16 +849,16 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	{
 		// Upper left area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1);
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[0]);
 		// Upper right area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2);
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2, ePointers[1]);
 		// Lower left area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3);
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3, ePointers[2]);
 		// Lower right area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4);
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4, ePointers[3]);
 	}
 
 #pragma omp sections
@@ -864,11 +874,11 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		stars1.merge(stars3);
 		// Remaining areas, all are overlapping with at least one other.
 		// Vertically middle band, full height
-		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
+		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1, ePointers[4]);
 		// Middle left
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[4]);
 		// Middle right
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1, ePointers[4]);
 
 		m_vStars.assign(stars1.cbegin(), stars1.cend());
 	}
@@ -881,6 +891,15 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		ComputeFWHM();
 	}
 } // omp parallel
+
+	//
+	// If there was at least one exception in the parallel OpenMP code -> re-throw it.
+	//
+	for (std::exception_ptr e : ePointers)
+	{
+		if (e != nullptr)
+			std::rethrow_exception(e);
+	}
 
 	if (m_pProgress)
 		m_pProgress->End2();
