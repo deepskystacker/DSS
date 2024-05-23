@@ -154,75 +154,64 @@ typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
 
-inline int	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
+// Returns the index of the nearest star in the star-vector.
+inline int FindNearestStar(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
 {
-	int			lResult = -1;
-	double			fMinDistance = -1;
-
+	int lResult = -1;
+	double minDistanceSqr = std::numeric_limits<double>::max();
 	bIn = false;
-	fDistance = -1.0;
-	for (int i = 0;i<vStars.size();i++)
+
+	for (int i = 0; const auto& star : vStars)
 	{
-		// Compute the distance
-		if (!vStars[i].m_bRemoved)
+		if (!star.m_bRemoved)
 		{
-			double		fTestDistance;
-			double		fdX, fdY;
+			const double dx = star.m_fX - fX;
+			const double dy = star.m_fY - fY;
+			const double testDistanceSqr = dx * dx + dy * dy;
 
-			fdX = vStars[i].m_fX-fX;
-			fdY = vStars[i].m_fY-fY;
-
-			fTestDistance = sqrt(fdX*fdX+fdY*fdY);
-			if ((fTestDistance < fMinDistance) || fMinDistance<0)
+			if (testDistanceSqr < minDistanceSqr)
 			{
-				fMinDistance = fTestDistance;
+				minDistanceSqr = testDistanceSqr;
 				lResult = i;
-				bIn = vStars[i].IsInRadius(QPointF(fX, fY));
-				fDistance = fMinDistance;
-			};
-		};
-	};
-
-	return lResult;
-};
-
-inline int	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
-{
-	int			lResult = -1;
-	double			fMinDistance = -1;
-	STARITERATOR	it;
-
-	bIn = false;
-	it = std::lower_bound(vStars.begin(), vStars.end(), CStar(fX-fDistance, 0));
-	while (it != vStars.end())
-	{
-		// Compute the distance
-		if (!(*it).m_bRemoved)
-		{
-			if ((*it).m_fX > fX+fDistance)
-				it = vStars.end();
-			else
-			{
-				double		fTestDistance;
-				double		fdX, fdY;
-
-				fdX = (*it).m_fX-fX;
-				fdY = (*it).m_fY-fY;
-
-				fTestDistance = sqrt(fdX*fdX+fdY*fdY);
-				if ((fTestDistance < fMinDistance) || fMinDistance<0)
-				{
-					fMinDistance = fTestDistance;
-					lResult = it-vStars.begin();
-					bIn = (*it).IsInRadius(QPointF(fX, fY));
-					fDistance = fTestDistance;
-				};
-				it++;
-			};
+				bIn = star.IsInRadius(QPointF{ fX, fY });
+			}
 		}
-		else
-			it++;
-	};
+		++i;
+	}
+
+	fDistance = lResult >= 0 ? std::sqrt(minDistanceSqr) : -1.0;
 
 	return lResult;
-};
+}
+
+inline int FindNearestStarWithinDistance(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
+{
+	const double distanceRange = fDistance;
+	int lResult = -1;
+	double minDistanceSqr = std::numeric_limits<double>::max();
+	bIn = false;
+
+	// First star right of fx - distanceRange.
+	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0 }, std::less{});
+	while (it != std::cend(vStars) && it->m_fX <= fX + distanceRange) // While star is left of fx + distanceRange
+	{
+		if (!it->m_bRemoved && std::abs(it->m_fY - fY) <= distanceRange) // y-distance smaller than distanceRange ?
+		{
+			const double dx = it->m_fX - fX;
+			const double dy = it->m_fY - fY;
+			const double testDistanceSqr = dx * dx + dy * dy;
+
+			if (testDistanceSqr < minDistanceSqr)
+			{
+				minDistanceSqr = testDistanceSqr;
+				lResult = std::distance(vStars.cbegin(), it);
+				bIn = it->IsInRadius(QPointF{ fX, fY });
+			}
+		}
+		++it;
+	}
+
+	fDistance = lResult >= 0 ? std::sqrt(minDistanceSqr) : -1.0;
+
+	return lResult;
+}

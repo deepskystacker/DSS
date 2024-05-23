@@ -170,7 +170,7 @@ namespace DSS
 		bool event(QEvent* event) override;
 		void keyPressEvent(QKeyEvent* event) override;
 		void paintEvent(QPaintEvent*) override;
-		void showEvent(QShowEvent* e);
+		void showEvent(QShowEvent* e) override;
 
     private:
         ImageView* imageView;

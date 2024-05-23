@@ -203,6 +203,9 @@ namespace DSS
 			computeBackgroundValue();
 	}
 
+	//
+	// refStars are the detected stars in the reference frame.
+	//
 	void EditStars::setRefStars(STARVECTOR const& Stars)
 	{
 		if (g_bShowRefStars)
@@ -431,6 +434,10 @@ namespace DSS
 		}
 	}
 
+	//
+	// pt = mouse cursor
+	// rcCheck = rectangle around mouse cursor to detect stars there. Is an output parameter.
+	//
 	void EditStars::detectStars(const QPointF& pt, QRect& rcCheck, STARVECTOR& vStars)
 	{
 		// Create a 3*STARMAXSIZE + 1 square rectangle centered on the point
@@ -463,13 +470,14 @@ namespace DSS
 			rcCheck.setTop(rcCheck.bottom() - RCCHECKSIZE);
 		};
 
-		initGrayBitmap(rcCheck);
+		initGrayBitmap(rcCheck); // rcCheck: l=MouseX-126, r=MouseX+126, t=MouseY-126, b=MouseY+126
 
 		CRegisteredFrame regFrame;
 		DSSRect	rcReg{ STARMAXSIZE, STARMAXSIZE, 
-			rcCheck.width() - (STARMAXSIZE + 1), rcCheck.height() - (STARMAXSIZE + 1) };
+			rcCheck.width() - (STARMAXSIZE + 1), rcCheck.height() - (STARMAXSIZE + 1) }; // left=50, top=50, right=202, bottom=202
 		STARSET starsInRect;
 
+		// Find stars in rectangle around mouse cursor with a border of 50 pixels.
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, starsInRect);
 
@@ -504,6 +512,9 @@ namespace DSS
 		QPen pen(Qt::red, 1.0);
 		painter.setPen(pen);
 
+		//
+		// If showRefStars: Red circles around the according stars in the reference frame (= refStars).
+		//
 		if (g_bShowRefStars && !m_bCometMode)
 		{
 			for (int i = 0; i < refStars.size(); i++)
@@ -547,7 +558,9 @@ namespace DSS
 				QRect		rc;
 
 				double		fX, fY;
-
+				//
+				// Circles around registered stars
+				//
 				fX = stars[i].m_fX - stars[i].m_fMeanRadius + 0.5;
 				fY = stars[i].m_fY - stars[i].m_fMeanRadius + 0.5;
 				imageView->imageToScreen(fX, fY);
@@ -568,6 +581,7 @@ namespace DSS
 
 				painter.drawEllipse(rc);
 
+				// Large stars get an additional cross inside the circle
 				if (rc.width() > 10 && rc.height() > 10)
 				{
 					fX = stars[i].m_fX + 0.5;
@@ -577,6 +591,8 @@ namespace DSS
 					painter.drawLine(QPointF(fX, fY - 5), QPointF(fX, fY + 6));
 				};
 
+				// If showRefStars: Line from ref-star to target-star.
+				// (target-star: star in the current frame, ref-star: according star in the reference frame).
 				if (g_bShowRefStars && refStars.size())
 				{
 					QPointF			ptOrg;
@@ -599,6 +615,7 @@ namespace DSS
 
 				};
 
+				// If showRefStars: Line in direction of large majos axis.
 				if (g_bShowRefStars && stars[i].m_fLargeMajorAxis > 0)
 				{
 					QPointF	ptOrg{ stars[i].m_fX + 0.5, stars[i].m_fY + 0.5 };
@@ -613,8 +630,11 @@ namespace DSS
 					painter.drawLine(ptOrg, ptDst);
 				};
 			};
-		};
+		}; // Loop over stars
 
+		//
+		// Purple circle around comet.
+		//
 		if (m_bComet)
 		{
 			double					fX = m_fXComet, fY = m_fYComet;
@@ -631,6 +651,10 @@ namespace DSS
 			painter.drawEllipse(QRectF(fX - fCometSize / 2, fY - fCometSize / 2, fCometSize, fCometSize));
 		};
 
+		//
+		// Boxes around detected/potential stars.
+		// Options to add/remove them or the comet.
+		//
 		m_Action = EditStarAction::None;
 		if (m_ptCursor.x() >= 0 && m_ptCursor.y() >= 0)
 		{
@@ -646,6 +670,8 @@ namespace DSS
 			bool					bShowAction = false;
 			CStar					star;
 
+			// Find stars in rectangle around mouse cursor.
+			// Output: rcCheck = checked rectangle, vStars = detected stars.
 			detectStars(m_ptCursor, rcCheck, vStars);
 
 			auto lNearestNewStar = FindNearestStar(m_ptCursor.x() - rcCheck.left(), m_ptCursor.y() - rcCheck.top(), vStars, bInNewStar, fNearestNewStarDistance);
@@ -663,12 +689,11 @@ namespace DSS
 					if (m_bComet)
 					{
 						// Check for comet removal
-						if ((lNearestNewStar >= 0) &&
-							vStars[lNearestNewStar].IsInRadius(m_fXComet - rcCheck.left(), m_fYComet - rcCheck.top()))
+						if ((lNearestNewStar >= 0) && vStars[lNearestNewStar].IsInRadius(m_fXComet - rcCheck.left(), m_fYComet - rcCheck.top()))
 							bRemoveComet = true;
-						else if ((lNearestOldStar > 0) &&
-							stars[lNearestOldStar].IsInRadius(m_fXComet, m_fYComet))
+						else if ((lNearestOldStar >= 0) && stars[lNearestOldStar].IsInRadius(m_fXComet, m_fYComet))
 							bRemoveComet = true;
+
 						if (bRemoveComet)
 						{
 							star.m_fX = m_fXComet;

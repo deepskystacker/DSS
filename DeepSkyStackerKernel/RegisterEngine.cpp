@@ -66,7 +66,7 @@ void CRegisteredFrame::Reset()
 	m_fFWHM = 0;
 }
 
-bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
+bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 {
 	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
@@ -175,7 +175,7 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
+bool CRegisteredFrame::ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
 {
 	int				i, j;
 	double				fSumX = 0,
@@ -286,7 +286,7 @@ namespace {
 	};
 }
 
-size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
+size_t CRegisteredFrame::RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
 {
 	double fMaxIntensity = std::numeric_limits<double>::min();
 	std::vector<int> vHistogram;
