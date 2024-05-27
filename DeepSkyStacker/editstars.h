@@ -46,14 +46,14 @@ namespace DSS
 {
 	class ImageView;
 
-	enum class EditStarAction
-	{
-		None = 0,
-		AddStar = 1,
-		RemoveStar = 2,
-		SetComet = 3,
-		ResetComet = 4
-	};
+//	enum class EditStarAction
+//	{
+//		None = 0,
+//		AddStar,
+//		RemoveStar,
+//		SetComet,
+//		ResetComet
+//	};
 
 	class DelaunayTriangle
 	{
@@ -93,35 +93,35 @@ namespace DSS
 
 	typedef std::vector<DelaunayTriangle>	DelaunayTriangleVector;
 
-	class QualityGrid
-	{
-	public:
-		DelaunayTriangleVector	triangles;
-		double					mean;
-		double					stdDev;
+//	class QualityGrid
+//	{
+//	public:
+//		DelaunayTriangleVector	triangles;
+//		double					mean;
+//		double					stdDev;
+//
+//	private:
+//	public:
+//		QualityGrid() :
+//			mean{ 0.0 },
+//			stdDev{ 0.0 }
+//		{
+//		};
+//
+//		void	InitGrid(STARVECTOR& vStars);
+//
+//		void	clear()
+//		{
+//			triangles.clear();
+//		};
+//
+//		bool	empty()
+//		{
+//			return triangles.empty();
+//		};
+//	};
 
-	private:
-	public:
-		QualityGrid() :
-			mean{ 0.0 },
-			stdDev{ 0.0 }
-		{
-		};
-
-		void	InitGrid(STARVECTOR& vStars);
-
-		void	clear()
-		{
-			triangles.clear();
-		};
-
-		bool	empty()
-		{
-			return triangles.empty();
-		};
-	};
-
-    class EditStars : public QWidget
+    class EditStars final : public QWidget
     {
         Q_OBJECT
 
@@ -132,15 +132,13 @@ namespace DSS
 		explicit EditStars(QWidget* parent);
 
         // No assignment of or copy construction of this
-        EditStars(const EditStars& rhs) = delete;
-        EditStars& operator = (const EditStars& rhs) = delete;
+        EditStars(const EditStars&) = delete;
+		EditStars(EditStars&&) = delete;
+        EditStars& operator=(const EditStars&) = delete;
 
-        virtual ~EditStars() {};
+		~EditStars() = default;
 
-		inline bool isDirty()
-		{
-			return m_bDirty;
-		};
+		bool isDirty() const;
 
 		void setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP);
 		void setBitmap(std::shared_ptr<CMemoryBitmap> bmp);
@@ -173,68 +171,49 @@ namespace DSS
 		void showEvent(QShowEvent* e) override;
 
     private:
+		enum class EditStarAction {
+			None = 0,
+			Add,
+			Remove
+		};
         ImageView* imageView;
         QString fileName;
         STARVECTOR	stars;
         STARVECTOR	refStars;
-        std::shared_ptr<CMemoryBitmap> m_pBitmap;
+//      std::shared_ptr<CMemoryBitmap> m_pBitmap;
         CBilinearParameters transformation;
         VOTINGPAIRVECTOR vVotedPairs;
-		QPointF					m_ptCursor;
-		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
-		EditStarAction				m_Action;
-		CStar						m_AddedStar;
-		int							m_lRemovedIndice;
-		bool						m_bRemoveComet;
-		bool						m_bCometMode;
-		double						m_fXComet, m_fYComet;
-		bool						m_bComet;
-		double						m_fLightBkgd;
-		bool						m_bDirty;
-		double						m_fScore;
-		int							m_lNrStars;
-		double						m_fFWHM;
-		double						m_fBackground;
-		QualityGrid					m_QualityGrid;
+		QPointF m_ptCursor;
+//		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
+		EditStarAction m_Action;
+		CStar m_SelectedStar;
+//		int							m_lRemovedIndice;
+//		bool						m_bRemoveComet;
+		bool m_bCometMode;
+		double m_fXComet;
+		double m_fYComet;
+		bool m_bComet;
+		double m_fLightBkgd;
+		bool m_bDirty;
+		double m_fScore;
+		int m_lNrStars;
+		double m_fFWHM;
+//		double						m_fBackground;
+//		QualityGrid					m_QualityGrid;
 		bool forceHere;
-		bool displayGrid;
-		uint m_tipShowCount;
+//		bool displayGrid;
+//		uint m_tipShowCount;
 
 		template <bool Refstar>
-		bool isStarVoted(const int star)
+		bool isStarVoted(const int starIndex)
 		{
-			bool bResult = false;
-			if (g_bShowRefStars)
-			{
-				if (!vVotedPairs.empty())
-				{
-					for (const auto& votedPair : vVotedPairs)
-					{
-						if constexpr (Refstar)
-						{
-							if (star == votedPair.m_RefStar)
-							{
-								bResult = true;
-								break;
-							}
-						}
-						else
-						{
-							if (star == votedPair.m_TgtStar)
-							{
-								bResult = true;
-								break;
-							}
-						}
-					}
-				}
-				else
-					bResult = true;
-			}
-			else
-				bResult = true;
+			if (!g_bShowRefStars || this->vVotedPairs.empty())
+				return true;
 
-			return bResult;
+			if constexpr (Refstar)
+				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_RefStar == starIndex; }) != vVotedPairs.end();
+			else
+				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_TgtStar == starIndex; }) != vVotedPairs.end();
 		}
 
 		bool isRefStarVoted(const int lStar)
@@ -248,32 +227,21 @@ namespace DSS
 		}
 
 
-		void initGrayBitmap(const QRect& rc);
-		void detectStars(const QPointF& pt, QRect& rc, STARVECTOR& vStars);
+//		void initGrayBitmap(const QRect& rc);
+//		void detectStars(const QPointF& pt, QRect& rc, STARVECTOR& vStars);
 
-		void computeOverallQuality()
-		{
-			m_fScore = 0.0;
-			m_lNrStars = 0;
-			m_fFWHM = 0;
-			for (size_t i = 0; i < stars.size(); i++)
-			{
-				if (!stars[i].m_bRemoved)
-				{
-					m_fScore += stars[i].m_fQuality;
-					m_lNrStars++;
-					m_fFWHM += stars[i].m_fMeanRadius * 2.35 / 1.5;
-				};
-			};
-			if (m_lNrStars)
-				m_fFWHM /= m_lNrStars;
-		};
+		void computeOverallQuality();
+//		void computeBackgroundValue();
 
-		void computeBackgroundValue();
-
+		template <bool ComputeQuality>
+		void addOrRemoveStar(const CStar& star, const bool remove);
+		template <bool WithCross>
+		void drawCircleAroundStar(const CStar& star, QPainter& painter, const QColor& color, const double radius, const double penWidth) const;
+		void showAction(const CStar& star, QPainter& painter, const bool add) const;
+		void showInfoBox(QPainter& painter, QPen& pen, const QRect& rcClient) const;
 		void draw();
 
-		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
+//		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
 
 		/*!
         \fn void EditStars::setGeometry(const QRect &rect)

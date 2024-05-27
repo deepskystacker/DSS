@@ -48,6 +48,7 @@ using namespace Gdiplus;
 #include <inttypes.h>
 #include <filesystem>
 #include <tuple>
+#include <ranges>
 
 #include "dssbase.h"
 
