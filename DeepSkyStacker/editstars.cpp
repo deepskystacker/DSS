@@ -259,30 +259,18 @@ namespace DSS
 					{
 						qDebug() << "Processing StarAction add comet";
 						if (m_bComet)
-						{
-							auto it = std::ranges::find(stars, CStar{ m_fXComet, m_fYComet });
-							if (it != std::end(stars))
-							{
-								it->m_bRemoved = false;
-							}
-						}
+							addOrRemoveStar<false>(CStar{ m_fXComet, m_fYComet }, false); // If old comet was a star before.
 						m_fXComet = m_SelectedStar.m_fX;
 						m_fYComet = m_SelectedStar.m_fY;
 						m_bComet = true;
-						auto it = std::ranges::find(stars, m_SelectedStar);
-						if (it != std::end(stars)) // It was a star previously
-						{
-							it->m_bRemoved = true;
-						}
+						addOrRemoveStar<false>(m_SelectedStar, true); // It new comet was a star before.
 						computeOverallQuality();
 					}
 					else // Add star
 					{
 						qDebug() << "Processing StarAction add star";
-						auto it = std::ranges::find(stars, m_SelectedStar);
-						it->m_bRemoved = false;
-						computeOverallQuality();
-						if (m_bComet && m_SelectedStar == CStar{ m_fXComet, m_fYComet })
+						addOrRemoveStar<true>(m_SelectedStar, false); // Add star.
+						if (m_bComet && m_SelectedStar == CStar{ m_fXComet, m_fYComet }) // If new star was a comet before.
 							m_bComet = false;
 					}
 				break;
@@ -292,19 +280,12 @@ namespace DSS
 					{
 						qDebug() << "Processing StarAction remove comet";
 						m_bComet = false;
-						auto it = std::ranges::find(stars, CStar{m_fXComet, m_fYComet});
-						if (it != std::end(stars))
-						{
-							it->m_bRemoved = false;
-							computeOverallQuality();
-						}
+						addOrRemoveStar<true>(CStar{ m_fXComet, m_fYComet }, false); // If the comet was a star before.
 					}
 					else // Remove star
 					{
 						qDebug() << "Processing StarAction remove star";
-						auto it = std::ranges::find(stars, m_SelectedStar);
-						it->m_bRemoved = true;
-						computeOverallQuality();
+						addOrRemoveStar<true>(m_SelectedStar, true);
 					}
 				break;
 
