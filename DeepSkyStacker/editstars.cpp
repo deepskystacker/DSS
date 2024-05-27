@@ -441,7 +441,7 @@ namespace DSS
 		{
 			// Get the stars back
 			stars = bmpInfo.GetStars();
-			std::sort(stars.begin(), stars.end());
+			std::ranges::sort(stars);
 			m_bComet = bmpInfo.m_bComet;
 			m_fXComet = bmpInfo.m_fXComet;
 			m_fYComet = bmpInfo.m_fYComet;
@@ -901,8 +901,6 @@ namespace DSS
 		painter.end();
 		return;
 
-
-
 #if (0)
 		if (m_ptCursor.x() >= 0 && m_ptCursor.y() >= 0)
 		{
@@ -1318,7 +1316,6 @@ namespace DSS
 //	};
 
 	/* ------------------------------------------------------------------- */
-
 
 	bool EditStars::event(QEvent* event)
 	{

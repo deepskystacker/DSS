@@ -10,30 +10,22 @@ public:
 	int    bottom;
 
 public:
-	DSSRect(const int l  = 0, const int t = 0, const int r = 0, const int b = 0) noexcept :
+	constexpr DSSRect() :
+		left{ 0 },
+		top{ 0 },
+		right{ 0 },
+		bottom{ 0 }
+	{}
+	explicit constexpr DSSRect(const int l, const int t, const int r, const int b) noexcept :
 		left{ l },
 		top{ t },
 		right{ r },
 		bottom{ b }
 	{} 
 
-	DSSRect(const DSSRect& rc) noexcept
-	{
-		left = rc.left;
-		right = rc.right;
-		top = rc.top;
-		bottom = rc.bottom;
-	};
-
-	const DSSRect& operator = (const DSSRect& rc) noexcept
-	{
-		left = rc.left;
-		right = rc.right;
-		top = rc.top;
-		bottom = rc.bottom;
-
-		return (*this);
-	};
+	DSSRect(const DSSRect&) noexcept = default;
+	DSSRect& operator=(const DSSRect&) noexcept = default;
+	~DSSRect() = default;
 
 	int	width() const
 	{
@@ -43,10 +35,6 @@ public:
 	int	height() const
 	{
 		return bottom - top;
-	};
-
-	~DSSRect()
-	{
 	};
 
 	bool	contains(const QPoint& pt) const

@@ -25,27 +25,23 @@ public:
 
 public:
 	CStar() = default;
-	explicit CStar(const double x, const double y) : m_fX{ x }, m_fY{ y }
+	explicit constexpr CStar(const double x, const double y) : m_fX{ x }, m_fY{ y }
 	{}
 	CStar(const CStar&) = default;
 	CStar& operator=(const CStar&) = default;
 	CStar(CStar&&) = default;
 	~CStar() = default;
 
-	bool operator<(const CStar& ms) const
+	friend constexpr auto operator<=>(const CStar& lhs, const CStar& rhs)
 	{
-		if (m_fX < ms.m_fX)
-			return true;
-		else if (m_fX > ms.m_fX)
-			return false;
-		else
-			return (m_fY < ms.m_fY);
+		if (auto cmp = lhs.m_fX <=> rhs.m_fX; cmp != 0)
+			return cmp;
+		return lhs.m_fY <=> rhs.m_fY;
 	}
-
 	// Two stars are equal if they are at the same position
-	friend bool operator==(const CStar& lhs, const CStar& rhs)
+	friend constexpr auto operator==(const CStar& lhs, const CStar& rhs)
 	{
-		return lhs.m_fX == rhs.m_fX && lhs.m_fY == rhs.m_fY;
+		return operator<=>(lhs, rhs) == 0;
 	}
 
 private:
@@ -76,20 +72,19 @@ public:
 	}
 };
 
-inline bool CompareStarLuminancy (const CStar & ms1, const CStar  & ms2)
-{
-	if (ms1.m_fIntensity > ms2.m_fIntensity)
-		return true;
-	else if (ms1.m_fIntensity < ms2.m_fIntensity)
-		return false;
-	else
-		return (ms1.m_fMeanRadius > ms2.m_fMeanRadius);
-};
-
 typedef std::vector<CStar>		STARVECTOR;
 typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
+
+constexpr bool CompareStarLuminancy(const CStar& ms1, const CStar& ms2)
+{
+	if (ms1.m_fIntensity > ms2.m_fIntensity)
+		return true;
+	if (ms1.m_fIntensity < ms2.m_fIntensity)
+		return false;
+	return (ms1.m_fMeanRadius > ms2.m_fMeanRadius);
+}
 
 // Returns the index of the nearest star in the star-vector.
 inline int FindNearestStar(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
@@ -129,7 +124,7 @@ inline int FindNearestStarWithinDistance(const double fX, const double fY, const
 	bIn = false;
 
 	// First star right of fx - distanceRange.
-	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0 }, std::less{});
+	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0 });
 	while (it != std::cend(vStars) && it->m_fX <= fX + distanceRange) // While star is left of fx + distanceRange
 	{
 		if (!it->m_bRemoved && std::abs(it->m_fY - fY) <= distanceRange) // y-distance smaller than distanceRange ?
