@@ -2536,7 +2536,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 {
 	ZFUNCTRACE_RUNTIME();
 
-	constexpr const char* AutoSave = "Autosafe";
+	constexpr const char AutoSave[] = "Autosave";
 
 	// Retrieve the first light frame
 	COutputSettings OutputSettings;
