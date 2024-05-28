@@ -1942,7 +1942,10 @@ namespace DSS
 
 		QFileDialog			fileDialog;
 
-		directory = settings.value("Folders/ListFolder").toString();
+		const auto& firstLightframe = this->frameList.getFirstCheckedLightFrame();
+		directory = firstLightframe.has_parent_path()
+			? QString::fromStdU16String(firstLightframe.parent_path().generic_u16string())
+			: settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 		extension = settings.value("Folders/ListExtension").toString();
 
