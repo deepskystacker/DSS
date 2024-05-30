@@ -44,7 +44,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		// Output should be identical to input.
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -78,7 +78,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		backgroundCalib.m_liRed.Initialize(0, 0, 1, 0, 0, 1); // This gives "in == out".
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -117,7 +117,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		// Output should be identical to input.
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -155,7 +155,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -201,7 +201,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -251,7 +251,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -314,7 +314,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		backgroundCalib.m_liRed.Initialize(0, -1, 0, 8.35, 1, 3); // => color * 2 + 3
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -357,7 +357,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 //		printf("A: %f, B: %f, C: %f, Min: %f, Max: %f\n", backgroundCalib.m_riRed.getParameterA(), backgroundCalib.m_riRed.getParameterB(), backgroundCalib.m_riRed.getParameterC(), backgroundCalib.m_riRed.getParameterMin(), backgroundCalib.m_riRed.getParameterMax());
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
@@ -409,7 +409,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
-		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 
 		for (int i = 0; i < 10; ++i)
 			REQUIRE(avxEntropy.getRedEntropyLayer()[i] == Approx(1.0f).epsilon(1e-4f));
@@ -466,7 +466,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 			// Img 0, entropies are: 1, 2, 3, 4 / 101, 102, 103, 104.
 			// Img 1, entropies are: 10, 11, 12, 13 / 20, 21, 22, 23.
 			entropyInfo.Init(pTempBitmap, img == 0 ? 10 : 9, nullptr); // Note: entropyInfo always uses window size 10 internally. Here it's used to distinguish img 0 and img 1.
-			REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
+			REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
 		}
 
 		for (int i = 0; i < 10; ++i)
