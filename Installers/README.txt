@@ -9,6 +9,7 @@ Changes since the last release:
 
 2. Bug fix: Monochrome JPEG and PNG images wouldn't load.
 
+5. Change FITSUtil::Open() so that it will correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
