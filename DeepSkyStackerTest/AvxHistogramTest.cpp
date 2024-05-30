@@ -72,7 +72,8 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		REQUIRE(memcmp(blueHisto.data(), expectedBlue.data(), 65536 * sizeof(int)) == 0);
 	}
 
-	SECTION("No calculation for too small arrays")
+	// Since we use the SimdSelector, even small arrays will be processed (by the class NonAvxHistogram).
+	SECTION("Calculation even for small arrays")
 	{
 		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
@@ -82,7 +83,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		// Set to 287
 		pGray->m_vPixels.assign(16 * 4, 287);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 4, 1) == 1);
+		REQUIRE(avxHistogram.calcHistogram(0, 4, 1) == 0);
 	}
 
 	SECTION("Gray pixels, calc 32 lines as 2 x 16")
