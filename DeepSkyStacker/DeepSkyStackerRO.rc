@@ -7,7 +7,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)
 LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
-#pragma code_page(1250)
+#pragma code_page(65001)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -911,7 +911,7 @@ BEGIN
     IDS_FILTER_OUTPUT       "Imagine TIFF (16 bit/ch)|*.TIF|Imagine TIFF (32 bit/ch - integer)|*.TIF|Imagine TIFF (32 bit/ch - rational)|*.TIF| Imagine FITS (16 bit/ch)|*.FTS|Imagine FTS (32 bit/ch - integer)|*.FTS| Imagine FTS|FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista fisiere  (*.txt)|*.txt|Lista fisiere (*.dssfilelist)|*.dssfilelist|Toate fisierele|*.*||"
     IDS_FILTER_MASK         "Imagine TIFF |*.tif;*.tiff|Imagine FITS |*.fits;*.fts;*.fit||"
-    IDS_TITLE_MASK          "Salvaþi StarMask ca ..."
+    IDS_TITLE_MASK          "SalvaÅ£i StarMask ca ..."
     IDS_TITLE_OPENLIGHTFRAMES "Deschide cadre Light..."
     IDS_TITLE_OPENDARKFRAMES "Deschide cadre Dark..."
 END
@@ -1012,7 +1012,7 @@ BEGIN
     IDS_COMPUTINGSTACKINGINFO "Calculez informatia stackare pentru %s"
     IDS_STACKING_COMPUTINGOFFSET "Stackez...calculez off-set-urile"
     IDS_STACKING            "Stackez"
-    IDS_STACKING_PICTURE    "Stackare %ld din %ld - Deviatie [%.1f,%.1f] - Unghi : %.1f°"
+    IDS_STACKING_PICTURE    "Stackare %ld din %ld - Deviatie [%.1f,%.1f] - Unghi : %.1fÂ°"
     IDS_LOADRGBLIGHT        "Incarc %ld biti/canal %s cadru light \n%s"
     IDS_LOADGRAYLIGHT       "Incarc %ld biti gri %s cadru light\n%s"
     IDS_STACKRGBLIGHT       "Stackez %ld biti/canal %s cadru light\n%s"
@@ -1381,13 +1381,13 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodare fisire RAW de LibRaw (versiune %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "Decodare fisire RAW de LibRaw (versiune %s)\nCopyright Â© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "Codare/decodare fisiere TIFF de LibTIFF (versiune %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "Codare/decodare fisiere TIFF de LibTIFF (versiune %s)\nCopyright Â© 1988-1996 Sam Leffler\nCopyright Â© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "Decodare FITS de CFitsIO (versiune %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "QHTM Library Copyright © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "QHTM Library Copyright Â© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
@@ -1396,7 +1396,7 @@ BEGIN
     IDS_ABOUT_LANG_SPANISH  "Versiune spaniola: Ricardo Contreras si echipa"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
     IDS_ABOUT_LANG_CZECH    "Versiune ceha:"
-    IDS_ABOUT_LANG_CZECH_LINK "Lukavský Premysl"
+    IDS_ABOUT_LANG_CZECH_LINK "LukavskÃ½ Premysl"
     IDS_ABOUT_LANG_ITALIAN  "Versiune italiana:"
     IDS_ABOUT_LANG_ITALIAN_LINK "Fabio Papa"
     IDS_ABOUT_LANG_CATALAN  "Versiune catalana:"
@@ -1425,7 +1425,7 @@ BEGIN
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Kolbert si Valentin Stoica"
     IDS_ABOUT_LANG_RUSSIAN  "Versiunea rusa:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-    IDS_ABOUT_LANG_TURKISH  "Turcã Versiune:"
+    IDS_ABOUT_LANG_TURKISH  "TurcÄƒ Versiune:"
     IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
@@ -1445,7 +1445,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Ne pare rãu, LibRaw nu acceptã camera %s"
+    IDS_CAMERA_NOT_SUPPORTED "Ne pare rÄƒu, LibRaw nu acceptÄƒ camera %s"
 	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker nu va debayeriza imaginile pe 8 biti"
 END
 

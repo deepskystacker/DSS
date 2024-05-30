@@ -17,7 +17,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NLD)
 LANGUAGE LANG_DUTCH, SUBLANG_DUTCH
-#pragma code_page(1252)
+#pragma code_page(65001)
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -325,7 +325,7 @@ CAPTION "Resultaat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     CONTROL         "Standaard Modus",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,12,69,10
-    CONTROL         """Mozaïek"" Modus",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,35,66,10
+    CONTROL         """MozaÃ¯ek"" Modus",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,35,66,10
     CONTROL         "Snijdings Mode",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,58,76,10
     LTEXT           "",IDC_MODE_TEXT,165,114,139,26
     CONTROL         "",IDC_MODEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,166,7,135,106
@@ -1148,7 +1148,7 @@ BEGIN
     IDS_COMPUTINGSTACKINGINFO "Berekenen stapel info voor %s"
     IDS_STACKING_COMPUTINGOFFSET "Stapelen ... berekenen compensatie"
     IDS_STACKING            "Stapelen"
-    IDS_STACKING_PICTURE    "Stapel %ld van %ld - Variatie [%.1f,%.1f] - Hoek : %.1f°"
+    IDS_STACKING_PICTURE    "Stapel %ld van %ld - Variatie [%.1f,%.1f] - Hoek : %.1fÂ°"
     IDS_LOADRGBLIGHT        "Laden %ld bit/kan %s licht plaat\n%s"
     IDS_LOADGRAYLIGHT       "Laden %ld bits grijs %s licht plaat\n%s"
     IDS_STACKRGBLIGHT       "Stapelen %ld bit/kan %s licht plaat\n%s"
@@ -1239,7 +1239,7 @@ BEGIN
     IDS_WARNINGREADONLY     "De volgende map(pen) zijn alleen-lezen:\n%s\nDeepSkyStacker moet bestanden aanmaken in deze map(pen) gedurende de bewerking."
     IDS_WARNING_SAVECHANGES "U heeft een aantal veranderingen gemaakt in de %s bestand lijst en/of de instellingen.\n\nWilt u deze veranderingen bewaren?"
     IDS_WARNING_ONLYONEFRAME 
-                            "Maar één afbeelding (van de %ld) wordt gestapeld.\n\nU kunt de ster detectie drempel kunnen controleren/veranderen om meer sterren te\ndetecteren en om DeepSkyStacker te helpen een transformatie te vinden tussen de\nreferentie afbeelding en de anderen.\n"
+                            "Maar Ã©Ã©n afbeelding (van de %ld) wordt gestapeld.\n\nU kunt de ster detectie drempel kunnen controleren/veranderen om meer sterren te\ndetecteren en om DeepSkyStacker te helpen een transformatie te vinden tussen de\nreferentie afbeelding en de anderen.\n"
 END
 
 STRINGTABLE
@@ -1319,7 +1319,7 @@ BEGIN
     IDS_RECAP_INFODISKSPACE "Het proces zal tijdelijk %s op de %s schijf gebruiken (%s vrij)."
     IDS_RECAP_SELECTTEMPFOLDER 
                             "Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten."
-    IDS_RECAP_MOSAIC        "Mozaïek modus: "
+    IDS_RECAP_MOSAIC        "MozaÃ¯ek modus: "
     IDS_RECAP_MOSAICWARNING "Let op: de benodigde schijfruimte wordt berekend met behulp van de referentie plaat. Afhankelijk van de grootte van de resulterende afbeelding is er misschien meer ruimte nodig."
     IDS_RECAP_WARNINGINTERMEDIATESAVE 
                             "Waarschuwing: de optie om geregistreerde en gecalibreerde afbeeldingen te bewaren is geselecteerd. Let op dat u genoeg schijfruimte over heeft om de bestanden te bewaren."
@@ -1394,7 +1394,7 @@ BEGIN
     IDS_RECAP_WARNINGJPEG   "Waarschuwing: U gebruikt donkere, platte of compensatie platen samen met JPEG bestanden.\nOmdat de compressie niet constant is zal de calibratie niet werken met JPEG bestanden."
     IDS_RECAP_STACKINGMODE  "Stapel modus: "
     IDS_RECAP_STACKINGMODE_NORMAL "Standaard"
-    IDS_RECAP_STACKINGMODE_MOSAIC "Mozaïek"
+    IDS_RECAP_STACKINGMODE_MOSAIC "MozaÃ¯ek"
     IDS_RECAP_STACKINGMODE_CUSTOM "Rechthoek op maat"
     IDS_RECAP_COMETSTACKING "Komeet verwerking : "
     IDS_RECAP_COMETSTACKING_NONE 
@@ -1523,13 +1523,13 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versie %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW bestanden gedecodeerd met LibRaw (versie %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "RAW bestanden gedecodeerd met LibRaw (versie %s)\nCopyright Â© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "TIFF bestanden codering/decodering door LibTIFF (versie %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "TIFF bestanden codering/decodering door LibTIFF (versie %s)\nCopyright Â© 1988-1996 Sam Leffler\nCopyright Â© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS decodering door CFitsIO (versie %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "QHTM Bibliotheek Copyright © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "QHTM Bibliotheek Copyright Â© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
@@ -1538,7 +1538,7 @@ BEGIN
     IDS_ABOUT_LANG_SPANISH  "Spanish versie: Ricardo Contreras en het team uit"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
     IDS_ABOUT_LANG_CZECH    "Tsjechische versie:"
-    IDS_ABOUT_LANG_CZECH_LINK "Lukavský Premysl"
+    IDS_ABOUT_LANG_CZECH_LINK "LukavskÃ½ Premysl"
     IDS_ABOUT_LANG_ITALIAN  "Italiaanse versie:"
     IDS_ABOUT_LANG_ITALIAN_LINK "Fabio Papa"
     IDS_ABOUT_LANG_CATALAN  "Catalaanse versie:"

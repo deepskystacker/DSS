@@ -18,7 +18,7 @@
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
 LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
-#pragma code_page(1252)
+#pragma code_page(65001)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -294,7 +294,7 @@ END
 
 IDD_PROPERTIES DIALOGEX 0, 0, 262, 172
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Propriet‡"
+CAPTION "Propriet√†"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "File",IDC_STATIC,7,9,42,8
@@ -305,8 +305,8 @@ BEGIN
     LTEXT           "Dimensioni",IDC_SIZES,70,43,79,8
     LTEXT           "CFA",IDC_STATIC,162,43,14,8
     LTEXT           "CFA",IDC_CFA,182,43,66,8
-    LTEXT           "Profondit‡",IDC_STATIC,7,60,54,8
-    LTEXT           "Profondit‡",IDC_DEPTH,70,60,185,8
+    LTEXT           "Profondit√†",IDC_STATIC,7,60,54,8
+    LTEXT           "Profondit√†",IDC_DEPTH,70,60,185,8
     LTEXT           "Info",IDC_STATIC,7,77,45,8
     LTEXT           "Info",IDC_INFO,70,77,185,8
     LTEXT           "Tipo",IDC_STATIC,7,94,43,8
@@ -367,7 +367,7 @@ BEGIN
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,93,177,204,8,SS_PATHELLIPSIS
     CONTROL         "Usa tutti i processori",IDC_USEALLPROCESSORS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,211,103,10
-    CONTROL         "Riduci priorit‡ dei worker threads",IDC_REDUCEWORKERTHREADS,
+    CONTROL         "Riduci priorit√† dei worker threads",IDC_REDUCEWORKERTHREADS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,156,10
 END
 
@@ -393,7 +393,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Azioni"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "Riallinea immagini gi‡ allineate",IDC_FORCEREGISTER,
+    CONTROL         "Riallinea immagini gi√† allineate",IDC_FORCEREGISTER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,7,126,10
     CONTROL         "Rilevamento automatico dei pixels caldi",IDC_HOTPIXELS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,23,155,10
@@ -425,7 +425,7 @@ CAPTION "File RAW"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Correzione Colori",IDC_STATIC,7,7,128,64
-    LTEXT           "Luminosit‡",IDC_STATIC,15,20,34,8
+    LTEXT           "Luminosit√†",IDC_STATIC,15,20,34,8
     EDITTEXT        IDC_BRIGHTNESS,71,17,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Rosso",IDC_STATIC,15,37,53,8
     EDITTEXT        IDC_REDSCALE,71,34,40,14,ES_RIGHT | ES_AUTOHSCROLL
@@ -435,10 +435,10 @@ BEGIN
     CONTROL         "Nessun bilanciamento del bianco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
     CONTROL         "Interno alla Macchina",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
     CONTROL         "Interpolazione bilineare",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,133,10
-    CONTROL         "Interpolazione adattiva diretta dall'omogeneit‡ (AHD)",IDC_AHD,
+    CONTROL         "Interpolazione adattiva diretta dall'omogeneit√† (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,218,10
-    LTEXT           "Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell'immagine risultante Ë divisa per due.",IDC_STATIC,23,193,229,27
-    LTEXT           "Questa opzione usa la matrice di Bayer cosi com'Ë. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.",IDC_STATIC,23,149,229,25
+    LTEXT           "Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell'immagine risultante √® divisa per due.",IDC_STATIC,23,193,229,27
+    LTEXT           "Questa opzione usa la matrice di Bayer cosi com'√®. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.",IDC_STATIC,23,149,229,25
     CONTROL         "Usa l'algoritmo Bayer Drizzle (no interpolazione ne debayerizzazione)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,135,244,10
     CONTROL         "Crea super-pixels dalla matrice di Bayer (no interpolazione)",IDC_SUPERPIXELS,
@@ -457,7 +457,7 @@ BEGIN
     LTEXT           "Camera:",IDC_TEXT1,13,37,27,8
     COMBOBOX        IDC_DSLR,42,34,228,241,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Correzione Colori",IDC_STATIC,6,52,128,64
-    LTEXT           "Luminosit‡",IDC_TEXT2,14,66,34,8
+    LTEXT           "Luminosit√†",IDC_TEXT2,14,66,34,8
     EDITTEXT        IDC_BRIGHTNESS,72,63,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Rosso",IDC_TEXT3,14,82,33,8
     EDITTEXT        IDC_REDSCALE,72,79,40,14,ES_RIGHT | ES_AUTOHSCROLL
@@ -466,14 +466,14 @@ BEGIN
     LTEXT           "Schema del filtro Bayer usato",IDC_TEXT5,143,56,93,8
     CONTROL         "",IDC_BAYERPATTERN,"Static",SS_BITMAP | SS_CENTERIMAGE,144,66,126,50
     CONTROL         "Interpolazione bilineare",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,131,87,10
-    CONTROL         "Interpolazione adattiva diretta dall'omogeneit‡ (AHD)",IDC_AHD,
+    CONTROL         "Interpolazione adattiva diretta dall'omogeneit√† (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,147,183,10
     CONTROL         "Usa l'algoritmo Bayer Drizzle (no interpolazione ne debayerizzazione)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,165,231,10
-    LTEXT           "Questa opzione usa la matrice di Bayer cosi com'Ë. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.",IDC_TEXT7,33,176,221,25
+    LTEXT           "Questa opzione usa la matrice di Bayer cosi com'√®. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.",IDC_TEXT7,33,176,221,25
     CONTROL         "Crea super-pixels dalla matrice di Bayer (no interpolazione)",IDC_SUPERPIXELS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,200,212,10
-    LTEXT           "Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell'immagine risultante Ë divisa per due.",IDC_TEXT6,33,212,221,24
+    LTEXT           "Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell'immagine risultante √® divisa per due.",IDC_TEXT6,33,212,221,24
     GROUPBOX        "Trasformazione della matrice di Bayer",IDC_STATIC,6,119,264,126
     CONTROL         "Forza l'uso di valori non segnati quando vengono memorizzati valori segnati",IDC_FORCEUNSIGNED,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,255,253,10
@@ -567,9 +567,9 @@ BEGIN
     CONTROL         "Combinazione per comete",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,63,110,10
     CONTROL         "Combinazione stelle + cometa",IDC_ADVANCEDSTACKING,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,104,120,10
-    LTEXT           "La posizione della cometa viene ingorata.\nLa cometa sar‡ mossa.",IDC_STATIC,17,34,123,27
-    LTEXT           "La posizione della cometa viene usata.\nLa cometa e le stelle saranno a fuoco. La procedura Ë lunga il doppio.",IDC_STATIC,17,116,123,27
-    LTEXT           "La posizione della cometa viene usata.\nLa cometa sar‡ a fuoco e le stelle mosse.",IDC_STATIC,17,74,123,27
+    LTEXT           "La posizione della cometa viene ingorata.\nLa cometa sar√† mossa.",IDC_STATIC,17,34,123,27
+    LTEXT           "La posizione della cometa viene usata.\nLa cometa e le stelle saranno a fuoco. La procedura √® lunga il doppio.",IDC_STATIC,17,116,123,27
+    LTEXT           "La posizione della cometa viene usata.\nLa cometa sar√† a fuoco e le stelle mosse.",IDC_STATIC,17,74,123,27
     CONTROL         "",IDC_COMETSAMPLE,"Static",SS_BITMAP | SS_CENTERIMAGE,150,19,151,124
 END
 
@@ -597,7 +597,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,99,100,50,14
     PUSHBUTTON      "Annulla",IDCANCEL,156,100,50,14
-    CTEXT           "Questa immagine non Ë allineata\n(le stelle non sono state rilevate).\n\nVuoi...",IDC_STATIC,7,5,199,33
+    CTEXT           "Questa immagine non √® allineata\n(le stelle non sono state rilevate).\n\nVuoi...",IDC_STATIC,7,5,199,33
     CONTROL         "allineare questa immagine",IDC_REGISTERONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,44,99,10
     CONTROL         "allineare tutte le immagini",IDC_REGISTERALL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,61,110,10
     CONTROL         "continuare senza allineare l'immagine",IDC_CONTINUE,
@@ -721,7 +721,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Togli dalla lista",           IDM_REMOVEFROMLIST
         MENUITEM SEPARATOR
-        MENUITEM "Propriet‡...",                IDM_PROPERTIES
+        MENUITEM "Propriet√†...",                IDM_PROPERTIES
         MENUITEM SEPARATOR
         MENUITEM "Copia negli appunti",         IDM_COPYTOCLIPBOARD
         MENUITEM SEPARATOR
@@ -899,7 +899,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_STACKINGMODE_NORMAL "L'inquadratura della combinazione Ë la stessa dell'immagine di riferimento."
+    IDS_STACKINGMODE_NORMAL "L'inquadratura della combinazione √® la stessa dell'immagine di riferimento."
     IDS_STACKINGMODE_MOSAIC "La combinazione contiene l'area totale di tutte le immagini."
     IDS_STACKINGMODE_INTERSECTION 
                             "Il risultato dell'elaborazione viene inquadrato dall'intersezione di tutte le immagini."
@@ -928,9 +928,9 @@ STRINGTABLE
 BEGIN
     IDS_RECO_DISCLAIMER     "Queste sono le impostazioni suggerite.\nPotrebbero non funzionare sempre ma sono spesso un buon punto di partenza."
     IDS_RECO_CLICKTOSET     "Clicca sul collegamento proposto per cambiare le impostazioni"
-    IDS_RECO_ALREADYSET     "Le impostazioni gi‡ attive sono in verde"
+    IDS_RECO_ALREADYSET     "Le impostazioni gi√† attive sono in verde"
     IDS_RECO_PREREQUISITES  "Devi prima aggiungere immagini alla lista e selezionarle."
-    IDS_RECO_RAWNARROWBAND_TEXT "Usa la modalit‡ sub-pixel"
+    IDS_RECO_RAWNARROWBAND_TEXT "Usa la modalit√† sub-pixel"
     IDS_RECO_RAWNARROWBAND_REASON 
                             "Se stai combinando immagini a banda stretta (specialmente Ha)"
     IDS_RECO_RAWHIGHSNR_TEXT "Usa debayer AHD"
@@ -980,13 +980,13 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versione %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW decodificati da LibRaw (version %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "RAW decodificati da LibRaw (version %s)\nCopyright ¬© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "De/codifica TIFF da LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "De/codifica TIFF da LibTIFF (version %s)\nCopyright ¬© 1988-1996 Sam Leffler\nCopyright ¬© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "Decodifica FITS da CFitsIO (versione %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "Copyright Libreria QHTM © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "Copyright Libreria QHTM ¬© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
@@ -995,7 +995,7 @@ BEGIN
     IDS_ABOUT_LANG_SPANISH  "Versione Spagnola: Ricardo Contreras e il squadra da"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
     IDS_ABOUT_LANG_CZECH    "Versione Ceca:"
-    IDS_ABOUT_LANG_CZECH_LINK "Lukavsk˝ Premysl"
+    IDS_ABOUT_LANG_CZECH_LINK "Lukavsk√Ω Premysl"
     IDS_ABOUT_LANG_ITALIAN  "Versione Italiana:"
     IDS_ABOUT_LANG_ITALIAN_LINK "Fabio Papa"
     IDS_ABOUT_LANG_CATALAN  "Versione Catalana:"
@@ -1040,7 +1040,7 @@ STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Dimensione"
     IDS_COLUMN_CFA          "CFA"
-    IDS_COLUMN_DEPTH        "Profondit‡"
+    IDS_COLUMN_DEPTH        "Profondit√†"
     IDS_COLUMN_INFOS        "Info"
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Esposizione"
@@ -1102,7 +1102,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_MSG_SAVEMODIFICATIONS "Vuoi salvare le modifiche?"
-    IDS_MSG_NOPICTURETOSAVE "Non c'Ë alcuna immagine da salvare."
+    IDS_MSG_NOPICTURETOSAVE "Non c'√® alcuna immagine da salvare."
     IDS_MSG_NOPICTUREFORSTARMASK 
                             "Almeno un'immagine dev'essere caricata per creare una maschera di stelle."
 END
@@ -1147,7 +1147,7 @@ BEGIN
                             "Devi selezionare le immagini per poterle combinare."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La creazione dei Masters (dark, flat, offset) richiede %ld Kb.\nSolo %ld Kb sono disponibili sul drive %s\nVuoi procedere comunque?"
-	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker non puÚ scrivere file nella directory %s"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker non pu√≤ scrivere file nella directory %s"
 END
 
 STRINGTABLE
@@ -1195,7 +1195,7 @@ BEGIN
     IDS_COMPUTINGSTACKINGINFO "Calcolo info combinazione per %s"
     IDS_STACKING_COMPUTINGOFFSET "Combinazione ... calcolo gli offsets"
     IDS_STACKING            "Combinazione"
-    IDS_STACKING_PICTURE    "Combino %ld su %ld - Offset [%.1f,%.1f] - Angolo : %.1f∞"
+    IDS_STACKING_PICTURE    "Combino %ld su %ld - Offset [%.1f,%.1f] - Angolo : %.1f¬∞"
     IDS_LOADRGBLIGHT        "Caricamento %ld bit/can %s immagine\n%s"
     IDS_LOADGRAYLIGHT       "Caricamento %ld bits grigi %s immagine\n%s"
     IDS_STACKRGBLIGHT       "Combinazione %ld bit/can %s immagine\n%s"
@@ -1276,8 +1276,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CHECKVERSION        "Vuoi che DeepSkyStacker controlli se c'Ë una nuova versione all'avvio?\n(Puoi abilitare questa funzione in futuro dalla finestra Info su)"
-    IDS_VERSIONAVAILABLE    "DeepSkyStacker versione %s Ë disponibile per lo scaricamento."
+    IDS_CHECKVERSION        "Vuoi che DeepSkyStacker controlli se c'√® una nuova versione all'avvio?\n(Puoi abilitare questa funzione in futuro dalla finestra Info su)"
+    IDS_VERSIONAVAILABLE    "DeepSkyStacker versione %s √® disponibile per lo scaricamento."
     IDS_TEMPFILEREMOVAL     "Uno o piu' files temporanei creati da DeepSkyStacker sono ancora presenti nella cartella temporanea.\n\nVuoi rimuoverli?\n\n(%ld file(s) che usano %s)"
     IDS_WARNING_ERASEFILES  "Vuoi veramente cancellare in modo permanente %ld file(s)?\nQuesta operazione non puo' essere annullata in seguito."
     IDS_WANTTOCONTINUE      "\nVuoi veramente continuare?"
@@ -1299,7 +1299,7 @@ STRINGTABLE
 BEGIN
     IDS_RECAP_STEP          "Passo combinazione %ld\n  ->%ld immagini (%s: %s) - esposizione totale: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld immagini (%s: %s) esposizione: %s\n"
-    IDS_RECAP_ISOWARNING    "\t\tAttenzione: velocit‡ ISO non congruente con le immagini\n"
+    IDS_RECAP_ISOWARNING    "\t\tAttenzione: velocit√† ISO non congruente con le immagini\n"
     IDS_RECAP_NOOFFSET      "\t-> Nessun Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1316,7 +1316,7 @@ BEGIN
     IDS_RECAP_DARKOPTIMIZATION "Ottimizzazione Dark: %s\n"
     IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
-                            "\t\tAttenzione: velocit‡ ISO non congruente con i flat\n"
+                            "\t\tAttenzione: velocit√† ISO non congruente con i flat\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttenzione: tempo di posa non congruente con i flat\n"
 END
@@ -1362,9 +1362,9 @@ STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
                             "L'operazione necessita di %s di spazio libero temporaneo sul disco %s .\nCi sono solamente %s disponibili su questo disco."
-    IDS_RECAP_INFODISKSPACE "L'operazione user‡ temporaneamente %s sul disco %s (%s liberi)."
+    IDS_RECAP_INFODISKSPACE "L'operazione user√† temporaneamente %s sul disco %s (%s liberi)."
     IDS_RECAP_SELECTTEMPFOLDER 
-                            "Seleziona la cartella che conterr‡ i files temporanei."
+                            "Seleziona la cartella che conterr√† i files temporanei."
     IDS_RECAP_MOSAIC        "Modo Mosaico: "
     IDS_RECAP_MOSAICWARNING "Nota: lo spazio necessario viene calcolato usando una dimensione d'immagine uguale a quella di riferimento. A seconda della reale dimensione risultante, potrebbe essere necessario piu' spazio."
     IDS_RECAP_WARNINGINTERMEDIATESAVE 
@@ -1386,12 +1386,12 @@ STRINGTABLE
 BEGIN
     IDS_TOOLTIP_KAPPASIGMA  "I pixels fuori dall'intervallo:\n[Mean-[kappa]*[sigma], Mean+[kappa]*[sigma]]\nsono iterativamente rimossi.\n\nDei pixel rimanenti viene calcolata la media."
     IDS_TOOLTIP_AUTOADAPTIVE 
-                            "La <b>media soppesata</b> Ë ottenuta\nsoppesando ogni pixel iterativamente\ndallo scostamento dal mediano \nconfrontato al normale scostamento ([sigma])."
+                            "La <b>media soppesata</b> √® ottenuta\nsoppesando ogni pixel iterativamente\ndallo scostamento dal mediano \nconfrontato al normale scostamento ([sigma])."
     IDS_TOOLTIP_MEDIANKAPPASIGMA 
                             "I pixel fuori dall'intervallo:\n[Mean-[kappa]*[sigma], Mean+[kappa]*[sigma]]\nsono iterativamente sostituiti dal valore mediano.\n\nDei pixel viene quindi calcolata la media."
-    IDS_TOOLTIP_SELECTRECT  "Modalit‡ rettangolo personalizzato\nQuesta modalit‡ viene usata per creare e modificare\nil rettangolo personalizzato."
-    IDS_TOOLTIP_STAR        "Modalit‡ modifica stelle\nQuesta modalit‡ viene usata per aggiungere e rimuovere stelle\nnell'immagine."
-    IDS_TOOLTIP_COMET       "Modalit‡ modifica cometa\nQuesta modalit‡ viene usata per modificare la posizione\ndella cometa nell'immagine."
+    IDS_TOOLTIP_SELECTRECT  "Modalit√† rettangolo personalizzato\nQuesta modalit√† viene usata per creare e modificare\nil rettangolo personalizzato."
+    IDS_TOOLTIP_STAR        "Modalit√† modifica stelle\nQuesta modalit√† viene usata per aggiungere e rimuovere stelle\nnell'immagine."
+    IDS_TOOLTIP_COMET       "Modalit√† modifica cometa\nQuesta modalit√† viene usata per modificare la posizione\ndella cometa nell'immagine."
     IDS_TOOLTIP_SAVE        "Salva cambiamenti\nSalva tutti i cambiamenti (Stelle e Cometa) per l'immagine corrente."
 END
 
@@ -1436,7 +1436,7 @@ BEGIN
                             "%ld processori rilevati - solo uno usato"
     IDS_RECAP_DRIZZLE       "Drizzle x%ld abilitato"
     IDS_RECAP_WARNINGDRIZZLE 
-                            "Lopzione drizzle selezionata non Ë compatibile con la modalit‡ Bayer Drizzle."
+                            "Lopzione drizzle selezionata non √® compatibile con la modalit√† Bayer Drizzle."
     IDS_RECAP_WARNINGJPEG   "Attenzione: stai usando dei dark, flat o bias in formato JPEG.\nA causa della compressione degradante la calibrazione non funziona con il formato JPEG."
     IDS_RECAP_STACKINGMODE  "Modo di combinazione: "
     IDS_RECAP_STACKINGMODE_NORMAL "Standard"
@@ -1518,7 +1518,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED 
-                            "Siamo spiacenti, la tua camera %s non Ë supportata da LibRaw"
+                            "Siamo spiacenti, la tua camera %s non √® supportata da LibRaw"
     IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker non de-Bayer immagini a 8 bit"
 END
 

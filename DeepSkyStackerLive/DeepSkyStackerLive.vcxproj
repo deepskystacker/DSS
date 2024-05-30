@@ -269,21 +269,6 @@
     <Image Include="res\StopSign.png" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStackerLive.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveCAT.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveCN.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveCZ.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveDE.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveES.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveFR.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveIT.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveNL.rc" />
-    <ResourceCompile Include="DeepSkyStackerLivePTB.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveRO.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveRU.rc" />
-    <ResourceCompile Include="DeepSkyStackerLiveTR.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
       <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
     </ProjectReference>

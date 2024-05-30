@@ -7,6 +7,9 @@ Changes since the last release:
 
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
 
+2. Bug fix: Monochrome JPEG and PNG images wouldn't load.
+
+5. Change FITSUtil::Open() so that it will correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
