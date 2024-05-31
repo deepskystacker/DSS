@@ -3,13 +3,46 @@ Welcome to DeepSkyStacker 5.1.6 Beta 1
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
+This is primarily a bug fix release, but there are a few enhancements as well.
+
 Changes since the last release:
 
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
 
-2. Bug fix: Monochrome JPEG and PNG images wouldn't load.
+2. Modify CFITSIO 4.3.0 to support UTF-8 file names.  The fix has been submitted to the FITSIO team who look like they will adopt it.
 
-5. Change FITSUtil::Open() so that it will correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
+3. Bug fix: Bright stars was had a black centre (another cause of this fixed).
+
+4. Support for non-ASCII characters in the path of the trace file.
+
+5. Support for non-ASCII characters in the interprocess file lock.
+
+6. Support for non-ASCII in the data to be written to the trace file.
+
+7. Bug fix: Crash calling getValue() for colour images.
+
+8. Bug fix: Problems with handling the name of directory for temporary file
+
+9. Bug fix: Monochrome JPEG and PNG images wouldn't load.
+
+10. Show white clipping and dark clipping in the Processing panel editing function as Red and Blue respectively.  Provide and option to enable/disable this.
+
+11. Bug fix: Error processing colour TIFF files - code was chacking for CFA information when it should not have.
+
+12. Bug fix: File groups messed up after clearing the image list.
+
+13. Bug fix: The output file did not have an appended file number when created from a file list name.
+
+14. Bug fix: If another file list is selected the output file name was not updated.
+
+15. Make the default path for a new file list the parent folder of the first light frame.
+
+16. Bug fix: Unable to load monochrome JPEG or PNG files.
+
+17. Bug fix: The picture list lost focus as an image finished loading.
+
+18. Bug fix: FITSUtil::Open() did not correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
