@@ -17,7 +17,7 @@ Changes since the last release:
 
 5. Support for non-ASCII characters in the interprocess file lock.
 
-6. Support for non-ASCII chararcters in the data to be written to the trace file.
+6. Support for non-ASCII characters in the data to be written to the trace file.
 
 7. Bug fix: Crash calling getValue() for colour images.
 
@@ -27,7 +27,7 @@ Changes since the last release:
 
 10. Show white clipping and dark clipping in the Processing panel editing function as Red and Blue respectively.  Provide an option to enable/disable this.
 
-11. Bug fix: Error processing colour TIFF files - code was chacking for CFA information when it should not have.
+11. Bug fix: Error processing colour TIFF files - code was checking for CFA information when it should not have.
 
 12. Bug fix: File groups messed up after clearing the image list.
 
