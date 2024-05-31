@@ -11,7 +11,7 @@ Changes since the last release:
 
 2. Modify CFITSIO 4.3.0 to support UTF-8 file names.  The fix has been submitted to the FITSIO team who look like they will adopt it.
 
-3. Bug fix: Bright stars was had a black centre (another cause of this fixed).
+3. Bug fix: Bright stars had a black centre (another cause of this fixed).
 
 4. Support for non-ASCII characters in the path of the trace file.
 
