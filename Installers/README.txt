@@ -43,6 +43,8 @@ Changes since the last release:
 
 18. Bug fix: FITSUtil::Open() did not correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
 
+19. Bug fix: A number of problems with star and comet editing were fixed thanks to Martin Toeltsch.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
