@@ -91,7 +91,7 @@ var PreviousUninstaller
 !insertmacro MUI_LANGUAGE "English"
 
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "DeepSkyStacker ${DSS_VERSION} Readme.txt" \
+          "DeepSkyStacker ${DSS_VERSION}${DSS_VERSION_SUFFIX} Readme.txt" \
           "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
