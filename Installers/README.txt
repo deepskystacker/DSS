@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.6 Beta 1
+Welcome to DeepSkyStacker 5.1.6 Beta 2
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -44,6 +44,8 @@ Changes since the last release:
 18. Bug fix: FITSUtil::Open() did not correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
 
 19. Bug fix: A number of problems with star and comet editing were fixed thanks to Martin Toeltsch.
+
+20. Bug fix: Remove developer debugging code that required a C:\temp directory and just exited if it wasn't there.
 
 Welcome to DeepSkyStacker 5.1.5
 ===============================
