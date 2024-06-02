@@ -5,6 +5,11 @@ Only 64 bit versions of Windows 10 and later are supported in this release.
 
 This is primarily a bug fix release, but there are a few enhancements as well.
 
+Known problems:
+
+1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
+   This requires too much work to fix in this release, as we will need to implement our own edit control.
+
 Changes since the last release:
 
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
@@ -47,15 +52,12 @@ Changes since the last release:
 
 20. Bug fix: Remove developer debugging code that required a C:\temp directory and just exited if it wasn't there.
 
+21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather NGC7331001.tif
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
-
-Known problems:
-
-1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
-   This requires too much work to fix in this release, as we will need to implement our own edit control.
 
 Changes since the last release:
 
