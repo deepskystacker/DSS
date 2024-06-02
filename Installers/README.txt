@@ -47,7 +47,7 @@ Changes since the last release:
 
 20. Bug fix: Remove developer debugging code that required a C:\temp directory and just exited if it wasn't there.
 
-21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather name NGC7331001.tif
+21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather NGC7331001.tif
 
 Welcome to DeepSkyStacker 5.1.5
 ===============================
