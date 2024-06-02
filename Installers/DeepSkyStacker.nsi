@@ -16,7 +16,7 @@ SetCompressor /SOLID lzma
 Function .onInit
 ${IfNot} ${AtLeastWin10}
 ${OrIfNot} ${RunningX64}
-	MessageBox mb_iconStop "Windows 10 x64 is required to install DeepSkyStacker 5.1.2"
+	MessageBox mb_iconStop "Windows 10 x64 is required to install DeepSkyStacker 5.1.2 or higher"
 	Abort
 ${EndIf}
 FunctionEnd
@@ -35,8 +35,8 @@ FunctionEnd
 !define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
 !define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
-!define DSS_VERSION        "5.1.5"                         # For control panel
-!define DSS_VERSION_SUFFIX ""				               # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION        "5.1.6"                         # For control panel
+!define DSS_VERSION_SUFFIX " Beta 2"				               # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -91,7 +91,7 @@ var PreviousUninstaller
 !insertmacro MUI_LANGUAGE "English"
 
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "DeepSkyStacker ${DSS_VERSION} Readme.txt" \
+          "DeepSkyStacker ${DSS_VERSION}${DSS_VERSION_SUFFIX} Readme.txt" \
           "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."

@@ -23,10 +23,10 @@ QEventLogger::QEventLogger(const QString& logFileBaseName,
     this->log = new QTextStream(this->logFile);
 
     // Write header to log file.
-    *log << "; Date and time are: " << now.toString(Qt::ISODate) << '\n';
-    *log << "; Resolution: " << mainWidget->size().width() << 'x' << mainWidget->size().height() << '\n';
-    *log << "time,input type,event type,target widget class,details\n";
-    log->flush();
+    *log << "time\tinput type\tevent type\ttarget widget class\tdetails\n";
+     *log << "# Date and time are: " << now.toString(Qt::ISODate) << '\n';
+     *log << "# Resolution: " << mainWidget->size().width() << 'x' << mainWidget->size().height() << '\n';
+     log->flush();
 
     // Create the dir in which screenshots will be stored, if requested.
     if (screenshotsEnabled) {
@@ -58,6 +58,13 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
     inputType = NONE;
 
     details = "";
+    if (nullptr != obj)
+    {
+        QString temp;
+        QDebug deb{ &temp };
+        deb << obj;
+        details = temp + ";";
+    }
     inputTypeAsString = "";
 
     switch (event->type()) {
@@ -84,6 +91,7 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
     case QEvent::KeyPress:
         inputType = KEYBOARD;
         eventType = "KeyPress";
+        break;
     case QEvent::KeyRelease:
         inputType = KEYBOARD;
         eventType = "KeyRelease";
@@ -119,25 +127,56 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
     if (inputType == MOUSE) {
         mouseEvent = static_cast<QMouseEvent*>(event);
 
-        // Collect the mouse buttons that are pressed.
-        mouseButton = mouseEvent->buttons();
-        QString buttonsPressed;
-        if (mouseButton & Qt::LeftButton)
-            buttonsPressed += 'L';
-        if (mouseButton & Qt::MiddleButton)
-            buttonsPressed += 'M';
-        if (mouseButton & Qt::RightButton)
-            buttonsPressed += 'R';
-
         if (event->type() == QEvent::MouseTrackingChange)
             details = "Mouse Tracking Change";
+
         else
         {
-            // Build the details string.
-            details += QString::number(mouseEvent->x()) + ';' + QString::number(mouseEvent->y());
-            details += ';' + buttonsPressed;
-        }
+            //
+            modifierKey = mouseEvent->modifiers();
+            QString modifiers;
+            if (Qt::NoModifier == modifierKey) modifiers = "none";
+            else
+            {
+                if (modifierKey & Qt::MetaModifier)
+                    modifiers += "Meta";
+                if (modifierKey & Qt::ShiftModifier)
+                    modifiers += "Shift";
+                if (modifierKey & Qt::ControlModifier)
+                    modifiers += "Control";
+                if (modifierKey & Qt::AltModifier)
+                    modifiers += "Alt";
+            }
 
+
+            // Collect the mouse buttons that are pressed.
+            mouseButton = mouseEvent->buttons();
+            QString buttonsPressed;
+            if (Qt::NoButton == mouseButton) buttonsPressed = "none";
+            else
+            {
+                if (mouseButton & Qt::LeftButton)
+                    buttonsPressed += 'L';
+                if (mouseButton & Qt::RightButton)
+                    buttonsPressed += 'R';
+                if (mouseButton & Qt::MiddleButton)
+                    buttonsPressed += 'M';
+                if (mouseButton & Qt::BackButton)
+                    buttonsPressed += "Back";
+                if (mouseButton & Qt::ForwardButton)
+                    buttonsPressed += "Forward";
+                if (mouseButton & Qt::TaskButton)
+                    buttonsPressed += "Task";
+            }
+
+
+            // Build the details string.
+            details +=
+                "X=" + QString::number(mouseEvent->x()) + ',' +
+                "Y=" + QString::number(mouseEvent->y()) + ',' +
+                "Buttons=" + buttonsPressed + ',' +
+                "Modifiers=" + modifiers;
+        }
         inputTypeAsString = "Mouse";
     }
     else if (inputType == KEYBOARD) {
@@ -160,8 +199,8 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
 
         // Build the details string.
         details += QKeySequence(keyEvent->key()).toString(QKeySequence::PortableText);
-        details += ';' + keyEvent->text();
-        details += ';' + modifierKeysPressed;
+        details += '\t' + keyEvent->text();
+        details += '\t' + modifierKeysPressed;
 
         inputTypeAsString = "Keyboard";
     }
@@ -201,42 +240,6 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
             break;
         }
 
-        //
-        // Add the value of QApplication::focusWidget()
-        //
-        QObject* object{ nullptr };
-        object = QApplication::focusWidget();
-        if (nullptr != object)
-        {
-            className = object->metaObject()->className();
-            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
-            {
-                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
-            }
-            id = this->widgetPointerToID[className][object];
-            className += " " + QString::number(id);
-            details += ";" + className;
-        }
-        else details += ";nullptr";
-
-        //
-        // Add the value of tableView->focusWidget
-        //
-        object = this->tableView->focusWidget();
-        if (nullptr != object)
-        {
-            className = object->metaObject()->className();
-            if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(object))
-            {
-                this->widgetPointerToID[className][object] = this->widgetPointerToID[className].size();
-            }
-            id = this->widgetPointerToID[className][object];
-            className += " " + QString::number(id);
-            details += ";" + className;
-        }
-        else details += ";nullptr";
-
-
         // qDebug() << focusEvent << obj->metaObject()->className();
     }
 
@@ -263,7 +266,7 @@ void QEventLogger::appendToLog(const QString& inputType, const QString& eventTyp
     if (this->screenshotsEnabled && eventType.compare("MouseMove") != 0)
         mainWidget->grab().save(screenshotDirName + "/" + QString::number(elapsedTime) + ".png", "PNG");
 
-    *(this->log) << elapsedTime << ',' << inputType << ',' << eventType << ',' << targetWidget << ',' << details << '\n';
+    *(this->log) << elapsedTime << '\t' << inputType << '\t' << eventType << '\t' << targetWidget << '\t' << details << '\n';
     //qDebug() << elapsedTime << inputType << eventType << targetWidget << details;
     this->log->flush();
 }
