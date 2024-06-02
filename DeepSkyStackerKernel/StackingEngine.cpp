@@ -2562,6 +2562,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	folder.remove_filename();
 
 	fs::path name{ file.stem() }; // Filename of the output file WITHOUT EXTENSION.
+	bool addHyphen = false;
 
 	if (name.empty())
 	{
@@ -2572,6 +2573,8 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 			name = fileList.stem();
 			if (name.empty())
 				name = AutoSave;
+			else
+				addHyphen = true;
 		}
 	}
 
@@ -2596,13 +2599,14 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 			fs::path newName{ name }; // newName does not yet have an extension.
 			if (i > 0)
 			{
-				suffix = QString("%1").arg(i, 3, 10, QLatin1Char('0'));
+				suffix = QString(addHyphen ? "-%1" : "%1").arg(i, 3, 10, QLatin1Char('0'));
 				newName += suffix.toStdU16String();
 			}
 			outputFile.replace_filename(newName += extension);
 
 			fileExists = exists(outputFile);
-			if (!fileExists) break;
+			if (!fileExists)
+				break;
 			++i;
 		}
 		while (fileExists && (i<1000));
