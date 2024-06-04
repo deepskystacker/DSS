@@ -163,38 +163,56 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgres
 		};
 
 		// Compute the transformations
-		CMatchingStars MatchingStars;
-		MatchingStars.SetSizes(pBitmap->Width(), pBitmap->Height());
+		CMatchingStars MatchingStars{ pBitmap->Width(), pBitmap->Height() };
+		constexpr int MaxNumberOfConsideredStars = 100;
+
+		const auto addRefOrTargetStar = [&MatchingStars]<bool Refstar>(std::span<CStar> stars)
 		{
-			STARVECTOR& vStarsOrg = pReference->m_vStars;
+			std::ranges::sort(stars, CompareStarLuminancy);
+			for (const auto& star : std::views::take(stars, MaxNumberOfConsideredStars)) // Is safe, even if 'stars' has less than 100 elements.
+			{
+				if constexpr (Refstar)
+					MatchingStars.AddReferenceStar(star.m_fX, star.m_fY);
+				else
+					MatchingStars.AddTargetedStar(star.m_fX, star.m_fY);
+			}
+		};
 
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+		addRefOrTargetStar.operator()<true>(pReference->m_vStars);
+		addRefOrTargetStar.operator()<false>(pSecond->m_vStars);
 
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-		}
-
-		{
-			STARVECTOR& vStarsOrg = pSecond->m_vStars;
-
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-		}
+//		{
+//			STARVECTOR& vStarsOrg = pReference->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+//		}
+//
+//		{
+//			STARVECTOR& vStarsOrg = pSecond->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+//		}
 
 		bool bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pSecond->m_BilinearParameters);
 
 		if (bTransformationsOk)
 		{
-			STARVECTOR& vStarsOrg = pThird->m_vStars;
-
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
 			MatchingStars.ClearTarget();
-
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+			addRefOrTargetStar.operator()<false>(pThird->m_vStars);
+//			STARVECTOR& vStarsOrg = pThird->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			MatchingStars.ClearTarget();
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 
 			bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pThird->m_BilinearParameters);
 		}
