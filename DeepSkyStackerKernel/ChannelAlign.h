@@ -8,17 +8,10 @@ namespace DSS { class ProgressBase; }
 
 class CChannelAlign
 {
-private :
-	std::shared_ptr<CMemoryBitmap> AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, DSS::ProgressBase* pProgress);
-	void CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* pTgtBitmap) const;
+private:
+	static std::shared_ptr<CMemoryBitmap> AlignChannel(const CMemoryBitmap* pBitmap, const CPixelTransform& PixTransform, DSS::ProgressBase* pProgress);
+	static void CopyBitmap(std::shared_ptr<const CMemoryBitmap> pSrcBitmap, CMemoryBitmap* pTgtBitmap);
 
 public:
-	CChannelAlign()
-	{}
-
-	~CChannelAlign()
-	{}
-
-	bool AlignChannels(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
+	static bool AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress);
 };
-

@@ -2501,8 +2501,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* c
 
 			if (bResult && m_bChannelAlign)
 			{
-				CChannelAlign channelAlign;
-				channelAlign.AlignChannels(pBitmap.get(), m_pProgress);
+				CChannelAlign::AlignChannels(pBitmap, m_pProgress);
 			}
 
 			if (bResult)
