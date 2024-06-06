@@ -42,7 +42,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone(true) };
 	pOutBitmap->Init(lWidth, lHeight);
 
-	PIXELDISPATCHVECTOR vPixels(16, {});
+	PIXELDISPATCHVECTOR vPixels(16, PIXELDISPATCHVECTOR::value_type{});
 
 	if (pProgress != nullptr)
 	{
