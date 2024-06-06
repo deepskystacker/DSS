@@ -54,6 +54,8 @@ Changes since the last release:
 
 21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather NGC7331001.tif
 
+22. Bug fix: Allow only one frame to be selected as the "reference frame".
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
