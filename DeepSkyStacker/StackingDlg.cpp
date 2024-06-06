@@ -101,16 +101,6 @@ namespace
 	static QStringList isos;
 }
 
-enum class Menuitem
-{
-	markAsReference,
-	check,
-	uncheck,
-	remove,
-	properties,
-	copy,
-	erase
-};
 namespace DSS
 {
 	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
@@ -814,7 +804,6 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		QModelIndex ndx = pictureList->tableView->indexAt(pos);
-		int i{ 0 };
 
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
@@ -823,17 +812,21 @@ namespace DSS
 		if (pictureList->tableView->model() == proxyModel)
 			ndx = proxyModel->mapToSource(ndx);
 
+		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
+		QModelIndexList selectedRows = qsm->selectedRows();
+		const qsizetype rowCount = selectedRows.size();
+
 		ImageListModel* imageModel = frameList.currentTableModel();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
 		{
-			if (imageModel->mydata[ndx.row()].m_bUseAsStarting)
+			if (rowCount == 1 && imageModel->mydata[ndx.row()].m_bUseAsStarting)
 				markAsReference->setChecked(true);
 			else
 				markAsReference->setChecked(false);
 
-			markAsReference->setEnabled(true);
+			markAsReference->setEnabled(rowCount == 1); // Only enable the "Set reference" checkbox if only a single image was selected.
 			check->setEnabled(true);
 			uncheck->setEnabled(true);
 			remove->setEnabled(true);
@@ -852,14 +845,9 @@ namespace DSS
 
 
 		QAction* action = menu.exec(pictureList->tableView->mapToGlobal(pos));
-		if (!action)
+		if (action == nullptr)
 			return;
 		Menuitem item = static_cast<Menuitem>(action->data().toInt());
-
-		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-		QModelIndexList selectedRows = qsm->selectedRows();
-
-		int rowCount = selectedRows.size();
 
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
@@ -867,7 +855,7 @@ namespace DSS
 		//
 		if (pictureList->tableView->model() == proxyModel)
 		{
-			for (i = 0; i < rowCount; i++)
+			for (qsizetype i = 0; i < rowCount; i++)
 			{
 				selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
 			}
@@ -900,24 +888,43 @@ namespace DSS
 		{
 			copyToClipboard();
 		}
+		else if (Menuitem::markAsReference == item)
+		{
+			if (rowCount == 1)
+			{
+				const int row = selectedRows.front().row();
+				const bool oldValue = imageModel->mydata[row].m_bUseAsStarting;
+				for (int r = 0; auto& image : imageModel->mydata) // Set all images to "not reference".
+				{
+					if (image.m_bUseAsStarting) // If it was set as reference before
+					{
+						image.m_bUseAsStarting = false; // Uncheck it.
+						imageModel->emitChanged(r, r, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+					}
+					++r;
+				}
+				imageModel->mydata[row].m_bUseAsStarting = !oldValue; // Toggle selected image.
+				imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+			}
+		}
 		else
 		{
 			//
 			// Iterate over the selected items doing whatever needs to be done
 			//
-			for (i = 0; i < rowCount; i++)
+			for (qsizetype i = 0; i < rowCount; i++)
 			{
-				int row = selectedRows[i].row();
+				const int row = selectedRows[i].row();
 
 				switch (item)
 				{
-				case Menuitem::markAsReference:
-					//
-					// Toggle the value
-					//
-					imageModel->mydata[row].m_bUseAsStarting ^= true;
-					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
-					break;
+//				case Menuitem::markAsReference:
+//					//
+//					// Toggle the value
+//					//
+//					imageModel->mydata[row].m_bUseAsStarting ^= true;
+//					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+//					break;
 				case Menuitem::check:
 					imageModel->mydata[row].m_bChecked = Qt::Checked;
 					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
@@ -939,7 +946,7 @@ namespace DSS
 
 			if (Menuitem::remove == item || Menuitem::erase == item)
 			{
-				for (i = 0; i < rowCount; i++)
+				for (qsizetype i = 0; i < rowCount; i++)
 				{
 					int row = selectedRows[i].row();
 					frameList.removeFromMap(imageModel->mydata[row].filePath);
@@ -1013,7 +1020,7 @@ namespace DSS
 					// Iterate over the selected items setting the values from the 
 					// dialogue
 					//
-					for (i = 0; i < rowCount; i++)
+					for (qsizetype i = 0; i < rowCount; i++)
 					{
 						row = selectedRows[i].row();
 

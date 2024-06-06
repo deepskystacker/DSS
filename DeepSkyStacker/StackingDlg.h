@@ -237,6 +237,16 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private:
+		enum class Menuitem
+		{
+			markAsReference,
+			check,
+			uncheck,
+			remove,
+			properties,
+			copy,
+			erase
+		};
 
 		static constexpr const char FileListExtension[] = ".dssfilelist";
 
