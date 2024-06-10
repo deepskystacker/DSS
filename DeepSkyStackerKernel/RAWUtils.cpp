@@ -380,82 +380,62 @@ namespace { // Only use in this .cpp file
 
 	void CRawDecod::checkCameraSupport(const QString& strModel)
 	{
-		bool result = false;
-		const std::string cameraString{ strModel.toLatin1().constData() };
+		std::string cameraString{ strModel.toLatin1().constData() }; // Not const! We want to move it at the end.
 
-		static std::set<std::string> checkedCameras;
+		static concurrency::concurrent_unordered_set<std::string> checkedCameras; // Initialisation is thread-safe.
 
 		//
 		// If we've already checked this camera type, then just bail out so
 		// complaints about unsupported cameras are only issued once.
 		//
-		if (checkedCameras.find(cameraString) != checkedCameras.end())
+		if (checkedCameras.count(cameraString) > 0)
 			return;
-
-		static std::vector<std::string> supportedCameras;
-
-		if (supportedCameras.empty())
+		//
+		// A case independent comparison lambda function.
+		// See: https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
+		//
+		const auto comparator = [tolow = [](char c) -> char { return std::tolower(c); }](std::string_view lhs, std::string_view rhs)
 		{
-			const char** cameraList = rawProcessor.cameraList();
-			const size_t count = rawProcessor.cameraCount();
-			supportedCameras.reserve(count);
+			const auto result = std::ranges::mismatch(lhs, rhs, [](char l, char r) { return l == r; }, tolow, tolow);
+			// Position, where the characters are unequal: if rhs ends -> to the front; otherwise if lhs ends -> to the front; otherwise the one with the "earlier" character.
+			return result.in2 != rhs.cend() && (result.in1 == lhs.cend() || tolower(*result.in1) < tolower(*result.in2));
+		};
 
-			//
-			// Copy LibRaw's supported camera list
-			//
-			for (size_t i = 0; i < count; ++i)
+		// Initialisation of a static variable is thread-safe.
+		static const std::vector<std::string> supportedCameras = std::invoke(
+			[&comparator](const std::span<const char* const> listOfCameras)
 			{
-				if (nullptr != cameraList[i])
-				{
-					supportedCameras.emplace_back(cameraList[i]);
-				}
-			}
+				std::vector<std::string> v(listOfCameras.size(), std::string{});
+				std::ranges::copy_if(listOfCameras, v.begin(), [](const char* pCamera) { return pCamera != nullptr; });
 
-			//
-			// Sort the camera names using std::sort and a case independent comparison lambda function
-			// See: https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
-			//
-			sort(supportedCameras.begin(), supportedCameras.end(),
-				[](const auto& lhs, const auto& rhs)
-				{
-					const auto result = mismatch(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
-						[](const auto& lhs, const auto& rhs) { return tolower(lhs) == tolower(rhs); }
-					);
-					return result.second != rhs.cend() && (result.first == lhs.cend() || tolower(*result.first) < tolower(*result.second));
-				});
-		}
+				// Sort the camera names using std::sort and our comparison function.
+				std::ranges::sort(v, comparator);
+
+				return v;
+			},
+			std::views::counted(rawProcessor.cameraList(), rawProcessor.cameraCount())
+		);
 
 		//
 		// The camera type hasn't already been checked, so search the LibRaw supported camera list
 		//
-		result = std::binary_search(supportedCameras.begin(), supportedCameras.end(), cameraString,
-			[](const std::string& lhs, const std::string& rhs) noexcept
-			{
-				const char* pclhs = lhs.c_str();
-				const char* pcrhs = rhs.c_str();
-				// choose the shorter length
-				const size_t len = std::min(strlen(pclhs), strlen(pcrhs));
-				return _strnicmp(pclhs, pcrhs, len) < 0;
-			}
-		);
+		const bool result = std::ranges::binary_search(supportedCameras, cameraString, comparator);
 
 		//
 		// Now we know whether this camera is supported or not, remember we've seen it before
 		//
-		checkedCameras.insert(cameraString);
+		checkedCameras.insert(std::move(cameraString));
+		// Attention: 'cameraString' is empty now (moved away into checkedCameras)!
 
 		//
 		// If the camera isn't supported complain, but only once
 		//
-		if (false == result)
+		if (!result)
 		{
 			const QString errorMessage(QCoreApplication::translate("RawUtils", "Sorry, LibRaw doesn't support your %1 camera", "IDS_CAMERA_NOT_SUPPORTED").arg(strModel));
 			DSSBase::instance()->reportError(errorMessage, "");
 		}
-
-		return;
-	};
-	/* ------------------------------------------------------------------- */
+	}
 
 
 	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
