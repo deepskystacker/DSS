@@ -1,10 +1,13 @@
 #pragma once
 class CMemoryBitmap;
 template <class Ptr, class T>
+requires (
+	(std::derived_from<std::remove_pointer_t<T>, CMemoryBitmap> || std::derived_from<std::remove_const_t<typename T::element_type>, CMemoryBitmap>)
+	&& (std::is_copy_constructible_v<T>)
+	&& (std::is_same_v<Ptr, void*> || std::is_same_v<Ptr, const void*>)
+)
 class BitmapIt
 {
-	static_assert(std::is_same_v<T, CMemoryBitmap*> || std::is_same_v<T, const CMemoryBitmap*> || std::is_same_v<T, std::shared_ptr<CMemoryBitmap>> || std::is_same_v<T, std::shared_ptr<const CMemoryBitmap>>);
-	static_assert(std::is_same_v<Ptr, void*> || std::is_same_v<Ptr, const void*>);
 protected:
 	T bitmap;
 	Ptr pRed;

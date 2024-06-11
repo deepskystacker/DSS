@@ -23,6 +23,7 @@
 #include "ColorMultiBitmap.h"
 #include "GreyMultiBitmap.h"
 #include "AHDDemosaicing.h"
+#include "BitmapIterator.h"
 
 
 #define _USE_MATH_DEFINES
@@ -1295,158 +1296,152 @@ bool CStackingEngine::AdjustEntropyCoverage()
 bool CStackingEngine::AdjustBayerDrizzleCoverage()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
-	if (!m_vPixelTransforms.empty())
+	if (m_vPixelTransforms.empty())
+		return false;
+
+	ZTRACE_RUNTIME("Adjust Bayer Drizzle Coverage");
+
+	std::unique_ptr<C96BitFloatColorBitmap> pCover = std::make_unique<C96BitFloatColorBitmap>();
+	pCover->Init(m_rcResult.width(), m_rcResult.height());
+
+	QString strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
+	if (m_pProgress != nullptr)
+		m_pProgress->Start1(strText, static_cast<int>(m_vPixelTransforms.size()), false);
+	int lProgress = 0;
+
+	for (int lNrBitmaps = 1; const CPixelTransform& PixTransform : m_vPixelTransforms)
 	{
-		ZTRACE_RUNTIME("Adjust Bayer Drizzle Coverage");
-
-		double fMaxCoverage = 0;
-		int lProgress = 0;
-		QString strText;
-
-		std::unique_ptr<C96BitFloatColorBitmap> pCover = std::make_unique<C96BitFloatColorBitmap>();
-		pCover->Init(m_rcResult.width(), m_rcResult.height());
-
-		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
-		if (m_pProgress)
-			m_pProgress->Start1(strText, static_cast<int>(m_vPixelTransforms.size()), false);
-
-		int lNrBitmaps = 0;
-		for (const CPixelTransform& PixTransform : m_vPixelTransforms)
+		if (m_pProgress != nullptr)
 		{
-			++lNrBitmaps;
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT").arg(lNrBitmaps + 1).arg(m_vPixelTransforms.size());
-				m_pProgress->Progress1(strText, lNrBitmaps + 1);
-				m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
-			}
+			strText = QCoreApplication::translate("StackingEngine", "Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT").arg(lNrBitmaps).arg(m_vPixelTransforms.size());
+			m_pProgress->Progress1(strText, lNrBitmaps);
+			m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
+		}
 
-			lProgress = 0;
-			for (int j = 0; j < m_rcResult.height(); j++)
+		lProgress = 0;
+		for (PIXELDISPATCHVECTOR vPixels(16, PIXELDISPATCHVECTOR::value_type{}); const int j : std::views::iota(0, m_rcResult.height()))
+		{
+			for (const int i : std::views::iota(0, m_rcResult.width()))
 			{
-				for (int i = 0; i < m_rcResult.width(); i++)
+				const QPointF ptOut = PixTransform.transform(QPointF(i, j));
+
+				if (DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
 				{
-					lProgress++;
-					const QPointF ptOut = PixTransform.transform(QPointF(i, j));
+					vPixels.resize(0);
+					ComputePixelDispatch(ptOut, vPixels);
 
-					if (DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
+					for (const CPixelDispatch& pixDispatch : vPixels)
 					{
-						PIXELDISPATCHVECTOR vPixels;
-						ComputePixelDispatch(ptOut, vPixels);
-
-						for (const CPixelDispatch& pixDispatch : vPixels)
+						// For each plane adjust the values
+						if (   pixDispatch.m_lX >= 0 && pixDispatch.m_lX < m_rcResult.width()
+							&& pixDispatch.m_lY >= 0 && pixDispatch.m_lY < m_rcResult.height())
 						{
-							// For each plane adjust the values
-							if (pixDispatch.m_lX >= 0 && 
-								pixDispatch.m_lX < m_rcResult.width() &&
-								pixDispatch.m_lY >= 0 &&
-								pixDispatch.m_lY < m_rcResult.height())
+							double fRedCover, fGreenCover, fBlueCover;
+							pCover->GetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
+
+							switch (GetBayerColor(i, j, m_InputCFAType))
 							{
-								double fRedCover, fGreenCover, fBlueCover;
-								pCover->GetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
-
-								switch (GetBayerColor(i, j, m_InputCFAType))
-								{
-								case BAYER_RED:   fRedCover   += pixDispatch.m_fPercentage; break;
-								case BAYER_GREEN: fGreenCover += pixDispatch.m_fPercentage; break;
-								case BAYER_BLUE:  fBlueCover  += pixDispatch.m_fPercentage; break;
-								}
-
-								pCover->SetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
+							case BAYER_RED:   fRedCover   += pixDispatch.m_fPercentage; break;
+							case BAYER_GREEN: fGreenCover += pixDispatch.m_fPercentage; break;
+							case BAYER_BLUE:  fBlueCover  += pixDispatch.m_fPercentage; break;
 							}
+
+							pCover->SetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
 						}
 					}
 				}
-				if (m_pProgress != nullptr)
-					m_pProgress->Progress2(lProgress);
 			}
-
 			if (m_pProgress != nullptr)
-				m_pProgress->End2();
-		}
-
-
-		m_vPixelTransforms.clear();
-
-		lProgress = 0;
-		if (m_pProgress != nullptr)
-		{
-			strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
-			m_pProgress->Start1(strText, 2, false);
-			strText = QCoreApplication::translate("StackingEngine", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
-			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
-		};
-
-		// Compute the maximum coverage
-		for (int j = 0; j < m_rcResult.height(); j++)
-		{
-			for (int i = 0; i < m_rcResult.width(); i++)
-			{
-				double			fRedCover,
-								fGreenCover,
-								fBlueCover;
-
-				lProgress++;
-
-				pCover->GetValue(i, j, fRedCover, fGreenCover, fBlueCover);
-
-				fMaxCoverage = max(fMaxCoverage, fRedCover);
-				fMaxCoverage = max(fMaxCoverage, fGreenCover);
-				fMaxCoverage = max(fMaxCoverage, fBlueCover);
-			}
-
-			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(lProgress);
-		}
-
-		if (m_pProgress != nullptr)
-		{
-			m_pProgress->End2();
-			m_pProgress->Progress1(1);
-		}
-
-		lProgress = 0;
-		if (m_pProgress != nullptr)
-		{
-			strText = QCoreApplication::translate("StackingEngine", "Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
-			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
-		}
-
-		// Adjust the coverage of all pixels
-		for (int j = 0; j < m_rcResult.height(); j++)
-		{
-			for (int i = 0; i < m_rcResult.width(); i++)
-			{
-				lProgress++;
-				double fRedCover, fGreenCover, fBlueCover;
-				double fRed, fGreen, fBlue;
-
-				pCover->GetValue(i, j, fRedCover, fGreenCover, fBlueCover);
-				m_pOutput->GetValue(i, j, fRed, fGreen, fBlue);
-
-				if (fRedCover > 0)
-					fRed *= fMaxCoverage / fRedCover;
-				if (fGreenCover > 0)
-					fGreen *= fMaxCoverage / fGreenCover;
-				if (fBlueCover > 0)
-					fBlue *= fMaxCoverage / fBlueCover;
-
-				m_pOutput->SetValue(i, j, fRed, fGreen, fBlue);
-			}
-
-			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(lProgress);
+				m_pProgress->Progress2(lProgress += m_rcResult.width());
 		}
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
-
-		bResult = true;
+		++lNrBitmaps;
 	}
 
-	return bResult;
+	m_vPixelTransforms.clear();
+
+	lProgress = 0;
+	if (m_pProgress != nullptr)
+	{
+		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
+		m_pProgress->Start1(strText, 2, false);
+		strText = QCoreApplication::translate("StackingEngine", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
+		m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
+	}
+
+	//
+	// Compute the maximum coverage
+	//
+	double fMaxCoverage = 0;
+	BitmapIteratorConst<const C96BitFloatColorBitmap*> it{ pCover.get() };
+	for (int j = 0; j < m_rcResult.height(); j++)
+	{
+		it.Reset(0, j);
+		for (int i = 0; i < m_rcResult.width(); i++, ++it)
+		{
+			double fRedCover, fGreenCover, fBlueCover;
+
+//				pCover->GetValue(i, j, fRedCover, fGreenCover, fBlueCover);
+			it.GetPixel(fRedCover, fGreenCover, fBlueCover);
+
+			fMaxCoverage = std::max(fMaxCoverage, fRedCover);
+			fMaxCoverage = std::max(fMaxCoverage, fGreenCover);
+			fMaxCoverage = std::max(fMaxCoverage, fBlueCover);
+		}
+
+		if (m_pProgress != nullptr)
+			m_pProgress->Progress2(lProgress += m_rcResult.width());
+	}
+
+	if (m_pProgress != nullptr)
+	{
+		m_pProgress->End2();
+		m_pProgress->Progress1(1);
+		strText = QCoreApplication::translate("StackingEngine", "Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
+		m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
+	}
+
+	//
+	// Adjust the coverage of all pixels
+	//
+	BitmapIterator outIt{ m_pOutput };
+	lProgress = 0;
+	for (int j = 0; j < m_rcResult.height(); j++)
+	{
+		it.Reset(0, j);
+		outIt.Reset(0, j);
+		for (int i = 0; i < m_rcResult.width(); i++, ++it, ++outIt)
+		{
+			double fRedCover, fGreenCover, fBlueCover;
+			double fRed, fGreen, fBlue;
+
+//				pCover->GetValue(i, j, fRedCover, fGreenCover, fBlueCover);
+			it.GetPixel(fRedCover, fGreenCover, fBlueCover);
+//				m_pOutput->GetValue(i, j, fRed, fGreen, fBlue);
+			outIt.GetPixel(fRed, fGreen, fBlue);
+
+			if (fRedCover > 0)
+				fRed *= fMaxCoverage / fRedCover;
+			if (fGreenCover > 0)
+				fGreen *= fMaxCoverage / fGreenCover;
+			if (fBlueCover > 0)
+				fBlue *= fMaxCoverage / fBlueCover;
+
+//				m_pOutput->SetValue(i, j, fRed, fGreen, fBlue);
+			outIt.SetPixel(fRed, fGreen, fBlue);
+		}
+
+		if (m_pProgress != nullptr)
+			m_pProgress->Progress2(lProgress += m_rcResult.width());
+	}
+
+	if (m_pProgress != nullptr)
+		m_pProgress->End2();
+
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
