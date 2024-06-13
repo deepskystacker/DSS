@@ -110,7 +110,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			const int lHeight = pInBitmap->Height();
 			std::shared_ptr<C48BitColorBitmap> pColorBitmap = std::make_shared<C48BitColorBitmap>();
 			pColorBitmap->Init(lWidth, lHeight);
-			ThreadVars<BitmapIterator, CMemoryBitmap*> threadVars{ pColorBitmap.get() };
+			ThreadVars<BitmapIterator, std::shared_ptr<C48BitColorBitmap>> threadVars{ pColorBitmap };
 
 #pragma omp parallel for default(none) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
 			for (int j = 0; j < lHeight; j++)
@@ -201,7 +201,7 @@ bool	CAllDepthBitmap::initQImage()
 
 		auto pImageData = m_Image->bits();
 		auto bytes_per_line = m_Image->bytesPerLine();
-		ThreadVars<BitmapIteratorConst, const CMemoryBitmap*> threadVars{ m_pBitmap.get() };
+		ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> threadVars{ m_pBitmap };
 
 #pragma omp parallel for firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
@@ -1454,8 +1454,8 @@ void CSubtractTask::process()
 	const int extraWidth = m_fXShift == 0 ? 0 : static_cast<int>(std::abs(m_fXShift) + 0.5);
 	const int width = m_pTarget->RealWidth() - extraWidth;
 
-	ThreadVars<BitmapIteratorConst, const CMemoryBitmap*> sourceIt{ m_pSource.get() };
-	ThreadVars<BitmapIterator, CMemoryBitmap*> targetIt{ m_pTarget.get() };
+	ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> sourceIt{ m_pSource };
+	ThreadVars<BitmapIterator, std::shared_ptr<CMemoryBitmap>> targetIt{ m_pTarget };
 
 #pragma omp parallel for default(none) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)

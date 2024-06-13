@@ -1308,7 +1308,14 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	QString strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
 	if (m_pProgress != nullptr)
 		m_pProgress->Start1(strText, static_cast<int>(m_vPixelTransforms.size()), false);
-	int lProgress = 0;
+
+	float* const pRed = pCover->GetRedPixel(0, 0);
+	float* const pGreen = pCover->GetGreenPixel(0, 0);
+	float* const pBlue = pCover->GetBluePixel(0, 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed + 1) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pGreen) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pBlue) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
 
 	for (int lNrBitmaps = 1; const CPixelTransform& PixTransform : m_vPixelTransforms)
 	{
@@ -1319,8 +1326,8 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
 		}
 
-		lProgress = 0;
-		for (PIXELDISPATCHVECTOR vPixels(16, PIXELDISPATCHVECTOR::value_type{}); const int j : std::views::iota(0, m_rcResult.height()))
+#pragma omp parallel for schedule(static, 250) default(none) shared(PixTransform) if(CMultitask::GetNrProcessors() > 1)
+		for (int j = 0; j < m_rcResult.height(); ++j)
 		{
 			for (const int i : std::views::iota(0, m_rcResult.width()))
 			{
@@ -1328,42 +1335,49 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 
 				if (DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
 				{
-					vPixels.resize(0);
-					ComputePixelDispatch(ptOut, vPixels);
+					std::array<int, 4> xcoords, ycoords;
+					std::array<double, 4> percents = ComputeAll4PixelDispatches(ptOut, xcoords, ycoords);
 
-					for (const CPixelDispatch& pixDispatch : vPixels)
+					for (const int n : { 0, 1, 2, 3 })
 					{
+						const int x = xcoords[n];
+						const int y = ycoords[n];
+
 						// For each plane adjust the values
-						if (   pixDispatch.m_lX >= 0 && pixDispatch.m_lX < m_rcResult.width()
-							&& pixDispatch.m_lY >= 0 && pixDispatch.m_lY < m_rcResult.height())
+						if (const float percent = static_cast<float>(percents[n]);
+							percent > 0.0f
+							&& x >= 0 && x < m_rcResult.width()
+							&& y >= 0 && y < m_rcResult.height())
 						{
-							double fRedCover, fGreenCover, fBlueCover;
-							pCover->GetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
+							const auto update = [offset = static_cast<size_t>(m_rcResult.width()) * y + x, percent](float* const vals)
+							{
+								std::atomic_ref{ vals[offset] } += percent;
+							};
 
 							switch (GetBayerColor(i, j, m_InputCFAType))
 							{
-							case BAYER_RED:   fRedCover   += pixDispatch.m_fPercentage; break;
-							case BAYER_GREEN: fGreenCover += pixDispatch.m_fPercentage; break;
-							case BAYER_BLUE:  fBlueCover  += pixDispatch.m_fPercentage; break;
+							case BAYER_RED:   //fRedCover   += pixDispatch.m_fPercentage; break;
+								update(pRed); break;
+							case BAYER_GREEN: //fGreenCover += pixDispatch.m_fPercentage; break;
+								update(pGreen); break;
+							case BAYER_BLUE:  //fBlueCover  += pixDispatch.m_fPercentage; break;
+								update(pBlue); break;
 							}
-
-							pCover->SetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
 						}
 					}
 				}
 			}
-			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(lProgress += m_rcResult.width());
+			if (m_pProgress != nullptr && omp_get_thread_num() == 0)
+				m_pProgress->Progress2(j * m_rcResult.width());
 		}
 
-		if (m_pProgress != nullptr)
+		if (m_pProgress != nullptr && omp_get_thread_num() == 0)
 			m_pProgress->End2();
 		++lNrBitmaps;
 	}
 
 	m_vPixelTransforms.clear();
 
-	lProgress = 0;
 	if (m_pProgress != nullptr)
 	{
 		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
@@ -1393,7 +1407,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		}
 
 		if (m_pProgress != nullptr)
-			m_pProgress->Progress2(lProgress += m_rcResult.width());
+			m_pProgress->Progress2(j * m_rcResult.width());
 	}
 
 	if (m_pProgress != nullptr)
@@ -1408,7 +1422,6 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	// Adjust the coverage of all pixels
 	//
 	BitmapIterator outIt{ m_pOutput };
-	lProgress = 0;
 	for (int j = 0; j < m_rcResult.height(); j++)
 	{
 		it.Reset(0, j);
@@ -1435,7 +1448,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		}
 
 		if (m_pProgress != nullptr)
-			m_pProgress->Progress2(lProgress += m_rcResult.width());
+			m_pProgress->Progress2(j * m_rcResult.width());
 	}
 
 	if (m_pProgress != nullptr)
