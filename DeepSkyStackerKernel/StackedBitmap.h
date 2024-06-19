@@ -137,7 +137,7 @@ class CFITSWriter;
 
 /* ------------------------------------------------------------------- */
 
-class CStackedBitmap
+class CStackedBitmap final
 {
 private:
 	int						m_lWidth;
@@ -161,7 +161,7 @@ private:
 	bool	LoadTIFF(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 	bool	LoadFITS(LPCTSTR szStackedFile, DSS::ProgressBase* pProgress = nullptr);
 
-	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
+//	COLORREF	GetPixel(float fRed, float fGreen, float fBlue);
 
 public:
 	void	ReadSpecificTags(CTIFFReader* tiffReader);
@@ -171,7 +171,7 @@ public:
 
 public:
 	CStackedBitmap();
-	virtual ~CStackedBitmap() {};
+	~CStackedBitmap();
 
 	void	SetOutputSizes(int lWidth, int lHeight)
 	{
@@ -226,11 +226,11 @@ public:
 	{
 		HistoAdjust = m_HistoAdjust;
 	};
-
-	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
-	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
-	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
-
+private:
+//	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
+//	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
+//	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
+public:
 	std::tuple<double, double, double> getValues(size_t X, size_t Y) const
 	{
 		const size_t lOffset { m_lWidth * Y + X };
@@ -319,7 +319,7 @@ public:
 	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
 	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
 	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
-	HBITMAP	GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
+	HBITMAP	GetHBitmap(C32BitsBitmap & Bitmap, const RECT * pRect = nullptr);
 	std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
 
 	void Clear()

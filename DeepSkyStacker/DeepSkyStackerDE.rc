@@ -11,7 +11,7 @@
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 #ifdef _WIN32
 LANGUAGE 7, 1
-#pragma code_page(1252)
+#pragma code_page(65001)
 #endif //_WIN32
 
 
@@ -19,7 +19,7 @@ LANGUAGE 7, 1
 STRINGTABLE 
 BEGIN
     IDS_STACKINGMODE_NORMAL "Das Resultat des Stacking-Prozess ist das Referenz Ligthframe."
-    IDS_STACKINGMODE_MOSAIC "Das Ergebnis des Stacking-Prozesses enthält alle Light Frames des Stacks"
+    IDS_STACKINGMODE_MOSAIC "Das Ergebnis des Stacking-Prozesses enthÃ¤lt alle Light Frames des Stacks"
     IDS_STACKINGMODE_INTERSECTION 
                             "Das Ergebnis des Stacking-Prozesses ist ein Bild der Schnittmenge aller Bilder."
 END
@@ -40,7 +40,7 @@ BEGIN
                     17,58,56,10
     CONTROL         "<Dateilisten-Name>.tif",IDC_FILELIST,"Button",BS_AUTORADIOBUTTON,
                     153,58,87,10
-    CONTROL         "Nummerieren um ein Überschreiben der Datei zu vermeiden (001, 002, ...)",
+    CONTROL         "Nummerieren um ein Ãœberschreiben der Datei zu vermeiden (001, 002, ...)",
                     IDC_APPENDNUMBER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,
                     73,250,10
     GROUPBOX        "Ausgabe-Speicherstelle",IDC_STATIC,7,89,294,56
@@ -60,17 +60,17 @@ BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
     IDS_ABOUT_LANG_PORTUGUESE "Portugiesische Version:"
     IDS_ABOUT_LANG_PORTUGUESE_LINK "Manuel Fernandes"
-    IDS_ABOUT_LANG_ROMANIAN "Rumänische Version:"
+    IDS_ABOUT_LANG_ROMANIAN "RumÃ¤nische Version:"
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Valentin und Kolbert Stoica"
     IDS_ABOUT_LANG_RUSSIAN  "Russische Version:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-	IDS_ABOUT_LANG_TURKISH  "Türkische Version:"
+	IDS_ABOUT_LANG_TURKISH  "TÃ¼rkische Version:"
 	IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_SELECTOUTPUTFOLDER  "Ausgabe-Ordner wählen"
+    IDS_SELECTOUTPUTFOLDER  "Ausgabe-Ordner wÃ¤hlen"
     IDS_RECAP_STACKINGMODE_INTERSECTION "Schnittmenge"
 END
 
@@ -88,7 +88,7 @@ BEGIN
     CONTROL         "LZW (veraltet)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,147,17,85,10
     GROUPBOX        "Optionen",IDC_STATIC,7,37,259,55
-    CONTROL         "Einstellungen für das gespeicherte Bild übernehmen",IDC_APPLIED,
+    CONTROL         "Einstellungen fÃ¼r das gespeicherte Bild Ã¼bernehmen",IDC_APPLIED,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,50,
                     177,10
     CONTROL         "Anpassungen im gespeicherten Bild einbetten aber nicht anwenden",
@@ -111,19 +111,19 @@ BEGIN
     LTEXT           "Bearbeitung",IDC_PROCESSING_TITLE,9,255,121,8
     LTEXT           "Raw/FITS DDP Einstellungen...",IDC_OPTIONS_RAWDDPSETTINGS,
                     33,359,118,8
-    LTEXT           "Ausgewählte Bilder registrieren...",IDC_REGISTERING_REGISTERCHECKED,
+    LTEXT           "AusgewÃ¤hlte Bilder registrieren...",IDC_REGISTERING_REGISTERCHECKED,
                     14,181,123,8
-    LTEXT           "Lightframes öffnen...",IDC_STACKING_OPENFILES,14,25,104,
+    LTEXT           "Lightframes Ã¶ffnen...",IDC_STACKING_OPENFILES,14,25,104,
                     8
     LTEXT           "Darkframes...",IDC_STACKING_OPENDARKS,33,37,68,8
-    LTEXT           "Liste Löschen",IDC_STACKING_CLEARLIST,14,117,43,8
-    LTEXT           "Alle auswählen",IDC_STACKING_CHECKALL,14,135,47,8
+    LTEXT           "Liste LÃ¶schen",IDC_STACKING_CLEARLIST,14,117,43,8
+    LTEXT           "Alle auswÃ¤hlen",IDC_STACKING_CHECKALL,14,135,47,8
     LTEXT           "Auswahl ab einem Wert...",IDC_STACKING_CHECKABOVE,14,147,
                     88,8
     LTEXT           "Auswahl aufheben",IDC_STACKING_UNCHECKALL,14,161,59,8
-    LTEXT           "Ausgewählte Bilder stacken...",IDC_STACKING_STACKCHECKED,
+    LTEXT           "AusgewÃ¤hlte Bilder stacken...",IDC_STACKING_STACKCHECKED,
                     14,216,115,8
-    LTEXT           "Bilddatei öffnen...",IDC_PROCESSING_OPENFILE,14,269,66,
+    LTEXT           "Bilddatei Ã¶ffnen...",IDC_PROCESSING_OPENFILE,14,269,66,
                     8
     LTEXT           "Bild in die Zwischenablage kopieren",IDC_PROCESSING_COPYTOCLIPBOARD,
                     14,282,113,9
@@ -137,8 +137,8 @@ BEGIN
     LTEXT           "Flatframes...",IDC_STACKING_OPENFLATS,33,48,60,8
     LTEXT           "Offset/Biasframes...",IDC_STACKING_OPENOFFSETS,33,71,71,
                     8
-    LTEXT           "Über DeepSkyStacker...",IDC_ABOUT,14,415,110,8
-    LTEXT           "Dateiliste öffnen...",IDC_STACKING_LOADLIST,14,86,61,8
+    LTEXT           "Ãœber DeepSkyStacker...",IDC_ABOUT,14,415,110,8
+    LTEXT           "Dateiliste Ã¶ffnen...",IDC_STACKING_LOADLIST,14,86,61,8
     LTEXT           "Dateiliste speichern...",IDC_STACKING_SAVELIST,14,97,70,
                     8
     LTEXT           "",IDC_STACKING_SUBRECT1,13,20,14,107,NOT WS_VISIBLE | WS_DISABLED,
@@ -172,9 +172,9 @@ BEGIN
                     16,35,148,30,WS_EX_CLIENTEDGE
     CONTROL         "Gradient",IDC_BLUEGRADIENT,"MFCGradientCtrl",WS_TABSTOP,
                     16,67,148,30,WS_EX_CLIENTEDGE
-    PUSHBUTTON      "Zurück",IDC_RESET,116,112,48,14
+    PUSHBUTTON      "ZurÃ¼ck",IDC_RESET,116,112,48,14
     PUSHBUTTON      "Anwenden",IDC_PROCESS,0,112,48,14
-    CONTROL         "Einstellungen verknüpfen",IDC_LINK,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Einstellungen verknÃ¼pfen",IDC_LINK,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,3,100,93,10
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12
     PUSHBUTTON      "",IDC_REDO,95,112,16,12
@@ -190,8 +190,8 @@ CAPTION "Luminanz"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CTEXT           "Tiefen",IDC_TEXT_DARKNESS,0,3,163,8
-    CTEXT           "Höhen",IDC_TEXT_HIGHLIGHT,0,72,163,8
-    CTEXT           "Mitteltöne",IDC_TEXT_MIDTONE,0,38,163,8
+    CTEXT           "HÃ¶hen",IDC_TEXT_HIGHLIGHT,0,72,163,8
+    CTEXT           "MitteltÃ¶ne",IDC_TEXT_MIDTONE,0,38,163,8
     CONTROL         "Regler1",IDC_DARKANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
                     WS_TABSTOP,38,14,125,9
     CONTROL         "Regler1",IDC_DARKPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
@@ -205,7 +205,7 @@ BEGIN
     CONTROL         "Regler1",IDC_HIGHPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
                     WS_TABSTOP,38,97,125,9
     PUSHBUTTON      "Anwenden",IDC_PROCESS,0,112,48,14
-    PUSHBUTTON      "Zurück",IDC_RESET,116,112,48,14
+    PUSHBUTTON      "ZurÃ¼ck",IDC_RESET,116,112,48,14
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12,BS_ICON
     PUSHBUTTON      "",IDC_REDO,95,112,16,12,BS_ICON
     PUSHBUTTON      "",IDC_SETTINGS,76,112,16,12,BS_ICON
@@ -219,9 +219,9 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Einstellungs-Management"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "Schließen",IDOK,172,141,50,14
-    DEFPUSHBUTTON   "Löschen",IDC_DELETE,172,27,50,14
-    DEFPUSHBUTTON   "Einfügen",IDC_ADD,172,7,50,14
+    DEFPUSHBUTTON   "SchlieÃŸen",IDOK,172,141,50,14
+    DEFPUSHBUTTON   "LÃ¶schen",IDC_DELETE,172,27,50,14
+    DEFPUSHBUTTON   "EinfÃ¼gen",IDC_ADD,172,7,50,14
     DEFPUSHBUTTON   "Laden",IDC_LOAD,172,122,50,14
     EDITTEXT        IDC_SETTINGSNAME,7,7,153,14,ES_AUTOHSCROLL
     LISTBOX         IDC_SETTINGSLIST,7,26,153,129,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
@@ -230,14 +230,14 @@ END
 
 IDD_SATURATION DIALOGEX 0, 0, 164, 126
 STYLE DS_SETFONT | WS_POPUP | WS_CAPTION
-CAPTION "Sättigung"
+CAPTION "SÃ¤ttigung"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CTEXT           "Sättigungsregler",IDC_TEXT_SATURATION,0,3,163,8
+    CTEXT           "SÃ¤ttigungsregler",IDC_TEXT_SATURATION,0,3,163,8
     CONTROL         "Regler1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
                     WS_TABSTOP,38,22,125,9
     PUSHBUTTON      "Anwenden",IDC_PROCESS,0,112,48,14
-    PUSHBUTTON      "Zurück",IDC_RESET,116,112,48,14
+    PUSHBUTTON      "ZurÃ¼ck",IDC_RESET,116,112,48,14
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12,BS_ICON
     PUSHBUTTON      "",IDC_REDO,95,112,16,12,BS_ICON
     PUSHBUTTON      "",IDC_SETTINGS,76,112,16,12,BS_ICON
@@ -260,7 +260,7 @@ END
 
 IDD_CHECKABOVE DIALOGEX 0, 0, 151, 57
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Alle Bilder auswählen über..."
+CAPTION "Alle Bilder auswÃ¤hlen Ã¼ber..."
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     LTEXT           "Minimalem Score-Wert:",IDC_STATIC,7,11,73,8
@@ -282,17 +282,17 @@ END
 
 IDD_ABOUT DIALOGEX 0, 0, 297, 335
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Über DeepSkyStacker"
+CAPTION "Ãœber DeepSkyStacker"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,240,315,50,14
-    CONTROL         "Beim Start überprüfen ob eine neue Version verfügbar ist",
+    CONTROL         "Beim Start Ã¼berprÃ¼fen ob eine neue Version verfÃ¼gbar ist",
                     IDC_CHECKVERSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,
                     319,195,10
     GROUPBOX        "Sprache",IDC_STATIC,7,187,283,119
     COMBOBOX        IDC_LANGUAGE,184,198,101,115,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    LTEXT           "Beim nächsten Start folgende Sprache übernehmen",IDC_STATIC,
+    LTEXT           "Beim nÃ¤chsten Start folgende Sprache Ã¼bernehmen",IDC_STATIC,
                     15,200,164,8
     CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
                     IDC_CREDITS,"QHTM_Window_Class_001",WS_TABSTOP,7,4,283,180
@@ -326,8 +326,8 @@ BEGIN
     LTEXT           "Dateiname",IDC_FILENAME,70,9,185,8,SS_NOPREFIX | SS_PATHELLIPSIS
     LTEXT           "Datum/Zeit",IDC_STATIC,7,26,35,8
     LTEXT           "Datum/Zeit",IDC_DATETIME,71,26,184,8
-    LTEXT           "Größe",IDC_STATIC,7,43,19,8
-    LTEXT           "Größen",IDC_SIZES,70,43,79,8
+    LTEXT           "GrÃ¶ÃŸe",IDC_STATIC,7,43,19,8
+    LTEXT           "GrÃ¶ÃŸen",IDC_SIZES,70,43,79,8
     LTEXT           "CFA",IDC_STATIC,162,43,14,8
     LTEXT           "CFA",IDC_CFA,182,43,66,8
     LTEXT           "Tiefe",IDC_STATIC,7,60,20,8
@@ -402,12 +402,12 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,266,191,50,14
     LTEXT           "Statik",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
-    LTEXT           "Temporärer Dateiordner:",IDC_STATIC,11,177,80,8
+    LTEXT           "TemporÃ¤rer Dateiordner:",IDC_STATIC,11,177,80,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Statik",IDC_TEMPFOLDER,97,178,200,9,SS_PATHELLIPSIS
-    CONTROL         "Alle verfügbaren Prozessoren verwenden",IDC_USEALLPROCESSORS,
+    CONTROL         "Alle verfÃ¼gbaren Prozessoren verwenden",IDC_USEALLPROCESSORS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,211,145,10
-    CONTROL         "Die Priorität des Worker-Threads reduzieren",IDC_REDUCEWORKERTHREADS,
+    CONTROL         "Die PrioritÃ¤t des Worker-Threads reduzieren",IDC_REDUCEWORKERTHREADS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,153,10
 END
 
@@ -431,7 +431,7 @@ BEGIN
                     WS_TABSTOP,86,109,77,10
     CONTROL         "Auswahlrechteck",IDC_CUSTOMRECTANGLE,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,7,81,74,10
-    CONTROL         "RGB Kanäle im Endbild ausrichten",IDC_ALIGNCHANNELS,"Button",
+    CONTROL         "RGB KanÃ¤le im Endbild ausrichten",IDC_ALIGNCHANNELS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,5,125,118,10
 END
 
@@ -448,10 +448,10 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,7,41,195,64
     CONTROL         "Nach der Registrierung stacken",IDC_STACK,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,13,40,113,10
-    LTEXT           "Wählen sie die Besten ",IDC_STATIC,14,58,72,8
+    LTEXT           "WÃ¤hlen sie die Besten ",IDC_STATIC,14,58,72,8
     EDITTEXT        IDC_PERCENT,86,55,20,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "% Bilder zum Stacken aus.",IDC_STATIC,109,58,86,8
-    CTEXT           "Nicht vergessen im Stacking Register\ndie Darkframes hinzuzufügen.",
+    CTEXT           "Nicht vergessen im Stacking Register\ndie Darkframes hinzuzufÃ¼gen.",
                     IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
 END
 
@@ -484,19 +484,19 @@ BEGIN
     EDITTEXT        IDC_REDSCALE,63,34,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Blau-Scala",IDC_STATIC,15,53,34,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    GROUPBOX        "Weißabgleich",IDC_STATIC,140,7,131,64
-    CONTROL         "Keine Weißabgleichverarbeitung",IDC_NOWB,"Button",
+    GROUPBOX        "WeiÃŸabgleich",IDC_STATIC,140,7,131,64
+    CONTROL         "Keine WeiÃŸabgleichverarbeitung",IDC_NOWB,"Button",
 						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,22,113,16
-    CONTROL         "Weißabgleich der Kamera verwenden",IDC_CAMERAWB,"Button",
+    CONTROL         "WeiÃŸabgleich der Kamera verwenden",IDC_CAMERAWB,"Button",
 						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,44,115,17
     CONTROL         "Bilineare Interpolation",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,15,91,83,10
     CONTROL         "Adaptive Homogeneity-Directed Interpolation (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,
                     179,10
-    LTEXT           "Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.",
+    LTEXT           "Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die GrÃ¶ÃŸe des fertigen Bildes halbiert sich dadurch.",
                     IDC_STATIC,23,196,229,25
-    LTEXT           "Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.",
+    LTEXT           "Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhÃ¤lt nur die Basiskomponenten des Rasters.",
                     IDC_STATIC,23,154,239,17
     CONTROL         "Bayer Drizzle Algorithmus anwenden (keine Interpolation, keine Debayerisation)",
                     IDC_RAWBAYER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP | 
@@ -537,12 +537,12 @@ BEGIN
     CONTROL         "Bayer Drizzle Algorithmus anwenden (keine Interpolation, keine Debayerisation)",
                     IDC_RAWBAYER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP | 
                     BS_MULTILINE,13,154,249,16
-    LTEXT           "Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.",
+    LTEXT           "Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhÃ¤lt nur die Basiskomponenten des Rasters.",
                     IDC_TEXT7,33,173,229,25
     CONTROL         "Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)",
                     IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
                     WS_TABSTOP | BS_MULTILINE,13,200,248,16
-    LTEXT           "Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.",
+    LTEXT           "Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die GrÃ¶ÃŸe des fertigen Bildes halbiert sich dadurch.",
                     IDC_TEXT6,33,219,221,24
     GROUPBOX        "Bayer Matrix Umwandlung",IDC_STATIC,6,119,264,126
     CONTROL         "Erzwungene Verwendung von unsignierten Werten, wenn signierte Werte gespeichert sind",
@@ -555,7 +555,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ausrichtung"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Verwendete Methode während der Ausrichtung",IDC_TITLE,7,
+    LTEXT           "Verwendete Methode wÃ¤hrend der Ausrichtung",IDC_TITLE,7,
                     7,294,8
     CONTROL         "Automatisch",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
                     WS_TABSTOP,9,22,52,10
@@ -572,12 +572,12 @@ END
 
 IDD_DROPFILES DIALOGEX 0, 0, 186, 124
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Datei anfügen..."
+CAPTION "Datei anfÃ¼gen..."
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,75,103,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,129,103,50,14
-    LTEXT           "%ld Datei(en) anfügen als",IDC_DROPFILESTEXT,7,7,172,8
+    LTEXT           "%ld Datei(en) anfÃ¼gen als",IDC_DROPFILESTEXT,7,7,172,8
     CONTROL         "Lightframes",IDC_LIGHTFRAMES,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,7,22,57,10
     CONTROL         "Darkframes",IDC_DARKFRAMES,"Button",BS_AUTORADIOBUTTON | 
@@ -595,12 +595,12 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "Zwischenbilder"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Einstellungen für die Zwischenbilder",IDC_TITLE,7,7,294,
+    LTEXT           "Einstellungen fÃ¼r die Zwischenbilder",IDC_TITLE,7,7,294,
                     8
-    CONTROL         "Erstelle eine kalibrierte Datei für jedes Lightframe",IDC_SAVECALIBRATED,
+    CONTROL         "Erstelle eine kalibrierte Datei fÃ¼r jedes Lightframe",IDC_SAVECALIBRATED,
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,
                     19,277,19
-    CONTROL         "Erstelle eine registrierte/kalibrierte Datei für jedes Lightframe",
+    CONTROL         "Erstelle eine registrierte/kalibrierte Datei fÃ¼r jedes Lightframe",
                     IDC_CREATEINTERMEDIATE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
                     WS_TABSTOP,17,50,284,18
     GROUPBOX        "Zwischenbilder Format",IDC_STATIC,7,73,294,47
@@ -624,8 +624,8 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,151,206,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,208,206,50,14
     LTEXT           "Sternerkennungs-Schwellenwert",IDC_STATIC,16,86,103,8
-    LTEXT           "Minimale Sterngröße",IDC_STATIC,16,118,65,8
-    LTEXT           "Maximale Sterngröße",IDC_STATIC,16,132,67,8
+    LTEXT           "Minimale SterngrÃ¶ÃŸe",IDC_STATIC,16,118,65,8
+    LTEXT           "Maximale SterngrÃ¶ÃŸe",IDC_STATIC,16,132,67,8
     CONTROL         "Hot-Pixel Erkennung",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,16,98,107,10
     CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
@@ -638,8 +638,8 @@ BEGIN
     RTEXT           "%ld Pixel",IDC_MINSIZETEXT,133,118,34,8
     RTEXT           "%ld Pixel",IDC_MAXSIZETEXT,133,132,34,8
     GROUPBOX        "Stern Erkennung",IDC_STATIC,7,71,249,81
-    GROUPBOX        "Erweiterungen/Einschränkungen",IDC_STATIC,7,156,249,44
-    LTEXT           "Prozentualer Anteil der Sterngrößen",IDC_STATIC,16,170,
+    GROUPBOX        "Erweiterungen/EinschrÃ¤nkungen",IDC_STATIC,7,156,249,44
+    LTEXT           "Prozentualer Anteil der SterngrÃ¶ÃŸen",IDC_STATIC,16,170,
                     115,9
     LTEXT           "Pixel",IDC_STATIC,16,183,19,8
     CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
@@ -669,9 +669,9 @@ BEGIN
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,96,92,10
     LTEXT           "Die Kometenposition wird ignoriert.\nDer Komet wird unscharf.",
                     IDC_STATIC,17,34,123,17
-    LTEXT           "Kometenposition wird berücksichtigt.\nDer Komet und die Sterne werden scharf. Diese Prozess dauert doppelt so lange.",
+    LTEXT           "Kometenposition wird berÃ¼cksichtigt.\nDer Komet und die Sterne werden scharf. Diese Prozess dauert doppelt so lange.",
                     IDC_STATIC,17,109,128,33
-    LTEXT           "Kometenposition wird berücksichtigt.\nDer Komet wird scharf und die Sterne als Strichspuren abgebildet.",
+    LTEXT           "Kometenposition wird berÃ¼cksichtigt.\nDer Komet wird scharf und die Sterne als Strichspuren abgebildet.",
                     IDC_STATIC,17,67,123,27
     CONTROL         "",IDC_COMETSAMPLE,"Static",SS_BITMAP | SS_CENTERIMAGE,150,
                     19,151,124
@@ -679,15 +679,15 @@ END
 
 IDD_SAVEEDITCHANGES DIALOGEX 0, 0, 236, 139
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Änderungen speichern?"
+CAPTION "Ã„nderungen speichern?"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Ja",IDYES,7,118,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,179,118,50,14
     PUSHBUTTON      "Nein",IDNO,64,118,50,14
-    CTEXT           "Sie haben einige Änderungen vorgenommen (Sterne oder Kometen-Positionen)\nWollen sie diese speichern?",
+    CTEXT           "Sie haben einige Ã„nderungen vorgenommen (Sterne oder Kometen-Positionen)\nWollen sie diese speichern?",
                     IDC_STATIC,7,7,222,25
-    GROUPBOX        "Das nächste Mal...",IDC_STATIC,7,32,222,81
+    GROUPBOX        "Das nÃ¤chste Mal...",IDC_STATIC,7,32,222,81
     CONTROL         "ohne Nachfrage speichern",IDC_SAVEWITHOUTASKING,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,44,97,10
     CONTROL         "ohne Nachfrage nicht speichern",IDC_DONTSAVEWITHOUTASKING,
@@ -695,7 +695,7 @@ BEGIN
                     114,10
     CONTROL         "erneut nachfragen",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,15,76,73,10
-    LTEXT           "Diese Optionen lassen sich mit einem rechten Mausklick auf den Speichern-Button ändern",
+    LTEXT           "Diese Optionen lassen sich mit einem rechten Mausklick auf den Speichern-Button Ã¤ndern",
                     IDC_STATIC,15,93,207,16
 END
 
@@ -706,7 +706,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,99,100,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,156,100,50,14
-    CTEXT           "Dieses Lightframe ist noch nicht registriert\n(Die Sterne wurden noch nicht erfasst).\n\nMöchten Sie...",
+    CTEXT           "Dieses Lightframe ist noch nicht registriert\n(Die Sterne wurden noch nicht erfasst).\n\nMÃ¶chten Sie...",
                     IDC_STATIC,7,5,199,33
     CONTROL         "dieses Lightframe registrieren",IDC_REGISTERONE,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,44,111,10
@@ -725,7 +725,7 @@ BEGIN
     LTEXT           "Kosmetik-Einstellungen zur Nachkalibrierung",IDC_TITLE,
                     7,7,294,8
     GROUPBOX        "",IDC_STATIC,7,22,294,44
-    LTEXT           "Filter-Größe",IDC_STATIC,17,36,38,8
+    LTEXT           "Filter-GrÃ¶ÃŸe",IDC_STATIC,17,36,38,8
     RTEXT           "%ld Px",IDC_HOTFILTERSTATIC,102,36,33,8
     CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
                     WS_TABSTOP,135,35,157,10
@@ -736,7 +736,7 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,7,71,294,44
     CONTROL         "Erkennen und Entfernen der verbliebenen Cold-Pixel",IDC_DETECTCLEANCOLD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,71,180,10
-    LTEXT           "Filter-Größe",IDC_STATIC,17,85,38,8
+    LTEXT           "Filter-GrÃ¶ÃŸe",IDC_STATIC,17,85,38,8
     RTEXT           "%ld Px",IDC_COLDFILTERSTATIC,102,85,33,8
     CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
                     WS_TABSTOP,135,84,157,10
@@ -746,7 +746,7 @@ BEGIN
                     WS_TABSTOP,135,101,157,10
     CONTROL         "Erkennen und Entfernen der verbliebenen Hot-Pixel",IDC_DETECTCLEANHOT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,22,177,10
-    CONTROL         "Ein Bild speichern welches die entfernten Pixel für jedes Ligthframe zeigt.",
+    CONTROL         "Ein Bild speichern welches die entfernten Pixel fÃ¼r jedes Ligthframe zeigt.",
                     IDC_SAVEDELTAIMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     11,133,246,10
     LTEXT           "Effekt  schwach",IDC_WEAK1,135,45,56,8
@@ -766,13 +766,13 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,146,158,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,203,158,50,14
-    LTEXT           "In diesem Dialog können Sie einen Stacking-Prozess aus bestehenden Bilderlisten starten\nFügen Sie die zu stackenden Bilderlisten im Auswahlfeld hinzu und klicken Sie auf OK um den Prozess zu starten.",
+    LTEXT           "In diesem Dialog kÃ¶nnen Sie einen Stacking-Prozess aus bestehenden Bilderlisten starten\nFÃ¼gen Sie die zu stackenden Bilderlisten im Auswahlfeld hinzu und klicken Sie auf OK um den Prozess zu starten.",
                     IDC_STATIC,7,7,246,36
-    PUSHBUTTON      "Bilderlisten hinzufügen...",IDC_ADDLISTS,5,46,112,14
+    PUSHBUTTON      "Bilderlisten hinzufÃ¼gen...",IDC_ADDLISTS,5,46,112,14
     LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | 
                     LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
-    PUSHBUTTON      "Liste Löschen",IDC_CLEARLIST,203,46,50,14
+    PUSHBUTTON      "Liste LÃ¶schen",IDC_CLEARLIST,203,46,50,14
 END
 
 IDD_BACKGROUNDOPTIONS DIALOGEX 0, 0, 231, 199
@@ -916,7 +916,7 @@ BEGIN
     BEGIN
         MENUITEM "Als Referenzbild verwenden",      IDM_USEASSTARTING
         MENUITEM SEPARATOR
-        MENUITEM "Auswählen",                       IDM_CHECK
+        MENUITEM "AuswÃ¤hlen",                       IDM_CHECK
         MENUITEM "Deaktivieren",                     IDM_UNCHECK
         MENUITEM SEPARATOR
         MENUITEM "Zum Lightframe wechseln",       IDM_CHANGETOFRAME
@@ -931,7 +931,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "In Zwischenablage kopieren",           IDM_COPYTOCLIPBOARD
         MENUITEM SEPARATOR
-        MENUITEM "Von der Festplatte löschen...",          IDM_ERASEFROMDISK
+        MENUITEM "Von der Festplatte lÃ¶schen...",          IDM_ERASEFROMDISK
     END
 END
 
@@ -960,17 +960,17 @@ BEGIN
     BEGIN
         MENUITEM "[Erstes MRU]",                 ID_FILELIST_FIRSTMRU
         MENUITEM SEPARATOR
-        MENUITEM "Eine andere Dateiliste öffnen...",   ID_FILELIST_OPENANOTHERFILELIST
+        MENUITEM "Eine andere Dateiliste Ã¶ffnen...",   ID_FILELIST_OPENANOTHERFILELIST
     END
 END
 
 IDR_CALIBRATION MENU 
 BEGIN
-    POPUP "Kalibrierungsmenü"
+    POPUP "KalibrierungsmenÃ¼"
     BEGIN
         MENUITEM "Keine Hintergrund-Kalibrierung",   ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION
         MENUITEM "Hintergrund Kalibrierung / pro Kanal", ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION
-        MENUITEM "RGB-Kanäle Hintergrund Kalibrierung", ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION
+        MENUITEM "RGB-KanÃ¤le Hintergrund Kalibrierung", ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION
         MENUITEM SEPARATOR
         MENUITEM "Optionen...",                  ID_CALIBRATIONMENU_OPTIONS
     END
@@ -1014,7 +1014,7 @@ STRINGTABLE
 BEGIN
     IDS_SHOWREGISTEREDSTARS "Registrierte Sterne anzeigen"
     IDS_HIDEREGISTEREDSTARS "Registrierte Sterne ausblenden"
-    IDS_UNDOLASTSETTINGS    "Letzte Anwendung rückgängig machen"
+    IDS_UNDOLASTSETTINGS    "Letzte Anwendung rÃ¼ckgÃ¤ngig machen"
     IDS_REDOLASTSETTINGS    "Letzte Anwendung wiederholen"
     IDS_MANAGESETTINGS      "Einstellungen verwalten, laden und speichern..."
 END
@@ -1033,7 +1033,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_COLUMN_SIZES        "Größe"
+    IDS_COLUMN_SIZES        "GrÃ¶ÃŸe"
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Tiefe"
     IDS_COLUMN_INFOS        "Infos"
@@ -1074,12 +1074,12 @@ BEGIN
     IDS_EXPOSURE2           "Belichtung: %ld m %ld s "
     IDS_EXPOSURE3           "Belichtung: %ld h %ld m %ld s "
     IDS_NRFRAMES            "(%ld Frames)"
-    IDS_NOINFO              "Keine Info verfügbar"
-    IDS_ESTIMATED0          "Geschätzte verbleibende Zeit: < 1 s "
-    IDS_ESTIMATED1          "Geschätzte verbleibende Zeit: %ld s "
-    IDS_ESTIMATED2          "Geschätzte verbleibende Zeit: %ld m %ld s "
-    IDS_ESTIMATED3          "Geschätzte verbleibende Zeit: %ld h %ld m %ld s "
-    IDS_ESTIMATEDUNKNOWN    "Geschätzte verbleibende Zeit: Unbekannt"
+    IDS_NOINFO              "Keine Info verfÃ¼gbar"
+    IDS_ESTIMATED0          "GeschÃ¤tzte verbleibende Zeit: < 1 s "
+    IDS_ESTIMATED1          "GeschÃ¤tzte verbleibende Zeit: %ld s "
+    IDS_ESTIMATED2          "GeschÃ¤tzte verbleibende Zeit: %ld m %ld s "
+    IDS_ESTIMATED3          "GeschÃ¤tzte verbleibende Zeit: %ld h %ld m %ld s "
+    IDS_ESTIMATEDUNKNOWN    "GeschÃ¤tzte verbleibende Zeit: Unbekannt"
 END
 
 STRINGTABLE 
@@ -1090,56 +1090,56 @@ BEGIN
     IDS_LISTFILTER_OUTPUT   "Datei Liste (*.txt)|*.txt|Datei Liste (*.dssfilelist)|*.dssfilelist|Alle Dateien|*.*||"
     IDS_FILTER_MASK         "TIFF Bild|*.tif;*.tiff|FITS Bild|*.fits;*.fts;*.fit||"
     IDS_TITLE_MASK          "Speichern der Sternmaske als..."
-    IDS_TITLE_OPENLIGHTFRAMES "Lightframes öffnen..."
-    IDS_TITLE_OPENDARKFRAMES "Darkframes öffnen..."
+    IDS_TITLE_OPENLIGHTFRAMES "Lightframes Ã¶ffnen..."
+    IDS_TITLE_OPENDARKFRAMES "Darkframes Ã¶ffnen..."
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_MSG_SAVEMODIFICATIONS "Wollen Sie die Änderungen speichern?"
+    IDS_MSG_SAVEMODIFICATIONS "Wollen Sie die Ã„nderungen speichern?"
     IDS_MSG_NOPICTURETOSAVE "Da ist kein Bild zum Speichern."
     IDS_MSG_NOPICTUREFORSTARMASK 
-                            "Zum Erstellen der Sternmaske muss ein Bild geöffnet sein!"
+                            "Zum Erstellen der Sternmaske muss ein Bild geÃ¶ffnet sein!"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_CHECK_ALLOK         "Darks, Flats und Offsets/Bias ausgewählt."
+    IDS_CHECK_ALLOK         "Darks, Flats und Offsets/Bias ausgewÃ¤hlt."
     IDS_CHECK_DARKFLATOFFSET 
-                            "Vergessen Sie nicht Dark-, Flat- und Offsetframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_DARKFLAT      "Vergessen Sie nicht Dark- und Flatframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_DARKOFFSET    "Vergessen Sie nicht Dark- und Offsetframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_FLATOFFSET    "Vergessen Sie nicht Flat- und Offsetframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_DARK          "Vergessen Sie nicht Darkframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_FLAT          "Vergessen Sie nicht Flatframes vor dem Stacken hinzuzufügen."
-    IDS_CHECK_OFFSET        "Vergessen Sie nicht Offsetframes vor dem Stacken hinzuzufügen."
+                            "Vergessen Sie nicht Dark-, Flat- und Offsetframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_DARKFLAT      "Vergessen Sie nicht Dark- und Flatframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_DARKOFFSET    "Vergessen Sie nicht Dark- und Offsetframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_FLATOFFSET    "Vergessen Sie nicht Flat- und Offsetframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_DARK          "Vergessen Sie nicht Darkframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_FLAT          "Vergessen Sie nicht Flatframes vor dem Stacken hinzuzufÃ¼gen."
+    IDS_CHECK_OFFSET        "Vergessen Sie nicht Offsetframes vor dem Stacken hinzuzufÃ¼gen."
 END
 
 STRINGTABLE 
 BEGIN
     IDS_TT_REDADJUST        "Rot-Histogramm Anpassungs-Methode festlegen"
-    IDS_TT_GREENADJUST      "Grün-Histogramm Anpassungs-Methode festlegen"
+    IDS_TT_GREENADJUST      "GrÃ¼n-Histogramm Anpassungs-Methode festlegen"
     IDS_TT_BLUEADJUST       "Blau-Histogramm Anpassungs-Methode festlegen"
     IDS_TT_APPLIED          "Diese Option speichert das Bild so wie Sie es sehen\nVerwenden sie diese Einstellung, wenn Sie die Bearbeitung in einem\nanderen Programm fortsetzen wollen"
-    IDS_TT_EMBEDDED         "Diese Option speichert das unbearbeitete Bild mit eingebetteten Bearbeitungs-Einstellungen\nVerwenden Sie diese Einstellung, wenn Sie die Verarbeitung später in einem anderen Programm (oder auch in DeepSkyStacker) fortsetzen wollen"
+    IDS_TT_EMBEDDED         "Diese Option speichert das unbearbeitete Bild mit eingebetteten Bearbeitungs-Einstellungen\nVerwenden Sie diese Einstellung, wenn Sie die Verarbeitung spÃ¤ter in einem anderen Programm (oder auch in DeepSkyStacker) fortsetzen wollen"
 END
 
 STRINGTABLE 
 BEGIN
     IDS_ASK_DELETESETTINGS  "Wollen Sie wirklich die %s Einstellungen entfernen?"
-    IDS_ASK_NODARK          "Sie haben keine Dark-Frames ausgewählt.\n"
-    IDS_ASK_NOFLAT          "Sie haben keine Flat-Frames ausgewählt.\n"
-    IDS_ASK_NOOFFSET        "Sie haben keine Offset-Frames ausgewählt.\n"
+    IDS_ASK_NODARK          "Sie haben keine Dark-Frames ausgewÃ¤hlt.\n"
+    IDS_ASK_NOFLAT          "Sie haben keine Flat-Frames ausgewÃ¤hlt.\n"
+    IDS_ASK_NOOFFSET        "Sie haben keine Offset-Frames ausgewÃ¤hlt.\n"
     IDS_ASK_CONTINUE        "\nWollen Sie fortfahren?"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERROR_NOTCOMPATIBLE "Die ausgewählten Bilder sind nicht kompatibel (Breite, Höhe, Anzahl der Farben, Anzahl der Kanäle, nur ein Master-Dark, Offset und Flat)."
-    IDS_ERROR_NOTLIGHTCHECKED "Bitte Lightframes zum Stacken auswählen!"
-    IDS_ERROR_NOTLIGHTCHECKED2 "Bitte Lightframes zum Registrieren auswählen!"
+    IDS_ERROR_NOTCOMPATIBLE "Die ausgewÃ¤hlten Bilder sind nicht kompatibel (Breite, HÃ¶he, Anzahl der Farben, Anzahl der KanÃ¤le, nur ein Master-Dark, Offset und Flat)."
+    IDS_ERROR_NOTLIGHTCHECKED "Bitte Lightframes zum Stacken auswÃ¤hlen!"
+    IDS_ERROR_NOTLIGHTCHECKED2 "Bitte Lightframes zum Registrieren auswÃ¤hlen!"
     IDS_ERROR_NOTENOUGHFREESPACE 
-                            "Die Erstellung der Masters (Dark, Flat, Offset) benötigt %ld KB.\nEs sind nur %ld KB auf dem Laufwerk verfügbar %s\nWollen Sie trotzdem fortfahren?"
+                            "Die Erstellung der Masters (Dark, Flat, Offset) benÃ¶tigt %ld KB.\nEs sind nur %ld KB auf dem Laufwerk verfÃ¼gbar %s\nWollen Sie trotzdem fortfahren?"
 	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker kann keine Dateien in das Verzeichnis %s schreiben"
 END
 
@@ -1179,16 +1179,16 @@ BEGIN
     IDS_LOADRGBOFFSET       "Lade %ld Bit/K %s Offsetframe\n%s"
     IDS_LOADGRAYOFFSET      "Lade %ld Bit Graustufen %s Offsetframe\n%s"
     IDS_ADDRGBOFFSET        "Addiere %ld Bit/K %s Offsetframe\n%s"
-    IDS_ADDGRAYOFFSET       "Füge %ld Bit Graustufen %s Offsetframe hinzu\n%s"
+    IDS_ADDGRAYOFFSET       "FÃ¼ge %ld Bit Graustufen %s Offsetframe hinzu\n%s"
     IDS_COMPUTINGOFFSETS    "Offsets berechnen"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_COMPUTINGSTACKINGINFO "Stacking-Info berechnen für %s"
+    IDS_COMPUTINGSTACKINGINFO "Stacking-Info berechnen fÃ¼r %s"
     IDS_STACKING_COMPUTINGOFFSET "Stacking ... Offsets berechnen"
     IDS_STACKING            "Stacking"
-    IDS_STACKING_PICTURE    "Stacking %ld von %ld - Offset [%.1f,%.1f] - Winkel : %.1f°"
+    IDS_STACKING_PICTURE    "Stacking %ld von %ld - Offset [%.1f,%.1f] - Winkel : %.1fÂ°"
     IDS_LOADRGBLIGHT        "Lade %ld Bit/K %s Lightframe\n%s"
     IDS_LOADGRAYLIGHT       "Lade %ld Bit Graustufen %s Lightframe\n%s"
     IDS_STACKRGBLIGHT       "Stacking %ld Bit/K %s Lightframe\n%s"
@@ -1269,15 +1269,15 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_CHECKVERSION        "Wollen Sie beim Start prüfen, ob eine neue Version von DeepSkyStacker verfügbar ist?\n(Sie können diese Option später in der ÜberDeepSkyStacker Dialogbox an und abschalten)"
+    IDS_CHECKVERSION        "Wollen Sie beim Start prÃ¼fen, ob eine neue Version von DeepSkyStacker verfÃ¼gbar ist?\n(Sie kÃ¶nnen diese Option spÃ¤ter in der ÃœberDeepSkyStacker Dialogbox an und abschalten)"
     IDS_VERSIONAVAILABLE    "DeepSkyStacker Version %s steht zum Download bereit."
-    IDS_TEMPFILEREMOVAL     "Eine oder mehrere temporäre Dateien von DeepSkyStacker befinden sich noch im Arbeitsverzeichnis.\n\nWollen Sie diese entfernen?\n\n(%ld Datei(s) verwenden %s)"
-    IDS_WARNING_ERASEFILES  "Wollen Sie wirklich die %ld Datei(en) dauerhaft löschen?\nDieser Vorgang kann nicht rückgängig gemacht werden!"
+    IDS_TEMPFILEREMOVAL     "Eine oder mehrere temporÃ¤re Dateien von DeepSkyStacker befinden sich noch im Arbeitsverzeichnis.\n\nWollen Sie diese entfernen?\n\n(%ld Datei(s) verwenden %s)"
+    IDS_WARNING_ERASEFILES  "Wollen Sie wirklich die %ld Datei(en) dauerhaft lÃ¶schen?\nDieser Vorgang kann nicht rÃ¼ckgÃ¤ngig gemacht werden!"
     IDS_WANTTOCONTINUE      "\nWollen Sie wirklich fortfahren?"
-    IDS_WARNINGREADONLY     "Folgende(r) Ordner sind nur zur Ansicht :\n%s\nDeepSkyStacker benötigt sie zum Erstellen von Dateien während der Arbeitsprozesse."
-    IDS_WARNING_SAVECHANGES "Sie haben einige Änderungen an der %s Dateiliste und/oder den Einstellungen vorgenommen.\n\nWollen Sie die Änderungen speichern?"
+    IDS_WARNINGREADONLY     "Folgende(r) Ordner sind nur zur Ansicht :\n%s\nDeepSkyStacker benÃ¶tigt sie zum Erstellen von Dateien wÃ¤hrend der Arbeitsprozesse."
+    IDS_WARNING_SAVECHANGES "Sie haben einige Ã„nderungen an der %s Dateiliste und/oder den Einstellungen vorgenommen.\n\nWollen Sie die Ã„nderungen speichern?"
     IDS_WARNING_ONLYONEFRAME 
-                            "Nur ein Bild (von %ld) wird gestackt werden.\n\nSie sollten den Sternerkennungs-Schwellenwert prüfen/bzw.ändern, damit mehr Sterne erkannt werden\nund DeepSkyStacker eine passende Ausrichtungsmethode zum Referenzframe findet.\n"
+                            "Nur ein Bild (von %ld) wird gestackt werden.\n\nSie sollten den Sternerkennungs-Schwellenwert prÃ¼fen/bzw.Ã¤ndern, damit mehr Sterne erkannt werden\nund DeepSkyStacker eine passende Ausrichtungsmethode zum Referenzframe findet.\n"
 END
 
 STRINGTABLE 
@@ -1293,7 +1293,7 @@ BEGIN
     IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (%s: %s) - Gesamtbelichtung: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAchtung: ISO Wert passt nicht zum Lightframe\n"
-    IDS_RECAP_GAINWARNING   "\t\tAchtung: Gain stimmt nicht mit dem Gain des Lightframes überein\n"
+    IDS_RECAP_GAINWARNING   "\t\tAchtung: Gain stimmt nicht mit dem Gain des Lightframes Ã¼berein\n"
     IDS_RECAP_NOOFFSET      "\t-> Kein Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1302,24 +1302,24 @@ BEGIN
     IDS_RECAP_FLAT          "\t-> Flat: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Kein Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
-                            "\nGeschätzte Gesamt-Belichtungszeit: %s\n(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle abgehakten Lightframes für den Stacking-Prozess verwendet werden)\n"
+                            "\nGeschÃ¤tzte Gesamt-Belichtungszeit: %s\n(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle abgehakten Lightframes fÃ¼r den Stacking-Prozess verwendet werden)\n"
     IDS_RECAP_WARNINGBAYERDRIZZLE 
-                            "Warnung: Die ausgewählte Bayer-Drizzle Option in den RAW DDP Einstellungen kann, mit einer anderen als der Durchschnittsmethode, zu seltsamen Resultaten führen."
+                            "Warnung: Die ausgewÃ¤hlte Bayer-Drizzle Option in den RAW DDP Einstellungen kann, mit einer anderen als der Durchschnittsmethode, zu seltsamen Resultaten fÃ¼hren."
     IDS_RECAP_BACKGROUNDCALIBRATION 
-                            "RGB-Kanäle Hintergrund Kalibrierung: %s\n"
+                            "RGB-KanÃ¤le Hintergrund Kalibrierung: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Dark Optimierung: %s\n"
     IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAchtung: ISO Wert passt nicht zum Flatframe\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tAchtung: Gain des Dark Flats stimmt nicht mit dem Gain des Flats überein\n"
+                            "\t\tAchtung: Gain des Dark Flats stimmt nicht mit dem Gain des Flats Ã¼berein\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Flatframe\n"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_MULTIPLEFILESELECTED "%ld Dateien ausgewählt"
+    IDS_MULTIPLEFILESELECTED "%ld Dateien ausgewÃ¤hlt"
 END
 
 STRINGTABLE 
@@ -1346,14 +1346,14 @@ END
 STRINGTABLE 
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
-                            "Dieser Prozess benötigt vorübergehend %s freien Speicherplatz auf dem %s Laufwerk.\nEs sind nur %s auf diesem Laufwerk verfügbar."
-    IDS_RECAP_INFODISKSPACE "Der Prozess wird vorübergehend %s auf dem %s Laufwerk benötigen (%s frei)."
+                            "Dieser Prozess benÃ¶tigt vorÃ¼bergehend %s freien Speicherplatz auf dem %s Laufwerk.\nEs sind nur %s auf diesem Laufwerk verfÃ¼gbar."
+    IDS_RECAP_INFODISKSPACE "Der Prozess wird vorÃ¼bergehend %s auf dem %s Laufwerk benÃ¶tigen (%s frei)."
     IDS_RECAP_SELECTTEMPFOLDER 
-                            "Bitte wählen sie einen Ordner für die temporären Dateien."
+                            "Bitte wÃ¤hlen sie einen Ordner fÃ¼r die temporÃ¤ren Dateien."
     IDS_RECAP_MOSAIC        "MosaiK Modus: "
-    IDS_RECAP_MOSAICWARNING "Hinweis: Der benötigte Speicherplatz ist aus der Größe des Referenzbildes errechnet. Je nach Größe des Summenbildes kann mehr Speicherplatz erforderlich sein!"
+    IDS_RECAP_MOSAICWARNING "Hinweis: Der benÃ¶tigte Speicherplatz ist aus der GrÃ¶ÃŸe des Referenzbildes errechnet. Je nach GrÃ¶ÃŸe des Summenbildes kann mehr Speicherplatz erforderlich sein!"
     IDS_RECAP_WARNINGINTERMEDIATESAVE 
-                            "Warnung: Die Option -Speichern der registrierten und kalibrierten Bilder- ist aktiviert. Bitte überprüfen Sie zuerst, ob Sie genügend freien Festplatten-Speicher zur Verfügung haben."
+                            "Warnung: Die Option -Speichern der registrierten und kalibrierten Bilder- ist aktiviert. Bitte Ã¼berprÃ¼fen Sie zuerst, ob Sie genÃ¼gend freien Festplatten-Speicher zur VerfÃ¼gung haben."
 END
 
 STRINGTABLE 
@@ -1369,15 +1369,15 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_TOOLTIP_KAPPASIGMA  "Die Pixel außerhalb des Bereichs:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nsind iterativ entfernt worden.\n\nDie verbliebenen Pixel sind durchschnittlich verteilt."
+    IDS_TOOLTIP_KAPPASIGMA  "Die Pixel auÃŸerhalb des Bereichs:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nsind iterativ entfernt worden.\n\nDie verbliebenen Pixel sind durchschnittlich verteilt."
     IDS_TOOLTIP_AUTOADAPTIVE 
-                            "The <b>Die Weighted Average</b> erhält man, indem man\niterativ jedes Pixel bewertet\naus der Abweichung vom Mittelwert\nim Vergleich zur Standardabweichung ([sigma])."
+                            "The <b>Die Weighted Average</b> erhÃ¤lt man, indem man\niterativ jedes Pixel bewertet\naus der Abweichung vom Mittelwert\nim Vergleich zur Standardabweichung ([sigma])."
     IDS_TOOLTIP_MEDIANKAPPASIGMA 
-                            "Die Pixel ausserhalb des Bereiches:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nsind iterativ durch den Medianwert ersetzt worden.\n\nDie Pixel werden dann anteilsmäßig verteilt."
-    IDS_TOOLTIP_SELECTRECT  "Auswahlrechteck-Modus\nIn diesem Modus können Sie ein Auswahlrechteck\nerstellen und verändern."
-    IDS_TOOLTIP_STAR        "Sternauswahl-Modus\nIn diesem Modus können Sie im angezeigten Bild\nSterne auswählen oder die Auswahl aufheben."
+                            "Die Pixel ausserhalb des Bereiches:\n[Mean-[kappa]*[sigma] , Mean+[kappa]*[sigma] ]\nsind iterativ durch den Medianwert ersetzt worden.\n\nDie Pixel werden dann anteilsmÃ¤ÃŸig verteilt."
+    IDS_TOOLTIP_SELECTRECT  "Auswahlrechteck-Modus\nIn diesem Modus kÃ¶nnen Sie ein Auswahlrechteck\nerstellen und verÃ¤ndern."
+    IDS_TOOLTIP_STAR        "Sternauswahl-Modus\nIn diesem Modus kÃ¶nnen Sie im angezeigten Bild\nSterne auswÃ¤hlen oder die Auswahl aufheben."
     IDS_TOOLTIP_COMET       "Kometauswahl-Modus\nIn diesem Modus legen Sie die Position\ndes Kometen im angezeigten Bild fest."
-    IDS_TOOLTIP_SAVE        "Änderungen speichern\nAlle Änderungen (Sterne und Komet) im aktuellen Bild speichern."
+    IDS_TOOLTIP_SAVE        "Ã„nderungen speichern\nAlle Ã„nderungen (Sterne und Komet) im aktuellen Bild speichern."
 END
 
 STRINGTABLE 
@@ -1397,10 +1397,10 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ALIGNMENT_AUTO      "Automatisch\n\nDiese Einstellung wählt automatisch die Ausrichtungsmethode, abhängig von der Anzahl der zur Verfügung stehenden Sternen."
-    IDS_ALIGNMENT_BILINEAR  "Bilineare Ausrichtung\n\nDie Bilineare Ausrichtung kann in allen Fällen verwendet werden. Es können weniger als 25 Sterne zur Verfügung stehen."
-    IDS_ALIGNMENT_BISQUARED "Bisquared Ausrichtung\n\nFür die Bisquared Ausrichtungmethode müssen wenigsten 25 Sterne zur Verfügung stehen, sonst bitte die Bilineare Ausrichtung verwenden."
-    IDS_ALIGNMENT_BICUBIC   "Bikubische Ausrichtung\n\nFür die Bikubische Ausrichtungsmethode müssen mindestens 40 Sterne zur Verfügung stehen. Bei 25 bis 39 Sternen bitte die Bisquared Methode verwenden. Bei noch weniger Sternen ist nur die Bilineare Methode möglich"
+    IDS_ALIGNMENT_AUTO      "Automatisch\n\nDiese Einstellung wÃ¤hlt automatisch die Ausrichtungsmethode, abhÃ¤ngig von der Anzahl der zur VerfÃ¼gung stehenden Sternen."
+    IDS_ALIGNMENT_BILINEAR  "Bilineare Ausrichtung\n\nDie Bilineare Ausrichtung kann in allen FÃ¤llen verwendet werden. Es kÃ¶nnen weniger als 25 Sterne zur VerfÃ¼gung stehen."
+    IDS_ALIGNMENT_BISQUARED "Bisquared Ausrichtung\n\nFÃ¼r die Bisquared Ausrichtungmethode mÃ¼ssen wenigsten 25 Sterne zur VerfÃ¼gung stehen, sonst bitte die Bilineare Ausrichtung verwenden."
+    IDS_ALIGNMENT_BICUBIC   "Bikubische Ausrichtung\n\nFÃ¼r die Bikubische Ausrichtungsmethode mÃ¼ssen mindestens 40 Sterne zur VerfÃ¼gung stehen. Bei 25 bis 39 Sternen bitte die Bisquared Methode verwenden. Bei noch weniger Sternen ist nur die Bilineare Methode mÃ¶glich"
 END
 
 STRINGTABLE 
@@ -1420,8 +1420,8 @@ BEGIN
                             "%ld gefundene/r Processor/en - nur einen verwendet."
     IDS_RECAP_DRIZZLE       "%ldx Drizzle aktiviert"
     IDS_RECAP_WARNINGDRIZZLE 
-                            "Die ausgewählte Drizzle-Option ist mit dem Bayer-Drizzle Modus nicht kompatibel."
-    IDS_RECAP_WARNINGJPEG   "Warnung: Sie verwenden als Dark, Flat oder Biasframes JPEG-Dateien.\nAufgrund des verlustbehafteten Formates ist eine Kalibrierung von JPEG-Dateien nicht möglich."
+                            "Die ausgewÃ¤hlte Drizzle-Option ist mit dem Bayer-Drizzle Modus nicht kompatibel."
+    IDS_RECAP_WARNINGJPEG   "Warnung: Sie verwenden als Dark, Flat oder Biasframes JPEG-Dateien.\nAufgrund des verlustbehafteten Formates ist eine Kalibrierung von JPEG-Dateien nicht mÃ¶glich."
     IDS_RECAP_STACKINGMODE  "Stacking Modus: "
     IDS_RECAP_STACKINGMODE_NORMAL "Standard"
     IDS_RECAP_STACKINGMODE_MOSAIC "Mosaik"
@@ -1461,16 +1461,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_LOADGRAYFITS        "%ld Bit schwarzweiß FITS Bild laden"
+    IDS_LOADGRAYFITS        "%ld Bit schwarzweiÃŸ FITS Bild laden"
     IDS_SAVINGFITS          "Als %ld Bit FITS speichern"
     IDS_STARMASKDESCRIPTION "Sternmaske von DeepSkyStacker erstellt"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_TITLE_OPENFLATFRAMES "Flatframes öffnen..."
-    IDS_TITLE_OPENBIASFRAMES "Biasframes öffnen..."
-    IDS_TITLE_OPENDARKFLATFRAMES "Dark/Flatframes öffnen..."
+    IDS_TITLE_OPENFLATFRAMES "Flatframes Ã¶ffnen..."
+    IDS_TITLE_OPENBIASFRAMES "Biasframes Ã¶ffnen..."
+    IDS_TITLE_OPENDARKFLATFRAMES "Dark/Flatframes Ã¶ffnen..."
     IDS_FILTER_SETTINGFILE  "DeepSkyStacker Einstellungen|*.dsssettings||"
     IDS_TITLE_LOADSETTINGS  "DeepSkyStacker Einstellungen laden"
     IDS_TITLE_SAVESETTINGS  "DeepSkyStacker Einstellungen speichern"
@@ -1490,7 +1490,7 @@ BEGIN
     IDS_COMPUTINGCOSMETICSTATS "Kosmetik berechnen"
     IDS_LIGHTFRAMEINFO      "#Sterne: %ld\nScore: %.2f\nFWHM: %.2f"
     IDS_LIGHTFRAMEINFOCOMET "\nKomet:%s"
-    IDS_ALIGNINGCHANNEL     "Kanäle anpassen"
+    IDS_ALIGNINGCHANNEL     "KanÃ¤le anpassen"
 END
 
 STRINGTABLE 
@@ -1508,18 +1508,18 @@ END
 STRINGTABLE 
 BEGIN
     IDS_RECO_DISCLAIMER     "Dies sind empfohlene Einstellungen.\nSie funktionieren nicht in allen Situationen, sind aber ein guter Ausgangspunkt."
-    IDS_RECO_CLICKTOSET     "Klicken Sie auf den vorgeschlagenen Link um die Einstellungen entsprechend zu ändern"
-    IDS_RECO_ALREADYSET     "Einstellungen, die bereits festgelegt sind, werden grün angezeigt"
-    IDS_RECO_PREREQUISITES  "Sie müssen zuerst Bilder zur Liste hinzufügen und auswählen."
+    IDS_RECO_CLICKTOSET     "Klicken Sie auf den vorgeschlagenen Link um die Einstellungen entsprechend zu Ã¤ndern"
+    IDS_RECO_ALREADYSET     "Einstellungen, die bereits festgelegt sind, werden grÃ¼n angezeigt"
+    IDS_RECO_PREREQUISITES  "Sie mÃ¼ssen zuerst Bilder zur Liste hinzufÃ¼gen und auswÃ¤hlen."
     IDS_RECO_RAWNARROWBAND_TEXT "Super-Pixel-Modus verwenden"
     IDS_RECO_RAWNARROWBAND_REASON 
                             "Wenn Sie Schmalband Aufnahmen verarbeiten (speziell Ha)"
     IDS_RECO_RAWHIGHSNR_TEXT "AHD Debayerisierung verwenden"
     IDS_RECO_RAWHIGHSNR_REASON 
-                            "Sie verarbeiten langbelichtete Bilder mit einem möglicherweise guten SNR"
+                            "Sie verarbeiten langbelichtete Bilder mit einem mÃ¶glicherweise guten SNR"
     IDS_RECO_RAWLOWSNR_TEXT "Bilineare Debayerisierung verwenden"
     IDS_RECO_RAWLOWSNR_REASON 
-                            "Sie verarbeiten kurzbelichtete Bilder mit einem möglicherweise niedrigen SNR"
+                            "Sie verarbeiten kurzbelichtete Bilder mit einem mÃ¶glicherweise niedrigen SNR"
     IDS_RECO_RAWSETBP_TEXT  "Zur Verbesserung der Kalibrierung setzen Sie den Schwarzpunkt auf 0"
     IDS_RECO_RAWSETBP_REASON "Sie verwenden Biasframes"
     IDS_RECO_RAWCLEARBP_TEXT "Schwarzpunkt nicht auf 0 setzen"
@@ -1532,7 +1532,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECO_MODDEDDSLR_TEXT "Alle Weißabgleich-Einstellungen zurücksetzen"
+    IDS_RECO_MODDEDDSLR_TEXT "Alle WeiÃŸabgleich-Einstellungen zurÃ¼cksetzen"
     IDS_RECO_MODDEDDSLR_REASON "Wenn Sie eine modifizierte DSLR verwenden"
     IDS_RECO_USEAVERAGECOMBINE "Verwenden Sie die Durchschnitts-Kombinations Methode"
     IDS_RECO_COMETSTARTRAILS_REASON 
@@ -1549,7 +1549,7 @@ BEGIN
                             "Wenn das daraus resultierende Bild zu grau aussieht"
     IDS_RECO_USEPERCHANNEL  "Hintergrund-Kalibrierung pro Kanal verwenden"
     IDS_RECO_RGBCALIBRATION_REASON 
-                            "Wenn die Farbbalance im fertigen Bild nur schwer in die Nachbearbeitung übernommen werden kann"
+                            "Wenn die Farbbalance im fertigen Bild nur schwer in die Nachbearbeitung Ã¼bernommen werden kann"
     IDS_RECO_USERGBCALIBRATION "RGB Hintergrund-Kalibrierung verwenden"
     IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON 
                             "Sie stacken Graustufenbilder mit leicht unterschiedlichen Hintergrundwerten"
@@ -1559,13 +1559,13 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von LibRaw (Version %s)\nCopyright © 1997-2020 LibRaw LLC"
+    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von LibRaw (Version %s)\nCopyright Â© 1997-2020 LibRaw LLC"
     IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
-    IDS_ABOUT_TIFF          "TIFF Dateien Kodierung/Dekodierung von LibTIFF (Version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_TIFF          "TIFF Dateien Kodierung/Dekodierung von LibTIFF (Version %s)\nCopyright Â© 1988-1996 Sam Leffler\nCopyright Â© 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS Dekodierung von CFitsIO (Version %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-    IDS_ABOUT_QHTM          "QHTM Library Copyright © Gipsysoft 2008"
+    IDS_ABOUT_QHTM          "QHTM Library Copyright Â© Gipsysoft 2008"
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
@@ -1574,14 +1574,14 @@ BEGIN
     IDS_ABOUT_LANG_SPANISH  "Spanische Version: Ricardo Contreras und sein Team"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
     IDS_ABOUT_LANG_CZECH    "Tschechische Version:"
-    IDS_ABOUT_LANG_CZECH_LINK "Lukavský Premysl"
+    IDS_ABOUT_LANG_CZECH_LINK "LukavskÃ½ Premysl"
     IDS_ABOUT_LANG_ITALIAN  "Italienische Version:"
     IDS_ABOUT_LANG_ITALIAN_LINK "Fabio Papa"
     IDS_ABOUT_LANG_CATALAN  "Katalanische Version:"
     IDS_ABOUT_LANG_CATALAN_LINK "Francesc Pruneda"
     IDS_ABOUT_LANG_GERMAN   "Deutsche Version:"
     IDS_ABOUT_LANG_GERMAN_LINK "Wilhelm-Michael Kasakow"
-    IDS_ABOUT_LANG_DUTCH    "Holländische Version:"
+    IDS_ABOUT_LANG_DUTCH    "HollÃ¤ndische Version:"
     IDS_ABOUT_LANG_DUTCH_LINK1 "Eelko Gielis"
     IDS_ABOUT_LANG_DUTCH_LINK2 "Inge van de Stadt"
     IDS_ABOUT_LANG_CHINESET "Traditionell Chinesische Version:"
@@ -1596,7 +1596,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstützt das Kameramodell %s nicht"
+    IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstÃ¼tzt das Kameramodell %s nicht"
 	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker debayer 8-Bit-Bilder nicht"
 END
 

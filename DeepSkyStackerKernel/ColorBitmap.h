@@ -76,9 +76,9 @@ public:
 	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	virtual void SetPixel(size_t i, size_t j, double fGray) override;
-	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override;
-	virtual void GetPixel(size_t i, size_t j, double& fGray) override;
-	virtual bool GetScanLine(size_t j, void* pScanLine) override;
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
+	virtual void GetPixel(size_t i, size_t j, double& fGray) const override;
+	virtual bool GetScanLine(size_t j, void* pScanLine) const override;
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	void Clear();
 
@@ -124,7 +124,7 @@ public:
 	}
 
 	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
-	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const override;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override;
 	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const override;

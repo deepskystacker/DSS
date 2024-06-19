@@ -6,17 +6,19 @@
 #include "BitmapIterator.h"
 #include "Ztrace.h"
 #include "ColorBitmap.h"
+#include "Multitask.h"
 
 /* ------------------------------------------------------------------- */
 
-void CChannelAlign::CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* pTgtBitmap) const
+// static
+void CChannelAlign::CopyBitmap(std::shared_ptr<const CMemoryBitmap> pSrcBitmap, CMemoryBitmap* pTgtBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	const int lHeight = pSrcBitmap->Height();
 	const int lWidth = pSrcBitmap->Width();
 
-	BitmapIteratorConst<const CMemoryBitmap*> itSrc{ pSrcBitmap };
+	BitmapIteratorConst itSrc{ pSrcBitmap };
 	BitmapIterator<CMemoryBitmap*> itTgt{ pTgtBitmap };
 
 	for (int j = 0; j < lHeight; j++)
@@ -29,8 +31,8 @@ void CChannelAlign::CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* p
 	}
 }
 
-
-std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, ProgressBase* pProgress)
+// static
+std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* pBitmap, const CPixelTransform& PixTransform, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -40,8 +42,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone(true) };
 	pOutBitmap->Init(lWidth, lHeight);
 
-	PIXELDISPATCHVECTOR vPixels;
-	vPixels.reserve(16);
+	PIXELDISPATCHVECTOR vPixels(16, {});
 
 	if (pProgress != nullptr)
 	{
@@ -49,6 +50,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 		pProgress->Start2(text, lHeight);
 	}
 
+#pragma omp parallel for default(none) firstprivate(vPixels) if(CMultitask::GetNrProcessors(false) > 1)
 	for (int j = 0; j < lHeight; j++)
 	{
 		for (int i = 0; i < lWidth; i++)
@@ -74,7 +76,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 				}
 			}
 		}
-		if (pProgress != nullptr)
+		if (pProgress != nullptr && omp_get_thread_num() == 0)
 			pProgress->Progress2(j+1);
 	}
 
@@ -84,15 +86,15 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 	return pOutBitmap;
 }
 
-
-bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+// static
+bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	if (pBitmap->IsMonochrome())
 		return true;
 
-	if (CColorBitmap* pColorBitmap = dynamic_cast<CColorBitmap*>(pBitmap))
+	if (std::shared_ptr<CColorBitmap> pColorBitmap = std::dynamic_pointer_cast<CColorBitmap>(pBitmap))
 	{
 		CMemoryBitmap* const pRed	= pColorBitmap->GetRed();
 		CMemoryBitmap* const pGreen	= pColorBitmap->GetGreen();
@@ -163,38 +165,56 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgres
 		};
 
 		// Compute the transformations
-		CMatchingStars MatchingStars;
-		MatchingStars.SetSizes(pBitmap->Width(), pBitmap->Height());
+		CMatchingStars MatchingStars{ pBitmap->Width(), pBitmap->Height() };
+		constexpr int MaxNumberOfConsideredStars = 100;
+
+		const auto addRefOrTargetStar = [&MatchingStars]<bool Refstar>(std::span<CStar> stars)
 		{
-			STARVECTOR& vStarsOrg = pReference->m_vStars;
+			std::ranges::sort(stars, CompareStarLuminancy);
+			for (const auto& star : std::views::take(stars, MaxNumberOfConsideredStars)) // Is safe, even if 'stars' has less than 100 elements.
+			{
+				if constexpr (Refstar)
+					MatchingStars.AddReferenceStar(star.m_fX, star.m_fY);
+				else
+					MatchingStars.AddTargetedStar(star.m_fX, star.m_fY);
+			}
+		};
 
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+		addRefOrTargetStar.operator()<true>(pReference->m_vStars);
+		addRefOrTargetStar.operator()<false>(pSecond->m_vStars);
 
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-		}
-
-		{
-			STARVECTOR& vStarsOrg = pSecond->m_vStars;
-
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-		}
+//		{
+//			STARVECTOR& vStarsOrg = pReference->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+//		}
+//
+//		{
+//			STARVECTOR& vStarsOrg = pSecond->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+//		}
 
 		bool bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pSecond->m_BilinearParameters);
 
 		if (bTransformationsOk)
 		{
-			STARVECTOR& vStarsOrg = pThird->m_vStars;
-
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
 			MatchingStars.ClearTarget();
-
-			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+			addRefOrTargetStar.operator()<false>(pThird->m_vStars);
+//			STARVECTOR& vStarsOrg = pThird->m_vStars;
+//
+//			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+//
+//			MatchingStars.ClearTarget();
+//
+//			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+//				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 
 			bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pThird->m_BilinearParameters);
 		}
@@ -223,8 +243,8 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, ProgressBase* pProgres
 				pProgress->Progress1(2);
 
 			// Dump the resulting modified channels in the image
-			CopyBitmap(pOutSecondBitmap.get(), pSecondBitmap);
-			CopyBitmap(pOutThirdBitmap.get(), pThirdBitmap);
+			CopyBitmap(pOutSecondBitmap, pSecondBitmap);
+			CopyBitmap(pOutThirdBitmap, pThirdBitmap);
 
 			return true;
 		}

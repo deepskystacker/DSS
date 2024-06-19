@@ -7,6 +7,8 @@ namespace DSS
 		dssClosing { false }
 	{
 		setupUi(this);
+		tableView->horizontalHeader()->setSortIndicator(1, Qt::AscendingOrder);
+		tableView->horizontalHeader()->setSortIndicatorShown(true);
 	}
 
 	PictureList::~PictureList()

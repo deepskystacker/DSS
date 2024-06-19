@@ -19,68 +19,60 @@ CBackgroundCalibration::CBackgroundCalibration() :
 void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);
-	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
-	std::vector<int> greenLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
-	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
+//	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
+//	std::vector<int> greenLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
+//	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 	const int height = pBitmap->Height();
 	const auto nrProcessors = CMultitask::GetNrProcessors();
 
-#pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram, redLocalHist, greenLocalHist, blueLocalHist) if(nrProcessors > 1)
+#pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
 	{
-		constexpr int Bulksize = 10;
-#pragma omp for schedule(guided, 50)
+		constexpr int Bulksize = 50;
+#pragma omp for
 		for (int startNdx = 0; startNdx < height; startNdx += Bulksize)
 		{
 			const int endNdx = std::min(startNdx + Bulksize, height);
-			if (avxHistogram.calcHistogram(startNdx, endNdx) != 0)
+			if (avxHistogram.calcHistogram(startNdx, endNdx, m_fMultiplier) != 0)
 			{
-				constexpr double Maxvalue = double{ std::numeric_limits<std::uint16_t>::max() };
-				const double fMultiplier = m_fMultiplier * 256.0;
+				//constexpr double Maxvalue = double{std::numeric_limits<std::uint16_t>::max()};
+				//const double fMultiplier = m_fMultiplier * 256.0;
 
-				if (redLocalHist.empty()) {
-					redLocalHist.resize(HistogramSize(), 0);
-					greenLocalHist.resize(HistogramSize(), 0);
-					blueLocalHist.resize(HistogramSize(), 0);
-				}
+				//if (redLocalHist.empty()) {
+				//	redLocalHist.resize(HistogramSize(), 0);
+				//	greenLocalHist.resize(HistogramSize(), 0);
+				//	blueLocalHist.resize(HistogramSize(), 0);
+				//}
 
 				if (pProgress != nullptr && omp_get_thread_num() == 0) // Only master thread
 					pProgress->Progress2(startNdx);
 
-				for (int j = startNdx; j < endNdx; ++j)
-				{
-					for (int i = 0, width = pBitmap->Width(); i < width; ++i)
-					{
-						COLORREF16 crColor;
-						double fRed, fGreen, fBlue;
-						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-						fRed *= fMultiplier;
-						fGreen *= fMultiplier;
-						fBlue *= fMultiplier;
+				//for (int j = startNdx; j < endNdx; ++j)
+				//{
+				//	for (int i = 0, width = pBitmap->Width(); i < width; ++i)
+				//	{
+				//		COLORREF16 crColor;
+				//		double fRed, fGreen, fBlue;
+				//		pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+				//		fRed *= fMultiplier;
+				//		fGreen *= fMultiplier;
+				//		fBlue *= fMultiplier;
 
-						crColor.red = std::min(fRed, Maxvalue);
-						crColor.blue = std::min(fBlue, Maxvalue);
-						crColor.green = std::min(fGreen, Maxvalue);
+				//		crColor.red = std::min(fRed, Maxvalue);
+				//		crColor.blue = std::min(fBlue, Maxvalue);
+				//		crColor.green = std::min(fGreen, Maxvalue);
 
-						redLocalHist[crColor.red]++;
-						greenLocalHist[crColor.green]++;
-						blueLocalHist[crColor.blue]++;
-					}
-				}
+				//		redLocalHist[crColor.red]++;
+				//		greenLocalHist[crColor.green]++;
+				//		blueLocalHist[crColor.blue]++;
+				//	}
+				//}
 			}
 		}
 
-		int rval = 1;
 #pragma omp critical(OmpLockHistoMerge)
 		{
-			if (avxHistogram.histogramSuccessful())
-				rval = avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto);
-			if (rval != 0)
-				for (size_t i = 0; i < HistogramSize(); ++i)
-				{
-					redHisto[i] += redLocalHist[i];
-					greenHisto[i] += greenLocalHist[i];
-					blueHisto[i] += blueLocalHist[i];
-				}
+//			if (avxHistogram.histogramSuccessful())
+			avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto);
 		}
 	} // omp parallel
 }

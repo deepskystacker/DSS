@@ -816,6 +816,9 @@
     <QtUic Include="ui\ImageProperties.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ProcessingDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">

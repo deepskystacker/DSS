@@ -301,7 +301,6 @@ namespace DSS
         connect(imageView, &ImageView::Image_resizeEvent, this, &SelectRect::resizeMe);
         show();
         raise();
-        activateWindow();
    }
 
     void SelectRect::starsButtonPressed()

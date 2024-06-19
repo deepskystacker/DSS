@@ -5,148 +5,71 @@
 
 class CStar
 {
-public :
-	DSSRect			m_rcStar;
-	double			m_fIntensity;
-	double			m_fPercentage;
-	double			m_fDeltaRadius;
-	double			m_fQuality;
-	double			m_fMeanRadius;
-	double			m_fX, m_fY;
-	bool			m_bUsed;
-	bool			m_bAdded;
-	bool			m_bRemoved;
-	double			m_fLargeMajorAxis;
-	double			m_fSmallMajorAxis;
-	double			m_fLargeMinorAxis;
-	double			m_fSmallMinorAxis;
-	double			m_fMajorAxisAngle;
+public:
+	DSSRect			m_rcStar{};
+	double			m_fIntensity{ 0.0 };
+	double			m_fPercentage{ 0.0 };
+	double			m_fDeltaRadius{ 0.0 };
+	double			m_fQuality{ 0.0 };
+	double			m_fMeanRadius{ 0.0 };
+	double			m_fX{ 0.0 };
+	double			m_fY{ 0.0 };
+	bool			m_bUsed{ false };
+	bool			m_bAdded{ false };
+	bool			m_bRemoved{ false };
+	double			m_fLargeMajorAxis{ 0.0 };
+	double			m_fSmallMajorAxis{ 0.0 };
+	double			m_fLargeMinorAxis{ 0.0 };
+	double			m_fSmallMinorAxis{ 0.0 };
+	double			m_fMajorAxisAngle{ 0.0 };
 
-private :
-	void CopyFrom(const CStar & ms)
+public:
+	CStar() = default;
+	explicit constexpr CStar(const double x, const double y) : m_fX{ x }, m_fY{ y }
+	{}
+	CStar(const CStar&) = default;
+	CStar& operator=(const CStar&) = default;
+	CStar(CStar&&) = default;
+	~CStar() = default;
+
+	friend constexpr auto operator<=>(const CStar& lhs, const CStar& rhs)
 	{
-		m_rcStar		= ms.m_rcStar;
-		m_fIntensity	= ms.m_fIntensity;
-		m_fPercentage	= ms.m_fPercentage;
-		m_fDeltaRadius	= ms.m_fDeltaRadius;
-		m_fQuality		= ms.m_fQuality;
-		m_fMeanRadius	= ms.m_fMeanRadius;
-		m_fX			= ms.m_fX;
-		m_fY			= ms.m_fY;
-		m_bUsed			= ms.m_bUsed;
-		m_bAdded		= ms.m_bAdded;
-		m_bRemoved		= ms.m_bRemoved;
-		m_fLargeMajorAxis = ms.m_fLargeMajorAxis;
-		m_fSmallMajorAxis = ms.m_fSmallMajorAxis;
-		m_fLargeMinorAxis = ms.m_fLargeMinorAxis;
-		m_fSmallMinorAxis = ms.m_fSmallMinorAxis;
-		m_fMajorAxisAngle = ms.m_fMajorAxisAngle;
-	};
-
-public :
-	CStar()
+		if (auto cmp = lhs.m_fX <=> rhs.m_fX; cmp != 0)
+			return cmp;
+		return lhs.m_fY <=> rhs.m_fY;
+	}
+	// Two stars are equal if they are at the same position
+	friend constexpr auto operator==(const CStar& lhs, const CStar& rhs)
 	{
-		m_fX	   = 0;
-		m_fY	   = 0;
-		m_bUsed    = false;
-		m_bAdded   = false;
-		m_bRemoved = false;
-		m_fLargeMajorAxis = 0;
-		m_fSmallMajorAxis = 0;
-		m_fLargeMinorAxis = 0;
-		m_fSmallMinorAxis = 0;
-		m_fMajorAxisAngle = 0;
-		m_fIntensity	  = 0.0;
-		m_fPercentage	  = 0.0;
-		m_fQuality		  = 0.0;
-		m_fMeanRadius	  = 0.0;
-		m_fDeltaRadius	  = 0.0;
-		m_rcStar.setEmpty();
-	};
-	~CStar() {};
+		return operator<=>(lhs, rhs) == 0;
+	}
 
-	CStar(const CStar & ms)
-	{
-		CopyFrom(ms);
-	};
-
-	CStar(double fX, double fY)
-	{
-		m_fX = fX;
-		m_fY = fY;
-		m_bUsed    = false;
-		m_bAdded   = false;
-		m_bRemoved = false;
-		m_fLargeMajorAxis = 0;
-		m_fSmallMajorAxis = 0;
-		m_fLargeMinorAxis = 0;
-		m_fSmallMinorAxis = 0;
-		m_fMajorAxisAngle = 0;
-		m_fIntensity	  = 0.0;
-		m_fPercentage	  = 0.0;
-		m_fQuality		  = 0.0;
-		m_fMeanRadius	  = 0.0;
-		m_fDeltaRadius	  = 0.0;
-		m_rcStar.setEmpty();
-	};
-
-	CStar & operator = (const CStar & ms)
-	{
-		CopyFrom(ms);
-		return (*this);
-	};
-
-	bool operator < (const CStar & ms) const
-	{
-		if (m_fX < ms.m_fX)
-			return true;
-		else if (m_fX > ms.m_fX)
-			return false;
-		else
-			return (m_fY < ms.m_fY);
-	};
-
-	private:
+private:
 	bool inRadius(const double lx, const double ly, const double rx, const double ry) const noexcept
 	{
 		return Distance(lx, ly, rx, ry) <= m_fMeanRadius * (2.35 / 1.5);
-	};
+	}
 
-	public:
+public:
 	bool IsInRadius(const QPoint& pt) const noexcept
 	{
 		return inRadius(m_fX, m_fY, pt.x(), pt.y());
-	};
+	}
 
 	bool IsInRadius(const QPointF & pt) const noexcept
 	{
 		return inRadius(m_fX, m_fY, pt.x(), pt.y());
-	};
+	}
 
 	bool IsInRadius(double fX, double fY) const noexcept
 	{
 		return inRadius(m_fX, m_fY, fX, fY);
-	};
-
-	bool	IsValid()
-	{
-		bool		bResult = false;
-
-		if (m_fX > 0 && m_fY > 0 && m_fQuality > 0 && m_fIntensity > 0 && m_fMeanRadius > 0)
-			bResult = true;
-
-		return bResult;
 	}
-};
 
-inline bool CompareStarLuminancy (const CStar & ms1, const CStar  & ms2)
-{
-	if (ms1.m_fIntensity > ms2.m_fIntensity)
-		return true;
-	else if (ms1.m_fIntensity < ms2.m_fIntensity)
-		return false;
-	else
-		return (ms1.m_fMeanRadius > ms2.m_fMeanRadius);
+	bool IsValid() const
+	{
+		return (m_fX > 0 && m_fY > 0 && m_fQuality > 0 && m_fIntensity > 0 && m_fMeanRadius > 0);
+	}
 };
 
 typedef std::vector<CStar>		STARVECTOR;
@@ -154,75 +77,73 @@ typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
 
-inline int	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
+constexpr bool CompareStarLuminancy(const CStar& ms1, const CStar& ms2)
 {
-	int			lResult = -1;
-	double			fMinDistance = -1;
+	if (ms1.m_fIntensity > ms2.m_fIntensity)
+		return true;
+	if (ms1.m_fIntensity < ms2.m_fIntensity)
+		return false;
+	return (ms1.m_fMeanRadius > ms2.m_fMeanRadius);
+}
 
+// Returns the index of the nearest star in the star-vector.
+inline int FindNearestStar(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
+{
+	int lResult = -1;
+	double minDistanceSqr = std::numeric_limits<double>::max();
 	bIn = false;
-	fDistance = -1.0;
-	for (int i = 0;i<vStars.size();i++)
+
+	for (int i = 0; const auto& star : vStars)
 	{
-		// Compute the distance
-		if (!vStars[i].m_bRemoved)
+		if (!star.m_bRemoved)
 		{
-			double		fTestDistance;
-			double		fdX, fdY;
+			const double dx = star.m_fX - fX;
+			const double dy = star.m_fY - fY;
+			const double testDistanceSqr = dx * dx + dy * dy;
 
-			fdX = vStars[i].m_fX-fX;
-			fdY = vStars[i].m_fY-fY;
-
-			fTestDistance = sqrt(fdX*fdX+fdY*fdY);
-			if ((fTestDistance < fMinDistance) || fMinDistance<0)
+			if (testDistanceSqr < minDistanceSqr)
 			{
-				fMinDistance = fTestDistance;
+				minDistanceSqr = testDistanceSqr;
 				lResult = i;
-				bIn = vStars[i].IsInRadius(QPointF(fX, fY));
-				fDistance = fMinDistance;
-			};
-		};
-	};
-
-	return lResult;
-};
-
-inline int	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
-{
-	int			lResult = -1;
-	double			fMinDistance = -1;
-	STARITERATOR	it;
-
-	bIn = false;
-	it = std::lower_bound(vStars.begin(), vStars.end(), CStar(fX-fDistance, 0));
-	while (it != vStars.end())
-	{
-		// Compute the distance
-		if (!(*it).m_bRemoved)
-		{
-			if ((*it).m_fX > fX+fDistance)
-				it = vStars.end();
-			else
-			{
-				double		fTestDistance;
-				double		fdX, fdY;
-
-				fdX = (*it).m_fX-fX;
-				fdY = (*it).m_fY-fY;
-
-				fTestDistance = sqrt(fdX*fdX+fdY*fdY);
-				if ((fTestDistance < fMinDistance) || fMinDistance<0)
-				{
-					fMinDistance = fTestDistance;
-					lResult = it-vStars.begin();
-					bIn = (*it).IsInRadius(QPointF(fX, fY));
-					fDistance = fTestDistance;
-				};
-				it++;
-			};
+				bIn = star.IsInRadius(QPointF{ fX, fY });
+			}
 		}
-		else
-			it++;
-	};
+		++i;
+	}
+
+	fDistance = lResult >= 0 ? std::sqrt(minDistanceSqr) : -1.0;
 
 	return lResult;
-};
+}
+
+inline int FindNearestStarWithinDistance(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
+{
+	const double distanceRange = fDistance;
+	int lResult = -1;
+	double minDistanceSqr = std::numeric_limits<double>::max();
+	bIn = false;
+
+	// First star right of fx - distanceRange.
+	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0 });
+	while (it != std::cend(vStars) && it->m_fX <= fX + distanceRange) // While star is left of fx + distanceRange
+	{
+		if (!it->m_bRemoved && std::abs(it->m_fY - fY) <= distanceRange) // y-distance smaller than distanceRange ?
+		{
+			const double dx = it->m_fX - fX;
+			const double dy = it->m_fY - fY;
+			const double testDistanceSqr = dx * dx + dy * dy;
+
+			if (testDistanceSqr < minDistanceSqr)
+			{
+				minDistanceSqr = testDistanceSqr;
+				lResult = std::distance(vStars.cbegin(), it);
+				bIn = it->IsInRadius(QPointF{ fX, fY });
+			}
+		}
+		++it;
+	}
+
+	fDistance = lResult >= 0 ? std::sqrt(minDistanceSqr) : -1.0;
+
+	return lResult;
+}

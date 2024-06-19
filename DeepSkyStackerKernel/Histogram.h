@@ -46,7 +46,8 @@ inline double LogLogAdjust(double fValue)
 inline double LogSquareRootAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-	fValue = log(pow(fValue, 1/2.0)*1.7+1);
+//	fValue = log(pow(fValue, 1/2.0)*1.7+1);
+	fValue = std::log(std::sqrt(fValue) * 1.7 + 1.0); // Displaying the entire picture is about 1.5 x faster when using sqrt(x) instead of pow(x, 0.5).
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
@@ -252,6 +253,11 @@ public :
 		return m_fShift;
 	};
 
+	double GetOrgMin() const { return m_fOrgMin; }
+	double GetOrgMax() const { return m_fOrgMax; }
+	double GetUsedMin() const { return m_fUsedMin; }
+	double GetUsedMax() const { return m_fUsedMax; }
+
 	double	Adjust(double fValue) const
 	{
 		double		fResult;
@@ -390,20 +396,23 @@ public :
 		fBlue	= m_BlueAdjust.Adjust(fBlue);
 	};
 
-	CHistogramAdjust & GetRedAdjust()
+	const CHistogramAdjust& GetRedAdjust() const
 	{
 		return m_RedAdjust;
-	};
+	}
+	CHistogramAdjust& GetRedAdjust() { return m_RedAdjust; }
 
-	CHistogramAdjust & GetGreenAdjust()
+	const CHistogramAdjust& GetGreenAdjust() const
 	{
 		return m_GreenAdjust;
-	};
+	}
+	CHistogramAdjust& GetGreenAdjust() { return m_GreenAdjust; }
 
-	CHistogramAdjust & GetBlueAdjust()
+	const CHistogramAdjust& GetBlueAdjust() const
 	{
 		return m_BlueAdjust;
-	};
+	}
+	CHistogramAdjust& GetBlueAdjust() { return m_BlueAdjust; }
 
 	bool	Load(FILE * hFile)
 	{

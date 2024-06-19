@@ -1,12 +1,65 @@
-Welcome to DeepSkyStacker 5.1.5
+Welcome to DeepSkyStacker 5.1.6 Beta 2
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
+
+This is primarily a bug fix release, but there are a few enhancements as well.
 
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
+
+Changes since the last release:
+
+1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
+
+2. Modify CFITSIO 4.3.0 to support UTF-8 file names.  The fix has been submitted to the FITSIO team who look like they will adopt it.
+
+3. Bug fix: Bright stars had a black centre (another cause of this fixed).
+
+4. Support for non-ASCII characters in the path of the trace file.
+
+5. Support for non-ASCII characters in the interprocess file lock.
+
+6. Support for non-ASCII characters in the data to be written to the trace file.
+
+7. Bug fix: Crash calling getValue() for colour images.
+
+8. Bug fix: Problems with handling the name of directory for temporary file
+
+9. Bug fix: Monochrome JPEG and PNG images wouldn't load.
+
+10. Show white clipping and dark clipping in the Processing panel editing function as Red and Blue respectively.  Provide an option to enable/disable this.
+
+11. Bug fix: Error processing colour TIFF files - code was checking for CFA information when it should not have.
+
+12. Bug fix: File groups messed up after clearing the image list.
+
+13. Bug fix: The output file did not have an appended file number when created from a file list name.
+
+14. Bug fix: If another file list is selected the output file name was not updated.
+
+15. Make the default path for a new file list the parent folder of the first light frame.
+
+16. Bug fix: Unable to load monochrome JPEG or PNG files.
+
+17. Bug fix: The picture list lost focus as an image finished loading.
+
+18. Bug fix: FITSUtil::Open() did not correctly parse a FITS DATE-OBS or TIME-OBS containing milliseconds.
+
+19. Bug fix: A number of problems with star and comet editing were fixed thanks to Martin Toeltsch.
+
+20. Bug fix: Remove developer debugging code that required a C:\temp directory and just exited if it wasn't there.
+
+21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather NGC7331001.tif
+
+22. Bug fix: Allow only one frame to be selected as the "reference frame".
+
+Welcome to DeepSkyStacker 5.1.5
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Changes since the last release:
 

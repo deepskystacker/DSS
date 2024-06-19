@@ -61,6 +61,7 @@ namespace bip = boost::interprocess;
 #include "DeepStack.h"
 #include "tracecontrol.h"
 #include "Workspace.h"
+#include "QEventLogger.h"
 
 
 CString OUTPUTFILE_FILTERS;
@@ -235,7 +236,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
 	winHost{ nullptr },
-	currTab{ 0 },
+	currTab{ IDD_REGISTERING },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -362,8 +363,6 @@ DeepSkyStacker::DeepSkyStacker() :
 
 
 	settings.endGroup();
-
-
 }
 
 DeepSkyStacker::~DeepSkyStacker()
@@ -373,6 +372,8 @@ DeepSkyStacker::~DeepSkyStacker()
 
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
+	// Invoke base class showEvent()
+	Inherited::showEvent(event);
 	if (!event->spontaneous())
 	{
 		if (!initialised)
@@ -381,8 +382,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 			onInitialise();
 		}
 	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
 }
 
 void DeepSkyStacker::onInitialise()
@@ -408,6 +407,18 @@ void DeepSkyStacker::onInitialise()
 	hwnd = processingDlg->GetSafeHwnd();
 	ZASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
+
+	//
+	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
+	// may not be visible now.  We want it to be visible.
+	//
+	QTimer::singleShot(20,
+		[this]()
+		{
+			this->stackingDlg->setVisible(true);
+			this->setTab(IDD_REGISTERING);
+			this->update();
+		});
 
 }
 
@@ -1137,6 +1148,9 @@ int main(int argc, char* argv[])
 		ZTRACE_RUNTIME("Creating Main Window");
 		DeepSkyStacker mainWindow;
 
+		//QEventLogger eventLogger("C:/temp/DSSEvents", &mainWindow, false);
+		//app.installEventFilter(&eventLogger);
+
 		ZTRACE_RUNTIME("Checking Mutex");
 		//
 		// Get the name of the writable local application data directory
@@ -1154,12 +1168,20 @@ int main(int argc, char* argv[])
 		//
 		// Create the file if it doesn't exist.  It is intentionally never deleted.
 		//
-		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());	
+#ifdef _WINDOWS
+		auto newFile = std::ofstream(mutexFileName.toStdWString().c_str());
+#else
+		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());
+#endif
 
 		//
 		// Use a boost::interprocess::file_lock as unlike a named_mutex, the OS removes the lock in the case of abnormal termination
 		//
+#ifdef _WINDOWS
+		bip::file_lock dssMutex{ mutexFileName.toStdWString().c_str() };
+#else
 		bip::file_lock dssMutex{ mutexFileName.toUtf8().constData() };
+#endif
 		bip::scoped_lock<bip::file_lock> lock(dssMutex, bip::try_to_lock);
 		const bool firstInstance{ lock.owns() };
 		ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");

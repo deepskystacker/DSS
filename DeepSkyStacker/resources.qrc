@@ -98,4 +98,23 @@
         <file alias="ButtonStar_Hot.png">res/ButtonStar_Hot.png</file>
         <file alias="ButtonStar_Up.png">res/ButtonStar_Up.png</file>
     </qresource>
+    <qresource prefix="/processing">
+        <file alias="undo.png">Icon/undo.png</file>
+        <file alias="redo.png">Icon/redo.png</file>
+        <file alias="settings.png">Icon/settings.png</file>
+        <file alias="asinh.png">Icon/asinh.png</file>
+        <file alias="asinh-dark.png">Icon/asinh-dark.png</file>
+        <file alias="cuberoot.png">Icon/cuberoot.png</file>
+        <file alias="cuberoot-dark.png">Icon/cuberoot-dark.png</file>
+        <file alias="linear.png">Icon/linear_en.png</file>
+        <file alias="linear-dark.png">Icon/linear_en-dark.png</file>
+        <file alias="log.png">Icon/log.png</file>
+        <file alias="log-dark.png">Icon/log-dark.png</file>
+        <file alias="loglog.png">Icon/loglog.png</file>
+        <file alias="loglog-dark.png">Icon/loglog-dark.png</file>
+        <file alias="logsqrt.png">Icon/logsqrt.png</file>
+        <file alias="logsqrt-dark.png">Icon/logsqrt-dark.png</file>
+        <file alias="sqrt.png">Icon/sqrt.png</file>
+        <file alias="sqrt-dark.png">Icon/sqrt-dark.png</file>
+    </qresource>
 </RCC>

@@ -111,44 +111,27 @@ typedef std::vector<CPixelTransform> PIXELTRANSFORMVECTOR;
 
 /* ------------------------------------------------------------------- */
 
-class CPixelDispatch
+class CPixelDispatch final
 {
 public:
-	int			m_lX,
-		m_lY;
-	double			m_fPercentage;
-
-private:
-	void	CopyFrom(const CPixelDispatch& pd)
-	{
-		m_lX = pd.m_lX;
-		m_lY = pd.m_lY;
-		m_fPercentage = pd.m_fPercentage;
-	};
+	int m_lX{ 0 };
+	int m_lY{ 0 };
+	double m_fPercentage{ 0.0 };
 
 public:
-	CPixelDispatch(int lX = 0, int lY = 0, double fPercentage = 0.0)
-	{
-		m_lX = lX;
-		m_lY = lY;
-		m_fPercentage = fPercentage;
-	};
-
-	CPixelDispatch(const CPixelDispatch& pd)
-	{
-		CopyFrom(pd);
-	};
-
-	CPixelDispatch& operator = (const CPixelDispatch& pd)
-	{
-		CopyFrom(pd);
-		return (*this);
-	};
-
-	virtual ~CPixelDispatch() {};
+	CPixelDispatch() = default;
+	explicit CPixelDispatch(const int lX, const int lY, const double fPercentage) :
+		m_lX{ lX },
+		m_lY{ lY },
+		m_fPercentage{ fPercentage }
+	{}
+	CPixelDispatch(const CPixelDispatch&) = default;
+	CPixelDispatch& operator=(const CPixelDispatch&) = default;
+	CPixelDispatch(CPixelDispatch&&) = default;
+	~CPixelDispatch() = default;
 };
 
-typedef std::vector<CPixelDispatch>			PIXELDISPATCHVECTOR;
+using PIXELDISPATCHVECTOR = std::vector<CPixelDispatch>;
 
 inline void ComputePixelDispatch(const QPointF& pt, PIXELDISPATCHVECTOR& vPixels)
 {

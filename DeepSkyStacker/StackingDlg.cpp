@@ -101,16 +101,6 @@ namespace
 	static QStringList isos;
 }
 
-enum class Menuitem
-{
-	markAsReference,
-	check,
-	uncheck,
-	remove,
-	properties,
-	copy,
-	erase
-};
 namespace DSS
 {
 	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
@@ -814,7 +804,6 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		QModelIndex ndx = pictureList->tableView->indexAt(pos);
-		int i{ 0 };
 
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
@@ -823,17 +812,21 @@ namespace DSS
 		if (pictureList->tableView->model() == proxyModel)
 			ndx = proxyModel->mapToSource(ndx);
 
+		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
+		QModelIndexList selectedRows = qsm->selectedRows();
+		const qsizetype rowCount = selectedRows.size();
+
 		ImageListModel* imageModel = frameList.currentTableModel();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
 		{
-			if (imageModel->mydata[ndx.row()].m_bUseAsStarting)
+			if (rowCount == 1 && imageModel->mydata[ndx.row()].m_bUseAsStarting)
 				markAsReference->setChecked(true);
 			else
 				markAsReference->setChecked(false);
 
-			markAsReference->setEnabled(true);
+			markAsReference->setEnabled(rowCount == 1); // Only enable the "Set reference" checkbox if only a single image was selected.
 			check->setEnabled(true);
 			uncheck->setEnabled(true);
 			remove->setEnabled(true);
@@ -852,14 +845,9 @@ namespace DSS
 
 
 		QAction* action = menu.exec(pictureList->tableView->mapToGlobal(pos));
-		if (!action)
+		if (action == nullptr)
 			return;
 		Menuitem item = static_cast<Menuitem>(action->data().toInt());
-
-		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-		QModelIndexList selectedRows = qsm->selectedRows();
-
-		int rowCount = selectedRows.size();
 
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
@@ -867,7 +855,7 @@ namespace DSS
 		//
 		if (pictureList->tableView->model() == proxyModel)
 		{
-			for (i = 0; i < rowCount; i++)
+			for (qsizetype i = 0; i < rowCount; i++)
 			{
 				selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
 			}
@@ -900,24 +888,43 @@ namespace DSS
 		{
 			copyToClipboard();
 		}
+		else if (Menuitem::markAsReference == item)
+		{
+			if (rowCount == 1)
+			{
+				const int row = selectedRows.front().row();
+				const bool oldValue = imageModel->mydata[row].m_bUseAsStarting;
+				for (int r = 0; auto& image : imageModel->mydata) // Set all images to "not reference".
+				{
+					if (image.m_bUseAsStarting) // If it was set as reference before
+					{
+						image.m_bUseAsStarting = false; // Uncheck it.
+						imageModel->emitChanged(r, r, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+					}
+					++r;
+				}
+				imageModel->mydata[row].m_bUseAsStarting = !oldValue; // Toggle selected image.
+				imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+			}
+		}
 		else
 		{
 			//
 			// Iterate over the selected items doing whatever needs to be done
 			//
-			for (i = 0; i < rowCount; i++)
+			for (qsizetype i = 0; i < rowCount; i++)
 			{
-				int row = selectedRows[i].row();
+				const int row = selectedRows[i].row();
 
 				switch (item)
 				{
-				case Menuitem::markAsReference:
-					//
-					// Toggle the value
-					//
-					imageModel->mydata[row].m_bUseAsStarting ^= true;
-					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
-					break;
+//				case Menuitem::markAsReference:
+//					//
+//					// Toggle the value
+//					//
+//					imageModel->mydata[row].m_bUseAsStarting ^= true;
+//					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+//					break;
 				case Menuitem::check:
 					imageModel->mydata[row].m_bChecked = Qt::Checked;
 					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
@@ -939,7 +946,7 @@ namespace DSS
 
 			if (Menuitem::remove == item || Menuitem::erase == item)
 			{
-				for (i = 0; i < rowCount; i++)
+				for (qsizetype i = 0; i < rowCount; i++)
 				{
 					int row = selectedRows[i].row();
 					frameList.removeFromMap(imageModel->mydata[row].filePath);
@@ -1013,7 +1020,7 @@ namespace DSS
 					// Iterate over the selected items setting the values from the 
 					// dialogue
 					//
-					for (i = 0; i < rowCount; i++)
+					for (qsizetype i = 0; i < rowCount; i++)
 					{
 						row = selectedRows[i].row();
 
@@ -1158,7 +1165,7 @@ namespace DSS
 		QLocale locale;
 		std::vector<fs::path> files;
 		std::vector<fs::path> masters;
-		const QStringList ignoreExtensions{ "txt", "html", "dssfilelist" };
+		const QStringList ignoreExtensions{ "txt", "html", FileListExtension };
 
 		size_t fileCount{ 0 };
 
@@ -1340,12 +1347,6 @@ namespace DSS
 		{
 			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
 			{
-				pictureList->tableView->setEnabled(true);
-				//
-				// Disabling the tableview resulted in it loosing focus
-				// so put the focus back
-				//
-				pictureList->tableView->setFocus(Qt::OtherFocusReason);
 				//
 				// The image we want is available in the cache
 				//
@@ -1395,7 +1396,6 @@ namespace DSS
 			}
 			else if (!fileToShow.empty())
 			{
-				pictureList->tableView->setEnabled(false);
 				//
 				// Display the "Loading filename" with red background gradient while loading in background
 				//
@@ -1447,12 +1447,6 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
-		pictureList->tableView->setEnabled(true);
-		//
-		// Disabling the tableview resulted in it loosing focus
-		// so put the focus back
-		//
-		pictureList->tableView->setFocus(Qt::OtherFocusReason);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
@@ -1729,7 +1723,7 @@ namespace DSS
 			}
 		};
 
-		if (vBitmaps.size())
+		if (!vBitmaps.empty())
 			editStarsPtr->setRefStars(vBitmaps[0].m_vStars);
 		else
 			editStarsPtr->clearRefStars();
@@ -1827,7 +1821,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		if (checkWorkspaceChanges())
 		{
-			if (mruPath.paths.size())
+			if (!mruPath.paths.empty())
 			{
 				openAnother = false;
 				QMenu filelistMenu(this);
@@ -1843,13 +1837,12 @@ namespace DSS
 
 					QAction* action = filelistMenu.addAction(name);
 					action->setData(i);		// Index into the list of files
-
-				};
+				}
 				filelistMenu.addSeparator();
 				QAction* loadAnother = filelistMenu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
 				QAction* a = filelistMenu.exec(pt);
-				if (a)
+				if (a != nullptr)
 				{
 					if (loadAnother == a)
 						openAnother = true;
@@ -1874,13 +1867,15 @@ namespace DSS
 			QString name;
 			loadList(mruPath, name);
 			dssApp->setWindowFilePath(name);
-		};
+		}
+
 		updateGroupTabs();
 		updateListInfo();
-		raise(); show();
+		raise();
+		show();
 	}
 
-	void StackingDlg::loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, const QString&)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1894,7 +1889,7 @@ namespace DSS
 		extension = settings.value("Folders/ListExtension").toString();
 
 		if (extension.isEmpty())
-			extension = ".dssfilelist";
+			extension = FileListExtension;
 
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
@@ -1908,12 +1903,14 @@ namespace DSS
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			QStringList files = fileDialog.selectedFiles();
 
-			for (int i = 0; i < files.size(); i++)
+			for (qsizetype i = 0; i < files.size(); i++)
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				const fs::path file{ files.at(i).toStdU16String() }; // as UTF-16
 
 				frameList.loadFilesFromList(file);
 				MRUList.Add(file);
+				if (i == 0)
+					fileList = file; // The first selected file-list will be remembered.
 
 				if (file.has_parent_path())
 					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
@@ -1939,25 +1936,28 @@ namespace DSS
 
 		saveList(mruPath, name);
 		dssApp->setWindowFilePath(name);
-	};
+	}
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, const QString&)
 	{
 		ZFUNCTRACE_RUNTIME();
-		QSettings					settings;
+		QSettings settings;
 		QString directory;
-		QString	extension;
+		QString extension;
 
 		QFileDialog			fileDialog;
 
-		directory = settings.value("Folders/ListFolder").toString();
+		const auto& firstLightframe = this->frameList.getFirstCheckedLightFrame();
+		directory = firstLightframe.has_parent_path()
+			? QString::fromStdU16String(firstLightframe.parent_path().generic_u16string())
+			: settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 		extension = settings.value("Folders/ListExtension").toString();
 
 		if (extension.isEmpty())
-			extension = ".dssfilelist";
+			extension = FileListExtension;
 
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::AnyFile);
@@ -1975,21 +1975,18 @@ namespace DSS
 
 			ZASSERTSTATE(1 == files.size());
 
-			for (int i = 0; i < files.size(); i++)
-			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
-				fileList = file;		// save this filelist
+			const fs::path file(files.at(0).toStdU16String()); // as UTF-16
+			fileList = file;		// save this filelist
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+			if (file.has_parent_path())
+				directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+			else
+				directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+			extension = QString::fromStdU16String(file.extension().generic_u16string());
 
-				frameList.saveListToFile(file);
-				MRUList.Add(file);
-			}
+			frameList.saveListToFile(file);
+			MRUList.Add(file);
 
 			QGuiApplication::restoreOverrideCursor();
 
@@ -1997,10 +1994,7 @@ namespace DSS
 			settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
 			settings.setValue("Folders/ListExtension", extension);
 		}
-
 	}
-
-	/* ------------------------------------------------------------------- */
 
 	/* ------------------------------------------------------------------- */
 
@@ -2292,14 +2286,15 @@ namespace DSS
 	{
 		bool						bResult = false;
 
-		if (!fileList.empty() || Group::fileCount())
+		if (!fileList.empty() || Group::fileCount() != 0)
 		{
 			Workspace workspace;
 
 			//
 			// Don't ask to save the the file list if a batch stacking operation is in progress.
 			//
-			if (frameList.batchStacking()) return true;			
+			if (frameList.batchStacking())
+				return true;			
 
 			if (frameList.dirty() || workspace.isDirty())
 			{
@@ -2401,6 +2396,7 @@ namespace DSS
 		}
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 		{
 			// Stack registered light frames
 			CStackingEngine StackingEngine;

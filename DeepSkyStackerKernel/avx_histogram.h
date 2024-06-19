@@ -7,8 +7,10 @@ class AvxHistogram
 public:
 	typedef std::vector<int> HistogramVectorType;
 private:
+	friend class Avx256Histogram;
+	friend class NonAvxHistogram;
+
 	bool avxReady;
-	bool allRunsSuccessful;
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -21,16 +23,28 @@ public:
 	AvxHistogram(AvxHistogram&&) = delete;
 	AvxHistogram& operator=(const AvxHistogram&) = delete;
 
-	int calcHistogram(const size_t lineStart, const size_t lineEnd);
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
 	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
-	bool histogramSuccessful() const;
 	inline bool isAvxReady() const { return this->avxReady; }
 private:
-	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{1}; }
+	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
+};
+
+class Avx256Histogram : public SimdFactory<Avx256Histogram>
+{
+private:
+	friend class AvxHistogram;
+	friend class SimdFactory<Avx256Histogram>;
+
+	AvxHistogram& histoData;
+	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
+
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double);
+
 	template <class T>
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
-
-	// Conflict detection: Number of equal elements + blocking mask.
+public:
+	// Conflict detection: Number of equal elements + blocking mask. 
 	inline static std::tuple<__m256i, std::uint32_t> detectConflictsEpi32(const __m256i a) noexcept
 	{
 		__m256i counter = _mm256_set1_epi32(1);
@@ -112,4 +126,117 @@ public:
 		constexpr size_t Unsigned_short_max = size_t{ std::numeric_limits<std::uint16_t>::max() };
 		++histo[std::min(static_cast<size_t>(grayValue), Unsigned_short_max)];
 	};
+};
+
+
+class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
+{
+private:
+	friend class AvxHistogram;
+	friend class SimdFactory<NonAvxHistogram>;
+
+	AvxHistogram& histoData;
+	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
+
+	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
+};
+
+
+// ---------------------------
+// For the image colour editor
+// ---------------------------
+
+class AvxBezierAndSaturation
+{
+private:
+	friend class Avx256BezierAndSaturation;
+	friend class NonAvxBezierAndSaturation;
+
+	std::vector<float> redBuffer;
+	std::vector<float> greenBuffer;
+	std::vector<float> blueBuffer;
+	std::vector<float> bezierX;
+	std::vector<float> bezierY;
+	bool avxSupported;
+
+public:
+	AvxBezierAndSaturation(const size_t bufferLen) :
+		avxSupported{ AvxSupport::checkSimdAvailability() },
+		redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
+		bezierX{}, bezierY{}
+	{}
+	AvxBezierAndSaturation(const AvxBezierAndSaturation&) = default;
+	AvxBezierAndSaturation(AvxBezierAndSaturation&&) = delete;
+	AvxBezierAndSaturation& operator=(const AvxBezierAndSaturation&) = delete;
+private:
+	int fillBezierBuffer(const auto& bezierPoints)
+	{
+		if (this->bezierX.empty())
+		{
+			this->bezierX.resize(bezierPoints.size());
+			this->bezierY.resize(bezierPoints.size());
+		}
+		std::transform(bezierPoints.cbegin(), bezierPoints.cend(), this->bezierX.begin(), [](const auto& bcp) { return static_cast<float>(bcp.x); });
+		std::transform(bezierPoints.cbegin(), bezierPoints.cend(), this->bezierY.begin(), [](const auto& bcp) { return static_cast<float>(bcp.y); });
+		return 0;
+	}
+	int toHsl();
+public:
+	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome);
+	std::tuple<float*, float*, float*> getBufferPtr();
+	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxToHsl(const auto& bezierPoints)
+	{
+		const int rv = this->toHsl();
+		return rv == 0 ? this->fillBezierBuffer(bezierPoints) : rv;
+	}
+	int avxToRgb(const bool markOverAndUnderExposure);
+	int avxBezierAdjust(const size_t len);
+	int avxBezierSaturation(const size_t len, const float saturationShift);
+};
+
+
+class Avx256BezierAndSaturation : public SimdFactory<Avx256BezierAndSaturation>
+{
+private:
+	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<Avx256BezierAndSaturation>;
+
+	AvxBezierAndSaturation& histoData;
+	Avx256BezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
+public:
+	Avx256BezierAndSaturation(const Avx256BezierAndSaturation&) = delete;
+	Avx256BezierAndSaturation& operator=(const Avx256BezierAndSaturation&) = delete;
+public: // for unit tests
+	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
+private:
+	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxToHsl();
+	template <bool MarkOverAndUnderExposure>
+	int avxToRgb();
+	int avxBezierAdjust(const size_t len);
+	int avxBezierSaturation(const size_t len, const float saturationShift);
+};
+
+
+class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
+{
+private:
+	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<NonAvxBezierAndSaturation>;
+
+	AvxBezierAndSaturation& histoData;
+	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
+public:
+	NonAvxBezierAndSaturation(const NonAvxBezierAndSaturation&) = delete;
+	NonAvxBezierAndSaturation& operator=(const NonAvxBezierAndSaturation&) = delete;
+public: // for unit tests
+	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
+private:
+	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxToHsl();
+	template <bool MarkOverAndUnderExposure>
+	int avxToRgb();
+	int avxBezierAdjust(const size_t len);
+	int avxBezierSaturation(const size_t len, const float saturationShift);
 };

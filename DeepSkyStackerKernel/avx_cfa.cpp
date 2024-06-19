@@ -2,7 +2,7 @@
 #include "avx_cfa.h"
 #include "avx_support.h"
 
-AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm) :
+AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, const CMemoryBitmap& inputbm) :
 	redPixels{},
 	greenPixels{},
 	bluePixels{},

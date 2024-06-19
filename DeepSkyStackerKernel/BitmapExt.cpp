@@ -351,7 +351,6 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	ZFUNCTRACE_RUNTIME();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
-	bool result = false;
 	const QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 	//
@@ -365,22 +364,34 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		pQImage.reset();
 		return false;
 	}
+
+	const auto makeMap = [&file]<typename Bitmap>(const char text[])
+	{
+		std::shared_ptr<CMemoryBitmap> pMap = std::make_shared<Bitmap>();
+		ZTRACE_RUNTIME(text, pMap.get(), file.generic_u8string().c_str());
+		return pMap;
+	};
 	std::shared_ptr<CMemoryBitmap> pBitmap;
-	int bits { pQImage->bitPlaneCount() };
+	const int bits = pQImage->bitPlaneCount();
 	switch (bits)
 	{
+	case 8:
+		pBitmap = makeMap.operator()<C8BitGrayBitmap>("Creating 8 bit mono memory bitmap %p (%s)");
+		break;
+	case 16:
+		pBitmap = makeMap.operator()<C16BitGrayBitmap>("Creating 16 bit mono memory bitmap %p (%s)");
+		break;
 	case 24:
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
-		pBitmap = std::make_shared<C24BitColorBitmap>();
+		pBitmap = makeMap.operator()<C24BitColorBitmap>("Creating 8 bit RGB memory bitmap %p (%s)");
 		break;
 	case 48:
-		ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
-		pBitmap = std::make_shared<C48BitColorBitmap>();
+		pBitmap = makeMap.operator()<C48BitColorBitmap>("Creating 16 bit RGB memory bitmap %p (%s)");
 		break;
 	default:
 		pQImage.reset();
 		return false;
 	}
+
 	const int width{ pQImage->width() };
 	const int height{ pQImage->height() };
 
@@ -394,20 +405,104 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	// unsigned char * which is what QImage::bits() returns
 	//
 
-	auto pImageData{ pQImage->constBits() };
-	auto bytes_per_line = pQImage->bytesPerLine();
+	const auto* pImageData = pQImage->constBits();
+	const auto bytes_per_line = pQImage->bytesPerLine();
 	
-	std::atomic_int loopCtr{ 0 };
-	if (24 == bits)
+//	std::atomic_int loopCtr{ 0 };
+
+	const auto copyPixels = 
+		[bytes_per_line, height, width, pBitmap, pProgress, numberOfProcessors]
+		<bool Monochrome, typename PixelType, std::invocable<const PixelType&> auto GetColours>
+		(const uchar* pSrc)
 	{
+		std::atomic_int loopCtr = 0;
+#pragma omp parallel for shared(loopCtr) default(none) if(numberOfProcessors > 1)
+		for (int row = 0; row < height; ++row)
+		{
+			const auto* pPixel = reinterpret_cast<const PixelType*>(pSrc + row * bytes_per_line);
+			for (int col = 0; col < width; ++col, ++pPixel)
+			{
+				if constexpr (Monochrome)
+				{
+					const auto grey = static_cast<double>(*pPixel);
+					pBitmap->SetPixel(col, row, grey);
+				}
+				else
+				{
+					const auto [r, g, b] = GetColours(*pPixel);
+					pBitmap->SetPixel(col, row, r, g, b);
+				}
+			}
+			if (pProgress != nullptr && omp_get_thread_num() == 0)
+				pProgress->Progress2(loopCtr);
+			++loopCtr;
+		}
+	};
+
+	switch (bits)
+	{
+	case 8:
+		copyPixels.operator()<true, uchar, std::identity{}>(pImageData);
+		break;
+	case 16:
+		copyPixels.operator()<true, std::uint16_t, std::identity{}>(pImageData);
+		break;
+	case 24:
+		copyPixels.operator()<false, QRgb, [](const QRgb& c) -> std::tuple<double, double, double> { return { qRed(c), qGreen(c), qBlue(c) }; }>(pImageData);
+		break;
+	case 48:
+		copyPixels.operator()<
+			false,
+			QRgba64,
+			[](const QRgba64& c) -> std::tuple<double, double, double> { return { c.red() / scaleFactorInt16, c.green() / scaleFactorInt16, c.blue() / scaleFactorInt16 }; }
+		>(pImageData);
+		break;
+	}
+/*
+	switch (bits)
+	{
+	case 8:
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
+		{
+			const uchar* pGreyPixel = pImageData + (j * bytes_per_line);
+			double	fGrey{ 0 };
+			for (int i = 0; i < width; i++)
+			{
+				fGrey = *pGreyPixel;
+				pBitmap->SetPixel(i, j, fGrey);
+				pGreyPixel++;
+
+			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
+		}
+		break;
+	case 16:
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
+		{
+			const uint16_t* pGreyPixel = reinterpret_cast<const uint16_t*>(pImageData + (j * bytes_per_line));
+			double	fGrey{ 0 };
+			for (int i = 0; i < width; i++)
+			{
+				fGrey = *pGreyPixel;
+				pBitmap->SetPixel(i, j, fGrey);
+				pGreyPixel++;
+
+			}
+			if (pProgress != nullptr)
+				pProgress->Progress2(++loopCtr);
+		}
+		break;
+	case 24:
 #pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
+			double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 			for (int i = 0; i < width; i++)
 			{
-
-				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 				fRed = qRed(*pRgbPixel);
 				fGreen = qGreen(*pRgbPixel);
 				fBlue = qBlue(*pRgbPixel);
@@ -421,16 +516,15 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 			if (pProgress != nullptr)
 				pProgress->Progress2(++loopCtr);
 		}
-	}
-	else       // Must be a 48 bit image
-	{
+		break;
+	case 48:
 #pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
+			double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 			for (int i = 0; i < width; i++)
 			{
-				double	fRed{ 0 }, fGreen{ 0 }, fBlue{ 0 };
 				fRed = pRgba64Pixel->red() / scaleFactorInt16;		// Returns quint16 == uint16_t
 				fGreen = pRgba64Pixel->green() / scaleFactorInt16;
 				fBlue = pRgba64Pixel->blue() / scaleFactorInt16;
@@ -443,8 +537,9 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 			if (pProgress != nullptr)
 				pProgress->Progress2(++loopCtr);
 		}
+		break;
 	}
-
+*/
 	if (pProgress != nullptr)
 		pProgress->End2();
 
@@ -454,9 +549,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	if (RetrieveEXIFInfo(file, bmpInfo))
 		pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
-	result = true;
-
-	return result;
+	return true;
 }
 
 bool C32BitsBitmap::CopyToClipboard()
@@ -698,7 +791,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 					unsigned char value = 0;
 
 					for (int i = 0; i < width; i++)
@@ -738,7 +831,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 					unsigned char value = 0;
 
 					for (int i = 0; i < width; i++)
@@ -846,7 +939,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
-					T* pGray = pInBitmap->GetGrayPixel(0, j);
+					const T* pGray = pInBitmap->GetGrayPixel(0, j);
 
 					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
 					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);

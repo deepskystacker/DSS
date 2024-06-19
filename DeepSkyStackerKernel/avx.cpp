@@ -9,39 +9,42 @@
 #include "avx_entropy.h"
 #include "EntropyInfo.h"
 
-AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
+AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
-	xCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
-	yCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
-	redPixels(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
+	vectorsPerLine{ AvxSupport::numberOfAvxVectors<float, VectorElementType>(width) },
+	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
+	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
+	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
 	greenPixels{},
 	bluePixels{},
 	inputBitmap{ inputbm },
 	tempBitmap{ tempbm },
 	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
-	entropyData{ entrdat }
+	entropyData{ entrdat },
+	avx2Enabled{ AvxSupport::checkSimdAvailability() }
 {
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
 
-	resizeColorVectors(AvxSupport::numberOfAvxVectors<float, __m256>(width) * height);
+	resizeColorVectors(vectorsPerLine * height);
 }
 
 void AvxStacking::init(const int lStart, const int lEnd)
 {
-	if (!AvxSupport::checkSimdAvailability())
-		return;
-
 	lineStart = lStart;
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width) * height;
-	xCoordinates.resize(nrVectors);
-	yCoordinates.resize(nrVectors);
-	redPixels.resize(nrVectors);
-	resizeColorVectors(nrVectors);
+
+	if (avx2Enabled)
+	{
+		const size_t nrVectors = vectorsPerLine * height;
+		xCoordinates.resize(nrVectors);
+		yCoordinates.resize(nrVectors);
+		redPixels.resize(nrVectors);
+		resizeColorVectors(nrVectors);
+	}
 }
 
 void AvxStacking::resizeColorVectors(const size_t nrVectors)
@@ -57,40 +60,51 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
-	if (!AvxSupport::checkSimdAvailability())
-		return 1;
-
-	int rval = 1;
-	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
-		|| doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
-		|| doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-	{
-		rval = 0;
-	}
+	const int rval = SimdSelector<Avx256Stacking, NonAvxStacking>(
+		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
+	);
 	return AvxSupport::zeroUpper(rval);
 }
 
+// ****************
+// AVX 256 Stacking
+// ****************
+
+int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
+{
+	if (!this->stackData.avx2Enabled)
+		return 1;
+
+	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+		return 0;
+	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+		return 0;
+	if (doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+		return 0;
+	return 1;
+}
+
 template <class T>
-int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
+int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
 	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
 		return 1;
 
 	// Check input bitmap.
-	const AvxSupport avxInputSupport{ inputBitmap };
+	const AvxSupport avxInputSupport{ stackData.inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
 	// Check output (temp) bitmap.
-	const AvxSupport avxTempSupport{ tempBitmap };
+	const AvxSupport avxTempSupport{ stackData.tempBitmap };
 	if (!avxTempSupport.isColorBitmapOfType<T>() && !avxTempSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
-	if (avxInputSupport.isMonochromeCfaBitmapOfType<T>() && avxCfa.interpolate(lineStart, lineEnd, pixelSizeMultiplier) != 0)
+	if (avxInputSupport.isMonochromeCfaBitmapOfType<T>() && stackData.avxCfa.interpolate(stackData.lineStart, stackData.lineEnd, pixelSizeMultiplier) != 0)
 		return 1;
 	if (pixelTransform(pixelTransformDef) != 0)
 		return 1;
@@ -118,12 +132,13 @@ int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskIn
 	return 0;
 };
 
-int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
+int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 {
+	constexpr size_t PixelsPerVector = 8; // 8 floats in __m256 vectors.
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
+	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width);
 	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fXCometShift : 0.0));
 	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fYCometShift : 0.0));
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
@@ -136,19 +151,19 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 		bilinearParams.b0 == 0.0f && bilinearParams.b1 == 0.0f && bilinearParams.b3 == 0.0f
 		))
 	{
-		for (int row = 0; row < height; ++row)
+		for (int row = 0; row < stackData.height; ++row)
 		{
-			const __m256 fyShiftVec = _mm256_set1_ps(static_cast<float>(lineStart + row) + fyShift);
-			__m256* pXLine = &xCoordinates.at(row * nrVectors);
-			__m256* pYLine = &yCoordinates.at(row * nrVectors);
+			const __m256 fyShiftVec = _mm256_set1_ps(static_cast<float>(stackData.lineStart + row) + fyShift);
+			float* pXLine = stackData.row(stackData.xCoordinates, row);
+			float* pYLine = stackData.row(stackData.yCoordinates, row);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pXLine += PixelsPerVector, pYLine += PixelsPerVector)
 			{
 				const __m256 fxline = _mm256_cvtepi32_ps(xline);
-				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
-				_mm256_store_ps((float*)pXLine, _mm256_add_ps(fxline, fxShiftVec));
-				_mm256_store_ps((float*)pYLine, fyShiftVec);
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(PixelsPerVector));
+				_mm256_store_ps(pXLine, _mm256_add_ps(fxline, fxShiftVec));
+				_mm256_store_ps(pYLine, fyShiftVec);
 			}
 		}
 		return 0;
@@ -185,20 +200,20 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 
 	if (bilinearParams.Type == TT_BILINEAR)
 	{
-		for (int row = 0; row < height; ++row)
+		for (int row = 0; row < stackData.height; ++row)
 		{
-			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
+			const float y = static_cast<float>(stackData.lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			__m256* pXLine = &xCoordinates.at(row * nrVectors);
-			__m256* pYLine = &yCoordinates.at(row * nrVectors);
+			float* pXLine = stackData.row(stackData.xCoordinates, row);
+			float* pYLine = stackData.row(stackData.yCoordinates, row);
 			// Vector with x-indices of the current 8 pixels of the line.
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pXLine += PixelsPerVector, pYLine += PixelsPerVector)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
 				// Indices of the next 8 pixels.
-				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(PixelsPerVector));
 
 				const __m256 xy = _mm256_mul_ps(vx, vy);
 				// X- and y-coordinates for the bilinear transformation of the current 8 pixels.
@@ -206,8 +221,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 yr = linearTransformY(vx, vy, xy);
 
 				// Save result.
-				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec)); // xr * fxWidth + fxShift
-				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec)); // yr * fyWidth + fyShift
+				_mm256_store_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec)); // xr * fxWidth + fxShift
+				_mm256_store_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec)); // yr * fyWidth + fyShift
 			}
 		}
 		return 0;
@@ -245,19 +260,18 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 
 	if (bilinearParams.Type == TT_BISQUARED)
 	{
-
-		for (int row = 0; row < height; ++row)
+		for (int row = 0; row < stackData.height; ++row)
 		{
-			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
+			const float y = static_cast<float>(stackData.lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			__m256* pXLine = &xCoordinates.at(row * nrVectors);
-			__m256* pYLine = &yCoordinates.at(row * nrVectors);
+			float* pXLine = stackData.row(stackData.xCoordinates, row);
+			float* pYLine = stackData.row(stackData.yCoordinates, row);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pXLine += PixelsPerVector, pYLine += PixelsPerVector)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
-				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(PixelsPerVector));
 
 				// Linear part
 				const __m256 xy = _mm256_mul_ps(vx, vy);
@@ -275,8 +289,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 xr = squaredTransformX(rlx, x2, y2, x2y, xy2, x2y2);
 				const __m256 yr = squaredTransformY(rly, x2, y2, x2y, xy2, x2y2);
 
-				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
-				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
+				_mm256_store_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
+				_mm256_store_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
 			}
 		}
 		return 0;
@@ -326,22 +340,22 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 
 	if (bilinearParams.Type == TT_BICUBIC)
 	{
-		for (int row = 0; row < height; ++row)
+		for (int row = 0; row < stackData.height; ++row)
 		{
-			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
+			const float y = static_cast<float>(stackData.lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			__m256* pXLine = &xCoordinates.at(row * nrVectors);
-			__m256* pYLine = &yCoordinates.at(row * nrVectors);
+			float* pXLine = stackData.row(stackData.xCoordinates, row);
+			float* pYLine = stackData.row(stackData.yCoordinates, row);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
 			// Do it in 2 steps, so that the loops get smaller, and the compiler can better keep data in CPU registers.
 			// (1) Linear and squared part.
 			// (2) Cubic part.
 
-			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pXLine += PixelsPerVector, pYLine += PixelsPerVector)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
-				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(PixelsPerVector));
 
 				// Linear part
 				const __m256 xy = _mm256_mul_ps(vx, vy);
@@ -357,18 +371,18 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 rsx = squaredTransformX(rlx, x2, y2, x2y, xy2, x2y2);
 				const __m256 rsy = squaredTransformY(rly, x2, y2, x2y, xy2, x2y2);
 
-				_mm256_store_ps((float*)pXLine, rsx);
-				_mm256_store_ps((float*)pYLine, rsy);
+				_mm256_store_ps(pXLine, rsx);
+				_mm256_store_ps(pYLine, rsy);
 			}
 
-			pXLine = &xCoordinates.at(row * nrVectors);
-			pYLine = &yCoordinates.at(row * nrVectors);
+			pXLine = stackData.row(stackData.xCoordinates, row);
+			pYLine = stackData.row(stackData.yCoordinates, row);
 			xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pXLine += PixelsPerVector, pYLine += PixelsPerVector)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
-				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(PixelsPerVector));
 
 				const __m256 x2 = _mm256_mul_ps(vx, vx);
 				const __m256 y2 = _mm256_mul_ps(vy, vy);
@@ -383,15 +397,15 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 x3y3 = _mm256_mul_ps(x3, y3);
 
 				// Load the squared part (has been calculated in previous step).
-				const __m256 rsx = _mm256_load_ps((const float*)pXLine);
-				const __m256 rsy = _mm256_load_ps((const float*)pYLine);
+				const __m256 rsx = _mm256_load_ps(pXLine);
+				const __m256 rsy = _mm256_load_ps(pYLine);
 
 				// The bicubic transformation
 				const __m256 xr = cubicTransformX(rsx, x3, y3, x3y, xy3, x3y2, x2y3, x3y3);
 				const __m256 yr = cubicTransformY(rsy, x3, y3, x3y, xy3, x3y2, x2y3, x3y3);
 
-				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
-				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
+				_mm256_store_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
+				_mm256_store_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
 			}
 		}
 		return 0;
@@ -401,33 +415,33 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 };
 
 template <class T, class LoopFunction, class InterpolParam>
-int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
+int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
 {
 	if (avxInputSupport.isColorBitmapOfType<T>())
 	{
-		const size_t w = static_cast<size_t>(this->width);
-		const size_t startNdx = w * lineStart;
-		loopFunc(&avxInputSupport.redPixels<T>().at(startNdx), w, redParams, redPixels);
-		loopFunc(&avxInputSupport.greenPixels<T>().at(startNdx), w, greenParams, greenPixels);
-		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), w, blueParams, bluePixels);
+		const size_t w = static_cast<size_t>(stackData.width);
+		const size_t startNdx = w * stackData.lineStart;
+		loopFunc(&avxInputSupport.redPixels<T>().at(startNdx), w, redParams, stackData.redPixels);
+		loopFunc(&avxInputSupport.greenPixels<T>().at(startNdx), w, greenParams, stackData.greenPixels);
+		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), w, blueParams, stackData.bluePixels);
 		return 0;
 	}
 	if constexpr (std::is_same<T, std::uint16_t>::value)
 	{
 		if (avxInputSupport.isMonochromeCfaBitmapOfType<T>())
 		{
-			const size_t w = avxCfa.nrVectorsPerLine();
-			loopFunc(avxCfa.redCfaBlock(), w, redParams, redPixels);
-			loopFunc(avxCfa.greenCfaBlock(), w, greenParams, greenPixels);
-			loopFunc(avxCfa.blueCfaBlock(), w, blueParams, bluePixels);
+			const size_t w = stackData.avxCfa.nrVectorsPerLine();
+			loopFunc(stackData.avxCfa.redCfaBlock(), w, redParams, stackData.redPixels);
+			loopFunc(stackData.avxCfa.greenCfaBlock(), w, greenParams, stackData.greenPixels);
+			loopFunc(stackData.avxCfa.blueCfaBlock(), w, blueParams, stackData.bluePixels);
 			return 0;
 		}
 	}
 	if (avxInputSupport.isMonochromeBitmapOfType<T>())
 	{
-		const size_t w = static_cast<size_t>(this->width);
-		const size_t startNdx = w * lineStart;
-		loopFunc(&avxInputSupport.grayPixels<T>().at(startNdx), w, redParams, redPixels);
+		const size_t w = static_cast<size_t>(stackData.width);
+		const size_t startNdx = w * stackData.lineStart;
+		loopFunc(&avxInputSupport.grayPixels<T>().at(startNdx), w, redParams, stackData.redPixels);
 		return 0;
 	}
 	return 1;
@@ -438,127 +452,118 @@ inline float readColorValue(const std::uint32_t c) { return static_cast<float>(c
 inline float readColorValue(const float c) { return c; }
 
 template <class T>
-int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
+int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
-	const int nrVectors = width / 16;
-	const AvxSupport avxInputSupport{ inputBitmap };
+	const int nrVectors = stackData.width / 16;
+	const AvxSupport avxInputSupport{ stackData.inputBitmap };
 
 	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
 	{
 		// Just copy color values as they are, pixel by pixel.
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto&, std::vector<__m256>& result) -> void
-		{
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
-
-			for (int row = 0; row < this->height; ++row)
+		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto&, AvxStacking::VectorType& result) -> void
 			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				__m256* pResult = &result.at(row * internalBufferNrVectors);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
+				for (int row = 0; row < stackData.height; ++row)
 				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps((float*)pResult, lo8);
-					_mm256_store_ps((float*)(pResult + 1), hi8);
+					const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+					float* pResult = stackData.row(result, row);
+					for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+					{
+						const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+						_mm256_store_ps(pResult, lo8);
+						_mm256_store_ps(pResult + 8, hi8);
+					}
+					// Remaining pixels of line
+					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+					{
+						*pResult = readColorValue(*pColor);
+					}
 				}
-				// Remaining pixels of line
-				float* pRemaining = reinterpret_cast<float*>(pResult);
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
-				{
-					*pRemaining = readColorValue(*pColor);
-				}
-			}
-		};
+			};
 
 		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
 	}
 	else if (backgroundCalibrationDef.m_BackgroundInterpolation == BCI_RATIONAL)
 	{
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, std::vector<__m256>& result) -> void
-		{
-			const __m256 a = _mm256_set1_ps(params.getParameterA());
-			const __m256 b = _mm256_set1_ps(params.getParameterB());
-			const __m256 c = _mm256_set1_ps(params.getParameterC());
-			const __m256 fmin = _mm256_set1_ps(params.getParameterMin());
-			const __m256 fmax = _mm256_set1_ps(params.getParameterMax());
-
-			const auto interpolate = [&a, &b, &c, &fmin, &fmax](const __m256 color) noexcept -> __m256
+		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, AvxStacking::VectorType& result) -> void
 			{
-				const __m256 denom = _mm256_fmadd_ps(b, color, c); // b * color + c
-				const __m256 mask = _mm256_cmp_ps(denom, _mm256_setzero_ps(), 0); // cmp: denom==0 ? 1 : 0
-				const __m256 xplusa = _mm256_add_ps(color, a);
-//				const __m256 division = _mm256_div_ps(xplusa, denom);
-				const __m256 division = _mm256_mul_ps(xplusa, _mm256_rcp_ps(denom)); // RCP is accurate enough.
-				// If denominator == 0 => use (x+a) else use (x+a)/denominator, then do the max and min.
-				return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
+				const __m256 a = _mm256_set1_ps(params.getParameterA());
+				const __m256 b = _mm256_set1_ps(params.getParameterB());
+				const __m256 c = _mm256_set1_ps(params.getParameterC());
+				const __m256 fmin = _mm256_set1_ps(params.getParameterMin());
+				const __m256 fmax = _mm256_set1_ps(params.getParameterMax());
+
+				const auto interpolate = [&a, &b, &c, &fmin, &fmax](const __m256 color) noexcept -> __m256
+				{
+					const __m256 denom = _mm256_fmadd_ps(b, color, c); // b * color + c
+					const __m256 mask = _mm256_cmp_ps(denom, _mm256_setzero_ps(), 0); // cmp: denom==0 ? 1 : 0
+					const __m256 xplusa = _mm256_add_ps(color, a);
+					//				const __m256 division = _mm256_div_ps(xplusa, denom);
+					const __m256 division = _mm256_mul_ps(xplusa, _mm256_rcp_ps(denom)); // RCP is accurate enough.
+					// If denominator == 0 => use (x+a) else use (x+a)/denominator, then do the max and min.
+					return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
+				};
+
+				for (int row = 0; row < stackData.height; ++row)
+				{
+					const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+					float* pResult = stackData.row(result, row);
+					for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+					{
+						const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+						_mm256_store_ps(pResult, interpolate(lo8));
+						_mm256_store_ps(pResult + 8, interpolate(hi8));
+					}
+					// Remaining pixels of line
+					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+					{
+						const float fcolor = readColorValue(*pColor);
+						const float denom = b.m256_f32[0] * fcolor + c.m256_f32[0];
+						const float xplusa = fcolor + a.m256_f32[0];
+						*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
+					}
+				}
 			};
-
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
-
-			for (int row = 0; row < this->height; ++row)
-			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				__m256* pResult = &result.at(row * internalBufferNrVectors);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
-				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps((float*)pResult, interpolate(lo8));
-					_mm256_store_ps((float*)(pResult + 1), interpolate(hi8));
-				}
-				// Remaining pixels of line
-				float* pRemaining = reinterpret_cast<float*>(pResult);
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
-				{
-					const float fcolor = readColorValue(*pColor);
-					const float denom = b.m256_f32[0] * fcolor + c.m256_f32[0];
-					const float xplusa = fcolor + a.m256_f32[0];
-					*pRemaining = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
-				}
-			}
-		};
 
 		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
 	}
 	else // LINEAR
 	{
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, std::vector<__m256>& result) -> void
-		{
-			const __m256 a0 = _mm256_set1_ps(params.getParameterA0());
-			const __m256 a1 = _mm256_set1_ps(params.getParameterA1());
-			const __m256 b0 = _mm256_set1_ps(params.getParameterB0());
-			const __m256 b1 = _mm256_set1_ps(params.getParameterB1());
-			const __m256 xm = _mm256_set1_ps(params.getParameterXm());
-
-			const auto interpolate = [a0, a1, b0, b1, xm](const __m256 x) noexcept -> __m256
+		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, AvxStacking::VectorType& result) -> void
 			{
-				const __m256 mask = _mm256_cmp_ps(x, xm, 17); // cmp: x < xm ? 1 : 0
-				// If x < xm => use a0 and b0, else use a1 and b1.
-				const __m256 aSelected = _mm256_blendv_ps(a1, a0, mask); // blend(arg1, arg2, mask): mask==1 ? arg2 : arg1;
-				const __m256 bSelected = _mm256_blendv_ps(b1, b0, mask);
-				return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
+				const __m256 a0 = _mm256_set1_ps(params.getParameterA0());
+				const __m256 a1 = _mm256_set1_ps(params.getParameterA1());
+				const __m256 b0 = _mm256_set1_ps(params.getParameterB0());
+				const __m256 b1 = _mm256_set1_ps(params.getParameterB1());
+				const __m256 xm = _mm256_set1_ps(params.getParameterXm());
+
+				const auto interpolate = [a0, a1, b0, b1, xm](const __m256 x) noexcept -> __m256
+				{
+					const __m256 mask = _mm256_cmp_ps(x, xm, 17); // cmp: x < xm ? 1 : 0
+					// If x < xm => use a0 and b0, else use a1 and b1.
+					const __m256 aSelected = _mm256_blendv_ps(a1, a0, mask); // blend(arg1, arg2, mask): mask==1 ? arg2 : arg1;
+					const __m256 bSelected = _mm256_blendv_ps(b1, b0, mask);
+					return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
+				};
+
+				for (int row = 0; row < stackData.height; ++row)
+				{
+					const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+					float* pResult = stackData.row(result, row);
+					for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+					{
+						const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+						_mm256_store_ps(pResult, interpolate(lo8));
+						_mm256_store_ps(pResult + 8, interpolate(hi8));
+					}
+					// Remaining pixels of line
+					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+					{
+						const float fcolor = readColorValue(*pColor);
+						*pResult = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
+					}
+				}
 			};
-
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
-
-			for (int row = 0; row < this->height; ++row)
-			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				__m256* pResult = &result.at(row * internalBufferNrVectors);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
-				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps((float*)pResult, interpolate(lo8));
-					_mm256_store_ps((float*)(pResult + 1), interpolate(hi8));
-				}
-				// Remaining pixels of line
-				float* pRemaining = reinterpret_cast<float*>(pResult);
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
-				{
-					const float fcolor = readColorValue(*pColor);
-					*pRemaining = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
-				}
-			}
-		};
 
 		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
 	}
@@ -569,9 +574,9 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 #pragma warning( disable : 4100 ) // Unreferenced variable
 
 template <bool ISRGB, bool ENTROPY, class T>
-int AvxStacking::pixelPartitioning()
+int Avx256Stacking::pixelPartitioning()
 {
-	AvxSupport avxTempBitmap{ tempBitmap };
+	AvxSupport avxTempBitmap{ stackData.tempBitmap };
 	// Check if we were called with the correct template argument.
 	if constexpr (ISRGB) {
 		if (!avxTempBitmap.isColorBitmapOfType<T>())
@@ -582,7 +587,6 @@ int AvxStacking::pixelPartitioning()
 			return 1;
 	}
 
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
 	const int outWidth = avxTempBitmap.width();
 	if (outWidth <= 0)
 		return 1;
@@ -593,53 +597,52 @@ int AvxStacking::pixelPartitioning()
 	// Non-vectorized accumulation for the case of 2 (or more) x-coordinates being identical.
 	// Vectorized version would be incorrect in that case.
 	const auto accumulateSingle = [](const __m256 newColor, const __m256i outNdx, const __m256i mask, auto* const pOutputBitmap) -> void
-	{
-		const auto conditionalAccumulate = [pOutputBitmap](const int m, const size_t ndx, const float color) -> void
 		{
-			if (m != 0)
-				pOutputBitmap[ndx] = AvxSupport::accumulateSingleColorValue(ndx, color, m, pOutputBitmap);
-		};
+			const auto conditionalAccumulate = [pOutputBitmap](const int m, const size_t ndx, const float color) -> void
+				{
+					if (m != 0)
+						pOutputBitmap[ndx] = AvxSupport::accumulateSingleColorValue(ndx, color, m, pOutputBitmap);
+				};
 
-		// This needs to be done pixel by pixel of the vector, because neighboring pixels have identical indices (due to prior pixel transform step).
-		__m128 color = _mm256_castps256_ps128(newColor);
-		conditionalAccumulate(_mm256_cvtsi256_si32(mask), _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 1), _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 2), _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 3), _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
-		color = _mm256_extractf128_ps(newColor, 1);
-		conditionalAccumulate(_mm256_extract_epi32(mask, 4), _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 5), _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 6), _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
-		conditionalAccumulate(_mm256_extract_epi32(mask, 7), _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
-	};
+			// This needs to be done pixel by pixel of the vector, because neighboring pixels have identical indices (due to prior pixel transform step).
+			__m128 color = _mm256_castps256_ps128(newColor);
+			conditionalAccumulate(_mm256_cvtsi256_si32(mask), _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 1), _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 2), _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 3), _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
+			color = _mm256_extractf128_ps(newColor, 1);
+			conditionalAccumulate(_mm256_extract_epi32(mask, 4), _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 5), _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 6), _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
+			conditionalAccumulate(_mm256_extract_epi32(mask, 7), _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
+		};
 
 	// Vectorized or non-vectorized accumulation
 	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, auto* const pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
-	{
-		if (twoNdxEqual) // If so, we cannot use AVX.
-			return accumulateSingle(_mm256_mul_ps(colorValue, fraction), outNdx, mask, pOutputBitmap);
+		{
+			if (twoNdxEqual) // If so, we cannot use AVX.
+				return accumulateSingle(_mm256_mul_ps(colorValue, fraction), outNdx, mask, pOutputBitmap);
 
-		// Read from pOutputBitmap[outNdx[0:7]], and add (colorValue*fraction)[0:7]
-		const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, colorValue, fraction, mask, pOutputBitmap, fastLoadAndStore);
-		AvxSupport::storeColorValue(outNdx, limitedColor, mask, pOutputBitmap, fastLoadAndStore);
-	};
+			// Read from pOutputBitmap[outNdx[0:7]], and add (colorValue*fraction)[0:7]
+			const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, colorValue, fraction, mask, pOutputBitmap, fastLoadAndStore);
+			AvxSupport::storeColorValue(outNdx, limitedColor, mask, pOutputBitmap, fastLoadAndStore);
+		};
 
-
-	const __m256i resultWidthVec = _mm256_set1_epi32(this->resultWidth);
-	const __m256i resultHeightVec = _mm256_set1_epi32(this->resultHeight);
+	const __m256i resultWidthVec = _mm256_set1_epi32(stackData.resultWidth);
+	const __m256i resultHeightVec = _mm256_set1_epi32(stackData.resultHeight);
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
-	const auto getColorPointer = [](const std::vector<__m256>& colorPixels, const size_t offset) -> const __m256*
+	const auto getColorPointer = [this](const auto& colorPixels, const size_t row) -> const float*
+		{
+			if constexpr (ISRGB)
+				return this->stackData.row(colorPixels, row);
+			else
+				return nullptr;
+		};
+	const auto getColorValue = [](const float* const pColor) -> __m256
 	{
 		if constexpr (ISRGB)
-			return colorPixels.data() + offset;
-		else
-			return nullptr;
-	};
-	const auto getColorValue = [](const __m256* const pColor) -> __m256
-	{
-		if constexpr (ISRGB)
-			return _mm256_load_ps((const float*)pColor);
+			return _mm256_load_ps(pColor);
 		else
 			return _mm256_undefined_ps();
 	};
@@ -647,68 +650,68 @@ int AvxStacking::pixelPartitioning()
 	// -------------------------------
 	// Entropy data
 
-	float *pRedEntropyLayer, *pGreenEntropyLayer, *pBlueEntropyLayer;
+	float* pRedEntropyLayer, * pGreenEntropyLayer, * pBlueEntropyLayer;
 	if constexpr (ENTROPY)
 	{
-		AvxSupport avxEntropySupport{ *this->entropyData.pEntropyCoverage };
+		AvxSupport avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
 		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
 			return 1;
 		if (!ISRGB && !avxEntropySupport.isMonochromeBitmapOfType<float>())
 			return 1;
-		if (this->entropyData.redEntropyLayer.empty()) // Something is wrong here!
+		if (stackData.entropyData.redEntropyLayer.empty()) // Something is wrong here!
 			return 1;
-		pRedEntropyLayer = reinterpret_cast<float*>(this->entropyData.redEntropyLayer.data());
-		pGreenEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
-		pBlueEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
+		pRedEntropyLayer = reinterpret_cast<float*>(stackData.entropyData.redEntropyLayer.data());
+		pGreenEntropyLayer = ISRGB ? reinterpret_cast<float*>(stackData.entropyData.greenEntropyLayer.data()) : nullptr;
+		pBlueEntropyLayer = ISRGB ? reinterpret_cast<float*>(stackData.entropyData.blueEntropyLayer.data()) : nullptr;
 	}
 
 	const auto accumulateEntropyRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
-	{
-		if constexpr (!ENTROPY)
-			return;
+		{
+			if constexpr (!ENTROPY)
+				return;
 
-		if constexpr (ISRGB)
-		{
-			accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, g, fraction, pGreenEntropyLayer, twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, b, fraction, pBlueEntropyLayer, twoNdxEqual, fastLoadAndStore);
-		}
-		else
-		{
-			accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
-		}
-	};
+			if constexpr (ISRGB)
+			{
+				accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
+				accumulateAVX(outNdx, mask, g, fraction, pGreenEntropyLayer, twoNdxEqual, fastLoadAndStore);
+				accumulateAVX(outNdx, mask, b, fraction, pBlueEntropyLayer, twoNdxEqual, fastLoadAndStore);
+			}
+			else
+			{
+				accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
+			}
+		};
 	// -------------------------------
 
 	T* const pRedOut = ISRGB ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
-	T* const pGreenOut =  ISRGB ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
+	T* const pGreenOut = ISRGB ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
 	T* const pBlueOut = ISRGB ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
 	T* const pGrayOut = ISRGB ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
 
 	const auto accumulateRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
-	{
-		if constexpr (ISRGB)
 		{
-			accumulateAVX(outNdx, mask, r, fraction, pRedOut, twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, g, fraction, pGreenOut, twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, b, fraction, pBlueOut, twoNdxEqual, fastLoadAndStore);
-		}
-		else
-		{
-			accumulateAVX(outNdx, mask, r, fraction, pGrayOut, twoNdxEqual, fastLoadAndStore);
-		}
-	};
+			if constexpr (ISRGB)
+			{
+				accumulateAVX(outNdx, mask, r, fraction, pRedOut, twoNdxEqual, fastLoadAndStore);
+				accumulateAVX(outNdx, mask, g, fraction, pGreenOut, twoNdxEqual, fastLoadAndStore);
+				accumulateAVX(outNdx, mask, b, fraction, pBlueOut, twoNdxEqual, fastLoadAndStore);
+			}
+			else
+			{
+				accumulateAVX(outNdx, mask, r, fraction, pGrayOut, twoNdxEqual, fastLoadAndStore);
+			}
+		};
 	const auto fastAccumulateWordRGBorMono = [&](const __m256 color, const __m256 fraction1, const __m256 fraction2, std::uint16_t* const pOutput) -> void
-	{
-		const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vmovdqu ymm, m256
-//		const __m256i colorVector = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vlddqu ymm, m256
-		const __m256i f1 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction1, color))); // Upper 128 bits are zeroed.
-		const __m256i f2 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction2, color)));
-		const __m256i f2ShiftedLeft = AvxSupport::shiftLeftEpi8<2>(f2);
-		const __m256i colorPlusFraction1 = _mm256_adds_epu16(colorVector, f1);
-		const __m256i colorPlusBothFractions = _mm256_adds_epu16(colorPlusFraction1, f2ShiftedLeft);
-		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutput), colorPlusBothFractions);
-	};
+		{
+			const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vmovdqu ymm, m256
+			//		const __m256i colorVector = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vlddqu ymm, m256
+			const __m256i f1 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction1, color))); // Upper 128 bits are zeroed.
+			const __m256i f2 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction2, color)));
+			const __m256i f2ShiftedLeft = AvxSupport::shiftLeftEpi8<2>(f2);
+			const __m256i colorPlusFraction1 = _mm256_adds_epu16(colorVector, f1);
+			const __m256i colorPlusBothFractions = _mm256_adds_epu16(colorPlusFraction1, f2ShiftedLeft);
+			_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutput), colorPlusBothFractions);
+		};
 
 	const auto getColumnOrRowMask = [](const __m256i coord, const __m256i resultWidthOrHeight) -> __m256i
 	{
@@ -722,49 +725,52 @@ int AvxStacking::pixelPartitioning()
 		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coordTrunc), _mm256_cmpgt_epi32(resultWidthOrHeight, _mm256_cvttps_epi32(_mm256_ceil_ps(coord))));
 	};
 
-	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
 	const __m256i allOnes = _mm256_set1_epi32(-1); // All bits '1' == all int elements -1
+
+	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
+
 	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
 		__m256i mask1, const __m256i mask2, const bool twoNdxEqual, const bool allNdxValid1, const bool allNdxValid2) -> void
-	{
-		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
-			if (allNdxValid1 && allNdxValid2)
+			if constexpr (std::is_same<T, std::uint16_t>::value)
 			{
-				const size_t startNdx = _mm256_cvtsi256_si32(outIndex); // outIndex[0]
-				if constexpr (ISRGB)
+				if (allNdxValid1 && allNdxValid2)
 				{
-					fastAccumulateWordRGBorMono(red, fraction1, fraction2, pRedOut + startNdx);
-					fastAccumulateWordRGBorMono(green, fraction1, fraction2, pGreenOut + startNdx);
-					fastAccumulateWordRGBorMono(blue, fraction1, fraction2, pBlueOut + startNdx);
+					const size_t startNdx = _mm256_cvtsi256_si32(outIndex); // outIndex[0]
+					if constexpr (ISRGB)
+					{
+						fastAccumulateWordRGBorMono(red, fraction1, fraction2, pRedOut + startNdx);
+						fastAccumulateWordRGBorMono(green, fraction1, fraction2, pGreenOut + startNdx);
+						fastAccumulateWordRGBorMono(blue, fraction1, fraction2, pBlueOut + startNdx);
+					}
+					else
+						fastAccumulateWordRGBorMono(red, fraction1, fraction2, pGrayOut + startNdx);
+
+					return;
 				}
-				else
-					fastAccumulateWordRGBorMono(red, fraction1, fraction2, pGrayOut + startNdx);
-
-				return;
 			}
-		}
 
-		accumulateRGBorMono(red, green, blue, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1); // x, y, fraction1
-		accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2); // x+1, y, fraction2
-	};
+			accumulateRGBorMono(red, green, blue, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1); // x, y, fraction1
+			accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2); // x+1, y, fraction2
+		};
 
-	for (int row = 0; row < height; ++row)
+	const int nrVectors = static_cast<int>(AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width));
+
+	for (int row = 0; row < stackData.height; ++row)
 	{
-		const size_t offset = row * nrVectors;
-		const __m256* pXLine = &*xCoordinates.begin() + offset;
-		const __m256* pYLine = &*yCoordinates.begin() + offset;
-		const __m256* pRed = &*redPixels.begin() + offset;
-		const __m256* pGreen = getColorPointer(greenPixels, offset);
-		const __m256* pBlue = getColorPointer(bluePixels, offset);
+		const float* pXLine = stackData.row(stackData.xCoordinates, row);
+		const float* pYLine = stackData.row(stackData.yCoordinates, row);
+		const float* pRed = stackData.row(stackData.redPixels, row);
+		const float* pGreen = getColorPointer(stackData.greenPixels, row);
+		const float* pBlue = getColorPointer(stackData.bluePixels, row);
 		__m256i vIndex;
 		if constexpr (ENTROPY)
 			vIndex = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-		for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine, ++pRed)
+		for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8, pRed += 8)
 		{
-			const __m256 xcoord = _mm256_load_ps((const float*)pXLine);
-			const __m256 ycoord = _mm256_load_ps((const float*)pYLine);
+			const __m256 xcoord = _mm256_load_ps(pXLine);
+			const __m256 ycoord = _mm256_load_ps(pYLine);
 			const __m256 xtruncated = _mm256_floor_ps(xcoord); // trunc(coordinate)
 			const __m256 ytruncated = _mm256_floor_ps(ycoord);
 			const __m256 xfractional = _mm256_sub_ps(xcoord, xtruncated); // fractional_part(coordinate)
@@ -772,7 +778,7 @@ int AvxStacking::pixelPartitioning()
 			const __m256 xfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), xfractional); // 1 - fractional_part
 			const __m256 yfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), yfractional);
 
-			const __m256 red = _mm256_load_ps((const float*)pRed);
+			const __m256 red = _mm256_load_ps(pRed);
 			const __m256 green = getColorValue(pGreen);
 			const __m256 blue = getColorValue(pBlue);
 
@@ -785,6 +791,7 @@ int AvxStacking::pixelPartitioning()
 			__m256 fraction2 = _mm256_mul_ps(xfractional, yfrac1);
 			const __m256i xii = _mm256_cvttps_epi32(xtruncated);
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
+			const __m256i loopIndexMask = _mm256_cmpgt_epi32(outWidthVec, _mm256_add_epi32(_mm256_set1_epi32(8 * counter), _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7)));
 
 			// DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut);
 			const auto resultRectMask = _mm256_and_si256(
@@ -803,7 +810,7 @@ int AvxStacking::pixelPartitioning()
 			const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0))); // 'testc' returns 1 if all bits are '1' -> 0xffffffff == -1 -> ndx[i] - ndx[i+1] == -1
 			const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0)));
 
-			rowMask = _mm256_and_si256(rowMask, resultRectMask);
+			rowMask = _mm256_and_si256(_mm256_and_si256(rowMask, resultRectMask), loopIndexMask);
 			__m256i mask1 = _mm256_and_si256(columnMask1, rowMask);
 			__m256i mask2 = _mm256_and_si256(columnMask2, rowMask);
 			bool allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
@@ -824,7 +831,7 @@ int AvxStacking::pixelPartitioning()
 			fraction1 = _mm256_mul_ps(xfrac1, yfractional);
 			fraction2 = _mm256_mul_ps(xfractional, yfractional);
 			rowMask = getColumnOrRowMask(_mm256_sub_epi32(yii, allOnes), resultHeightVec);
-			rowMask = _mm256_and_si256(rowMask, resultRectMask);
+			rowMask = _mm256_and_si256(_mm256_and_si256(rowMask, resultRectMask), loopIndexMask);
 			mask1 = _mm256_and_si256(columnMask1, rowMask);
 			mask2 = _mm256_and_si256(columnMask2, rowMask);
 			allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
@@ -840,8 +847,8 @@ int AvxStacking::pixelPartitioning()
 
 			if constexpr (ISRGB)
 			{
-				++pGreen;
-				++pBlue;
+				pGreen += 8;
+				pBlue += 8;
 			}
 		}
 	}
@@ -852,49 +859,49 @@ int AvxStacking::pixelPartitioning()
 #pragma warning( pop )
 
 template <bool ISRGB>
-inline void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row)
+inline void Avx256Stacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row)
 {
-	const int windowSize = entropyData.entropyInfo.windowSize();
+	const int windowSize = stackData.entropyData.entropyInfo.windowSize();
 	const int squareSize = 2 * windowSize + 1;
 
 	const __m256 vx = _mm256_cvtepi32_ps(xIndex);
-	const __m256 vy = _mm256_set1_ps(static_cast<float>(lineStart + row));
+	const __m256 vy = _mm256_set1_ps(static_cast<float>(stackData.lineStart + row));
 	const __m256 vsquareSize = _mm256_set1_ps(static_cast<float>(squareSize));
-	const __m256i vsquareNdxY = _mm256_set1_epi32((lineStart + row) / squareSize);
+	const __m256i vsquareNdxY = _mm256_set1_epi32((stackData.lineStart + row) / squareSize);
 	const __m256 xndx = _mm256_floor_ps(_mm256_div_ps(vx, vsquareSize));
 	const __m256i vsquareNdxX = _mm256_cvttps_epi32(xndx);
 	const __m256 vsquareCenterX = _mm256_fmadd_ps(xndx, vsquareSize, _mm256_set1_ps(static_cast<float>(windowSize))); //_mm256_add_epi32(_mm256_mullo_epi32(vsquareNdxX, vsquareSize), _mm256_set1_epi32(windowSize));
 	const __m256 vsquareCenterY = _mm256_fmadd_ps(_mm256_cvtepi32_ps(vsquareNdxY), vsquareSize, _mm256_set1_ps(static_cast<float>(windowSize))); //_mm256_add_epi32(_mm256_mullo_epi32(vsquareNdxY, vsquareSize), _mm256_set1_epi32(windowSize));
-	const __m256i vnrSquaresX = _mm256_set1_epi32(entropyData.entropyInfo.nrSquaresX());
-	const __m256i vnrSquaresY = _mm256_set1_epi32(entropyData.entropyInfo.nrSquaresY());
+	const __m256i vnrSquaresX = _mm256_set1_epi32(stackData.entropyData.entropyInfo.nrSquaresX());
+	const __m256i vnrSquaresY = _mm256_set1_epi32(stackData.entropyData.entropyInfo.nrSquaresY());
 
 	const auto vdistanceTo = [&vx, &vy](const __m256 vcenterX, const __m256 vcenterY) -> __m256
 	{
 		const __m256 x = _mm256_sub_ps(vx, vcenterX);
 		const __m256 y = _mm256_sub_ps(vy, vcenterY);
 		return _mm256_sqrt_ps(_mm256_fmadd_ps(y, y, _mm256_mul_ps(x, x)));
-//		return _mm256_hypot_ps(_mm256_cvtepi32_ps(_mm256_sub_epi32(vx, vcenterX)), _mm256_cvtepi32_ps(_mm256_sub_epi32(vy, vcenterY)));
+		//		return _mm256_hypot_ps(_mm256_cvtepi32_ps(_mm256_sub_epi32(vx, vcenterX)), _mm256_cvtepi32_ps(_mm256_sub_epi32(vy, vcenterY)));
 	};
 
 	const auto vgetEntropy = [&vnrSquaresX,
-		pRedEntropy = entropyData.entropyInfo.redEntropyData(),
-		pGreenEntropy = entropyData.entropyInfo.greenEntropyData(),
-		pBlueEntropy = entropyData.entropyInfo.blueEntropyData()](const __m256i x, const __m256i y, const __m256 mask)
-	{
-		const __m256i index = _mm256_add_epi32(_mm256_mullo_epi32(y, vnrSquaresX), x);
-		if constexpr (ISRGB)
+		pRedEntropy = stackData.entropyData.entropyInfo.redEntropyData(),
+		pGreenEntropy = stackData.entropyData.entropyInfo.greenEntropyData(),
+		pBlueEntropy = stackData.entropyData.entropyInfo.blueEntropyData()](const __m256i x, const __m256i y, const __m256 mask)
 		{
-			return std::make_tuple(
-				_mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4), // where mask==0 -> gather returns mask, i.e. it returns zero.
-				_mm256_mask_i32gather_ps(mask, pGreenEntropy, index, mask, 4),
-				_mm256_mask_i32gather_ps(mask, pBlueEntropy, index, mask, 4)
-			);
-		}
-		else
-		{
-			return _mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4);
-		}
-	};
+			const __m256i index = _mm256_add_epi32(_mm256_mullo_epi32(y, vnrSquaresX), x);
+			if constexpr (ISRGB)
+			{
+				return std::make_tuple(
+					_mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4), // where mask==0 -> gather returns mask, i.e. it returns zero.
+					_mm256_mask_i32gather_ps(mask, pGreenEntropy, index, mask, 4),
+					_mm256_mask_i32gather_ps(mask, pBlueEntropy, index, mask, 4)
+				);
+			}
+			else
+			{
+				return _mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4);
+			}
+		};
 
 	// Square 0
 	const __m256 vd0 = vdistanceTo(vsquareCenterX, vsquareCenterY);
@@ -940,74 +947,170 @@ inline void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy,
 		const __m256 vr2 = vgetEntropy(vsquareNdxX, vndxY, mask2);
 		redEntropy = _mm256_div_ps(_mm256_fmadd_ps(vw0, vr0, _mm256_fmadd_ps(vw1, vr1, _mm256_mul_ps(vw2, vr2))), vdenom);
 	}
-/*
-	const auto getEntropies = [nrSquaresX = entropyData.entropyInfo.nrSquaresX(),
-		nrSquaresY = entropyData.entropyInfo.nrSquaresY(),
-		redSquareEntropies = entropyData.entropyInfo.redEntropyData(),
-		greenSquareEntropies = entropyData.entropyInfo.greenEntropyData(),
-		blueSquareEntropies = entropyData.entropyInfo.blueEntropyData()](const int x, const int y) -> std::tuple<float, float, float>
-	{
-		return (x >= 0 && x < nrSquaresX && y >= 0 && y < nrSquaresY)
-			? (constexpr (ISRGB)
-				? std::make_tuple(redSquareEntropies[y * nrSquaresX + x], greenSquareEntropies[y * nrSquaresX + x], blueSquareEntropies[y * nrSquaresX + x])
-				: std::make_tuple(redSquareEntropies[y * nrSquaresX + x], 0.0f, 0.0f))
-			: std::make_tuple(-1.0f, -1.0f, -1.0f);
-	};
-
-	const int y = lineStart + row;
-	const int squareNdxY = y / squareSize;
-	for (int n = 0; n < 8; ++n)
-	{
-		const int x = counter * 8 + n;
-		const int squareNdxX = x / squareSize;
-		const int squareCenterX = squareNdxX * squareSize + windowSize;
-		const int squareCenterY = squareNdxY * squareSize + windowSize;
-
-		const auto distanceTo = [x, y](const int centerX, const int centerY) -> float
+	/*
+		const auto getEntropies = [nrSquaresX = entropyData.entropyInfo.nrSquaresX(),
+			nrSquaresY = entropyData.entropyInfo.nrSquaresY(),
+			redSquareEntropies = entropyData.entropyInfo.redEntropyData(),
+			greenSquareEntropies = entropyData.entropyInfo.greenEntropyData(),
+			blueSquareEntropies = entropyData.entropyInfo.blueEntropyData()](const int x, const int y) -> std::tuple<float, float, float>
 		{
-			const auto square = [](const int x) { return static_cast<float>(x * x); };
-			return sqrtf(square(x - centerX) + square(y - centerY));
+			return (x >= 0 && x < nrSquaresX && y >= 0 && y < nrSquaresY)
+				? (constexpr (ISRGB)
+					? std::make_tuple(redSquareEntropies[y * nrSquaresX + x], greenSquareEntropies[y * nrSquaresX + x], blueSquareEntropies[y * nrSquaresX + x])
+					: std::make_tuple(redSquareEntropies[y * nrSquaresX + x], 0.0f, 0.0f))
+				: std::make_tuple(-1.0f, -1.0f, -1.0f);
 		};
 
-		// Square 0
-		const auto [re0, ge0, be0] = getEntropies(squareNdxX, squareNdxY);
-		const float d0 = distanceTo(squareCenterX, squareCenterY);
-		// Square 1
-		int ndxX = x >= squareCenterX ? (squareNdxX + 1) : (squareNdxX - 1);
-		int ndxY = squareNdxY;
-		const auto [re1, ge1, be1] = getEntropies(ndxX, ndxY);
-		const float d1 = (re1 < 0.0f || x == squareCenterX) ? 1e5f : distanceTo(squareCenterX + (x >= squareCenterX ? squareSize : -squareSize), squareCenterY);
-		// Square 2
-		ndxX = squareNdxX;
-		ndxY = y >= squareCenterY ? (squareNdxY + 1) : (squareNdxY - 1);
-		const auto [re2, ge2, be2] = getEntropies(ndxX, ndxY);
-		const float d2 = (re2 < 0.0f || y == squareCenterY) ? 1e5f : distanceTo(squareCenterX, squareCenterY + (y >= squareCenterY ? squareSize : -squareSize));
-
-		const float denom = d1 * d2 + d0 * (d1 + d2);
-		const float w0 = d1 * d2;
-		const float w1 = d0 * d2;
-		const float w2 = d0 * d1;
-
-		redEntropy.m256_f32[n] = (w0 * re0 + w1 * re1 + w2 * re2) / denom;
-		if constexpr (ISRGB)
+		const int y = lineStart + row;
+		const int squareNdxY = y / squareSize;
+		for (int n = 0; n < 8; ++n)
 		{
-			greenEntropy.m256_f32[n] = (w0 * ge0 + w1 * ge1 + w2 * ge2) / denom;
-			blueEntropy.m256_f32[n] = (w0 * be0 + w1 * be1 + w2 * be2) / denom;
+			const int x = counter * 8 + n;
+			const int squareNdxX = x / squareSize;
+			const int squareCenterX = squareNdxX * squareSize + windowSize;
+			const int squareCenterY = squareNdxY * squareSize + windowSize;
+
+			const auto distanceTo = [x, y](const int centerX, const int centerY) -> float
+			{
+				const auto square = [](const int x) { return static_cast<float>(x * x); };
+				return sqrtf(square(x - centerX) + square(y - centerY));
+			};
+
+			// Square 0
+			const auto [re0, ge0, be0] = getEntropies(squareNdxX, squareNdxY);
+			const float d0 = distanceTo(squareCenterX, squareCenterY);
+			// Square 1
+			int ndxX = x >= squareCenterX ? (squareNdxX + 1) : (squareNdxX - 1);
+			int ndxY = squareNdxY;
+			const auto [re1, ge1, be1] = getEntropies(ndxX, ndxY);
+			const float d1 = (re1 < 0.0f || x == squareCenterX) ? 1e5f : distanceTo(squareCenterX + (x >= squareCenterX ? squareSize : -squareSize), squareCenterY);
+			// Square 2
+			ndxX = squareNdxX;
+			ndxY = y >= squareCenterY ? (squareNdxY + 1) : (squareNdxY - 1);
+			const auto [re2, ge2, be2] = getEntropies(ndxX, ndxY);
+			const float d2 = (re2 < 0.0f || y == squareCenterY) ? 1e5f : distanceTo(squareCenterX, squareCenterY + (y >= squareCenterY ? squareSize : -squareSize));
+
+			const float denom = d1 * d2 + d0 * (d1 + d2);
+			const float w0 = d1 * d2;
+			const float w1 = d0 * d2;
+			const float w2 = d0 * d1;
+
+			redEntropy.m256_f32[n] = (w0 * re0 + w1 * re1 + w2 * re2) / denom;
+			if constexpr (ISRGB)
+			{
+				greenEntropy.m256_f32[n] = (w0 * ge0 + w1 * ge1 + w2 * ge2) / denom;
+				blueEntropy.m256_f32[n] = (w0 * be0 + w1 * be1 + w2 * be2) / denom;
+			}
 		}
-	}
-*/
-/*
-	double dr, dg, db;
-	COLORREF16 crcol;
-	for (int n = 0; n < 8; ++n)
+	*/
+	/*
+		double dr, dg, db;
+		COLORREF16 crcol;
+		for (int n = 0; n < 8; ++n)
+		{
+			const_cast<CEntropyInfo&>(entropyData.entropyInfo).GetPixel(xIndex.m256i_i32[n], lineStart + row, dr, dg, db, crcol);
+			if (fabsf(redEntropy.m256_f32[n] - static_cast<float>(dr)) > 0.01f)
+			{
+				wchar_t s[256];
+				swprintf_s(s, L"x/y=%d/%d, soll=%f, ist=%f", xIndex.m256i_i32[n], lineStart+row, static_cast<float>(dr), redEntropy.m256_f32[n]);
+				MessageBox(0, s, L"", 0);
+			}
+		}
+	*/
+}
+
+
+// ****************
+// Non-AVX Stacking
+// ****************
+
+int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+{
+	const int width = this->stackData.width;
+	PIXELDISPATCHVECTOR vPixels;
+	vPixels.reserve(16);
+
+	const bool isColor = AvxSupport{ this->stackData.entropyData.inputBitmap }.isColorBitmapOrCfa();
+
+	for (int j = this->stackData.lineStart; j < this->stackData.lineEnd; ++j)
 	{
-		const_cast<CEntropyInfo&>(entropyData.entropyInfo).GetPixel(xIndex.m256i_i32[n], lineStart + row, dr, dg, db, crcol);
-		if (fabsf(redEntropy.m256_f32[n] - static_cast<float>(dr)) > 0.01f)
+		for (int i = 0; i < width; ++i)
 		{
-			wchar_t s[256];
-			swprintf_s(s, L"x/y=%d/%d, soll=%f, ist=%f", xIndex.m256i_i32[n], lineStart+row, static_cast<float>(dr), redEntropy.m256_f32[n]);
-			MessageBox(0, s, L"", 0);
+			const QPointF ptOut = pixelTransformDef.transform(QPointF(i, j));
+
+			COLORREF16 crColor;
+			double fRedEntropy = 1.0, fGreenEntropy = 1.0, fBlueEntropy = 1.0;
+
+			if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
+				this->stackData.entropyData.entropyInfo.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
+			else
+				this->stackData.inputBitmap.GetPixel16(i, j, crColor);
+
+			float Red = crColor.red;
+			float Green = crColor.green;
+			float Blue = crColor.blue;
+
+			if (backgroundCalibrationDef.m_BackgroundCalibrationMode != BCM_NONE)
+				backgroundCalibrationDef.ApplyCalibration(Red, Green, Blue);
+
+			if ((0 != Red || 0 != Green || 0 != Blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
+			{
+				vPixels.resize(0);
+				ComputePixelDispatch(ptOut, pixelSizeMultiplier, vPixels);
+
+				for (CPixelDispatch& Pixel : vPixels)
+				{
+					// For each plane adjust the values
+					if (Pixel.m_lX >= 0 && Pixel.m_lX < this->stackData.resultWidth && Pixel.m_lY >= 0 && Pixel.m_lY < this->stackData.resultHeight)
+					{
+						// Special case for entropy average
+						if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
+						{
+							if (isColor)
+							{
+								double fOldRed, fOldGreen, fOldBlue;
+
+								this->stackData.entropyData.pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+								fOldRed += Pixel.m_fPercentage * fRedEntropy;
+								fOldGreen += Pixel.m_fPercentage * fGreenEntropy;
+								fOldBlue += Pixel.m_fPercentage * fBlueEntropy;
+								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+
+								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+								fOldRed += Red * Pixel.m_fPercentage * fRedEntropy;
+								fOldGreen += Green * Pixel.m_fPercentage * fGreenEntropy;
+								fOldBlue += Blue * Pixel.m_fPercentage * fBlueEntropy;
+								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+							}
+							else
+							{
+								double fOldGray;
+
+								this->stackData.entropyData.pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+								fOldGray += Pixel.m_fPercentage * fRedEntropy;
+								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+
+								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+								fOldGray += Red * Pixel.m_fPercentage * fRedEntropy;
+								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+							}
+						}
+
+						double fPreviousRed, fPreviousGreen, fPreviousBlue;
+
+						this->stackData.tempBitmap.GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
+						fPreviousRed += static_cast<double>(Red) / 256.0 * Pixel.m_fPercentage;
+						fPreviousGreen += static_cast<double>(Green) / 256.0 * Pixel.m_fPercentage;
+						fPreviousBlue += static_cast<double>(Blue) / 256.0 * Pixel.m_fPercentage;
+						fPreviousRed = std::min(fPreviousRed, 255.0);
+						fPreviousGreen = std::min(fPreviousGreen, 255.0);
+						fPreviousBlue = std::min(fPreviousBlue, 255.0);
+						this->stackData.tempBitmap.SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
+					}
+				}
+			}
 		}
 	}
-*/
+
+	return 0;
 }

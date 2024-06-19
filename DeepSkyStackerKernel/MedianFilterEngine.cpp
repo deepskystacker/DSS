@@ -128,4 +128,3 @@ template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(Progress
 template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(ProgressBase*);
 template void CInternalMedianFilterEngineT<float>::ApplyFilter(ProgressBase*);
 template void CInternalMedianFilterEngineT<double>::ApplyFilter(ProgressBase*);
-template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(ProgressBase*);

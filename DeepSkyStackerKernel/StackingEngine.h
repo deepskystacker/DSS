@@ -9,55 +9,37 @@ class CComputeOffsetTask;
 
 /* ------------------------------------------------------------------- */
 
-class	CImageCometShift
+class CImageCometShift
 {
-public :
-	int						m_lImageIndex;
-	double						m_fXShift,
-								m_fYShift;
+public:
+	int m_lImageIndex{ 0 };
+	double m_fXShift{ 0.0 };
+	double m_fYShift{ 0.0 };
 
-private :
-	void	CopyFrom(const CImageCometShift & ics)
-	{
-		m_lImageIndex	= ics.m_lImageIndex;
-		m_fXShift		= ics.m_fXShift;
-		m_fYShift		= ics.m_fYShift;
-	};
+public:
+	CImageCometShift() noexcept = default;
+	CImageCometShift(const int lIndex, const double fXShift, const double fYShift) noexcept :
+		m_lImageIndex{ lIndex },
+		m_fXShift{ fXShift },
+		m_fYShift{ fYShift }
+	{}
+	CImageCometShift(const CImageCometShift&) noexcept = default;
+	CImageCometShift(CImageCometShift&&) noexcept = default;
+	~CImageCometShift() = default;
+	CImageCometShift& operator=(const CImageCometShift&) noexcept = default;
 
-public :
-	CImageCometShift(int lIndex = 0, double fXShift = 0, double fYShift = 0)
+	bool operator<(const CImageCometShift& ics) const
 	{
-		m_lImageIndex	= lIndex;
-		m_fXShift		= fXShift;
-		m_fYShift		= fYShift;
-	};
-	CImageCometShift(const CImageCometShift & ics)
-	{
-		CopyFrom(ics);
-	};
-
-	~CImageCometShift() {};
-
-	CImageCometShift & operator = (const CImageCometShift & ics)
-	{
-		CopyFrom(ics);
-		return (*this);
-	};
-
-	bool operator < (const CImageCometShift & ics) const
-	{
-		if (m_fXShift < ics.m_fXShift)
-			return true;
-		else if (m_fXShift > ics.m_fXShift)
-			return false;
-		else
-			return (m_fYShift < ics.m_fYShift);
-	};
+		return m_fXShift == ics.m_fXShift ? (m_fYShift < ics.m_fYShift) : (m_fXShift < ics.m_fXShift);
+//		if (m_fXShift < ics.m_fXShift)
+//			return true;
+//		else if (m_fXShift > ics.m_fXShift)
+//			return false;
+//		else
+//			return (m_fYShift < ics.m_fYShift);
+	}
 };
 
-typedef std::vector<CImageCometShift>		IMAGECOMETSHIFTVECTOR;
-
-/* ------------------------------------------------------------------- */
 
 class CLightFrameStackingInfo
 {
@@ -152,7 +134,7 @@ private:
 	std::shared_ptr<CMemoryBitmap> m_pOutput;
 	std::shared_ptr<CMemoryBitmap> m_pEntropyCoverage;
 	std::shared_ptr<CMemoryBitmap> m_pComet;
-	IMAGECOMETSHIFTVECTOR		m_vCometShifts;
+	std::vector<CImageCometShift> m_vCometShifts;
 	double						m_fStarTrailsAngle;
 	PIXELTRANSFORMVECTOR		m_vPixelTransforms;
 	CBackgroundCalibration		m_BackgroundCalibration;

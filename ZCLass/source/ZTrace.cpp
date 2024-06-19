@@ -686,46 +686,85 @@ void  ZTrace :: writeString(const char* pszString)
 
      case ZTrace::file :
        {
-         // check to see whether the environment variable
-         // is defined
-         char * envptr = getenv("Z_TRACEFILE");
+           FILE* fp{ nullptr };
+#if defined(_WIN32)
 
-         // If (environment variable defined) {
-         //   - strip the leading and trailing blanks from the value
-         //   - use the value as filename
-         //   - open the file
-         //   - if (open successful) {
-         //       - append the provided string the file
-         //       - close the file
-         //     } else {
-         //       - do nothing
-         //     }
-         // } else {
-         //   - do nothing
-         // }
-         if (envptr)
-         {
-           std::string strTraceOutputFile(envptr);
+           // check to see whether the environment variable
+           // is defined
+           wchar_t* envptr = _wgetenv(L"Z_TRACEFILE");
 
-           // Strip leading and trailing blanks
-           std::string::size_type index = 
-             strTraceOutputFile.find_first_not_of(' ');
-           if (0 != index && std::string::npos != index)
-             strTraceOutputFile.erase(0, index);
-           index =
-             strTraceOutputFile.find_last_not_of(' ');
-           if (index < (strTraceOutputFile.length() - 1))
-             strTraceOutputFile.erase(1+index);
+           // If (environment variable defined) {
+           //   - strip the leading and trailing blanks from the value
+           //   - use the value as filename
+           //   - open the file
+           //   - if (open successful) {
+           //       - append the provided string the file
+           //       - close the file
+           //     } else {
+           //       - do nothing
+           //     }
+           // } else {
+           //   - do nothing
+           // }
+           if (envptr)
+           {
+               std::wstring strTraceOutputFile(envptr);
 
-           FILE *fp = fopen(strTraceOutputFile.c_str(), "a");
+               // Strip leading and trailing blanks
+               std::wstring::size_type index =
+                   strTraceOutputFile.find_first_not_of(L' ');
+               if (0 != index && std::wstring::npos != index)
+                   strTraceOutputFile.erase(0, index);
+               index =
+                   strTraceOutputFile.find_last_not_of(L' ');
+               if (index < (strTraceOutputFile.length() - 1))
+                   strTraceOutputFile.erase(1 + index);
+
+               fp = _wfopen(strTraceOutputFile.c_str(), L"a");
+           }
+#else
+           // check to see whether the environment variable
+           // is defined
+           char* envptr = getenv("Z_TRACEFILE");
+
+           // If (environment variable defined) {
+           //   - strip the leading and trailing blanks from the value
+           //   - use the value as filename
+           //   - open the file
+           //   - if (open successful) {
+           //       - append the provided string the file
+           //       - close the file
+           //     } else {
+           //       - do nothing
+           //     }
+           // } else {
+           //   - do nothing
+           // }
+           if (envptr)
+           {
+               std::string strTraceOutputFile(envptr);
+
+               // Strip leading and trailing blanks
+               std::string::size_type index =
+                   strTraceOutputFile.find_first_not_of(' ');
+               if (0 != index && std::string::npos != index)
+                   strTraceOutputFile.erase(0, index);
+               index =
+                   strTraceOutputFile.find_last_not_of(' ');
+               if (index < (strTraceOutputFile.length() - 1))
+                   strTraceOutputFile.erase(1 + index);
+
+               fp = fopen(strTraceOutputFile.c_str(), "a");
+           }
+#endif
+
            if (fp)
            {
              fprintf(fp, "%s", pszString);
              fclose(fp);
            }
-         }
-         break;
        }
+       break;
    }
 }
 

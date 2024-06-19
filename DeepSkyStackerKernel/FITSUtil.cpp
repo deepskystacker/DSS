@@ -456,10 +456,15 @@ bool CFITSReader::Open()
 				// Decode 2007-11-02T22:07:03.890
 				//        01234567890123456789012
 				QString				strTime;
+				qsizetype length{ strDateTime.length() };
 
-				if (strDateTime.length() >= 19)
+				if (19 == length)	// No trailing milli-seconds
 				{
 					m_DateTime = QDateTime::fromString(strDateTime, "yyyy-MM-ddThh:mm:ss");
+				}
+				else if (length > 19)	// Probably has trailing milli-seconds
+				{
+					m_DateTime = QDateTime::fromString(strDateTime, "yyyy-MM-ddThh:mm:ss.z");
 				}
 				else if ((strDateTime.length() == 8) && ReadKey("TIME-OBS", strTime))
 				{
@@ -471,12 +476,26 @@ bool CFITSReader::Open()
 					else
 						date = date.addYears(1900);
 
-					if (strTime.length() >= 8)
+					length = strTime.length();
+					if (length >= 8)
 					{
-						// Decode hh:mm:ss.xxx
-						//        01234567
-						QTime time = QTime::fromString(strTime, "hh:hh:ss");
-						m_DateTime = QDateTime(date, time);
+						QTime time;
+						if (8 == length)
+						{
+							// Decode hh:mm:ss
+							//        01234567
+							time = QTime::fromString(strTime, "hh:mm:ss");
+						}
+						else
+						{
+							// Decode hh:mm:ss.xxx
+							//        01234567
+							time = QTime::fromString(strTime, "hh:mm:ss.z");
+						}
+						if (time.isValid())
+						{
+							m_DateTime = QDateTime(date, time);
+						}
 					};
 				};
 			};
@@ -1161,7 +1180,7 @@ void	CFITSWriter::WriteAllKeys()
 	bool bFound = false;
 
 	// Check if DATE-OBS is already in the list of Extra Info
-	for (const CExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
+	for (const ExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
 	{
 		if (extraInfo.m_strName.compare("DATE-OBS", Qt::CaseInsensitive) == 0)
 		{
@@ -1186,7 +1205,7 @@ void	CFITSWriter::WriteAllKeys()
 
 		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
-			const CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
+			const ExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
 			CHAR szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
