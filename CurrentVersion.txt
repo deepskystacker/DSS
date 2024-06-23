@@ -1,1 +1,1 @@
-DeepSkyStackerVersion=5.1.5
+DeepSkyStackerVersion=5.1.6
