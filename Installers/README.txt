@@ -1,9 +1,9 @@
-Welcome to DeepSkyStacker 5.1.6
+Welcome to DeepSkyStacker 5.1.7
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is primarily a bug fix release, but there are a few enhancements as well.
+This is primarily a bug fix release, but there are a few enhancements as well.  It supercedes 5.1.6 which is withdrawn.
 
 Known problems:
 
@@ -55,6 +55,8 @@ Changes since the last release:
 21. Insert a "-" character beween filelist name and numeric suffix so the output file is called e.g.: NGC7331-001.tif rather NGC7331001.tif
 
 22. Bug fix: Allow only one frame to be selected as the "reference frame".
+
+23. Bug fix: Crash during startup while initialising the "Workspace" which caches the settings.
 
 Welcome to DeepSkyStacker 5.1.5
 ===============================
