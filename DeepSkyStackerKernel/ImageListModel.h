@@ -48,9 +48,6 @@ namespace DSS
         friend class FrameList;
         friend class StackingDlg;
 
-        static inline std::mutex mutex {};
-        static inline std::vector<QIcon> icons {};
-
         //
         // Change to use a deque instead of a vector as it offers O(n) insertion 
         // and deletion of elements unlike vector.  Cost is a somewhat higher 
