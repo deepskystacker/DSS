@@ -42,36 +42,8 @@ namespace DSS
     // Initial code based on https://meetingcpp.com/blog/items/an-introduction-into-qt-part-3.html
     //
 
-    ImageListModel::ImageListModel(QObject* parent) :
-    QAbstractTableModel(parent)
-    {
-        //
-        // Populate the Icon array if it's not already been done
-        //
-        if (0 == ImageListModel::icons.size())
-        {
-            std::lock_guard lock(ImageListModel::mutex);
-            if (0 == ImageListModel::icons.size())          // check for race condtion
-            {
-                ImageListModel::icons.emplace_back(":/stacking/LightColour.png");
-                ImageListModel::icons.emplace_back(":/stacking/DarkColour.png");
-                ImageListModel::icons.emplace_back(":/stacking/FlatColour.png");
-                ImageListModel::icons.emplace_back(":/stacking/BiasColour.png");
-                ImageListModel::icons.emplace_back(":/stacking/LightCMYG.png");
-                ImageListModel::icons.emplace_back(":/stacking/DarkCMYG.png");
-                ImageListModel::icons.emplace_back(":/stacking/FlatCMYG.png");
-                ImageListModel::icons.emplace_back(":/stacking/BiasCMYG.png");
-                ImageListModel::icons.emplace_back(":/stacking/LightRGB.png");
-                ImageListModel::icons.emplace_back(":/stacking/DarkRGB.png");
-                ImageListModel::icons.emplace_back(":/stacking/FlatRGB.png");
-                ImageListModel::icons.emplace_back(":/stacking/BiasRGB.png");
-                ImageListModel::icons.emplace_back(":/stacking/LightGreyscale.png");
-                ImageListModel::icons.emplace_back(":/stacking/DarkGreyscale.png");
-                ImageListModel::icons.emplace_back(":/stacking/FlatGreyscale.png");
-                ImageListModel::icons.emplace_back(":/stacking/BiasGreyscale.png");
-            }
-        }
-    }
+    ImageListModel::ImageListModel(QObject* parent) : QAbstractTableModel{ parent }
+    {}
 
     QVariant ImageListModel::data(const int row, const Column column, int role) const
     {
@@ -609,19 +581,42 @@ namespace DSS
         }
 
         if (file.m_lNrChannels == 3)
-            index +=0;              // Use xxxxColour Icons
+            index += 0;              // Use xxxxColour Icons
         else if (IsCYMGType(file.GetCFAType()))
             index += 4;             // Use xxxxCMYG Icons
         else if (file.GetCFAType() != CFATYPE_NONE)
             index += 8;             // Use xxxxRGB Icons
         else
             index += 12;            // Use xxxxGreyscale Icons
+
+        //
+        // Populate the static Icon array once.
+        // Note: The order is important!
+        //
+        static std::vector<QIcon> icons{ // Atomically and thread-safe initialise the icon array.
+            QIcon{ ":/stacking/LightColour.png" },
+            QIcon{ ":/stacking/DarkColour.png" },
+            QIcon{ ":/stacking/FlatColour.png" },
+            QIcon{ ":/stacking/BiasColour.png" },
+            QIcon{ ":/stacking/LightCMYG.png" },
+            QIcon{ ":/stacking/DarkCMYG.png" },
+            QIcon{ ":/stacking/FlatCMYG.png" },
+            QIcon{ ":/stacking/BiasCMYG.png" },
+            QIcon{ ":/stacking/LightRGB.png" },
+            QIcon{ ":/stacking/DarkRGB.png" },
+            QIcon{ ":/stacking/FlatRGB.png" },
+            QIcon{ ":/stacking/BiasRGB.png" },
+            QIcon{ ":/stacking/LightGreyscale.png" },
+            QIcon{ ":/stacking/DarkGreyscale.png" },
+            QIcon{ ":/stacking/FlatGreyscale.png" },
+            QIcon{ ":/stacking/BiasGreyscale.png" }
+        };
        
-        if (ImageListModel::icons[index].isNull())
+        if (icons[index].isNull())
         {
             qDebug("null icon");
         }
-        return ImageListModel::icons[index];
+        return icons[index];
     }
 
     QString ImageListModel::exposureToString(double exposure) const
