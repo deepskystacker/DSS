@@ -58,6 +58,8 @@ Changes since the last release:
 
 23. Bug fix: Crash during startup while initialising the "Workspace" which caches the settings.
 
+24. Bug fix: Chrash during startup initialising ImageListModel array of icons.
+
 Welcome to DeepSkyStacker 5.1.5
 ===============================
 
