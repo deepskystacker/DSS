@@ -1308,7 +1308,7 @@ namespace DSS
 					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
 					ui->information->setOpenExternalLinks(false);
 					fileToShow = file;
-					imageLoad();
+					imageLoad(fileToShow);
 				}
 			}
 			else
@@ -1336,16 +1336,21 @@ namespace DSS
 	// 2. On completion of image loading by the background thread.  In this case the image will now be available in 
 	//    the cache, so invoking imageLoader.load() will now return true.
 	//
-	void StackingDlg::imageLoad()
+	void StackingDlg::imageLoad(std::filesystem::path p)
 	{
+		// If both the argument and fileToShow are set, but they are different, then we are obviously not any more interested in that file.
+		// It might be a signal from the image cache, that a file has been stored to the cache, but the user already moved the mouse to a new location of the file-list.
+		if (!p.empty() && !fileToShow.empty() && p != fileToShow)
+			return;
+
 		std::shared_ptr<CMemoryBitmap>	pBitmap;
 		std::shared_ptr<QImage>	pImage;
-		QString fileName;
-		if (!fileToShow.empty()) fileName = QString::fromStdU16String(fileToShow.generic_u16string());
+		const std::filesystem::path& file = p.empty() ? fileToShow : p;
+		const QString fileName = QString::fromStdU16String(file.generic_u16string());
 
 		try
 		{
-			if (!fileToShow.empty() && imageLoader.load(fileToShow, pBitmap, pImage))
+			if (!file.empty() && imageLoader.load(file, pBitmap, pImage))
 			{
 				//
 				// The image we want is available in the cache
@@ -1356,7 +1361,7 @@ namespace DSS
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 
-				if (frameList.isLightFrame(fileToShow))
+				if (frameList.isLightFrame(file))
 				{
 					editStarsPtr->setLightFrame(fileName);
 					editStarsPtr->setBitmap(pBitmap);
@@ -1394,7 +1399,7 @@ namespace DSS
 					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
 				ui->information->setText(fileName);
 			}
-			else if (!fileToShow.empty())
+			else if (!file.empty())
 			{
 				//
 				// Display the "Loading filename" with red background gradient while loading in background
@@ -1439,7 +1444,7 @@ namespace DSS
 				"DeepSkyStacker",
 				tr("%1 does not exist or is not a file").arg(fileName));
 		}
-	};
+	}
 
 	void StackingDlg::imageLoadFailed()
 	{
@@ -2352,14 +2357,11 @@ namespace DSS
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			imageLoader.clearCache();
-			imageLoad();
+			imageLoad(fileToShow);
 			QGuiApplication::restoreOverrideCursor();
 
-		};
-
-	};
-
-	/* ------------------------------------------------------------------- */
+		}
+	}
 
 
 	/* ------------------------------------------------------------------- */
