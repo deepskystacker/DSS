@@ -1949,46 +1949,27 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
-		QString directory;
-		QString extension;
-
-		QFileDialog			fileDialog;
 
 		const auto& firstLightframe = this->frameList.getFirstCheckedLightFrame();
-		directory = firstLightframe.has_parent_path()
-			? QString::fromStdU16String(firstLightframe.parent_path().generic_u16string())
-			: settings.value("Folders/ListFolder").toString();
-		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
-		extension = settings.value("Folders/ListExtension").toString();
-
+		const auto dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : std::filesystem::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
+		QString extension = settings.value("Folders/ListExtension").toString();
 		if (extension.isEmpty())
 			extension = FileListExtension;
+		auto fn = dirPath.has_filename() ? dirPath.filename() : std::filesystem::path{ "list" };
+		const auto defaultName = dirPath / fn.replace_extension(std::filesystem::path{ extension.toStdU16String() });
 
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::AnyFile);
-		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
-		fileDialog.setDirectory(directory);
+		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 
-		ZTRACE_RUNTIME("About to show file save dlg");
-		if (QDialog::Accepted == fileDialog.exec())
+		const auto save = [this, &MRUList, &settings](const std::filesystem::path& file, const auto selectedIndex)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
-			const auto selectedIndex = OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter());
 
-			ZASSERTSTATE(1 == files.size());
-
-			const fs::path file(files.at(0).toStdU16String()); // as UTF-16
 			fileList = file;		// save this filelist
 
-			if (file.has_parent_path())
-				directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-			else
-				directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-			extension = QString::fromStdU16String(file.extension().generic_u16string());
+			const QString directory = file.has_parent_path()
+				? QString::fromStdU16String(file.parent_path().generic_u16string())
+				: QString::fromStdU16String(file.root_path().generic_u16string());
+			const QString extension = QString::fromStdU16String(file.extension().generic_u16string());
 
 			frameList.saveListToFile(file);
 			MRUList.Add(file);
@@ -1996,8 +1977,36 @@ namespace DSS
 			QGuiApplication::restoreOverrideCursor();
 
 			settings.setValue("Folders/ListFolder", directory);
-			settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
+			if constexpr (!std::is_same_v<std::remove_cv_t<decltype(selectedIndex)>, bool>)
+				settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
 			settings.setValue("Folders/ListExtension", extension);
+		};
+
+		ZTRACE_RUNTIME("About to show file save dlg");
+		QString selectedFilter;
+		const auto file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex], &selectedFilter);
+		if (!file.isEmpty())
+		{
+			ZTRACE_RUNTIME("Saving to file-list %s", file.toUtf8().constData());
+			save(fs::path{ file.toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(selectedFilter));
+		}
+		return;
+
+		// This is the old code using a QFileDialog.
+
+		QFileDialog fileDialog;
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::AnyFile);
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
+		fileDialog.setDirectory(QString::fromStdU16String(dirPath.generic_u16string()));
+
+		if (QDialog::Accepted == fileDialog.exec())
+		{
+			QStringList files = fileDialog.selectedFiles();
+			ZASSERTSTATE(1 == files.size());
+			save(fs::path{ files.at(0).toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter()));
 		}
 	}
 
