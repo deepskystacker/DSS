@@ -203,6 +203,7 @@ namespace DSS
 		bool forceHere;
 //		bool displayGrid;
 //		uint m_tipShowCount;
+		bool disabled;
 
 		template <bool Refstar>
 		bool isStarVoted(const int starIndex)
