@@ -317,7 +317,7 @@ typedef VOTINGPAIRVECTOR::iterator		VOTINGPAIRITERATOR;
 
 /* ------------------------------------------------------------------- */
 class CBilinearParameters;
-class CMatchingStars
+class CMatchingStars final
 {
 private:
 	POINTFVECTOR m_vRefStars;
@@ -331,8 +331,8 @@ private:
 	STARDISTVECTOR m_vRefStarDistances;
 	STARDISTVECTOR m_vTgtStarDistances;
 	VOTINGPAIRVECTOR m_vVotedPairs;
-	int m_lWidth;
-	int m_lHeight;
+	int m_lWidth{ 0 };
+	int m_lHeight{ 0 };
 
 private:
 	QPointF& RefStar(const CVotingPair& vp)
@@ -359,10 +359,10 @@ private:
 	void AdjustSize();
 
 public:
-	CMatchingStars() : m_lHeight{ 0 }, m_lWidth{ 0 }
+	CMatchingStars() = default;
+	explicit CMatchingStars(const int width, const int height) : m_lWidth{ width }, m_lHeight{ height }
 	{}
-
-	virtual ~CMatchingStars() = default;
+	~CMatchingStars() = default;
 
 	void AddReferenceStar(double fX, double fY)
 	{

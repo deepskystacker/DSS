@@ -443,20 +443,15 @@ void	WorkspaceSettings::ResetToDefault()
 
 
 namespace {
-	std::shared_ptr<WorkspaceSettings> g_pSettings;
-	std::mutex mutex;
 	std::deque<WorkspaceSettings> g_WSStack;
 }
 
 
-Workspace::Workspace() : pSettings{ g_pSettings }
+Workspace::Workspace()
 {
-	if (this->pSettings != nullptr) // If g_pSettings was already initialised -> all good and return.
-		return;
-	std::unique_lock lock{ mutex };
-	if (nullptr == g_pSettings) // After acquiring the lock, we need to check again, if another thread has already initialised g_pSettings.
-		g_pSettings = std::make_shared<WorkspaceSettings>();
-	this->pSettings = g_pSettings;
+	static std::shared_ptr<WorkspaceSettings> Settings = std::make_shared<WorkspaceSettings>();
+	// Settings is guaranteed to be initialised here, and this initialisation is thread-safe (static variable in funcion scope).
+	this->pSettings = Settings;
 }
 
 

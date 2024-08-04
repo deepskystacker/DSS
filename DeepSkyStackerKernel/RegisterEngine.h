@@ -96,7 +96,7 @@ protected :
 	};
 
 	void	Reset();
-	bool FindStarShape(CMemoryBitmap* pBitmap, CStar& star);
+	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
 
 	void	ComputeOverallQuality()
 	{
@@ -158,8 +158,8 @@ public :
 		return m_bInfoOk;
 	}
 
-	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
-	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
+	bool ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
+	size_t RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);

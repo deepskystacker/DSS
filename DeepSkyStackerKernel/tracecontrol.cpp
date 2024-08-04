@@ -78,7 +78,12 @@ namespace DSS
 		file /= name.toStdU16String();
 
 		QString traceFile = QString{ "Z_TRACEFILE=%1" }.arg(file.generic_u16string().c_str());
-		(void) _putenv(traceFile.toStdString().c_str());
+#if defined(_WIN32)
+		(void) _wputenv(traceFile.toStdWString().c_str());
+#else
+		(void)putenv(tracefile.toStdString().c_str());
+#endif
+
 	}
 
 	TraceControl::~TraceControl()

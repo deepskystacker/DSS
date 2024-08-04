@@ -10,13 +10,14 @@ class CEntropyInfo;
 class AvxEntropy
 {
 private:
-	friend class AvxStacking;
+	friend class Avx256Stacking;
+	friend class NonAvxStacking;
 	friend class AvxAccumulation;
 
 	typedef std::vector<float> EntropyVectorType;
-	typedef std::vector<__m256> EntropyLayerVectorType;
+	typedef std::vector<__m512> EntropyLayerVectorType;
 
-	CMemoryBitmap& inputBitmap;
+	const CMemoryBitmap& inputBitmap;
 	const CEntropyInfo& entropyInfo;
 	CMemoryBitmap* pEntropyCoverage;
 	EntropyLayerVectorType redEntropyLayer;
@@ -25,13 +26,13 @@ private:
 	bool avxReady;
 public:
 	AvxEntropy() = delete;
-	AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
+	AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
 	AvxEntropy(const AvxEntropy&) = default;
 	AvxEntropy(AvxEntropy&&) = delete;
 	AvxEntropy& operator=(const AvxEntropy&) = delete;
-#if defined(UNIT_TESTS)
+#if defined(UNIT_TESTS) 
 	float* getRedEntropyLayer() { return reinterpret_cast<float*>(redEntropyLayer.data()); }
-#endif
+#endif 
 
 	int calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies);
 private:

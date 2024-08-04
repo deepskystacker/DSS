@@ -45,7 +45,7 @@ public:
 		return *this;
 	};
 
-	inline int xOffset() noexcept
+	inline int xOffset() const noexcept
 	{
 		return m_xBayerOffset;
 	}
@@ -56,7 +56,7 @@ public:
 		return *this;
 	};
 
-	inline int yOffset() noexcept
+	inline int yOffset() const noexcept
 	{
 		return m_yBayerOffset;
 	}

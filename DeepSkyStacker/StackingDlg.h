@@ -143,7 +143,7 @@ namespace DSS
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
-		void imageLoad();
+		void imageLoad(std::filesystem::path p);
 		void imageLoadFailed();
 		
 		void toolBar_rectButtonPressed(bool checked);
@@ -237,6 +237,19 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private:
+		enum class Menuitem
+		{
+			markAsReference,
+			check,
+			uncheck,
+			remove,
+			properties,
+			copy,
+			erase
+		};
+
+		static constexpr const char FileListExtension[] = ".dssfilelist";
+
 		PictureList* pictureList;
 		Ui::StackingDlg* ui;
 		bool initialised;
@@ -314,9 +327,9 @@ namespace DSS
 
 		void switchGroup(int);
 
-		void loadList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
+		void loadList(MRUPath& MRUList, const QString&);
 
-		void saveList(MRUPath& MRUList, [[maybe_unused]] QString& strFileList);
+		void saveList(MRUPath& MRUList, const QString&);
 
 		bool isValidImage(const fs::path& path);
 

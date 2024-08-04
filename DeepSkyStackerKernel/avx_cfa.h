@@ -13,12 +13,12 @@ private:
 	VectorType redPixels;
 	VectorType greenPixels;
 	VectorType bluePixels;
-	CMemoryBitmap& inputBitmap;
+	const CMemoryBitmap& inputBitmap;
 	size_t vectorsPerLine;
 	bool avxReady;
 public:
 	AvxCfaProcessing() = delete;
-	AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm);
+	AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, const CMemoryBitmap& inputbm);
 	AvxCfaProcessing(const AvxCfaProcessing&) = default;
 	AvxCfaProcessing(AvxCfaProcessing&&) = delete;
 	AvxCfaProcessing& operator=(const AvxCfaProcessing&) = delete;

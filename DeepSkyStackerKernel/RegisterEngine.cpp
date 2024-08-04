@@ -16,43 +16,22 @@
 
 /* ------------------------------------------------------------------- */
 
-class CStarAxisInfo
+class CStarAxisInfo final
 {
 public :
-	int					m_lAngle;
-	double					m_fRadius;
-	double					m_fSum;
+	int m_lAngle{ 0 };
+	double m_fRadius{ 0.0 };
+	double m_fSum{ 0.0 };
 
-private :
-	void	CopyFrom(const CStarAxisInfo & ai)
-	{
-		m_lAngle	= ai.m_lAngle;
-		m_fRadius	= ai.m_fRadius;
-		m_fSum		= ai.m_fSum;
-	};
-
-public :
-	CStarAxisInfo()
-	{
-        m_lAngle = 0;
-        m_fRadius = 0;
-        m_fSum = 0;
-	};
-
-	CStarAxisInfo(const CStarAxisInfo & ai)
-	{
-		CopyFrom(ai);
-	};
-
-	virtual ~CStarAxisInfo()
-	{
-	};
-
-	const CStarAxisInfo & operator = (const CStarAxisInfo & ai)
-	{
-		CopyFrom(ai);
-		return *this;
-	};
+public:
+	CStarAxisInfo(const int angle, const double rad, const double sum):
+		m_lAngle{ angle },
+		m_fRadius{ rad },
+		m_fSum{ sum }
+	{}
+	CStarAxisInfo(const CStarAxisInfo&) = default;
+	~CStarAxisInfo() = default;
+	CStarAxisInfo& operator=(const CStarAxisInfo&) = default;
 };
 
 inline	void NormalizeAngle(int & lAngle)
@@ -87,64 +66,64 @@ void CRegisteredFrame::Reset()
 	m_fFWHM = 0;
 }
 
-bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
+bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 {
 	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
 	double						fMaxHalfRadius = 0.0;
 	double						fMaxCumulated  = 0.0;
 	int						lMaxHalfRadiusAngle = 0.0;
-	int						lAngle;
 
 	// Preallocate the vector for the inner loop.
 	PIXELDISPATCHVECTOR		vPixels;
 	vPixels.reserve(10);
 
-	for (lAngle = 0;lAngle<360;lAngle+=10)
+	const int width = pBitmap->Width();
+	const int height = pBitmap->Height();
+
+	for (int lAngle = 0; lAngle < 360; lAngle += 10)
 	{
-		CStarAxisInfo			ai;
 		double					fSquareSum = 0.0;
 		double					fSum	   = 0.0;
 		double					fNrValues  = 0.0;
-		double					fStdDev	   = 0.0;
 
-		ai.m_lAngle = lAngle;
-		for (double fPos = 0.0;fPos<=star.m_fMeanRadius*2.0;fPos+=0.10)
+		for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
 		{
-			double		fX = star.m_fX + cos(lAngle*M_PI/180.0)*fPos,
-						fY = star.m_fY + sin(lAngle*M_PI/180.0)*fPos;
-			double		fLuminance = 0;
+			constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
+			const double fX = star.m_fX + std::cos(lAngle * GradRadFactor) * fPos;
+			const double fY = star.m_fY + std::sin(lAngle * GradRadFactor) * fPos;
+			double fLuminance = 0;
 
 			// Compute luminance at fX, fY
 			vPixels.resize(0);
 			ComputePixelDispatch(QPointF(fX, fY), vPixels);
 
-			for (int k = 0;k<vPixels.size();k++)
+			for (const CPixelDispatch& pixel : vPixels)
 			{
-				double				fValue;
+				if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
+					continue;
 
-				pBitmap->GetPixel(vPixels[k].m_lX, vPixels[k].m_lY, fValue);
-				fLuminance += fValue * vPixels[k].m_fPercentage;
-			};
-			fSquareSum	+= pow(fPos, 2) * fLuminance * 2;
-			fSum		+= fLuminance;
-			fNrValues	+= fLuminance * 2;
-		};
+				double fValue;
+				pBitmap->GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), fValue);
+				fLuminance += fValue * pixel.m_fPercentage;
+			}
+			fSquareSum += fPos * fPos * fLuminance * 2;
+			fSum += fLuminance;
+			fNrValues += fLuminance * 2;
+		}
 
-		if (fNrValues)
-			fStdDev = sqrt(fSquareSum/fNrValues);
-		ai.m_fRadius = fStdDev * 1.5;
-		ai.m_fSum    = fSum;
+		const double fStdDev = fNrValues > 0.0 ? std::sqrt(fSquareSum / fNrValues) : 0.0;
+		CStarAxisInfo ai{ lAngle, fStdDev * 1.5, fSum };
 
 		if (ai.m_fSum > fMaxCumulated)
 		{
 			fMaxCumulated		= ai.m_fSum;
 			fMaxHalfRadius		= ai.m_fRadius;
 			lMaxHalfRadiusAngle = ai.m_lAngle;
-		};
+		}
 
-		vStarAxises.push_back(ai);
-	};
+		vStarAxises.push_back(std::move(ai));
+	}
 
 	// Get the biggest value - this is the major axis
 	star.m_fLargeMajorAxis = fMaxHalfRadius;
@@ -162,8 +141,8 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fSmallMajorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 90;
@@ -175,8 +154,8 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fLargeMinorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 210;
@@ -188,15 +167,15 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 		{
 			bFound = true;
 			star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
+bool CRegisteredFrame::ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
 {
 	int				i, j;
 	double				fSumX = 0,
@@ -307,7 +286,7 @@ namespace {
 	};
 }
 
-size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
+size_t CRegisteredFrame::RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
 {
 	double fMaxIntensity = std::numeric_limits<double>::min();
 	std::vector<int> vHistogram;
@@ -838,21 +817,31 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		}
 	};
 
-	const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars) -> void
+	std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
+
+	const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
+		const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer) -> void
 	{
-		const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
-
-		for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+		try
 		{
-			const int top = StarMaxSize + rowNdx * stepSize;
-			const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
+			const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
 
-			for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-				nStars += RegisterSubRect(&Bitmap, DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+			for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+			{
+				const int top = StarMaxSize + rowNdx * stepSize;
+				const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
+
+				for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
+					nStars += RegisterSubRect(&Bitmap, DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+			}
+		}
+		catch (...)
+		{
+			ePointer = std::current_exception();
 		}
 	};
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
 #pragma omp master // There is no implied barrier.
 		ZTRACE_RUNTIME("Registering with %d OpenMP threads.", omp_get_num_threads());
@@ -860,16 +849,16 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	{
 		// Upper left area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1);
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[0]);
 		// Upper right area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2);
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2, ePointers[1]);
 		// Lower left area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3);
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3, ePointers[2]);
 		// Lower right area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4);
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4, ePointers[3]);
 	}
 
 #pragma omp sections
@@ -885,11 +874,11 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		stars1.merge(stars3);
 		// Remaining areas, all are overlapping with at least one other.
 		// Vertically middle band, full height
-		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
+		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1, ePointers[4]);
 		// Middle left
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[4]);
 		// Middle right
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1, ePointers[4]);
 
 		m_vStars.assign(stars1.cbegin(), stars1.cend());
 	}
@@ -902,6 +891,15 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		ComputeFWHM();
 	}
 } // omp parallel
+
+	//
+	// If there was at least one exception in the parallel OpenMP code -> re-throw it.
+	//
+	for (std::exception_ptr e : ePointers)
+	{
+		if (e != nullptr)
+			std::rethrow_exception(e);
+	}
 
 	if (m_pProgress)
 		m_pProgress->End2();

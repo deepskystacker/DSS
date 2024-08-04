@@ -9,22 +9,15 @@ void ThreadLoader::run()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (!imageLoader->fileToLoad.empty())
+	if (!this->filepath.empty())
 	{
-		CAllDepthBitmap				adb;
+		ZTRACE_RUNTIME("ThreadLoader: Trying to load picture %s", this->filepath.generic_u8string().c_str());
+		imageLoader->addOrUpdateCache(this->filepath, LoadedImage{}, false);
 
-		if (LoadPicture(imageLoader->fileToLoad, adb))
+		if (CAllDepthBitmap adb; LoadPicture(this->filepath, adb))
 		{
-			const std::lock_guard <std::mutex> lock { imageLoader->mutex };
-
-	   		LoadedImage			li;
-
-			li.m_Image = adb.m_Image;
-			li.m_pBitmap = adb.m_pBitmap;
-			li.fileName = imageLoader->fileToLoad;
-			li.lastUse = 0;
-			imageLoader->imageVector.push_back(li);
-			emit(imageLoader->imageLoaded());
+			imageLoader->addOrUpdateCache(this->filepath, LoadedImage{ std::move(adb.m_pBitmap), std::move(adb.m_Image) }, true);
+			emit(imageLoader->imageLoaded(this->filepath)); // Inform the GUI that we successfully loaded the image and stored it in the cache.
 		}
 		else
 		{
@@ -36,18 +29,18 @@ void ThreadLoader::run()
 
 void ImageLoader::clearCache()
 {
-	std::lock_guard lock(mutex);
-	imageVector.clear();
+	std::unique_lock writeLock{ rwMutex };
+	this->imageCache.clear();
 }
 
-bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
-{
-	fs::path p{ fileName.toStdU16String() };
+//bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
+//{
+//	fs::path p{ fileName.toStdU16String() };
+//
+//	return load(p, pBitmap, pImage);
+//}
 
-	return load(p, pBitmap, pImage);
-}
-
-bool ImageLoader::load(const fs::path& p, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
+bool ImageLoader::load(const fs::path p, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -57,46 +50,46 @@ bool ImageLoader::load(const fs::path& p, std::shared_ptr<CMemoryBitmap>& pBitma
 	{
 		ZTHROW (ZAccessError("File not found"));
 	}
-	bool found(false), result(false);
-	std::lock_guard lock(mutex);
 
-	//
-	// Search the images we have stored in our cache, if found return the bitmap pointers.
-	//
-	for (LoadedImage& image : imageVector)
+	std::shared_lock rLock{ rwMutex };
+	if (CacheType::iterator it = imageCache.find(p); it != imageCache.end())
 	{
-		if (image.fileName == p)
+		++age;
+		if (std::get<2>(it->second) == true) // Image - ready loading - found in cache.
 		{
-			pBitmap = image.m_pBitmap;		// Return the pointer stored in the shared ptr
-			pImage = image.m_Image;		// Return the pointer stored in the shared ptr
-			found = true;
+			ZTRACE_RUNTIME("Image file %s found in image cache", p.generic_u8string().c_str());
+			std::get<1>(it->second) = age.load(); // Update age to "youngest" value.
+			pBitmap = std::get<0>(it->second).m_pBitmap;
+			pImage = std::get<0>(it->second).m_Image;
+			return true;
 		}
-		else
-		{
-			image.lastUse++;
-		};
+		// else image is still loading from disk.
+	}
+	else // Image not yet loaded.
+	{
+		QThreadPool::globalInstance()->start(new ThreadLoader(p, this)); // Request loading from disk in separate thread.
 	}
 
-	// Did we find the image in our cache?
-	if (found)
-	{
-		ZTRACE_RUNTIME("Image file %s found in image cache", p.generic_u8string().c_str());
-		result = true;
-		if (imageVector.size() > MAXIMAGESINCACHE)
-		{
-			// Remove the last images from the cache
-			std::sort(imageVector.begin(), imageVector.end());
-			imageVector.resize(MAXIMAGESINCACHE);
-		}
-	}
-	else
-	{
-		ZTRACE_RUNTIME("Loading image file %s in thread", p.generic_u8string().c_str());
-		fileToLoad = p;
-		ThreadLoader* threadLoader(new ThreadLoader(this));
-		QThreadPool::globalInstance()->start(threadLoader);
-	}
-	
-	return result;
+	return false; // Image not in cache or still loading from disk.
 }
 
+void ImageLoader::addOrUpdateCache(const CacheKeyType& key, LoadedImage&& loadedImage, const bool alreadyLoaded)
+{
+	std::unique_lock writeLock{ rwMutex };
+	this->imageCache.insert_or_assign(key, std::make_tuple(std::move(loadedImage), age++, alreadyLoaded));
+	limitCacheSize();
+}
+
+// Note: This function does not lock the mutex, this must have been done before the call.
+void ImageLoader::limitCacheSize()
+{
+	if (imageCache.size() <= MAXIMAGESINCACHE)
+		return;
+	CacheType::const_iterator it2oldest = imageCache.cbegin();
+	for (CacheType::const_iterator it = imageCache.cbegin(); it != imageCache.cend(); ++it)
+	{
+		if (std::get<1>(it->second) < std::get<1>(it2oldest->second)) // Search for smallest (=oldest) age field in the cache.
+			it2oldest = it;
+	}
+	imageCache.erase(it2oldest);
+}

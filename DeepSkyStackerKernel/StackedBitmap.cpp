@@ -10,6 +10,8 @@
 #include "tiffio.h"
 #include "FITSUtil.h"
 #include "BitmapExt.h"
+#include "Multitask.h"
+#include "avx_histogram.h"
 
 using namespace DSS;
 /* ------------------------------------------------------------------- */
@@ -26,15 +28,28 @@ StackedBitmap::StackedBitmap()
 	m_lTotalTime	= 0;
 	m_bMonochrome   = false;
 	DSSTIFFInitialize();
-};
+}
 
-/* ------------------------------------------------------------------- */
+CStackedBitmap::~CStackedBitmap() = default;
 
+namespace {
+	thread_local constinit int lastY = -1;
+	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
+}
+
+
+//
+// MT, 11-March-2024
+// This function is used in
+//     *) CTIFFWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue);
+//     *) CFITSWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue);
+// for saving displayed (stacked or loaded) picture to file.
+//
 void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
 {
 	int				lOffset = m_lWidth * Y + X;
 
-	double		H, S, L;
+//	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
 	fRed   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
@@ -56,6 +71,31 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 
 	if (bApplySettings)
 	{
+		const size_t bufferLen = this->m_lWidth;
+		if (!static_cast<bool>(pAvxBezierAndSaturation))
+			pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
+
+		if (lastY != Y) // New row (lastY is thread_local and initialised to -1, see above).
+		{
+			lastY = Y;
+
+			const float* const pRed = m_vRedPlane.data() + lOffset;
+			const float* const pGreen = m_bMonochrome ? pRed : m_vGreenPlane.data() + lOffset;
+			const float* const pBlue = m_bMonochrome ? pRed : m_vBluePlane.data() + lOffset;
+			pAvxBezierAndSaturation->copyData(pRed, pGreen, pBlue, bufferLen, m_bMonochrome);
+
+			pAvxBezierAndSaturation->avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			pAvxBezierAndSaturation->avxToHsl(m_BezierAdjust.m_vPoints);
+			pAvxBezierAndSaturation->avxBezierAdjust(bufferLen);
+			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			pAvxBezierAndSaturation->avxToRgb(true);
+		}
+
+		const auto [redBuffer, greenBuffer, blueBuffer] = pAvxBezierAndSaturation->getBufferPtr();
+		fRed = redBuffer[X];
+		fGreen = greenBuffer[X];
+		fBlue = blueBuffer[X];
+/*
 		m_HistoAdjust.Adjust(fRed, fGreen, fBlue);
 
 		fRed	/= 256.0;
@@ -71,6 +111,7 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 		S = m_BezierAdjust.AdjustSaturation(S);
 
 		ToRGB(H, S, L, fRed, fGreen, fBlue);
+*/
 	}
 	else
 	{
@@ -81,34 +122,32 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 };
 
 /* ------------------------------------------------------------------- */
+namespace
+{
+void limitColorValues(double& red, double& green, double& blue)
+{
+	constexpr double UpperLimit = 255.0;
 
 COLORREF StackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
 {
-	COLORREF			crResult;
-	double				Red, Green, Blue;
+	constexpr double ScalingFactor = 256.0;
 
-	double		H, S, L;
-
-	// Adjust beetween 0 and 65535.0
-	Red   = fRed/m_lNrBitmaps*256.0;
-	Green = fGreen/m_lNrBitmaps*256.0;
-	Blue  = fBlue/m_lNrBitmaps*256.0;
-
-	if (bApplySettings)
+	if (true)
 	{
+		double H, S, L;
+
+		// Adjust beetween 0 and 65535.0
+		double Red = fRed / m_lNrBitmaps * ScalingFactor;
+		double Green = fGreen / m_lNrBitmaps * ScalingFactor;
+		double Blue = fBlue / m_lNrBitmaps * ScalingFactor;
+
 		m_HistoAdjust.Adjust(Red, Green, Blue);
 
-		Red		/= 256.0;
-		Green	/= 256.0;
-		Blue	/= 256.0;
+		Red		/= ScalingFactor;
+		Green	/= ScalingFactor;
+		Blue	/= ScalingFactor;
 
-		if (Red > 255)
-			Red = 255;
-		if (Green > 255)
-			Green = 255;
-		if (Blue > 255)
-			Blue = 255;
-
+		limitColorValues(Red, Green, Blue);
 		ToHSL(Red, Green, Blue, H, S, L);
 
 		// adjust luminance
@@ -119,27 +158,19 @@ COLORREF StackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bAp
 
 		ToRGB(H, S, L, Red, Green, Blue);
 
-		crResult = RGB(Red, Green, Blue);
+		return static_cast<COLORREF>(RGB(Red, Green, Blue));
 	}
 	else
 	{
-		crResult = RGB(Red/256.0, Green/256.0, Blue/256.0);
-	};
-
-	return crResult;
-};
-
+		return static_cast<COLORREF>(RGB(fRed / m_lNrBitmaps, fGreen / m_lNrBitmaps, fBlue / m_lNrBitmaps));
+	}
+}
+*/
 /* ------------------------------------------------------------------- */
 
 COLORREF StackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
 {
 	int				lOffset = m_lWidth * Y + X;
-
-	if (m_bMonochrome)
-		return GetPixel(m_vRedPlane[lOffset], m_vRedPlane[lOffset], m_vRedPlane[lOffset], bApplySettings);
-	else
-		return GetPixel(m_vRedPlane[lOffset], m_vGreenPlane[lOffset], m_vBluePlane[lOffset], bApplySettings);
-};
 
 /* ------------------------------------------------------------------- */
 
@@ -200,7 +231,7 @@ COLORREF16	StackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 
 	return crResult;
 };
-
+*/
 /* ------------------------------------------------------------------- */
 
 COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
@@ -260,7 +291,7 @@ COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 
 	return crResult;
 };
-
+*/
 /* ------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------- */
@@ -316,65 +347,105 @@ HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 	if (!Bitmap.IsEmpty())
 	{
-		int		lXMin = 0,
-					lYMin = 0,
-					lXMax = m_lWidth,
-					lYMax = m_lHeight;
+		int lXMin = 0;
+		int lYMin = 0;
+		int lXMax = m_lWidth;
+		int lYMax = m_lHeight;
 
-		if (pRect)
+		if (pRect != nullptr)
 		{
-			lXMin	= std::max(0L, pRect->left);
-			lYMin	= std::max(0L, pRect->top);
+			lXMin = std::max(0L, pRect->left);
+			lYMin = std::max(0L, pRect->top);
 			lXMax = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
 			lYMax = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
-		};
+		}
 
 		/*PIXELSET		sPixels;
 		PIXELITERATOR	it;*/
 
-		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = nullptr;
-		float *				pBaseBluePixel  = nullptr;
+		const float* const pBaseRedPixel = m_vRedPlane.data() + (m_lWidth * lYMin + lXMin);
+		const float* const pBaseGreenPixel = m_bMonochrome ? nullptr : m_vGreenPlane.data() + (m_lWidth * lYMin + lXMin);
+		const float* const pBaseBluePixel = m_bMonochrome ? nullptr : m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
 
-		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
-		if (!m_bMonochrome)
-		{
-			pBaseGreenPixel = &(m_vGreenPlane[m_lWidth * lYMin + lXMin]);
-			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
-		};
+		const size_t bufferLen = lXMax - lXMin;
+		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
-#pragma omp parallel for schedule(dynamic, 50) default(none) shared(lYMin)
-		for (int j = lYMin;j<lYMax;j++)
+#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+		for (int j = lYMin; j < lYMax; j++)
 		{
 			std::uint8_t* lpOut = Bitmap.GetPixelBase(lXMin, j);
 			LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
-			float* pRedPixel = nullptr;;
-			float* pGreenPixel = nullptr;
-			float* pBluePixel = nullptr;
-
 			//
 			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
 			//
-			pRedPixel	= pBaseRedPixel + (m_lWidth * (j - lYMin));
-			if (!m_bMonochrome)
+			const float* const pRedPixel = pBaseRedPixel + m_lWidth * (j - lYMin);
+			const float* const pGreenPixel = m_bMonochrome ? nullptr : pBaseGreenPixel + m_lWidth * (j - lYMin);
+			const float* const pBluePixel = m_bMonochrome ? nullptr : pBaseBluePixel + m_lWidth * (j - lYMin);
+
+			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
+			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
+
+			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			avxBezierAndSaturation.avxToRgb(true);
+/*
+			if (avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust) != 0)
 			{
-				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
-				pBluePixel  = pBaseBluePixel + (m_lWidth * (j - lYMin));
-			};
-			for (int i = lXMin;i<lXMax;i++)
+				const float scale = 255.0f / static_cast<float>(m_lNrBitmaps);
+
+				for (size_t n = 0; n < bufferLen; ++n)
+				{
+					redBuffer[n] *= scale;
+					greenBuffer[n] *= scale;
+					blueBuffer[n] *= scale;
+
+					double r = redBuffer[n], g = greenBuffer[n], b = blueBuffer[n];
+					m_HistoAdjust.Adjust(r, g, b);
+
+					redBuffer[n] = std::min(static_cast<float>(r) / 255.0f, 255.0f);
+					greenBuffer[n] = std::min(static_cast<float>(g) / 255.0f, 255.0f);
+					blueBuffer[n] = std::min(static_cast<float>(b) / 255.0f, 255.0f);
+				}
+			}
+
+			if (avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints) == 0)
 			{
-				COLORREF		crColor;
-
-				if (!m_bMonochrome)
-					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
-				else
-					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true);
-
-				/*CPixel			px(*pRedPixel, *pGreenPixel, *pBluePixel);
-
-				it = sPixels.find(px);
-				if (it == sPixels.end())
-					sPixels.insert(px);*/
+				avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+				avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+				avxBezierAndSaturation.avxToRgb();
+			}
+			else
+			{
+				for (size_t n = 0; n < bufferLen; ++n)
+				{
+					double h, s, l;
+					ToHSL(redBuffer[n], greenBuffer[n], blueBuffer[n], h, s, l);
+					l = m_BezierAdjust.GetValue(l);
+					s = m_BezierAdjust.AdjustSaturation(s);
+					double r, g, b;
+					ToRGB(h, s, l, r, g, b);
+					redBuffer[n] = r;
+					greenBuffer[n] = g;
+					blueBuffer[n] = b;
+				}
+			}
+*/
+			for (size_t n = 0; n < bufferLen; ++n, lpOut += 4)
+			{
+				const COLORREF crColor = RGB(redBuffer[n], greenBuffer[n], blueBuffer[n]);
+				lpOutPixel->rgbRed = GetRValue(crColor);
+				lpOutPixel->rgbGreen = GetGValue(crColor);
+				lpOutPixel->rgbBlue = GetBValue(crColor);
+				lpOutPixel->rgbReserved = 0;
+			}
+/*
+			for (int i = lXMin; i < lXMax; i++)
+			{
+				const COLORREF crColor = m_bMonochrome
+					? GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true)
+					: GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
 
 				lpOutPixel->rgbRed		= GetRValue(crColor);
 				lpOutPixel->rgbGreen	= GetGValue(crColor);
@@ -387,19 +458,18 @@ HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 				{
 					pGreenPixel++;
 					pBluePixel++;
-				};
+				}
 				lpOut += 4;
-			};
-		};
+			} */
+		}
 
 		/*int				lNrPixels = sPixels.size();
 		printf("%ld", lNrPixels);*/
-	};
+	}
 
 	return Bitmap.GetHBITMAP();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pProgress)
 {
@@ -414,7 +484,10 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 
 	if (static_cast<bool>(pBitmap))
 	{
-		const int lXMin = 0, lYMin = 0, lXMax = m_lWidth, lYMax = m_lHeight;
+		constexpr int lXMin = 0;
+		constexpr int lYMin = 0;
+		const int lXMax = m_lWidth;
+		const int lYMax = m_lHeight;
 
 		float* pBaseRedPixel;
 		float* pBaseGreenPixel = nullptr;
@@ -435,8 +508,11 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 			pBaseBluePixel = m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
 		}
 
-#pragma omp parallel for default(none) schedule(static, 100)
-		for (int j = lYMin; j < lYMax; j++)
+		const size_t bufferLen = lXMax - lXMin;
+		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
+
+#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+		for (int j = lYMin; j < lYMax; ++j)
 		{
 			//
 			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
@@ -445,25 +521,43 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 			float* pGreenPixel = m_bMonochrome ? pRedPixel : pBaseGreenPixel + (m_lWidth * (j - lYMin));
 			float* pBluePixel = m_bMonochrome ? pRedPixel : pBaseBluePixel + (m_lWidth * (j - lYMin));
 
+			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
+
+			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+			avxBezierAndSaturation.avxToRgb(true);
+
+			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
+
+			for (size_t n = 0; n < bufferLen; ++n)
+			{
+				if (this->m_bMonochrome)
+					pBitmap->SetPixel(n + lXMin, j, redBuffer[n]);
+				else
+					pBitmap->SetPixel(n + lXMin, j, redBuffer[n], greenBuffer[n], blueBuffer[n]);
+			}
+/*
 			for (int i = lXMin; i < lXMax; i++)
 			{
 				COLORREF crColor;
 
 				if (!m_bMonochrome)
 				{
-					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
+					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel);
 					pBitmap->SetPixel(i, j, GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
 				}
 				else
 				{
-					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true);
+					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel);
 					pBitmap->SetPixel(i, j, GetRValue(crColor));
 				}
 
 				pRedPixel++;
 				pGreenPixel++; // Incrementing the pointers is harmless, even if we don't use them due to monochrome image.
 				pBluePixel++;
-			}
+			} */
 			if (pProgress != nullptr && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();

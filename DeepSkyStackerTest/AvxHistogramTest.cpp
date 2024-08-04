@@ -15,8 +15,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		// Set to 100
 		pGray->m_vPixels.assign(256 * 32, 100);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -37,8 +36,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		// Set to 1000
 		pGray->m_vPixels.assign(256 * 32, 1000);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65537), greenHisto(65537), blueHisto(65537);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -61,8 +59,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		pColor->m_Green.m_vPixels.assign(256 * 32, 66);
 		pColor->m_Blue.m_vPixels.assign(256 * 32, 77);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -75,7 +72,8 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		REQUIRE(memcmp(blueHisto.data(), expectedBlue.data(), 65536 * sizeof(int)) == 0);
 	}
 
-	SECTION("No calculation for too small arrays")
+	// Since we use the SimdSelector, even small arrays will be processed (by the class NonAvxHistogram).
+	SECTION("Calculation even for small arrays")
 	{
 		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
@@ -85,8 +83,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		// Set to 287
 		pGray->m_vPixels.assign(16 * 4, 287);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 4) == 1);
-		REQUIRE(avxHistogram.histogramSuccessful() == false);
+		REQUIRE(avxHistogram.calcHistogram(0, 4, 1) == 0);
 	}
 
 	SECTION("Gray pixels, calc 32 lines as 2 x 16")
@@ -99,10 +96,8 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		// Set to 793
 		pGray->m_vPixels.assign(256 * 32, 793);
 
-		REQUIRE(avxHistogram1.calcHistogram(0, 16) == 0);
-		REQUIRE(avxHistogram2.calcHistogram(16, 32) == 0);
-		REQUIRE(avxHistogram1.histogramSuccessful() == true);
-		REQUIRE(avxHistogram2.histogramSuccessful() == true);
+		REQUIRE(avxHistogram1.calcHistogram(0, 16, 1) == 0);
+		REQUIRE(avxHistogram2.calcHistogram(16, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram1.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 		REQUIRE(avxHistogram2.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
@@ -128,8 +123,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		for (size_t i = 0; i < 32; ++i)
 		{
 			AvxHistogram avxHistogram(*pBitmap);
-			b &= (avxHistogram.calcHistogram(i, i + 1) == 0);
-			b &= avxHistogram.histogramSuccessful();
+			b &= (avxHistogram.calcHistogram(i, i + 1, 1) == 0);
 			b &= (avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 		}
 		REQUIRE(b == true);
@@ -156,8 +150,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		i = 0;
 		std::for_each(pColor->m_Blue.m_vPixels.begin(), pColor->m_Blue.m_vPixels.end(), [&i](auto& v) { v = i++; });
 
-		REQUIRE(avxHistogram.calcHistogram(0, 256) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 256, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -178,8 +171,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		pGray->m_vPixels.assign(256 * 32, 236.99f); // 236.99 should be truncated to 236.
 		pGray->m_vPixels[1000] = 1e5f; // 100000 should be limited to 65535.
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -206,8 +198,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		i = 2;
 		std::for_each(pColor->m_Blue.m_vPixels.begin(), pColor->m_Blue.m_vPixels.end(), [&i](auto& v) { v = static_cast<float>(i++); i %= 3; }); // 2, 0, 1, 2, 0, 1, ...
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -239,8 +230,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		pGray->m_vPixels[1000] = 60000; // 60000 should become 0.
 		pGray->m_vPixels[1001] = (7328 << 16);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 256) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 256, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -267,8 +257,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		for (size_t n = 100 * 271; n < 101 * 271; ++n) // One line has constant value 64000.
 			pGray->m_vPixels[n] = static_cast<std::uint32_t>(64000 << 16);
 
-		REQUIRE(avxHistogram.calcHistogram(0, 200) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 200, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 
@@ -294,8 +283,7 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 		pGray->m_vPixels.assign(256 * 32, 202.01133); // 202.01133 should become trunc(202.01133 * 256.0) = trunc(51714.90) = 51714.
 		pGray->m_vPixels[1000] = 260.0; // 260.0 should be limited to 65535.
 
-		REQUIRE(avxHistogram.calcHistogram(0, 32) == 0);
-		REQUIRE(avxHistogram.histogramSuccessful() == true);
+		REQUIRE(avxHistogram.calcHistogram(0, 32, 1) == 0);
 		std::vector<int> redHisto(65536), greenHisto(65536), blueHisto(65536);
 		REQUIRE(avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto) == 0);
 

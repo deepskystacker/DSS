@@ -7,13 +7,13 @@
 class AvxSupport
 {
 private:
-	// Unfortunately, we cannot use const here, because the member function are hardly never const declared. :-(
-	CMemoryBitmap& bitmap;
+	const CMemoryBitmap& bitmap;
+	CMemoryBitmap* pBitmap;
 
 	template <class T>
-	auto* getColorPtr() { return dynamic_cast<CColorBitmapT<T>*>(&bitmap); }
+	auto* getColorPtr() { return dynamic_cast<CColorBitmapT<T>*>(pBitmap); }
 	template <class T>
-	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(&bitmap); }
+	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(pBitmap); }
 	template <class T>
 	const auto* getColorPtr() const { return dynamic_cast<const CColorBitmapT<T>*>(&bitmap); }
 	template <class T>
@@ -22,6 +22,7 @@ private:
 	int getNrChannels() const;
 public:
 	AvxSupport(CMemoryBitmap& b) noexcept;
+	AvxSupport(const CMemoryBitmap& b) noexcept;
 
 	bool isColorBitmap() const;
 	template <class T> bool isColorBitmapOfType() const;
@@ -321,10 +322,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -348,10 +349,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -373,10 +374,10 @@ public:
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
 			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-			{
-				if ((iMask & mask) != 0)
-					pOutputBitmap[ndx] = color;
-			};
+				{
+					if ((iMask & mask) != 0)
+						pOutputBitmap[ndx] = color;
+				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
 			checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
 			checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
@@ -424,6 +425,44 @@ public:
 	{
 		return shiftRightEpi8<4 * N>(x);
 	}
+	inline static __m256i shiftRightVarEpi8(const __m256i x, const int N) noexcept
+	{
+		switch (N) {
+		case 0: return x;
+		case 1: return shiftRightEpi8<1>(x);
+		case 2: return shiftRightEpi8<2>(x);
+		case 3: return shiftRightEpi8<3>(x);
+		case 4: return shiftRightEpi8<4>(x);
+		case 5: return shiftRightEpi8<5>(x);
+		case 6: return shiftRightEpi8<6>(x);
+		case 7: return shiftRightEpi8<7>(x);
+		case 8: return shiftRightEpi8<8>(x);
+		case 9: return shiftRightEpi8<9>(x);
+		case 10: return shiftRightEpi8<10>(x);
+		case 11: return shiftRightEpi8<11>(x);
+		case 12: return shiftRightEpi8<12>(x);
+		case 13: return shiftRightEpi8<13>(x);
+		case 14: return shiftRightEpi8<14>(x);
+		case 15: return shiftRightEpi8<15>(x);
+		case 16: return shiftRightEpi8<16>(x);
+		case 17: return shiftRightEpi8<17>(x);
+		case 18: return shiftRightEpi8<18>(x);
+		case 19: return shiftRightEpi8<19>(x);
+		case 20: return shiftRightEpi8<20>(x);
+		case 21: return shiftRightEpi8<21>(x);
+		case 22: return shiftRightEpi8<22>(x);
+		case 23: return shiftRightEpi8<23>(x);
+		case 24: return shiftRightEpi8<24>(x);
+		case 25: return shiftRightEpi8<25>(x);
+		case 26: return shiftRightEpi8<26>(x);
+		case 27: return shiftRightEpi8<27>(x);
+		case 28: return shiftRightEpi8<28>(x);
+		case 29: return shiftRightEpi8<29>(x);
+		case 30: return shiftRightEpi8<30>(x);
+		case 31: return shiftRightEpi8<31>(x);
+		}
+		return _mm256_setzero_si256();
+	}
 
 	template <int N>
 	inline static __m256i shiftLeftEpi8(const __m256i x) noexcept
@@ -435,7 +474,14 @@ public:
 	inline static __m256i shiftLeftEpi32(const __m256i x) noexcept
 	{
 		static_assert(N == 1);
-		return _mm256_permutevar8x32_epi32(x, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6));
+		return _mm256_permutevar8x32_epi32(x, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6)); // permutevar8x32: dst[0] = x[idx[0]]; dst[1] = x[idx[1]]; ...
+	}
+
+	template <int N>
+	inline static __m256 shiftRightPs(const __m256 x) noexcept
+	{
+		static_assert(N == 1);
+		return _mm256_castsi256_ps(shiftRightEpi32<1>(_mm256_castps_si256(x)));
 	}
 
 	inline static __m256i shl1Epi16(const __m256i x, const int value) noexcept // CPU cycles: 2/2 + 3/1 + 1/1 = 6/4
@@ -451,9 +497,12 @@ public:
 		return _mm256_alignr_epi8(a, x, 2); // [a, x] >> (2 bytes) lane-by-lane
 	}
 
+
 	template <int N>
 	inline static __m256i rotateRightEpi8(const __m256i x) noexcept
 	{
+		if constexpr (N == 0 || N == 32)
+			return x;
 		if constexpr (N > 16)
 			return _mm256_alignr_epi8(x, _mm256_permute2x128_si256(x, x, 1), N - 16);
 		else
@@ -463,6 +512,13 @@ public:
 	inline static __m256i rotateRightEpi32(const __m256i x) noexcept
 	{
 		return rotateRightEpi8<4 * N>(x);
+	}
+	template <int N>
+	inline static __m256 rotateRightPs(const __m256 x) noexcept
+	{
+		if constexpr (N == 0 || N == 8)
+			return x;
+		return _mm256_castsi256_ps(rotateRightEpi32<N>(_mm256_castps_si256(x)));
 	}
 
 	// Extract for PS has a strange signature (returns int), so we write an own version.
@@ -476,3 +532,25 @@ public:
 			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(ps), NDX * 4)));
 	}
 };
+
+
+template <class SimdClass>
+class SimdFactory
+{
+public:
+	static SimdClass makeSimdObject(auto* pDataClass)
+	{
+		return SimdClass{ *pDataClass };
+	}
+};
+
+template <class PrimarySimdClass, class... OtherSimdClasses>
+int SimdSelector(auto* pDataClass, auto&& Caller)
+{
+	const int rv = Caller(PrimarySimdClass::makeSimdObject(pDataClass));
+
+	if constexpr (sizeof...(OtherSimdClasses) == 0)
+		return rv;
+	else
+		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, std::forward<decltype(Caller)>(Caller));
+}
