@@ -286,6 +286,7 @@
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />
+    <ClInclude Include="histogram.h" />
     <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
     <ClInclude Include=".\MasterFrames.h" />
