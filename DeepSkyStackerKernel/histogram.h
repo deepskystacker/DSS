@@ -102,7 +102,7 @@ inline QString HistoAdjustTypeText(HISTOADJUSTTYPE hat)
 	return "";
 };
 
-class CHistogramAdjust
+class HistogramAdjust
 {
 private :
 	double					m_fMin;
@@ -183,7 +183,7 @@ private :
 	}
 
 public :
-	CHistogramAdjust()
+	HistogramAdjust()
 	{
 		m_HAT = HAT_LOGSQUAREROOT;
 		SetOrgValues(0.0, 65535.0);
@@ -193,7 +193,7 @@ public :
         m_fShift = 0;
 	};
 
-	virtual ~CHistogramAdjust() {};
+	virtual ~HistogramAdjust() {};
 
 	void	Reset()
 	{
@@ -202,12 +202,12 @@ public :
 		SetNewValues(0.0, 65535.0, 0.0);
 	};
 
-	CHistogramAdjust(const CHistogramAdjust & ha)
+	HistogramAdjust(const HistogramAdjust & ha)
 	{
 		CopyFrom(ha);
 	};
 
-	CHistogramAdjust & operator = (const CHistogramAdjust & ha)
+	HistogramAdjust & operator = (const HistogramAdjust & ha)
 	{
 		CopyFrom(ha);
 		return (*this);
