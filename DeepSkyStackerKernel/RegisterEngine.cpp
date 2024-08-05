@@ -477,6 +477,13 @@ size_t CRegisteredFrame::RegisterSubRect(const CMemoryBitmap* pBitmap, const DSS
 								// create an incompatibility with existing info.txt files that were created by
 								// earlier releases of the code.
 								//
+								// MT, August 2024: The ONLY function still using star.m_rcStar ist:
+								//    CDarkFrame::FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
+								// Every other function which used to use m_rcStar is now commented out - not any more used.
+								// Ironically, this function uses the ("correct" ?) limits with < NOT <= :
+								//    for (int x = rcStar.left; x < rcStar.right; x++) 
+								//       for (int y = rcStar.top; y < rcStar.bottom; y++)
+
 
 								if (bWanabeeStarOk)
 								{
