@@ -565,20 +565,15 @@ bool CFITSReader::Open()
 			//
 			// If the user has explicitly set that this FITS file is a Bayer format RAW file,
 			// then the user will also have explicitly set the Bayer pattern that's to be used.
-			// In this case we use that and set the Bayer offsets (if any) to zero
+			// In this case we use that and set the Bayer offsets (if any) to zero.
+			// We do this only for 16 bits per pixel data.
 			//
-			bool isRaw = IsFITSRaw();
-
-			if ((m_lNrChannels == 1) &&
-				((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
+			if (m_lNrChannels == 1 && m_lBitsPerPixel == 16 && IsFITSRaw())
 			{
 				ZTRACE_RUNTIME("Using user supplied override for Bayer pattern.");
-				if (isRaw)
-				{
-					m_CFAType = GetFITSCFATYPE();
-					m_xBayerOffset = 0;
-					m_yBayerOffset = 0;
-				}
+				m_CFAType = GetFITSCFATYPE();
+				m_xBayerOffset = 0;
+				m_yBayerOffset = 0;
 				//
 				// If user hasn't said it's a FITS format RAW, then use the CFA we've already
 				// retrieved from the FITS header if set.
