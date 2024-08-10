@@ -1733,7 +1733,7 @@ namespace DSS
 		};
 
 		if (!vBitmaps.empty())
-			editStarsPtr->setRefStars(vBitmaps[0].m_vStars);
+			editStars->setRefStars(vBitmaps[0].m_vStars);
 		else
 			editStars->clearRefStars();
 	};

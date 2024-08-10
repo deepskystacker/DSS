@@ -30,8 +30,6 @@ StackedBitmap::StackedBitmap()
 	DSSTIFFInitialize();
 }
 
-CStackedBitmap::~CStackedBitmap() = default;
-
 namespace {
 	thread_local constinit int lastY = -1;
 	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
@@ -85,7 +83,7 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 			pAvxBezierAndSaturation->copyData(pRed, pGreen, pBlue, bufferLen, m_bMonochrome);
 
 			pAvxBezierAndSaturation->avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
-			pAvxBezierAndSaturation->avxToHsl(m_BezierAdjust.m_vPoints);
+			pAvxBezierAndSaturation->avxToHsl(m_BezierAdjust.curvePoints);
 			pAvxBezierAndSaturation->avxBezierAdjust(bufferLen);
 			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			pAvxBezierAndSaturation->avxToRgb(true);
@@ -124,10 +122,20 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 /* ------------------------------------------------------------------- */
 namespace
 {
-void limitColorValues(double& red, double& green, double& blue)
-{
-	constexpr double UpperLimit = 255.0;
+	void limitColorValues(double& red, double& green, double& blue)
+	{
+		constexpr double UpperLimit = 255.0;
+		red = std::min(red, UpperLimit);
+		green = std::min(green, UpperLimit);
+		blue = std::min(blue, UpperLimit);
+	}
+}
 
+//
+// MT, 11-March-2024
+// This function is only used in CStackedBitmap::GetBitmap() for creating star masks.
+//
+/*
 COLORREF StackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings)
 {
 	constexpr double ScalingFactor = 256.0;
@@ -168,13 +176,19 @@ COLORREF StackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bAp
 */
 /* ------------------------------------------------------------------- */
 
-COLORREF StackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
-{
-	int				lOffset = m_lWidth * Y + X;
+//COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
+//{
+//	int				lOffset = m_lWidth * Y + X;
+//
+//	if (m_bMonochrome)
+//		return GetPixel(m_vRedPlane[lOffset], m_vRedPlane[lOffset], m_vRedPlane[lOffset], bApplySettings);
+//	else
+//		return GetPixel(m_vRedPlane[lOffset], m_vGreenPlane[lOffset], m_vBluePlane[lOffset], bApplySettings);
+//};
 
 /* ------------------------------------------------------------------- */
-
-COLORREF16	StackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
+/*
+COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 {
 	COLORREF16			crResult;
 
@@ -233,8 +247,8 @@ COLORREF16	StackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 };
 */
 /* ------------------------------------------------------------------- */
-
-COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
+/*
+COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 {
 	COLORREF32			crResult;
 
@@ -292,7 +306,6 @@ COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 	return crResult;
 };
 */
-/* ------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------------- */
 // 
@@ -340,6 +353,10 @@ COLORREF32	StackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 // 	};
 // };
 
+//
+// MT, 11-March-2024
+// This function is only called from DeepStack::PartialProcess() to display the picture.
+//
 HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 {
 	if (Bitmap.IsEmpty())
@@ -386,7 +403,7 @@ HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
 
 			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
-			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			avxBezierAndSaturation.avxToRgb(true);
@@ -470,7 +487,10 @@ HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 	return Bitmap.GetHBITMAP();
 }
 
-
+//
+// MT, 11-March-2024
+// This function is only used for creating star masks.
+//
 std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -524,7 +544,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
 
 			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
-			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints);
+			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			avxBezierAndSaturation.avxToRgb(true);

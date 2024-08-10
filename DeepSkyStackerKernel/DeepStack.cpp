@@ -77,7 +77,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 /* ------------------------------------------------------------------- */
 
-void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHisto, const RGBHistogramAdjust & histogramAdjust)
+void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust)
 {
 	ZFUNCTRACE_RUNTIME();
 	tgtHisto.clear();

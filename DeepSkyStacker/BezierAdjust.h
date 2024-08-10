@@ -80,8 +80,9 @@ namespace DSS
 			m_fHighlightPower;
 		double 	m_fSaturationShift;
 
-	private:
 		std::vector<BezierCurvePoint> curvePoints;
+
+	private:
 
 		void addBezierPoints(double x1, double y1, double vx1, double vy1, double x2, double y2, double vx2, double vy2)
 		{

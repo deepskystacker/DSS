@@ -14,7 +14,7 @@ inline double LinearAdjust(double fValue)
 inline double CubeRootAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-	fValue = pow(fValue, 1/3.0);
+	fValue = pow(fValue, 1 / 3.0);
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
@@ -22,7 +22,7 @@ inline double CubeRootAdjust(double fValue)
 inline double SquareRootAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-	fValue = pow(fValue, 1/2.0);
+	fValue = pow(fValue, 1 / 2.0);
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
@@ -38,7 +38,7 @@ inline double LogAdjust(double fValue)
 inline double LogLogAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-	fValue = log(log(fValue * 1.7 + 1)*1.7+1);
+	fValue = log(log(fValue * 1.7 + 1) * 1.7 + 1);
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
@@ -46,8 +46,7 @@ inline double LogLogAdjust(double fValue)
 inline double LogSquareRootAdjust(double fValue)
 {
 	ZASSERT(fValue >= 0 && fValue <= 1);
-//	fValue = log(pow(fValue, 1/2.0)*1.7+1);
-	fValue = std::log(std::sqrt(fValue) * 1.7 + 1.0); // Displaying the entire picture is about 1.5 x faster when using sqrt(x) instead of pow(x, 0.5).
+	fValue = log(pow(fValue, 1 / 2.0) * 1.7 + 1);
 	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
@@ -61,677 +60,680 @@ inline double AsinHAdjust(double fValue)
 	return fValue;
 };
 
-typedef enum HISTOADJUSTTYPE
+namespace DSS
 {
-	HAT_LINEAR			= 1,
-	HAT_CUBEROOT		= 2,
-	HAT_SQUAREROOT		= 3,
-	HAT_LOG				= 4,
-	HAT_LOGLOG			= 5,
-	HAT_LOGSQUAREROOT	= 6,
-	HAT_ASINH			= 7
-}HISTOADJUSTTYPE;
+	enum class HistogramAdjustmentCurve : uint
+	{
+		Linear = 0,
+		CubeRoot = 1,
+		SquareRoot = 2,
+		Log = 3,
+		LogLog = 4,
+		LogSquareRoot = 5,
+		ASinH = 6
+	};
+}
 
-
-inline QString HistoAdjustTypeText(HISTOADJUSTTYPE hat)
+inline QString HistoAdjustTypeText(DSS::HistogramAdjustmentCurve hat)
 {
 	switch (hat)
 	{
-	case HAT_LINEAR	:
+	case DSS::HistogramAdjustmentCurve::Linear:
 		return QCoreApplication::translate("Histogram", "Linear", "IDS_HAT_LINEAR");
 		break;
-	case HAT_CUBEROOT :
+	case DSS::HistogramAdjustmentCurve::CubeRoot:
 		return QCoreApplication::translate("Histogram", "Cube Root", "IDS_HAT_CUBEROOT");
 		break;
-	case HAT_SQUAREROOT :
+	case DSS::HistogramAdjustmentCurve::SquareRoot:
 		return QCoreApplication::translate("Histogram", "Square Root", "IDS_HAT_SQUAREROOT");
 		break;
-	case HAT_LOG :
+	case DSS::HistogramAdjustmentCurve::Log:
 		return QCoreApplication::translate("Histogram", "Logarithm", "IDS_HAT_LOG");
 		break;
-	case HAT_LOGLOG :
+	case DSS::HistogramAdjustmentCurve::LogLog:
 		return QCoreApplication::translate("Histogram", "Log(Log)", "IDS_HAT_LOGLOG");
 		break;
-	case HAT_LOGSQUAREROOT :
+	case DSS::HistogramAdjustmentCurve::LogSquareRoot:
 		return QCoreApplication::translate("Histogram", "Log(Square Root)", "IDS_HAT_LOGSQUAREROOT");
 		break;
-	case HAT_ASINH :
+	case DSS::HistogramAdjustmentCurve::ASinH:
 		return QCoreApplication::translate("Histogram", "ASinH", "IDS_HAT_ASINH");
 		break;
 	};
 	return "";
 };
 
-class HistogramAdjust
+
+namespace DSS
 {
-private :
-	double					m_fMin;
-	double					m_fMax;
-	double					m_fShift;
-
-	double					m_fOrgMin;
-	double					m_fOrgMax;
-
-	double					m_fUsedMin;
-	double					m_fUsedMax;
-
-	HISTOADJUSTTYPE			m_HAT;
-
-private :
-	void	CopyFrom(const CHistogramAdjust & ha)
+	class HistogramAdjust
 	{
-		m_fMin		= ha.m_fMin;
-		m_fMax		= ha.m_fMax;
-		m_fShift	= ha.m_fShift;
+		friend class RGBHistogramAdjust;
 
-		m_fOrgMin	= ha.m_fOrgMin;
-		m_fOrgMax	= ha.m_fOrgMax;
+	private:
+		double					minimum;
+		double					maximum;
+		double					shift;
 
-		m_fUsedMin	= ha.m_fUsedMin;
-		m_fUsedMax	= ha.m_fUsedMax;
+		double					originalMinimum;
+		double					originalMaximum;
 
-		m_HAT		= ha.m_HAT;
-	};
+		double					usedMinimum;
+		double					usedMaximum;
 
-	double	AdjustValue(double fValue) const
-	{
-		if (!std::isfinite(fValue))
-			return 0;
+		HistogramAdjustmentCurve adjustmentCurve;
 
-		switch (m_HAT)
+		//
+		// loadSettings and saveSettings are deliberately private and should only ever be
+		// called from the same named member function in RGBHistogramAdjust (which is a 
+		// friend so we can do that).
+		//
+		void loadSettings(const QString& groupName)
 		{
-		case HAT_CUBEROOT :
-			return CubeRootAdjust(fValue);
-			break;
-		case HAT_SQUAREROOT :
-			return SquareRootAdjust(fValue);
-			break;
-		case HAT_LOG :
-			return LogAdjust(fValue);
-			break;
-		case HAT_LOGLOG	:
-			return LogLogAdjust(fValue);
-			break;
-		case HAT_LOGSQUAREROOT :
-			return LogSquareRootAdjust(fValue);
-			break;
-		case HAT_ASINH :
-			return AsinHAdjust(fValue);
-			break;
-		case HAT_LINEAR	:
-		default :
-			return LinearAdjust(fValue);
-			break;
+			ZFUNCTRACE_RUNTIME();
+			QSettings settings;
+			settings.beginGroup(groupName);
+			minimum = settings.value("Minimum").toDouble();
+			maximum = settings.value("Maximum").toDouble();
+			shift = settings.value("Shift").toDouble();
+			originalMinimum = settings.value("OriginalMinimum").toDouble();
+			originalMaximum = settings.value("OriginalMaximum").toDouble();
+			usedMinimum = settings.value("UsedMinimum").toDouble();
+			usedMaximum = settings.value("UsedMaximum").toDouble();
+			adjustmentCurve = static_cast<HistogramAdjustmentCurve>(settings.value("AdjustmentCurve").toUInt());
+		};
+
+		void saveSettings(const QString& groupName) const
+		{
+			ZFUNCTRACE_RUNTIME();
+			QSettings settings;
+			settings.beginGroup(groupName);
+			settings.setValue("Minimum", minimum);
+			settings.setValue("Maximum", maximum);
+			settings.setValue("Shift", shift);
+			settings.setValue("OriginalMinimum", originalMinimum);
+			settings.setValue("OriginalMaximum", originalMaximum);
+			settings.setValue("UsedMinimum", usedMinimum);
+			settings.setValue("UsedMaximum", usedMaximum);
+			settings.setValue("AdjustmentCurve", static_cast<uint>(adjustmentCurve));
+		};
+
+		double	AdjustValue(double fValue) const
+		{
+			if (!std::isfinite(fValue))
+				return 0;
+
+			switch (adjustmentCurve)
+			{
+			case HistogramAdjustmentCurve::CubeRoot:
+				return CubeRootAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::SquareRoot:
+				return SquareRootAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::Log:
+				return LogAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::LogLog:
+				return LogLogAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::LogSquareRoot:
+				return LogSquareRootAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::ASinH:
+				return AsinHAdjust(fValue);
+				break;
+			case HistogramAdjustmentCurve::Linear:
+			default:
+				return LinearAdjust(fValue);
+				break;
+			};
+		};
+
+		double	ExtractValue(const QString& szString, const QString& szVariable)
+		{
+			double fValue = 0.0;
+			QString strVariable(szVariable + "=");
+			qsizetype nPos = szString.indexOf(strVariable, 0);
+			if (nPos >= 0)
+			{
+				qsizetype nStart = nPos + strVariable.length();
+				qsizetype nEnd = szString.indexOf(";", nStart);
+				if (nEnd < 0)
+					nEnd = szString.indexOf("}", nStart);
+				if (nEnd > nStart)
+					fValue = szString.mid(nStart, nEnd - nStart).toFloat();
+			}
+			return fValue;
+		}
+
+	public:
+		HistogramAdjust()
+		{
+			adjustmentCurve = HistogramAdjustmentCurve::LogSquareRoot;
+			setOriginalValues(0.0, 65535.0);
+
+			minimum = 0;
+			maximum = 0;
+			shift = 0;
+		};
+
+		virtual ~HistogramAdjust() {};
+
+		double getOriginalMinimum() const { return originalMinimum; }
+		double getOriginalMaximum() const { return originalMaximum; }
+		double getUsedMinimum() const { return usedMinimum; }
+		double getUsedMaximum() const { return usedMaximum; }
+
+
+		void	reset()
+		{
+			adjustmentCurve = HistogramAdjustmentCurve::LogSquareRoot;
+			setOriginalValues(0.0, 65535.0);
+			SetNewValues(0.0, 65535.0, 0.0);
+		};
+
+		HistogramAdjust(const HistogramAdjust& ha) = default;
+
+		HistogramAdjust& operator = (const HistogramAdjust& ha) = default;
+
+		void	setOriginalValues(double min, double max)
+		{
+			originalMinimum = min;
+			originalMaximum = max;
+			usedMinimum = (originalMaximum - originalMinimum) * 0.05;
+			usedMaximum = originalMaximum - usedMinimum;
+		};
+
+		void	SetNewValues(double fMin, double fMax, double fShift)
+		{
+			minimum = fMin;
+			maximum = fMax;
+			shift = fShift;
+		};
+
+		void	SetAdjustMethod(HistogramAdjustmentCurve hat)
+		{
+			adjustmentCurve = hat;
+		};
+
+		HistogramAdjustmentCurve GetAdjustMethod() const
+		{
+			return adjustmentCurve;
+		};
+
+		double	GetMin() const
+		{
+			return minimum;
+		};
+
+		double	GetMax() const
+		{
+			return maximum;
+		};
+
+		double	GetShift() const
+		{
+			return shift;
+		};
+
+		double	Adjust(double fValue) const
+		{
+			double		fResult;
+
+			if (fValue < minimum)
+				fResult = originalMinimum + fValue / max(1.0, minimum - originalMinimum) * (usedMinimum - originalMinimum);
+			else if (fValue > maximum)
+				fResult = originalMaximum - (fValue - maximum) / max(1.0, originalMaximum - maximum) * (originalMaximum - usedMaximum);
+			else
+				fResult = usedMinimum + AdjustValue((fValue - minimum) / max(1.0, (maximum - minimum))) * (usedMaximum - usedMinimum);
+
+			// Then shift the value
+			fResult = fResult + (usedMaximum - usedMinimum) * shift;
+			if (fResult < originalMinimum)
+				fResult = originalMinimum + fValue / max(1.0, minimum - originalMinimum) * (usedMinimum - originalMinimum);
+			else if (fResult > originalMaximum)
+				fResult = originalMaximum - (fValue - maximum) / max(1.0, originalMaximum - maximum) * (originalMaximum - usedMaximum);
+
+			return fResult;
+		};
+
+		void	ToText(QString& strParameters) const
+		{
+			strParameters = QString("Min=%1;Max=%2;Shift=%3;MinOrg=%4;MaxOrg=%5;MinUsed=%6;MaxUsed=%7;HAT=%8;")
+				.arg(minimum, 0, 'f', 2)
+				.arg(maximum, 0, 'f', 2)
+				.arg(shift, 0, 'f', 2)
+				.arg(originalMinimum, 0, 'f', 2)
+				.arg(originalMaximum, 0, 'f', 2)
+				.arg(usedMinimum, 0, 'f', 2)
+				.arg(usedMaximum, 0, 'f', 2)
+				.arg(static_cast<int>(adjustmentCurve));
+		};
+
+		void	FromText(const QString& szParameters)
+		{
+			minimum = ExtractValue(szParameters, "Min");
+			maximum = ExtractValue(szParameters, "Max");
+			shift = ExtractValue(szParameters, "Shift");
+			originalMinimum = ExtractValue(szParameters, "MinOrg");
+			originalMaximum = ExtractValue(szParameters, "MaxOrg");
+			usedMinimum = ExtractValue(szParameters, "MinUsed");
+			usedMaximum = ExtractValue(szParameters, "MaxUsed");
+
+			int				lValue;
+
+			lValue = ExtractValue(szParameters, "HAT");
+			adjustmentCurve = (HistogramAdjustmentCurve)lValue;
 		};
 	};
 
-	double	ExtractValue(const QString& szString, const QString& szVariable)
+	/* ------------------------------------------------------------------- */
+
+	class RGBHistogramAdjust
 	{
-		double fValue = 0.0;
-		QString strVariable(szVariable + "=");
-		qsizetype nPos = szString.indexOf(strVariable, 0);
-		if (nPos >= 0)
+	private:
+		HistogramAdjust		redAdjustment;
+		HistogramAdjust		greenAdjustment;
+		HistogramAdjust		blueAdjustment;
+
+		//void	CopyFrom(const RGBHistogramAdjust & ha)
+		//{
+		//	redAdjustment	= ha.redAdjustment;
+		//	greenAdjustment	= ha.greenAdjustment;
+		//	blueAdjustment	= ha.blueAdjustment;
+		//};
+
+		void	ExtractParameters(const QString& szParameters, const QString& szSub, HistogramAdjust& ha)
 		{
-			qsizetype nStart = nPos + strVariable.length();
-			qsizetype nEnd = szString.indexOf(";", nStart);
-			if (nEnd < 0)
-				nEnd = szString.indexOf("}", nStart);
-			if (nEnd > nStart)
-				fValue = szString.mid(nStart, nEnd-nStart).toFloat();
-		}
-		return fValue;
-	}
-
-public :
-	HistogramAdjust()
-	{
-		m_HAT = HAT_LOGSQUAREROOT;
-		SetOrgValues(0.0, 65535.0);
-
-        m_fMin = 0;
-        m_fMax = 0;
-        m_fShift = 0;
-	};
-
-	virtual ~HistogramAdjust() {};
-
-	void	Reset()
-	{
-		m_HAT = HAT_LOGSQUAREROOT;
-		SetOrgValues(0.0, 65535.0);
-		SetNewValues(0.0, 65535.0, 0.0);
-	};
-
-	HistogramAdjust(const HistogramAdjust & ha)
-	{
-		CopyFrom(ha);
-	};
-
-	HistogramAdjust & operator = (const HistogramAdjust & ha)
-	{
-		CopyFrom(ha);
-		return (*this);
-	};
-
-	void	SetOrgValues(double fMin, double fMax)
-	{
-		m_fOrgMin = fMin;
-		m_fOrgMax = fMax;
-		m_fUsedMin = (m_fOrgMax-m_fOrgMin) * 0.05;
-		m_fUsedMax = m_fOrgMax - m_fUsedMin;
-	};
-
-	void	SetNewValues(double fMin, double fMax, double fShift)
-	{
-		m_fMin   = fMin;
-		m_fMax	 = fMax;
-		m_fShift = fShift;
-	};
-
-	void	SetAdjustMethod(HISTOADJUSTTYPE hat)
-	{
-		m_HAT = hat;
-	};
-
-	HISTOADJUSTTYPE GetAdjustMethod() const
-	{
-		return m_HAT;
-	};
-
-	double	GetMin() const
-	{
-		return m_fMin;
-	};
-
-	double	GetMax() const
-	{
-		return m_fMax;
-	};
-
-	double	GetShift() const
-	{
-		return m_fShift;
-	};
-
-	double GetOrgMin() const { return m_fOrgMin; }
-	double GetOrgMax() const { return m_fOrgMax; }
-	double GetUsedMin() const { return m_fUsedMin; }
-	double GetUsedMax() const { return m_fUsedMax; }
-
-	double	Adjust(double fValue) const
-	{
-		double		fResult;
-
-		if (fValue < m_fMin)
-			fResult = m_fOrgMin + fValue/max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin);
-		else if (fValue > m_fMax)
-			fResult = m_fOrgMax - (fValue - m_fMax)/max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax);
-		else
-			fResult = m_fUsedMin + AdjustValue((fValue-m_fMin)/max(1.0, (m_fMax - m_fMin)))*(m_fUsedMax - m_fUsedMin);
-
-		// Then shift the value
-		fResult = fResult + (m_fUsedMax - m_fUsedMin)*m_fShift;
-		if (fResult < m_fOrgMin)
-			fResult = m_fOrgMin + fValue/max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin);
-		else if (fResult > m_fOrgMax)
-			fResult = m_fOrgMax - (fValue - m_fMax)/max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax);
-
-		return fResult;
-	};
-
-	bool	Load(FILE * hFile)
-	{
-		fread(&m_fMin, sizeof(m_fMin), 1, hFile);
-		fread(&m_fMax, sizeof(m_fMax), 1, hFile);
-		fread(&m_fShift, sizeof(m_fShift), 1, hFile);
-		fread(&m_fOrgMin, sizeof(m_fOrgMin), 1, hFile);
-		fread(&m_fOrgMax, sizeof(m_fOrgMax), 1, hFile);
-		fread(&m_fUsedMin, sizeof(m_fUsedMin), 1, hFile);
-		fread(&m_fUsedMax, sizeof(m_fUsedMax), 1, hFile);
-		fread(&m_HAT, sizeof(m_HAT), 1, hFile);
-		return true;
-	};
-
-	bool	Save(FILE * hFile) const
-	{
-		fwrite(&m_fMin, sizeof(m_fMin), 1, hFile);
-		fwrite(&m_fMax, sizeof(m_fMax), 1, hFile);
-		fwrite(&m_fShift, sizeof(m_fShift), 1, hFile);
-		fwrite(&m_fOrgMin, sizeof(m_fOrgMin), 1, hFile);
-		fwrite(&m_fOrgMax, sizeof(m_fOrgMax), 1, hFile);
-		fwrite(&m_fUsedMin, sizeof(m_fUsedMin), 1, hFile);
-		fwrite(&m_fUsedMax, sizeof(m_fUsedMax), 1, hFile);
-		fwrite(&m_HAT, sizeof(m_HAT), 1, hFile);
-		return true;
-	};
-
-	void	ToText(QString & strParameters) const
-	{
-		strParameters = QString("Min=%1;Max=%2;Shift=%3;MinOrg=%4;MaxOrg=%5;MinUsed=%6;MaxUsed=%7;HAT=%8;")
-			.arg(m_fMin, 0, 'f', 2)
-			.arg(m_fMax, 0, 'f', 2)
-			.arg(m_fShift, 0, 'f', 2)
-			.arg(m_fOrgMin, 0, 'f', 2)
-			.arg(m_fOrgMax, 0, 'f', 2)
-			.arg(m_fUsedMin, 0, 'f', 2)
-			.arg(m_fUsedMax, 0, 'f', 2)
-			.arg(m_HAT);
-	};
-
-	void	FromText(const QString& szParameters)
-	{
-		m_fMin = ExtractValue(szParameters, "Min");
-		m_fMax = ExtractValue(szParameters, "Max");
-		m_fShift = ExtractValue(szParameters, "Shift");
-		m_fOrgMin = ExtractValue(szParameters, "MinOrg");
-		m_fOrgMax = ExtractValue(szParameters, "MaxOrg");
-		m_fUsedMin = ExtractValue(szParameters, "MinUsed");
-		m_fUsedMax = ExtractValue(szParameters, "MaxUsed");
-
-		int				lValue;
-
-		lValue = ExtractValue(szParameters, "HAT");
-		m_HAT = (HISTOADJUSTTYPE)lValue;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-class CRGBHistogramAdjust
-{
-private :
-	CHistogramAdjust		m_RedAdjust;
-	CHistogramAdjust		m_GreenAdjust;
-	CHistogramAdjust		m_BlueAdjust;
-
-	void	CopyFrom(const CRGBHistogramAdjust & ha)
-	{
-		m_RedAdjust		= ha.m_RedAdjust;
-		m_GreenAdjust	= ha.m_GreenAdjust;
-		m_BlueAdjust	= ha.m_BlueAdjust;
-	};
-
-	void	ExtractParameters(const QString& szParameters, const QString& szSub, CHistogramAdjust & ha)
-	{
-		QString strSub(szSub + "{");
-		qsizetype nPos = szParameters.indexOf(strSub);
-		if (nPos >= 0)
-		{
-			qsizetype nStart = nPos + strSub.length();
-			qsizetype nEnd = szParameters.indexOf("}", nStart);
-			if (nEnd > nStart)
+			QString strSub(szSub + "{");
+			qsizetype nPos = szParameters.indexOf(strSub);
+			if (nPos >= 0)
 			{
-				QString strValue(szParameters.mid(nStart, nEnd - nStart));
-				ha.FromText(strValue);
+				qsizetype nStart = nPos + strSub.length();
+				qsizetype nEnd = szParameters.indexOf("}", nStart);
+				if (nEnd > nStart)
+				{
+					QString strValue(szParameters.mid(nStart, nEnd - nStart));
+					ha.FromText(strValue);
+				}
 			}
 		}
-	}
 
-public :
-	CRGBHistogramAdjust() {	};
-	virtual ~CRGBHistogramAdjust() {};
+	public:
+		RGBHistogramAdjust() {	};
+		virtual ~RGBHistogramAdjust() {};
 
-	void	Reset()
-	{
-		m_RedAdjust.Reset();
-		m_GreenAdjust.Reset();
-		m_BlueAdjust.Reset();
-	};
-
-	CRGBHistogramAdjust(const CRGBHistogramAdjust & ha)
-	{
-		CopyFrom(ha);
-	};
-
-	CRGBHistogramAdjust & operator = (const CRGBHistogramAdjust & ha)
-	{
-		CopyFrom(ha);
-		return (*this);
-	};
-
-	void	Adjust(double & fRed, double & fGreen, double & fBlue) const
-	{
-		fRed	= m_RedAdjust.Adjust(fRed);
-		fGreen	= m_GreenAdjust.Adjust(fGreen);
-		fBlue	= m_BlueAdjust.Adjust(fBlue);
-	};
-
-	const CHistogramAdjust& GetRedAdjust() const
-	{
-		return m_RedAdjust;
-	}
-	CHistogramAdjust& GetRedAdjust() { return m_RedAdjust; }
-
-	const CHistogramAdjust& GetGreenAdjust() const
-	{
-		return m_GreenAdjust;
-	}
-	CHistogramAdjust& GetGreenAdjust() { return m_GreenAdjust; }
-
-	const CHistogramAdjust& GetBlueAdjust() const
-	{
-		return m_BlueAdjust;
-	}
-	CHistogramAdjust& GetBlueAdjust() { return m_BlueAdjust; }
-
-	bool	Load(FILE * hFile)
-	{
-		return m_RedAdjust.Load(hFile) && m_GreenAdjust.Load(hFile) && m_BlueAdjust.Load(hFile);
-	};
-	bool	Save(FILE * hFile) const
-	{
-		return m_RedAdjust.Save(hFile) && m_GreenAdjust.Save(hFile) && m_BlueAdjust.Save(hFile);
-	};
-
-	void	ToText(QString & strParameters) const
-	{
-		QString strRedParameters;
-		QString strGreenParameters;
-		QString strBlueParameters;
-
-		m_RedAdjust.ToText(strRedParameters);
-		m_GreenAdjust.ToText(strGreenParameters);
-		m_BlueAdjust.ToText(strBlueParameters);
-
-		strParameters = QString("RedAdjust{%1}GreenAdjust{%2}BlueAdjust{%3}")
-			.arg(strRedParameters)
-			.arg(strGreenParameters)
-			.arg(strBlueParameters);
-	};
-
-	void	FromText(const QString& szParameters)
-	{
-		static const QString strRedAdjust("RedAdjust");
-		static const QString strGreenAdjust("GreenAdjust");
-		static const QString strBlueAdjust("BlueAdjust");
-		ExtractParameters(szParameters, strRedAdjust, m_RedAdjust);
-		ExtractParameters(szParameters, strGreenAdjust, m_GreenAdjust);
-		ExtractParameters(szParameters, strBlueAdjust, m_BlueAdjust);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-class CHistogram
-{
-private :
-	std::vector<std::uint32_t>		m_vValues;
-	int					m_lMax;
-	double					m_fAbsMax;
-	double					m_fMax;
-	double					m_fMin;
-	double					m_fStep;
-	double					m_fSum;
-	double					m_fPowSum;
-	int					m_lNrValues;
-	bool					m_bInitOk;
-
-public :
-	CHistogram()
-	{
-		m_fSum		= 0;
-		m_fPowSum	= 0;
-		m_lNrValues = 0;
-		m_lMax		= 0;
-		m_fMax		= 0;
-		m_fMin		= -1;
-		m_bInitOk	= false;
-        m_fAbsMax   = 0;
-        m_fStep     = 0;
-	};
-
-	CHistogram& operator=(const CHistogram&) = default;
-
-	virtual ~CHistogram() {};
-
-	void	Init()
-	{
-		int		lNrValues = 0;
-
-		m_bInitOk = false;
-		Clear();
-		const double numberOfSteps = m_fAbsMax / m_fStep;
-		lNrValues = std::isfinite(numberOfSteps) ? (static_cast<int>(numberOfSteps) + 1) : 1;
-
-		m_vValues.resize(lNrValues);
-
-		m_bInitOk = true;
-	};
-	void Init(const size_t size)
-	{
-		m_bInitOk = false;
-		Clear();
-		m_vValues.resize(size);
-		m_bInitOk = true;
-	}
-
-	void	Clear()
-	{
-		m_vValues.clear();
-		m_fSum		= 0;
-		m_fPowSum	= 0;
-		m_lNrValues = 0;
-		m_lMax		= 0;
-		m_fMax		= 0;
-		m_fMin		= -1;
-
-		if (m_bInitOk)
+		void	reset()
 		{
-			int		lNrValues;
+			redAdjustment.reset();
+			greenAdjustment.reset();
+			blueAdjustment.reset();
+		};
 
-			lNrValues = (int)(m_fAbsMax/m_fStep+1);
-			m_vValues.resize(lNrValues);
+		RGBHistogramAdjust(const RGBHistogramAdjust& ha) = default;
+		//{
+		//	CopyFrom(ha);
+		//};
+
+		RGBHistogramAdjust& operator = (const RGBHistogramAdjust& ha) = default;
+		//{
+		//	CopyFrom(ha);
+		//	return (*this);
+		//};
+
+		void	Adjust(double& fRed, double& fGreen, double& fBlue) const
+		{
+			fRed = redAdjustment.Adjust(fRed);
+			fGreen = greenAdjustment.Adjust(fGreen);
+			fBlue = blueAdjustment.Adjust(fBlue);
+		};
+
+		const HistogramAdjust& GetRedAdjust() const
+		{
+			return redAdjustment;
+		};
+
+		const HistogramAdjust& GetGreenAdjust() const
+		{
+			return greenAdjustment;
+		};
+
+		const HistogramAdjust& GetBlueAdjust() const
+		{
+			return blueAdjustment;
+		};
+
+		void loadSettings(const QString& group)
+		{
+			const QString redGroup{ group + "/RedHistogramAdjust" };
+			const QString greenGroup{ group + "/GreenHistogramAdjust" };
+			const QString blueGroup{ group + "/BlueHistogramAdjust" };
+			redAdjustment.loadSettings(redGroup);
+			greenAdjustment.loadSettings(greenGroup);
+			blueAdjustment.loadSettings(blueGroup);
+		}
+
+		void saveSettings(const QString& group) const
+		{
+			const QString redGroup{ group + "/RedHistogramAdjust" };
+			const QString greenGroup{ group + "/GreenHistogramAdjust" };
+			const QString blueGroup{ group + "/BlueHistogramAdjust" };
+			redAdjustment.saveSettings(redGroup);
+			greenAdjustment.saveSettings(greenGroup);
+			blueAdjustment.saveSettings(blueGroup);
+		}
+
+		void	ToText(QString& strParameters) const
+		{
+			QString strRedParameters;
+			QString strGreenParameters;
+			QString strBlueParameters;
+
+			redAdjustment.ToText(strRedParameters);
+			greenAdjustment.ToText(strGreenParameters);
+			blueAdjustment.ToText(strBlueParameters);
+
+			strParameters = QString("RedAdjust{%1}GreenAdjust{%2}BlueAdjust{%3}")
+				.arg(strRedParameters)
+				.arg(strGreenParameters)
+				.arg(strBlueParameters);
+		};
+
+		void	FromText(const QString& szParameters)
+		{
+			static const QString strRedAdjust("RedAdjust");
+			static const QString strGreenAdjust("GreenAdjust");
+			static const QString strBlueAdjust("BlueAdjust");
+			ExtractParameters(szParameters, strRedAdjust, redAdjustment);
+			ExtractParameters(szParameters, strGreenAdjust, greenAdjustment);
+			ExtractParameters(szParameters, strBlueAdjust, blueAdjustment);
 		};
 	};
 
-	void	SetSize(double fMax, double fStep)
+	/* ------------------------------------------------------------------- */
+
+	class Histogram
 	{
-		m_fAbsMax = fMax;
-		m_fStep	  = fStep;
+	private:
+		std::vector<std::uint32_t>		values;
+		uint32_t	intMax;
+		double		absoluteMax;
+		double		maximum;
+		double		minimum;
+		double		step;
+		double		sum;
+		double		sumOfSquares;
+		int			valueCount;
+		bool		initialised;
 
-		Init();
-	};
-
-	void	SetSize(double fMax, int lNrValues)
-	{
-		m_fAbsMax	= fMax;
-		m_fStep = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
-
-		Init(lNrValues);
-	};
-
-	int	GetSize()
-	{
-		return (int)m_vValues.size();
-	};
-
-	void	AddValue(double fValue, int lNrValues = 1)
-	{
-		int		lNrStep;
-
-		lNrStep = (int)(fValue/m_fStep);
-
-		if (lNrStep < m_vValues.size())
+	public:
+		Histogram()
 		{
-			m_vValues[lNrStep]+=lNrValues;
-			m_lNrValues+=lNrValues;
-			m_fPowSum += (fValue*fValue)*lNrValues;
-			m_fSum	  += fValue * lNrValues;
-			m_lMax	  = max(m_lMax, static_cast<int>(m_vValues[lNrStep]));
-
-			m_fMax = max(m_fMax, fValue);
-			if (m_fMin < 0)
-				m_fMin = fValue;
-			else
-				m_fMin = min(m_fMin, fValue);
+			sum = 0;
+			sumOfSquares = 0;
+			valueCount = 0;
+			intMax = 0;
+			maximum = 0;
+			minimum = -1;
+			initialised = false;
+			absoluteMax = 0;
+			step = 0;
 		};
-	};
 
-	void	AddValues(const CHistogram & Histogram)
-	{
-		for (int i = 0;i<Histogram.m_vValues.size();i++)
+		Histogram& operator=(const Histogram&) = default;
+
+		virtual ~Histogram() {};
+
+		void	init()
 		{
-			if (Histogram.m_vValues[i])
-				AddValue(i*m_fStep, Histogram.m_vValues[i]);
+			int		lNrValues = 0;
+
+			initialised = false;
+			clear();
+			const double numberOfSteps = absoluteMax / step;
+			lNrValues = std::isfinite(numberOfSteps) ? (static_cast<int>(numberOfSteps) + 1) : 1;
+
+			values.resize(lNrValues);
+
+			initialised = true;
 		};
-	};
-
-	int	GetNrValues()
-	{
-		return (int)m_vValues.size();
-	};
-
-	int	GetValue(double fValue)
-	{
-		return m_vValues[(int)(fValue/m_fStep)];
-	};
-
-	int	GetValue(int lValue)
-	{
-		return m_vValues[lValue];
-	};
-
-	double	GetComponentValue(int lIndice)
-	{
-		return (double)lIndice * m_fStep;
-	};
-
-	double	GetAverage()
-	{
-		double		fResult = 0;
-
-		if (m_lNrValues)
-			fResult = m_fSum/m_lNrValues;
-
-		return fResult;
-	};
-
-	double	GetMin()
-	{
-		return m_fMin;
-	};
-
-	double	GetMax()
-	{
-		return m_fMax;
-	};
-
-	double	GetStdDeviation()
-	{
-		double		fResult = 0;
-
-		if (m_lNrValues)
-			fResult = sqrt(m_fPowSum/m_lNrValues - pow(m_fSum/m_lNrValues, 2));
-
-		return fResult;
-	};
-
-	double	GetMedian()
-	{
-		double		fResult = 0;
-
-		if (m_lNrValues)
+		void init(const size_t size)
 		{
-			unsigned int		lCount = 0;
-			int		i = 0;
+			initialised = false;
+			clear();
+			values.resize(size);
+			initialised = true;
+		}
 
-			while ((lCount + m_vValues[i]) <= (unsigned int)(m_lNrValues/2))
+		void	clear()
+		{
+			values.clear();
+			sum = 0;
+			sumOfSquares = 0;
+			valueCount = 0;
+			intMax = 0;
+			maximum = 0;
+			minimum = -1;
+
+			if (initialised)
 			{
-				lCount += m_vValues[i];
-				i++;
+				int		lNrValues;
+
+				lNrValues = (int)(absoluteMax / step + 1);
+				values.resize(lNrValues);
 			};
-			// The median is i
-			fResult = i*m_fStep;
 		};
 
-		return fResult;
+		void	SetSize(double fMax, double fStep)
+		{
+			absoluteMax = fMax;
+			step = fStep;
+
+			init();
+		};
+
+		void	SetSize(double fMax, int lNrValues)
+		{
+			absoluteMax = fMax;
+			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
+
+			init(lNrValues);
+		};
+
+		int	GetSize()
+		{
+			return (int)values.size();
+		};
+
+		void	AddValue(double fValue, int lNrValues = 1)
+		{
+			int		lNrStep;
+
+			lNrStep = (int)(fValue / step);
+
+			if (lNrStep < values.size())
+			{
+				values[lNrStep] += lNrValues;
+				valueCount += lNrValues;
+				sumOfSquares += (fValue * fValue) * lNrValues;
+				sum += fValue * lNrValues;
+				intMax = max(intMax, static_cast<uint32_t>(values[lNrStep]));
+
+				maximum = max(maximum, fValue);
+				if (minimum < 0)
+					minimum = fValue;
+				else
+					minimum = min(minimum, fValue);
+			};
+		};
+
+		void	AddValues(const Histogram& Histogram)
+		{
+			for (int i = 0; i < Histogram.values.size(); i++)
+			{
+				if (Histogram.values[i])
+					AddValue(i * step, Histogram.values[i]);
+			};
+		};
+
+		int	GetNrValues()
+		{
+			return (int)values.size();
+		};
+
+		int	GetValue(double fValue)
+		{
+			return values[(int)(fValue / step)];
+		};
+
+		int	GetValue(int lValue)
+		{
+			return values[lValue];
+		};
+
+		double	GetComponentValue(int lIndice)
+		{
+			return (double)lIndice * step;
+		};
+
+		double	GetAverage()
+		{
+			double		fResult = 0;
+
+			if (valueCount)
+				fResult = sum / valueCount;
+
+			return fResult;
+		};
+
+		double	GetMin()
+		{
+			return minimum;
+		};
+
+		double	GetMax()
+		{
+			return maximum;
+		};
+
+		double	GetStdDeviation()
+		{
+			double		fResult = 0;
+
+			if (valueCount)
+				fResult = sqrt(sumOfSquares / valueCount - pow(sum / valueCount, 2));
+
+			return fResult;
+		};
+
+		double	GetMedian()
+		{
+			double		fResult = 0;
+
+			if (valueCount)
+			{
+				unsigned int		lCount = 0;
+				int		i = 0;
+
+				while ((lCount + values[i]) <= (unsigned int)(valueCount / 2))
+				{
+					lCount += values[i];
+					i++;
+				};
+				// The median is i
+				fResult = i * step;
+			};
+
+			return fResult;
+		};
+
+		int	GetMaximumNrValues()
+		{
+			return intMax;
+		};
 	};
 
-	int	GetMaximumNrValues()
+
+	/* ------------------------------------------------------------------- */
+
+	class RGBHistogram
 	{
-		return m_lMax;
+	private:
+
+		Histogram				redHistogram;
+		Histogram				greenHistogram;
+		Histogram				blueHistogram;
+
+	public:
+		RGBHistogram() {};
+		virtual ~RGBHistogram() {};
+
+		void	clear()
+		{
+			redHistogram.clear();
+			greenHistogram.clear();
+			blueHistogram.clear();
+		};
+
+		bool	IsInitialized()
+		{
+			return redHistogram.GetSize() && greenHistogram.GetSize() && blueHistogram.GetSize();
+		};
+
+		int	GetSize()
+		{
+			return redHistogram.GetSize();
+		};
+
+		void	SetSize(double fMax, double fStep)
+		{
+			redHistogram.SetSize(fMax, fStep);
+			greenHistogram.SetSize(fMax, fStep);
+			blueHistogram.SetSize(fMax, fStep);
+		};
+
+		void	SetSize(double fMax, int lNrValues)
+		{
+			redHistogram.SetSize(fMax, lNrValues);
+			greenHistogram.SetSize(fMax, lNrValues);
+			blueHistogram.SetSize(fMax, lNrValues);
+		};
+
+		void	AddValues(double fRed, double fGreen, double fBlue)
+		{
+			redHistogram.AddValue(fRed);
+			greenHistogram.AddValue(fGreen);
+			blueHistogram.AddValue(fBlue);
+		};
+
+		void	AddValues(const RGBHistogram& RGBHistogram)
+		{
+			redHistogram.AddValues(RGBHistogram.redHistogram);
+			greenHistogram.AddValues(RGBHistogram.greenHistogram);
+			blueHistogram.AddValues(RGBHistogram.blueHistogram);
+		};
+
+		void	GetValues(int lValue, int& lNrReds, int& lNrGreens, int& lNrBlues)
+		{
+			lNrReds = redHistogram.GetValue(lValue);
+			lNrGreens = greenHistogram.GetValue(lValue);
+			lNrBlues = blueHistogram.GetValue(lValue);
+		};
+
+		Histogram& GetRedHistogram()
+		{
+			return redHistogram;
+		};
+
+		Histogram& GetGreenHistogram()
+		{
+			return greenHistogram;
+		};
+
+		Histogram& GetBlueHistogram()
+		{
+			return blueHistogram;
+		};
 	};
-};
-
-/* ------------------------------------------------------------------- */
-
-class CRGBHistogram
-{
-private :
-	CHistogram				m_RedHisto;
-	CHistogram				m_GreenHisto;
-	CHistogram				m_BlueHisto;
-
-public :
-	CRGBHistogram() {};
-	virtual ~CRGBHistogram() {};
-
-	void	Clear()
-	{
-		m_RedHisto.Clear();
-		m_GreenHisto.Clear();
-		m_BlueHisto.Clear();
-	};
-
-	bool	IsInitialized()
-	{
-		return m_RedHisto.GetSize() && m_GreenHisto.GetSize() && m_BlueHisto.GetSize();
-	};
-
-	int	GetSize()
-	{
-		return m_RedHisto.GetSize();
-	};
-
-	void	SetSize(double fMax, double fStep)
-	{
-		m_RedHisto.SetSize(fMax, fStep);
-		m_GreenHisto.SetSize(fMax, fStep);
-		m_BlueHisto.SetSize(fMax, fStep);
-	};
-
-	void	SetSize(double fMax, int lNrValues)
-	{
-		m_RedHisto.SetSize(fMax, lNrValues);
-		m_GreenHisto.SetSize(fMax, lNrValues);
-		m_BlueHisto.SetSize(fMax, lNrValues);
-	};
-
-	void	AddValues(double fRed, double fGreen, double fBlue)
-	{
-		m_RedHisto.AddValue(fRed);
-		m_GreenHisto.AddValue(fGreen);
-		m_BlueHisto.AddValue(fBlue);
-	};
-
-	void	AddValues(const CRGBHistogram & RGBHistogram)
-	{
-		m_RedHisto.AddValues(RGBHistogram.m_RedHisto);
-		m_GreenHisto.AddValues(RGBHistogram.m_GreenHisto);
-		m_BlueHisto.AddValues(RGBHistogram.m_BlueHisto);
-	};
-
-	void	GetValues(int lValue, int & lNrReds, int & lNrGreens, int & lNrBlues)
-	{
-		lNrReds		= m_RedHisto.GetValue(lValue);
-		lNrGreens	= m_GreenHisto.GetValue(lValue);
-		lNrBlues	= m_BlueHisto.GetValue(lValue);
-	};
-
-	CHistogram & GetRedHistogram()
-	{
-		return m_RedHisto;
-	};
-
-	CHistogram & GetGreenHistogram()
-	{
-		return m_GreenHisto;
-	};
-
-	CHistogram & GetBlueHistogram()
-	{
-		return m_BlueHisto;
-	};
-};
-
-/* ------------------------------------------------------------------- */
+} // namespace DSS

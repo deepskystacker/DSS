@@ -138,7 +138,7 @@ class CFITSWriter;
 /* ------------------------------------------------------------------- */
 namespace DSS
 {
-	class StackedBitmap
+	class StackedBitmap final
 	{
 	private:
 		int						m_lWidth;
@@ -172,7 +172,7 @@ namespace DSS
 
 	public:
 		StackedBitmap();
-		virtual ~StackedBitmap() {};
+		~StackedBitmap() = default;
 
 		void	SetOutputSizes(int lWidth, int lHeight)
 		{
@@ -228,9 +228,9 @@ namespace DSS
 			HistoAdjust = m_HistoAdjust;
 		};
 
-		COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
-		COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
-		COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
+//		COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
+//		COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
+//		COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
 
 		std::tuple<double, double, double> getValues(size_t X, size_t Y) const
 		{
