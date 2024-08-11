@@ -13,7 +13,6 @@ std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* p
 
 	LightFrame.SetDetectionThreshold(m_fMinLuminancy);
 	LightFrame.SetHotPixelRemoval(m_bRemoveHotPixels);
-	LightFrame.SetRoundnessTolerance(2.0);
 
 	LightFrame.SetProgress(pProgress);
 	LightFrame.RegisterPicture(pBitmap);

@@ -11,62 +11,12 @@ namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
-class CRegisterInfo
-{
-public :
-	int			m_lNrStars;
-	double			m_fMinLuminancy;
-	double			m_fOverallQuality;
-
-private :
-	void	CopyFrom(const CRegisterInfo & ri)
-	{
-		m_lNrStars		= ri.m_lNrStars;
-		m_fMinLuminancy = ri.m_fMinLuminancy;
-		m_fOverallQuality = ri.m_fOverallQuality;
-	};
-
-public :
-	CRegisterInfo()
-	{
-		m_lNrStars			= 0;
-		m_fMinLuminancy		= 0;
-		m_fOverallQuality	= 0;
-	};
-
-	CRegisterInfo(const CRegisterInfo & ri)
-	{
-		CopyFrom(ri);
-	};
-
-	virtual ~CRegisterInfo()
-	{
-	};
-
-	const CRegisterInfo & operator = (const CRegisterInfo & ri)
-	{
-		CopyFrom(ri);
-		return (*this);
-	};
-
-	bool operator < (const CRegisterInfo & ri) const
-	{
-		return m_fMinLuminancy < ri.m_fMinLuminancy;
-	};
-};
-
-typedef std::vector<CRegisterInfo>		REGISTERINFOVECTOR;
-
-/* ------------------------------------------------------------------- */
-
-
-/* ------------------------------------------------------------------- */
-
 class CRegisteredFrame
 {
-public :
+public:
+	constexpr static double m_fRoundnessTolerance = 2.0;
+
 	STARVECTOR		m_vStars;
-	double			m_fRoundnessTolerance;
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
 	double			m_fBackground;
@@ -74,27 +24,11 @@ public :
 	double			m_fFWHM;
 	bool			m_bInfoOk;
 	bool			m_bComet;
-	double			m_fXComet,
-					m_fYComet;
+	double			m_fXComet;
+	double			m_fYComet;
 	CSkyBackground	m_SkyBackground;
 
-protected :
-	void	CopyFrom(const CRegisteredFrame & rf)
-	{
-		m_vStars				= rf.m_vStars;
-		m_fRoundnessTolerance	= rf.m_fRoundnessTolerance;
-		m_fMinLuminancy			= rf.m_fMinLuminancy;
-		m_bApplyMedianFilter	= rf.m_bApplyMedianFilter;
-		m_fBackground			= rf.m_fBackground;
-		m_fOverallQuality		= rf.m_fOverallQuality;
-		m_fFWHM					= rf.m_fFWHM;
-		m_bComet				= rf.m_bComet;
-		m_fXComet				= rf.m_fXComet;
-		m_fYComet				= rf.m_fYComet;
-		m_bInfoOk				= rf.m_bInfoOk;
-		m_SkyBackground			= rf.m_SkyBackground;
-	};
-
+protected:
 	void	Reset();
 	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
 
@@ -103,27 +37,20 @@ protected :
 		m_fOverallQuality = 0.0;
 		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
 			m_fOverallQuality += m_vStars[i].m_fQuality;
-	};
+	}
 
-public :
+public:
 	CRegisteredFrame()
 	{
 		Reset();
-	};
+	}
 
-	virtual ~CRegisteredFrame()
-	{
-	};
+	virtual ~CRegisteredFrame() = default;
 
 	void	SetDetectionThreshold(double fMinLuminancy)
 	{
 		m_fMinLuminancy = fMinLuminancy;
-	};
-
-	void	SetRoundnessTolerance(double fTolerance)
-	{
-		m_fRoundnessTolerance = fTolerance;
-	};
+	}
 
 	STARVECTOR GetStars() const
 	{
@@ -135,7 +62,7 @@ public :
 		m_vStars = vStars;
 		ComputeOverallQuality();
 		ComputeFWHM();
-	};
+	}
 
 	void	ComputeFWHM()
 	{
@@ -158,8 +85,7 @@ public :
 		return m_bInfoOk;
 	}
 
-	bool ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
-	size_t RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
+	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer);
 
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
@@ -168,7 +94,7 @@ public :
 /* ------------------------------------------------------------------- */
 
 class CLightFrameInfo : public CFrameInfo,
-						public CRegisteredFrame
+                        public CRegisteredFrame
 {
 public:
 	fs::path m_strInfoFileName;
