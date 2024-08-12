@@ -2,13 +2,19 @@
 
 class CMemoryBitmap;
 class C32BitsBitmap;
-namespace DSS { class StackingDlg; }
+
+namespace DSS
+{
+	class StackingDlg; 
+	class ImageViewer;
+}
 
 class LoadedImage
 {
 private:
 	friend class ImageLoader;
 	friend class DSS::StackingDlg;
+	friend class DSS::ImageViewer;
 
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	std::shared_ptr<QImage>	m_Image;
