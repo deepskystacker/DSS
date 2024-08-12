@@ -64,10 +64,9 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
-	const int rval = SimdSelector<Avx256Stacking, NonAvxStacking>(
+	return SimdSelector<Avx256Stacking, NonAvxStacking>(
 		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
 	);
-	return AvxSupport::zeroUpper(rval);
 }
 
 // ****************
@@ -80,12 +79,12 @@ int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 		return 1;
 
 	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
+		return AvxSupport::zeroUpper(0);
 	if (doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
-	return 1;
+		return AvxSupport::zeroUpper(0);
+	return AvxSupport::zeroUpper(1);
 }
 
 template <class T>
