@@ -12,6 +12,22 @@ Known problems:
 
 Changes since the last release:
 
+1. Fix to AVX support to prevent Illegal Instruction problem on earlier CPU types (e.g. Xeon X5650).
+
+Welcome to DeepSkyStacker 5.1.7
+===============================
+
+Only 64 bit versions of Windows 10 and later are supported in this release.
+
+This is primarily a bug fix release, but there are a few enhancements as well.  It supercedes 5.1.6 which is withdrawn.
+
+Known problems:
+
+1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
+   This requires too much work to fix in this release, as we will need to implement our own edit control.
+
+Changes since the last release:
+
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
 
 2. Modify CFITSIO 4.3.0 to support UTF-8 file names.  The fix has been submitted to the FITSIO team who look like they will adopt it.
