@@ -2,19 +2,26 @@
 
 class CMemoryBitmap;
 class C32BitsBitmap;
+class DeepSkyStackerLive;
+
 
 namespace DSS
 {
-	class StackingDlg; 
+	class FileRegistrar;
+	class FileStacker;
 	class ImageViewer;
+	class StackingDlg;
 }
 
 class LoadedImage
 {
 private:
 	friend class ImageLoader;
-	friend class DSS::StackingDlg;
+	friend class DeepSkyStackerLive;
+	friend class DSS::FileRegistrar;
+	friend class DSS::FileStacker;
 	friend class DSS::ImageViewer;
+	friend class DSS::StackingDlg;
 
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	std::shared_ptr<QImage>	m_Image;
