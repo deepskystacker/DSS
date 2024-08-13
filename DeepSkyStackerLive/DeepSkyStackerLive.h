@@ -117,7 +117,7 @@ protected slots:
 	void progress(const QString& str, int achieved, int total);
 	void endProgress();
 	void addImageToList(fs::path path);
-	void fileLoaded(std::shared_ptr<LoadedImage> image);
+	void fileLoaded(std::shared_ptr<LoadedImage> image, const fs::path fileName);
 	void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 	void fileNotStackable(fs::path file);
 	void fileStacked(std::shared_ptr<CLightFrameInfo> p);
