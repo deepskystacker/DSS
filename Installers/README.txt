@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.7
+Welcome to DeepSkyStacker 5.1.8
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -12,7 +12,15 @@ Known problems:
 
 Changes since the last release:
 
-1. Fix to AVX support to prevent Illegal Instruction problem on earlier CPU types (e.g. Xeon X5650).
+1. When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
+
+2. Bug fix: The circles around the stars and the comet stayed even after clearing the file list.
+
+3. Lower the minimum detection threshold for registering from 2% to 1%.
+
+4. Bug fix: Crash caused by trying to de-bayer 32 bits FITS files with the method AHD.
+
+5. Bug fix: AVX support to prevent Illegal Instruction problem on earlier CPU types (e.g. Xeon X5650).
 
 Welcome to DeepSkyStacker 5.1.7
 ===============================
