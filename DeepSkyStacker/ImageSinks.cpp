@@ -658,7 +658,7 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 
 		regFrame.m_fBackground = m_fBackground;
 		std::vector<double> buffer(rcReg.width() * rcReg.height());
-		regFrame.RegisterSubRect(m_GrayBitmap, rcReg, stars, buffer);
+		regFrame.RegisterSubRect(m_GrayBitmap, regFrame.m_fMinLuminancy, rcReg, stars, buffer);
 
 		vStars.assign(stars.cbegin(), stars.cend());
 	}

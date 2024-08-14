@@ -35,15 +35,12 @@
 **
 ****************************************************************************/
 
-class Workspace;
 class CAllStackingTasks;
 class QValidator;
 
 namespace Ui {
 	class RegisterSettings;
 }
-
-class Workspace;
 
 class RegisterSettings : public QDialog
 {
@@ -94,12 +91,13 @@ private slots:
 	void on_luminanceThreshold_valueChanged(int);
 	void on_computeDetectedStars_clicked();
 	void on_medianFilter_stateChanged(int);
+	void on_autoThreshold_changed(const int);
 
 
 
 private:
 	Ui::RegisterSettings *ui;
-	std::unique_ptr<Workspace> workspace;
+	std::unique_ptr<class Workspace> workspace;
 
 	bool					initialised;
 	bool					forceRegister;

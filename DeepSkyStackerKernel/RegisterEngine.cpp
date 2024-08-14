@@ -286,9 +286,9 @@ namespace {
 // getValue() returns values in the range [0.0, 256.0).
 // GetPixel() returns values in the range [0.0, 1.0).
 //
-size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer)
+size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer)
 {
-	double fMaxIntensity = std::numeric_limits<double>::min();
+	double maxIntensity = std::numeric_limits<double>::min();
 	size_t nStars{ 0 };
 
 	// Work with a local buffer. Copy the pixel values for the rect.
@@ -299,7 +299,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const D
 		{
 			const double value = inputBitmap.getValue(i, j); // Range [0, 256)
 			buffer[ndx] = value;
-			fMaxIntensity = std::max(fMaxIntensity, value);
+			maxIntensity = std::max(maxIntensity, value);
 		}
 	}
 
@@ -331,9 +331,9 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const D
 	};
 
 	const double backgroundLevel = 256.0 * getBackgroundValue(width, rc.height()); // Range [0.0, 256.0)
-	const double intensityThreshold = 256.0 * m_fMinLuminancy + backgroundLevel; // Range [0.0, 256.0)
+	const double intensityThreshold = 256.0 * detectionThreshold + backgroundLevel; // Range [0.0, 256.0)
 
-	if (fMaxIntensity >= intensityThreshold)
+	if (maxIntensity >= intensityThreshold)
 	{
 		// Find how many wanabee stars are existing above 90% maximum luminance
 
@@ -547,7 +547,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 		if (m_bComet)
 			fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
-		fileOut << QString{ "ThresholdPercent = %1" }.arg(100.0 * this->m_fMinLuminancy, 0, 'f', 3) << Qt::endl;
+		fileOut << QString{ "ThresholdPercent = %1" }.arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
 		fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
 		for (int i = 0; i<m_vStars.size();i++)
 		{
@@ -800,12 +800,18 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	std::atomic<int> nrSubrects{ 0 };
 	std::atomic<size_t> nStars{ 0 };
 
-	const auto stop = [&stars1](const double threshold) -> bool
+	auto stop = [&stars1, thres = m_fMinLuminancy](const double threshold) mutable -> bool
 	{
-		return stars1.size() >= 50 || threshold <= 0.00075;
+		return thres == 0
+			? stars1.size() >= 50 || threshold <= 0.00075
+			: true; // IF minLuminancy != 0 THEN return always true (=stop after the first iteration).
 	};
-	auto newThreshold = [&stars1, n1 = size_t{ 0 }, n2 = size_t{ 0 }](const double lastThreshold) mutable -> double
+	auto newThreshold = [&stars1, n1 = size_t{ 0 }, n2 = size_t{ 0 }, thres = m_fMinLuminancy](const double lastThreshold) mutable -> double
 	{
+		if (thres != 0) // IF minLuminancy != 0 THEN return that.
+			return thres;
+		if (lastThreshold < 0) // First iteration -> starting threshold is 0.65.
+			return 0.65;
 		n2 = n1;
 		n1 = stars1.size();
 		const double gradientFactor = (n1 != 0 && n2 != 0)
@@ -814,9 +820,16 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		return lastThreshold * 0.5 / (gradientFactor >= 1.0 ? gradientFactor : (0.5 * gradientFactor + 0.5));
 	};
 
-	for (double threshold = 0.65; !stop(threshold); threshold = newThreshold(threshold))
+	//
+	// IF m_fMinLuminancy == 0 THEN use the threshold optimization algorithm,
+	// ELSE make a single iteration with minLuminancy.
+	//
+
+	double threshold = -1;
+	//for (; !stop(threshold); threshold = newThreshold(threshold))
+	do
 	{
-		this->m_fMinLuminancy = threshold;
+		threshold = newThreshold(threshold);
 
 		int masterCount{ 0 };
 		const auto progress = [this, &nrSubrects, &nStars, &masterCount]() -> void
@@ -835,7 +848,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
-		const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
+		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
 					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer, std::vector<double>& buffer
 			) -> void
 		{
@@ -851,6 +864,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 					for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
 					{
 						nStars += RegisterSubRect(Bitmap,
+							threshold,
 							DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom),
 							stars,
 							buffer
@@ -931,12 +945,14 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 		if (m_pProgress)
 			m_pProgress->End2();
-	} // loop over thresholds
+
+	} while (!stop(threshold)); // loop over thresholds
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
+	usedDetectionThreshold = threshold;
 	ComputeOverallQuality();
 	ComputeFWHM();
-	ZTRACE_RUNTIME("Final threshold = %f; Found %zu stars.", this->m_fMinLuminancy, m_vStars.size());
+	ZTRACE_RUNTIME("Final threshold = %f; Found %zu stars.", threshold, m_vStars.size());
 }
 
 

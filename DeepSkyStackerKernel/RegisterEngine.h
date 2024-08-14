@@ -27,6 +27,8 @@ public:
 	double			m_fXComet;
 	double			m_fYComet;
 	CSkyBackground	m_SkyBackground;
+protected:
+	double usedDetectionThreshold{ 0.0 };
 
 protected:
 	void	Reset();
@@ -85,7 +87,7 @@ public:
 		return m_bInfoOk;
 	}
 
-	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer);
+	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer);
 
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
@@ -167,9 +169,9 @@ public:
 		else
 			return false;
 	}
-
+public:
 	void RegisterPicture(CMemoryBitmap* pBitmap);
-	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, DSS::ProgressBase* pProgress = nullptr);
+	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::ProgressBase* pProgress);
 	void SaveRegisteringInfo();
 
 private:

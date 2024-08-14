@@ -254,6 +254,13 @@
         </layout>
        </item>
        <item>
+        <widget class="QCheckBox" name="checkBox_autoThreshold">
+         <property name="text">
+          <string>Use automatic threshold</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <spacer name="verticalSpacer_4">
