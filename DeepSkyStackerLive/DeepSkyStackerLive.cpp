@@ -1191,9 +1191,9 @@ void DeepSkyStackerLive::removeFromListIfStatusIs(const QString& status)
 
 /* ------------------------------------------------------------------- */
 
-void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image)
+void DeepSkyStackerLive::fileLoaded(std::shared_ptr<LoadedImage> image, const fs::path fileName)
 {
-	QString name{ QString::fromStdU16String(image->fileName.filename().generic_u16string()) };
+	QString name{ QString::fromStdU16String(fileName.filename().generic_u16string()) };
 	lastImage->setLoadedImage(image);
 	lastImage->copyToClipboard->setVisible(true);
 	lastImage->information->setText(name);

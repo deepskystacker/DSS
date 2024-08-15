@@ -55,7 +55,7 @@ namespace DSS
 	signals:
 		void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = Qt::green);
 		void addImageToList(fs::path file);
-		void fileLoaded(std::shared_ptr<LoadedImage> image);
+		void fileLoaded(std::shared_ptr<LoadedImage> image, const fs::path fileName);
 		void fileRegistered(std::shared_ptr<CLightFrameInfo> lfi);
 		void addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi);
 		void fileNotStackable(fs::path file);
