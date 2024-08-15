@@ -361,7 +361,7 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
 {
 	if (!this->histoData.avxSupported)
-		return AvxSupport::zeroUpper(1);
+		return 1;
 
 	const size_t len = this->histoData.redBuffer.size();
 
@@ -371,7 +371,7 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistog
 	const auto blueAdjust = histoAdjust.GetBlueAdjust();
 
 	if (redAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || greenAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || blueAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT)
-		return AvxSupport::zeroUpper(2);
+		return 2;
 
 	for (size_t n = 0; n < len; ++n)
 	{
@@ -394,7 +394,7 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistog
 int Avx256BezierAndSaturation::avxToHsl()
 {
 	if (!this->histoData.avxSupported)
-		return AvxSupport::zeroUpper(1);
+		return 1;
 
 	const size_t len = this->histoData.redBuffer.size();
 
@@ -455,7 +455,7 @@ template <bool MarkOverAndUnderExposure>
 int Avx256BezierAndSaturation::avxToRgb()
 {
 	if (!this->histoData.avxSupported)
-		return AvxSupport::zeroUpper(1);
+		return 1;
 
 	const size_t len = this->histoData.redBuffer.size();
 	using VecType = __m256;
@@ -535,7 +535,7 @@ int Avx256BezierAndSaturation::avxToRgb<false>();
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
 	if (!this->histoData.avxSupported)
-		return AvxSupport::zeroUpper(1);
+		return 1;
 
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -565,9 +565,9 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
 	if (saturationShift == 0)
-		return AvxSupport::zeroUpper(0);
+		return 0;
 	if (!this->histoData.avxSupported)
-		return AvxSupport::zeroUpper(1);
+		return 1;
 
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);

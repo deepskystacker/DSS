@@ -143,7 +143,7 @@ namespace DSS
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
-		void imageLoad();
+		void imageLoad(std::filesystem::path p);
 		void imageLoadFailed();
 		
 		void toolBar_rectButtonPressed(bool checked);

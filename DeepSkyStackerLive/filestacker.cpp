@@ -387,7 +387,6 @@ namespace DSS
 		std::shared_ptr<CMemoryBitmap>	pStackedImage{ stackingEngine.getStackedImage() };
 
 		std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
-		loadedImage->fileName = file;
 		loadedImage->m_pBitmap = pStackedImage;
 		
 		if (pStackedImage)

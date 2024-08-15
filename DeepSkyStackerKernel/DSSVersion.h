@@ -3,14 +3,14 @@
 //#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 2
+#define DSSBETARELEASE 1
 constexpr int DSSBETAEXPIREYEAR = 2024;
 constexpr int DSSBETAEXPIREMONTH = 9;
 #endif
 
 #define DSSVER_MAJOR			5
 #define DSSVER_MINOR			1
-#define DSSVER_SUB				7
+#define DSSVER_SUB				8
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE

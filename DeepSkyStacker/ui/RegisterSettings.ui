@@ -235,7 +235,7 @@
          <item>
           <widget class="QSlider" name="luminanceThreshold">
            <property name="minimum">
-            <number>2</number>
+            <number>1</number>
            </property>
            <property name="maximum">
             <number>98</number>

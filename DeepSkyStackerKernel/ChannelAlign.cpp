@@ -18,7 +18,7 @@ void CChannelAlign::CopyBitmap(std::shared_ptr<const CMemoryBitmap> pSrcBitmap, 
 	const int lHeight = pSrcBitmap->Height();
 	const int lWidth = pSrcBitmap->Width();
 
-	BitmapIteratorConst itSrc{ pSrcBitmap };
+	BitmapIteratorConst<std::shared_ptr<const CMemoryBitmap>> itSrc{ pSrcBitmap };
 	BitmapIterator<CMemoryBitmap*> itTgt{ pTgtBitmap };
 
 	for (int j = 0; j < lHeight; j++)
@@ -42,7 +42,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone(true) };
 	pOutBitmap->Init(lWidth, lHeight);
 
-	PIXELDISPATCHVECTOR vPixels(16, {});
+	PIXELDISPATCHVECTOR vPixels(16, PIXELDISPATCHVECTOR::value_type{});
 
 	if (pProgress != nullptr)
 	{

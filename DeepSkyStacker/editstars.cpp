@@ -178,9 +178,10 @@ namespace DSS
 		m_fFWHM{ 0 },
 	//	m_fBackground{ 0 },
 	//	m_QualityGrid;
-		forceHere{ false }
+		forceHere{ false },
 	//	displayGrid{ false },
 	//	m_tipShowCount{ 0 }
+		disabled{ false }
 	{
 		ZASSERT(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -209,7 +210,7 @@ namespace DSS
 		refStars.clear();
 	}
 
-	void EditStars::setBitmap(std::shared_ptr<CMemoryBitmap>)
+	void EditStars::setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
 	{
 //		m_pBitmap = bmp;
 //		m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
@@ -217,6 +218,7 @@ namespace DSS
 //		m_fBackground = 0;
 //		if (static_cast<bool>(m_pBitmap))
 //			computeBackgroundValue();
+		this->disabled = !static_cast<bool>(bmp); // If bmp is empty (nullptr), then set disabled to true to prevent drawing events.
 	}
 
 	//
@@ -710,6 +712,8 @@ namespace DSS
 
 	void EditStars::draw()
 	{
+		if (this->disabled)
+			return;
 		//
 		// Note this creates the star/comet overlay pixmap the same size as the
 		// imageView control, *not* the size of the image.  This means all the

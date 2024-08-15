@@ -182,3 +182,20 @@ inline void ComputePixelDispatch(const QPointF& pt, const int lPixelSize, PIXELD
 			ComputePixelDispatch(pt + QPointF{ i, j }, vPixels);
 		}
 }
+
+inline std::array<double, 4> ComputeAll4PixelDispatches(const QPointF& pt, std::span<int, 4> xcoords, std::span<int, 4> ycoords)
+{
+	const double xf = std::floor(pt.x());
+	const double yf = std::floor(pt.y());
+	const int xfi = static_cast<int>(xf);
+	const int yfi = static_cast<int>(yf);
+	xcoords[0] = xfi; xcoords[1] = xfi + 1; xcoords[2] = xfi;     xcoords[3] = xfi + 1;
+	ycoords[0] = yfi; ycoords[1] = yfi;     ycoords[2] = yfi + 1; ycoords[3] = yfi + 1;
+
+	return {
+		(1.0 - pt.x() + xf) * (1.0 - pt.y() + yf),
+		(pt.x() - xf) * (1.0 - pt.y() + yf),
+		(1.0 - pt.x() + xf) * (pt.y() - yf),
+		(pt.x() - xf) * (pt.y() - yf)
+	};
+}

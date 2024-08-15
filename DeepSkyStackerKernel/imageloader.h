@@ -2,83 +2,77 @@
 
 class CMemoryBitmap;
 class C32BitsBitmap;
+class DeepSkyStackerLive;
+
+
+namespace DSS
+{
+	class FileRegistrar;
+	class FileStacker;
+	class ImageViewer;
+	class StackingDlg;
+}
 
 class LoadedImage
 {
-public:
-	fs::path fileName;
+private:
+	friend class ImageLoader;
+	friend class DeepSkyStackerLive;
+	friend class DSS::FileRegistrar;
+	friend class DSS::FileStacker;
+	friend class DSS::ImageViewer;
+	friend class DSS::StackingDlg;
+
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	std::shared_ptr<QImage>	m_Image;
-	int						lastUse;
-
-private:
-	void	CopyFrom(const LoadedImage& li)
-	{
-		fileName = li.fileName;
-		m_pBitmap = li.m_pBitmap;
-		m_Image = li.m_Image;
-		lastUse = li.lastUse;
-	};
 
 public:
-	LoadedImage() :
-		lastUse(0)
-	{
-	};
+	LoadedImage() = default;
+	explicit LoadedImage(auto&& pb, auto&& pi) :
+		m_pBitmap{ std::forward<decltype(pb)>(pb)},
+		m_Image{ std::forward<decltype(pi)>(pi)}
+	{}
+	LoadedImage(const LoadedImage&) noexcept = default;
+	LoadedImage(LoadedImage&&) noexcept = default;
+	~LoadedImage() = default;
+	LoadedImage& operator=(const LoadedImage&) noexcept = default;
+	LoadedImage& operator=(LoadedImage&&) noexcept = default;
 
-	LoadedImage(const LoadedImage& li)
+	void reset()
 	{
-		CopyFrom(li);
-	};
-
-	~LoadedImage()
-	{
-	};
-
-	LoadedImage& operator = (const LoadedImage& li)
-	{
-		CopyFrom(li);
-		return (*this);
-	};
-
-	bool operator < (const LoadedImage& li) const
-	{
-		return lastUse < li.lastUse;
-	};
-
-	void	reset()
-	{
-		fileName.clear();
 		m_Image.reset();
 		m_pBitmap.reset();
-		lastUse = 0;
-	};
-
+	}
 };
 
-class ImageLoader :
-    public QObject
+class ImageLoader : public QObject
 {
+	using CacheKeyType = std::filesystem::path;
+	using CacheValueType = std::tuple<LoadedImage, int, bool>; // <image, lastUse, currentlyLoading>
+	using CacheType = std::unordered_map<CacheKeyType, CacheValueType>;
+
 	friend class ThreadLoader;
 	Q_OBJECT
 
-    static const inline int16_t MAXIMAGESINCACHE{ 20 };
-	static inline std::mutex mutex{};
-	fs::path fileToLoad;
-	std::vector<LoadedImage>	imageVector;
+	static constexpr int16_t MAXIMAGESINCACHE = 20;
+	static inline constinit std::shared_mutex rwMutex{};
+	static inline constinit std::atomic_int age{ 0 };
+	static inline CacheType imageCache{};
+
+private:
+	void addOrUpdateCache(const CacheKeyType& key, LoadedImage&& loadedImage, const bool alreadyLoaded);
+	void limitCacheSize();
 
 public:
-	ImageLoader()
-	{}
-	virtual ~ImageLoader()
-	{}
+	ImageLoader() = default;
+	virtual ~ImageLoader() = default;
 
 	void	clearCache();
-	bool	load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
-	bool	load(const fs::path& file, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
+//	bool	load(const QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
+	bool	load(const fs::path file, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
 
 signals:
-	void imageLoaded();
+	void imageLoaded(std::filesystem::path p);
 	void imageLoadFailed();
 };
 
@@ -89,12 +83,13 @@ class ThreadLoader : public QObject, public QRunnable
 	void run() override;
 
 public:
-	ThreadLoader(ImageLoader * loader ) :
-		imageLoader(loader)
+	ThreadLoader(const std::filesystem::path& p, ImageLoader* loader) :
+		filepath{ p },
+		imageLoader{ loader }
 	{}
 
-	virtual ~ThreadLoader()
-	{}
+	virtual ~ThreadLoader() = default;
 
+	std::filesystem::path filepath;
 	ImageLoader* imageLoader;
 };
