@@ -163,11 +163,10 @@ namespace DSS
 			if (result)
 			{
 				std::shared_ptr<LoadedImage> loadedImage{ std::make_shared<LoadedImage>() };
-				loadedImage->fileName = file;
 				loadedImage->m_pBitmap = adb.m_pBitmap;
 				loadedImage->m_Image = adb.m_Image;
 
-				emit fileLoaded(loadedImage);
+				emit fileLoaded(loadedImage, file);
 
 				std::shared_ptr<CLightFrameInfo>  lfi {std::make_shared<CLightFrameInfo>()};
 				// Now register the image

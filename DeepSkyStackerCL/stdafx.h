@@ -60,6 +60,7 @@ using namespace Gdiplus;
 #include <inttypes.h>
 #include <filesystem>
 #include <boost/interprocess/sync/named_mutex.hpp>
+#include <ranges>
 
 #include "dssbase.h"
 
