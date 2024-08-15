@@ -370,7 +370,7 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHi
 	const auto greenAdjust = histoAdjust.GetGreenAdjust();
 	const auto blueAdjust = histoAdjust.GetBlueAdjust();
 
-	if (redAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || greenAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || blueAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT)
+	if (redAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || greenAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || blueAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot)
 		return 2;
 
 	for (size_t n = 0; n < len; ++n)
