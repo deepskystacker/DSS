@@ -436,7 +436,7 @@ namespace DSS
 		CLightFrameInfo bmpInfo;
 
 //		m_QualityGrid.clear();
-		bmpInfo.SetBitmap(name.toStdWString().c_str(), false);
+		bmpInfo.SetBitmap(name.toStdWString().c_str());
 		if (bmpInfo.m_bInfoOk)
 		{
 			// Get the stars back

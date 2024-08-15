@@ -575,7 +575,7 @@ namespace DSS
 				if (it->m_bChecked == Qt::Checked && it->IsLightFrame())
 				{
 					CLightFrameInfo bmpInfo;
-					bmpInfo.SetBitmap(it->filePath, false, false);
+					bmpInfo.SetBitmap(it->filePath);
 
 					//
 					// Update list information, but beware that you must use setData() for any of the columns
@@ -616,7 +616,7 @@ namespace DSS
 			if (it->filePath == fileName && it->IsLightFrame())
 			{
 				CLightFrameInfo bmpInfo;
-				bmpInfo.SetBitmap(it->filePath, false, false);
+				bmpInfo.SetBitmap(it->filePath);
 
 				//
 				// Update list information, but beware that you must use setData() for any of the columns

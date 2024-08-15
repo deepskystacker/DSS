@@ -446,7 +446,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 			for (auto& bitmap : task.m_vBitmaps)
 			{
 				CLightFrameInfo lfi;
-				lfi.SetBitmap(bitmap.filePath, false, false);
+				lfi.SetBitmap(bitmap.filePath);
 
 				if (lfi.IsRegistered())
 				{
@@ -475,7 +475,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		CFrameInfo				fi;
 		if (fi.InitFromFile(referenceFrame, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(referenceFrame, false, false);
+			lfi.SetBitmap(referenceFrame);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;

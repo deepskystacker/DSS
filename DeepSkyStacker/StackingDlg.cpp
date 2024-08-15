@@ -2277,7 +2277,7 @@ namespace DSS
 	{
 		// Check that the current light frame is registered (or not) and ask accordingly
 		CLightFrameInfo lfi;
-		lfi.SetBitmap(fileToShow, false, false);
+		lfi.SetBitmap(fileToShow);
 		if (!lfi.IsRegistered())
 		{
 			AskRegistering dlg;

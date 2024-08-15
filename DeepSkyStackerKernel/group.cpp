@@ -145,7 +145,7 @@ namespace DSS
 			{
 				CLightFrameInfo			bmpInfo;
 
-				bmpInfo.SetBitmap(file.c_str(), false);
+				bmpInfo.SetBitmap(file.c_str());
 				if (bmpInfo.m_bInfoOk)
 				{
 					lb.m_bRegistered = true;

@@ -606,7 +606,6 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 {
 	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
 	const auto unsuccessfulReturn = [this]() -> bool
 	{
@@ -714,14 +713,10 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 	}
 
 	ComputeFWHM();
-
 	m_bInfoOk = true;
-	bResult = true;
-
-	return bResult;
+	return true;
 }
 
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 void CLightFrameInfo::Reset()
@@ -762,8 +757,8 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
-	int lSubRectWidth;
-	int lSubRectHeight;
+	constexpr int SubRectWidth = STARMAXSIZE * 5;
+	constexpr int SubRectHeight = STARMAXSIZE * 5;
 	// int lProgress = 0;
 
 	// First computed median value
@@ -771,13 +766,9 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 	m_SkyBackground.m_fLight = m_fBackground;
 
-	lSubRectWidth = STARMAXSIZE * 5;
-	lSubRectHeight = STARMAXSIZE * 5;
-
-	const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / lSubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / lSubRectHeight * 2);
-
 	if (m_pProgress != nullptr)
 	{
+		const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / SubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / SubRectHeight * 2);
 		const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1", "IDS_REGISTERINGNAME").
 			arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, lNrSubRects);
@@ -1195,11 +1186,18 @@ void CLightFrameInfo::ComputeRedBlueShifting(CMemoryBitmap * pBitmap)
 	};
 };
 */
-/* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture()
+void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	Reset();
+	filePath = bitmap;
+	m_fMinLuminancy		= fMinLuminancy;
+	m_fBackground		= 0.0;
+	m_bRemoveHotPixels  = bRemoveHotPixels;
+	m_bApplyMedianFilter= bApplyMedianFilter ? true : false;
+	m_pProgress			= pProgress;
+
 	CBitmapInfo			bmpInfo;
 	bool				bLoaded;
 
@@ -1235,22 +1233,6 @@ void CLightFrameInfo::RegisterPicture()
 //			ComputeRedBlueShifting(pBitmap);
 		}
 	}
-}
-
-/* ------------------------------------------------------------------- */
-
-void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	Reset();
-	filePath = bitmap;
-	m_fMinLuminancy		= fMinLuminancy;
-	m_fBackground		= 0.0;
-	m_bRemoveHotPixels  = bRemoveHotPixels;
-	m_bApplyMedianFilter= bApplyMedianFilter ? true : false;
-	m_pProgress			= pProgress;
-
-	RegisterPicture();
 
 	m_pProgress = nullptr;
 }
@@ -1271,7 +1253,7 @@ void CLightFrameInfo::SaveRegisteringInfo()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bForceRegister)
+void CLightFrameInfo::SetBitmap(fs::path path/*, bool bProcessIfNecessary, bool bForceRegister*/)
 {
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -1287,11 +1269,12 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 
 	m_strInfoFileName = szInfoName;
 
-	if (bForceRegister || (!ReadInfoFileName() && bProcessIfNecessary))
-	{
-		RegisterPicture();
-		SaveRegisteringInfo();
-	}
+	ReadInfoFileName();
+	//if (bForceRegister || (!ReadInfoFileName() && bProcessIfNecessary))
+	//{
+	//	RegisterPicture();
+	//	SaveRegisteringInfo();
+	//}
 }
 
 /* ------------------------------------------------------------------- */
@@ -1412,7 +1395,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			const auto& bitmap{ bitmaps[bitmapNdx] };
 			auto lfInfo = std::make_unique<CLightFrameInfo>();
-			lfInfo->SetBitmap(bitmap.filePath, false, false);
+			lfInfo->SetBitmap(bitmap.filePath);
 			if (!bForce && lfInfo->IsRegistered())
 				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
 

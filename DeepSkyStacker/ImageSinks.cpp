@@ -523,7 +523,7 @@ void CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 	CLightFrameInfo bmpInfo;
 
 	m_QualityGrid.Clear();
-	bmpInfo.SetBitmap(szFileName, false);
+	bmpInfo.SetBitmap(szFileName);
 	if (bmpInfo.m_bInfoOk)
 	{
 		// Get the stars back

@@ -171,7 +171,7 @@ namespace DSS
 				std::shared_ptr<CLightFrameInfo>  lfi {std::make_shared<CLightFrameInfo>()};
 				// Now register the image
 
-				lfi->SetBitmap(file, false, false);
+				lfi->SetBitmap(file);
 				lfi->SetProgress(pProgress);
 				lfi->RegisterPicture(adb.m_pBitmap.get());
 				lfi->SaveRegisteringInfo();

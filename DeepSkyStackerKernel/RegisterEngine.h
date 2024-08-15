@@ -156,7 +156,7 @@ public:
 		m_pProgress = pProgress;
 	}
 
-	void SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
+	void SetBitmap(fs::path path/*, bool bProcessIfNecessary, bool bForceRegister*/);
 
 	bool operator<(const CLightFrameInfo& cbi) const
 	{
@@ -176,7 +176,6 @@ public:
 
 private:
 	bool ReadInfoFileName();
-	void RegisterPicture();
 	void RegisterPicture(CGrayBitmap& Bitmap);
 	double ComputeMedianValue(CGrayBitmap& Bitmap);
 	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
