@@ -27,19 +27,14 @@ public:
 	double			m_fXComet;
 	double			m_fYComet;
 	CSkyBackground	m_SkyBackground;
+	double meanQuality{ 0.0 };
 protected:
 	double usedDetectionThreshold{ 0.0 };
 
 protected:
-	void	Reset();
+	void Reset();
 	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
-
-	void	ComputeOverallQuality()
-	{
-		m_fOverallQuality = 0.0;
-		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
-			m_fOverallQuality += m_vStars[i].m_fQuality;
-	}
+	void ComputeOverallQuality();
 
 public:
 	CRegisteredFrame()

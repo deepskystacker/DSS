@@ -63,6 +63,7 @@ void CRegisteredFrame::Reset()
 
 	m_fOverallQuality = 0;
 	m_fFWHM = 0;
+	meanQuality = 0;
 }
 
 bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
@@ -171,6 +172,29 @@ bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 
 	return bResult;
 }
+
+void CRegisteredFrame::ComputeOverallQuality()
+{
+	m_fOverallQuality = std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double accu, const CStar& star) { return accu + star.m_fQuality; });
+
+	std::vector<int> indexes(m_vStars.size());
+	std::iota(indexes.begin(), indexes.end(), 0);
+	const auto Projector = [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fQuality; };
+	std::ranges::sort(indexes, std::greater{}, Projector); // Sort descending by quality of stars.
+	constexpr std::array<double, 12> weights = {10.0, 10.0, 10.0, 9.0, 9.0, 8.0, 6.0, 4.0, 2.0, 2.0, 2.0, 1.5 };
+	double sumWeights = 0;
+	double sum = 0;
+	for (int ndx = 0; const double q : std::views::transform(indexes, Projector))
+	{
+		const double w = ndx < 12 ? weights[ndx] : (ndx < 20 ? 1.0 : 0.2); // Star 0..11 weights-from-above, star 12..19 weight=1, then weight=0.2
+		sumWeights += w;
+		sum += w * q;
+		++ndx;
+	}
+
+	this->meanQuality = sumWeights != 0 ? sum / sumWeights : 0.0;
+}
+
 
 namespace {
 
@@ -1054,7 +1078,8 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 		this->usedDetectionThreshold = usedThres;
 		// IF auto-threshold: Take the threshold of the first lightframe as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
-		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars.", bitmapIndex, usedThres, m_vStars.size());
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Quality=%f; MeanQuality=%f",
+			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->meanQuality);
 	}
 }
 
