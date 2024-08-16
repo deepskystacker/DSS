@@ -176,8 +176,8 @@ public:
 
 private:
 	bool ReadInfoFileName();
-	double RegisterPicture(CGrayBitmap& Bitmap, const double threshold, const bool optimizeThreshold);
-	double ComputeMedianValue(CGrayBitmap& Bitmap);
+	double RegisterPicture(const CGrayBitmap& Bitmap, const double threshold, const bool optimizeThreshold);
+	double ComputeMedianValue(const CGrayBitmap& Bitmap);
 	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
 	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };

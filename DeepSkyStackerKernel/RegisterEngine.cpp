@@ -737,7 +737,7 @@ void CLightFrameInfo::Reset()
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
 }
 
-double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
+double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 {
 	double					fResult = 0.0;
 	CBackgroundCalibration	BackgroundCalibration;
@@ -752,7 +752,7 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 };
 
 
-double CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap, double threshold, const bool optimizeThreshold)
+double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const bool optimizeThreshold)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
