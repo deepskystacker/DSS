@@ -182,44 +182,6 @@ private:
 	std::shared_ptr<const CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };
 
-/* ------------------------------------------------------------------- */
-
-class CScoredLightFrame
-{
-public:
-	std::uint32_t	m_dwIndice;
-	double			m_fScore;
-
-private:
-	void CopyFrom(const CScoredLightFrame& slf)
-	{
-		m_dwIndice = slf.m_dwIndice;
-		m_fScore   = slf.m_fScore;
-	}
-
-public:
-	CScoredLightFrame(std::uint32_t dwIndice, double fScore) :
-		m_dwIndice{ dwIndice },
-		m_fScore{ fScore }
-	{}
-
-	CScoredLightFrame(const CScoredLightFrame& slf)
-	{
-		CopyFrom(slf);
-	}
-
-	const CScoredLightFrame& operator=(const CScoredLightFrame& slf)
-	{
-		CopyFrom(slf);
-		return (*this);
-	}
-
-	bool operator<(const CScoredLightFrame& slf) const
-	{
-		return (m_fScore > slf.m_fScore);
-	}
-};
-
 namespace DSS
 {
 	class ScoredLightFrame
