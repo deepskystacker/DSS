@@ -173,7 +173,7 @@ namespace DSS
 
 				lfi->SetBitmap(file);
 				lfi->SetProgress(pProgress);
-				lfi->RegisterPicture(adb.m_pBitmap.get());
+				lfi->RegisterPicture(adb.m_pBitmap.get(), -1);
 				lfi->SaveRegisteringInfo();
 				lfi->m_lISOSpeed = bmpInfo.m_lISOSpeed;
 				lfi->m_lGain = bmpInfo.m_lGain;

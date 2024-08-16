@@ -116,13 +116,13 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		lfiGreen.SetProgress(pProgress);
 		lfiBlue.SetProgress(pProgress);
 
-		lfiRed.RegisterPicture(pRed);
+		lfiRed.RegisterPicture(pRed, -1); // -1 means, we do NOT register a series of frames.
 		if (pProgress)
 			pProgress->Progress1(1);
-		lfiGreen.RegisterPicture(pGreen);
+		lfiGreen.RegisterPicture(pGreen, -1);
 		if (pProgress)
 			pProgress->Progress1(2);
-		lfiBlue.RegisterPicture(pBlue);
+		lfiBlue.RegisterPicture(pBlue, -1);
 		if (pProgress)
 			pProgress->Progress1(3);
 

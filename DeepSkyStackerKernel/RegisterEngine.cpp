@@ -751,9 +751,8 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 	return fResult;
 };
 
-/* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
+double CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap, double threshold, const bool optimizeThreshold)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
@@ -791,37 +790,25 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	std::atomic<int> nrSubrects{ 0 };
 	std::atomic<size_t> nStars{ 0 };
 
-	auto stop = [&stars1, thres = m_fMinLuminancy](const double threshold) mutable -> bool
+	const auto stop = [&stars1, optimizeThreshold](const double thres) -> bool
 	{
-		return thres == 0
-			? stars1.size() >= 50 || threshold <= 0.00075
-			: true; // IF minLuminancy != 0 THEN return always true (=stop after the first iteration).
+		return !optimizeThreshold || stars1.size() >= 50 || thres <= 0.00075; // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 	};
-	auto newThreshold = [&stars1, n1 = size_t{ 0 }, n2 = size_t{ 0 }, thres = m_fMinLuminancy](const double lastThreshold) mutable -> double
+	auto newThreshold = [&stars1, n1 = size_t{ 0 }, n2 = size_t{ 0 }, optimizeThreshold](const double lastThreshold) mutable -> double
 	{
-		if (thres != 0) // IF minLuminancy != 0 THEN return that.
-			return thres;
-		if (lastThreshold < 0) // First iteration -> starting threshold is 0.65.
-			return 0.65;
+		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
+			return lastThreshold;
 		n2 = n1;
 		n1 = stars1.size();
-		const double gradientFactor = (n1 != 0 && n2 != 0)
+		const double gradient = (n1 != 0 && n2 != 0)
 			?  (50.0 * n2) / (static_cast<double>(n1) * static_cast<double>(n1)) // 50 = wanted number of stars
 			: 1.0;
-		return lastThreshold * 0.5 / (gradientFactor >= 1.0 ? gradientFactor : (0.5 * gradientFactor + 0.5));
+		return lastThreshold * (lastThreshold >= 0.02 ? 0.5 : 0.8) / (gradient >= 1.0 ? gradient : (0.5 * gradient + 0.5));
 	};
 
-	//
-	// IF m_fMinLuminancy == 0 THEN use the threshold optimization algorithm,
-	// ELSE make a single iteration with minLuminancy.
-	//
-
-	double threshold = -1;
-	//for (; !stop(threshold); threshold = newThreshold(threshold))
+	double usedThreshold = threshold;
 	do
 	{
-		threshold = newThreshold(threshold);
-
 		int masterCount{ 0 };
 		const auto progress = [this, &nrSubrects, &nStars, &masterCount]() -> void
 		{
@@ -937,13 +924,14 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		if (m_pProgress)
 			m_pProgress->End2();
 
+		usedThreshold = threshold;
+		threshold = newThreshold(threshold);
 	} while (!stop(threshold)); // loop over thresholds
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
-	usedDetectionThreshold = threshold;
 	ComputeOverallQuality();
 	ComputeFWHM();
-	ZTRACE_RUNTIME("Final threshold = %f; Found %zu stars.", threshold, m_vStars.size());
+	return usedThreshold;
 }
 
 
@@ -1045,13 +1033,29 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 		return pGrayBitmap;
 }
 
-void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
+//
+// Note: Consistent results for auto-threshold registration are only guarateed if this function is called in the correct order of the lightframes. 
+// This is, because the threshold used in the previous run influences the current run. 
+//
+void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex)
 {
 	ZFUNCTRACE_RUNTIME();
 
+	constexpr double ThresholdStartingValue = 0.65;
+
+	const bool thresholdOptimization = this->m_fMinLuminancy == 0;
+	static double previousThreshold = ThresholdStartingValue;
+	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
+
 	const std::shared_ptr<CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
-		RegisterPicture(*pGrayBitmap);
+	{
+		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, thresholdOptimization);
+		this->usedDetectionThreshold = usedThres;
+		// IF auto-threshold: Take the threshold of the first lightframe as starting value for the following lightframes.
+		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
+		ZTRACE_RUNTIME("Final threshold = %f; Found %zu stars.", usedThres, m_vStars.size());
+	}
 }
 
 bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, double& fRedXShift, double& fRedYShift, double& fBlueXShift, double& fBlueYShift)
@@ -1229,7 +1233,7 @@ void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminan
 
 		if (bLoaded)
 		{
-			RegisterPicture(pBitmap.get());
+			RegisterPicture(pBitmap.get(), -1); // -1 means, we do NOT register a series of frames.
 //			ComputeRedBlueShifting(pBitmap);
 		}
 	}
@@ -1449,7 +1453,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			// Then register the light frame
 			lfInfo->SetProgress(pProgress);
-			lfInfo->RegisterPicture(pBitmap.get());
+			lfInfo->RegisterPicture(pBitmap.get(), static_cast<int>(j));
 			lfInfo->SaveRegisteringInfo();
 
 			++numberOfRegisteredLightframes;

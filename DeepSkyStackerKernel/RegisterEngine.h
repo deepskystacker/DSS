@@ -170,13 +170,13 @@ public:
 			return false;
 	}
 public:
-	void RegisterPicture(CMemoryBitmap* pBitmap);
+	void RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex);
 	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::ProgressBase* pProgress);
 	void SaveRegisteringInfo();
 
 private:
 	bool ReadInfoFileName();
-	void RegisterPicture(CGrayBitmap& Bitmap);
+	double RegisterPicture(CGrayBitmap& Bitmap, const double threshold, const bool optimizeThreshold);
 	double ComputeMedianValue(CGrayBitmap& Bitmap);
 	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
 	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);

@@ -15,7 +15,7 @@ std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* p
 	LightFrame.SetHotPixelRemoval(m_bRemoveHotPixels);
 
 	LightFrame.SetProgress(pProgress);
-	LightFrame.RegisterPicture(pBitmap);
+	LightFrame.RegisterPicture(pBitmap, -1); // -1 means, we do NOT register a series of frames.
 
 	const STARVECTOR vStars = LightFrame.GetStars();
 
