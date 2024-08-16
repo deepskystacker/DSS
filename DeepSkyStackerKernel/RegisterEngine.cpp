@@ -939,11 +939,11 @@ class CComputeLuminanceTask
 {
 public:
 	CGrayBitmap* m_pGrayBitmap;
-	CMemoryBitmap* m_pBitmap;
+	const CMemoryBitmap* m_pBitmap;
 	ProgressBase* m_pProgress;
 
 public:
-	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
+	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }
@@ -994,7 +994,7 @@ void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd
 }
 
 
-std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap)
+std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1023,7 +1023,7 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 
 	if (m_bApplyMedianFilter)
 	{
-		std::shared_ptr<CGrayBitmap> pFiltered = std::dynamic_pointer_cast<CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
+		std::shared_ptr<const CGrayBitmap> pFiltered = std::dynamic_pointer_cast<const CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
 		if (static_cast<bool>(pFiltered))
 			return pFiltered;
 		else
@@ -1047,14 +1047,14 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	static double previousThreshold = ThresholdStartingValue;
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
 
-	const std::shared_ptr<CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
+	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
 	{
 		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, thresholdOptimization);
 		this->usedDetectionThreshold = usedThres;
 		// IF auto-threshold: Take the threshold of the first lightframe as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
-		ZTRACE_RUNTIME("Final threshold = %f; Found %zu stars.", usedThres, m_vStars.size());
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars.", bitmapIndex, usedThres, m_vStars.size());
 	}
 }
 
@@ -1382,6 +1382,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 	// Number of image being registered.  Starts at 1 - goes up to nrRegisteredPictures
 	//
 	int imageNumber = 1;
+	int successfulRegisteredPictures = 0;
 
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
@@ -1419,7 +1420,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
 		{
-			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+			ZTRACE_RUNTIME("Register file # %d: %s", successfulRegisteredPictures, it->m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 
 			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
 			future = std::async(std::launch::async, readTask, j + 1, nullptr);
@@ -1453,7 +1454,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 			// Then register the light frame
 			lfInfo->SetProgress(pProgress);
-			lfInfo->RegisterPicture(pBitmap.get(), static_cast<int>(j));
+			lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++);
 			lfInfo->SaveRegisteringInfo();
 
 			++numberOfRegisteredLightframes;
@@ -1476,7 +1477,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 		// from that folder. This avoids alignment issues, because the stackinfo-file might 
 		// contain invalid (not matching new registration info) alignment (=offset) parameters.
 		//
-		ZTRACE_RUNTIME("Number of actually registered lightframes = %d", numberOfRegisteredLightframes);
+		ZTRACE_RUNTIME("Number of actually registered lightframes in this stack = %d", numberOfRegisteredLightframes);
 		if (numberOfRegisteredLightframes > 0)
 		{
 			for (const CFrameInfo& bitmap : it->m_pLightTask->m_vBitmaps)
@@ -1490,7 +1491,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 				}
 			}
 		}
-	}
+	} // Loop over tasks.
 
 	// Clear stuff
 	tasks.ClearCache();
