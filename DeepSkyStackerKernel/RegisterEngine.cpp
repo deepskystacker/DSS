@@ -800,40 +800,68 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	m_vStars.clear();
 
 	constexpr int StarMaxSize = static_cast<int>(STARMAXSIZE);
-	constexpr int rectSize = 5 * StarMaxSize;
-	constexpr int stepSize = rectSize / 2;
+	constexpr int RectSize = 5 * StarMaxSize;
+	constexpr int StepSize = RectSize / 2;
 	constexpr int Separation = 3;
 	const int calcHeight = Bitmap.Height() - 2 * StarMaxSize;
-	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
+	const int nrSubrectsY = (calcHeight - 1) / StepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
-	const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
+	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
 	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
+	constexpr size_t NumberOfWantedStars = 50;
 
-	STARSET stars1, stars2, stars3, stars4;
-	std::atomic<int> nrSubrects{ 0 };
-	std::atomic<size_t> nStars{ 0 };
+	int oneMoreIteration = 0;
 
-	const auto stop = [&stars1, optimizeThreshold](const double thres) -> bool
+	const auto stop = [optimizeThreshold, &oneMoreIteration](const double thres, const size_t nStars) -> bool
 	{
-		return !optimizeThreshold || stars1.size() >= 50 || thres <= 0.00075; // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
+		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
+			|| (oneMoreIteration == 2)
+			|| (oneMoreIteration != 1 && (nStars >= NumberOfWantedStars || thres <= 0.00075));
 	};
-	auto newThreshold = [&stars1, n1 = size_t{ 0 }, n2 = size_t{ 0 }, optimizeThreshold](const double lastThreshold) mutable -> double
+	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, optimizeThreshold](const double lastThreshold, const size_t nStars) mutable -> double
 	{
 		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
 			return lastThreshold;
-		n2 = n1;
-		n1 = stars1.size();
-		const double gradient = (n1 != 0 && n2 != 0)
-			?  (50.0 * n2) / (static_cast<double>(n1) * static_cast<double>(n1)) // 50 = wanted number of stars
-			: 1.0;
-		return lastThreshold * (lastThreshold >= 0.02 ? 0.5 : 0.8) / (gradient >= 1.0 ? gradient : (0.5 * gradient + 0.5));
+
+		n2 = n1; // Number of detected stars of last iteration.
+		n1 = nStars; // Current number of stars.
+
+		// We multiply the last threshold by a factor.
+		// If there are no stars detected yet (n1 == 0), that factor is 0.5.
+		// Otherwise, the factor is the geometric mean (sqrt(a*b)) of two sub-factors f1 and f2.
+		// f1 and f2 are calculated using an exponential function y = 1.05 - exp(-tau * x).
+		// For f1: x = avg(n1, n2); for f2: x = n1 - n2.
+		// If n1 is far beyond the number of wanted stars (3 x), we slightly increase the threshold again.
+
+		double factor = 0.5;
+		if (n1 != 0)
+		{
+			constexpr double Offset = 1.05;
+			constexpr double InfinityPoint = 5.0 + NumberOfWantedStars;
+			const double tau = std::log(Offset - 1.0) / (-InfinityPoint);
+			const double nAvg = (1 + n1 + n2) / 2;
+			const double nDelta = n1 - n2;
+			const bool tooManyStars = n1 >= 3 * NumberOfWantedStars;
+			oneMoreIteration = oneMoreIteration == 0 ? (tooManyStars ? 1 : 0) : 2; // IF number of stars too large -> add one iteration with increased threshold.
+			factor = tooManyStars
+				? std::sqrt(previousThreshold / lastThreshold) // Slightly increase threshold again (lastThreshold cannot be zero!).
+				: std::sqrt((Offset - std::exp(-tau * nAvg)) * (Offset - std::exp(-tau * nDelta)));
+		}
+		previousThreshold = lastThreshold;
+		return lastThreshold * std::clamp(factor, 0.05, 2.0);
 	};
 
 	double usedThreshold = threshold;
+	STARSET stars1;
 	do
 	{
+		stars1.clear();
+		STARSET stars2, stars3, stars4;
+		std::atomic<int> nrSubrects{ 0 };
+		std::atomic<size_t> nStars{ 0 };
 		int masterCount{ 0 };
+
 		const auto progress = [this, &nrSubrects, &nStars, &masterCount]() -> void
 		{
 			if (m_pProgress == nullptr)
@@ -850,7 +878,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
-		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
+		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars](
 					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer, std::vector<double>& buffer
 			) -> void
 		{
@@ -860,14 +888,14 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 				for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
 				{
-					const int top = StarMaxSize + rowNdx * stepSize;
-					const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
+					const int top = StarMaxSize + rowNdx * StepSize;
+					const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + RectSize);
 
 					for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
 					{
 						nStars += RegisterSubRect(Bitmap,
 							threshold,
-							DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom),
+							DSSRect(StarMaxSize + colNdx * StepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * StepSize + RectSize), bottom),
 							stars,
 							buffer
 						);
@@ -949,8 +977,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 			m_pProgress->End2();
 
 		usedThreshold = threshold;
-		threshold = newThreshold(threshold);
-	} while (!stop(threshold)); // loop over thresholds
+		threshold = newThreshold(threshold, stars1.size());
+	} while (!stop(threshold, stars1.size())); // loop over thresholds
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
 	ComputeOverallQuality();
