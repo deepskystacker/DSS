@@ -33,7 +33,7 @@ protected:
 
 protected:
 	void Reset();
-	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
+	void FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
 	void ComputeOverallQuality();
 
 public:

@@ -66,7 +66,7 @@ void CRegisteredFrame::Reset()
 	meanQuality = 0;
 }
 
-bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
+void CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 {
 	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
@@ -169,8 +169,6 @@ bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 			star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
 		}
 	}
-
-	return bResult;
 }
 
 void CRegisteredFrame::ComputeOverallQuality()
@@ -179,14 +177,17 @@ void CRegisteredFrame::ComputeOverallQuality()
 
 	std::vector<int> indexes(m_vStars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);
-	const auto Projector = [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fQuality; };
-	std::ranges::sort(indexes, std::greater{}, Projector); // Sort descending by quality of stars.
-	constexpr std::array<double, 12> weights = {10.0, 10.0, 10.0, 9.0, 9.0, 8.0, 6.0, 4.0, 2.0, 2.0, 2.0, 1.5 };
+	std::ranges::sort(indexes, std::greater{}, [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fIntensity; }); // Sort descending by ...
+	// Approximate a Gaussian weighting
+	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
 	double sumWeights = 0;
 	double sum = 0;
+	const auto Projector = [&stars = this->m_vStars](const int ndx) {
+		return stars[ndx].m_fQuality / (1.0 + stars[ndx].m_fDeltaRadius);
+	};
 	for (int ndx = 0; const double q : std::views::transform(indexes, Projector))
 	{
-		const double w = ndx < 12 ? weights[ndx] : (ndx < 20 ? 1.0 : 0.2); // Star 0..11 weights-from-above, star 12..19 weight=1, then weight=0.2
+		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
 		sumWeights += w;
 		sum += w * q;
 		++ndx;
@@ -371,10 +372,10 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 
 					if (fIntensity >= intensityThreshold)
 					{
-						// Check that this pixel is not already used in a wanabee star
 						bool bNew = true;
 						const QPoint ptTest{ i, j };
 
+						// Check that this pixel is not already used for another star.
 						for (STARSET::const_iterator it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.cend() && bNew; ++it) // Note: stars are sorted by x-coordinate.
 						{
 							if (it->IsInRadius(ptTest))
@@ -385,11 +386,23 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 
 						if (bNew)
 						{
-							// Search around the point until intensity is divided by 2
-							// STARMAXSIZE pixels radius max search
+							// Search around the point in 8 directions.
+							// If a brighter pixel is found -> NO star (either one pixel 5% brighter OR at least 2 pixels just brighter).
+							//
 							std::array<PixelDirection, 8> directions{ {
 								{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}
 							} };
+
+							// Hot pixel prevention.
+							int numberOfDarkerPixels = 0;
+							for (auto& direction : directions)
+							{
+								if (inputBitmap.getValue(i + direction.m_lXDir, j + direction.m_lYDir) - backgroundLevel < 0.5 * (fIntensity - backgroundLevel))
+									++numberOfDarkerPixels;
+							}
+							const bool isHotPixel = numberOfDarkerPixels >= 7; // IF most of the neighbor pixels are darker than 50% -> most likely a hot pixel.
+							if (isHotPixel)
+								continue;
 
 							bool bBrighterPixel = false;
 							bool bMainOk = true;
@@ -397,59 +410,71 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 
 							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
 							{
+								// Here just set the luminance values of the 8 directions in the distance 'testedRadius'.
 								for (auto& testPixel : directions)
 								{
 									inputBitmap.GetValue(i + testPixel.m_lXDir * testedRadius, j + testPixel.m_lYDir * testedRadius, testPixel.m_fIntensity); // [0, 256)
 								}
 
 								bMainOk = false;
-								for (auto& testPixel : directions)
+								for (auto& testPixel : directions) // Check in the 8 directions
 								{
 									if (bBrighterPixel) break;
-									if (testPixel.m_Ok)
+									if (testPixel.m_Ok) // m_Ok initialized to 2.
 									{
+										// Is the intensity in this direction and this distance smaller than 25% of the center pixel?
 										if (testPixel.m_fIntensity - backgroundLevel < 0.25 * (fIntensity - backgroundLevel))
 										{
 											testPixel.m_Radius = testedRadius;
 											--testPixel.m_Ok;
 											lMaxRadius = std::max(lMaxRadius, testedRadius);
 										}
+										// If we found a pixel brighter than +5% of the center -> stop, NO star at the center pixel.
 										else if (testPixel.m_fIntensity > 1.05 * fIntensity)
 											bBrighterPixel = true;
+										// ELSE just count the number of pixels that are brighter that the center.
 										else if (testPixel.m_fIntensity > fIntensity)
 											++testPixel.m_lNrBrighterPixels;
 									}
-
+									// As long as we did not yet find at least 2 pixels darker than 25% of the center -> cannot be a star.
 									if (testPixel.m_Ok)
 										bMainOk = true;
-									if (testPixel.m_lNrBrighterPixels > 2)
+									if (testPixel.m_lNrBrighterPixels > 2) // If at least 2 pixels are brighter than the center -> NO star.
 										bBrighterPixel = true;
-								}
+								} // Loop over 8 test directions.
 							}
-
-							// Check the roundness of the wanabee star
-							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
+							//
+							// If bMainOk == false -> there is a candidate star at the center pixel (i, j).
+							// This is the case, if
+							//   Max. 1 pixel brighter than the center, no pixel brighter than +5%.
+							//   In every of the 8 test directions we found 2 pixels that are darker than 25% of the center (above the background level).
+							//   The largest distance (over all directions) of such a darker pixel is at least 2 pixels (so stars cannot be too small).
+							//   - Additionally we stored for every direction the distance of the second of the darker pixels in m_Radius.
+							//
+							// Now, check the circularity (also called 'roundness') by evaluating the 
+							// radius (see above, the distance of the second of the darker pixels) and 
+							// comparing it for each direction to the other directions.
+							//
+							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 							{
-								// Radiuses should be within deltaRadius pixels of each others
-								//if (i>=1027 && i<=1035 && j>=2365 && j<=2372)
-								//	DebugBreak();
+								bool validCandidate = true;
 
-								bool bWanabeeStarOk = true;
-
-								for (size_t k1 = 0; (k1 < 4) && bWanabeeStarOk; k1++)
+								// Compare directions up, down, left, right: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
+								for (size_t k1 = 0; (k1 < 4) && validCandidate; k1++)
 								{
-									for (size_t k2 = 0; (k2 < 4) && bWanabeeStarOk; k2++)
+									for (size_t k2 = 0; (k2 < 4) && validCandidate; k2++)
 									{
-										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
-											bWanabeeStarOk = false;
+										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius) // deltaRadius is outermost loop 0 -> 4
+											validCandidate = false;
 									}
 								}
-								for (size_t k1 = 4; (k1 < 8) && bWanabeeStarOk; k1++)
+								// Compare the 4 diagonal directions: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
+								for (size_t k1 = 4; (k1 < 8) && validCandidate; k1++)
 								{
-									for (size_t k2 = 4; (k2 < 8) && bWanabeeStarOk; k2++)
+									for (size_t k2 = 4; (k2 < 8) && validCandidate; k2++)
 									{
 										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
-											bWanabeeStarOk = false;
+											validCandidate = false;
 									}
 								}
 
@@ -460,10 +485,10 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									std::accumulate(directions.cbegin() + 4, directions.cend(), 0.0, [](const double acc, const PixelDirection& d) { return acc + d.m_Radius; })
 									* 0.3535533905932737622; // sqrt(2.0) / 4.0;
 
-								int	lLeftRadius = 0;
-								int	lRightRadius = 0;
-								int	lTopRadius = 0;
-								int	lBottomRadius = 0;
+								int	lLeftRadius = 0; // Largest extension of star to the left of the center.
+								int	lRightRadius = 0; // Largest extension of star to the right of the center.
+								int	lTopRadius = 0; // Largest extension of star above the center.
+								int	lBottomRadius = 0; // Largest extension of star below the center.
 
 								for (const auto& testPixel : directions)
 								{
@@ -495,44 +520,44 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 								//    CDarkFrame::FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
 								// Every other function which used to use m_rcStar is now commented out -> not any more used.
 								// Ironically, this function uses the ("correct" ?) limits with < NOT <= :
+								// See DarkFrame.cpp, line 387:
 								//    for (int x = rcStar.left; x < rcStar.right; x++) 
 								//       for (int y = rcStar.top; y < rcStar.bottom; y++)
-
-
-								if (bWanabeeStarOk)
+								//
+								if (validCandidate)
 								{
 									// The new star to add:
 									CStar ms(ptTest.x(), ptTest.y());
 									ms.m_fIntensity = fIntensity / 256.0;
 									ms.m_rcStar = DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
 									ms.m_fPercentage = 1.0;
-									ms.m_fDeltaRadius = deltaRadius;
+									ms.m_fDeltaRadius = deltaRadius; // MT, Aug. 2024: m_fDeltaRadius is not used anywhere (although a valuable parameter).
 									ms.m_fMeanRadius= (fMeanRadius1 + fMeanRadius2) / 2.0;
 
 									constexpr double radiusFactor = 2.35 / 1.5;
 
-									// Compute the real position
+									// Compute the real position (correct m_fX, m_fY, m_fMeanRadius).
 									if (computeStarCenter(inputBitmap, ms.m_fX, ms.m_fY, ms.m_fMeanRadius, backgroundLevel * (1.0 / 256.0)))
 									{
 										// Check last overlap condition
 										{
-											for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * radiusFactor - STARMAXSIZE, 0)); it != stars.cend() && bWanabeeStarOk; ++it)
+											for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * radiusFactor - STARMAXSIZE, 0)); it != stars.cend() && validCandidate; ++it)
 											{
+												// If the candidate is closer to one of the already found stars -> NO candidate any more.
 												if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * radiusFactor)
-													bWanabeeStarOk = false;
-												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * radiusFactor + STARMAXSIZE)
+													validCandidate = false;
+												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * radiusFactor + STARMAXSIZE) // Stop if stars to compare are too far away in x-direction.
 													break;
 											}
 										}
-
 										// Check comet intersection
 										if (m_bComet)
 										{
 											if (ms.IsInRadius(m_fXComet, m_fYComet))
-												bWanabeeStarOk = false;
+												validCandidate = false;
 										}
 
-										if (bWanabeeStarOk)
+										if (validCandidate)
 										{
 											ms.m_fQuality = (10 - deltaRadius) + fIntensity / 256.0 - ms.m_fMeanRadius;
 											FindStarShape(&inputBitmap, ms);
@@ -542,8 +567,8 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									}
 								}
 							}
-						}
-					}
+						} // Pixel not already used for another star
+					} // fIntensity >= intensityThreshold ?
 				} // for i left -> right
 			} // for j top -> bottom
 		} // for deltaradius 0 -> 4
