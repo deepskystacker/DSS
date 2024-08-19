@@ -814,7 +814,7 @@ double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 };
 
 
-double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const bool optimizeThreshold)
+double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
@@ -847,17 +847,18 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
 	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
-	constexpr size_t NumberOfWantedStars = 50;
+	constexpr double LowestPossibleThreshold = 0.00075;
 
 	int oneMoreIteration = 0;
 
-	const auto stop = [optimizeThreshold, &oneMoreIteration](const double thres, const size_t nStars) -> bool
+	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
 		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 			|| (oneMoreIteration == 2)
-			|| (oneMoreIteration != 1 && (nStars >= NumberOfWantedStars || thres <= 0.00075));
+			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
 	};
-	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, optimizeThreshold](const double lastThreshold, const size_t nStars) mutable -> double
+	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
+		const double lastThreshold, const size_t nStars) mutable -> double
 	{
 		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
 			return lastThreshold;
@@ -876,11 +877,11 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		if (n1 != 0)
 		{
 			constexpr double Offset = 1.05;
-			constexpr double InfinityPoint = 5.0 + NumberOfWantedStars;
+			const double InfinityPoint = 5.0 + numberOfWantedStars;
 			const double tau = std::log(Offset - 1.0) / (-InfinityPoint);
 			const double nAvg = (1 + n1 + n2) / 2;
 			const double nDelta = n1 - n2;
-			const bool tooManyStars = n1 >= 3 * NumberOfWantedStars;
+			const bool tooManyStars = n1 >= std::max(3 * numberOfWantedStars, size_t{ 150 });
 			oneMoreIteration = oneMoreIteration == 0 ? (tooManyStars ? 1 : 0) : 2; // IF number of stars too large -> add one iteration with increased threshold.
 			factor = tooManyStars
 				? std::sqrt(previousThreshold / lastThreshold) // Slightly increase threshold again (lastThreshold cannot be zero!).
@@ -1136,11 +1137,13 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	const bool thresholdOptimization = this->m_fMinLuminancy == 0;
 	static double previousThreshold = ThresholdStartingValue;
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
+	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
+	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
 
 	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
 	{
-		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, thresholdOptimization);
+		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, numberWantedStars, thresholdOptimization);
 		this->usedDetectionThreshold = usedThres;
 		// IF auto-threshold: Take the threshold of the first lightframe as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
