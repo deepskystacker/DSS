@@ -531,7 +531,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									ms.m_fIntensity = fIntensity / 256.0;
 									ms.m_rcStar = DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
 									ms.m_fPercentage = 1.0;
-									ms.m_fDeltaRadius = deltaRadius; // MT, Aug. 2024: m_fDeltaRadius is not used anywhere (although a valuable parameter).
+									ms.m_fDeltaRadius = deltaRadius; // MT, Aug. 2024: m_fDeltaRadius was not used anywhere (although valuable). We now use it for the new quality measure.
 									ms.m_fMeanRadius= (fMeanRadius1 + fMeanRadius2) / 2.0;
 
 									constexpr double radiusFactor = 2.35 / 1.5;
@@ -577,9 +577,42 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 	return nStars;
 }
 
-/* ------------------------------------------------------------------- */
+namespace {
+	bool GetNextValue(QTextStream* fileIn, QString& strVariable, QString& strValue)
+	{
+		bool bResult = false;
+		strVariable.clear();
+		strValue.clear();
 
-bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
+		if (!fileIn->atEnd())
+		{
+			const QString strText = fileIn->readLine();
+			int nPos = strText.indexOf("="); // Search = sign
+			if (nPos >= 0)
+			{
+				strVariable = strText.left(nPos - 1).trimmed();
+				strValue = strText.right(strText.length() - nPos - 1).trimmed();
+			}
+			else
+			{
+				strVariable = strText.trimmed();
+			}
+			bResult = true;
+		}
+		return bResult;
+	}
+
+	constexpr char ThresholdParam[] = "ThresholdPercent";
+	constexpr char DeltaRadiusParam[] = "DeltaRadius";
+	constexpr char MeanQualityParam[] = "MeanQuality";
+
+	const QString paramString(std::string_view param, std::string_view part2)
+	{
+		return QString{ param.data() } + QString{ part2.data() };
+	}
+}
+
+bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 {
 	bool bResult = false;
 	QFile data(szInfoFileName);
@@ -589,6 +622,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	QTextStream fileOut(&data);	
 	{
 		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << paramString(MeanQualityParam, " = %1").arg(this->meanQuality, 0, 'f', 2) << Qt::endl;
 		fileOut << "RedXShift = 0.0" << Qt::endl;
 		fileOut << "RedYShift = 0.0" << Qt::endl;
 		fileOut << "BlueXShift = 0.0" << Qt::endl;
@@ -596,25 +630,28 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 		if (m_bComet)
 			fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
-		fileOut << QString{ "ThresholdPercent = %1" }.arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
+		fileOut << paramString(ThresholdParam, " = %1").arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
 		fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
-		for (int i = 0; i<m_vStars.size();i++)
+
+		for (int i = 0; const CStar& star : this->m_vStars)
 		{
 			fileOut << "Star# = " << i << Qt::endl;
-			fileOut << QString("Intensity = %1").arg(m_vStars[i].m_fIntensity, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("Quality = %1").arg(m_vStars[i].m_fQuality, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("MeanRadius = %1").arg(m_vStars[i].m_fMeanRadius, 0, 'f', 2) << Qt::endl;
-			fileOut << "Rect = " <<	m_vStars[i].m_rcStar.left << ", " <<
-									m_vStars[i].m_rcStar.top << ", " <<
-									m_vStars[i].m_rcStar.right << ", " <<
-									m_vStars[i].m_rcStar.bottom << Qt::endl;
-			fileOut << QString("Center = %1, %2").arg(m_vStars[i].m_fX, 0, 'f', 2).arg(m_vStars[i].m_fY, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
+			fileOut << paramString(DeltaRadiusParam, " = %1").arg(star.m_fDeltaRadius, 0, 'f', 2) << Qt::endl;
+			fileOut << "Rect = " << star.m_rcStar.left << ", "
+				<< star.m_rcStar.top << ", "
+				<< star.m_rcStar.right << ", "
+				<< star.m_rcStar.bottom << Qt::endl;
+			fileOut << QString("Center = %1, %2").arg(star.m_fX, 0, 'f', 2).arg(star.m_fY, 0, 'f', 2) << Qt::endl;
 			fileOut << QString("Axises = %1, %2, %3, %4, %5")
-									.arg(m_vStars[i].m_fMajorAxisAngle, 0, 'f', 2)
-									.arg(m_vStars[i].m_fLargeMajorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fSmallMajorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fLargeMinorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+				.arg(star.m_fMajorAxisAngle, 0, 'f', 2)
+				.arg(star.m_fLargeMajorAxis, 0, 'f', 2)
+				.arg(star.m_fSmallMajorAxis, 0, 'f', 2)
+				.arg(star.m_fLargeMinorAxis, 0, 'f', 2)
+				.arg(star.m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+			++i;
 		}
 		bResult = true;
 	}
@@ -623,35 +660,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
-namespace {
-bool GetNextValue(QTextStream* fileIn, QString& strVariable, QString& strValue)
-{
-	bool bResult = false;
-	strVariable.clear();
-	strValue.clear();
-	
-	if (!fileIn->atEnd())
-	{
-		const QString strText = fileIn->readLine();
-		int nPos = strText.indexOf("="); // Search = sign
-		if (nPos >= 0)
-		{
-			strVariable = strText.left(nPos - 1).trimmed();
-			strValue = strText.right(strText.length() - nPos - 1).trimmed();
-		}
-		else
-		{
-			strVariable = strText.trimmed();
-		}
-		bResult = true;
-	}
-	return bResult;
-}
-}
-
-/* ------------------------------------------------------------------- */
-
-bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
+bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 {
 	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
@@ -682,6 +691,8 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
 			m_fOverallQuality = strValue.toDouble();
+		if (0 == strVariable.compare(MeanQualityParam, Qt::CaseInsensitive))
+			this->meanQuality = strValue.toDouble();
 
 		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
 		{
@@ -711,7 +722,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fDeltaRadius = 0;
+		ms.m_fDeltaRadius = 1; // Old .info.txt files don't contain that parameter, so we set it to 1.
 
 		while (!bNextStar)
 		{
@@ -722,6 +733,8 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 				ms.m_fQuality = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
+			else if (!strVariable.compare(DeltaRadiusParam, Qt::CaseInsensitive))
+				ms.m_fDeltaRadius = strValue.toDouble();
 			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))
 			{
 				const QStringList items(strValue.split(","));
