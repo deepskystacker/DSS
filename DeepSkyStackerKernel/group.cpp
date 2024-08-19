@@ -150,6 +150,7 @@ namespace DSS
 				{
 					lb.m_bRegistered = true;
 					lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
+					lb.meanQuality = bmpInfo.meanQuality;
 					lb.m_fFWHM = bmpInfo.m_fFWHM;
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet = bmpInfo.m_bComet;

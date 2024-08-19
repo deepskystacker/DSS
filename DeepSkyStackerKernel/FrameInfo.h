@@ -124,6 +124,7 @@ public:
 	bool					m_bRegistered;
 	Qt::CheckState			m_bChecked;
 	double					m_fOverallQuality;
+	double					meanQuality;
 	double					m_fFWHM;
 	double					m_dX;
 	double					m_dY;
@@ -153,6 +154,7 @@ protected:
 		m_bRegistered = lb.m_bRegistered;
 		m_bChecked = lb.m_bChecked;
 		m_fOverallQuality = lb.m_fOverallQuality;
+		meanQuality = lb.meanQuality;
 		m_fFWHM = lb.m_fFWHM;
 		m_dX = lb.m_dX;
 		m_dY = lb.m_dY;
@@ -177,6 +179,7 @@ public:
 		m_bRegistered = false;
 		m_bChecked = Qt::Unchecked;
 		m_fOverallQuality = 0;
+		meanQuality = 0;
 		m_fFWHM = 0;
 		m_dX = 0;
 		m_dY = 0;
