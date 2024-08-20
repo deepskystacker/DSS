@@ -134,12 +134,14 @@ void ExplorerBar::onInitDialog()
 
 	ui->keepTracefile->setChecked(!traceControl.deleteOnExit());
 	ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
-	connect(ui->keepTracefile, &QCheckBox::stateChanged,
+	ui->showClipping->setChecked(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+	connect(ui->keepTracefile, &QCheckBox::stateChanged, 
 		this, &ExplorerBar::keepTraceChanged);
 	connect(ui->enableSounds, &QCheckBox::stateChanged,
 		this, &ExplorerBar::onEnableSoundsStateChanged);
+	connect(ui->showClipping, &QCheckBox::stateChanged,
+		this, &ExplorerBar::onShowClippingStateChanged);
 }
-
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
@@ -480,6 +482,12 @@ void ExplorerBar::onEnableSoundsStateChanged(int state)
 	Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
 	QSettings{}.setValue("Beep", (Qt::Checked == checked));
 
+}
+
+void ExplorerBar::onShowClippingStateChanged(int state)
+{
+	Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
+	QSettings{}.setValue("ShowBlackWhiteClipping", (Qt::Checked == checked));
 }
 
 #if QT_VERSION >= 0x060500

@@ -621,6 +621,29 @@ Tick this box to keep the trace file.</string>
              </property>
             </widget>
            </item>
+           <item>
+            <spacer name="verticalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>5</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="showClipping">
+             <property name="toolTip">
+              <string>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</string>
+             </property>
+             <property name="text">
+              <string>Show clipping for Black/White Points</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>

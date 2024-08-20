@@ -22,6 +22,8 @@ Changes since the last release:
 
 5. Bug fix: AVX support to prevent Illegal Instruction problem on earlier CPU types (e.g. Xeon X5650).
 
+6. Bug fix: Add check box to control display of Black/White clipping in Processing panel.
+
 Welcome to DeepSkyStacker 5.1.7
 ===============================
 

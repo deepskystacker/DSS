@@ -530,31 +530,36 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="844"/>
+        <location filename="../editstars.cpp" line="611"/>
+        <location filename="../editstars.cpp" line="1117"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Нажмите чтобы поставить комету здесь</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="846"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1119"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Добавить звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="853"/>
+        <location filename="../editstars.cpp" line="621"/>
+        <location filename="../editstars.cpp" line="1126"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Нажмите чтобы убрать комету</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="855"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1128"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Убрать звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="903"/>
+        <location filename="../editstars.cpp" line="665"/>
+        <location filename="../editstars.cpp" line="1176"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -564,7 +569,8 @@ FWHM: %3</source>
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="910"/>
+        <location filename="../editstars.cpp" line="672"/>
+        <location filename="../editstars.cpp" line="1183"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -572,7 +578,8 @@ Comet:%1</source>
 Комета:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="910"/>
+        <location filename="../editstars.cpp" line="672"/>
+        <location filename="../editstars.cpp" line="1183"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Да</translation>

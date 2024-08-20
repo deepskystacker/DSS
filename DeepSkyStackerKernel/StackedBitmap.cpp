@@ -86,7 +86,7 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 			pAvxBezierAndSaturation->avxToHsl(m_BezierAdjust.curvePoints);
 			pAvxBezierAndSaturation->avxBezierAdjust(bufferLen);
 			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			pAvxBezierAndSaturation->avxToRgb(true);
+			pAvxBezierAndSaturation->avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
 		}
 
 		const auto [redBuffer, greenBuffer, blueBuffer] = pAvxBezierAndSaturation->getBufferPtr();
@@ -406,7 +406,7 @@ HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			avxBezierAndSaturation.avxToRgb(true);
+			avxBezierAndSaturation.avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
 /*
 			if (avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust) != 0)
 			{
@@ -547,7 +547,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			avxBezierAndSaturation.avxToRgb(true);
+			avxBezierAndSaturation.avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
 
 			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
 
