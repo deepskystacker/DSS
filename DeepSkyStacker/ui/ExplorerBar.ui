@@ -635,7 +635,7 @@ Tick this box to keep the trace file.</string>
             </spacer>
            </item>
            <item>
-            <widget class="QCheckBox" name="showBlackWhiteClipping">
+            <widget class="QCheckBox" name="showClipping">
              <property name="toolTip">
               <string>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</string>
              </property>
