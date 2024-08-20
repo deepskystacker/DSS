@@ -1292,12 +1292,12 @@ Seleziona questa casella per conservare il file di traccia.</translation>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="640"/>
         <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation>Nel Processing Panel, mostra i pixel sotto il Black Level come blu e i pixel sopra il White Level come rossi.</translation>
+        <translation>Nel Pannello di Elaborazione, mostra i pixel al di sotto del Livello del Nero come blu ed i pixel al di sopra del Livello del Bianco come rossi.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="643"/>
         <source>Show clipping for Black/White Points</source>
-        <translation>Mostra ritaglio per punti bianchi/neri</translation>
+        <translation>Mostra il ritaglio per i punti bianchi/neri</translation>
     </message>
 </context>
 <context>
