@@ -770,6 +770,16 @@ Vink dit vakje aan om het tracebestand te behouden.</translation>
         <source>Enable progress sounds</source>
         <translation type="unfinished">Schakel voortgangsgeluiden in</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>Geef in het Processing Panel pixels onder het Black Level weer als blauw en pixels boven het White Level als rood.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Knipsel weergeven voor zwart/witpunten</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

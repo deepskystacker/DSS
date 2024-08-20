@@ -773,6 +773,16 @@ Cochez cette case pour conserver le fichier de trace.</translation>
         <source>Enable progress sounds</source>
         <translation type="unfinished">Activer les sons de progression</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>Dans le Processing Panel, affichez les pixels inférieurs au Black Level en bleu et les pixels supérieurs au White Level en rouge.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Afficher le clip pour les points noirs/blancs</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

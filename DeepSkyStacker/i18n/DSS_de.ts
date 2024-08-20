@@ -772,6 +772,16 @@ Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</tran
         <source>Enable progress sounds</source>
         <translation>Fortschrittsgeräusche aktivieren</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>Zeige im Processing Panel Pixel kleiner als der Black Level in blau und größer als der White Level in rot.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Limitierung von schwarzen/weißen Punkten anzeigen</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

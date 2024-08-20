@@ -774,6 +774,16 @@ Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
         <source>Enable progress sounds</source>
         <translation>Povolit zvuky postupu</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>Na Processing Panel zobrazte pixely pod Black Level jako modré a pixely nad White Level jako červené.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Zobrazit výstřižek pro černé/bílé body</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

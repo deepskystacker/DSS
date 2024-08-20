@@ -768,6 +768,16 @@ Marqueu aquesta casella per mantenir el fitxer de traça.</translation>
         <source>Enable progress sounds</source>
         <translation>Activa els sons de progrés</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>Al Processing Panel, mostreu els píxels per sota del Black Level com a blau i els píxels per sobre del White Level com a vermell.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Mostra el retall de punts blancs/negres</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

@@ -764,6 +764,16 @@ Tick this box to keep the trace file.</source>
         <source>Enable progress sounds</source>
         <translation type="unfinished">啟用進度聲音</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>在Processing Panel中，將 Black Level下方的像素顯示為藍色，將 White Level 上方的像素顯示為紅色。</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>顯示黑/白點的剪裁</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>

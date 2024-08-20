@@ -773,6 +773,16 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <source>Enable progress sounds</source>
         <translation type="unfinished">Activați sunetele de progres</translation>
     </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="640"/>
+    <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+    <translation>În Processing Panel, afișați pixelii de sub Black Level ca albastru și pixelii de deasupra White Level ca roșu.</translation>
+  </message>
+  <message>
+    <location filename="../ui/ExplorerBar.ui" line="643"/>
+    <source>Show clipping for Black/White Points</source>
+    <translation>Afișați decuparea pentru puncte alb/negru</translation>
+  </message>
 </context>
 <context>
     <name>DSS::Group</name>
