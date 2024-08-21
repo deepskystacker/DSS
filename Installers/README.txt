@@ -24,6 +24,8 @@ Changes since the last release:
 
 6. Bug fix: Add check box to control display of Black/White clipping in Processing panel.
 
+7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
+
 Welcome to DeepSkyStacker 5.1.6
 ===============================
 
