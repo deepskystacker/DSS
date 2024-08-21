@@ -791,7 +791,6 @@ int Avx256Stacking::pixelPartitioning()
 			__m256 fraction2 = _mm256_mul_ps(xfractional, yfrac1);
 			const __m256i xii = _mm256_cvttps_epi32(xtruncated);
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
-			const __m256i loopIndexMask = _mm256_cmpgt_epi32(outWidthVec, _mm256_add_epi32(_mm256_set1_epi32(8 * counter), _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7)));
 
 			// This is just a safety check that the loop over the columns of the input bitmap does not read beyond the line.
 			const __m256i loopIndexMask = _mm256_cmpgt_epi32(inputWidthVec, _mm256_add_epi32(_mm256_set1_epi32(8 * counter), _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7)));
