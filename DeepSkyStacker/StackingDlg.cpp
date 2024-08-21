@@ -1049,11 +1049,14 @@ namespace DSS
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
 		//
-		// Restore windowState of this and the table view's horizontal header
+		// Restore windowState of this and the table view's horizontal header.
+		// MT, Aug. 2024: The state currently has 331 bytes (after adding column MeanQuality).
+		// If you add columns, find out the new byte-size of the state, and adjust the comparison below.
 		//
 		QSettings settings;
-		pictureList->tableView->horizontalHeader()->restoreState(
-			settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
+		const QByteArray pictureTableState = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray();
+		if (pictureTableState.size() == 331)
+			pictureList->tableView->horizontalHeader()->restoreState(pictureTableState);
 		//
 		// If the model data changes let me know
 		//
