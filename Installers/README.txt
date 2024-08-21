@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8
+Welcome to DeepSkyStacker 5.1.7
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -22,7 +22,11 @@ Changes since the last release:
 
 5. Bug fix: AVX support to prevent Illegal Instruction problem on earlier CPU types (e.g. Xeon X5650).
 
-Welcome to DeepSkyStacker 5.1.7
+6. Bug fix: Add check box to control display of Black/White clipping in Processing panel.
+
+7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
+
+Welcome to DeepSkyStacker 5.1.6
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -82,7 +86,7 @@ Changes since the last release:
 
 23. Bug fix: Crash during startup while initialising the "Workspace" which caches the settings.
 
-24. Bug fix: Chrash during startup initialising ImageListModel array of icons.
+24. Bug fix: Crash during startup initialising ImageListModel array of icons.
 
 Welcome to DeepSkyStacker 5.1.5
 ===============================
