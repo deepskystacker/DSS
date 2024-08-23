@@ -689,17 +689,17 @@ Seçili satırları kaldırmak (silmemek) için Sil tuşu
 Menüyü görüntülemek için farenin sağ tuşu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1445"/>
+        <location filename="../StackingDlg.cpp" line="1449"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1454"/>
+        <location filename="../StackingDlg.cpp" line="1458"/>
         <source>Failed to load image %1</source>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1751"/>
+        <location filename="../StackingDlg.cpp" line="1769"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
@@ -710,36 +710,36 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         <translation>Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1410"/>
+        <location filename="../StackingDlg.cpp" line="1414"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Yükleniyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1502"/>
+        <location filename="../StackingDlg.cpp" line="1506"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>%1 dosyası, %2 (%3) grubunda zaten yüklü olduğu için yüklenmedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1526"/>
+        <location filename="../StackingDlg.cpp" line="1530"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Görüntü Dosyalarını aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1529"/>
+        <location filename="../StackingDlg.cpp" line="1533"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Siyah Dosyaları aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1547"/>
+        <location filename="../StackingDlg.cpp" line="1551"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Siyah Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1535"/>
+        <location filename="../StackingDlg.cpp" line="1539"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Düz Kareleri Aç...</translation>
@@ -759,13 +759,13 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1541"/>
+        <location filename="../StackingDlg.cpp" line="1545"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Ofset Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1764"/>
+        <location filename="../StackingDlg.cpp" line="1782"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -779,37 +779,37 @@ Siyah Düz Kareler: %4
 Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1847"/>
+        <location filename="../StackingDlg.cpp" line="1865"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Başka Bir Dosya Listesi Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2034"/>
+        <location filename="../StackingDlg.cpp" line="2052"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Sürüm %s indirilebilir.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2050"/>
+        <location filename="../StackingDlg.cpp" line="2068"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Sürüm kontrolü İnternet hata kodu %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2166"/>
+        <location filename="../StackingDlg.cpp" line="2184"/>
         <source>Total registering time: %1 %2</source>
         <translation>Toplam kayıt süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2185"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Hizalama için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2243"/>
+        <location filename="../StackingDlg.cpp" line="2261"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -819,19 +819,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker&apos;ın işlem sırasında bu klasörlere dosya oluşturması gerekiyor.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2264"/>
+        <location filename="../StackingDlg.cpp" line="2282"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Seçilen resimler uyumlu değil: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2268"/>
+        <location filename="../StackingDlg.cpp" line="2286"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>İstiflemek için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2315"/>
+        <location filename="../StackingDlg.cpp" line="2333"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -841,18 +841,18 @@ Do you want to save the changes?</source>
 Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2429"/>
+        <location filename="../StackingDlg.cpp" line="2447"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Toplam istifleme süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2460"/>
+        <location filename="../StackingDlg.cpp" line="2478"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2542"/>
+        <location filename="../StackingDlg.cpp" line="2560"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -955,7 +955,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="655"/>
+        <location filename="../DeepSkyStacker.cpp" line="656"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
@@ -2115,73 +2115,78 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)</translation>
         <translation>Yıldız tespiti için eşik değeri</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="274"/>
+        <location filename="../ui/RegisterSettings.ui" line="259"/>
+        <source>Use automatic threshold</source>
+        <translation>Otomatik eşik</translation>
+    </message>
+    <message>
+        <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
         <translation>Tespit edilen yıldızların sayısını hesapla</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="317"/>
+        <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
         <translation>Orta değer (median) Filtresi kullanarak gürültüyü azalt</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="158"/>
+        <location filename="../RegisterSettings.cpp" line="166"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>İstiflemeden önce siyah, düz ve Ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="161"/>
+        <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>İstiflemeden önce siyah ve düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="164"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="167"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="170"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>İstiflemeden önce siyah dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="173"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>İstiflemeden önce düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="176"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>İstiflemeden önce ofset dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="208"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="264"/>
+        <location filename="../RegisterSettings.cpp" line="272"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Hizalanıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="271"/>
+        <location filename="../RegisterSettings.cpp" line="279"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 yıldız</translation>
