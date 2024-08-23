@@ -550,6 +550,7 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
 	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
 		tableView->horizontalHeader()->saveState());
+	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/hashOfHeaders", StackingDlg::getHashOfTableViewHeaders(tableView));
 	settings.sync();
 };
 

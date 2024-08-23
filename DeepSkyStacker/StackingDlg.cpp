@@ -1049,15 +1049,6 @@ namespace DSS
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
 		//
-		// Restore windowState of this and the table view's horizontal header.
-		// MT, Aug. 2024: The state currently has 331 bytes (after adding column MeanQuality).
-		// If you add columns, find out the new byte-size of the state, and adjust the comparison below.
-		//
-		QSettings settings;
-		const QByteArray pictureTableState = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray();
-		if (pictureTableState.size() == 331)
-			pictureList->tableView->horizontalHeader()->restoreState(pictureTableState);
-		//
 		// If the model data changes let me know
 		//
 		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
@@ -1155,6 +1146,16 @@ namespace DSS
 			openFileList(fileList);			// Will call updateListInfo()
 		else
 			updateListInfo();
+
+		//
+		// Restore windowState of this and the table view's horizontal header.
+		// MT, Aug. 2024: We calculate a hash value over all header strings and save it in the Settings.
+		// We compare it with the current hash here. IF equal -> restore state, ELSE headers have changed (e.g. new column).
+		//
+		QSettings settings;
+		const size_t savedHash = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/hashOfHeaders", 0).value<size_t>();
+		if (savedHash == getHashOfTableViewHeaders(pictureList->tableView))
+			pictureList->tableView->horizontalHeader()->restoreState(settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
 
 		//
 		// Make sure the image list is visible
@@ -1746,6 +1747,20 @@ namespace DSS
 
 		return checkEditChanges() && checkWorkspaceChanges();
 	};
+
+	// static
+	size_t StackingDlg::getHashOfTableViewHeaders(const QTableView* const tableView)
+	{
+		if (tableView == nullptr)
+			return 0;
+
+		QString allHeaders;
+		for (const int ndx : std::views::iota(0, tableView->horizontalHeader()->count()))
+		{
+			allHeaders += tableView->model()->headerData(ndx, Qt::Horizontal).toString();
+		}
+		return std::hash<std::string>{}(allHeaders.toUtf8().toStdString());
+	}
 
 	/* ------------------------------------------------------------------- */
 
