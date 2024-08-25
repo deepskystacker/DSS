@@ -179,9 +179,8 @@ void CRegisteredFrame::ComputeOverallQuality()
 	std::iota(indexes.begin(), indexes.end(), 0);
 	const auto Projector = [&stars = this->m_vStars](const int ndx)
 	{
-		const double deltaRadius = stars[ndx].m_fDeltaRadius;
-		//		return stars[ndx].m_fQuality / (1.0 + stars[ndx].m_fDeltaRadius);
-		return deltaRadius;
+		return stars[ndx].m_fCircularity;
+//		return stars[ndx].m_fQuality / (1.0 + stars[ndx].m_fDeltaRadius);
 	};
 	std::ranges::sort(indexes, std::greater{}, Projector); // [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fIntensity; }); // Sort descending by ...
 	// Approximate a Gaussian weighting
@@ -557,7 +556,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									ms.m_fIntensity = fIntensity / 256.0;
 									ms.m_rcStar = DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
 									ms.m_fPercentage = 1.0;
-									ms.m_fDeltaRadius = (fIntensity - intensityThreshold) / (radiusRatio - 0.95); // MT, Aug. 2024: m_fDeltaRadius was not used anywhere (although valuable). We now use it for the new quality measure.
+									ms.m_fCircularity = (fIntensity - intensityThreshold) / (radiusRatio - 0.95); // MT, Aug. 2024: m_fDeltaRadius was not used anywhere.
 									ms.m_fMeanRadius= (fMeanRadius1 + fMeanRadius2) / 2.0;
 
 									constexpr double radiusFactor = 2.35 / 1.5;
@@ -629,7 +628,7 @@ namespace {
 	}
 
 	constexpr char ThresholdParam[] = "ThresholdPercent";
-	constexpr char DeltaRadiusParam[] = "DeltaRadius";
+	constexpr char CircularityParam[] = "Circularity";
 	constexpr char MeanQualityParam[] = "MeanQuality";
 
 	const QString paramString(std::string_view param, std::string_view part2)
@@ -665,7 +664,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 			fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
 			fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
 			fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
-			fileOut << paramString(DeltaRadiusParam, " = %1").arg(star.m_fDeltaRadius, 0, 'f', 2) << Qt::endl;
+			fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
 			fileOut << "Rect = " << star.m_rcStar.left << ", "
 				<< star.m_rcStar.top << ", "
 				<< star.m_rcStar.right << ", "
@@ -748,7 +747,7 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fDeltaRadius = 1; // Old .info.txt files don't contain that parameter, so we set it to 1.
+		ms.m_fCircularity = 1; // Old .info.txt files don't contain that parameter, so we set it to 1.
 
 		while (!bNextStar)
 		{
@@ -759,8 +758,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 				ms.m_fQuality = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
-			else if (!strVariable.compare(DeltaRadiusParam, Qt::CaseInsensitive))
-				ms.m_fDeltaRadius = strValue.toDouble();
+			else if (!strVariable.compare(CircularityParam, Qt::CaseInsensitive))
+				ms.m_fCircularity = strValue.toDouble();
 			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))
 			{
 				const QStringList items(strValue.split(","));

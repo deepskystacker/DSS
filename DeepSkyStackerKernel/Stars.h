@@ -9,7 +9,7 @@ public:
 	DSSRect			m_rcStar{};
 	double			m_fIntensity{ 0.0 };
 	double			m_fPercentage{ 0.0 };
-	double			m_fDeltaRadius{ 0.0 };
+	double			m_fCircularity{ 0.0 };
 	double			m_fQuality{ 0.0 };
 	double			m_fMeanRadius{ 0.0 };
 	double			m_fX{ 0.0 };
