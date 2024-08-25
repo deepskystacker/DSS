@@ -177,14 +177,17 @@ void CRegisteredFrame::ComputeOverallQuality()
 
 	std::vector<int> indexes(m_vStars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);
-	std::ranges::sort(indexes, std::greater{}, [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fIntensity; }); // Sort descending by ...
+	const auto Projector = [&stars = this->m_vStars](const int ndx)
+	{
+		const double deltaRadius = stars[ndx].m_fDeltaRadius;
+		//		return stars[ndx].m_fQuality / (1.0 + stars[ndx].m_fDeltaRadius);
+		return deltaRadius;
+	};
+	std::ranges::sort(indexes, std::greater{}, Projector); // [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fIntensity; }); // Sort descending by ...
 	// Approximate a Gaussian weighting
 	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
 	double sumWeights = 0;
 	double sum = 0;
-	const auto Projector = [&stars = this->m_vStars](const int ndx) {
-		return stars[ndx].m_fQuality / (1.0 + stars[ndx].m_fDeltaRadius);
-	};
 	for (int ndx = 0; const double q : std::views::transform(indexes, Projector))
 	{
 		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
@@ -322,13 +325,13 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 	{
 		for (size_t i = rc.left; i < rc.right; ++i, ++ndx)
 		{
-			const double value = inputBitmap.getValue(i, j); // Range [0, 256)
+			const double value = inputBitmap.getUncheckedValue(i, j); // Range [0, 256)
 			buffer[ndx] = value;
 			maxIntensity = std::max(maxIntensity, value);
 		}
 	}
 
-	const auto getValue = [&buffer, top = rc.top, left = rc.left, width](const int x, const int y) -> double
+	const auto getBufferedValue = [&buffer, top = rc.top, left = rc.left, width](const int x, const int y) -> double
 	{
 		return buffer[(y - top) * width + x - left];
 	};
@@ -368,7 +371,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 			{
 				for (int i = rc.left; i < rc.right; i++)
 				{
-					const double fIntensity = getValue(i, j); // [0, 256)
+					const double fIntensity = getBufferedValue(i, j); // [0, 256)
 
 					if (fIntensity >= intensityThreshold)
 					{
@@ -390,31 +393,43 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 							// If a brighter pixel is found -> NO star (either one pixel 5% brighter OR at least 2 pixels just brighter).
 							//
 							std::array<PixelDirection, 8> directions{ {
-								{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}
+							//  down     right   up      left     dn-right up-right up-left  dn-left
+								{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1},  {-1, 1}, {-1, -1} // Note: DO NOT change the order of these directions, you risk confusing the algorithm!
 							} };
+							// Set the luminance values of the 8 directions.
+							for (auto& testPixel : directions)
+							{
+								inputBitmap.GetValue(i + testPixel.m_lXDir, j + testPixel.m_lYDir, testPixel.m_fIntensity); // [0, 256)
+							}
 
 							// Hot pixel prevention.
-							int numberOfDarkerPixels = 0;
-							for (auto& direction : directions)
+							const auto isHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
 							{
-								if (inputBitmap.getValue(i + direction.m_lXDir, j + direction.m_lYDir) - backgroundLevel < 0.5 * (fIntensity - backgroundLevel))
-									++numberOfDarkerPixels;
-							}
-							const bool isHotPixel = numberOfDarkerPixels >= 7; // IF most of the neighbor pixels are darker than 50% -> most likely a hot pixel.
-							if (isHotPixel)
-								continue;
+								int numberOfDarkerPixels = 0;
+								int numberOfMuchDarkerPixels = 0;
+								for (const auto& direction : directions)
+								{
+									const double testValue = direction.m_fIntensity - backgroundLevel;
+									if (testValue < th1)
+									{
+										++numberOfDarkerPixels;
+										if (testValue < th2)
+											++numberOfMuchDarkerPixels;
+									}
+								}
+								return numberOfDarkerPixels >= 7 && numberOfMuchDarkerPixels >= 4;
+							};
 
 							bool bBrighterPixel = false;
-							bool bMainOk = true;
+							bool bMainOk = !isHotPixel(); // true;
 							int	lMaxRadius = 0;
 
 							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
 							{
 								// Here just set the luminance values of the 8 directions in the distance 'testedRadius'.
-								for (auto& testPixel : directions)
-								{
-									inputBitmap.GetValue(i + testPixel.m_lXDir * testedRadius, j + testPixel.m_lYDir * testedRadius, testPixel.m_fIntensity); // [0, 256)
-								}
+								if (testedRadius > 1)
+									for (auto& testPixel : directions)
+										inputBitmap.GetValue(i + testPixel.m_lXDir * testedRadius, j + testPixel.m_lYDir * testedRadius, testPixel.m_fIntensity); // [0, 256)
 
 								bMainOk = false;
 								for (auto& testPixel : directions) // Check in the 8 directions
@@ -432,7 +447,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 										// If we found a pixel brighter than +5% of the center -> stop, NO star at the center pixel.
 										else if (testPixel.m_fIntensity > 1.05 * fIntensity)
 											bBrighterPixel = true;
-										// ELSE just count the number of pixels that are brighter that the center.
+										// ELSE just count the number of pixels that are brighter than the center.
 										else if (testPixel.m_fIntensity > fIntensity)
 											++testPixel.m_lNrBrighterPixels;
 									}
@@ -457,26 +472,37 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 							//
 							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 							{
-								bool validCandidate = true;
+								const auto compareDeltaRadii = [deltaRadius, &directions](const size_t dir1, const size_t dir2) -> bool
+								{
+									for (size_t k1 = dir1; k1 < dir2; ++k1)
+									{
+										const auto radiusToCompare = directions[k1].m_Radius;
+										for (size_t k2 = dir1; k2 < dir2; ++k2)
+										{
+											if (std::abs(directions[k2].m_Radius - radiusToCompare) > deltaRadius)
+												return false;
+										}
+									}
+									return true;
+								};
 
 								// Compare directions up, down, left, right: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
-								for (size_t k1 = 0; (k1 < 4) && validCandidate; k1++)
+								// Compare the 4 diagonal directions: delta of radii must also be smaller than deltaRadius.
+								bool validCandidate = compareDeltaRadii(0, 4) && compareDeltaRadii(4, 8);
+
+								// Additional check for super-small stars (which could be "larger" hot-pixels).
+								// The ratio of the radii must not be too large.
+								double radiusRatio = 1.0;
+								const auto checkRadiusRatio = [&directions, &radiusRatio](const size_t d1, const size_t d2, const size_t d3, const size_t d4) -> bool
 								{
-									for (size_t k2 = 0; (k2 < 4) && validCandidate; k2++)
-									{
-										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius) // deltaRadius is outermost loop 0 -> 4
-											validCandidate = false;
-									}
-								}
-								// Compare the 4 diagonal directions: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
-								for (size_t k1 = 4; (k1 < 8) && validCandidate; k1++)
-								{
-									for (size_t k2 = 4; (k2 < 8) && validCandidate; k2++)
-									{
-										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
-											validCandidate = false;
-									}
-								}
+									const auto diameter1 = directions[d1].m_Radius + directions[d2].m_Radius;
+									const auto diameter2 = directions[d3].m_Radius + directions[d4].m_Radius;
+									const double ratio1 = diameter1 != 0 ? diameter2 / static_cast<double>(diameter1) : 0; // 0 if one of the diameters is 0
+									const double ratio2 = diameter2 != 0 ? diameter1 / static_cast<double>(diameter2) : 0; // 0 if one of the diameters is 0
+									radiusRatio = std::max(radiusRatio, std::max(ratio1, ratio2));
+									return ratio1 <= 1.3 && ratio2 <= 1.3;
+								};
+								validCandidate = validCandidate && checkRadiusRatio(0, 2, 1, 3) && checkRadiusRatio(4, 6, 5, 7);
 
 								const double fMeanRadius1 = // top, bottom, left, right
 									std::accumulate(directions.cbegin(), directions.cbegin() + 4, 0.0, [](const double acc, const PixelDirection& d) { return acc + d.m_Radius; })
@@ -531,7 +557,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									ms.m_fIntensity = fIntensity / 256.0;
 									ms.m_rcStar = DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
 									ms.m_fPercentage = 1.0;
-									ms.m_fDeltaRadius = deltaRadius; // MT, Aug. 2024: m_fDeltaRadius was not used anywhere (although valuable). We now use it for the new quality measure.
+									ms.m_fDeltaRadius = (fIntensity - intensityThreshold) / (radiusRatio - 0.95); // MT, Aug. 2024: m_fDeltaRadius was not used anywhere (although valuable). We now use it for the new quality measure.
 									ms.m_fMeanRadius= (fMeanRadius1 + fMeanRadius2) / 2.0;
 
 									constexpr double radiusFactor = 2.35 / 1.5;
