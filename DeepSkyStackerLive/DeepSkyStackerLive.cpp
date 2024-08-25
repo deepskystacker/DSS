@@ -613,6 +613,7 @@ void DeepSkyStackerLive::onInitialise()
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
 		case ImageListColumns::Score:
+		case ImageListColumns::MeanQuality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
 		case ImageListColumns::dX:
@@ -1145,6 +1146,7 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
 		case ImageListColumns::Score:
+		case ImageListColumns::MeanQuality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
 		case ImageListColumns::dX:
