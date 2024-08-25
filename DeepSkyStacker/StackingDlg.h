@@ -231,7 +231,7 @@ namespace DSS
 			return !selectRect.isEmpty();
 		}
 
-		static size_t getHashOfTableViewHeaders(const QTableView* const tableView);
+		static int getNumberOfTableViewColumns(const QTableView* const tableView);
 
 	protected:
 		void changeEvent(QEvent* e) override;

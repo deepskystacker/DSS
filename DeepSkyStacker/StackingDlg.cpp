@@ -1146,15 +1146,14 @@ namespace DSS
 			openFileList(fileList);			// Will call updateListInfo()
 		else
 			updateListInfo();
-
 		//
 		// Restore windowState of this and the table view's horizontal header.
-		// MT, Aug. 2024: We calculate a hash value over all header strings and save it in the Settings.
-		// We compare it with the current hash here. IF equal -> restore state, ELSE headers have changed (e.g. new column).
+		// MT, Aug. 2024: We additionally save in the Settings the number of columns that have been saved last time.
+		// We compare it with the current number of columns. IF equal -> restore state, ELSE headers have changed (e.g. new column).
 		//
 		QSettings settings;
-		const size_t savedHash = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/hashOfHeaders", 0).value<size_t>();
-		if (savedHash == getHashOfTableViewHeaders(pictureList->tableView))
+		const int numberOfSavedColumns = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/numberOfColumns", 0).toInt();
+		if (numberOfSavedColumns == getNumberOfTableViewColumns(pictureList->tableView))
 			pictureList->tableView->horizontalHeader()->restoreState(settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
 
 		//
@@ -1749,17 +1748,9 @@ namespace DSS
 	};
 
 	// static
-	size_t StackingDlg::getHashOfTableViewHeaders(const QTableView* const tableView)
+	int StackingDlg::getNumberOfTableViewColumns(const QTableView* const tableView)
 	{
-		if (tableView == nullptr)
-			return 0;
-
-		QString allHeaders;
-		for (const int ndx : std::views::iota(0, tableView->horizontalHeader()->count()))
-		{
-			allHeaders += tableView->model()->headerData(ndx, Qt::Horizontal).toString();
-		}
-		return std::hash<std::string>{}(allHeaders.toUtf8().toStdString());
+		return tableView == nullptr ? 0 : tableView->horizontalHeader()->count();
 	}
 
 	/* ------------------------------------------------------------------- */
