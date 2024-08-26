@@ -33,7 +33,7 @@ protected:
 
 protected:
 	void Reset();
-	void FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
+	void FindStarShape(const CGrayBitmap& bitmap, CStar& star);
 	void ComputeOverallQuality();
 
 public:
@@ -82,7 +82,7 @@ public:
 		return m_bInfoOk;
 	}
 
-	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::vector<double>& buffer);
+	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
