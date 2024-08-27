@@ -331,7 +331,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 				const double value = inputBitmap.getUncheckedValue(x, y); // Range [0, 256)
 				if constexpr (WithHisto) {
 					maxIntensity = std::max(maxIntensity, value);
-					++histo[static_cast<size_t>(value * 32.0)];
+					++histo[value * 32.0]; // Implicit type cast generates the fastest code.
 				}
 			}
 	};
