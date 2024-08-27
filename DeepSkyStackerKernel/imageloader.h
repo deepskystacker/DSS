@@ -1,7 +1,6 @@
 #pragma once
 
 class CMemoryBitmap;
-class C32BitsBitmap;
 class DeepSkyStackerLive;
 
 
