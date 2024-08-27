@@ -94,7 +94,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>450</width>
+           <width>300</width>
            <height>240</height>
           </size>
          </property>
@@ -413,7 +413,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSlider" name="midPower">
+                <widget class="QSlider" name="midTone">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>

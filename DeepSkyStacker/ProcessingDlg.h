@@ -235,6 +235,46 @@ namespace DSS
 
 		void updateInformation();
 
+		inline void updateDarkText()
+		{
+			//
+			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
+			//
+			darkLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(darkAngle->sliderPosition()).arg(darkPower->sliderPosition() / 10.0, 0, 'f', 1));
+
+		}
+
+		inline void updateMidText()
+		{
+			//
+			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
+			//
+			midLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(midAngle->sliderPosition()).arg(midTone->sliderPosition() / 10.0, 0, 'f', 1));
+
+		}
+
+		inline void updateHighText()
+		{
+			//
+			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
+			//
+			highLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(highAngle->sliderPosition()).arg(highPower->sliderPosition() / 10.0, 0, 'f', 1));
+
+		}
+
+		//
+		// Initial settings for the Luminance tab sliders
+		//
+		static const inline unsigned int maxAngle{ 45 };
+		static const inline unsigned int maxLuminance { 1000 };
+
+		static const inline unsigned int midAngleInitialPosition{ 20 };
+		static const inline unsigned int midToneInitialPosition { 200 };
+		static const inline unsigned int powerInitialPosition { 500 };
+
 	signals:
 		void showOriginalHistogram();
 
@@ -260,6 +300,16 @@ namespace DSS
 		void redButtonPressed();
 		void greenButtonPressed();
 		void blueButtonPressed();
+
+		void darkAngleChanged();
+		void darkPowerChanged();
+
+		void midAngleChanged();
+		void midToneChanged();
+
+		void highAngleChanged();
+		void highPowerChanged();
+
 
 #if (0)
 		void	ProcessAndShow(bool bSaveUndo = true);

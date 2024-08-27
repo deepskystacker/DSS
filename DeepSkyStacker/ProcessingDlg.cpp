@@ -58,6 +58,34 @@ namespace DSS {
 		selectRect->setShowDrizzle(false);
 
 		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
+	
+		//
+		// Set the initial values for the sliders on the luminance tab and set the text to match
+		//
+		darkAngle->setMinimum(0);
+		darkAngle->setMaximum(maxAngle);		// const value of 45
+		darkAngle->setValue(0);
+		darkPower->setMinimum(0);
+		darkPower->setMaximum(maxLuminance);	// const value of 1000
+		darkPower->setValue(powerInitialPosition);	// const value of 500
+		updateDarkText();
+
+		midAngle->setMinimum(0);
+		midAngle->setMaximum(maxAngle);			// const value of 45
+		midAngle->setValue(midAngleInitialPosition);	// const value of 20
+		midTone->setMinimum(0);
+		midTone->setMaximum(maxLuminance);		// const value of 1000
+		midTone->setValue(midToneInitialPosition);	// const value of 200
+		updateMidText();
+
+		highAngle->setMinimum(0);
+		highAngle->setMaximum(maxAngle);		// const value of 45
+		highAngle->setValue(0);
+		highPower->setMinimum(0);
+		highPower->setMaximum(maxLuminance);	// const value of 1000
+		highPower->setValue(powerInitialPosition);	// const value of 500
+		updateHighText();
+
 	}
 
 	ProcessingDlg::~ProcessingDlg()
@@ -87,6 +115,17 @@ namespace DSS {
 		connect(redHAC, &QPushButton::pressed, this, &ProcessingDlg::redButtonPressed);
 		connect(greenHAC, &QPushButton::pressed, this, &ProcessingDlg::greenButtonPressed);
 		connect(blueHAC, &QPushButton::pressed, this, &ProcessingDlg::blueButtonPressed);
+
+		//
+		// If the luminance tab sliders are moved, update the text to match and process the
+		// change
+		//
+		connect(darkAngle, &QSlider::valueChanged, this, &ProcessingDlg::darkAngleChanged);
+		connect(darkPower, &QSlider::valueChanged, this, &ProcessingDlg::darkPowerChanged);
+		connect(midAngle, &QSlider::valueChanged, this, &ProcessingDlg::midAngleChanged);
+		connect(midTone, &QSlider::valueChanged, this, &ProcessingDlg::midToneChanged);
+		connect(highAngle, &QSlider::valueChanged, this, &ProcessingDlg::highAngleChanged);
+		connect(highPower, &QSlider::valueChanged, this, &ProcessingDlg::highPowerChanged);
 
 	}
 
@@ -300,6 +339,37 @@ namespace DSS {
 	//
 	// Slots
 	//
+
+	void ProcessingDlg::darkAngleChanged()
+	{
+		updateDarkText();
+	}
+
+	void ProcessingDlg::darkPowerChanged()
+	{
+		updateDarkText();
+	}
+
+	void ProcessingDlg::midAngleChanged()
+	{
+		updateMidText();
+	}
+
+	void ProcessingDlg::midToneChanged()
+	{
+		updateMidText();
+	}
+
+	void ProcessingDlg::highAngleChanged()
+	{
+		updateHighText();
+	}
+
+	void ProcessingDlg::highPowerChanged()
+	{
+		updateHighText();
+	}
+
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
 	{
