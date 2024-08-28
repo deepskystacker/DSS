@@ -477,36 +477,47 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klik om hier de komeet te plaatsen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Klik om deze ster toe te voegen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Klik om de komeet te verwijderen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Klik om deze ster te verwijderen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>#Sterren: %1
+Score: %2
+Kwaliteit: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -516,8 +527,8 @@ Score: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -525,8 +536,8 @@ Comet:%1</source>
 Komeet:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ja</translation>
@@ -693,17 +704,17 @@ Delete-toets om geselecteerde rijen te verwijderen (niet wissen).
 Rechtermuisknop om het menu weer te geven</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1449"/>
+        <location filename="../StackingDlg.cpp" line="1448"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 niet bestaat of geen bestand is</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1458"/>
+        <location filename="../StackingDlg.cpp" line="1457"/>
         <source>Failed to load image %1</source>
         <translation>Kan afbeelding %1 niet laden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1769"/>
+        <location filename="../StackingDlg.cpp" line="1760"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Light Platen:%1      -      Dark Platen: %2      -      Flat Platen:%3      -   Dark Flat Platen: %4   -      Offset/Bias Platen: %5</translation>
@@ -714,36 +725,36 @@ Rechtermuisknop om het menu weer te geven</translation>
         <translation>Dubbelklik hier om de afbeeldingenlijst te koppelen/ontkoppelen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1414"/>
+        <location filename="../StackingDlg.cpp" line="1413"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Laden %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1506"/>
+        <location filename="../StackingDlg.cpp" line="1505"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Bestand %1 is niet geladen omdat het al was geladen in groep %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1530"/>
+        <location filename="../StackingDlg.cpp" line="1529"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Open Light Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1533"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Open Dark Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1551"/>
+        <location filename="../StackingDlg.cpp" line="1550"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Open Dark Flat Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1539"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Open Flat Platen...</translation>
@@ -764,13 +775,13 @@ Rechtermuisknop om het menu weer te geven</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1545"/>
+        <location filename="../StackingDlg.cpp" line="1544"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Open Offset Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1782"/>
+        <location filename="../StackingDlg.cpp" line="1773"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -784,37 +795,37 @@ Dark Flat Platen: %4
 Offset/Bias Platen: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1865"/>
+        <location filename="../StackingDlg.cpp" line="1856"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Open andere Bestand Lijst...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2052"/>
+        <location filename="../StackingDlg.cpp" line="2043"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versie %1 is beschikbaar om te downloaden.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2068"/>
+        <location filename="../StackingDlg.cpp" line="2059"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Versie controle internetfoutcode %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2184"/>
+        <location filename="../StackingDlg.cpp" line="2175"/>
         <source>Total registering time: %1 %2</source>
         <translation>Totale registratietijd: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2203"/>
+        <location filename="../StackingDlg.cpp" line="2194"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>U moet light platen aanvinken om te registreren.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2261"/>
+        <location filename="../StackingDlg.cpp" line="2252"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -824,19 +835,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker moet bestanden aanmaken in deze map(pen) gedurende de bewerking.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2282"/>
+        <location filename="../StackingDlg.cpp" line="2273"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>De aangevinkte afbeeldingen zijn niet compatibel: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2286"/>
+        <location filename="../StackingDlg.cpp" line="2277"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>U moet light platen aanvinken om te stapelen.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2333"/>
+        <location filename="../StackingDlg.cpp" line="2324"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -846,18 +857,18 @@ Do you want to save the changes?</source>
 Wilt u deze veranderingen bewaren?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2447"/>
+        <location filename="../StackingDlg.cpp" line="2438"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Totale stapeltijd: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2478"/>
+        <location filename="../StackingDlg.cpp" line="2469"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Bewaren Uiteindelijke afbeelding in %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2560"/>
+        <location filename="../StackingDlg.cpp" line="2551"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -960,7 +971,7 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
         <translation>%1 niet bestaat of geen bestand is</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="656"/>
+        <location filename="../DeepSkyStacker.cpp" line="655"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

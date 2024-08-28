@@ -480,36 +480,47 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klikněte pro nastavení komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Klikněte pro přidání hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Klikněte pro odstranění komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Klikněte pro odstranění hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>Hvězdy: %1
+Skóre: %2
+Kvalitní: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -519,8 +530,8 @@ Kvalita: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -528,8 +539,8 @@ Comet:%1</source>
 Kometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ano</translation>
@@ -699,17 +710,17 @@ Klávesa Delete pro odstranění (ne vymazání) vybraných řádků
 Pravým tlačítkem myši zobrazíte nabídku</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1449"/>
+        <location filename="../StackingDlg.cpp" line="1448"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1458"/>
+        <location filename="../StackingDlg.cpp" line="1457"/>
         <source>Failed to load image %1</source>
         <translation>Nepodařilo se načíst obrázek %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1769"/>
+        <location filename="../StackingDlg.cpp" line="1760"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Aktivní snímky: %1      -      Temné pozadí: %2      -      Vyrovnání jasu: %3      -   Vyrovnání temného pozadí: %4   -      Vyrovnání zkreslení: %5</translation>
@@ -720,36 +731,36 @@ Pravým tlačítkem myši zobrazíte nabídku</translation>
         <translation>Dvojitým kliknutím sem ukotvíte/odemknete seznam obrázků</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1414"/>
+        <location filename="../StackingDlg.cpp" line="1413"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1506"/>
+        <location filename="../StackingDlg.cpp" line="1505"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Soubor %1 nebyl načten, protože již byl načten ve skupině %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1530"/>
+        <location filename="../StackingDlg.cpp" line="1529"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Otevřít aktivní snímky...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1533"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Otevřít snímky temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1551"/>
+        <location filename="../StackingDlg.cpp" line="1550"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1539"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání jasu...</translation>
@@ -771,13 +782,13 @@ Pravým tlačítkem myši zobrazíte nabídku</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1545"/>
+        <location filename="../StackingDlg.cpp" line="1544"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Otevřít snímky vyrovnání zkreslení...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1782"/>
+        <location filename="../StackingDlg.cpp" line="1773"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -791,37 +802,37 @@ Vyrovnání temného pozadí: %4
 Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1865"/>
+        <location filename="../StackingDlg.cpp" line="1856"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Otevřít jiný seznam...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2052"/>
+        <location filename="../StackingDlg.cpp" line="2043"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>Ke stažení je dostupná verze programu DeepSkyStacker %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2068"/>
+        <location filename="../StackingDlg.cpp" line="2059"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Kontrola verze Internetový kód chyby %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2184"/>
+        <location filename="../StackingDlg.cpp" line="2175"/>
         <source>Total registering time: %1 %2</source>
         <translation>Celkový čas registrace: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2203"/>
+        <location filename="../StackingDlg.cpp" line="2194"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Pro zarovnání musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2261"/>
+        <location filename="../StackingDlg.cpp" line="2252"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -831,19 +842,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 Program DeepSkyStacker potřebuje při své práci v nich vytvářet soubory.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2282"/>
+        <location filename="../StackingDlg.cpp" line="2273"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Vybrané obrázky nejsou kompatibilní: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2286"/>
+        <location filename="../StackingDlg.cpp" line="2277"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Pro sloučení musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2333"/>
+        <location filename="../StackingDlg.cpp" line="2324"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -853,18 +864,18 @@ Do you want to save the changes?</source>
 Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2447"/>
+        <location filename="../StackingDlg.cpp" line="2438"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Celková doba skládání: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2478"/>
+        <location filename="../StackingDlg.cpp" line="2469"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Ukládání výsledného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2560"/>
+        <location filename="../StackingDlg.cpp" line="2551"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -968,7 +979,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="656"/>
+        <location filename="../DeepSkyStacker.cpp" line="655"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
