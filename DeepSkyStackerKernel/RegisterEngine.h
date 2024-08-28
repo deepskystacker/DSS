@@ -34,7 +34,6 @@ protected:
 protected:
 	void Reset();
 	void FindStarShape(const CGrayBitmap& bitmap, CStar& star);
-	void ComputeOverallQuality();
 
 public:
 	CRegisteredFrame()
@@ -43,6 +42,8 @@ public:
 	}
 
 	virtual ~CRegisteredFrame() = default;
+
+	static std::pair<double, double> ComputeOverallQuality(const STARVECTOR& stars);
 
 	void	SetDetectionThreshold(double fMinLuminancy)
 	{
@@ -54,10 +55,10 @@ public:
 		return m_vStars;
 	}
 
-	void	SetStars(const STARVECTOR & vStars)
+	void SetStars(const STARVECTOR& vStars)
 	{
 		m_vStars = vStars;
-		ComputeOverallQuality();
+		std::tie(this->m_fOverallQuality, this->meanQuality) = CRegisteredFrame::ComputeOverallQuality(m_vStars);
 		ComputeFWHM();
 	}
 

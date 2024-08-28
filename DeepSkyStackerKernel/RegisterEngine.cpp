@@ -171,21 +171,29 @@ void CRegisteredFrame::FindStarShape(const CGrayBitmap& bitmap, CStar& star)
 	}
 }
 
-void CRegisteredFrame::ComputeOverallQuality()
+// static
+std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECTOR& stars)
 {
-	m_fOverallQuality = std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double accu, const CStar& star) { return accu + star.m_fQuality; });
+	namespace vs = std::ranges::views;
 
-	std::vector<int> indexes(m_vStars.size());
+	constexpr auto Filter = vs::filter([](const CStar& star) { return !star.m_bRemoved; });
+	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
+
+	auto activeStars = Filter(stars);
+	const double overallQuality = std::accumulate(std::ranges::begin(activeStars), std::ranges::end(activeStars), 0.0,
+		[](const double accu, const CStar& star) { return accu + star.m_fQuality; });
+
+	std::vector<int> indexes(stars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);
 
-	const auto Projector = [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fCircularity; };
-	
-	std::ranges::sort(indexes, std::greater{}, Projector); // [&stars = this->m_vStars](const int ndx) { return stars[ndx].m_fIntensity; }); // Sort descending by ...
+	// Sort indexes descending (due to std::greater) by CStar::circularity.
+	std::ranges::sort(indexes, std::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
 	// Approximate a Gaussian weighting
 	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
 	double sumWeights = 0;
 	double sum = 0;
-	for (int ndx = 0; const double q : indexes | std::views::take(100) | std::views::transform(Projector))
+	// Sorted indexes -> get CStar -> filter out removed -> take max. 100 -> get circularity.
+	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(100) | vs::transform(&CStar::m_fCircularity))
 	{
 		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
 		sumWeights += w;
@@ -193,7 +201,9 @@ void CRegisteredFrame::ComputeOverallQuality()
 		++ndx;
 	}
 
-	this->meanQuality = sumWeights != 0 ? sum / sumWeights : 0.0;
+	const double meanQuality = sumWeights != 0 ? sum / sumWeights : 0.0;
+
+	return std::make_pair(overallQuality, meanQuality);
 }
 
 
@@ -323,7 +333,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 	constexpr size_t HistoSize = 256 * 32;
 	std::vector<int> histo(HistoSize + 1, 0); // +1 for safety reasons.
 	const auto bufferAndHisto = [/*&buffer,*/ &inputBitmap, &histo, &maxIntensity]<bool WithHisto>(
-		const std::ranges::viewable_range auto xRange, const std::ranges::viewable_range auto yRange)
+		const std::ranges::view auto xRange, const std::ranges::view auto yRange)
 	{
 		for (const size_t y : yRange)
 			for (const size_t x : xRange)
@@ -1054,7 +1064,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	} while (!stop(threshold, stars1.size())); // loop over thresholds
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
-	ComputeOverallQuality();
+	std::tie(this->m_fOverallQuality, this->meanQuality) = ComputeOverallQuality(m_vStars);
 	ComputeFWHM();
 	return usedThreshold;
 }

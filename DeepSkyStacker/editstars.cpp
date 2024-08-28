@@ -174,6 +174,7 @@ namespace DSS
 		m_fLightBkgd{ 0 },
 		m_bDirty{ false },
 		m_fScore{ 0 },
+		m_fMeanQuality{ 0 },
 		m_lNrStars{ 0 },
 		m_fFWHM{ 0 },
 	//	m_fBackground{ 0 },
@@ -465,13 +466,14 @@ namespace DSS
 		{
 			if (!star.m_bRemoved)
 			{
-				m_fScore += star.m_fQuality;
+//				m_fScore += star.m_fQuality;
 				m_lNrStars++;
 				m_fFWHM += star.m_fMeanRadius * RadiusFactor;
 			}
 		}
 		if (m_lNrStars > 0)
 			m_fFWHM /= m_lNrStars;
+		std::tie(this->m_fScore, this->m_fMeanQuality) = CRegisteredFrame::ComputeOverallQuality(stars);
 	}
 
 //	void EditStars::computeBackgroundValue()
@@ -662,9 +664,10 @@ namespace DSS
 		painter.setFont(font);
 		QFontMetrics fontMetrics(font);
 
-		QString	strText{ tr("#Stars: %1\nScore: %2\nFWHM: %3", "IDS_LIGHTFRAMEINFO")
+		QString	strText{ tr("#Stars: %1\nScore: %2\nQuality: %3\nFWHM: %4", "IDS_LIGHTFRAMEINFO")
 			.arg(m_lNrStars)
 			.arg(m_fScore, 0, 'f', 2)
+			.arg(m_fMeanQuality, 0, 'f', 2)
 			.arg(m_fFWHM, 0, 'f', 2) };
 
 		if (m_bComet)
@@ -822,7 +825,7 @@ namespace DSS
 			const double dy = star.m_fY - cursor.y();
 			return dx * dx + dy * dy;
 		};
-		const auto findNearestStar = [this, &squaredDist](std::ranges::viewable_range auto view) -> const CStar*
+		const auto findNearestStar = [this, &squaredDist](std::ranges::view auto view) -> const CStar*
 		{
 			double minDistSqr = std::numeric_limits<double>::max();
 			const CStar* p = nullptr;

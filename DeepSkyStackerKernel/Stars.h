@@ -14,7 +14,7 @@ public:
 	double			m_fMeanRadius{ 0.0 };
 	double			m_fX{ 0.0 };
 	double			m_fY{ 0.0 };
-	bool			m_bUsed{ false };
+//	bool			m_bUsed{ false }; // MT, Aug. 2024: this bool is not used anywhere.
 	bool			m_bAdded{ false };
 	bool			m_bRemoved{ false };
 	double			m_fLargeMajorAxis{ 0.0 };

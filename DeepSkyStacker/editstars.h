@@ -196,6 +196,7 @@ namespace DSS
 		double m_fLightBkgd;
 		bool m_bDirty;
 		double m_fScore;
+		double m_fMeanQuality{ 0.0 };
 		int m_lNrStars;
 		double m_fFWHM;
 //		double						m_fBackground;
