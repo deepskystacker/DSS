@@ -197,6 +197,8 @@ void CRegisteredFrame::FindStarShape(const CGrayBitmap& bitmap, CStar& star)
 // So it is really a quality measure for the circularity of the stars in the light-frame.
 // 
 // In the GUI is a new column "MeanQuality" right next to the good old "Score". Users can use it to sort the light-frames.
+// 
+// CRegisteredFrame::ComputeOverallQuality is now public static, so it can be used from other parts of the code, too, e.g. in EditStars::computeOverallQuality().
 //
 // static
 std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECTOR& stars)
@@ -235,7 +237,9 @@ std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECT
 
 
 namespace {
-
+	//
+	// Calculates the exact position of a star as the center of gravity using the pixel values around the center pixel.
+	//
 	bool computeStarCenter(const CGrayBitmap& inputBitmap, double& fX, double& fY, double& fRadius, const double backgroundLevel)
 	{
 		double fSumX = 0;
@@ -325,7 +329,9 @@ namespace {
 
 		return std::abs(fStdDevX - fStdDevY) < CRegisteredFrame::RoundnessTolerance;
 	}
-
+	//
+	// Defines the test direction around a pixel (to check neighbor pixels).
+	//
 	struct PixelDirection
 	{
 		double m_fIntensity{ 0.0 };
@@ -1426,6 +1432,10 @@ void CLightFrameInfo::ComputeRedBlueShifting(CMemoryBitmap * pBitmap)
 };
 */
 
+//
+// Public function to run a test registering of a light-frame using the path to the file.
+// Used in: RegisterSettings::on_computeDetectedStars_clicked().
+//
 void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1590,7 +1600,10 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 	return bResult;
 }
 
-
+//
+// Register all light-frames of all the stacking tasks. 
+// Will call lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++); for all light-frames.
+//
 bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
