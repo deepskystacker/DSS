@@ -171,6 +171,33 @@ void CRegisteredFrame::FindStarShape(const CGrayBitmap& bitmap, CStar& star)
 	}
 }
 
+//
+// MT, August 2024
+// We now calculate 2 different quality metrics. 
+// (1) The old 'overallQuality' (shown as "Score" in the GUI): this is simply the sum of CStar::m_fQuality over the stars.
+// (2) A new average quality indicator, which is independent of the number of detected stars (unlike the above).
+//     This is important, because the new auto-threshold algorithm cannot guarantee an identical detection threshold over the series of light-frames.
+//     Using the new quality indicator, even then the light-frames can be compared.
+// The new quality indicator double CLightframInfo::meanQuality; (shown as "MeanQuality" in the GUI) much better characterises the realy quality of 
+// a light-frame than the old Score.
+// 
+// The new MeanQuality parameter is calculated as follows:
+// We take the vector of detected stars and filter out those, that are inactive (e.g. removed by the edit stars functionality in the GUI).
+// We sort the active stars by the new parameter double CStar::m_fCircularity; From the active stars, we take maximum 100.
+// Over these stars, we calculate a weighted average of the circularity parameter.
+// The weighting window is similar to a Gaussian funtion. The exact shape is not important, we just want to favour the best stars more than the myriads of 
+//   small and faint stars.
+// 
+// The new parameter double CStar::m_fCircularity is calculated in RegisterSubrect as:
+//   (fIntensity - backgroundLevel) / (0.1 + maxDeltaRadii); where maxDeltaRadii is the maximum difference of the radii (in pixels) in the 8 directions around the star center.
+//   So if maxDeltaRadii == 0, the star will be additionally weighted by 10. If maxDeltaRadii == 1, the star will be devaluated by 1/1.1 (0.91). And so on ...
+//   So the best stars will be those, that are bright and perfectly circular.
+// From all light-frames, the best (in terms of the new MeanQuality parameter) will be those with bright and perfectly circular stars. The absolut number 
+// of stars is NOT important.
+// So it is really a quality measure for the circularity of the stars in the light-frame.
+// 
+// In the GUI is a new column "MeanQuality" right next to the good old "Score". Users can use it to sort the light-frames.
+//
 // static
 std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECTOR& stars)
 {
@@ -316,6 +343,24 @@ namespace {
 }
 
 //
+// RegisterSubRect performs the star detection in the bitmap 'inputBitmap', within the rectangle 'rc', using the threshold 'detectionThreshold'.
+// The found stars will be inserted into the std::set<CStar> 'stars'.
+// 
+// MT, August 2024
+// RegisterSubRect has been improved. Primarily to better work together with the new auto-threshold algorithm for the registration process.
+// The detection threshold can become as low as 0.07%, so we needed a few enhancements.
+// 
+// (*) There is no local buffer for the input pixels anymore, we directly read the inputBitmap. To avoid concurrency issues, inputBitmap is const now.
+// (*) We calculate a local (in the rectangle 'rc') background level using the local histogram of the grey values, rather than using a 
+//     global background level over the entire bitmap.
+// (*) We work with the raw grey values in the range [0, 256), so we avoid the continued multiplication with the normalization factor 256.
+// (*) A hot pixel prevention check. This is needed, because at low thresholds, many hot pixels would otherwise be found. They are 
+//     small, bright, and often perfectly circular -> actually seem like a perfect star.
+// (*) For small stars (radius < 10 pixels), we do an additional check for the ratios of the diameters in 2x2 perpendicular directions 
+//     (up/dn - le/ri; and the 45 deg directions).
+//     The diameter in the 2 prependicular directions may not differ more than 1.3 : 1.
+//     This avoids detecting small speckles which are more or less circular and just resulting from a collection of noise around the pixel (i, j).
+//
 // CGrayBitmap is a typedef for CGrayBitmapT<double>
 // So the gray raw values are in the range [0, 256), CGrayBitmap::m_fMultiplier is 256.0.
 // getValue() ant getUncheckedValue() return values in the range [0.0, 256.0).
@@ -349,7 +394,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.top - STARMAXSIZE, rc.top));
 
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.left),   std::views::iota(rc.top, rc.bottom));
-	bufferAndHisto.operator()<true>( std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
+	bufferAndHisto.operator()<true>(std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.right, rc.right + STARMAXSIZE), std::views::iota(rc.top, rc.bottom));
 
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.bottom, rc.bottom + STARMAXSIZE));
@@ -372,8 +417,8 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 
 	if (maxIntensity >= intensityThreshold)
 	{
-		// Find how many wanabee stars are existing above 90% maximum luminance
-
+		// deltaRadius is the maximum allowed difference (in pixels) of the radii of a star-candidate around its center (in 8 directions).
+		// Optimum would be 0 (totally circular star), but we allow up to 3 pixels.
 		for (int deltaRadius = 0; deltaRadius < 4; ++deltaRadius)
 		{
 			for (int j = rc.top; j < rc.bottom; j++)
@@ -396,6 +441,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 								break;
 						}
 
+						// This pixel at coordinates (i, j) is not yet part of an already detected star.
 						if (bNew)
 						{
 							// Search around the point in 8 directions.
@@ -414,6 +460,7 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 							}
 
 							// Hot pixel prevention.
+							// The pixel is a hot-pixel, if: of the 8 surrounding pixels, (i) 7 are darker than the center minus background-noise, and (ii) 4 are much darker.
 							const auto isHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
 							{
 								int numberOfDarkerPixels = 0;
@@ -432,9 +479,12 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 							};
 
 							bool bBrighterPixel = false;
-							bool bMainOk = !isHotPixel(); // true;
+							bool bMainOk = !isHotPixel();
 							int	lMaxRadius = 0;
 
+							// We search the pixels around the center (i, j) up to a distance of 'STARMAXSIZE'.
+							// We'll check, if the center is the brightest pixel and we find much darker pixels around it.
+							// If so, then the center will be a star-candidate.
 							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
 							{
 								// Here just set the luminance values of the 8 directions in the distance 'testedRadius'.
@@ -445,7 +495,8 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 								bMainOk = false;
 								for (auto& testPixel : directions) // Check in the 8 directions
 								{
-									if (bBrighterPixel) break;
+									if (bBrighterPixel)
+										break;
 									if (testPixel.m_Ok) // m_Ok initialized to 2.
 									{
 										// Is the intensity in this direction and this distance smaller than 25% of the center pixel?
@@ -501,12 +552,13 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 								};
 								// Compare directions up, down, left, right: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
 								// Compare the 4 diagonal directions: delta of radii must also be smaller than deltaRadius.
-								bool validCandidate = compareDeltaRadii(std::array{ Dirs::Down, Dirs::Right, Dirs::Up, Dirs::Left })
+								bool validCandidate =
+									compareDeltaRadii(std::array{ Dirs::Down, Dirs::Right, Dirs::Up, Dirs::Left })
 									&& compareDeltaRadii(std::array{ Dirs::DnRight, Dirs::UpRight, Dirs::UpLeft, Dirs::DnLeft });
 
 								// Additional check for super-small stars, which could be "larger" hot-pixels or just noise.
 								// The ratio of the radii must not be too large.
-								const auto checkRadiusRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
+								const auto checkDiameterRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
 								{
 									if (lMaxRadius > 10)
 										return true;
@@ -517,8 +569,8 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									return ratio1 <= 1.3 && ratio2 <= 1.3;
 								};
 								validCandidate = validCandidate
-									&& checkRadiusRatio(Dirs::Down, Dirs::Up, Dirs::Right, Dirs::Left)
-									&& checkRadiusRatio(Dirs::DnRight, Dirs::UpLeft, Dirs::UpRight, Dirs::DnLeft);
+									&& checkDiameterRatio(Dirs::Down, Dirs::Up, Dirs::Right, Dirs::Left)
+									&& checkDiameterRatio(Dirs::DnRight, Dirs::UpLeft, Dirs::UpRight, Dirs::DnLeft);
 
 								const double fMeanRadius1 = // top, bottom, left, right
 									std::accumulate(directions.cbegin(), directions.cbegin() + 4, 0.0, [](const double acc, const PixelDirection& d) { return acc + d.m_Radius; })
@@ -565,6 +617,11 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 								// See DarkFrame.cpp, line 387:
 								//    for (int x = rcStar.left; x < rcStar.right; x++) 
 								//       for (int y = rcStar.top; y < rcStar.bottom; y++)
+								// 
+								// The new CStar::m_fCircularity parameter:
+								// It measures how circular ("round") a star is by dividing the brightness above noise by (0.1 + maxDeltaRadii), where maxDeltaRadii is
+								// the maximum difference of the radii in pixels of the star around the center in the 8 test-directions.
+								// So stars which are perfectly round will be weighted by 10 (1/0.1), the others by 0.91 or less.
 								//
 								if (validCandidate)
 								{
