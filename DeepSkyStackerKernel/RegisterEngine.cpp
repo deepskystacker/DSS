@@ -296,7 +296,7 @@ namespace {
 		// The radius is the average of the standard deviations
 		fRadius = (fStdDevX + fStdDevY) * (1.5 / 2.0);
 
-		return std::abs(fStdDevX - fStdDevY) < CRegisteredFrame::m_fRoundnessTolerance;
+		return std::abs(fStdDevX - fStdDevY) < CRegisteredFrame::RoundnessTolerance;
 	}
 
 	struct PixelDirection
@@ -576,8 +576,6 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 									ms.m_fCircularity = (fIntensity - backgroundLevel) / (0.1 + maxDeltaRadii); // MT, Aug. 2024: m_fDeltaRadius was not used anywhere.
 									ms.m_fMeanRadius= (fMeanRadius1 + fMeanRadius2) / 2.0;
 
-									constexpr double RadiusFactor = 2.35 / 1.5;
-
 									// Compute the real position (correct m_fX, m_fY, m_fMeanRadius).
 									if (computeStarCenter(inputBitmap, ms.m_fX, ms.m_fY, ms.m_fMeanRadius, backgroundLevel * (1.0 / 256.0)))
 									{
@@ -855,7 +853,30 @@ double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 	return fResult;
 };
 
-
+//
+// MT, August 2024
+// New auto-threshold optimisation algorithm optionally available, if user ticked the checkbox in the GUI "Use automatic threshold".
+// It is enabled, IF optimizeThreshold == true, ELSE the parameter 'threshold' is just used as is to register the light-frame.
+// 
+// IF auto-threshold enabled:
+// 'threshold' is used as starting point to iteratively find that threshold, where the number of found stars is >= 'numberOfWantedStars'.
+// The search algorithm is stopped, if EITHER the number of stars >= numberOfWantedStars OR the used threshold <= 0.075% (found out heuristically).
+// 
+// If at the end of an iteration, the number of detected stars < numberOfWantedStars, the threshold is updated as follows:
+//   If no stars found yet: return lastThreshold * 0.5;
+//   Otherwise, the threshold is multiplied by a factor, which is the geometric mean of 2 sub-factors f1 and f2.
+//   Those two factors are calculated by an exponential function 1.05 - exp(-tau * x), where x is (1) avg(n1, n2), and (2) n1 - n2.
+//   n1 and n2 are the number of detected stars of this iteration and the one before, respectively.
+//   Tau is ln(1.05 - 1) / (5 + numberOfWantedStars) ... this makes sure that the algorithm converges quickly to the optimum point.
+//   The 2 sub-factors make sure that the algorithm converges reliably, independently of the starting threshold. 
+//     If the algorithm is "too fast" (n1-n2 large) -> sub-factor is close to 1 and has no influence.
+//     If the algorithm is "too slow" (n1==n2)      -> sub-factor is 0.05, so the threshold is significantly decreased.
+//     If both n1 and n2 are small (e.g. 2 and 1)   -> sub-factor is small, so the threshold is significantly decreased.
+// 
+//   There is a special check, if the number of detected stars is too large (>= 3 x wanted stars):
+//     Generally speaking, that would not be a disaster, but in this case, we make one more iteration with a slightly increased threshold.
+//     Threshold multiplied by sqrt(lastThreshold / currentThreshold).
+//
 double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -891,14 +912,16 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 	constexpr double LowestPossibleThreshold = 0.00075;
 
-	int oneMoreIteration = 0;
+	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 
+	// Lambda for stopping criterion.
 	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
 		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 			|| (oneMoreIteration == 2)
 			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
 	};
+	// Lambda for threshold update.
 	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
 		const double lastThreshold, const size_t nStars) mutable -> double
 	{
@@ -913,7 +936,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		// Otherwise, the factor is the geometric mean (sqrt(a*b)) of two sub-factors f1 and f2.
 		// f1 and f2 are calculated using an exponential function y = 1.05 - exp(-tau * x).
 		// For f1: x = avg(n1, n2); for f2: x = n1 - n2.
-		// If n1 is far beyond the number of wanted stars (3 x), we slightly increase the threshold again.
+		// If n1 is far beyond the number of wanted stars (3 x), we slightly increase the threshold again, but only once (one more iteration).
 
 		double factor = 0.5;
 		if (n1 != 0)
@@ -939,6 +962,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	// This is the threshold optimisation loop.
 	// We modify the threshold at the end of the loop-body with:
 	//    threshold = newThreshold(threshold, stars1.size());
+	// The loop continues until stop(threshold, stars1.size()) == true;
 	//
 	do
 	{
@@ -994,8 +1018,6 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 #pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers, nPixels, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
-//#pragma omp master // There is no implied barrier.
-//		ZTRACE_RUNTIME("Registering with %d OpenMP threads. Threshold = %f.", omp_get_num_threads(), threshold);
 #pragma omp sections
 		{
 			// Upper left area
@@ -1035,14 +1057,6 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 //				m_vStars.assign(stars1.cbegin(), stars1.cend());
 		}
 
-//#pragma omp sections
-//	{
-//#pragma omp section
-//		ComputeOverallQuality();
-//#pragma omp section
-//		ComputeFWHM();
-//	}
-
 #pragma omp master // There is no implied barrier.
 		ZTRACE_RUNTIME("Registering with %d OpenMP threads. Threshold = %f %%; #-Stars = %zu.", omp_get_num_threads(), threshold * 100, stars1.size());
 } // omp parallel
@@ -1066,6 +1080,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
 	std::tie(this->m_fOverallQuality, this->meanQuality) = ComputeOverallQuality(m_vStars);
 	ComputeFWHM();
+	// We return the threshold of the last iteration. This can be used by the caller as starting value for the next light-frame.
 	return usedThreshold;
 }
 
@@ -1169,8 +1184,31 @@ std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemo
 }
 
 //
+// MT, August 2024
+// New option for registering light-frames: auto-threshold (in the GUI it's called "Use automatic threshold"). 
+// If enabled, the user does not any more have to set a proper threshold in the GUI (using the slider), rather a good threshold is found by a search algorithm. 
+// The algorithm is implemented in the member function 
+//   double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold);
+// It uses the parameter 'threshold' as starting value to check, if at least 'numberOfWantedStars' are found after the first iteration. If less, 
+// the threshold will be lowered and a new registering-round is done. 
+// This is repeated, until the number of found stars is >= 'numberOfWantedStars'.
+// The threshold can be lowered down to 0.07% (heuristically found - e.g. for very dark, short-time exposed images). 
+// 
+// In a series of light-frames, the first (bitmapIndex == 0) will be used to find this optimal threshold, which will be returned by the function. 
+// This threshold will be used for all other images as starting threshold (the starting threshold for the first image is set to 65%).
+// The parameter 'numberOfWantedStars' is set to 50 for the first image, and 30 for the others. This makes it highly probable, that all images 
+// will be registered with the same (or a similar) threshold. 
+// Only if a really bad (dark or blurred) image is in the sequence, this "optimum" threshold will be lowered further down to find at least 
+// the 30 wanted stars. 
+// 
+// bitmapIndex == 0 -> first image of a series of images.
+// bitmapIndex < 0  -> the only image to register.
+// In both cases, the search algorithm is started with the default values of threshold=65%, numberOfWantedStars=50.
+//
 // Note: Consistent results for auto-threshold registration are only guarateed if this function is called in the correct order of the lightframes. 
 // This is, because the threshold used in the previous run influences the current run. 
+// 
+// The auto-threshold algorithm will be used if m_fMinLuminancy == 0 (read from the QSettings, which was set if the user ticked the checkbox in the GUI).
 //
 void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex)
 {
@@ -1180,6 +1218,7 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 
 	const bool thresholdOptimization = this->m_fMinLuminancy == 0;
 	static double previousThreshold = ThresholdStartingValue;
+	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
 	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
 	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
@@ -1188,10 +1227,11 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	if (static_cast<bool>(pGrayBitmap))
 	{
 		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, numberWantedStars, thresholdOptimization);
+		// Save the optimum threshold in this member-variable, will be written to the .info.txt files.
 		this->usedDetectionThreshold = usedThres;
-		// IF auto-threshold: Take the threshold of the first lightframe as starting value for the following lightframes.
+		// IF auto-threshold: Take the threshold of the first lightframe (bitmapIndex == 0) as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
-		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Quality=%f; MeanQuality=%f",
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; MeanQuality=%f",
 			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->meanQuality);
 	}
 }

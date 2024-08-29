@@ -14,7 +14,8 @@ namespace DSS { class ProgressBase; }
 class CRegisteredFrame
 {
 public:
-	constexpr static double m_fRoundnessTolerance = 2.0;
+	constexpr static double RoundnessTolerance = 2.0;
+	constexpr static double RadiusFactor = 2.35 / 1.5;
 
 	STARVECTOR		m_vStars;
 	double			m_fMinLuminancy;
@@ -45,7 +46,7 @@ public:
 
 	static std::pair<double, double> ComputeOverallQuality(const STARVECTOR& stars);
 
-	void	SetDetectionThreshold(double fMinLuminancy)
+	void SetDetectionThreshold(double fMinLuminancy)
 	{
 		m_fMinLuminancy = fMinLuminancy;
 	}
@@ -62,20 +63,11 @@ public:
 		ComputeFWHM();
 	}
 
-	void	ComputeFWHM()
+	void ComputeFWHM()
 	{
-		std::vector<double>		vFWHM;
-
-		// Compute FWHM
-		m_fFWHM = 0.0;
-		for (const auto& star : m_vStars)
-			vFWHM.push_back(star.m_fMeanRadius * (2.35 / 1.5));
-
-		if (!vFWHM.empty())
-		{
-			// m_fFWHM = Median(vFWHM);
-			m_fFWHM = Average(vFWHM);
-		}
+		m_fFWHM = m_vStars.empty()
+			? 0.0
+			: std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double acc, const CStar& star) { return acc + star.m_fMeanRadius * RadiusFactor; }) / m_vStars.size();
 	}
 
 	bool IsRegistered() const
