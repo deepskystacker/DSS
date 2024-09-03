@@ -123,9 +123,12 @@ void RegisterSettings::onInitDialog()
 
 	ui->hotPixels->setChecked(workspace->value("Register/DetectHotPixels", false).toBool());
 
-	const uint thresholdValue = workspace->value("Register/DetectionThreshold", 10).toUInt();
+	const uint thresholdValue = workspace->value("Register/UseAutoThreshold", true).toBool()
+		? 0
+		: workspace->value("Register/DetectionThreshold", 10).toUInt();
 	ui->luminanceThreshold->setSliderPosition(thresholdValue);
 	ui->luminancePercent->setText(QString("%1%").arg(thresholdValue));
+
 	this->detectionThreshold = thresholdValue;
 
 	ui->checkBox_autoThreshold->setChecked(detectionThreshold == 0);
@@ -339,6 +342,7 @@ void RegisterSettings::accept()
 	// Save the luminance detection threshold which wasn't saved in 
 	// the valueChanged() slot
 	workspace->setValue("Register/DetectionThreshold", detectionThreshold);
+	workspace->setValue("Register/UseAutoThreshold", detectionThreshold == 0);
 	//
 	// Pop the preserved workspace setting and discard the saved values
 	//
