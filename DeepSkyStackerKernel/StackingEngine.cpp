@@ -891,7 +891,15 @@ void CStackingEngine::ComputeOffsets()
 	if (m_vBitmaps.empty())
 		return;
 
-	std::sort(m_vBitmaps.begin(), m_vBitmaps.end());
+	constexpr auto QualityComp = [](const CLightFrameInfo& l, const CLightFrameInfo& r)
+	{
+		if (l.m_bStartingFrame)
+			return true;
+		if (r.m_bStartingFrame)
+			return false;
+		return l.meanQuality > r.meanQuality;
+	};
+	std::ranges::sort(m_vBitmaps, QualityComp);
 
 	if (m_vBitmaps[0].m_bDisabled)
 		m_lNrStackable = 0;

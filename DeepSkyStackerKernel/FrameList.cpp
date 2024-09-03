@@ -228,7 +228,7 @@ namespace DSS
 		size_t				comets = 0;
 //		bool				bReferenceFrameHasComet = false;
 		bool				bReferenceFrameSet = false;
-		double				fMaxScore = -1.0;
+		double				fMaxScore = std::numeric_limits<double>::min();
 
 		// Iterate over all groups.
 		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
@@ -243,9 +243,9 @@ namespace DSS
 						bReferenceFrameSet = true;
 //						bReferenceFrameHasComet = it->m_bComet;
 					}
-					if (!bReferenceFrameSet && (it->m_fOverallQuality > fMaxScore))
+					if (!bReferenceFrameSet && (it->meanQuality > fMaxScore))
 					{
-						fMaxScore = it->m_fOverallQuality;
+						fMaxScore = it->meanQuality;
 //						bReferenceFrameHasComet = it->m_bComet;
 					}
 					tasks.AddFileToTask(*it, group);
@@ -833,7 +833,7 @@ namespace DSS
 	void FrameList::checkAbove(const double threshold)
 	{
 		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
-			return std::make_pair(file.IsLightFrame(), file.m_fOverallQuality >= threshold ? Qt::Checked : Qt::Unchecked);
+			return std::make_pair(file.IsLightFrame(), file.meanQuality >= threshold ? Qt::Checked : Qt::Unchecked);
 		};
 		checkSelective<Selector, false>(true, threshold);
 		//for (auto& group : imageGroups)
@@ -857,7 +857,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void FrameList::changePictureType([[maybe_unused]] int nItem, [[maybe_unused]]PICTURETYPE PictureType)
+	void FrameList::changePictureType(int, PICTURETYPE)
 	{
 		qDebug() << "In " <<
 #ifdef __FUNCSIG__
@@ -869,7 +869,32 @@ namespace DSS
 #endif
 	}
 
-	/* ------------------------------------------------------------------- */
+	class ScoredLightFrame
+	{
+	private:
+		double qualityParameter;
+	public:
+		std::uint32_t index;
+		std::uint16_t group;
+
+	public:
+		explicit ScoredLightFrame(const double value, const size_t ndx, const unsigned int grp) :
+			qualityParameter{ value },
+			index{ static_cast<std::uint32_t>(ndx) },
+			group{ static_cast<std::uint16_t>(grp) }
+		{}
+
+		ScoredLightFrame(const ScoredLightFrame& rhs) = delete;
+		ScoredLightFrame(ScoredLightFrame&& rhs) = default;
+
+		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = delete;
+		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
+
+		bool operator>(const ScoredLightFrame& rhs) const
+		{
+			return qualityParameter > rhs.qualityParameter;
+		}
+	};
 
 	void FrameList::checkBest(double fPercent)
 	{
@@ -884,28 +909,23 @@ namespace DSS
 				const auto& file = group.pictures->mydata[i];
 				if (file.IsLightFrame())
 				{
-					lightFrames.emplace_back(
-						static_cast<decltype(ScoredLightFrame::group)>(group.index()),
-						static_cast<decltype(ScoredLightFrame::index)>(i),
-						file.m_fOverallQuality
-					);
+					lightFrames.emplace_back(file.meanQuality, i, group.index());
 				}
 			}
 			group.setDirty();
 		}
 
-		const size_t last = static_cast<size_t>(fPercent * lightFrames.size() / 100.0);
+		const size_t last = static_cast<size_t>(fPercent * static_cast<double>(lightFrames.size()) / 100.0);
 		//
-		// Sort in *descending* order (see operator < in class definition)
-		std::sort(lightFrames.begin(), lightFrames.end());
+		// Sort in descending order
+		std::ranges::sort(lightFrames, std::greater{});
 
 		for (size_t i = 0; i < lightFrames.size(); i++)
 		{
 			const auto id = lightFrames[i].group;
 			const auto idx = lightFrames[i].index;
 
-			imageGroups[id].pictures->mydata[idx].m_bChecked =
-				(i <= last) ? Qt::Checked : Qt::Unchecked;
+			imageGroups[id].pictures->mydata[idx].m_bChecked = (i <= last) ? Qt::Checked : Qt::Unchecked;
 			QModelIndex start	{ imageGroups[id].pictures->createIndex(idx, 0) };
 			QModelIndex end		{ imageGroups[id].pictures->createIndex(idx, 0) };
 			const QVector<int> role{ Qt::CheckStateRole };

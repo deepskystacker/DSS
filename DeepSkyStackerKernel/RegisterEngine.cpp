@@ -825,7 +825,7 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fCircularity = 1; // Old .info.txt files don't contain that parameter, so we set it to 1.
+		ms.m_fCircularity = 0; // Old .info.txt files don't contain that parameter.
 
 		while (!bNextStar)
 		{

@@ -144,19 +144,8 @@ public:
 		m_pProgress = pProgress;
 	}
 
-	void SetBitmap(fs::path path/*, bool bProcessIfNecessary, bool bForceRegister*/);
+	void SetBitmap(fs::path path);
 
-	bool operator<(const CLightFrameInfo& cbi) const
-	{
-		if (m_bStartingFrame)
-			return true;
-		else if (cbi.m_bStartingFrame)
-			return false;
-		else if (m_fOverallQuality > cbi.m_fOverallQuality)
-			return true;
-		else
-			return false;
-	}
 public:
 	void RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex);
 	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::ProgressBase* pProgress);
@@ -170,57 +159,10 @@ private:
 	std::shared_ptr<const CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };
 
-namespace DSS
-{
-	class ScoredLightFrame
-	{
-	public:
-		std::uint16_t	group;
-		std::uint32_t	index;
-		double			score;
+
+using LIGHTFRAMEINFOVECTOR = std::vector<CLightFrameInfo>;
 
 
-		//private:
-		//	void CopyFrom(const CScoredLightFrame& slf)
-		//	{
-		//		m_dwIndice = slf.m_dwIndice;
-		//		m_fScore   = slf.m_fScore;
-		//	}
-
-	public:
-		ScoredLightFrame(std::uint16_t id, std::uint32_t ndx, double value) :
-			group{ id },
-			index{ ndx },
-			score{ value }
-
-		{}
-
-		ScoredLightFrame(const ScoredLightFrame& rhs) = default;
-		ScoredLightFrame(ScoredLightFrame&& rhs) = default;
-
-		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = default;
-		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
-
-		/// <summary>
-		/// Implement operator < for std::sort.  Note the what is
-		/// actually wanted is a reverse sort so we use > for the
-		/// operator.
-		/// </summary>
-		/// <param name="rhs" >The comparand</param>
-		/// <returns>true if greater than comparand </returns>
-		bool operator<(const ScoredLightFrame& rhs) const
-		{
-			return (score > rhs.score);
-		}
-	};
-
-}
-
-/* ------------------------------------------------------------------- */
-
-typedef std::vector<CLightFrameInfo>	LIGHTFRAMEINFOVECTOR;
-
-/* ------------------------------------------------------------------- */
 class CAllStackingTasks;
 class CRegisterEngine
 {
@@ -239,6 +181,3 @@ public :
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
 	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, DSS::ProgressBase* pProgress);
 };
-
-/* ------------------------------------------------------------------- */
-

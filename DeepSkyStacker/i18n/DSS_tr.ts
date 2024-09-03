@@ -362,9 +362,9 @@ Add the file lists you want to stack and click OK to start the stacking processe
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>En düşük değer:</translation>
+        <translation>Asgari kalite:</translation>
     </message>
 </context>
 <context>
@@ -2143,61 +2143,61 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)</translation>
         <translation>Orta değer (median) Filtresi kullanarak gürültüyü azalt</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="166"/>
+        <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>İstiflemeden önce siyah, düz ve Ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="169"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>İstiflemeden önce siyah ve düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="172"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="175"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="178"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>İstiflemeden önce siyah dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="181"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>İstiflemeden önce düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="184"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>İstiflemeden önce ofset dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="208"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="272"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Hizalanıyor %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="279"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 yıldız</translation>

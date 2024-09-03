@@ -366,9 +366,9 @@ Ajoutez les différentes listes que vous souhaitez empiler et cliquez sur OK pou
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Score minimum :</translation>
+        <translation>Qualité minimale:</translation>
     </message>
 </context>
 <context>
@@ -2158,61 +2158,61 @@ Pixels froids détectés : %L3 (%L4%)</translation>
         <translation>Réduire le bruit en utilisant un filtre médian</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="166"/>
+        <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de dark, de flat et d&apos;offset avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="169"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de dark et de flat avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="172"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de dark et d&apos;offset avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="175"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de flat et d&apos;offset avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="178"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de dark avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="181"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images de flat avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="184"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>N&apos;oubliez pas d&apos;ajouter et de cocher les images d&apos;offset avant l&apos;empilement.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="208"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>Darks, flats et offsets/bias cochés.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="272"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Enregistrement de %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="279"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 étoile(s)</translation>

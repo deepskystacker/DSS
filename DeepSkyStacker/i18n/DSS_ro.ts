@@ -365,9 +365,9 @@ Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a 
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Scor minim:</translation>
+        <translation>Calitate minima:</translation>
     </message>
 </context>
 <context>
@@ -2166,61 +2166,61 @@ Pixeli reci detectați: %L3 (%L4%)</translation>
         <translation>Redu zgomotul folosind un filtru median</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="166"/>
+        <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark, flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="169"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="172"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="175"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="178"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="181"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="184"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="208"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats si offset/bias selectate.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="272"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Inregistrez %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="279"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 stele</translation>

@@ -135,8 +135,8 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		CMemoryBitmap* pSecondBitmap;
 		CMemoryBitmap* pThirdBitmap;
 
-		const double fMaxScore = std::max(lfiRed.m_fOverallQuality, std::max(lfiGreen.m_fOverallQuality, lfiBlue.m_fOverallQuality));
-		if (fMaxScore == lfiRed.m_fOverallQuality)
+		const double fMaxScore = std::max(lfiRed.meanQuality, std::max(lfiGreen.meanQuality, lfiBlue.meanQuality));
+		if (fMaxScore == lfiRed.meanQuality)
 		{
 			pReference	= &lfiRed;
 			pSecond		= &lfiGreen;
@@ -145,7 +145,7 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 			pSecondBitmap	 = pGreen;
 			pThirdBitmap	 = pBlue;
 		}
-		else if (fMaxScore == lfiGreen.m_fOverallQuality)
+		else if (fMaxScore == lfiGreen.meanQuality)
 		{
 			pReference	= &lfiGreen;
 			pSecond		= &lfiRed;
