@@ -196,9 +196,7 @@ namespace DSS
 		{
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
-				if (it->IsLightFrame() && 
-					it->m_bUseAsStarting
-					)
+				if (it->IsLightFrame() && it->IsUseAsStarting())
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
 				}

@@ -193,30 +193,30 @@ public:
 	ListBitMap(const ListBitMap& lb)
 	{
 		CopyFrom(lb);
-	};
+	}
 
-	ListBitMap& operator = (const ListBitMap& lb)
+	ListBitMap& operator=(const ListBitMap& lb)
 	{
 		CopyFrom(lb);
 		return (*this);
-	};
+	}
 
-	bool	IsUseAsStarting()
+	bool IsUseAsStarting() const
 	{
 		return m_bUseAsStarting;
-	};
+	}
 
-	bool	IsDeltaComputed()
+	bool IsDeltaComputed() const
 	{
 		return m_bDeltaComputed;
-	};
+	}
 
-	inline bool operator ==(const ListBitMap& rhs) const
+	inline bool operator==(const ListBitMap& rhs) const
 	{
 		return (m_strPath == rhs.m_strPath && m_strFile == rhs.m_strFile);
 	}
 
-	inline bool operator !=(const ListBitMap& rhs) const
+	inline bool operator!=(const ListBitMap& rhs) const
 	{
 		return !(*this == rhs);
 	}
