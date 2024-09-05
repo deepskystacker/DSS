@@ -231,7 +231,8 @@ namespace DSS
 		// Iterate over all groups.
 		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
 		{
-			// and then over each image in the group
+			// and then over each image in the group.
+			// it = deque<ListBitMap>::const_iterator.
 			for (auto it = imageGroups[group].pictures->cbegin(); it != imageGroups[group].pictures->cend(); ++it)
 			{
 				if (it->m_bChecked == Qt::Checked)
@@ -246,7 +247,8 @@ namespace DSS
 						fMaxScore = it->meanQuality;
 //						bReferenceFrameHasComet = it->m_bComet;
 					}
-					tasks.AddFileToTask(*it, group);
+					const ListBitMap& image = *it;
+					tasks.AddFileToTask(image, group);
 					if (it->m_bComet)
 						comets++;
 				}

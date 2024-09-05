@@ -1303,71 +1303,80 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, const std::uint32_t dwGroupID)
+void CAllStackingTasks::AddFileToTask(const CFrameInfo& frameInfo, const std::uint32_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool			bFound = false;
+	bool bFound = false;
 
-	for (int i = 0;i<m_vTasks.size() && !bFound;i++)
+	// Add this frame to an already existing task, IF (1) same picture type, (2) same file group, (3) same ISO or gain, (4) same exposure.
+	for (CTaskInfo& task : m_vTasks)
 	{
-		if ((m_vTasks[i].m_TaskType == FrameInfo.m_PictureType) &&
-			(m_vTasks[i].m_groupID == dwGroupID))
+		if (task.m_TaskType == frameInfo.m_PictureType && task.m_groupID == dwGroupID)
 		{
 			// Check ISO, gain and exposure time
-			if ((m_vTasks[i].HasISOSpeed() ? (m_vTasks[i].m_lISOSpeed == FrameInfo.m_lISOSpeed) : (m_vTasks[i].m_lGain == FrameInfo.m_lGain)) &&
-				AreExposureEquals(m_vTasks[i].m_fExposure,FrameInfo.m_fExposure))
+			if ((task.HasISOSpeed() ? (task.m_lISOSpeed == frameInfo.m_lISOSpeed) : (task.m_lGain == frameInfo.m_lGain)) &&
+				AreExposureEquals(task.m_fExposure, frameInfo.m_fExposure))
 			{
 				bFound = true;
-				m_vTasks[i].m_vBitmaps.push_back(FrameInfo);
-			};
-		};
-	};
+				task.m_vBitmaps.push_back(frameInfo);
+				break;
+			}
+		}
+	}
 
 	if (!bFound)
 	{
 		// Create a new task for this file
-		CTaskInfo			ti;
+//		CTaskInfo ti;
+//		ti.m_dwTaskID  = (int)m_vTasks.size()+1;
+//		ti.m_groupID = dwGroupID;
+//		ti.m_fExposure = frameInfo.m_fExposure;
+//		ti.m_fAperture = frameInfo.m_fAperture;
+//		ti.m_lISOSpeed = frameInfo.m_lISOSpeed;
+//		ti.m_lGain     = frameInfo.m_lGain;
+//		ti.m_TaskType  = frameInfo.m_PictureType;
+//		ti.m_vBitmaps.push_back(frameInfo);
+//		m_vTasks.push_back(ti);
 
-		ti.m_dwTaskID  = (int)m_vTasks.size()+1;
-		ti.m_groupID = dwGroupID;
-		ti.m_fExposure = FrameInfo.m_fExposure;
-		ti.m_fAperture = FrameInfo.m_fAperture;
-		ti.m_lISOSpeed = FrameInfo.m_lISOSpeed;
-		ti.m_lGain     = FrameInfo.m_lGain;
-		ti.m_TaskType  = FrameInfo.m_PictureType;
-		ti.m_vBitmaps.push_back(FrameInfo);
+		m_vTasks.emplace_back(CTaskInfo{ .m_dwTaskID = static_cast<std::uint32_t>(m_vTasks.size() + 1),
+			.m_groupID = dwGroupID,
+			.m_TaskType = frameInfo.m_PictureType,
+			.m_lISOSpeed = frameInfo.m_lISOSpeed,
+			.m_lGain = frameInfo.m_lGain,
+			.m_fExposure = frameInfo.m_fExposure,
+			.m_fAperture = frameInfo.m_fAperture,
+			.m_vBitmaps{ frameInfo }
+		});
+	}
 
-		m_vTasks.push_back(ti);
-	};
-
-	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.left(4) == "JPEG"))
+	if (!m_bUsingJPEG && (frameInfo.m_strInfos.left(4) == "JPEG"))
 		m_bUsingJPEG = true;
-	if (!m_bUsingFITS && (FrameInfo.m_strInfos.left(4) == "FITS"))
+	if (!m_bUsingFITS && (frameInfo.m_strInfos.left(4) == "FITS"))
 		m_bUsingFITS = true;
-	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
+	if (!m_bCalibrating && !frameInfo.IsLightFrame())
 		m_bCalibrating = true;
-	if (!m_bUsingBayer && (FrameInfo.GetCFAType() != CFATYPE_NONE))
+	if (!m_bUsingBayer && (frameInfo.GetCFAType() != CFATYPE_NONE))
 		m_bUsingBayer = true;
-	if (!m_bUsingColorImages && (m_bUsingBayer || FrameInfo.m_lNrChannels>1))
+	if (!m_bUsingColorImages && (m_bUsingBayer || frameInfo.m_lNrChannels>1))
 		m_bUsingColorImages = true;
 
-	if (FrameInfo.IsDarkFrame())
+	if (frameInfo.IsDarkFrame())
 	{
 		m_bDarkUsed = true;
 		m_lNrDarkFrames++;
 	}
-	else if (FrameInfo.IsDarkFlatFrame())
+	else if (frameInfo.IsDarkFlatFrame())
 	{
 		m_bDarkUsed = true;
 		m_lNrDarkFlatFrames++;
 	}
-	else if (FrameInfo.IsFlatFrame())
+	else if (frameInfo.IsFlatFrame())
 	{
 		m_bFlatUsed = true;
 		m_lNrFlatFrames++;
 	}
-	else if (FrameInfo.IsOffsetFrame())
+	else if (frameInfo.IsOffsetFrame())
 	{
 		m_bBiasUsed = true;
 		m_lNrBiasFrames++;
@@ -1375,9 +1384,9 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, const std::u
 	else
 	{
 		m_lNrLightFrames++;
-		m_fMaxExposureTime = max(m_fMaxExposureTime, FrameInfo.m_fExposure);
-	};
-};
+		m_fMaxExposureTime = std::max(m_fMaxExposureTime, frameInfo.m_fExposure);
+	}
+}
 
 /* ------------------------------------------------------------------- */
 

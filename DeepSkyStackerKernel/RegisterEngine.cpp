@@ -45,7 +45,7 @@ inline	void NormalizeAngle(int & lAngle)
 /* ------------------------------------------------------------------- */
 void CRegisteredFrame::Reset()
 {
-	Workspace			workspace;
+	Workspace workspace;
 
 	m_vStars.clear();
 
@@ -886,8 +886,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 void CLightFrameInfo::Reset()
 {
-	CFrameInfo::Reset();
-	CRegisteredFrame::Reset();
+//	CFrameInfo::Reset();
+//	CRegisteredFrame::Reset();
 
 	m_fXOffset = 0;
 	m_fYOffset = 0;
@@ -1604,120 +1604,149 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 // Register all light-frames of all the stacking tasks. 
 // Will call lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++); for all light-frames.
 //
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, ProgressBase* pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = true;
-	int nrRegisteredPictures = 0;
+	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>;
+	using FutureType = std::future<ReadReturnType>;
 
-	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks); ++it)
-		nrRegisteredPictures += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
-
-	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
-
-	if (pProgress != nullptr)
+	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, ProgressBase* pTaskProgress) -> ReadReturnType
 	{
-		pProgress->Start1(strText, nrRegisteredPictures, true);
+		if (pBitmap == nullptr)
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		auto lfInfo = std::make_unique<CLightFrameInfo>();
+		lfInfo->SetBitmap(pBitmap->filePath);
+		if (!bForce && lfInfo->IsRegistered())
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		auto bmpInfo = std::make_unique<CBitmapInfo>();
+		if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		std::shared_ptr<CMemoryBitmap> outputBitmap;
+		std::shared_ptr<QImage> pQImage;
+		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
+		return std::make_tuple(std::move(outputBitmap), success, std::move(lfInfo), std::move(bmpInfo));
+	};
+
+	int nrTotalImages = 0;
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks); ++it)
+	{
+		nrTotalImages += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
 	}
 
-	bResult = tasks.DoAllPreTasks(pProgress);
-
-	// Do it again in case pretasks change the progress
+	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
 	if (pProgress != nullptr)
-		pProgress->Start1(strText, nrRegisteredPictures, true);
+		pProgress->Start1(strText, nrTotalImages, true);
 
-	//
-	// Number of image being registered.  Starts at 1 - goes up to nrRegisteredPictures
-	//
-	int imageNumber = 1;
-	int successfulRegisteredPictures = 0;
+	if (!tasks.DoAllPreTasks(pProgress))
+		return false;
 
+	// Do it again in case pretasks change the progress.
+	if (pProgress != nullptr)
+		pProgress->Start1(strText, nrTotalImages, true);
+	//
+	// This lambda does the actual registering of the light frame.
+	//
+	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, referenceFrame = fs::path{}](
+		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const bool isReferenceFrame) mutable
+	{
+		auto [pBitmap, success, lfInfo, bmpInfo] = std::move(data);
+		if (isReferenceFrame)
+			referenceFrame = lfInfo->filePath;
+		else if (lfInfo->filePath == referenceFrame)
+			return true; // Has already been registered.
+
+		if (pProgress != nullptr)
+		{
+			const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(successfulRegisteredPictures + 1).arg(nrTotalImages);
+			pProgress->Progress1(strText1, successfulRegisteredPictures);
+		}
+		if (!success)
+			return false;
+
+		ZTRACE_RUNTIME("Register %s file # %d: %s", isReferenceFrame ? "REFERENCE" : "", successfulRegisteredPictures, lfInfo->filePath.generic_u8string().c_str());
+		if (pProgress != nullptr)
+		{
+			QString strDescription;
+			bmpInfo->GetDescription(strDescription);
+			const bool isRGB = bmpInfo->m_lNrChannels == 3;
+			const char* info = isRGB ? "Loading %1 bit/ch %2 light frame\n%3" : "Loading %1 bits gray %2 light frame\n%3";
+			pProgress->Start2(QCoreApplication::translate("RegisterEngine", info, isRGB ? "IDS_LOADRGBLIGHT" : "IDS_LOADGRAYLIGHT")
+				.arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str()), 0);
+		}
+
+		// Apply offset, dark and flat to lightframe
+		masterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
+
+		QString strCalibratedFile;
+		if (m_bSaveCalibrated &&
+			(stackingInfo.m_pDarkTask != nullptr || stackingInfo.m_pDarkFlatTask != nullptr || stackingInfo.m_pFlatTask != nullptr || stackingInfo.m_pOffsetTask != nullptr))
+		{
+			SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
+		}
+
+		// Then register the light frame
+		lfInfo->SetProgress(pProgress);
+		lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++);
+		lfInfo->SaveRegisteringInfo();
+
+		if (!strCalibratedFile.isEmpty())
+		{
+			fs::path file{ strCalibratedFile.toStdU16String().c_str() };
+			lfInfo->CRegisteredFrame::SaveRegisteringInfo(file.replace_extension(".info.txt"));
+		}
+
+		if (pProgress != nullptr)
+			pProgress->End2();
+
+		return true;
+	};
+
+	bool bResult = true;
+	//
+	// Check if there is a reference frame set by the user.
+	//
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
 		if (it->m_pLightTask == nullptr)
 			continue;
+		for (const CFrameInfo& frame : it->m_pLightTask->m_vBitmaps)
+		{
+			if (referenceFrame.compare(frame.filePath.generic_u16string()) == 0)
+			{
+				CMasterFrames masterFrames;
+				masterFrames.LoadMasters(*it, pProgress);
+				DoRegister(ReadTask(&frame, pProgress), masterFrames, *it, true); // true = this is the reference frame.
+				bResult = false;
+				break;
+			}
+		}
+	}
+	bResult = true;
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
+	{
+		if (it->m_pLightTask == nullptr || it->m_pLightTask->m_vBitmaps.empty())
+			continue;
 
 		CMasterFrames MasterFrames;
-		MasterFrames.LoadMasters(std::addressof(*it), pProgress);
+		MasterFrames.LoadMasters(*it, pProgress);
 
-		const auto readTask = [&bitmaps = it->m_pLightTask->m_vBitmaps, bForce](const size_t bitmapNdx, ProgressBase* pTaskProgress)
-			-> std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>
-		{
-			if (bitmapNdx >= bitmaps.size())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			const auto& bitmap{ bitmaps[bitmapNdx] };
-			auto lfInfo = std::make_unique<CLightFrameInfo>();
-			lfInfo->SetBitmap(bitmap.filePath);
-			if (!bForce && lfInfo->IsRegistered())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			auto bmpInfo = std::make_unique<CBitmapInfo>();
-			if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			std::shared_ptr<CMemoryBitmap> pBitmap;
-			std::shared_ptr<QImage> pQImage;
-			bool success = ::FetchPicture(lfInfo->filePath, pBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
-			return std::make_tuple(std::move(pBitmap), success, std::move(lfInfo), std::move(bmpInfo));
-		};
-
-		auto future = std::async(std::launch::deferred, readTask, 0, pProgress);
+		FRAMEINFOVECTOR::const_pointer pData = it->m_pLightTask->m_vBitmaps.data(); // m_vBitmaps is not empty!
+		FutureType future = std::async(std::launch::deferred, ReadTask, pData, pProgress);
 
 		int numberOfRegisteredLightframes = 0;
-
-		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
+		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; ++j)
 		{
-			ZTRACE_RUNTIME("Register file # %d: %s", successfulRegisteredPictures, it->m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+			pData = (j + 1) < it->m_pLightTask->m_vBitmaps.size() ? pData + 1 : nullptr;
+			ReadReturnType data = future.get();
+			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
-			future = std::async(std::launch::async, readTask, j + 1, nullptr);
+			if (DoRegister(std::move(data), MasterFrames, *it, false))
+				++numberOfRegisteredLightframes;
 
-			if (pProgress != nullptr)
-			{
-				const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(imageNumber).arg(nrRegisteredPictures);
-				pProgress->Progress1(strText1, (imageNumber - 1));
-			}
-
-			if (!success)
-				continue;
-
-			QString strDescription;
-			bmpInfo->GetDescription(strDescription);
-			QString strText2;
-			if (bmpInfo->m_lNrChannels == 3)
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
-			else
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
-			if (pProgress != nullptr)
-				pProgress->Start2(strText2, 0);
-
-			// Apply offset, dark and flat to lightframe
-			MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
-
-			QString strCalibratedFile;
-
-			if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
-				SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
-
-			// Then register the light frame
-			lfInfo->SetProgress(pProgress);
-			lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++);
-			lfInfo->SaveRegisteringInfo();
-
-			++numberOfRegisteredLightframes;
-
-			if (strCalibratedFile.length())
-			{
-				fs::path file{ strCalibratedFile.toStdU16String().c_str() };
-				lfInfo->CRegisteredFrame::SaveRegisteringInfo(file.replace_extension(".info.txt"));
-			}
-
-			if (pProgress != nullptr)
-			{
-				pProgress->End2();
-				bResult = !pProgress->IsCanceled();
-			}
+			bResult = !pProgress->IsCanceled();
 		}
 
 		//

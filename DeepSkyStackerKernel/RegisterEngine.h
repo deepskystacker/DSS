@@ -32,8 +32,9 @@ public:
 protected:
 	double usedDetectionThreshold{ 0.0 };
 
-protected:
+private:
 	void Reset();
+protected:
 	void FindStarShape(const CGrayBitmap& bitmap, CStar& star);
 
 public:
@@ -107,31 +108,30 @@ private:
 	void Reset();
 
 public:
-	CLightFrameInfo()
+	CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
 	{
 		Reset();
 	}
 
 	CLightFrameInfo(const CLightFrameInfo&) = default;
 
-	explicit CLightFrameInfo(const CFrameInfo& cbi)
+	explicit CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
 	{
         Reset();
-		CFrameInfo::CopyFrom(cbi);
+//		CFrameInfo::CopyFrom(cbi);
 	}
 
-	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg)
+	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
 	{
 		Reset();
 		this->SetProgress(pPrg);
 	}
 
 	CLightFrameInfo& operator=(const CLightFrameInfo&) = default;
-
 	CLightFrameInfo& operator=(const CFrameInfo& cbi)
 	{
 		CFrameInfo::operator=(cbi);
-		return (*this);
+		return *this;
 	}
 
 	void SetHotPixelRemoval(const bool bHotPixels)
@@ -163,8 +163,7 @@ private:
 using LIGHTFRAMEINFOVECTOR = std::vector<CLightFrameInfo>;
 
 
-class CAllStackingTasks;
-class CRegisterEngine
+class CRegisterEngine final
 {
 private :
 	bool						m_bSaveCalibrated;
@@ -176,8 +175,8 @@ private :
 
 public :
 	CRegisterEngine();
-	virtual ~CRegisterEngine() = default;
+	~CRegisterEngine() = default;
 
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
-	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, DSS::ProgressBase* pProgress);
+	bool RegisterLightFrames(class CAllStackingTasks& tasks, const QString& referenceFrame, bool bForceRegister, DSS::ProgressBase* pProgress);
 };

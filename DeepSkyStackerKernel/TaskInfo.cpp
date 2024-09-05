@@ -3,25 +3,6 @@
 #include "MemoryBitmap.h"
 #include "MultiBitmap.h"
 
-CTaskInfo::CTaskInfo() :
-	m_dwTaskID{ 0 },
-	m_groupID{ 0 },
-	m_TaskType{ PICTURETYPE(0) },
-	m_lISOSpeed{ 0 },
-	m_lGain{ -1 },
-	m_fExposure{ 0.0 },
-	m_fAperture{ 0.0 },
-	m_bUnmodified{ false },
-	m_bDone{ false },
-	m_strOutputFile{},
-	m_vBitmaps{},
-	m_Method{ MBP_MEDIAN },
-	m_fKappa{ 2.0 },
-	m_lNrIterations{ 5 },
-	m_pMaster{}
-{
-}
-
 void CTaskInfo::SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 {
 	m_Method = Method;

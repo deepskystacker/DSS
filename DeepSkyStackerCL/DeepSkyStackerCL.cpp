@@ -117,7 +117,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 		// Register checked light frames
 		CRegisterEngine	RegisterEngine;
 		RegisterEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
-		bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
+		bContinue = RegisterEngine.RegisterLightFrames(tasks, frameList.getReferenceFrame(), stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
 	}
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING) && bContinue)
 	{

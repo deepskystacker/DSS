@@ -16,190 +16,120 @@ bool IsFITSSuperPixels();
 
 class CFrameInfo
 {
-public :
+public:
 	fs::path filePath; 
-	int				m_lWidth,
-						m_lHeight;
-	int				m_lISOSpeed;
-	int				m_lGain;
-	double				m_fExposure;
-	double				m_fAperture;
-	PICTURETYPE			m_PictureType;
-	int				m_lBitsPerChannel;
-	int				m_lNrChannels;
-	QString				m_strDateTime;
-	QDateTime			m_DateTime;
-	bool				m_bMaster;
-	QString				m_strInfos;
-	bool				m_bFITS16bit;
-	CBitmapExtraInfo	m_ExtraInfo;
-	QString				m_filterName;
-    mutable	QString	incompatibilityReason;
+	int m_lWidth{ 0 };
+	int m_lHeight{ 0 };
+	int m_lISOSpeed{ 0 };
+	int m_lGain{ -1 };
+	double m_fExposure{ 0.0 };
+	double m_fAperture{ 0.0 };
+	PICTURETYPE m_PictureType{ PICTURETYPE_LIGHTFRAME };
+	int m_lBitsPerChannel{ 16 };
+	int m_lNrChannels{ 3 };
+	QString m_strDateTime;
+	QDateTime m_DateTime;
+	bool m_bMaster{ false };
+	QString m_strInfos;
+	bool m_bFITS16bit{ false };
+	CBitmapExtraInfo m_ExtraInfo{};
+	QString m_filterName;
+    mutable	QString incompatibilityReason;
 
+private:
+	mutable CFATYPE m_CFAType{ CFATYPE_NONE };
+	mutable bool m_bSuperPixel{ false };
 
-private :
-	mutable CFATYPE			m_CFAType;
-	mutable bool			m_bSuperPixel;
+protected:
+//	void Reset();
 
-protected :
-	void CopyFrom(const CFrameInfo& cfi);
-	void Reset();
+public:
+	CFrameInfo() = default;
+	CFrameInfo(const CFrameInfo&) = default;
+	CFrameInfo& operator=(const CFrameInfo&) = default;
 
-public :
-	CFrameInfo()
-	{
-		Reset();
-	};
-	CFrameInfo(const CFrameInfo & cbi)
-	{
-		CopyFrom(cbi);
-	};
-
-	CFrameInfo & operator = (const CFrameInfo & cbi)
-	{
-		CopyFrom(cbi);
-		return (*this);
-	};
-
-	bool	IsLightFrame() const
+	bool IsLightFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_LIGHTFRAME);
-	};
+	}
 
-	bool	IsDarkFrame() const
+	bool IsDarkFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFRAME);
-	};
+	}
 
-	bool	IsDarkFlatFrame() const
+	bool IsDarkFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFLATFRAME);
-	};
+	}
 
-	bool	IsFlatFrame() const
+	bool IsFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_FLATFRAME);
-	};
+	}
 
-	bool	IsOffsetFrame() const
+	bool IsOffsetFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_OFFSETFRAME);
-	};
+	}
 
-	bool	IsMasterFrame() const
+	bool IsMasterFrame() const
 	{
 		return m_bMaster;
-	};
+	}
 
-	int	RenderedWidth()
+	int RenderedWidth()
 	{
 		return m_lWidth/(m_bSuperPixel ? 2 : 1);
-	};
+	}
 
-	int	RenderedHeight()
+	int RenderedHeight()
 	{
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
-	};
+	}
 
 	bool IsCompatible(const CFrameInfo& cfi) const;
 
-	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);
+	bool InitFromFile(const fs::path& file, PICTURETYPE Type);
 
-	CFATYPE	GetCFAType() const;
-	bool	IsSuperPixel() const;
-	void	RefreshSuperPixel();
+	CFATYPE GetCFAType() const;
+	bool IsSuperPixel() const;
+	void RefreshSuperPixel();
 };
 
 using FRAMEINFOVECTOR = std::vector<CFrameInfo>;
 
-
 class ListBitMap : public CFrameInfo
 {
 public:
-	uint16_t				m_groupId;
-	bool					m_bUseAsStarting;
+	uint16_t				m_groupId{ 0 };
+	bool					m_bUseAsStarting{ false };
 	QString					m_strType;
 	QString					m_strPath;
 	QString					m_strFile;
-	bool					m_bRegistered;
-	Qt::CheckState			m_bChecked;
-	double					m_fOverallQuality;
-	double					meanQuality;
-	double					m_fFWHM;
-	double					m_dX;
-	double					m_dY;
-	double					m_fAngle;
+	bool					m_bRegistered{ false };
+	Qt::CheckState			m_bChecked{ Qt::Unchecked };
+	double					m_fOverallQuality{ 0.0 };
+	double					meanQuality{ 0.0 };
+	double					m_fFWHM{ 0.0 };
+	double					m_dX{ 0.0 };
+	double					m_dY{ 0.0 };
+	double					m_fAngle{ 0.0 };
 	CSkyBackground			m_SkyBackground;
-	bool					m_bDeltaComputed;
+	bool					m_bDeltaComputed{ false };
 	QString					m_strCFA;
 	QString					m_strSizes;
 	QString					m_strDepth;
-	bool					m_bCompatible;
+	bool					m_bCompatible{ true };
 	CBilinearParameters		m_Transformation;
 	VOTINGPAIRVECTOR		m_vVotedPairs;
-	int					m_lNrStars;
-	bool					m_bComet;
-
-
-protected:
-	void	CopyFrom(const ListBitMap& lb)
-	{
-		CFrameInfo::CopyFrom(lb);
-
-		m_groupId = lb.m_groupId;
-		m_bUseAsStarting = lb.m_bUseAsStarting;
-		m_strType = lb.m_strType;
-		m_strPath = lb.m_strPath;
-		m_strFile = lb.m_strFile;
-		m_bRegistered = lb.m_bRegistered;
-		m_bChecked = lb.m_bChecked;
-		m_fOverallQuality = lb.m_fOverallQuality;
-		meanQuality = lb.meanQuality;
-		m_fFWHM = lb.m_fFWHM;
-		m_dX = lb.m_dX;
-		m_dY = lb.m_dY;
-		m_fAngle = lb.m_fAngle;
-		m_bDeltaComputed = lb.m_bDeltaComputed;
-		m_strCFA = lb.m_strCFA;
-		m_strSizes = lb.m_strSizes;
-		m_strDepth = lb.m_strDepth;
-		m_bCompatible = lb.m_bCompatible;
-		m_Transformation = lb.m_Transformation;
-		m_vVotedPairs = lb.m_vVotedPairs;
-		m_lNrStars = lb.m_lNrStars;
-		m_bComet = lb.m_bComet;
-		m_SkyBackground = lb.m_SkyBackground;
-	};
+	int						m_lNrStars{ 0 };
+	bool					m_bComet{ false };
 
 public:
-	ListBitMap()
-	{
-		m_groupId = 0;
-		m_bUseAsStarting = false;
-		m_bRegistered = false;
-		m_bChecked = Qt::Unchecked;
-		m_fOverallQuality = 0;
-		meanQuality = 0;
-		m_fFWHM = 0;
-		m_dX = 0;
-		m_dY = 0;
-		m_fAngle = 0;
-		m_bDeltaComputed = false;
-		m_bCompatible = true;
-		m_lNrStars = 0;
-		m_bComet = 0;
-	};
-
-	ListBitMap(const ListBitMap& lb)
-	{
-		CopyFrom(lb);
-	}
-
-	ListBitMap& operator=(const ListBitMap& lb)
-	{
-		CopyFrom(lb);
-		return (*this);
-	}
+	ListBitMap() = default;
+	ListBitMap(const ListBitMap&) = default;
+	ListBitMap& operator=(const ListBitMap&) = default;
 
 	bool IsUseAsStarting() const
 	{
@@ -221,7 +151,7 @@ public:
 		return !(*this == rhs);
 	}
 
-	void	EraseFile()
+	void EraseFile()
 	{
 		fs::path path{ filePath };
 		fs::remove(path);
@@ -229,8 +159,8 @@ public:
 		{
 			path.replace_extension("Info.txt");
 			fs::remove(path);
-		};
-	};
+		}
+	}
 };
 
 typedef std::vector<ListBitMap>		LISTBITMAPVECTOR;

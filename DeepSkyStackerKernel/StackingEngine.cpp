@@ -2190,7 +2190,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				{
 					// Do stack these
 					CMasterFrames MasterFrames;
-					MasterFrames.LoadMasters(pStackingInfo, m_pProgress);
+					MasterFrames.LoadMasters(*pStackingInfo, m_pProgress);
 
 					m_pLightTask = pStackingInfo->m_pLightTask;
 

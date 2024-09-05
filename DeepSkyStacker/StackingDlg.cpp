@@ -2110,7 +2110,7 @@ namespace DSS
 			//dlgSettings.SetNoOffset(!frameList.GetNrCheckedOffsets());
 			//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
 
-			CAllStackingTasks	tasks;
+			CAllStackingTasks tasks;
 
 			frameList.fillTasks(tasks);
 			tasks.ResolveTasks();
@@ -2151,7 +2151,7 @@ namespace DSS
 						imageLoader.clearCache();
 						frameList.blankCheckedItemScores();
 
-						bContinue = RegisterEngine.RegisterLightFrames(tasks, bForceRegister, &dlg);
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), bForceRegister, &dlg);
 
 						frameList.updateCheckedItemScores();
 						// Update the current image score if necessary
@@ -2226,7 +2226,7 @@ namespace DSS
 						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
-						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
 						frameList.updateCheckedItemScores();
 						dlg.Close();
 					};
@@ -2582,7 +2582,7 @@ namespace DSS
 				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
 				frameList.updateCheckedItemScores();
 				dlg.Close();
 			};
