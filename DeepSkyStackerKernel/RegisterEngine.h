@@ -76,7 +76,7 @@ public:
 		return m_bInfoOk;
 	}
 
-	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars);
+	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::pair<double,double>* backgroundLevelCache);
 
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);

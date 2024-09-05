@@ -657,7 +657,7 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 		STARSET stars;
 
 		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(m_GrayBitmap, regFrame.m_fMinLuminancy, rcReg, stars);
+		regFrame.RegisterSubRect(m_GrayBitmap, regFrame.m_fMinLuminancy, rcReg, stars, nullptr);
 
 		vStars.assign(stars.cbegin(), stars.cend());
 	}

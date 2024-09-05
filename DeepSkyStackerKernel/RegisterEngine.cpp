@@ -359,6 +359,9 @@ namespace {
 // (*) There is no local buffer for the input pixels anymore, we directly read the inputBitmap. To avoid concurrency issues, inputBitmap is const now.
 // (*) We calculate a local (in the rectangle 'rc') background level using the local histogram of the grey values, rather than using a 
 //     global background level over the entire bitmap.
+// (*) There is a cache for the background level and the maxIntensity value (a simple pair<double,double>*). This avoids calculating these values multiple times 
+//     if RegisterSubrect is called iteratively for different thresholds.
+//     The cache is initialised to -Inf, so in this case background and maxIntensity are calculated and then stored in the cache for the next iteration (if any).
 // (*) We work with the raw grey values in the range [0, 256), so we avoid the continued multiplication with the normalization factor 256.
 // (*) A hot pixel prevention check. This is needed, because at low thresholds, many hot pixels would otherwise be found. They are 
 //     small, bright, and often perfectly circular -> actually seem like a perfect star.
@@ -372,20 +375,22 @@ namespace {
 // getValue() ant getUncheckedValue() return values in the range [0.0, 256.0).
 // GetPixel() returns values in the range [0.0, 1.0).
 //
-size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars)
+size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::pair<double, double>* backgroundLevelCache)
 {
 	enum class Dirs {
 		Down = 0, Right, Up, Left, DnRight, UpRight, UpLeft, DnLeft
 	};
 
-	double maxIntensity = std::numeric_limits<double>::min();
+	const bool useCachedValues = backgroundLevelCache != nullptr && std::isfinite(backgroundLevelCache->first);
+	double maxIntensity = useCachedValues ? backgroundLevelCache->first : std::numeric_limits<double>::min();
 	size_t nStars{ 0 };
 
 	constexpr size_t HistoSize = 256 * 32;
-	std::vector<int> histo(HistoSize + 1, 0); // +1 for safety reasons.
-	const auto bufferAndHisto = [/*&buffer,*/ &inputBitmap, &histo, &maxIntensity]<bool WithHisto>(
-		const std::ranges::view auto xRange, const std::ranges::view auto yRange)
+	std::vector<int> histo(useCachedValues ? 0 : HistoSize + 1, 0); // +1 for safety reasons.
+	const auto BufferAndHisto = [/*&buffer,*/ &inputBitmap, &histo, &maxIntensity, backgroundLevelCache, useCachedValues]<bool WithHisto>(const std::ranges::view auto xRange, const std::ranges::view auto yRange)
 	{
+		if (useCachedValues)
+			return;
 		for (const size_t y : yRange)
 			for (const size_t x : xRange)
 			{
@@ -395,18 +400,22 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 					++histo[value * 32.0]; // Implicit type cast generates the fastest code.
 				}
 			}
+		if (backgroundLevelCache != nullptr)
+			backgroundLevelCache->first = maxIntensity;
 	};
 
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.top - STARMAXSIZE, rc.top));
 
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.left),   std::views::iota(rc.top, rc.bottom));
-	bufferAndHisto.operator()<true>(std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
+	BufferAndHisto.operator()<true>(std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.right, rc.right + STARMAXSIZE), std::views::iota(rc.top, rc.bottom));
 
 	//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.bottom, rc.bottom + STARMAXSIZE));
 
-	const auto getBackgroundValue = [&histo](const int width, const int height) -> double
+	const auto getBackgroundValue = [&histo, backgroundLevelCache, useCachedValues](const int width, const int height) -> double
 	{
+		if (useCachedValues)
+			return backgroundLevelCache->second;
 		const int fiftyPercentValues = ((width - 1) * (height - 1)) / 2;
 		int nrValues = 0;
 		int fiftyPercentQuantile = 0;
@@ -415,7 +424,10 @@ size_t CRegisteredFrame::RegisterSubRect(const CGrayBitmap& inputBitmap, const d
 			nrValues += histo[fiftyPercentQuantile];
 			++fiftyPercentQuantile;
 		}
-		return static_cast<double>(fiftyPercentQuantile) / static_cast<double>(HistoSize);
+		const double v = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(HistoSize);
+		if (backgroundLevelCache != nullptr)
+			backgroundLevelCache->second = v;
+		return v;
 	};
 
 	const double backgroundLevel = 256.0 * getBackgroundValue(rc.width(), rc.height()); // Range [0.0, 256.0)  Background level in inner rectangle.
@@ -1021,6 +1033,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 	double usedThreshold = threshold;
 	STARSET stars1;
+	constexpr double initVal = -std::numeric_limits<double>::infinity();
+	std::vector<std::pair<double, double>> backgroundLevelCache(nrSubrectsX * nrSubrectsY, std::make_pair(initVal, initVal));
 	//
 	// This is the threshold optimisation loop.
 	// We modify the threshold at the end of the loop-body with:
@@ -1051,7 +1065,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
-		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars](
+		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
 					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer)
 		{
 			try
@@ -1068,7 +1082,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 						nStars += RegisterSubRect(Bitmap,
 							threshold,
 							DSSRect(StarMaxSize + colNdx * StepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * StepSize + RectSize), bottom),
-							stars
+							stars,
+							std::addressof(backgroundLevelCache.at(rowNdx * nrSubrectsX + colNdx))
 						);
 					}
 				}
