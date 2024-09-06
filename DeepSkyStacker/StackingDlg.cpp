@@ -2092,10 +2092,6 @@ namespace DSS
 		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
-		const auto start{ std::chrono::steady_clock::now() };
-
-
-		//bool					bFound = false;
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
 		{
@@ -2131,6 +2127,7 @@ namespace DSS
 
 				if (checkReadOnlyFolders(tasks))
 				{
+					const auto start{ std::chrono::steady_clock::now() };
 					if (bStackAfter)
 					{
 						bContinue = checkStacking(tasks);
@@ -2140,7 +2137,7 @@ namespace DSS
 					else
 					{
 						bContinue = checkStacking(tasks);
-					};
+					}
 
 					if (bContinue)
 					{
@@ -2162,10 +2159,10 @@ namespace DSS
 							// Update the registering info
 							editStarsPtr->setLightFrame(QString::fromStdU16String(fileToShow.generic_u16string()));
 							ui->picture->update();
-						};
+						}
 
 						dlg.Close();
-					};
+					}
 					const auto now{ std::chrono::steady_clock::now() };
 					std::chrono::duration<double> elapsed{ now - start };
 
@@ -2182,18 +2179,18 @@ namespace DSS
 					if (bContinue && bStackAfter)
 					{
 						doStacking(tasks, fPercent);
-					};
+					}
 
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
-				};
-			};
+				}
+			}
 		}
 		else
 		{
 			QMessageBox::critical(this, "DeepSkyStacker", 
 				tr("You must check light frames to register them.", "IDS_ERROR_NOTLIGHTCHECKED2"));
-		};
-	};
+		}
+	}
 
 	void StackingDlg::stackCheckedImages()
 	{
