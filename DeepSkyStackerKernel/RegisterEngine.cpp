@@ -1665,21 +1665,22 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 	// This lambda does the actual registering of the light frame.
 	//
 	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, referenceFrame = fs::path{}](
-		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const bool isReferenceFrame) mutable
+		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const int fileNumber, const bool isReferenceFrame) mutable
 	{
-		auto [pBitmap, success, lfInfo, bmpInfo] = std::move(data);
+		if (pProgress != nullptr)
+		{
+			const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(fileNumber).arg(nrTotalImages);
+			pProgress->Progress1(strText1, successfulRegisteredPictures);
+		}
+
+		auto&& [pBitmap, success, lfInfo, bmpInfo] = std::move(data);
+		if (!success)
+			return false;
+
 		if (isReferenceFrame)
 			referenceFrame = lfInfo->filePath;
 		else if (lfInfo->filePath == referenceFrame)
 			return true; // Has already been registered.
-
-		if (pProgress != nullptr)
-		{
-			const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(successfulRegisteredPictures + 1).arg(nrTotalImages);
-			pProgress->Progress1(strText1, successfulRegisteredPictures);
-		}
-		if (!success)
-			return false;
 
 		ZTRACE_RUNTIME("Register %s file # %d: %s", isReferenceFrame ? "REFERENCE" : "", successfulRegisteredPictures, lfInfo->filePath.generic_u8string().c_str());
 		if (pProgress != nullptr)
@@ -1733,13 +1734,14 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			{
 				CMasterFrames masterFrames;
 				masterFrames.LoadMasters(*it, pProgress);
-				DoRegister(ReadTask(&frame, pProgress), masterFrames, *it, true); // true = this is the reference frame.
+				DoRegister(ReadTask(&frame, pProgress), masterFrames, *it, 0, true); // true = this is the reference frame.
 				bResult = false;
 				break;
 			}
 		}
 	}
 	bResult = true;
+	int numberSeenFiles = 0;
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
 		if (it->m_pLightTask == nullptr || it->m_pLightTask->m_vBitmaps.empty())
@@ -1758,8 +1760,11 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			ReadReturnType data = future.get();
 			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			if (DoRegister(std::move(data), MasterFrames, *it, false))
+			if (DoRegister(std::move(data), MasterFrames, *it, numberSeenFiles, false))
+			{
 				++numberOfRegisteredLightframes;
+				++numberSeenFiles;
+			}
 
 			bResult = !pProgress->IsCanceled();
 		}
