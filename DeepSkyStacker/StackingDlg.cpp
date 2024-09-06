@@ -2090,8 +2090,8 @@ namespace DSS
 	void StackingDlg::registerCheckedImages()
 	{
 		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-		::RegisterSettings		dlgSettings(this);
-		bool					bContinue = true;
+		::RegisterSettings dlgSettings{ this };
+		bool bContinue = true;
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
 		{
@@ -2117,27 +2117,17 @@ namespace DSS
 
 			if (dlgSettings.exec())
 			{
-				bool				bForceRegister = false;
-				double				fPercent = 20.0;
-				bool				bStackAfter = false;
-
-				bForceRegister = dlgSettings.isForceRegister();
-
-				bStackAfter = dlgSettings.isStackAfter(fPercent);
+				double fPercent = 20.0;
+				const bool bForceRegister = dlgSettings.isForceRegister();
+				const bool bStackAfter = dlgSettings.isStackAfter(fPercent);
 
 				if (checkReadOnlyFolders(tasks))
 				{
 					const auto start{ std::chrono::steady_clock::now() };
+
+					bContinue = checkStacking(tasks);
 					if (bStackAfter)
-					{
-						bContinue = checkStacking(tasks);
-						if (bContinue)
-							bContinue = showRecap(tasks);
-					}
-					else
-					{
-						bContinue = checkStacking(tasks);
-					}
+						bContinue = bContinue && showRecap(tasks);
 
 					if (bContinue)
 					{
@@ -2152,9 +2142,7 @@ namespace DSS
 
 						frameList.updateCheckedItemScores();
 						// Update the current image score if necessary
-						if (!fileToShow.empty()
-							&& frameList.isLightFrame(fileToShow)
-							&& frameList.isChecked(fileToShow))
+						if (!fileToShow.empty() && frameList.isLightFrame(fileToShow) && frameList.isChecked(fileToShow))
 						{
 							// Update the registering info
 							editStarsPtr->setLightFrame(QString::fromStdU16String(fileToShow.generic_u16string()));
@@ -2178,6 +2166,8 @@ namespace DSS
 
 					if (bContinue && bStackAfter)
 					{
+						if (!frameList.isMeanQualityAvailable())
+							QMessageBox::warning(this, "DeepSkyStacker", tr("Not all of your checked light frames have a mean quality calculated. You should re-register your light frames."));
 						doStacking(tasks, fPercent);
 					}
 
@@ -2229,13 +2219,13 @@ namespace DSS
 					};
 
 					if (bContinue)
-						doStacking(tasks);
+						doStacking(tasks, 100.0);
 
 					//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	/* ------------------------------------------------------------------- */
 

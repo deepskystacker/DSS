@@ -205,6 +205,22 @@ namespace DSS
 		return QString();
 	}
 
+	bool FrameList::isMeanQualityAvailable() const
+	{
+		for (const Group& group : imageGroups)
+		{
+			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
+			{
+				// Is it a checked light-frame?
+				// IF yes -> is meanQuality missing?
+				// IF yes again -> return false (not all checked light-frames have 'meanQuality' set).
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && (!std::isfinite(it->meanQuality) || it->meanQuality <= 0.0))
+					return false;
+			}
+		}
+		return true;
+	}
+
 	fs::path FrameList::getFirstCheckedLightFrame() const
 	{
 		for (const auto& group : imageGroups)

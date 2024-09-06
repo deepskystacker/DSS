@@ -315,7 +315,7 @@ namespace DSS
 
 		bool showRecap(CAllStackingTasks& tasks);
 
-		void doStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
+		void doStacking(CAllStackingTasks& tasks, const double fPercent);
 
 		void updateCheckedAndOffsets(CStackingEngine& StackingEngine);
 		

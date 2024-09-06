@@ -55,26 +55,26 @@ public:
 	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
 	{
 		settingsOnly = bSettingsOnly;
-	};
+	}
 
-	inline bool	isForceRegister() noexcept
+	bool isForceRegister() const noexcept
 	{
 		return forceRegister;
-	};
+	}
 
-	inline bool	isStackAfter(double & fPercent) noexcept
+	bool isStackAfter(double& fPercent) const noexcept
 	{
-		fPercent = (double)percentStack;
+		fPercent = static_cast<double>(percentStack);
 
 		return stackAfter;
-	};
+	}
 
 	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
 	{
 		pStackingTasks = ptr;
 		return *this;
-	};
-	   
+	}
+
 private slots:
 
 	void on_recommendedSettings_clicked();
