@@ -3,6 +3,7 @@
 #include "Histogram.h"
 #include "ColorRef.h"
 #include "BitmapInfo.h"
+#include "dssrect.h"
 
 
 namespace DSS { class ProgressBase; }
@@ -320,8 +321,9 @@ namespace DSS
 		void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
 		void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
 		void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
-		HBITMAP	GetHBitmap(C32BitsBitmap& Bitmap, RECT* pRect = nullptr);
 		std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
+
+		void	updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect = nullptr);
 
 		void Clear()
 		{

@@ -354,139 +354,63 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 // };
 
 //
-// MT, 11-March-2024
-// This function is only called from DeepStack::PartialProcess() to display the picture.
+// Invoked from DeepStack::PartialProcess() to display the picture
 //
-HBITMAP StackedBitmap::GetHBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
+void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect)
 {
-	if (Bitmap.IsEmpty())
-		Bitmap.Create(m_lWidth, m_lHeight);
+	ZFUNCTRACE_RUNTIME();
+	//
+	// pImageData is a uchar* pointer to the pre-allocated buffer used by the QImage
+	//
 
-	if (!Bitmap.IsEmpty())
+	int lXMin = 0;
+	int lYMin = 0;
+	int lXMax = m_lWidth;
+	int lYMax = m_lHeight;
+
+	if (pRect != nullptr)
 	{
-		int lXMin = 0;
-		int lYMin = 0;
-		int lXMax = m_lWidth;
-		int lYMax = m_lHeight;
-
-		if (pRect != nullptr)
-		{
-			lXMin = std::max(0L, pRect->left);
-			lYMin = std::max(0L, pRect->top);
-			lXMax = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
-			lYMax = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
-		}
-
-		/*PIXELSET		sPixels;
-		PIXELITERATOR	it;*/
-
-		const float* const pBaseRedPixel = m_vRedPlane.data() + (m_lWidth * lYMin + lXMin);
-		const float* const pBaseGreenPixel = m_bMonochrome ? nullptr : m_vGreenPlane.data() + (m_lWidth * lYMin + lXMin);
-		const float* const pBaseBluePixel = m_bMonochrome ? nullptr : m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
-
-		const size_t bufferLen = lXMax - lXMin;
-		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
-
-#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
-		for (int j = lYMin; j < lYMax; j++)
-		{
-			std::uint8_t* lpOut = Bitmap.GetPixelBase(lXMin, j);
-			LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
-			//
-			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
-			//
-			const float* const pRedPixel = pBaseRedPixel + m_lWidth * (j - lYMin);
-			const float* const pGreenPixel = m_bMonochrome ? nullptr : pBaseGreenPixel + m_lWidth * (j - lYMin);
-			const float* const pBluePixel = m_bMonochrome ? nullptr : pBaseBluePixel + m_lWidth * (j - lYMin);
-
-			avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
-			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
-
-			avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
-			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
-			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
-			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			avxBezierAndSaturation.avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
-/*
-			if (avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust) != 0)
-			{
-				const float scale = 255.0f / static_cast<float>(m_lNrBitmaps);
-
-				for (size_t n = 0; n < bufferLen; ++n)
-				{
-					redBuffer[n] *= scale;
-					greenBuffer[n] *= scale;
-					blueBuffer[n] *= scale;
-
-					double r = redBuffer[n], g = greenBuffer[n], b = blueBuffer[n];
-					m_HistoAdjust.Adjust(r, g, b);
-
-					redBuffer[n] = std::min(static_cast<float>(r) / 255.0f, 255.0f);
-					greenBuffer[n] = std::min(static_cast<float>(g) / 255.0f, 255.0f);
-					blueBuffer[n] = std::min(static_cast<float>(b) / 255.0f, 255.0f);
-				}
-			}
-
-			if (avxBezierAndSaturation.avxToHsl(m_BezierAdjust.m_vPoints) == 0)
-			{
-				avxBezierAndSaturation.avxBezierAdjust(bufferLen);
-				avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-				avxBezierAndSaturation.avxToRgb();
-			}
-			else
-			{
-				for (size_t n = 0; n < bufferLen; ++n)
-				{
-					double h, s, l;
-					ToHSL(redBuffer[n], greenBuffer[n], blueBuffer[n], h, s, l);
-					l = m_BezierAdjust.GetValue(l);
-					s = m_BezierAdjust.AdjustSaturation(s);
-					double r, g, b;
-					ToRGB(h, s, l, r, g, b);
-					redBuffer[n] = r;
-					greenBuffer[n] = g;
-					blueBuffer[n] = b;
-				}
-			}
-*/
-			for (size_t n = 0; n < bufferLen; ++n, lpOut += 4)
-			{
-				const COLORREF crColor = RGB(redBuffer[n], greenBuffer[n], blueBuffer[n]);
-				lpOutPixel->rgbRed = GetRValue(crColor);
-				lpOutPixel->rgbGreen = GetGValue(crColor);
-				lpOutPixel->rgbBlue = GetBValue(crColor);
-				lpOutPixel->rgbReserved = 0;
-			}
-/*
-			for (int i = lXMin; i < lXMax; i++)
-			{
-				const COLORREF crColor = m_bMonochrome
-					? GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true)
-					: GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel, true);
-
-				lpOutPixel->rgbRed		= GetRValue(crColor);
-				lpOutPixel->rgbGreen	= GetGValue(crColor);
-				lpOutPixel->rgbBlue		= GetBValue(crColor);
-				lpOutPixel->rgbReserved	= 0;
-				// Bitmap.SetPixel(i, j, crColor);
-
-				pRedPixel++;
-				if (!m_bMonochrome)
-				{
-					pGreenPixel++;
-					pBluePixel++;
-				}
-				lpOut += 4;
-			} */
-		}
-
-		/*int				lNrPixels = sPixels.size();
-		printf("%ld", lNrPixels);*/
+		lXMin = std::max(0, pRect->left);
+		lYMin = std::max(0, pRect->top);
+		lXMax = std::min(m_lWidth, pRect->right);
+		lYMax = std::min(m_lHeight, pRect->bottom);
 	}
 
-	return Bitmap.GetHBITMAP();
-}
+	const float* const pBaseRedPixel = m_vRedPlane.data() + (m_lWidth * lYMin + lXMin);
+	const float* const pBaseGreenPixel = m_bMonochrome ? nullptr : m_vGreenPlane.data() + (m_lWidth * lYMin + lXMin);
+	const float* const pBaseBluePixel = m_bMonochrome ? nullptr : m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
 
+	const size_t bufferLen = lXMax - lXMin;
+	AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
+
+#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+	for (int j = lYMin; j < lYMax; j++)
+	{
+		QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (bytes_per_line * j) + lXMin);
+		//
+		// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
+		//
+		const float* const pRedPixel = pBaseRedPixel + m_lWidth * (j - lYMin);
+		const float* const pGreenPixel = m_bMonochrome ? nullptr : pBaseGreenPixel + m_lWidth * (j - lYMin);
+		const float* const pBluePixel = m_bMonochrome ? nullptr : pBaseBluePixel + m_lWidth * (j - lYMin);
+
+		avxBezierAndSaturation.copyData(pRedPixel, pGreenPixel, pBluePixel, bufferLen, m_bMonochrome);
+		const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
+
+		avxBezierAndSaturation.avxAdjustRGB(m_lNrBitmaps, m_HistoAdjust);
+		avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
+		avxBezierAndSaturation.avxBezierAdjust(bufferLen);
+		avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
+		avxBezierAndSaturation.avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+
+		for (size_t n = 0; n < bufferLen; ++n)
+		{
+			*pOutPixel++ = qRgb(std::clamp(redBuffer[n], 0.0F, 255.0F),
+					std::clamp(greenBuffer[n], 0.0F, 255.0F),
+					std::clamp(blueBuffer[n], 0.0F, 255.0F));
+		}
+	}
+}
 //
 // MT, 11-March-2024
 // This function is only used for creating star masks.
@@ -558,26 +482,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 				else
 					pBitmap->SetPixel(n + lXMin, j, redBuffer[n], greenBuffer[n], blueBuffer[n]);
 			}
-/*
-			for (int i = lXMin; i < lXMax; i++)
-			{
-				COLORREF crColor;
 
-				if (!m_bMonochrome)
-				{
-					crColor = GetPixel(*pRedPixel, *pGreenPixel, *pBluePixel);
-					pBitmap->SetPixel(i, j, GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
-				}
-				else
-				{
-					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel);
-					pBitmap->SetPixel(i, j, GetRValue(crColor));
-				}
-
-				pRedPixel++;
-				pGreenPixel++; // Incrementing the pointers is harmless, even if we don't use them due to monochrome image.
-				pBluePixel++;
-			} */
 			if (pProgress != nullptr && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();

@@ -173,6 +173,125 @@ namespace DSS
 		}
 	};
 
+	typedef std::list<ProcessingSettings>		PROCESSINGSETTINGSLIST;
+	typedef PROCESSINGSETTINGSLIST::iterator	PROCESSINGSETTINGSITERATOR;
+
+	class ProcessingSettingsList
+	{
+	public:
+		PROCESSINGSETTINGSLIST		m_lParams;
+		int					m_lCurrent;
+
+	public:
+		ProcessingSettingsList()
+		{
+			m_lCurrent = -1;
+		};
+		virtual ~ProcessingSettingsList()
+		{
+		};
+
+		int size()
+		{
+			return (int)m_lParams.size();
+		};
+
+		int current()
+		{
+			return m_lCurrent;
+		};
+
+		void clear()
+		{
+			m_lParams.clear();
+			m_lCurrent = -1;
+		};
+
+		bool	MoveForward()
+		{
+			bool			bResult = false;
+
+			if (m_lCurrent + 1 < size())
+			{
+				m_lCurrent++;
+				bResult = true;
+			};
+			return bResult;
+		};
+		bool	MoveBackward()
+		{
+			bool			bResult = false;
+
+			if ((m_lCurrent - 1 >= 0) && (size() > 0))
+			{
+				m_lCurrent--;
+				bResult = true;
+			};
+			return bResult;
+		};
+
+		bool IsBackwardAvailable()
+		{
+			return (m_lCurrent - 1 >= 0);
+		};
+
+		bool IsForwardAvailable()
+		{
+			return (m_lCurrent + 1 < size());
+		};
+
+		bool	GetCurrentSettings(ProcessingSettings& pp)
+		{
+			return GetSettings(m_lCurrent, pp);
+		};
+
+		bool	GetSettings(int lIndice, ProcessingSettings& pp)
+		{
+			bool					bResult = false;
+			PROCESSINGSETTINGSITERATOR    it;
+			//bool					bFound = false;
+
+			if (!(lIndice >= 0) && (lIndice < size()))
+				return false;
+
+			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice > 0; it++, lIndice--);
+			if (it != m_lParams.end())
+			{
+				pp = (*it);
+				bResult = true;
+			};
+
+			return bResult;
+		};
+
+		bool	AddParams(const ProcessingSettings& pp)
+		{
+			bool						bResult = false;
+
+			if ((m_lCurrent >= 0) && (m_lCurrent < size() - 1))
+			{
+				PROCESSINGSETTINGSITERATOR	it;
+				int					lIndice = m_lCurrent + 1;
+
+				for (it = m_lParams.begin(); it != m_lParams.end() && lIndice > 0; it++, lIndice--);
+
+				m_lParams.erase(it, m_lParams.end());
+			}
+			else if (m_lCurrent == -1)
+				m_lParams.clear();
+
+			m_lParams.push_back(pp);
+
+			m_lCurrent = size() - 1;
+
+			bResult = true;
+
+			return bResult;
+		};
+
+	};
+
+
 
 	class ProcessingDlg : public QDialog, public Ui::ProcessingDlg
 	{
@@ -189,7 +308,7 @@ namespace DSS
 		void createStarMask();
 		void loadFile(const fs::path& file);
 		void loadImage();
-		void saveImage();
+		bool saveImage();
 
 		bool saveOnClose();
 
@@ -198,7 +317,8 @@ namespace DSS
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
 
 	private:
-		ProcessingSettings	processParms;
+		ProcessingSettingsList processingSettingsList;
+		ProcessingSettings	processingSettings;
 		ProcessRect		rectToProcess;
 		bool dirty_;
 		fs::path currentFile;
@@ -212,8 +332,8 @@ namespace DSS
 		QAction* logSquareRootAction;
 		QAction* asinHAction;
 		inline static const QStringList iconNames{ "linear", "cuberoot", "sqrt", "log", "loglog", "logsqrt", "asinh" };
-		double gradientOffset;
-		double gradientRange;
+		double gradientOffset_;
+		double gradientRange_;
 
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
@@ -223,6 +343,7 @@ namespace DSS
 		HistogramAdjustmentCurve greenAdjustmentCurve_;
 		HistogramAdjustmentCurve blueAdjustmentCurve_;
 
+		void initialiseSliders();
 		void connectSignalsToSlots();
 		void setButtonIcons();
 		void setRedButtonIcon();
@@ -231,8 +352,9 @@ namespace DSS
 
 		void modifyRGBKGradientControls();
 
-		void	updateControlsFromParams();
+		void	updateControlsFromSettings();
 
+		void updateControls();
 		void updateInformation();
 
 		inline void updateDarkText()
@@ -241,7 +363,7 @@ namespace DSS
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
 			darkLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(darkAngle->sliderPosition()).arg(darkPower->sliderPosition() / 10.0, 0, 'f', 1));
+				.arg(darkAngle->sliderPosition()).arg(darkPower->value() / 10.0, 0, 'f', 1));
 
 		}
 
@@ -251,7 +373,7 @@ namespace DSS
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
 			midLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(midAngle->sliderPosition()).arg(midTone->sliderPosition() / 10.0, 0, 'f', 1));
+				.arg(midAngle->sliderPosition()).arg(midTone->value() / 10.0, 0, 'f', 1));
 
 		}
 
@@ -261,8 +383,13 @@ namespace DSS
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
 			highLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(highAngle->sliderPosition()).arg(highPower->sliderPosition() / 10.0, 0, 'f', 1));
+				.arg(highAngle->sliderPosition()).arg(highPower->value() / 10.0, 0, 'f', 1));
 
+		}
+
+		inline void updateSaturationText()
+		{
+			saturationLabel->setText(QString("%1 %").arg(saturation->value()));
 		}
 
 		//
@@ -271,9 +398,20 @@ namespace DSS
 		static const inline unsigned int maxAngle{ 45 };
 		static const inline unsigned int maxLuminance { 1000 };
 
-		static const inline unsigned int midAngleInitialPosition{ 20 };
-		static const inline unsigned int midToneInitialPosition { 200 };
-		static const inline unsigned int powerInitialPosition { 500 };
+		static const inline unsigned int darkAngleInitialValue{ 0 };
+		static const inline unsigned int darkPowerInitialValue{ 500 };
+		static const inline unsigned int midAngleInitialValue{ 20 };
+		static const inline unsigned int midToneInitialValue{ 200 };
+		static const inline unsigned int highAngleInitialPostion{ 0 };
+		static const inline unsigned int highPowerInitialValue{ 500 };
+
+		//
+		// Initial values for the Saturation slider
+		//
+		static const inline int minSaturation { -50 };
+		static const inline int maxSaturation { 50 };
+		static const inline int initialSaturation { 20 };
+
 
 	signals:
 		void showOriginalHistogram();
@@ -310,6 +448,8 @@ namespace DSS
 		void highAngleChanged();
 		void highPowerChanged();
 
+		void saturationChanged();
+
 
 #if (0)
 		void	ProcessAndShow(bool bSaveUndo = true);
@@ -324,7 +464,6 @@ namespace DSS
 		void	UpdateHistogramAdjust();
 		void	DrawBezierCurve(Graphics* pGraphics, int lWidth, int lHeight);
 
-		void	UpdateControls();
 		void	UpdateMonochromeControls();
 
 

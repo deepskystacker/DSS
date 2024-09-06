@@ -23,6 +23,52 @@ namespace DSS {
 		setupUi(this);
 		tabWidget->setCurrentIndex(0);	// Position on the RGB/K tab
 
+		Qt::ColorScheme colorScheme{ QGuiApplication::styleHints()->colorScheme() };
+		if (Qt::ColorScheme::Dark == colorScheme)
+			iconModifier = "-dark";
+
+		setButtonIcons();
+
+		//
+		// Initialise the popup menu for the "Histogram Adjustment Type" on the RGB tab
+		//
+		linearAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Linear));
+		cubeRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::CubeRoot));
+		squareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::SquareRoot));
+		logAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Log));
+		logLogAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogLog));
+		logSquareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogSquareRoot));
+		asinHAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::ASinH));
+
+		initialiseSliders();
+
+		//
+		// Allow selection of partial image, don't display "Drizzle" rectangles.
+		//
+		selectRect = new SelectRect(picture);
+		selectRect->setShowDrizzle(false);
+
+		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
+		connectSignalsToSlots();
+
+		updateControls();
+
+
+	}
+
+	ProcessingDlg::~ProcessingDlg()
+	{
+		ZFUNCTRACE_RUNTIME();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::initialiseSliders()
+	{
+
+		//
+		// Initialise the "sliders" on the RGB tab
+		//
 		redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
 		redGradient->setColorAt(0.999, Qt::red);
 		redGradient->setColorAt(1.0, Qt::red);
@@ -35,63 +81,68 @@ namespace DSS {
 		blueGradient->setColorAt(0.999, Qt::blue);
 		blueGradient->setColorAt(1.0, Qt::blue);
 
-		connectSignalsToSlots();
-
-		Qt::ColorScheme colorScheme { QGuiApplication::styleHints()->colorScheme() };
-		if (Qt::ColorScheme::Dark == colorScheme)
-			iconModifier = "-dark";
-
-		setButtonIcons();
-
-		linearAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Linear));
-		cubeRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::CubeRoot));
-		squareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::SquareRoot));
-		logAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Log));
-		logLogAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogLog));
-		logSquareRootAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::LogSquareRoot));
-		asinHAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::ASinH));
-
 		//
-		// Allow selection of partial image, don't display "Drizzle" rectangles.
-		//
-		selectRect = new SelectRect(picture);
-		selectRect->setShowDrizzle(false);
-
-		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
-	
-		//
-		// Set the initial values for the sliders on the luminance tab and set the text to match
+		// Set the initial values for the sliders on the Luminance tab and set the text to match
 		//
 		darkAngle->setMinimum(0);
 		darkAngle->setMaximum(maxAngle);		// const value of 45
-		darkAngle->setValue(0);
+		darkAngle->setValue(darkAngleInitialValue);
 		darkPower->setMinimum(0);
 		darkPower->setMaximum(maxLuminance);	// const value of 1000
-		darkPower->setValue(powerInitialPosition);	// const value of 500
+		darkPower->setValue(darkPowerInitialValue);	// const value of 800
 		updateDarkText();
 
 		midAngle->setMinimum(0);
 		midAngle->setMaximum(maxAngle);			// const value of 45
-		midAngle->setValue(midAngleInitialPosition);	// const value of 20
+		midAngle->setValue(midAngleInitialValue);	// const value of 20
 		midTone->setMinimum(0);
 		midTone->setMaximum(maxLuminance);		// const value of 1000
-		midTone->setValue(midToneInitialPosition);	// const value of 200
+		midTone->setValue(midToneInitialValue);	// const value of 330
 		updateMidText();
 
 		highAngle->setMinimum(0);
 		highAngle->setMaximum(maxAngle);		// const value of 45
-		highAngle->setValue(0);
+		highAngle->setValue(highAngleInitialPostion);	// const value of 0
 		highPower->setMinimum(0);
 		highPower->setMaximum(maxLuminance);	// const value of 1000
-		highPower->setValue(powerInitialPosition);	// const value of 500
+		highPower->setValue(highPowerInitialValue);	// const value of 500
 		updateHighText();
 
+		//
+		// Set the range and setting for the Saturation shift slider on the Saturation tab
+		//
+		saturation->setMinimum(minSaturation);	// const value of -50
+		saturation->setMaximum(maxSaturation);	// const value of 50;
+		saturation->setValue(initialSaturation);	// Set to a saturation shift of 20
+		updateSaturationText();
 	}
 
-	ProcessingDlg::~ProcessingDlg()
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::updateControls()
 	{
-		ZFUNCTRACE_RUNTIME();
-	}
+		//
+		// Has an image been loaded, if so enable the RGB, Luminance and Saturation tabs, and
+		// also enable the buttons
+		// 
+		if (dssApp->deepStack().IsLoaded())
+		{
+			tabWidget->setEnabled(true);
+			buttonWidget->setEnabled(true);
+			//
+			// If there are saved processing settings we can navigate, enable the undo and redo
+			// buttons as appropriate
+			//
+			undoButton->setEnabled(processingSettingsList.IsBackwardAvailable());
+			redoButton->setEnabled(processingSettingsList.IsForwardAvailable());
+		}
+		else
+		{
+			tabWidget->setEnabled(false);
+			buttonWidget->setEnabled(false);
+		};
+	};
+
 
 	/* ------------------------------------------------------------------- */
 
@@ -127,6 +178,12 @@ namespace DSS {
 		connect(highAngle, &QSlider::valueChanged, this, &ProcessingDlg::highAngleChanged);
 		connect(highPower, &QSlider::valueChanged, this, &ProcessingDlg::highPowerChanged);
 
+		//
+		// if the saturation slider is moved, update the text to match and process the
+		// change
+		//
+		connect(saturation, &QSlider::valueChanged, this, &ProcessingDlg::saturationChanged);
+
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -134,7 +191,27 @@ namespace DSS {
 	bool ProcessingDlg::saveOnClose()
 	{
 		ZFUNCTRACE_RUNTIME();
-		return true;
+		//
+		// The existing image is being closed and has been changed, ask the user if they want to save it
+		//
+		if (dirty_)
+		{
+			QString message{ tr("Do you want to save the modifications?", "IDS_MSG_SAVEMODIFICATIONS")};
+			auto result = QMessageBox::question(this, "DeepSkyStacker",
+				message, (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel), QMessageBox::No);
+			switch (result)
+			{
+			case QMessageBox::Cancel:
+				return false;
+				break;
+			case QMessageBox::No:
+				return true;
+				break;
+			default:
+				return saveImage();
+			}
+		}
+		else return true;
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -161,11 +238,14 @@ namespace DSS {
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load File";
+		//
+		// Load the output file created at the end of the stacking process.
+		//
 		ProgressDlg dlg{ DeepSkyStacker::instance() };
 		bool ok { false };
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		dssApp->deepStack().Clear();
+		dssApp->deepStack().reset();
 		dssApp->deepStack().SetProgress(&dlg);
 		ok = dssApp->deepStack().LoadStackedInfo(file);
 		dssApp->deepStack().SetProgress(nullptr);
@@ -179,19 +259,20 @@ namespace DSS {
 			updateInformation();
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-			dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processParms.bezierAdjust_);
-			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processParms.histoAdjust_);
+			dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
+			updateControlsFromSettings();
+
 			/*
-			updateControlsFromParams();
 
 			ShowOriginalHistogram(false);
 			ResetSliders();
 
 			int height = dssApp->deepStack().GetHeight();
-			m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
-			m_lProcessParams.clear();
-			m_Picture.SetImg((HBITMAP)nullptr);
+			processingSettingsList.clear();
+			picture->clear();
 			ProcessAndShow(true);
 			*/
 			QGuiApplication::restoreOverrideCursor();
@@ -207,18 +288,202 @@ namespace DSS {
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load image";
+		QFileDialog			fileDialog(this);
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		QString				strTitle;
+		fs::path file;
 
-		if (saveOnClose())
+		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+
+
+		directory = settings.value("Folders/SaveDSIFolder").toString();
+		extension = settings.value("Folders/SavePictureExtension").toString();
+		if (extension.isEmpty()) extension = "tif";
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFile);	// There can be only one
+
+		fileDialog.setNameFilter(tr("TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)", "IDS_FILTER_DSIIMAGETIFF"));
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
+
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-		}
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
+
+			//
+			// Now get the file as a standard fs::path object
+			//
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
+			{
+				file = files.at(0).toStdU16String();
+				
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
+				extension = QString::fromStdU16String(file.extension().generic_u16string());
+			}
+			
+			settings.setValue("Folders/SaveDSIFolder", directory);
+			settings.setValue("Folders/SavePictureExtension", extension);
+
+			//
+			// Finally load the file of interest
+			//
+			currentFile = file;				// Remember the current file
+			dssApp->deepStack().reset();
+			dssApp->deepStack().SetProgress(&dlg);
+			bool OK = dssApp->deepStack().LoadStackedInfo(file);
+			dssApp->deepStack().SetProgress(nullptr);
+
+			modifyRGBKGradientControls();
+			updateInformation();
+
+			dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
+
+			updateControlsFromSettings();
+			/*
+			ShowOriginalHistogram(false);
+			// ResetSliders();
+			int height = dssApp->deepStack().GetHeight();
+			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+
+			processingSettingsList.clear();
+			picture->clear();
+			ProcessAndShow(true);
+			*/
+			setDirty(false);
+
+			QGuiApplication::restoreOverrideCursor();
+
+		};
+
+
 	}
 
 	/* ------------------------------------------------------------------- */
 
-	void ProcessingDlg::saveImage()
+	bool ProcessingDlg::saveImage()
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Save image to file";
+		bool				bResult = false;
+		/*
+		QSettings			settings;
+		CString				strBaseDirectory;
+		CString				strBaseExtension;
+		bool				applied = false;
+		uint				dwCompression;
+		CRect				rcSelect;
+
+		if (dssApp->deepStack().IsLoaded())
+		{
+			strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
+			strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
+			auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
+			applied = settings.value("Folders/SaveApplySetting", false).toBool();
+			dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
+
+			if (!strBaseExtension.GetLength())
+				strBaseExtension = _T(".tif");
+
+			CSavePicture				dlgOpen(false,
+				_T(".TIF"),
+				nullptr,
+				OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
+				OUTPUTFILE_FILTERS,
+				this);
+
+			if (m_SelectRectSink.GetSelectRect(rcSelect))
+				dlgOpen.SetUseRect(true, true);
+			if (applied)
+				dlgOpen.SetApplied(true);
+
+			dlgOpen.SetCompression((TIFFCOMPRESSION)dwCompression);
+
+			if (strBaseDirectory.GetLength())
+				dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
+			dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
+
+			TCHAR				szBigBuffer[20000] = _T("");
+			DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+
+			dlgOpen.m_ofn.lpstrFile = szBigBuffer;
+			dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
+
+			if (dlgOpen.DoModal() == IDOK)
+			{
+				POSITION		pos;
+
+				pos = dlgOpen.GetStartPosition();
+				if (pos)
+				{
+					CString			strFile;
+					LPRECT			lpRect = nullptr;
+					bool			bApply;
+					bool			bUseRect;
+					TIFFCOMPRESSION	Compression;
+
+					bApply = dlgOpen.GetApplied();
+					bUseRect = dlgOpen.GetUseRect();
+					Compression = dlgOpen.GetCompression();
+
+					if (bUseRect && m_SelectRectSink.GetSelectRect(rcSelect))
+						lpRect = &rcSelect;
+
+					BeginWaitCursor();
+					strFile = dlgOpen.GetNextPathName(pos);
+					if (dlgOpen.m_ofn.nFilterIndex == 1)
+						dssApp->deepStack().GetStackedBitmap().SaveTIFF16Bitmap(strFile, lpRect, &dlg, bApply, Compression);
+					else if (dlgOpen.m_ofn.nFilterIndex == 2)
+						dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, false, Compression);
+					else if (dlgOpen.m_ofn.nFilterIndex == 3)
+						dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, true, Compression);
+					else if (dlgOpen.m_ofn.nFilterIndex == 4)
+						dssApp->deepStack().GetStackedBitmap().SaveFITS16Bitmap(strFile, lpRect, &dlg, bApply);
+					else if (dlgOpen.m_ofn.nFilterIndex == 5)
+						dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, false);
+					else if (dlgOpen.m_ofn.nFilterIndex == 6)
+						dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, true);
+
+					TCHAR		szDir[1 + _MAX_DIR];
+					TCHAR		szDrive[1 + _MAX_DRIVE];
+					TCHAR		szExt[1 + _MAX_EXT];
+
+					_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
+					strBaseDirectory = szDrive;
+					strBaseDirectory += szDir;
+					strBaseExtension = szExt;
+
+					dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
+					settings.setValue("Folders/SavePictureFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+					settings.setValue("Folders/SavePictureExtension", QString::fromWCharArray(strBaseExtension.GetString()));
+					settings.setValue("Folders/SavePictureIndex", (uint)dwFilterIndex);
+					settings.setValue("Folders/SaveApplySetting", bApply);
+					settings.setValue("Folders/SaveCompression", (uint)Compression);
+
+					EndWaitCursor();
+
+					m_strCurrentFile = strFile;
+					UpdateInfos();
+					m_bDirty = false;
+					bResult = true;
+				};
+			};
+		}
+		else
+		{
+			AfxMessageBox(IDS_MSG_NOPICTURETOSAVE, MB_OK | MB_ICONSTOP);
+		};*/
+
+		return bResult;
+
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -255,49 +520,50 @@ namespace DSS {
 		information->setText(text);
 	}
 
-	void ProcessingDlg::updateControlsFromParams()
+	void ProcessingDlg::updateControlsFromSettings()
 	{
-		/*
-		m_tabLuminance.m_MidTone.SetPos(processParms.m_BezierAdjust.m_fMidtone * 10);
-		m_tabLuminance.m_MidAngle.SetPos(processParms.m_BezierAdjust.m_fMidtoneAngle);
+		ZFUNCTRACE_RUNTIME();
 
-		m_tabLuminance.m_DarkAngle.SetPos(processParms.m_BezierAdjust.m_fDarknessAngle);
-		m_tabLuminance.m_DarkPower.SetPos(processParms.m_BezierAdjust.m_fDarknessPower * 10);
+		//
+		// Position the controls to match the current settings
+		//
+		darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
+		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower);
+		updateDarkText();
 
-		m_tabLuminance.m_HighAngle.SetPos(processParms.m_BezierAdjust.m_fHighlightAngle);
-		m_tabLuminance.m_HighPower.SetPos(processParms.m_BezierAdjust.m_fHighlightPower * 10);
 
-		m_tabLuminance.UpdateTexts();
+		midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
+		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone);
+		updateMidText();
 
-		m_tabSaturation.m_Saturation.SetPos(processParms.m_BezierAdjust.m_fSaturationShift + 50);
-		m_tabSaturation.UpdateTexts();
+		highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
+		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower);
+		updateHighText();
 
-		double					fMinRed,
-			fMaxRed,
-			fShiftRed;
-		double					fMinGreen,
-			fMaxGreen,
-			fShiftGreen;
-		double					fMinBlue,
-			fMaxBlue,
-			fShiftBlue;
+		saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		updateSaturationText();
 
-		fMinRed = processParms.m_HistoAdjust.GetRedAdjust().GetMin();
-		fMaxRed = processParms.m_HistoAdjust.GetRedAdjust().GetMax();
-		fShiftRed = processParms.m_HistoAdjust.GetRedAdjust().GetShift();
+		double	fMinRed, fMaxRed, fShiftRed;
 
-		fMinGreen = processParms.m_HistoAdjust.GetGreenAdjust().GetMin();
-		fMaxGreen = processParms.m_HistoAdjust.GetGreenAdjust().GetMax();
-		fShiftGreen = processParms.m_HistoAdjust.GetGreenAdjust().GetShift();
+		double	fMinGreen, fMaxGreen, fShiftGreen;
 
-		fMinBlue = processParms.m_HistoAdjust.GetBlueAdjust().GetMin();
-		fMaxBlue = processParms.m_HistoAdjust.GetBlueAdjust().GetMax();
-		fShiftBlue = processParms.m_HistoAdjust.GetBlueAdjust().GetShift();
+		double	fMinBlue, fMaxBlue,	fShiftBlue;
 
-		double				fAbsMin,
-			fAbsMax;
-		double				fOffset;
-		double				fRange;
+		fMinRed = processingSettings.histoAdjust_.GetRedAdjust().GetMin();
+		fMaxRed = processingSettings.histoAdjust_.GetRedAdjust().GetMax();
+		fShiftRed = processingSettings.histoAdjust_.GetRedAdjust().GetShift();
+
+		fMinGreen = processingSettings.histoAdjust_.GetGreenAdjust().GetMin();
+		fMaxGreen = processingSettings.histoAdjust_.GetGreenAdjust().GetMax();
+		fShiftGreen = processingSettings.histoAdjust_.GetGreenAdjust().GetShift();
+
+		fMinBlue = processingSettings.histoAdjust_.GetBlueAdjust().GetMin();
+		fMaxBlue = processingSettings.histoAdjust_.GetBlueAdjust().GetMax();
+		fShiftBlue = processingSettings.histoAdjust_.GetBlueAdjust().GetShift();
+
+		double	fAbsMin, fAbsMax;
+		double	fOffset;
+		double	fRange;
 
 		fAbsMin = min(fMinRed, min(fMinGreen, fMinBlue));
 		fAbsMax = max(fMaxRed, min(fMaxGreen, fMaxBlue));
@@ -310,30 +576,27 @@ namespace DSS {
 		if (fOffset < 0)
 			fOffset = 0.0;
 
-		m_fGradientOffset = fOffset;
-		m_fGradientRange = fRange;
+		gradientOffset_ = fOffset;
+		gradientRange_ = fRange;
 
-		CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-		RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((fMinRed - m_fGradientOffset) / m_fGradientRange));
-		RedGradient.SetPeg(RedGradient.IndexFromId(1), (float)(fShiftRed / 2.0 + 0.5));
-		RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((fMaxRed - m_fGradientOffset) / m_fGradientRange));
-		m_tabRGB.m_RedGradient.Invalidate(true);
-		m_tabRGB.SetRedAdjustMethod(processParms.m_HistoAdjust.GetRedAdjust().GetAdjustMethod());
+		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
+		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
+		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
+		redGradient->update();
+		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 
-		CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-		GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((fMinGreen - m_fGradientOffset) / m_fGradientRange));
-		GreenGradient.SetPeg(GreenGradient.IndexFromId(1), (float)(fShiftGreen / 2.0 + 0.5));
-		GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((fMaxGreen - m_fGradientOffset) / m_fGradientRange));
-		m_tabRGB.m_GreenGradient.Invalidate(true);
-		m_tabRGB.SetGreenAdjustMethod(processParms.m_HistoAdjust.GetGreenAdjust().GetAdjustMethod());
+		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
+		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
+		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
+		greenGradient->update();
+		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 
-		CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-		BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((fMinBlue - m_fGradientOffset) / m_fGradientRange));
-		BlueGradient.SetPeg(BlueGradient.IndexFromId(1), (float)(fShiftBlue / 2.0 + 0.5));
-		BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((fMaxBlue - m_fGradientOffset) / m_fGradientRange));
-		m_tabRGB.m_BlueGradient.Invalidate(true);
-		m_tabRGB.SetBlueAdjustMethod(processParms.m_HistoAdjust.GetBlueAdjust().GetAdjustMethod());
-		*/
+		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
+		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
+		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
+		blueGradient->update();
+		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
+
 	};
 
 	//
@@ -370,6 +633,11 @@ namespace DSS {
 		updateHighText();
 	}
 
+	void ProcessingDlg::saturationChanged()
+	{
+		updateSaturationText();
+	}
+
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
 	{
@@ -404,8 +672,8 @@ CProcessingDlg::CProcessingDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CProcessingDlg)
 	//}}AFX_DATA_INIT
 	m_bDirty = false;
-	m_fGradientOffset = 0;
-	m_fGradientRange = 0;
+	gradientOffset_ = 0;
+	gradientRange_ = 0;
 }
 
 /* ------------------------------------------------------------------- */
@@ -529,8 +797,8 @@ BOOL CProcessingDlg::OnInitDialog()
 
 	SetTimer(1, 100, nullptr);
 
-	m_fGradientOffset = 0.0;
-	m_fGradientRange = 65535.0;
+	gradientOffset_ = 0.0;
+	gradientRange_ = 65535.0;
 
 	m_tabRGB.m_RedGradient.SetOrientation(CGradientCtrl::ForceHorizontal);
 	m_tabRGB.m_RedGradient.SetPegSide(true, false);
@@ -579,46 +847,15 @@ BOOL CProcessingDlg::OnInitDialog()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::UpdateControls()
-{
-	bool			bUndo = false,
-		bRedo = false;
-
-	if (dssApp->deepStack().IsLoaded())
-	{
-		m_tabRGB.EnableWindow(true);
-		m_tabLuminance.EnableWindow(true);
-		m_tabSaturation.EnableWindow(true);
-
-		bUndo = m_lProcessParams.IsBackwardAvailable();
-		bRedo = m_lProcessParams.IsForwardAvailable();
-
-		m_tabRGB.m_Undo.EnableWindow(bUndo);
-		m_tabRGB.m_Redo.EnableWindow(bRedo);
-		m_tabLuminance.m_Undo.EnableWindow(bUndo);
-		m_tabLuminance.m_Redo.EnableWindow(bRedo);
-		m_tabSaturation.m_Undo.EnableWindow(bUndo);
-		m_tabSaturation.m_Redo.EnableWindow(bRedo);
-	}
-	else
-	{
-		m_tabRGB.EnableWindow(false);
-		m_tabLuminance.EnableWindow(false);
-		m_tabSaturation.EnableWindow(false);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
 
 
 /* ------------------------------------------------------------------- */
 
 void CProcessingDlg::OnUndo()
 {
-	m_lProcessParams.MoveBackward();
-	m_lProcessParams.GetCurrentParams(processParms);
-	UpdateControlsFromParams();
+	processingSettingsList.MoveBackward();
+	processingSettingsList.GetCurrentParams(processingSettings);
+	updateControlsFromSettings();
 	ProcessAndShow(false);
 	ShowOriginalHistogram(false);
 	UpdateControls();
@@ -628,9 +865,9 @@ void CProcessingDlg::OnUndo()
 
 void CProcessingDlg::OnRedo()
 {
-	m_lProcessParams.MoveForward();
-	m_lProcessParams.GetCurrentParams(processParms);
-	UpdateControlsFromParams();
+	processingSettingsList.MoveForward();
+	processingSettingsList.GetCurrentParams(processingSettings);
+	updateControlsFromSettings();
 	ProcessAndShow(false);
 	ShowOriginalHistogram(false);
 	UpdateControls();
@@ -644,13 +881,13 @@ void CProcessingDlg::OnSettings()
 	ProcessingSettingsSet& Settings = dssApp->processingSettingsSet();
 
 	KillTimer(1);
-	dlg.SetDSSSettings(&Settings, processParms);
+	dlg.SetDSSSettings(&Settings, processingSettings);
 	dlg.DoModal();
 
 	if (dlg.IsLoaded())
 	{
-		dlg.GetCurrentSettings(processParms);
-		UpdateControlsFromParams();
+		dlg.GetCurrentSettings(processingSettings);
+		updateControlsFromSettings();
 		ProcessAndShow(false);
 		ShowOriginalHistogram(false);
 		UpdateControls();
@@ -684,9 +921,9 @@ LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 	ResetSliders();
 
 	int height = dssApp->deepStack().GetHeight();
-	m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+	rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
-	m_lProcessParams.clear();
+	processingSettingsList.clear();
 	m_Picture.SetImg((HBITMAP)nullptr);
 	ProcessAndShow(true);
 
@@ -775,17 +1012,17 @@ void CProcessingDlg::OnLoaddsi()
 				UpdateMonochromeControls();
 				UpdateInfos();
 				BeginWaitCursor();
-				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processParms.m_BezierAdjust);
-				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processParms.m_HistoAdjust);
+				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.m_BezierAdjust);
+				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.m_HistoAdjust);
 
-				UpdateControlsFromParams();
+				updateControlsFromSettings();
 
 				ShowOriginalHistogram(false);
 				// ResetSliders();
 				int height = dssApp->deepStack().GetHeight();
-				m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
-				m_lProcessParams.clear();
+				processingSettingsList.clear();
 				m_Picture.SetImg((HBITMAP)nullptr);
 				ProcessAndShow(true);
 				EndWaitCursor();
@@ -827,31 +1064,31 @@ void CProcessingDlg::ProcessAndShow(bool bSaveUndo)
 {
 	UpdateHistogramAdjust();
 
-	processParms.m_BezierAdjust.m_fMidtone = m_tabLuminance.m_MidTone.GetPos() / 10.0;
-	processParms.m_BezierAdjust.m_fMidtoneAngle = m_tabLuminance.m_MidAngle.GetPos();
-	processParms.m_BezierAdjust.m_fDarknessAngle = m_tabLuminance.m_DarkAngle.GetPos();
-	processParms.m_BezierAdjust.m_fHighlightAngle = m_tabLuminance.m_HighAngle.GetPos();
-	processParms.m_BezierAdjust.m_fHighlightPower = m_tabLuminance.m_HighPower.GetPos() / 10.0;
-	processParms.m_BezierAdjust.m_fDarknessPower = m_tabLuminance.m_DarkPower.GetPos() / 10.0;
-	processParms.m_BezierAdjust.m_fSaturationShift = m_tabSaturation.m_Saturation.GetPos() - 50;
-	processParms.m_BezierAdjust.Clear();
+	processingSettings.m_BezierAdjust.m_fMidtone = m_tabLuminance.m_MidTone.GetPos() / 10.0;
+	processingSettings.m_BezierAdjust.m_fMidtoneAngle = m_tabLuminance.m_MidAngle.GetPos();
+	processingSettings.m_BezierAdjust.m_fDarknessAngle = m_tabLuminance.m_DarkAngle.GetPos();
+	processingSettings.m_BezierAdjust.m_fHighlightAngle = m_tabLuminance.m_HighAngle.GetPos();
+	processingSettings.m_BezierAdjust.m_fHighlightPower = m_tabLuminance.m_HighPower.GetPos() / 10.0;
+	processingSettings.m_BezierAdjust.m_fDarknessPower = m_tabLuminance.m_DarkPower.GetPos() / 10.0;
+	processingSettings.m_BezierAdjust.m_fSaturationShift = m_tabSaturation.m_Saturation.GetPos() - 50;
+	processingSettings.m_BezierAdjust.Clear();
 
 	if (bSaveUndo)
-		m_lProcessParams.AddParams(processParms);
+		processingSettingsList.AddParams(processingSettings);
 
 	UpdateControls();
 
 	CRect			rcSelect;
 
 	if (m_SelectRectSink.GetSelectRect(rcSelect))
-		m_ToProcess.SetProcessRect(rcSelect);
+		rectToProcess.SetProcessRect(rcSelect);
 	else
 	{
 		rcSelect.SetRectEmpty();
-		m_ToProcess.SetProcessRect(rcSelect);
+		rectToProcess.SetProcessRect(rcSelect);
 	};
 
-	m_ToProcess.Reset();
+	rectToProcess.Reset();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1037,14 +1274,14 @@ void CProcessingDlg::ResetSliders()
 {
 	RGBHistogram& Histogram = dssApp->deepStack().GetOriginalHistogram();
 
-	processParms.m_BezierAdjust.Reset();
+	processingSettings.m_BezierAdjust.Reset();
 
 	float				RedMarks[3];
 	float				GreenMarks[3];
 	float				BlueMarks[3];
 
-	m_fGradientOffset = 0.0;
-	m_fGradientRange = 65535.0;
+	gradientOffset_ = 0.0;
+	gradientRange_ = 65535.0;
 
 	RedMarks[0] = Histogram.GetRedHistogram().GetMin();
 	GreenMarks[0] = Histogram.GetGreenHistogram().GetMin();
@@ -1056,38 +1293,38 @@ void CProcessingDlg::ResetSliders()
 
 
 	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((RedMarks[0] - m_fGradientOffset) / m_fGradientRange));
+	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
 	RedGradient.SetPeg(RedGradient.IndexFromId(1), (float)0.5);
-	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((RedMarks[2] - m_fGradientOffset) / m_fGradientRange));
+	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_RedGradient.Invalidate(true);
-	m_tabRGB.SetRedAdjustMethod(processParms.m_HistoAdjust.GetRedAdjust().GetAdjustMethod());
+	m_tabRGB.SetRedAdjustMethod(processingSettings.m_HistoAdjust.GetRedAdjust().GetAdjustMethod());
 
 	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((GreenMarks[0] - m_fGradientOffset) / m_fGradientRange));
+	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
 	GreenGradient.SetPeg(GreenGradient.IndexFromId(1), (float)0.5);
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((GreenMarks[2] - m_fGradientOffset) / m_fGradientRange));
+	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_GreenGradient.Invalidate(true);
-	m_tabRGB.SetGreenAdjustMethod(processParms.m_HistoAdjust.GetGreenAdjust().GetAdjustMethod());
+	m_tabRGB.SetGreenAdjustMethod(processingSettings.m_HistoAdjust.GetGreenAdjust().GetAdjustMethod());
 
 	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((BlueMarks[0] - m_fGradientOffset) / m_fGradientRange));
+	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
 	BlueGradient.SetPeg(BlueGradient.IndexFromId(1), (float)0.5);
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((BlueMarks[2] - m_fGradientOffset) / m_fGradientRange));
+	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_BlueGradient.Invalidate(true);
-	m_tabRGB.SetBlueAdjustMethod(processParms.m_HistoAdjust.GetBlueAdjust().GetAdjustMethod());
+	m_tabRGB.SetBlueAdjustMethod(processingSettings.m_HistoAdjust.GetBlueAdjust().GetAdjustMethod());
 
-	m_tabLuminance.m_MidTone.SetPos(processParms.m_BezierAdjust.m_fMidtone * 10);
-	m_tabLuminance.m_MidAngle.SetPos(processParms.m_BezierAdjust.m_fMidtoneAngle);
+	m_tabLuminance.m_MidTone.SetPos(processingSettings.m_BezierAdjust.m_fMidtone * 10);
+	m_tabLuminance.m_MidAngle.SetPos(processingSettings.m_BezierAdjust.m_fMidtoneAngle);
 
-	m_tabLuminance.m_DarkAngle.SetPos(processParms.m_BezierAdjust.m_fDarknessAngle);
-	m_tabLuminance.m_DarkPower.SetPos(processParms.m_BezierAdjust.m_fDarknessPower * 10);
+	m_tabLuminance.m_DarkAngle.SetPos(processingSettings.m_BezierAdjust.m_fDarknessAngle);
+	m_tabLuminance.m_DarkPower.SetPos(processingSettings.m_BezierAdjust.m_fDarknessPower * 10);
 
-	m_tabLuminance.m_HighAngle.SetPos(processParms.m_BezierAdjust.m_fHighlightAngle);
-	m_tabLuminance.m_HighPower.SetPos(processParms.m_BezierAdjust.m_fHighlightPower * 10);
+	m_tabLuminance.m_HighAngle.SetPos(processingSettings.m_BezierAdjust.m_fHighlightAngle);
+	m_tabLuminance.m_HighPower.SetPos(processingSettings.m_BezierAdjust.m_fHighlightPower * 10);
 
 	m_tabLuminance.UpdateTexts();
 
-	m_tabSaturation.m_Saturation.SetPos(processParms.m_BezierAdjust.m_fSaturationShift + 50);
+	m_tabSaturation.m_Saturation.SetPos(processingSettings.m_BezierAdjust.m_fSaturationShift + 50);
 	m_tabSaturation.UpdateTexts();
 
 	ShowOriginalHistogram(false);
@@ -1413,29 +1650,29 @@ void CProcessingDlg::ShowHistogram(CWndImage& wndImage, RGBHistogram& Histogram,
 void CProcessingDlg::UpdateHistogramAdjust()
 {
 	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	double				fMinRed = m_fGradientOffset + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftRed = (RedGradient.GetPeg(RedGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxRed = m_fGradientOffset + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * gradientRange_;
 
 	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	double				fMinGreen = m_fGradientOffset + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftGreen = (GreenGradient.GetPeg(GreenGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxGreen = m_fGradientOffset + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * gradientRange_;
 
 
 	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	double				fMinBlue = m_fGradientOffset + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftBlue = (BlueGradient.GetPeg(BlueGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxBlue = m_fGradientOffset + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * gradientRange_;
 
 
-	processParms.m_HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
-	processParms.m_HistoAdjust.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
-	processParms.m_HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
+	processingSettings.m_HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
+	processingSettings.m_HistoAdjust.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
+	processingSettings.m_HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
 
-	processParms.m_HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
-	processParms.m_HistoAdjust.GetGreenAdjust().SetAdjustMethod(m_tabRGB.GetGreenAdjustMethod());
-	processParms.m_HistoAdjust.GetBlueAdjust().SetAdjustMethod(m_tabRGB.GetBlueAdjustMethod());
+	processingSettings.m_HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
+	processingSettings.m_HistoAdjust.GetGreenAdjust().SetAdjustMethod(m_tabRGB.GetGreenAdjustMethod());
+	processingSettings.m_HistoAdjust.GetBlueAdjust().SetAdjustMethod(m_tabRGB.GetBlueAdjustMethod());
 
 
 	// Update gradient adjust values
@@ -1455,22 +1692,22 @@ void CProcessingDlg::UpdateHistogramAdjust()
 	if (fOffset < 0)
 		fOffset = 0.0;
 
-	m_fGradientOffset = fOffset;
-	m_fGradientRange = fRange;
+	gradientOffset_ = fOffset;
+	gradientRange_ = fRange;
 
-	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((fMinRed - m_fGradientOffset) / m_fGradientRange));
+	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((fMinRed - gradientOffset_) / gradientRange_));
 	RedGradient.SetPeg(RedGradient.IndexFromId(1), (float)(fShiftRed / 2.0 + 0.5));
-	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((fMaxRed - m_fGradientOffset) / m_fGradientRange));
+	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((fMaxRed - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_RedGradient.Invalidate(true);
 
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((fMinGreen - m_fGradientOffset) / m_fGradientRange));
+	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((fMinGreen - gradientOffset_) / gradientRange_));
 	GreenGradient.SetPeg(GreenGradient.IndexFromId(1), (float)(fShiftGreen / 2.0 + 0.5));
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((fMaxGreen - m_fGradientOffset) / m_fGradientRange));
+	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((fMaxGreen - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_GreenGradient.Invalidate(true);
 
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((fMinBlue - m_fGradientOffset) / m_fGradientRange));
+	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((fMinBlue - gradientOffset_) / gradientRange_));
 	BlueGradient.SetPeg(BlueGradient.IndexFromId(1), (float)(fShiftBlue / 2.0 + 0.5));
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((fMaxBlue - m_fGradientOffset) / m_fGradientRange));
+	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((fMaxBlue - gradientOffset_) / gradientRange_));
 	m_tabRGB.m_BlueGradient.Invalidate(true);
 };
 
@@ -1488,19 +1725,19 @@ void CProcessingDlg::ShowOriginalHistogram(bool bLog)
 	Histo.SetSize(65535.0, (int)rcClient.Width());
 
 	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	double				fMinRed = m_fGradientOffset + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftRed = (RedGradient.GetPeg(RedGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxRed = m_fGradientOffset + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * gradientRange_;
 
 	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	double				fMinGreen = m_fGradientOffset + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftGreen = (GreenGradient.GetPeg(GreenGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxGreen = m_fGradientOffset + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * gradientRange_;
 
 	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	double				fMinBlue = m_fGradientOffset + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * m_fGradientRange,
+	double				fMinBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * gradientRange_,
 		fShiftBlue = (BlueGradient.GetPeg(BlueGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxBlue = m_fGradientOffset + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * m_fGradientRange;
+		fMaxBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * gradientRange_;
 
 
 	HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
@@ -1521,7 +1758,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	CRect			rcCell;
 
-	if (m_ToProcess.GetNextUnProcessedRect(rcCell))
+	if (rectToProcess.GetNextUnProcessedRect(rcCell))
 	{
 		HBITMAP			hBitmap = nullptr;
 		bool			bInitialized = true;
@@ -1530,7 +1767,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 		if (!hBitmap)
 			bInitialized = false;
 
-		hBitmap = dssApp->deepStack().PartialProcess(rcCell, processParms.m_BezierAdjust, processParms.m_HistoAdjust);
+		hBitmap = dssApp->deepStack().PartialProcess(rcCell, processingSettings.m_BezierAdjust, processingSettings.m_HistoAdjust);
 
 		if (!bInitialized)
 			m_Picture.SetImg(hBitmap, true);
@@ -1542,7 +1779,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 			ShowOriginalHistogram(false);
 			ResetSliders();
 		};
-		const int nProgress = static_cast<int>(m_ToProcess.GetPercentageComplete());
+		const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
 		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
 	};
 

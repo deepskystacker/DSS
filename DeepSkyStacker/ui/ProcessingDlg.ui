@@ -77,7 +77,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="sizePolicy">
@@ -99,7 +99,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="rgbTab">
           <attribute name="title">
@@ -298,7 +298,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="lumTab">
+         <widget class="QWidget" name="luminanceTab">
           <attribute name="title">
            <string comment="IDD_LUMINANCE">Luminance</string>
           </attribute>
@@ -485,7 +485,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="satTab">
+         <widget class="QWidget" name="saturationTab">
           <attribute name="title">
            <string comment="IDD_SATURATION">Saturation</string>
           </attribute>
@@ -534,7 +534,7 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <widget class="QLabel" name="darkLabel_2">
+              <widget class="QLabel" name="saturationLabel">
                <property name="minimumSize">
                 <size>
                  <width>49</width>
@@ -550,6 +550,12 @@
               <widget class="QSlider" name="saturation">
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="tickPosition">
+                <enum>QSlider::TicksBelow</enum>
+               </property>
+               <property name="tickInterval">
+                <number>10</number>
                </property>
               </widget>
              </item>
@@ -573,85 +579,87 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="applyButton">
-           <property name="text">
-            <string comment="IDC_PROCESS">Apply</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="undoButton">
-           <property name="toolTip">
-            <string comment="IDS_UNDOLASTSETTINGS">Undo last applied settings</string>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources.qrc">
-             <normaloff>:/processing/undo.png</normaloff>:/processing/undo.png</iconset>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="settingsButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string comment="IDS_MANAGESETTINGS">Save, Load, Manage settings ...</string>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources.qrc">
-             <normaloff>:/processing/settings.png</normaloff>:/processing/settings.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>24</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="redoButton">
-           <property name="toolTip">
-            <string comment="IDS_REDOLASTSETTINGS">Redo last applied settings</string>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
-           <property name="icon">
-            <iconset resource="../resources.qrc">
-             <normaloff>:/processing/redo.png</normaloff>:/processing/redo.png</iconset>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="resetButton">
-           <property name="text">
-            <string comment="IDC_RESET">Reset</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="buttonWidget" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="applyButton">
+            <property name="text">
+             <string comment="IDC_PROCESS">Apply</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="undoButton">
+            <property name="toolTip">
+             <string comment="IDS_UNDOLASTSETTINGS">Undo last applied settings</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources.qrc">
+              <normaloff>:/processing/undo.png</normaloff>:/processing/undo.png</iconset>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="settingsButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string comment="IDS_MANAGESETTINGS">Save, Load, Manage settings ...</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources.qrc">
+              <normaloff>:/processing/settings.png</normaloff>:/processing/settings.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="redoButton">
+            <property name="toolTip">
+             <string comment="IDS_REDOLASTSETTINGS">Redo last applied settings</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources.qrc">
+              <normaloff>:/processing/redo.png</normaloff>:/processing/redo.png</iconset>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetButton">
+            <property name="text">
+             <string comment="IDC_RESET">Reset</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
       </layout>
      </item>

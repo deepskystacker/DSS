@@ -1,4 +1,11 @@
+
 #pragma once
+#include <zexcept.h>
+#include <filesystem>
+#include <QImage>
+
+namespace fs = std::filesystem;
+
 #include "StackedBitmap.h"
 #include "BitmapExt.h"
 
@@ -8,22 +15,24 @@ class CDeepStack
 private :
 	DSS::StackedBitmap m_StackedBitmap;
 	DSS::RGBHistogram m_OriginalHisto;
-	C32BitsBitmap m_Bitmap;
+	QVector<uchar> imageData_;
+	std::unique_ptr<QImage> image_;
 	bool m_bNewStackedBitmap;
 	DSS::ProgressBase* m_pProgress;
 
 public :
-	CDeepStack()
+	CDeepStack() : 
+		m_bNewStackedBitmap{false},
+		m_pProgress{nullptr}
 	{
-		m_bNewStackedBitmap = false;
-		m_pProgress			= nullptr;
 	};
 	virtual ~CDeepStack() {};
 
-	void	Clear()
+	void	reset()
 	{
 		m_StackedBitmap.Clear();
-		m_Bitmap.Free();
+		image_.reset();
+		imageData_.clear();
 		m_OriginalHisto.clear();
 		m_bNewStackedBitmap = false;
 	};
@@ -60,24 +69,25 @@ public :
 
 	bool	LoadStackedInfo(const fs::path& file);
 
-	HBITMAP PartialProcess(RECT rcProcess, const DSS::BezierAdjust & BezierAdjust, const DSS::RGBHistogramAdjust & histogramAdjust)
+	void PartialProcess(DSSRect& rcProcess, const DSS::BezierAdjust& BezierAdjust, const DSS::RGBHistogramAdjust& histogramAdjust)
 	{
-		if (m_Bitmap.IsEmpty())
-			m_Bitmap.Create(GetWidth(), GetHeight());
+		//
+		// Initialise an empty QImage of the right size if necessary using a preallocated buffer (in imageData_)
+		//
+		if (nullptr == image_.get())
+		{
+			imageData_.resize(GetWidth() * GetHeight() * sizeof(QRgb));
+			image_ = std::make_unique<QImage>(imageData_.data(), GetWidth(), GetHeight(), QImage::Format_RGB32);
+		}
 
 		m_StackedBitmap.SetBezierAdjust(BezierAdjust);
 		m_StackedBitmap.SetHistogramAdjust(histogramAdjust);
-		return m_StackedBitmap.GetHBitmap(m_Bitmap, &rcProcess);
-	};
+		m_StackedBitmap.updateQImage(imageData_.data(), image_->bytesPerLine(), &rcProcess);
+	}
 
 	DSS::StackedBitmap& GetStackedBitmap()
 	{
 		return m_StackedBitmap;
-	}
-
-	C32BitsBitmap& GetBitmap()
-	{
-		return m_Bitmap;
 	}
 
 	void AdjustOriginalHistogram(DSS::RGBHistogram & Histo, const DSS::RGBHistogramAdjust & histogramAdjust)
