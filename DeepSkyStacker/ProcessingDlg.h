@@ -293,7 +293,7 @@ namespace DSS
 
 
 
-	class ProcessingDlg : public QDialog, public Ui::ProcessingDlg
+	class ProcessingDlg : public QWidget, public Ui::ProcessingDlg
 	{
 		Q_OBJECT
 
@@ -412,9 +412,13 @@ namespace DSS
 		static const inline int maxSaturation { 50 };
 		static const inline int initialSaturation { 20 };
 
+		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
+		void	drawHistoBar(QPainter& palette, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
+
+
 
 	signals:
-		void showOriginalHistogram();
+		void showHistogram(bool useLogarithm = false);	// Calls drawHistogram 
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
@@ -455,8 +459,6 @@ namespace DSS
 		void	ProcessAndShow(bool bSaveUndo = true);
 
 		void	ResetSliders();
-		void	DrawHistoBar(Graphics* pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
-		void	ShowHistogram(CWndImage& wndImage, RGBHistogram& Histogram, bool bLog = false);
 		void	ShowOriginalHistogram(bool bLog = false);
 
 		void	DrawGaussCurves(Graphics* pGraphics, RGBHistogram& Histogram, int lWidth, int lHeight);

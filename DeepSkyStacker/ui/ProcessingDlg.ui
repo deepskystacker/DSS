@@ -664,7 +664,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QChartView" name="chartView" native="true">
+      <widget class="DSS::ImageView" name="histogram" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
          <horstretch>0</horstretch>
@@ -710,12 +710,6 @@
    <class>DSS::ImageView</class>
    <extends>QWidget</extends>
    <header>imageview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>QChartView</class>
-   <extends>QWidget</extends>
-   <header location="global">QChartView</header>
    <container>1</container>
   </customwidget>
   <customwidget>

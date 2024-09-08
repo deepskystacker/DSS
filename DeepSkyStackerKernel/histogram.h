@@ -394,12 +394,27 @@ namespace DSS
 			return redAdjustment;
 		};
 
+		HistogramAdjust& GetRedAdjust()
+		{
+			return redAdjustment;
+		};
+
 		const HistogramAdjust& GetGreenAdjust() const
 		{
 			return greenAdjustment;
 		};
 
+		HistogramAdjust& GetGreenAdjust()
+		{
+			return greenAdjustment;
+		};
+
 		const HistogramAdjust& GetBlueAdjust() const
+		{
+			return blueAdjustment;
+		};
+
+		HistogramAdjust& GetBlueAdjust()
 		{
 			return blueAdjustment;
 		};

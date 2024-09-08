@@ -10,9 +10,41 @@
 
 /* ------------------------------------------------------------------- */
 
-namespace DSS {
+namespace
+{
+	class ColorOrder
+	{
+	public:
+		ARGB		m_crColor;		// Qt 32-bit ARGB format (0xAARRGGBB)
+		int			m_lSize;
+
+		ColorOrder() :
+			m_crColor{ qRgb(0, 0, 0) },
+			m_lSize{ 0 }
+		{
+		}
+
+		ColorOrder(ARGB crColor, int lSize)
+		{
+			m_crColor = crColor;
+			m_lSize = lSize;
+		};
+		virtual ~ColorOrder() {};
+		ColorOrder(const ColorOrder& co) = default;
+
+		ColorOrder& operator = (const ColorOrder& co) = default;
+
+		bool operator < (const ColorOrder& co) const
+		{
+			return m_lSize < co.m_lSize;
+		};
+	};
+};
+
+namespace DSS
+{
 	ProcessingDlg::ProcessingDlg(QWidget *parent)
-		: QDialog(parent),
+		: QWidget(parent),
 		dirty_ { false },
 		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
 		greenAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
@@ -28,6 +60,12 @@ namespace DSS {
 			iconModifier = "-dark";
 
 		setButtonIcons();
+
+		//
+		// Disable the magnifier for the imageview histogram and also its tooltip
+		//
+		histogram->enableMagnifier(false);
+		histogram->setToolTip("");
 
 		//
 		// Initialise the popup menu for the "Histogram Adjustment Type" on the RGB tab
@@ -265,7 +303,7 @@ namespace DSS {
 
 			/*
 
-			ShowOriginalHistogram(false);
+			showHistogram(false);
 			ResetSliders();
 
 			int height = dssApp->deepStack().GetHeight();
@@ -339,6 +377,8 @@ namespace DSS {
 			dssApp->deepStack().reset();
 			dssApp->deepStack().SetProgress(&dlg);
 			bool OK = dssApp->deepStack().LoadStackedInfo(file);
+			ZASSERT(OK);
+
 			dssApp->deepStack().SetProgress(nullptr);
 
 			modifyRGBKGradientControls();
@@ -348,8 +388,9 @@ namespace DSS {
 			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
 
 			updateControlsFromSettings();
+
+			showHistogram(false);
 			/*
-			ShowOriginalHistogram(false);
 			// ResetSliders();
 			int height = dssApp->deepStack().GetHeight();
 			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
@@ -583,19 +624,19 @@ namespace DSS {
 		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
 		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
 		redGradient->update();
-		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
+		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
 
 		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
 		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
 		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
 		greenGradient->update();
-		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
+		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
 
 		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
 		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
 		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
 		blueGradient->update();
-		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
+		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod();
 
 	};
 
@@ -659,8 +700,166 @@ namespace DSS {
 		update();
 	}
 
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::showHistogram(bool useLogarithm)
+	{
+		// Adjust Histogram
+		RGBHistogram			Histo;
+		RGBHistogramAdjust		HistoAdjust;
+
+		Histo.SetSize(65535.0, histogram->width());
+
+		QGradientStops gradientStops = redGradient->gradient().stops();
+
+		double 
+			fMinRed = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftRed = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxRed = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		gradientStops = greenGradient->gradient().stops();
+
+		double
+			fMinGreen = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftGreen = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxGreen = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		gradientStops = greenGradient->gradient().stops();
+
+		double
+			fMinBlue = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftBlue = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxBlue = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		HistoAdjust.GetRedAdjust().SetAdjustMethod(redAdjustmentCurve());
+		HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
+		HistoAdjust.GetGreenAdjust().SetAdjustMethod(greenAdjustmentCurve());
+		HistoAdjust.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
+		HistoAdjust.GetBlueAdjust().SetAdjustMethod(blueAdjustmentCurve());
+		HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
+
+		dssApp->deepStack().AdjustOriginalHistogram(Histo, HistoAdjust);
+
+		drawHistogram(Histo, useLogarithm);
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::drawHistogram(RGBHistogram& Histogram, bool useLogarithm)
+	{
+		QPixmap pix(histogram->size());
+		QPainter painter;
+		QBrush brush(palette().window());
+		const QRect histogramRect{ histogram->rect() };
+
+		painter.begin(&pix);
+		painter.setRenderHint(QPainter::Antialiasing);
+		painter.setRenderHint(QPainter::SmoothPixmapTransform);
+
+		painter.fillRect(histogramRect, brush);
+
+		double	maxLogarithm = 0.0;
+
+		int				lNrValues;
+		int				lMaxValue = 0;
+
+		lMaxValue = max(lMaxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
+		lMaxValue = max(lMaxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
+		lMaxValue = max(lMaxValue, Histogram.GetBlueHistogram().GetMaximumNrValues());
+
+		lNrValues = Histogram.GetRedHistogram().GetNrValues();
+
+		if (lNrValues)
+		{
+			if (useLogarithm)
+			{
+				if (lMaxValue)
+					maxLogarithm = exp(log((double)lMaxValue) / histogramRect.height());
+				else
+					useLogarithm = false;
+			};
+
+			for (int i = 0; i < lNrValues; i++)
+			{
+				int			lNrReds;
+				int			lNrGreens;
+				int			lNrBlues;
+
+				Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+
+				if (useLogarithm)
+				{
+					if (lNrReds)
+						lNrReds = log((double)lNrReds) / log(maxLogarithm);
+					if (lNrGreens)
+						lNrGreens = log((double)lNrGreens) / log(maxLogarithm);
+					if (lNrBlues)
+						lNrBlues = log((double)lNrBlues) / log(maxLogarithm);
+				}
+				else
+				{
+					lNrReds = (double)lNrReds / (double)lMaxValue * histogramRect.height();
+					lNrGreens = (double)lNrGreens / (double)lMaxValue * histogramRect.height();
+					lNrBlues = (double)lNrBlues / (double)lMaxValue * histogramRect.height();
+				};
+
+				drawHistoBar(painter, lNrReds, lNrGreens, lNrBlues, i, histogramRect.height());
+			};
+
+
+		}
+		//DrawGaussCurves(painter, Histogram, histogramRect.width(), histogramRect.height());
+		//DrawBezierCurve(painter, histogramRect.width(), histogramRect.height());
+
+		painter.end();
+		histogram->setPixmap(pix);
+	}
+
+	void ProcessingDlg::drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
+	{
+		std::vector<ColorOrder>	vColors;
+		int						lLastHeight = 0;
+
+		vColors.emplace_back(qRgb(255, 0, 0), lNrReds);
+		vColors.emplace_back(qRgb(0, 255, 0), lNrGreens);
+		vColors.emplace_back(qRgb(0, 0, 255), lNrBlues);
+
+		std::sort(vColors.begin(), vColors.end());
+
+		for (int i = 0; i < vColors.size(); i++)
+		{
+			if (vColors[i].m_lSize > lLastHeight)
+			{
+				// Create a color from the remaining values
+				double	fRed, fGreen, fBlue;
+				int		lNrColors = 1;
+
+				fRed = qRed(vColors[i].m_crColor);		// Get the red component of the colour
+				fGreen = qGreen(vColors[i].m_crColor);	// Get the green component of the colour
+				fBlue = qBlue(vColors[i].m_crColor);	// Get the blue component of the colour
+
+				for (int j = i + 1; j < vColors.size(); j++)
+				{
+					fRed += qRed(vColors[j].m_crColor);		// Get the red component of the colour
+					fGreen += qGreen(vColors[j].m_crColor);	// Get the green component of the colour
+					fBlue += qBlue(vColors[j].m_crColor);	// Get the blue component of the colour
+					lNrColors++;
+				};
+
+				QPen colorPen(QColor(fRed / lNrColors, fGreen / lNrColors, fBlue / lNrColors));
+				painter.setPen(colorPen);
+
+				painter.drawLine(X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
+
+				lLastHeight = vColors[i].m_lSize;
+			};
+		};
+	}
+
 } // namespace DSS
+
 #if (0)
+
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // CProcessingDlg dialog
@@ -857,7 +1056,7 @@ void CProcessingDlg::OnUndo()
 	processingSettingsList.GetCurrentParams(processingSettings);
 	updateControlsFromSettings();
 	ProcessAndShow(false);
-	ShowOriginalHistogram(false);
+	showHistogram(false);
 	UpdateControls();
 };
 
@@ -869,7 +1068,7 @@ void CProcessingDlg::OnRedo()
 	processingSettingsList.GetCurrentParams(processingSettings);
 	updateControlsFromSettings();
 	ProcessAndShow(false);
-	ShowOriginalHistogram(false);
+	showHistogram(false);
 	UpdateControls();
 };
 
@@ -889,7 +1088,7 @@ void CProcessingDlg::OnSettings()
 		dlg.GetCurrentSettings(processingSettings);
 		updateControlsFromSettings();
 		ProcessAndShow(false);
-		ShowOriginalHistogram(false);
+		showHistogram(false);
 		UpdateControls();
 		m_bDirty = true;
 	};
@@ -917,7 +1116,7 @@ void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 
 LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 {
-	ShowOriginalHistogram(false);
+	showHistogram(false);
 	ResetSliders();
 
 	int height = dssApp->deepStack().GetHeight();
@@ -1017,7 +1216,7 @@ void CProcessingDlg::OnLoaddsi()
 
 				updateControlsFromSettings();
 
-				ShowOriginalHistogram(false);
+				showHistogram(false);
 				// ResetSliders();
 				int height = dssApp->deepStack().GetHeight();
 				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
@@ -1327,104 +1526,13 @@ void CProcessingDlg::ResetSliders()
 	m_tabSaturation.m_Saturation.SetPos(processingSettings.m_BezierAdjust.m_fSaturationShift + 50);
 	m_tabSaturation.UpdateTexts();
 
-	ShowOriginalHistogram(false);
+	showHistogram(false);
 };
 
 /* ------------------------------------------------------------------- */
 
-class CColorOrder
-{
-public:
-	COLORREF		m_crColor;
-	int			m_lSize;
 
-private:
-	void	CopyFrom(const CColorOrder& co)
-	{
-		m_crColor = co.m_crColor;
-		m_lSize = co.m_lSize;
-	};
-
-public:
-	CColorOrder()
-	{
-		m_crColor = 0;
-		m_lSize = 0;
-	}
-	CColorOrder(COLORREF crColor, int lSize)
-	{
-		m_crColor = crColor;
-		m_lSize = lSize;
-	};
-	virtual ~CColorOrder() {};
-	CColorOrder(const CColorOrder& co)
-	{
-		CopyFrom(co);
-	};
-
-	CColorOrder& operator = (const CColorOrder& co)
-	{
-		CopyFrom(co);
-		return *this;
-	};
-
-	bool operator < (const CColorOrder& co) const
-	{
-		return m_lSize < co.m_lSize;
-	};
-};
-
-void CProcessingDlg::DrawHistoBar(Graphics* pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
-{
-	std::vector<CColorOrder>	vColors;
-	int						lLastHeight = 0;
-
-	vColors.emplace_back(RGB(255, 0, 0), lNrReds);
-	vColors.emplace_back(RGB(0, 255, 0), lNrGreens);
-	vColors.emplace_back(RGB(0, 0, 255), lNrBlues);
-
-	std::sort(vColors.begin(), vColors.end());
-
-	for (int i = 0; i < vColors.size(); i++)
-	{
-		if (vColors[i].m_lSize > lLastHeight)
-		{
-			// Create a color from the remaining values
-			double			fRed, fGreen, fBlue;
-			int			lNrColors = 1;
-
-			fRed = GetRValue(vColors[i].m_crColor);
-			fGreen = GetGValue(vColors[i].m_crColor);
-			fBlue = GetBValue(vColors[i].m_crColor);
-
-			for (int j = i + 1; j < vColors.size(); j++)
-			{
-				fRed += GetRValue(vColors[j].m_crColor);
-				fGreen += GetGValue(vColors[j].m_crColor);
-				fBlue += GetBValue(vColors[j].m_crColor);
-				lNrColors++;
-			};
-
-			Pen				ColorPen(Color(fRed / lNrColors, fGreen / lNrColors, fBlue / lNrColors));
-
-			pGraphics->DrawLine(&ColorPen, X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
-			/*
-						HPEN			hPen,
-										hOldPen;
-
-						hPen = ::CreatePen(PS_SOLID, 1, RGB(fRed/lNrColors, fGreen/lNrColors, fBlue/lNrColors));
-						hOldPen = (HPEN)::SelectObject(hDC, hPen);
-						::MoveToEx(hDC, X, lHeight-lLastHeight, nullptr);
-						::LineTo(hDC, X, lHeight-vColors[i].m_lSize);
-						::SelectObject(hDC, hOldPen);
-						::DeleteObject(hPen);*/
-
-			lLastHeight = vColors[i].m_lSize;
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
+--------------------------------------------------------- */
 
 void CProcessingDlg::DrawBezierCurve(Graphics* pGraphics, int lWidth, int lHeight)
 {
@@ -1560,90 +1668,6 @@ void CProcessingDlg::DrawGaussCurves(Graphics* pGraphics, RGBHistogram& Histogra
 	};
 };
 
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::ShowHistogram(CWndImage& wndImage, RGBHistogram& Histogram, bool bLog)
-{
-	CRect				rcClient;
-	HBITMAP				hBitmap;
-	HBITMAP				hOldBitmap;
-	HDC					hScreenDC;
-	HDC					hMemDC;
-	double				fLog = 0;
-
-	wndImage.GetClientRect(&rcClient);
-
-	hScreenDC = ::GetDC(nullptr);
-	hMemDC = ::CreateCompatibleDC(hScreenDC);
-	hBitmap = ::CreateCompatibleBitmap(hScreenDC, rcClient.Width(), rcClient.Height());
-
-	hOldBitmap = (HBITMAP)::SelectObject(hMemDC, hBitmap);
-
-	::FillRect(hMemDC, &rcClient, (HBRUSH)::GetStockObject(WHITE_BRUSH));
-
-	Graphics* pGraphics = new Graphics(hMemDC);
-	if (pGraphics)
-	{
-		pGraphics->SetSmoothingMode(SmoothingModeAntiAlias);
-		int				lNrValues;
-		int				lMaxValue = 0;
-
-		lMaxValue = max(lMaxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
-		lMaxValue = max(lMaxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
-		lMaxValue = max(lMaxValue, Histogram.GetBlueHistogram().GetMaximumNrValues());
-
-		lNrValues = Histogram.GetRedHistogram().GetNrValues();
-
-		if (lNrValues)
-		{
-			if (bLog)
-			{
-				if (lMaxValue)
-					fLog = exp(log((double)lMaxValue) / rcClient.Height());
-				else
-					bLog = false;
-			};
-
-			for (int i = 0; i < lNrValues; i++)
-			{
-				int			lNrReds;
-				int			lNrGreens;
-				int			lNrBlues;
-
-				Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
-
-				if (bLog)
-				{
-					if (lNrReds)
-						lNrReds = log((double)lNrReds) / log(fLog);
-					if (lNrGreens)
-						lNrGreens = log((double)lNrGreens) / log(fLog);
-					if (lNrBlues)
-						lNrBlues = log((double)lNrBlues) / log(fLog);
-				}
-				else
-				{
-					lNrReds = (double)lNrReds / (double)lMaxValue * rcClient.Height();
-					lNrGreens = (double)lNrGreens / (double)lMaxValue * rcClient.Height();
-					lNrBlues = (double)lNrBlues / (double)lMaxValue * rcClient.Height();
-				};
-
-				DrawHistoBar(pGraphics/*hMemDC*/, lNrReds, lNrGreens, lNrBlues, i, rcClient.Height());
-			};
-
-		};
-
-		DrawGaussCurves(pGraphics /*hMemDC*/, Histogram, rcClient.Width(), rcClient.Height());
-		DrawBezierCurve(pGraphics /*hMemDC*/, rcClient.Width(), rcClient.Height());
-		delete pGraphics;
-		::SelectObject(hMemDC, hOldBitmap);
-	};
-
-	::DeleteDC(hMemDC);
-	::ReleaseDC(nullptr, hScreenDC);
-
-	wndImage.SetImg(hBitmap);
-};
 
 /* ------------------------------------------------------------------- */
 
@@ -1713,47 +1737,6 @@ void CProcessingDlg::UpdateHistogramAdjust()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::ShowOriginalHistogram(bool bLog)
-{
-	// Adjust Histogram
-	RGBHistogram			Histo;
-	RGBHistogramAdjust		HistoAdjust;
-	CRect					rcClient;
-
-	m_OriginalHistogram.GetClientRect(&rcClient);
-
-	Histo.SetSize(65535.0, (int)rcClient.Width());
-
-	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	double				fMinRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftRed = (RedGradient.GetPeg(RedGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * gradientRange_;
-
-	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	double				fMinGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftGreen = (GreenGradient.GetPeg(GreenGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * gradientRange_;
-
-	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	double				fMinBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftBlue = (BlueGradient.GetPeg(BlueGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * gradientRange_;
-
-
-	HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
-	HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
-	HistoAdjust.GetGreenAdjust().SetAdjustMethod(m_tabRGB.GetGreenAdjustMethod());
-	HistoAdjust.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
-	HistoAdjust.GetBlueAdjust().SetAdjustMethod(m_tabRGB.GetBlueAdjustMethod());
-	HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
-
-	dssApp->deepStack().AdjustOriginalHistogram(Histo, HistoAdjust);
-
-	ShowHistogram(m_OriginalHistogram, Histo, bLog);
-};
-
-/* ------------------------------------------------------------------- */
-
 void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	CRect			rcCell;
@@ -1776,7 +1759,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 
 		if (!m_OriginalHistogram.GetBitmap())
 		{
-			ShowOriginalHistogram(false);
+			showHistogram(false);
 			ResetSliders();
 		};
 		const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
@@ -1799,55 +1782,55 @@ void CProcessingDlg::OnReset()
 void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyRedPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyRedPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyGreenPegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1855,7 +1838,7 @@ void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
 void CProcessingDlg::UpdateBezierCurve()
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1863,7 +1846,7 @@ void CProcessingDlg::UpdateBezierCurve()
 void CProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	m_bDirty = true;
-	ShowOriginalHistogram();
+	showHistogram();
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 

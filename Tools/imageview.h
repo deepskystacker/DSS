@@ -93,13 +93,13 @@ namespace DSS
         inline QPointF screenToImage(const QPointF& pt) noexcept
         {
             return ((pt - m_origin) / (m_zoom * m_scale)) + rectOfInterest.topLeft();
-        };
+        }
 
         inline void	screenToImage(qreal& fX, qreal& fY) noexcept
         {
             fX = (fX - m_origin.x()) / (m_zoom * m_scale) + rectOfInterest.topLeft().x();
             fY = (fY - m_origin.y()) / (m_zoom * m_scale) + rectOfInterest.topLeft().y();
-        };
+        }
 
         inline QRectF screenToImage(const QRectF& rc)
         {
@@ -107,7 +107,12 @@ namespace DSS
                 (rc.topLeft() - m_origin) / (m_zoom * m_scale) + rectOfInterest.topLeft(),
                 rc.size() / (m_zoom * m_scale)
             );
-        };
+        }
+
+        inline void enableMagnifier(bool value = true)
+        {
+            m_enableMagnifier = value;
+        }
 
         void  clearOverlay();
 
@@ -154,7 +159,7 @@ namespace DSS
         QToolBar* m_pToolBar;
         QRectF displayRect;
         bool m_fourCorners;
-        bool m_enableZoomImage;
+        bool m_enableMagnifier;
         uint m_tipShowCount;
         void zoom(const QPointF& mouseLocation, qreal steps);
         void drawOnPixmap();

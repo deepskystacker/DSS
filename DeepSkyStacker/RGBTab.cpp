@@ -162,7 +162,7 @@ namespace DSS
 		}
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 
 	}
 
@@ -193,7 +193,7 @@ namespace DSS
 		}
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 
 		qDebug() << "red sliders changed";
 
@@ -281,7 +281,7 @@ namespace DSS
 		}
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -313,7 +313,7 @@ namespace DSS
 		qDebug() << "green sliders changed";
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -398,7 +398,7 @@ namespace DSS
 		}
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -428,7 +428,7 @@ namespace DSS
 		}
 
 		setDirty();
-		emit showOriginalHistogram();
+		emit showHistogram();
 
 		qDebug() << "blue sliders changed";
 
