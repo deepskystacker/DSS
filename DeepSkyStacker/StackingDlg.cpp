@@ -2166,9 +2166,15 @@ namespace DSS
 
 					if (bContinue && bStackAfter)
 					{
-						if (!frameList.isMeanQualityAvailable())
-							QMessageBox::warning(this, "DeepSkyStacker", tr("Not all of your checked light frames have a mean quality calculated. You should re-register your light frames."));
-						doStacking(tasks, fPercent);
+						if (frameList.isMeanQualityAvailable()
+							||	QMessageBox::warning(this, "DeepSkyStacker",
+									tr("Not all of your checked light frames have a mean quality calculated. You should re-register your light frames."),
+									QMessageBox::Ok, QMessageBox::Cancel
+								) == QMessageBox::Ok
+							)
+						{
+							doStacking(tasks, fPercent);
+						}
 					}
 
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
