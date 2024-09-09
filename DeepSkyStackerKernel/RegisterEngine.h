@@ -34,8 +34,6 @@ protected:
 
 private:
 	void Reset();
-protected:
-	void FindStarShape(const CGrayBitmap& bitmap, CStar& star);
 
 public:
 	CRegisteredFrame()
@@ -76,11 +74,14 @@ public:
 		return m_bInfoOk;
 	}
 
-	size_t RegisterSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars, std::pair<double,double>* backgroundLevelCache);
-
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
 };
+
+namespace DSS {
+	size_t registerSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars,
+		std::pair<double, double>* backgroundLevelCache, const QPointF& comet);
+}
 
 /* ------------------------------------------------------------------- */
 

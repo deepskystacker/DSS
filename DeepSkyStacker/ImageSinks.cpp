@@ -652,12 +652,12 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 
 		InitGrayBitmap(rcCheck);
 
-		CRegisteredFrame		regFrame;
+		CRegisteredFrame regFrame;
+		regFrame.m_fBackground = m_fBackground;
 		const DSSRect rcReg{ STARMAXSIZE, STARMAXSIZE, rcCheck.Width() - (STARMAXSIZE + 1), rcCheck.Height() - (STARMAXSIZE + 1) };
 		STARSET stars;
-
-		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(m_GrayBitmap, regFrame.m_fMinLuminancy, rcReg, stars, nullptr);
+		constexpr qreal iv = std::numeric_limits<qreal>::quiet_NaN();
+		DSS::registerSubRect(m_GrayBitmap, regFrame.m_fMinLuminancy, rcReg, stars, nullptr, QPointF{ iv, iv });
 
 		vStars.assign(stars.cbegin(), stars.cend());
 	}
