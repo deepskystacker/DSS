@@ -32,19 +32,26 @@ namespace {
 		double fAverageY = 0;
 		int lNrLines = 0;
 
-		for (int j = fY - fRadius; j <= fY + fRadius; j++)
+		const auto getRange = [radius = fRadius](const double coordinate)
+		{
+			return std::views::iota(
+				static_cast<size_t>(std::max(std::floor(coordinate - radius), 0.0)),
+				static_cast<size_t>(std::max(std::ceil(coordinate + radius), 0.0)) + 1 // (coordinate + radius) must be inclusive => +1.
+			);
+		};
+
+		for (const size_t y : getRange(fY))
 		{
 			fSumX = 0;
 			fNrValuesX = 0;
-			for (int i = fX - fRadius; i <= fX + fRadius; i++)
+			for (const size_t x : getRange(fX))
 			{
-				double			fValue;
-
-				inputBitmap.GetPixel(i, j, fValue);
-				fSumX += fValue * i;
+				double fValue;
+				inputBitmap.GetPixel(x, y, fValue);
+				fSumX += fValue * x;
 				fNrValuesX += fValue;
 			}
-			if (fNrValuesX)
+			if (fNrValuesX > 0)
 			{
 				lNrLines++;
 				fAverageX += fSumX / fNrValuesX;
@@ -53,18 +60,18 @@ namespace {
 		fAverageX /= static_cast<double>(lNrLines);
 
 		int lNrColumns = 0;
-		for (int j = fX - fRadius; j <= fX + fRadius; j++)
+		for (const size_t x : getRange(fX))
 		{
 			fSumY = 0;
 			fNrValuesY = 0;
-			for (int i = fY - fRadius; i <= fY + fRadius; i++)
+			for (const size_t y : getRange(fY))
 			{
 				double fValue;
-				inputBitmap.GetPixel(j, i, fValue);
-				fSumY += fValue * i;
+				inputBitmap.GetPixel(x, y, fValue);
+				fSumY += fValue * y;
 				fNrValuesY += fValue;
 			}
-			if (fNrValuesY)
+			if (fNrValuesY > 0)
 			{
 				lNrColumns++;
 				fAverageY += fSumY / fNrValuesY;
@@ -80,13 +87,14 @@ namespace {
 		double fStdDevX = 0;
 		fSumX = 0;
 		fNrValuesX = 0;
-		for (int i = fX - fRadius; i <= fX + fRadius; i++)
+		const size_t yCoord = std::round(fY);
+		for (const size_t x : getRange(fX))
 		{
 			double fValue;
-			inputBitmap.GetPixel(i, fY, fValue);
+			inputBitmap.GetPixel(x, yCoord, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumX += fValue * i;
-			fSquareSumX += (i - fX) * (i - fX) * fValue;
+			fSumX += fValue * x;
+			fSquareSumX += (x - fX) * (x - fX) * fValue;
 			fNrValuesX += fValue;
 		}
 		fStdDevX = std::sqrt(fSquareSumX / fNrValuesX);
@@ -95,13 +103,14 @@ namespace {
 		double fStdDevY = 0;
 		fSumY = 0;
 		fNrValuesY = 0;
-		for (int i = fY - fRadius; i <= fY + fRadius; i++)
+		const size_t xCoord = std::round(fX);
+		for (const size_t y : getRange(fY))
 		{
 			double fValue;
-			inputBitmap.GetPixel(fX, i, fValue);
+			inputBitmap.GetPixel(xCoord, y, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumY += fValue * i;
-			fSquareSumY += (i - fY) * (i - fY) * fValue;
+			fSumY += fValue * y;
+			fSquareSumY += (y - fY) * (y - fY) * fValue;
 			fNrValuesY += fValue;
 		}
 		fStdDevY = std::sqrt(fSquareSumY / fNrValuesY);
@@ -275,8 +284,9 @@ namespace DSS {
 		size_t nStars{ 0 };
 
 		constexpr size_t HistoSize = 256 * 32;
+		namespace ranges = std::ranges;
 		std::vector<int> histo(useCachedValues ? 0 : HistoSize + 1, 0); // +1 for safety reasons.
-		const auto BufferAndHisto = [/*&buffer,*/ &inputBitmap, &histo, &maxIntensity, backgroundLevelCache, useCachedValues]<bool WithHisto>(const std::ranges::view auto xRange, const std::ranges::view auto yRange)
+		const auto CalcHisto = [&inputBitmap, &histo, &maxIntensity, backgroundLevelCache, useCachedValues](const ranges::view auto xRange, const ranges::view auto yRange)
 		{
 			if (useCachedValues)
 				return;
@@ -284,24 +294,16 @@ namespace DSS {
 				for (const size_t x : xRange)
 				{
 					const double value = inputBitmap.getUncheckedValue(x, y); // Range [0, 256)
-					if constexpr (WithHisto) {
-						maxIntensity = std::max(maxIntensity, value);
-						++histo[value * 32.0]; // Implicit type cast generates the fastest code.
-					}
+					maxIntensity = std::max(maxIntensity, value);
+					++histo[value * 32.0]; // Implicit type cast generates the fastest code.
 				}
 			if (backgroundLevelCache != nullptr)
 				backgroundLevelCache->first = maxIntensity;
 		};
 
-		//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.top - STARMAXSIZE, rc.top));
+		CalcHisto(std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
 
-		//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.left),   std::views::iota(rc.top, rc.bottom));
-		BufferAndHisto.operator()<true>(std::views::iota(rc.left, rc.right), std::views::iota(rc.top, rc.bottom));
-		//bufferAndHisto.operator()<false>(std::views::iota(rc.right, rc.right + STARMAXSIZE), std::views::iota(rc.top, rc.bottom));
-
-		//bufferAndHisto.operator()<false>(std::views::iota(rc.left - STARMAXSIZE, rc.right + STARMAXSIZE), std::views::iota(rc.bottom, rc.bottom + STARMAXSIZE));
-
-		const auto getBackgroundValue = [&histo, backgroundLevelCache, useCachedValues](const int width, const int height) -> double
+		const auto GetBackgroundValue = [&histo, backgroundLevelCache, useCachedValues](const int width, const int height) -> double
 		{
 			if (useCachedValues)
 				return backgroundLevelCache->second;
@@ -319,7 +321,7 @@ namespace DSS {
 			return v;
 		};
 
-		const double backgroundLevel = 256.0 * getBackgroundValue(rc.width(), rc.height()); // Range [0.0, 256.0)  Background level in inner rectangle.
+		const double backgroundLevel = 256.0 * GetBackgroundValue(rc.width(), rc.height()); // Range [0.0, 256.0)  Background level in inner rectangle.
 		const double intensityThreshold = 256.0 * detectionThreshold + backgroundLevel; // Range [0.0, 256.0)
 
 		if (maxIntensity >= intensityThreshold)
