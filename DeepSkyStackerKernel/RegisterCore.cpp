@@ -304,13 +304,13 @@ namespace DSS {
 		{
 			if (useCachedValues)
 				return backgroundLevelCache->second;
-			const int fiftyPercentValues = ((width - 1) * (height - 1)) / 2;
-			int nrValues = 0;
-			int fiftyPercentQuantile = 0;
+			const size_t fiftyPercentValues = (static_cast<size_t>(width) * static_cast<size_t>(height)) / 2 - 1;
+			size_t nrValues = 0;
+			size_t fiftyPercentQuantile = static_cast<size_t>(-1);
 			while (nrValues < fiftyPercentValues)
 			{
-				nrValues += histo[fiftyPercentQuantile];
 				++fiftyPercentQuantile;
+				nrValues += histo[fiftyPercentQuantile];
 			}
 			const double v = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(HistoSize);
 			if (backgroundLevelCache != nullptr)

@@ -335,7 +335,7 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		pGray->m_vPixels[96 * W + 116] = 120.0;
 		pGray->m_vPixels[96 * W + 117] = 120.0;
 		pGray->m_vPixels[97 * W + 115] = 120.0;
-		pGray->m_vPixels[97 * W + 116] = 120.0;
+		pGray->m_vPixels[97 * W + 116] = 125.0;
 		pGray->m_vPixels[97 * W + 117] = 120.0;
 		pGray->m_vPixels[98 * W + 115] = 120.0;
 		pGray->m_vPixels[98 * W + 116] = 120.0;
@@ -354,6 +354,8 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 
 		REQUIRE(std::isfinite(cache.first));
 		REQUIRE(std::isfinite(cache.second));
+		REQUIRE(cache.first == 125); // Max intensity
+		REQUIRE(cache.second == 30.0 / 256.0); // Background level
 
 		stars.clear();
 		DSS::registerSubRect(*pGray, 0.2, DSSRect{ 70, 70, 130, 130 }, stars, std::addressof(cache), QPointF{ iv, iv });
