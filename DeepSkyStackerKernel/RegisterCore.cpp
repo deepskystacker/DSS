@@ -22,7 +22,7 @@ namespace {
 	//
 	// Calculates the exact position of a star as the center of gravity using the pixel values around the center pixel.
 	//
-	bool computeStarCenter(const CGrayBitmap& inputBitmap, double& fX, double& fY, double& fRadius, const double backgroundLevel)
+	bool computeStarCenter(const CGrayBitmap& inputBitmap, CStar& star, const double backgroundLevel)
 	{
 		double fSumX = 0;
 		double fSumY = 0;
@@ -32,19 +32,16 @@ namespace {
 		double fAverageY = 0;
 		int lNrLines = 0;
 
-		const auto getRange = [radius = fRadius](const double coordinate)
+		const auto GetCoords = [](const int lo, const int hi)
 		{
-			return std::views::iota(
-				static_cast<size_t>(std::max(std::floor(coordinate - radius), 0.0)),
-				static_cast<size_t>(std::max(std::ceil(coordinate + radius), 0.0)) + 1 // (coordinate + radius) must be inclusive => +1.
-			);
+			return std::views::iota(static_cast<size_t>(lo), static_cast<size_t>(hi) + 1);
 		};
 
-		for (const size_t y : getRange(fY))
+		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
 			fSumX = 0;
 			fNrValuesX = 0;
-			for (const size_t x : getRange(fX))
+			for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 			{
 				double fValue;
 				inputBitmap.GetPixel(x, y, fValue);
@@ -60,11 +57,11 @@ namespace {
 		fAverageX /= static_cast<double>(lNrLines);
 
 		int lNrColumns = 0;
-		for (const size_t x : getRange(fX))
+		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
 			fSumY = 0;
 			fNrValuesY = 0;
-			for (const size_t y : getRange(fY))
+			for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 			{
 				double fValue;
 				inputBitmap.GetPixel(x, y, fValue);
@@ -79,22 +76,22 @@ namespace {
 		}
 		fAverageY /= static_cast<double>(lNrColumns);
 
-		fX = fAverageX;
-		fY = fAverageY;
+		star.m_fX = fAverageX;
+		star.m_fY = fAverageY;
 
 		// Then compute the radius
 		double fSquareSumX = 0;
 		double fStdDevX = 0;
 		fSumX = 0;
 		fNrValuesX = 0;
-		const size_t yCoord = std::round(fY);
-		for (const size_t x : getRange(fX))
+		const size_t yCoord = std::round(star.m_fY);
+		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
 			double fValue;
 			inputBitmap.GetPixel(x, yCoord, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
 			fSumX += fValue * x;
-			fSquareSumX += (x - fX) * (x - fX) * fValue;
+			fSquareSumX += (x - star.m_fX) * (x - star.m_fX) * fValue;
 			fNrValuesX += fValue;
 		}
 		fStdDevX = std::sqrt(fSquareSumX / fNrValuesX);
@@ -103,20 +100,20 @@ namespace {
 		double fStdDevY = 0;
 		fSumY = 0;
 		fNrValuesY = 0;
-		const size_t xCoord = std::round(fX);
-		for (const size_t y : getRange(fY))
+		const size_t xCoord = std::round(star.m_fX);
+		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
 			double fValue;
 			inputBitmap.GetPixel(xCoord, y, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
 			fSumY += fValue * y;
-			fSquareSumY += (y - fY) * (y - fY) * fValue;
+			fSquareSumY += (y - star.m_fY) * (y - star.m_fY) * fValue;
 			fNrValuesY += fValue;
 		}
 		fStdDevY = std::sqrt(fSquareSumY / fNrValuesY);
 
 		// The radius is the average of the standard deviations
-		fRadius = (fStdDevX + fStdDevY) * (1.5 / 2.0);
+		star.m_fMeanRadius = (fStdDevX + fStdDevY) * (1.5 / 2.0);
 
 		return std::abs(fStdDevX - fStdDevY) < CRegisteredFrame::RoundnessTolerance;
 	}
@@ -543,7 +540,7 @@ namespace DSS {
 										ms.m_fMeanRadius = (fMeanRadius1 + fMeanRadius2) / 2.0;
 
 										// Compute the real position (correct m_fX, m_fY, m_fMeanRadius).
-										if (computeStarCenter(inputBitmap, ms.m_fX, ms.m_fY, ms.m_fMeanRadius, backgroundLevel * (1.0 / 256.0)))
+										if (computeStarCenter(inputBitmap, ms, backgroundLevel * (1.0 / 256.0)))
 										{
 											// Check last overlap condition
 											{
