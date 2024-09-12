@@ -295,13 +295,15 @@ namespace DSS
 
     void SelectRect::rectButtonPressed()
     {
-        connect(imageView, &ImageView::Image_mousePressEvent, this, &SelectRect::mousePressEvent, Qt::UniqueConnection);
-        connect(imageView, &ImageView::Image_mouseMoveEvent, this, &SelectRect::mouseMoveEvent, Qt::UniqueConnection);
-        connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &SelectRect::mouseReleaseEvent, Qt::UniqueConnection);
-        connect(imageView, &ImageView::Image_resizeEvent, this, &SelectRect::resizeMe, Qt::UniqueConnection);
+        constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
+
+        connect(imageView, &ImageView::Image_mousePressEvent, this, &SelectRect::mousePressEvent, connectionType);
+        connect(imageView, &ImageView::Image_mouseMoveEvent, this, &SelectRect::mouseMoveEvent, connectionType);
+        connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &SelectRect::mouseReleaseEvent, connectionType);
+        connect(imageView, &ImageView::Image_resizeEvent, this, &SelectRect::resizeMe, connectionType);
         show();
         raise();
-   }
+    }
 
     void SelectRect::starsButtonPressed()
     {

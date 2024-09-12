@@ -1057,7 +1057,8 @@ namespace DSS
 		//
 		// If the model data changes let me know
 		//
-		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
+		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged, connectionType);
 		
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
@@ -1372,12 +1373,12 @@ namespace DSS
 					}
 					else if (pToolBar->starsAction->isChecked())
 					{
-						editStarsPtr->starsButtonPressed();
+						editStarsPtr->starsOrCometButtonPressed(false); // Stars mode (comet==false).
 						selectRectPtr->starsButtonPressed();
 					}
 					else if (pToolBar->cometAction->isChecked())
 					{
-						editStarsPtr->cometButtonPressed();
+						editStarsPtr->starsOrCometButtonPressed(true); // Comet mode (comet==true).
 						selectRectPtr->cometButtonPressed();
 					}
 
@@ -1454,27 +1455,27 @@ namespace DSS
 			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
 	}
 
-	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
+	void StackingDlg::toolBar_rectButtonPressed(bool)
 	{
 		editStarsPtr->rectButtonPressed();
 		selectRectPtr->rectButtonPressed();
 	}
 
-	void StackingDlg::toolBar_starsButtonPressed([[maybe_unused]] bool checked)
+	void StackingDlg::toolBar_starsButtonPressed(bool)
 	{
 		checkAskRegister();
-		editStarsPtr->starsButtonPressed();
+		editStarsPtr->starsOrCometButtonPressed(false); // false = Stars mode.
 		selectRectPtr->starsButtonPressed();
 	}
 
-	void StackingDlg::toolBar_cometButtonPressed([[maybe_unused]] bool checked)
+	void StackingDlg::toolBar_cometButtonPressed(bool)
 	{
 		checkAskRegister();
-		editStarsPtr->cometButtonPressed();
+		editStarsPtr->starsOrCometButtonPressed(true); // true = Comet mode.
 		selectRectPtr->cometButtonPressed();
 	}
 
-	void StackingDlg::toolBar_saveButtonPressed([[maybe_unused]] bool checked)
+	void StackingDlg::toolBar_saveButtonPressed(bool)
 	{
 		editStarsPtr->saveRegisterSettings();
 		pToolBar->setSaveEnabled(false);
@@ -2745,7 +2746,8 @@ namespace DSS
 	{
 		frameList.setGroup(index);
 		auto model{ frameList.currentTableModel() };
-		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged);
+		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
+		connect(frameList.currentTableModel(), &ImageListModel::dataChanged, this, &StackingDlg::tableViewModel_dataChanged, connectionType);
 		proxyModel->setSourceModel(model);
 	}
 
