@@ -1376,12 +1376,12 @@ namespace DSS
 					}
 					else if (pToolBar->starsAction->isChecked())
 					{
-						editStarsPtr->starsOrCometButtonPressed(false); // Stars mode (comet==false).
+						editStarsPtr->starsButtonPressed();
 						selectRectPtr->starsButtonPressed();
 					}
 					else if (pToolBar->cometAction->isChecked())
 					{
-						editStarsPtr->starsOrCometButtonPressed(true); // Comet mode (comet==true).
+						editStarsPtr->cometButtonPressed();
 						selectRectPtr->cometButtonPressed();
 					}
 
@@ -1467,14 +1467,14 @@ namespace DSS
 	void StackingDlg::toolBar_starsButtonPressed(bool)
 	{
 		checkAskRegister();
-		editStarsPtr->starsOrCometButtonPressed(false); // false = Stars mode.
+		editStarsPtr->starsButtonPressed();
 		selectRectPtr->starsButtonPressed();
 	}
 
 	void StackingDlg::toolBar_cometButtonPressed(bool)
 	{
 		checkAskRegister();
-		editStarsPtr->starsOrCometButtonPressed(true); // true = Comet mode.
+		editStarsPtr->cometButtonPressed();
 		selectRectPtr->cometButtonPressed();
 	}
 
