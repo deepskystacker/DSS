@@ -353,26 +353,18 @@ namespace DSS
 		hide();
 	}
 
-	void EditStars::starsButtonPressed()
+	// This function replaces the two old functions starsButtonPressed() and cometButtonPressed() which did exactly the same but set m_bCometMode to true or false.
+	// This is now replaced with a bool parameter.
+	void EditStars::starsOrCometButtonPressed(const bool cometMode)
 	{
-		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
-		connect(imageView, &ImageView::Image_mousePressEvent, this, & EditStars::mousePressEvent);
-		connect(imageView, &ImageView::Image_mouseMoveEvent, this, & EditStars::mouseMoveEvent);
-		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, & EditStars::mouseReleaseEvent);
-		connect(imageView, &ImageView::Image_resizeEvent, this, & EditStars::resizeMe);
-		m_bCometMode = false;
-		show();
-		raise();
-	}
+		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
 
-	void EditStars::cometButtonPressed()
-	{
-		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
-		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent);
-		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent);
-		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent);
-		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe);
-		m_bCometMode = true;
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent, connectionType);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent, connectionType);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent, connectionType);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent, connectionType);
+		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe, connectionType);
+		m_bCometMode = cometMode;
 		show();
 		raise();
 	}

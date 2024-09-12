@@ -154,8 +154,7 @@ namespace DSS
 		void resizeMe(QResizeEvent* e);
 
         void rectButtonPressed();
-        void starsButtonPressed();
-        void cometButtonPressed();
+		void starsOrCometButtonPressed(const bool cometMode);
         void saveButtonPressed();
 
         void setLightFrame(QString name);
