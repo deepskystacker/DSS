@@ -352,8 +352,6 @@ namespace DSS
 		hide();
 	}
 
-	// This function replaces the two old functions starsButtonPressed() and cometButtonPressed() which did exactly the same but set m_bCometMode to true or false.
-	// This is now replaced with a bool parameter.
 	void EditStars::starsOrCometButtonPressed(const bool cometMode)
 	{
 		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
@@ -366,6 +364,16 @@ namespace DSS
 		m_bCometMode = cometMode;
 		show();
 		raise();
+	}
+
+	void EditStars::starsButtonPressed()
+	{
+		starsOrCometButtonPressed(false);
+	}
+
+	void EditStars::cometButtonPressed()
+	{
+		starsOrCometButtonPressed(true);
 	}
 
 	void EditStars::saveButtonPressed()
