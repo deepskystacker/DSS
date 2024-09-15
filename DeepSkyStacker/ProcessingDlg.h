@@ -331,6 +331,7 @@ namespace DSS
 		QAction* logLogAction;
 		QAction* logSquareRootAction;
 		QAction* asinHAction;
+		QTimer	timer;
 		inline static const QStringList iconNames{ "linear", "cuberoot", "sqrt", "log", "loglog", "logsqrt", "asinh" };
 		double gradientOffset_;
 		double gradientRange_;
@@ -413,12 +414,17 @@ namespace DSS
 		static const inline int initialSaturation { 20 };
 
 		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
-		void	drawHistoBar(QPainter& palette, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
+		void	drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
+		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
+		void	drawBezierCurve(QPainter& painter, int lWidth, int lHeight);
 
-
-
-	signals:
 		void showHistogram(bool useLogarithm = false);	// Calls drawHistogram 
+
+		void resetSliders();
+
+		void	processAndShow(bool bSaveUndo = true);
+
+		void	UpdateHistogramAdjust();
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
@@ -438,6 +444,7 @@ namespace DSS
 		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac) { blueAdjustmentCurve_ = hac; };
 
 		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+		void onTimer();
 
 		void redButtonPressed();
 		void greenButtonPressed();
@@ -456,15 +463,6 @@ namespace DSS
 
 
 #if (0)
-		void	ProcessAndShow(bool bSaveUndo = true);
-
-		void	ResetSliders();
-		void	ShowOriginalHistogram(bool bLog = false);
-
-		void	DrawGaussCurves(Graphics* pGraphics, RGBHistogram& Histogram, int lWidth, int lHeight);
-
-		void	UpdateHistogramAdjust();
-		void	DrawBezierCurve(Graphics* pGraphics, int lWidth, int lHeight);
 
 		void	UpdateMonochromeControls();
 

@@ -48,8 +48,8 @@ namespace DSS
 
 	public:
 		BezierCurvePoint(double nx = 0, double ny = 0) :
-			x {nx},
-			y {ny}
+			x{ nx },
+			y{ ny }
 		{
 		};
 
@@ -82,6 +82,125 @@ namespace DSS
 
 		std::vector<BezierCurvePoint> curvePoints;
 
+		BezierAdjust()
+		{
+			reset();
+		}
+
+		BezierAdjust(const BezierAdjust& rhs) = default;
+		virtual ~BezierAdjust() {};
+		BezierAdjust& operator = (const BezierAdjust& rhs) = default;
+
+		void	clear()
+		{
+			curvePoints.clear();
+			init();
+		}
+
+		void reset(bool bNeutral = false)
+		{
+			if (bNeutral)
+			{
+				m_fDarknessAngle = 0;
+				m_fDarknessPower = 0;
+				m_fMidtone = 50;
+				m_fMidtoneAngle = 45;
+				m_fHighlightAngle = 0;
+				m_fHighlightPower = 0;
+				m_fSaturationShift = 0;
+			}
+			else
+			{
+				m_fDarknessAngle = 0;
+				m_fDarknessPower = 80;
+				m_fMidtone = 33;
+				m_fMidtoneAngle = 10;
+				m_fHighlightAngle = 0;
+				m_fHighlightPower = 50;
+				m_fSaturationShift = 0;
+			};
+			clear();
+		}
+
+		double	GetValue(double x)
+		{
+			double			fResult = x;
+
+			if (!curvePoints.size())
+				init();
+
+			CurvePointIterator	it;
+
+			it = std::lower_bound(curvePoints.begin(), curvePoints.end(), BezierCurvePoint(x, 0));
+			if (it != curvePoints.end())
+				fResult = it->y;
+
+			return fResult;
+		}
+
+		double	AdjustSaturation(double S)
+		{
+			double			fResult = S;
+
+			if (m_fSaturationShift > 0)
+				fResult = pow(S, 1.0 / (m_fSaturationShift / 10.0));
+			else if (m_fSaturationShift < 0)
+				fResult = pow(S, -m_fSaturationShift / 10.0);
+
+			return fResult;
+		}
+
+		void loadSettings(const QString& group)
+		{
+			ZFUNCTRACE_RUNTIME();
+			QString groupName{ group + "/BezierAdjust" };
+			QSettings settings;
+			settings.beginGroup(groupName);
+			m_fDarknessAngle = settings.value("DarkAngle").toDouble();
+			m_fDarknessPower = settings.value("DarkPower").toDouble();
+			m_fMidtone = settings.value("Midtone").toDouble();
+			m_fMidtoneAngle = settings.value("MidtoneAngle").toDouble();
+			m_fHighlightAngle = settings.value("HighlightAngle").toDouble();
+			m_fHighlightPower = settings.value("HighlightPower").toDouble();
+		}
+
+		void saveSettings(const QString& group) const
+		{
+			ZFUNCTRACE_RUNTIME();
+			QString groupName{ group + "/BezierAdjust" };
+			QSettings settings;
+			settings.beginGroup(groupName);
+			settings.setValue("DarkAngle", m_fDarknessAngle);
+			settings.setValue("DarkPower", m_fDarknessPower);
+			settings.setValue("Midtone", m_fMidtone);
+			settings.setValue("MidtoneAngle", m_fMidtoneAngle);
+			settings.setValue("HighlightAngle", m_fHighlightAngle);
+			settings.setValue("HighlightPower", m_fHighlightPower);
+		}
+
+		const QString toString() const
+		{
+			return QString("Bezier{DA=%1;DP=%2;MA=%3;MP=%4;HA=%5;HP=%6;SS=%7;}")
+				.arg(m_fDarknessAngle, 0, 'f', 2)
+				.arg(m_fDarknessPower, 0, 'f', 2)
+				.arg(m_fMidtoneAngle, 0, 'f', 2)
+				.arg(m_fMidtone, 0, 'f', 2)
+				.arg(m_fHighlightAngle, 0, 'f', 2)
+				.arg(m_fHighlightPower, 0, 'f', 2)
+				.arg(m_fSaturationShift, 0, 'f', 2);
+		}
+
+		void fromString(const QString& szParameters)
+		{
+			m_fDarknessAngle = ExtractValue(szParameters, "DA");
+			m_fDarknessPower = ExtractValue(szParameters, "DP");
+			m_fMidtoneAngle = ExtractValue(szParameters, "MA");
+			m_fMidtone = ExtractValue(szParameters, "MP");
+			m_fHighlightAngle = ExtractValue(szParameters, "HA");
+			m_fHighlightPower = ExtractValue(szParameters, "HP");
+			m_fSaturationShift = ExtractValue(szParameters, "SS");
+		}
+
 	private:
 
 		void addBezierPoints(double x1, double y1, double vx1, double vy1, double x2, double y2, double vx2, double vy2)
@@ -95,13 +214,7 @@ namespace DSS
 
 				curvePoints.push_back(pt);
 			};
-		};
-
-		void	clear()
-		{
-			curvePoints.clear();
-			init();
-		};
+		}
 
 		void init()
 		{
@@ -139,7 +252,7 @@ namespace DSS
 			addBezierPoints(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, pt4.x, pt4.y);
 
 			std::sort(curvePoints.begin(), curvePoints.end());
-		};
+		}
 
 		double	ExtractValue(const QString& szString, const QString& szVariable)
 		{
@@ -161,117 +274,5 @@ namespace DSS
 			return fValue;
 		}
 
-	public:
-		BezierAdjust()
-		{
-			reset();
-		};
-		BezierAdjust(const BezierAdjust& rhs) = default;
-		virtual ~BezierAdjust() {};
-		BezierAdjust& operator = (const BezierAdjust& rhs) = default;
-
-		void reset(bool bNeutral = false)
-		{
-			if (bNeutral)
-			{
-				m_fDarknessAngle = 0;
-				m_fDarknessPower = 0;
-				m_fMidtone = 50;
-				m_fMidtoneAngle = 45;
-				m_fHighlightAngle = 0;
-				m_fHighlightPower = 0;
-				m_fSaturationShift = 0;
-			}
-			else
-			{
-				m_fDarknessAngle = 0;
-				m_fDarknessPower = 80;
-				m_fMidtone = 33;
-				m_fMidtoneAngle = 10;
-				m_fHighlightAngle = 0;
-				m_fHighlightPower = 50;
-				m_fSaturationShift = 0;
-			};
-			clear();
-		};
-
-		double	GetValue(double x)
-		{
-			double			fResult = x;
-
-			if (!curvePoints.size())
-				init();
-
-			CurvePointIterator	it;
-
-			it = std::lower_bound(curvePoints.begin(), curvePoints.end(), BezierCurvePoint(x, 0));
-			if (it != curvePoints.end())
-				fResult = it->y;
-
-			return fResult;
-		};
-
-		double	AdjustSaturation(double S)
-		{
-			double			fResult = S;
-
-			if (m_fSaturationShift > 0)
-				fResult = pow(S, 1.0 / (m_fSaturationShift / 10.0));
-			else if (m_fSaturationShift < 0)
-				fResult = pow(S, -m_fSaturationShift / 10.0);
-
-			return fResult;
-		};
-
-		void loadSettings(const QString& group)
-		{
-			ZFUNCTRACE_RUNTIME();
-			QString groupName{ group + "/BezierAdjust" };
-			QSettings settings;
-			settings.beginGroup(groupName);
-			m_fDarknessAngle = settings.value("DarkAngle").toDouble();
-			m_fDarknessPower = settings.value("DarkPower").toDouble();
-			m_fMidtone = settings.value("Midtone").toDouble();
-			m_fMidtoneAngle = settings.value("MidtoneAngle").toDouble();
-			m_fHighlightAngle = settings.value("HighlightAngle").toDouble();
-			m_fHighlightPower = settings.value("HighlightPower").toDouble();
-		};
-
-		void saveSettings(const QString& group) const
-		{
-			ZFUNCTRACE_RUNTIME();
-			QString groupName{ group + "/BezierAdjust" };
-			QSettings settings;
-			settings.beginGroup(groupName);
-			settings.setValue("DarkAngle", m_fDarknessAngle);
-			settings.setValue("DarkPower", m_fDarknessPower);
-			settings.setValue("Midtone", m_fMidtone);
-			settings.setValue("MidtoneAngle", m_fMidtoneAngle);
-			settings.setValue("HighlightAngle", m_fHighlightAngle);
-			settings.setValue("HighlightPower", m_fHighlightPower);
-		};
-
-		const QString toString() const
-		{
-			return QString("Bezier{DA=%1;DP=%2;MA=%3;MP=%4;HA=%5;HP=%6;SS=%7;}")
-				.arg(m_fDarknessAngle, 0, 'f', 2)
-				.arg(m_fDarknessPower, 0, 'f', 2)
-				.arg(m_fMidtoneAngle, 0, 'f', 2)
-				.arg(m_fMidtone, 0, 'f', 2)
-				.arg(m_fHighlightAngle, 0, 'f', 2)
-				.arg(m_fHighlightPower, 0, 'f', 2)
-				.arg(m_fSaturationShift, 0, 'f', 2);
-		};
-
-		void fromString(const QString& szParameters)
-		{
-			m_fDarknessAngle = ExtractValue(szParameters, "DA");
-			m_fDarknessPower = ExtractValue(szParameters, "DP");
-			m_fMidtoneAngle = ExtractValue(szParameters, "MA");
-			m_fMidtone = ExtractValue(szParameters, "MP");
-			m_fHighlightAngle = ExtractValue(szParameters, "HA");
-			m_fHighlightPower = ExtractValue(szParameters, "HP");
-			m_fSaturationShift = ExtractValue(szParameters, "SS");
-		};
 	};
 }

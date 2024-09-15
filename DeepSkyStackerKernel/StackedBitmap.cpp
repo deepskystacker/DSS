@@ -362,6 +362,7 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 	//
 	// pImageData is a uchar* pointer to the pre-allocated buffer used by the QImage
 	//
+	qDebug() << "In StackedBitmap::updateQImage, rectangle " << pRect->left << pRect->top << pRect->width() << pRect->height();
 
 	int lXMin = 0;
 	int lYMin = 0;

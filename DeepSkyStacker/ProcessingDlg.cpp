@@ -46,6 +46,7 @@ namespace DSS
 	ProcessingDlg::ProcessingDlg(QWidget *parent)
 		: QWidget(parent),
 		dirty_ { false },
+		timer {this},
 		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
 		greenAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
 		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
@@ -85,9 +86,12 @@ namespace DSS
 		//
 		selectRect = new SelectRect(picture);
 		selectRect->setShowDrizzle(false);
+		selectRect->rectButtonPressed();
 
 		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
 		connectSignalsToSlots();
+
+		timer.start(50);	// 50 ms timeout
 
 		updateControls();
 
@@ -222,6 +226,13 @@ namespace DSS
 		//
 		connect(saturation, &QSlider::valueChanged, this, &ProcessingDlg::saturationChanged);
 
+		//
+		// When the timer fires, drive the timer handler
+		//
+		connect(&timer, &QTimer::timeout, this, &ProcessingDlg::onTimer);
+
+		qDebug() << "Picture size is: " << picture->size();
+
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -276,11 +287,15 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load File";
+		qDebug() << "Picture size is: " << picture->size();
+
 		//
 		// Load the output file created at the end of the stacking process.
 		//
 		ProgressDlg dlg{ DeepSkyStacker::instance() };
 		bool ok { false };
+
+		timer.stop();
 
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		dssApp->deepStack().reset();
@@ -301,23 +316,19 @@ namespace DSS
 			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
 			updateControlsFromSettings();
 
-			/*
-
-			showHistogram(false);
-			ResetSliders();
+			resetSliders();		// Calls showHistogram
 
 			int height = dssApp->deepStack().GetHeight();
 			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 			processingSettingsList.clear();
 			picture->clear();
-			ProcessAndShow(true);
-			*/
+			processAndShow(true);
 			QGuiApplication::restoreOverrideCursor();
 			setDirty(false);
 		};
 
-		//SetTimer(1, 100, nullptr);
+		timer.start();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -326,6 +337,8 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load image";
+		qDebug() << "Picture size is: " << picture->size();
+
 		QFileDialog			fileDialog(this);
 		QSettings			settings;
 		QString				directory;
@@ -335,6 +348,7 @@ namespace DSS
 
 		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
+		timer.stop();
 
 		directory = settings.value("Folders/SaveDSIFolder").toString();
 		extension = settings.value("Folders/SavePictureExtension").toString();
@@ -390,16 +404,17 @@ namespace DSS
 			updateControlsFromSettings();
 
 			showHistogram(false);
-			/*
-			// ResetSliders();
+			resetSliders();
 			int height = dssApp->deepStack().GetHeight();
 			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 			processingSettingsList.clear();
 			picture->clear();
-			ProcessAndShow(true);
-			*/
+			processAndShow(true);
+
 			setDirty(false);
+
+			timer.start();
 
 			QGuiApplication::restoreOverrideCursor();
 
@@ -531,6 +546,7 @@ namespace DSS
 
 	void ProcessingDlg::updateInformation()
 	{
+		ZFUNCTRACE_RUNTIME();
 		int		isoSpeed;
 		int		gain;
 		int		totalTime;
@@ -569,16 +585,16 @@ namespace DSS
 		// Position the controls to match the current settings
 		//
 		darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
-		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower);
+		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
 		updateDarkText();
 
 
 		midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
-		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone);
+		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
 		updateMidText();
 
 		highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
-		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower);
+		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
 		updateHighText();
 
 		saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
@@ -702,6 +718,28 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void ProcessingDlg::onTimer()
+	{
+		DSSRect			cell;
+
+		if (rectToProcess.GetNextUnProcessedRect(cell))
+		{
+			dssApp->deepStack().PartialProcess(cell, processingSettings.bezierAdjust_, processingSettings.histoAdjust_);
+
+			picture->setPixmap(QPixmap::fromImage(dssApp->deepStack().getImage()));
+
+			// showHistogram(false);
+			//resetSliders();		// Will call showHistogram()
+
+			const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
+			progressBar->setValue(min(max(0, nProgress), 100));
+		};
+	}
+
+
+
+	/* ------------------------------------------------------------------- */
+
 	void ProcessingDlg::showHistogram(bool useLogarithm)
 	{
 		// Adjust Histogram
@@ -724,7 +762,7 @@ namespace DSS
 			fShiftGreen = (gradientStops[2].first - 0.5) * 2.0,
 			fMaxGreen = gradientOffset_ + gradientStops[3].first * gradientRange_;
 
-		gradientStops = greenGradient->gradient().stops();
+		gradientStops = blueGradient->gradient().stops();
 
 		double
 			fMinBlue = gradientOffset_ + gradientStops[1].first * gradientRange_,
@@ -744,6 +782,197 @@ namespace DSS
 	}
 
 	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
+	{
+		std::vector<ColorOrder>	vColors;
+		int						lLastHeight = 0;
+
+		vColors.emplace_back(qRgb(255, 0, 0), lNrReds);
+		vColors.emplace_back(qRgb(0, 255, 0), lNrGreens);
+		vColors.emplace_back(qRgb(0, 0, 255), lNrBlues);
+
+		std::sort(vColors.begin(), vColors.end());
+
+		for (int i = 0; i < vColors.size(); i++)
+		{
+			if (vColors[i].m_lSize > lLastHeight)
+			{
+				// Create a color from the remaining values
+				double	fRed, fGreen, fBlue;
+				int		lNrColors = 1;
+
+				fRed = qRed(vColors[i].m_crColor);		// Get the red component of the colour
+				fGreen = qGreen(vColors[i].m_crColor);	// Get the green component of the colour
+				fBlue = qBlue(vColors[i].m_crColor);	// Get the blue component of the colour
+
+				for (int j = i + 1; j < vColors.size(); j++)
+				{
+					fRed += qRed(vColors[j].m_crColor);		// Get the red component of the colour
+					fGreen += qGreen(vColors[j].m_crColor);	// Get the green component of the colour
+					fBlue += qBlue(vColors[j].m_crColor);	// Get the blue component of the colour
+					lNrColors++;
+				};
+
+				QPen colorPen(QColor(fRed / lNrColors, fGreen / lNrColors, fBlue / lNrColors));
+				painter.setPen(colorPen);
+
+				painter.drawLine(X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
+
+				lLastHeight = vColors[i].m_lSize;
+			};
+		};
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::drawGaussianCurves(QPainter& painter, RGBHistogram& histo, int lWidth, int lHeight)
+	{
+		int				lNrValues;
+		double				fAverage[3] = { 0, 0, 0 };
+		double				fStdDev[3] = { 0, 0, 0 };
+		double				fSum[3] = { 0, 0, 0 };
+		double				fSquareSum[3] = { 0, 0, 0 };
+		double				fTotalPixels[3] = { 0, 0, 0 };
+		int				i;
+
+		lNrValues = histo.GetRedHistogram().GetNrValues();
+
+		if (lNrValues)
+		{
+			for (i = 0; i < lNrValues; i++)
+			{
+
+				int			lNrReds;
+				int			lNrGreens;
+				int			lNrBlues;
+
+				histo.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+
+				fSum[0] += lNrReds * i;
+				fSum[1] += lNrGreens * i;
+				fSum[2] += lNrBlues * i;
+				fTotalPixels[0] += lNrReds;
+				fTotalPixels[1] += lNrGreens;
+				fTotalPixels[2] += lNrBlues;
+			};
+
+			fAverage[0] = fSum[0] / fTotalPixels[0];
+			fAverage[1] = fSum[1] / fTotalPixels[1];
+			fAverage[2] = fSum[2] / fTotalPixels[2];
+
+			for (i = 0; i < lNrValues; i++)
+			{
+				int			lNrReds;
+				int			lNrGreens;
+				int			lNrBlues;
+
+				histo.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+
+				fSquareSum[0] += pow(i - fAverage[0], 2) * lNrReds;
+				fSquareSum[1] += pow(i - fAverage[1], 2) * lNrGreens;
+				fSquareSum[2] += pow(i - fAverage[2], 2) * lNrBlues;
+			};
+
+			fStdDev[0] = sqrt(fSquareSum[0] / fTotalPixels[0]);
+			fStdDev[1] = sqrt(fSquareSum[1] / fTotalPixels[1]);
+			fStdDev[2] = sqrt(fSquareSum[2] / fTotalPixels[2]);
+
+			//
+			// Create the list of points with the initial size set correctly.
+			//
+			QList<QPointF>	redPoints{lNrValues};
+			QList<QPointF>	greenPoints{lNrValues};
+			QList<QPointF>	bluePoints{lNrValues};
+
+			bool				bShow = true;
+
+			for (i = 0; i < lNrValues; i++)
+			{
+				double		fX,
+					fY;
+				fX = i;
+
+				fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / lNrValues;
+				fY = lHeight - fY * lHeight;
+				redPoints.emplace_back(fX, fY);
+
+				bShow = bShow && (fX < 1000 && fY < 1000);
+
+				fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / lNrValues;
+				fY = lHeight - fY * lHeight;
+				greenPoints.emplace_back(fX, fY);
+
+				bShow = bShow && (fX < 1000 && fY < 1000);
+
+				fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / lNrValues;
+				fY = lHeight - fY * lHeight;
+				bluePoints.emplace_back(fX, fY);
+
+				bShow = bShow && (fX < 1000 && fY < 1000);
+			};
+
+			QPen redPen{ qRgba(255, 0, 0, 128)};
+			QPen greenPen{ qRgba(0, 255, 0, 128) };
+			QPen bluePen{ qRgba(0, 0, 255, 128) };
+
+			redPen.setStyle(Qt::DashLine);
+			greenPen.setStyle(Qt::DashLine);
+			bluePen.setStyle(Qt::DashLine);
+
+			if (bShow)
+			{
+				QPen oldPen = painter.pen();
+				painter.setPen(redPen); painter.drawLines(redPoints);
+				painter.setPen(greenPen); painter.drawLines(greenPoints);
+				painter.setPen(bluePen); painter.drawLines(bluePoints);
+				painter.setPen(oldPen);
+			};
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::drawBezierCurve(QPainter& painter, int width, int height)
+	{
+		BezierAdjust		bezierAdjust;
+		QPointF				point;
+
+		bezierAdjust.m_fMidtone = midTone->value() / 10.0;
+		bezierAdjust.m_fMidtoneAngle = midAngle->value();
+		bezierAdjust.m_fDarknessAngle = darkAngle->value();
+		bezierAdjust.m_fHighlightAngle = highAngle->value();
+		bezierAdjust.m_fHighlightPower = highPower->value() / 10.0;
+		bezierAdjust.m_fDarknessPower = darkPower->value() / 10.0;
+
+		bezierAdjust.clear();
+
+		//
+		// Create a pen from the currene window text color (which depends on 
+		// the dark/light colour theme setting).
+		//
+		QPen pen(palette().color(QPalette::WindowText));
+
+		//
+		// Create the points array for the curve
+		//
+		QList<QPointF>	points{ 100 };
+
+		pen.setStyle(Qt::DashLine);
+
+		for (double i = 0; i <= 1.0; i += 0.01)
+		{
+			double	j;
+
+			j = bezierAdjust.GetValue(i);
+			points.emplace_back(i * width, height - j * height);
+		};
+		QPen oldPen{ painter.pen() };
+		painter.setPen(pen);
+		painter.drawLines(points);
+		painter.setPen(oldPen);
+	};
+
 
 	void ProcessingDlg::drawHistogram(RGBHistogram& Histogram, bool useLogarithm)
 	{
@@ -808,53 +1037,179 @@ namespace DSS
 
 
 		}
-		//DrawGaussCurves(painter, Histogram, histogramRect.width(), histogramRect.height());
-		//DrawBezierCurve(painter, histogramRect.width(), histogramRect.height());
+		drawGaussianCurves(painter, Histogram, histogramRect.width(), histogramRect.height());
+		drawBezierCurve(painter, histogramRect.width(), histogramRect.height());
 
 		painter.end();
 		histogram->setPixmap(pix);
 	}
 
-	void ProcessingDlg::drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::resetSliders()
 	{
-		std::vector<ColorOrder>	vColors;
-		int						lLastHeight = 0;
+		RGBHistogram& Histogram = dssApp->deepStack().GetOriginalHistogram();
 
-		vColors.emplace_back(qRgb(255, 0, 0), lNrReds);
-		vColors.emplace_back(qRgb(0, 255, 0), lNrGreens);
-		vColors.emplace_back(qRgb(0, 0, 255), lNrBlues);
+		processingSettings.bezierAdjust_.reset();
 
-		std::sort(vColors.begin(), vColors.end());
+		float				RedMarks[3];
+		float				GreenMarks[3];
+		float				BlueMarks[3];
 
-		for (int i = 0; i < vColors.size(); i++)
-		{
-			if (vColors[i].m_lSize > lLastHeight)
-			{
-				// Create a color from the remaining values
-				double	fRed, fGreen, fBlue;
-				int		lNrColors = 1;
+		gradientOffset_ = 0.0;
+		gradientRange_ = 65535.0;
 
-				fRed = qRed(vColors[i].m_crColor);		// Get the red component of the colour
-				fGreen = qGreen(vColors[i].m_crColor);	// Get the green component of the colour
-				fBlue = qBlue(vColors[i].m_crColor);	// Get the blue component of the colour
+		RedMarks[0] = Histogram.GetRedHistogram().GetMin();
+		GreenMarks[0] = Histogram.GetGreenHistogram().GetMin();
+		BlueMarks[0] = Histogram.GetBlueHistogram().GetMin();
 
-				for (int j = i + 1; j < vColors.size(); j++)
-				{
-					fRed += qRed(vColors[j].m_crColor);		// Get the red component of the colour
-					fGreen += qGreen(vColors[j].m_crColor);	// Get the green component of the colour
-					fBlue += qBlue(vColors[j].m_crColor);	// Get the blue component of the colour
-					lNrColors++;
-				};
+		RedMarks[2] = Histogram.GetRedHistogram().GetMax();
+		GreenMarks[2] = Histogram.GetGreenHistogram().GetMax();
+		BlueMarks[2] = Histogram.GetBlueHistogram().GetMax();
 
-				QPen colorPen(QColor(fRed / lNrColors, fGreen / lNrColors, fBlue / lNrColors));
-				painter.setPen(colorPen);
 
-				painter.drawLine(X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
+		QLinearGradient& gradient = redGradient->gradient();
+		redGradient->setPeg(1, (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
+		redGradient->setPeg(2, (float)0.5);
+		redGradient->setPeg(3, (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
+		redGradient->update();
+		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
 
-				lLastHeight = vColors[i].m_lSize;
-			};
-		};
-	}
+		gradient = greenGradient->gradient();
+		greenGradient->setPeg(1, (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
+		greenGradient->setPeg(2, (float)0.5);
+		greenGradient->setPeg(3, (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
+		greenGradient->update();
+		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
+
+		gradient = blueGradient->gradient();
+		blueGradient->setPeg(1, (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
+		blueGradient->setPeg(2, (float)0.5);
+		blueGradient->setPeg(3, (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
+		blueGradient->update();
+		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod();
+
+		//
+		// Position the controls to match the current settings
+		//
+		darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
+		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
+		updateDarkText();
+
+
+		midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
+		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
+		updateMidText();
+
+		highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
+		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
+		updateHighText();
+
+		saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		updateSaturationText();
+
+		showHistogram(false);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::processAndShow(bool bSaveUndo)
+	{
+		UpdateHistogramAdjust();
+
+		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
+		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
+		processingSettings.bezierAdjust_.clear();
+
+		if (bSaveUndo)
+			processingSettingsList.AddParams(processingSettings);
+
+		updateControls();
+
+		//
+		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted
+		// It will be the null rectangle when no selection has been made by the user
+		// 
+		rectToProcess.SetProcessRect(selectionRect);
+
+		rectToProcess.Reset();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::UpdateHistogramAdjust()
+	{
+
+		QGradientStops gradientStops = redGradient->gradient().stops();
+
+		double
+			fMinRed = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftRed = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxRed = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		gradientStops = greenGradient->gradient().stops();
+
+		double
+			fMinGreen = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftGreen = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxGreen = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		gradientStops = greenGradient->gradient().stops();
+
+		double
+			fMinBlue = gradientOffset_ + gradientStops[1].first * gradientRange_,
+			fShiftBlue = (gradientStops[2].first - 0.5) * 2.0,
+			fMaxBlue = gradientOffset_ + gradientStops[3].first * gradientRange_;
+
+		processingSettings.histoAdjust_.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
+		processingSettings.histoAdjust_.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
+		processingSettings.histoAdjust_.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
+
+		processingSettings.histoAdjust_.GetRedAdjust().SetAdjustMethod(redAdjustmentCurve());
+		processingSettings.histoAdjust_.GetGreenAdjust().SetAdjustMethod(greenAdjustmentCurve());
+		processingSettings.histoAdjust_.GetBlueAdjust().SetAdjustMethod(blueAdjustmentCurve());
+
+
+		// Update gradient adjust values
+		double				fAbsMin,
+			fAbsMax;
+		double				fOffset;
+		double				fRange;
+
+		fAbsMin = min(fMinRed, min(fMinGreen, fMinBlue));
+		fAbsMax = max(fMaxRed, min(fMaxGreen, fMaxBlue));
+
+		fRange = fAbsMax - fAbsMin;
+		if (fRange * 1.10 <= 65535.0)
+			fRange *= 1.10;
+
+		fOffset = (fAbsMin + fAbsMax - fRange) / 2.0;
+		if (fOffset < 0)
+			fOffset = 0.0;
+
+		gradientOffset_ = fOffset;
+		gradientRange_ = fRange;
+
+		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
+		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
+		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
+		redGradient->update();
+
+		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
+		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
+		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
+		greenGradient->update();
+
+		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
+		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
+		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
+		blueGradient->update();
+	};
 
 } // namespace DSS
 
@@ -956,26 +1311,26 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_OriginalHistogram.SetBltMode(CWndImage::bltFitXY);
 	m_OriginalHistogram.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
 
-	m_tabLuminance.m_MidTone.SetRange(0, 1000, true);
-	m_tabLuminance.m_MidTone.SetPos(200);
-	m_tabLuminance.m_MidAngle.SetRange(0, 45, true);
-	m_tabLuminance.m_MidAngle.SetPos(20);
+	m_MidTone.SetRange(0, 1000, true);
+	m_MidTone.SetPos(200);
+	m_MidAngle.SetRange(0, 45, true);
+	m_MidAngle.SetPos(20);
 
-	m_tabLuminance.m_DarkAngle.SetRange(0, 45, true);
-	m_tabLuminance.m_DarkAngle.SetPos(0);
-	m_tabLuminance.m_DarkPower.SetRange(0, 1000, true);
-	m_tabLuminance.m_DarkPower.SetPos(500);
+	m_DarkAngle.SetRange(0, 45, true);
+	m_DarkAngle.SetPos(0);
+	m_DarkPower.SetRange(0, 1000, true);
+	m_DarkPower.SetPos(500);
 
-	m_tabLuminance.m_HighAngle.SetRange(0, 45, true);
-	m_tabLuminance.m_HighAngle.SetPos(0);
-	m_tabLuminance.m_HighPower.SetRange(0, 1000, true);
-	m_tabLuminance.m_HighPower.SetPos(500);
+	m_HighAngle.SetRange(0, 45, true);
+	m_HighAngle.SetPos(0);
+	m_HighPower.SetRange(0, 1000, true);
+	m_HighPower.SetPos(500);
 
-	m_tabLuminance.UpdateTexts();
+	UpdateTexts();
 
-	m_tabSaturation.m_Saturation.SetRange(0, 100, true);
-	m_tabSaturation.m_Saturation.SetPos(50);
-	m_tabSaturation.UpdateTexts();
+	m_Saturation.SetRange(0, 100, true);
+	m_Saturation.SetPos(50);
+	UpdateTexts();
 
 	m_ControlPos.SetParent(this);
 
@@ -994,7 +1349,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	COLORREF		crGreens[3] = { RGB(0, 0, 0), RGB(0, 128, 0), RGB(0, 255, 0) };
 	COLORREF		crBlues[3] = { RGB(0, 0, 0), RGB(0, 0, 128), RGB(0, 0, 255) };
 
-	SetTimer(1, 100, nullptr);
+	timer.start();
 
 	gradientOffset_ = 0.0;
 	gradientRange_ = 65535.0;
@@ -1038,7 +1393,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_ProcessingProgress.SetRange(0, 100);
 	m_ProcessingProgress.SetPos(100);
 
-	UpdateControls();
+	updateControls();
 
 	return true;  // return true unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return false
@@ -1055,9 +1410,9 @@ void CProcessingDlg::OnUndo()
 	processingSettingsList.MoveBackward();
 	processingSettingsList.GetCurrentParams(processingSettings);
 	updateControlsFromSettings();
-	ProcessAndShow(false);
+	processAndShow(false);
 	showHistogram(false);
-	UpdateControls();
+	updateControls();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1067,9 +1422,9 @@ void CProcessingDlg::OnRedo()
 	processingSettingsList.MoveForward();
 	processingSettingsList.GetCurrentParams(processingSettings);
 	updateControlsFromSettings();
-	ProcessAndShow(false);
+	processAndShow(false);
 	showHistogram(false);
-	UpdateControls();
+	updateControls();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1079,7 +1434,7 @@ void CProcessingDlg::OnSettings()
 	CSettingsDlg			dlg;
 	ProcessingSettingsSet& Settings = dssApp->processingSettingsSet();
 
-	KillTimer(1);
+	timer.stop();
 	dlg.SetDSSSettings(&Settings, processingSettings);
 	dlg.DoModal();
 
@@ -1087,12 +1442,12 @@ void CProcessingDlg::OnSettings()
 	{
 		dlg.GetCurrentSettings(processingSettings);
 		updateControlsFromSettings();
-		ProcessAndShow(false);
+		processAndShow(false);
 		showHistogram(false);
-		UpdateControls();
+		updateControls();
 		m_bDirty = true;
 	};
-	SetTimer(1, 100, nullptr);
+	timer.start();
 };
 
 /* ------------------------------------------------------------------- */
@@ -1117,14 +1472,14 @@ void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 {
 	showHistogram(false);
-	ResetSliders();
+	resetSliders();
 
 	int height = dssApp->deepStack().GetHeight();
 	rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 	processingSettingsList.clear();
 	m_Picture.SetImg((HBITMAP)nullptr);
-	ProcessAndShow(true);
+	processAndShow(true);
 
 	UpdateInfos();
 
@@ -1173,7 +1528,7 @@ void CProcessingDlg::OnLoaddsi()
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 
-		KillTimer(1);
+		timer.stop();
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -1211,25 +1566,25 @@ void CProcessingDlg::OnLoaddsi()
 				UpdateMonochromeControls();
 				UpdateInfos();
 				BeginWaitCursor();
-				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.m_BezierAdjust);
-				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.m_HistoAdjust);
+				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
 
 				updateControlsFromSettings();
 
 				showHistogram(false);
-				// ResetSliders();
+				// resetSliders();
 				int height = dssApp->deepStack().GetHeight();
 				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 				processingSettingsList.clear();
 				m_Picture.SetImg((HBITMAP)nullptr);
-				ProcessAndShow(true);
+				processAndShow(true);
 				EndWaitCursor();
 				m_bDirty = false;
 			};
 		};
 
-		SetTimer(1, 100, nullptr);
+		timer.start();
 	};
 }
 
@@ -1259,39 +1614,6 @@ bool CProcessingDlg::AskToSave()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::ProcessAndShow(bool bSaveUndo)
-{
-	UpdateHistogramAdjust();
-
-	processingSettings.m_BezierAdjust.m_fMidtone = m_tabLuminance.m_MidTone.GetPos() / 10.0;
-	processingSettings.m_BezierAdjust.m_fMidtoneAngle = m_tabLuminance.m_MidAngle.GetPos();
-	processingSettings.m_BezierAdjust.m_fDarknessAngle = m_tabLuminance.m_DarkAngle.GetPos();
-	processingSettings.m_BezierAdjust.m_fHighlightAngle = m_tabLuminance.m_HighAngle.GetPos();
-	processingSettings.m_BezierAdjust.m_fHighlightPower = m_tabLuminance.m_HighPower.GetPos() / 10.0;
-	processingSettings.m_BezierAdjust.m_fDarknessPower = m_tabLuminance.m_DarkPower.GetPos() / 10.0;
-	processingSettings.m_BezierAdjust.m_fSaturationShift = m_tabSaturation.m_Saturation.GetPos() - 50;
-	processingSettings.m_BezierAdjust.Clear();
-
-	if (bSaveUndo)
-		processingSettingsList.AddParams(processingSettings);
-
-	UpdateControls();
-
-	CRect			rcSelect;
-
-	if (m_SelectRectSink.GetSelectRect(rcSelect))
-		rectToProcess.SetProcessRect(rcSelect);
-	else
-	{
-		rcSelect.SetRectEmpty();
-		rectToProcess.SetProcessRect(rcSelect);
-	};
-
-	rectToProcess.Reset();
-};
-
-/* ------------------------------------------------------------------- */
-
 void CProcessingDlg::CopyPictureToClipboard()
 {
 	HBITMAP			hBitmap;
@@ -1308,7 +1630,7 @@ void CProcessingDlg::CreateStarMask()
 {
 	if (dssApp->deepStack().IsLoaded())
 	{
-		KillTimer(1);
+		timer.stop();
 
 		CStarMaskDlg dlgStarMask;
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
@@ -1338,7 +1660,7 @@ void CProcessingDlg::CreateStarMask()
 					WriteTIFF(strFileName.GetString(), pStarMask.get(), &dlg, description);
 			}
 		}
-		SetTimer(1, 100, nullptr);
+		timer.start();
 	}
 	else
 	{
@@ -1464,317 +1786,16 @@ bool CProcessingDlg::SavePictureToFile()
 
 void CProcessingDlg::OnProcess()
 {
-	ProcessAndShow(true);
+	processAndShow(true);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::ResetSliders()
-{
-	RGBHistogram& Histogram = dssApp->deepStack().GetOriginalHistogram();
-
-	processingSettings.m_BezierAdjust.Reset();
-
-	float				RedMarks[3];
-	float				GreenMarks[3];
-	float				BlueMarks[3];
-
-	gradientOffset_ = 0.0;
-	gradientRange_ = 65535.0;
-
-	RedMarks[0] = Histogram.GetRedHistogram().GetMin();
-	GreenMarks[0] = Histogram.GetGreenHistogram().GetMin();
-	BlueMarks[0] = Histogram.GetBlueHistogram().GetMin();
-
-	RedMarks[2] = Histogram.GetRedHistogram().GetMax();
-	GreenMarks[2] = Histogram.GetGreenHistogram().GetMax();
-	BlueMarks[2] = Histogram.GetBlueHistogram().GetMax();
-
-
-	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
-	RedGradient.SetPeg(RedGradient.IndexFromId(1), (float)0.5);
-	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_RedGradient.Invalidate(true);
-	m_tabRGB.SetRedAdjustMethod(processingSettings.m_HistoAdjust.GetRedAdjust().GetAdjustMethod());
-
-	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(1), (float)0.5);
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_GreenGradient.Invalidate(true);
-	m_tabRGB.SetGreenAdjustMethod(processingSettings.m_HistoAdjust.GetGreenAdjust().GetAdjustMethod());
-
-	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(1), (float)0.5);
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_BlueGradient.Invalidate(true);
-	m_tabRGB.SetBlueAdjustMethod(processingSettings.m_HistoAdjust.GetBlueAdjust().GetAdjustMethod());
-
-	m_tabLuminance.m_MidTone.SetPos(processingSettings.m_BezierAdjust.m_fMidtone * 10);
-	m_tabLuminance.m_MidAngle.SetPos(processingSettings.m_BezierAdjust.m_fMidtoneAngle);
-
-	m_tabLuminance.m_DarkAngle.SetPos(processingSettings.m_BezierAdjust.m_fDarknessAngle);
-	m_tabLuminance.m_DarkPower.SetPos(processingSettings.m_BezierAdjust.m_fDarknessPower * 10);
-
-	m_tabLuminance.m_HighAngle.SetPos(processingSettings.m_BezierAdjust.m_fHighlightAngle);
-	m_tabLuminance.m_HighPower.SetPos(processingSettings.m_BezierAdjust.m_fHighlightPower * 10);
-
-	m_tabLuminance.UpdateTexts();
-
-	m_tabSaturation.m_Saturation.SetPos(processingSettings.m_BezierAdjust.m_fSaturationShift + 50);
-	m_tabSaturation.UpdateTexts();
-
-	showHistogram(false);
-};
-
-/* ------------------------------------------------------------------- */
-
-
---------------------------------------------------------- */
-
-void CProcessingDlg::DrawBezierCurve(Graphics* pGraphics, int lWidth, int lHeight)
-{
-	CBezierAdjust		BezierAdjust;
-	POINT				pt;
-
-	BezierAdjust.m_fMidtone = m_tabLuminance.m_MidTone.GetPos() / 10.0;
-	BezierAdjust.m_fMidtoneAngle = m_tabLuminance.m_MidAngle.GetPos();
-	BezierAdjust.m_fDarknessAngle = m_tabLuminance.m_DarkAngle.GetPos();
-	BezierAdjust.m_fHighlightAngle = m_tabLuminance.m_HighAngle.GetPos();
-	BezierAdjust.m_fHighlightPower = m_tabLuminance.m_HighPower.GetPos() / 10.0;
-	BezierAdjust.m_fDarknessPower = m_tabLuminance.m_DarkPower.GetPos() / 10.0;
-
-	BezierAdjust.Clear();
-
-	Pen					BlackPen(Color(0, 0, 0));
-	std::vector<PointF>	vPoints;
-
-	BlackPen.SetDashStyle(DashStyleDash);
-
-	for (double i = 0; i <= 1.0; i += 0.01)
-	{
-		double	j;
-
-		j = BezierAdjust.GetValue(i);
-		pt.x = i * lWidth;
-		pt.y = lHeight - j * lHeight;
-		vPoints.emplace_back(pt.x, pt.y);
-	};
-
-	pGraphics->DrawLines(&BlackPen, &vPoints[0], (int)vPoints.size());
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::DrawGaussCurves(Graphics* pGraphics, RGBHistogram& Histogram, int lWidth, int lHeight)
-{
-	int				lNrValues;
-	double				fAverage[3] = { 0, 0, 0 };
-	double				fStdDev[3] = { 0, 0, 0 };
-	double				fSum[3] = { 0, 0, 0 };
-	double				fSquareSum[3] = { 0, 0, 0 };
-	double				fTotalPixels[3] = { 0, 0, 0 };
-	int				i;
-
-	lNrValues = Histogram.GetRedHistogram().GetNrValues();
-
-	if (lNrValues)
-	{
-		for (i = 0; i < lNrValues; i++)
-		{
-			int			lNrReds;
-			int			lNrGreens;
-			int			lNrBlues;
-
-			Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
-
-			fSum[0] += lNrReds * i;
-			fSum[1] += lNrGreens * i;
-			fSum[2] += lNrBlues * i;
-			fTotalPixels[0] += lNrReds;
-			fTotalPixels[1] += lNrGreens;
-			fTotalPixels[2] += lNrBlues;
-		};
-
-		fAverage[0] = fSum[0] / fTotalPixels[0];
-		fAverage[1] = fSum[1] / fTotalPixels[1];
-		fAverage[2] = fSum[2] / fTotalPixels[2];
-
-		for (i = 0; i < lNrValues; i++)
-		{
-			int			lNrReds;
-			int			lNrGreens;
-			int			lNrBlues;
-
-			Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
-
-			fSquareSum[0] += pow(i - fAverage[0], 2) * lNrReds;
-			fSquareSum[1] += pow(i - fAverage[1], 2) * lNrGreens;
-			fSquareSum[2] += pow(i - fAverage[2], 2) * lNrBlues;
-		};
-
-		fStdDev[0] = sqrt(fSquareSum[0] / fTotalPixels[0]);
-		fStdDev[1] = sqrt(fSquareSum[1] / fTotalPixels[1]);
-		fStdDev[2] = sqrt(fSquareSum[2] / fTotalPixels[2]);
-
-
-		std::vector<PointF>	vReds;
-		std::vector<PointF>	vGreens;
-		std::vector<PointF>	vBlues;
-
-		bool				bShow = true;
-
-		for (i = 0; i < lNrValues; i++)
-		{
-			double		fX,
-				fY;
-			fX = i;
-
-			fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / lNrValues;
-			fY = lHeight - fY * lHeight;
-			vReds.emplace_back(fX, fY);
-
-			bShow = bShow && (fX < 1000 && fY < 1000);
-
-			fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / lNrValues;
-			fY = lHeight - fY * lHeight;
-			vGreens.emplace_back(fX, fY);
-
-			bShow = bShow && (fX < 1000 && fY < 1000);
-
-			fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / lNrValues;
-			fY = lHeight - fY * lHeight;
-			vBlues.emplace_back(fX, fY);
-
-			bShow = bShow && (fX < 1000 && fY < 1000);
-		};
-
-		Pen				RedPen(Color(128, 255, 0, 0));
-		Pen				GreenPen(Color(128, 0, 255, 0));
-		Pen				BluePen(Color(128, 0, 0, 255));
-
-		RedPen.SetDashStyle(DashStyleDash);
-		GreenPen.SetDashStyle(DashStyleDash);
-		BluePen.SetDashStyle(DashStyleDash);
-
-		if (bShow)
-		{
-			pGraphics->DrawLines(&RedPen, &vReds[0], (int)vReds.size());
-			pGraphics->DrawLines(&GreenPen, &vGreens[0], (int)vGreens.size());
-			pGraphics->DrawLines(&BluePen, &vBlues[0], (int)vBlues.size());
-		};
-	};
-};
-
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::UpdateHistogramAdjust()
-{
-	CGradient& RedGradient = m_tabRGB.m_RedGradient.GetGradient();
-	double				fMinRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftRed = (RedGradient.GetPeg(RedGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxRed = gradientOffset_ + RedGradient.GetPeg(RedGradient.IndexFromId(2)).position * gradientRange_;
-
-	CGradient& GreenGradient = m_tabRGB.m_GreenGradient.GetGradient();
-	double				fMinGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftGreen = (GreenGradient.GetPeg(GreenGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxGreen = gradientOffset_ + GreenGradient.GetPeg(GreenGradient.IndexFromId(2)).position * gradientRange_;
-
-
-	CGradient& BlueGradient = m_tabRGB.m_BlueGradient.GetGradient();
-	double				fMinBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * gradientRange_,
-		fShiftBlue = (BlueGradient.GetPeg(BlueGradient.IndexFromId(1)).position - 0.5) * 2.0,
-		fMaxBlue = gradientOffset_ + BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * gradientRange_;
-
-
-	processingSettings.m_HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
-	processingSettings.m_HistoAdjust.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
-	processingSettings.m_HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
-
-	processingSettings.m_HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
-	processingSettings.m_HistoAdjust.GetGreenAdjust().SetAdjustMethod(m_tabRGB.GetGreenAdjustMethod());
-	processingSettings.m_HistoAdjust.GetBlueAdjust().SetAdjustMethod(m_tabRGB.GetBlueAdjustMethod());
-
-
-	// Update gradient adjust values
-	double				fAbsMin,
-		fAbsMax;
-	double				fOffset;
-	double				fRange;
-
-	fAbsMin = min(fMinRed, min(fMinGreen, fMinBlue));
-	fAbsMax = max(fMaxRed, min(fMaxGreen, fMaxBlue));
-
-	fRange = fAbsMax - fAbsMin;
-	if (fRange * 1.10 <= 65535.0)
-		fRange *= 1.10;
-
-	fOffset = (fAbsMin + fAbsMax - fRange) / 2.0;
-	if (fOffset < 0)
-		fOffset = 0.0;
-
-	gradientOffset_ = fOffset;
-	gradientRange_ = fRange;
-
-	RedGradient.SetPeg(RedGradient.IndexFromId(0), (float)((fMinRed - gradientOffset_) / gradientRange_));
-	RedGradient.SetPeg(RedGradient.IndexFromId(1), (float)(fShiftRed / 2.0 + 0.5));
-	RedGradient.SetPeg(RedGradient.IndexFromId(2), (float)((fMaxRed - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_RedGradient.Invalidate(true);
-
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(0), (float)((fMinGreen - gradientOffset_) / gradientRange_));
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(1), (float)(fShiftGreen / 2.0 + 0.5));
-	GreenGradient.SetPeg(GreenGradient.IndexFromId(2), (float)((fMaxGreen - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_GreenGradient.Invalidate(true);
-
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(0), (float)((fMinBlue - gradientOffset_) / gradientRange_));
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(1), (float)(fShiftBlue / 2.0 + 0.5));
-	BlueGradient.SetPeg(BlueGradient.IndexFromId(2), (float)((fMaxBlue - gradientOffset_) / gradientRange_));
-	m_tabRGB.m_BlueGradient.Invalidate(true);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
-{
-	CRect			rcCell;
-
-	if (rectToProcess.GetNextUnProcessedRect(rcCell))
-	{
-		HBITMAP			hBitmap = nullptr;
-		bool			bInitialized = true;
-
-		hBitmap = m_Picture.GetBitmap();
-		if (!hBitmap)
-			bInitialized = false;
-
-		hBitmap = dssApp->deepStack().PartialProcess(rcCell, processingSettings.m_BezierAdjust, processingSettings.m_HistoAdjust);
-
-		if (!bInitialized)
-			m_Picture.SetImg(hBitmap, true);
-
-		m_Picture.Invalidate(true);
-
-		if (!m_OriginalHistogram.GetBitmap())
-		{
-			showHistogram(false);
-			ResetSliders();
-		};
-		const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
-		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
-	};
-
-	CDialog::OnTimer(nIDEvent);
-}
 
 /* ------------------------------------------------------------------- */
 
 void CProcessingDlg::OnReset()
 {
 	m_bDirty = true;
-	ResetSliders();
+	resetSliders();
 }
 
 /* ------------------------------------------------------------------- */

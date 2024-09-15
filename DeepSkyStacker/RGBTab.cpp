@@ -84,6 +84,8 @@ namespace DSS
 
 	void ProcessingDlg::redChanging(int peg)
 	{
+		qDebug() << "ProcessingDlg::RedChanging(" << peg << ")";
+
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
@@ -170,6 +172,7 @@ namespace DSS
 
 	void ProcessingDlg::redChanged(int peg)
 	{
+		qDebug() << "ProcessingDlg::RedChanged(" << peg << ")";
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// one final time

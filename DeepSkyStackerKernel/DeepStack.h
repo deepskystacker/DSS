@@ -76,6 +76,8 @@ public :
 		//
 		if (nullptr == image_.get())
 		{
+			int width = GetWidth(); int height = GetHeight();
+			qDebug() << "Creating image data storage: " << width << "*" << height;
 			imageData_.resize(GetWidth() * GetHeight() * sizeof(QRgb));
 			image_ = std::make_unique<QImage>(imageData_.data(), GetWidth(), GetHeight(), QImage::Format_RGB32);
 		}
@@ -83,11 +85,17 @@ public :
 		m_StackedBitmap.SetBezierAdjust(BezierAdjust);
 		m_StackedBitmap.SetHistogramAdjust(histogramAdjust);
 		m_StackedBitmap.updateQImage(imageData_.data(), image_->bytesPerLine(), &rcProcess);
+		
 	}
 
 	DSS::StackedBitmap& GetStackedBitmap()
 	{
 		return m_StackedBitmap;
+	}
+
+	const QImage& getImage() const
+	{
+		return *image_;
 	}
 
 	void AdjustOriginalHistogram(DSS::RGBHistogram & Histo, const DSS::RGBHistogramAdjust & histogramAdjust)
