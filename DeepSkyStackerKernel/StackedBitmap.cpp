@@ -362,7 +362,6 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 	//
 	// pImageData is a uchar* pointer to the pre-allocated buffer used by the QImage
 	//
-	qDebug() << "In StackedBitmap::updateQImage, rectangle " << pRect->left << pRect->top << pRect->width() << pRect->height();
 
 	int lXMin = 0;
 	int lYMin = 0;
@@ -387,7 +386,7 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 #pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
 	for (int j = lYMin; j < lYMax; j++)
 	{
-		QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (bytes_per_line * j) + lXMin);
+		QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (bytes_per_line * j) + (lXMin * sizeof(QRgb)));
 		//
 		// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
 		//
@@ -406,9 +405,16 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 
 		for (size_t n = 0; n < bufferLen; ++n)
 		{
-			*pOutPixel++ = qRgb(std::clamp(redBuffer[n], 0.0F, 255.0F),
-					std::clamp(greenBuffer[n], 0.0F, 255.0F),
-					std::clamp(blueBuffer[n], 0.0F, 255.0F));
+			*pOutPixel++ = qRgb(
+				std::clamp(redBuffer[n], 0.0F, 255.0F),
+				std::clamp(greenBuffer[n], 0.0F, 255.0F),
+				std::clamp(blueBuffer[n], 0.0F, 255.0F));
+			/*
+			*pOutPixel++ = qRgb(
+				std::clamp(pRedPixel[n], 0.0F, 255.0F),
+				std::clamp(pGreenPixel[n], 0.0F, 255.0F),
+				std::clamp(pBluePixel[n], 0.0F, 255.0F));
+				*/
 		}
 	}
 }

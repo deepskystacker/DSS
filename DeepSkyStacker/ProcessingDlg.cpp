@@ -231,8 +231,6 @@ namespace DSS
 		//
 		connect(&timer, &QTimer::timeout, this, &ProcessingDlg::onTimer);
 
-		qDebug() << "Picture size is: " << picture->size();
-
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -287,7 +285,6 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load File";
-		qDebug() << "Picture size is: " << picture->size();
 
 		//
 		// Load the output file created at the end of the stacking process.
@@ -337,7 +334,6 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load image";
-		qDebug() << "Picture size is: " << picture->size();
 
 		QFileDialog			fileDialog(this);
 		QSettings			settings;
@@ -980,6 +976,8 @@ namespace DSS
 		QPainter painter;
 		QBrush brush(palette().window());
 		const QRect histogramRect{ histogram->rect() };
+		const int width{ histogramRect.width() };
+		const int height{ histogramRect.height() };
 
 		painter.begin(&pix);
 		painter.setRenderHint(QPainter::Antialiasing);
@@ -1003,7 +1001,7 @@ namespace DSS
 			if (useLogarithm)
 			{
 				if (lMaxValue)
-					maxLogarithm = exp(log((double)lMaxValue) / histogramRect.height());
+					maxLogarithm = exp(log((double)lMaxValue) / height);
 				else
 					useLogarithm = false;
 			};
@@ -1027,18 +1025,18 @@ namespace DSS
 				}
 				else
 				{
-					lNrReds = (double)lNrReds / (double)lMaxValue * histogramRect.height();
-					lNrGreens = (double)lNrGreens / (double)lMaxValue * histogramRect.height();
-					lNrBlues = (double)lNrBlues / (double)lMaxValue * histogramRect.height();
+					lNrReds = (double)lNrReds / (double)lMaxValue * height;
+					lNrGreens = (double)lNrGreens / (double)lMaxValue * height;
+					lNrBlues = (double)lNrBlues / (double)lMaxValue * height;
 				};
 
-				drawHistoBar(painter, lNrReds, lNrGreens, lNrBlues, i, histogramRect.height());
+				drawHistoBar(painter, lNrReds, lNrGreens, lNrBlues, i, height);
 			};
 
 
 		}
-		drawGaussianCurves(painter, Histogram, histogramRect.width(), histogramRect.height());
-		drawBezierCurve(painter, histogramRect.width(), histogramRect.height());
+		drawGaussianCurves(painter, Histogram, width, height);
+		drawBezierCurve(painter, width, height);
 
 		painter.end();
 		histogram->setPixmap(pix);
