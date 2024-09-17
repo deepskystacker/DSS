@@ -31,7 +31,7 @@ QEventLogger::QEventLogger(const QString& logFileBaseName,
     // Create the dir in which screenshots will be stored, if requested.
     if (screenshotsEnabled) {
         screenshotDirName = "./screenshots " + now.toString(Qt::ISODate).replace(":", "-");
-        qDebug() << QDir().mkdir(screenshotDirName);
+        QDir().mkdir(screenshotDirName);
     }
 
     // Start timer.
