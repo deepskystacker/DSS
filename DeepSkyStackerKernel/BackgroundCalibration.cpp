@@ -16,7 +16,7 @@ CBackgroundCalibration::CBackgroundCalibration() :
 	m_RGBBackgroundMethod{ CAllStackingTasks::GetRGBBackgroundCalibrationMethod() }
 {}
 
-void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
+void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);
 //	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
@@ -77,7 +77,7 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBa
 	} // omp parallel
 }
 
-void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress)
+void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_fSrcRedMax = 0;

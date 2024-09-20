@@ -3,7 +3,7 @@
 #include "avx_cfa.h"
 #include "avx_support.h"
 
-AvxLuminance::AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
+AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
 	inputBitmap{ inputbm },
 	outputBitmap{ outbm },
 	avxReady{ true }
@@ -46,7 +46,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 	constexpr size_t vectorLen = 16;
 	const size_t nrVectors = width / vectorLen;
 
-	const auto scaleAndStoreLuminance = [scalingFactor](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double *const pOut) -> void
+	const auto scaleAndStoreLuminance = [scalingFactor](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double* const pOut) -> void
 	{
 		const __m256d vScalingFactor = _mm256_set1_pd(scalingFactor);
 		_mm256_storeu_pd(pOut, _mm256_mul_pd(d0, vScalingFactor));
@@ -126,7 +126,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 }
 
 template <class T>
-std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(const T *const pRed, const T *const pGreen, const T *const pBlue)
+std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(const T* const pRed, const T* const pGreen, const T* const pBlue)
 {
 	const __m256i red = AvxSupport::read16PackedShort(pRed);
 	const __m256i green = AvxSupport::read16PackedShort(pGreen);

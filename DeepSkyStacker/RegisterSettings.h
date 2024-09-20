@@ -35,15 +35,12 @@
 **
 ****************************************************************************/
 
-class Workspace;
 class CAllStackingTasks;
 class QValidator;
 
 namespace Ui {
 	class RegisterSettings;
 }
-
-class Workspace;
 
 class RegisterSettings : public QDialog
 {
@@ -58,26 +55,26 @@ public:
 	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
 	{
 		settingsOnly = bSettingsOnly;
-	};
+	}
 
-	inline bool	isForceRegister() noexcept
+	bool isForceRegister() const noexcept
 	{
 		return forceRegister;
-	};
+	}
 
-	inline bool	isStackAfter(double & fPercent) noexcept
+	bool isStackAfter(double& fPercent) const noexcept
 	{
-		fPercent = (double)percentStack;
+		fPercent = static_cast<double>(percentStack);
 
 		return stackAfter;
-	};
+	}
 
 	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
 	{
 		pStackingTasks = ptr;
 		return *this;
-	};
-	   
+	}
+
 private slots:
 
 	void on_recommendedSettings_clicked();
@@ -94,12 +91,13 @@ private slots:
 	void on_luminanceThreshold_valueChanged(int);
 	void on_computeDetectedStars_clicked();
 	void on_medianFilter_stateChanged(int);
+	void on_autoThreshold_changed(const int);
 
 
 
 private:
 	Ui::RegisterSettings *ui;
-	std::unique_ptr<Workspace> workspace;
+	std::unique_ptr<class Workspace> workspace;
 
 	bool					initialised;
 	bool					forceRegister;

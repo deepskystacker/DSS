@@ -14,42 +14,12 @@
 #include "TIFFUtil.h"
 #include "MasterFrames.h"
 
-/* ------------------------------------------------------------------- */
-
-class CStarAxisInfo final
-{
-public :
-	int m_lAngle{ 0 };
-	double m_fRadius{ 0.0 };
-	double m_fSum{ 0.0 };
-
-public:
-	CStarAxisInfo(const int angle, const double rad, const double sum):
-		m_lAngle{ angle },
-		m_fRadius{ rad },
-		m_fSum{ sum }
-	{}
-	CStarAxisInfo(const CStarAxisInfo&) = default;
-	~CStarAxisInfo() = default;
-	CStarAxisInfo& operator=(const CStarAxisInfo&) = default;
-};
-
-inline	void NormalizeAngle(int & lAngle)
-{
-	while (lAngle >= 360)
-		lAngle -= 360;
-	while (lAngle < 0)
-		lAngle += 360;
-};
-
-/* ------------------------------------------------------------------- */
 void CRegisteredFrame::Reset()
 {
-	Workspace			workspace;
+	Workspace workspace;
 
 	m_vStars.clear();
 
-	m_fRoundnessTolerance = 2.0;
 	m_bInfoOk = false;
 
 	m_bComet = false;
@@ -64,486 +34,109 @@ void CRegisteredFrame::Reset()
 
 	m_fOverallQuality = 0;
 	m_fFWHM = 0;
+	meanQuality = 0;
 }
 
-bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
+//
+// MT, August 2024
+// We now calculate 2 different quality metrics. 
+// (1) The old 'overallQuality' (shown as "Score" in the GUI): this is simply the sum of CStar::m_fQuality over the stars.
+// (2) A new average quality indicator, which is independent of the number of detected stars (unlike the above).
+//     This is important, because the new auto-threshold algorithm cannot guarantee an identical detection threshold over the series of light-frames.
+//     Using the new quality indicator, even then the light-frames can be compared.
+// The new quality indicator double CLightframInfo::meanQuality; (shown as "MeanQuality" in the GUI) much better characterises the realy quality of 
+// a light-frame than the old Score.
+// 
+// The new MeanQuality parameter is calculated as follows:
+// We take the vector of detected stars and filter out those, that are inactive (e.g. removed by the edit stars functionality in the GUI).
+// We sort the active stars by the new parameter double CStar::m_fCircularity; From the active stars, we take maximum 100.
+// Over these stars, we calculate a weighted average of the circularity parameter.
+// The weighting window is similar to a Gaussian funtion. The exact shape is not important, we just want to favour the best stars more than the myriads of 
+//   small and faint stars.
+// 
+// The new parameter double CStar::m_fCircularity is calculated in RegisterSubrect as:
+//   (fIntensity - backgroundLevel) / (0.1 + maxDeltaRadii); where maxDeltaRadii is the maximum difference of the radii (in pixels) in the 8 directions around the star center.
+//   So if maxDeltaRadii == 0, the star will be additionally weighted by 10. If maxDeltaRadii == 1, the star will be devaluated by 1/1.1 (0.91). And so on ...
+//   So the best stars will be those, that are bright and perfectly circular.
+// From all light-frames, the best (in terms of the new MeanQuality parameter) will be those with bright and perfectly circular stars. The absolut number 
+// of stars is NOT important.
+// So it is really a quality measure for the circularity of the stars in the light-frame.
+// 
+// In the GUI is a new column "MeanQuality" right next to the good old "Score". Users can use it to sort the light-frames.
+// 
+// CRegisteredFrame::ComputeOverallQuality is now public static, so it can be used from other parts of the code, too, e.g. in EditStars::computeOverallQuality().
+//
+// static
+std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECTOR& stars)
 {
-	bool						bResult = false;
-	std::vector<CStarAxisInfo>	vStarAxises;
-	double						fMaxHalfRadius = 0.0;
-	double						fMaxCumulated  = 0.0;
-	int						lMaxHalfRadiusAngle = 0.0;
+	namespace vs = std::ranges::views;
 
-	// Preallocate the vector for the inner loop.
-	PIXELDISPATCHVECTOR		vPixels;
-	vPixels.reserve(10);
+	constexpr auto Filter = vs::filter([](const CStar& star) { return !star.m_bRemoved; });
+	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
 
-	const int width = pBitmap->Width();
-	const int height = pBitmap->Height();
+	auto activeStars = Filter(stars);
+	const double overallQuality = std::accumulate(std::ranges::begin(activeStars), std::ranges::end(activeStars), 0.0,
+		[](const double accu, const CStar& star) { return accu + star.m_fQuality; });
 
-	for (int lAngle = 0; lAngle < 360; lAngle += 10)
+	std::vector<int> indexes(stars.size());
+	std::iota(indexes.begin(), indexes.end(), 0);
+
+	// Sort indexes descending (due to std::greater) by CStar::circularity.
+	std::ranges::sort(indexes, std::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
+	// Approximate a Gaussian weighting
+	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
+	double sumWeights = 0;
+	double sum = 0;
+	// Sorted indexes -> get CStar -> filter out removed -> take max. 100 -> get circularity.
+	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(100) | vs::transform(&CStar::m_fCircularity))
 	{
-		double					fSquareSum = 0.0;
-		double					fSum	   = 0.0;
-		double					fNrValues  = 0.0;
-
-		for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
-		{
-			constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
-			const double fX = star.m_fX + std::cos(lAngle * GradRadFactor) * fPos;
-			const double fY = star.m_fY + std::sin(lAngle * GradRadFactor) * fPos;
-			double fLuminance = 0;
-
-			// Compute luminance at fX, fY
-			vPixels.resize(0);
-			ComputePixelDispatch(QPointF(fX, fY), vPixels);
-
-			for (const CPixelDispatch& pixel : vPixels)
-			{
-				if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
-					continue;
-
-				double fValue;
-				pBitmap->GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), fValue);
-				fLuminance += fValue * pixel.m_fPercentage;
-			}
-			fSquareSum += fPos * fPos * fLuminance * 2;
-			fSum += fLuminance;
-			fNrValues += fLuminance * 2;
-		}
-
-		const double fStdDev = fNrValues > 0.0 ? std::sqrt(fSquareSum / fNrValues) : 0.0;
-		CStarAxisInfo ai{ lAngle, fStdDev * 1.5, fSum };
-
-		if (ai.m_fSum > fMaxCumulated)
-		{
-			fMaxCumulated		= ai.m_fSum;
-			fMaxHalfRadius		= ai.m_fRadius;
-			lMaxHalfRadiusAngle = ai.m_lAngle;
-		}
-
-		vStarAxises.push_back(std::move(ai));
+		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
+		sumWeights += w;
+		sum += w * q;
+		++ndx;
 	}
 
-	// Get the biggest value - this is the major axis
-	star.m_fLargeMajorAxis = fMaxHalfRadius;
-	star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
+	const double meanQuality = sumWeights != 0 ? sum / sumWeights : 0.0;
 
-	int			lSearchAngle;
-	bool			bFound = false;
-
-	lSearchAngle = lMaxHalfRadiusAngle + 180;
-	NormalizeAngle(lSearchAngle);
-
-	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
-	{
-		if (vStarAxises[i].m_lAngle == lSearchAngle)
-		{
-			bFound = true;
-			star.m_fSmallMajorAxis = vStarAxises[i].m_fRadius;
-		}
-	}
-
-	bFound		 = false;
-	lSearchAngle = lMaxHalfRadiusAngle + 90;
-	NormalizeAngle(lSearchAngle);
-
-	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
-	{
-		if (vStarAxises[i].m_lAngle == lSearchAngle)
-		{
-			bFound = true;
-			star.m_fLargeMinorAxis = vStarAxises[i].m_fRadius;
-		}
-	}
-
-	bFound		 = false;
-	lSearchAngle = lMaxHalfRadiusAngle + 210;
-	NormalizeAngle(lSearchAngle);
-
-	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
-	{
-		if (vStarAxises[i].m_lAngle == lSearchAngle)
-		{
-			bFound = true;
-			star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
-		}
-	}
-
-	return bResult;
+	return std::make_pair(overallQuality, meanQuality);
 }
-
-/* ------------------------------------------------------------------- */
-
-bool CRegisteredFrame::ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
-{
-	int				i, j;
-	double				fSumX = 0,
-						fSumY = 0;
-	double				fNrValuesX = 0,
-						fNrValuesY = 0;
-	double				fAverageX = 0,
-						fAverageY = 0;
-
-
-	int				lNrLines = 0;
-	for (j = fY-fRadius;j<=fY+fRadius;j++)
-	{
-		fSumX = 0;
-		fNrValuesX = 0;
-		for (i = fX-fRadius;i<=fX+fRadius;i++)
-		{
-			double			fValue;
-
-			pBitmap->GetPixel(i, j, fValue);
-			fSumX += fValue * i;
-			fNrValuesX += fValue;
-		};
-		if (fNrValuesX)
-		{
-			lNrLines++;
-			fAverageX += fSumX/fNrValuesX;
-		};
-	};
-	fAverageX /= (double)lNrLines;
-
-	int				lNrColumns = 0;
-	for (j = fX-fRadius;j<=fX+fRadius;j++)
-	{
-		fSumY = 0;
-		fNrValuesY = 0;
-		for (i = fY-fRadius;i<=fY+fRadius;i++)
-		{
-			double			fValue;
-			pBitmap->GetPixel(j, i, fValue);
-			fSumY += fValue * i;
-			fNrValuesY += fValue;
-		};
-		if (fNrValuesY)
-		{
-			lNrColumns++;
-			fAverageY += fSumY/fNrValuesY;
-		};
-	};
-	fAverageY /= (double)lNrColumns;
-
-	fX = fAverageX;
-	fY = fAverageY;
-
-	// Then compute the radius
-	double				fSquareSumX = 0;
-	double				fStdDevX = 0;
-	fSumX = 0;
-	fNrValuesX = 0;
-	for (i = fX-fRadius;i<=fX+fRadius;i++)
-	{
-		double			fValue;
-		pBitmap->GetPixel(i, fY, fValue);
-		fValue = std::max(0.0, fValue - m_fBackground);
-		fSumX		+= fValue * i;
-		fSquareSumX += pow(i - fX, 2)* fValue;
-		fNrValuesX	+= fValue;
-	};
-	fStdDevX = sqrt(fSquareSumX /fNrValuesX);
-
-	double				fSquareSumY = 0;
-	double				fStdDevY = 0;
-	fSumY = 0;
-	fNrValuesY = 0;
-	for (i = fY-fRadius;i<=fY+fRadius;i++)
-	{
-		double			fValue;
-		pBitmap->GetPixel(fX, i, fValue);
-		fValue = std::max(0.0, fValue - m_fBackground);
-		fSumY		+= fValue * i;
-		fSquareSumY += pow(i - fY, 2)*fValue;
-		fNrValuesY	+= fValue;
-	};
-	fStdDevY = sqrt(fSquareSumY /fNrValuesY);
-
-	// The radius is the average of the standard deviations
-	fRadius = (fStdDevX + fStdDevY)/2.0*1.5;
-
-	return fabs(fStdDevX - fStdDevY) < m_fRoundnessTolerance;
-};
-
-/* ------------------------------------------------------------------- */
 
 namespace {
-	struct PixelDirection
+	bool GetNextValue(QTextStream* fileIn, QString& strVariable, QString& strValue)
 	{
-		double m_fIntensity{ 0.0 };
-		int m_Radius{ 0 };
-		std::int8_t m_lNrBrighterPixels{ 0 };
-		std::int8_t m_Ok{ 2 };
-		std::int8_t m_lXDir{ 0 };
-		std::int8_t m_lYDir{ 0 };
+		bool bResult = false;
+		strVariable.clear();
+		strValue.clear();
 
-		constexpr PixelDirection(const std::int8_t x, const std::int8_t y) noexcept : m_lXDir{ x }, m_lYDir{ y } {}
-		constexpr PixelDirection(const PixelDirection&) noexcept = default;
-		constexpr PixelDirection(PixelDirection&&) noexcept = default;
-		template <typename T> PixelDirection& operator=(T&&) = delete;
-	};
-}
-
-size_t CRegisteredFrame::RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
-{
-	double fMaxIntensity = std::numeric_limits<double>::min();
-	std::vector<int> vHistogram;
-	size_t nStars{ 0 };
-
-	// Work with a local buffer. Copy the pixel values for the rect.
-	const int width = rc.width();
-	std::vector<double> values(width * rc.height());
-	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
-	{
-		for (int i = rc.left; i < rc.right; ++i, ++ndx)
+		if (!fileIn->atEnd())
 		{
-			double value;
-			pBitmap->GetPixel(i, j, value);
-			values[ndx] = value;
-			fMaxIntensity = std::max(fMaxIntensity, value);
-		}
-	}
-
-	const auto getValue = [&values, rc, width](const int x, const int y) -> double
-	{
-		return values[(y - rc.top) * width + x - rc.left];
-	};
-
-	// Read pixels from the memory bitmap
-	// First find the top luminance
-	if (m_fBackground == 0.0)
-	{
-		constexpr size_t Maxsize = size_t{ std::numeric_limits<std::uint16_t>::max() } + 1;
-		constexpr double Maxvalue = double{ std::numeric_limits<std::uint16_t>::max() };
-		vHistogram.resize(Maxsize);
-		for (const auto value : values)
-		{
-			++vHistogram[std::min(value * 256.0, Maxvalue)];
-		}
-
-		const int fiftyPercentValues = ((rc.width() - 1) * (rc.height() - 1)) / 2;
-		int nrValues = 0;
-		int fiftyPercentQuantile = 0;
-		while (nrValues < fiftyPercentValues)
-		{
-			nrValues += vHistogram[fiftyPercentQuantile];
-			++fiftyPercentQuantile;
-		}
-		m_fBackground = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(Maxsize);
-	}
-
-	const double intensityThreshold = m_fMinLuminancy + m_fBackground;
-
-	if (fMaxIntensity >= intensityThreshold)
-	{
-		// Find how many wanabee stars are existing above 90% maximum luminance
-
-		for (int deltaRadius = 0; deltaRadius < 4; ++deltaRadius)
-		{
-			for (int j = rc.top; j < rc.bottom; j++)
+			const QString strText = fileIn->readLine();
+			int nPos = strText.indexOf("="); // Search = sign
+			if (nPos >= 0)
 			{
-				for (int i = rc.left; i < rc.right; i++)
-				{
-					const double fIntensity = getValue(i, j);
-
-					if (fIntensity >= intensityThreshold)
-					{
-						// Check that this pixel is not already used in a wanabee star
-						bool bNew = true;
-						const QPoint ptTest{ i, j };
-
-						for (STARSET::const_iterator it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.cend() && bNew; ++it)
-						{
-							if (it->IsInRadius(ptTest))
-								bNew = false;
-							else if (it->m_fX > ptTest.x() + STARMAXSIZE)
-								break;
-						}
-
-						if (bNew)
-						{
-							// Search around the point until intensity is divided by 2
-							// STARMAXSIZE pixels radius max search
-							std::array<PixelDirection, 8> directions{ {
-								{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}
-							} };
-
-							bool bBrighterPixel = false;
-							bool bMainOk = true;
-							int	lMaxRadius = 0;
-							// int	lNrBrighterPixels = 0;
-
-							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
-							{
-								for (auto& pixel : directions)
-								{
-									pBitmap->GetPixel(i + pixel.m_lXDir * testedRadius, j + pixel.m_lYDir * testedRadius, pixel.m_fIntensity);
-								}
-
-								bMainOk = false;
-								for (auto& pixel : directions)
-								{
-									if (bBrighterPixel) break;
-									if (pixel.m_Ok)
-									{
-										if (pixel.m_fIntensity - m_fBackground < 0.25 * (fIntensity - m_fBackground))
-										{
-											pixel.m_Radius = testedRadius;
-											--pixel.m_Ok;
-											lMaxRadius = std::max(lMaxRadius, testedRadius);
-										}
-										else if (pixel.m_fIntensity > 1.05 * fIntensity)
-											bBrighterPixel = true;
-										else if (pixel.m_fIntensity > fIntensity)
-											++pixel.m_lNrBrighterPixels;
-									}
-
-									if (pixel.m_Ok)
-										bMainOk = true;
-									if (pixel.m_lNrBrighterPixels > 2)
-										bBrighterPixel = true;
-								}
-							}
-
-							// Check the roundness of the wanabee star
-							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
-							{
-								// Radiuses should be within deltaRadius pixels of each others
-								//if (i>=1027 && i<=1035 && j>=2365 && j<=2372)
-								//	DebugBreak();
-
-								bool bWanabeeStarOk = true;
-								double fMeanRadius1 = 0.0;
-								double fMeanRadius2 = 0.0;
-
-								for (size_t k1 = 0; (k1 < 4) && bWanabeeStarOk; k1++)
-								{
-									for (size_t k2 = 0; (k2 < 4) && bWanabeeStarOk; k2++)
-									{
-										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
-											bWanabeeStarOk = false;
-									}
-								}
-								for (size_t k1 = 4; (k1 < 8) && bWanabeeStarOk; k1++)
-								{
-									for (size_t k2 = 4; (k2 < 8) && bWanabeeStarOk; k2++)
-									{
-										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
-											bWanabeeStarOk = false;
-									}
-								}
-
-								for (size_t k1 = 0; k1 < 4; k1++)
-									fMeanRadius1 += directions[k1].m_Radius;
-								fMeanRadius1 /= 4.0;
-								for (size_t k1 = 4; k1 < 8; k1++)
-									fMeanRadius2 += directions[k1].m_Radius;
-								fMeanRadius2 /= 4.0;
-								fMeanRadius2 *= sqrt(2.0);
-
-								//if (fabs(fMeanRadius1 - fMeanRadius2) > deltaRadius - 1)
-								//	bWanabeeStarOk = false;
-
-								int	lLeftRadius = 0;
-								int	lRightRadius = 0;
-								int	lTopRadius = 0;
-								int	lBottomRadius = 0;
-
-								for (const auto& pixel : directions)
-								{
-									if (pixel.m_lXDir < 0)
-										lLeftRadius = std::max(lLeftRadius, static_cast<int>(pixel.m_Radius));
-									else if (pixel.m_lXDir > 0)
-										lRightRadius = std::max(lRightRadius, static_cast<int>(pixel.m_Radius));
-									if (pixel.m_lYDir < 0)
-										lTopRadius = std::max(lTopRadius, static_cast<int>(pixel.m_Radius));
-									else if (pixel.m_lYDir > 0)
-										lBottomRadius = std::max(lBottomRadius, static_cast<int>(pixel.m_Radius));
-								}
-								//
-								// **********************************
-								// * Danger! Danger, Will Robinson! *
-								// **********************************
-								// 
-								// This rectangle is INCLUSIVE so the loops over the m_rcStar rectangle MUST use
-								// <= limit, not the more normal < limit.
-								// 
-								// It is not safe to change this as the data is saved in the .info.txt files
-								// that the code reads during "Compute Offsets" processing.
-								// 
-								// So, while technically incorrect, it must not be changed otherwise it would
-								// create an incompatibility with existing info.txt files that were created by
-								// earlier releases of the code.
-								//
-								// MT, August 2024: The ONLY function still using star.m_rcStar ist:
-								//    CDarkFrame::FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
-								// Every other function which used to use m_rcStar is now commented out - not any more used.
-								// Ironically, this function uses the ("correct" ?) limits with < NOT <= :
-								//    for (int x = rcStar.left; x < rcStar.right; x++) 
-								//       for (int y = rcStar.top; y < rcStar.bottom; y++)
-
-
-								if (bWanabeeStarOk)
-								{
-									// Add the star
-									CStar ms(ptTest.x(), ptTest.y());
-									ms.m_fIntensity	  = fIntensity;
-									ms.m_rcStar =		DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
-									ms.m_fPercentage  = 1.0;
-									ms.m_fDeltaRadius = deltaRadius;
-									ms.m_fMeanRadius  = (fMeanRadius1 + fMeanRadius2) / 2.0;
-
-									constexpr double radiusFactor = 2.35 / 1.5;
-
-									// Compute the real position
-									if (ComputeStarCenter(pBitmap, ms.m_fX, ms.m_fY, ms.m_fMeanRadius))
-									{
-										// Check last overlap condition
-										{
-											for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * radiusFactor - STARMAXSIZE, 0)); it != stars.cend() && bWanabeeStarOk; ++it)
-											{
-												if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * radiusFactor)
-													bWanabeeStarOk = false;
-												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * radiusFactor + STARMAXSIZE)
-													break;
-											}
-										}
-
-										// Check comet intersection
-										if (m_bComet)
-										{
-											if (ms.IsInRadius(m_fXComet, m_fYComet))
-												bWanabeeStarOk = false;
-										}
-
-										if (bWanabeeStarOk)
-										{
-											ms.m_fQuality = (10 - deltaRadius) + fIntensity - ms.m_fMeanRadius;
-											FindStarShape(pBitmap, ms);
-											stars.insert(std::move(ms));
-											++nStars;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				strVariable = strText.left(nPos - 1).trimmed();
+				strValue = strText.right(strText.length() - nPos - 1).trimmed();
 			}
+			else
+			{
+				strVariable = strText.trimmed();
+			}
+			bResult = true;
 		}
+		return bResult;
 	}
 
-	if  (!vHistogram.empty())
-		m_fBackground = 0;
+	constexpr char ThresholdParam[] = "ThresholdPercent";
+	constexpr char CircularityParam[] = "Circularity";
+	constexpr char MeanQualityParam[] = "MeanQuality";
 
-	return nStars;
+	const QString paramString(std::string_view param, std::string_view part2)
+	{
+		return QString{ param.data() } + QString{ part2.data() };
+	}
 }
 
-/* ------------------------------------------------------------------- */
-
-bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
+bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 {
 	bool bResult = false;
 	QFile data(szInfoFileName);
@@ -553,6 +146,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	QTextStream fileOut(&data);	
 	{
 		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << paramString(MeanQualityParam, " = %1").arg(this->meanQuality, 0, 'f', 2) << Qt::endl;
 		fileOut << "RedXShift = 0.0" << Qt::endl;
 		fileOut << "RedYShift = 0.0" << Qt::endl;
 		fileOut << "BlueXShift = 0.0" << Qt::endl;
@@ -560,24 +154,28 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 		if (m_bComet)
 			fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
+		fileOut << paramString(ThresholdParam, " = %1").arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
 		fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
-		for (int i = 0; i<m_vStars.size();i++)
+
+		for (int i = 0; const CStar& star : this->m_vStars)
 		{
 			fileOut << "Star# = " << i << Qt::endl;
-			fileOut << QString("Intensity = %1").arg(m_vStars[i].m_fIntensity, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("Quality = %1").arg(m_vStars[i].m_fQuality, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("MeanRadius = %1").arg(m_vStars[i].m_fMeanRadius, 0, 'f', 2) << Qt::endl;
-			fileOut << "Rect = " <<	m_vStars[i].m_rcStar.left << ", " <<
-									m_vStars[i].m_rcStar.top << ", " <<
-									m_vStars[i].m_rcStar.right << ", " <<
-									m_vStars[i].m_rcStar.bottom << Qt::endl;
-			fileOut << QString("Center = %1, %2").arg(m_vStars[i].m_fX, 0, 'f', 2).arg(m_vStars[i].m_fY, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
+			fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
+			fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
+			fileOut << "Rect = " << star.m_rcStar.left << ", "
+				<< star.m_rcStar.top << ", "
+				<< star.m_rcStar.right << ", "
+				<< star.m_rcStar.bottom << Qt::endl;
+			fileOut << QString("Center = %1, %2").arg(star.m_fX, 0, 'f', 2).arg(star.m_fY, 0, 'f', 2) << Qt::endl;
 			fileOut << QString("Axises = %1, %2, %3, %4, %5")
-									.arg(m_vStars[i].m_fMajorAxisAngle, 0, 'f', 2)
-									.arg(m_vStars[i].m_fLargeMajorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fSmallMajorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fLargeMinorAxis, 0, 'f', 2)
-									.arg(m_vStars[i].m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+				.arg(star.m_fMajorAxisAngle, 0, 'f', 2)
+				.arg(star.m_fLargeMajorAxis, 0, 'f', 2)
+				.arg(star.m_fSmallMajorAxis, 0, 'f', 2)
+				.arg(star.m_fLargeMinorAxis, 0, 'f', 2)
+				.arg(star.m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+			++i;
 		}
 		bResult = true;
 	}
@@ -586,39 +184,10 @@ bool	CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
-namespace {
-bool GetNextValue(QTextStream* fileIn, QString& strVariable, QString& strValue)
-{
-	bool bResult = false;
-	strVariable.clear();
-	strValue.clear();
-	
-	if (!fileIn->atEnd())
-	{
-		const QString strText = fileIn->readLine();
-		int nPos = strText.indexOf("="); // Search = sign
-		if (nPos >= 0)
-		{
-			strVariable = strText.left(nPos - 1).trimmed();
-			strValue = strText.right(strText.length() - nPos - 1).trimmed();
-		}
-		else
-		{
-			strVariable = strText.trimmed();
-		}
-		bResult = true;
-	}
-	return bResult;
-}
-}
-
-/* ------------------------------------------------------------------- */
-
-bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
+bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 {
 	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
 	const auto unsuccessfulReturn = [this]() -> bool
 	{
@@ -646,6 +215,8 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
 			m_fOverallQuality = strValue.toDouble();
+		if (0 == strVariable.compare(MeanQualityParam, Qt::CaseInsensitive))
+			this->meanQuality = strValue.toDouble();
 
 		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
 		{
@@ -675,7 +246,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fDeltaRadius = 0;
+		ms.m_fCircularity = 0; // Old .info.txt files don't contain that parameter.
 
 		while (!bNextStar)
 		{
@@ -686,6 +257,8 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 				ms.m_fQuality = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
+			else if (!strVariable.compare(CircularityParam, Qt::CaseInsensitive))
+				ms.m_fCircularity = strValue.toDouble();
 			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))
 			{
 				const QStringList items(strValue.split(","));
@@ -726,20 +299,16 @@ bool	CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 	}
 
 	ComputeFWHM();
-
 	m_bInfoOk = true;
-	bResult = true;
-
-	return bResult;
+	return true;
 }
 
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 void CLightFrameInfo::Reset()
 {
-	CFrameInfo::Reset();
-	CRegisteredFrame::Reset();
+//	CFrameInfo::Reset();
+//	CRegisteredFrame::Reset();
 
 	m_fXOffset = 0;
 	m_fYOffset = 0;
@@ -754,7 +323,7 @@ void CLightFrameInfo::Reset()
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
 }
 
-double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
+double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 {
 	double					fResult = 0.0;
 	CBackgroundCalibration	BackgroundCalibration;
@@ -768,14 +337,36 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 	return fResult;
 };
 
-/* ------------------------------------------------------------------- */
-
-void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
+//
+// MT, August 2024
+// New auto-threshold optimisation algorithm optionally available, if user ticked the checkbox in the GUI "Use automatic threshold".
+// It is enabled, IF optimizeThreshold == true, ELSE the parameter 'threshold' is just used as is to register the light-frame.
+// 
+// IF auto-threshold enabled:
+// 'threshold' is used as starting point to iteratively find that threshold, where the number of found stars is >= 'numberOfWantedStars'.
+// The search algorithm is stopped, if EITHER the number of stars >= numberOfWantedStars OR the used threshold <= 0.075% (found out heuristically).
+// 
+// If at the end of an iteration, the number of detected stars < numberOfWantedStars, the threshold is updated as follows:
+//   If no stars found yet: return lastThreshold * 0.5;
+//   Otherwise, the threshold is multiplied by a factor, which is the geometric mean of 2 sub-factors f1 and f2.
+//   Those two factors are calculated by an exponential function 1.05 - exp(-tau * x), where x is (1) avg(n1, n2), and (2) n1 - n2.
+//   n1 and n2 are the number of detected stars of this iteration and the one before, respectively.
+//   Tau is ln(1.05 - 1) / (5 + numberOfWantedStars) ... this makes sure that the algorithm converges quickly to the optimum point.
+//   The 2 sub-factors make sure that the algorithm converges reliably, independently of the starting threshold. 
+//     If the algorithm is "too fast" (n1-n2 large) -> sub-factor is close to 1 and has no influence.
+//     If the algorithm is "too slow" (n1==n2)      -> sub-factor is 0.05, so the threshold is significantly decreased.
+//     If both n1 and n2 are small (e.g. 2 and 1)   -> sub-factor is small, so the threshold is significantly decreased.
+// 
+//   There is a special check, if the number of detected stars is too large (>= 3 x wanted stars):
+//     Generally speaking, that would not be a disaster, but in this case, we make one more iteration with a slightly increased threshold.
+//     Threshold multiplied by sqrt(lastThreshold / currentThreshold).
+//
+double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
-	int lSubRectWidth;
-	int lSubRectHeight;
+	constexpr int SubRectWidth = STARMAXSIZE * 5;
+	constexpr int SubRectHeight = STARMAXSIZE * 5;
 	// int lProgress = 0;
 
 	// First computed median value
@@ -783,13 +374,9 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 	m_SkyBackground.m_fLight = m_fBackground;
 
-	lSubRectWidth = STARMAXSIZE * 5;
-	lSubRectHeight = STARMAXSIZE * 5;
-
-	const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / lSubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / lSubRectHeight * 2);
-
 	if (m_pProgress != nullptr)
 	{
+		const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / SubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / SubRectHeight * 2);
 		const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1", "IDS_REGISTERINGNAME").
 			arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, lNrSubRects);
@@ -798,118 +385,191 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	m_vStars.clear();
 
 	constexpr int StarMaxSize = static_cast<int>(STARMAXSIZE);
-	constexpr int rectSize = 5 * StarMaxSize;
-	constexpr int stepSize = rectSize / 2;
+	constexpr int RectSize = 5 * StarMaxSize;
+	constexpr int StepSize = RectSize / 2;
 	constexpr int Separation = 3;
 	const int calcHeight = Bitmap.Height() - 2 * StarMaxSize;
-	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
+	const int nrSubrectsY = (calcHeight - 1) / StepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
-	const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
+	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
+	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
+	constexpr double LowestPossibleThreshold = 0.00075;
 
-	STARSET stars1, stars2, stars3, stars4;
-	std::atomic<int> nrSubrects{ 0 };
-	std::atomic<size_t> nStars{ 0 };
+	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 
-	int masterCount{ 0 };
-	const auto progress = [this, &nrSubrects, &nStars, &masterCount]() -> void
+	// Lambda for stopping criterion.
+	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
-		if (m_pProgress == nullptr)
-			return;
-		++nrSubrects;
-		if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
+		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
+			|| (oneMoreIteration == 2)
+			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
+	};
+	// Lambda for threshold update.
+	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
+		const double lastThreshold, const size_t nStars) mutable -> double
+	{
+		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
+			return lastThreshold;
+
+		n2 = n1; // Number of detected stars of last iteration.
+		n1 = nStars; // Current number of stars.
+
+		// We multiply the last threshold by a factor.
+		// If there are no stars detected yet (n1 == 0), that factor is 0.5.
+		// Otherwise, the factor is the geometric mean (sqrt(a*b)) of two sub-factors f1 and f2.
+		// f1 and f2 are calculated using an exponential function y = 1.05 - exp(-tau * x).
+		// For f1: x = avg(n1, n2); for f2: x = n1 - n2.
+		// If n1 is far beyond the number of wanted stars (3 x), we slightly increase the threshold again, but only once (one more iteration).
+
+		double factor = 0.5;
+		if (n1 != 0)
 		{
-			const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.filename().generic_u8string().c_str()).arg(nStars.load()));
-			m_pProgress->Progress2(strText, nrSubrects.load());
+			constexpr double Offset = 1.05;
+			const double InfinityPoint = 5.0 + numberOfWantedStars;
+			const double tau = std::log(Offset - 1.0) / (-InfinityPoint);
+			const double nAvg = (1 + n1 + n2) / 2;
+			const double nDelta = n1 - n2;
+			const bool tooManyStars = n1 >= std::max(3 * numberOfWantedStars, size_t{ 150 });
+			oneMoreIteration = oneMoreIteration == 0 ? (tooManyStars ? 1 : 0) : 2; // IF number of stars too large -> add one iteration with increased threshold.
+			factor = tooManyStars
+				? std::sqrt(previousThreshold / lastThreshold) // Slightly increase threshold again (lastThreshold cannot be zero!).
+				: std::sqrt((Offset - std::exp(-tau * nAvg)) * (Offset - std::exp(-tau * nDelta)));
 		}
+		previousThreshold = lastThreshold;
+		return lastThreshold * std::clamp(factor, 0.05, 2.0);
 	};
 
-	std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
-
-	const auto processDisjointArea = [this, StarMaxSize, &Bitmap, stepSize, rectSize, &progress, &nStars](
-		const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer) -> void
+	double usedThreshold = threshold;
+	STARSET stars1;
+	constexpr double initVal = -std::numeric_limits<double>::infinity();
+	std::vector<std::pair<double, double>> backgroundLevelCache(nrSubrectsX * nrSubrectsY, std::make_pair(initVal, initVal));
+	//
+	// This is the threshold optimisation loop.
+	// We modify the threshold at the end of the loop-body with:
+	//    threshold = newThreshold(threshold, stars1.size());
+	// The loop continues until stop(threshold, stars1.size()) == true;
+	//
+	do
 	{
-		try
-		{
-			const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
+		stars1.clear();
+		STARSET stars2, stars3, stars4;
+		std::atomic<int> nrSubrects{ 0 };
+		std::atomic<size_t> nStars{ 0 };
+		int masterCount{ 0 };
 
-			for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+		const auto progress = [this, &nrSubrects, &nStars, &masterCount]() -> void
+		{
+			if (m_pProgress == nullptr)
+				return;
+			++nrSubrects;
+			if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
 			{
-				const int top = StarMaxSize + rowNdx * stepSize;
-				const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
-
-				for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-					nStars += RegisterSubRect(&Bitmap, DSSRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+				const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS")
+					.arg(filePath.filename().generic_u8string().c_str())
+					.arg(nStars.load()));
+				m_pProgress->Progress2(strText, nrSubrects.load());
 			}
-		}
-		catch (...)
+		};
+
+		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
+
+		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
+					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer)
 		{
-			ePointer = std::current_exception();
-		}
-	};
+			try
+			{
+				const int rightmostColumn = static_cast<int>(Bitmap.Width()) - StarMaxSize;
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+				for (int rowNdx = yStart; rowNdx < yEnd; ++rowNdx)
+				{
+					const int top = StarMaxSize + rowNdx * StepSize;
+					const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + RectSize);
+
+					for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
+					{
+						nStars += registerSubRect(Bitmap,
+							threshold,
+							DSSRect(StarMaxSize + colNdx * StepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * StepSize + RectSize), bottom),
+							stars,
+							std::addressof(backgroundLevelCache.at(rowNdx * nrSubrectsX + colNdx)),
+							m_bComet ? QPointF{ m_fXComet, m_fYComet } : QPointF{ std::numeric_limits<qreal>::quiet_NaN(), std::numeric_limits<qreal>::quiet_NaN() }
+						);
+					}
+				}
+			}
+			catch (...)
+			{
+				ePointer = std::current_exception();
+			}
+		};
+
+#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers, nPixels, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
-#pragma omp master // There is no implied barrier.
-		ZTRACE_RUNTIME("Registering with %d OpenMP threads.", omp_get_num_threads());
 #pragma omp sections
-	{
-		// Upper left area
+		{
+			// Upper left area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[0]);
-		// Upper right area
+			processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[0]);
+			// Upper right area
 #pragma omp section
-		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2, ePointers[1]);
-		// Lower left area
+			processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2, ePointers[1]);
+			// Lower left area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3, ePointers[2]);
-		// Lower right area
+			processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3, ePointers[2]);
+			// Lower right area
 #pragma omp section
-		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4, ePointers[3]);
-	}
+			processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4, ePointers[3]);
+		}
 
 #pragma omp sections
-	{
+		{
 #pragma omp section
-		stars1.merge(stars2);
+			stars1.merge(stars2);
 #pragma omp section
-		stars3.merge(stars4);
-	}
+			stars3.merge(stars4);
+		}
 
 #pragma omp single
-	{
-		stars1.merge(stars3);
-		// Remaining areas, all are overlapping with at least one other.
-		// Vertically middle band, full height
-		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1, ePointers[4]);
-		// Middle left
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[4]);
-		// Middle right
-		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1, ePointers[4]);
+		{
+			stars1.merge(stars3);
+			// Remaining areas, all are overlapping with at least one other.
+			// Vertically middle band, full height
+			processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1, ePointers[4]);
+			// Middle left
+			processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1, ePointers[4]);
+			// Middle right
+			processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation,
+				nrSubrectsX, stars1, ePointers[4]);
 
-		m_vStars.assign(stars1.cbegin(), stars1.cend());
-	}
+//				m_vStars.assign(stars1.cbegin(), stars1.cend());
+		}
 
-#pragma omp sections
-	{
-#pragma omp section
-		ComputeOverallQuality();
-#pragma omp section
-		ComputeFWHM();
-	}
+#pragma omp master // There is no implied barrier.
+		ZTRACE_RUNTIME("Registering with %d OpenMP threads. Threshold = %f %%; #-Stars = %zu.", omp_get_num_threads(), threshold * 100, stars1.size());
 } // omp parallel
 
-	//
-	// If there was at least one exception in the parallel OpenMP code -> re-throw it.
-	//
-	for (std::exception_ptr e : ePointers)
-	{
-		if (e != nullptr)
-			std::rethrow_exception(e);
-	}
+		//
+		// If there was at least one exception in the parallel OpenMP code -> re-throw it.
+		//
+		for (std::exception_ptr e : ePointers)
+		{
+			if (e != nullptr)
+				std::rethrow_exception(e);
+		}
 
-	if (m_pProgress)
-		m_pProgress->End2();
+		if (m_pProgress)
+			m_pProgress->End2();
+
+		usedThreshold = threshold;
+		threshold = newThreshold(threshold, stars1.size());
+	} while (!stop(threshold, stars1.size())); // loop over thresholds
+
+	m_vStars.assign(stars1.cbegin(), stars1.cend());
+	std::tie(this->m_fOverallQuality, this->meanQuality) = ComputeOverallQuality(m_vStars);
+	ComputeFWHM();
+	// We return the threshold of the last iteration. This can be used by the caller as starting value for the next light-frame.
+	return usedThreshold;
 }
 
 
@@ -917,11 +577,11 @@ class CComputeLuminanceTask
 {
 public:
 	CGrayBitmap* m_pGrayBitmap;
-	CMemoryBitmap* m_pBitmap;
+	const CMemoryBitmap* m_pBitmap;
 	ProgressBase* m_pProgress;
 
 public:
-	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
+	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }
@@ -972,7 +632,7 @@ void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd
 }
 
 
-std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap)
+std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1001,7 +661,7 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 
 	if (m_bApplyMedianFilter)
 	{
-		std::shared_ptr<CGrayBitmap> pFiltered = std::dynamic_pointer_cast<CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
+		std::shared_ptr<const CGrayBitmap> pFiltered = std::dynamic_pointer_cast<const CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
 		if (static_cast<bool>(pFiltered))
 			return pFiltered;
 		else
@@ -1011,13 +671,57 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 		return pGrayBitmap;
 }
 
-void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
+//
+// MT, August 2024
+// New option for registering light-frames: auto-threshold (in the GUI it's called "Use automatic threshold"). 
+// If enabled, the user does not any more have to set a proper threshold in the GUI (using the slider), rather a good threshold is found by a search algorithm. 
+// The algorithm is implemented in the member function 
+//   double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold);
+// It uses the parameter 'threshold' as starting value to check, if at least 'numberOfWantedStars' are found after the first iteration. If less, 
+// the threshold will be lowered and a new registering-round is done. 
+// This is repeated, until the number of found stars is >= 'numberOfWantedStars'.
+// The threshold can be lowered down to 0.07% (heuristically found - e.g. for very dark, short-time exposed images). 
+// 
+// In a series of light-frames, the first (bitmapIndex == 0) will be used to find this optimal threshold, which will be returned by the function. 
+// This threshold will be used for all other images as starting threshold (the starting threshold for the first image is set to 65%).
+// The parameter 'numberOfWantedStars' is set to 50 for the first image, and 30 for the others. This makes it highly probable, that all images 
+// will be registered with the same (or a similar) threshold. 
+// Only if a really bad (dark or blurred) image is in the sequence, this "optimum" threshold will be lowered further down to find at least 
+// the 30 wanted stars. 
+// 
+// bitmapIndex == 0 -> first image of a series of images.
+// bitmapIndex < 0  -> the only image to register.
+// In both cases, the search algorithm is started with the default values of threshold=65%, numberOfWantedStars=50.
+//
+// Note: Consistent results for auto-threshold registration are only guarateed if this function is called in the correct order of the lightframes. 
+// This is, because the threshold used in the previous run influences the current run. 
+// 
+// The auto-threshold algorithm will be used if m_fMinLuminancy == 0 (read from the QSettings, which was set if the user ticked the checkbox in the GUI).
+//
+void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	const std::shared_ptr<CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
+	constexpr double ThresholdStartingValue = 0.65;
+
+	const bool thresholdOptimization = this->m_fMinLuminancy == 0;
+	static double previousThreshold = ThresholdStartingValue;
+	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
+	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
+	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
+	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
+
+	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
-		RegisterPicture(*pGrayBitmap);
+	{
+		const double usedThres = RegisterPicture(*pGrayBitmap, threshold, numberWantedStars, thresholdOptimization);
+		// Save the optimum threshold in this member-variable, will be written to the .info.txt files.
+		this->usedDetectionThreshold = usedThres;
+		// IF auto-threshold: Take the threshold of the first lightframe (bitmapIndex == 0) as starting value for the following lightframes.
+		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; MeanQuality=%f",
+			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->meanQuality);
+	}
 }
 
 bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, double& fRedXShift, double& fRedYShift, double& fBlueXShift, double& fBlueYShift)
@@ -1113,50 +817,22 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 	return (lNrRedColumns != 0) && (lNrRedLines != 0) && (lNrBlueLines != 0) && (lNrBlueColumns != 0);
 }
 
-/* ------------------------------------------------------------------- */
-/*
-void CLightFrameInfo::ComputeRedBlueShifting(CMemoryBitmap * pBitmap)
-{
-	int				i = 0;
-	int				lNrShifts = 0;
 
-	m_fRedXShift	  = 0;
-	m_fRedYShift	  = 0;
-	m_fBlueXShift	  = 0;
-	m_fBlueYShift	  = 0;
-
-	// For each detected star compute blue and red shift
-	for (i = 0;i<m_vStars.size();i++)
-	{
-		double			fRedXShift,
-						fRedYShift,
-						fBlueXShift,
-						fBlueYShift;
-
-		if (ComputeStarShifts(pBitmap, m_vStars[i], fRedXShift, fRedYShift, fBlueXShift, fBlueYShift))
-		{
-			m_fRedXShift += fRedXShift;
-			m_fRedYShift += fRedYShift;
-			m_fBlueXShift += fBlueXShift;
-			m_fBlueYShift += fBlueYShift;
-			lNrShifts++;
-		};
-	};
-
-	if (lNrShifts)
-	{
-		m_fRedXShift /= (double)lNrShifts;
-		m_fRedYShift /= (double)lNrShifts;
-		m_fBlueXShift /= (double)lNrShifts;
-		m_fBlueYShift /= (double)lNrShifts;
-	};
-};
-*/
-/* ------------------------------------------------------------------- */
-
-void CLightFrameInfo::RegisterPicture()
+//
+// Public function to run a test registering of a light-frame using the path to the file.
+// Used in: RegisterSettings::on_computeDetectedStars_clicked().
+//
+void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	Reset();
+	filePath = bitmap;
+	m_fMinLuminancy		= fMinLuminancy;
+	m_fBackground		= 0.0;
+	m_bRemoveHotPixels  = bRemoveHotPixels;
+	m_bApplyMedianFilter= bApplyMedianFilter ? true : false;
+	m_pProgress			= pProgress;
+
 	CBitmapInfo			bmpInfo;
 	bool				bLoaded;
 
@@ -1188,26 +864,10 @@ void CLightFrameInfo::RegisterPicture()
 
 		if (bLoaded)
 		{
-			RegisterPicture(pBitmap.get());
+			RegisterPicture(pBitmap.get(), -1); // -1 means, we do NOT register a series of frames.
 //			ComputeRedBlueShifting(pBitmap);
 		}
 	}
-}
-
-/* ------------------------------------------------------------------- */
-
-void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	Reset();
-	filePath = bitmap;
-	m_fMinLuminancy		= fMinLuminancy;
-	m_fBackground		= 0.0;
-	m_bRemoveHotPixels  = bRemoveHotPixels;
-	m_bApplyMedianFilter= bApplyMedianFilter ? true : false;
-	m_pProgress			= pProgress;
-
-	RegisterPicture();
 
 	m_pProgress = nullptr;
 }
@@ -1228,7 +888,7 @@ void CLightFrameInfo::SaveRegisteringInfo()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bForceRegister)
+void CLightFrameInfo::SetBitmap(fs::path path/*, bool bProcessIfNecessary, bool bForceRegister*/)
 {
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -1244,11 +904,12 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 
 	m_strInfoFileName = szInfoName;
 
-	if (bForceRegister || (!ReadInfoFileName() && bProcessIfNecessary))
-	{
-		RegisterPicture();
-		SaveRegisteringInfo();
-	}
+	ReadInfoFileName();
+	//if (bForceRegister || (!ReadInfoFileName() && bProcessIfNecessary))
+	//{
+	//	RegisterPicture();
+	//	SaveRegisteringInfo();
+	//}
 }
 
 /* ------------------------------------------------------------------- */
@@ -1325,120 +986,158 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 	return bResult;
 }
 
-
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, ProgressBase* pProgress)
+//
+// Register all light-frames of all the stacking tasks. 
+// Will call lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++); for all light-frames.
+//
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = true;
-	int nrRegisteredPictures = 0;
+	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>;
+	using FutureType = std::future<ReadReturnType>;
 
-	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks); ++it)
-		nrRegisteredPictures += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
-
-	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
-
-	if (pProgress != nullptr)
+	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, ProgressBase* pTaskProgress) -> ReadReturnType
 	{
-		pProgress->Start1(strText, nrRegisteredPictures, true);
+		if (pBitmap == nullptr)
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		auto lfInfo = std::make_unique<CLightFrameInfo>();
+		lfInfo->SetBitmap(pBitmap->filePath);
+		if (!bForce && lfInfo->IsRegistered())
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		auto bmpInfo = std::make_unique<CBitmapInfo>();
+		if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+
+		std::shared_ptr<CMemoryBitmap> outputBitmap;
+		std::shared_ptr<QImage> pQImage;
+		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
+		return std::make_tuple(std::move(outputBitmap), success, std::move(lfInfo), std::move(bmpInfo));
+	};
+
+	int nrTotalImages = 0;
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks); ++it)
+	{
+		nrTotalImages += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
 	}
 
-	bResult = tasks.DoAllPreTasks(pProgress);
-
-	// Do it again in case pretasks change the progress
+	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
 	if (pProgress != nullptr)
-		pProgress->Start1(strText, nrRegisteredPictures, true);
+		pProgress->Start1(strText, nrTotalImages, true);
 
-	//
-	// Number of image being registered.  Starts at 1 - goes up to nrRegisteredPictures
-	//
-	int imageNumber = 1;
+	if (!tasks.DoAllPreTasks(pProgress))
+		return false;
 
+	// Do it again in case pretasks change the progress.
+	if (pProgress != nullptr)
+		pProgress->Start1(strText, nrTotalImages, true);
+	//
+	// This lambda does the actual registering of the light frame.
+	//
+	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, referenceFrame = fs::path{}](
+		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const int fileNumber, const bool isReferenceFrame) mutable
+	{
+		if (pProgress != nullptr)
+		{
+			const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(fileNumber).arg(nrTotalImages);
+			pProgress->Progress1(strText1, successfulRegisteredPictures);
+		}
+
+		auto&& [pBitmap, success, lfInfo, bmpInfo] = std::move(data);
+		if (!success)
+			return false;
+
+		if (isReferenceFrame)
+			referenceFrame = lfInfo->filePath;
+		else if (lfInfo->filePath == referenceFrame)
+			return true; // Has already been registered.
+
+		ZTRACE_RUNTIME("Register %s file # %d: %s", isReferenceFrame ? "REFERENCE" : "", successfulRegisteredPictures, lfInfo->filePath.generic_u8string().c_str());
+		if (pProgress != nullptr)
+		{
+			QString strDescription;
+			bmpInfo->GetDescription(strDescription);
+			const bool isRGB = bmpInfo->m_lNrChannels == 3;
+			const char* info = isRGB ? "Loading %1 bit/ch %2 light frame\n%3" : "Loading %1 bits gray %2 light frame\n%3";
+			pProgress->Start2(QCoreApplication::translate("RegisterEngine", info, isRGB ? "IDS_LOADRGBLIGHT" : "IDS_LOADGRAYLIGHT")
+				.arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str()), 0);
+		}
+
+		// Apply offset, dark and flat to lightframe
+		masterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
+
+		QString strCalibratedFile;
+		if (m_bSaveCalibrated &&
+			(stackingInfo.m_pDarkTask != nullptr || stackingInfo.m_pDarkFlatTask != nullptr || stackingInfo.m_pFlatTask != nullptr || stackingInfo.m_pOffsetTask != nullptr))
+		{
+			SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
+		}
+
+		// Then register the light frame
+		lfInfo->SetProgress(pProgress);
+		lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++);
+		lfInfo->SaveRegisteringInfo();
+
+		if (!strCalibratedFile.isEmpty())
+		{
+			fs::path file{ strCalibratedFile.toStdU16String().c_str() };
+			lfInfo->CRegisteredFrame::SaveRegisteringInfo(file.replace_extension(".info.txt"));
+		}
+
+		if (pProgress != nullptr)
+			pProgress->End2();
+
+		return true;
+	};
+
+	bool bResult = true;
+	//
+	// Check if there is a reference frame set by the user.
+	//
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
 		if (it->m_pLightTask == nullptr)
 			continue;
+		for (const CFrameInfo& frame : it->m_pLightTask->m_vBitmaps)
+		{
+			if (referenceFrame.compare(frame.filePath.generic_u16string()) == 0)
+			{
+				CMasterFrames masterFrames;
+				masterFrames.LoadMasters(*it, pProgress);
+				DoRegister(ReadTask(&frame, pProgress), masterFrames, *it, 0, true); // true = this is the reference frame.
+				bResult = false;
+				break;
+			}
+		}
+	}
+	bResult = true;
+	int numberSeenFiles = 0;
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
+	{
+		if (it->m_pLightTask == nullptr || it->m_pLightTask->m_vBitmaps.empty())
+			continue;
 
 		CMasterFrames MasterFrames;
-		MasterFrames.LoadMasters(std::addressof(*it), pProgress);
+		MasterFrames.LoadMasters(*it, pProgress);
 
-		const auto readTask = [&bitmaps = it->m_pLightTask->m_vBitmaps, bForce](const size_t bitmapNdx, ProgressBase* pTaskProgress)
-			-> std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>
-		{
-			if (bitmapNdx >= bitmaps.size())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			const auto& bitmap{ bitmaps[bitmapNdx] };
-			auto lfInfo = std::make_unique<CLightFrameInfo>();
-			lfInfo->SetBitmap(bitmap.filePath, false, false);
-			if (!bForce && lfInfo->IsRegistered())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			auto bmpInfo = std::make_unique<CBitmapInfo>();
-			if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
-				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
-
-			std::shared_ptr<CMemoryBitmap> pBitmap;
-			std::shared_ptr<QImage> pQImage;
-			bool success = ::FetchPicture(lfInfo->filePath, pBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
-			return std::make_tuple(std::move(pBitmap), success, std::move(lfInfo), std::move(bmpInfo));
-		};
-
-		auto future = std::async(std::launch::deferred, readTask, 0, pProgress);
+		FRAMEINFOVECTOR::const_pointer pData = it->m_pLightTask->m_vBitmaps.data(); // m_vBitmaps is not empty!
+		FutureType future = std::async(std::launch::deferred, ReadTask, pData, pProgress);
 
 		int numberOfRegisteredLightframes = 0;
-
-		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++, imageNumber++)
+		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; ++j)
 		{
-			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+			pData = (j + 1) < it->m_pLightTask->m_vBitmaps.size() ? pData + 1 : nullptr;
+			ReadReturnType data = future.get();
+			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
-			future = std::async(std::launch::async, readTask, j + 1, nullptr);
-
-			if (pProgress != nullptr)
+			if (DoRegister(std::move(data), MasterFrames, *it, numberSeenFiles, false))
 			{
-				const QString strText1 = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(imageNumber).arg(nrRegisteredPictures);
-				pProgress->Progress1(strText1, (imageNumber - 1));
+				++numberOfRegisteredLightframes;
+				++numberSeenFiles;
 			}
 
-			if (!success)
-				continue;
-
-			QString strDescription;
-			bmpInfo->GetDescription(strDescription);
-			QString strText2;
-			if (bmpInfo->m_lNrChannels == 3)
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
-			else
-				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitsPerChannel).arg(strDescription).arg(lfInfo->filePath.c_str());
-			if (pProgress != nullptr)
-				pProgress->Start2(strText2, 0);
-
-			// Apply offset, dark and flat to lightframe
-			MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
-
-			QString strCalibratedFile;
-
-			if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
-				SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
-
-			// Then register the light frame
-			lfInfo->SetProgress(pProgress);
-			lfInfo->RegisterPicture(pBitmap.get());
-			lfInfo->SaveRegisteringInfo();
-
-			++numberOfRegisteredLightframes;
-
-			if (strCalibratedFile.length())
-			{
-				fs::path file{ strCalibratedFile.toStdU16String().c_str() };
-				lfInfo->CRegisteredFrame::SaveRegisteringInfo(file.replace_extension(".info.txt"));
-			}
-
-			if (pProgress != nullptr)
-			{
-				pProgress->End2();
-				bResult = !pProgress->IsCanceled();
-			}
+			bResult = !pProgress->IsCanceled();
 		}
 
 		//
@@ -1446,7 +1145,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 		// from that folder. This avoids alignment issues, because the stackinfo-file might 
 		// contain invalid (not matching new registration info) alignment (=offset) parameters.
 		//
-		ZTRACE_RUNTIME("Number of actually registered lightframes = %d", numberOfRegisteredLightframes);
+		ZTRACE_RUNTIME("Number of actually registered lightframes in this stack = %d", numberOfRegisteredLightframes);
 		if (numberOfRegisteredLightframes > 0)
 		{
 			for (const CFrameInfo& bitmap : it->m_pLightTask->m_vBitmaps)
@@ -1460,7 +1159,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 				}
 			}
 		}
-	}
+	} // Loop over tasks.
 
 	// Clear stuff
 	tasks.ClearCache();

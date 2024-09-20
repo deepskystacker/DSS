@@ -235,6 +235,7 @@
     <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="imageloader.cpp" />
     <ClCompile Include="QEventLogger.cpp" />
+    <ClCompile Include="RegisterCore.cpp" />
     <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
     <ClCompile Include="StackWalker.cpp" />

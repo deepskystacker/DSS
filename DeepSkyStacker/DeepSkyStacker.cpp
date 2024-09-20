@@ -548,10 +548,10 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 
 	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
-	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
-		tableView->horizontalHeader()->saveState());
+	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState", tableView->horizontalHeader()->saveState());
+	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/numberOfColumns", StackingDlg::getNumberOfTableViewColumns(tableView));
 	settings.sync();
-};
+}
 
 
 GdiplusStartupOutput gdiSO;

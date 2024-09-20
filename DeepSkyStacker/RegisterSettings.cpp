@@ -59,7 +59,7 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	noDarks(true),
 	noFlats(true),
 	noOffsets(true),
-	detectionThreshold(0),
+	detectionThreshold{ 0 },
 	medianFilter(false),
 	pStackingTasks(nullptr),
 	settingsOnly(false)
@@ -67,6 +67,7 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 	ui->setupUi(this);
 	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+	connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::on_autoThreshold_changed);
 
 	perCentValidator = new QIntValidator(0, 100, this);
 	ui->percentStack->setValidator(perCentValidator);
@@ -77,6 +78,13 @@ RegisterSettings::RegisterSettings(QWidget *parent) :
 RegisterSettings::~RegisterSettings()
 {
 	delete ui;
+}
+
+void RegisterSettings::on_autoThreshold_changed(const int state)
+{
+	ui->luminanceThreshold->setEnabled(state == 0);
+	ui->label_4->setEnabled(state == 0);
+	this->detectionThreshold = static_cast<uint>(state == 0 ? ui->luminanceThreshold->value() : 0);
 }
 
 void RegisterSettings::onInitDialog()
@@ -115,14 +123,17 @@ void RegisterSettings::onInitDialog()
 
 	ui->hotPixels->setChecked(workspace->value("Register/DetectHotPixels", false).toBool());
 
-	uint value = workspace->value("Register/DetectionThreshold", 10).toUInt();
-	ui->luminanceThreshold->
-		setSliderPosition(value);
-	ui->luminancePercent->setText(QString("%1%").arg(value));
-	detectionThreshold = value;
+	const uint thresholdValue = workspace->value("Register/UseAutoThreshold", true).toBool()
+		? 0
+		: workspace->value("Register/DetectionThreshold", 10).toUInt();
+	ui->luminanceThreshold->setSliderPosition(thresholdValue);
+	ui->luminancePercent->setText(QString("%1%").arg(thresholdValue));
 
-	ui->medianFilter->
-		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
+	this->detectionThreshold = thresholdValue;
+
+	ui->checkBox_autoThreshold->setChecked(detectionThreshold == 0);
+
+	ui->medianFilter->setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
 	DSS::StackingDlg & stackingDlg = DeepSkyStacker::instance()->getStackingDlg();
 	//
@@ -331,6 +342,7 @@ void RegisterSettings::accept()
 	// Save the luminance detection threshold which wasn't saved in 
 	// the valueChanged() slot
 	workspace->setValue("Register/DetectionThreshold", detectionThreshold);
+	workspace->setValue("Register/UseAutoThreshold", detectionThreshold == 0);
 	//
 	// Pop the preserved workspace setting and discard the saved values
 	//

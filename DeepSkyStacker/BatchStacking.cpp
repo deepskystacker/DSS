@@ -82,7 +82,7 @@ namespace DSS
 			if (stackingDlg->frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingDlg->frameList.getReferenceFrame(), false, &dlg);
 			}
 
 			if (bContinue)

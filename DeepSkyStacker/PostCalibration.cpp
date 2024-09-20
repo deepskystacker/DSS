@@ -349,7 +349,7 @@ void PostCalibration::on_testCosmetic_clicked()
 
 				dlg.SetJointProgress(true);
 				tasks.DoAllPreTasks(&dlg);
-				MasterFrames.LoadMasters(&StackingInfo, &dlg);
+				MasterFrames.LoadMasters(StackingInfo, &dlg);
 
 				// Load the image
 				CBitmapInfo		bmpInfo;
