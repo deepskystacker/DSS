@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8
+Welcome to DeepSkyStacker 5.1.7
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -24,7 +24,7 @@ Changes since the last release:
 
 6. Bug fix: Add check box to control display of Black/White clipping in Processing panel.
 
-Welcome to DeepSkyStacker 5.1.7
+Welcome to DeepSkyStacker 5.1.6
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -84,7 +84,7 @@ Changes since the last release:
 
 23. Bug fix: Crash during startup while initialising the "Workspace" which caches the settings.
 
-24. Bug fix: Chrash during startup initialising ImageListModel array of icons.
+24. Bug fix: Crash during startup initialising ImageListModel array of icons.
 
 Welcome to DeepSkyStacker 5.1.5
 ===============================
