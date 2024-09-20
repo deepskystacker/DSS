@@ -18,8 +18,25 @@ namespace DSS {
 
 		ProcessingSettingsDlg& operator = (const ProcessingSettingsDlg& rhs) = delete;
 
-		inline void setParameterSet(const ProcessingSettings& set) { parameterSet_ = set; };
-		inline const ProcessingSettings& parameterSet() const { return parameterSet_; }
+		inline void setParameters(ProcessingSettingsSet& set, ProcessingSettings current ) 
+		{ 
+			settingsSet = set;
+			currentSettings = current;
+
+			const int count = settingsSet.Count();
+			ProcessingSettings settings;
+
+			//
+			// Populate the list of named settings
+			//
+			for (int i = 0; i < count; i++)
+			{
+				if (settingsSet.GetItem(i, settings))
+					settingsList->addItem(settings.name_);
+			}
+		}
+
+		inline const ProcessingSettingsSet& parameterSet() const { return settingsSet; }
 
 	private slots:
 		void addPressed();
@@ -27,8 +44,12 @@ namespace DSS {
 		void loadPressed();
 		void closePressed();
 
+		void nameEdited(const QString& text);
+		void listItemDoubleClicked(QListWidgetItem* item);
+
 	private:
-		ProcessingSettings parameterSet_;
+		ProcessingSettingsSet& settingsSet;
+		ProcessingSettings currentSettings;
 
 		bool isValidFilename(const QString& name);
 

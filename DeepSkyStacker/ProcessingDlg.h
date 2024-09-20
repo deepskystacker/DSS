@@ -422,14 +422,18 @@ namespace DSS
 
 		void resetSliders();
 
-		void	processAndShow(bool bSaveUndo = true);
-
 		void	UpdateHistogramAdjust();
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
 
 	private slots:
+
+		void processAndShow(bool bSaveUndo = true);		// Driven by Apply button
+		void onUndo();
+		void onRedo();
+		void onSettings();
+
 		void redChanging(int peg);
 		void redChanged(int peg);
 
@@ -469,10 +473,6 @@ namespace DSS
 
 		// Implementation
 	public:
-		void	UpdateBezierCurve();
-		void	OnUndo();
-		void	OnRedo();
-		void	OnSettings();
 
 		void	CopyPictureToClipboard();
 		bool	SavePictureToFile();

@@ -75,11 +75,7 @@
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QTextBrowser" name="settingsList">
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-    </widget>
+    <widget class="QListWidget" name="settingsList"/>
    </item>
   </layout>
  </widget>

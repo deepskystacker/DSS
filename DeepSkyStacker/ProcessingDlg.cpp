@@ -4,6 +4,7 @@
 #include "progressdlg.h"
 #include "selectrect.h"
 #include "FrameInfoSupport.h"
+#include "ProcessingSettingsDlg.h"
 #include <Ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
@@ -15,7 +16,7 @@ namespace
 	class ColorOrder
 	{
 	public:
-		ARGB		m_crColor;		// Qt 32-bit ARGB format (0xAARRGGBB)
+		QRgb		m_crColor;		// Qt 32-bit QRgb format (0xAARRGGBB)
 		int			m_lSize;
 
 		ColorOrder() :
@@ -24,7 +25,7 @@ namespace
 		{
 		}
 
-		ColorOrder(ARGB crColor, int lSize)
+		ColorOrder(QRgb crColor, int lSize)
 		{
 			m_crColor = crColor;
 			m_lSize = lSize;
@@ -192,6 +193,9 @@ namespace DSS
 	{
 		connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
 			this, &ProcessingDlg::onColorSchemeChanged);
+
+		connect(applyButton, &QPushButton::pressed, this, &ProcessingDlg::processAndShow);
+		connect(undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
 
 		//
 		// The source for the slots below are in RGBTab.cpp
@@ -656,6 +660,83 @@ namespace DSS
 	// Slots
 	//
 
+		/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::processAndShow(bool bSaveUndo)
+	{
+		UpdateHistogramAdjust();
+
+		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
+		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
+		processingSettings.bezierAdjust_.clear();
+
+		if (bSaveUndo)
+			processingSettingsList.AddParams(processingSettings);
+
+		updateControls();
+
+		//
+		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted
+		// It will be the null rectangle when no selection has been made by the user
+		// 
+		rectToProcess.SetProcessRect(selectionRect);
+
+		rectToProcess.Reset();
+	};
+
+
+	void ProcessingDlg::onUndo()
+	{
+		processingSettingsList.MoveBackward();
+		processingSettingsList.GetCurrentSettings(processingSettings);
+		updateControlsFromSettings();
+		processAndShow(false);
+		showHistogram(false);
+		updateControls();
+	}
+
+	void ProcessingDlg::onRedo()
+	{
+		processingSettingsList.MoveForward();
+		processingSettingsList.GetCurrentSettings(processingSettings);
+		updateControlsFromSettings();
+		processAndShow(false);
+		showHistogram(false);
+		updateControls();
+	};
+
+	void ProcessingDlg::onSettings()
+	{
+		ProcessingSettingsDlg			dlg;
+		//
+		// Note that this uses ProcessingSettingsSet which is not the same as ProcessingSettingsList
+		// even thought both use std::list<ProcessingSettings>
+		//
+		ProcessingSettingsSet& settingsSet = dssApp->imageProcessingSettings();
+
+		timer.stop();
+		dlg.setParameters(settingsSet, processingSettings);
+		dlg.DoModal();
+
+		if (dlg.IsLoaded())
+		{
+			dlg.GetCurrentSettings(m_ProcessParams);
+			UpdateControlsFromParams();
+			ProcessAndShow(false);
+			ShowOriginalHistogram(false);
+			UpdateControls();
+			m_bDirty = true;
+		};
+		timer.start();
+	};
+
+
+
 	void ProcessingDlg::darkAngleChanged()
 	{
 		updateDarkText();
@@ -1107,35 +1188,6 @@ namespace DSS
 		updateSaturationText();
 
 		showHistogram(false);
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void ProcessingDlg::processAndShow(bool bSaveUndo)
-	{
-		UpdateHistogramAdjust();
-
-		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
-		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
-		processingSettings.bezierAdjust_.clear();
-
-		if (bSaveUndo)
-			processingSettingsList.AddParams(processingSettings);
-
-		updateControls();
-
-		//
-		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted
-		// It will be the null rectangle when no selection has been made by the user
-		// 
-		rectToProcess.SetProcessRect(selectionRect);
-
-		rectToProcess.Reset();
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -1847,14 +1899,6 @@ void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
 };
 
 void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::UpdateBezierCurve()
 {
 	m_bDirty = true;
 	showHistogram();

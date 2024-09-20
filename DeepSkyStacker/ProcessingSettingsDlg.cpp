@@ -11,6 +11,8 @@ namespace DSS {
 		setupUi(this);
 
 		connectSignalsToSlots();
+
+		
 	}
 
 	void ProcessingSettingsDlg::connectSignalsToSlots()
@@ -19,6 +21,9 @@ namespace DSS {
 		connect(deleteButton, &QPushButton::pressed, this, &ProcessingSettingsDlg::deletePressed);
 		connect(loadButton, &QPushButton::pressed, this, &ProcessingSettingsDlg::loadPressed);
 		connect(closeButton, &QPushButton::pressed, this, &ProcessingSettingsDlg::closePressed);
+
+		connect(settingsName, &QLineEdit::textEdited, this, &ProcessingSettingsDlg::nameEdited);
+		connect(settingsList, &QListWidget::itemDoubleClicked, this, &ProcessingSettingsDlg::listItemDoubleClicked);
 	}
 
 
@@ -45,6 +50,10 @@ namespace DSS {
 	void ProcessingSettingsDlg::addPressed()
 	{
 		QString name{ settingsName->text()};
+
+		currentSettings.name_ = name;		// Set name of current settings
+		settingsSet.Add(currentSettings);	// Add current settings to the set
+		settingsList->addItem(name);		// Add the name to the list of named settings
 	}
 
 	void ProcessingSettingsDlg::deletePressed()
@@ -62,4 +71,16 @@ namespace DSS {
 		dssApp->processingSettingsSet().saveSettings();
 		QDialog::accept();
 	}
+
+	void ProcessingSettingsDlg::nameEdited(const QString& text)
+	{
+
+	}
+
+	void ProcessingSettingsDlg::listItemDoubleClicked(QListWidgetItem* item)
+	{
+
+	}
+
+
 } // namespace DSS
