@@ -426,9 +426,9 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Minimální hodnota kvality:</translation>
+        <translation>Minimální kvalita:</translation>
     </message>
 </context>
 <context>
@@ -531,36 +531,47 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klikněte pro nastavení komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Klikněte pro přidání hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Klikněte pro odstranění komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Klikněte pro odstranění hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>Hvězdy: %1
+Skóre: %2
+Kvalitní: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -570,8 +581,8 @@ Kvalita: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -579,8 +590,8 @@ Comet:%1</source>
 Kometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ano</translation>
@@ -2586,55 +2597,55 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <translation>řed sloučením nezapomeňte přidat a zvolit temné pozadí, vyrovnání jasu a zkreslení.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="161"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a vyrovnání jasu.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="164"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a zkreslení.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="167"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu a zkreslení.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="170"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="173"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="176"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Před sloučením nezapomeňte přidat a zvolit zkreslení.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>Temné pozadí, vyrovnání jasu a vyrovnání zkreslení zvoleno.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="264"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Zarovnávání %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="271"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 hvězd</translation>

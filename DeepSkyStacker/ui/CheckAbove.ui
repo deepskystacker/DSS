@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string comment="IDD_CHECKABOVE">Minimum score:</string>
+      <string comment="IDD_CHECKABOVE">Minimum quality:</string>
      </property>
     </widget>
    </item>

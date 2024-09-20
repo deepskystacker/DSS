@@ -231,6 +231,8 @@ namespace DSS
 			return !selectionRect.isEmpty();
 		}
 
+		static int getNumberOfTableViewColumns(const QTableView* const tableView);
+
 	protected:
 		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
@@ -313,7 +315,7 @@ namespace DSS
 
 		bool showRecap(CAllStackingTasks& tasks);
 
-		void doStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
+		void doStacking(CAllStackingTasks& tasks, const double fPercent);
 
 		void updateCheckedAndOffsets(CStackingEngine& StackingEngine);
 		

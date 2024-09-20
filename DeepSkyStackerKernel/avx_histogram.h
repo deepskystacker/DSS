@@ -16,10 +16,10 @@ private:
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
 	AvxCfaProcessing avxCfa;
-	CMemoryBitmap& inputBitmap;
+	const CMemoryBitmap& inputBitmap;
 public:
 	AvxHistogram() = delete;
-	AvxHistogram(CMemoryBitmap& inputbm);
+	AvxHistogram(const CMemoryBitmap& inputbm);
 	AvxHistogram(const AvxHistogram&) = default;
 	AvxHistogram(AvxHistogram&&) = delete;
 	AvxHistogram& operator=(const AvxHistogram&) = delete;

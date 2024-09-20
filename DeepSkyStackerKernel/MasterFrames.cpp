@@ -11,39 +11,42 @@
 using namespace DSS;
 
 /* ------------------------------------------------------------------- */
-CMasterFrames::CMasterFrames()
-{
-	Workspace			workspace;
-	m_fDebloom = workspace.value("Stacking/Debloom", false).toBool();
-}
+CMasterFrames::CMasterFrames() :
+	currentStackinfo{ nullptr },
+	m_fDebloom{ Workspace{}.value("Stacking/Debloom", false).toBool() }
+{}
 
-bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, ProgressBase * pProgress)
+bool CMasterFrames::LoadMasters(const CStackingInfo& stackingInfo, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	// If LoadMasters has already been called with this stackingInfo object, we return here.
+	if (this->currentStackinfo == std::addressof(stackingInfo))
+		return true;
+	this->currentStackinfo = std::addressof(stackingInfo);
 	bool bResult = true;
 
-	if (pStackingInfo->m_pOffsetTask != nullptr)
-		bResult = GetTaskResult(pStackingInfo->m_pOffsetTask, pProgress, m_pMasterOffset);
+	if (stackingInfo.m_pOffsetTask != nullptr)
+		bResult = GetTaskResult(stackingInfo.m_pOffsetTask, pProgress, m_pMasterOffset);
 
-	if (pStackingInfo->m_pDarkTask != nullptr)
+	if (stackingInfo.m_pDarkTask != nullptr)
 	{
 		std::shared_ptr<CMemoryBitmap> pMasterDark;
-		bResult = bResult && GetTaskResult(pStackingInfo->m_pDarkTask, pProgress, pMasterDark);
+		bResult = bResult && GetTaskResult(stackingInfo.m_pDarkTask, pProgress, pMasterDark);
 
 		if (bResult)
 			m_MasterDark.SetMasterDark(pMasterDark);
 	}
 
-	if (pStackingInfo->m_pDarkFlatTask)
+	if (stackingInfo.m_pDarkFlatTask)
 	{
 		std::shared_ptr<CMemoryBitmap> pMasterDarkFlat;
-		bResult = bResult && GetTaskResult(pStackingInfo->m_pDarkFlatTask, pProgress, pMasterDarkFlat);
+		bResult = bResult && GetTaskResult(stackingInfo.m_pDarkFlatTask, pProgress, pMasterDarkFlat);
 		// ### WTF??? Nothing is done with pMasterDarkFlat!
 	}
 
-	if (pStackingInfo->m_pFlatTask)
+	if (stackingInfo.m_pFlatTask)
 	{
-		bResult = bResult && GetTaskResult(pStackingInfo->m_pFlatTask, pProgress, m_MasterFlat.m_pFlatFrame);
+		bResult = bResult && GetTaskResult(stackingInfo.m_pFlatTask, pProgress, m_MasterFlat.m_pFlatFrame);
 		if (bResult)
 			m_MasterFlat.ComputeFlatNormalization(pProgress);
 	}
@@ -100,7 +103,7 @@ void	CMasterFrames::ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pB
 		m_MasterDark.InterpolateHotPixels(pBitmap, pProgress);
 }
 
-void CMasterFrames::ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, ProgressBase* pProgress)
+void CMasterFrames::ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CDeBloom debloom;
@@ -109,7 +112,7 @@ void CMasterFrames::ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, cons
 		debloom.CreateBloomMask(pBitmap.get(), pProgress);
 
 	ApplyMasterOffset(pBitmap, pProgress);
-	ApplyMasterDark(pBitmap, pStars, pProgress);
+	ApplyMasterDark(pBitmap, nullptr, pProgress); // MT, Sept 2024: STARVECTOR* pStars not any more used for ApplyMasterDark().
 	ApplyMasterFlat(pBitmap, pProgress);
 	ApplyHotPixelInterpolation(pBitmap, pProgress);
 

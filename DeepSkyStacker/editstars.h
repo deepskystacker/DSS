@@ -146,6 +146,9 @@ namespace DSS
 		void clearRefStars();
 		void saveRegisterSettings();
 
+	private:
+		void starsOrCometButtonPressed(const bool cometMode);
+
     public slots:
 		void leaveEvent(QEvent* e);
         void mousePressEvent(QMouseEvent* e);
@@ -154,8 +157,8 @@ namespace DSS
 		void resizeMe(QResizeEvent* e);
 
         void rectButtonPressed();
-        void starsButtonPressed();
-        void cometButtonPressed();
+		void starsButtonPressed();
+		void cometButtonPressed();
         void saveButtonPressed();
 
         void setLightFrame(QString name);
@@ -196,6 +199,7 @@ namespace DSS
 		double m_fLightBkgd;
 		bool m_bDirty;
 		double m_fScore;
+		double m_fMeanQuality{ 0.0 };
 		int m_lNrStars;
 		double m_fFWHM;
 //		double						m_fBackground;

@@ -285,8 +285,8 @@ void DeepSkyStackerLive::closeEvent(QCloseEvent* e)
 	settings.endGroup();
 
 	settings.beginGroup("DeepSkyStackerLive/ImageList");
-	settings.setValue("HorizontalHeader/windowState",
-		imageList->horizontalHeader()->saveState());
+	settings.setValue("HorizontalHeader/windowState", imageList->horizontalHeader()->saveState());
+	settings.setValue("HorizontalHeader/numberOfColumns", static_cast<int>(ImageListColumns::ColumnCount));
 	settings.endGroup();
 
 	settings.sync();
@@ -497,14 +497,6 @@ void DeepSkyStackerLive::onInitialise()
 	}
 	settings.endGroup();
 
-	//
-	// Restore windowState of table widget's horizontal header
-	//
-	settings.beginGroup("DeepSkyStackerLive/ImageList");
-	imageList->horizontalHeader()->restoreState(
-		settings.value("HorizontalHeader/windowState").toByteArray());
-	settings.endGroup();
-
 	Workspace workspace;
 	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 	QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -592,6 +584,7 @@ void DeepSkyStackerLive::onInitialise()
 		<< tr("Exposure", "IDS_COLUMN_EXPOSURE")
 		<< tr("Aperture", "IDS_COLUMN_APERTURE")
 		<< tr("Score", "IDS_COLUMN_SCORE")
+		<< tr("MeanQualiy", "IDS_COLUMN_MEANQUALITY")
 		<< tr("#Stars", "IDS_COLUMN_STARS")
 		<< tr("FWHM")
 		<< tr("dX", "IDS_COLUMN_DX")
@@ -613,6 +606,7 @@ void DeepSkyStackerLive::onInitialise()
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
 		case ImageListColumns::Score:
+		case ImageListColumns::MeanQuality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
 		case ImageListColumns::dX:
@@ -634,10 +628,10 @@ void DeepSkyStackerLive::onInitialise()
 	// Restore windowState of table widget's horizontal header
 	//
 	settings.beginGroup("DeepSkyStackerLive/ImageList");
-	imageList->horizontalHeader()->restoreState(
-		settings.value("HorizontalHeader/windowState").toByteArray());
+	const int numberOfSavedColumns = settings.value("HorizontalHeader/numberOfColumns", 0).toInt();
+	if (numberOfSavedColumns == static_cast<int>(ImageListColumns::ColumnCount))
+		imageList->horizontalHeader()->restoreState(settings.value("HorizontalHeader/windowState").toByteArray());
 	settings.endGroup();
-
 	
 	//
 	// Set image list non-editable
@@ -1145,6 +1139,7 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
 		case ImageListColumns::Score:
+		case ImageListColumns::MeanQuality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
 		case ImageListColumns::dX:
@@ -1321,6 +1316,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(lfi->m_fExposure));
 			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
 			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::MeanQuality))->setText(locale.toString(lfi->meanQuality, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_vStars.size()));
 			imageList->item(row, static_cast<int>(ImageListColumns::FWHM))->setText(locale.toString(lfi->m_fFWHM, 'f', 2));
 			//

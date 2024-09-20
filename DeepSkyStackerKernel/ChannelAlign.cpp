@@ -116,13 +116,13 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		lfiGreen.SetProgress(pProgress);
 		lfiBlue.SetProgress(pProgress);
 
-		lfiRed.RegisterPicture(pRed);
+		lfiRed.RegisterPicture(pRed, -1); // -1 means, we do NOT register a series of frames.
 		if (pProgress)
 			pProgress->Progress1(1);
-		lfiGreen.RegisterPicture(pGreen);
+		lfiGreen.RegisterPicture(pGreen, -1);
 		if (pProgress)
 			pProgress->Progress1(2);
-		lfiBlue.RegisterPicture(pBlue);
+		lfiBlue.RegisterPicture(pBlue, -1);
 		if (pProgress)
 			pProgress->Progress1(3);
 
@@ -135,8 +135,8 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		CMemoryBitmap* pSecondBitmap;
 		CMemoryBitmap* pThirdBitmap;
 
-		const double fMaxScore = std::max(lfiRed.m_fOverallQuality, std::max(lfiGreen.m_fOverallQuality, lfiBlue.m_fOverallQuality));
-		if (fMaxScore == lfiRed.m_fOverallQuality)
+		const double fMaxScore = std::max(lfiRed.meanQuality, std::max(lfiGreen.meanQuality, lfiBlue.meanQuality));
+		if (fMaxScore == lfiRed.meanQuality)
 		{
 			pReference	= &lfiRed;
 			pSecond		= &lfiGreen;
@@ -145,7 +145,7 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 			pSecondBitmap	 = pGreen;
 			pThirdBitmap	 = pBlue;
 		}
-		else if (fMaxScore == lfiGreen.m_fOverallQuality)
+		else if (fMaxScore == lfiGreen.meanQuality)
 		{
 			pReference	= &lfiGreen;
 			pSecond		= &lfiRed;

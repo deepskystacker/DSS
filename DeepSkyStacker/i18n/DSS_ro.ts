@@ -425,7 +425,7 @@ Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a 
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
         <translation type="unfinished">Scor minim:</translation>
     </message>
@@ -530,36 +530,47 @@ Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Faceți click pentru a poziționa cometa aici</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Faceți click pentru a adăuga această stea</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Faceți click pentru a șterge cometa</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Faceți click pentru a șterge această stea</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>#Stele: %1
+Scor: %2
+Calitate: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -569,8 +580,8 @@ Scor: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -578,8 +589,8 @@ Comet:%1</source>
 Cometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Da</translation>
@@ -2583,55 +2594,55 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <translation>Nu uitati sa adaugati si sa selectati cadre dark, flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="161"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="164"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="167"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat si offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="170"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre dark inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="173"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre flat inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="176"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats si offset/bias selectate.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="264"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Inregistrez %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="271"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 stele</translation>

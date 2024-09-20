@@ -425,7 +425,7 @@ Adicione 1º ficheiro da lista que voce quer integrar e clique OK para comecar p
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
         <translation type="unfinished">Cotacao de valor minimo:</translation>
     </message>
@@ -529,36 +529,47 @@ Cometa estrelas ficarao bem. 2 vezes + tempo.</translation>
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Clique para posicionar o cometa aqui</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Clique para adicionar esta estrela</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Clique para remover o cometa</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Clique para remover esta estrela</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>#Estrelas: %1
+Contagem: %2
+Qualidade: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -568,8 +579,8 @@ Contagem: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -577,8 +588,8 @@ Comet:%1</source>
 Cometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Sim</translation>
@@ -2572,55 +2583,55 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <translation>Nao esqueca adicionar-verificar fotogramas do dark, flat e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="161"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark e flat antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="164"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="167"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do flat e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="170"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="173"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do flat antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="176"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats and offsets/bias verificados.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="264"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registando %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="271"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 estrela(s)</translation>

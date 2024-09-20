@@ -170,6 +170,10 @@ public:
 		CheckXY(i, j);
 		return m_vPixels[GetOffset(i, j)];
 	}
+	double getUncheckedValue(const size_t x, const size_t y) const
+	{
+		return m_vPixels[GetOffset(x, y)]; // Note: the GetOffset function with size_t arguments makes no CheckXy call.
+	}
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
 	inline virtual void SetPixel(size_t i, size_t j, double fGray) override;

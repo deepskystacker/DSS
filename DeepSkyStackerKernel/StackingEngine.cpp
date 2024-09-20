@@ -446,7 +446,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 			for (auto& bitmap : task.m_vBitmaps)
 			{
 				CLightFrameInfo lfi;
-				lfi.SetBitmap(bitmap.filePath, false, false);
+				lfi.SetBitmap(bitmap.filePath);
 
 				if (lfi.IsRegistered())
 				{
@@ -475,7 +475,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		CFrameInfo				fi;
 		if (fi.InitFromFile(referenceFrame, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(referenceFrame, false, false);
+			lfi.SetBitmap(referenceFrame);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;
@@ -891,7 +891,15 @@ void CStackingEngine::ComputeOffsets()
 	if (m_vBitmaps.empty())
 		return;
 
-	std::sort(m_vBitmaps.begin(), m_vBitmaps.end());
+	constexpr auto QualityComp = [](const CLightFrameInfo& l, const CLightFrameInfo& r)
+	{
+		if (l.m_bStartingFrame)
+			return true;
+		if (r.m_bStartingFrame)
+			return false;
+		return l.meanQuality > r.meanQuality;
+	};
+	std::ranges::sort(m_vBitmaps, QualityComp);
 
 	if (m_vBitmaps[0].m_bDisabled)
 		m_lNrStackable = 0;
@@ -2182,7 +2190,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				{
 					// Do stack these
 					CMasterFrames MasterFrames;
-					MasterFrames.LoadMasters(pStackingInfo, m_pProgress);
+					MasterFrames.LoadMasters(*pStackingInfo, m_pProgress);
 
 					m_pLightTask = pStackingInfo->m_pLightTask;
 
