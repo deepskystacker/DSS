@@ -24,10 +24,10 @@ namespace DSS
 
 	void CheckAbove::accept()
 	{
+		ZASSERT(ui->lineEdit->validator() != nullptr);
 		QString strValue = ui->lineEdit->text();
 		QLocale const& locale = ui->lineEdit->validator()->locale();
 		
-		ZASSERT(ui->lineEdit->validator());
 		if (strValue.endsWith(locale.percent()))
 		{
 			m_bPercent = true;
