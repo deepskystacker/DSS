@@ -185,8 +185,9 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 
 	vSettings.push_back(WorkspaceSetting("Register/PercentStack", (uint)80));
   	vSettings.push_back(WorkspaceSetting("Register/StackAfter", true));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", true));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)10));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", false));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)0));
+	vSettings.push_back(WorkspaceSetting("Register/UseAutoThreshold", true));
 	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", false));
 
 	vSettings.push_back(WorkspaceSetting("RawDDP/Brightness", 1.0));

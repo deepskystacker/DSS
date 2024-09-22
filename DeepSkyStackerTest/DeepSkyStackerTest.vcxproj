@@ -131,6 +131,7 @@
     <ClCompile Include="DssRectTest.cpp" />
     <ClCompile Include="OpenMpTest.cpp" />
     <ClCompile Include="PixelIteratorTest.cpp" />
+    <ClCompile Include="RegisterTest.cpp" />
     <ClCompile Include="SkyBackGroupTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

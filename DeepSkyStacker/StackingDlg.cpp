@@ -1049,12 +1049,6 @@ namespace DSS
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
 		//
-		// Restore windowState of this and the table view's horizontal header
-		//
-		QSettings settings;
-		pictureList->tableView->horizontalHeader()->restoreState(
-			settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
-		//
 		// If the model data changes let me know
 		//
 		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
@@ -1153,6 +1147,15 @@ namespace DSS
 			openFileList(fileList);			// Will call updateListInfo()
 		else
 			updateListInfo();
+		//
+		// Restore windowState of this and the table view's horizontal header.
+		// MT, Aug. 2024: We additionally save in the Settings the number of columns that have been saved last time.
+		// We compare it with the current number of columns. IF equal -> restore state, ELSE headers have changed (e.g. new column).
+		//
+		QSettings settings;
+		const int numberOfSavedColumns = settings.value("Dialogs/PictureList/TableView/HorizontalHeader/numberOfColumns", 0).toInt();
+		if (numberOfSavedColumns == getNumberOfTableViewColumns(pictureList->tableView))
+			pictureList->tableView->horizontalHeader()->restoreState(settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
 
 		//
 		// Make sure the image list is visible
@@ -1745,6 +1748,12 @@ namespace DSS
 		return checkEditChanges() && checkWorkspaceChanges();
 	};
 
+	// static
+	int StackingDlg::getNumberOfTableViewColumns(const QTableView* const tableView)
+	{
+		return tableView == nullptr ? 0 : tableView->horizontalHeader()->count();
+	}
+
 	/* ------------------------------------------------------------------- */
 
 	void	StackingDlg::updateListInfo()
@@ -2082,12 +2091,8 @@ namespace DSS
 	void StackingDlg::registerCheckedImages()
 	{
 		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-		::RegisterSettings		dlgSettings(this);
-		bool					bContinue = true;
-		const auto start{ std::chrono::steady_clock::now() };
-
-
-		//bool					bFound = false;
+		::RegisterSettings dlgSettings{ this };
+		bool bContinue = true;
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
 		{
@@ -2102,7 +2107,7 @@ namespace DSS
 			//dlgSettings.SetNoOffset(!frameList.GetNrCheckedOffsets());
 			//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
 
-			CAllStackingTasks	tasks;
+			CAllStackingTasks tasks;
 
 			frameList.fillTasks(tasks);
 			tasks.ResolveTasks();
@@ -2113,26 +2118,17 @@ namespace DSS
 
 			if (dlgSettings.exec())
 			{
-				bool				bForceRegister = false;
-				double				fPercent = 20.0;
-				bool				bStackAfter = false;
-
-				bForceRegister = dlgSettings.isForceRegister();
-
-				bStackAfter = dlgSettings.isStackAfter(fPercent);
+				double fPercent = 20.0;
+				const bool bForceRegister = dlgSettings.isForceRegister();
+				const bool bStackAfter = dlgSettings.isStackAfter(fPercent);
 
 				if (checkReadOnlyFolders(tasks))
 				{
+					const auto start{ std::chrono::steady_clock::now() };
+
+					bContinue = checkStacking(tasks);
 					if (bStackAfter)
-					{
-						bContinue = checkStacking(tasks);
-						if (bContinue)
-							bContinue = showRecap(tasks);
-					}
-					else
-					{
-						bContinue = checkStacking(tasks);
-					};
+						bContinue = bContinue && showRecap(tasks);
 
 					if (bContinue)
 					{
@@ -2143,21 +2139,19 @@ namespace DSS
 						imageLoader.clearCache();
 						frameList.blankCheckedItemScores();
 
-						bContinue = RegisterEngine.RegisterLightFrames(tasks, bForceRegister, &dlg);
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), bForceRegister, &dlg);
 
 						frameList.updateCheckedItemScores();
 						// Update the current image score if necessary
-						if (!fileToShow.empty()
-							&& frameList.isLightFrame(fileToShow)
-							&& frameList.isChecked(fileToShow))
+						if (!fileToShow.empty() && frameList.isLightFrame(fileToShow) && frameList.isChecked(fileToShow))
 						{
 							// Update the registering info
 							editStarsPtr->setLightFrame(QString::fromStdU16String(fileToShow.generic_u16string()));
 							ui->picture->update();
-						};
+						}
 
 						dlg.Close();
-					};
+					}
 					const auto now{ std::chrono::steady_clock::now() };
 					std::chrono::duration<double> elapsed{ now - start };
 
@@ -2173,19 +2167,27 @@ namespace DSS
 
 					if (bContinue && bStackAfter)
 					{
-						doStacking(tasks, fPercent);
-					};
+						if (frameList.isMeanQualityAvailable()
+							||	QMessageBox::warning(this, "DeepSkyStacker",
+									tr("Not all of your checked light frames have a mean quality calculated. You should re-register your light frames."),
+									QMessageBox::Ok, QMessageBox::Cancel
+								) == QMessageBox::Ok
+							)
+						{
+							doStacking(tasks, fPercent);
+						}
+					}
 
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
-				};
-			};
+				}
+			}
 		}
 		else
 		{
 			QMessageBox::critical(this, "DeepSkyStacker", 
 				tr("You must check light frames to register them.", "IDS_ERROR_NOTLIGHTCHECKED2"));
-		};
-	};
+		}
+	}
 
 	void StackingDlg::stackCheckedImages()
 	{
@@ -2218,19 +2220,19 @@ namespace DSS
 						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
-						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
 						frameList.updateCheckedItemScores();
 						dlg.Close();
 					};
 
 					if (bContinue)
-						doStacking(tasks);
+						doStacking(tasks, 100.0);
 
 					//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -2278,7 +2280,7 @@ namespace DSS
 	{
 		// Check that the current light frame is registered (or not) and ask accordingly
 		CLightFrameInfo lfi;
-		lfi.SetBitmap(fileToShow, false, false);
+		lfi.SetBitmap(fileToShow);
 		if (!lfi.IsRegistered())
 		{
 			AskRegistering dlg;
@@ -2574,7 +2576,7 @@ namespace DSS
 				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
 				frameList.updateCheckedItemScores();
 				dlg.Close();
 			};

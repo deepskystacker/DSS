@@ -365,9 +365,9 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
-        <source>Minimum score:</source>
+        <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation>Valor mínim de puntuació:</translation>
+        <translation>Mínima qualitat:</translation>
     </message>
 </context>
 <context>
@@ -477,36 +477,47 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1117"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Faci click per a marcar el cometa aquí</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1119"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Faci click per a agregar aquesta estrella</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1126"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Faci click per a borrar el cometa</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1128"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Faci click per a eliminar aquesta estrella</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <location filename="../editstars.cpp" line="1176"/>
+        <location filename="../editstars.cpp" line="667"/>
+        <source>#Stars: %1
+Score: %2
+Quality: %3
+FWHM: %4</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>#Stars: %1
+Score: %2
+Qualitat: %3
+FWHM: %4</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="1179"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -514,8 +525,8 @@ FWHM: %3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -523,8 +534,8 @@ Comet:%1</source>
 Cometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="672"/>
-        <location filename="../editstars.cpp" line="1183"/>
+        <location filename="../editstars.cpp" line="675"/>
+        <location filename="../editstars.cpp" line="1186"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Si</translation>
@@ -689,17 +700,17 @@ Tecla Suprimeix per eliminar (no esborrar) les files seleccionades
 Botó dret del ratolí per mostrar el menú</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1445"/>
+        <location filename="../StackingDlg.cpp" line="1448"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 no existeix o no és un fitxer</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1454"/>
+        <location filename="../StackingDlg.cpp" line="1457"/>
         <source>Failed to load image %1</source>
         <translation>No s&apos;ha pogut carregar la imatge %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1751"/>
+        <location filename="../StackingDlg.cpp" line="1760"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Imatges: %1      -      Darks: %2      -      Flats: %3      -   Dark Flats: %4   -      Offset/Bias: %5</translation>
@@ -710,36 +721,36 @@ Botó dret del ratolí per mostrar el menú</translation>
         <translation>Feu doble clic aquí per acoblar/desacoblar la llista d&apos;imatges</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1410"/>
+        <location filename="../StackingDlg.cpp" line="1413"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Carregant %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1502"/>
+        <location filename="../StackingDlg.cpp" line="1505"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>El fitxer %1 no s&apos;ha carregat perquè ja estava carregat al grup %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1526"/>
+        <location filename="../StackingDlg.cpp" line="1529"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Obrir Light Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1529"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Obrir Dark Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1547"/>
+        <location filename="../StackingDlg.cpp" line="1550"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Obrir Dark Flat Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1535"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Obrir Flat Frames...</translation>
@@ -760,13 +771,13 @@ Botó dret del ratolí per mostrar el menú</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1541"/>
+        <location filename="../StackingDlg.cpp" line="1544"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Obrir Bias Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1764"/>
+        <location filename="../StackingDlg.cpp" line="1773"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -780,37 +791,42 @@ Dark Flats: %4
 Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1847"/>
+        <location filename="../StackingDlg.cpp" line="1856"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Obrir una altra Llista d&apos;Arxius...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2034"/>
+        <location filename="../StackingDlg.cpp" line="2043"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>La versió %1 de DeepSkyStacker està disponible per a ser descarregada.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2050"/>
+        <location filename="../StackingDlg.cpp" line="2059"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Codi d&apos;error d&apos;Internet de comprovació de versió %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2166"/>
+        <location filename="../StackingDlg.cpp" line="2160"/>
         <source>Total registering time: %1 %2</source>
         <translation>Temps total de registre: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2185"/>
+        <location filename="../StackingDlg.cpp" line="2171"/>
+        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
+        <translation>No tots els marcs de llum seleccionats tenen una qualitat mitjana calculada. Hauríeu de tornar a registrar els vostres marcs lleugers.</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2187"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Vè. ha de seleccionar light frames per a registrar-los.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2243"/>
+        <location filename="../StackingDlg.cpp" line="2245"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -820,19 +836,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker necessita crear arxius en aquestes carpetes durant el processament.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2264"/>
+        <location filename="../StackingDlg.cpp" line="2266"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Les imatges marcades no són compatibles: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2268"/>
+        <location filename="../StackingDlg.cpp" line="2270"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Vè. ha de seleccionar light frames per a apilar-los.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2315"/>
+        <location filename="../StackingDlg.cpp" line="2317"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -842,18 +858,18 @@ Do you want to save the changes?</source>
 Vol desar els canvis?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2429"/>
+        <location filename="../StackingDlg.cpp" line="2431"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Temps total d&apos;apilament: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2460"/>
+        <location filename="../StackingDlg.cpp" line="2462"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Guardant imatge Final en %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2542"/>
+        <location filename="../StackingDlg.cpp" line="2544"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -2122,73 +2138,78 @@ Píxels freds detectats: %L3 (%L4%)</translation>
         <translation>Llindar de detecció d&apos;estrelles</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="274"/>
+        <location filename="../ui/RegisterSettings.ui" line="259"/>
+        <source>Use automatic threshold</source>
+        <translation>El llindar automàtic</translation>
+    </message>
+    <message>
+        <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
         <translation>Calcular el número d&apos;estrelles detectades</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="317"/>
+        <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
         <translation>Redueix el soroll usant el Filtre de Mediana</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="158"/>
+        <location filename="../RegisterSettings.cpp" line="169"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark, flat i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="161"/>
+        <location filename="../RegisterSettings.cpp" line="172"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark i flat abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="164"/>
+        <location filename="../RegisterSettings.cpp" line="175"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="167"/>
+        <location filename="../RegisterSettings.cpp" line="178"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxiu flat i offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="170"/>
+        <location filename="../RegisterSettings.cpp" line="181"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>No oblidi agregar i seleccionar els arxius dark abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="173"/>
+        <location filename="../RegisterSettings.cpp" line="184"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>No oblidi agregar i seleccionar els arxius flat abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="176"/>
+        <location filename="../RegisterSettings.cpp" line="187"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>No oblidi agregar i seleccionar els arxius offset abans d&apos;apilar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="211"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats i offsets/bias seleccionats.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="264"/>
+        <location filename="../RegisterSettings.cpp" line="275"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrant %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="271"/>
+        <location filename="../RegisterSettings.cpp" line="282"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 estrella/es</translation>

@@ -24,20 +24,19 @@ namespace DSS
 
 	void CheckAbove::accept()
 	{
-		QString			strValue = ui->lineEdit->text();
+		ZASSERT(ui->lineEdit->validator() != nullptr);
+		QString strValue = ui->lineEdit->text();
+		QLocale const& locale = ui->lineEdit->validator()->locale();
 		
-		ZASSERT(ui->lineEdit->validator());
-		if (strValue.endsWith(ui->lineEdit->validator()->locale().percent()))
+		if (strValue.endsWith(locale.percent()))
 		{
 			m_bPercent = true;
-			strValue = strValue.left(strValue.length() - 1);
+			strValue = strValue.left(strValue.length() - locale.percent().length());
 		}
-		m_fThreshold = strValue.toDouble();
+		m_fThreshold = locale.toDouble(strValue);
 
 		Inherited::accept();
 	}
-
-
 
 	CheckAboveValidator::CheckAboveValidator(QObject* parent /*= nullptr*/) :
 		QValidator(parent),
