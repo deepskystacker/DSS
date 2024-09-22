@@ -135,7 +135,6 @@ namespace {
 
 	void findStarShape(const CGrayBitmap& bitmap, CStar& star)
 	{
-		bool						bResult = false;
 		std::vector<CStarAxisInfo>	vStarAxises;
 		double						fMaxHalfRadius = 0.0;
 		double						fMaxCumulated = 0.0;
