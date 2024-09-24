@@ -93,7 +93,6 @@ namespace DSS
 
 		void	clear()
 		{
-			curvePoints.clear();
 			init();
 		}
 
