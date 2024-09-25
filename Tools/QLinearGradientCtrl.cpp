@@ -929,6 +929,11 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 			if (stops[i].first == position)
 				index = i;
 	}
+	//
+	// Bug fix: Need to update the QLinearGradient's stops after updating our local
+	// copy of the QGradientStops
+	//
+	m_Gradient.setStops(stops);		// Update the gradient control's stops
 
 	return index;
 }
