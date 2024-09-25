@@ -64,12 +64,6 @@ namespace DSS
 		setButtonIcons();
 
 		//
-		// Disable the magnifier for the imageview histogram and also its tooltip
-		//
-		histogram->enableMagnifier(false);
-		histogram->setToolTip("");
-
-		//
 		// Initialise the popup menu for the "Histogram Adjustment Type" on the RGB tab
 		//
 		linearAction = hacMenu.addAction(HistoAdjustTypeText(HistogramAdjustmentCurve::Linear));
@@ -194,8 +188,11 @@ namespace DSS
 		connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
 			this, &ProcessingDlg::onColorSchemeChanged);
 
-		connect(applyButton, &QPushButton::pressed, this, &ProcessingDlg::processAndShow);
+		connect(applyButton, &QPushButton::pressed, this, &ProcessingDlg::onApply);
 		connect(undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
+		connect(settingsButton, &QPushButton::pressed, this, &ProcessingDlg::onSettings);
+		connect(redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
+		connect(resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
 
 		//
 		// The source for the slots below are in RGBTab.cpp
@@ -639,181 +636,24 @@ namespace DSS
 		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
 		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
 		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
-		redGradient->update();
 		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
+
+		redGradient->update();
 
 		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
 		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
 		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
-		greenGradient->update();
 		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
+
+		greenGradient->update();
 
 		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
 		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
 		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
-		blueGradient->update();
 		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod();
+		blueGradient->update();
 
 	};
-
-	//
-	// Slots
-	//
-
-		/* ------------------------------------------------------------------- */
-
-	void ProcessingDlg::processAndShow(bool bSaveUndo)
-	{
-		UpdateHistogramAdjust();
-
-		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
-		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
-		processingSettings.bezierAdjust_.clear();
-
-		if (bSaveUndo)
-			processingSettingsList.AddParams(processingSettings);
-
-		updateControls();
-
-		//
-		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted
-		// It will be the null rectangle when no selection has been made by the user
-		// 
-		rectToProcess.SetProcessRect(selectionRect);
-
-		rectToProcess.Reset();
-	};
-
-
-	void ProcessingDlg::onUndo()
-	{
-		processingSettingsList.MoveBackward();
-		processingSettingsList.GetCurrentSettings(processingSettings);
-		updateControlsFromSettings();
-		processAndShow(false);
-		showHistogram(false);
-		updateControls();
-	}
-
-	void ProcessingDlg::onRedo()
-	{
-		processingSettingsList.MoveForward();
-		processingSettingsList.GetCurrentSettings(processingSettings);
-		updateControlsFromSettings();
-		processAndShow(false);
-		showHistogram(false);
-		updateControls();
-	};
-
-	void ProcessingDlg::onSettings()
-	{
-		ProcessingSettingsDlg			dlg;
-		//
-		// Note that this uses ProcessingSettingsSet which is not the same as ProcessingSettingsList
-		// even thought both use std::list<ProcessingSettings>
-		//
-		ProcessingSettingsSet& settingsSet = dssApp->imageProcessingSettings();
-
-		timer.stop();
-		dlg.setParameters(settingsSet, processingSettings);
-		dlg.DoModal();
-
-		if (dlg.IsLoaded())
-		{
-			dlg.GetCurrentSettings(m_ProcessParams);
-			UpdateControlsFromParams();
-			ProcessAndShow(false);
-			ShowOriginalHistogram(false);
-			UpdateControls();
-			m_bDirty = true;
-		};
-		timer.start();
-	};
-
-
-
-	void ProcessingDlg::darkAngleChanged()
-	{
-		updateDarkText();
-	}
-
-	void ProcessingDlg::darkPowerChanged()
-	{
-		updateDarkText();
-	}
-
-	void ProcessingDlg::midAngleChanged()
-	{
-		updateMidText();
-	}
-
-	void ProcessingDlg::midToneChanged()
-	{
-		updateMidText();
-	}
-
-	void ProcessingDlg::highAngleChanged()
-	{
-		updateHighText();
-	}
-
-	void ProcessingDlg::highPowerChanged()
-	{
-		updateHighText();
-	}
-
-	void ProcessingDlg::saturationChanged()
-	{
-		updateSaturationText();
-	}
-
-
-	void ProcessingDlg::setSelectionRect(const QRectF& rect)
-	{
-		selectionRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void ProcessingDlg::onColorSchemeChanged(Qt::ColorScheme colorScheme)
-	{
-		iconModifier.clear();
-		//
-		// Dark colour scheme?
-		//
-		if (Qt::ColorScheme::Dark == colorScheme)
-			iconModifier = "-dark";
-
-		setButtonIcons();		// in RGBTab.cpp
-		update();
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void ProcessingDlg::onTimer()
-	{
-		DSSRect			cell;
-
-		if (rectToProcess.GetNextUnProcessedRect(cell))
-		{
-			dssApp->deepStack().PartialProcess(cell, processingSettings.bezierAdjust_, processingSettings.histoAdjust_);
-
-			picture->setPixmap(QPixmap::fromImage(dssApp->deepStack().getImage()));
-
-			// showHistogram(false);
-			//resetSliders();		// Will call showHistogram()
-
-			const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
-			progressBar->setValue(min(max(0, nProgress), 100));
-		};
-	}
-
-
 
 	/* ------------------------------------------------------------------- */
 
@@ -825,26 +665,27 @@ namespace DSS
 
 		Histo.SetSize(65535.0, histogram->width());
 
-		QGradientStops gradientStops = redGradient->gradient().stops();
+		const QGradientStops& redStops = redGradient->gradient().stops();
+		const QGradientStops& greenStops = greenGradient->gradient().stops();
+		const QGradientStops& blueStops = blueGradient->gradient().stops();
 
-		double 
-			fMinRed = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftRed = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxRed = gradientOffset_ + gradientStops[3].first * gradientRange_;
-
-		gradientStops = greenGradient->gradient().stops();
 
 		double
-			fMinGreen = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftGreen = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxGreen = gradientOffset_ + gradientStops[3].first * gradientRange_;
+			fMinRed = gradientOffset_ + redStops[1].first * gradientRange_,
+			fShiftRed = (redStops[2].first - 0.5) * 2.0,
+			fMaxRed = gradientOffset_ + redStops[3].first * gradientRange_;
 
-		gradientStops = blueGradient->gradient().stops();
 
 		double
-			fMinBlue = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftBlue = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxBlue = gradientOffset_ + gradientStops[3].first * gradientRange_;
+			fMinGreen = gradientOffset_ + greenStops[1].first * gradientRange_,
+			fShiftGreen = (greenStops[2].first - 0.5) * 2.0,
+			fMaxGreen = gradientOffset_ + greenStops[3].first * gradientRange_;
+
+
+		double
+			fMinBlue = gradientOffset_ + blueStops[1].first * gradientRange_,
+			fShiftBlue = (blueStops[2].first - 0.5) * 2.0,
+			fMaxBlue = gradientOffset_ + blueStops[3].first * gradientRange_;
 
 		HistoAdjust.GetRedAdjust().SetAdjustMethod(redAdjustmentCurve());
 		HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
@@ -958,9 +799,9 @@ namespace DSS
 			//
 			// Create the list of points with the initial size set correctly.
 			//
-			QList<QPointF>	redPoints{lNrValues};
-			QList<QPointF>	greenPoints{lNrValues};
-			QList<QPointF>	bluePoints{lNrValues};
+			QList<QPointF>	redPoints{ lNrValues };
+			QList<QPointF>	greenPoints{ lNrValues };
+			QList<QPointF>	bluePoints{ lNrValues };
 
 			bool				bShow = true;
 
@@ -989,7 +830,7 @@ namespace DSS
 				bShow = bShow && (fX < 1000 && fY < 1000);
 			};
 
-			QPen redPen{ qRgba(255, 0, 0, 128)};
+			QPen redPen{ qRgba(255, 0, 0, 128) };
 			QPen greenPen{ qRgba(0, 255, 0, 128) };
 			QPen bluePen{ qRgba(0, 0, 255, 128) };
 
@@ -1025,7 +866,7 @@ namespace DSS
 		bezierAdjust.clear();
 
 		//
-		// Create a pen from the currene window text color (which depends on 
+		// Create a pen from the current window text color (which depends on 
 		// the dark/light colour theme setting).
 		//
 		QPen pen(palette().color(QPalette::WindowText));
@@ -1055,7 +896,7 @@ namespace DSS
 	{
 		QPixmap pix(histogram->size());
 		QPainter painter;
-		QBrush brush(palette().window());
+		QBrush brush(palette().button());  // QPalette::Window was too dark - use QPalette::Button instead
 		const QRect histogramRect{ histogram->rect() };
 		const int width{ histogramRect.width() };
 		const int height{ histogramRect.height() };
@@ -1147,21 +988,18 @@ namespace DSS
 		BlueMarks[2] = Histogram.GetBlueHistogram().GetMax();
 
 
-		QLinearGradient& gradient = redGradient->gradient();
 		redGradient->setPeg(1, (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
 		redGradient->setPeg(2, (float)0.5);
 		redGradient->setPeg(3, (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
 		redGradient->update();
 		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
 
-		gradient = greenGradient->gradient();
 		greenGradient->setPeg(1, (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
 		greenGradient->setPeg(2, (float)0.5);
 		greenGradient->setPeg(3, (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
 		greenGradient->update();
 		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
 
-		gradient = blueGradient->gradient();
 		blueGradient->setPeg(1, (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
 		blueGradient->setPeg(2, (float)0.5);
 		blueGradient->setPeg(3, (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
@@ -1195,26 +1033,24 @@ namespace DSS
 	void ProcessingDlg::UpdateHistogramAdjust()
 	{
 
-		QGradientStops gradientStops = redGradient->gradient().stops();
+		const QGradientStops& redStops{ redGradient->gradient().stops() };
+		const QGradientStops& greenStops{ greenGradient->gradient().stops() };
+		const QGradientStops& blueStops{ blueGradient->gradient().stops() };
 
 		double
-			fMinRed = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftRed = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxRed = gradientOffset_ + gradientStops[3].first * gradientRange_;
-
-		gradientStops = greenGradient->gradient().stops();
+			fMinRed = gradientOffset_ + redStops[1].first * gradientRange_,
+			fShiftRed = (redStops[2].first - 0.5) * 2.0,
+			fMaxRed = gradientOffset_ + redStops[3].first * gradientRange_;
 
 		double
-			fMinGreen = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftGreen = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxGreen = gradientOffset_ + gradientStops[3].first * gradientRange_;
-
-		gradientStops = greenGradient->gradient().stops();
+			fMinGreen = gradientOffset_ + greenStops[1].first * gradientRange_,
+			fShiftGreen = (greenStops[2].first - 0.5) * 2.0,
+			fMaxGreen = gradientOffset_ + greenStops[3].first * gradientRange_;
 
 		double
-			fMinBlue = gradientOffset_ + gradientStops[1].first * gradientRange_,
-			fShiftBlue = (gradientStops[2].first - 0.5) * 2.0,
-			fMaxBlue = gradientOffset_ + gradientStops[3].first * gradientRange_;
+			fMinBlue = gradientOffset_ + blueStops[1].first * gradientRange_,
+			fShiftBlue = (blueStops[2].first - 0.5) * 2.0,
+			fMaxBlue = gradientOffset_ + blueStops[3].first * gradientRange_;
 
 		processingSettings.histoAdjust_.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
 		processingSettings.histoAdjust_.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
@@ -1260,6 +1096,178 @@ namespace DSS
 		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
 		blueGradient->update();
 	};
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::processAndShow(bool bSaveUndo)
+	{
+		UpdateHistogramAdjust();
+
+		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
+		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
+		processingSettings.bezierAdjust_.clear();
+
+		if (bSaveUndo)
+			processingSettingsList.AddParams(processingSettings);
+
+		updateControls();
+
+		//
+		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted
+		// It will be the null rectangle when no selection has been made by the user
+		// 
+		rectToProcess.SetProcessRect(selectionRect);
+
+		rectToProcess.Reset();
+	};
+
+
+
+	//
+	// Slots
+	//
+
+	void ProcessingDlg::onApply()
+	{
+		processAndShow(true);
+	}
+
+	void ProcessingDlg::onUndo()
+	{
+		processingSettingsList.MoveBackward();
+		processingSettingsList.GetCurrentSettings(processingSettings);
+		updateControlsFromSettings();
+		processAndShow(false);
+		showHistogram(false);
+		//updateControls();
+	}
+
+	void ProcessingDlg::onRedo()
+	{
+		processingSettingsList.MoveForward();
+		processingSettingsList.GetCurrentSettings(processingSettings);
+		updateControlsFromSettings();
+		processAndShow(false);
+		showHistogram(false);
+		//updateControls();
+	};
+
+	void ProcessingDlg::onReset()
+	{
+		setDirty();
+		resetSliders();
+	}
+
+
+	void ProcessingDlg::onSettings()
+	{
+		//
+		// Copy the current ProcessingSettings to the dialog
+		// 
+		ProcessingSettingsDlg dlg(this, processingSettings);
+
+		timer.stop();
+		
+		//
+		// If the dialog was exited normally and the user changed to
+		// a different settings ...
+		//
+		if (QDialog::Accepted == dlg.exec() && dlg.settingsChanged())
+		{
+			processingSettings = dlg.settings();
+			updateControlsFromSettings();
+			processAndShow(false);
+			showHistogram(false);
+			updateControls();
+			setDirty();
+		}
+		timer.start();
+	};
+
+
+
+	void ProcessingDlg::darkAngleChanged()
+	{
+		updateDarkText();
+	}
+
+	void ProcessingDlg::darkPowerChanged()
+	{
+		updateDarkText();
+	}
+
+	void ProcessingDlg::midAngleChanged()
+	{
+		updateMidText();
+	}
+
+	void ProcessingDlg::midToneChanged()
+	{
+		updateMidText();
+	}
+
+	void ProcessingDlg::highAngleChanged()
+	{
+		updateHighText();
+	}
+
+	void ProcessingDlg::highPowerChanged()
+	{
+		updateHighText();
+	}
+
+	void ProcessingDlg::saturationChanged()
+	{
+		updateSaturationText();
+	}
+
+
+	void ProcessingDlg::setSelectionRect(const QRectF& rect)
+	{
+		selectionRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::onColorSchemeChanged(Qt::ColorScheme colorScheme)
+	{
+		iconModifier.clear();
+		//
+		// Dark colour scheme?
+		//
+		if (Qt::ColorScheme::Dark == colorScheme)
+			iconModifier = "-dark";
+
+		setButtonIcons();		// in RGBTab.cpp
+		update();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::onTimer()
+	{
+		DSSRect			cell;
+
+		if (rectToProcess.GetNextUnProcessedRect(cell))
+		{
+			dssApp->deepStack().PartialProcess(cell, processingSettings.bezierAdjust_, processingSettings.histoAdjust_);
+
+			picture->setPixmap(QPixmap::fromImage(dssApp->deepStack().getImage()));
+
+			// showHistogram(false);
+			//resetSliders();		// Will call showHistogram()
+
+			const int nProgress = static_cast<int>(rectToProcess.GetPercentageComplete());
+			progressBar->setValue(min(max(0, nProgress), 100));
+		};
+	}
+
+
 
 } // namespace DSS
 
@@ -1482,7 +1490,7 @@ void CProcessingDlg::OnRedo()
 void CProcessingDlg::OnSettings()
 {
 	CSettingsDlg			dlg;
-	ProcessingSettingsSet& Settings = dssApp->processingSettingsSet();
+	ProcessingSettingsSet& Settings = dssApp->processingSettingsMap();
 
 	timer.stop();
 	dlg.SetDSSSettings(&Settings, processingSettings);
@@ -1842,11 +1850,6 @@ void CProcessingDlg::OnProcess()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnReset()
-{
-	m_bDirty = true;
-	resetSliders();
-}
 
 /* ------------------------------------------------------------------- */
 

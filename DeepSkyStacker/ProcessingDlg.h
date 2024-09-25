@@ -9,6 +9,7 @@
 namespace DSS
 {
 	class SelectRect;
+	class ProcessingSettingsDlg;
 
 	class ValuedRect final
 	{
@@ -317,8 +318,8 @@ namespace DSS
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
 
 	private:
-		ProcessingSettingsList processingSettingsList;
 		ProcessingSettings	processingSettings;
+		ProcessingSettingsList processingSettingsList;
 		ProcessRect		rectToProcess;
 		bool dirty_;
 		fs::path currentFile;
@@ -357,6 +358,9 @@ namespace DSS
 
 		void updateControls();
 		void updateInformation();
+
+		void processAndShow(bool bSaveUndo = true);		// Driven by Apply button
+
 
 		inline void updateDarkText()
 		{
@@ -429,9 +433,10 @@ namespace DSS
 
 	private slots:
 
-		void processAndShow(bool bSaveUndo = true);		// Driven by Apply button
+		void onApply();
 		void onUndo();
 		void onRedo();
+		void onReset();
 		void onSettings();
 
 		void redChanging(int peg);

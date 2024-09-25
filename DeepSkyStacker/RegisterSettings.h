@@ -37,6 +37,7 @@
 
 class CAllStackingTasks;
 class QValidator;
+class Workspace; 
 
 namespace DSS
 {
@@ -99,7 +100,7 @@ namespace DSS
 
 	private:
 		Ui::RegisterSettings* ui;
-	    std::unique_ptr<class Workspace> workspace;
+	    std::unique_ptr<Workspace> workspace;
 
 		bool					initialised;
 		bool					forceRegister;

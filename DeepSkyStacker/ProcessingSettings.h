@@ -98,7 +98,7 @@ namespace DSS
 		void loadSettings()
 		{
 			ZFUNCTRACE_RUNTIME();
-			const QString groupName{ "ProcessingParms/" + name_ };
+			const QString groupName{ "ProcessingSettings/" + name_ };
 			qDebug() << "Load settings for " << groupName;
 			bezierAdjust_.loadSettings(groupName);
 			histoAdjust_.loadSettings(groupName);
@@ -107,85 +107,11 @@ namespace DSS
 		void saveSettings() const
 		{
 			ZFUNCTRACE_RUNTIME();
-			const QString groupName{ "ProcessingParms/" + name_ };
-			qDebug() << "Load settings for " << groupName;
+			const QString groupName{ "ProcessingSettings/" + name_ };
+			qDebug() << "Save settings for " << groupName;
 			bezierAdjust_.saveSettings(groupName);
 			histoAdjust_.saveSettings(groupName);
 		};
 	};
 
-	typedef	std::list<ProcessingSettings>::iterator SettingsIterator;
-	typedef std::list<ProcessingSettings>::const_iterator ConstSettingsIterator;
-
-
-	class ProcessingSettingsSet
-	{
-	private:
-		std::list<ProcessingSettings>	allSettings;
-
-	public:
-		ProcessingSettingsSet();
-
-		virtual ~ProcessingSettingsSet() {};
-
-		void loadSettings();
-		void saveSettings() const;
-		// bool	Load(LPCTSTR szFile = nullptr);
-		// bool	Save(LPCTSTR szFile = nullptr);
-
-		int	Count()
-		{
-			return static_cast<int>(allSettings.size());
-		};
-
-		bool	GetItem(int lIndice, ProcessingSettings& cds)
-		{
-			bool			bResult = false;
-
-			if (lIndice < static_cast<int>(allSettings.size()))
-			{
-				SettingsIterator	it;
-
-				it = allSettings.begin();
-				while (lIndice)
-				{
-					it++;
-					lIndice--;
-				};
-
-				cds = (*it);
-				bResult = true;
-			};
-
-			return bResult;
-		};
-
-		bool	Add(const ProcessingSettings& cds)
-		{
-			allSettings.push_back(cds);
-			return true;
-		};
-
-		bool	Remove(int lIndice)
-		{
-			bool			bResult = false;
-
-			if (lIndice < static_cast<int>(allSettings.size()))
-			{
-				SettingsIterator	it;
-
-				it = allSettings.begin();
-				while (lIndice)
-				{
-					it++;
-					lIndice--;
-				};
-
-				allSettings.erase(it);
-				bResult = true;
-			};
-
-			return bResult;
-		};
-	};
 }

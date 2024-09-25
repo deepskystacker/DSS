@@ -75,7 +75,6 @@ private:
 	DSS::StackingDlg* stackingDlg;
 	DSS::ProcessingDlg*	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
-	std::unique_ptr<DSS::ProcessingSettingsSet> processingSettingsSet_;
 	ActivePanel activePanel;
 	QStringList args;
 	QString baseTitle;
@@ -118,7 +117,6 @@ public:
 	void setPanel(ActivePanel panel);
 	void disableSubDialogs();
 	void enableSubDialogs();
-	DSS::ProcessingSettingsSet& processingSettingsSet();
 	DSS::StackingDlg& getStackingDlg();
 	DSS::ProcessingDlg& getProcessingDlg();
 	DSS::ExplorerBar& GetExplorerBar();

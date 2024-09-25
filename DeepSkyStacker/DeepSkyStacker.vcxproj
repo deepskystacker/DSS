@@ -290,7 +290,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="picturelist.cpp" />
     <ClCompile Include="ProcessingDlg.cpp" />
-    <ClCompile Include="ProcessingSettings.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
