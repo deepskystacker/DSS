@@ -61,7 +61,8 @@ Bayer.Drizzle</A>, Bilinear und AHD Interpolations-Modus anwenden.</font></font>
 <p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>Anpassung des Sternerkennungs-Schwellenwert</font></b><font size="2" face="Arial"><b>es<br>
 </b>
                                  Der Standard Sternerkennungs-Schwellenwert liegt normalerweise bei 10% (10% der maximalen Luminanz). </font></p>
-<p align="justify"><font size="2" face="Arial">&nbsp;<TABLE style="WIDTH: 100%; BORDER-COLLAPSE:  collapse" borderColor=#ffffff cellSpacing=0 cellPadding=5 width="100%" border=1>
+<p align="justify"><font size="2" face="Arial">&nbsp;</p>
+<p align="justify"><TABLE style="WIDTH: 100%; BORDER-COLLAPSE:  collapse" borderColor=#ffffff cellSpacing=0 cellPadding=5 width="100%" border=1>
              
           <TBODY >    <TR>
                <TD width="63%">
@@ -107,7 +108,7 @@ Wenn
        
                     
                
-           </font></font><FONT face=Courier>verwenden</FONT>"  einschalten.<font size="2" face="Arial">
+           </font></FONT><FONT face=Courier>verwenden</FONT>"  einschalten.<font size="2" face="Arial">
              <font size=2 face=Arial></SPAN></p>                            <p align=justify>
 Um den optimalen Schwellenwert für 
       Ihre lights zu finden können Sie die Anzahl der Sterne berechnen die 
@@ -117,10 +118,21 @@ Um den optimalen Schwellenwert für
 <font size=2 face=Arial >
     Sie sollten aber beachten dass 
       dies nur ein Richtwert ist und die reelle Anzahl variieren kann wenn Sie dark-, 
-      offset-, und flatframes ausgewählt haben..</font></p></FONT></TD>
+      offset-, und flatframes ausgewählt haben.</font></p></FONT></TD>
 <TD >&nbsp;<IMG alt="" 
-      src="../images/german/Register_Settings.jpg"></TD></TR></TBODY></TABLE><br >
-<font size=2 face=Arial><BR></font></FONT>
+      src="../images/german/Register_Settings.jpg"></TD></TR></TBODY></TABLE></P>
+<p align="justify">Durch Benutzung der Option 
+"Auto-Schwellwert" findet DeepSkyStacker einen guten Schwellwert von selbst 
+mittels eines Optimierungs-Algorithmus, ein manuelles Einstellen entfällt. Das 
+ist insbesondere dann sehr hilfreich, wenn selbst der minimale Schwellwert von 
+1% nicht ausreicht, um eine geeignete Anzahl von Sternen zu finden (der 
+Optimierungs-Algorithmus findet Schwellwerte bis hinab zu 0,05%). Der 
+Schwellwert wird so gewählt, dass zumindest 50 Sterne detektiert werden (wenn 
+möglich, ansonsten werden auch weniger akzeptiert).<BR>Der erkannte Schwellwert 
+des ersten Bildes wird verwendet als Startpunkt für alle weiteren Bilder. Wenn 
+ein Reference-Frame ausgewählt wurde, so ist dieses Bild das erste der 
+Registrierung.
+<font size=2 face=Arial><BR></p></FONT></FONT>
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 <P></P>
@@ -484,45 +496,53 @@ jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN
 class="jCAhz ChMk0b" jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
 jsname="txFAF" 
 jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><FONT size=3 face="Times New Roman">Sie müssen 
+&#13;&#10;&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><FONT size=3 face="Times New Roman">Sie müssen 
 also:</FONT></SPAN></SPAN></SPAN>         </font></P>
 <UL>
   <LI><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
-  &#13;&#10;  mousedown:qjlr0e" 
+  &#13;&#10;  &#13;&#10;  
+  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; 
+  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb">Markieren 
   Sie die Position des Kometenzentrums in 2 Lightframes mit großem zeitlichem 
   Abstand (idealerweise das erste und das letzte Lightframe in chronologischer 
   Reihenfolge).</SPAN></SPAN></SPAN>
   <LI><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
-  &#13;&#10;  mousedown:qjlr0e" 
+  &#13;&#10;  &#13;&#10;  
+  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; 
+  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb"><SPAN 
   lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
-  &#13;&#10;  mousedown:qjlr0e" 
+  &#13;&#10;  &#13;&#10;  
+  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; 
+  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb">Die 
   Markierung des Kometenzentrums in zusätzlichen Lightframes kann möglicherweise 
   die Ergebnisse 
   verbessern.</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></span><span lang="EN-US"><font face="Times New Roman" size="3"><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
-  &#13;&#10;  mousedown:qjlr0e" 
+  &#13;&#10;  &#13;&#10;  
+  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; 
+  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb"></SPAN></SPAN></SPAN>
         </font></span></LI></UL>
 <P><span lang="EN-US"><font face="Arial" size="2">Dazu öffnen Sie ein Lightframe aus der Liste und verwenden den <A href="userguide.htm#imagepreview">Edit Comet Mode</A> um das Kometenzentrum zu markieren.<br>
@@ -574,7 +594,7 @@ In allen anderen Fällen sollten sie die Median (bei kleinen Stacks) oder die Kap
 RAW-Dateien, die 
 mit DSLRs erstellt wurden, werden mit <U><FONT color=#0066cc>LibRaw</FONT></U>&nbsp;Copyright ©&nbsp;2008-2019 LibRaw 
 LLC, <SPAN 
-style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA'>basierend 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-fareast-font-family: Calibri; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'>basierend 
 auf das originale DCRaw von Dave Coffin.</SPAN>    
          &nbsp; <br>
                                 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>   DeepSkyStacker verwendet die neueste 
