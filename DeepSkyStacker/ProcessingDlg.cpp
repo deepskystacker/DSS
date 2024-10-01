@@ -5,6 +5,7 @@
 #include "selectrect.h"
 #include "FrameInfoSupport.h"
 #include "ProcessingSettingsDlg.h"
+#include "SavePicture.h"
 #include <Ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
@@ -238,28 +239,7 @@ namespace DSS
 
 	bool ProcessingDlg::saveOnClose()
 	{
-		ZFUNCTRACE_RUNTIME();
-		//
-		// The existing image is being closed and has been changed, ask the user if they want to save it
-		//
-		if (dirty_)
-		{
-			QString message{ tr("Do you want to save the modifications?", "IDS_MSG_SAVEMODIFICATIONS")};
-			auto result = QMessageBox::question(this, "DeepSkyStacker",
-				message, (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel), QMessageBox::No);
-			switch (result)
-			{
-			case QMessageBox::Cancel:
-				return false;
-				break;
-			case QMessageBox::No:
-				return true;
-				break;
-			default:
-				return saveImage();
-			}
-		}
-		else return true;
+		return askToSave();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -282,10 +262,10 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void ProcessingDlg::loadFile(const fs::path& file)
+	void ProcessingDlg::loadStackedImage(const fs::path& file)
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Load File";
+		qDebug() << "Load stacked image";
 
 		//
 		// Load the output file created at the end of the stacking process.
@@ -336,88 +316,90 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Load image";
 
-		QFileDialog			fileDialog(this);
-		QSettings			settings;
-		QString				directory;
-		QString				extension;
-		QString				strTitle;
-		fs::path file;
-
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-
-		timer.stop();
-
-		directory = settings.value("Folders/SaveDSIFolder").toString();
-		extension = settings.value("Folders/SavePictureExtension").toString();
-		if (extension.isEmpty()) extension = "tif";
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::ExistingFile);	// There can be only one
-
-		fileDialog.setNameFilter(tr("TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)", "IDS_FILTER_DSIIMAGETIFF"));
-		fileDialog.selectFile(QString());		// No file(s) selected
-		if (!directory.isEmpty())
-			fileDialog.setDirectory(directory);
-
-		if (QDialog::Accepted == fileDialog.exec())
+		if (askToSave())
 		{
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-			QStringList files = fileDialog.selectedFiles();
 
-			//
-			// Now get the file as a standard fs::path object
-			//
-			if (!files.empty())		// Never, ever attempt to add zero rows!!!
+			QFileDialog			fileDialog(this);
+			QSettings			settings;
+			QString				directory;
+			QString				extension;
+			QString				strTitle;
+			fs::path file;
+
+			DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+
+			timer.stop();
+
+			directory = settings.value("Folders/SaveDSIFolder").toString();
+			extension = settings.value("Folders/SavePictureExtension").toString();
+			if (extension.isEmpty()) extension = "tif";
+			fileDialog.setDefaultSuffix(extension);
+			fileDialog.setFileMode(QFileDialog::ExistingFile);	// There can be only one
+
+			fileDialog.setNameFilter(tr("TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)", "IDS_FILTER_DSIIMAGETIFF"));
+			fileDialog.selectFile(QString());		// No file(s) selected
+			if (!directory.isEmpty())
+				fileDialog.setDirectory(directory);
+
+			if (QDialog::Accepted == fileDialog.exec())
 			{
-				file = files.at(0).toStdU16String();
-				
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+				QStringList files = fileDialog.selectedFiles();
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+				//
+				// Now get the file as a standard fs::path object
+				//
+				if (!files.empty())		// Never, ever attempt to add zero rows!!!
+				{
+					file = files.at(0).toStdU16String();
+
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+
+				settings.setValue("Folders/SaveDSIFolder", directory);
+				settings.setValue("Folders/SavePictureExtension", extension);
+
+				//
+				// Finally load the file of interest
+				//
+				currentFile = file;				// Remember the current file
+				dssApp->deepStack().reset();
+				dssApp->deepStack().SetProgress(&dlg);
+				bool OK = dssApp->deepStack().LoadStackedInfo(file);
+				ZASSERT(OK);
+
+				dssApp->deepStack().SetProgress(nullptr);
+
+				modifyRGBKGradientControls();
+				updateInformation();
+
+				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
+
+				updateControlsFromSettings();
+
+				showHistogram(false);
+				resetSliders();
+				int height = dssApp->deepStack().GetHeight();
+				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+
+				processingSettingsList.clear();
+				picture->clear();
+				processAndShow(true);
+
+				setDirty(false);
+
+				timer.start();
+
+				QGuiApplication::restoreOverrideCursor();
+
 			}
-			
-			settings.setValue("Folders/SaveDSIFolder", directory);
-			settings.setValue("Folders/SavePictureExtension", extension);
-
-			//
-			// Finally load the file of interest
-			//
-			currentFile = file;				// Remember the current file
-			dssApp->deepStack().reset();
-			dssApp->deepStack().SetProgress(&dlg);
-			bool OK = dssApp->deepStack().LoadStackedInfo(file);
-			ZASSERT(OK);
-
-			dssApp->deepStack().SetProgress(nullptr);
-
-			modifyRGBKGradientControls();
-			updateInformation();
-
-			dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
-			dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
-
-			updateControlsFromSettings();
-
-			showHistogram(false);
-			resetSliders();
-			int height = dssApp->deepStack().GetHeight();
-			rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
-
-			processingSettingsList.clear();
-			picture->clear();
-			processAndShow(true);
-
-			setDirty(false);
-
-			timer.start();
-
-			QGuiApplication::restoreOverrideCursor();
-
-		};
-
-
+		}
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -427,6 +409,46 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Save image to file";
 		bool				bResult = false;
+
+
+		if (dssApp->deepStack().IsLoaded())
+		{
+			QSettings settings;
+
+			auto baseDirectory{ settings.value("Folders/SavePictureFolder").toString() };
+			auto extension{ settings.value("Folders/SavePictureExtension").toString().toLower() };
+			auto applied{ settings.value("Folders/SaveApplySetting", false).toBool() };
+			auto compression{ settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt() };
+			auto filterIndex{ settings.value("Folders/SavePictureIndex", 0).toUInt() };
+
+
+			QStringList fileFilters{
+				tr("TIFF Image 16 bit/ch (*.tif)", "IDS_FILTER_OUTPUT"),
+				tr("TIFF Image 32 bit/ch - integer (*.tif)", "IDS_FILTER_OUTPUT"),
+				tr("TIFF Image 32 bit/ch - rational (*.tif)", "IDS_FILTER_OUTPUT"),
+				tr("FITS Image 16 bit/ch (*.fts)", "IDS_FILTER_OUTPUT"),
+				tr("FITS Image 32 bit/ch - integer (*.fts)", "IDS_FILTER_OUTPUT"),
+				tr("FITS Image 32 bit/ch - rational (*.fts)", "IDS_FILTER_OUTPUT")
+			};
+
+			if (extension.isEmpty()) extension = ".tif";
+
+			//
+			// SavePicture is a sub-class of QFileDialog, we'll set the QFileDialog vars first
+			//
+			SavePicture dlg{ this, tr("Save Image"), baseDirectory };
+			dlg.setDefaultSuffix(extension);
+			dlg.setNameFilters(fileFilters);
+			dlg.selectNameFilter(fileFilters.at(filterIndex));
+			dlg.setFilter(QDir::Files | QDir::Writable);
+
+			//
+			// Now set our sub-class variables
+			//
+			dlg.setCompression(TIFFCOMPRESSION(compression));
+			dlg.setApply(applied);
+			dlg.exec();
+		}
 		/*
 		QSettings			settings;
 		CString				strBaseDirectory;
@@ -1126,6 +1148,33 @@ namespace DSS
 		rectToProcess.Reset();
 	};
 
+	/* ------------------------------------------------------------------- */
+
+	bool ProcessingDlg::askToSave()
+	{
+		ZFUNCTRACE_RUNTIME();
+		//
+		// The existing image is being closed and has been changed, ask the user if they want to save it
+		//
+		if (dirty_)
+		{
+			QString message{ tr("Do you want to save the modifications?", "IDS_MSG_SAVEMODIFICATIONS") };
+			auto result = QMessageBox::question(this, "DeepSkyStacker",
+				message, (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel), QMessageBox::No);
+			switch (result)
+			{
+			case QMessageBox::Cancel:
+				return false;
+				break;
+			case QMessageBox::No:
+				return true;
+				break;
+			default:
+				return saveImage();
+			}
+		}
+		else return true;
+	};
 
 
 	//
@@ -1189,40 +1238,51 @@ namespace DSS
 		timer.start();
 	};
 
-
+	void ProcessingDlg::updateBezierCurve()
+	{
+		setDirty();
+		showHistogram();
+	};
 
 	void ProcessingDlg::darkAngleChanged()
 	{
 		updateDarkText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::darkPowerChanged()
 	{
 		updateDarkText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::midAngleChanged()
 	{
 		updateMidText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::midToneChanged()
 	{
 		updateMidText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::highAngleChanged()
 	{
 		updateHighText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::highPowerChanged()
 	{
 		updateHighText();
+		emit updateBezierCurve();
 	}
 
 	void ProcessingDlg::saturationChanged()
 	{
+		setDirty();
 		updateSaturationText();
 	}
 
@@ -1556,122 +1616,6 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 /* ------------------------------------------------------------------- */
 
-void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
-{
-
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::OnLoaddsi()
-{
-	if (AskToSave())
-	{
-		bool				bOk = false;
-		CString				strFilter;
-		QSettings			settings;
-
-		CString	strBaseDirectory = (LPCTSTR)settings.value("Folders/SaveDSIFolder", QString("")).toString().utf16();
-
-		strFilter.LoadString(IDS_FILTER_DSIIMAGETIFF);
-		CFileDialog			dlgOpen(true,
-			_T(".DSImage"),
-			nullptr,
-			OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-			strFilter,
-			this);
-		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-
-		if (strBaseDirectory.GetLength())
-			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-
-		timer.stop();
-
-		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-		dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-		if (dlgOpen.DoModal() == IDOK)
-		{
-			CString			strFile;
-			POSITION		pos;
-
-			pos = dlgOpen.GetStartPosition();
-			while (pos && !bOk)
-			{
-				BeginWaitCursor();
-				strFile = dlgOpen.GetNextPathName(pos);
-				dssApp->deepStack().Clear();
-				dssApp->deepStack().SetProgress(&dlg);
-				bOk = dssApp->deepStack().LoadStackedInfo(strFile);
-				dssApp->deepStack().SetProgress(nullptr);
-				EndWaitCursor();
-			};
-
-			if (bOk)
-			{
-				m_strCurrentFile = strFile;
-
-				TCHAR		szDir[1 + _MAX_DIR];
-				TCHAR		szDrive[1 + _MAX_DRIVE];
-
-				_tsplitpath(strFile, szDrive, szDir, nullptr, nullptr);
-				strBaseDirectory = szDrive;
-				strBaseDirectory += szDir;
-
-				settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-
-				UpdateMonochromeControls();
-				UpdateInfos();
-				BeginWaitCursor();
-				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
-				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
-
-				updateControlsFromSettings();
-
-				showHistogram(false);
-				// resetSliders();
-				int height = dssApp->deepStack().GetHeight();
-				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
-
-				processingSettingsList.clear();
-				m_Picture.SetImg((HBITMAP)nullptr);
-				processAndShow(true);
-				EndWaitCursor();
-				m_bDirty = false;
-			};
-		};
-
-		timer.start();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-bool CProcessingDlg::AskToSave()
-{
-	bool				bResult = false;
-
-	if (m_bDirty)
-	{
-		int				nResult;
-
-		nResult = AfxMessageBox(IDS_MSG_SAVEMODIFICATIONS, MB_YESNOCANCEL | MB_ICONQUESTION);
-		if (nResult == IDCANCEL)
-			bResult = false;
-		else if (nResult == IDNO)
-			bResult = true;
-		else
-			bResult = SavePictureToFile();
-	}
-	else
-		bResult = true;
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
 void CProcessingDlg::CopyPictureToClipboard()
 {
 	HBITMAP			hBitmap;
@@ -1727,194 +1671,4 @@ void CProcessingDlg::CreateStarMask()
 }
 
 
-bool CProcessingDlg::SavePictureToFile()
-{
-	bool				bResult = false;
-	QSettings			settings;
-	CString				strBaseDirectory;
-	CString				strBaseExtension;
-	bool				applied = false;
-	uint				dwCompression;
-	CRect				rcSelect;
-
-	if (dssApp->deepStack().IsLoaded())
-	{
-		strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
-		strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
-		auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
-		applied = settings.value("Folders/SaveApplySetting", false).toBool();
-		dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
-
-		if (!strBaseExtension.GetLength())
-			strBaseExtension = _T(".tif");
-
-		CSavePicture				dlgOpen(false,
-			_T(".TIF"),
-			nullptr,
-			OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
-			OUTPUTFILE_FILTERS,
-			this);
-
-		if (m_SelectRectSink.GetSelectRect(rcSelect))
-			dlgOpen.SetUseRect(true, true);
-		if (applied)
-			dlgOpen.SetApplied(true);
-
-		dlgOpen.SetCompression((TIFFCOMPRESSION)dwCompression);
-
-		if (strBaseDirectory.GetLength())
-			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
-
-		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-
-		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-		dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-		if (dlgOpen.DoModal() == IDOK)
-		{
-			POSITION		pos;
-
-			pos = dlgOpen.GetStartPosition();
-			if (pos)
-			{
-				CString			strFile;
-				LPRECT			lpRect = nullptr;
-				bool			bApply;
-				bool			bUseRect;
-				TIFFCOMPRESSION	Compression;
-
-				bApply = dlgOpen.GetApplied();
-				bUseRect = dlgOpen.GetUseRect();
-				Compression = dlgOpen.GetCompression();
-
-				if (bUseRect && m_SelectRectSink.GetSelectRect(rcSelect))
-					lpRect = &rcSelect;
-
-				BeginWaitCursor();
-				strFile = dlgOpen.GetNextPathName(pos);
-				if (dlgOpen.m_ofn.nFilterIndex == 1)
-					dssApp->deepStack().GetStackedBitmap().SaveTIFF16Bitmap(strFile, lpRect, &dlg, bApply, Compression);
-				else if (dlgOpen.m_ofn.nFilterIndex == 2)
-					dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, false, Compression);
-				else if (dlgOpen.m_ofn.nFilterIndex == 3)
-					dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, true, Compression);
-				else if (dlgOpen.m_ofn.nFilterIndex == 4)
-					dssApp->deepStack().GetStackedBitmap().SaveFITS16Bitmap(strFile, lpRect, &dlg, bApply);
-				else if (dlgOpen.m_ofn.nFilterIndex == 5)
-					dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, false);
-				else if (dlgOpen.m_ofn.nFilterIndex == 6)
-					dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, true);
-
-				TCHAR		szDir[1 + _MAX_DIR];
-				TCHAR		szDrive[1 + _MAX_DRIVE];
-				TCHAR		szExt[1 + _MAX_EXT];
-
-				_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
-				strBaseDirectory = szDrive;
-				strBaseDirectory += szDir;
-				strBaseExtension = szExt;
-
-				dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-				settings.setValue("Folders/SavePictureFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-				settings.setValue("Folders/SavePictureExtension", QString::fromWCharArray(strBaseExtension.GetString()));
-				settings.setValue("Folders/SavePictureIndex", (uint)dwFilterIndex);
-				settings.setValue("Folders/SaveApplySetting", bApply);
-				settings.setValue("Folders/SaveCompression", (uint)Compression);
-
-				EndWaitCursor();
-
-				m_strCurrentFile = strFile;
-				UpdateInfos();
-				m_bDirty = false;
-				bResult = true;
-			};
-		};
-	}
-	else
-	{
-		AfxMessageBox(IDS_MSG_NOPICTURETOSAVE, MB_OK | MB_ICONSTOP);
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::OnProcess()
-{
-	processAndShow(true);
-}
-
-
-/* ------------------------------------------------------------------- */
-
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::OnNotifyRedChangeSelPeg(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyRedPegMove(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyRedPegMoved(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyGreenChangeSelPeg(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyGreenPegMove(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyGreenPegMoved(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyBlueChangeSelPeg(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyBluePegMove(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-void CProcessingDlg::OnNotifyBluePegMoved(NMHDR*, LRESULT*)
-{
-	m_bDirty = true;
-	showHistogram();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-	m_bDirty = true;
-	showHistogram();
-	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
-}
-
-/* ------------------------------------------------------------------- */
 #endif

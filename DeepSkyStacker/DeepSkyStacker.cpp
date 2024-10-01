@@ -63,7 +63,6 @@ namespace bip = boost::interprocess;
 #include "QEventLogger.h"
 
 
-CString OUTPUTFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
 
@@ -732,8 +731,6 @@ BOOL DeepSkyStackerApp::InitInstance()
 
 	AfxInitRichEdit2();
 
-
-	OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);
 	STARMASKFILE_FILTERS.LoadString(IDS_FILTER_MASK);
 
 	return TRUE;

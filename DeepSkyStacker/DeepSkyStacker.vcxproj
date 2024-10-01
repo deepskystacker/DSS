@@ -429,7 +429,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="resourceIT.h" />
     <QtMoc Include="ResultParameters.h" />
     <QtMoc Include="SaveEditChanges.h" />
-    <ClInclude Include="SavePicture.h" />
+    <QtMoc Include="SavePicture.h" />
     <QtMoc Include="selectrect.h" />
     <ClInclude Include="SetUILanguage.h" />
     <QtMoc Include="StackingDlg.h" />

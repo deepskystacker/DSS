@@ -140,7 +140,7 @@ namespace DSS {
 
 	void ProcessingSettingsDlg::nameEdited(const QString& text)
 	{
-		if (text.contains(QRegularExpression("[/\\]")))
+		if (text.contains(QRegularExpression("[/\\\\]")))
 		{
 			QApplication::beep();
 			QMessageBox::critical(const_cast<ProcessingSettingsDlg*>(this), "DeepSkyStacker",

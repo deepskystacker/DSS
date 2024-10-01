@@ -474,8 +474,7 @@ namespace DSS
 		copy{ nullptr },
 		erase{ nullptr },
 		networkManager{ nullptr },
-		m_tipShowCount{ 0 },
-		dockTitle{ new QLabel(this) }
+		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -679,8 +678,6 @@ namespace DSS
 			"Right mouse button to display the menu"));
 
 		updateListInfo();  // Update information bar and tooltip
-
-		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 
 		//
 		// Now iterate over the groups and retranslate the group names and all strings in the table model
@@ -1125,19 +1122,6 @@ namespace DSS
 		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
 		ui->gamma->setPegsOnLeftOrBottom(true).
 			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
-
-		//
-		// Set an informative title bar on the dockable image list with a nice gradient
-		// as the background (like the old "listInfo" static control).
-		// 
-		QSize size{ 625, 25 };
-		dockTitle->setObjectName("dockTitle");
-		dockTitle->setMinimumSize(size);
-		dockTitle->resize(size);
-		dockTitle->setStyleSheet(QString::fromUtf8("QLabel {"
-			"background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
-			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))}"));
-		pictureList->setTitleBarWidget(dockTitle);
 
 		//
 		// Set up the tab bar (used to be a tab widget)
@@ -1771,7 +1755,7 @@ namespace DSS
 			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
 			};
 
-		dockTitle->setText(text);
+		pictureList->dockTitle->setText(text);
 
 		for (int i = 0; i < pictureList->tabBar->count(); i++)
 		{
@@ -2505,7 +2489,7 @@ namespace DSS
 					dlg.SetJointProgress(false);
 					dlg.Close();
 
-					dssApp->getProcessingDlg().loadFile(strFileName);
+					dssApp->getProcessingDlg().loadStackedImage(strFileName);
 
 					// Change tab to processing
 					dssApp->setPanel(ActivePanel::ProcessingPanel);

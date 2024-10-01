@@ -307,7 +307,7 @@ namespace DSS
 
 		void copyToClipboard();
 		void createStarMask();
-		void loadFile(const fs::path& file);
+		void loadStackedImage(const fs::path& file);
 		void loadImage();
 		bool saveImage();
 
@@ -360,7 +360,6 @@ namespace DSS
 		void updateInformation();
 
 		void processAndShow(bool bSaveUndo = true);		// Driven by Apply button
-
 
 		inline void updateDarkText()
 		{
@@ -428,6 +427,8 @@ namespace DSS
 
 		void	UpdateHistogramAdjust();
 
+		bool askToSave();
+
 	public slots:
 		void setSelectionRect(const QRectF& rect);
 
@@ -468,6 +469,8 @@ namespace DSS
 		void highAngleChanged();
 		void highPowerChanged();
 
+		void updateBezierCurve();
+
 		void saturationChanged();
 
 
@@ -482,9 +485,6 @@ namespace DSS
 		void	CopyPictureToClipboard();
 		bool	SavePictureToFile();
 		void	CreateStarMask();
-
-		void	LoadFile(LPCTSTR szFileName);
-
 
 #endif
 	 

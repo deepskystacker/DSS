@@ -33,7 +33,8 @@
 ** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 **
 **
-****************************************************************************/#include <QDialog>
+****************************************************************************/
+#include <QDialog>
 #include "BaseDialog.h"
 #include "ProcessingSettings.h"
 #include "ui_ProcessingSettingsDlg.h"

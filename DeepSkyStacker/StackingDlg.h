@@ -297,8 +297,6 @@ namespace DSS
 		QAction* copy;
 		QAction* erase;
 
-		QLabel* dockTitle;
-
 		void checkAskRegister();
 
 		void onInitDialog();
