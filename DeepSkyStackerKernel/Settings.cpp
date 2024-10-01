@@ -49,15 +49,19 @@ bool CGlobalSettings::operator == (const CGlobalSettings & gs) const
 
 /* ------------------------------------------------------------------- */
 
-bool	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
+bool	CGlobalSettings::ReadFromFile(const fs::path& file)
 {
 	bool		bResult = false;
-	FILE *		hFile;
 
 	m_sSettings.clear();
 	m_vFiles.clear();
-	hFile = _tfopen(szFile, _T("rt"));
-	if (hFile)
+	if (std::FILE* hFile =
+#if defined(_WINDOWS)
+		_wfopen(file.c_str(), L"wt")
+#else
+		std::fopen(file.c_ctr(), "wt")
+#endif
+		)
 	{
 		// First read the settings
 		CSetting		s;
@@ -84,12 +88,15 @@ bool	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
+void	CGlobalSettings::WriteToFile(const fs::path& file)
 {
-	FILE *				hFile;
-
-	hFile = _tfopen(szFile, _T("wt"));
-	if (hFile)
+	if (std::FILE* hFile =
+#if defined(_WINDOWS)
+		_wfopen(file.c_str(), L"wt")
+#else
+		std::fopen(file.c_ctr(), "wt")
+#endif
+		)
 	{
 		// First write the settings
 		SETTINGITERATOR		it;
@@ -111,14 +118,14 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
+bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, const fs::path& file)
 {
 	bool				bResult = false;
 	CBitmapInfo			bmpInfo;
 
 	m_sSettings.clear();
 	m_vFiles.clear();
-	if (pTask && GetPictureInfo(szFile, bmpInfo))
+	if (pTask && GetPictureInfo(file, bmpInfo))
 	{
 		bResult = true;
 
@@ -157,11 +164,11 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		if (!bmpInfo.m_bMaster)
 			bResult = false;
 
-		AddFileVariable(_T("Bitmap.FileName"), szFile);
-		AddVariable(_T("Bitmap.Width"), lWidth);
-		AddVariable(_T("Bitmap.Height"), lHeight);
-		AddVariable(_T("Bitmap.BitPerChannels"), bmpInfo.m_lBitsPerChannel);
-		AddVariable(_T("Bitmap.NrChannels"), lNrChannels);
+		AddFileVariable("Bitmap.FileName", file);
+		AddVariable("Bitmap.Width", lWidth);
+		AddVariable("Bitmap.Height", lHeight);
+		AddVariable("Bitmap.BitPerChannels", bmpInfo.m_lBitsPerChannel);
+		AddVariable("Bitmap.NrChannels", lNrChannels);
 
 		if (bFITS)
 			AddFITSSettings();

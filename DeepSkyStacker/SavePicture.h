@@ -79,6 +79,8 @@ namespace DSS
 			}
 		}
 
+		inline TIFFCOMPRESSION compression() const { return compression_; }
+
 		inline void setApply(const bool apply)
 		{
 			apply_ = apply;
@@ -92,6 +94,17 @@ namespace DSS
 				break;
 			}
 		}
+
+		inline bool apply() const  { return apply_; }
+
+		void setUseRect(bool use)
+		{
+			useRectangle->setEnabled(true);
+			useRect_ = use;
+
+		}
+
+		inline bool useRect() const { return useRect_; }
 
 	private:
 		QGroupBox* compressionGroup;
@@ -113,6 +126,8 @@ namespace DSS
 		bool apply_;
 		bool useRect_;
 
+	public slots:
+		void onFilter(const QString& filter);
 
 	private slots:
 		void onCompressionNone(bool checked);
@@ -120,7 +135,7 @@ namespace DSS
 		void onCompressionLZW(bool checked);
 		void onApply(bool checked);
 		void onEmbed(bool checked);
-		void onFilter(const QString& filter);
+		void onRect(bool checked);
 
 	};
 }

@@ -50,17 +50,24 @@ namespace DSS
 {
 	SavePicture::SavePicture(QWidget* parent, const QString& caption, const QString& directory, const QString& filter) :
 		QFileDialog(parent, caption, directory, filter),
-		compressionGroup(new QGroupBox(this)),
-		compressionLayout(new QHBoxLayout(compressionGroup)),
-		compressionNone(new QRadioButton(compressionGroup)),
-		compressionZIP(new QRadioButton(compressionGroup)),
-		compressionLZW(new QRadioButton(compressionGroup)),
-		optionsGroup(new QGroupBox(this)),
-		optionsLayout(new QVBoxLayout(optionsGroup)),
-		applyAdjustments(new QRadioButton(optionsGroup)),
-		embedAdjustments(new QRadioButton(optionsGroup)),
-		useRectangle(new QCheckBox(optionsGroup))
+		compressionGroup{ new QGroupBox(this) },
+		compressionLayout{ new QHBoxLayout(compressionGroup) },
+		compressionNone{ new QRadioButton(compressionGroup) },
+		compressionZIP{new QRadioButton(compressionGroup)},
+		compressionLZW{new QRadioButton(compressionGroup)},
+		optionsGroup{new QGroupBox(this)},
+		optionsLayout{new QVBoxLayout(optionsGroup)},
+		applyAdjustments{new QRadioButton(optionsGroup)},
+		embedAdjustments{new QRadioButton(optionsGroup)},
+		useRectangle{new QCheckBox(optionsGroup)},
+		apply_{ false },
+		useRect_{false}
 	{
+		//
+		// Only used for saving files ...
+		//
+		setAcceptMode(QFileDialog::AcceptSave);
+
 		compressionGroup->setObjectName("compressionGroup");
 		compressionLayout->setObjectName("compressionLayout");
 		compressionNone->setObjectName("compressionNone");
@@ -82,6 +89,8 @@ namespace DSS
 		optionsLayout->addWidget(applyAdjustments);
 		optionsLayout->addWidget(embedAdjustments);
 		optionsLayout->addWidget(useRectangle);
+
+		useRectangle->setEnabled(false);
 
 		retranslateUi(this);
 
@@ -121,6 +130,7 @@ namespace DSS
 		connect(compressionLZW, &QRadioButton::clicked, this, &SavePicture::onCompressionLZW);
 		connect(applyAdjustments, &QRadioButton::clicked, this, &SavePicture::onApply);
 		connect(embedAdjustments, &QRadioButton::clicked, this, &SavePicture::onEmbed);
+		connect(useRectangle, &QCheckBox::clicked, this, &SavePicture::onRect);
 		connect(this, &QFileDialog::filterSelected, this, &SavePicture::onFilter);
 	}
 
@@ -150,6 +160,11 @@ namespace DSS
 	void SavePicture::onEmbed(bool checked)
 	{
 		if (checked) apply_ = false;
+	}
+
+	void SavePicture::onRect(bool checked)
+	{
+		useRect_ = checked;
 	}
 
 

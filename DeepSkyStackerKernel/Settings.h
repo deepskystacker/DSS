@@ -98,94 +98,80 @@ protected :
 	std::vector<QString> m_vFiles; // Not really files - they are files with date/times on the end, so stored as a string and not a fs::path.
 
 protected :
-	bool	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
+	bool	ReadVariableFromWorkspace(const QString& keyName, const QString& defaultValue, const QString prefix = QString())
 	{
 		Workspace workspace;
-		const QString keyName(QString::fromWCharArray(szKey));
-		const QString prefix(szPrefix ? QString::fromWCharArray(szPrefix) : "");
-		const QString strDefault(QString::fromWCharArray(szDefault));
-		QString strValue(workspace.value(keyName).toString());
+		QString value(workspace.value(keyName).toString());
 
-		if (strValue.isEmpty())
-			strValue = strDefault;
+		if (value.isEmpty())
+			value = defaultValue;
 
 		CSetting s;
 
-		if (szPrefix)
+		if (!prefix.isEmpty())
 			s.m_strVariable = QString("%1.%2").arg(prefix).arg(keyName);
 		else
 			s.m_strVariable = keyName;
-		s.m_strValue = strValue;
+		s.m_strValue = value;
 
 		m_sSettings.insert(s);
 
 		return true;
 	};
 
-	void	AddVariable(LPCTSTR szVariable, int lValue)
+	void	AddVariable(const QString& variable, int lValue)
 	{
 		CSetting		s;
 
-		s.m_strVariable = QString::fromWCharArray(szVariable);
+		s.m_strVariable = variable;
 		s.m_strValue = QString("%1").arg(lValue);
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
 	};
 
-	void	AddVariable(LPCTSTR szVariable, LPCTSTR szValue)
+	void	AddVariable(const QString& variable, const QString& value)
 	{
 		CSetting		s;
 
-		s.m_strVariable = QString::fromWCharArray(szVariable);
-		s.m_strValue    = QString::fromWCharArray(szValue);
+		s.m_strVariable = variable;
+		s.m_strValue    = value;
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
 	};
 
-	void	AddFileVariable(LPCTSTR szVariable, LPCTSTR szFileName)
+	void	AddFileVariable(const QString& variable, const fs::path& file)
 	{
 		CBitmapInfo		bmpInfo;
 
 		// Retrieve the date and time of creation and append it to the file name
-		if (GetPictureInfo(szFileName, bmpInfo))
+		if (GetPictureInfo(file, bmpInfo))
 		{
-			QString strValue = QString("%1[%2]").arg(szFileName, bmpInfo.m_strDateTime);
-			AddVariable(szVariable, strValue.toStdWString().c_str());
-		};
-	};
-	void	AddFileVariable(LPCTSTR szVariable, const fs::path& szFileName)
-	{
-		CBitmapInfo		bmpInfo;
-
-		// Retrieve the date and time of creation and append it to the file name
-		if (GetPictureInfo(szFileName, bmpInfo))
-		{
-			QString strValue = QString("%1[%2]").arg(szFileName.c_str(), bmpInfo.m_strDateTime);
-			AddVariable(szVariable, strValue.toStdWString().c_str());
+			QString value = QString("%1[%2]").arg(file.u16string(), bmpInfo.m_strDateTime);
+			AddVariable(variable, value);
 		};
 	};
 
 	void	AddRAWSettings()
 	{
-		ReadVariableFromWorkspace(_T("RawDDP/Brightness"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(_T("RawDDP/RedScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(_T("RawDDP/BlueScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(_T("RawDDP/NoWB"), _T("0"), _T("Raw"));
-		ReadVariableFromWorkspace(_T("RawDDP/CameraWB"), _T("0"), _T("Raw"));
-		ReadVariableFromWorkspace(_T("RawDDP/BlackPointTo0"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace("RawDDP/Brightness", "1.0", "Raw");
+		ReadVariableFromWorkspace("RawDDP/RedScale", "1.0", "Raw");
+		ReadVariableFromWorkspace("RawDDP/BlueScale", "1.0", "Raw");
+		ReadVariableFromWorkspace("RawDDP/NoWB", "0", "Raw");
+		ReadVariableFromWorkspace("RawDDP/CameraWB", "0", "Raw");
+		ReadVariableFromWorkspace("RawDDP/BlackPointTo0", "0", "Raw");
 	};
 
 	void	AddFITSSettings()
 	{
-		ReadVariableFromWorkspace(_T("FitsDDP/FITSisRAW"), _T("0"), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/Brightness"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/RedScale"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/BlueScale"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/DSLR"), _T(""), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/BayerPattern"), _T("4"), _T("Fits"));
-		ReadVariableFromWorkspace(_T("FitsDDP/ForceUnsigned"), _T("0"), _T("Fits"));
+		ReadVariableFromWorkspace("FitsDDP/FITSisRAW", "0", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/Brightness", "1.0", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/RedScale", "1.0", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/BlueScale", "1.0", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/DSLR", "", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/BayerPattern", "4", "Fits");
+		ReadVariableFromWorkspace("FitsDDP/ForceUnsigned", "0", "Fits");
 	};
 
 public :
@@ -197,9 +183,9 @@ public :
 	{
 	};
 
-	bool	ReadFromFile(LPCTSTR szFile);
-	bool	InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile);
-	void	WriteToFile(LPCTSTR szFile);
+	bool	ReadFromFile(const fs::path&);
+	bool	InitFromCurrent(CTaskInfo * pTask, const fs::path&);
+	void	WriteToFile(const fs::path&);
 
 	virtual void	ReadFromRegistry() {};
 
@@ -216,15 +202,15 @@ public :
 
 	virtual void	ReadFromRegistry() override
 	{
-		ReadVariableFromWorkspace(_T("Stacking/Dark_Method"), _T("0"));
-		ReadVariableFromWorkspace(_T("Stacking/Dark_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(_T("Stacking/Dark_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace("Stacking/Dark_Method", "0");
+		ReadVariableFromWorkspace("Stacking/Dark_Iteration", "5");
+		ReadVariableFromWorkspace("Stacking/Dark_Kappa", "2.0");
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
-			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
+			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
 	};
 };
 
@@ -238,20 +224,20 @@ public :
 
 	virtual void	ReadFromRegistry() override
 	{
-		ReadVariableFromWorkspace(_T("Stacking/Flat_Method"), _T("0"));
-		ReadVariableFromWorkspace(_T("Stacking/Flat_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(_T("Stacking/Flat_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace("Stacking/Flat_Method", "0");
+		ReadVariableFromWorkspace("Stacking/Flat_Iteration", "5");
+		ReadVariableFromWorkspace("Stacking/Flat_Kappa", "2.0");
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
-			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
+			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
 	};
 	void	SetMasterDarkFlat(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
-			AddFileVariable(_T("MasterDarkFlat"), pTask->m_strOutputFile);
+			AddFileVariable("MasterDarkFlat", pTask->m_strOutputFile);
 	};
 };
 
@@ -265,9 +251,9 @@ public :
 
 	virtual void	ReadFromRegistry() override
 	{
-		ReadVariableFromWorkspace(_T("Stacking/Offset_Method"), _T("0"));
-		ReadVariableFromWorkspace(_T("Stacking/Offset_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(_T("Stacking/Offset_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace("Stacking/Offset_Method", "0");
+		ReadVariableFromWorkspace("Stacking/Offset_Iteration", "5");
+		ReadVariableFromWorkspace("Stacking/Offset_Kappa", "2.0");
 	};
 };
 

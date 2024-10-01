@@ -317,10 +317,10 @@ namespace DSS
 		};
 
 		bool	Load(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
-		void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
-		void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
-		void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
-		void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
+		void	SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
+		void	SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
+		void	SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true);
+		void	SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, DSS::ProgressBase* pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
 		std::shared_ptr<CMemoryBitmap> GetBitmap(DSS::ProgressBase* const pProgress = nullptr);
 
 		void	updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect = nullptr);

@@ -619,13 +619,14 @@ void ExplorerBar::SaveSettingFile()
 	create_directories(fs::path{ directory.toStdU16String() });
 
 	fileDialog.setWindowTitle(tr("Save DeepSkyStacker Settings", "IDS_TITLE_SAVESETTINGS"));
+	fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 	fileDialog.setDefaultSuffix(extension);
 	fileDialog.setFileMode(QFileDialog::AnyFile);
 
 	fileDialog.setNameFilter(tr("DSS Settings Files (*.dsssettings)"));
 	fileDialog.setDirectory(directory);
 
-	ZTRACE_RUNTIME("About to show file open dlg");
+	ZTRACE_RUNTIME("About to show file save dlg");
 	if (QDialog::Accepted == fileDialog.exec())
 	{
 		QString file = fileDialog.selectedFiles()[0];

@@ -1989,23 +1989,6 @@ namespace DSS
 			save(fs::path{ file.toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(selectedFilter));
 		}
 		return;
-
-		// This is the old code using a QFileDialog.
-
-		QFileDialog fileDialog;
-		fileDialog.setDefaultSuffix(extension);
-		fileDialog.setFileMode(QFileDialog::AnyFile);
-		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
-		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[filterIndex]);
-		fileDialog.setDirectory(QString::fromStdU16String(dirPath.generic_u16string()));
-
-		if (QDialog::Accepted == fileDialog.exec())
-		{
-			QStringList files = fileDialog.selectedFiles();
-			ZASSERTSTATE(1 == files.size());
-			save(fs::path{ files.at(0).toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter()));
-		}
 	}
 
 	/* ------------------------------------------------------------------- */

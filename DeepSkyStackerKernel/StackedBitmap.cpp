@@ -631,7 +631,7 @@ void StackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
 class CTIFFWriterStacker : public CTIFFWriter
 {
 private :
-	LPRECT				m_lprc;
+	DSSRect rect;
 	StackedBitmap *	m_pStackedBitmap;
 	bool				m_bApplySettings;
 	TIFFFORMAT			m_TiffFormat;
@@ -640,9 +640,9 @@ private :
 						m_lYStart;
 
 public :
-	CTIFFWriterStacker(const fs::path& p, LPRECT lprc, ProgressBase *	pProgress) :
+	CTIFFWriterStacker(const fs::path& p, const DSSRect& rc, ProgressBase *	pProgress) :
 	   CTIFFWriter(p, pProgress),
-		m_lprc { lprc },
+		rect { rc },
 		m_pStackedBitmap{ nullptr },
 		m_bApplySettings { false },
 		m_TiffFormat{ TF_16BITRGB },
@@ -691,23 +691,23 @@ bool CTIFFWriterStacker::OnOpen()
 	{
 		lWidth	= m_pStackedBitmap->GetWidth();
 		lHeight = m_pStackedBitmap->GetHeight();
-		if (!m_lprc)
+		if (rect.isEmpty())
 		{
 			m_lXStart = 0;
 			m_lYStart = 0;
 		}
 		else
 		{
-			m_lprc->left	= std::max(0L, m_lprc->left);
-			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
-			m_lprc->top		= std::max(0L, m_lprc->top);
-			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
+			rect.left	= std::max(0, rect.left);
+			rect.right = std::min(lWidth, rect.right);
+			rect.top		= std::max(0, rect.top);
+			rect.bottom = std::min(lHeight, rect.bottom);
 
-			lWidth			= (m_lprc->right-m_lprc->left);
-			lHeight			= (m_lprc->bottom-m_lprc->top);
+			lWidth			= (rect.right-rect.left);
+			lHeight			= (rect.bottom-rect.top);
 
-			m_lXStart = m_lprc->left;
-			m_lYStart = m_lprc->top;
+			m_lXStart = rect.left;
+			m_lYStart = rect.top;
 		};
 
 		SetCompression(m_TiffComp);
@@ -756,10 +756,10 @@ bool CTIFFWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
-	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
+	CTIFFWriterStacker		tiff(file, rect, pProgress);
 	QString					strText;
 
 	tiff.SetStackedBitmap(this);
@@ -785,10 +785,10 @@ void StackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progres
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
-	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
+	CTIFFWriterStacker		tiff(file, rect, pProgress);
 	QString					strText;
 
 	tiff.SetStackedBitmap(this);
@@ -830,7 +830,7 @@ void StackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progres
 class CFITSWriterStacker : public CFITSWriter
 {
 private :
-	LPRECT				m_lprc;
+	DSSRect rect;
 	StackedBitmap *	m_pStackedBitmap;
 	bool				m_bApplySettings;
 	FITSFORMAT			m_FitsFormat;
@@ -838,10 +838,10 @@ private :
 						m_lYStart;
 
 public :
-	CFITSWriterStacker(const fs::path& file, LPRECT lprc, ProgressBase *	pProgress) :
-	   CFITSWriter(file, pProgress)
+	CFITSWriterStacker(const fs::path& file, const DSSRect& rc, ProgressBase *	pProgress) :
+		CFITSWriter(file, pProgress),
+		rect{rc}
 	{
-		m_lprc = lprc;
 		m_bApplySettings = false;
 		m_FitsFormat	 = FF_16BITRGB;
 		m_lXStart = 0;
@@ -885,23 +885,23 @@ bool CFITSWriterStacker::OnOpen()
 	{
 		lWidth	= m_pStackedBitmap->GetWidth();
 		lHeight = m_pStackedBitmap->GetHeight();
-		if (!m_lprc)
+		if (rect.isEmpty())
 		{
 			m_lXStart = 0;
 			m_lYStart = 0;
 		}
 		else
 		{
-			m_lprc->left	= std::max(0L, m_lprc->left);
-			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
-			m_lprc->top		= std::max(0L, m_lprc->top);
-			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
+			rect.left	= std::max(0, rect.left);
+			rect.right = std::min( lWidth, rect.right);
+			rect.top		= std::max(0, rect.top);
+			rect.bottom = std::min( lHeight, rect.bottom);
 
-			lWidth			= (m_lprc->right-m_lprc->left);
-			lHeight			= (m_lprc->bottom-m_lprc->top);
+			lWidth			= (rect.right-rect.left);
+			lHeight			= (rect.bottom-rect.top);
 
-			m_lXStart = m_lprc->left;
-			m_lYStart = m_lprc->top;
+			m_lXStart = rect.left;
+			m_lYStart = rect.top;
 		};
 
 		SetFormat(lWidth, lHeight, m_FitsFormat, CFATYPE_NONE);
@@ -951,10 +951,10 @@ bool CFITSWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings)
+void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings)
 {
 	ZFUNCTRACE_RUNTIME();
-	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
+	CFITSWriterStacker		fits(file, rect, pProgress);
 	QString					strText;
 
 	fits.SetStackedBitmap(this);
@@ -984,10 +984,10 @@ void StackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, Progres
 
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
+void StackedBitmap::SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
 {
 	ZFUNCTRACE_RUNTIME();
-	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
+	CFITSWriterStacker		fits(file, rect, pProgress);
 	QString					strText;
 
 	fits.SetStackedBitmap(this);

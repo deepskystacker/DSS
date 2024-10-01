@@ -1076,11 +1076,6 @@ namespace big_endian {
 	}
 }
 
-bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
-{
-	const fs::path strFilename(szFileName);
-	return GetPictureInfo(strFilename, BitmapInfo);
-}
 bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();

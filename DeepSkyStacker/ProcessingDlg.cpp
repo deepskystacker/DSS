@@ -417,8 +417,9 @@ namespace DSS
 
 			auto baseDirectory{ settings.value("Folders/SavePictureFolder").toString() };
 			auto extension{ settings.value("Folders/SavePictureExtension").toString().toLower() };
-			auto applied{ settings.value("Folders/SaveApplySetting", false).toBool() };
-			auto compression{ settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt() };
+			auto apply{ settings.value("Folders/SaveApplySetting", false).toBool() };
+			TIFFCOMPRESSION compression{ static_cast<TIFFCOMPRESSION>(
+				settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt()) };
 			auto filterIndex{ settings.value("Folders/SavePictureIndex", 0).toUInt() };
 
 
@@ -431,23 +432,84 @@ namespace DSS
 				tr("FITS Image 32 bit/ch - rational (*.fts)", "IDS_FILTER_OUTPUT")
 			};
 
-			if (extension.isEmpty()) extension = ".tif";
+			// if (extension.isEmpty()) extension = ".tif";
+			if (filterIndex > 2) extension = ".fts";
+			else extension = ".tif";
 
 			//
 			// SavePicture is a sub-class of QFileDialog, we'll set the QFileDialog vars first
 			//
 			SavePicture dlg{ this, tr("Save Image"), baseDirectory };
 			dlg.setDefaultSuffix(extension);
-			dlg.setNameFilters(fileFilters);
-			dlg.selectNameFilter(fileFilters.at(filterIndex));
 			dlg.setFilter(QDir::Files | QDir::Writable);
+			dlg.setNameFilters(fileFilters);
+			auto filter{ fileFilters.at(filterIndex) };
+			dlg.selectNameFilter(filter);
+			//
+			// selectNameFilter doesn't fire the QFileDialog::filterSelected signal
+			// so need to drive the slot ourself
+			//
+			dlg.onFilter(filter);
 
 			//
 			// Now set our sub-class variables
 			//
+
 			dlg.setCompression(TIFFCOMPRESSION(compression));
-			dlg.setApply(applied);
-			dlg.exec();
+			dlg.setApply(apply);
+			if (!selectionRect.isEmpty()) dlg.setUseRect(true);
+
+			//
+			// display the dialogue
+			//
+			if (QDialog::Accepted == dlg.exec())
+			{
+				fs::path file = dlg.selectedFiles().at(0).toStdU16String();
+				apply = dlg.apply();
+				compression = dlg.compression();
+				bool useRect = dlg.useRect();
+				DSSRect rect;			// Empty rectangle
+				DSS::ProgressDlg progress{ DeepSkyStacker::instance() };
+
+
+				//
+				// If only wish to save the selected rectangle, copy it
+				// to our working rectangle
+				//
+				if (useRect) rect = selectionRect;
+
+				//
+				// Save the image in the format the user has selected
+				//
+				auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) };
+				StackedBitmap& stackedBitmap{ dssApp->deepStack().GetStackedBitmap() };
+
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+				switch (index)
+				{
+				case 0:		// TIFF 16 bit
+					stackedBitmap.SaveTIFF16Bitmap(file, rect, &progress, apply, compression);
+					break;
+				case 1:		// TIFF 32 bit integer
+					stackedBitmap.SaveTIFF32Bitmap(file, rect, &progress, apply, false, compression);
+					break;
+				case 2:		// TIFF 32 bit rational
+					stackedBitmap.SaveTIFF32Bitmap(file, rect, &progress, apply, true, compression);
+					break;
+				case 3:		// FITS 16 bit
+					stackedBitmap.SaveFITS16Bitmap(file, rect, &progress, apply);
+					break;
+				case 4:		// FITS 32 bit integer
+					stackedBitmap.SaveFITS32Bitmap(file, rect, &progress, apply, false);
+					break;
+				case 5:		// FITS 32 bit rational
+					stackedBitmap.SaveFITS32Bitmap(file, rect, &progress, apply, true);
+					break;
+				}
+				QGuiApplication::restoreOverrideCursor();
+
+			}
 		}
 		/*
 		QSettings			settings;
@@ -462,7 +524,7 @@ namespace DSS
 			strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
 			strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
 			auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
-			applied = settings.value("Folders/SaveApplySetting", false).toBool();
+			apply = settings.value("Folders/SaveApplySetting", false).toBool();
 			dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
 
 			if (!strBaseExtension.GetLength())
