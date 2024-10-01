@@ -1165,7 +1165,7 @@ namespace DSS
 
 		const auto addFileIfValid = [&](const auto file) -> void
 		{
-			QString stem{ QString::fromUtf16(file.stem().u16string().c_str()) };
+			QString stem{ QString::fromStdU16String(file.stem().u16string()) };
 			stem = locale.toLower(stem);
 			QString extension{ file.extension().string().c_str() };
 			extension = extension.toLower();

@@ -14,7 +14,6 @@
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "File.h"
 #include "MedianFilterEngine.h"
 #include "omp.h"
 #include "dssbase.h"

@@ -148,7 +148,7 @@ protected :
 		// Retrieve the date and time of creation and append it to the file name
 		if (GetPictureInfo(file, bmpInfo))
 		{
-			QString value = QString("%1[%2]").arg(file.u16string(), bmpInfo.m_strDateTime);
+			QString value = QString("%1[%2]").arg(file.generic_u16string(), bmpInfo.m_strDateTime);
 			AddVariable(variable, value);
 		};
 	};

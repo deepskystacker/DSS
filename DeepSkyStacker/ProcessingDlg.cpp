@@ -415,13 +415,13 @@ namespace DSS
 		{
 			QSettings settings;
 
-			auto baseDirectory{ settings.value("Folders/SavePictureFolder").toString() };
+			auto directory{ settings.value("Folders/SavePictureFolder").toString() };
 			auto extension{ settings.value("Folders/SavePictureExtension").toString().toLower() };
 			auto apply{ settings.value("Folders/SaveApplySetting", false).toBool() };
 			TIFFCOMPRESSION compression{ static_cast<TIFFCOMPRESSION>(
 				settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt()) };
 			auto filterIndex{ settings.value("Folders/SavePictureIndex", 0).toUInt() };
-
+			if (filterIndex > 5) filterIndex = 0;
 
 			QStringList fileFilters{
 				tr("TIFF Image 16 bit/ch (*.tif)", "IDS_FILTER_OUTPUT"),
@@ -439,7 +439,7 @@ namespace DSS
 			//
 			// SavePicture is a sub-class of QFileDialog, we'll set the QFileDialog vars first
 			//
-			SavePicture dlg{ this, tr("Save Image"), baseDirectory };
+			SavePicture dlg{ this, tr("Save Image"), directory };
 			dlg.setDefaultSuffix(extension);
 			dlg.setFilter(QDir::Files | QDir::Writable);
 			dlg.setNameFilters(fileFilters);
@@ -507,6 +507,20 @@ namespace DSS
 					stackedBitmap.SaveFITS32Bitmap(file, rect, &progress, apply, true);
 					break;
 				}
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
+				extension = QString::fromStdU16String(file.extension().generic_u16string());
+
+				settings.setValue("Folders/SavePictureFolder", directory);
+				settings.setValue("Folders/SavePictureExtension", extension);
+				settings.setValue("Folders/SavePictureIndex", index);
+				settings.setValue("Folders/SaveApplySetting", apply);
+				settings.setValue("Folders/SaveCompression", (uint)compression);
+
 				QGuiApplication::restoreOverrideCursor();
 
 			}
