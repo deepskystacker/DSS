@@ -203,7 +203,6 @@
     <ClCompile Include=".\DSSProgress.cpp" />
     <ClCompile Include=".\DSSTools.cpp" />
     <ClCompile Include=".\EntropyInfo.cpp" />
-    <ClCompile Include=".\File.cpp" />
     <ClCompile Include=".\Filters.cpp" />
     <ClCompile Include=".\FITSUtil.cpp" />
     <ClCompile Include=".\FlatFrame.cpp" />
@@ -275,7 +274,6 @@
     <ClInclude Include=".\dssrect.h" />
     <ClInclude Include=".\DSSTools.h" />
     <ClInclude Include=".\EntropyInfo.h" />
-    <ClInclude Include=".\File.h" />
     <ClInclude Include=".\Filters.h" />
     <ClInclude Include=".\FITSUtil.h" />
     <ClInclude Include=".\FlatFrame.h" />
