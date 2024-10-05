@@ -6,6 +6,7 @@
 #include "FrameInfoSupport.h"
 #include "ProcessingSettingsDlg.h"
 #include "SavePicture.h"
+#include "StarMaskDlg.h"
 #include <Ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
@@ -257,6 +258,15 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Create star mask";
+		timer.stop();
+		StarMaskDlg dlg{ this };
+
+		if (QDialog::Accepted == dlg.exec())
+		{
+		}
+
+
+		timer.start();
 		return;
 	}
 
@@ -265,7 +275,6 @@ namespace DSS
 	void ProcessingDlg::loadStackedImage(const fs::path& file)
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Load stacked image";
 
 		//
 		// Load the output file created at the end of the stacking process.
@@ -408,7 +417,7 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Save image to file";
-		bool				bResult = false;
+		bool result = false;
 
 
 		if (dssApp->deepStack().IsLoaded())
@@ -432,7 +441,6 @@ namespace DSS
 				tr("FITS Image 32 bit/ch - rational (*.fts)", "IDS_FILTER_OUTPUT")
 			};
 
-			// if (extension.isEmpty()) extension = ".tif";
 			if (filterIndex > 2) extension = ".fts";
 			else extension = ".tif";
 
@@ -441,7 +449,6 @@ namespace DSS
 			//
 			SavePicture dlg{ this, tr("Save Image"), directory };
 			dlg.setDefaultSuffix(extension);
-			dlg.setFilter(QDir::Files | QDir::Writable);
 			dlg.setNameFilters(fileFilters);
 			auto filter{ fileFilters.at(filterIndex) };
 			dlg.selectNameFilter(filter);
@@ -454,7 +461,6 @@ namespace DSS
 			//
 			// Now set our sub-class variables
 			//
-
 			dlg.setCompression(TIFFCOMPRESSION(compression));
 			dlg.setApply(apply);
 			if (!selectionRect.isEmpty()) dlg.setUseRect(true);
@@ -465,6 +471,7 @@ namespace DSS
 			if (QDialog::Accepted == dlg.exec())
 			{
 				fs::path file = dlg.selectedFiles().at(0).toStdU16String();
+
 				apply = dlg.apply();
 				compression = dlg.compression();
 				bool useRect = dlg.useRect();
@@ -522,119 +529,20 @@ namespace DSS
 				settings.setValue("Folders/SaveCompression", (uint)compression);
 
 				QGuiApplication::restoreOverrideCursor();
+				currentFile = file;
+				updateInformation();
+				setDirty(false);
+				result = true;
 
 			}
 		}
-		/*
-		QSettings			settings;
-		CString				strBaseDirectory;
-		CString				strBaseExtension;
-		bool				applied = false;
-		uint				dwCompression;
-		CRect				rcSelect;
-
-		if (dssApp->deepStack().IsLoaded())
-		{
-			strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
-			strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
-			auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
-			apply = settings.value("Folders/SaveApplySetting", false).toBool();
-			dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
-
-			if (!strBaseExtension.GetLength())
-				strBaseExtension = _T(".tif");
-
-			CSavePicture				dlgOpen(false,
-				_T(".TIF"),
-				nullptr,
-				OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
-				OUTPUTFILE_FILTERS,
-				this);
-
-			if (m_SelectRectSink.GetSelectRect(rcSelect))
-				dlgOpen.SetUseRect(true, true);
-			if (applied)
-				dlgOpen.SetApplied(true);
-
-			dlgOpen.SetCompression((TIFFCOMPRESSION)dwCompression);
-
-			if (strBaseDirectory.GetLength())
-				dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-			dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
-
-			TCHAR				szBigBuffer[20000] = _T("");
-			DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
-
-			dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-			dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-			if (dlgOpen.DoModal() == IDOK)
-			{
-				POSITION		pos;
-
-				pos = dlgOpen.GetStartPosition();
-				if (pos)
-				{
-					CString			strFile;
-					LPRECT			lpRect = nullptr;
-					bool			bApply;
-					bool			bUseRect;
-					TIFFCOMPRESSION	Compression;
-
-					bApply = dlgOpen.GetApplied();
-					bUseRect = dlgOpen.GetUseRect();
-					Compression = dlgOpen.GetCompression();
-
-					if (bUseRect && m_SelectRectSink.GetSelectRect(rcSelect))
-						lpRect = &rcSelect;
-
-					BeginWaitCursor();
-					strFile = dlgOpen.GetNextPathName(pos);
-					if (dlgOpen.m_ofn.nFilterIndex == 1)
-						dssApp->deepStack().GetStackedBitmap().SaveTIFF16Bitmap(strFile, lpRect, &dlg, bApply, Compression);
-					else if (dlgOpen.m_ofn.nFilterIndex == 2)
-						dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, false, Compression);
-					else if (dlgOpen.m_ofn.nFilterIndex == 3)
-						dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, true, Compression);
-					else if (dlgOpen.m_ofn.nFilterIndex == 4)
-						dssApp->deepStack().GetStackedBitmap().SaveFITS16Bitmap(strFile, lpRect, &dlg, bApply);
-					else if (dlgOpen.m_ofn.nFilterIndex == 5)
-						dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, false);
-					else if (dlgOpen.m_ofn.nFilterIndex == 6)
-						dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, true);
-
-					TCHAR		szDir[1 + _MAX_DIR];
-					TCHAR		szDrive[1 + _MAX_DRIVE];
-					TCHAR		szExt[1 + _MAX_EXT];
-
-					_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
-					strBaseDirectory = szDrive;
-					strBaseDirectory += szDir;
-					strBaseExtension = szExt;
-
-					dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-					settings.setValue("Folders/SavePictureFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-					settings.setValue("Folders/SavePictureExtension", QString::fromWCharArray(strBaseExtension.GetString()));
-					settings.setValue("Folders/SavePictureIndex", (uint)dwFilterIndex);
-					settings.setValue("Folders/SaveApplySetting", bApply);
-					settings.setValue("Folders/SaveCompression", (uint)Compression);
-
-					EndWaitCursor();
-
-					m_strCurrentFile = strFile;
-					UpdateInfos();
-					m_bDirty = false;
-					bResult = true;
-				};
-			};
-		}
 		else
 		{
-			AfxMessageBox(IDS_MSG_NOPICTURETOSAVE, MB_OK | MB_ICONSTOP);
-		};*/
+			QMessageBox::information(this, "DeepSkyStacker",
+				tr("There is no picture to save.", "IDS_MSG_NOPICTURETOSAVE"));
+		}
 
-		return bResult;
-
+		return result;
 	}
 
 	/* ------------------------------------------------------------------- */

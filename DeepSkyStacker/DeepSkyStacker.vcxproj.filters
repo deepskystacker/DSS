@@ -271,9 +271,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StarMaskDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\BtnST.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -775,6 +772,9 @@
     <QtUic Include="ui\ProcessingSettingsDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\StarMaskDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -883,6 +883,9 @@
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
     <QtMoc Include="SavePicture.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
   </ItemGroup>

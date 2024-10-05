@@ -49,7 +49,7 @@ namespace DSS {
 		ProcessingSettingsDlg(QWidget *parent, ProcessingSettings settings);
 		~ProcessingSettingsDlg();
 
-		ProcessingSettingsDlg(const ProcessingSettings& rhs) = delete;
+		ProcessingSettingsDlg(const ProcessingSettingsDlg& rhs) = delete;
 
 		ProcessingSettingsDlg& operator = (const ProcessingSettingsDlg& rhs) = delete;
 
