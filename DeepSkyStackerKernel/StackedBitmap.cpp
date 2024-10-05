@@ -37,6 +37,9 @@ namespace {
 	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
 }
 
+#if defined(MSC_VER) && !defined(NDEBUG)
+#include <vld.h>
+#endif
 
 //
 // MT, 11-March-2024
@@ -73,7 +76,14 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 	{
 		const size_t bufferLen = this->m_lWidth;
 		if (!static_cast<bool>(pAvxBezierAndSaturation))
+		{
+#if defined(MSC_VER) && !defined(NDEBUG)
+			// The Visual Leak Detector under Windows reports false positive leaks for thread_local allocations (using unique_ptr in this case).
+			// So we turn the leak detection off here, and turn it on again after the allocation.
+			VLDDisable();
+#endif
 			pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
+		}
 
 		if (lastY != Y) // New row (lastY is thread_local and initialised to -1, see above).
 		{
@@ -90,6 +100,10 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			pAvxBezierAndSaturation->avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
 		}
+
+#if defined(MSC_VER) && !defined(NDEBUG)
+		VLDEnable();
+#endif
 
 		const auto [redBuffer, greenBuffer, blueBuffer] = pAvxBezierAndSaturation->getBufferPtr();
 		fRed = redBuffer[X];
@@ -118,8 +132,8 @@ void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double
 		fRed	/= 256.0;
 		fGreen	/= 256.0;
 		fBlue	/= 256.0;
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 namespace
