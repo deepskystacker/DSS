@@ -49,7 +49,7 @@
 #pragma warning(disable : 4710)  // Function not inlined
 #endif //_MSC_VER
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
 #include "vld.h"
 #endif
 
@@ -153,7 +153,7 @@ static ZPrivateResource &traceFunction_Lock()
   static ZPrivateResource *theLock = 0;
   if (! theLock)
   {
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
       // Visual Leak Detector reports these as memory leaks, which is technically correct
       // but as we know about them and they are harmless turn leak detection off here,
       // and turn it on again after the allocation
@@ -164,7 +164,7 @@ static ZPrivateResource &traceFunction_Lock()
     if (! theLock)
         theLock = new ZPrivateResource;
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
     VLDEnable();
 #endif
   }
@@ -212,7 +212,7 @@ public:
         ZResourceLock aLock(traceFunction_Lock());
         if (!initializer)
         {
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
             // Visual Leak Detector reports these as memory leaks, which is technically correct
             // but as we know about them and they are harmless turn leak detection off here,
             // and turn it on again after the allocation
@@ -220,7 +220,7 @@ public:
 #endif
             initializer = new ZTrace_Init;
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
             VLDEnable();
 #endif
         }

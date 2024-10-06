@@ -47,7 +47,7 @@
 #endif //!ALL_WARNINGS
 #endif //_MSC_VER
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
 #include "vld.h"
 #endif
 
@@ -123,7 +123,7 @@ static ZPrivateResource &traceFunction_Lock()
   static ZPrivateResource *theLock = 0;
   if (! theLock)
   {
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
     // Visual Leak Detector reports these as memory leaks, which is technically correct
     // but as we know about them and they are harmless turn leak detection off here,
     // and turn it on again after the allocation
@@ -134,7 +134,7 @@ static ZPrivateResource &traceFunction_Lock()
     if (! theLock)
         theLock = new ZPrivateResource;
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
     VLDEnable();
 #endif
   }
@@ -159,7 +159,7 @@ static ZException::TraceFn& traceFunction()
 
   if (! pDefaultTraceFn)
   {
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
       // Visual Leak Detector reports these as memory leaks, which is technically correct
       // but as we know about them and they are harmless turn leak detection off here,
       // and turn it on again after the allocation
@@ -171,7 +171,7 @@ static ZException::TraceFn& traceFunction()
     if (! pDefaultTraceFn)
         pDefaultTraceFn = new ZExceptTraceFn;
 
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
     VLDEnable();
 #endif
 
