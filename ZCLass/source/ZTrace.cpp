@@ -46,10 +46,11 @@
 #pragma warning(disable : 4512)  // assignment operator could not be generated
 #pragma warning(disable : 4663)  // C++ template specialisation change
 #endif //!ALL_WARNINGS
+#pragma warning(disable : 4710)  // Function not inlined
 #endif //_MSC_VER
 
-#if defined(_MSC_VER)
-#pragma warning(disable : 4710)  // Function not inlined
+#if defined(_MSC_VER) && !defined(NDEBUG)
+#include "vld.h"
 #endif
 
 #include "zdefs.h"
@@ -152,9 +153,20 @@ static ZPrivateResource &traceFunction_Lock()
   static ZPrivateResource *theLock = 0;
   if (! theLock)
   {
+#if defined(_MSC_VER) && !defined(NDEBUG)
+      // Visual Leak Detector reports these as memory leaks, which is technically correct
+      // but as we know about them and they are harmless turn leak detection off here,
+      // and turn it on again after the allocation
+      VLDDisable();
+#endif
+
     ZMasterLock lockInit;
     if (! theLock)
         theLock = new ZPrivateResource;
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+    VLDEnable();
+#endif
   }
   return *theLock;
 }
@@ -197,9 +209,20 @@ public:
     static ZTrace_Init * initializer;
     if (! initializer)
     {
+#if defined(_MSC_VER) && !defined(NDEBUG)
+        // Visual Leak Detector reports these as memory leaks, which is technically correct
+        // but as we know about them and they are harmless turn leak detection off here,
+        // and turn it on again after the allocation
+        VLDDisable();
+#endif
+
       ZResourceLock aLock(traceFunction_Lock());
       if (! initializer)
           initializer = new ZTrace_Init;
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+      VLDEnable();
+#endif
     }
     if (ZTrace::iClState & ZTrace::uninitialized)
         initialize();
