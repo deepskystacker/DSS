@@ -164,7 +164,7 @@ static ZPrivateResource &traceFunction_Lock()
     if (! theLock)
         theLock = new ZPrivateResource;
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && !defined(NDEBUG)
     VLDEnable();
 #endif
   }
@@ -209,20 +209,23 @@ public:
     static ZTrace_Init * initializer;
     if (! initializer)
     {
+        ZResourceLock aLock(traceFunction_Lock());
+        if (!initializer)
+        {
 #if defined(_MSC_VER) && !defined(NDEBUG)
-        // Visual Leak Detector reports these as memory leaks, which is technically correct
-        // but as we know about them and they are harmless turn leak detection off here,
-        // and turn it on again after the allocation
-        VLDDisable();
+            // Visual Leak Detector reports these as memory leaks, which is technically correct
+            // but as we know about them and they are harmless turn leak detection off here,
+            // and turn it on again after the allocation
+            VLDDisable();
 #endif
+            initializer = new ZTrace_Init;
 
-      ZResourceLock aLock(traceFunction_Lock());
-      if (! initializer)
-          initializer = new ZTrace_Init;
-
-#if defined(_MSC_VER) && defined(_DEBUG)
-      VLDEnable();
+#if defined(_MSC_VER) && !defined(NDEBUG)
+            VLDEnable();
 #endif
+        }
+
+
     }
     if (ZTrace::iClState & ZTrace::uninitialized)
         initialize();

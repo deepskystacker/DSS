@@ -134,7 +134,7 @@ static ZPrivateResource &traceFunction_Lock()
     if (! theLock)
         theLock = new ZPrivateResource;
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && !defined(NDEBUG)
     VLDEnable();
 #endif
   }
@@ -171,7 +171,7 @@ static ZException::TraceFn& traceFunction()
     if (! pDefaultTraceFn)
         pDefaultTraceFn = new ZExceptTraceFn;
 
-#if defined(_MSC_VER) && defined(_DEBUG)
+#if defined(_MSC_VER) && !defined(NDEBUG)
     VLDEnable();
 #endif
 
