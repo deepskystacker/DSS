@@ -43,8 +43,11 @@ namespace DSS {
 	{
 		Q_OBJECT
 
+		typedef BaseDialog
+			Inherited;
+
 	public:
-		StarMaskDlg(QWidget* parent);
+		StarMaskDlg(QWidget* parent, const fs::path& file);
 		~StarMaskDlg() {}
 
 		StarMaskDlg(const StarMaskDlg& rhs) = delete;
@@ -60,10 +63,16 @@ namespace DSS {
 		void percentChanged(int value);
 		void pixelsChanged(int value);
 
+		void onOK();
+		void onCancel();
+
+
 
 
 	private:
 		void connectSignalsToSlots();
+
+		fs::path imageFile;
 
 	};
 } // namespace DSS

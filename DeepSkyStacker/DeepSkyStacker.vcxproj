@@ -238,27 +238,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tools\BtnST.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ButtonToolbar.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\childprop.cpp" />
-    <ClCompile Include="..\Tools\ControlPos.cpp" />
-    <ClCompile Include="..\Tools\Gradient.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
     <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\ToolTipButton.cpp" />
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="About.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -284,10 +266,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="editstars.cpp" />
     <ClCompile Include="ImageProperties.cpp" />
-    <ClCompile Include="ImageSinks.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="picturelist.cpp" />
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
@@ -373,20 +351,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ResourceCompile Include="DeepSkyStackerTR.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Tools\BtnST.h" />
-    <ClInclude Include="..\Tools\ButtonToolbar.h" />
-    <ClInclude Include="..\Tools\childprop.h" />
-    <ClInclude Include="..\Tools\ControlPos.h" />
-    <ClInclude Include="..\Tools\EasySize.h" />
-    <ClInclude Include="..\Tools\Gradient.h" />
-    <ClInclude Include="..\Tools\gradientctrl.h" />
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
-    <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
-    <ClInclude Include="..\Tools\WndImage.h" />
     <QtMoc Include="AlignmentParameters.h" />
     <QtMoc Include="AskRegistering.h" />
     <QtMoc Include="BackgroundOptions.h" />
@@ -403,13 +371,11 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="DSS-versionhelpers.h" />
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
-    <ClInclude Include="DSSMemory.h" />
     <QtMoc Include="ExplorerBar.h" />
     <QtMoc Include="editstars.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
     <ClInclude Include="Histogram.h" />
-    <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />
     <QtMoc Include="picturelist.h" />

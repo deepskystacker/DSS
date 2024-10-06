@@ -258,15 +258,17 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		qDebug() << "Create star mask";
-		timer.stop();
-		StarMaskDlg dlg{ this };
-
-		if (QDialog::Accepted == dlg.exec())
+		if (dssApp->deepStack().IsLoaded())
 		{
+			timer.stop();
+			StarMaskDlg dlg{ this, currentFile };
+
+			if (QDialog::Accepted == dlg.exec())
+			{
+			}
+
+			timer.start();
 		}
-
-
-		timer.start();
 		return;
 	}
 

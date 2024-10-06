@@ -43,8 +43,9 @@
 #define dssApp DeepSkyStacker::instance()
 namespace DSS
 {
-	StarMaskDlg::StarMaskDlg(QWidget* parent)
-		: BaseDialog(BaseDialog::Behaviour::PersistGeometry, parent)
+	StarMaskDlg::StarMaskDlg(QWidget* parent, const fs::path& file)
+		: BaseDialog(BaseDialog::Behaviour::PersistGeometry, parent),
+		imageFile{ file }
 	{
 		setupUi(this);
 		QSettings settings;
@@ -102,6 +103,8 @@ namespace DSS
 
 	void StarMaskDlg::connectSignalsToSlots()
 	{
+		connect(buttonBox, &QDialogButtonBox::accepted, this, &StarMaskDlg::onOK);
+		connect(buttonBox, &QDialogButtonBox::rejected, this, &StarMaskDlg::onCancel);
 		connect(starShape, &QComboBox::currentIndexChanged, this, &StarMaskDlg::setStarShapePreview);
 		connect(thresholdSlider, &QSlider::valueChanged, this, &StarMaskDlg::thresholdChanged);
 		connect(minSizeSlider, &QSlider::valueChanged, this, &StarMaskDlg::minSizeChanged);
@@ -166,6 +169,70 @@ namespace DSS
 		pixels->setText(tr("%n pixel(s)", "", value));
 	}
 
+	void StarMaskDlg::onOK()
+	{
+		QSettings settings;
+		fs::path file;
+
+		if (imageFile.has_parent_path())
+			file = imageFile.parent_path();
+		else
+			file = imageFile.root_path();
+		file /= "StarMask";
+
+		// 
+		// Set the filetype based on the saved settings value of StarMask/FileType
+		// which is a 1 based value.  1 ==> tif, 2 ==> fits.   It is 1 based because
+		// the Windows file dialog used a 1 based value for the file type filter.
+		//
+		auto selectedType{ settings.value("StarMask/FileType", 1).toUInt() };
+
+		switch (selectedType)
+		{
+		case 1:
+			file.replace_extension("tif");
+			break;
+		case 2:
+			file.replace_extension("fts");
+			break;
+		}
+
+		QString selectedFilter;		// Will be set by QFileDialog::getSaveFileName
+		QStringList fileFilters{
+			tr("TIFF Image(*.tif *.tiff)", "IDS_FILTER_MASK"),
+			tr("FITS Image(*.fits *.fts *.fit)", "IDS_FILTER_MASK")
+		};
+
+		//
+		// SavePicture is a sub-class of QFileDialog, we'll set the QFileDialog vars first
+		//
+		QFileDialog dlg{ this, tr("Save the StarMask as ...", "IDS_TITLE_MASK"), QString::fromStdU16String(file.generic_u16string()) };
+		dlg.setNameFilters(fileFilters);
+		auto filter{ fileFilters.at(selectedType-1) };
+		dlg.selectNameFilter(filter);
+		dlg.setAcceptMode(QFileDialog::AcceptSave);
+
+		//
+		// display the dialogue
+		//
+		if (QDialog::Accepted == dlg.exec())
+		{
+			fs::path outputFile = dlg.selectedFiles().at(0).toStdU16String();
+			auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) };
+
+			qDebug() << "Selected filter" << index;
+			
+
+		}
+			
+
+		accept();
+	}
+
+	void StarMaskDlg::onCancel()
+	{
+		reject();
+	}
 }
 #if (0)
 extern CString STARMASKFILE_FILTERS;

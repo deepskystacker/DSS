@@ -28,9 +28,6 @@
     <Filter Include="Dialogs\Settings">
       <UniqueIdentifier>{b3fd7e64-4da0-4cee-9902-e351ec135e87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dialogs\ImageSinks">
-      <UniqueIdentifier>{1c172764-f817-483b-9fe6-5b07e4b4a8c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
     </Filter>
@@ -81,41 +78,8 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BtnST.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ButtonToolbar.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\childprop.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ControlPos.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Gradient.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Delaunay.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageSinks.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
     <ClCompile Include="StackingDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
@@ -198,6 +162,9 @@
     <ClCompile Include="ProcessingSettingsDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="Delaunay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -271,36 +238,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\BtnST.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ButtonToolbar.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\childprop.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ControlPos.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\EasySize.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Gradient.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\gradientctrl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Delaunay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -312,12 +249,6 @@
     </ClInclude>
     <ClInclude Include="DSS-winpackagefamily.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageSinks.h">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>

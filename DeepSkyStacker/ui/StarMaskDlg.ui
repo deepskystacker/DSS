@@ -22,7 +22,7 @@
      <height>33</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
      <number>6</number>
     </property>
