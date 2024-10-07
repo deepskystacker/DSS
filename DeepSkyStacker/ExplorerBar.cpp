@@ -625,7 +625,7 @@ namespace DSS
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::AnyFile);
 
-		fileDialog.setNameFilter(tr("DSS Settings Files (*.dsssettings)"));
+		fileDialog.setNameFilter(tr("DSS Settings Files (*.dsssettings)", "IDS_FILTER_SETTINGFILE"));
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file save dlg");

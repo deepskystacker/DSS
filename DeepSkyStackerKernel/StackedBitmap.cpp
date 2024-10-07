@@ -35,6 +35,18 @@ namespace {
 	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
 }
 
+//
+// Define some convenience "functions" to either turn Visual Leak Detector on and off
+// or do nothing
+//
+#if defined(_WINDOWS) && !defined(NDEBUG)
+#include <vld.h>
+void turnOffVld() { VLDDisable(); }
+void turnOnVld() { VLDEnable(); }
+#else
+void turnOffVld() {}
+void turnOnVld() {}
+#endif
 
 //
 // MT, 11-March-2024
@@ -69,6 +81,14 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 
 	if (bApplySettings)
 	{
+		//
+		// Visual Leak Detector (VLD) under Windows reports false positive leaks for thread_local 
+		// allocations (using unique_ptr in this case).
+		// 
+		// So we turn the leak detection off here, and turn it on again after the allocation.
+		//
+		turnOffVld();
+
 		const size_t bufferLen = this->m_lWidth;
 		if (!static_cast<bool>(pAvxBezierAndSaturation))
 			pAvxBezierAndSaturation = std::make_unique<AvxBezierAndSaturation>(bufferLen);
@@ -88,6 +108,8 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			pAvxBezierAndSaturation->avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
 		}
+
+		turnOnVld();
 
 		const auto [redBuffer, greenBuffer, blueBuffer] = pAvxBezierAndSaturation->getBufferPtr();
 		fRed = redBuffer[X];
