@@ -1192,60 +1192,60 @@ Píxels freds detectats: %L3 (%L4%)
         <location filename="../ProcessingDlg.cpp" line="1146"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Desitja guardar les modificacions?</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="350"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge TIFF o FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="437"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="438"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge TIFF 32 bit/ch - integer(*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="439"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="440"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="441"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge FITS 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="442"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge FITS 32 bit/ch - rational (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="451"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Guarda Imatge</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="543"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>No hi ha una imatge per a guardar.</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="558"/>
@@ -1368,34 +1368,35 @@ Píxels freds detectats: %L3 (%L4%)
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Administració de Configuracions</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Agregar</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregar</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Tancar</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>El nom de la configuració de processament no pot contenir ni un / ni \.
+Si us plau, canvieu el nom.</translation>
     </message>
 </context>
 <context>
@@ -1553,7 +1554,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Els fitxers FITS d&apos;un sol pla de 16 bits provenen d&apos;un &amp;quot;One-Shot-Colour&amp;quot; càmera (DSLR, mirrorless, CCD o CMOS) que s&apos;ha de desactivar.&lt;br/&gt;Deixeu &lt;span style=&quot; font-style:italic;&quot;&gt;desmarcada&lt;/span&gt; per intentar la detecció automàtica basada en paraules clau FITS. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
@@ -1714,7 +1715,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>El llindar automàtic</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
@@ -1786,7 +1787,7 @@ Please change the name.</source>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 estrella/es</translation>
+        <translation>%1 estrella/es</translation>
     </message>
 </context>
 <context>
@@ -1920,55 +1921,55 @@ Desitja guardar-los?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Compressió</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">Cap</translation>
+        <translation>Cap</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (Comprimir)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (Obsolet)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Opcions</translation>
+        <translation>Opcions</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar ajustaments a la imatge guardada</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Agregar els ajustaments a la imatge guardada però no aplicar-los</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>No aplicar ajustaments a la imatge guardada</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crear una imatge a partir del rectangle seleccionat</translation>
     </message>
 </context>
 <context>
@@ -2550,7 +2551,7 @@ Offset/Bias: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>No tots els marcs de llum seleccionats tenen una qualitat mitjana calculada. Hauríeu de tornar a registrar els vostres marcs lleugers.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2791,112 +2792,112 @@ comparativament a la desviació estàndard (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Crear una Màscara d&apos;Estrelles</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="77"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Detecció d&apos;Estrelles</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="89"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Llindar de detecció d&apos;estrelles</translation>
+        <translation>Llindar de detecció d&apos;estrelles</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="136"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detecció de Hot Pixels</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="184"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Mesura Màxima d&apos;una Estrella</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="283"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Augmentarr/Reduir</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="311"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Percentatge de la grandària de l&apos;estrella</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="374"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Augmentar la mida en</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="422"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma de les estrelles en la màscara</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="59"/>
         <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Campana</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Campana Truncada</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Con</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Con Truncat</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Cúbic</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <translation>Quadràtic;</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="149"/>
         <location filename="../StarMaskDlg.cpp" line="164"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
         <location filename="../StarMaskDlg.cpp" line="154"/>
         <location filename="../StarMaskDlg.cpp" line="159"/>
         <location filename="../StarMaskDlg.cpp" line="169"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n píxel</numerusform>
+            <numerusform>%n píxels</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="202"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imatge FITS (*.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="209"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Desa la StarMask com a ...</translation>
     </message>
 </context>
 <context>
