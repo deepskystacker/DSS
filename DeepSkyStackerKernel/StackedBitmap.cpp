@@ -41,7 +41,7 @@ namespace {
 // The Visual Leak Detector (VLD) under Windows reports false positive leaks for thread_local allocations (using unique_ptr in this case).
 // So we turn the leak detection off here, and turn it on again after the allocation.
 //
-#if defined(_MSC_VER) && !defined(NDEBUG)
+#if defined(_WINDOWS) && !defined(NDEBUG)
 #include <vld.h>
 void turnOffVld() { VLDDisable(); }
 void turnOnVld() { VLDEnable(); }
