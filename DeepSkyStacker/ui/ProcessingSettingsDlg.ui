@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DeepSkyStacker - Processing Settings</string>
+   <string>Processing Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
