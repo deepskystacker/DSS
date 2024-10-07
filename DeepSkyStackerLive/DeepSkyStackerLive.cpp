@@ -53,7 +53,12 @@
 // Necessary Windows header
 //
 #if defined(Q_OS_WIN)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
 #include <afx.h>
+//
+// Visual Leak Detector
+#include <vld.h>
 #endif
 
 #include "avx_support.h"
@@ -64,7 +69,6 @@
 #include "LiveSettings.h"
 #include <zexcept.h>
 #include <ztrace.h>
-#include "./../DeepSkyStacker/SetUILanguage.h"	// Explicit include so not to pull over all headers in DSS if we added just a new include path.
 #include "tracecontrol.h"
 #include "Workspace.h"
 #include "foldermonitor.h"

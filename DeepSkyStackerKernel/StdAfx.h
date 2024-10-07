@@ -4,10 +4,6 @@
 //
 #pragma once
 
-// Visual Leak Detector
-//
-#include <vld.h>
-
 // Qt Files
 #include <QCoreApplication>
 #include <QFileInfo>
@@ -72,11 +68,5 @@ using std::max;
 // If it got too big, or changed a lot, then we could move out to specific cpp files.
 #include "dssbase.h"
 
-
-// Windows Files (eventually to go!)
-#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
-
-#include <afx.h>
 #include <zexcept.h>
 #include <Ztrace.h>

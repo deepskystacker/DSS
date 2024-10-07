@@ -157,7 +157,7 @@ private:
 	CPostCalibrationSettings	m_PostCalibrationSettings;
 	bool						m_bChannelAlign;
 
-	CComAutoCriticalSection		m_CriticalSection;
+	std::mutex	mutex;
 
 public:
 	CStackingEngine() :

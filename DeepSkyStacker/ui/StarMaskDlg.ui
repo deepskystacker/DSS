@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string comment="IDD_STARMASK">Create a Star Mask</string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="layoutWidget1">
    <property name="geometry">
     <rect>
      <x>10</x>

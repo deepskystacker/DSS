@@ -7,7 +7,6 @@
 
 
 namespace DSS { class ProgressBase; }
-class C32BitsBitmap;
 class CMemoryBitmap;
 /* ------------------------------------------------------------------- */
 

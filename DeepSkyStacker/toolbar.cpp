@@ -46,9 +46,6 @@ namespace DSS
         opacityEffect(this),
         selectionGroup(this)
     {
-        StackingDlg* stackingDlg = dynamic_cast<StackingDlg*>(parent);
-        ZASSERT(nullptr != stackingDlg);
-
         constexpr int iconpixels = 48;
         constexpr int radius = 27;
 

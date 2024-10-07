@@ -653,10 +653,18 @@ int Avx256Stacking::pixelPartitioning()
 	if constexpr (ENTROPY)
 	{
 		AvxSupport avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
+#if defined (_MSC_VER)
+#pragma warning( push )
+#pragma warning (disable: 4127)
+#endif
 		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
 			return 1;
+
 		if (!ISRGB && !avxEntropySupport.isMonochromeBitmapOfType<float>())
 			return 1;
+#if defined (_MSC_VER)
+#pragma warning (pop)
+#endif
 		if (stackData.entropyData.redEntropyLayer.empty()) // Something is wrong here!
 			return 1;
 		pRedEntropyLayer = reinterpret_cast<float*>(stackData.entropyData.redEntropyLayer.data());

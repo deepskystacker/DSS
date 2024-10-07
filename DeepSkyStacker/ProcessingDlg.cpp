@@ -381,8 +381,7 @@ namespace DSS
 				currentFile = file;				// Remember the current file
 				dssApp->deepStack().reset();
 				dssApp->deepStack().SetProgress(&dlg);
-				bool OK = dssApp->deepStack().LoadStackedInfo(file);
-				ZASSERT(OK);
+				std::ignore = dssApp->deepStack().LoadStackedInfo(file);
 
 				dssApp->deepStack().SetProgress(nullptr);
 

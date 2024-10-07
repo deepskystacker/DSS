@@ -173,7 +173,6 @@
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -188,7 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
     <ClInclude Include="..\dssbase.h" />
     <QtMoc Include="progressconsole.h" />

@@ -251,19 +251,6 @@ void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colou
 		break;
 	}
 	painter.drawPolygon(points, 3);
-
-	//----- Draw lines manually in the right directions ------//
-	//CPen outlinepen(PS_SOLID, 1, GetSysColor(COLOR_WINDOWTEXT));
-	//oldpen = dc->SelectObject(&outlinepen);
-
-	//dc->MoveTo(points[0]);
-	//dc->LineTo(points[1]);
-	//dc->LineTo(points[2]);
-	//dc->LineTo(points[0]);
-
-	//dc->SelectObject(oldpen);
-
-	//brush.DeleteObject();
 }
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direction)

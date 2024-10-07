@@ -306,7 +306,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="SaveEditChanges.cpp" />
     <ClCompile Include="SavePicture.cpp" />
     <ClCompile Include="selectrect.cpp" />
-    <ClCompile Include="SetUILanguage.cpp" />
     <ClCompile Include="RGBTab.cpp" />
     <ClCompile Include="StackingDlg.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -397,7 +396,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="SaveEditChanges.h" />
     <QtMoc Include="SavePicture.h" />
     <QtMoc Include="selectrect.h" />
-    <ClInclude Include="SetUILanguage.h" />
     <QtMoc Include="StackingDlg.h" />
     <QtMoc Include="StackingParameters.h" />
     <QtMoc Include="StackRecap.h" />

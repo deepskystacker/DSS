@@ -48,10 +48,9 @@ public :
 			return false;
 	};
 
-	bool	Read(LPCTSTR szLine)
+	bool	Read(const QString&  strLine)
 	{
 		bool			bResult = false;
-		QString			strLine = QString::fromWCharArray(szLine);
 		int				nPos;
 
 		nPos = strLine.indexOf("=");
@@ -70,7 +69,7 @@ public :
 		CHAR			szBuffer[2000];
 
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
-			bResult = Read((LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer));
+			bResult = Read(QString::fromLatin1(szBuffer));
 
 		return bResult;
 	};

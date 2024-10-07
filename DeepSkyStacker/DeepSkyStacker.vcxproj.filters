@@ -42,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SetUILanguage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -214,9 +211,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SetUILanguage.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="commonresource.h">
       <Filter>Header Files</Filter>
     </ClInclude>

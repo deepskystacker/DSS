@@ -185,7 +185,7 @@ inline bool IsInStdDev(double fValue, double fMean, double fStdDev)
 	ZFUNCTRACE_RUNTIME();
 	return (fValue >= fMean-2*fStdDev) && (fValue <= fMean+2*fStdDev);
 };
-
+#if (0)
 static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -306,7 +306,7 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 
 	sValuePairs = sTempValuePairs;
 };
-
+#endif
 /* ------------------------------------------------------------------- */
 
 class CSubSquare

@@ -219,7 +219,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />

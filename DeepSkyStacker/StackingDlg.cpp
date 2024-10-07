@@ -2166,7 +2166,6 @@ namespace DSS
 		{
 			bool				bContinue;
 			CAllStackingTasks	tasks;
-			CRect				rcSelect;
 
 			emit statusMessage("");
 

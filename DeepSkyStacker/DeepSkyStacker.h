@@ -95,9 +95,6 @@ protected:
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e) override;
 	void dropEvent(QDropEvent* e) override;
-	void showEvent(QShowEvent* event) override;
-
-	void onInitialise();
 
 public:
 	inline static DeepSkyStacker* instance()
@@ -125,24 +122,17 @@ public:
 };
 
 
-class DeepSkyStackerApp : public CWinApp
-{
-public :
-	CWnd *				m_pMainDlg;
-
-public :
-	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
-	virtual ~DeepSkyStackerApp() = default;
-
-	virtual BOOL InitInstance( ) override;
-	virtual int ExitInstance() override;
-	virtual int Run() override;
-
-};
-
+//class DeepSkyStackerApp : public CWinApp
+//{
+//public :
+//	CWnd *				m_pMainDlg;
 //
-// Temporarily left here while still have to position MFC windows
+//public :
+//	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
+//	virtual ~DeepSkyStackerApp() = default;
 //
-void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath);
-void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter = false);
-
+//	virtual BOOL InitInstance( ) override;
+//	virtual int ExitInstance() override;
+//	virtual int Run() override;
+//
+//};

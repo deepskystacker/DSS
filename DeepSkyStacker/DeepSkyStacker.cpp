@@ -36,6 +36,15 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
+#if defined(_WINDOWS)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#include <afx.h>
+//
+// Visual Leak Detector
+//
+#include <vld.h>
+#endif
+
 #include <htmlhelp.h>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -56,7 +65,6 @@ namespace bip = boost::interprocess;
 #include "commonresource.h"
 #include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
-#include "SetUILanguage.h"
 #include "DeepStack.h"
 #include "tracecontrol.h"
 #include "Workspace.h"
@@ -373,24 +381,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	settings.endGroup();
 }
 
-void DeepSkyStacker::showEvent(QShowEvent* event)
-{
-	// Invoke base class showEvent()
-	Inherited::showEvent(event);
-	if (!event->spontaneous())
-	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitialise();
-		}
-	}
-}
-
-void DeepSkyStacker::onInitialise()
-{
-}
-
 void DeepSkyStacker::createStatusBar()
 {
 	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
@@ -536,11 +526,6 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	settings.sync();
 }
 
-
-GdiplusStartupOutput gdiSO;
-ULONG_PTR gdiplusToken{ 0ULL };
-ULONG_PTR gdiHookToken{ 0ULL };
-
 void DeepSkyStacker::disableSubDialogs()
 {
 	stackingDlg->setEnabled(false);
@@ -676,96 +661,6 @@ void DeepSkyStacker::updateStatus(const QString& text)
 {
 	statusBarText->setText(text);
 }
-
-BOOL DeepSkyStackerApp::InitInstance()
-{
-	ZFUNCTRACE_RUNTIME();
-	CWinApp::InitInstance();
-
-	EnableHtmlHelp();
-
-	SetRegistryKey(_T("DeepSkyStacker"));
-
-	//
-	// Set our Profile Name to DeepSkyStacker5 so native Windows registry stuff
-	// will be written under "DeepSkyStacker\\DeepSkyStacker5"
-	// 
-	// First free the string allocated by MFC at CWinApp startup.
-	// The string is allocated before InitInstance is called.
-	free((void*)m_pszProfileName);
-	// Change the name of the registry profile to use.
-	// The CWinApp destructor will free the memory.
-	m_pszProfileName = _tcsdup(_T("DeepSkyStacker5"));
-
-	//ZTRACE_RUNTIME("AfxInitialize()");
-	//if (!AfxInitialize())
-	//{
-	//	AfxMessageBox(L"AfxInitialize failed.", MB_OK | MB_ICONSTOP);
-	//}
-
-
-	// Initialize OLE libraries
-	if (!AfxOleInit())
-	{
-		AfxMessageBox(L"OLE initialization failed.\nMake sure that the OLE libraries are the correct version.",
-			MB_OK | MB_ICONSTOP);
-		return false;
-	}
-
-	GdiplusStartupInput		gdiplusStartupInput;
-
-
-	ZTRACE_RUNTIME("Initialize GDI+");
-
-	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = true;
-	Gdiplus::Status status = GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
-	gdiSO.NotificationHook(&gdiHookToken);
-	if (Gdiplus::Ok != status)
-	{
-		AfxMessageBox(L"GDI+ initialization failed.");
-		return false;
-	}
-	ZTRACE_RUNTIME("Initialize GDI+ - ok");
-
-	AfxInitRichEdit2();
-
-	return TRUE;
-};
-
-int DeepSkyStackerApp::ExitInstance()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	AfxOleTerm(FALSE);
-
-#ifndef NOGDIPLUS
-	// Shutdown GDI+
-	ZTRACE_RUNTIME("Shutting down GDI+");
-	gdiSO.NotificationUnhook(gdiHookToken);
-	GdiplusShutdown(gdiplusToken);
-#endif
-
-	return CWinApp::ExitInstance();
-}
-
-// The DeepSkyStacker class, a subclass of CWinApp, runs the event loop in the default implementation of Run().
-// The MFC event loop is a standard Win32 event loop, but uses the CWinApp API PreTranslateMessage() to activate accelerators.
-//
-/* ------------------------------------------------------------------- */
-int DeepSkyStackerApp::Run()
-{
-	ZFUNCTRACE_RUNTIME();
-	ZASSERT(false);
-	return 0;
-}
-
-DeepSkyStackerApp theApp;
-
-DeepSkyStackerApp *		GetDSSApp()
-{
-	return &theApp;
-};
 
 using namespace std;
 
@@ -1044,24 +939,10 @@ int main(int argc, char* argv[])
 //	std::signal(SIGTERM, signalHandler);
 //#endif
 
-	//QMfcApp app(&theApp, argc, argv);
 	QApplication app(argc, argv);
 
 	if (hasExpired())
 		return FALSE;
-
-	ZTRACE_RUNTIME("Initialize MFC");
-	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
-	{
-		ZTRACE_RUNTIME("Fatal Error: MFC initialization failed");
-		QString errorMessage{ "Fatal Error: MFC initialization failed" };
-		cerr << errorMessage.toUtf8().constData() << endl;
-		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
-		return 1;
-	}
-	// initialize all the windows stuff we need for now
-	theApp.InitInstance();
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -1083,11 +964,6 @@ int main(int argc, char* argv[])
 
 	ZTRACE_RUNTIME("Set UI Language");
 	LoadTranslations();
-
-	//
-	// Do the old Windows language stuff
-	//
-	SetUILanguage();
 
 	reportCpuType();
 
@@ -1187,17 +1063,6 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 	}
-	catch (CException& e)
-	{
-		traceControl.setDeleteOnExit(false);
-		constexpr unsigned int msglen{ 255 };
-		TCHAR message[msglen]{ 0x00 };
-		e.GetErrorMessage(&message[0], msglen);
-		ZTRACE_RUNTIME("CException caught: %s", (LPCSTR)CT2CA(message));
-
-		e.ReportError();
-		e.Delete();
-	}
 	catch (ZException& ze)
 	{
 		traceControl.setDeleteOnExit(false);
@@ -1242,101 +1107,6 @@ int main(int argc, char* argv[])
 
 	}
 #endif
-	theApp.ExitInstance();
+	//theApp.ExitInstance();
 	return result;
 }
-
-/* ------------------------------------------------------------------- */
-
-void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath)
-{
-	ZFUNCTRACE_RUNTIME();
-	std::uint32_t dwMaximized = 0;
-	std::uint32_t dwTop = 0;
-	std::uint32_t dwLeft = 0;
-	std::uint32_t dwWidth = 0;
-	std::uint32_t dwHeight = 0;
-
-	QSettings	settings;
-
-	WINDOWPLACEMENT		wp;
-
-	memset(&wp, 0, sizeof(wp));
-	wp.length = sizeof(wp);
-
-	pWnd->GetWindowPlacement(&wp);
-	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-	dwLeft = wp.rcNormalPosition.left;
-	dwTop = wp.rcNormalPosition.top;
-
-	dwWidth = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-	dwHeight = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
-
-	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
-	QString regBase(szRegistryPath);
-	QString key = regBase + "/Maximized";
-	settings.setValue(key, (uint)dwMaximized);
-
-	key = regBase + "/Top";
-	settings.setValue(key, (uint)dwTop);
-
-	key = regBase + "/Left";
-	settings.setValue(key, (uint)dwLeft);
-
-	key = regBase + "/Width";
-	settings.setValue(key, (uint)dwWidth);
-
-	key = regBase + "/Height";
-	settings.setValue(key, (uint)dwHeight);
-
-};
-
-/* ------------------------------------------------------------------- */
-
-void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter)
-{
-	ZFUNCTRACE_RUNTIME();
-	std::uint32_t dwMaximized = 0;
-	std::uint32_t dwTop = 0;
-	std::uint32_t dwLeft = 0;
-	std::uint32_t dwWidth = 0;
-	std::uint32_t dwHeight = 0;
-
-	QSettings   settings;
-
-	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
-
-	QString regBase(szRegistryPath);
-	QString key = regBase + "/Maximized";
-	dwMaximized = settings.value(key).toUInt();
-
-	key = regBase + "/Top";
-	dwTop = settings.value(key).toUInt();
-
-	key = regBase + "/Left";
-	dwLeft = settings.value(key).toUInt();
-
-	key = regBase + "/Width";
-	dwWidth = settings.value(key).toUInt();
-
-	key = regBase += "/Height";
-	dwHeight = settings.value(key).toUInt();
-
-	if (dwTop && dwLeft && dwWidth && dwHeight)
-	{
-		WINDOWPLACEMENT		wp;
-
-		memset(&wp, 0, sizeof(wp));
-		wp.length = sizeof(wp);
-		wp.flags = 0;
-		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-		wp.rcNormalPosition.left = dwLeft;
-		wp.rcNormalPosition.top = dwTop;
-		wp.rcNormalPosition.right = wp.rcNormalPosition.left + dwWidth;
-		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + dwHeight;
-
-		pWnd->SetWindowPlacement(&wp);
-		if (bCenter)
-			pWnd->CenterWindow();
-	};
-};
