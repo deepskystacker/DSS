@@ -35,13 +35,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
