@@ -26,18 +26,13 @@ Changes since the last release:
 
 7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
 
-8. Bug fix: When using a custom rectangle a partially empty stacked result was created.
-
-9. When using the Processing panel, show black clipping in Blue, and white clipping in Red. 
-
-10. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
+8. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
    mean star quality.
+9. Finish conversion of code to Qt - there should be no MFC stuff left.
 
-8. Finish conversion of code to Qt - there should be no MFC stuff left.
+10. Upgrade LibRaw to 0.23.1
 
-9. Upgrade LibRaw to 0.23.1
-
-10. Upgrade LibTIFF to 4.7.0
+11. Upgrade LibTIFF to 4.7.0
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
