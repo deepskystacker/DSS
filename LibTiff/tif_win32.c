@@ -27,6 +27,10 @@
  * Scott Wagner (wagner@itek.com), Itek Graphix, Rochester, NY USA
  */
 
+#ifdef TIFF_DO_NOT_USE_NON_EXT_ALLOC_FUNCTIONS
+#undef TIFF_DO_NOT_USE_NON_EXT_ALLOC_FUNCTIONS
+#endif
+
 #include "tiffiop.h"
 #include <stdlib.h>
 
@@ -274,7 +278,7 @@ TIFF *TIFFOpenExt(const char *name, const char *mode, TIFFOpenOptions *opts)
             dwMode = OPEN_EXISTING;
             break;
         case O_RDWR:
-            dwMode = OPEN_ALWAYS;
+            dwMode = OPEN_EXISTING;
             break;
         case O_RDWR | O_CREAT:
             dwMode = OPEN_ALWAYS;
@@ -332,7 +336,7 @@ TIFF *TIFFOpenWExt(const wchar_t *name, const char *mode, TIFFOpenOptions *opts)
             dwMode = OPEN_EXISTING;
             break;
         case O_RDWR:
-            dwMode = OPEN_ALWAYS;
+            dwMode = OPEN_EXISTING;
             break;
         case O_RDWR | O_CREAT:
             dwMode = OPEN_ALWAYS;

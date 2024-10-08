@@ -1,3 +1,9 @@
+/* clang-format off */
+/* clang-format disabled because CMake scripts are very sensitive to the
+ * formatting of this file. configure_file variables of type "" are
+ * modified by clang-format and won't be substituted.
+ */
+
 /* libtiff/tif_config.h.cmake.in.  Not generated, but originated from autoheader.  */
 /* This file must be kept up-to-date with needed substitutions from libtiff/tif_config.h.in. */
 
@@ -89,13 +95,10 @@
 #define PACKAGE "LibTIFF Software"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "tiff@lists.maptools.org"
+#define PACKAGE_BUGREPORT "tiff@lists.osgeo.org"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "LibTIFF Software"
-
-/* Define to the full name and version of this package. */
-#define PACKAGE_STRING "LibTIFF Software 4.5.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "tiff"
@@ -103,25 +106,17 @@
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""
 
-/* Define to the version of this package. */
-#define PACKAGE_VERSION "4.5.0"
-
 /* Size of size_t */
 #define SIZEOF_SIZE_T 8
 
 /* Default size of the strip in bytes (when strip chopping enabled) */
-#ifndef STRIP_SIZE_DEFAULT
-#define STRIP_SIZE_DEFAULT 8192
-#endif
+#define STRIP_SIZE_DEFAULT 262144
 
 /** Maximum number of TIFF IFDs that libtiff can iterate through in a file. */
 #define TIFF_MAX_DIR_COUNT 1048576
 
 /* define to use win32 IO system */
 #define USE_WIN32_FILEIO 1
-
-/* Version number of package */
-#define VERSION "4.5.0"
 
 /* Support WEBP compression */
 /* #undef WEBP_SUPPORT */
@@ -158,3 +153,5 @@
 #else
 #  error "Unsupported size_t size; please submit a bug report"
 #endif
+
+/* clang-format on */
