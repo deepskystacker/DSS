@@ -24,10 +24,10 @@ namespace DSS
 	private:
 		QLabel* dockTitle;
 
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	protected:
 		void closeEvent(QCloseEvent* event);
 
-#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	private:
 		bool dssClosing;
 #endif
