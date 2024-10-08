@@ -132,7 +132,7 @@ void LibRaw::parseAdobeRAFMakernote()
   }
 
 #define CHECKSPACE(s)                                                          \
-  if (posPrivateMknBuf + (s) > PrivateMknLength)                               \
+  if (INT64(posPrivateMknBuf) + INT64(s) > INT64(PrivateMknLength))            \
   {                                                                            \
     free(PrivateMknBuf);                                                       \
     return;                                                                    \
@@ -209,7 +209,7 @@ void LibRaw::parseAdobeRAFMakernote()
     PrivateOrder = sget2(PrivateMknBuf);
     unsigned s, l;
     s = ifd_start = sget4(PrivateMknBuf +2)+6;
-    CHECKSPACE(ifd_start+4);
+    CHECKSPACE(INT64(ifd_start)+4LL);
     l = ifd_len = sget4(PrivateMknBuf +ifd_start);
 	CHECKSPACE_ABS3(ifd_start, ifd_len, 4);
 
@@ -767,7 +767,7 @@ void LibRaw::parseAdobeRAFMakernote()
 
 		  if (wb_section_offset)
 		  {
-			  CHECKSPACE(wb_section_offset + 12);
+			  CHECKSPACE(INT64(wb_section_offset) + 12LL);
 		  }
 
           if (wb_section_offset &&
@@ -856,7 +856,7 @@ void LibRaw::parseAdobeRAFMakernote()
             wb[2] = sget4(PrivateMknBuf + posWB) << 1;
             posWB += 4;
 
-            if (tWB && (iCCT < 255))
+            if (tWB && (iCCT < 64))
             {
               icWBCCTC[iCCT][0] = tWB;
               FORC4 icWBCCTC[iCCT][c + 1] = wb[c];
@@ -1143,9 +1143,9 @@ void LibRaw::parse_fuji_thumbnail(int offset)
               if ((fread(buf, 1, xmpsz, ifp) == xmpsz) && !memcmp(buf, xmpmarker, xmpsz)) // got it
               {
                   xmplen = len - xmpsz - 2;
-                  xmpdata = (char*) malloc(xmplen+1);
-                  fread(xmpdata, 1, xmplen, ifp);
-                  xmpdata[xmplen] = 0;
+                  xmpdata = (char*) calloc(xmplen+1,1);
+                  unsigned br = fread(xmpdata, 1, xmplen, ifp);
+                  xmpdata[br] = 0;
                   break;
               }
           }
@@ -1394,7 +1394,7 @@ void LibRaw::parse_fuji(int offset)
           wb[1] = get4();
           wb[3] = get4();
           wb[2] = get4() << 1;
-          if (tWB && (iCCT < 255))
+          if (tWB && (iCCT < 64))
           {
             icWBCCTC[iCCT][0] = tWB;
             FORC4 icWBCCTC[iCCT][c + 1] = wb[c];

@@ -707,9 +707,9 @@ static const char *static_camera_list[] = {
 	"Nikon Df",
 	"Nikon Z 5",
 	"Nikon Z 6",
-	"Nikon Z 6_2",  // Z 6 II
+	"Nikon Z 6 II",
 	"Nikon Z 7",
-	"Nikon Z 7_2",  // Z 7 II
+	"Nikon Z 7 II",
 	"Nikon Z 9 (HE/HE* formats are not supported yet)",
 	"Nikon Z 50",
 	"Nikon Z fc",
@@ -822,7 +822,6 @@ static const char *static_camera_list[] = {
 	"Olympus E-M5",
 	"Olympus E-M5 Mark II",
 	"Olympus E-M5 Mark III",
-	"Olympus OM-1",
 	"Olympus Pen-F",
 	"Olympus SP-310",
 	"Olympus SP-320",
