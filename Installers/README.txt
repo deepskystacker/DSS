@@ -1,5 +1,5 @@
-Welcome to DeepSkyStacker 5.1.7
-===============================
+Welcome to DeepSkyStacker 5.2.0 Beta 1
+======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
@@ -25,6 +25,19 @@ Changes since the last release:
 6. Bug fix: Add check box to control display of Black/White clipping in Processing panel.
 
 7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
+
+8. Bug fix: When using a custom rectangle a partially empty stacked result was created.
+
+9. When using the Processing panel, show black clipping in Blue, and white clipping in Red. 
+
+10. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
+   mean star quality.
+
+8. Finish conversion of code to Qt - there should be no MFC stuff left.
+
+9. Upgrade LibRaw to 0.23.1
+
+10. Upgrade LibTIFF to 4.7.0
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
