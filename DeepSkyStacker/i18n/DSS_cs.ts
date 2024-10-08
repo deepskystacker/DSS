@@ -806,66 +806,62 @@ Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished">Nastavení zpracování...</translation>
+        <translation>Nastavení zpracování...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished">Parametry slučování...</translation>
+        <translation>Parametry slučování...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished">Obnovit výchozí nastavení</translation>
+        <translation>Obnovit výchozí nastavení</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Načíst nastavení DeepSkyStacker Live</translation>
+        <translation>Načíst nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished">Načíst...</translation>
+        <translation>Načíst...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Uložit jako nastavení DeepSkyStacker Live</translation>
+        <translation>Uložit jako nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished">Uložit jako...</translation>
+        <translation>Uložit jako...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="576"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished">Načtení nastavení DeepSkyStacker</translation>
+        <translation>Načtení nastavení DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished">Nastavení DeepSkyStacker (*.dsssettings)</translation>
+        <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished">Uložení nastavení DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished">Nastavení DeepSkyStacker (*.dsssettings)</translation>
+        <translation>Uložení nastavení DeepSkyStacker</translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1096,7 @@ Ctrl+4 přepne režim 4 rohů</translation>
     <message>
         <location filename="../picturelist.cpp" line="13"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished">Dvojitým kliknutím sem ukotvíte/odemknete seznam obrázků</translation>
+        <translation>Dvojitým kliknutím sem ukotvíte/odemknete seznam obrázků</translation>
     </message>
 </context>
 <context>
@@ -1202,60 +1198,60 @@ Zjištěné studené pixely: %L3 (%L4 %)
         <location filename="../ProcessingDlg.cpp" line="1146"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chcete změny uložit?</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="350"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obrázky TIFF a FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="437"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF obraz 16 bit/k (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="438"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF obraz 32 bit/k - celočíselné (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="439"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF obraz 32 bit/k - racionální (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="440"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS obraz 16 bit/k (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="441"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS obraz 32 bit//k - celočíselné (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="442"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS obraz 32 bit/k - racionální (*.fts)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="451"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit obrázek</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="543"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Není žádný obraz k uložení.</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="558"/>
@@ -1379,34 +1375,35 @@ Zjištěné studené pixely: %L3 (%L4 %)
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Správa nastavení</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Odstranit</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Načíst</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Zavřít</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Název Nastavení zpracování nesmí obsahovat / nebo \.
+Změňte prosím název.</translation>
     </message>
 </context>
 <context>
@@ -1565,7 +1562,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jednoplošné 16bitové soubory FITS pocházejí z „One-Shot-Colour“; fotoaparát (DSLR, mirrorless, CCD nebo CMOS), který je třeba vyjmout.&lt;br/&gt;Chcete-li zkusit automatickou detekci na základě klíčových slov FITS, ponechte &lt;span style=&quot; font-style:italic;&quot;&gt;nezaškrtnuto&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
@@ -1726,7 +1723,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatický práh</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
@@ -1744,61 +1741,61 @@ Please change the name.</source>
         <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished">řed sloučením nezapomeňte přidat a zvolit temné pozadí, vyrovnání jasu a zkreslení.</translation>
+        <translation>řed sloučením nezapomeňte přidat a zvolit temné pozadí, vyrovnání jasu a zkreslení.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit temné pozadí a vyrovnání jasu.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a vyrovnání jasu.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="177"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit temné pozadí a zkreslení.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí a zkreslení.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="180"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu a zkreslení.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu a zkreslení.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="183"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit temné pozadí.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit temné pozadí.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="186"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit vyrovnání jasu.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished">Před sloučením nezapomeňte přidat a zvolit zkreslení.</translation>
+        <translation>Před sloučením nezapomeňte přidat a zvolit zkreslení.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="213"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished">Temné pozadí, vyrovnání jasu a vyrovnání zkreslení zvoleno.</translation>
+        <translation>Temné pozadí, vyrovnání jasu a vyrovnání zkreslení zvoleno.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="277"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Zarovnávání %1</translation>
+        <translation>Zarovnávání %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 hvězd</translation>
+        <translation>%1 hvězd</translation>
     </message>
 </context>
 <context>
@@ -1932,55 +1929,55 @@ Chcete je uložit?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Komprese</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">Žádná</translation>
+        <translation>Žádná</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (ztrátové)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (zastaralé)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Nastavení</translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použít úpravy pro uložení souboru</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vložit úpravy v uloženém snímku, ale nepoužívat je</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nepoužívat úpravy pro uložení obrazu</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvořit obraz z označeného obdelníku</translation>
     </message>
 </context>
 <context>
@@ -2004,206 +2001,206 @@ Chcete je uložit?</translation>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished">ISO</translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished">Citlivost</translation>
+        <translation>Citlivost</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Ano</translation>
+        <translation>Ano</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">Ne</translation>
+        <translation>Ne</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">RGB kanály kalibrace pozadí: %1</translation>
+        <translation>RGB kanály kalibrace pozadí: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Kalibrace pozadí kanálů: %1</translation>
+        <translation>Kalibrace pozadí kanálů: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Optimalizace temného pozadí: %1</translation>
+        <translation>Optimalizace temného pozadí: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished">Koeficient zesílení temného pozadí: %1</translation>
+        <translation>Koeficient zesílení temného pozadí: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished">Zjištění a odstranění přepálených bodů: %1</translation>
+        <translation>Zjištění a odstranění přepálených bodů: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">Pro zpracování je třeba %1 volného odkládacího prostoru na disku %2.&lt;br&gt;Na tomto disku je dostupných jen %3.</translation>
+        <translation>Pro zpracování je třeba %1 volného odkládacího prostoru na disku %2.&lt;br&gt;Na tomto disku je dostupných jen %3.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="740"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished">Poznámka: Nezbytné místo na disku je spočítáno z velikosti snímku a jeho souřadnic. Závisí na celkové velikosti výsledného obrazu a možná bude třeba větší prostor.</translation>
+        <translation>Poznámka: Nezbytné místo na disku je spočítáno z velikosti snímku a jeho souřadnic. Závisí na celkové velikosti výsledného obrazu a možná bude třeba větší prostor.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished">Varování: Používáte snímky temného pozadí, vyrovnání jasu nebo zkreslení s JPEG soubory.&lt;br&gt;Kvůli ztrátové kompresi nelze provést kalibraci na JPEG souborech.</translation>
+        <translation>Varování: Používáte snímky temného pozadí, vyrovnání jasu nebo zkreslení s JPEG soubory.&lt;br&gt;Kvůli ztrátové kompresi nelze provést kalibraci na JPEG souborech.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished">Způsob sloučení: </translation>
+        <translation>Způsob sloučení: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">Normální</translation>
+        <translation>Normální</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Mozaika</translation>
+        <translation>Mozaika</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished">Volitelný obdelník</translation>
+        <translation>Volitelný obdelník</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Křížení</translation>
+        <translation>Křížení</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="301"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished">Způsob zarovnání: </translation>
+        <translation>Způsob zarovnání: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="309"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished">Automatický</translation>
+        <translation>Automatický</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="312"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished">Bilineární</translation>
+        <translation>Bilineární</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="315"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished">Bisquared</translation>
+        <translation>Bisquared</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="318"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished">Bikubický</translation>
+        <translation>Bikubický</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="321"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished">Nezarovnáno</translation>
+        <translation>Nezarovnáno</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="332"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished">Roztřeseni x%1 povoleno</translation>
+        <translation>Roztřeseni x%1 povoleno</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="338"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished">Vybrané nastavení roztřesení není slučitelné s režimem Bayerova roztřesení.</translation>
+        <translation>Vybrané nastavení roztřesení není slučitelné s režimem Bayerova roztřesení.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 zjištěno a zpracováno</translation>
+        <translation>%1 zjištěno a zpracováno</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished">%ld zjištěno - jen jeden použit</translation>
+        <translation>%1 zjištěno - jen jeden použit</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="364"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished">Zpracování komety : </translation>
+        <translation>Zpracování komety : </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished">Zarovnat na hvězdy (žádné speciální zpracovaní)</translation>
+        <translation>Zarovnat na hvězdy (žádné speciální zpracovaní)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished">Zarovnat kometu</translation>
+        <translation>Zarovnat kometu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="375"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished">Zarovnat na hvězdy a kometu</translation>
+        <translation>Zarovnat na hvězdy a kometu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="389"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished">Úprava vzhledu přepálených bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
+        <translation>Úprava vzhledu přepálených bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="397"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished">Úprava vzhledu mrtvých bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
+        <translation>Úprava vzhledu mrtvých bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="426"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished">Krok slučování %1&lt;br&gt;  -&gt;%2 snímků (%3: %4) - celková expozice: </translation>
+        <translation>Krok slučování %1&lt;br&gt;  -&gt;%2 snímků (%3: %4) - celková expozice: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="444"/>
@@ -2213,19 +2210,19 @@ Chcete je uložit?</translation>
         <location filename="../StackRecap.cpp" line="674"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished">Metoda: </translation>
+        <translation>Metoda: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="455"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished">Varování: Zvolená volba Bayerova roztřesení při nastavení RAW DDP může často vést k nezvyklým výsledkům proti jiné průměrující metodě.</translation>
+        <translation>Varování: Zvolená volba Bayerova roztřesení při nastavení RAW DDP může často vést k nezvyklým výsledkům proti jiné průměrující metodě.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="475"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished">-&gt; Zkreslení: %1 snímků (%2: %3) expozice: %4</translation>
+        <translation>-&gt; Zkreslení: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="500"/>
@@ -2233,7 +2230,7 @@ Chcete je uložit?</translation>
         <location filename="../StackRecap.cpp" line="686"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished">Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
+        <translation>Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="510"/>
@@ -2241,85 +2238,85 @@ Chcete je uložit?</translation>
         <location filename="../StackRecap.cpp" line="696"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished">Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
+        <translation>Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="521"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished">-&gt; Bez vyrovnání zkreslení</translation>
+        <translation>-&gt; Bez vyrovnání zkreslení</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="530"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished">-&gt; Temné pozadí: %1 snímků (%2 : %3) expozice: %4</translation>
+        <translation>-&gt; Temné pozadí: %1 snímků (%2 : %3) expozice: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="588"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished">Varování: Expoziční čas neodpovídá aktivním snímkům</translation>
+        <translation>Varování: Expoziční čas neodpovídá aktivním snímkům</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="597"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished">-&gt; Bez temného pozadí</translation>
+        <translation>-&gt; Bez temného pozadí</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="606"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished">-&gt; Vyrovnání jasu: %1 snímků (%2 : %3) expozice: %4</translation>
+        <translation>-&gt; Vyrovnání jasu: %1 snímků (%2 : %3) expozice: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="632"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
+        <translation>Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="642"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
+        <translation>Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="650"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Varování: Expoziční čas neodpovídá snímkům vyrovnání jasu</translation>
+        <translation>Varování: Expoziční čas neodpovídá snímkům vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="662"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished">-&gt; Vyrovnání jasu: %1 snímků (%2: %3) expozice: %4</translation>
+        <translation>-&gt; Vyrovnání jasu: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="706"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished">-&gt; Bez vyrovnání jasu</translation>
+        <translation>-&gt; Bez vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="721"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished">Odhadovaný celkový čas expozice: %1&lt;br&gt;(výpočet celkové expoziční doby je proveden z vybraných aktivních snímků použitých pro složení výsledného obrazu)</translation>
+        <translation>Odhadovaný celkový čas expozice: %1&lt;br&gt;(výpočet celkové expoziční doby je proveden z vybraných aktivních snímků použitých pro složení výsledného obrazu)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="731"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished">Pro zpracování bude použito %1 odkládacího prostoru na disku %2 (%3 je volné).</translation>
+        <translation>Pro zpracování bude použito %1 odkládacího prostoru na disku %2 (%3 je volné).</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="748"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished">Varování: Je zvoleno uložení zarovnaných a kalibrovaných obrazů. Zkontrolujte prosím, zda máte pro tyto soubory na disku dostatek volného místa.</translation>
+        <translation>Varování: Je zvoleno uložení zarovnaných a kalibrovaných obrazů. Zkontrolujte prosím, zda máte pro tyto soubory na disku dostatek volného místa.</translation>
     </message>
 </context>
 <context>
@@ -2567,7 +2564,7 @@ Vyrovnání zkreslení: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne všechny vámi vybrané světelné rámy mají vypočítanou střední kvalitu. Měli byste znovu zaregistrovat své světelné rámy.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2808,93 +2805,93 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření masky hvězd</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="77"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Zjištění hvězdy</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="89"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Práh detekce hvězd</translation>
+        <translation>Práh detekce hvězd</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="136"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zjistit přepálené body</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="184"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximální velikost hvězdy</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="283"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Zvětšení/Zmenšení</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="311"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Procento velikosti hvězdy</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="374"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Zvětšit velikost o  </translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="422"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
+        <translation>Tvar masky pro hvězdu</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="59"/>
         <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Kvon</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Komolý zvon</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Kužel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>Komolý kužel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Krychlový</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <translation>Kvadratický</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="149"/>
         <location filename="../StarMaskDlg.cpp" line="164"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
         <location filename="../StarMaskDlg.cpp" line="154"/>
         <location filename="../StarMaskDlg.cpp" line="159"/>
         <location filename="../StarMaskDlg.cpp" line="169"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n pixel</numerusform>
+            <numerusform>%n pixely</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
@@ -2902,19 +2899,19 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <location filename="../StarMaskDlg.cpp" line="202"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF obraz (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS obraz (*.fits *.fts *.fit)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="209"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložit masku hvězd jako ...</translation>
     </message>
 </context>
 <context>
