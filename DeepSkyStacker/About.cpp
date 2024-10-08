@@ -59,7 +59,7 @@ namespace DSS
         copyright = TIFFGetVersion();
         copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
         copyright = copyright.left(copyright.indexOf("Copyright") - 1);
-        strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1997 Sam Leffler\nCopyright © 1991-1997 Silicon Graphics, Inc.",
+        strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1997 Sam Leffler\nCopyright © 1991-2024 Silicon Graphics, Inc.",
             "IDS_ABOUT_TIFF").arg(copyright);
         strText = strText.replace("\n", "<br>");
         strHTML += strText + "<br>";
