@@ -7,7 +7,9 @@
 #include "ProcessingSettingsDlg.h"
 #include "SavePicture.h"
 #include "StarMaskDlg.h"
-#include <Ztrace.h>
+#include "StarMask.h"
+#include "FITSUtil.h"
+#include "TIFFUtil.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -271,6 +273,28 @@ namespace DSS
 
 			if (QDialog::Accepted == dlg.exec())
 			{
+				ProgressDlg progress{ DeepSkyStacker::instance() };
+				StarMaskEngine starMaskEngine;
+
+				progress.SetJointProgress(true);
+				std::shared_ptr<CMemoryBitmap> pBitmap = dssApp->deepStack().GetStackedBitmap().GetBitmap(&progress);
+				if (std::shared_ptr<CMemoryBitmap> pStarMask = starMaskEngine.createStarMask(pBitmap.get(), &progress))
+				{
+					// Save the star mask to a file
+					fs::path file{ dlg.outputFile() };
+					bool isFits{ dlg.outputIsFits() };
+
+					const QString description{ tr("Star Mask created by DeepSkyStacker", "IDS_STARMASKDESCRIPTION") };
+
+					const QString strText(tr("Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(file.generic_u16string()));
+					progress.Start2(strText, 0);
+					if (isFits)
+						WriteFITS(file, pStarMask.get(), &progress, description);
+					else
+						WriteTIFF(file, pStarMask.get(), &progress, description);
+				}
+				progress.End2();
+
 			}
 
 			timer.start();

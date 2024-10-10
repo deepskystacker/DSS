@@ -54,6 +54,9 @@ namespace DSS {
 
 		StarMaskDlg& operator = (const StarMaskDlg& rhs) = delete;
 
+		inline const fs::path& outputFile() { return outputFile_; }
+		inline bool outputIsFits() { return isFits;  }
+
 	private slots:
 		void setStarShapePreview(int index);
 		void thresholdChanged(int value);
@@ -67,12 +70,12 @@ namespace DSS {
 		void onCancel();
 
 
-
-
 	private:
 		void connectSignalsToSlots();
 
 		fs::path imageFile;
+		fs::path outputFile_;
+		bool isFits;
 
 	};
 } // namespace DSS

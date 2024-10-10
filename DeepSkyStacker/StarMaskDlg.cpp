@@ -45,7 +45,8 @@ namespace DSS
 {
 	StarMaskDlg::StarMaskDlg(QWidget* parent, const fs::path& file)
 		: BaseDialog(BaseDialog::Behaviour::PersistGeometry, parent),
-		imageFile{ file }
+		imageFile{ file },
+		isFits { false }
 	{
 		setupUi(this);
 		QSettings settings;
@@ -217,11 +218,39 @@ namespace DSS
 		//
 		if (QDialog::Accepted == dlg.exec())
 		{
-			fs::path outputFile = dlg.selectedFiles().at(0).toStdU16String();
-			auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) };
+			outputFile_ = dlg.selectedFiles().at(0).toStdU16String();
+			//
+			// For compatability with the old code add one so this is a 1 based index
+			// 
+			auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) + 1 };
 
-			qDebug() << "Selected filter" << index;
+			settings.setValue("StarMask/FileType", (uint)index);
+			switch (index)
+			{
+			case 1:
+				isFits = false;
+				break;
+			case 2: 
+				isFits = true;
+				break;
+			}
+
+			//
+			// Save the selected options for use by the Star Mask Engine
+			//
+			settings.setValue("StarMask/StarShape", starShape->currentIndex());
+
+			settings.setValue("StarMask/DetectionThreshold", thresholdSlider->value());
 			
+			settings.setValue("StarMask/DetectHotPixels", detectHotPixels->isChecked());
+
+			settings.setValue("StarMask/MinSize", minSizeSlider->value());
+
+			settings.setValue("StarMask/MaxSize", maxSizeSlider->value());
+
+			settings.setValue("StarMask/PercentRadius", percentSlider->value());
+
+			settings.setValue("StarMask/PixelIncrease", pixelsSlider->value());
 
 		}
 			
