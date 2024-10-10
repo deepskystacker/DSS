@@ -429,6 +429,22 @@ namespace DSS
 
 		bool askToSave();
 
+		inline void setRedAdjustmentCurve(HistogramAdjustmentCurve hac)
+		{
+			redAdjustmentCurve_ = hac;
+			setRedButtonIcon();
+		};
+		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac)
+		{
+			greenAdjustmentCurve_ = hac;
+			setGreenButtonIcon();
+		};
+		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac)
+		{
+			blueAdjustmentCurve_ = hac;
+			setBlueButtonIcon();
+		};
+
 	public slots:
 		void setSelectionRect(const QRectF& rect);
 
@@ -448,10 +464,6 @@ namespace DSS
 
 		void blueChanging(int peg);
 		void blueChanged(int peg);
-
-		inline void setRedAdjustmentCurve(HistogramAdjustmentCurve hac) { redAdjustmentCurve_ = hac; };
-		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac) { greenAdjustmentCurve_ = hac; };
-		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac) { blueAdjustmentCurve_ = hac; };
 
 		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
 		void onTimer();

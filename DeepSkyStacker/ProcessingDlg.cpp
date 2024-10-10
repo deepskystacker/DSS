@@ -643,21 +643,21 @@ namespace DSS
 		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
 		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
 		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
-		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
+		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 
 		redGradient->update();
 
 		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
 		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
 		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
-		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
+		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 
 		greenGradient->update();
 
 		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
 		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
 		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
-		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod();
+		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
 		blueGradient->update();
 
 	};
@@ -999,19 +999,19 @@ namespace DSS
 		redGradient->setPeg(2, (float)0.5);
 		redGradient->setPeg(3, (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
 		redGradient->update();
-		redAdjustmentCurve_ = processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod();
+		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 
 		greenGradient->setPeg(1, (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
 		greenGradient->setPeg(2, (float)0.5);
 		greenGradient->setPeg(3, (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
 		greenGradient->update();
-		greenAdjustmentCurve_ = processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod();
+		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 
 		blueGradient->setPeg(1, (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
 		blueGradient->setPeg(2, (float)0.5);
 		blueGradient->setPeg(3, (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
 		blueGradient->update();
-		blueAdjustmentCurve_ = processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod();
+		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
 
 		//
 		// Position the controls to match the current settings

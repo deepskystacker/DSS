@@ -64,13 +64,17 @@ namespace DSS
 {
 	enum class HistogramAdjustmentCurve : uint
 	{
-		Linear = 0,
-		CubeRoot = 1,
-		SquareRoot = 2,
-		Log = 3,
-		LogLog = 4,
-		LogSquareRoot = 5,
-		ASinH = 6
+		//
+		// HistogramAdjustmentCurve is 1 based not zero based for compatability 
+		// with the MFC code.
+		//
+		Linear = 1,
+		CubeRoot = 2,
+		SquareRoot = 3,
+		Log = 4,
+		LogLog = 5,
+		LogSquareRoot = 6,
+		ASinH = 7
 	};
 }
 

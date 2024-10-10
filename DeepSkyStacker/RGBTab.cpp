@@ -57,7 +57,11 @@ namespace DSS
 	//
 	void ProcessingDlg::setRedButtonIcon()
 	{
-		const QString curveName = iconNames[static_cast<qsizetype>(redAdjustmentCurve_)];
+		//
+		// HistogramAdjustmentCurve is 1 based so need to subtract one 
+		//
+		auto index = static_cast<qsizetype>(redAdjustmentCurve_) - 1;
+		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
 		redHAC->setIcon(QIcon(iconName));
 	}
@@ -66,7 +70,11 @@ namespace DSS
 
 	void ProcessingDlg::setGreenButtonIcon()
 	{
-		const QString curveName = iconNames[static_cast<qsizetype>(greenAdjustmentCurve_)];
+		//
+		// HistogramAdjustmentCurve is 1 based so need to subtract one 
+		//
+		auto index = static_cast<qsizetype>(greenAdjustmentCurve_) - 1;
+		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
 		greenHAC->setIcon(QIcon(iconName));
 	}
@@ -75,7 +83,11 @@ namespace DSS
 
 	void ProcessingDlg::setBlueButtonIcon()
 	{
-		const QString curveName = iconNames[static_cast<qsizetype>(blueAdjustmentCurve_)];
+		//
+		// HistogramAdjustmentCurve is 1 based so need to subtract one 
+		//
+		auto index = static_cast<qsizetype>(blueAdjustmentCurve_) - 1;
+		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
 		blueHAC->setIcon(QIcon(iconName));
 	}
@@ -451,8 +463,7 @@ namespace DSS
 		if (a == logSquareRootAction) hac = HistogramAdjustmentCurve::LogSquareRoot;
 		if (a == asinHAction) hac = HistogramAdjustmentCurve::ASinH;
 
-		redAdjustmentCurve_ = hac;
-		setRedButtonIcon();
+		setRedAdjustmentCurve(hac);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -469,8 +480,7 @@ namespace DSS
 		if (a == logSquareRootAction) hac = HistogramAdjustmentCurve::LogSquareRoot;
 		if (a == asinHAction) hac = HistogramAdjustmentCurve::ASinH;
 
-		greenAdjustmentCurve_ = hac;
-		setGreenButtonIcon();
+		setGreenAdjustmentCurve(hac);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -487,8 +497,7 @@ namespace DSS
 		if (a == logSquareRootAction) hac = HistogramAdjustmentCurve::LogSquareRoot;
 		if (a == asinHAction) hac = HistogramAdjustmentCurve::ASinH;
 
-		blueAdjustmentCurve_ = hac;
-		setBlueButtonIcon();
+		setBlueAdjustmentCurve(hac);
 	}
 } // namespace DSS
 
