@@ -28,11 +28,26 @@ Changes since the last release:
 
 8. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
    mean star quality.
-9. Finish conversion of code to Qt - there should be no MFC stuff left.
+   The determined threshold will be in the range 0.05% and 100%, the target number of stars is ~50.
 
-10. Upgrade LibRaw to 0.23.1
+9. The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is now largly independent of the number of detected stars.
 
-11. Upgrade LibTIFF to 4.7.0
+10. The background level, to which the star detection threshold is referring, is now calculated localy per 250x250 pixel square rather than globally over the entire image.
+    This compensates background illumination gradients.
+
+11. All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
+
+12. The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold is used, the detected threshold
+    of this light frame will serve as the basis for the threshold search of the following frames.
+	Make sure that the first registered light frame is not significantly darker then the other frames (brighter is no problem), otherwise the number of detected stars might be very high.
+
+13. Bug fix: Computation of the final star centers has been corrected. The old version was slightly biased towards left/up of the real center.
+
+14. Finish conversion of code to Qt - there should be no MFC stuff left.
+
+15. Upgrade LibRaw to 0.23.1
+
+16. Upgrade LibTIFF to 4.7.0
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
