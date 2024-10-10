@@ -63,6 +63,9 @@
    <property name="text">
     <string notr="true"/>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QGroupBox" name="detectionGroup">
    <property name="geometry">
