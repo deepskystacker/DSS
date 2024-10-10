@@ -724,6 +724,10 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 			QGradientStop stop = selectedStop();
 			stop.first = 0.005;
 			moveSelected(stop.first, true);
+			QRect pegrect;
+			getPegRect(selectedPeg, &pegrect, m_RightUpSide);
+			update(pegrect);
+
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -750,10 +754,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first -= 0.005f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first <= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -766,10 +782,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first += 0.005f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
+			moveSelected(stop.first, true);
 
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -788,10 +816,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first -= 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first -= 0.025f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first >= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -803,10 +843,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first += 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first += 0.025f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
