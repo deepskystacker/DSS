@@ -40,6 +40,10 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 
 	stops = m_Gradient.stops();				// Grab the gradient stops
 	endPegStop = stops.size() - 1;
+
+	setToolTip(tr("You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;\n"
+		"Page-Up and Page-Down keys to move a slider after you have selected it\n"
+		"with the mouse."));
 }
 
 QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& src)
