@@ -2814,48 +2814,48 @@ par rapport à l&apos;écart moyen (%1).</translation>
         <translation>Création d&apos;un masque d&apos;étoiles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="80"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
         <translation>Détection des étoiles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="92"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
         <translation>Seuil de détection des étoiles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="139"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Détection des pixels chauds</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
         <source>Minimum size of a star</source>
         <translation>Taille minimale d&apos;une étoile</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="187"/>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
         <translation>Taille maximale d&apos;une étoile</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="286"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
         <translation>Agrandissement/Réduction</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="314"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
         <translation>En pourcentage</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="377"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
         <translation>Augmenter la taille de</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="425"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
         <translation>Forme des étoiles du masque</translation>
     </message>
@@ -3046,6 +3046,18 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Chargement de l&apos;image monochrome %1 bits %2
 %3</translation>
+    </message>
+</context>
+<context>
+    <name>QLinearGradientCtrl</name>
+    <message>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Vous pouvez utiliser les touches Flèche vers le haut, Flèche vers la droite, Flèche vers la gauche, Flèche vers le bas ;
+Page précédente et Page suivante pour déplacer un curseur après l&apos;avoir sélectionné
+avec la souris.</translation>
     </message>
 </context>
 <context>

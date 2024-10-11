@@ -2811,48 +2811,48 @@ im Verhältnis zur Standardabweichung (%1) kleiner werden.</translation>
         <translation>Sternmaske erstellen</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="80"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
         <translation>Stern Erkennung</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="92"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
         <translation>Sternerkennungs-Schwellenwert</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="139"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Hot-Pixel Erkennung</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
         <source>Minimum size of a star</source>
         <translation>Minimale Sterngröße</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="187"/>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
         <translation>Maximale Sterngröße</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="286"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
         <translation>Erweiterungen/Einschränkungen</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="314"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
         <translation>Prozentualer Anteil der Sterngrößen</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="377"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
         <translation>Vergrößern um  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="425"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
         <translation>Form der Sterne in der Maske</translation>
     </message>
@@ -3043,6 +3043,18 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Lade %1 Bit Graustufen %2 Lightframe
 %3</translation>
+    </message>
+</context>
+<context>
+    <name>QLinearGradientCtrl</name>
+    <message>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Sie können die Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Linkspfeil“, „Abwärtspfeil“
+sowie „Bild-auf“ und „Bild-ab“verwenden, um einen Schieberegler zu verschieben,
+nachdem Sie ihn mit der Maus ausgewählt haben.</translation>
     </message>
 </context>
 <context>

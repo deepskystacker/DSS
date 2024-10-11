@@ -2820,48 +2820,48 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <translation>Vytvoření masky hvězd</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="80"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
         <translation>Zjištění hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="92"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
         <translation>Práh detekce hvězd</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="139"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Zjistit přepálené body</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
         <source>Minimum size of a star</source>
         <translation>Minimální velikost hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="187"/>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
         <translation>Maximální velikost hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="286"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
         <translation>Zvětšení/Zmenšení</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="314"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
         <translation>Procento velikosti hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="377"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
         <translation>Zvětšit velikost o  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="425"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
         <translation>Tvar masky pro hvězdu</translation>
     </message>
@@ -3053,6 +3053,18 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Načítání %1 bitového %2 aktivního šedého snímku
 %3</translation>
+    </message>
+</context>
+<context>
+    <name>QLinearGradientCtrl</name>
+    <message>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Můžete použít šipku nahoru, šipku doprava, šipku doleva, šipku dolů;
+Klávesy Page-Up a Page-Down slouží k přesunutí posuvníku poté, co jste jej vybrali
+s myší.</translation>
     </message>
 </context>
 <context>

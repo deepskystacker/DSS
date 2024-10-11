@@ -2814,48 +2814,48 @@ comparativamente a la desviación estándar (%1).</translation>
         <translation>Crear una Máscara de Estrellas</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="80"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
         <translation>Detección de Estrellas</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="92"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
         <translation>Umbral de detección de estrellas</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="139"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Detección de Hot Pixels</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
         <source>Minimum size of a star</source>
         <translation>Medida Mínima de una Estrella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="187"/>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
         <translation>Medida Máxima de una Estrella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="286"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
         <translation>Agrandar/Reducir</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="314"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
         <translation>Porcentual del tamaño de la estrella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="377"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
         <translation>Aumentar el tamaño en  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="425"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
         <translation>Forma de las estrellas en la máscara</translation>
     </message>
@@ -3046,6 +3046,18 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Cargando %1 bits gray %2 light frame
 %3</translation>
+    </message>
+</context>
+<context>
+    <name>QLinearGradientCtrl</name>
+    <message>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Puede utilizar las teclas de flecha arriba, flecha derecha, flecha izquierda, flecha abajo,
+re Pág y avance Pág para mover un control deslizante después de haberlo seleccionado
+con el ratón.</translation>
     </message>
 </context>
 <context>
