@@ -54,6 +54,7 @@
 class QLinearGradientCtrl : public QWidget
 {
 	Q_OBJECT
+
 	Q_PROPERTY(QLinearGradient gradient READ gradient WRITE setGradient)
 	Q_PROPERTY(int gradientWidth READ gradientWidth WRITE setGradientWidth)
 	Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation)
