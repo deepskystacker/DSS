@@ -108,20 +108,20 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>RAW soubory dekódovány pomocí LibRaw (verze %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation>Dekódování souborů RAW pomocí LibRaw (verze %1)
+Copyright © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>TIFF soubory kódovány/dekódovány pomocí LibTIFF (verze %1)
+        <translation>Kódování/dekódování souboru TIFF pomocí LibTIFF (verze %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
@@ -1195,77 +1195,89 @@ Zjištěné studené pixely: %L3 (%L4 %)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Obrázky TIFF a FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>Maska hvězd vytvořená v DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Uložení masky hvězd do %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 16 bit/k (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 32 bit/k - celočíselné (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 32 bit/k - racionální (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 16 bit/k (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 32 bit//k - celočíselné (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 32 bit/k - racionální (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
         <translation>Uložit obrázek</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Není žádný obraz k uložení.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Informace jsou nedostupné</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
         <translation>Expozice: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -2808,86 +2820,86 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <translation>Vytvoření masky hvězd</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="80"/>
         <source>Star detection</source>
         <translation>Zjištění hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="92"/>
         <source>Star detection threshold</source>
         <translation>Práh detekce hvězd</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="139"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Zjistit přepálené body</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="187"/>
         <source>Maximum size of a star</source>
         <translation>Maximální velikost hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="286"/>
         <source>Enlarge/Shrink</source>
         <translation>Zvětšení/Zmenšení</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Percentage of the star size</source>
         <translation>Procento velikosti hvězdy</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="377"/>
         <source>Increase size by  </source>
         <translation>Zvětšit velikost o  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="425"/>
         <source>Shape of the stars in the mask</source>
         <translation>Tvar masky pro hvězdu</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
+        <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Bell</source>
         <translation>Kvon</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="60"/>
+        <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Truncated Bell</source>
         <translation>Komolý zvon</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="61"/>
+        <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Cone</source>
         <translation>Kužel</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="62"/>
+        <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Truncated Cone</source>
         <translation>Komolý kužel</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="63"/>
+        <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Cubic</source>
         <translation>Krychlový</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="64"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
         <source>Quadric</source>
         <translation>Kvadratický</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
         <translation>
             <numerusform>%n pixel</numerusform>
@@ -2896,19 +2908,19 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation>TIFF obraz (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation>FITS obraz (*.fits *.fts *.fit)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
         <translation>Uložit masku hvězd jako ...</translation>
@@ -3036,15 +3048,6 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Načítání %1 bitového %2 aktivního šedého snímku
 %3</translation>
-    </message>
-</context>
-<context>
-    <name>ProcessingDlg</name>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Uložení masky hvězd do %1</translation>
     </message>
 </context>
 <context>

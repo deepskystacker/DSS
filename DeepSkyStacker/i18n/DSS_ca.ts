@@ -108,20 +108,20 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>Decodificació d&apos;arxius RAW amb LibRaw (versió %1)
-Copyright © 1997-2019 LibRaw LLC {1)?} {1997-2022 ?}</translation>
+        <translation>Descodificació de fitxers RAW per LibRaw (versió %1)
+Copyright © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>Codificació i Decodificació d&apos;arcxius TIFF amb LibTIFF (versió %1)
+        <translation>Codificació/descodificació d&apos;arxius TIFF per LibTIFF (versió %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
@@ -1189,77 +1189,89 @@ Píxels freds detectats: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Desitja guardar les modificacions?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Imatge TIFF o FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>Màscara d&apos;Estrelles creada per DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - integer(*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
         <translation>Guarda Imatge</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>No hi ha una imatge per a guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sense informació disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
         <translation>Exposició: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -2795,86 +2807,86 @@ comparativament a la desviació estàndard (%1).</translation>
         <translation>&quot;Crear una Màscara d&apos;Estrelles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="80"/>
         <source>Star detection</source>
         <translation>Detecció d&apos;Estrelles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="92"/>
         <source>Star detection threshold</source>
         <translation>Llindar de detecció d&apos;estrelles</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="139"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Detecció de Hot Pixels</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="187"/>
         <source>Maximum size of a star</source>
         <translation>Mesura Màxima d&apos;una Estrella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="286"/>
         <source>Enlarge/Shrink</source>
         <translation>Augmentarr/Reduir</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Percentage of the star size</source>
         <translation>Percentatge de la grandària de l&apos;estrella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="377"/>
         <source>Increase size by  </source>
         <translation>Augmentar la mida en</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="425"/>
         <source>Shape of the stars in the mask</source>
         <translation>Forma de les estrelles en la màscara</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
+        <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Bell</source>
         <translation>Campana</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="60"/>
+        <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Truncated Bell</source>
         <translation>Campana Truncada</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="61"/>
+        <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Cone</source>
         <translation>Con</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="62"/>
+        <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Truncated Cone</source>
         <translation>Con Truncat</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="63"/>
+        <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Cubic</source>
         <translation>Cúbic</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="64"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
         <source>Quadric</source>
         <translation>Quadràtic;</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
         <translation>
             <numerusform>%n píxel</numerusform>
@@ -2882,19 +2894,19 @@ comparativament a la desviació estàndard (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation>Imatge TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation>Imatge FITS (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
         <translation>Desa la StarMask com a ...</translation>
@@ -3021,15 +3033,6 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation>Carregant %1 bits gray %2 light frame
 %3</translation>
-    </message>
-</context>
-<context>
-    <name>ProcessingDlg</name>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
     </message>
 </context>
 <context>
