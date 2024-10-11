@@ -16,7 +16,7 @@
 <context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -63,9 +63,9 @@ This operation cannot be reversed or cancelled.</numerusform>
 <context>
     <name>DSS::StarMaskDlg</name>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
         <translation>
             <numerusform></numerusform>
