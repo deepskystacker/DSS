@@ -29,7 +29,7 @@
     <item>
      <spacer name="horizontalSpacer">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
@@ -42,7 +42,7 @@
     <item>
      <widget class="QDialogButtonBox" name="buttonBox">
       <property name="standardButtons">
-       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
       </property>
      </widget>
     </item>
@@ -58,13 +58,13 @@
     </rect>
    </property>
    <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
+    <enum>QFrame::Shape::StyledPanel</enum>
    </property>
    <property name="text">
     <string notr="true"/>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
   <widget class="QGroupBox" name="detectionGroup">
@@ -72,7 +72,7 @@
     <rect>
      <x>10</x>
      <y>220</y>
-     <width>421</width>
+     <width>431</width>
      <height>128</height>
     </rect>
    </property>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>26</y>
+      <y>30</y>
       <width>181</width>
       <height>16</height>
      </rect>
@@ -95,7 +95,7 @@
    <widget class="QSlider" name="thresholdSlider">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>260</x>
       <y>30</y>
       <width>161</width>
       <height>20</height>
@@ -123,7 +123,7 @@
      <number>10</number>
     </property>
     <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
    <widget class="QCheckBox" name="detectHotPixels">
@@ -143,19 +143,19 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>76</y>
+      <y>80</y>
       <width>171</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string notr="true">Minimum size of a star</string>
+     <string>Minimum size of a star</string>
     </property>
    </widget>
    <widget class="QLabel" name="minSize">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>200</x>
       <y>80</y>
       <width>51</width>
       <height>20</height>
@@ -171,7 +171,7 @@
      <string notr="true">2 pixels</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="maxSizeLabel">
@@ -190,7 +190,7 @@
    <widget class="QLabel" name="maxSize">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>190</x>
       <y>100</y>
       <width>61</width>
       <height>20</height>
@@ -200,13 +200,13 @@
      <string notr="true">25 pixels</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QSlider" name="maxSizeSlider">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>260</x>
       <y>100</y>
       <width>161</width>
       <height>20</height>
@@ -234,13 +234,13 @@
      <number>25</number>
     </property>
     <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
    <widget class="QLabel" name="threshold">
     <property name="geometry">
      <rect>
-      <x>202</x>
+      <x>210</x>
       <y>30</y>
       <width>41</width>
       <height>20</height>
@@ -250,13 +250,13 @@
      <string notr="true">10%</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QSlider" name="minSizeSlider">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>260</x>
       <y>80</y>
       <width>161</width>
       <height>18</height>
@@ -269,7 +269,7 @@
      <number>10</number>
     </property>
     <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -278,7 +278,7 @@
     <rect>
      <x>10</x>
      <y>370</y>
-     <width>421</width>
+     <width>431</width>
      <height>78</height>
     </rect>
    </property>
@@ -288,7 +288,7 @@
    <widget class="QLabel" name="percent">
     <property name="geometry">
      <rect>
-      <x>179</x>
+      <x>190</x>
       <y>30</y>
       <width>61</width>
       <height>20</height>
@@ -298,15 +298,15 @@
      <string notr="true">100%</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="percentLabel">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>26</y>
-      <width>181</width>
+      <y>30</y>
+      <width>191</width>
       <height>16</height>
      </rect>
     </property>
@@ -317,8 +317,8 @@
    <widget class="QSlider" name="percentSlider">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>26</y>
+      <x>260</x>
+      <y>30</y>
       <width>161</width>
       <height>20</height>
      </rect>
@@ -345,13 +345,13 @@
      <number>100</number>
     </property>
     <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
    <widget class="QLabel" name="pixels">
     <property name="geometry">
      <rect>
-      <x>169</x>
+      <x>180</x>
       <y>50</y>
       <width>71</width>
       <height>20</height>
@@ -361,7 +361,7 @@
      <string notr="true">0 pixels</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="pixelLabel">
@@ -369,7 +369,7 @@
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>161</width>
+      <width>181</width>
       <height>16</height>
      </rect>
     </property>
@@ -380,7 +380,7 @@
    <widget class="QSlider" name="pixelsSlider">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>260</x>
       <y>50</y>
       <width>161</width>
       <height>20</height>
@@ -405,7 +405,7 @@
      <number>10</number>
     </property>
     <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
   </widget>
