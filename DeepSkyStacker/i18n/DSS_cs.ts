@@ -2720,7 +2720,7 @@ Chcete změny uložit?</translation>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation>Nastavení...</translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
@@ -2836,6 +2836,11 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <translation>Zjistit přepálené body</translation>
     </message>
     <message>
+        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <source>Minimum size of a star</source>
+        <translation>Minimální velikost hvězdy</translation>
+    </message>
+    <message>
         <location filename="../ui/StarMaskDlg.ui" line="187"/>
         <source>Maximum size of a star</source>
         <translation>Maximální velikost hvězdy</translation>
@@ -2904,7 +2909,7 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <translation>
             <numerusform>%n pixel</numerusform>
             <numerusform>%n pixely</numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n pixelů</numerusform>
         </translation>
     </message>
     <message>
