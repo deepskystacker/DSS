@@ -2827,6 +2827,11 @@ im Verhältnis zur Standardabweichung (%1) kleiner werden.</translation>
         <translation>Hot-Pixel Erkennung</translation>
     </message>
     <message>
+        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <source>Minimum size of a star</source>
+        <translation>Minimale Sterngröße</translation>
+    </message>
+    <message>
         <location filename="../ui/StarMaskDlg.ui" line="187"/>
         <source>Maximum size of a star</source>
         <translation>Maximale Sterngröße</translation>
