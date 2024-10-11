@@ -2823,6 +2823,11 @@ comparativament a la desviació estàndard (%1).</translation>
         <translation>Detecció de Hot Pixels</translation>
     </message>
     <message>
+        <location filename="../ui/StarMaskDlg.ui" line="152"/>
+        <source>Minimum size of a star</source>
+        <translation>Mesura Mínima d&apos;una Estrella</translation>
+    </message>
+    <message>
         <location filename="../ui/StarMaskDlg.ui" line="187"/>
         <source>Maximum size of a star</source>
         <translation>Mesura Màxima d&apos;una Estrella</translation>
