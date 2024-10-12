@@ -411,7 +411,13 @@ namespace DSS
 				currentFile = file;				// Remember the current file
 				dssApp->deepStack().reset();
 				dssApp->deepStack().SetProgress(&dlg);
-				std::ignore = dssApp->deepStack().LoadStackedInfo(file);
+				bool result = dssApp->deepStack().LoadStackedInfo(file);
+				if (!result)
+				{
+					QString message{ QString("Failure processing file %1").arg(file.generic_u16string()) };
+					QMessageBox::warning(this, "DeepSkyStacker",
+							message);
+				}
 
 				dssApp->deepStack().SetProgress(nullptr);
 
