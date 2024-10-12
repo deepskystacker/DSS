@@ -846,7 +846,15 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 			bResult = true;
 		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
+		//
+		// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
+		// "application/fits" so code round that.
+		//
+#if QT_VERSION < 0x060800
 		else if (mime.inherits("image/fits") && IsFITSPicture(path, BitmapInfo))
+#else
+		else if (mime.inherits("application/fits") && IsFITSPicture(path, BitmapInfo))
+#endif
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
