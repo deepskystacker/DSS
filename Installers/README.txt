@@ -3,7 +3,9 @@ Welcome to DeepSkyStacker 5.1.8 Beta 1
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is primarily a bug fix release, but there are a few enhancements as well.  It supercedes 5.1.6 which is withdrawn.
+This is release is all about finishing the conversion of the code to us Qt instead of MFC.  That said, there are few bug fixes,
+and a a number of enhancements as well.   This isn't a complete list as a many changes were made to improve code quality and 
+performance.
 
 Known problems:
 
@@ -12,7 +14,7 @@ Known problems:
 
 Changes since the last release:
 
-1. When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
+1. Bug fix: When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
 
 2. Bug fix: The circles around the stars and the comet stayed even after clearing the file list.
 
@@ -27,39 +29,41 @@ Changes since the last release:
 7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
 
 8. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
-   mean star quality.
-   The determined threshold will be in the range 0.05% and 100%, the target number of stars is ~50.
+   mean star quality as compared to the score which was the sum of all star qualities and depended on the number of
+   stars as well as their quality.
 
-9. The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is now largly independent of the number of detected stars.
+   The threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
 
-10. The background level, to which the star detection threshold is referring, is now calculated localy per 250x250 pixel square rather than globally over the entire image.
-    This compensates background illumination gradients.
+   The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is
+   largly independent of the number of detected stars.
 
-11. All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
+   The background level, to which the star detection threshold is referring, is now calculated localy per 250x250 pixel square rather than globally over the entire image.
+   This compensates for any background illumination gradients.
 
-12. The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold is used, the detected threshold
-    of this light frame will serve as the basis for the threshold search of the following frames.
-	Make sure that the first registered light frame is not significantly darker then the other frames (brighter is no problem), otherwise the number of detected stars might be very high.
+   All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
 
-13. Bug fix: Computation of the final star centers has been corrected. The old version was slightly biased towards left/up of the real center.
+   The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold is used, the detected threshold
+   of this light frame will serve as the basis for the threshold search of the following frames.
 
-14. Finish conversion of code to Qt - there should be no MFC stuff left.
+   We suggest that you ensure that the first registered light frame is not significantly darker then the other frames (brighter is no problem),
+   otherwise the number of detected stars might be very high.
 
-15. Upgrade LibRaw to 0.23.1
+9. Bug fix: Computation of the final star centers has been corrected. The old version was slightly biased towards left/up of the real center.
 
-16. Upgrade LibTIFF to 4.7.0
+10. Finish conversion of code to Qt - there should be no MFC stuff left.
+
+11. Upgrade LibRaw to 0.23.1
+
+12. Upgrade LibTIFF to 4.7.0
+
+13. Bug fix: Fix broken handling of Up-Arrow, Right-Arrow, Down-Arrow, Left-Arrow; Page-Up and Page-Down keys for the sliders of the gradient control.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is primarily a bug fix release, but there are a few enhancements as well.  It supercedes 5.1.6 which is withdrawn.
-
-Known problems:
-
-1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
-   This requires too much work to fix in this release, as we will need to implement our own edit control.
+This is primarily a bug fix release, but there are a few enhancements as well.
 
 Changes since the last release:
 
