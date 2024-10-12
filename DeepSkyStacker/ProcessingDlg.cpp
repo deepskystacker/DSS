@@ -604,7 +604,7 @@ namespace DSS
 
 			if (isoSpeed) isoText = QString("%1 ISO - ").arg(isoSpeed);
 			if (gain >= 0) gainText = QString("%1 Gain - ").arg(gain);
-			if (totalTime) timeText = tr("Exposure: %1 "), exposureToString(totalTime);
+			if (totalTime) timeText = tr("Exposure: %1 ").arg(exposureToString(totalTime));
 			if (nrFrames) framesText = tr("%n frames", "IDS_NRFRAMES", nrFrames);
 
 			text = QString("%1\n%2%3%4(%5)").arg(currentFile.generic_u8string().c_str())
