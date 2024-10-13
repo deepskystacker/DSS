@@ -72,113 +72,113 @@
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation type="unfinished">Over DeepSkyStacker</translation>
+        <translation>Over DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation type="unfinished">Taal</translation>
+        <translation>Taal</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation type="unfinished">Selecteer taal:</translation>
+        <translation>Selecteer taal:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation type="unfinished">Controleer of er een nieuwe versie beschikbaar is bij het opstarten</translation>
+        <translation>Controleer of er een nieuwe versie beschikbaar is bij het opstarten</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Over &amp;Qt</translation>
+        <translation>Over &amp;Qt</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="35"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation type="unfinished">DeepSkyStacker versie %1</translation>
+        <translation>DeepSkyStacker versie %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="42"/>
         <source>(Now somewhat out of date)</source>
-        <translation type="unfinished">(Nu wat verouderd)</translation>
+        <translation>(Nu wat verouderd)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">RAW bestanden gedecodeerd met LibRaw (versie %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation>RAW-bestandsdecodering door LibRaw (versie %1)
+Copyright © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation type="unfinished">TIFF bestanden codering/decodering door LibTIFF (versie %1)
+        <translation>TIFF-bestandscodering/-decodering door LibTIFF (versie %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation type="unfinished">FITS decodering door CFitsIO (versie %1)
+        <translation>FITS decodering door CFitsIO (versie %1)
 Copyright NASA</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="76"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished">Exif-, IPTC-, XMP- en ICC-beeldmetadata van Exiv2 - Versie 0.28.0
+        <translation>Exif-, IPTC-, XMP- en ICC-beeldmetadata van Exiv2 - Versie 0.28.0
 Copyright 2004-2023 Exiv2-auteurs</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="82"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished">SMTP-ondersteuning door SMTP Client voor Qt (C++) - Versie 0.27.6
+        <translation>SMTP-ondersteuning door SMTP Client voor Qt (C++) - Versie 0.27.6
 Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="96"/>
         <source>Default</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation type="unfinished">Spanish versie: Ricardo Contreras en het team uit</translation>
+        <translation>Spanish versie: Ricardo Contreras en het team uit</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="121"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation type="unfinished">Tsjechische versie:</translation>
+        <translation>Tsjechische versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="125"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation type="unfinished">Italiaanse versie:</translation>
+        <translation>Italiaanse versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="129"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation type="unfinished">Catalaanse versie:</translation>
+        <translation>Catalaanse versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="133"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation type="unfinished">Duitse versie:</translation>
+        <translation>Duitse versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="135"/>
@@ -187,43 +187,43 @@ Copyright Tőkés Attila</translation>
         <location filename="../About.cpp" line="152"/>
         <location filename="../About.cpp" line="153"/>
         <source>and</source>
-        <translation type="unfinished">en</translation>
+        <translation>en</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="138"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation type="unfinished">Nederlandse versie:</translation>
+        <translation>Nederlandse versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="142"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation type="unfinished">Traditioneel Chinees versie:</translation>
+        <translation>Traditioneel Chinees versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="146"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation type="unfinished">Portugeese versie:</translation>
+        <translation>Portugeese versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="151"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation type="unfinished">Roemeense versie:</translation>
+        <translation>Roemeense versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="156"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation type="unfinished">Russische versie:</translation>
+        <translation>Russische versie:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="160"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation type="unfinished">Turkse versie:</translation>
+        <translation>Turkse versie:</translation>
     </message>
 </context>
 <context>
@@ -231,37 +231,37 @@ Copyright Tőkés Attila</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation type="unfinished">Uitlijning</translation>
+        <translation>Uitlijning</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation type="unfinished">Verplaatsing tijdens uitlijnen gebruikt</translation>
+        <translation>Verplaatsing tijdens uitlijnen gebruikt</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation type="unfinished">Bi-oppervlak</translation>
+        <translation>Bi-oppervlak</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation type="unfinished">Geen Uitlijning</translation>
+        <translation>Geen Uitlijning</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation type="unfinished">Bi-lineair</translation>
+        <translation>Bi-lineair</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation type="unfinished">Bi-kubus</translation>
+        <translation>Bi-kubus</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automatisch</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="33"/>
@@ -269,7 +269,7 @@ Copyright Tőkés Attila</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation type="unfinished">Automatisch
+        <translation>Automatisch
 
 De uitlijnmethode wordt automatisch geselecteerd afhankeijk van het aantal beschikbare sterren.</translation>
     </message>
@@ -279,7 +279,7 @@ De uitlijnmethode wordt automatisch geselecteerd afhankeijk van het aantal besch
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation type="unfinished">Bi-lineair Uitlijnen
+        <translation>Bi-lineair Uitlijnen
 
 Het Bi-lineair Uitlijnen wordt gebruikt in alle gevallen.</translation>
     </message>
@@ -289,7 +289,7 @@ Het Bi-lineair Uitlijnen wordt gebruikt in alle gevallen.</translation>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation type="unfinished">Bi-oppervlakte Uitlijning
+        <translation>Bi-oppervlakte Uitlijning
 
 De Bi-oppervlakte Uitlijning wordt gebruikt wanneer er minimaal 25 sterren beschikbaar zijn, anders wordt de Bi-lineaire Uitlijning methode gebruikt.</translation>
     </message>
@@ -299,7 +299,7 @@ De Bi-oppervlakte Uitlijning wordt gebruikt wanneer er minimaal 25 sterren besch
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation type="unfinished">Bi-kubus Uitlijning
+        <translation>Bi-kubus Uitlijning
 
 De Bi-kubus methode wordt gebruikt wanneer er minimaal 40 sterren beschikbaar zijn, de Bi-oppervlakte methode wordt gebruikt als er 25 tot 39 sterren beschikbaar zijn, en de Bi-lineair methode wordt gebruikt als er minder dan 25 sterren beschikbaar zijn.</translation>
     </message>
@@ -309,7 +309,7 @@ De Bi-kubus methode wordt gebruikt wanneer er minimaal 40 sterren beschikbaar zi
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation type="unfinished">Ongeregistreerde Light platen</translation>
+        <translation>Ongeregistreerde Light platen</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -317,7 +317,7 @@ De Bi-kubus methode wordt gebruikt wanneer er minimaal 40 sterren beschikbaar zi
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation type="unfinished">Deze licht plaat is niet geregistreerd
+        <translation>Deze licht plaat is niet geregistreerd
 (de sterren zijn niet gedetecteerd).
 
 Wilt u...</translation>
@@ -325,17 +325,17 @@ Wilt u...</translation>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation type="unfinished">om deze Light plaat te registreren</translation>
+        <translation>om deze Light plaat te registreren</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
-        <translation type="unfinished">om al deze Light platen te registreren</translation>
+        <translation>om al deze Light platen te registreren</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
-        <translation type="unfinished">om door te gaan zonder registratie van de licht platen</translation>
+        <translation>om door te gaan zonder registratie van de licht platen</translation>
     </message>
 </context>
 <context>
@@ -343,47 +343,47 @@ Wilt u...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation type="unfinished">Achtergrond Opties</translation>
+        <translation>Achtergrond Opties</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation type="unfinished">Calibratie Methode</translation>
+        <translation>Calibratie Methode</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation type="unfinished">Lineair</translation>
+        <translation>Lineair</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation type="unfinished">Rationeel</translation>
+        <translation>Rationeel</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation type="unfinished">RGB Achtergrond Calibratie Methode</translation>
+        <translation>RGB Achtergrond Calibratie Methode</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation type="unfinished">Geen</translation>
+        <translation>Geen</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation type="unfinished">Minimum</translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation type="unfinished">Midden</translation>
+        <translation>Midden</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation type="unfinished">Maximum</translation>
+        <translation>Maximum</translation>
     </message>
 </context>
 <context>
@@ -391,7 +391,7 @@ Wilt u...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation type="unfinished">Groeps Stapelen</translation>
+        <translation>Groeps Stapelen</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -399,20 +399,20 @@ Wilt u...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation type="unfinished">Dit dialoog wordt gebruikt om het stapel proces van bestaande afbeelding lijsten te starten.
+        <translation>Dit dialoog wordt gebruikt om het stapel proces van bestaande afbeelding lijsten te starten.
 Voeg de bestand lijsten die u wilt stapelen toe en klik OK om het stapel proces te starten.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation type="unfinished">Bestandslijsten toevoegen...</translation>
+        <translation>Bestandslijsten toevoegen...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation type="unfinished">Lijst Leegmaken</translation>
+        <translation>Lijst Leegmaken</translation>
     </message>
 </context>
 <context>
@@ -421,13 +421,13 @@ Voeg de bestand lijsten die u wilt stapelen toe en klik OK om het stapel proces 
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Vink alle afbeeldingen aan boven...</translation>
+        <translation>Vink alle afbeeldingen aan boven...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Minimale score waarde:</translation>
+        <translation>Minimale score waarde:</translation>
     </message>
 </context>
 <context>
@@ -435,46 +435,46 @@ Voeg de bestand lijsten die u wilt stapelen toe en klik OK om het stapel proces 
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished">Komeet</translation>
+        <translation>Komeet</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished">Komeet stapel parameters</translation>
+        <translation>Komeet stapel parameters</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished">Normaal Stapele</translation>
+        <translation>Normaal Stapele</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished">Komeet positie wordt genegeerd.
+        <translation>Komeet positie wordt genegeerd.
 De komeet zal wazig zijn.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished">Komeet Stapelen</translation>
+        <translation>Komeet Stapelen</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished">Komeet positie wordt gebruikt.\nDe komeet is scherp en de sterren krijgen sporen.</translation>
+        <translation>Komeet positie wordt gebruikt.\nDe komeet is scherp en de sterren krijgen sporen.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished">Sterren + Komeet Stapelen</translation>
+        <translation>Sterren + Komeet Stapelen</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished">Komeet positie wordt gebruikt.\nDe komeet en de sterren zijn scherp. Dit proces duurt twee maal langer.</translation>
+        <translation>Komeet positie wordt gebruikt.\nDe komeet en de sterren zijn scherp. Dit proces duurt twee maal langer.</translation>
     </message>
 </context>
 <context>
@@ -482,13 +482,13 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation type="unfinished">Bestanden toevoegen...</translation>
+        <translation>Bestanden toevoegen...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Voeg een bestand toe als</numerusform>
             <numerusform>Voeg %n bestanden toe als</numerusform>
         </translation>
@@ -497,31 +497,31 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
-        <translation type="unfinished">Light Platen</translation>
+        <translation>Light Platen</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
-        <translation type="unfinished">Dark Platen</translation>
+        <translation>Dark Platen</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
-        <translation type="unfinished">Flat Platen</translation>
+        <translation>Flat Platen</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="94"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
-        <translation type="unfinished">Dark Flat Platen</translation>
+        <translation>Dark Flat Platen</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="95"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
-        <translation type="unfinished">Offset/Bias Platen</translation>
+        <translation>Offset/Bias Platen</translation>
     </message>
 </context>
 <context>
@@ -599,194 +599,194 @@ Komeet:%1</translation>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation type="unfinished">Registreren en Stapelen</translation>
+        <translation>Registreren en Stapelen</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation type="unfinished">Open afbeelding bestanden...</translation>
+        <translation>Open afbeelding bestanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation type="unfinished">dark bestanden...</translation>
+        <translation>dark bestanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation type="unfinished">flat bestanden...</translation>
+        <translation>flat bestanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation type="unfinished">dark flat bestanden...</translation>
+        <translation>dark flat bestanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation type="unfinished">offset/bias bestanden...</translation>
+        <translation>offset/bias bestanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation type="unfinished">Open een Bestand Lijst...</translation>
+        <translation>Open een Bestand Lijst...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation type="unfinished">Bewaar de Bestand Lijst...</translation>
+        <translation>Bewaar de Bestand Lijst...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation type="unfinished">Lijst Leegmaken</translation>
+        <translation>Lijst Leegmaken</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation type="unfinished">Selecteer alles</translation>
+        <translation>Selecteer alles</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation type="unfinished">Selecteer boven een drempel...</translation>
+        <translation>Selecteer boven een drempel...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation type="unfinished">Deselecteer alles</translation>
+        <translation>Deselecteer alles</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation type="unfinished">Registreer gevinkte afbeeldingen...</translation>
+        <translation>Registreer gevinkte afbeeldingen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation type="unfinished">Bereken afstanden...</translation>
+        <translation>Bereken afstanden...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation type="unfinished">Stapel gevinkte afbeeldingen...</translation>
+        <translation>Stapel gevinkte afbeeldingen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation type="unfinished">Groeps stapelen...</translation>
+        <translation>Groeps stapelen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation type="unfinished">Verwerken</translation>
+        <translation>Verwerken</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation type="unfinished">Open afbeelding bestand...</translation>
+        <translation>Open afbeelding bestand...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished">Kopieer huidige afbeelding naar klembord</translation>
+        <translation>Kopieer huidige afbeelding naar klembord</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation type="unfinished">Maak een Sterren Masker...</translation>
+        <translation>Maak een Sterren Masker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation type="unfinished">Bewaar afbeelding naar bestand...</translation>
+        <translation>Bewaar afbeelding naar bestand...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation type="unfinished">Opties</translation>
+        <translation>Opties</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation type="unfinished">Instellingen...</translation>
+        <translation>Instellingen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation type="unfinished">RAW/FITS DDP Instellingen...</translation>
+        <translation>RAW/FITS DDP Instellingen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation type="unfinished">Laad...</translation>
+        <translation>Laad...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation type="unfinished">Bewaar...</translation>
+        <translation>Bewaar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Geadviseerd...</translation>
+        <translation>Geadviseerd...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation type="unfinished">Over DeepSkyStacker...</translation>
+        <translation>Over DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation type="unfinished">DeepSkyStacker Help...</translation>
+        <translation>DeepSkyStacker Help...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="592"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished">Het traceerbestand wordt normaal gesproken naar de DeepSkyStacker-map in de gebruikers geschreven
+        <translation>Het traceerbestand wordt normaal gesproken naar de DeepSkyStacker-map in de gebruikers geschreven
 map &quot;Documenten&quot; en wordt verwijderd bij het afsluiten (tenzij de applicatie crasht).
 Vink dit vakje aan om het tracebestand te behouden.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished">Bewaar het traceringsbestand bij het afsluiten</translation>
+        <translation>Bewaar het traceringsbestand bij het afsluiten</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
-        <translation type="unfinished">Schakel voortgangsgeluiden in</translation>
+        <translation>Schakel voortgangsgeluiden in</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="640"/>
@@ -802,66 +802,62 @@ Vink dit vakje aan om het tracebestand te behouden.</translation>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished">Registratie Instellingen...</translation>
+        <translation>Registratie Instellingen...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished">Stapel Instellingen...</translation>
+        <translation>Stapel Instellingen...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished">Herstel Standaard instellingen</translation>
+        <translation>Herstel Standaard instellingen</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Laad DeepSkyStacker Live instellingen</translation>
+        <translation>Laad DeepSkyStacker Live instellingen</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished">Laad...</translation>
+        <translation>Laad...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Bewaar als DeepSkyStacker Live instellingen</translation>
+        <translation>Bewaar als DeepSkyStacker Live instellingen</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished">Bewaar als...</translation>
+        <translation>Bewaar als...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="576"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished">Laad DeepSkyStacker Instellingen</translation>
+        <translation>Laad DeepSkyStacker Instellingen</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished">DeepSkyStacker Instellingen (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Instellingen (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished">Bewaar DeepSkyStacker Instellingen</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished">DeepSkyStacker Instellingen (*.dsssettings)</translation>
+        <translation>Bewaar DeepSkyStacker Instellingen</translation>
     </message>
 </context>
 <context>
@@ -902,52 +898,52 @@ Vink dit vakje aan om het tracebestand te behouden.</translation>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation type="unfinished">DeepSkyStacker - Afbeeldingseigenschappen</translation>
+        <translation>DeepSkyStacker - Afbeeldingseigenschappen</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation type="unfinished">Datum/Tijd</translation>
+        <translation>Datum/Tijd</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation type="unfinished">Diepte</translation>
+        <translation>Diepte</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation type="unfinished">Grootte</translation>
+        <translation>Grootte</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation type="unfinished">Belichting</translation>
+        <translation>Belichting</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation type="unfinished">Informatie</translation>
+        <translation>Informatie</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation type="unfinished">Bestand</translation>
+        <translation>Bestand</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO/Gain</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
         <source>CFA</source>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
 </context>
 <context>
@@ -970,43 +966,43 @@ Ctrl+4 om de 4-Hoeken-modus in te schakelen</translation>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished">Tussentijdse Bestanden</translation>
+        <translation>Tussentijdse Bestanden</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished">Instellingen maken tussentijdse bestanden</translation>
+        <translation>Instellingen maken tussentijdse bestanden</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished">Maak een gecalibreerd bestand voor elke licht plaat</translation>
+        <translation>Maak een gecalibreerd bestand voor elke licht plaat</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished">Bewaar een gedebayerizeerde afbeelding wanneer RAW
+        <translation>Bewaar een gedebayerizeerde afbeelding wanneer RAW
 afbeelding worden verwerkt</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished">Maak een registratie/calibratie bestand voor elke licht plaat</translation>
+        <translation>Maak een registratie/calibratie bestand voor elke licht plaat</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished">Indeling Tussentijds Bestand</translation>
+        <translation>Indeling Tussentijds Bestand</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished">Bewaar Tussentijdse Bestanden als TIFF bestand</translation>
+        <translation>Bewaar Tussentijdse Bestanden als TIFF bestand</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewaar Tussentijdse Bestanden als FITS bestand</translation>
     </message>
 </context>
 <context>
@@ -1014,82 +1010,82 @@ afbeelding worden verwerkt</translation>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished">Uitvoer</translation>
+        <translation>Uitvoer</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished">Uitvoer Bestands-instelling</translation>
+        <translation>Uitvoer Bestands-instelling</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation type="unfinished">Maak Uitvoer bestand</translation>
+        <translation>Maak Uitvoer bestand</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation type="unfinished">Maak HTML beschrijving bestand</translation>
+        <translation>Maak HTML beschrijving bestand</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished">Uitvoer Bestand Naam</translation>
+        <translation>Uitvoer Bestand Naam</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation type="unfinished">&lt;bestand lijst naam&gt;.tif/fits</translation>
+        <translation>&lt;bestand lijst naam&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation type="unfinished">Voeg een nummer toe om overschrijving te voorkomen (001, 002, ...)</translation>
+        <translation>Voeg een nummer toe om overschrijving te voorkomen (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished">Uitvoer Lokatie</translation>
+        <translation>Uitvoer Lokatie</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation type="unfinished">Maak Uitvoer bestand in de map van de referentie afbeelding</translation>
+        <translation>Maak Uitvoer bestand in de map van de referentie afbeelding</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation type="unfinished">Maak Uitvoer bestand in de map van de bestand lijst</translation>
+        <translation>Maak Uitvoer bestand in de map van de bestand lijst</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation type="unfinished">Maak Uitvoer bestand in</translation>
+        <translation>Maak Uitvoer bestand in</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation type="unfinished">&lt;Uitvoer Map&gt;</translation>
+        <translation>&lt;Uitvoer Map&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="135"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation type="unfinished">Selekteer Uitvoer Map</translation>
+        <translation>Selekteer Uitvoer Map</translation>
     </message>
 </context>
 <context>
@@ -1097,7 +1093,7 @@ afbeelding worden verwerkt</translation>
     <message>
         <location filename="../picturelist.cpp" line="13"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished">Dubbelklik hier om de afbeeldingenlijst te koppelen/ontkoppelen</translation>
+        <translation>Dubbelklik hier om de afbeeldingenlijst te koppelen/ontkoppelen</translation>
     </message>
 </context>
 <context>
@@ -1105,80 +1101,80 @@ afbeelding worden verwerkt</translation>
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished">Cosmetisch</translation>
+        <translation>Cosmetisch</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished">Postuum instellingen Cosmetische Calibratie</translation>
+        <translation>Postuum instellingen Cosmetische Calibratie</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation type="unfinished">Detecteer en maak overgebleven Hete Pixels schoon</translation>
+        <translation>Detecteer en maak overgebleven Hete Pixels schoon</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation type="unfinished">&lt;small&gt;Zwak Effect&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Zwak Effect&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation type="unfinished">&lt;small&gt;Sterk&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Sterk&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished">Filter Grootte</translation>
+        <translation>Filter Grootte</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished">Detectie Drempel</translation>
+        <translation>Detectie Drempel</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation type="unfinished">Detecteer en maak overgebleven Koude Pixels schoon</translation>
+        <translation>Detecteer en maak overgebleven Koude Pixels schoon</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation type="unfinished">Vervang pixel waarde met</translation>
+        <translation>Vervang pixel waarde met</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation type="unfinished">Test op de eerste plaat...</translation>
+        <translation>Test op de eerste plaat...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation type="unfinished">Bewaar een afbeelding die de schoongemaakte pixels vertoont voor elke licht plaat</translation>
+        <translation>Bewaar een afbeelding die de schoongemaakte pixels vertoont voor elke licht plaat</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="24"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation type="unfinished">het rechtlijnige filter</translation>
+        <translation>het rechtlijnige filter</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="25"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation type="unfinished">de gauskromme filter</translation>
+        <translation>de gauskromme filter</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="385"/>
@@ -1187,221 +1183,235 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished">Kunstmatig
+        <translation>Kunstmatig
 Gedetecteerde hotpixels: %L1 (%L2%)
-Gedetecteerde koude pixels: %L3 (%L4%)</translation>
+Gedetecteerde koude pixels: %L3 (%L4%)
+</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Wilt u de veranderingen bewaren?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF en FITS-afbeelding (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>Ster Masker gemaakt door DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Bewaren van Ster Masker in %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Afbeelding 16 bit/kan (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Afbeelding 32 bit/kan - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Afbeelding 32 bit/kan - rationeel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Afbeelding 16 bit/kan (*fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Image 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Afbeelding 32 bit/kan - rationeel (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewaar afbeelding</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen afbeelding om te bewaren.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Geen informatie beschikbaar</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
-        <translation type="unfinished"></translation>
+        <translation>Belichting: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n plater</numerusform>
+            <numerusform>%n platen</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="119"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB/K Waarden</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="145"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik Rood Histogram Aanpassing Methode</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="206"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik Groen Histogram Aanpassing Methode</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="267"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik Blauw Histogram Aanpassing Methode</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="308"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gekoppelde instellingen</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="316"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Helderheid</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="337"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zwart gebied</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="397"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Midden gebied</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="457"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hoge lichten</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="503"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Absorpti</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="524"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Absorptie verschuiving</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="612"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Toepassen</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="619"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maak laatst toegepaste instellingen ongedaan</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="642"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bewaar, Laad, Beheer instellingen ...</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="665"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Herstel laatst toegepaste instellingen</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="682"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reset</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Instellingen Beheer</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Laad</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>De naam van de verwerkingsinstellingen mag geen / of \ bevatten.
+Wijzig de naam.</translation>
     </message>
 </context>
 <context>
@@ -1452,12 +1462,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation type="unfinished">Verwerken ...</translation>
+        <translation>Verwerken ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -1465,151 +1475,151 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation type="unfinished">RAW/FITS Digitale Ontwikkel Proces (DDP) Instellingen</translation>
+        <translation>RAW/FITS Digitale Ontwikkel Proces (DDP) Instellingen</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation type="unfinished">RAW Bestanden</translation>
+        <translation>RAW Bestanden</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished">Kleur Aanpassing</translation>
+        <translation>Kleur Aanpassing</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation type="unfinished">Helderheid</translation>
+        <translation>Helderheid</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation type="unfinished">Rode schaal</translation>
+        <translation>Rode schaal</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation type="unfinished">Blauwe schaal</translation>
+        <translation>Blauwe schaal</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation type="unfinished">Wit Balans</translation>
+        <translation>Wit Balans</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished">Geen witbalansverwerkings</translation>
+        <translation>Geen witbalansverwerkings</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished">Gebruik Camera Wit Balans</translation>
+        <translation>Gebruik Camera Wit Balans</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished">Bayer Matrix Verplaatsing</translation>
+        <translation>Bayer Matrix Verplaatsing</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished">Bi-lineair Interpolatie</translation>
+        <translation>Bi-lineair Interpolatie</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished">Geleide Aanpassende Homogeniteit (AHD) Interpolatie</translation>
+        <translation>Geleide Aanpassende Homogeniteit (AHD) Interpolatie</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished">Gebruik Bayer Drizzle algoritme (geen interpolatie, geen debayerisatie)</translation>
+        <translation>Gebruik Bayer Drizzle algoritme (geen interpolatie, geen debayerisatie)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished">Deze optie gebruikt de Bayer matrix. Geen interpolatie wordt toegepast en iedere pixel krijgt alleen de primaire onderdelen van de matrix.</translation>
+        <translation>Deze optie gebruikt de Bayer matrix. Geen interpolatie wordt toegepast en iedere pixel krijgt alleen de primaire onderdelen van de matrix.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Maak super-pixels van de ruwe Bayer matrix (geen interpolatie)</translation>
+        <translation>Maak super-pixels van de ruwe Bayer matrix (geen interpolatie)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished">Deze optie gebruikt de Bayer matrix om een super-pixel te maken van iedere groep van 4 pixels (RGBG). De afmeting van de resulterende afbeelding is daardoor gedeeld door twee.</translation>
+        <translation>Deze optie gebruikt de Bayer matrix om een super-pixel te maken van iedere groep van 4 pixels (RGBG). De afmeting van de resulterende afbeelding is daardoor gedeeld door twee.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS Bestanden</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;16-bits FITS-bestanden met één vlak zijn afkomstig van een &amp;quot;One-Shot-Colour&amp;quot;-camera (DSLR, spiegelloos, CCD of CMOS) die van de Bayer moeten worden ontdaan.&lt;br/&gt;Laat &lt;span style=&quot; font-style:italic;&quot;&gt;niet aangevinkt&lt;/span&gt; om automatische detectie op basis van FITS-trefwoorden te proberen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation type="unfinished">Camera:</translation>
+        <translation>Camera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation type="unfinished">Rode schaal</translation>
+        <translation>Rode schaal</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation type="unfinished">Blauwe schaal</translation>
+        <translation>Blauwe schaal</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished">Bayer Filter Patroon gebruikt</translation>
+        <translation>Bayer Filter Patroon gebruikt</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished">Forceer het gebruik van niet getekende waarden waar getekende waarden bewaard worden</translation>
+        <translation>Forceer het gebruik van niet getekende waarden waar getekende waarden bewaard worden</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished">Algemeen RGGB</translation>
+        <translation>Algemeen RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished">Algemeen BGGR</translation>
+        <translation>Algemeen BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="22"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished">Algemeen GBRG</translation>
+        <translation>Algemeen GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished">Algemeen GRBG</translation>
+        <translation>Algemeen GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="25"/>
         <source>Generic</source>
-        <translation type="unfinished">Algemeen</translation>
+        <translation>Algemeen</translation>
     </message>
 </context>
 <context>
@@ -1617,42 +1627,42 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation type="unfinished">Aanbevolen Instellingen</translation>
+        <translation>Aanbevolen Instellingen</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="44"/>
         <source>Show all recommendations</source>
-        <translation type="unfinished">Laat alle aanbevelingen zien</translation>
+        <translation>Laat alle aanbevelingen zien</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="190"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation type="unfinished">Dit zijn aanbevolen instellingen.&lt;br&gt;Deze instellingen zijn een uitgangs punt om te beginnen maar kunnen niet altijd werken.</translation>
+        <translation>Dit zijn aanbevolen instellingen.&lt;br&gt;Deze instellingen zijn een uitgangs punt om te beginnen maar kunnen niet altijd werken.</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="194"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation type="unfinished">Klik op de voorgestelde link om de instelling te veranderen</translation>
+        <translation>Klik op de voorgestelde link om de instelling te veranderen</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="198"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation type="unfinished">Instellingen die al gemaakt zijn worden in het groen afgedrukt</translation>
+        <translation>Instellingen die al gemaakt zijn worden in het groen afgedrukt</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="780"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation type="unfinished">of</translation>
+        <translation>of</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="846"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation type="unfinished">U moet eerst afbeeldingen toevoegen en aanvinken in de lijst.</translation>
+        <translation>U moet eerst afbeeldingen toevoegen en aanvinken in de lijst.</translation>
     </message>
 </context>
 <context>
@@ -1660,139 +1670,139 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation type="unfinished">Registratie Instellingen</translation>
+        <translation>Registratie Instellingen</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Stapel Instellingen...</translation>
+        <translation>Stapel Instellingen...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Aanbevolen Instellingen...</translation>
+        <translation>Aanbevolen Instellingen...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation type="unfinished">Acties</translation>
+        <translation>Acties</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation type="unfinished">Registreer al geregistreerde platen</translation>
+        <translation>Registreer al geregistreerde platen</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Automatische detectie van hete pixels</translation>
+        <translation>Automatische detectie van hete pixels</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation type="unfinished">Stapel na registratie</translation>
+        <translation>Stapel na registratie</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation type="unfinished">Selecteer de beste</translation>
+        <translation>Selecteer de beste</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation type="unfinished">% platen en stapel ze.</translation>
+        <translation>% platen en stapel ze</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation type="unfinished">Ge-avanceerd</translation>
+        <translation>Ge-avanceerd</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Ster detectie drempel</translation>
+        <translation>Ster detectie drempel</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische drempel gebruiken</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation type="unfinished">Bereken het aantal gedetecteerde sterren</translation>
+        <translation>Bereken het aantal gedetecteerde sterren</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation type="unfinished">Reduceer de ruis door een Rechtlijnig Filter te gebruiken</translation>
+        <translation>Reduceer de ruis door een Rechtlijnig Filter te gebruiken</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished">Vergeet niet om dark, flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om dark, flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished">Vergeet niet om dark en flat platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om dark en flat platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="177"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished">Vergeet niet om dark en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om dark en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="180"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished">Vergeet niet om flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="183"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished">Vergeet niet om dark platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om dark platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="186"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished">Vergeet niet om flat platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om flat platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished">Vergeet niet om offset platen toe te voegen en aan te vinken voor stapelen.</translation>
+        <translation>Vergeet niet om offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="213"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished">donkere, platte en compensatie/verstoring aangevinkt.</translation>
+        <translation>donkere, platte en compensatie/verstoring aangevinkt.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="277"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Registreren %1</translation>
+        <translation>Registreren %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 ster(ren)</translation>
+        <translation>%1 ster(ren)</translation>
     </message>
 </context>
 <context>
@@ -1800,12 +1810,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation type="unfinished">Groep hernoemen</translation>
+        <translation>Groep hernoemen</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation type="unfinished">Groepsnaam:</translation>
+        <translation>Groepsnaam:</translation>
     </message>
 </context>
 <context>
@@ -1813,63 +1823,63 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation type="unfinished">Resultaat</translation>
+        <translation>Resultaat</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation type="unfinished">Standaard Modus</translation>
+        <translation>Standaard Modus</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation type="unfinished">&quot;Mozaïek&quot; Modus</translation>
+        <translation>&quot;Mozaïek&quot; Modus</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation type="unfinished">Snijdings Mode</translation>
+        <translation>Snijdings Mode</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation type="unfinished">Rechthoek op maat</translation>
+        <translation>Rechthoek op maat</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation type="unfinished">2x Drizzle Aanzetten</translation>
+        <translation>2x Drizzle Aanzetten</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation type="unfinished">3x Drizzle Aanzetten</translation>
+        <translation>3x Drizzle Aanzetten</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation type="unfinished">Lijn RGB Kanalen in definitive afbeelding uit</translation>
+        <translation>Lijn RGB Kanalen in definitive afbeelding uit</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="70"/>
         <location filename="../ResultParameters.cpp" line="132"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">Het resultaat van het stapelproces is gekaderd door de referentie licht afbeelding.</translation>
+        <translation>Het resultaat van het stapelproces is gekaderd door de referentie licht afbeelding.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="80"/>
         <location filename="../ResultParameters.cpp" line="145"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Het resultaat van het stapel proces bevat alle licht platen uit de stapel.</translation>
+        <translation>Het resultaat van het stapel proces bevat alle licht platen uit de stapel.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="90"/>
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Het resultaat van het stapel proces is gekaderd door de snijding van alle afbeeldingen.</translation>
+        <translation>Het resultaat van het stapel proces is gekaderd door de snijding van alle afbeeldingen.</translation>
     </message>
 </context>
 <context>
@@ -1877,7 +1887,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation type="unfinished">Bewaar Veranderingen?</translation>
+        <translation>Bewaar Veranderingen?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -1885,7 +1895,7 @@ Please change the name.</source>
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">U heeft veranderingen gemaakt (sterren of komeet posities)
+        <translation>U heeft veranderingen gemaakt (sterren of komeet posities)
 
 Wilt u ze bewaren?</translation>
     </message>
@@ -1893,31 +1903,31 @@ Wilt u ze bewaren?</translation>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">De volgende keer...</translation>
+        <translation>De volgende keer...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Bewaar zonder te vragen</translation>
+        <translation>Bewaar zonder te vragen</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Niet bewaren zonder te vragen</translation>
+        <translation>Niet bewaren zonder te vragen</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation type="unfinished">Vraag nog een keer</translation>
+        <translation>Vraag nog een keer</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">U kan deze opties benaderen door rechts te klikken op de Bewaar knop</translation>
+        <translation>U kan deze opties benaderen door rechts te klikken op de Bewaar knop</translation>
     </message>
 </context>
 <context>
@@ -1926,55 +1936,55 @@ Wilt u ze bewaren?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Compressie</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">Geen</translation>
+        <translation>Geen</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (Deflate)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (verouderd)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Opties</translation>
+        <translation>Opties</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pas de veranderingen toe op de bewaarde afbeelding</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Voeg de veranderingen toe aan de bewaarde afbeelding maar pas ze niet toe</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pas de veranderingen niet toe op de te bewaren afbeelding</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maak een afbeelding van de geselecteerde rechthoek</translation>
     </message>
 </context>
 <context>
@@ -1982,222 +1992,222 @@ Wilt u ze bewaren?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation type="unfinished">Stapel stappen</translation>
+        <translation>Stapel stappen</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="34"/>
         <source>Recommended Settings ...</source>
-        <translation type="unfinished">Aanbevolen Instellingen..</translation>
+        <translation>Aanbevolen Instellingen ...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="41"/>
         <source>Stacking Settings ...</source>
-        <translation type="unfinished">Stapel Instellingen...</translation>
+        <translation>Stapel Instellingen...</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Ja</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">Nee</translation>
+        <translation>Nee</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Achtergrond Calibratie RGB Kanalen: %1</translation>
+        <translation>Achtergrond Calibratie RGB Kanalen: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Per Kanaal Achtergrond Calibratie: %1</translation>
+        <translation>Per Kanaal Achtergrond Calibratie: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Donker optimalisatie: %1</translation>
+        <translation>Donker optimalisatie: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished">Donker Vermenigvuldigings Factor: %1</translation>
+        <translation>Donker Vermenigvuldigings Factor: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished">Hete Pixel detectie en verwijdering: %1</translation>
+        <translation>Hete Pixel detectie en verwijdering: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">Het proces heeft tijdelijk %1 aan vrije ruimte nodig op de %2 schijf.\nEr is %3 beschikbaar op deze schijf.</translation>
+        <translation>Het proces heeft tijdelijk %1 aan vrije ruimte nodig op de %2 schijf.\nEr is %3 beschikbaar op deze schijf.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="740"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished">Let op: de benodigde schijfruimte wordt berekend met behulp van de referentie plaat. Afhankelijk van de grootte van de resulterende afbeelding is er misschien meer ruimte nodig.</translation>
+        <translation>Let op: de benodigde schijfruimte wordt berekend met behulp van de referentie plaat. Afhankelijk van de grootte van de resulterende afbeelding is er misschien meer ruimte nodig.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished">Waarschuwing: U gebruikt donkere, platte of compensatie platen samen met JPEG bestanden.&lt;br&gt;Omdat de compressie niet constant is zal de calibratie niet werken met JPEG bestanden.</translation>
+        <translation>Waarschuwing: U gebruikt donkere, platte of compensatie platen samen met JPEG bestanden.&lt;br&gt;Omdat de compressie niet constant is zal de calibratie niet werken met JPEG bestanden.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished">Stapel modus: </translation>
+        <translation>Stapel modus: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Mozaïek</translation>
+        <translation>Mozaïek</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished">Rechthoek op maat</translation>
+        <translation>Rechthoek op maat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Doorsnijding</translation>
+        <translation>Doorsnijding</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="301"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished">Uitlijning methode: </translation>
+        <translation>Uitlijning methode: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="309"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished">Automatisch</translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="312"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished">Bi-lineair</translation>
+        <translation>Bi-lineair</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="315"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished">Bi-oppervlak</translation>
+        <translation>Bi-oppervlak</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="318"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished">Bi-kubus</translation>
+        <translation>Bi-kubus</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="321"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished">Geen Uitlijning</translation>
+        <translation>Geen Uitlijning</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="332"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished">Drizzle x%1 ingeschakeld</translation>
+        <translation>Drizzle x%1 ingeschakeld</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="338"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished">De geselcteerde drizzle optie komt niet overeen met de Bayer Drizzle modus.</translation>
+        <translation>De geselcteerde drizzle optie komt niet overeen met de Bayer Drizzle modus.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 gevonden en gebruikte processoren</translation>
+        <translation>%1 gevonden en gebruikte processoren</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 gevonden processoren - slechts één gebruikt</translation>
+        <translation>%1 gevonden processoren - slechts één gebruikt</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="364"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished">Komeet verwerking : </translation>
+        <translation>Komeet verwerking : </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished">Lijn uit op sterren (geen specifieke verwerking)</translation>
+        <translation>Lijn uit op sterren (geen specifieke verwerking)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished">Lijn uit op komeet</translation>
+        <translation>Lijn uit op komeet</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="375"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished">Lijn uit op sterren en komeet</translation>
+        <translation>Lijn uit op sterren en komeet</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="389"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished">Cosmetica op hete pixels wordt toegepast (Filter = %1 px, Detectie Drempel = %L2%)&lt;br&gt;</translation>
+        <translation>Cosmetica op hete pixels wordt toegepast (Filter = %1 px, Detectie Drempel = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="397"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished">Cosmetica op koude pixels wordt toegepast (Filter = %1 px, Detectie Drempel = %L1%)&lt;br&gt;</translation>
+        <translation>Cosmetica op koude pixels wordt toegepast (Filter = %1 px, Detectie Drempel = %L1%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="426"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished">Stapel stap %1&lt;br&gt;  -&gt;%2 platen (%3: %4) - totale belichting: </translation>
+        <translation>Stapel stap %1&lt;br&gt;  -&gt;%2 platen (%3: %4) - totale belichting: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="444"/>
@@ -2207,19 +2217,19 @@ Wilt u ze bewaren?</translation>
         <location filename="../StackRecap.cpp" line="674"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished">Methode: </translation>
+        <translation>Methode: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="455"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished">Waarschuwing: De Bayer Drizzle optie is geselecteerd in de RAW DDP en kan leiden tot vreemde resultaten met een methode anders dan gemidddeld.</translation>
+        <translation>Waarschuwing: De Bayer Drizzle optie is geselecteerd in de RAW DDP en kan leiden tot vreemde resultaten met een methode anders dan gemidddeld.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="475"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished">-&gt; Offset: %1 platen (%2: %3) belichting: %4</translation>
+        <translation>-&gt; Offset: %1 platen (%2: %3) belichting: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="500"/>
@@ -2227,7 +2237,7 @@ Wilt u ze bewaren?</translation>
         <location filename="../StackRecap.cpp" line="686"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished">Waarschuwing: ISO snelheid komt niet overeen met licht platen</translation>
+        <translation>Waarschuwing: ISO snelheid komt niet overeen met licht platen</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="510"/>
@@ -2235,85 +2245,85 @@ Wilt u ze bewaren?</translation>
         <location filename="../StackRecap.cpp" line="696"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished">Waarschuwing: Gain komt niet overeen met Light foto gain</translation>
+        <translation>Waarschuwing: Gain komt niet overeen met Light foto gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="521"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished">-&gt; Geen Offset</translation>
+        <translation>-&gt; Geen Offset</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="530"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished">-&gt; Dark: %1 platen (%2: %3) belichting: %4</translation>
+        <translation>-&gt; Dark: %1 platen (%2: %3) belichting: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="588"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished">Waarschuwing: belichting tijd komt niet overeen met licht platen</translation>
+        <translation>Waarschuwing: belichting tijd komt niet overeen met licht platen</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="597"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished">-&gt; Geen Dark</translation>
+        <translation>-&gt; Geen Dark</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="606"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished">-&gt; Dark Flat: %1 platen (%2: %3) belichting: %4</translation>
+        <translation>-&gt; Dark Flat: %1 platen (%2: %3) belichting: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="632"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Waarschuwing: ISO snelheid komt niet overeen met platte platen</translation>
+        <translation>Waarschuwing: ISO snelheid komt niet overeen met platte platen</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="642"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Waarschuwing: Donker Flat foto gain komt niet overeen met Flat foto gain</translation>
+        <translation>Waarschuwing: Donker Flat foto gain komt niet overeen met Flat foto gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="650"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Waarschuwing: belichting tijd komt niet overeen met platte platen</translation>
+        <translation>Waarschuwing: belichting tijd komt niet overeen met platte platen</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="662"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished">-&gt; Flat: %1 platen (%2: %3) belichting: %4</translation>
+        <translation>-&gt; Flat: %1 platen (%2: %3) belichting: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="706"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished">-&gt; Geen Flat</translation>
+        <translation>-&gt; Geen Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="721"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished">Geschatte Totale belichting tijd: %1&lt;br&gt;(de totale belichting tijd is berekend rekeninghoudend dat alle aangevinkte licht platen worden behouden voor het stapel proces)</translation>
+        <translation>Geschatte Totale belichting tijd: %1&lt;br&gt;(de totale belichting tijd is berekend rekeninghoudend dat alle aangevinkte licht platen worden behouden voor het stapel proces)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="731"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished">Het proces zal tijdelijk %1 op de %2 schijf gebruiken (%3 vrij).</translation>
+        <translation>Het proces zal tijdelijk %1 op de %2 schijf gebruiken (%3 vrij).</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="748"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished">Waarschuwing: de optie om geregistreerde en gecalibreerde afbeeldingen te bewaren is geselecteerd. Let op dat u genoeg schijfruimte over heeft om de bestanden te bewaren.</translation>
+        <translation>Waarschuwing: de optie om geregistreerde en gecalibreerde afbeeldingen te bewaren is geselecteerd. Let op dat u genoeg schijfruimte over heeft om de bestanden te bewaren.</translation>
     </message>
 </context>
 <context>
@@ -2321,62 +2331,62 @@ Wilt u ze bewaren?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation type="unfinished">Stapel Instellingen...</translation>
+        <translation>Stapel Instellingen</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation type="unfinished">Tijdelijke Bestands Map:</translation>
+        <translation>Tijdelijke Bestands Map:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation type="unfinished">Verminder werker threads voorrang</translation>
+        <translation>Verminder werker threads voorrang</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation type="unfinished">Gebruik alle beschikbare processoren</translation>
+        <translation>Gebruik alle beschikbare processoren</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation type="unfinished">SIMD vectorisatie</translation>
+        <translation>SIMD vectorisatie</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished">Light</translation>
+        <translation>Light</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="190"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation type="unfinished">Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten.</translation>
+        <translation>Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten</translation>
     </message>
 </context>
 <context>
@@ -2558,7 +2568,7 @@ Offset/Bias Platen: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet al uw gecontroleerde lichtframes hebben een gemiddelde kwaliteit berekend. U moet uw lichtframes opnieuw registreren.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2627,124 +2637,124 @@ Wilt u deze veranderingen bewaren?</translation>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Stapelen</translation>
+        <translation>Stapelen</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation type="unfinished">Stapel modus</translation>
+        <translation>Stapel modus</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation type="unfinished">Aantal herhalingen:</translation>
+        <translation>Aantal herhalingen:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation type="unfinished">Rechtlijnig</translation>
+        <translation>Rechtlijnig</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation type="unfinished">Kappa-Sigma afbreken</translation>
+        <translation>Kappa-Sigma afbreken</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation type="unfinished">Maximum</translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation type="unfinished">Rechtlijnig Kappa-Sigma afbreken</translation>
+        <translation>Rechtlijnig Kappa-Sigma afbreken</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished">Automatisch Aangepaste Gewogen Gemiddelde</translation>
+        <translation>Automatisch Aangepaste Gewogen Gemiddelde</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation type="unfinished">Gemiddelde</translation>
+        <translation>Gemiddelde</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Afnemend Gewogen Gemiddelde
+        <translation>Afnemend Gewogen Gemiddelde
 (Hoog Dynamisch Bereik)</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation type="unfinished">Aberratie correctie</translation>
+        <translation>Aberratie correctie</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation type="unfinished">Instellingen...</translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Donker Optimalisatie</translation>
+        <translation>Donker Optimalisatie</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation type="unfinished">Slechte kolommen detectie en verwijdering</translation>
+        <translation>Slechte kolommen detectie en verwijdering</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Hete Pixels detectie en verwijdering</translation>
+        <translation>Hete Pixels detectie en verwijdering</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation type="unfinished">Donker Vermenigvuldigings Factor:</translation>
+        <translation>Donker Vermenigvuldigings Factor</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Geen Achtergrond Calibratie</translation>
+        <translation>Geen Achtergrond Calibratie</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Achtergrond Calibratie per Kanaal</translation>
+        <translation>Achtergrond Calibratie per Kanaal</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="20"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Achtergrond Calibratie RGB Kanalen</translation>
+        <translation>Achtergrond Calibratie RGB Kanalen</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="59"/>
@@ -2754,7 +2764,7 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation type="unfinished">De pixels buiten de drempel:
+        <translation>De pixels buiten de drempel:
 [Gemiddelde-%1*%2 , Gemiddelde+%1*%2 ]
 zijn herhaaldelijk verwijderd.
 
@@ -2768,7 +2778,7 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation type="unfinished">De pixels buiten de drempel:
+        <translation>De pixels buiten de drempel:
 [Gemiddelde-%1*%2 , Gemiddelde+%1*%2 ]
 zijn herhaaldelijk vervangen door de gemiddelde waarde.
 
@@ -2781,7 +2791,7 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">Het &lt;b&gt;gewogen gemiddelde&lt;/b&gt; is bereikt door
+        <translation>Het &lt;b&gt;gewogen gemiddelde&lt;/b&gt; is bereikt door
 het herhaaldelijk wegen van elke pixel
 uit de deviatie van het gemiddelde
 in vergelijking tot de standaard deviatie (%1).</translation>
@@ -2790,7 +2800,7 @@ in vergelijking tot de standaard deviatie (%1).</translation>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation type="unfinished">Opties...</translation>
+        <translation>Opties...</translation>
     </message>
 </context>
 <context>
@@ -2799,112 +2809,117 @@ in vergelijking tot de standaard deviatie (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maak een Ster Masker</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ster detectie</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Ster detectie drempel</translation>
+        <translation>Ster detectie drempel</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hete Pixels detectie</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
+        <source>Minimum size of a star</source>
+        <translation>Minimum Afmeting van een Ster</translation>
+    </message>
+    <message>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum Afmating van een Ster</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergroting/Krimpen</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Percentage van de ster grootte</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Vergroot de grootte met</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
-        <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorm van de sterren in het masker</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
-        <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <source>Bell</source>
+        <translation>Bel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
-        <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Bell</source>
+        <translation>Afgeplatte Bel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
-        <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Cone</source>
+        <translation>Kegel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
-        <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Cone</source>
+        <translation>Afgeplatte Kegel</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
-        <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <source>Cubic</source>
+        <translation>Vierkant</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
+        <source>Quadric</source>
+        <translation>Kwadratisch</translation>
+    </message>
+    <message>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n pixel</numerusform>
+            <numerusform>%n pixels</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF afbeelding (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS afbeelding (*.fits *.fts *.fit)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bewaar Ster Masker als ...</translation>
     </message>
 </context>
 <context>
@@ -2991,7 +3006,7 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
     <message>
         <location filename="../DeepSkyStacker.cpp" line="392"/>
         <source>Sponsor DeepSkyStacker</source>
-        <translation type="unfinished"></translation>
+        <translation>Sponsor DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="336"/>
@@ -3031,12 +3046,15 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
     </message>
 </context>
 <context>
-    <name>ProcessingDlg</name>
+    <name>QLinearGradientCtrl</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Bewaren van Ster Masker in %1</translation>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>U kunt de toetsen Omhoog-pijl, Rechts-pijl, Links-pijl, Omlaag-pijl;
+Page-Up en Page-Down gebruiken om een ​​schuifbalk te verplaatsen
+nadat u deze met de muis hebt geselecteerd.</translation>
     </message>
 </context>
 <context>
