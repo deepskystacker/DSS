@@ -72,113 +72,113 @@
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation type="unfinished">Info su DeepSkyStacker</translation>
+        <translation>Info su DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation type="unfinished">Lingua</translation>
+        <translation>Lingua</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation type="unfinished">Seleziona la lingua:</translation>
+        <translation>Seleziona la lingua:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation type="unfinished">Controlla per nuove versioni all&apos;avvio</translation>
+        <translation>Controlla per nuove versioni all&apos;avvio</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Info su &amp;Qt</translation>
+        <translation>Info su &amp;Qt</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="35"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation type="unfinished">DeepSkyStacker versione %1</translation>
+        <translation>DeepSkyStacker versione %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="42"/>
         <source>(Now somewhat out of date)</source>
-        <translation type="unfinished">(Ora un po &apos;obsoleto)</translation>
+        <translation>(Ora un po &apos;obsoleto)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">RAW decodificati da LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation>Decodifica file RAW da LibRaw (versione %1)
+Copyright © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation type="unfinished">De/codifica TIFF da LibTIFF (version %1)
+        <translation>Codifica/decodifica file TIFF tramite LibTIFF (versione %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation type="unfinished">Decodifica FITS da CFitsIO (versione %1)
+        <translation>Decodifica FITS da CFitsIO (versione %1)
 Copyright NASA</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="76"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished">Metadati immagine Exif, IPTC, XMP e ICC di Exiv2 - Versione 0.28.0
+        <translation>Metadati immagine Exif, IPTC, XMP e ICC di Exiv2 - Versione 0.28.0
 Copyright 2004-2023 Autori Exiv2</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="82"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished">Supporto SMTP da parte del client SMTP per Qt (C++) - Versione 0.27.6
+        <translation>Supporto SMTP da parte del client SMTP per Qt (C++) - Versione 0.27.6
 Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="96"/>
         <source>Default</source>
-        <translation type="unfinished">Predeterminanta</translation>
+        <translation>Predeterminanta</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation type="unfinished">Versione Spagnola: Ricardo Contreras e il squadra da</translation>
+        <translation>Versione Spagnola: Ricardo Contreras e il squadra da</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="121"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation type="unfinished">Versione Ceca:</translation>
+        <translation>Versione Ceca:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="125"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation type="unfinished">Versione Italiana:</translation>
+        <translation>Versione Italiana:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="129"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation type="unfinished">Versione Catalana:</translation>
+        <translation>Versione Catalana:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="133"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation type="unfinished">Versione tedesca:</translation>
+        <translation>Versione tedesca:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="135"/>
@@ -187,43 +187,43 @@ Copyright Tőkés Attila</translation>
         <location filename="../About.cpp" line="152"/>
         <location filename="../About.cpp" line="153"/>
         <source>and</source>
-        <translation type="unfinished">e</translation>
+        <translation>e</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="138"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation type="unfinished">Versione Olandese:</translation>
+        <translation>Versione Olandese:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="142"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation type="unfinished">Versione Cinese Tradizionale:</translation>
+        <translation>Versione Cinese Tradizionale:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="146"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation type="unfinished">Versione Portoghese:</translation>
+        <translation>Versione Portoghese:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="151"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation type="unfinished">Versione rumena:</translation>
+        <translation>Versione rumena:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="156"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation type="unfinished">Versione russa:</translation>
+        <translation>Versione russa:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="160"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation type="unfinished">Versione turca:</translation>
+        <translation>Versione turca:</translation>
     </message>
 </context>
 <context>
@@ -231,37 +231,37 @@ Copyright Tőkés Attila</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation type="unfinished">Allineamento</translation>
+        <translation>Allineamento</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation type="unfinished">Transformazione usata durante l&apos;allineamento</translation>
+        <translation>Transformazione usata durante l&apos;allineamento</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation type="unfinished">Biquadratica</translation>
+        <translation>Biquadratica</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation type="unfinished">Nessun allineamento</translation>
+        <translation>Nessun allineamento</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation type="unfinished">Bilineare</translation>
+        <translation>Bilineare</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation type="unfinished">Bicubica</translation>
+        <translation>Bicubica</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automatico</translation>
+        <translation>Automatico</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="33"/>
@@ -269,7 +269,7 @@ Copyright Tőkés Attila</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation type="unfinished">Automatico
+        <translation>Automatico
 
 Il metodo di allineamento viene scielto automaticamente a seconda del numero di stelle disponibili.</translation>
     </message>
@@ -279,7 +279,7 @@ Il metodo di allineamento viene scielto automaticamente a seconda del numero di 
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation type="unfinished">Allineamento bilineare
+        <translation>Allineamento bilineare
 
 L&apos;allineamento bilineare viene usato in tutti i casi.</translation>
     </message>
@@ -289,7 +289,7 @@ L&apos;allineamento bilineare viene usato in tutti i casi.</translation>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation type="unfinished">Allineamento biquadratico
+        <translation>Allineamento biquadratico
 
 L&apos;allineamento biquadratico viene usato se ci sono almeno 25 stelle disponibili, altrimenti viene usato il bilineare.</translation>
     </message>
@@ -299,7 +299,7 @@ L&apos;allineamento biquadratico viene usato se ci sono almeno 25 stelle disponi
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation type="unfinished">Allineamento bicubico
+        <translation>Allineamento bicubico
 
 L&apos;allineamento bicubico viene usato se ci sono almeno 40 stelle disponibili, poi il biquadratico se ce ne sono da 25 a 39, poi quello bilineare se ci sono meno di 25 stelle disponibili.</translation>
     </message>
@@ -309,7 +309,7 @@ L&apos;allineamento bicubico viene usato se ci sono almeno 40 stelle disponibili
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation type="unfinished">Immagine non allineata</translation>
+        <translation>Immagine non allineata</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -317,7 +317,7 @@ L&apos;allineamento bicubico viene usato se ci sono almeno 40 stelle disponibili
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation type="unfinished">Questa immagine non è allineata
+        <translation>Questa immagine non è allineata
 (le stelle non sono state rilevate).
 
 Vuoi...</translation>
@@ -325,17 +325,17 @@ Vuoi...</translation>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation type="unfinished">allineare questa immagine</translation>
+        <translation>allineare questa immagine</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
-        <translation type="unfinished">allineare tutte le immagini</translation>
+        <translation>allineare tutte le immagini</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
-        <translation type="unfinished">continuare senza allineare l&apos;immagine</translation>
+        <translation>continuare senza allineare l&apos;immagine</translation>
     </message>
 </context>
 <context>
@@ -343,47 +343,47 @@ Vuoi...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation type="unfinished">Opzioni Sfondo</translation>
+        <translation>Opzioni Sfondo</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation type="unfinished">Metodo di Calibrazione</translation>
+        <translation>Metodo di Calibrazione</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation type="unfinished">Lineare</translation>
+        <translation>Lineare</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation type="unfinished">Razionale</translation>
+        <translation>Razionale</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation type="unfinished">Metodo di Calibrazione RGB Sfondo</translation>
+        <translation>Metodo di Calibrazione RGB Sfondo</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation type="unfinished">Minimo</translation>
+        <translation>Minimo</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation type="unfinished">Medio</translation>
+        <translation>Medio</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation type="unfinished">Massima</translation>
+        <translation>Massima</translation>
     </message>
 </context>
 <context>
@@ -391,7 +391,7 @@ Vuoi...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation type="unfinished">Combinazione multipla</translation>
+        <translation>Combinazione multipla</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -399,7 +399,7 @@ Vuoi...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation type="unfinished">Questa finestra serve a far partire la combinazione da una lista di immagini esistente
+        <translation>Questa finestra serve a far partire la combinazione da una lista di immagini esistente
 
 Aggiungi le liste che vuoi combinare e premi OK per partire.</translation>
     </message>
@@ -407,13 +407,13 @@ Aggiungi le liste che vuoi combinare e premi OK per partire.</translation>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation type="unfinished">Aggiungi liste...</translation>
+        <translation>Aggiungi liste...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation type="unfinished">Svuota Lista</translation>
+        <translation>Svuota Lista</translation>
     </message>
 </context>
 <context>
@@ -422,13 +422,13 @@ Aggiungi le liste che vuoi combinare e premi OK per partire.</translation>
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Marca immagini sopra...</translation>
+        <translation>Marca immagini sopra...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Punteggio minimo:</translation>
+        <translation>Punteggio minimo:</translation>
     </message>
 </context>
 <context>
@@ -436,47 +436,47 @@ Aggiungi le liste che vuoi combinare e premi OK per partire.</translation>
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished">Comete</translation>
+        <translation>Comete</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished">Parametri combinazione per comete</translation>
+        <translation>Parametri combinazione per comete</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished">Combinazione standard</translation>
+        <translation>Combinazione standard</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished">La posizione della cometa viene ingorata.
+        <translation>La posizione della cometa viene ingorata.
 La cometa sarà mossa.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished">Combinazione per comete</translation>
+        <translation>Combinazione per comete</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished">La posizione della cometa viene usata.
+        <translation>La posizione della cometa viene usata.
 La cometa sarà a fuoco e le stelle mosse.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished">Combinazione stelle + cometa</translation>
+        <translation>Combinazione stelle + cometa</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished">La posizione della cometa viene usata.
+        <translation>La posizione della cometa viene usata.
 La cometa e le stelle saranno a fuoco. La procedura è lunga il doppio.</translation>
     </message>
 </context>
@@ -485,13 +485,13 @@ La cometa e le stelle saranno a fuoco. La procedura è lunga il doppio.</transla
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation type="unfinished">Aggiungi files...</translation>
+        <translation>Aggiungi files...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Aggiungi un file come</numerusform>
             <numerusform>Aggiungi %n files come</numerusform>
         </translation>
@@ -500,31 +500,31 @@ La cometa e le stelle saranno a fuoco. La procedura è lunga il doppio.</transla
         <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
-        <translation type="unfinished">Immagini</translation>
+        <translation>Immagini</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
-        <translation type="unfinished">Darks</translation>
+        <translation>Darks</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
-        <translation type="unfinished">Flats</translation>
+        <translation>Flats</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="94"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
-        <translation type="unfinished">Dark Flats</translation>
+        <translation>Dark Flats</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="95"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
-        <translation type="unfinished">Offset/Bias</translation>
+        <translation>Offset/Bias</translation>
     </message>
 </context>
 <context>
@@ -602,194 +602,194 @@ Cometa:%1</translation>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation type="unfinished">Allinea e Combina</translation>
+        <translation>Allinea e Combina</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation type="unfinished">Apri immagini...</translation>
+        <translation>Apri immagini...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation type="unfinished">dark files...</translation>
+        <translation>dark files...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation type="unfinished">flat files...</translation>
+        <translation>flat files...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation type="unfinished">dark flat files...</translation>
+        <translation>dark flat files...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation type="unfinished">offset/bias files...</translation>
+        <translation>offset/bias files...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation type="unfinished">Apri una lista...</translation>
+        <translation>Apri una lista...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation type="unfinished">Salva una lista...</translation>
+        <translation>Salva una lista...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation type="unfinished">Svuota Lista</translation>
+        <translation>Svuota Lista</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation type="unfinished">Marca tutti</translation>
+        <translation>Marca tutti</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation type="unfinished">Marca sopra una soglia...</translation>
+        <translation>Marca sopra una soglia...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation type="unfinished">Demarca tutti</translation>
+        <translation>Demarca tutti</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation type="unfinished">Allinea immagini selezionate...</translation>
+        <translation>Allinea immagini selezionate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation type="unfinished">Calcola offsets...</translation>
+        <translation>Calcola offsets...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation type="unfinished">Combina immagini selezionate...</translation>
+        <translation>Combina immagini selezionate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation type="unfinished">Combinazione multipla...</translation>
+        <translation>Combinazione multipla...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation type="unfinished">Elaborazione</translation>
+        <translation>Elaborazione</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation type="unfinished">Apri immagini...</translation>
+        <translation>Apri immagini...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished">Copia l&apos;immagine nella clipboard</translation>
+        <translation>Copia l&apos;immagine nella clipboard</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation type="unfinished">Crea una Maschera di Stelle...</translation>
+        <translation>Crea una Maschera di Stelle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation type="unfinished">Salva immagine...</translation>
+        <translation>Salva immagine...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation type="unfinished">Opzioni</translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation type="unfinished">Impostazioni...</translation>
+        <translation>Impostazioni...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation type="unfinished">Settaggi Raw/FITS DDP...</translation>
+        <translation>Settaggi Raw/FITS DDP...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation type="unfinished">Carica...</translation>
+        <translation>Carica...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation type="unfinished">Salva...</translation>
+        <translation>Salva...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Consigliato...</translation>
+        <translation>Consigliato...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation type="unfinished">Info su DeepSkyStacker...</translation>
+        <translation>Info su DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation type="unfinished">Aiuto su DeepSkyStacker...</translation>
+        <translation>Aiuto su DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="592"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished">Il file di traccia viene normalmente scritto nella directory DeepSkyStacker negli utenti
+        <translation>Il file di traccia viene normalmente scritto nella directory DeepSkyStacker negli utenti
 Directory &quot;Documenti&quot; e viene eliminata all&apos;uscita (a meno che l&apos;applicazione non si arresti in modo anomalo).
 Seleziona questa casella per conservare il file di traccia.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished">Conservare il file di traccia all&apos;uscita</translation>
+        <translation>Conservare il file di traccia all&apos;uscita</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
-        <translation type="unfinished">Abilita i suoni di avanzamento</translation>
+        <translation>Abilita i suoni di avanzamento</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="640"/>
@@ -805,66 +805,62 @@ Seleziona questa casella per conservare il file di traccia.</translation>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished">Settaggi Allineamento...</translation>
+        <translation>Settaggi Allineamento...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished">Parametri Combinazione...</translation>
+        <translation>Parametri Combinazione...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished">Ripristina settaggi Originali</translation>
+        <translation>Ripristina settaggi Originali</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Carica settaggi di DeepSkyStacker Live</translation>
+        <translation>Carica settaggi di DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished">Carica...</translation>
+        <translation>Carica...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Salva come settaggi per DeepSkyStacker Live</translation>
+        <translation>Salva come settaggi per DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished">Salva come...</translation>
+        <translation>Salva come...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="576"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished">Carica Impostazioni DeepSkyStacker</translation>
+        <translation>Carica Impostazioni DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished">Impostazioni DeepSkyStacker (*.dsssettings)</translation>
+        <translation>Impostazioni DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished">Salva Impostazioni DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished">Impostazioni DeepSkyStacker (*.dsssettings)</translation>
+        <translation>Salva Impostazioni DeepSkyStacker</translation>
     </message>
 </context>
 <context>
@@ -905,52 +901,52 @@ Seleziona questa casella per conservare il file di traccia.</translation>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation type="unfinished">DeepSkyStacker - Proprietà dell&apos;immagine</translation>
+        <translation>DeepSkyStacker - Proprietà dell&apos;immagine</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation type="unfinished">Data/Ora</translation>
+        <translation>Data/Ora</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation type="unfinished">Profondità</translation>
+        <translation>Profondità</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation type="unfinished">Dimensione</translation>
+        <translation>Dimensione</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation type="unfinished">Esposizione</translation>
+        <translation>Esposizione</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation type="unfinished">Informazione</translation>
+        <translation>Informazione</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation type="unfinished">Tipo</translation>
+        <translation>Tipo</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>File</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO/Gain</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
         <source>CFA</source>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
 </context>
 <context>
@@ -973,42 +969,42 @@ Ctrl+4 per attivare/disattivare la modalità 4 angoli</translation>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished">Files Intermedi</translation>
+        <translation>Files Intermedi</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished">Parametri per la creazione di files intermedi</translation>
+        <translation>Parametri per la creazione di files intermedi</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished">Crea un file calibrato per ogni immagine</translation>
+        <translation>Crea un file calibrato per ogni immagine</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished">Salva un&apos;immagine debayerizzata mentre composita immagini RAW</translation>
+        <translation>Salva un&apos;immagine debayerizzata mentre composita immagini RAW</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished">Crea un file allineato/calibrato per ogni immagine</translation>
+        <translation>Crea un file allineato/calibrato per ogni immagine</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished">Formato del file Intermedio</translation>
+        <translation>Formato del file Intermedio</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished">Salva file Intermedio come TIFF</translation>
+        <translation>Salva file Intermedio come TIFF</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva file Intermedio come FITS</translation>
     </message>
 </context>
 <context>
@@ -1016,82 +1012,82 @@ Ctrl+4 per attivare/disattivare la modalità 4 angoli</translation>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished">Risultato</translation>
+        <translation>Risultato</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished">Settaggi per i files finali</translation>
+        <translation>Settaggi per i files finali</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation type="unfinished">Crea il file finale</translation>
+        <translation>Crea il file finale</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation type="unfinished">Crea un file di descrizione in HTML</translation>
+        <translation>Crea un file di descrizione in HTML</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished">Nome file</translation>
+        <translation>Nome file</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation type="unfinished">Autosave.tif/fits</translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation type="unfinished">&lt;nome della lista di files&gt;.tif/fits</translation>
+        <translation>&lt;nome della lista di files&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation type="unfinished">Aggiungi un numero per evitare la sovrascrittura (001, 002, ...)</translation>
+        <translation>Aggiungi un numero per evitare la sovrascrittura (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished">Destinazione</translation>
+        <translation>Destinazione</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation type="unfinished">Crea il file finale nella cartella dell&apos;immagine di riferimento</translation>
+        <translation>Crea il file finale nella cartella dell&apos;immagine di riferimento</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation type="unfinished">Crea il file finale nella cartella della lista di files</translation>
+        <translation>Crea il file finale nella cartella della lista di files</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation type="unfinished">Crea il file finale in</translation>
+        <translation>Crea il file finale in</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation type="unfinished">&lt;Cartella Destinazione&gt;</translation>
+        <translation>&lt;Cartella Destinazione&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="135"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation type="unfinished">Scegli la cartella di destinazione</translation>
+        <translation>Scegli la cartella di destinazione</translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1095,7 @@ Ctrl+4 per attivare/disattivare la modalità 4 angoli</translation>
     <message>
         <location filename="../picturelist.cpp" line="13"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished">Fare doppio clic qui per agganciare/sganciare l&apos;elenco delle immagini</translation>
+        <translation>Fare doppio clic qui per agganciare/sganciare l&apos;elenco delle immagini</translation>
     </message>
 </context>
 <context>
@@ -1107,80 +1103,80 @@ Ctrl+4 per attivare/disattivare la modalità 4 angoli</translation>
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished">Cosmetica</translation>
+        <translation>Cosmetica</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished">Settaggi cosmetici dopo la calibrazione</translation>
+        <translation>Settaggi cosmetici dopo la calibrazione</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation type="unfinished">Rileva ed elimina i rimanenti Pixels Caldi</translation>
+        <translation>Rileva ed elimina i rimanenti Pixels Caldi</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation type="unfinished">&lt;small&gt;Effetto leggero&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Effetto leggero&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation type="unfinished">&lt;small&gt;Forte&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Forte&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished">Dimensione filtro</translation>
+        <translation>Dimensione filtro</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished">Soglia rilevamento</translation>
+        <translation>Soglia rilevamento</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation type="unfinished">Rileva ed elimina i rimanenti Pixels Freddi</translation>
+        <translation>Rileva ed elimina i rimanenti Pixels Freddi</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation type="unfinished">Sostituisci il valore del pixel con</translation>
+        <translation>Sostituisci il valore del pixel con</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation type="unfinished">Prova sulla prima immagine...</translation>
+        <translation>Prova sulla prima immagine...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation type="unfinished">Salva un&apos;immagine con i pixels rimossi per ogni immagine sorgente</translation>
+        <translation>Salva un&apos;immagine con i pixels rimossi per ogni immagine sorgente</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="24"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation type="unfinished">il mediano</translation>
+        <translation>il mediano</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="25"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation type="unfinished">il filtro gaussiano</translation>
+        <translation>il filtro gaussiano</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="385"/>
@@ -1189,221 +1185,235 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished">Cosmetico
+        <translation>Cosmetico
 Pixel caldi rilevati: %L1 (%L2%)
-Pixel freddi rilevati: %L3 (%L4%)</translation>
+Pixel freddi rilevati: %L3 (%L4%)
+</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vuoi salvare le modifiche?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine TIFF o FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>Maschera di Stelle creata da DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Salvo la Maschera di Stelle in %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine TIFF 32 bit/ch - interi (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine TIFF 32 bit/ch - razionale (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine FITS 16 bit/can (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine FITS 32 bit/can - interi (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine FITS 32 bit/can - razionale (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Salva Immagine</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Non c&apos;è alcuna immagine da salvare.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>No info disponibile</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
-        <translation type="unfinished"></translation>
+        <translation>Esposizione: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n immagine</numerusform>
+            <numerusform>%n immagini</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="119"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>Livelli RGB/K</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="145"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Scegli il metodo di regolazione dell&apos;istogramma nel rosso</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="206"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Scegli il metodo di regolazione dell&apos;istogramma nel verde</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="267"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Scegli il metodo di regolazione dell&apos;istogramma nel blu</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="308"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Settaggi collegati</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="316"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Luminanza</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="337"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Scuri</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="397"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mezzitoni</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="457"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Chiari</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="503"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Saturazione</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="524"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Shift saturazione</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="612"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Applica</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="619"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Togli ultimi settaggi applicati</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="642"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Salva, Carica, Amministra i settaggi...</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="665"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rimetti ultimi settaggi applicati</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="682"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Azzera</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Gestione Settaggi</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Aggiungere</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Anulla</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Carico</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Il nome delle impostazioni di elaborazione non può contenere né / né \.
+Cambia il nome.</translation>
     </message>
 </context>
 <context>
@@ -1454,12 +1464,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation type="unfinished">In lavorazione ...</translation>
+        <translation>In lavorazione ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation type="unfinished">Anulla</translation>
+        <translation>Anulla</translation>
     </message>
 </context>
 <context>
@@ -1467,151 +1477,151 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation type="unfinished">Settagi del Digital Development Process RAW/FITS</translation>
+        <translation>Settagi del Digital Development Process RAW/FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation type="unfinished">File RAW</translation>
+        <translation>File RAW</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished">Correzione Colori</translation>
+        <translation>Correzione Colori</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation type="unfinished">Luminosità</translation>
+        <translation>Luminosità</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation type="unfinished">Rosso</translation>
+        <translation>Rosso</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation type="unfinished">Blu</translation>
+        <translation>Blu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation type="unfinished">Bilanciamento del bianco</translation>
+        <translation>Bilanciamento del bianco</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished">Nessun bilanciamento del bianco</translation>
+        <translation>Nessun bilanciamento del bianco</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished">Interno alla Macchina</translation>
+        <translation>Interno alla Macchina</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished">Trasformazione della matrice di Bayer</translation>
+        <translation>Trasformazione della matrice di Bayer</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished">Interpolazione bilineare</translation>
+        <translation>Interpolazione bilineare</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished">Interpolazione adattiva diretta dall&apos;omogeneità (AHD)</translation>
+        <translation>Interpolazione adattiva diretta dall&apos;omogeneità (AHD)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished">Usa l&apos;algoritmo Bayer Drizzle (no interpolazione ne debayerizzazione)</translation>
+        <translation>Usa l&apos;algoritmo Bayer Drizzle (no interpolazione ne debayerizzazione)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished">Questa opzione usa la matrice di Bayer cosi com&apos;è. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.</translation>
+        <translation>Questa opzione usa la matrice di Bayer cosi com&apos;è. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Crea super-pixels dalla matrice di Bayer (no interpolazione)</translation>
+        <translation>Crea super-pixels dalla matrice di Bayer (no interpolazione)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished">Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell&apos;immagine risultante è divisa per due.</translation>
+        <translation>Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell&apos;immagine risultante è divisa per due.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
+        <translation>File FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I file FITS a 16 bit a piano singolo provengono da una fotocamera &quot;One-Shot-Colour&quot; (DSLR, mirrorless, CCD o CMOS) che deve essere de-bayerata.&lt;br/&gt;Lascia &lt;span style=&quot; font-style:italic;&quot;&gt;deselezionata&lt;/span&gt; per tentare il rilevamento automatico in base alle parole chiave FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation type="unfinished">Camera:</translation>
+        <translation>Camera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation type="unfinished">Rosso</translation>
+        <translation>Rosso</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation type="unfinished">Blu</translation>
+        <translation>Blu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished">Schema del filtro Bayer usato</translation>
+        <translation>Schema del filtro Bayer usato</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished">Forza l&apos;uso di valori non segnati quando vengono memorizzati valori segnati</translation>
+        <translation>Forza l&apos;uso di valori non segnati quando vengono memorizzati valori segnati</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished">Generico RGGB</translation>
+        <translation>Generico RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished">Generico BGGR</translation>
+        <translation>Generico BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="22"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished">Generico GBRG</translation>
+        <translation>Generico GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished">Generico GRBG</translation>
+        <translation>Generico GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="25"/>
         <source>Generic</source>
-        <translation type="unfinished">Generico</translation>
+        <translation>Generico</translation>
     </message>
 </context>
 <context>
@@ -1619,42 +1629,42 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation type="unfinished">Impostazioni Consigliate</translation>
+        <translation>Impostazioni Consigliate</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="44"/>
         <source>Show all recommendations</source>
-        <translation type="unfinished">Mostra tutti i suggerimenti</translation>
+        <translation>Mostra tutti i suggerimenti</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="190"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation type="unfinished">Queste sono le impostazioni suggerite.&lt;br&gt;Potrebbero non funzionare sempre ma sono spesso un buon punto di partenza.</translation>
+        <translation>Queste sono le impostazioni suggerite.&lt;br&gt;Potrebbero non funzionare sempre ma sono spesso un buon punto di partenza.</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="194"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation type="unfinished">Clicca sul collegamento proposto per cambiare le impostazioni</translation>
+        <translation>Clicca sul collegamento proposto per cambiare le impostazioni</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="198"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation type="unfinished">Le impostazioni già attive sono in verde</translation>
+        <translation>Le impostazioni già attive sono in verde</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="780"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation type="unfinished">oppure</translation>
+        <translation>oppure</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="846"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation type="unfinished">Devi prima aggiungere immagini alla lista e selezionarle.</translation>
+        <translation>Devi prima aggiungere immagini alla lista e selezionarle.</translation>
     </message>
 </context>
 <context>
@@ -1662,139 +1672,139 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation type="unfinished">Settaggi Allineamento</translation>
+        <translation>Settaggi Allineamento</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Parametri Combinazione...</translation>
+        <translation>Parametri Combinazione...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Impostazioni Consigliate...</translation>
+        <translation>Impostazioni Consigliate...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation type="unfinished">Azioni</translation>
+        <translation>Azioni</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation type="unfinished">Riallinea immagini già allineate</translation>
+        <translation>Riallinea immagini già allineate</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Rilevamento automatico dei pixels caldi</translation>
+        <translation>Rilevamento automatico dei pixels caldi</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation type="unfinished">Combina dopo l&apos;allineamento</translation>
+        <translation>Combina dopo l&apos;allineamento</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation type="unfinished">Seleziona il</translation>
+        <translation>Seleziona il</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation type="unfinished">% delle migliori immagini e combinale.</translation>
+        <translation>% delle migliori immagini e combinale</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation type="unfinished">Avanzate</translation>
+        <translation>Avanzate</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Soglia rilevamento stelle</translation>
+        <translation>Soglia rilevamento stelle</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizza soglia automatica</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation type="unfinished">Calcola il numero di stelle rilevate</translation>
+        <translation>Calcola il numero di stelle rilevate</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation type="unfinished">Riduce il rumore usando un filtro mediano</translation>
+        <translation>Riduce il rumore usando un filtro mediano</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare dark, flat e offset prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare dark, flat e offset prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare i dark e i flat prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare i dark e i flat prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="177"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare i dark e gli offset prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare i dark e gli offset prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="180"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare i flat e gli offset prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare i flat e gli offset prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="183"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare i dark prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare i dark prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="186"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare i flat prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare i flat prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished">Ricorda di aggiungere e controllare gli offset prima di iniziare.</translation>
+        <translation>Ricorda di aggiungere e controllare gli offset prima di iniziare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="213"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished">darks, flats e offsets/bias selezionati.</translation>
+        <translation>darks, flats e offsets/bias selezionati.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="277"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Allineo %1</translation>
+        <translation>Allineo %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 stelle</translation>
+        <translation>%1 stelle</translation>
     </message>
 </context>
 <context>
@@ -1802,12 +1812,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation type="unfinished">Rinomina gruppo</translation>
+        <translation>Rinomina gruppo</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation type="unfinished">Nome del gruppo:</translation>
+        <translation>Nome del gruppo:</translation>
     </message>
 </context>
 <context>
@@ -1815,63 +1825,63 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation type="unfinished">Risultato</translation>
+        <translation>Risultato</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation type="unfinished">Modo Standard</translation>
+        <translation>Modo Standard</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation type="unfinished">Modo &quot;Mosaico&quot;</translation>
+        <translation>Modo &quot;Mosaico&quot;</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation type="unfinished">Modalit intersezione</translation>
+        <translation>Modalit intersezione</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation type="unfinished">Rettangolo pers.</translation>
+        <translation>Rettangolo pers</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation type="unfinished">Abilita Drizzle 2x</translation>
+        <translation>Abilita Drizzle 2x</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation type="unfinished">Abilita Drizzle 3x</translation>
+        <translation>Abilita Drizzle 3x</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation type="unfinished">Allineare RGB canali in immagine finale</translation>
+        <translation>Allineare RGB canali in immagine finale</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="70"/>
         <location filename="../ResultParameters.cpp" line="132"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">L&apos;inquadratura della combinazione è la stessa dell&apos;immagine di riferimento.</translation>
+        <translation>L&apos;inquadratura della combinazione è la stessa dell&apos;immagine di riferimento.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="80"/>
         <location filename="../ResultParameters.cpp" line="145"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">La combinazione contiene l&apos;area totale di tutte le immagini.</translation>
+        <translation>La combinazione contiene l&apos;area totale di tutte le immagini.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="90"/>
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Il risultato dell&apos;elaborazione viene inquadrato dall&apos;intersezione di tutte le immagini.</translation>
+        <translation>Il risultato dell&apos;elaborazione viene inquadrato dall&apos;intersezione di tutte le immagini.</translation>
     </message>
 </context>
 <context>
@@ -1879,7 +1889,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation type="unfinished">Salva le modifiche?</translation>
+        <translation>Salva le modifiche?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -1887,7 +1897,7 @@ Please change the name.</source>
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Hai fatto modifiche (posizioni delle stelle o della cometa)
+        <translation>Hai fatto modifiche (posizioni delle stelle o della cometa)
 
 Vuoi salvarle?</translation>
     </message>
@@ -1895,31 +1905,31 @@ Vuoi salvarle?</translation>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">La prossima volta...</translation>
+        <translation>La prossima volta...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Salva senza chiedere</translation>
+        <translation>Salva senza chiedere</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Non salvare senza chiedere</translation>
+        <translation>Non salvare senza chiedere</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation type="unfinished">Chiedi ancora</translation>
+        <translation>Chiedi ancora</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Trovi queste opzioni cliccando col tasto destro sul pulsante Salva</translation>
+        <translation>Trovi queste opzioni cliccando col tasto destro sul pulsante Salva</translation>
     </message>
 </context>
 <context>
@@ -1928,55 +1938,55 @@ Vuoi salvarle?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Compressione</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (Deflate)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (obsoleto)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Opzioni</translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Applica i cambiamenti all&apos;immagine salvata</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Includi i cambiamenti all&apos;immagine salvata senza applicarle</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Non applicare i cambiamenti all&apos;immagine salvata</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crea un&apos;immagine dal rettangolo di selezione</translation>
     </message>
 </context>
 <context>
@@ -1984,222 +1994,222 @@ Vuoi salvarle?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation type="unfinished">Procedura combinazione</translation>
+        <translation>Procedura combinazione</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="34"/>
         <source>Recommended Settings ...</source>
-        <translation type="unfinished">Impostazioni Consigliate...</translation>
+        <translation>Impostazioni Consigliate...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="41"/>
         <source>Stacking Settings ...</source>
-        <translation type="unfinished">Parametri combinazione...</translation>
+        <translation>Parametri combinazione...</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Sì</translation>
+        <translation>Sì</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">No</translation>
+        <translation>No</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrazione dei canali RGB dello sfondo: %1</translation>
+        <translation>Calibrazione dei canali RGB dello sfondo: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrazione sfondo per canale: %1</translation>
+        <translation>Calibrazione sfondo per canale: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Ottimizzazione Dark: %1</translation>
+        <translation>Ottimizzazione Dark: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished">Fattore di moltiplicazione del dark: %1</translation>
+        <translation>Fattore di moltiplicazione del dark: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished">Rilevamento e rimozione pixels caldi: %1</translation>
+        <translation>Rilevamento e rimozione pixels caldi: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">L&apos;operazione necessita di %1 di spazio libero temporaneo sul disco %2 .&lt;br&gt;Ci sono solamente %3 disponibili su questo disco.</translation>
+        <translation>L&apos;operazione necessita di %1 di spazio libero temporaneo sul disco %2 .&lt;br&gt;Ci sono solamente %3 disponibili su questo disco.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="740"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished">Nota: lo spazio necessario viene calcolato usando una dimensione d&apos;immagine uguale a quella di riferimento. A seconda della reale dimensione risultante, potrebbe essere necessario piu&apos; spazio.</translation>
+        <translation>Nota: lo spazio necessario viene calcolato usando una dimensione d&apos;immagine uguale a quella di riferimento. A seconda della reale dimensione risultante, potrebbe essere necessario piu&apos; spazio.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished">Attenzione: stai usando dei dark, flat o bias in formato JPEG.&lt;br&gt;A causa della compressione degradante la calibrazione non funziona con il formato JPEG.</translation>
+        <translation>Attenzione: stai usando dei dark, flat o bias in formato JPEG.&lt;br&gt;A causa della compressione degradante la calibrazione non funziona con il formato JPEG.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished">Modo di combinazione: </translation>
+        <translation>Modo di combinazione: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Mosaico</translation>
+        <translation>Mosaico</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished">Rettangolo pers.</translation>
+        <translation>Rettangolo pers</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Intersezione</translation>
+        <translation>Intersezione</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="301"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished">Metodo di allineamento: </translation>
+        <translation>Metodo di allineamento: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="309"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished">Automatico</translation>
+        <translation>Automatico</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="312"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished">Bilineare</translation>
+        <translation>Bilineare</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="315"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished">Biquadratica</translation>
+        <translation>Biquadratica</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="318"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished">Bicubica</translation>
+        <translation>Bicubica</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="321"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished">Nessun allineamento</translation>
+        <translation>Nessun allineamento</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="332"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished">Drizzle x%1 abilitato</translation>
+        <translation>Drizzle x%1 abilitato</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="338"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished">Lopzione drizzle selezionata non è compatibile con la modalità Bayer Drizzle.</translation>
+        <translation>Lopzione drizzle selezionata non è compatibile con la modalità Bayer Drizzle.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 processori rilevati ed utilizzati</translation>
+        <translation>%1 processori rilevati ed utilizzati</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 processori rilevati - solo uno usato</translation>
+        <translation>%1 processori rilevati - solo uno usato</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="364"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished">Elaborazione cometa : </translation>
+        <translation>Elaborazione cometa : </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished">Allinea sulle stelle (niente di specifico)</translation>
+        <translation>Allinea sulle stelle (niente di specifico)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished">Allinea sulla cometa</translation>
+        <translation>Allinea sulla cometa</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="375"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished">Allinea su cometa e stelle</translation>
+        <translation>Allinea su cometa e stelle</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="389"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished">Cosmetica applicata ai pixel caldi (Filtro = %1 px, Soglia di Rilevamento = %L2%)&lt;br&gt;</translation>
+        <translation>Cosmetica applicata ai pixel caldi (Filtro = %1 px, Soglia di Rilevamento = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="397"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished">Cosmetica applicata ai pixel freddi (Filtro = %1 px, Soglia di Rilevamento = %L2%)&lt;br&gt;</translation>
+        <translation>Cosmetica applicata ai pixel freddi (Filtro = %1 px, Soglia di Rilevamento = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="426"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished">Passo combinazione %1&lt;br&gt;  -&gt;%2 immagini (%3: %4) - esposizione totale: </translation>
+        <translation>Passo combinazione %1&lt;br&gt;  -&gt;%2 immagini (%3: %4) - esposizione totale: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="444"/>
@@ -2209,19 +2219,19 @@ Vuoi salvarle?</translation>
         <location filename="../StackRecap.cpp" line="674"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished">Metodo: </translation>
+        <translation>Metodo: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="455"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished">Attenzione: l&apos;opzione Bayer Drizzle selezionata nei settaggi RAW DDP puo&apos; portare a risultati incoerenti con metodi diversi da media.</translation>
+        <translation>Attenzione: l&apos;opzione Bayer Drizzle selezionata nei settaggi RAW DDP puo&apos; portare a risultati incoerenti con metodi diversi da media.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="475"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished">-&gt; Offset: %1 immagini (%2: %3) esposizione: %4</translation>
+        <translation>-&gt; Offset: %1 immagini (%2: %3) esposizione: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="500"/>
@@ -2229,7 +2239,7 @@ Vuoi salvarle?</translation>
         <location filename="../StackRecap.cpp" line="686"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished">Attenzione: velocità ISO non congruente con le immagini</translation>
+        <translation>Attenzione: velocità ISO non congruente con le immagini</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="510"/>
@@ -2237,85 +2247,85 @@ Vuoi salvarle?</translation>
         <location filename="../StackRecap.cpp" line="696"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished">Attenzione:gli aumento non congruente con le immagini</translation>
+        <translation>Attenzione:gli aumento non congruente con le immagini</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="521"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished">-&gt; Nessun Offset</translation>
+        <translation>-&gt; Nessun Offset</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="530"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished">-&gt; Dark: %1 immagini (%2 : %3) esposizione: %4</translation>
+        <translation>-&gt; Dark: %1 immagini (%2 : %3) esposizione: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="588"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished">Attenzione: tempo di posa non congruente con le immagini</translation>
+        <translation>Attenzione: tempo di posa non congruente con le immagini</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="597"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished">-&gt; Nessun Dark</translation>
+        <translation>-&gt; Nessun Dark</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="606"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished">-&gt; Dark Flat: %1 immagini (%2 : %3) esposizione: %4</translation>
+        <translation>-&gt; Dark Flat: %1 immagini (%2 : %3) esposizione: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="632"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Attenzione: velocità ISO non congruente con i flat</translation>
+        <translation>Attenzione: velocità ISO non congruente con i flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="642"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Attenzione: gli aumento  non congruente con i flat</translation>
+        <translation>Attenzione: gli aumento  non congruente con i flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="650"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Attenzione: tempo di posa non congruente con i flat</translation>
+        <translation>Attenzione: tempo di posa non congruente con i flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="662"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished">-&gt; Flat: %1 immagini (%2: %3) esposizione: %4</translation>
+        <translation>-&gt; Flat: %1 immagini (%2: %3) esposizione: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="706"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished">-&gt; Nessun Flat</translation>
+        <translation>-&gt; Nessun Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="721"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished">Tempo stimato di posa totale: %1&lt;br&gt;(tempo stimato considerando che tutte le immagini vengano tenute ed utilizzate nella combinazione)</translation>
+        <translation>Tempo stimato di posa totale: %1&lt;br&gt;(tempo stimato considerando che tutte le immagini vengano tenute ed utilizzate nella combinazione)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="731"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished">L&apos;operazione userà temporaneamente %1 sul disco %2 (%3 liberi).</translation>
+        <translation>L&apos;operazione userà temporaneamente %1 sul disco %2 (%3 liberi).</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="748"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished">Attenzione: le opzioni di salvataggio delle immagini allineate e calibrate sono selezionate. Controlla di aver abbastanza spazio disponibile per contenerle.</translation>
+        <translation>Attenzione: le opzioni di salvataggio delle immagini allineate e calibrate sono selezionate. Controlla di aver abbastanza spazio disponibile per contenerle.</translation>
     </message>
 </context>
 <context>
@@ -2323,62 +2333,62 @@ Vuoi salvarle?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation type="unfinished">Parametri Combinazione</translation>
+        <translation>Parametri Combinazione</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation type="unfinished">Cartella files temporanei:</translation>
+        <translation>Cartella files temporanei:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation type="unfinished">Riduci priorità dei worker threads</translation>
+        <translation>Riduci priorità dei worker threads</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation type="unfinished">Usa tutti i processori</translation>
+        <translation>Usa tutti i processori</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation type="unfinished">Vettorizzazione SIMD</translation>
+        <translation>Vettorizzazione SIMD</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished">Immagine</translation>
+        <translation>Immagine</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="190"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation type="unfinished">Seleziona la cartella che conterrà i files temporanei.</translation>
+        <translation>Seleziona la cartella che conterrà i files temporanei</translation>
     </message>
 </context>
 <context>
@@ -2558,7 +2568,7 @@ Offset/Bias: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>Non tutti i tuoi light frame controllati hanno una qualità media calcolata. Dovresti registrare nuovamente i tuoi light frame.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2580,7 +2590,7 @@ DeepSkyStacker deve creare files in queste cartelle durante le elaborazioni.</tr
         <location filename="../StackingDlg.cpp" line="2237"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>Le immagini selezionate non sono compatibili:</translation>
+        <translation>Le immagini selezionate non sono compatibili: %1.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2241"/>
@@ -2627,123 +2637,123 @@ Vuoi salvarli?</translation>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Combinazione</translation>
+        <translation>Combinazione</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation type="unfinished">Modo combinazione</translation>
+        <translation>Modo combinazione</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation type="unfinished">Numero di iterazioni:</translation>
+        <translation>Numero di iterazioni:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation type="unfinished">Mediano</translation>
+        <translation>Mediano</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation type="unfinished">Taglio Kappa-Sigma</translation>
+        <translation>Taglio Kappa-Sigma</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation type="unfinished">Massima</translation>
+        <translation>Massima</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation type="unfinished">Taglio Mediano Kappa-Sigma</translation>
+        <translation>Taglio Mediano Kappa-Sigma</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished">Media Soppesata Autoadattativa</translation>
+        <translation>Media Soppesata Autoadattativa</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation type="unfinished">Media</translation>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Media Entropica (Alta Dinamica)</translation>
+        <translation>Media Entropica (Alta Dinamica)</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation type="unfinished"></translation>
+        <translation>Debloom</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation type="unfinished">Impostazioni...</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Ottimizzazione del Dark</translation>
+        <translation>Ottimizzazione del Dark</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation type="unfinished">Rilevamento e rimozione di Colonne Sparate</translation>
+        <translation>Rilevamento e rimozione di Colonne Sparate</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Rilevamento e rimozione Pixels Caldi</translation>
+        <translation>Rilevamento e rimozione Pixels Caldi</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation type="unfinished">Fattore di moltiplicazione del dark:</translation>
+        <translation>Fattore di moltiplicazione del dark</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Nessuna Calibrazione Sfondo</translation>
+        <translation>Nessuna Calibrazione Sfondo</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrazione sfondo per canale</translation>
+        <translation>Calibrazione sfondo per canale</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="20"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrazione Canali RGB dello Sfondo</translation>
+        <translation>Calibrazione Canali RGB dello Sfondo</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="59"/>
@@ -2753,7 +2763,7 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation type="unfinished">I pixels fuori dall&apos;intervallo:
+        <translation>I pixels fuori dall&apos;intervallo:
 [Mean-%1*%2, Mean+%1*%2]
 sono iterativamente rimossi.
 
@@ -2767,7 +2777,7 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation type="unfinished">I pixel fuori dall&apos;intervallo:
+        <translation>I pixel fuori dall&apos;intervallo:
 [Mean-%1*%2, Mean+%1*%2]
 sono iterativamente sostituiti dal valore mediano.
 
@@ -2780,7 +2790,7 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">La &lt;b&gt;media soppesata&lt;/b&gt; è ottenuta
+        <translation>La &lt;b&gt;media soppesata&lt;/b&gt; è ottenuta
 soppesando ogni pixel iterativamente
 dallo scostamento dal mediano
 confrontato al normale scostamento (%1).</translation>
@@ -2789,7 +2799,7 @@ confrontato al normale scostamento (%1).</translation>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation type="unfinished">Opzioni...</translation>
+        <translation>Opzioni...</translation>
     </message>
 </context>
 <context>
@@ -2798,112 +2808,117 @@ confrontato al normale scostamento (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crea una Maschera di Stelle</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Rilevamento stella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Soglia rilevamento stelle</translation>
+        <translation>Soglia rilevamento stelle</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rilevamento Pixels Caldi</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
+        <source>Minimum size of a star</source>
+        <translation>Grandezza minima di una Stella</translation>
+    </message>
+    <message>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Grandezza massima di una Stella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Allarga/Restringi</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Percentuale della stella</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Aumentare le dimensioni di  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
-        <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma delle stelle nella maschera</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
-        <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <source>Bell</source>
+        <translation>Campana</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
-        <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Bell</source>
+        <translation>Campana troncata</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
-        <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Cone</source>
+        <translation>Cono</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
-        <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Cone</source>
+        <translation>Cono troncato</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
-        <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <source>Cubic</source>
+        <translation>Cubico</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
+        <source>Quadric</source>
+        <translation>Quadrico</translation>
+    </message>
+    <message>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n pixel</numerusform>
+            <numerusform>%n pixel</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Immagine FITS (*.fits *.fts *.fit)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Salva Maschera di Stelle come ...</translation>
     </message>
 </context>
 <context>
@@ -3030,12 +3045,15 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
     </message>
 </context>
 <context>
-    <name>ProcessingDlg</name>
+    <name>QLinearGradientCtrl</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Salvo la Maschera di Stelle in %1</translation>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>È possibile utilizzare i tasti Freccia su, Freccia destra, Freccia sinistra, Freccia giù;
+Pagina su e Pagina giù per spostare un cursore dopo averlo selezionato
+con il mouse.</translation>
     </message>
 </context>
 <context>
