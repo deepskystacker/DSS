@@ -37,13 +37,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core; gui</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core; gui</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -173,7 +173,6 @@
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -188,7 +187,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
     <ClInclude Include="..\dssbase.h" />
     <QtMoc Include="progressconsole.h" />
@@ -318,6 +316,7 @@
     <QtTranslation Include="i18n\DSSCL_es.ts" />
     <QtTranslation Include="i18n\DSSCL_fr.ts" />
     <QtTranslation Include="i18n\DSSCL_it.ts" />
+    <QtTranslation Include="i18n\DSSCL_ja_JP.ts" />
     <QtTranslation Include="i18n\DSSCL_nl.ts" />
     <QtTranslation Include="i18n\DSSCL_pt_BR.ts" />
     <QtTranslation Include="i18n\DSSCL_ro.ts" />

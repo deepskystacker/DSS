@@ -1,6 +1,7 @@
 #pragma once
 #include "avx_cfa.h"
 #include "avx_support.h"
+#include "histogram.h"
 
 class AvxHistogram
 {
@@ -184,7 +185,7 @@ private:
 public:
 	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome);
 	std::tuple<float*, float*, float*> getBufferPtr();
-	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const class DSS::RGBHistogramAdjust& histoAdjust);
 	int avxToHsl(const auto& bezierPoints)
 	{
 		const int rv = this->toHsl();
@@ -210,7 +211,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
 	template <bool MarkOverAndUnderExposure>
 	int avxToRgb();
@@ -233,7 +234,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
 	template <bool MarkOverAndUnderExposure>
 	int avxToRgb();

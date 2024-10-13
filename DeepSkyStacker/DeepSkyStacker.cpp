@@ -36,6 +36,15 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
+#if defined(_WINDOWS)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#include <afx.h>
+//
+// Visual Leak Detector
+//
+#include <vld.h>
+#endif
+
 #include <htmlhelp.h>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -56,16 +65,12 @@ namespace bip = boost::interprocess;
 #include "commonresource.h"
 #include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
-#include "SetUILanguage.h"
-#include "qwinhost.h"
 #include "DeepStack.h"
 #include "tracecontrol.h"
 #include "Workspace.h"
 #include "QEventLogger.h"
 
 
-CString OUTPUTFILE_FILTERS;
-CString STARMASKFILE_FILTERS;
 bool	g_bShowRefStars = false;
 
 //
@@ -235,17 +240,14 @@ DeepSkyStacker::DeepSkyStacker() :
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
-	winHost{ nullptr },
-	currTab{ IDD_REGISTERING },
+	activePanel{ ActivePanel::StackingPanel },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
 	m_progress{ false },
 	sponsorText{ new QLabel("") },
 	statusBarText{ new QLabel("") },
-	processingDlg{ std::make_unique<CProcessingDlg>() },
 	m_DeepStack{ std::make_unique<CDeepStack>() },
-	m_ImageProcessingSettings{ std::make_unique<CDSSSettings>() },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
@@ -274,10 +276,12 @@ DeepSkyStacker::DeepSkyStacker() :
 
 	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
 	explorerBar = new ExplorerBar(this);
+	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
 
 	ZTRACE_RUNTIME("Creating pictureList");
 	pictureList = new DSS::PictureList(this);
+	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
@@ -291,13 +295,15 @@ DeepSkyStacker::DeepSkyStacker() :
 
 	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
 	stackedWidget->addWidget(stackingDlg);
-
-	winHost = new QWinHost(stackedWidget);
-	winHost->setObjectName("winHost");
-	stackedWidget->addWidget(winHost);
 	
+	ZTRACE_RUNTIME("Creating Processing Panel");
+	processingDlg = new DSS::ProcessingDlg(this);
+	processingDlg->setObjectName("processingDlg");
+
+	ZTRACE_RUNTIME("Adding Processing Panel to stackedWidget");
+	stackedWidget->addWidget(processingDlg);
+
 	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	//
 	// Connect Qt Signals to appropriate slots
@@ -339,20 +345,30 @@ DeepSkyStacker::DeepSkyStacker() :
 	QSettings settings;
 	settings.beginGroup("MainWindow");
 
-	if (settings.contains("geometry") && settings.contains("maximised"))
+	if (settings.contains("geometry"))
 	{
 		const QByteArray geometry{ settings.value("geometry").toByteArray() };
-		const bool maximised{ settings.value("maximised").toBool() };
 
-		if (maximised)
+#if QT_VERSION < 0x060601
+		// Shouldn't need this in 6.6.1 or above
+		if (settings.contains("maximised"))
 		{
-			setGeometry(screen()->availableGeometry());
-			showMaximized();
+			const bool maximised{ settings.value("maximised").toBool() };
+
+			if (maximised)
+			{
+				setGeometry(screen()->availableGeometry());
+				showMaximized();
+			}
 		}
 		else
 		{
 			restoreGeometry(geometry);
 		}
+#else
+		restoreGeometry(geometry);
+#endif
+
 	}
 
 	if (settings.contains("windowState"))
@@ -363,63 +379,6 @@ DeepSkyStacker::DeepSkyStacker() :
 
 
 	settings.endGroup();
-}
-
-DeepSkyStacker::~DeepSkyStacker()
-{
-	hostWnd.Detach();
-}
-
-void DeepSkyStacker::showEvent(QShowEvent* event)
-{
-	// Invoke base class showEvent()
-	Inherited::showEvent(event);
-	if (!event->spontaneous())
-	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitialise();
-		}
-	}
-}
-
-void DeepSkyStacker::onInitialise()
-{
-	ZFUNCTRACE_RUNTIME();
-	//
-	// Attach the hwnd of the stacked widget to a CWnd that we use as the parent for the 
-	// processing dialog.   This code can't be in the ctor because stackedWidget doesn't
-	// have an HWND at that point, whereas it does when Qt inokes the showEvent handler.
-	//
-	HWND hwnd{ reinterpret_cast<HWND>(stackedWidget->effectiveWinId()) };
-	hostWnd.Attach(hwnd);
-
-	ZTRACE_RUNTIME("Creating Processing Panel");
-	auto result = processingDlg->Create(IDD_PROCESSING, &hostWnd);
-	if (FALSE == result)
-	{
-		int lastErr = GetLastError();
-		ZTRACE_RUNTIME("lastErr = %d", lastErr);
-	}
-	processingDlg->setParent(winHost);			// Provide a Qt object to be parent for any Qt Widgets this creates
-
-	hwnd = processingDlg->GetSafeHwnd();
-	ZASSERT(NULL != hwnd);
-	winHost->setWindow(hwnd);
-
-	//
-	// If the Stacking Dialog was not visible when DeepSkyStacker last closed, it
-	// may not be visible now.  We want it to be visible.
-	//
-	QTimer::singleShot(20,
-		[this]()
-		{
-			this->stackingDlg->setVisible(true);
-			this->setTab(IDD_REGISTERING);
-			this->update();
-		});
-
 }
 
 void DeepSkyStacker::createStatusBar()
@@ -501,18 +460,17 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::stackCheckedImages, stackingDlg, &DSS::StackingDlg::stackCheckedImages);
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 
-	connect(this, &DeepSkyStacker::tabChanged, explorerBar, &ExplorerBar::tabChanged);
+	connect(this, &DeepSkyStacker::panelChanged, explorerBar, &ExplorerBar::panelChanged);
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (false == processingDlg->SaveOnClose())
+	if (false == processingDlg->saveOnClose())
 	{
 		e->ignore();
 		return;
 	}
-	processingDlg->DestroyWindow();
 	if (false == stackingDlg->saveOnClose())
 	{
 		e->ignore();
@@ -520,14 +478,29 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
+
+	ZTRACE_RUNTIME("Saving Window State and Position");
+
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
-	// DSS is now closing, tell the two dock widgets that they must now accept
+	// Colossal Cave is now closing, tell the two dock widgets that they must now accept
 	// close event requests otherwise DSS never closes down.
 	//
 	explorerBar->setDSSClosing();
 	pictureList->setDSSClosing();
+#endif
+
+
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
+
+	//
+	// Before saving the window state which saves the state the dock widgets, it is necessary to 
+	// make the image list dock widget visible.   As we want the stacking dialog to be visible 
+	// when opening again, make that visible too.
+	//
+	stackedWidget->setCurrentIndex(static_cast<int>(ActivePanel::StackingPanel));
+	stackingDlg->showImageList();
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -553,15 +526,10 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	settings.sync();
 }
 
-
-GdiplusStartupOutput gdiSO;
-ULONG_PTR gdiplusToken{ 0ULL };
-ULONG_PTR gdiHookToken{ 0ULL };
-
 void DeepSkyStacker::disableSubDialogs()
 {
 	stackingDlg->setEnabled(false);
-	processingDlg->EnableWindow(false);
+	processingDlg->setEnabled(false);
 	//m_dlgLibrary.EnableWindow(false);
 	explorerBar->setEnabled(false);
 }
@@ -569,17 +537,9 @@ void DeepSkyStacker::disableSubDialogs()
 void DeepSkyStacker::enableSubDialogs()
 {
 	stackingDlg->setEnabled(true);
-	processingDlg->EnableWindow(true);
+	processingDlg->setEnabled(true);
 	//m_dlgLibrary.EnableWindow(true);
 	explorerBar->setEnabled(true);
-}
-
-CDSSSettings& DeepSkyStacker::imageProcessingSettings()
-{
-	if (!m_ImageProcessingSettings->IsLoaded())
-		m_ImageProcessingSettings->Load();
-
-	return *m_ImageProcessingSettings.get();
 }
 
 DSS::StackingDlg& DeepSkyStacker::getStackingDlg()
@@ -587,9 +547,9 @@ DSS::StackingDlg& DeepSkyStacker::getStackingDlg()
 	return *stackingDlg;
 }
 
-CProcessingDlg& DeepSkyStacker::getProcessingDlg()
+DSS::ProcessingDlg& DeepSkyStacker::getProcessingDlg()
 {
-	return *processingDlg.get();
+	return *processingDlg;
 }
 
 CDeepStack& DeepSkyStacker::deepStack()
@@ -602,13 +562,11 @@ QString DeepSkyStacker::statusMessage()
 	return statusBarText->text();
 }
 
-void DeepSkyStacker::setTab(std::uint32_t dwTabID)
+void DeepSkyStacker::setPanel(ActivePanel panel)
 {
-	if (dwTabID == IDD_STACKING)
-		dwTabID = IDD_REGISTERING;
-	currTab = dwTabID;
-	updateTab();
-	emit tabChanged();
+	activePanel = panel;
+	updatePanel ();
+	emit panelChanged(panel);
 }
 
 ExplorerBar& DeepSkyStacker::GetExplorerBar()
@@ -626,20 +584,19 @@ void DeepSkyStacker::setWindowFilePath(const QString& name)
 		setWindowTitle(baseTitle);
 }
 
-void DeepSkyStacker::updateTab()
+void DeepSkyStacker::updatePanel()
 {
-	switch (currTab)
+	stackedWidget->setCurrentIndex(static_cast<int>(activePanel));
+
+	switch (activePanel)
 	{
-	case IDD_REGISTERING:
-	case IDD_STACKING:
-		stackedWidget->setCurrentIndex(0);
+	case ActivePanel::StackingPanel:
 		stackingDlg->showImageList();
 		stackingDlg->update();
 		break;
-	case IDD_PROCESSING:
-		stackedWidget->setCurrentIndex(1);
+	case ActivePanel::ProcessingPanel:
 		stackingDlg->showImageList(false);
-		processingDlg->ShowWindow(SW_SHOW);
+		processingDlg->update();
 		break;
 	};
 	explorerBar->update();
@@ -704,100 +661,6 @@ void DeepSkyStacker::updateStatus(const QString& text)
 {
 	statusBarText->setText(text);
 }
-
-BOOL DeepSkyStackerApp::InitInstance()
-{
-	ZFUNCTRACE_RUNTIME();
-	CWinApp::InitInstance();
-
-	EnableHtmlHelp();
-
-	SetRegistryKey(_T("DeepSkyStacker"));
-
-	//
-	// Set our Profile Name to DeepSkyStacker5 so native Windows registry stuff
-	// will be written under "DeepSkyStacker\\DeepSkyStacker5"
-	// 
-	// First free the string allocated by MFC at CWinApp startup.
-	// The string is allocated before InitInstance is called.
-	free((void*)m_pszProfileName);
-	// Change the name of the registry profile to use.
-	// The CWinApp destructor will free the memory.
-	m_pszProfileName = _tcsdup(_T("DeepSkyStacker5"));
-
-	//ZTRACE_RUNTIME("AfxInitialize()");
-	//if (!AfxInitialize())
-	//{
-	//	AfxMessageBox(L"AfxInitialize failed.", MB_OK | MB_ICONSTOP);
-	//}
-
-
-	// Initialize OLE libraries
-	if (!AfxOleInit())
-	{
-		AfxMessageBox(L"OLE initialization failed.\nMake sure that the OLE libraries are the correct version.",
-			MB_OK | MB_ICONSTOP);
-		return false;
-	}
-
-	GdiplusStartupInput		gdiplusStartupInput;
-
-
-	ZTRACE_RUNTIME("Initialize GDI+");
-
-	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = true;
-	Gdiplus::Status status = GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
-	gdiSO.NotificationHook(&gdiHookToken);
-	if (Gdiplus::Ok != status)
-	{
-		AfxMessageBox(L"GDI+ initialization failed.");
-		return false;
-	}
-	ZTRACE_RUNTIME("Initialize GDI+ - ok");
-
-	AfxInitRichEdit2();
-
-
-	OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);
-	STARMASKFILE_FILTERS.LoadString(IDS_FILTER_MASK);
-
-	return TRUE;
-};
-
-int DeepSkyStackerApp::ExitInstance()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	AfxOleTerm(FALSE);
-
-#ifndef NOGDIPLUS
-	// Shutdown GDI+
-	ZTRACE_RUNTIME("Shutting down GDI+");
-	gdiSO.NotificationUnhook(gdiHookToken);
-	GdiplusShutdown(gdiplusToken);
-#endif
-
-	return CWinApp::ExitInstance();
-}
-
-// The DeepSkyStacker class, a subclass of CWinApp, runs the event loop in the default implementation of Run().
-// The MFC event loop is a standard Win32 event loop, but uses the CWinApp API PreTranslateMessage() to activate accelerators.
-//
-/* ------------------------------------------------------------------- */
-int DeepSkyStackerApp::Run()
-{
-	ZFUNCTRACE_RUNTIME();
-	ZASSERT(false);
-	return 0;
-}
-
-DeepSkyStackerApp theApp;
-
-DeepSkyStackerApp *		GetDSSApp()
-{
-	return &theApp;
-};
 
 using namespace std;
 
@@ -1076,24 +939,10 @@ int main(int argc, char* argv[])
 //	std::signal(SIGTERM, signalHandler);
 //#endif
 
-	//QMfcApp app(&theApp, argc, argv);
 	QApplication app(argc, argv);
 
 	if (hasExpired())
 		return FALSE;
-
-	ZTRACE_RUNTIME("Initialize MFC");
-	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
-	{
-		ZTRACE_RUNTIME("Fatal Error: MFC initialization failed");
-		QString errorMessage{ "Fatal Error: MFC initialization failed" };
-		cerr << errorMessage.toUtf8().constData() << endl;
-		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
-		return 1;
-	}
-	// initialize all the windows stuff we need for now
-	theApp.InitInstance();
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -1115,11 +964,6 @@ int main(int argc, char* argv[])
 
 	ZTRACE_RUNTIME("Set UI Language");
 	LoadTranslations();
-
-	//
-	// Do the old Windows language stuff
-	//
-	SetUILanguage();
 
 	reportCpuType();
 
@@ -1219,17 +1063,6 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 	}
-	catch (CException& e)
-	{
-		traceControl.setDeleteOnExit(false);
-		constexpr unsigned int msglen{ 255 };
-		TCHAR message[msglen]{ 0x00 };
-		e.GetErrorMessage(&message[0], msglen);
-		ZTRACE_RUNTIME("CException caught: %s", (LPCSTR)CT2CA(message));
-
-		e.ReportError();
-		e.Delete();
-	}
 	catch (ZException& ze)
 	{
 		traceControl.setDeleteOnExit(false);
@@ -1274,101 +1107,6 @@ int main(int argc, char* argv[])
 
 	}
 #endif
-	theApp.ExitInstance();
+	//theApp.ExitInstance();
 	return result;
 }
-
-/* ------------------------------------------------------------------- */
-
-void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath)
-{
-	ZFUNCTRACE_RUNTIME();
-	std::uint32_t dwMaximized = 0;
-	std::uint32_t dwTop = 0;
-	std::uint32_t dwLeft = 0;
-	std::uint32_t dwWidth = 0;
-	std::uint32_t dwHeight = 0;
-
-	QSettings	settings;
-
-	WINDOWPLACEMENT		wp;
-
-	memset(&wp, 0, sizeof(wp));
-	wp.length = sizeof(wp);
-
-	pWnd->GetWindowPlacement(&wp);
-	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-	dwLeft = wp.rcNormalPosition.left;
-	dwTop = wp.rcNormalPosition.top;
-
-	dwWidth = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
-	dwHeight = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
-
-	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
-	QString regBase(szRegistryPath);
-	QString key = regBase + "/Maximized";
-	settings.setValue(key, (uint)dwMaximized);
-
-	key = regBase + "/Top";
-	settings.setValue(key, (uint)dwTop);
-
-	key = regBase + "/Left";
-	settings.setValue(key, (uint)dwLeft);
-
-	key = regBase + "/Width";
-	settings.setValue(key, (uint)dwWidth);
-
-	key = regBase + "/Height";
-	settings.setValue(key, (uint)dwHeight);
-
-};
-
-/* ------------------------------------------------------------------- */
-
-void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter)
-{
-	ZFUNCTRACE_RUNTIME();
-	std::uint32_t dwMaximized = 0;
-	std::uint32_t dwTop = 0;
-	std::uint32_t dwLeft = 0;
-	std::uint32_t dwWidth = 0;
-	std::uint32_t dwHeight = 0;
-
-	QSettings   settings;
-
-	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
-
-	QString regBase(szRegistryPath);
-	QString key = regBase + "/Maximized";
-	dwMaximized = settings.value(key).toUInt();
-
-	key = regBase + "/Top";
-	dwTop = settings.value(key).toUInt();
-
-	key = regBase + "/Left";
-	dwLeft = settings.value(key).toUInt();
-
-	key = regBase + "/Width";
-	dwWidth = settings.value(key).toUInt();
-
-	key = regBase += "/Height";
-	dwHeight = settings.value(key).toUInt();
-
-	if (dwTop && dwLeft && dwWidth && dwHeight)
-	{
-		WINDOWPLACEMENT		wp;
-
-		memset(&wp, 0, sizeof(wp));
-		wp.length = sizeof(wp);
-		wp.flags = 0;
-		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-		wp.rcNormalPosition.left = dwLeft;
-		wp.rcNormalPosition.top = dwTop;
-		wp.rcNormalPosition.right = wp.rcNormalPosition.left + dwWidth;
-		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + dwHeight;
-
-		pWnd->SetWindowPlacement(&wp);
-		if (bCenter)
-			pWnd->CenterWindow();
-	};
-};

@@ -65,14 +65,20 @@ typedef struct
                             tif_dirread.c */
 } TIFFDirEntry;
 
+typedef struct
+{
+    uint64_t offset;
+    uint64_t length;
+} TIFFEntryOffsetAndLength; /* auxiliary for evaluating size of IFD data */
+
 /*
  * Internal format of a TIFF directory entry.
  */
 typedef struct
 {
-#define FIELD_SETLONGS 4
+#define FIELDSET_ITEMS 4
     /* bit vector of fields that are set */
-    unsigned long td_fieldsset[FIELD_SETLONGS];
+    uint32_t td_fieldsset[FIELDSET_ITEMS];
 
     uint32_t td_imagewidth, td_imagelength, td_imagedepth;
     uint32_t td_tilewidth, td_tilelength, td_tiledepth;
@@ -115,6 +121,9 @@ typedef struct
 #ifdef STRIPBYTECOUNTSORTED_UNUSED
     int td_stripbytecountsorted; /* is the bytecount array sorted ascending? */
 #endif
+    /* Be aware that the parameters of td_stripoffset_entry and
+     * td_stripbytecount_entry are swapped but tdir_offset is not
+     * and has to be swapped when used. */
     TIFFDirEntry td_stripoffset_entry;    /* for deferred loading */
     TIFFDirEntry td_stripbytecount_entry; /* for deferred loading */
     uint16_t td_nsubifd;
@@ -135,6 +144,24 @@ typedef struct
 
     unsigned char
         td_deferstrilearraywriting; /* see TIFFDeferStrileArrayWriting() */
+
+    unsigned char
+        td_iswrittentofile; /* indicates if current IFD is present on file */
+
+    /* LibTIFF writes all data that does not fit into the IFD entries directly
+     * after the IFD tag entry part. When reading, only the IFD data directly
+     * and continuously behind the IFD tags is taken into account for the IFD
+     * data size.*/
+    uint64_t td_dirdatasize_write; /* auxiliary for evaluating size of IFD data
+                                       to be written */
+    uint64_t td_dirdatasize_read;  /* auxiliary for evaluating size of IFD data
+                                       read from file */
+    uint32_t td_dirdatasize_Noffsets; /* auxiliary counter for
+                                         tif_dir.td_dirdatasize_offsets array */
+    TIFFEntryOffsetAndLength
+        *td_dirdatasize_offsets; /* auxiliary array for all offsets of IFD tag
+                                    entries with data outside the IFD tag
+                                    entries. */
 } TIFFDirectory;
 
 /*
@@ -202,9 +229,9 @@ typedef struct
  */
 #define FIELD_PSEUDO 0
 
-#define FIELD_LAST (32 * FIELD_SETLONGS - 1)
+#define FIELD_LAST (32 * FIELDSET_ITEMS - 1)
 
-#define BITn(n) (((unsigned long)1L) << ((n)&0x1f))
+#define BITn(n) (((uint32_t)1L) << ((n)&0x1f))
 #define BITFIELDn(tif, n) ((tif)->tif_dir.td_fieldsset[(n) / 32])
 #define TIFFFieldSet(tif, field) (BITFIELDn(tif, field) & BITn(field))
 #define TIFFSetFieldBit(tif, field) (BITFIELDn(tif, field) |= BITn(field))
@@ -308,11 +335,10 @@ extern "C"
         TIFFDataType field_type; /* type of associated data */
         uint32_t
             field_anonymous; /* if true, this is a unknown / anonymous tag */
-        TIFFSetGetFieldType
-            set_field_type; /* type to be passed to TIFFSetField */
-        TIFFSetGetFieldType
-            get_field_type;              /* type to be passed to TIFFGetField */
-        unsigned short field_bit;        /* bit in fieldsset bit vector */
+        TIFFSetGetFieldType set_field_type; /* type to be passed to TIFFSetField
+                                               and TIFFGetField*/
+        TIFFSetGetFieldType get_field_type; /* not used */
+        unsigned short field_bit;           /* bit in fieldsset bit vector */
         unsigned char field_oktochange;  /* if true, can change while writing */
         unsigned char field_passcount;   /* if true, pass dir count on set */
         char *field_name;                /* ASCII name */
@@ -329,6 +355,10 @@ extern "C"
                                             uint64_t diroff);
     extern int _TIFFGetDirNumberFromOffset(TIFF *tif, uint64_t diroff,
                                            tdir_t *dirn);
+    extern int _TIFFGetOffsetFromDirNumber(TIFF *tif, tdir_t dirn,
+                                           uint64_t *diroff);
+    extern int _TIFFRemoveEntryFromDirectoryListByOffset(TIFF *tif,
+                                                         uint64_t diroff);
 
 #if defined(__cplusplus)
 }

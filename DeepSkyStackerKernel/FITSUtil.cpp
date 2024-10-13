@@ -20,7 +20,7 @@ using namespace DSS;
 
 /* ------------------------------------------------------------------- */
 
-static	CComAutoCriticalSection			g_FITSCritical;
+static	std::mutex mutex;
 
 CFITSHeader::CFITSHeader()
 {
@@ -31,7 +31,7 @@ CFITSHeader::CFITSHeader()
 	m_CFAType		= CFATYPE_NONE;
 	m_Format		= FF_UNKNOWN;
 	m_bSigned		= false;
-	g_FITSCritical.Lock();
+	mutex.lock();
     m_lWidth = 0;
     m_lHeight = 0;
 	m_lBitsPerPixel = 0;
@@ -46,7 +46,7 @@ CFITSHeader::CFITSHeader()
 
 CFITSHeader::~CFITSHeader()
 {
-	g_FITSCritical.Unlock();
+	mutex.unlock();
 };
 
 /* ------------------------------------------------------------------- */

@@ -1,55 +1,58 @@
 #pragma once
-namespace Ui {
-class About;
-}
-
-class About : public QDialog
+namespace DSS
 {
-    Q_OBJECT
-    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
-    Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged)
-
-typedef QDialog
-		Inherited;
-
-public:
-    explicit About(QWidget *parent = 0);
-    ~About();
-
-    QString language()
-    {
-        return m_Language;
+    namespace Ui {
+        class About;
     }
 
-    void setLanguage(QString lang);
-
-    bool internetCheck()
+    class About : public QDialog
     {
-        return m_InternetCheck;
-    }
+        Q_OBJECT
+            Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
+            Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged)
 
-    void setInternetCheck(bool);
+            typedef QDialog
+            Inherited;
 
-protected:
-    void showEvent(QShowEvent* event) override;
+    public:
+        explicit About(QWidget* parent = 0);
+        ~About();
 
-signals:
-    void languageChanged(QString);
-    void internetCheckChanged();
+        QString language()
+        {
+            return m_Language;
+        }
 
-private slots:
-    void storeSettings();
-    void selectLanguage(int);
-    void setCheck(bool);
-	void aboutQt();
+        void setLanguage(QString lang);
+
+        bool internetCheck()
+        {
+            return m_InternetCheck;
+        }
+
+        void setInternetCheck(bool);
+
+    protected:
+        void showEvent(QShowEvent* event) override;
+
+    signals:
+        void languageChanged(QString);
+        void internetCheckChanged();
+
+    private slots:
+        void storeSettings();
+        void selectLanguage(int);
+        void setCheck(bool);
+        void aboutQt();
 
 
-private:
-    Ui::About *ui;
+    private:
+        Ui::About* ui;
 
-	bool initialised;
-    QString m_Language;
-    bool m_InternetCheck;
+        bool initialised;
+        QString m_Language;
+        bool m_InternetCheck;
 
-	void onInitDialog();
-};
+        void onInitDialog();
+    };
+}

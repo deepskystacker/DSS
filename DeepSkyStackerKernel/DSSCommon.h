@@ -138,6 +138,14 @@ enum class Column
 	Info, ISO, Exposure, Aperture, FWHM, Stars,
 	Background, MAX_COLS
 };
+
+enum class ActivePanel
+{
+	StackingPanel,
+	ProcessingPanel
+};
+
+
 // TODO: reference additional headers your program requires here
 
 #pragma warning( disable : 4244 )

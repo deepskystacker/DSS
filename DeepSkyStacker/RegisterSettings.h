@@ -37,83 +37,87 @@
 
 class CAllStackingTasks;
 class QValidator;
+class Workspace; 
 
-namespace Ui {
-	class RegisterSettings;
-}
-
-class RegisterSettings : public QDialog
+namespace DSS
 {
-	Q_OBJECT
-
-typedef QDialog
-		Inherited;
-public:
-	explicit RegisterSettings(QWidget *parent = nullptr);
-	~RegisterSettings();
-
-	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
-	{
-		settingsOnly = bSettingsOnly;
+	namespace Ui {
+		class RegisterSettings;
 	}
 
-	bool isForceRegister() const noexcept
+	class RegisterSettings : public QDialog
 	{
-		return forceRegister;
-	}
+		Q_OBJECT
 
-	bool isStackAfter(double& fPercent) const noexcept
-	{
-		fPercent = static_cast<double>(percentStack);
+			typedef QDialog
+			Inherited;
+	public:
+		explicit RegisterSettings(QWidget* parent = nullptr);
+		~RegisterSettings();
 
-		return stackAfter;
-	}
+		inline void	setSettingsOnly(bool bSettingsOnly) noexcept
+		{
+			settingsOnly = bSettingsOnly;
+	    }
 
-	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
-	{
-		pStackingTasks = ptr;
-		return *this;
-	}
+	    bool isForceRegister() const noexcept
+		{
+			return forceRegister;
+	    }
 
-private slots:
+	    bool isStackAfter(double& fPercent) const noexcept
+		{
+		    fPercent = static_cast<double>(percentStack);
 
-	void on_recommendedSettings_clicked();
-	void on_stackingSettings_clicked();
+			return stackAfter;
+	    }
 
-	void accept() override;
-	void reject() override;
+		inline RegisterSettings& setStackingTasks(CAllStackingTasks* ptr) noexcept
+		{
+			pStackingTasks = ptr;
+			return *this;
+	    }
 
-	void on_forceRegister_stateChanged(int);
-	void on_hotPixels_stateChanged(int);
-	void on_stackAfter_clicked();
-	void on_percentStack_editingFinished();
+	private slots:
 
-	void on_luminanceThreshold_valueChanged(int);
-	void on_computeDetectedStars_clicked();
-	void on_medianFilter_stateChanged(int);
-	void on_autoThreshold_changed(const int);
+		void on_recommendedSettings_clicked();
+		void on_stackingSettings_clicked();
+
+		void accept() override;
+		void reject() override;
+
+		void on_forceRegister_stateChanged(int);
+		void on_hotPixels_stateChanged(int);
+		void on_stackAfter_clicked();
+		void on_percentStack_editingFinished();
+
+		void on_luminanceThreshold_valueChanged(int);
+		void on_computeDetectedStars_clicked();
+		void on_medianFilter_stateChanged(int);
+        void on_autoThreshold_changed(const int);
 
 
 
-private:
-	Ui::RegisterSettings *ui;
-	std::unique_ptr<class Workspace> workspace;
+	private:
+		Ui::RegisterSettings* ui;
+	    std::unique_ptr<Workspace> workspace;
 
-	bool					initialised;
-	bool					forceRegister;
-	bool					stackAfter;
-	uint 					percentStack;
-	bool					noDarks;
-	bool					noFlats;
-	bool					noOffsets;
-	uint					detectionThreshold;
-	bool					medianFilter;
-	fs::path				firstLightFrame;
-	CAllStackingTasks *		pStackingTasks;
-	bool					settingsOnly;
-	QValidator *			perCentValidator;
+		bool					initialised;
+		bool					forceRegister;
+		bool					stackAfter;
+		uint 					percentStack;
+		bool					noDarks;
+		bool					noFlats;
+		bool					noOffsets;
+		uint					detectionThreshold;
+		bool					medianFilter;
+		fs::path				firstLightFrame;
+		CAllStackingTasks* pStackingTasks;
+		bool					settingsOnly;
+		QValidator* perCentValidator;
 
-	void showEvent(QShowEvent *event) override;
+		void showEvent(QShowEvent* event) override;
 
-	void onInitDialog();
-};
+		void onInitDialog();
+	};
+}

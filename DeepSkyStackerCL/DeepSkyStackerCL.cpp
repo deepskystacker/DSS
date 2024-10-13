@@ -2,14 +2,23 @@
 //
 
 #include <stdafx.h>
+
+#if defined(_WINDOWS)
+#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
+#include <afx.h>
+//
+// Visual Leak Detector
+#include <vld.h>
+#endif
+
 #include <QtLogging>
+#include <QImageReader>
 #include "DeepSkyStackerCL.h"
 #include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "SetUILanguage.h"
 #include "tracecontrol.h"
 #include "Ztrace.h"
 
@@ -403,20 +412,6 @@ int main(int argc, char* argv[])
 #endif
 #endif
 
-#ifndef NOGDIPLUS
-	GdiplusStartupInput		gdiplusStartupInput;
-	GdiplusStartupOutput	gdiSO;
-	ULONG_PTR				gdiplusToken;
-	ULONG_PTR				gdiHookToken;
-
-	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = true;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
-	gdiSO.NotificationHook(&gdiHookToken);
-#endif
-
-	SetUILanguage();
-
 	Exiv2::XmpParser::initialize();
 	::atexit(Exiv2::XmpParser::terminate);
 
@@ -429,12 +424,6 @@ int main(int argc, char* argv[])
 	DeepSkyStackerCommandLine process(argc, argv);
 
 	process.Run();
-
-#ifndef NOGDIPLUS
-	// Shutdown GDI+
-	gdiSO.NotificationUnhook(gdiHookToken);
-	GdiplusShutdown(gdiplusToken);
-#endif
 
 	return 0;
 }

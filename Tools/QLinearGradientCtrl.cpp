@@ -40,6 +40,11 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 
 	stops = m_Gradient.stops();				// Grab the gradient stops
 	endPegStop = stops.size() - 1;
+
+	setToolTip(QCoreApplication::translate("QLinearGradientCtrl",
+		"You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;\n"
+		"Page-Up and Page-Down keys to move a slider after you have selected it\n"
+		"with the mouse."));
 }
 
 QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& src)
@@ -251,19 +256,6 @@ void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colou
 		break;
 	}
 	painter.drawPolygon(points, 3);
-
-	//----- Draw lines manually in the right directions ------//
-	//CPen outlinepen(PS_SOLID, 1, GetSysColor(COLOR_WINDOWTEXT));
-	//oldpen = dc->SelectObject(&outlinepen);
-
-	//dc->MoveTo(points[0]);
-	//dc->LineTo(points[1]);
-	//dc->LineTo(points[2]);
-	//dc->LineTo(points[0]);
-
-	//dc->SelectObject(oldpen);
-
-	//brush.DeleteObject();
 }
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direction)
@@ -737,6 +729,10 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 			QGradientStop stop = selectedStop();
 			stop.first = 0.005;
 			moveSelected(stop.first, true);
+			QRect pegrect;
+			getPegRect(selectedPeg, &pegrect, m_RightUpSide);
+			update(pegrect);
+
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -763,10 +759,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first -= 0.005f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first <= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -779,10 +787,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first += 0.005f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
+			moveSelected(stop.first, true);
 
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -801,10 +821,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first -= 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first -= 0.025f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first >= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -816,10 +848,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first += 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first += 0.025f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -929,9 +973,21 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 			if (stops[i].first == position)
 				index = i;
 	}
+	//
+	// Bug fix: Need to update the QLinearGradient's stops after updating our local
+	// copy of the QGradientStops
+	//
+	m_Gradient.setStops(stops);		// Update the gradient control's stops
 
 	return index;
 }
+
+int QLinearGradientCtrl::setPeg(int index, qreal position)
+{
+	QColor colour{ stops[index].second };
+	return setPeg(index, colour, position);
+}
+
 
 int QLinearGradientCtrl::setSelected(int iSel)
 {

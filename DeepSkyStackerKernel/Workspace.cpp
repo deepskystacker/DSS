@@ -508,11 +508,11 @@ void Workspace::ReadFromFile(FILE * hFile)
 	pSettings->ReadFromFile(hFile);
 }
 
-void Workspace::ReadFromFile(LPCTSTR name)
-{
-	fs::path file(name);
-	pSettings->ReadFromFile(file);
-}
+//void Workspace::ReadFromFile(LPCTSTR name)
+//{
+//	fs::path file(name);
+//	pSettings->ReadFromFile(file);
+//}
 
 void Workspace::ReadFromFile(const fs::path& file)
 {

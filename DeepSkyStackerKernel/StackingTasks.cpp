@@ -258,27 +258,27 @@ static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, P
 };
 
 /* ------------------------------------------------------------------- */
-bool	CStackingInfo::CheckForExistingOffset(fs::path& strMasterFile)
+bool	CStackingInfo::CheckForExistingOffset(fs::path& masterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
 	if (m_pOffsetTask != nullptr && m_pOffsetTask->m_vBitmaps.size() > 0)
 	{
-		fs::path strMasterOffset;
-		fs::path strMasterOffsetInfo;
+		fs::path masterOffsetFile;
+		fs::path masterOffsetInfoFile;
 
-		BuildMasterFileNames(m_pOffsetTask, "MasterOffset", false, m_pOffsetTask->m_vBitmaps[0].filePath, strMasterOffset, strMasterOffsetInfo);
+		BuildMasterFileNames(m_pOffsetTask, "MasterOffset", false, m_pOffsetTask->m_vBitmaps[0].filePath, masterOffsetFile, masterOffsetInfoFile);
 
 		// Check that the Master Offset File is existing
 		COffsetSettings bmpSettings;
 		COffsetSettings newSettings;
 
-		if (newSettings.InitFromCurrent(m_pOffsetTask, strMasterOffset.wstring().c_str()) && bmpSettings.ReadFromFile(strMasterOffsetInfo.wstring().c_str()))
+		if (newSettings.InitFromCurrent(m_pOffsetTask, masterOffsetFile) && bmpSettings.ReadFromFile(masterOffsetInfoFile))
 		{
 			if (newSettings == bmpSettings)
 			{
-				strMasterFile = strMasterOffset;
+				masterFile = masterOffsetFile;
 				bResult = true;
 			}
 		}
@@ -415,7 +415,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 	return bResult;
 }
 
-bool CStackingInfo::CheckForExistingDark(fs::path& strMasterFile)
+bool CStackingInfo::CheckForExistingDark(fs::path& masterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -424,21 +424,21 @@ bool CStackingInfo::CheckForExistingDark(fs::path& strMasterFile)
 	{
 		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
-			fs::path strMasterDark;
-			fs::path strMasterDarkInfo;
+			fs::path masterDarkFile;
+			fs::path masterDarkInfoFile;
 
-			BuildMasterFileNames(m_pDarkTask, "MasterDark", true, m_pDarkTask->m_vBitmaps[0].filePath, strMasterDark, strMasterDarkInfo);
+			BuildMasterFileNames(m_pDarkTask, "MasterDark", true, m_pDarkTask->m_vBitmaps[0].filePath, masterDarkFile, masterDarkInfoFile);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings bmpSettings;
 			CDarkSettings newSettings;
 
-			if (newSettings.InitFromCurrent(m_pDarkTask, strMasterDark.wstring().c_str()) && bmpSettings.ReadFromFile(strMasterDarkInfo.wstring().c_str()))
+			if (newSettings.InitFromCurrent(m_pDarkTask, masterDarkFile) && bmpSettings.ReadFromFile(masterDarkInfoFile))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDark;
+					masterFile = masterDarkFile;
 					bResult = true;
 				}
 			}
@@ -607,7 +607,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 	return bResult;
 }
 
-bool CStackingInfo::CheckForExistingDarkFlat(fs::path& strMasterFile)
+bool CStackingInfo::CheckForExistingDarkFlat(fs::path& masterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -617,22 +617,22 @@ bool CStackingInfo::CheckForExistingDarkFlat(fs::path& strMasterFile)
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
-			fs::path strMasterDarkFlat;
-			fs::path strMasterDarkFlatInfo;
+			fs::path masterDarkFlatFile;
+			fs::path masterDarkFlatInfoFile;
 
-			BuildMasterFileNames(m_pDarkFlatTask, "MasterDarkFlat", true, m_pDarkFlatTask->m_vBitmaps[0].filePath, strMasterDarkFlat, strMasterDarkFlatInfo);
+			BuildMasterFileNames(m_pDarkFlatTask, "MasterDarkFlat", true, m_pDarkFlatTask->m_vBitmaps[0].filePath, masterDarkFlatFile, masterDarkFlatInfoFile);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
 			CDarkSettings		newSettings;
 
-			if (newSettings.InitFromCurrent(m_pDarkFlatTask, strMasterDarkFlat.wstring().c_str()) &&
-				bmpSettings.ReadFromFile(strMasterDarkFlatInfo.wstring().c_str()))
+			if (newSettings.InitFromCurrent(m_pDarkFlatTask, masterDarkFlatFile) &&
+				bmpSettings.ReadFromFile(masterDarkFlatInfoFile))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
-					strMasterFile = strMasterDarkFlat;
+					masterFile = masterDarkFlatFile;
 					bResult = true;
 				};
 			};

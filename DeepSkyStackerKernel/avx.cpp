@@ -9,6 +9,10 @@
 #include "avx_entropy.h"
 #include "EntropyInfo.h"
 
+#if defined (_MSC_VER)
+#pragma warning (disable: 4127)
+#endif
+
 AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
@@ -653,10 +657,13 @@ int Avx256Stacking::pixelPartitioning()
 	if constexpr (ENTROPY)
 	{
 		AvxSupport avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
+
 		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
 			return 1;
+
 		if (!ISRGB && !avxEntropySupport.isMonochromeBitmapOfType<float>())
 			return 1;
+
 		if (stackData.entropyData.redEntropyLayer.empty()) // Something is wrong here!
 			return 1;
 		pRedEntropyLayer = reinterpret_cast<float*>(stackData.entropyData.redEntropyLayer.data());

@@ -88,7 +88,7 @@ public:
 	void readSettings();
 	void saveSettings();
 	void ReadFromFile(FILE* hFile);
-	void ReadFromFile(LPCTSTR name);
+	//void ReadFromFile(LPCTSTR name);
 	void ReadFromFile(const fs::path& file);
 	void SaveToFile(FILE* hFile);
 	void SaveToFile(const fs::path& file);

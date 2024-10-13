@@ -37,12 +37,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -88,7 +88,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -131,7 +131,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -203,7 +203,6 @@
     <ClCompile Include=".\DSSProgress.cpp" />
     <ClCompile Include=".\DSSTools.cpp" />
     <ClCompile Include=".\EntropyInfo.cpp" />
-    <ClCompile Include=".\File.cpp" />
     <ClCompile Include=".\Filters.cpp" />
     <ClCompile Include=".\FITSUtil.cpp" />
     <ClCompile Include=".\FlatFrame.cpp" />
@@ -230,7 +229,6 @@
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
     <ClCompile Include="DeepStack.cpp" />
-    <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
     <ClCompile Include="ImageListModel.cpp" />
     <ClCompile Include="imageloader.cpp" />
@@ -260,7 +258,6 @@
     <ClInclude Include=".\avx_support.h" />
     <ClInclude Include=".\BackgroundCalibration.h" />
     <ClInclude Include=".\Bayer.h" />
-    <ClInclude Include=".\BezierAdjust.h" />
     <ClInclude Include=".\BitmapBase.h" />
     <ClInclude Include=".\BitmapExt.h" />
     <ClInclude Include=".\BitMapFiller.h" />
@@ -277,7 +274,6 @@
     <ClInclude Include=".\dssrect.h" />
     <ClInclude Include=".\DSSTools.h" />
     <ClInclude Include=".\EntropyInfo.h" />
-    <ClInclude Include=".\File.h" />
     <ClInclude Include=".\Filters.h" />
     <ClInclude Include=".\FITSUtil.h" />
     <ClInclude Include=".\FlatFrame.h" />
@@ -286,10 +282,10 @@
     <ClInclude Include=".\GrayBitmap.h" />
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
-    <ClInclude Include=".\Histogram.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />
+    <ClInclude Include="histogram.h" />
     <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
     <ClInclude Include=".\MasterFrames.h" />
@@ -318,7 +314,6 @@
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="dssbase.h" />
     <ClInclude Include="DSSVersion.h" />
-    <ClInclude Include="dss_settings.h" />
     <ClInclude Include="DynamicStats.h" />
     <ClInclude Include="ExtraInfo.h" />
     <ClInclude Include="FlatPart.h" />
@@ -354,10 +349,14 @@
     <QtTranslation Include="i18n\DSSKernel_ca.ts" />
     <QtTranslation Include="i18n\DSSKernel_cs.ts" />
     <QtTranslation Include="i18n\DSSKernel_de.ts" />
-    <QtTranslation Include="i18n\DSSKernel_en.ts" />
+    <QtTranslation Include="i18n\DSSKernel_en.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
     <QtTranslation Include="i18n\DSSKernel_es.ts" />
     <QtTranslation Include="i18n\DSSKernel_fr.ts" />
     <QtTranslation Include="i18n\DSSKernel_it.ts" />
+    <QtTranslation Include="i18n\DSSKernel_ja_JP.ts" />
     <QtTranslation Include="i18n\DSSKernel_nl.ts" />
     <QtTranslation Include="i18n\DSSKernel_pt_BR.ts" />
     <QtTranslation Include="i18n\DSSKernel_ro.ts" />

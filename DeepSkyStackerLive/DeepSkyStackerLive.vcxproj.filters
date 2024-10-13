@@ -86,9 +86,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -264,6 +261,9 @@
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
     <QtTranslation Include="i18n\DSSLive_zh_CN.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive_ja_JP.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>
