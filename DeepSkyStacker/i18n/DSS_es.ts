@@ -1192,7 +1192,7 @@ Píxeles fríos detectados: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
+        <location filename="../ProcessingDlg.cpp" line="1182"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>¿Desea guardar las modificaciones?</translation>
@@ -1216,65 +1216,65 @@ Píxeles fríos detectados: %L3 (%L4%)
         <translation>Guardando la Máscara de Estrellas en %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="467"/>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="468"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 32 bit/ch integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="469"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 32 bit/ch rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="470"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="471"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 32 bit/ch integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="472"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 32 bit/ch rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="481"/>
+        <location filename="../ProcessingDlg.cpp" line="487"/>
         <source>Save Image</source>
         <translation>Salvar el imagen</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="573"/>
+        <location filename="../ProcessingDlg.cpp" line="579"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>No hay una imagen para guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="588"/>
+        <location filename="../ProcessingDlg.cpp" line="594"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sin información disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="601"/>
+        <location filename="../ProcessingDlg.cpp" line="607"/>
         <source>Exposure: %1 </source>
         <translation>Exposición: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="602"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1971,18 +1971,34 @@ Do you want to save them?</source>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
+        <source>This option saves the image as you see it
+Use it if you plan to do further processing in other software</source>
+        <comment>IDS_TT_APPLIED</comment>
+        <translation>Esta opción guarda la imagen tal como la visualiza
+Utilicela si planea realizar un procesamiento posterior con otro programa</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
         <translation>Agregar los ajustes en la imagen guardada pero no aplicarlos</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="122"/>
+        <location filename="../SavePicture.cpp" line="124"/>
+        <source>This option saves the unprocessed image and embeds the processing settings
+Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
+        <comment>IDS_TT_EMBEDDED</comment>
+        <translation>Esta opción guarda la imagen sin procesar pero le adjunta los ajustes de procesamiento
+Utilice esta opción si planea hacer todo el procesamiento en otro programa o si planea reabrir la imagen con DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="129"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation>No aplicar ajustes a la imagen guardada</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="123"/>
+        <location filename="../SavePicture.cpp" line="130"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
         <translation>Crear una imagen a partir del rectángulo seleccionado</translation>

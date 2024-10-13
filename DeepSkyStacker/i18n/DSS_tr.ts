@@ -1190,7 +1190,7 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
+        <location filename="../ProcessingDlg.cpp" line="1182"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
@@ -1214,65 +1214,65 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation>Yıldız Maskesini Kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="467"/>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="468"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="469"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="470"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="471"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="472"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="481"/>
+        <location filename="../ProcessingDlg.cpp" line="487"/>
         <source>Save Image</source>
         <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="573"/>
+        <location filename="../ProcessingDlg.cpp" line="579"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="588"/>
+        <location filename="../ProcessingDlg.cpp" line="594"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="601"/>
+        <location filename="../ProcessingDlg.cpp" line="607"/>
         <source>Exposure: %1 </source>
         <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="602"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1966,18 +1966,35 @@ Bunları kaydetmek ister misiniz?</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
+        <source>This option saves the image as you see it
+Use it if you plan to do further processing in other software</source>
+        <comment>IDS_TT_APPLIED</comment>
+        <translation>Bu seçenek resmi gördüğünüz gibi kaydeder
+Eğer başka bir programda işlemeye devam edecekseniz bu seçeneği kullanın</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
         <translation>aydedilen görüntüye ayarları ilişkilendir fakat uygulama</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="122"/>
+        <location filename="../SavePicture.cpp" line="124"/>
+        <source>This option saves the unprocessed image and embeds the processing settings
+Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
+        <comment>IDS_TT_EMBEDDED</comment>
+        <translation>Bu seçenek işlenmemiş resmi kaydeder fakat işlem ayarlarını içine yerleştirir
+Eğer bütün işlemi başka bir programda devam etmek istiyorsanız veya bu görüntüyü daha sonra DeepSkyStacker&apos;da açmak
+istiyorsanız bu seçeneği kullann</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="129"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation>Kaydedilen görüntüye değişiklikleri uygulama</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="123"/>
+        <location filename="../SavePicture.cpp" line="130"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
         <translation>Seçilen dikdörtgenden bir görüntü oluştur</translation>

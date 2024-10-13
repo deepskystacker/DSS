@@ -1194,7 +1194,7 @@ Pixel freddi rilevati: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
+        <location filename="../ProcessingDlg.cpp" line="1182"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Vuoi salvare le modifiche?</translation>
@@ -1218,65 +1218,65 @@ Pixel freddi rilevati: %L3 (%L4%)
         <translation>Salvo la Maschera di Stelle in %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="467"/>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="468"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine TIFF 32 bit/ch - interi (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="469"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine TIFF 32 bit/ch - razionale (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="470"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine FITS 16 bit/can (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="471"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine FITS 32 bit/can - interi (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="472"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Immagine FITS 32 bit/can - razionale (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="481"/>
+        <location filename="../ProcessingDlg.cpp" line="487"/>
         <source>Save Image</source>
         <translation>Salva Immagine</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="573"/>
+        <location filename="../ProcessingDlg.cpp" line="579"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Non c&apos;è alcuna immagine da salvare.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="588"/>
+        <location filename="../ProcessingDlg.cpp" line="594"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>No info disponibile</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="601"/>
+        <location filename="../ProcessingDlg.cpp" line="607"/>
         <source>Exposure: %1 </source>
         <translation>Esposizione: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="602"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1972,18 +1972,34 @@ Vuoi salvarle?</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
+        <source>This option saves the image as you see it
+Use it if you plan to do further processing in other software</source>
+        <comment>IDS_TT_APPLIED</comment>
+        <translation>Questa opzione salva l&apos;immagine come la vedi
+Usala se vuoi processarla ancora in un altro programma</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
         <translation>Includi i cambiamenti all&apos;immagine salvata senza applicarle</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="122"/>
+        <location filename="../SavePicture.cpp" line="124"/>
+        <source>This option saves the unprocessed image and embeds the processing settings
+Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
+        <comment>IDS_TT_EMBEDDED</comment>
+        <translation>Questa opzione salva l&apos;immagine non processata ma include i settaggi che hai modificato
+Usala se vuoi processarla in un altro programma e poi vuoi riaprirla in DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="129"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation>Non applicare i cambiamenti all&apos;immagine salvata</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="123"/>
+        <location filename="../SavePicture.cpp" line="130"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
         <translation>Crea un&apos;immagine dal rettangolo di selezione</translation>

@@ -117,7 +117,14 @@ namespace DSS
 		compressionLZW->setText(tr("LZW (Deprecated)", "IDC_COMPRESSION_LZW"));
 		optionsGroup->setTitle(tr("Options", "IDD_SAVEPICTURE"));
 		applyAdjustments->setText(tr("Apply adjustments to the saved image", "IDC_APPLIED"));
+		applyAdjustments->setToolTip(tr("This option saves the image as you see it\n"
+			"Use it if you plan to do further processing in other software",
+			"IDS_TT_APPLIED"));
 		embedAdjustments->setText(tr("Embed adjustments in the saved image but do not apply them", "IDC_EMBEDDED"));
+		embedAdjustments->setToolTip(tr("This option saves the unprocessed image and embeds the processing settings\n"
+			"Use it if you plan to do all the processing in other software"
+			" or if you plan to re-open the picture with DeepSkyStacker",
+			"IDS_TT_EMBEDDED"));
 		embedText = embedAdjustments->text();
 		noAdjustments = tr("Do not apply adjustments to the saved image", "IDS_SAVENOADJUSTMENT");
 		useRectangle->setText(tr("Create an image from the selected rectangle", "IDC_USERECT"));
