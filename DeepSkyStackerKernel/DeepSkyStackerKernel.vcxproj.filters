@@ -511,5 +511,8 @@
     <QtTranslation Include="i18n\DSSKernel_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DSSKernel_ja_JP.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
 </Project>
