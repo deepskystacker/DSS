@@ -349,7 +349,10 @@
     <QtTranslation Include="i18n\DSSKernel_ca.ts" />
     <QtTranslation Include="i18n\DSSKernel_cs.ts" />
     <QtTranslation Include="i18n\DSSKernel_de.ts" />
-    <QtTranslation Include="i18n\DSSKernel_en.ts" />
+    <QtTranslation Include="i18n\DSSKernel_en.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
     <QtTranslation Include="i18n\DSSKernel_es.ts" />
     <QtTranslation Include="i18n\DSSKernel_fr.ts" />
     <QtTranslation Include="i18n\DSSKernel_it.ts" />
