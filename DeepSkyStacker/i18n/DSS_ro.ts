@@ -72,113 +72,113 @@
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation type="unfinished">Despre DeepSkyStacker</translation>
+        <translation>Despre DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation type="unfinished">Limba</translation>
+        <translation>Limba</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation type="unfinished">Selectează limba:</translation>
+        <translation>Selectează limba:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation type="unfinished">Verifică la pornire dacă este disponibilă o versiune mai nouă</translation>
+        <translation>Verifică la pornire dacă este disponibilă o versiune mai nouă</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Despre &amp;Qt</translation>
+        <translation>Despre &amp;Qt</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="35"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation type="unfinished">DeepSkyStacker version %1</translation>
+        <translation>DeepSkyStacker versiunea %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="42"/>
         <source>(Now somewhat out of date)</source>
-        <translation type="unfinished">(Acum oarecum demodat)</translation>
+        <translation>(Acum oarecum demodat)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">Decodare fișire RAW de LibRaw (versiune %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation>Decodificare fișier RAW de către LibRaw (versiunea %1)
+Copyright © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation type="unfinished">Codare/decodare fișiere TIFF de LibTIFF (versiune %1)
+        <translation>Codificarea/decodarea fișierelor TIFF de către LibTIFF (versiunea %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</translation>
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation type="unfinished">Decodare FITS de CFitsIO (versiune %1)
+        <translation>Decodare FITS de CFitsIO (versiune %1)
 Copyright NASA</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="76"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
 Copyright 2004-2023 Exiv2 authors</source>
-        <translation type="unfinished">Metadatele imaginii Exif, IPTC, XMP și ICC de la Exiv2 - Versiunea 0.28.0
+        <translation>Metadatele imaginii Exif, IPTC, XMP și ICC de la Exiv2 - Versiunea 0.28.0
 Copyright 2004-2023 Exiv2 autori</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="82"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished">Suport SMTP de către Client SMTP pentru Qt (C++) - Versiunea 0.27.6
+        <translation>Suport SMTP de către Client SMTP pentru Qt (C++) - Versiunea 0.27.6
 Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="96"/>
         <source>Default</source>
-        <translation type="unfinished">Implicit</translation>
+        <translation>Implicit</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation type="unfinished">Versiune spaniolă: Ricardo Contreras și echipa</translation>
+        <translation>Versiune spaniolă: Ricardo Contreras și echipa</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="121"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation type="unfinished">Versiune cehă:</translation>
+        <translation>Versiune cehă:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="125"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation type="unfinished">Versiune italiană:</translation>
+        <translation>Versiune italiană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="129"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation type="unfinished">Versiune catalană:</translation>
+        <translation>Versiune catalană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="133"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation type="unfinished">Versiune germană:</translation>
+        <translation>Versiune germană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="135"/>
@@ -187,43 +187,43 @@ Copyright Tőkés Attila</translation>
         <location filename="../About.cpp" line="152"/>
         <location filename="../About.cpp" line="153"/>
         <source>and</source>
-        <translation type="unfinished">și</translation>
+        <translation>și</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="138"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation type="unfinished">Versiune olandeză:</translation>
+        <translation>Versiune olandeză:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="142"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation type="unfinished">Versiunea Chineză Tradițională:</translation>
+        <translation>Versiunea Chineză Tradițională:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="146"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation type="unfinished">Versiunea portugheză:</translation>
+        <translation>Versiunea portugheză:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="151"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation type="unfinished">&quot;Versiunea română:</translation>
+        <translation>&quot;Versiunea română:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="156"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation type="unfinished">Versiunea rusă:</translation>
+        <translation>Versiunea rusă:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="160"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation type="unfinished">Versiunea Turcă:</translation>
+        <translation>Versiunea Turcă:</translation>
     </message>
 </context>
 <context>
@@ -231,37 +231,37 @@ Copyright Tőkés Attila</translation>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation type="unfinished">Aliniere</translation>
+        <translation>Aliniere</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation type="unfinished">Transformare folosită în decursul alinierii</translation>
+        <translation>Transformare folosită în decursul alinierii</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation type="unfinished">Bipatrata</translation>
+        <translation>Bipatrata</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation type="unfinished">Fără aliniere</translation>
+        <translation>Fără aliniere</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation type="unfinished">Biliniara</translation>
+        <translation>Biliniara</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation type="unfinished">Bicubica</translation>
+        <translation>Bicubica</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation type="unfinished">Automata</translation>
+        <translation>Automata</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="33"/>
@@ -269,7 +269,7 @@ Copyright Tőkés Attila</translation>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation type="unfinished">Automată
+        <translation>Automată
 
 Metoda de aliniere este selectată automat în funcție de numărul de stele disponibile.</translation>
     </message>
@@ -279,7 +279,7 @@ Metoda de aliniere este selectată automat în funcție de numărul de stele dis
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation type="unfinished">Aliniere bilinară
+        <translation>Aliniere bilinară
 
 Alinierea biliniară este folosită în toate cazurile.</translation>
     </message>
@@ -289,7 +289,7 @@ Alinierea biliniară este folosită în toate cazurile.</translation>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation type="unfinished">Aliniere bipătrată
+        <translation>Aliniere bipătrată
 
 Alinierea bipătrată este folosită atunci când sunt disponibile cel puțin 25 de stele, în restul cazurilor fiind folosită Alinierea biliniară.</translation>
     </message>
@@ -299,7 +299,7 @@ Alinierea bipătrată este folosită atunci când sunt disponibile cel puțin 25
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation type="unfinished">Aliniere bicubică
+        <translation>Aliniere bicubică
 
 Alinierea bicubică este folosită atunci când sunt disponibile cel puțin 40 de stele, altfel dacă sunt disponibile între 25 și 39 de stele este folosită Alinierea Bipătrată, iar când sunt disponibile mai puțin de 25 de stele este folosită Alinierea biliniară.</translation>
     </message>
@@ -309,7 +309,7 @@ Alinierea bicubică este folosită atunci când sunt disponibile cel puțin 40 d
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation type="unfinished">Cadre light neînregistrate</translation>
+        <translation>Cadre light neînregistrate</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -317,7 +317,7 @@ Alinierea bicubică este folosită atunci când sunt disponibile cel puțin 40 d
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation type="unfinished">Cadrul light nu este înregistrat
+        <translation>Cadrul light nu este înregistrat
 (stelele nu au fost detectate).
 
 Vreți să...</translation>
@@ -325,17 +325,17 @@ Vreți să...</translation>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation type="unfinished">pentru a înregistra acest cadru light</translation>
+        <translation>pentru a înregistra acest cadru light</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
-        <translation type="unfinished">pentru a înregistra toate cadrele light</translation>
+        <translation>pentru a înregistra toate cadrele light</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
-        <translation type="unfinished">pentru a continua fără înregistrarea cadrului light</translation>
+        <translation>pentru a continua fără înregistrarea cadrului light</translation>
     </message>
 </context>
 <context>
@@ -343,47 +343,47 @@ Vreți să...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation type="unfinished">Opțiuni fundal</translation>
+        <translation>Opțiuni fundal</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation type="unfinished">Metodă calibrare</translation>
+        <translation>Metodă calibrare</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation type="unfinished">Liniar</translation>
+        <translation>Liniar</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation type="unfinished">Rațional</translation>
+        <translation>Rațional</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation type="unfinished">Metodă calibrare fundal RGB</translation>
+        <translation>Metodă calibrare fundal RGB</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation type="unfinished">Fară</translation>
+        <translation>Fară</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation type="unfinished">Minim</translation>
+        <translation>Minim</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation type="unfinished">Mediu</translation>
+        <translation>Mediu</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation type="unfinished">Maxim</translation>
+        <translation>Maxim</translation>
     </message>
 </context>
 <context>
@@ -391,7 +391,7 @@ Vreți să...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation type="unfinished">Stivuire mod batch</translation>
+        <translation>Stivuire mod batch</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -399,20 +399,20 @@ Vreți să...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation type="unfinished">Acest dialog este utilizat pentru pornirea procesului de stivuire folosind lista de imagini existente.
+        <translation>Acest dialog este utilizat pentru pornirea procesului de stivuire folosind lista de imagini existente.
 Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a porni procesul de stivuire.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation type="unfinished">Adaugă lista fișiere...</translation>
+        <translation>Adaugă lista fișiere...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation type="unfinished">Golește lista</translation>
+        <translation>Golește lista</translation>
     </message>
 </context>
 <context>
@@ -421,13 +421,13 @@ Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a 
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Selectează toate imaginile...</translation>
+        <translation>Selectează toate imaginile...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Scor minim:</translation>
+        <translation>Scor minim:</translation>
     </message>
 </context>
 <context>
@@ -435,47 +435,47 @@ Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a 
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished">Cometă</translation>
+        <translation>Cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished">Parametrii stivuire cometă</translation>
+        <translation>Parametrii stivuire cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished">Stivuire Standard</translation>
+        <translation>Stivuire Standard</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished">Poziția cometei va fi ignorată.
+        <translation>Poziția cometei va fi ignorată.
 Cometa va fi neclară.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished">Stivuire Cometă</translation>
+        <translation>Stivuire Cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished">Este utilizată poziția cometei.
+        <translation>Este utilizată poziția cometei.
 Cometa va fi clară iar stelele vor fi alungite.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished">Stivuire Stele + Cometă</translation>
+        <translation>Stivuire Stele + Cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished">Este utilizată poziția cometei.
+        <translation>Este utilizată poziția cometei.
 Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
     </message>
 </context>
@@ -484,13 +484,13 @@ Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation type="unfinished">Adaugă fișiere...</translation>
+        <translation>Adaugă fișiere...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
-        <translation type="unfinished">
+        <translation>
             <numerusform>Adaugă un fișier ca</numerusform>
             <numerusform></numerusform>
             <numerusform>Adaugă %n fișiere ca</numerusform>
@@ -500,31 +500,31 @@ Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
         <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
-        <translation type="unfinished">Cadru Light</translation>
+        <translation>Cadru Light</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
-        <translation type="unfinished">Cadru Dark</translation>
+        <translation>Cadru Dark</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
-        <translation type="unfinished">Cadru Flat</translation>
+        <translation>Cadru Flat</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="94"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
-        <translation type="unfinished">Cadru Dark Flat</translation>
+        <translation>Cadru Dark Flat</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="95"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
-        <translation type="unfinished">Cadru Offset/Bias</translation>
+        <translation>Cadru Offset/Bias</translation>
     </message>
 </context>
 <context>
@@ -602,194 +602,194 @@ Cometa:%1</translation>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation type="unfinished">Înregistrare și stivuire</translation>
+        <translation>Înregistrare și stivuire</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation type="unfinished">Deschide fișiere imagine...</translation>
+        <translation>Deschide fișiere imagine...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation type="unfinished">Fișiere dark...</translation>
+        <translation>Fișiere dark...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation type="unfinished">Fișiere Flat...</translation>
+        <translation>Fișiere Flat...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation type="unfinished">fișiere dark flat...</translation>
+        <translation>fișiere dark flat...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation type="unfinished">Fișiere offset/bias...</translation>
+        <translation>Fișiere offset/bias...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation type="unfinished">Deschide o listă de fișiere...</translation>
+        <translation>Deschide o listă de fișiere...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation type="unfinished">Salvează lista de fișiere...</translation>
+        <translation>Salvează lista de fișiere...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation type="unfinished">Golește lista</translation>
+        <translation>Golește lista</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation type="unfinished">Bifează toate</translation>
+        <translation>Bifează toate</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation type="unfinished">Bifează peste un prag...</translation>
+        <translation>Bifează peste un prag...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation type="unfinished">Deselectează toate</translation>
+        <translation>Deselectează toate</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation type="unfinished">Înregistrează imaginile selectate...</translation>
+        <translation>Înregistrează imaginile selectate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation type="unfinished">Calculează offset-urile...</translation>
+        <translation>Calculează offset-urile...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation type="unfinished">Stivuiește imaginile selectate...</translation>
+        <translation>Stivuiește imaginile selectate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation type="unfinished">Stivuire Serie...</translation>
+        <translation>Stivuire Serie...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation type="unfinished">Procesare</translation>
+        <translation>Procesare</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation type="unfinished">Deschide fișier imagine...</translation>
+        <translation>Deschide fișier imagine...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished">Copiază imaginea curentă în clipboard</translation>
+        <translation>Copiază imaginea curentă în clipboard</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation type="unfinished">Creează o Mască Stea...</translation>
+        <translation>Creează o Mască Stea...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation type="unfinished">Salvează imaginea în fișierul...</translation>
+        <translation>Salvează imaginea în fișierul...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation type="unfinished">Opțiuni</translation>
+        <translation>Opțiuni</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation type="unfinished">Setări...</translation>
+        <translation>Setări...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation type="unfinished">Setări Raw/FITS DDP...</translation>
+        <translation>Setări Raw/FITS DDP...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation type="unfinished">Încarcă...</translation>
+        <translation>Încarcă...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation type="unfinished">Salvează...</translation>
+        <translation>Salvează...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Recomandat...</translation>
+        <translation>Recomandat...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation type="unfinished">Despre DeepSkyStacker...</translation>
+        <translation>Despre DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation type="unfinished">Ajutor DeepSkyStacker...</translation>
+        <translation>Ajutor DeepSkyStacker...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="592"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished">Fișierul de urmărire este în mod normal scris în directorul DeepSkyStacker din utilizatori
+        <translation>Fișierul de urmărire este în mod normal scris în directorul DeepSkyStacker din utilizatori
 Directorul „Documente” și este șters la ieșire (cu excepția cazului în care aplicația se blochează).
 Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished">Păstrați fișierul de urmărire la ieșire</translation>
+        <translation>Păstrați fișierul de urmărire la ieșire</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
-        <translation type="unfinished">Activați sunetele de progres</translation>
+        <translation>Activați sunetele de progres</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="640"/>
@@ -805,66 +805,62 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished">Setari Inregistrare...</translation>
+        <translation>Setari Inregistrare...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished">Setari Stackare...</translation>
+        <translation>Setari Stackare...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished">Restaurează setările implicite</translation>
+        <translation>Restaurează setările implicite</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Încarcă setările pentru DeepSkyStacker Live</translation>
+        <translation>Încarcă setările pentru DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished">Încarcă...</translation>
+        <translation>Încarcă...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">Salvează ca setări pentru DeepSkyStacker Live</translation>
+        <translation>Salvează ca setări pentru DeepSkyStacker Live</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished">Salvează ca...</translation>
+        <translation>Salvează ca...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="576"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished">Încarcă setări pentru DeepSkyStacker</translation>
+        <translation>Încarcă setări pentru DeepSkyStacker</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished">Fișiere Setări DSS (*.dsssettings)</translation>
+        <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished">Salvează Setări DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished">Fișiere Setări DSS (*.dsssettings)</translation>
+        <translation>Salvează Setări DeepSkyStacker</translation>
     </message>
 </context>
 <context>
@@ -905,52 +901,52 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation type="unfinished">DeepSkyStacker - Proprietăți imagine</translation>
+        <translation>DeepSkyStacker - Proprietăți imagine</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation type="unfinished">Dată/oră</translation>
+        <translation>Dată/oră</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation type="unfinished">Adâncime</translation>
+        <translation>Adâncime</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation type="unfinished">Dimensiune</translation>
+        <translation>Dimensiune</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation type="unfinished">Expunere</translation>
+        <translation>Expunere</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation type="unfinished">Informație</translation>
+        <translation>Informație</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation type="unfinished">Tip</translation>
+        <translation>Tip</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation type="unfinished">Fișier</translation>
+        <translation>Fișier</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation type="unfinished">ISO/Câștig</translation>
+        <translation>ISO/Câștig</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
         <source>CFA</source>
-        <translation type="unfinished">CFA</translation>
+        <translation>CFA</translation>
     </message>
 </context>
 <context>
@@ -973,42 +969,42 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished">Fișiere Intermediare</translation>
+        <translation>Fișiere Intermediare</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished">Setări creare fișiere intermediare</translation>
+        <translation>Setări creare fișiere intermediare</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished">Creează un fișier calibrat pentru fiecare cadru light</translation>
+        <translation>Creează un fișier calibrat pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished">Salvează o imagine debayerizată la procesarea fișierelor RAW</translation>
+        <translation>Salvează o imagine debayerizată la procesarea fișierelor RAW</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished">Creează un fișier înregistrare/calibrare pentru fiecare cadru light</translation>
+        <translation>Creează un fișier înregistrare/calibrare pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished">Formatul fișierelor de imagini intermediare și finale</translation>
+        <translation>Formatul fișierelor de imagini intermediare și finale</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished">Fișiere TIFF</translation>
+        <translation>Fișiere TIFF</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished">Fișiere FITS</translation>
+        <translation>Fișiere FITS</translation>
     </message>
 </context>
 <context>
@@ -1016,82 +1012,82 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished">Rezultat</translation>
+        <translation>Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished">Setări Fișiere Rezultate</translation>
+        <translation>Setări Fișiere Rezultate</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation type="unfinished">Creează fișier Rezultat</translation>
+        <translation>Creează fișier Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation type="unfinished">Creează fișier HTML de descriere</translation>
+        <translation>Creează fișier HTML de descriere</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished">Nume fișier rezultat</translation>
+        <translation>Nume fișier rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation type="unfinished">&lt;nume lista fisier&gt;.tif/fits</translation>
+        <translation>&lt;nume lista fisier&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation type="unfinished">Adaugă un număr pentru a evita suprascrierea fișierelor (001,002,...)</translation>
+        <translation>Adaugă un număr pentru a evita suprascrierea fișierelor (001,002,...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished">Locație Rezultat</translation>
+        <translation>Locație Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation type="unfinished">Creează fișierul Rezultat în directorul cadrului de referință</translation>
+        <translation>Creează fișierul Rezultat în directorul cadrului de referință</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation type="unfinished">Creează fișierul Rezultat în directorul listei de fișiere</translation>
+        <translation>Creează fișierul Rezultat în directorul listei de fișiere</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation type="unfinished">Creează fișierul Rezultat în</translation>
+        <translation>Creează fișierul Rezultat în</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation type="unfinished">&lt;Director salvare&gt;</translation>
+        <translation>&lt;Director salvare&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="135"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation type="unfinished">Selectează director rezultat</translation>
+        <translation>Selectează director rezultat</translation>
     </message>
 </context>
 <context>
@@ -1099,7 +1095,7 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
     <message>
         <location filename="../picturelist.cpp" line="13"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished">Faceți dublu clic aici pentru a ancora/dezancora lista de imagini</translation>
+        <translation>Faceți dublu clic aici pentru a ancora/dezancora lista de imagini</translation>
     </message>
 </context>
 <context>
@@ -1107,80 +1103,80 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished">Cosmetică</translation>
+        <translation>Cosmetică</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished">Setări cosmetice postcalibrare</translation>
+        <translation>Setări cosmetice postcalibrare</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation type="unfinished">Detecția și eliminarea pixelilor fierbinți rămași</translation>
+        <translation>Detecția și eliminarea pixelilor fierbinți rămași</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation type="unfinished">&lt;small&gt;Efect slab&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Efect slab&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation type="unfinished">&lt;small&gt;Puternic&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Puternic&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished">Mărime filtru</translation>
+        <translation>Mărime filtru</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished">Nivel detecție</translation>
+        <translation>Nivel detecție</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation type="unfinished">Detecția și eliminarea pixelilor reci rămași</translation>
+        <translation>Detecția și eliminarea pixelilor reci rămași</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation type="unfinished">Înlocuiește valoarea pixelului cu</translation>
+        <translation>Înlocuiește valoarea pixelului cu</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation type="unfinished">Testează pe primul cadru...</translation>
+        <translation>Testează pe primul cadru...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation type="unfinished">Salvează o imagine indicând pixelii îndepărtați pentru fiecare cadru light</translation>
+        <translation>Salvează o imagine indicând pixelii îndepărtați pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="24"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation type="unfinished">mediana</translation>
+        <translation>mediana</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="25"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation type="unfinished">filtrul gaussian</translation>
+        <translation>filtrul gaussian</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="385"/>
@@ -1189,222 +1185,236 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished">Cosmetic
+        <translation>Cosmetic
 Pixeli fierbinți detectați: %L1 (%L2%)
-Pixeli reci detectați: %L3 (%L4%)</translation>
+Pixeli reci detectați: %L3 (%L4%)
+</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vreti sa salvati modificarile?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine TIFF sau FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>Star Mask creat de DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Salvează Mască Stea în %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine TIFF 32 bit/ch - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine FITS 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine FITS 32 bit/ch - rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvați imaginea</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nici o imagine de salvat.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nu exista informatii disponibile</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
-        <translation type="unfinished"></translation>
+        <translation>Expunere: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n cadru</numerusform>
+            <numerusform>%n cadre</numerusform>
+            <numerusform>%n de cadre</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="119"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nivele RGB/K</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="145"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seteaza metoda reglaj histograma rosu</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="206"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seteaza metoda reglaj histograma verde</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="267"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seteaza metoda reglaj histograma albastru</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="308"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Setari interconectate</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="316"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Luminanta</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="337"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ton negru</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="397"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ton mediu</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="457"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ton luminos</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="503"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Saturatie</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="524"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Shift saturatie</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="612"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplica</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="619"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Descarca ultimele setari aplicat</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="642"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Management setari Incarcare, Salvare ...</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="665"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reaplica ultimele setari aplicate</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="682"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Reseteaza</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Management setari</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Adauga</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Sterge</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Incarca</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Inchide</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Numele Setărilor de procesare nu poate conține nici un / sau \.
+Vă rugăm să schimbați numele.</translation>
     </message>
 </context>
 <context>
@@ -1456,12 +1466,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation type="unfinished">Procesează ...</translation>
+        <translation>Procesează ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation type="unfinished">Întrerupe</translation>
+        <translation>Întrerupe</translation>
     </message>
 </context>
 <context>
@@ -1469,151 +1479,151 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation type="unfinished">Setări Proces Developare Digitală RAW/FITS</translation>
+        <translation>Setări Proces Developare Digitală RAW/FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation type="unfinished">Fișiere RAW</translation>
+        <translation>Fișiere RAW</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished">Ajustări culori</translation>
+        <translation>Ajustări culori</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation type="unfinished">Luminozitate</translation>
+        <translation>Luminozitate</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation type="unfinished">Valoare roșu</translation>
+        <translation>Valoare roșu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation type="unfinished">Valoare albastru</translation>
+        <translation>Valoare albastru</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation type="unfinished">White Balance</translation>
+        <translation>White Balance</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished">Fără procesare White Balance</translation>
+        <translation>Fără procesare White Balance</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished">Folosește White Balance camera</translation>
+        <translation>Folosește White Balance camera</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished">Transformare folosind matricea Bayer</translation>
+        <translation>Transformare folosind matricea Bayer</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished">Interpolare biliniară</translation>
+        <translation>Interpolare biliniară</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished">Interpolare omogenitate adaptivă orientată</translation>
+        <translation>Interpolare omogenitate adaptivă orientată</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished">Folosește algoritmul de drizzle Bayer (fără interpoare, fără debayerizare)</translation>
+        <translation>Folosește algoritmul de drizzle Bayer (fără interpoare, fără debayerizare)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished">Această opțiune utilizează matricea Bayer așa cum este ea. Nu se face nici o interpolare și fiecărui pixel i se acordă componenta primară din matrice.</translation>
+        <translation>Această opțiune utilizează matricea Bayer așa cum este ea. Nu se face nici o interpolare și fiecărui pixel i se acordă componenta primară din matrice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Creează super pixeli din matricea brută Bayer (fără interpolare)</translation>
+        <translation>Creează super pixeli din matricea brută Bayer (fără interpolare)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished">Această opțiune folosește matricea Bayer pentru a crea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultată este redusă la jumătate.</translation>
+        <translation>Această opțiune folosește matricea Bayer pentru a crea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultată este redusă la jumătate.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation type="unfinished">Fișiere FITS</translation>
+        <translation>Fișiere FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fișierele FITS pe 16 biți cu un singur plan provin dintr-un „One-Shot-Colour”; cameră (DSLR, mirrorless, CCD sau CMOS) care trebuie dezactivată.&lt;br/&gt;Lăsați &lt;span style=&quot; font-style:italic;&quot;&gt;nebifat&lt;/span&gt; pentru a încerca detectarea automată pe baza cuvintelor cheie FITS. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation type="unfinished">Camera:</translation>
+        <translation>Camera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation type="unfinished">Valoare roșu</translation>
+        <translation>Valoare roșu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation type="unfinished">Valoare albastru</translation>
+        <translation>Valoare albastru</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished">Filtru model Bayer utilizat</translation>
+        <translation>Filtru model Bayer utilizat</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished">Forțează utilizarea valorilor fără semn (pozitive) atunci când valorile cu semn sunt salvate</translation>
+        <translation>Forțează utilizarea valorilor fără semn (pozitive) atunci când valorile cu semn sunt salvate</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished"></translation>
+        <translation>RGGB generic</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished"></translation>
+        <translation>BGGR generic</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="22"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished"></translation>
+        <translation>GBRG generic</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished"></translation>
+        <translation>GRBG generic</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="25"/>
         <source>Generic</source>
-        <translation type="unfinished"></translation>
+        <translation>Generic</translation>
     </message>
 </context>
 <context>
@@ -1621,42 +1631,42 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation type="unfinished">Setări recomandate</translation>
+        <translation>Setări recomandate</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="44"/>
         <source>Show all recommendations</source>
-        <translation type="unfinished">Afișează toate recomandările</translation>
+        <translation>Afișează toate recomandările</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="190"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation type="unfinished">Aceastea sunt setările recomandate.&lt;br&gt;Este posibil să nu fie corecte în toate situațiile dar sunt un bun punct de pornire.</translation>
+        <translation>Aceastea sunt setările recomandate.&lt;br&gt;Este posibil să nu fie corecte în toate situațiile dar sunt un bun punct de pornire.</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="194"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation type="unfinished">Click pe link-ul propus pentru a modifica setările</translation>
+        <translation>Click pe link-ul propus pentru a modifica setările</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="198"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation type="unfinished">Setările deja selectate sunt afișate în verde</translation>
+        <translation>Setările deja selectate sunt afișate în verde</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="780"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation type="unfinished">sau</translation>
+        <translation>sau</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="846"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation type="unfinished">Trebuie să adăugați imagini la listă si să le bifați.</translation>
+        <translation>Trebuie să adăugați imagini la listă si să le bifați.</translation>
     </message>
 </context>
 <context>
@@ -1664,139 +1674,139 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation type="unfinished">Înregistrează setările</translation>
+        <translation>Înregistrează setările</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Setari Stackare...</translation>
+        <translation>Setari Stackare...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Setari recomandate...</translation>
+        <translation>Setari recomandate...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation type="unfinished">Actiuni</translation>
+        <translation>Actiuni</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation type="unfinished">Inregistreaza imaginile deja inregistrate</translation>
+        <translation>Inregistreaza imaginile deja inregistrate</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Detectie automata a pixelilor hot</translation>
+        <translation>Detectie automata a pixelilor hot</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation type="unfinished">Stackeaza dupa inregistrare</translation>
+        <translation>Stackeaza dupa inregistrare</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation type="unfinished">Selecteaza cele mai bune</translation>
+        <translation>Selecteaza cele mai bune</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation type="unfinished">% din imagini și stivuiește-le</translation>
+        <translation>% din imagini și stivuiește-le</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation type="unfinished">Avansat</translation>
+        <translation>Avansat</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Nivel detectie stele</translation>
+        <translation>Nivel detectie stele</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizați pragul automat</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation type="unfinished">Calculez numarul de stele detectate</translation>
+        <translation>Calculez numarul de stele detectate</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation type="unfinished">Redu zgomotul folosind un filtru median</translation>
+        <translation>Redu zgomotul folosind un filtru median</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre dark, flat si offset inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre dark, flat si offset inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre dark si flat inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre dark si flat inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="177"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre dark si offset inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre dark si offset inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="180"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre flat si offset inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre flat si offset inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="183"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre dark inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre dark inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="186"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre flat inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre flat inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished">Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare.</translation>
+        <translation>Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="213"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished">darks, flats si offset/bias selectate.</translation>
+        <translation>darks, flats si offset/bias selectate.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="277"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Inregistrez %1</translation>
+        <translation>Inregistrez %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 stele</translation>
+        <translation>%1 stele</translation>
     </message>
 </context>
 <context>
@@ -1804,12 +1814,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation type="unfinished">Redenumește Grupul</translation>
+        <translation>Redenumește Grupul</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation type="unfinished">Nume Grup:</translation>
+        <translation>Nume Grup:</translation>
     </message>
 </context>
 <context>
@@ -1817,63 +1827,63 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation type="unfinished">Rezultat</translation>
+        <translation>Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation type="unfinished">Mod standard</translation>
+        <translation>Mod standard</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation type="unfinished">Mod &quot;Mozaic&quot;</translation>
+        <translation>Mod &quot;Mozaic&quot;</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation type="unfinished">Mod intersectie</translation>
+        <translation>Mod intersectie</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation type="unfinished">Dreptunghi definit</translation>
+        <translation>Dreptunghi definit</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation type="unfinished">Activeaza 2x Drizzle</translation>
+        <translation>Activeaza 2x Drizzle</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation type="unfinished">Activeaza 3x Drizzle</translation>
+        <translation>Activeaza 3x Drizzle</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation type="unfinished">Aliniaza canalele RGB in imaginea finala</translation>
+        <translation>Aliniaza canalele RGB in imaginea finala</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="70"/>
         <location filename="../ResultParameters.cpp" line="132"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">Rezultatul stivuirii este încadrat de cadrul de referință light.</translation>
+        <translation>Rezultatul stivuirii este încadrat de cadrul de referință light.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="80"/>
         <location filename="../ResultParameters.cpp" line="145"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Rezultatul stackarii contine toate cadrele light din lista.</translation>
+        <translation>Rezultatul stackarii contine toate cadrele light din lista.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="90"/>
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Rezultatul procesului de stackare este incadrat prin intersectia tuturor cadrurilor.</translation>
+        <translation>Rezultatul procesului de stackare este incadrat prin intersectia tuturor cadrurilor.</translation>
     </message>
 </context>
 <context>
@@ -1881,7 +1891,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation type="unfinished">Salvează Modificările?</translation>
+        <translation>Salvează Modificările?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -1889,7 +1899,7 @@ Please change the name.</source>
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Ați făcut modificări (pozițiile stelelor sau cometei)
+        <translation>Ați făcut modificări (pozițiile stelelor sau cometei)
 
 Doriți să le salvați?</translation>
     </message>
@@ -1897,31 +1907,31 @@ Doriți să le salvați?</translation>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Data următoare...</translation>
+        <translation>Data următoare...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Salvează modificările fără confirmare</translation>
+        <translation>Salvează modificările fără confirmare</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Anulează modificările fără confirmare</translation>
+        <translation>Anulează modificările fără confirmare</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation type="unfinished">Confirmă de fiecare dată</translation>
+        <translation>Confirmă de fiecare dată</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Puteți accesa aceste opțiuni făcând clic dreapta pe butonul Salvează</translation>
+        <translation>Puteți accesa aceste opțiuni făcând clic dreapta pe butonul Salvează</translation>
     </message>
 </context>
 <context>
@@ -1930,55 +1940,55 @@ Doriți să le salvați?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Compresie</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">Fară</translation>
+        <translation>Fară</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (Deflate)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (învechit)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Opțiuni</translation>
+        <translation>Opțiuni</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplica ajustarile la imaginea salvata</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Include ajustarile in imaginea salvata dar nu le aplica</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nu aplica ajustarile pe imaginea salvata</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Creaza o imagine din dreptunghiul selectat</translation>
     </message>
 </context>
 <context>
@@ -1986,222 +1996,222 @@ Doriți să le salvați?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation type="unfinished">Pasi stackare</translation>
+        <translation>Pasi stackare</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="34"/>
         <source>Recommended Settings ...</source>
-        <translation type="unfinished">Setari recomandate...</translation>
+        <translation>Setari recomandate...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="41"/>
         <source>Stacking Settings ...</source>
-        <translation type="unfinished">Setari stackare...</translation>
+        <translation>Setari stackare...</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Da</translation>
+        <translation>Da</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">Nu</translation>
+        <translation>Nu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrare fundal canale RGB: %1</translation>
+        <translation>Calibrare fundal canale RGB: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrare fundal pe canal: %1</translation>
+        <translation>Calibrare fundal pe canal: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Optimizare Dark: %1</translation>
+        <translation>Optimizare Dark: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished">Factor multiplicare Dark: %1</translation>
+        <translation>Factor multiplicare Dark: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished">Detectie si indepartare Pixeli hot: %1</translation>
+        <translation>Detectie si indepartare Pixeli hot: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">Procesul necesita %1 de spatiu liber pe disc %2.&lt;br&gt;Doar %3 sunt disponibili pe acest disc.</translation>
+        <translation>Procesul necesita %1 de spatiu liber pe disc %2.&lt;br&gt;Doar %3 sunt disponibili pe acest disc.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="740"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished">Nota: spatiul necesar pe disc este calculat folosind dimensiunea cadrului de referinta. In functie de marimea totala a imaginii rezultate poate fi necesar mai mult spatiu.</translation>
+        <translation>Nota: spatiul necesar pe disc este calculat folosind dimensiunea cadrului de referinta. In functie de marimea totala a imaginii rezultate poate fi necesar mai mult spatiu.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished">Atentie: folositi cadre Dark, Flat sau Bias impreuna cu fisiere JPEG.&lt;br&gt;Calibrarea cu fisiere JPEG nu functioneaza datorita comprimarii cu pierderi.</translation>
+        <translation>Atentie: folositi cadre Dark, Flat sau Bias impreuna cu fisiere JPEG.&lt;br&gt;Calibrarea cu fisiere JPEG nu functioneaza datorita comprimarii cu pierderi.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished">Mod stackare: </translation>
+        <translation>Mod stackare: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mosaic</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished">Dreptunghi definit</translation>
+        <translation>Dreptunghi definit</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Intersectie</translation>
+        <translation>Intersectie</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="301"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished">Metoda aliniament: </translation>
+        <translation>Metoda aliniament: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="309"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished">Automata</translation>
+        <translation>Automata</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="312"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished">Biliniara</translation>
+        <translation>Biliniara</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="315"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished">Bipatrata</translation>
+        <translation>Bipatrata</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="318"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished">Bicubica</translation>
+        <translation>Bicubica</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="321"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished">Fara aliniere</translation>
+        <translation>Fara aliniere</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="332"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished">Drizzle activat x%1</translation>
+        <translation>Drizzle activat x%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="338"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished">Optiunea Drizzle selectata nu este compatibila cu modul Drizzle Bayer.</translation>
+        <translation>Optiunea Drizzle selectata nu este compatibila cu modul Drizzle Bayer.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished">Procesoare detectate si utilizate %1</translation>
+        <translation>Procesoare detectate si utilizate %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished">Procesoare detectate %1 - doar unul folosit&quot;</translation>
+        <translation>Procesoare detectate %1 - doar unul folosit&quot;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="364"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished">Procesare Cometa: </translation>
+        <translation>Procesare Cometa: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished">Aliniaza pe Stele (fara procesare specificata)</translation>
+        <translation>Aliniaza pe Stele (fara procesare specificata)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished">Aliniaza pe cometa</translation>
+        <translation>Aliniaza pe cometa</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="375"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished">Aliniaza pe stele si cometa</translation>
+        <translation>Aliniaza pe stele si cometa</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="389"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished">Efect cosmetic aplicat asupra pixelilor hot (Filtru = %1 px, Prag Detectie  = %L2%)&lt;br&gt;</translation>
+        <translation>Efect cosmetic aplicat asupra pixelilor hot (Filtru = %1 px, Prag Detectie  = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="397"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished">Efect cosmetic aplicat asupra pixelilor cold (Filtru = %1 px, Prag Detectie  = %L2%)&lt;br&gt;</translation>
+        <translation>Efect cosmetic aplicat asupra pixelilor cold (Filtru = %1 px, Prag Detectie  = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="426"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished">Pasi stackare %1&lt;br&gt;  -&gt;%2 cadre (%3: %4) - expunere totala: </translation>
+        <translation>Pasi stackare %1&lt;br&gt;  -&gt;%2 cadre (%3: %4) - expunere totala: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="444"/>
@@ -2211,19 +2221,19 @@ Doriți să le salvați?</translation>
         <location filename="../StackRecap.cpp" line="674"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished">Metoda: </translation>
+        <translation>Metoda: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="455"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished">Atentie: Optiunea Drizzle Bayer selectata in setarile RAW DDP poate duce la rezultate ciudate cu o alta metoda decat cea medie.</translation>
+        <translation>Atentie: Optiunea Drizzle Bayer selectata in setarile RAW DDP poate duce la rezultate ciudate cu o alta metoda decat cea medie.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="475"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished">-&gt; Offset: %1 cadre  (%2: %3) expunere: %4</translation>
+        <translation>-&gt; Offset: %1 cadre  (%2: %3) expunere: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="500"/>
@@ -2231,7 +2241,7 @@ Doriți să le salvați?</translation>
         <location filename="../StackRecap.cpp" line="686"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished">Atentie: Sensibilitatea ISO nu corespunde cu cadrele Light</translation>
+        <translation>Atentie: Sensibilitatea ISO nu corespunde cu cadrele Light</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="510"/>
@@ -2239,85 +2249,85 @@ Doriți să le salvați?</translation>
         <location filename="../StackRecap.cpp" line="696"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished">Atentie: Gain-ul nu corespunde cu gain-ul cadrelor Light</translation>
+        <translation>Atentie: Gain-ul nu corespunde cu gain-ul cadrelor Light</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="521"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished">-&gt; Lipsa Offset</translation>
+        <translation>-&gt; Lipsa Offset</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="530"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished">-&gt; Dark: %1 cadre (%2 : %3) expunere: %4</translation>
+        <translation>-&gt; Dark: %1 cadre (%2 : %3) expunere: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="588"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished">Atentie: timpul de expunere nu corespunde cu cadrele Light</translation>
+        <translation>Atentie: timpul de expunere nu corespunde cu cadrele Light</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="597"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished">-&gt; Lipsa Dark</translation>
+        <translation>-&gt; Lipsa Dark</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="606"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished">-&gt; Dark Flat: %1 cadre (%2 : %3) expunere: %4</translation>
+        <translation>-&gt; Dark Flat: %1 cadre (%2 : %3) expunere: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="632"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Atentie: Sensibilitatea ISO nu corespunde cu cadrele Flat</translation>
+        <translation>Atentie: Sensibilitatea ISO nu corespunde cu cadrele Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="642"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Atentie: Gain-ul cadrelor Dark Flat nu corespunde cu gain-ul cadrelor Flat</translation>
+        <translation>Atentie: Gain-ul cadrelor Dark Flat nu corespunde cu gain-ul cadrelor Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="650"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Atentie: timpul de expunere nu corespunde cu cadrele Flat</translation>
+        <translation>Atentie: timpul de expunere nu corespunde cu cadrele Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="662"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished">-&gt; Flat: %1 cadre (%2: %3) expunere: %4</translation>
+        <translation>-&gt; Flat: %1 cadre (%2: %3) expunere: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="706"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished">-&gt; Lipsa Flat</translation>
+        <translation>-&gt; Lipsa Flat</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="721"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished">Timpul total estimat de expunere: %1&lt;br&gt;(timpul total de expunere este calculat considerand ca toate cadrele Light selectate se vor pastra pentru procesul de stackare)</translation>
+        <translation>Timpul total estimat de expunere: %1&lt;br&gt;(timpul total de expunere este calculat considerand ca toate cadrele Light selectate se vor pastra pentru procesul de stackare)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="731"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished">Procesul va utiliza temporar %1 pe discul %2 (%3 liberi).</translation>
+        <translation>Procesul va utiliza temporar %1 pe discul %2 (%3 liberi).</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="748"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished">Atentie: optiunea de salvare a imaginilor inregistrate si calibrate este activata. Verificati daca aveti suficient spatiu pe disc pentru a pastra aceste fisiere.</translation>
+        <translation>Atentie: optiunea de salvare a imaginilor inregistrate si calibrate este activata. Verificati daca aveti suficient spatiu pe disc pentru a pastra aceste fisiere.</translation>
     </message>
 </context>
 <context>
@@ -2325,62 +2335,62 @@ Doriți să le salvați?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation type="unfinished">Setari stackare</translation>
+        <translation>Setari stackare</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation type="unfinished">Director fisiere temporare:</translation>
+        <translation>Director fisiere temporare:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation type="unfinished">Lucreaza la nivel redus de incarcare</translation>
+        <translation>Lucreaza la nivel redus de incarcare</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation type="unfinished">Foloseste toate procesoarele disponibile</translation>
+        <translation>Foloseste toate procesoarele disponibile</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation type="unfinished">Vectorizare SIMD</translation>
+        <translation>Vectorizare SIMD</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Light</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="190"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation type="unfinished">Selectați directorul care va conține toate fișierele temporare</translation>
+        <translation>Selectați directorul care va conține toate fișierele temporare</translation>
     </message>
 </context>
 <context>
@@ -2564,7 +2574,7 @@ Cadre Offset/Bias: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nu toate cadrele dvs. luminoase verificate au o calitate medie calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2633,124 +2643,124 @@ Vreți să salvați modificările?</translation>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">Stackez</translation>
+        <translation>Stackez</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation type="unfinished">Mod stackare</translation>
+        <translation>Mod stackare</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation type="unfinished">Numar iteratii:</translation>
+        <translation>Numar iteratii:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation type="unfinished">Mediana</translation>
+        <translation>Mediana</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation type="unfinished">Taiere Kappa-Sigma</translation>
+        <translation>Taiere Kappa-Sigma</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation type="unfinished">Maxim</translation>
+        <translation>Maxim</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation type="unfinished">Taiere mediana Kappa-Sigma</translation>
+        <translation>Taiere mediana Kappa-Sigma</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished">Medie ponderata auto adaptiva</translation>
+        <translation>Medie ponderata auto adaptiva</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation type="unfinished">Medie</translation>
+        <translation>Medie</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Entropie medie ponderata
+        <translation>Entropie medie ponderata
 (High Dynamic Range)</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation type="unfinished">Setări</translation>
+        <translation>Setări</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Optimizare dark</translation>
+        <translation>Optimizare dark</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation type="unfinished">Detectie si eliminare coloane defecte</translation>
+        <translation>Detectie si eliminare coloane defecte</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Detectie si eliminare pixeli hot</translation>
+        <translation>Detectie si eliminare pixeli hot</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation type="unfinished">Factor multiplicare Dark</translation>
+        <translation>Factor multiplicare Dark</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Fara calibrare fundal</translation>
+        <translation>Fara calibrare fundal</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrare Fundal per Canal</translation>
+        <translation>Calibrare Fundal per Canal</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="20"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Calibrare Fundal Canale RGB</translation>
+        <translation>Calibrare Fundal Canale RGB</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="59"/>
@@ -2760,7 +2770,7 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation type="unfinished">Pixelii in afara intervalului:
+        <translation>Pixelii in afara intervalului:
 [Mean-%1*%2, Mean+%1*%2]
 sunt indepartati in mod iterativ.
 
@@ -2774,7 +2784,7 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation type="unfinished">Pixelii in afara intervalului:
+        <translation>Pixelii in afara intervalului:
 [Mean-%1*%2, Mean+%1*%2]
 sunt inlocuiti iterativ cu valoarea mediana.
 
@@ -2787,7 +2797,7 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">&lt;b&gt;Media ponderata&lt;/b&gt; este obtinuta prin
+        <translation>&lt;b&gt;Media ponderata&lt;/b&gt; este obtinuta prin
 ponderarea iterativa a fiecarei pixel 
 de la abaterea de la medie
 comparativ cu abaterea standard (%1).</translation>
@@ -2796,7 +2806,7 @@ comparativ cu abaterea standard (%1).</translation>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation type="unfinished">Optiuni...</translation>
+        <translation>Optiuni...</translation>
     </message>
 </context>
 <context>
@@ -2805,113 +2815,118 @@ comparativ cu abaterea standard (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Creaza un Star Mask</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Detectie stele</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Nivel detectie stele</translation>
+        <translation>Nivel detectie stele</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detectie pixeli hot</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
+        <source>Minimum size of a star</source>
+        <translation>Dimesiune minima a stelei</translation>
+    </message>
+    <message>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensiune maxima a stelei</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Mareste/micsoreaza</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Procent din dimensiunea stelei</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Măriți mărimea cu  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
-        <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Forma stelelor in masca</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
-        <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <source>Bell</source>
+        <translation>Clopot</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
-        <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Bell</source>
+        <translation>Trunchi de clopot</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
-        <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Cone</source>
+        <translation>Con</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
-        <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Cone</source>
+        <translation>Trunchi de con</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
-        <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <source>Cubic</source>
+        <translation>Cubic</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
+        <source>Quadric</source>
+        <translation>Patratic</translation>
+    </message>
+    <message>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n pixel</numerusform>
+            <numerusform>%n pixeli</numerusform>
+            <numerusform>%n pixeli</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagine FITS (*.fits *.fts *.fit)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Salvaţi StarMask ca ...</translation>
     </message>
 </context>
 <context>
@@ -3039,12 +3054,15 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     </message>
 </context>
 <context>
-    <name>ProcessingDlg</name>
+    <name>QLinearGradientCtrl</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Salvează Mască Stea în %1</translation>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Puteți utiliza săgeata sus, săgeata dreapta, săgeata stânga, săgeata în jos;
+Tastele Pagină în sus și Pagină în jos pentru a muta un glisor după ce l-ați selectat
+cu mouse-ul.</translation>
     </message>
 </context>
 <context>
