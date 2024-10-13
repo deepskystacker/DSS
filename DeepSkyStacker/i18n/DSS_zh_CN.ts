@@ -108,7 +108,7 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -116,7 +116,7 @@ Copyright © 1997-2022 LibRaw LLC</source>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -820,6 +820,7 @@ Tick this box to keep the trace file.</source>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation type="unfinished"></translation>
@@ -828,11 +829,6 @@ Tick this box to keep the trace file.</source>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1161,77 +1157,89 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1182"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="487"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="579"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="594"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="607"/>
         <source>Exposure: %1 </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation type="unfinished">
@@ -1339,7 +1347,7 @@ Detected Cold Pixels: %L3 (%L4%)
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
+        <source>Processing Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1922,18 +1930,32 @@ Do you want to save them?</source>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
+        <source>This option saves the image as you see it
+Use it if you plan to do further processing in other software</source>
+        <comment>IDS_TT_APPLIED</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="122"/>
+        <location filename="../SavePicture.cpp" line="124"/>
+        <source>This option saves the unprocessed image and embeds the processing settings
+Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
+        <comment>IDS_TT_EMBEDDED</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="129"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="123"/>
+        <location filename="../SavePicture.cpp" line="130"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
         <translation type="unfinished"></translation>
@@ -2733,105 +2755,110 @@ compared to the standard deviation (%1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
+        <source>Minimum size of a star</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
+        <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="60"/>
+        <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Truncated Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="61"/>
+        <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Cone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="62"/>
+        <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Truncated Cone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="63"/>
+        <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Cubic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="64"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
         <source>Quadric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
         <translation type="unfinished"></translation>
@@ -2948,11 +2975,12 @@ You can probably get another one or download the final release from the web site
     </message>
 </context>
 <context>
-    <name>ProcessingDlg</name>
+    <name>QLinearGradientCtrl</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
