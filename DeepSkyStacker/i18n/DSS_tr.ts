@@ -77,58 +77,58 @@
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation type="unfinished">Dil</translation>
+        <translation>Dil</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation type="unfinished">Dil Seçin:</translation>
+        <translation>Dil Seçin:</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation type="unfinished">Başlangıçta yeni bir sürümün olup olmadığını sorgula</translation>
+        <translation>Başlangıçta yeni bir sürümün olup olmadığını sorgula</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">&amp;Qt hakkında</translation>
+        <translation>&amp;Qt hakkında</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="35"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation type="unfinished">DeepSkyStacker version %1</translation>
+        <translation>DeepSkyStacker sürümü %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="42"/>
         <source>(Now somewhat out of date)</source>
-        <translation type="unfinished">(Şimdi biraz güncel değil)</translation>
+        <translation>(Şimdi biraz güncel değil)</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</source>
+Copyright © 1997-2024 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">RAW kod çözümü LibRaw (version %1)
-Copyright © 1997-2022 LibRaw LLC</translation>
+        <translation>LibRaw tarafından RAW dosyası kod çözme (sürüm %1)
+Telif Hakkı © 1997-2024 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
-Copyright © 1991-1997 Silicon Graphics, Inc.</source>
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation type="unfinished">TIFF dosyalrın kodlaması LibTIFF (sürüm %1) ile
+        <translation>LibTIFF tarafından TIFF dosyası kodlama/kod çözme (sürüm %1)
 Telif Hakkı © 1988-1997 Sam Leffler
-Telif Hakkı © 1991-1997 Silicon Graphics, Inc.</translation>
+Telif Hakkı © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="69"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation type="unfinished">FITS kod çözümü CFitsIO (sürümü %1) ile
+        <translation>FITS kod çözümü CFitsIO (sürümü %1) ile
 Telif Hakkı: NASA</translation>
     </message>
     <message>
@@ -141,24 +141,25 @@ Copyright 2004-2023 Exiv2 authors</source>
         <location filename="../About.cpp" line="82"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt (C++) için SMTP İstemcisi tarafından SMTP desteği - Sürüm 0.27.6
+Telif Hakkı Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="96"/>
         <source>Default</source>
-        <translation type="unfinished">Varsayılan</translation>
+        <translation>Varsayılan</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation type="unfinished">İspanyolca Sürümü: Ricardo Contreras ve ekibi</translation>
+        <translation>İspanyolca Sürümü: Ricardo Contreras ve ekibi</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="121"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation type="unfinished">Çekçe Sürümü:</translation>
+        <translation>Çekçe Sürümü:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="125"/>
@@ -234,32 +235,32 @@ Copyright Tőkés Attila</source>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation type="unfinished">Hizalama sırasında kullanılan dönüşüm</translation>
+        <translation>Hizalama sırasında kullanılan dönüşüm</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation type="unfinished">Çift kareli</translation>
+        <translation>Çift kareli</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation type="unfinished">Hizalama yok</translation>
+        <translation>Hizalama yok</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation type="unfinished">Çift çizgili</translation>
+        <translation>Çift çizgili</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation type="unfinished">Çift küplü</translation>
+        <translation>Çift küplü</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation type="unfinished">Otomatik</translation>
+        <translation>Otomatik</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="33"/>
@@ -267,7 +268,7 @@ Copyright Tőkés Attila</source>
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <comment>IDS_ALIGNMENT_AUTO</comment>
-        <translation type="unfinished">Otamatik
+        <translation>Otamatik
 
 Hizalama yöntemi yıldızların sayısına bağlı olarak otamatik olarak seçilir.</translation>
     </message>
@@ -277,7 +278,7 @@ Hizalama yöntemi yıldızların sayısına bağlı olarak otamatik olarak seçi
 
 The Bilinear Alignment is used in all cases.</source>
         <comment>IDS_ALIGNMENT_BILINEAR</comment>
-        <translation type="unfinished">İki Çizgili Hizalama
+        <translation>İki Çizgili Hizalama
 
 İki Çizgili Hizalama her koşulda kullanılır.</translation>
     </message>
@@ -287,7 +288,7 @@ The Bilinear Alignment is used in all cases.</source>
 
 The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
         <comment>IDS_ALIGNMENT_BISQUARED</comment>
-        <translation type="unfinished">İki Kareli Hizalama
+        <translation>İki Kareli Hizalama
 İki Kareli Hizalama en az 25 yıldızın olduğu durumda yapılabilir, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
     </message>
     <message>
@@ -296,7 +297,7 @@ The Bisquared Alignment is used when at least 25 stars areavailable, else the Bi
 
 The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
         <comment>IDS_ALIGNMENT_BICUBIC</comment>
-        <translation type="unfinished">İki Küplüi Hizalama
+        <translation>İki Küplüi Hizalama
 
 İki Küplü Hizalama en az 40 yıldızın olduğu durumda yapılabilir, 25-39 yıldız varsa İki kareli Yöntem, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
     </message>
@@ -306,7 +307,7 @@ The Bicubic method is used when at least 40 stars areavailable, then the Bisquar
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation type="unfinished">Hizalanmamış görüntü karesi</translation>
+        <translation>Hizalanmamış görüntü karesi</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -314,25 +315,25 @@ The Bicubic method is used when at least 40 stars areavailable, then the Bisquar
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation type="unfinished">Bu görüntü hizalanmamış
+        <translation>Bu görüntü hizalanmamış
 (yıldızlar tespit edilemedi). 
 
-Hangisini yapmak istersiniz?</translation>
+Hangisini yapmak istersiniz...</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation type="unfinished">bu görüntü karesini hizala</translation>
+        <translation>bu görüntü karesini hizala</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
-        <translation type="unfinished">bütün görüntü karelerini hizala</translation>
+        <translation>bütün görüntü karelerini hizala</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
-        <translation type="unfinished">görüntü karelerini hizalamadan devam et</translation>
+        <translation>görüntü karelerini hizalamadan devam et</translation>
     </message>
 </context>
 <context>
@@ -340,47 +341,47 @@ Hangisini yapmak istersiniz?</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation type="unfinished">Arkaplan Seçenekleri</translation>
+        <translation>Arkaplan Seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation type="unfinished">Kalibrasyon Yöntemi</translation>
+        <translation>Kalibrasyon Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation type="unfinished">Doğrusal</translation>
+        <translation>Doğrusal</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation type="unfinished">Kesirli</translation>
+        <translation>Kesirli</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation type="unfinished">KYM Arkaplan Kalibrasyon Yöntemi</translation>
+        <translation>KYM Arkaplan Kalibrasyon Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation type="unfinished">Yok</translation>
+        <translation>Yok</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>Minimum</source>
-        <translation type="unfinished">Minimum</translation>
+        <translation>Minimum</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Middle</source>
-        <translation type="unfinished">Orta</translation>
+        <translation>Orta</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Maximum</source>
-        <translation type="unfinished">En yüksek değer</translation>
+        <translation>En yüksek değer</translation>
     </message>
 </context>
 <context>
@@ -388,7 +389,7 @@ Hangisini yapmak istersiniz?</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation type="unfinished">Toplu istifleme</translation>
+        <translation>Toplu istifleme</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -396,20 +397,20 @@ Hangisini yapmak istersiniz?</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation type="unfinished">Bu diyalog var olan görüntü listesinden istifleme işlemini başlatmak için kullanılır.
+        <translation>Bu diyalog var olan görüntü listesinden istifleme işlemini başlatmak için kullanılır.
 İstiflemek istediğin görüntü listesini ekleyin ve istifleme işlemini başlatmak için Tamam&apos;a basın.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation type="unfinished">Dosya Listesini ekle...</translation>
+        <translation>Dosya Listesini ekle...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation type="unfinished">Listeyi temizle</translation>
+        <translation>Listeyi temizle</translation>
     </message>
 </context>
 <context>
@@ -418,13 +419,13 @@ Add the file lists you want to stack and click OK to start the stacking processe
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">Üzerindeki bütün resimleri işaretle...</translation>
+        <translation>Üzerindeki bütün resimleri işaretle...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished">En düşük değer:</translation>
+        <translation>En düşük değer:</translation>
     </message>
 </context>
 <context>
@@ -432,47 +433,47 @@ Add the file lists you want to stack and click OK to start the stacking processe
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished">Kuyrukluyıldız</translation>
+        <translation>Kuyrukluyıldız</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished">Kuyrukluyıldız İstifleme Parametreleri</translation>
+        <translation>Kuyrukluyıldız İstifleme Parametreleri</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished">Standart İstifleme</translation>
+        <translation>Standart İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished">Kuyrukluyıldız konumu yok sayıldı.
+        <translation>Kuyrukluyıldız konumu yok sayıldı.
 Kuyrukluyıldız bulanık olacak.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished">Kuyrukluyıldız İstifleme</translation>
+        <translation>Kuyrukluyıldız İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished">Kuyrukluyıldız konumu kullanıldı.
+        <translation>Kuyrukluyıldız konumu kullanıldı.
 Kuyrukluyıldız keskin olacak ve yıldızlar iz bırakacak.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished">Yıldızlar + Kuyrukluyıldız İstifleme</translation>
+        <translation>Yıldızlar + Kuyrukluyıldız İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished">Kuyrukluyıldız konumu kullanıldı.
+        <translation>Kuyrukluyıldız konumu kullanıldı.
 Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun sürer.</translation>
     </message>
 </context>
@@ -481,45 +482,45 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation type="unfinished">Dosyaları ekle...</translation>
+        <translation>Dosyaları ekle...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
-        <translation type="unfinished">
-            <numerusform>%1 dosyayı şu şekilde ekle</numerusform>
+        <translation>
+            <numerusform>%n dosyayı şu şekilde ekle</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
-        <translation type="unfinished">Resim dosyaları</translation>
+        <translation>Resim dosyaları</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
-        <translation type="unfinished">Siyah kareler</translation>
+        <translation>Siyah kareler</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
-        <translation type="unfinished">Düz kareler</translation>
+        <translation>Düz kareler</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="94"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
-        <translation type="unfinished">Siyah Düz Kareler</translation>
+        <translation>Siyah Düz Kareler</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="95"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
-        <translation type="unfinished">Ofset(bias) kareler</translation>
+        <translation>Ofset(bias) kareler</translation>
     </message>
 </context>
 <context>
@@ -529,28 +530,28 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
         <location filename="../editstars.cpp" line="1120"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
-        <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın.</translation>
+        <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="615"/>
         <location filename="../editstars.cpp" line="1122"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
-        <translation>Bu yıldızı eklemek için tıklayın.</translation>
+        <translation>Bu yıldızı eklemek için tıklayın</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="623"/>
         <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
-        <translation>Kuyrukluyıldızı kaldırmak için tıklayın.</translation>
+        <translation>Kuyrukluyıldızı kaldırmak için tıklayın</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="625"/>
         <location filename="../editstars.cpp" line="1131"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
-        <translation>Bu yıldızı silmek için tıklayın.</translation>
+        <translation>Bu yıldızı silmek için tıklayın</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="667"/>
@@ -597,194 +598,194 @@ Kuyrukluyıldız:%1</translation>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation type="unfinished">Hizalıyor ve İstifliyor</translation>
+        <translation>Hizalıyor ve İstifliyor</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation type="unfinished">Resim dosyalarını aç...</translation>
+        <translation>Resim dosyalarını aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation type="unfinished">siyah kereler...</translation>
+        <translation>siyah kereler...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation type="unfinished">düz dosyalar...</translation>
+        <translation>düz dosyalar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation type="unfinished">siyah düz kareler...</translation>
+        <translation>siyah düz kareler...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation type="unfinished">ofset dosyalar...</translation>
+        <translation>ofset dosyalar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation type="unfinished">Bir dosya listesi aç...</translation>
+        <translation>Bir dosya listesi aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation type="unfinished">Dosya Listesini kaydet...</translation>
+        <translation>Dosya Listesini kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation type="unfinished">Listeyi temizle</translation>
+        <translation>Listeyi temizle</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation type="unfinished">Hepsini işaretle</translation>
+        <translation>Hepsini işaretle</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation type="unfinished">Eşik değerinin üzerindekileri işaretle...</translation>
+        <translation>Eşik değerinin üzerindekileri işaretle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation type="unfinished">İşaretleri kaldır</translation>
+        <translation>İşaretleri kaldır</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation type="unfinished">Seçilen resimleri hizala...</translation>
+        <translation>Seçilen resimleri hizala...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation type="unfinished">Ofsetleri hesapla...</translation>
+        <translation>Ofsetleri hesapla...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation type="unfinished">İşaretlenen dosyaları istifle...</translation>
+        <translation>İşaretlenen dosyaları istifle...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation type="unfinished">Toplu istifleme...</translation>
+        <translation>Toplu istifleme...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="410"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation type="unfinished">İşliyor</translation>
+        <translation>İşliyor</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="431"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation type="unfinished">Görüntü dosyasını aç...</translation>
+        <translation>Görüntü dosyasını aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="438"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished">Şu anki resmi panoya kopyala</translation>
+        <translation>Şu anki resmi panoya kopyala</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="445"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation type="unfinished">Yıldız maskesi yarat...</translation>
+        <translation>Yıldız maskesi yarat...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="452"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation type="unfinished">Görüntüyü dosyaya kaydet...</translation>
+        <translation>Görüntüyü dosyaya kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="471"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation type="unfinished">Seçenekler</translation>
+        <translation>Seçenekler</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="492"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation type="unfinished">Ayarlar...</translation>
+        <translation>Ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="502"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation type="unfinished">Ham/FITS DDP ayarları...</translation>
+        <translation>Ham/FITS DDP ayarları...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="512"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation type="unfinished">Aç...</translation>
+        <translation>Aç...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="522"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation type="unfinished">Kaydet...</translation>
+        <translation>Kaydet...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="532"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Önerilen...</translation>
+        <translation>Önerilen...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="552"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
-        <translation type="unfinished">DeepSkyStacker hakkında...</translation>
+        <translation>DeepSkyStacker hakkında...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="572"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
-        <translation type="unfinished">DeepSkyStacker&apos;nin yardımı...</translation>
+        <translation>DeepSkyStacker&apos;nin yardımı...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="592"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
-        <translation type="unfinished">İzleme dosyası normalde kullanıcılardaki DeepSkyStacker dizinine yazılır.
+        <translation>İzleme dosyası normalde kullanıcılardaki DeepSkyStacker dizinine yazılır.
 &quot;Belgeler&quot; dizini ve çıkışta silinir (uygulama çökmediği sürece).
 İzleme dosyasını saklamak için bu kutuyu işaretleyin.</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="597"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished">Çıkışta izleme dosyasını sakla</translation>
+        <translation>Çıkışta izleme dosyasını sakla</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="617"/>
         <source>Enable progress sounds</source>
-        <translation type="unfinished">İlerleme seslerini etkinleştir</translation>
+        <translation>İlerleme seslerini etkinleştir</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="640"/>
@@ -800,66 +801,62 @@ Tick this box to keep the trace file.</source>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished">Ayarları Kaydet...</translation>
+        <translation>Ayarları Kaydet...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished">İstifleme Ayarları...</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished">Varsayılan Ayarları Geriyükle</translation>
+        <translation>Varsayılan Ayarları Geriyükle</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">DeepSkyStacker Canlı Ayarları&apos;nı Aç</translation>
+        <translation>DeepSkyStacker Canlı Ayarları&apos;nı Aç</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished">Aç...</translation>
+        <translation>Aç...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished">DeepSkyStacker Canlı olarak kaydet</translation>
+        <translation>DeepSkyStacker Canlı olarak kaydet</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished">Farklı Kaydet...</translation>
+        <translation>Farklı Kaydet...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="576"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished">DeepSkyStacker ayarları aç.</translation>
+        <translation>DeepSkyStacker ayarları aç</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="580"/>
+        <location filename="../ExplorerBar.cpp" line="628"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished">DeepSkyStacker Ayarları (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Ayarları (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="623"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished">DeepSkyStacker Ayarlarını Kaydet</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="628"/>
-        <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished">DeepSkyStacker Ayarları (*.dsssettings)</translation>
+        <translation>DeepSkyStacker Ayarlarını Kaydet</translation>
     </message>
 </context>
 <context>
@@ -900,52 +897,52 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation type="unfinished">DeepSkyStacker - Görüntü Özellikleri</translation>
+        <translation>DeepSkyStacker - Görüntü Özellikleri</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation type="unfinished">Tarih/Saat</translation>
+        <translation>Tarih/Saat</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation type="unfinished">Derinlik</translation>
+        <translation>Derinlik</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation type="unfinished">Boyut</translation>
+        <translation>Boyut</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation type="unfinished">Poz süresi</translation>
+        <translation>Poz süresi</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation type="unfinished">Bilgiler</translation>
+        <translation>Bilgiler</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation type="unfinished">Tür</translation>
+        <translation>Tür</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation type="unfinished">Dosya</translation>
+        <translation>Dosya</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO/Gain</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
         <source>CFA</source>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
 </context>
 <context>
@@ -968,42 +965,42 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished">Ara dosyalar</translation>
+        <translation>Ara dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished">Ara dosya oluşturma ayarları</translation>
+        <translation>Ara dosya oluşturma ayarları</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished">Her resim karesi için bir kalibre edilmiş dosya oluştur</translation>
+        <translation>Her resim karesi için bir kalibre edilmiş dosya oluştur</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished">Ham dosyaları işlerken bayersizleştirilmiş bir görüntü kaydet</translation>
+        <translation>Ham dosyaları işlerken bayersizleştirilmiş bir görüntü kaydet</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished">Her bir resim karesi için hizalanmış/kalibre edilmiş dosya oluştur</translation>
+        <translation>Her bir resim karesi için hizalanmış/kalibre edilmiş dosya oluştur</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished">Orta ve Son Görüntü Dosya Formatı</translation>
+        <translation>Orta ve Son Görüntü Dosya Formatı</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished">TIFF dosyalar</translation>
+        <translation>TIFF dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished">FITS dosyalar</translation>
+        <translation>FITS dosyalar</translation>
     </message>
 </context>
 <context>
@@ -1011,82 +1008,82 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished">Çıktı</translation>
+        <translation>Çıktı</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished">Çıkış Dosyaları Seçenekleri</translation>
+        <translation>Çıkış Dosyaları Seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation type="unfinished">Çıktı Dosyası Yarat</translation>
+        <translation>Çıktı Dosyası Yarat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation type="unfinished">HTML tanım dosyası yarat</translation>
+        <translation>HTML tanım dosyası yarat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished">Çıktı Dosyası Adı</translation>
+        <translation>Çıktı Dosyası Adı</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation type="unfinished">Otomatikkayıt.tif/fits</translation>
+        <translation>Otomatikkayıt.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation type="unfinished">&lt;dosya listesi adı&gt;.tif/fits</translation>
+        <translation>&lt;dosya listesi adı&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation type="unfinished">Üzerine yazmayı engellemek için numara tayin et (001, 002, ...)</translation>
+        <translation>Üzerine yazmayı engellemek için numara tayin et (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished">Çıktı Konumu</translation>
+        <translation>Çıktı Konumu</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation type="unfinished">Çıktı Dosyasını referans alınan karenin klasörüne kaydet</translation>
+        <translation>Çıktı Dosyasını referans alınan karenin klasörüne kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation type="unfinished">Çıktı Dosyasını dosya listesinin bulunduğu klasöre kaydet</translation>
+        <translation>Çıktı Dosyasını dosya listesinin bulunduğu klasöre kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation type="unfinished">Çıktı Dosyasını Şuraya Kaydet</translation>
+        <translation>Çıktı Dosyasını Şuraya Kaydet</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation type="unfinished">&lt;Çıktı Klasörü&gt;</translation>
+        <translation>&lt;Çıktı Klasörü&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="135"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation type="unfinished">Çıktı Klasörünü Seçin</translation>
+        <translation>Çıktı Klasörünü Seçin</translation>
     </message>
 </context>
 <context>
@@ -1094,7 +1091,7 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     <message>
         <location filename="../picturelist.cpp" line="13"/>
         <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished">Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
+        <translation>Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
     </message>
 </context>
 <context>
@@ -1102,80 +1099,80 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished">Kozmetik</translation>
+        <translation>Kozmetik</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished">Kalibrasyon sonrası Kozmetik ayarları.</translation>
+        <translation>Kalibrasyon sonrası Kozmetik ayarları</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation type="unfinished">Kalan Sıcak Gözeleri tespit et ve Temizle</translation>
+        <translation>Kalan Sıcak Gözeleri tespit et ve Temizle</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation type="unfinished">&lt;small&gt;Etki Zayıf&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Etki Zayıf&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation type="unfinished">&lt;small&gt;Güçlü&lt;/small&gt;</translation>
+        <translation>&lt;small&gt;Güçlü&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished">Filtre boyutu</translation>
+        <translation>Filtre boyutu</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished">Tespit etme eşik değeri</translation>
+        <translation>Tespit etme eşik değeri</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation type="unfinished">Kalan soğuk gözeleri (pikselleri) tespit et ve temizle</translation>
+        <translation>Kalan soğuk gözeleri (pikselleri) tespit et ve temizle</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation type="unfinished">Göze (piksel) değerini bununla değiştir</translation>
+        <translation>Göze (piksel) değerini bununla değiştir</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation type="unfinished">İlk kare üzerinde dene...</translation>
+        <translation>İlk kare üzerinde dene...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation type="unfinished">Her bir görüntü için temizlenen gözeleri gösteren bir dosya kaydet</translation>
+        <translation>Her bir görüntü için temizlenen gözeleri gösteren bir dosya kaydet</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="24"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation type="unfinished">Orta Değer (median)</translation>
+        <translation>Orta Değer (median)</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="25"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation type="unfinished">Gauss Filtresi</translation>
+        <translation>Gauss Filtresi</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="385"/>
@@ -1184,220 +1181,234 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished">Kozmetik
+        <translation>Kozmetik
 Algılanan Sıcak Pikseller: %L1 (%L2%)
-Algılanan Soğuk Pikseller: %L3 (%L4%)</translation>
+Algılanan Soğuk Pikseller: %L3 (%L4%)
+</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1146"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="350"/>
+        <location filename="../ProcessingDlg.cpp" line="380"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="437"/>
+        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>DeepSkyStacker&apos;la Yıldız Maskesini oluşturuyor</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Yıldız Maskesini Kaydediyor %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="467"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="468"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="439"/>
+        <location filename="../ProcessingDlg.cpp" line="469"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="440"/>
+        <location filename="../ProcessingDlg.cpp" line="470"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="441"/>
+        <location filename="../ProcessingDlg.cpp" line="471"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="481"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="543"/>
+        <location filename="../ProcessingDlg.cpp" line="573"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="588"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="571"/>
+        <location filename="../ProcessingDlg.cpp" line="601"/>
         <source>Exposure: %1 </source>
-        <translation type="unfinished"></translation>
+        <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="572"/>
+        <location filename="../ProcessingDlg.cpp" line="602"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n kare</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="119"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
-        <translation type="unfinished"></translation>
+        <translation>KYM/K seviyeleri</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="145"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kırmızı Histogram Ayarı Metodunu belirle</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="206"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Yeşil Histogram Ayarı Metodunu belirle</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="267"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
-        <translation type="unfinished"></translation>
+        <translation>Mavi Histogramı Ayarı Metodunu belirle</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="308"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
-        <translation type="unfinished"></translation>
+        <translation>İlişkilendirilen ayarlar</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="316"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parlaklık</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="337"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>karanlık</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="397"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Orta ton</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="457"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Parlak bölge</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="503"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Doygunluk</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="524"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Doygunluk ayarı</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="612"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uygula</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="619"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>En son uygulanan ayarları geri-al</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="642"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ayarları Kaydet, Aç, Yönet...</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="665"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>En son uygulanan ayarları tekrar uygula</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingDlg.ui" line="682"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sıfırla</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingSettingsDlg</name>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>DeepSkyStacker - Processing Settings</source>
-        <translation type="unfinished"></translation>
+        <source>Processing Settings</source>
+        <translation>Ayar düznelemeleri</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekle</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Sil</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Aç</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
-        <translation type="unfinished"></translation>
+        <translation>İşleme Ayarları adı / veya \ içeremez.
+Lütfen adı değiştirin.</translation>
     </message>
 </context>
 <context>
@@ -1447,12 +1458,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation type="unfinished">İşleme ...</translation>
+        <translation>İşleme ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation type="unfinished">İptal</translation>
+        <translation>İptal</translation>
     </message>
 </context>
 <context>
@@ -1460,151 +1471,151 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation type="unfinished">Ham/FITS Sayısal Geliştirme İşlemi Ayarları</translation>
+        <translation>Ham/FITS Sayısal Geliştirme İşlemi Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation type="unfinished">Ham (RAW) dosyalar</translation>
+        <translation>Ham (RAW) dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished">Renk Ayarları</translation>
+        <translation>Renk Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
-        <translation type="unfinished">Parlaklık</translation>
+        <translation>Parlaklık</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation type="unfinished">Kırmızı ölçeği</translation>
+        <translation>Kırmızı ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation type="unfinished">Mavi Ölçeği</translation>
+        <translation>Mavi Ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation type="unfinished">Beyaz Dengesi</translation>
+        <translation>Beyaz Dengesi</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished">Beyaz Dengesi işlemesi yok</translation>
+        <translation>Beyaz Dengesi işlemesi yok</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished">Kamera Beyaz Dengesini Kullan</translation>
+        <translation>Kamera Beyaz Dengesini Kullan</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished">Bayer Matris Dönüşümü</translation>
+        <translation>Bayer Matris Dönüşümü</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished">Çift Çizgili Ekleme</translation>
+        <translation>Çift Çizgili Ekleme</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished">Uyabilen Homojenlik Doğrultulu (AHD) Ara değeri</translation>
+        <translation>Uyabilen Homojenlik Doğrultulu (AHD) Ara değeri</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished">Bayer Serpiştirme algoritmasını kullan( ekleme yok, bayersizleştirme yok)</translation>
+        <translation>Bayer Serpiştirme algoritmasını kullan( ekleme yok, bayersizleştirme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished">Bu seçenek Bayer matrisini olduğu gibi kullanır. Ekleme yapılmaz ve her göze (piksel) sadece matrisin temel bileşimlerinden verilir.</translation>
+        <translation>Bu seçenek Bayer matrisini olduğu gibi kullanır. Ekleme yapılmaz ve her göze (piksel) sadece matrisin temel bileşimlerinden verilir.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Ham Bayer matrisinden süper gözeler oluştur (ekleme yok)</translation>
+        <translation>Ham Bayer matrisinden süper gözeler oluştur (ekleme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished">Bu seçenek 4 gözeli (pikselli) gruplardan (KMYG) bir süper piksel yaratmak için Bayer Matrisi kullanır. Sonuçlanan görüntünün boyutları ikiye bölünür.</translation>
+        <translation>Bu seçenek 4 gözeli (pikselli) gruplardan (KMYG) bir süper piksel yaratmak için Bayer Matrisi kullanır. Sonuçlanan görüntünün boyutları ikiye bölünür.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
-        <translation type="unfinished">FITS dosyalar</translation>
+        <translation>FITS dosyalar</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tek düzlem 16 bit FITS Dosyaları, de-Bayered edilmesi gereken bir &amp;quot;Tek Çekim Renkli&amp;quot; kameradan (DSLR, aynasız, CCD veya CMOS) gelir.&lt;br/&gt;FITS anahtar sözcüklerine dayalı otomatik algılamayı denemek için &lt;span style=&quot; font-style:italic;&quot;&gt;işaretsiz&lt;/span&gt; bırakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
-        <translation type="unfinished">Kamera:</translation>
+        <translation>Kamera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
-        <translation type="unfinished">Kırmızı ölçeği</translation>
+        <translation>Kırmızı ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
-        <translation type="unfinished">Mavi Ölçeği</translation>
+        <translation>Mavi Ölçeği</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished">Bayer Doku Filtresi kullanıldı</translation>
+        <translation>Bayer Doku Filtresi kullanıldı</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished">İşaretlenen değerler hafızaya alındığında işaretlenmemiş değerler kullanmaya zorla</translation>
+        <translation>İşaretlenen değerler hafızaya alındığında işaretlenmemiş değerler kullanmaya zorla</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished">Kapsamlı KYYM</translation>
+        <translation>Kapsamlı KYYM</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished">Kapsamlı MYYK</translation>
+        <translation>Kapsamlı MYYK</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="22"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished">Kapsamlı YMKY</translation>
+        <translation>Kapsamlı YMKY</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished">Kapsamlı YKMY</translation>
+        <translation>Kapsamlı YKMY</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="25"/>
         <source>Generic</source>
-        <translation type="unfinished">Kapsamlı</translation>
+        <translation>Kapsamlı</translation>
     </message>
 </context>
 <context>
@@ -1612,42 +1623,42 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation type="unfinished">Önerilen Ayarlar</translation>
+        <translation>Önerilen Ayarlar</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="44"/>
         <source>Show all recommendations</source>
-        <translation type="unfinished">Bütün önerileri göster</translation>
+        <translation>Bütün önerileri göster</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="190"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation type="unfinished">Bunlar önerilen ayarlar.&lt;br&gt;Her koşulda çalışmayabilirler fakat genelde iyi bir başlangıç noktasıdırlar.</translation>
+        <translation>Bunlar önerilen ayarlar.&lt;br&gt;Her koşulda çalışmayabilirler fakat genelde iyi bir başlangıç noktasıdırlar.</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="194"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation type="unfinished">Ayarı değiştirmek için önerilen bağlantıya tıklayın.</translation>
+        <translation>Ayarı değiştirmek için önerilen bağlantıya tıklayın</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="198"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation type="unfinished">Seçilmiş olan ayarlar yeşil olarak gösterilir.</translation>
+        <translation>Seçilmiş olan ayarlar yeşil olarak gösterilir</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="780"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation type="unfinished">veya</translation>
+        <translation>veya</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="846"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation type="unfinished">Önce listeye görüntüleri eklemeli, ardından da onları işaretlemelisiniz.</translation>
+        <translation>Önce listeye görüntüleri eklemeli, ardından da onları işaretlemelisiniz.</translation>
     </message>
 </context>
 <context>
@@ -1655,139 +1666,139 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation type="unfinished">Hizalama seçenekleri</translation>
+        <translation>Hizalama seçenekleri</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">İstifleme Ayarları...</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished">Önerilen ayarlar...</translation>
+        <translation>Önerilen ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation type="unfinished">Hareketler</translation>
+        <translation>Hareketler</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation type="unfinished">Daha önce hizalanan resimleri de hizala</translation>
+        <translation>Daha önce hizalanan resimleri de hizala</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Sıcak gözelerin (piksellerin) otomatik tespiti</translation>
+        <translation>Sıcak gözelerin (piksellerin) otomatik tespiti</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation type="unfinished">Hizalamadan sonra istifle</translation>
+        <translation>Hizalamadan sonra istifle</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation type="unfinished">En iyi olanı seç</translation>
+        <translation>En iyi olanı seç</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
-        <translation type="unfinished">% görüntü ve bunları istifle</translation>
+        <translation>% görüntü ve bunları istifle</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
-        <translation type="unfinished">Gelişmiş</translation>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Yıldız tespiti için eşik değeri</translation>
+        <translation>Yıldız tespiti için eşik değeri</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="259"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik eşik değerini kullan</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="281"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation type="unfinished">Tespit edilen yıldızların sayısını hesapla</translation>
+        <translation>Tespit edilen yıldızların sayısını hesapla</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="324"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation type="unfinished">Orta değer (median) Filtresi kullanarak gürültüyü azalt</translation>
+        <translation>Orta değer (median) Filtresi kullanarak gürültüyü azalt</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="171"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished">İstiflemeden önce siyah, düz ve Ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce siyah, düz ve Ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="174"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished">İstiflemeden önce siyah ve düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce siyah ve düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="177"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished">İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="180"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished">İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce düz ve ofset kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="183"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished">İstiflemeden önce siyah dosyaları ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce siyah dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="186"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished">İstiflemeden önce düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce düz kareleri ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished">İstiflemeden önce ofset dosyaları ekleyip işaretlemeyi unutmayın.</translation>
+        <translation>İstiflemeden önce ofset dosyaları ekleyip işaretlemeyi unutmayın.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="213"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished">Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
+        <translation>Siyah, Düz ve Ofset dosyalar işaretlendi.</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="277"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Hizalanıyor %1</translation>
+        <translation>Hizalanıyor %1</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="284"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished">%1 yıldız</translation>
+        <translation>%1 yıldız</translation>
     </message>
 </context>
 <context>
@@ -1795,12 +1806,12 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation type="unfinished">Grubu Yeniden Adlandır</translation>
+        <translation>Grubu Yeniden Adlandır</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation type="unfinished">Grup ismi:</translation>
+        <translation>Grup ismi:</translation>
     </message>
 </context>
 <context>
@@ -1808,63 +1819,63 @@ Please change the name.</source>
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation type="unfinished">Sonuç</translation>
+        <translation>Sonuç</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation type="unfinished">Standart Yöntem</translation>
+        <translation>Standart Yöntem</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation type="unfinished">&quot;Mozayik&quot; Yöntem</translation>
+        <translation>&quot;Mozayik&quot; Yöntem</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation type="unfinished">Kesişim Yöntemi</translation>
+        <translation>Kesişim Yöntemi</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation type="unfinished">Seçilen diktörtgen</translation>
+        <translation>Seçilen diktörtgen</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation type="unfinished">2x serpiştirmeyi uygula</translation>
+        <translation>2x serpiştirmeyi uygula</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation type="unfinished">3x serpiştirmeyi uygula</translation>
+        <translation>3x serpiştirmeyi uygula</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation type="unfinished">Resmin son halinde KYM kanallarını hizala</translation>
+        <translation>Resmin son halinde KYM kanallarını hizala</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="70"/>
         <location filename="../ResultParameters.cpp" line="132"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">İstifleme işleminin sonucu referans görüntü karesi olarak çerçevelendi.</translation>
+        <translation>İstifleme işleminin sonucu referans görüntü karesi olarak çerçevelendi.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="80"/>
         <location filename="../ResultParameters.cpp" line="145"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">İstifleme işleminin sonucu istiflin bütün görüntü karelerini içerir.</translation>
+        <translation>İstifleme işleminin sonucu istiflin bütün görüntü karelerini içerir.</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="90"/>
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">İstifleme işleminin sonucu bütün karelerin kesişimi ile çerçevelenir.</translation>
+        <translation>İstifleme işleminin sonucu bütün karelerin kesişimi ile çerçevelenir.</translation>
     </message>
 </context>
 <context>
@@ -1872,7 +1883,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation type="unfinished">Değişiklikler kaydedilsin mi?</translation>
+        <translation>Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -1880,7 +1891,7 @@ Please change the name.</source>
 
 Do you want to save them?</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Bir kaç değişiklik yaptınız (yıldızların veya kuyrukluyıldızın konumu)
+        <translation>Bir kaç değişiklik yaptınız (yıldızların veya kuyrukluyıldızın konumu)
 
 Bunları kaydetmek ister misiniz?</translation>
     </message>
@@ -1888,31 +1899,31 @@ Bunları kaydetmek ister misiniz?</translation>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Daha sonra...</translation>
+        <translation>Daha sonra...</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Sormadan kaydet</translation>
+        <translation>Sormadan kaydet</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished">Sormadan kaydetme</translation>
+        <translation>Sormadan kaydetme</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation type="unfinished">Bir daha sor</translation>
+        <translation>Bir daha sor</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished">Bu seçeneklere Kaydet tuşunun üzerine sağ tıklayarak ulaşabilirsiniz.</translation>
+        <translation>Bu seçeneklere Kaydet tuşunun üzerine sağ tıklayarak ulaşabilirsiniz</translation>
     </message>
 </context>
 <context>
@@ -1921,55 +1932,55 @@ Bunları kaydetmek ister misiniz?</translation>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sıkıştırma</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished">Yok</translation>
+        <translation>Yok</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP (Deflate)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW (Kullanım dışı)</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished">Seçenekler</translation>
+        <translation>Seçenekler</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kaydedilen dosyaya ayarları uygula</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
         <source>Embed adjustments in the saved image but do not apply them</source>
         <comment>IDC_EMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>aydedilen görüntüye ayarları ilişkilendir fakat uygulama</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="122"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kaydedilen görüntüye değişiklikleri uygulama</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Create an image from the selected rectangle</source>
         <comment>IDC_USERECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seçilen dikdörtgenden bir görüntü oluştur</translation>
     </message>
 </context>
 <context>
@@ -1977,222 +1988,222 @@ Bunları kaydetmek ister misiniz?</translation>
     <message>
         <location filename="../ui/StackRecap.ui" line="14"/>
         <source>Stacking Steps</source>
-        <translation type="unfinished">İstifleme adımları</translation>
+        <translation>İstifleme adımları</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="34"/>
         <source>Recommended Settings ...</source>
-        <translation type="unfinished">Önerilen ayarlar...</translation>
+        <translation>Önerilen ayarlar...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="41"/>
         <source>Stacking Settings ...</source>
-        <translation type="unfinished">İstifleme Ayarları...</translation>
+        <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gain</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Evet</translation>
+        <translation>Evet</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished">Hayır</translation>
+        <translation>Hayır</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">KYM Kanalları Arkaplan Kalibrasyonu: %1</translation>
+        <translation>KYM Kanalları Arkaplan Kalibrasyonu: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Her bir Kanal için Arkaplan Kalibrasyonu: %1</translation>
+        <translation>Her bir Kanal için Arkaplan Kalibrasyonu: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Siyah iyileştirmesi: %1</translation>
+        <translation>Siyah iyileştirmesi: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished">Siyah çarpım Faktörü: %1</translation>
+        <translation>Siyah çarpım Faktörü: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished">Sıcak Gözelerin tespit edilip kaldırılması: %1</translation>
+        <translation>Sıcak Gözelerin tespit edilip kaldırılması: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished">Bu süreç geçici olarak %1 boş alana ihtiyaç duyuyor.&lt;br&gt;Kullanılacak olan %2 sürücüsünde sadece %3 boş alan var.</translation>
+        <translation>Bu süreç geçici olarak %1 boş alana ihtiyaç duyuyor.&lt;br&gt;Kullanılacak olan %2 sürücüsünde sadece %3 boş alan var.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="740"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished">Not: gerekli disk alanı referans karenin boyutundaki bir görüntü kullanılarak hesaplanır. Sonuç görüntünün toplam boyutuna bağlı olarak daha fazla alan gerekebilir.</translation>
+        <translation>Not: gerekli disk alanı referans karenin boyutundaki bir görüntü kullanılarak hesaplanır. Sonuç görüntünün toplam boyutuna bağlı olarak daha fazla alan gerekebilir.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished">Uyarı: Siyah, Düz veya ofset kareleri JPEG dosyaları ile kullanıyorsunuz.&lt;br&gt;Kayıplı sıkıştırmadan ötürü kalibrasyon JPEG dosyaları için çalışmıyor.</translation>
+        <translation>Uyarı: Siyah, Düz veya ofset kareleri JPEG dosyaları ile kullanıyorsunuz.&lt;br&gt;Kayıplı sıkıştırmadan ötürü kalibrasyon JPEG dosyaları için çalışmıyor.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished">İstifleme Yöntemi: </translation>
+        <translation>İstifleme Yöntemi: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished">Standart</translation>
+        <translation>Standart</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished">Mozayik</translation>
+        <translation>Mozayik</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished">Seçilen diktörtgen</translation>
+        <translation>Seçilen diktörtgen</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished">Kesişim</translation>
+        <translation>Kesişim</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="301"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished">Hizalama Yöntemi: </translation>
+        <translation>Hizalama Yöntemi: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="309"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished">Otomatik</translation>
+        <translation>Otomatik</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="312"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished">Çift çizgili</translation>
+        <translation>Çift çizgili</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="315"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished">Çift kareli</translation>
+        <translation>Çift kareli</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="318"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished">Çift küplü</translation>
+        <translation>Çift küplü</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="321"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished">Hizalama yok</translation>
+        <translation>Hizalama yok</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="332"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished">Serpiştirme x%1 geçerli</translation>
+        <translation>Serpiştirme x%1 geçerli</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="338"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished">Bu serpiştirme yöntemi Bayer Serpiştirme yöntemi ile uyumlu değil.</translation>
+        <translation>Bu serpiştirme yöntemi Bayer Serpiştirme yöntemi ile uyumlu değil.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="349"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 tespit edilen ve kullanılan işleyici</translation>
+        <translation>%1 tespit edilen ve kullanılan işleyici</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished">%1 tespit edilen işleyici - sadece bir tane kullanıldı</translation>
+        <translation>%1 tespit edilen işleyici - sadece bir tane kullanıldı</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="364"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished">Kuyrukluyıldız İşleme: </translation>
+        <translation>Kuyrukluyıldız İşleme: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="369"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished">Yıldızlar üzerinde hizala (özel bir işlem yok)</translation>
+        <translation>Yıldızlar üzerinde hizala (özel bir işlem yok)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="372"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished">Kuyrukluyıldız üzerine hizala</translation>
+        <translation>Kuyrukluyıldız üzerine hizala</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="375"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished">Kuyrukluyıldız ve yıldızlar üzerine hizala</translation>
+        <translation>Kuyrukluyıldız ve yıldızlar üzerine hizala</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="389"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished">Sıcak gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
+        <translation>Sıcak gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="397"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished">Soğuk gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
+        <translation>Soğuk gözelere kozmetik uygulandı (Filtre= %1 göze, Tespit etme eşik değeri = %L2%)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="426"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished">İstifleme adımı %1&lt;br&gt; -&gt;%2 kare (%3: %4) - toplam poz süresi: </translation>
+        <translation>İstifleme adımı %1&lt;br&gt; -&gt;%2 kare (%3: %4) - toplam poz süresi: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="444"/>
@@ -2202,19 +2213,19 @@ Bunları kaydetmek ister misiniz?</translation>
         <location filename="../StackRecap.cpp" line="674"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished">Yöntem: </translation>
+        <translation>Yöntem: </translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="455"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished">Uyarı: RAW DDP ayarlarında seçilen Bayer Serpiştirme seçeneği ortalama yöntemi haricinde garip sonuçlar ortaya çıkarabilir.</translation>
+        <translation>Uyarı: RAW DDP ayarlarında seçilen Bayer Serpiştirme seçeneği ortalama yöntemi haricinde garip sonuçlar ortaya çıkarabilir.</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="475"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished">-&gt; Ofset: %1 kare (%2: %3) poz süresi: %4</translation>
+        <translation>-&gt; Ofset: %1 kare (%2: %3) poz süresi: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="500"/>
@@ -2222,7 +2233,7 @@ Bunları kaydetmek ister misiniz?</translation>
         <location filename="../StackRecap.cpp" line="686"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished">Uyarı: ISO hızı görüntülerle uyuşmuyor</translation>
+        <translation>Uyarı: ISO hızı görüntülerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="510"/>
@@ -2230,85 +2241,85 @@ Bunları kaydetmek ister misiniz?</translation>
         <location filename="../StackRecap.cpp" line="696"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished">Uyarı: Kazanç hızı görüntülerle uyuşmuyor</translation>
+        <translation>Uyarı: Kazanç hızı görüntülerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="521"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished">-&gt; Ofset yok</translation>
+        <translation>-&gt; Ofset yok</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="530"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished">-&gt; Siyah: %1 kare (%2 : %3) poz süresi: %4</translation>
+        <translation>-&gt; Siyah: %1 kare (%2 : %3) poz süresi: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="588"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished">Uyarı: Poz süresi görüntülerle uyuşmuyor</translation>
+        <translation>Uyarı: Poz süresi görüntülerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="597"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished">-&gt; Siyah yok</translation>
+        <translation>-&gt; Siyah yok</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="606"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished">-&gt; Siyah Düz: %1 kare (%2 : %3) poz süresi: %4</translation>
+        <translation>-&gt; Siyah Düz: %1 kare (%2 : %3) poz süresi: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="632"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Uyarı: ISO hızı düz karelerle uyuşmuyor</translation>
+        <translation>Uyarı: ISO hızı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="642"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Uyarı: Kazanç hızı düz karelerle uyuşmuyor</translation>
+        <translation>Uyarı: Kazanç hızı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="650"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished">Uyarı: Poz Süresı düz karelerle uyuşmuyor</translation>
+        <translation>Uyarı: Poz Süresı düz karelerle uyuşmuyor</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="662"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished">-&gt; Düz: %1 kare (%2: %3) poz süresi: %4</translation>
+        <translation>-&gt; Düz: %1 kare (%2: %3) poz süresi: %4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="706"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished">-&gt; Düz Yok</translation>
+        <translation>-&gt; Düz Yok</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="721"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished">Tahmin edilen toplam poz süresi: %1&lt;br&gt;(toplam poz süresi bütün görüntü kareleri birleştirilecekmiş gibi hesaplanır)</translation>
+        <translation>Tahmin edilen toplam poz süresi: %1&lt;br&gt;(toplam poz süresi bütün görüntü kareleri birleştirilecekmiş gibi hesaplanır)</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="731"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished">Bu işlem geçici olarak %1 kullanacak (kullanılacak olan %2 sürücüsünde %3 boşluk var)</translation>
+        <translation>Bu işlem geçici olarak %1 kullanacak (kullanılacak olan %2 sürücüsünde %3 boşluk var).</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="748"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished">Uyarı: hizalanan ve kalibre edilen görüntüleri kaydet seçeği işaretlenmiş durumda. Lütfen bu dosyalar için yeterli disk alanı olup olmadığını kontrol edin.</translation>
+        <translation>Uyarı: hizalanan ve kalibre edilen görüntüleri kaydet seçeği işaretlenmiş durumda. Lütfen bu dosyalar için yeterli disk alanı olup olmadığını kontrol edin.</translation>
     </message>
 </context>
 <context>
@@ -2316,62 +2327,62 @@ Bunları kaydetmek ister misiniz?</translation>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation type="unfinished">İstifleme Ayarları...</translation>
+        <translation>İstifleme Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation type="unfinished">Geçici Dosya Klasörü:</translation>
+        <translation>Geçici Dosya Klasörü:</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation type="unfinished">Görev yürütme birimi önceliğini düşür</translation>
+        <translation>Görev yürütme birimi önceliğini düşür</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="90"/>
         <source>Use all available processors</source>
-        <translation type="unfinished">Uygulanabilir bütün işlemcileri kullan</translation>
+        <translation>Uygulanabilir bütün işlemcileri kullan</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="97"/>
         <source>SIMD vectorisation</source>
-        <translation type="unfinished">SIMD vektörleştirme</translation>
+        <translation>SIMD vektörleştirme</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished">Görüntü</translation>
+        <translation>Görüntü</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished">Siyah</translation>
+        <translation>Siyah</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished">Düz</translation>
+        <translation>Düz</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished">Ofset</translation>
+        <translation>Ofset</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="190"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation type="unfinished">Lütfen bütün geçici dosyaları içerecek klasörü seçin.</translation>
+        <translation>Lütfen bütün geçici dosyaları içerecek klasörü seçin</translation>
     </message>
 </context>
 <context>
@@ -2533,7 +2544,7 @@ Ofset Kareler: %5</translation>
         <location filename="../StackingDlg.cpp" line="2015"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation>DeepSkyStacker Sürüm %s indirilebilir.</translation>
+        <translation>DeepSkyStacker Sürüm %1 indirilebilir.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2031"/>
@@ -2550,7 +2561,7 @@ Ofset Kareler: %5</translation>
     <message>
         <location filename="../StackingDlg.cpp" line="2143"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontrol ettiğiniz ışık çerçevelerinizin hepsinin hesaplanmış bir ortalama kalitesi yoktur. Işık çerçevelerinizi yeniden kaydetmelisiniz.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2159"/>
@@ -2619,124 +2630,124 @@ Değişiklikler kaydedilsin mi?</translation>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation type="unfinished">İstifleme</translation>
+        <translation>İstifleme</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation type="unfinished">İstifleme modu</translation>
+        <translation>İstifleme modu</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation type="unfinished">Tekrar sayısı:</translation>
+        <translation>Tekrar sayısı:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation type="unfinished">Orta değer</translation>
+        <translation>Orta değer</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation type="unfinished">Kappa-Sigma kırpımı</translation>
+        <translation>Kappa-Sigma kırpımı</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation type="unfinished">En yüksek değer</translation>
+        <translation>En yüksek değer</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation type="unfinished">Orta Kappa-Sigma kırpımı</translation>
+        <translation>Orta Kappa-Sigma kırpımı</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished">Otomatik Uyabilen Ağırlıklı Ortalama</translation>
+        <translation>Otomatik Uyabilen Ağırlıklı Ortalama</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation type="unfinished">Ortalama</translation>
+        <translation>Ortalama</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa:</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Entropi Ağırlıklı ortalama
+        <translation>Entropi Ağırlıklı ortalama
 (Yüksek Dinamik Alan (HDR))</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation type="unfinished"></translation>
+        <translation>Debloom</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation type="unfinished">Ayarlar...</translation>
+        <translation>Ayarlar</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation type="unfinished">Siyah Optimizasyonu</translation>
+        <translation>Siyah Optimizasyonu</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation type="unfinished">Kötü sütun tespiti ve kaldırılması</translation>
+        <translation>Kötü sütun tespiti ve kaldırılması</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished">Sıcak piksel tespiti ve yok edilmesi</translation>
+        <translation>Sıcak piksel tespiti ve yok edilmesi</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation type="unfinished">Siyah Çarpım Faktörü:</translation>
+        <translation>Siyah Çarpım Faktörü</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Arkaplan kalibrasyonu yok</translation>
+        <translation>Arkaplan kalibrasyonu yok</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">Her Kanal İçin Arkaplan Kalibrasyonu</translation>
+        <translation>Her Kanal İçin Arkaplan Kalibrasyonu</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="20"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished">KYM Kanalları Arkaplan Kalibrasyonu</translation>
+        <translation>KYM Kanalları Arkaplan Kalibrasyonu</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="59"/>
@@ -2746,7 +2757,7 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation type="unfinished">Hedef dışındaki gözeler (pikseller):
+        <translation>Hedef dışındaki gözeler (pikseller):
 [Ortalama-%1*%2, Ortalama+%1*%2]
 parçalar halinde kaldırıldı.
 
@@ -2760,7 +2771,7 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation type="unfinished">Hedefin dışında kalan gözeler (pikseller):
+        <translation>Hedefin dışında kalan gözeler (pikseller):
 [Ortalama-%1*%2, Ortalama+%1*%2]
 tekrarlı olarak orta değer ile değiştirilir.
 
@@ -2773,7 +2784,7 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">&lt;b&gt;Ağırlıklı Ortalama&lt;/b&gt; şunların kullanılmasıyla elde edilir
+        <translation>&lt;b&gt;Ağırlıklı Ortalama&lt;/b&gt; şunların kullanılmasıyla elde edilir
 her gözenin (pikselin) tekrarlı olarak ağırlığı ile
 ortalamadan doğan sapma ile
 nispeten standart sapmadan (%1).</translation>
@@ -2782,7 +2793,7 @@ nispeten standart sapmadan (%1).</translation>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation type="unfinished">Ayarlar...</translation>
+        <translation>Ayarlar...</translation>
     </message>
 </context>
 <context>
@@ -2791,111 +2802,116 @@ nispeten standart sapmadan (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Yıldız Maskesi Oluştur</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="77"/>
+        <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>Yıldız Tespiti</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="89"/>
+        <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished">Yıldız tespiti için eşik değeri</translation>
+        <translation>Yıldız tespiti için eşik değeri</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="136"/>
+        <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sıcak gözelerin(piksellerin) tespiti</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="184"/>
+        <location filename="../ui/StarMaskDlg.ui" line="137"/>
+        <source>Minimum size of a star</source>
+        <translation>Yıldızın en küçük boyutu</translation>
+    </message>
+    <message>
+        <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>Yıldızın en büyük boyutu</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="283"/>
+        <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>Genişletme/Daraltma</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="311"/>
+        <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>Yıldız büyüklüğünün yüzdesi</translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="374"/>
+        <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>Boyutu arttır  </translation>
     </message>
     <message>
-        <location filename="../ui/StarMaskDlg.ui" line="422"/>
+        <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StarMaskDlg.cpp" line="59"/>
-        <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Maskedeki yıldızların şekli</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
-        <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <source>Bell</source>
+        <translation>Çan</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
-        <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Bell</source>
+        <translation>Kesilmiş Çan</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
-        <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <source>Cone</source>
+        <translation>Koni</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
-        <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <source>Truncated Cone</source>
+        <translation>Kesilmiş Koni</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
-        <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <source>Cubic</source>
+        <translation>Küp Şeklinde</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="149"/>
-        <location filename="../StarMaskDlg.cpp" line="164"/>
+        <location filename="../StarMaskDlg.cpp" line="65"/>
+        <source>Quadric</source>
+        <translation>İkinci Dereceli (Kuadrik);</translation>
+    </message>
+    <message>
+        <location filename="../StarMaskDlg.cpp" line="150"/>
+        <location filename="../StarMaskDlg.cpp" line="165"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="154"/>
-        <location filename="../StarMaskDlg.cpp" line="159"/>
-        <location filename="../StarMaskDlg.cpp" line="169"/>
+        <location filename="../StarMaskDlg.cpp" line="155"/>
+        <location filename="../StarMaskDlg.cpp" line="160"/>
+        <location filename="../StarMaskDlg.cpp" line="170"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n piksel</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="202"/>
+        <location filename="../StarMaskDlg.cpp" line="203"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF Görüntüsü (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="203"/>
+        <location filename="../StarMaskDlg.cpp" line="204"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS Görüntüsü (*.fits *.fts *.fit)</translation>
     </message>
     <message>
-        <location filename="../StarMaskDlg.cpp" line="209"/>
+        <location filename="../StarMaskDlg.cpp" line="210"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>YıldızMaskesini farklı kaydet...</translation>
     </message>
 </context>
 <context>
@@ -3022,12 +3038,14 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
     </message>
 </context>
 <context>
-    <name>ProcessingDlg</name>
+    <name>QLinearGradientCtrl</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1642"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Yıldız Maskesini Kaydediyor %1</translation>
+        <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
+        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
+Page-Up and Page-Down keys to move a slider after you have selected it
+with the mouse.</source>
+        <translation>Bir kaydırıcıyı fareyle seçtikten sonra hareket ettirmek için Yukarı Ok, Sağ Ok, Sol Ok, Aşağı Ok;
+Page-Up ve Page-Down tuşlarını kullanabilirsiniz.</translation>
     </message>
 </context>
 <context>
@@ -3043,7 +3061,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="265"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation>Süper-Göze (piksel) yöntemini kullan.</translation>
+        <translation>Süper-Göze (piksel) yöntemini kullan</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="292"/>
@@ -3063,13 +3081,13 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="317"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>AHD bayersizleştirmeyi (Bayer Matrisi) kullan.</translation>
+        <translation>AHD bayersizleştirmeyi (Bayer Matrisi) kullan</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="323"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation>Kısa pozlu ve muhtemelen düşük sinyal/gürültü oranına sahip görüntüleri işliyorsunuz.</translation>
+        <translation>Kısa pozlu ve muhtemelen düşük sinyal/gürültü oranına sahip görüntüleri işliyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="326"/>
@@ -3081,31 +3099,31 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="359"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation>Ofset kareler kullanıyorsunuz.</translation>
+        <translation>Ofset kareler kullanıyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="362"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation>Kalibrasyonu iyileştirmek için siyah noktasını 0&apos;a çekin.</translation>
+        <translation>Kalibrasyonu iyileştirmek için siyah noktasını 0&apos;a çekin</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="371"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation>Düz kareleri siyah kareler olmadan kullanıyorsunuz.</translation>
+        <translation>Düz kareleri siyah kareler olmadan kullanıyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="374"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
-        <translation>Siyah noktasını sıfıra çekmeyin.</translation>
+        <translation>Siyah noktasını sıfıra çekmeyin</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="394"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>Düşük yıldız tespit eşik değeri kullanıyorsunuz.</translation>
+        <translation>Düşük yıldız tespit eşik değeri kullanıyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="397"/>
@@ -3123,13 +3141,13 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="417"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation>Bütün beyaz dengesini sıfırla.</translation>
+        <translation>Bütün beyaz dengesini sıfırla</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="454"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation>Yıldız izlerine sahip bir kuyrukluyıldız fotoğrafı oluşturmaya çalışıyorsunuz.</translation>
+        <translation>Yıldız izlerine sahip bir kuyrukluyıldız fotoğrafı oluşturmaya çalışıyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="457"/>
@@ -3142,7 +3160,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="468"/>
         <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
         <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation>%1 görüntü karesinden yıldızların ve kuyrukluyıldızın üzerine hizalı bir kuyrukluyıldız görüntüsü oluşturmaya çalışıyorsunuz.</translation>
+        <translation>%1 görüntü karesinden yıldızların ve kuyrukluyıldızın üzerine hizalı bir kuyrukluyıldız görüntüsü oluşturmaya çalışıyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="475"/>
@@ -3177,7 +3195,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="551"/>
         <source>You are creating a master dark from %1 dark frame(s)</source>
         <comment>IDS_RECO_DARK_REASON</comment>
-        <translation>%1 siyah kareden bir Ana siyah oluşturuyorsunuz.</translation>
+        <translation>%1 siyah kareden bir Ana siyah oluşturuyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="558"/>
@@ -3191,13 +3209,13 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="583"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation>%1 ofset kareden bir ana ofset oluşturuyorsunuz.</translation>
+        <translation>%1 ofset kareden bir ana ofset oluşturuyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="615"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
-        <translation>%1 düz kareden ana düz oluşturuyorsunuz.</translation>
+        <translation>%1 düz kareden ana düz oluşturuyorsunuz</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="647"/>
@@ -3221,7 +3239,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../RecommendedSettings.cpp" line="693"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation>Siyah-beyaz görüntüleri istifliyorsunuz, bunlar biraz farklı arkaplan değerinlerine sahip olabilir.</translation>
+        <translation>Siyah-beyaz görüntüleri istifliyorsunuz, bunlar biraz farklı arkaplan değerinlerine sahip olabilir</translation>
     </message>
 </context>
 </TS>
