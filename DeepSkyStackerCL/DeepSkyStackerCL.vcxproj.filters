@@ -385,6 +385,9 @@
     <QtTranslation Include="i18n\DSSCL_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DSSCL_ja_JP.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
