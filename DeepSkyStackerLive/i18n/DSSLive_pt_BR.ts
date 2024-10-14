@@ -663,9 +663,9 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Qualidade</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -883,7 +883,7 @@ Você deseja processá-los?</numerusform>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1354"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1535"/>
@@ -997,28 +997,12 @@ Você deseja processá-los?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="72"/>
         <source>SMTP server:</source>
-        <translation type="unfinished">Servidor SMTP:</translation>
+        <translation>Servidor SMTP:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
@@ -1076,7 +1060,7 @@ Você deseja processá-los?</numerusform>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Depois de selecionar um controle deslizante com o mouse, você pode movê-lo usando as teclas Seta para cima, Seta para direita, Seta para baixo, Seta para baixo, Page Up e Page Down.</translation>
     </message>
 </context>
 </TS>

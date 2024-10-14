@@ -668,9 +668,9 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Güte</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -888,7 +888,7 @@ Wollen Sie sie verarbeiten?</numerusform>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1354"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1535"/>
@@ -1007,23 +1007,7 @@ Wollen Sie sie verarbeiten?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished">Anschluss:</translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation type="unfinished"></translation>
+        <translation>Anschluss:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
@@ -1081,7 +1065,7 @@ Wollen Sie sie verarbeiten?</numerusform>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachdem Sie mit der Maus einen Schieberegler ausgewählt haben, können Sie ihn mit den Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Abwärtspfeil“, „Bild auf“ und „Bild ab“ verschieben.</translation>
     </message>
 </context>
 </TS>

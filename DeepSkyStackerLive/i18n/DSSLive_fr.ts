@@ -668,9 +668,9 @@ A partir de ce moment toutes les images entrantes (et celles déjà enregistrée
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Qualité</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -888,7 +888,7 @@ Voulez-vous les traiter?</numerusform>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1354"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1535"/>
@@ -1007,23 +1007,7 @@ Voulez-vous les traiter?</numerusform>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
@@ -1081,7 +1065,7 @@ Voulez-vous les traiter?</numerusform>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Après avoir sélectionné un curseur avec la souris, vous pouvez le déplacer à l&apos;aide des touches Flèche vers le haut, Flèche vers la droite, Flèche vers le bas, Flèche vers le bas, Page précédente et Page suivante.</translation>
     </message>
 </context>
 </TS>

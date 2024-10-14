@@ -666,9 +666,9 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Qualitat</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -1011,22 +1011,6 @@ Vol processar-les?</numerusform>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
         <translation>Xifratge:</translation>
@@ -1082,7 +1066,7 @@ Vol processar-les?</numerusform>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Després de seleccionar un control lliscant amb el ratolí, podeu moure&apos;l amb les tecles Fletxa amunt, Fletxa dreta, Fletxa avall, Fletxa avall, Pàg amunt i Pàg avall.</translation>
     </message>
 </context>
 </TS>

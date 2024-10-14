@@ -670,9 +670,9 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kvalitní</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -1016,22 +1016,6 @@ Chcete je zpracovat?</numerusform>
         <translation>Účet:</translation>
     </message>
     <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
         <source>Encryption:</source>
         <translation>Šifrování:</translation>
@@ -1087,7 +1071,7 @@ Chcete je zpracovat?</numerusform>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Po výběru posuvníku pomocí myši jej můžete přesunout pomocí kláves Šipka nahoru, Šipka doprava, Šipka dolů, Šipka dolů, Page Up a Page Down.</translation>
     </message>
 </context>
 </TS>

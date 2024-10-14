@@ -668,9 +668,9 @@ En este punto todas las imágenes que van llegando serán apiladas (y previament
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calidad</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -888,7 +888,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1354"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1535"/>
@@ -1008,23 +1008,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation type="unfinished"></translation>
+        <translation>Port:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
@@ -1082,7 +1066,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Después de seleccionar un control deslizante con el mouse, puede moverlo usando las teclas Flecha arriba, Flecha derecha, Flecha abajo, Flecha abajo, Re Pág y Av Pág.</translation>
     </message>
 </context>
 </TS>

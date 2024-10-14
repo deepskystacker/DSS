@@ -670,9 +670,9 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQualiy</source>
+        <source>MeanQuality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Качество</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -894,7 +894,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1354"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1535"/>
@@ -1013,23 +1013,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../ui/EmailSettings.ui" line="82"/>
         <source>Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="95"/>
-        <location filename="../ui/EmailSettings.ui" line="108"/>
-        <source>465</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="113"/>
-        <source>587</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/EmailSettings.ui" line="118"/>
-        <source>2525</source>
-        <translation type="unfinished"></translation>
+        <translation>Порт:</translation>
     </message>
     <message>
         <location filename="../ui/EmailSettings.ui" line="126"/>
@@ -1087,7 +1071,7 @@ Do you want to process them?</source>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбрав ползунок с помощью мыши, вы можете перемещать его с помощью клавиш «Стрелка вверх», «Стрелка вправо», «Стрелка вниз», «Стрелка вниз», Page Up и Page Down.</translation>
     </message>
 </context>
 </TS>
