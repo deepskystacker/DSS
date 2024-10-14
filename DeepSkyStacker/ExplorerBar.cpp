@@ -5,7 +5,6 @@
 #include "Ztrace.h"
 #include "zexcept.h"
 #include "DeepSkyStacker.h"
-#include "commonresource.h"
 #include "ProcessingDlg.h"
 #include "Workspace.h"
 #include "RegisterSettings.h"

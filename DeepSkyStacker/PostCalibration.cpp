@@ -10,7 +10,6 @@
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "CosmeticEngine.h"
-#include "commonresource.h"
 
 extern bool	g_bShowRefStars;
 

@@ -64,7 +64,6 @@
 #include "ProcessingDlg.h"
 #include "ZExcept.h"
 #include "ImageProperties.h"
-#include "commonresource.h"
 
 #define dssApp DeepSkyStacker::instance()
 

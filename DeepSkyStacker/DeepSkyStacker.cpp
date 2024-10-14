@@ -61,8 +61,6 @@ namespace bip = boost::interprocess;
 #include "StackingDlg.h"
 #include "ExplorerBar.h"
 #include "picturelist.h"
-#include "resource.h"
-#include "commonresource.h"
 #include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
 #include "DeepStack.h"

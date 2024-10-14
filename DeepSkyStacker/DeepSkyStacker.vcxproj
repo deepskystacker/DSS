@@ -333,23 +333,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStacker.rc" />
-    <ResourceCompile Include="DeepSkyStackerCAT.rc" />
-    <ResourceCompile Include="DeepSkyStackerCN2.rc" />
-    <ResourceCompile Include="DeepSkyStackerCZ.rc" />
-    <ResourceCompile Include="DeepSkyStackerDE.rc" />
-    <ResourceCompile Include="DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="DeepSkyStackerES.rc" />
-    <ResourceCompile Include="DeepSkyStackerFR.rc" />
-    <ResourceCompile Include="DeepSkyStackerIT.rc" />
-    <ResourceCompile Include="DeepSkyStackerJP.rc" />
-    <ResourceCompile Include="DeepSkyStackerNL.rc" />
-    <ResourceCompile Include="DeepSkyStackerPTB.rc" />
-    <ResourceCompile Include="DeepSkyStackerRO.rc" />
-    <ResourceCompile Include="DeepSkyStackerRU.rc" />
-    <ResourceCompile Include="DeepSkyStackerTR.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
@@ -362,7 +345,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CometStacking.h" />
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="BezierAdjust.h" />
-    <ClInclude Include="commonresource.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
@@ -387,11 +369,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="RecommendedSettings.h" />
     <QtMoc Include="RegisterSettings.h" />
     <QtMoc Include="RenameGroup.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="resourceCZ.h" />
-    <ClInclude Include="resourceES.h" />
-    <ClInclude Include="resourceFR.h" />
-    <ClInclude Include="resourceIT.h" />
     <QtMoc Include="ResultParameters.h" />
     <QtMoc Include="SaveEditChanges.h" />
     <QtMoc Include="SavePicture.h" />

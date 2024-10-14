@@ -193,21 +193,6 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCAT.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCN2.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCZ.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerDE.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerES.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerFR.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerIT.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerNL.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerPTB.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRO.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRU.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerTR.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
