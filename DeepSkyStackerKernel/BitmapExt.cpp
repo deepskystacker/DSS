@@ -842,19 +842,17 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		//
 		// Check RAW image file types
 		//
+		// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
+		// "application/fits" so code round that.
+		//
+		constexpr char const* mimeFitsKeyword = QT_VERSION < 0x060800 ? "image/fits" : "application/fits";
+
 		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
 		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
-		//
-		// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
-		// "application/fits" so code round that.
-		//
-#if QT_VERSION < 0x060800
-		else if (mime.inherits("image/fits") && IsFITSPicture(path, BitmapInfo))
-#else
-		else if (mime.inherits("application/fits") && IsFITSPicture(path, BitmapInfo))
-#endif
+		else if (mime.inherits(mimeFitsKeyword) && IsFITSPicture(path, BitmapInfo))
+
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
