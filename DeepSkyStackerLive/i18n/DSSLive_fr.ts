@@ -668,7 +668,7 @@ A partir de ce moment toutes les images entrantes (et celles déjà enregistrée
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualité</translation>
     </message>

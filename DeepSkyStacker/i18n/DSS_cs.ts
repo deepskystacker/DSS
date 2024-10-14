@@ -2591,8 +2591,8 @@ Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Ne všechny vámi vybrané světelné rámy mají vypočítanou střední kvalitu. Měli byste znovu zaregistrovat své světelné rámy.</translation>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Ne všechny vaše kontrolované světelné rámy mají vypočtenou kvalitu. Měli byste znovu zaregistrovat své světelné rámy.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

@@ -2488,6 +2488,11 @@ Rechtermuisknop om het menu weer te geven</translation>
         <translation>Light Platen:%1      -      Dark Platen: %2      -      Flat Platen:%3      -   Dark Flat Platen: %4   -      Offset/Bias Platen: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Niet al uw gecontroleerde lichtframes hebben een berekende kwaliteit. U moet uw lichtframes opnieuw registreren.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2580,11 +2585,6 @@ Offset/Bias Platen: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Totale registratietijd: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Niet al uw gecontroleerde lichtframes hebben een gemiddelde kwaliteit berekend. U moet uw lichtframes opnieuw registreren.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

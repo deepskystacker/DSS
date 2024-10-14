@@ -2490,6 +2490,11 @@ Bouton droit de la souris pour afficher le menu</translation>
         <translation>Images : %1      -      Dark : %2      -      Flat :%3      -   Dark Flat : %4    -      Offset/Bias : %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Toutes les images lumineuses que vous avez vérifiées n&apos;ont pas de qualité calculée. Vous devez réenregistrer vos images lumineuses.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2582,11 +2587,6 @@ Offset/Bias : %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Durée totale d&apos;enregistrement: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Toutes les images lumineuses que vous avez vérifiées n&apos;ont pas de qualité moyenne calculée. Vous devez réenregistrer vos images lumineuses.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

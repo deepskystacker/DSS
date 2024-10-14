@@ -667,9 +667,9 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation>Güte</translation>
+        <translation>Qualität</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>

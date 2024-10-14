@@ -668,7 +668,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualità</translation>
     </message>

@@ -2483,6 +2483,11 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Kontrol ettiğiniz ışık çerçevelerinin hepsinin hesaplanmış bir kalitesi yoktur. Işık çerçevelerinizi yeniden kaydetmelisiniz.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2574,11 +2579,6 @@ Ofset Kareler: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Toplam kayıt süresi: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Kontrol ettiğiniz ışık çerçevelerinizin hepsinin hesaplanmış bir ortalama kalitesi yoktur. Işık çerçevelerinizi yeniden kaydetmelisiniz.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

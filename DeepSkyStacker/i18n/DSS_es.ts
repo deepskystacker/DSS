@@ -2489,6 +2489,11 @@ Botón derecho del ratón para mostrar el menú</translation>
         <translation>Imágenes: %1      -      Darks: %2      -      Flats: %3      -   Dark Flats: %4   -      Offset/Bias: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>No todos los marcos de luz que has marcado tienen una calidad calculada. Deberías volver a registrar tus marcos de luz.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2581,12 +2586,6 @@ Offset/Bias: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Tiempo total de registro: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>110 / 5,000
-No todos los cuadros de luz que has marcado tienen una calidad media calculada. Deberías volver a registrar tus cuadros de luz.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

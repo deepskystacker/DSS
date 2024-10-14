@@ -663,7 +663,7 @@ Aqui todas as entradas (primeiro registadas) serao integradas.
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualidade</translation>
     </message>

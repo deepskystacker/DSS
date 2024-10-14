@@ -2137,9 +2137,9 @@ namespace DSS
 
 					if (bContinue && bStackAfter)
 					{
-						if (frameList.isMeanQualityAvailable()
+						if (frameList.isQualityAvailable()
 							||	QMessageBox::warning(this, "DeepSkyStacker",
-									tr("Not all of your checked light frames have a mean quality calculated. You should re-register your light frames."),
+									tr("Not all of your checked light frames have a quality calculated. You should re-register your light frames."),
 									QMessageBox::Ok, QMessageBox::Cancel
 								) == QMessageBox::Ok
 							)

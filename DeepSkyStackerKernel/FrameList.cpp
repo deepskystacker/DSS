@@ -205,7 +205,7 @@ namespace DSS
 		return QString();
 	}
 
-	bool FrameList::isMeanQualityAvailable() const
+	bool FrameList::isQualityAvailable() const
 	{
 		for (const Group& group : imageGroups)
 		{
@@ -607,7 +607,7 @@ namespace DSS
 					{
 						it->m_bRegistered = true;
 						group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-						group.pictures->setData(row, Column::MeanQuality, bmpInfo.meanQuality);
+						group.pictures->setData(row, Column::Quality, bmpInfo.meanQuality);
 						group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
 						group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
@@ -649,7 +649,7 @@ namespace DSS
 				{
 					it->m_bRegistered = true;
 					group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-					group.pictures->setData(row, Column::MeanQuality, bmpInfo.meanQuality);
+					group.pictures->setData(row, Column::Quality, bmpInfo.meanQuality);
 					group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
 					group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());

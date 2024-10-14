@@ -666,7 +666,7 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualitat</translation>
     </message>

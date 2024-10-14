@@ -1562,7 +1562,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;單平面 16 位 FITS 檔來自需要去拜耳化的“單色”相機（DSLR、無反光鏡、CCD 或 CMOS）。&lt;br/&gt;取消選中 &lt;span style=“ font-style：italic;”&gt;&lt;/span&gt; 以嘗試基於 FITS 關鍵字的自動檢測。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;單平面 16 位 FITS 檔來自需要去拜耳化的“單色”相機（DSLR、無反光鏡、CCD 或 CMOS）。&lt;br/&gt;取消選中 &lt;span style=“ font-style：italic;”&gt;&lt;/span&gt; 以嘗試基於 FITS 關鍵字的自動檢測。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
@@ -2479,6 +2479,11 @@ Ctrl-A 或相當於選擇所有行
         <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>並非所有檢查的燈框都經過品質計算。您應該重新註冊您的燈框。</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2570,11 +2575,6 @@ Offset/Bias Frames: %5</source>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>總註冊時間：%1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>並非所有選中的亮框都計算了平均品質。您應該重新註冊您的輕型幀。</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

@@ -704,7 +704,7 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation type="unfinished"></translation>
     </message>

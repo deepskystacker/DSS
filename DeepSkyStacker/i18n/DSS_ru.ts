@@ -2495,6 +2495,11 @@ Ctrl-A или эквивалент для выбора всех строк
         <translation>Кадров изображения:%1      -      Dark кадров: %2      -      Flat кадров:%3      -   Dark Flat кадров: %4   -      Offset/Bias кадров: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Не все ваши проверенные световые рамки имеют рассчитанное качество. Вам следует перерегистрировать ваши световые рамки.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2588,11 +2593,6 @@ Offset/Bias кадров: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Общее время регистрации: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Не все ваши проверенные световые рамки имеют рассчитанное среднее качество. Вам следует перерегистрировать ваши световые рамки.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>

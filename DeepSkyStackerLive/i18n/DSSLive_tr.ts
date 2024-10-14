@@ -665,9 +665,9 @@ Görüntüleri istiflemeye başlamak için İstifle tuşuna basın.
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation>Kalite</translation>
+        <translation type="unfinished">Kalite</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
