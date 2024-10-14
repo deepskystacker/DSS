@@ -3,8 +3,8 @@ Welcome to DeepSkyStacker 5.1.8 Beta 1
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is release is all about finishing the conversion of the code to us Qt instead of MFC.  That said, there are few bug fixes,
-and a a number of enhancements as well.   This isn't a complete list as a many changes were made to improve code quality and 
+This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are few bug fixes,
+and a number of enhancements as well.   This isn't a complete list as a many changes were made to improve code quality and 
 performance.
 
 Known problems:
@@ -35,9 +35,9 @@ Changes since the last release:
    The threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
 
    The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is
-   largly independent of the number of detected stars.
+   largely independent of the number of detected stars.
 
-   The background level, to which the star detection threshold is referring, is now calculated localy per 250x250 pixel square rather than globally over the entire image.
+   The background level, to which the star detection threshold is referring, is now calculated locally per 250x250 pixel square rather than globally over the entire image.
    This compensates for any background illumination gradients.
 
    All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
@@ -48,7 +48,7 @@ Changes since the last release:
    We suggest that you ensure that the first registered light frame is not significantly darker then the other frames (brighter is no problem),
    otherwise the number of detected stars might be very high.
 
-9. Bug fix: Computation of the final star centers has been corrected. The old version was slightly biased towards left/up of the real center.
+9. Bug fix: Computation of the final star centres has been corrected. The old version was slightly biased towards left/up of the real centre.
 
 10. Finish conversion of code to Qt - there should be no MFC stuff left.
 
