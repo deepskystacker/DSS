@@ -5,12 +5,12 @@
 
 class QStandardItemModel;
 
-namespace Ui {
-	class BatchStacking;
-}
-
 namespace DSS
 {
+	namespace Ui {
+		class BatchStacking;
+	}
+
 	class BatchStacking : public BaseDialog
 	{
 		Q_OBJECT

@@ -37,13 +37,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core; gui</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core; gui</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -173,7 +173,6 @@
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
     <ClCompile Include="DeepSkyStackerCL.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -188,26 +187,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
     <ClInclude Include="..\dssbase.h" />
     <QtMoc Include="progressconsole.h" />
     <ClInclude Include="stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCAT.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCN2.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCZ.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerDE.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerES.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerFR.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerIT.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerNL.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerPTB.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRO.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRU.rc" />
-    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerTR.rc" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -318,6 +301,7 @@
     <QtTranslation Include="i18n\DSSCL_es.ts" />
     <QtTranslation Include="i18n\DSSCL_fr.ts" />
     <QtTranslation Include="i18n\DSSCL_it.ts" />
+    <QtTranslation Include="i18n\DSSCL_ja_JP.ts" />
     <QtTranslation Include="i18n\DSSCL_nl.ts" />
     <QtTranslation Include="i18n\DSSCL_pt_BR.ts" />
     <QtTranslation Include="i18n\DSSCL_ro.ts" />

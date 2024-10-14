@@ -2,40 +2,43 @@
 
 class Workspace;
 
-namespace Ui {
-class AlignmentParameters;
-}
-
-class AlignmentParameters : public QWidget
+namespace DSS
 {
-    Q_OBJECT
+    namespace Ui {
+        class AlignmentParameters;
+    }
 
-typedef QWidget
-		Inherited;
+    class AlignmentParameters : public QWidget
+    {
+        Q_OBJECT
 
-public:
-    explicit AlignmentParameters(QWidget *parent = 0);
-    ~AlignmentParameters();
+            typedef QWidget
+            Inherited;
 
-public slots:
-	void onSetActive();
+    public:
+        explicit AlignmentParameters(QWidget* parent = 0);
+        ~AlignmentParameters();
 
-private:
-	Ui::AlignmentParameters *ui;
-	std::unique_ptr<Workspace> workspace;
-	uint m_Alignment;
+    public slots:
+        void onSetActive();
 
-	void updateControls();
+    private:
+        Ui::AlignmentParameters* ui;
+        std::unique_ptr<Workspace> workspace;
+        uint m_Alignment;
 
-	void setAlignment(uint wAlignment);
+        void updateControls();
 
-private slots:
-    void on_alignAuto_clicked();
-    void on_alignBilinear_clicked();
-    void on_alignBisquared_clicked();
-    void on_alignBicubic_clicked();
-    void on_alignNone_clicked();
+        void setAlignment(uint wAlignment);
+
+    private slots:
+        void on_alignAuto_clicked();
+        void on_alignBilinear_clicked();
+        void on_alignBisquared_clicked();
+        void on_alignBicubic_clicked();
+        void on_alignNone_clicked();
 
 
-private:
-};
+    private:
+    };
+}

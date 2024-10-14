@@ -117,4 +117,12 @@
         <file alias="sqrt.png">Icon/sqrt.png</file>
         <file alias="sqrt-dark.png">Icon/sqrt-dark.png</file>
     </qresource>
+    <qresource prefix="/starmask">
+        <file alias="StarShape_Bell.bmp">res/StarShape_Bell.bmp</file>
+        <file alias="StarShape_TruncatedBell.bmp">res/StarShape_TruncatedBell.bmp</file>
+        <file alias="StarShape_Cone.bmp">res/StarShape_Cone.bmp</file>
+        <file alias="StarShape_TruncatedCone.bmp">res/StarShape_TruncatedCone.bmp</file>
+        <file alias="StarShape_Cubic.bmp">res/StarShape_Cubic.bmp</file>
+        <file alias="StarShape_Quadratic.bmp">res/StarShape_Quadratic.bmp</file>
+    </qresource>
 </RCC>

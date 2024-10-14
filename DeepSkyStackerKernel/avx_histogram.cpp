@@ -203,7 +203,7 @@ int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 // *************
 namespace {
 
-	void adjust(const CHistogramAdjust& hadj, float* const p, const size_t len)
+	void adjust(const DSS::HistogramAdjust& hadj, float* const p, const size_t len)
 	{
 		using VecType = __m256;
 		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -211,10 +211,10 @@ namespace {
 		const VecType mn = _mm256_set1_ps(hadj.GetMin());
 		const VecType mx = _mm256_set1_ps(hadj.GetMax());
 		const VecType sh = _mm256_set1_ps(hadj.GetShift());
-		const VecType omn = _mm256_set1_ps(hadj.GetOrgMin());
-		const VecType omx = _mm256_set1_ps(hadj.GetOrgMax());
-		const VecType umn = _mm256_set1_ps(hadj.GetUsedMin());
-		const VecType umx = _mm256_set1_ps(hadj.GetUsedMax());
+		const VecType omn = _mm256_set1_ps(hadj.getOriginalMinimum());
+		const VecType omx = _mm256_set1_ps(hadj.getOriginalMaximum());
+		const VecType umn = _mm256_set1_ps(hadj.getUsedMinimum());
+		const VecType umx = _mm256_set1_ps(hadj.getUsedMaximum());
 		const VecType usedMinusOrgMin = _mm256_sub_ps(umn, omn);
 		const VecType orgMinusUsedMax = _mm256_sub_ps(omx, umx);
 		const VecType minMinusOrgMin = _mm256_sub_ps(mn, omn);
@@ -306,7 +306,7 @@ int AvxBezierAndSaturation::toHsl()
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
 }
 
-int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
 }
@@ -358,7 +358,7 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 	return first;
 }
 
-int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
+int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
 	if (!this->histoData.avxSupported)
 		return 1;
@@ -370,7 +370,7 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistog
 	const auto greenAdjust = histoAdjust.GetGreenAdjust();
 	const auto blueAdjust = histoAdjust.GetBlueAdjust();
 
-	if (redAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || greenAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || blueAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT)
+	if (redAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || greenAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || blueAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot)
 		return 2;
 
 	for (size_t n = 0; n < len; ++n)
@@ -593,7 +593,7 @@ int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float
 // Non AVX Bezier functions
 // ------------------------
 
-int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
+int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class DSS::RGBHistogramAdjust& histoAdjust)
 {
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
 

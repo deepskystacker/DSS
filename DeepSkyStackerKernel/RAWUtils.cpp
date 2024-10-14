@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "RAWUtils.h"
+#define LIBRAW_NO_WINSOCK2
 #include "libraw/libraw.h"
 #include "Ztrace.h"
 #include "Workspace.h"
@@ -161,11 +162,9 @@ void PopRAWSettings()
 
 #include "BitMapFiller.h"
 
-#define Thread   __declspec( thread )
-
 namespace { // Only use in this .cpp file
 
-	static Thread ProgressBase* g_Progress;
+	static thread_local ProgressBase* g_Progress;
 
 	class DSSLibRaw : public LibRaw
 	{
@@ -542,7 +541,7 @@ namespace { // Only use in this .cpp file
 			//
 			// Get our endian-ness so we can swap bytes if needed (always on Windows).
 			//
-			const bool littleEndian = htons(0x55aa) != 0x55aa; // big_endian = htons(host_byte_order)
+			const bool littleEndian = (htons(0x55aa) != 0x55aa); // big_endian = htons(host_byte_order)
 
 			if (!m_bColorRAW)
 			{

@@ -14,7 +14,6 @@
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "File.h"
 #include "MedianFilterEngine.h"
 #include "omp.h"
 #include "dssbase.h"
@@ -25,50 +24,6 @@ const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "
 		"kdc", "srf", "arw", "raw", "dng", "ia", "rw2" };
 
 /* ------------------------------------------------------------------- */
-
-void CopyBitmapToClipboard(HBITMAP hBitmap)
-{
-	ZFUNCTRACE_RUNTIME();
-	HDC					hScreenDC;
-	HDC					hSrcDC,
-		hTgtDC;
-	BITMAP				bmpInfo;
-	HBITMAP				hTgtBmp;
-	HBITMAP				hOldSrcBmp,
-		hOldTgtBmp;
-
-	GetObject(hBitmap, sizeof(BITMAP), &bmpInfo);
-
-	hScreenDC = GetDC(nullptr);
-	hSrcDC = CreateCompatibleDC(hScreenDC);
-	hTgtDC = CreateCompatibleDC(hScreenDC);
-
-	hTgtBmp = CreateCompatibleBitmap(hScreenDC, bmpInfo.bmWidth, bmpInfo.bmHeight);
-
-	if (hTgtBmp)
-	{
-		hOldSrcBmp = (HBITMAP)SelectObject(hSrcDC, hBitmap);
-		hOldTgtBmp = (HBITMAP)SelectObject(hTgtDC, hTgtBmp);
-
-		BitBlt(hTgtDC, 0, 0, bmpInfo.bmWidth, bmpInfo.bmHeight,
-			hSrcDC, 0, 0, SRCCOPY);
-
-		SelectObject(hSrcDC, hOldSrcBmp);
-		SelectObject(hTgtDC, hOldTgtBmp);
-	};
-
-	DeleteDC(hSrcDC);
-	DeleteDC(hTgtDC);
-	ReleaseDC(nullptr, hScreenDC);
-
-	if (hTgtBmp)
-	{
-		OpenClipboard(nullptr);
-		EmptyClipboard();
-		SetClipboardData(CF_BITMAP, hTgtBmp);
-		CloseClipboard();
-	};
-};
 
 namespace
 {
@@ -279,13 +234,6 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 					AllDepthBitmap.m_pBitmap = pColorBitmap;
 				}
 			}
-
-			//
-			// Create a Windows bitmap for display purposes (wrapped in a C32BitsBitmap class).
-			// (TODO) Delete this when Qt porting is done.
-			//
-			AllDepthBitmap.m_pWndBitmap = std::make_shared<C32BitsBitmap>();
-			AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap.get());
 
 			//
 			// If FetchPicture didn't create a QImage (which it does when loading a jpeg or png file),
@@ -552,132 +500,6 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	return true;
 }
 
-bool C32BitsBitmap::CopyToClipboard()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
-	const size_t dwSize = sizeof(BITMAPINFO) + 16 + static_cast<size_t>(m_dwByteWidth) * m_lHeight;
-
-	HGLOBAL			hGlobal;
-	char *			pGlobal;
-
-	if (m_hBitmap)
-	{
-		hGlobal = GlobalAlloc(GMEM_MOVEABLE, dwSize);
-		if (hGlobal)
-		{
-			BITMAPINFO		bmpInfo;
-
-			memset(&bmpInfo, 0, sizeof(bmpInfo));
-			bmpInfo.bmiHeader.biSize = sizeof(bmpInfo.bmiHeader);
-			bmpInfo.bmiHeader.biWidth = m_lWidth;
-			bmpInfo.bmiHeader.biHeight= m_lHeight;
-			bmpInfo.bmiHeader.biPlanes= 1;;
-			bmpInfo.bmiHeader.biBitCount= 32;
-			bmpInfo.bmiHeader.biCompression= BI_RGB;
-			bmpInfo.bmiHeader.biSizeImage= 0;
-			bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96*100.0/2.54);
-			bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96*100.0/2.54);
-			bmpInfo.bmiHeader.biClrUsed = 0;
-			bmpInfo.bmiHeader.biClrImportant = 0;
-
-			pGlobal = (char*)GlobalLock(hGlobal);
-			memcpy(pGlobal, &bmpInfo, sizeof(BITMAPINFO));
-			pGlobal += sizeof(BITMAPINFO);
-
-			memcpy(pGlobal, m_lpBits, m_dwByteWidth*m_lHeight);
-
-			GlobalUnlock(hGlobal);
-
-			if (OpenClipboard(nullptr/*AfxGetMainWnd()->GetSafeHwnd()*/))
-			{
-				EmptyClipboard();
-				if (!SetClipboardData(CF_DIB, hGlobal))
-					GlobalFree(hGlobal);
-				else
-					bResult = true;
-				CloseClipboard();
-			}
-			else
-				GlobalFree(hGlobal);
-		};
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-
-	Free();
-	if (pBitmap != nullptr)
-	{
-		HBITMAP hBitmap = Create(pBitmap->Width(), pBitmap->Height());
-		if (hBitmap)
-		{
-			if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
-			{
-				ZTRACE_RUNTIME("Slow Bitmap Copy");
-				// Slow Method
-				for (int j = 0; j < m_lHeight; j++)
-				{
-					pByte lpOut;
-					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
-
-					lpOut = GetPixelBase(0, j);
-					for (int i = 0; i < m_lWidth; i++)
-					{
-						double			fRed, fGreen, fBlue;
-						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-
-						lpOutPixel->rgbRed		= std::min(std::max(0.0, fRed), 255.0);
-						lpOutPixel->rgbGreen	= std::min(std::max(0.0, fGreen), 255.0);
-						lpOutPixel->rgbBlue		= std::min(std::max(0.0, fBlue), 255.0);
-						lpOutPixel->rgbReserved	= 0;
-
-						lpOut += 4;
-					}
-				}
-			}
-			else
-			{
-				ZTRACE_RUNTIME("Fast Bitmap Copy");
-				// Fast Method
-				BitmapIteratorConst<const CMemoryBitmap*> it{ pBitmap };
-
-				for (int j = 0; j < m_lHeight; j++)
-				{
-					pByte lpOut;
-					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
-
-					it.Reset(0, j);
-					lpOut = GetPixelBase(0, j);
-					for (int i = 0; i < m_lWidth; i++)
-					{
-						double fRed, fGreen, fBlue;
-						it.GetPixel(fRed, fGreen, fBlue);
-
-						lpOutPixel->rgbRed = std::min(std::max(0.0, fRed), 255.0);
-						lpOutPixel->rgbGreen = std::min(std::max(0.0, fGreen), 255.0);
-						lpOutPixel->rgbBlue = std::min(std::max(0.0, fBlue), 255.0);
-						lpOutPixel->rgbReserved = 0;
-
-						lpOut += 4;
-						++it;
-					}
-				}
-			}
-			bResult = true;
-		}
-	}
-
-	return bResult;
-}
-
 /* ------------------------------------------------------------------- */
 
 namespace DSS
@@ -886,118 +708,6 @@ bool ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, GammaTra
 	return bResult;
 };
 
-
-template <template<class> class BitmapClass, class T>
-bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, GammaTransformation& gammatrans)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-
-	if (pInBitmap != nullptr && gammatrans.isInitialized())
-	{
-		bool bContinue;
-		const int lWidth = pInBitmap->Width();
-		const int lHeight = pInBitmap->Height();
-
-		if (pOutBitmap->IsEmpty())
-		{
-			// Create the Bitmap
-			pOutBitmap->Init(lWidth, lHeight);
-		};
-
-		// Check that the output bitmap size is matching the input bitmap
-		bContinue = (pOutBitmap->Width() == lWidth) && (pOutBitmap->Height() == lHeight);
-
-		if (bContinue)
-		{
-			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
-
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-			for (int j = 0; j < lHeight; j++)
-			{
-				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
-				{
-					// Init iterators
-					T* pRed = pInBitmap->GetRedPixel(0, j);
-					T* pGreen = pInBitmap->GetGreenPixel(0, j);
-					T* pBlue = pInBitmap->GetBluePixel(0, j);
-
-					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
-					for (int i = 0; i < lWidth; i++)
-					{
-						pOutPixel->rgbRed = gammatrans.getTransformation(*pRed / fMultiplier);
-						pOutPixel->rgbGreen = gammatrans.getTransformation(*pGreen / fMultiplier);
-						pOutPixel->rgbBlue = gammatrans.getTransformation(*pBlue / fMultiplier);
-						pOutPixel->rgbReserved = 0;
-						pRed++;
-						pGreen++;
-						pBlue++;
-						pOut += 4;
-					}
-				}
-				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
-				{
-					// Init iterators
-					const T* pGray = pInBitmap->GetGrayPixel(0, j);
-
-					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
-					for (int i = 0; i < lWidth; i++)
-					{
-						pOutPixel->rgbRed = gammatrans.getTransformation(*pGray / fMultiplier);
-						pOutPixel->rgbBlue = pOutPixel->rgbRed;
-						pOutPixel->rgbGreen = pOutPixel->rgbRed;
-						pOutPixel->rgbReserved = 0;
-						pGray++;
-						pOut += 4;
-					}
-				}
-			}
-			bResult = true;
-		}
-	}
-	return bResult;
-}
-
-bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, GammaTransformation& gammatrans)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-	C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(pInBitmap);
-	C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(pInBitmap);
-	C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(pInBitmap);
-	C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(pInBitmap);
-
-	CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(pInBitmap);
-	C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(pInBitmap);
-	C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
-	C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(pInBitmap);
-	C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(pInBitmap);
-
-	if (p24BitColorBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p24BitColorBitmap, gammatrans);
-	else if (p48BitColorBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p48BitColorBitmap, gammatrans);
-	else if (p96BitColorBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p96BitColorBitmap, gammatrans);
-	else if (p96BitFloatColorBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p96BitFloatColorBitmap, gammatrans);
-	else if (pGrayBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, pGrayBitmap, gammatrans);
-	else if (p8BitGrayBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p8BitGrayBitmap, gammatrans);
-	else if (p16BitGrayBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p16BitGrayBitmap, gammatrans);
-	else if (p32BitGrayBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p32BitGrayBitmap, gammatrans);
-	else if (p32BitFloatGrayBitmap != nullptr)
-		bResult = ApplyGammaTransformation(pOutBitmap, p32BitFloatGrayBitmap, gammatrans);
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 namespace {
@@ -1076,11 +786,6 @@ namespace big_endian {
 	}
 }
 
-bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
-{
-	const fs::path strFilename(szFileName);
-	return GetPictureInfo(strFilename, BitmapInfo);
-}
 bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1137,11 +842,17 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		//
 		// Check RAW image file types
 		//
+		// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
+		// "application/fits" so code round that.
+		//
+		constexpr char const* mimeFitsKeyword = QT_VERSION < 0x060800 ? "image/fits" : "application/fits";
+
 		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
 		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/fits") && IsFITSPicture(path, BitmapInfo))
+		else if (mime.inherits(mimeFitsKeyword) && IsFITSPicture(path, BitmapInfo))
+
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
@@ -1729,142 +1440,10 @@ void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& f
 }
 
 //////////////////////////////////////////////////////////////////////////
-C32BitsBitmap::C32BitsBitmap()
-{
-	m_hBitmap = nullptr;
-	m_lpBits = nullptr;
-	m_lWidth = 0;
-	m_lHeight = 0;
-	m_pLine = nullptr;
-	m_dwByteWidth = 0;
-}
-C32BitsBitmap::~C32BitsBitmap()
-{
-	Free();
-}
-void C32BitsBitmap::InitInternals()
-{
-	if (m_pLine)
-		free(m_pLine);
 
-	m_pLine = static_cast<pByte*>(malloc(m_lHeight * sizeof(pByte)));
-	if (nullptr == m_pLine)
-	{
-		ZOutOfMemory e("Could not allocate storage for scanline pointers");
-		ZTHROW(e);
-	}
-
-	m_dwByteWidth = (((m_lWidth * 32 + 31) & ~31) >> 3);
-	int			y = m_lHeight - 1;
-
-	for (int i = 0; y >= 0; y--, i++)
-	{
-		m_pLine[i] = static_cast<pByte>(m_lpBits) + y * m_dwByteWidth;
-	}
-}
-void C32BitsBitmap::Init(int lWidth, int lHeight)
-{
-	Create(lWidth, lHeight);
-}
-HBITMAP	C32BitsBitmap::Create(int lWidth, int lHeight)
-{
-	Free();
-
-	HBITMAP			hBitmap;
-	BITMAPINFO		bmpInfo;
-	void* pBits;
-
-	memset(&bmpInfo, 0, sizeof(bmpInfo));
-	bmpInfo.bmiHeader.biSize = sizeof(bmpInfo.bmiHeader);
-	bmpInfo.bmiHeader.biWidth = lWidth;
-	bmpInfo.bmiHeader.biHeight = lHeight;
-	bmpInfo.bmiHeader.biPlanes = 1;;
-	bmpInfo.bmiHeader.biBitCount = 32;
-	bmpInfo.bmiHeader.biCompression = BI_RGB;
-	bmpInfo.bmiHeader.biSizeImage = 0;
-	bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96 * 100.0 / 2.54);
-	bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96 * 100.0 / 2.54);
-	bmpInfo.bmiHeader.biClrUsed = 0;
-	bmpInfo.bmiHeader.biClrImportant = 0;
-
-	HDC				hDC;
-	hDC = GetDC(nullptr);
-	hBitmap = CreateDIBSection(hDC, &bmpInfo, 0, &pBits, nullptr, 0);
-	ReleaseDC(nullptr, hDC);
-
-	if (hBitmap)
-	{
-		m_hBitmap = hBitmap;
-		m_lpBits = pBits;
-		m_lWidth = lWidth;
-		m_lHeight = lHeight;
-		InitInternals();
-	};
-
-	return hBitmap;
-}
-void C32BitsBitmap::Free()
-{
-	if (m_hBitmap)
-	{
-		DeleteObject(m_hBitmap);
-	};
-	m_hBitmap = nullptr;
-	m_lpBits = nullptr;
-	if (m_pLine)
-		free(m_pLine);
-	m_pLine = nullptr;
-}
-HBITMAP C32BitsBitmap::Detach()
-{
-	HBITMAP hResult = m_hBitmap;
-
-	m_hBitmap = nullptr;
-	Free();
-
-	return hResult;
-};
-
-COLORREF C32BitsBitmap::GetPixel(int x, int y)
-{
-	COLORREF crColor = RGB(0, 0, 0);
-
-	if ((x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
-	{
-		const pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
-		const auto dwPixel = *reinterpret_cast<std::uint32_t*>(pPixel);
-		const RGBQUAD rgbq = *reinterpret_cast<const RGBQUAD*>(&dwPixel);
-
-		crColor = RGB(rgbq.rgbRed, rgbq.rgbGreen, rgbq.rgbBlue);
-	};
-
-	return crColor;
-}
-pByte C32BitsBitmap::GetPixelBase(int x, int y)
-{
-	return m_pLine[y] + x * 4;
-}
-void C32BitsBitmap::SetPixel(int x, int y, COLORREF crColor)
-{
-	if ((x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
-	{
-		pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
-		alignas(std::uint32_t) RGBQUAD rgbq;
-
-		rgbq.rgbRed = GetRValue(crColor);
-		rgbq.rgbGreen = GetGValue(crColor);
-		rgbq.rgbBlue = GetBValue(crColor);
-		rgbq.rgbReserved = 0;
-
-		*reinterpret_cast<std::uint32_t*>(pPixel) = *reinterpret_cast<std::uint32_t*>(&rgbq);
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////
 void CAllDepthBitmap::Clear()
 {
 	m_pBitmap.reset();
-	m_pWndBitmap.reset();
 	m_Image.reset();
 }
 

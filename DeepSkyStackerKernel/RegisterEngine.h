@@ -89,7 +89,7 @@ class CLightFrameInfo : public CFrameInfo,
                         public CRegisteredFrame
 {
 public:
-	fs::path m_strInfoFileName;
+	fs::path infoFile;
 	bool m_bStartingFrame;
 	bool m_bTransformedCometPosition;
 

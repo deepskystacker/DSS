@@ -876,33 +876,25 @@ void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminan
 
 bool CLightFrameInfo::ReadInfoFileName()
 {
-	return LoadRegisteringInfo(m_strInfoFileName);
+	return LoadRegisteringInfo(infoFile);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CLightFrameInfo::SaveRegisteringInfo()
 {
-	m_bInfoOk = CRegisteredFrame::SaveRegisteringInfo(m_strInfoFileName);
+	m_bInfoOk = CRegisteredFrame::SaveRegisteringInfo(infoFile);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CLightFrameInfo::SetBitmap(fs::path path/*, bool bProcessIfNecessary, bool bForceRegister*/)
 {
-	TCHAR				szDrive[1+_MAX_DRIVE];
-	TCHAR				szDir[1+_MAX_DIR];
-	TCHAR				szFile[1+_MAX_FNAME];
-	TCHAR				szExt[1+_MAX_EXT];
-	TCHAR				szInfoName[1+_MAX_PATH];
-
 	Reset();
 	m_bInfoOk = false;
 	filePath = path;
-	_tsplitpath(filePath.c_str(), szDrive, szDir, szFile, szExt);
-	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".info.txt"));
 
-	m_strInfoFileName = szInfoName;
+	infoFile = path.replace_extension("info.txt");
 
 	ReadInfoFileName();
 	//if (bForceRegister || (!ReadInfoFileName() && bProcessIfNecessary))

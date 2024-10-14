@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "ImageProperties.h"
 
-namespace DSS {
+namespace DSS
+{
 	ImageProperties::ImageProperties(QWidget* parent)
 		: QDialog(parent)
 	{

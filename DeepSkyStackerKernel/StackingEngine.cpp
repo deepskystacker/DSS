@@ -17,7 +17,6 @@
 #include "avx_avg.h"
 #include "Ztrace.h"
 #include "Workspace.h"
-#include "File.h"
 #include "MultiBitmap.h"
 #include "ColorBitmap.h"
 #include "ColorMultiBitmap.h"
@@ -498,9 +497,10 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	bool				bResult = false;
 	CBilinearParameters	BilinearParameters;
 
-	m_CriticalSection.Lock();
-	bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-	m_CriticalSection.Unlock();
+	{
+		const std::lock_guard<std::mutex> lock(mutex);
+		bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
+	}
 
 	if (bResult)
 	{
@@ -511,9 +511,8 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	else if (GetTransformationType() == TT_NONE)
 	{
 		// Automatic acknowledgment of the transformation
-		m_CriticalSection.Lock();
+		const std::lock_guard<std::mutex> lock(mutex);
 		m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-		m_CriticalSection.Unlock();
 
 		bResult = true;
 	}
@@ -527,10 +526,11 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 		STARVECTOR &		vStarsDst = m_vBitmaps[lBitmapIndice].m_vStars;
 		CMatchingStars		MatchingStars;
 
-		m_CriticalSection.Lock();
-		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
-		m_CriticalSection.Unlock();
+		{
+			const std::lock_guard<std::mutex> lock(mutex);
+			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+			std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
+		}
 
 		if (!MatchingStars.IsReferenceSet())
 		{
@@ -555,9 +555,8 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 			m_vBitmaps[lBitmapIndice].m_fAngle   = BilinearParameters.Angle(m_vBitmaps[lBitmapIndice].RenderedWidth());
 			m_vBitmaps[lBitmapIndice].m_BilinearParameters = BilinearParameters;
 			MatchingStars.GetVotedPairs(m_vBitmaps[lBitmapIndice].m_vVotedPairs);
-			m_CriticalSection.Lock();
+			const std::lock_guard<std::mutex> lock(mutex);
 			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-			m_CriticalSection.Unlock();
 		};
 	};
 

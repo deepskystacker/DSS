@@ -36,6 +36,7 @@
 #include "stdafx.h"
 #include "selectrect.h"
 #include "imageview.h"
+#include "ProcessingDlg.h"
 #include "StackingDlg.h"
 #include "DeepSkyStacker.h"
 
@@ -59,17 +60,15 @@ namespace DSS
     SelectRect::SelectRect(QWidget* parent) :
         QWidget(parent),
         mode(SelectionMode::None),
-        selecting(false)
+        selecting(false),
+        showDrizzle_(true)
     {
         imageView = dynamic_cast<ImageView*>(parent);
         ZASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
- 
-        StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
-        connect(this, &SelectRect::selectRectChanged, &stackingDlg, &StackingDlg::setSelectionRect);
-    }
+     }
 
     /*!
         \reimp
@@ -603,48 +602,61 @@ namespace DSS
     void SelectRect::getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept
     {
         rect2xDrizzle.setLeft(0.0);  rect2xDrizzle.setTop(0.0);
-        rect2xDrizzle.setRight(imageView->imageWidth() / 2);
-        rect2xDrizzle.setBottom(imageView->imageHeight() / 2);
-
         rect3xDrizzle.setLeft(0.0);  rect3xDrizzle.setTop(0.0);
-        rect3xDrizzle.setRight(imageView->imageWidth() / 3);
-        rect3xDrizzle.setBottom(imageView->imageHeight() / 3);
 
-        switch (mode)
+        //
+        // If the drizzle rectangles are required then calculate the necessary sizes
+        // otherwise set the size to zero.
+        //
+        if (showDrizzle_)
         {
-        case SelectionMode::Create:
-        case SelectionMode::MoveBottom:
-        case SelectionMode::MoveRight:
-        case SelectionMode::MoveBottomRight:
-            // Upper left corner is used as anchor
-            rect2xDrizzle.moveTo(selectRect.left(), selectRect.top());
-            rect3xDrizzle.moveTo(selectRect.left(), selectRect.top());
-            break;
-        case SelectionMode::Move:
-            // No need to show the drizzle rectangles
-            rect2xDrizzle.setSize(QSizeF(0.0, 0.0));
-            rect3xDrizzle.setSize(QSizeF(0.0, 0.0));
-            break;
-        case SelectionMode::MoveTop:
-        case SelectionMode::MoveTopRight:
-            // Lower left corner is used as anchor
-            rect2xDrizzle.moveTo(selectRect.left(), selectRect.bottom() - rect2xDrizzle.height());
-            rect3xDrizzle.moveTo(selectRect.left(), selectRect.bottom() - rect3xDrizzle.height());
-            break;
-        case SelectionMode::MoveLeft:
-        case SelectionMode::MoveBottomLeft:
-            // Upper right corner is used as anchor
-            rect2xDrizzle.moveTo(selectRect.right() - rect2xDrizzle.width(), selectRect.top());
-            rect3xDrizzle.moveTo(selectRect.right() - rect3xDrizzle.width(), selectRect.top());
-            break;
-        case SelectionMode::MoveTopLeft:
-            // Lower right corner is used as anchor
-            rect2xDrizzle.moveTo(selectRect.right() - rect2xDrizzle.width(), selectRect.bottom() - rect2xDrizzle.height());
-            rect3xDrizzle.moveTo(selectRect.right() - rect3xDrizzle.width(), selectRect.bottom() - rect3xDrizzle.height());
-            break;
-        default:
-            break;
-        };
+            rect2xDrizzle.setRight(imageView->imageWidth() / 2);
+            rect2xDrizzle.setBottom(imageView->imageHeight() / 2);
+
+            rect3xDrizzle.setRight(imageView->imageWidth() / 3);
+            rect3xDrizzle.setBottom(imageView->imageHeight() / 3);
+
+            switch (mode)
+            {
+            case SelectionMode::Create:
+            case SelectionMode::MoveBottom:
+            case SelectionMode::MoveRight:
+            case SelectionMode::MoveBottomRight:
+                // Upper left corner is used as anchor
+                rect2xDrizzle.moveTo(selectRect.left(), selectRect.top());
+                rect3xDrizzle.moveTo(selectRect.left(), selectRect.top());
+                break;
+            case SelectionMode::Move:
+                // No need to show the drizzle rectangles
+                rect2xDrizzle.setSize(QSizeF(0.0, 0.0));
+                rect3xDrizzle.setSize(QSizeF(0.0, 0.0));
+                break;
+            case SelectionMode::MoveTop:
+            case SelectionMode::MoveTopRight:
+                // Lower left corner is used as anchor
+                rect2xDrizzle.moveTo(selectRect.left(), selectRect.bottom() - rect2xDrizzle.height());
+                rect3xDrizzle.moveTo(selectRect.left(), selectRect.bottom() - rect3xDrizzle.height());
+                break;
+            case SelectionMode::MoveLeft:
+            case SelectionMode::MoveBottomLeft:
+                // Upper right corner is used as anchor
+                rect2xDrizzle.moveTo(selectRect.right() - rect2xDrizzle.width(), selectRect.top());
+                rect3xDrizzle.moveTo(selectRect.right() - rect3xDrizzle.width(), selectRect.top());
+                break;
+            case SelectionMode::MoveTopLeft:
+                // Lower right corner is used as anchor
+                rect2xDrizzle.moveTo(selectRect.right() - rect2xDrizzle.width(), selectRect.bottom() - rect2xDrizzle.height());
+                rect3xDrizzle.moveTo(selectRect.right() - rect3xDrizzle.width(), selectRect.bottom() - rect3xDrizzle.height());
+                break;
+            default:
+                break;
+            }
+        }
+        else
+        {
+            rect2xDrizzle.setBottom(0.0); rect2xDrizzle.setRight(0.0);
+            rect3xDrizzle.setBottom(0.0); rect3xDrizzle.setRight(0.0);
+        }
 
     }
 

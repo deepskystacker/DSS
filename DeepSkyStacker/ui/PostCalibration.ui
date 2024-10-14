@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PostCalibration</class>
- <widget class="QWidget" name="PostCalibration">
+ <class>DSS::PostCalibration</class>
+ <widget class="QWidget" name="DSS::PostCalibration">
   <property name="geometry">
    <rect>
     <x>0</x>
