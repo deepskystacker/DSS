@@ -13,55 +13,55 @@
 <context>
     <name>DSS</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="108"/>
+        <location filename="../StackingDlg.cpp" line="107"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Listă fișiere (*.dssfilelist)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="109"/>
+        <location filename="../StackingDlg.cpp" line="108"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Listă fișiere (*.txt)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="110"/>
+        <location filename="../StackingDlg.cpp" line="109"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Toate fișierele (*)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="116"/>
+        <location filename="../StackingDlg.cpp" line="115"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fișiere imagine (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="120"/>
+        <location filename="../StackingDlg.cpp" line="119"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fișiere JPEG sau PNG (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="121"/>
+        <location filename="../StackingDlg.cpp" line="120"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fișiere TIFF (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="122"/>
+        <location filename="../StackingDlg.cpp" line="121"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fișiere RAW (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="125"/>
+        <location filename="../StackingDlg.cpp" line="124"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Fișiere FITS (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="126"/>
+        <location filename="../StackingDlg.cpp" line="125"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Toate Fișierele (*)</translation>
@@ -802,62 +802,62 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <translation>Afișați decuparea pentru puncte alb/negru</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Setari Inregistrare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Setari Stackare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="342"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurează setările implicite</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="344"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Încarcă setările pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="348"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Încarcă...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="409"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Salvează ca setări pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="413"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Salvează ca...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="576"/>
+        <location filename="../ExplorerBar.cpp" line="575"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Încarcă setări pentru DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="580"/>
-        <location filename="../ExplorerBar.cpp" line="628"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
+        <location filename="../ExplorerBar.cpp" line="627"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="623"/>
+        <location filename="../ExplorerBar.cpp" line="622"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Salvează Setări DeepSkyStacker</translation>
@@ -866,31 +866,31 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="651"/>
+        <location filename="../StackingDlg.cpp" line="650"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="653"/>
+        <location filename="../StackingDlg.cpp" line="652"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="652"/>
+        <location filename="../StackingDlg.cpp" line="651"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="654"/>
+        <location filename="../StackingDlg.cpp" line="653"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="650"/>
+        <location filename="../StackingDlg.cpp" line="649"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
@@ -1167,19 +1167,19 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
         <translation>Salvează o imagine indicând pixelii îndepărtați pentru fiecare cadru light</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="24"/>
+        <location filename="../PostCalibration.cpp" line="23"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
         <translation>mediana</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="25"/>
+        <location filename="../PostCalibration.cpp" line="24"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
         <translation>filtrul gaussian</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="385"/>
+        <location filename="../PostCalibration.cpp" line="384"/>
         <source>Cosmetic
 Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
@@ -2412,12 +2412,12 @@ Utilizati-o daca doriti sa faceti toata procesarea in alt software sau daca dori
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="785"/>
+        <location filename="../StackingDlg.cpp" line="784"/>
         <source>Rename group</source>
         <translation>Redenumire grup</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="872"/>
+        <location filename="../StackingDlg.cpp" line="871"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -2430,43 +2430,43 @@ Această operație este ireversibilă și nu poate fi întreruptă.</numerusform
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="627"/>
+        <location filename="../StackingDlg.cpp" line="626"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Folosește ca și cadru de referință</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="631"/>
+        <location filename="../StackingDlg.cpp" line="630"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Bifează</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="633"/>
+        <location filename="../StackingDlg.cpp" line="632"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Debifează</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="636"/>
+        <location filename="../StackingDlg.cpp" line="635"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Șterge din listă</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="642"/>
+        <location filename="../StackingDlg.cpp" line="641"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Copie în clipboard</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="645"/>
+        <location filename="../StackingDlg.cpp" line="644"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Șterge de pe disc...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="675"/>
+        <location filename="../StackingDlg.cpp" line="674"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -2477,64 +2477,64 @@ Tasta Delete pentru a elimina (nu a șterge) rândurile selectate
 Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1437"/>
+        <location filename="../StackingDlg.cpp" line="1436"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1446"/>
+        <location filename="../StackingDlg.cpp" line="1445"/>
         <source>Failed to load image %1</source>
         <translation>Nu s-a putut încărca imaginea %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1749"/>
+        <location filename="../StackingDlg.cpp" line="1748"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1402"/>
+        <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Se încarcă %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1494"/>
+        <location filename="../StackingDlg.cpp" line="1493"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Fișierul %1 nu a fost încărcat deoarece a fost deja încărcat în grupul %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1518"/>
+        <location filename="../StackingDlg.cpp" line="1517"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Încarcă Cadre Light...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1521"/>
+        <location filename="../StackingDlg.cpp" line="1520"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Încarcă Cadre Dark...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1539"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Încarcă Cadre Dark Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1527"/>
+        <location filename="../StackingDlg.cpp" line="1526"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Încarcă Cadre Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="639"/>
+        <location filename="../StackingDlg.cpp" line="638"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Proprietati...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="972"/>
+        <location filename="../StackingDlg.cpp" line="971"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -2544,13 +2544,13 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1533"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Încarcă Cadre Bias...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1762"/>
+        <location filename="../StackingDlg.cpp" line="1761"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2564,42 +2564,42 @@ Cadre Dark Flat: %4
 Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1845"/>
+        <location filename="../StackingDlg.cpp" line="1844"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Încarcă o altă Listă de Fișiere...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2015"/>
+        <location filename="../StackingDlg.cpp" line="2014"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versiunea %1 este disponibil pentru a fi descărcat.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2031"/>
+        <location filename="../StackingDlg.cpp" line="2030"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Cod de eroare verificare version Internet %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2132"/>
+        <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2143"/>
+        <location filename="../StackingDlg.cpp" line="2142"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
         <translation>Nu toate cadrele dvs. luminoase verificate au o calitate medie calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2159"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Trebuie să bifați cadrele light pentru a le înregistra.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2216"/>
+        <location filename="../StackingDlg.cpp" line="2215"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2609,19 +2609,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker are nevoie sa creeze fișiere în aceste directoare în timpul procesării.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2237"/>
+        <location filename="../StackingDlg.cpp" line="2236"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Imaginile bifate nu sunt compatibile: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2241"/>
+        <location filename="../StackingDlg.cpp" line="2240"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Trebuie să bifați cadrele light pentru a le stivui.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2288"/>
+        <location filename="../StackingDlg.cpp" line="2287"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2631,18 +2631,18 @@ Do you want to save the changes?</source>
 Vreți să salvați modificările?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2402"/>
+        <location filename="../StackingDlg.cpp" line="2401"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Timp total de stivuire: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2433"/>
+        <location filename="../StackingDlg.cpp" line="2432"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2515"/>
+        <location filename="../StackingDlg.cpp" line="2514"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3013,14 +3013,14 @@ Faceți clic dreapta pentru a modifica comportamentul.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="137"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Această versiune beta a DeepSkyStacker a expirat
 Probabil că puteți obține alta sau puteți descărca versiunea finală de pe site-ul web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="165"/>
+        <location filename="../DeepSkyStacker.cpp" line="163"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3028,17 +3028,17 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 (Puteți modifica această opțiune mai târziu din fereastra Despre)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="392"/>
+        <location filename="../DeepSkyStacker.cpp" line="390"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsorizează DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="336"/>
+        <location filename="../DeepSkyStacker.cpp" line="334"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="612"/>
+        <location filename="../DeepSkyStacker.cpp" line="610"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
@@ -3047,13 +3047,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 <context>
     <name>PostCalibration</name>
     <message>
-        <location filename="../PostCalibration.cpp" line="349"/>
+        <location filename="../PostCalibration.cpp" line="348"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
         <translation>Calculează Cosmetica</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="365"/>
+        <location filename="../PostCalibration.cpp" line="364"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -3061,7 +3061,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 %3</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="367"/>
+        <location filename="../PostCalibration.cpp" line="366"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3073,12 +3073,8 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
-Page-Up and Page-Down keys to move a slider after you have selected it
-with the mouse.</source>
-        <translation>Puteți utiliza săgeata sus, săgeata dreapta, săgeata stânga, săgeata în jos;
-Tastele Pagină în sus și Pagină în jos pentru a muta un glisor după ce l-ați selectat
-cu mouse-ul.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
+        <translation>După ce selectați un cursor cu mouse-ul, îl puteți muta folosind tastele Săgeată în sus, Săgeată dreapta, Săgeată în jos, Săgeată în jos, Pagină în sus și Pagină în jos.</translation>
     </message>
 </context>
 <context>

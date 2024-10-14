@@ -13,31 +13,31 @@
 <context>
     <name>DSS</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="108"/>
+        <location filename="../StackingDlg.cpp" line="107"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>檔案清單 (*.dssfilelist)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="109"/>
+        <location filename="../StackingDlg.cpp" line="108"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>檔案清單 (*.txt)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="110"/>
+        <location filename="../StackingDlg.cpp" line="109"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>所有檔案 (*)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="116"/>
+        <location filename="../StackingDlg.cpp" line="115"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>圖片檔案 (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="120"/>
+        <location filename="../StackingDlg.cpp" line="119"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>17 / 5,000
@@ -45,25 +45,25 @@ Translation results
 JPEG 或 PNG 文件 (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="121"/>
+        <location filename="../StackingDlg.cpp" line="120"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>TIFF 文件 (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="122"/>
+        <location filename="../StackingDlg.cpp" line="121"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>RAW 文件 (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="125"/>
+        <location filename="../StackingDlg.cpp" line="124"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>FITS 文件 (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="126"/>
+        <location filename="../StackingDlg.cpp" line="125"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>所有檔案 (*)</translation>
@@ -795,62 +795,62 @@ Tick this box to keep the trace file.</source>
         <translation>顯示黑/白點的剪裁</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>星點偵測設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>疊合設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="342"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>還原為預設設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="344"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>載入DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="348"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>載入...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="409"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>儲存為DeepSkyStacker Live設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="413"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>儲存為...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="576"/>
+        <location filename="../ExplorerBar.cpp" line="575"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>載入DeepSkyStacker設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="580"/>
-        <location filename="../ExplorerBar.cpp" line="628"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
+        <location filename="../ExplorerBar.cpp" line="627"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="623"/>
+        <location filename="../ExplorerBar.cpp" line="622"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>儲存DeepSkyStacker設定</translation>
@@ -859,31 +859,31 @@ Tick this box to keep the trace file.</source>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="651"/>
+        <location filename="../StackingDlg.cpp" line="650"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="653"/>
+        <location filename="../StackingDlg.cpp" line="652"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="652"/>
+        <location filename="../StackingDlg.cpp" line="651"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="654"/>
+        <location filename="../StackingDlg.cpp" line="653"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="650"/>
+        <location filename="../StackingDlg.cpp" line="649"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
@@ -1160,19 +1160,19 @@ Ctrl+4 切換四角模式</translation>
         <translation>每幅天體影像都儲存一幅顯示哪些像元被移除的影像</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="24"/>
+        <location filename="../PostCalibration.cpp" line="23"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
         <translation>中位數</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="25"/>
+        <location filename="../PostCalibration.cpp" line="24"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
         <translation>高斯濾波</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="385"/>
+        <location filename="../PostCalibration.cpp" line="384"/>
         <source>Cosmetic
 Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
@@ -1562,7 +1562,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;單平面 16 位 FITS 檔來自需要去拜耳化的“單色”相機（DSLR、無反光鏡、CCD 或 CMOS）。&lt;br/&gt;取消選中 &lt;span style=“ font-style：italic;”&gt;&lt;/span&gt; 以嘗試基於 FITS 關鍵字的自動檢測。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;單平面 16 位 FITS 檔來自需要去拜耳化的“單色”相機（DSLR、無反光鏡、CCD 或 CMOS）。&lt;br/&gt;取消選中 &lt;span style=“ font-style：italic;”&gt;&lt;/span&gt; 以嘗試基於 FITS 關鍵字的自動檢測。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="334"/>
@@ -2401,12 +2401,12 @@ Use it if you plan to do all the processing in other software or if you plan to 
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="785"/>
+        <location filename="../StackingDlg.cpp" line="784"/>
         <source>Rename group</source>
         <translation>重命名群組</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="872"/>
+        <location filename="../StackingDlg.cpp" line="871"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -2416,43 +2416,43 @@ This operation cannot be reversed or cancelled.</source>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="627"/>
+        <location filename="../StackingDlg.cpp" line="626"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>以此為基準影像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="631"/>
+        <location filename="../StackingDlg.cpp" line="630"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>勾選</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="633"/>
+        <location filename="../StackingDlg.cpp" line="632"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>取消勾選</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="636"/>
+        <location filename="../StackingDlg.cpp" line="635"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>從清單中移除</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="642"/>
+        <location filename="../StackingDlg.cpp" line="641"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>複製至暫存區</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="645"/>
+        <location filename="../StackingDlg.cpp" line="644"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>從硬碟裡刪除...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="675"/>
+        <location filename="../StackingDlg.cpp" line="674"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -2463,64 +2463,64 @@ Ctrl-A 或相當於選擇所有行
 鼠標右鍵顯示菜單</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1437"/>
+        <location filename="../StackingDlg.cpp" line="1436"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1446"/>
+        <location filename="../StackingDlg.cpp" line="1445"/>
         <source>Failed to load image %1</source>
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1749"/>
+        <location filename="../StackingDlg.cpp" line="1748"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1402"/>
+        <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>載入 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1494"/>
+        <location filename="../StackingDlg.cpp" line="1493"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1518"/>
+        <location filename="../StackingDlg.cpp" line="1517"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>開啟天體影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1521"/>
+        <location filename="../StackingDlg.cpp" line="1520"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>開啟暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1539"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>開起平場暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1527"/>
+        <location filename="../StackingDlg.cpp" line="1526"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>開啟平場影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="639"/>
+        <location filename="../StackingDlg.cpp" line="638"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>屬性...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="972"/>
+        <location filename="../StackingDlg.cpp" line="971"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -2528,13 +2528,13 @@ Ctrl-A 或相當於選擇所有行
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1533"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>開啟偏壓影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1762"/>
+        <location filename="../StackingDlg.cpp" line="1761"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2548,42 +2548,42 @@ Offset/Bias Frames: %5</source>
 偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1845"/>
+        <location filename="../StackingDlg.cpp" line="1844"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>開啟另一個檔案清單...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2015"/>
+        <location filename="../StackingDlg.cpp" line="2014"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>第%1版DeepSkyStacker已可下載。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2031"/>
+        <location filename="../StackingDlg.cpp" line="2030"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>版本檢查 Internet 錯誤代碼 %1：
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2132"/>
+        <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>總註冊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2143"/>
+        <location filename="../StackingDlg.cpp" line="2142"/>
         <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
+        <translation>並非所有選中的亮框都計算了平均品質。您應該重新註冊您的輕型幀。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2159"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>偵測星點前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2216"/>
+        <location filename="../StackingDlg.cpp" line="2215"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2593,19 +2593,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker需要在執行中存取這些檔案夾。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2237"/>
+        <location filename="../StackingDlg.cpp" line="2236"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>勾选的图片不相容: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2241"/>
+        <location filename="../StackingDlg.cpp" line="2240"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>疊合前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2288"/>
+        <location filename="../StackingDlg.cpp" line="2287"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2615,18 +2615,18 @@ Do you want to save the changes?</source>
 要儲存這些變定嗎？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2402"/>
+        <location filename="../StackingDlg.cpp" line="2401"/>
         <source>Total stacking time: %1 %2</source>
         <translation>總堆疊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2433"/>
+        <location filename="../StackingDlg.cpp" line="2432"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>儲存最終影像於 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2515"/>
+        <location filename="../StackingDlg.cpp" line="2514"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -2988,14 +2988,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="137"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker 測試版已過期
 您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="165"/>
+        <location filename="../DeepSkyStacker.cpp" line="163"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3003,17 +3003,17 @@ You can probably get another one or download the final release from the web site
 （稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="392"/>
+        <location filename="../DeepSkyStacker.cpp" line="390"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>贊助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="336"/>
+        <location filename="../DeepSkyStacker.cpp" line="334"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="612"/>
+        <location filename="../DeepSkyStacker.cpp" line="610"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
@@ -3022,13 +3022,13 @@ You can probably get another one or download the final release from the web site
 <context>
     <name>PostCalibration</name>
     <message>
-        <location filename="../PostCalibration.cpp" line="349"/>
+        <location filename="../PostCalibration.cpp" line="348"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
         <translation>計算外觀修飾</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="365"/>
+        <location filename="../PostCalibration.cpp" line="364"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -3036,7 +3036,7 @@ You can probably get another one or download the final release from the web site
 %3</translation>
     </message>
     <message>
-        <location filename="../PostCalibration.cpp" line="367"/>
+        <location filename="../PostCalibration.cpp" line="366"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3048,10 +3048,8 @@ You can probably get another one or download the final release from the web site
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
-Page-Up and Page-Down keys to move a slider after you have selected it
-with the mouse.</source>
-        <translation type="unfinished"></translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
+        <translation>使用滑鼠選擇滑桿後，可以使用向上箭頭、向右箭頭、向下箭頭、向下箭頭、向上翻頁和向下翻頁鍵來移動它。</translation>
     </message>
 </context>
 <context>

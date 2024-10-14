@@ -42,9 +42,9 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 	endPegStop = stops.size() - 1;
 
 	setToolTip(QCoreApplication::translate("QLinearGradientCtrl",
-		"You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;\n"
-		"Page-Up and Page-Down keys to move a slider after you have selected it\n"
-		"with the mouse."));
+		"After selecting a slider with the mouse, you can move it"
+		" using the Up Arrow, Right Arrow, Down Arrow, Down Arrow,"
+		" Page Up, and Page Down keys."));
 }
 
 QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& src)

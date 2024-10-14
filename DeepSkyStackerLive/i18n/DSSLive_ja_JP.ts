@@ -1039,9 +1039,7 @@ Do you want to process them?</source>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>You can use the Up-Arrow, Right-Arrow, Left-Arrow, Down-Arrow;
-Page-Up and Page-Down keys to move a slider after you have selected it
-with the mouse.</source>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
