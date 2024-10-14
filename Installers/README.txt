@@ -3,8 +3,8 @@ Welcome to DeepSkyStacker 5.1.8 Beta 1
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are few bug fixes,
-and a number of enhancements as well.   This isn't a complete list as a many changes were made to improve code quality and 
+This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are a few bug fixes,
+and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
 performance.
 
 Known problems:
