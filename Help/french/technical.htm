@@ -17,14 +17,14 @@
 <p><b><font size="5" face="Arial">Détails techniques</font></b></p>
 <blockquote>
 
-<p><b><font face="Arial"><A href="#Registering">Enregistrement</a><br>
-<A href="#Alignment">Alignement</a><br>
-<A href="#filegroup">Les groupes de fichiers</a><br>
-<A href="#Stacking">Empilement</a><br>
-<A href="#stackingmethods">Les méthodes d'empilement</a><br>
-<A href="#Drizzle">Drizzle</a><br>
-<A href="#cometstacking">Empilement d'images de comète</a><br>
-<A href="#rawdecod">Décodage et traitement des fichiers RAW</a></font></b></p>
+<p><b><font face="Arial"><A href="#Registering">Enregistrement</A><br>
+<A href="#Alignment">Alignement</A><br>
+<A href="#filegroup">Les groupes de fichiers</A><br>
+<A href="#Stacking">Empilement</A><br>
+<A href="#stackingmethods">Les méthodes d'empilement</A><br>
+<A href="#Drizzle">Drizzle</A><br>
+<A href="#cometstacking">Empilement d'images de comète</A><br>
+<A href="#rawdecod">Décodage et traitement des fichiers RAW</A></font></b></p>
 </blockquote>
 <hr color="#0000ff">
 <p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
@@ -52,14 +52,14 @@ détection d'étoiles..</font></font></p>
 chauds pendant le processus d'enregistrement afin des les éliminer pour ne pas 
 les confondre avec des étoiles.<br>
 Il faut noter que cette option n'est valable que sur les images monochromes et 
-sur les images RAW ou FITS dans les modes <A href="#superpixel">Super-pixels</a>,
-<A href="#bayerdrizzle">Bayer.Drizzle</a> et interpolation bilinéaire ou AHD.</font></font></p>
+sur les images RAW ou FITS dans les modes <A href="#superpixel">Super-pixels</A>,
+<A href="#bayerdrizzle">Bayer.Drizzle</A> et interpolation bilinéaire ou AHD.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><b><font size="2" face="Arial"><a name="detectionthreshold"></a>Changement du 
 seuil de détection des étoiles</font></b><font size="2" face="Arial"><b><br>
 </b>Le seuil de détection des 
-étoiles est fixé à 10% par défaut (10% de la luminosité maximale).<br>&nbsp;</font></p>
-<p align="justify"><font size="2" face="Arial"><font size="2" face="Arial">
+étoiles est fixé à 10% par défaut (10% de la luminosité maximale).<br>&nbsp;</font></p><font size="2" face="Arial"><font size="2" face="Arial">
+<p align="justify">
 <table style="BORDER-COLLAPSE: collapse" width="100%" cellspacing="0" cellpadding="5" bordercolor="#c0c0c0" border="1">
   <tbody>
   <tr>
@@ -85,9 +85,69 @@ lumineuse), vous pouvez réduire le bruit en activant l'option Réduire
 le bruit en utilisant un filtre médian.</font></span></p>
 <font size="2" face="Arial">      </font><p align="justify"><font size="2" face="Arial">Pour vous aider à trouver le meilleur seuil pour vos images, vous pouvez calculer le nombre d'étoiles qui vont être détectées.<br>
 Pour cela DeepSkyStacker utilise la première image et désactive temporaitement la détection des pixels chauds.<br>
-</font></p><p align="justify"><font size="2" face="Arial">Ce nombre est uniquement un guide et le nombre réel d'étoiles détectées va varier en fonction des autres paramètres.</font></p></td>
-    <td>&nbsp;<IMG alt="" src="technical_files/Register_Settings.jpg"></td></tr></tbody></table><br></font><font size="2" face="Arial"><br></font></font>
-</p><hr size="1" color="#0000ff">
+</font></p><p align="justify"><font size="2" face="Arial">Ce nombre est uniquement un guide et le nombre réel d'étoiles détectées va varier en fonction des autres paramètres.</font></p>
+<p align="justify"><FONT size=2><SPAN lang=fr class="HwtZe" 
+jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Si vous sélectionnez «&nbsp;Utiliser le seuil 
+automatique&nbsp;», DeepSkyStacker essaiera de déterminer un bon seuil de 
+détection à l'aide d'un algorithme d'optimisation.<BR></SPAN></SPAN><SPAN 
+class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Cela signifie qu'il n'est plus nécessaire d'ajuster manuellement 
+le «&nbsp;Seuil de détection d'étoiles&nbsp;».</SPAN></SPAN></SPAN> 
+      </FONT>
+</p>
+<p align="justify"><SPAN lang=fr class="HwtZe" 
+jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"><FONT size=2>Cela est particulièrement utile pour les images où le seuil 
+minimum de 1&nbsp;% n'est toujours pas assez bas pour trouver un nombre 
+raisonnable d'étoiles (le seuil automatique peut descendre jusqu'à 
+0,05&nbsp;%).<BR></FONT></SPAN></SPAN></SPAN><FONT size=2><SPAN lang=fr class="HwtZe" 
+jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Le seuil sera défini de telle sorte que le nombre d'étoiles 
+détectées soit d'au moins 50 (si possible, sinon un nombre inférieur est 
+accepté).</SPAN></SPAN></SPAN> </FONT>
+</p>
+<p align="justify"><SPAN lang=fr class="HwtZe" 
+jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"></SPAN></SPAN><FONT size=2><SPAN class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Le seuil calculé de la première image sera utilisé comme point 
+de départ pour trouver le seuil optimal pour les images suivantes.</SPAN></SPAN> 
+<SPAN class="jCAhz ChMk0b" 
+jsname="txFAF" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsname="W297wb" jsaction  
+="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Si un cadre de référence a déjà été choisi, cette image sera 
+alors utilisée comme première à enregistrer.</SPAN></SPAN></FONT></SPAN></p></td>
+    <td>&nbsp;<IMG alt="" src="../images/french/Register_Settings.jpg"></td></tr></tbody></table>
+</p></font></font><hr size="1" color="#0000ff">
+
+<P></P>
 <p></p>
 <p align="justify"><font size="2" face="Arial"><b>Sauvegarde des résultats de l'enregistrement<br>
 </b>Les paramètres de l'enregistrement (nombre d'étoiles détectées, position, 
@@ -327,7 +387,7 @@ valeur interpolée à partir des pixels voisins.<br>
 <br>
 <b>Etape 6<br>
 </b>Dans le cas du développement raw avec la méthode du
-<A href="#bayerdrizzle">Bayer drizzle</a>, les valeurs des trois composantes RGB 
+<A href="#bayerdrizzle">Bayer drizzle</A>, les valeurs des trois composantes RGB 
 sont normalisées pour éviter les trous d'information.<br>
 <br>
 <b>Etape 7<br>
@@ -393,7 +453,7 @@ Lorsque que vous lancerez l'empilement, le rectangle que vous avez sélectionné
 sera choisi par défaut comme méthode d'empilement.<br>
 <br>
 Cette option peut être particulièrement utile si vous utilisez l'option
-<A href="#Drizzle">Drizzle</a> qui double ou triple la taille des images 
+<A href="#Drizzle">Drizzle</A> qui double ou triple la taille des images 
 résultantes et donc l'espace disque et l'espace mémoire utilisés lors de 
 l'empilement.<br>
 <br>
@@ -436,7 +496,7 @@ de rejeter les valeurs elles sont remplacées par la médiane.<br>
 La moyenne pondérée auto 
 adaptative est adaptée des travaux de Dr. Peter B. Stetson (see&nbsp;<A href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html">
 The 
-Techniques of Least Squares and Stellar Photometry with CCDs</a>&nbsp;- Peter B. 
+Techniques of Least Squares and Stellar Photometry with CCDs</A>&nbsp;- Peter B. 
 Stetson 1989).<br><br>
 Cette méthode permet de calculer une moyenne robuste obtenue en pondérant de 
 façon itérative les pixels en fonction de leurs écart à la moyenne par rapport à 
@@ -503,9 +563,9 @@ caractéristiques de l'image (couleurs, luminance).</font></p>
     <br>
     Passer la souris sur le texte pour voir<br>
 &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Pas de Drizzle - Agrandie 4 fois';" href="javascript:void(0);">
-M57 non traitée - Pas de Drizzle (agrandie 4 fois)</a><br>
+M57 non traitée - Pas de Drizzle (agrandie 4 fois)</A><br>
 &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Drizzle x2 - Agrandie 2 fois';" href="javascript:void(0);">
-M57 non traitée - Drizzle x2 (agrandie 2 fois)</a></span></font></p></td>
+M57 non traitée - Drizzle x2 (agrandie 2 fois)</A></span></font></p></td>
     <td width="60%">
     <p align="center">
     <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="technical_files/M57_NoDrizzle.jpg" width=411 height=353><br>
@@ -535,7 +595,7 @@ la résolution de l'image finale.<br>
 <br>
 Dans tous les cas une bonne façon de limiter l'augmentation de la quantité 
 d'espace disque et de mémoire nécessaire liés au Drizzle est d'utiliser un
-<A href="#customrect">rectangle personnalisé</a>.<br>
+<A href="#customrect">rectangle personnalisé</A>.<br>
 <br>
 <b>Drizzle et Bayer Drizzle</b><br>
 Même s'ils utilisent deux versions de l'algorithme Drizzle, il n'est pas 
@@ -564,18 +624,18 @@ texte pour voir les résultats)</font></p>
     <td width="41%">
 <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"><font size="2" face="Arial"><br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
-Empilement standard</a></b><br>
+Empilement standard</A></b><br>
 La position de la comète est ignorée.<br>
 La comète est floue est les étoiles sont ponctuelles.</font></p>
 <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"><A href="javascript:void(0);"><b>
-<font size="2" face="Arial"></font></b></a><b><font size="2" face="Arial"><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
-Alignement sur la comète : filés d'étoiles</a></font><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);"></a></b><font size="2" face="Arial"><br>
+<font size="2" face="Arial"></font></b></A><b><font size="2" face="Arial"><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
+Alignement sur la comète : filés d'étoiles</A></font><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);"></A></b><font size="2" face="Arial"><br>
 La position de la comète est utilisée. Les images sont alignées sur la comète et 
 les positions des étoiles sont utilisées uniquement pour compenser une rotation 
 du champ.<br>
 <br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
-Alignement sur la comète et les étoiles : effet "étoiles arrêtées"</a></b><br>
+Alignement sur la comète et les étoiles : effet "étoiles arrêtées"</A></b><br>
 La position de la comète est utilisée.<br>
 Un premier empilement est réalisé pour extraire la comète du fond stellaire.<br>
 Ensuite un second empilement est réalisé pour geler les étoiles (la comète est 
@@ -597,46 +657,55 @@ comportement par défaut.<br>
 Etape 1 : Enregistrer la position de la comète</font><br>
 </b></font><font size="2" face="Arial">DeepSkyStacker ne peut pas détecter automatiquement la 
 position de la comète dans les images brutes.&nbsp;&nbsp; <SPAN lang=fr 
-class=HwtZe jsname="jqKxS" 
-jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
+class="HwtZe" jsname="jqKxS" 
+jsaction ="mouseup:Sxi9L,BR6jm; &#13;&#10;&#13;&#10;mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
 jsname="txFAF" 
 jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><FONT size=3 face="Times New Roman">Donc, vous devez 
+jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+jsaction   ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><FONT size=3 face="Times New Roman">Donc, vous devez 
 :</FONT></SPAN></SPAN></SPAN>        </font></P>
 <UL>
   <LI>
-<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class=HwtZe jsname="jqKxS" 
-  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
+<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsname="jqKxS" 
+  jsaction   
+  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
   jsname="txFAF" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-  jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
-  lang=fr class=HwtZe jsname="jqKxS" 
-  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+  jsaction     
+  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
+  lang=fr class="HwtZe" jsname="jqKxS" 
+  jsaction   
+  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-  jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquez 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+  jsaction     
+  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquez 
   la position du centre de la comète dans 2 images lumineuses avec une grande 
   distance temporelle (idéalement la première et la dernière image lumineuse 
   dans l'ordre 
-  chronologique).</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div></LI>
+  chronologique).</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div>
   <LI>
-<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class=HwtZe jsname="jqKxS" 
-  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
+<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsname="jqKxS" 
+  jsaction   
+  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
   jsname="txFAF" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-  jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
-  lang=fr class=HwtZe jsname="jqKxS" 
-  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+  jsaction     
+  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
+  lang=fr class="HwtZe" jsname="jqKxS" 
+  jsaction   
+  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-  jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"></SPAN></SPAN><SPAN 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+  jsaction     
+  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"></SPAN></SPAN><SPAN 
   class="jCAhz ChMk0b" jsname="txFAF" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class=ryNqvb jsname="W297wb" 
-  jsaction="click:E6Tfl,GFf3ac,tMZCfe; contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquer 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
+  jsaction     
+  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquer 
   le centre de la comète dans des cadres lumineux supplémentaires peut 
   potentiellement améliorer les 
   résultats.</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div></LI></UL>
@@ -720,7 +789,7 @@ des fichiers raw</font><br>
               Les 
 fichiers raw produits par les appareils photos numériques sont décodés à 
 l'aide de<A href="https://www.libraw.org/">
-LibRaw</a>&nbsp;Copyright 
+LibRaw</A>&nbsp;Copyright 
 ©&nbsp;2008-2019 LibRaw LLC, which is based on the original DCRaw by Dave 
 Coffin.
 <br>
