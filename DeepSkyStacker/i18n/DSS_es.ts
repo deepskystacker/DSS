@@ -3068,8 +3068,8 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Después de seleccionar un control deslizante con el mouse, puede moverlo usando las teclas Flecha arriba, Flecha derecha, Flecha abajo, Flecha abajo, Re Pág y Av Pág.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Después de seleccionar un control deslizante con el mouse, puede moverlo usando las teclas Flecha arriba, Flecha derecha, Flecha abajo, Flecha izquierda, Re Pág y Av Pág.</translation>
     </message>
 </context>
 <context>

@@ -1058,8 +1058,8 @@ Do you want to process them?</source>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>使用滑鼠選擇滑桿後，可以使用向上箭頭、向右箭頭、向下箭頭、向下箭頭、向上翻頁和向下翻頁鍵來移動它。</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>用滑鼠選擇滑桿後，可以使用向上箭頭、向右箭頭、向下箭頭、向左箭頭、向上翻頁和向下翻頁鍵來移動它。</translation>
     </message>
 </context>
 </TS>

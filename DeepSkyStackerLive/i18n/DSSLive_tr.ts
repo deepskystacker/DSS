@@ -1057,8 +1057,8 @@ Bunları işlemek ister misiniz?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Fare ile bir kaydırıcıyı seçtikten sonra Yukarı Ok, Sağ Ok, Aşağı Ok, Aşağı Ok, Page Up ve Page Down tuşlarını kullanarak kaydırıcıyı hareket ettirebilirsiniz.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Fare ile bir kaydırıcıyı seçtikten sonra Yukarı Ok, Sağ Ok, Aşağı Ok, Sol Ok, Page Up ve Page Down tuşlarını kullanarak kaydırıcıyı hareket ettirebilirsiniz.</translation>
     </message>
 </context>
 </TS>

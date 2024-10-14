@@ -3064,8 +3064,8 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Dopo aver selezionato un cursore con il mouse, è possibile spostarlo utilizzando i tasti Freccia su, Freccia destra, Freccia giù, Freccia giù, Pag su e Pag giù.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Dopo aver selezionato un cursore con il mouse, è possibile spostarlo utilizzando i tasti Freccia su, Freccia destra, Freccia giù, Freccia sinistra, Pagina su e Pagina giù.</translation>
     </message>
 </context>
 <context>

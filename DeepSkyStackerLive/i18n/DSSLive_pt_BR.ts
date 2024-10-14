@@ -1059,8 +1059,8 @@ Você deseja processá-los?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Depois de selecionar um controle deslizante com o mouse, você pode movê-lo usando as teclas Seta para cima, Seta para direita, Seta para baixo, Seta para baixo, Page Up e Page Down.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Depois de selecionar um controle deslizante com o mouse, você pode movê-lo usando as teclas Seta para cima, Seta para direita, Seta para baixo, Seta para esquerda, Page Up e Page Down.</translation>
     </message>
 </context>
 </TS>

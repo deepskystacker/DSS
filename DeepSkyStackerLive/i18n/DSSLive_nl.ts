@@ -1059,8 +1059,8 @@ Wil je ze verwerken?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Nadat u een schuifregelaar met de muis hebt geselecteerd, kunt u deze verplaatsen met de toetsen Pijltje omhoog, Pijltje rechts, Pijltje omlaag, Pijltje omlaag, Page Up en Page Down.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Nadat u een schuifregelaar met de muis hebt geselecteerd, kunt u deze verplaatsen met de toetsen Pijl-omhoog, Pijl-rechts, Pijl-omlaag, Pijl-links, Page Up en Page Down.</translation>
     </message>
 </context>
 </TS>

@@ -3065,8 +3065,8 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Nachdem Sie mit der Maus einen Schieberegler ausgewählt haben, können Sie ihn mit den Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Abwärtspfeil“, „Bild auf“ und „Bild ab“ verschieben.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Nachdem Sie mit der Maus einen Schieberegler ausgewählt haben, können Sie ihn mit den Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Abwärtspfeil“, „Linkspfeil“ und „Bild auf“ verschieben.</translation>
     </message>
 </context>
 <context>
