@@ -12,6 +12,25 @@ Known problems:
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
+2. If you install DeepSkyStacker and it won’t startup, then it is likely that you have hit a problem caused by another application’s install
+   procedure overwriting msvcp140.dll with a back-level version.
+
+   If this is the case, then you will find that the log file in “My Documents\DeepSkyStacker” contains lines like:
+
+	00000030 2024/06/19 21:30:57.010 028564 00003520     >00007FFC81353020 (MSVCP140): (filename not available): Thrd_yield
+	00000030 2024/06/19 21:30:57.010 028564 00003520     >
+	00000031 2024/06/19 21:30:57.011 028564 00003520     >C:\Users\amonra\Documents\GitHub\DSS\DeepSkyStackerKernel\Workspace.cpp (456): Workspace::Workspace
+
+   The solution to this problem is to download the latest version of the Visual C++ re-distributable (vc_redist) for x64 from:
+
+	https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+   and running it, selecting the “Repair” option.
+
+   For more details of the issue please see:
+
+	https://stackoverflow.com/questions/78598141/first-stdmutexlock-crashes-in-application-built-with-latest-visual-studio
+
 Changes since the last release:
 
 1. Bug fix: When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
@@ -28,22 +47,22 @@ Changes since the last release:
 
 7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
 
-8. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
-   mean star quality as compared to the score which was the sum of all star qualities and depended on the number of
-   stars as well as their quality.
+8. Implement an automatic threshold for star detection (which is the default) and a much better image quality indication (Quality) which is a
+   Gaussian mean of star quality as compared to the Score which was the sum of all star qualities (calculated differently) and was dependent
+   on the number of stars as well as their quality.
 
-   The threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
+   The automatic threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
 
-   The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is
+   The new Quality value is primarily based on the average circularity ("roundness") of the stars in the image. It is
    largely independent of the number of detected stars.
 
-   The background level, to which the star detection threshold is referring, is now calculated locally per 250x250 pixel square rather than globally over the entire image.
-   This compensates for any background illumination gradients.
+   The background level, to which the star detection threshold refers, is now calculated locally per 250x250 pixel square rather than
+   globally over the entire image.  This compensates for any background illumination gradients.
 
-   All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
+   All light frame sorting criteria have been switched to the new Quality value instead of the Score (e.g. for stacking the best x% light frames).
 
-   The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold is used, the detected threshold
-   of this light frame will serve as the basis for the threshold search of the following frames.
+   The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold
+   is used, the detected threshold of this light frame will serve as the basis for the threshold search of the following frames.
 
    We suggest that you ensure that the first registered light frame is not significantly darker then the other frames (brighter is no problem),
    otherwise the number of detected stars might be very high.

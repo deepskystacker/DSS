@@ -212,9 +212,9 @@ namespace DSS
 			for (auto it = group.pictures->cbegin(); it != group.pictures->cend(); ++it)
 			{
 				// Is it a checked light-frame?
-				// IF yes -> is meanQuality missing?
-				// IF yes again -> return false (not all checked light-frames have 'meanQuality' set).
-				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && (!std::isfinite(it->meanQuality) || it->meanQuality <= 0.0))
+				// IF yes -> is quality missing?
+				// IF yes again -> return false (not all checked light-frames have 'quality' set).
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked && (!std::isfinite(it->quality) || it->quality <= 0.0))
 					return false;
 			}
 		}
@@ -258,9 +258,9 @@ namespace DSS
 						bReferenceFrameSet = true;
 //						bReferenceFrameHasComet = it->m_bComet;
 					}
-					if (!bReferenceFrameSet && (it->meanQuality > fMaxScore))
+					if (!bReferenceFrameSet && (it->quality > fMaxScore))
 					{
-						fMaxScore = it->meanQuality;
+						fMaxScore = it->quality;
 //						bReferenceFrameHasComet = it->m_bComet;
 					}
 					const ListBitMap& image = *it;
@@ -607,7 +607,7 @@ namespace DSS
 					{
 						it->m_bRegistered = true;
 						group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-						group.pictures->setData(row, Column::Quality, bmpInfo.meanQuality);
+						group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 						group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
 						group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
@@ -649,7 +649,7 @@ namespace DSS
 				{
 					it->m_bRegistered = true;
 					group.pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
-					group.pictures->setData(row, Column::Quality, bmpInfo.meanQuality);
+					group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 					group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
 					group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
@@ -849,7 +849,7 @@ namespace DSS
 	void FrameList::checkAbove(const double threshold)
 	{
 		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
-			return std::make_pair(file.IsLightFrame(), file.meanQuality >= threshold ? Qt::Checked : Qt::Unchecked);
+			return std::make_pair(file.IsLightFrame(), file.quality >= threshold ? Qt::Checked : Qt::Unchecked);
 		};
 		checkSelective<Selector, false>(true, threshold);
 		//for (auto& group : imageGroups)
@@ -925,7 +925,7 @@ namespace DSS
 				const auto& file = group.pictures->mydata[i];
 				if (file.IsLightFrame())
 				{
-					lightFrames.emplace_back(file.meanQuality, i, group.index());
+					lightFrames.emplace_back(file.quality, i, group.index());
 				}
 			}
 			group.setDirty();

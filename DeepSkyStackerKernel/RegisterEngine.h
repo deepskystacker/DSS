@@ -28,7 +28,7 @@ public:
 	double			m_fXComet;
 	double			m_fYComet;
 	CSkyBackground	m_SkyBackground;
-	double meanQuality{ 0.0 };
+	double quality{ 0.0 };
 protected:
 	double usedDetectionThreshold{ 0.0 };
 
@@ -58,7 +58,7 @@ public:
 	void SetStars(const STARVECTOR& vStars)
 	{
 		m_vStars = vStars;
-		std::tie(this->m_fOverallQuality, this->meanQuality) = CRegisteredFrame::ComputeOverallQuality(m_vStars);
+		std::tie(this->m_fOverallQuality, this->quality) = CRegisteredFrame::ComputeOverallQuality(m_vStars);
 		ComputeFWHM();
 	}
 

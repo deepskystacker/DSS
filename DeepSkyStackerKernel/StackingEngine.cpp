@@ -896,7 +896,7 @@ void CStackingEngine::ComputeOffsets()
 			return true;
 		if (r.m_bStartingFrame)
 			return false;
-		return l.meanQuality > r.meanQuality;
+		return l.quality > r.quality;
 	};
 	std::ranges::sort(m_vBitmaps, QualityComp);
 

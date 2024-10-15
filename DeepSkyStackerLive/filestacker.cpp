@@ -170,10 +170,10 @@ namespace DSS
 
 					for (auto it = pending.begin(); it != pending.end(); ++it)
 					{
-						if ((*it)->meanQuality > maxScore)
+						if ((*it)->quality > maxScore)
 						{
 							bestit = it;
-							maxScore = (*it)->meanQuality;
+							maxScore = (*it)->quality;
 						}
 					}
 					if (bestit != pending.end())
