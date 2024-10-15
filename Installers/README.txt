@@ -44,22 +44,22 @@ Changes since the last release:
 
 7. Bug fix: Custom rectangle produces a partly empty stacking result when the SIMD acceleration is turned ON.
 
-8. Automatic threshold for star detection (default) and better image quality indication (Mean Quality) which is the
-   mean star quality as compared to the score which was the sum of all star qualities and depended on the number of
-   stars as well as their quality.
+8. Implement an automatic threshold for star detection (which is the default) and a much better image quality indication (Quality) which is a
+   Gaussian mean of star quality as compared to the Score which was the sum of all star qualities (calculated differently) and was dependent
+   on the number of stars as well as their quality.
 
-   The threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
+   The automatic threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
 
-   The new Mean Quality is primarily based on the average circularity ("roundness") of the stars in the image. It is
+   The new Quality value is primarily based on the average circularity ("roundness") of the stars in the image. It is
    largely independent of the number of detected stars.
 
-   The background level, to which the star detection threshold is referring, is now calculated locally per 250x250 pixel square rather than globally over the entire image.
-   This compensates for any background illumination gradients.
+   The background level, to which the star detection threshold refers, is now calculated locally per 250x250 pixel square rather than
+   globally over the entire image.  This compensates for any background illumination gradients.
 
-   All light frame sorting criteria have been switched to the new Mean Quality (e.g. for stacking the best x% light frames).
+   All light frame sorting criteria have been switched to the new Quality value instead of the Score (e.g. for stacking the best x% light frames).
 
-   The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold is used, the detected threshold
-   of this light frame will serve as the basis for the threshold search of the following frames.
+   The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold
+   is used, the detected threshold of this light frame will serve as the basis for the threshold search of the following frames.
 
    We suggest that you ensure that the first registered light frame is not significantly darker then the other frames (brighter is no problem),
    otherwise the number of detected stars might be very high.
