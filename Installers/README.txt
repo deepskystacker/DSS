@@ -77,6 +77,9 @@ Changes since the last release:
 
 13. Bug fix: Fix broken handling of Up-Arrow, Right-Arrow, Down-Arrow, Left-Arrow; Page-Up and Page-Down keys for the sliders of the gradient control.
 
+14. Bug fix: Attempting to load a FITS file from the image list failed with a message: "Failed to load ...".   This was caused by a change in the Mime
+    types database shipped with the latest version of Qt.  It used to assign a type of "image/fits" to FITS files, but now assigns "application/fits".
+
 Welcome to DeepSkyStacker 5.1.6
 ===============================
 

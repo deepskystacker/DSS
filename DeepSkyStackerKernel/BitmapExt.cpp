@@ -38,6 +38,11 @@ namespace
 		ThreadVars& operator=(const ThreadVars&) = delete;
 	};
 
+	//
+	// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
+	// "application/fits" so code round that.
+	//
+	constexpr char const* mimeFitsKeyword = QT_VERSION < 0x060800 ? "image/fits" : "application/fits";
 }
 
 /* ------------------------------------------------------------------- */
@@ -841,11 +846,6 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 		//
 		// Check RAW image file types
-		//
-		// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
-		// "application/fits" so code round that.
-		//
-		constexpr char const* mimeFitsKeyword = QT_VERSION < 0x060800 ? "image/fits" : "application/fits";
 
 		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
@@ -1056,7 +1056,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		// It wasn't a TIFF file, so try to load a FITS file
 		//
-		else if (mime.inherits("image/fits"))
+		else if (mime.inherits(mimeFitsKeyword))
 		{
 			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 			if (0 == loadResult)
