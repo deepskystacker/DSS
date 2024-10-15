@@ -668,7 +668,7 @@ A partir de ce moment toutes les images entrantes (et celles déjà enregistrée
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualité</translation>
     </message>
@@ -1064,8 +1064,8 @@ Voulez-vous les traiter?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Après avoir sélectionné un curseur avec la souris, vous pouvez le déplacer à l&apos;aide des touches Flèche vers le haut, Flèche vers la droite, Flèche vers le bas, Flèche vers le bas, Page précédente et Page suivante.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Après avoir sélectionné un curseur avec la souris, vous pouvez le déplacer à l&apos;aide des touches Flèche vers le haut, Flèche vers la droite, Flèche vers le bas, Flèche vers la gauche, Page précédente et Page suivante.</translation>
     </message>
 </context>
 </TS>

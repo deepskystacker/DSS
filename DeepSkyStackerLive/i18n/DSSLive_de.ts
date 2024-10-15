@@ -20,7 +20,7 @@
         <location filename="../ChartTab.cpp" line="46"/>
         <source>FWHM</source>
         <comment>IDC_FWHM</comment>
-        <translation type="unfinished">FWHM</translation>
+        <translation>FWHM</translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="63"/>
@@ -33,7 +33,7 @@
         <location filename="../ui/ChartTab.ui" line="79"/>
         <source>dX/dY</source>
         <comment>IDC_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>dX/dY</translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="95"/>
@@ -556,8 +556,7 @@ Aktivieren Sie dieses Kontrollkästchen, um die Trace-Datei beizubehalten.</tran
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Diese Beta-Version von DeepSkyStacker ist abgelaufen
-Sie können wahrscheinlich eine weitere bekommen oder die endgültige Version von der Website herunterladen.
-</translation>
+Sie können wahrscheinlich eine weitere bekommen oder die endgültige Version von der Website herunterladen.</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="461"/>
@@ -668,9 +667,9 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
-        <translation>Güte</translation>
+        <translation>Qualität</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="592"/>
@@ -1064,8 +1063,8 @@ Wollen Sie sie verarbeiten?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Nachdem Sie mit der Maus einen Schieberegler ausgewählt haben, können Sie ihn mit den Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Abwärtspfeil“, „Bild auf“ und „Bild ab“ verschieben.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Nachdem Sie mit der Maus einen Schieberegler ausgewählt haben, können Sie ihn mit den Tasten „Aufwärtspfeil“, „Rechtspfeil“, „Abwärtspfeil“, „Linkspfeil“ und „Bild auf“ verschieben.</translation>
     </message>
 </context>
 </TS>

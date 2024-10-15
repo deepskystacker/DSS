@@ -669,7 +669,7 @@ In acest moment toate imaginile (inclusiv cele inregistrate anterior) vor fi sta
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Calitate</translation>
     </message>
@@ -1069,8 +1069,8 @@ Doriți să le procesați?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>După ce selectați un cursor cu mouse-ul, îl puteți muta folosind tastele Săgeată în sus, Săgeată dreapta, Săgeată în jos, Săgeată în jos, Pagină în sus și Pagină în jos.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>După ce ați selectat un cursor cu mouse-ul, îl puteți muta folosind tastele Săgeată sus, Săgeată la dreapta, Săgeată în jos, Săgeată stânga, Pagină în sus și Pagină în jos.</translation>
     </message>
 </context>
 </TS>

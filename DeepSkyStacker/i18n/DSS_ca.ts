@@ -2578,8 +2578,8 @@ Offset/Bias: %5</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>No tots els marcs de llum seleccionats tenen una qualitat mitjana calculada. Hauríeu de tornar a registrar els vostres marcs lleugers.</translation>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>No tots els marcs de llum seleccionats tenen una qualitat calculada. Hauríeu de tornar a registrar els vostres marcs lleugers.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>
@@ -2820,7 +2820,7 @@ comparativament a la desviació estàndard (%1).</translation>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation>&quot;Crear una Màscara d&apos;Estrelles</translation>
+        <translation>Crear una Màscara d&apos;Estrelles</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="61"/>
@@ -2861,7 +2861,7 @@ comparativament a la desviació estàndard (%1).</translation>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation>Augmentar la mida en</translation>
+        <translation>Augmentar la mida en  </translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="388"/>
@@ -3060,8 +3060,8 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Després de seleccionar un control lliscant amb el ratolí, podeu moure&apos;l amb les tecles Fletxa amunt, Fletxa dreta, Fletxa avall, Fletxa avall, Pàg amunt i Pàg avall.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Després de seleccionar un control lliscant amb el ratolí, podeu moure&apos;l amb les tecles Fletxa amunt, Fletxa dreta, Fletxa avall, Fletxa esquerra, Pàg amunt i Pàg avall.</translation>
     </message>
 </context>
 <context>

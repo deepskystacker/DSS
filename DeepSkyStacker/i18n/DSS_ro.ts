@@ -2493,6 +2493,11 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Nu toate cadrele dvs. luminoase verificate au o calitate calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2586,11 +2591,6 @@ Cadre Offset/Bias: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Nu toate cadrele dvs. luminoase verificate au o calitate medie calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>
@@ -3073,8 +3073,8 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>După ce selectați un cursor cu mouse-ul, îl puteți muta folosind tastele Săgeată în sus, Săgeată dreapta, Săgeată în jos, Săgeată în jos, Pagină în sus și Pagină în jos.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>După ce ați selectat un cursor cu mouse-ul, îl puteți muta folosind tastele Săgeată sus, Săgeată la dreapta, Săgeată în jos, Săgeată stânga, Pagină în sus și Pagină în jos.</translation>
     </message>
 </context>
 <context>

@@ -666,7 +666,7 @@ Per a començar a apilar les imatges, faci click en el botó Apilar\nEn aquest m
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualitat</translation>
     </message>
@@ -1065,8 +1065,8 @@ Vol processar-les?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Després de seleccionar un control lliscant amb el ratolí, podeu moure&apos;l amb les tecles Fletxa amunt, Fletxa dreta, Fletxa avall, Fletxa avall, Pàg amunt i Pàg avall.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Després de seleccionar un control lliscant amb el ratolí, podeu moure&apos;l amb les tecles Fletxa amunt, Fletxa dreta, Fletxa avall, Fletxa esquerra, Pàg amunt i Pàg avall.</translation>
     </message>
 </context>
 </TS>

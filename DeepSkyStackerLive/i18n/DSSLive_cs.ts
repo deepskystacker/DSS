@@ -670,7 +670,7 @@ Nově zjištěné (i dříve zaregistrované) snímky budou sloučeny.
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="591"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Kvalitní</translation>
     </message>
@@ -1070,8 +1070,8 @@ Chcete je zpracovat?</numerusform>
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Po výběru posuvníku pomocí myši jej můžete přesunout pomocí kláves Šipka nahoru, Šipka doprava, Šipka dolů, Šipka dolů, Page Up a Page Down.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Po výběru posuvníku pomocí myši jej můžete přesunout pomocí kláves Šipka nahoru, Šipka doprava, Šipka dolů, Šipka doleva, Page Up a Page Down.</translation>
     </message>
 </context>
 </TS>

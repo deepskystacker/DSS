@@ -28,48 +28,48 @@
         <translation>Application de la cosmétique - Pixels Chauds</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1007"/>
+        <location filename="../BitmapExt.cpp" line="1005"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 n&apos;existe pas ou n&apos;est pas un fichier</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1363"/>
+        <location filename="../BitmapExt.cpp" line="1361"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Moyenne</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1366"/>
+        <location filename="../BitmapExt.cpp" line="1364"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Médiane</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1369"/>
+        <location filename="../BitmapExt.cpp" line="1367"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Maximum</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1372"/>
+        <location filename="../BitmapExt.cpp" line="1370"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, Itérations = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1375"/>
+        <location filename="../BitmapExt.cpp" line="1373"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Moyenne pondérée auto adaptative (Itérations = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1378"/>
+        <location filename="../BitmapExt.cpp" line="1376"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Moyenne pondérée par l&apos;entropie</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1381"/>
+        <location filename="../BitmapExt.cpp" line="1379"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Kappa-Sigma médian (Kappa = %1, Iterations = %2)</translation>
@@ -275,7 +275,7 @@
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="396"/>
-        <source>MeanQuality</source>
+        <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Qualité</translation>
     </message>
@@ -682,43 +682,43 @@ a renvoyé un statut %2, le texte d&apos;erreur est :
         <translation>%L1 Go</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1392"/>
+        <location filename="../BitmapExt.cpp" line="1390"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>Moyenne</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1395"/>
+        <location filename="../BitmapExt.cpp" line="1393"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>Médiane</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1398"/>
+        <location filename="../BitmapExt.cpp" line="1396"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>Maximum</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1401"/>
+        <location filename="../BitmapExt.cpp" line="1399"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, Itérations = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1407"/>
+        <location filename="../BitmapExt.cpp" line="1405"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>Moyenne pondérée auto adaptative (Itérations = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1413"/>
+        <location filename="../BitmapExt.cpp" line="1411"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>Moyenne pondérée par l&apos;entropie</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1418"/>
+        <location filename="../BitmapExt.cpp" line="1416"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>Kappa-Sigma médian (Kappa = %1, Iterations = %2)</translation>

@@ -133,7 +133,7 @@ typedef enum FITSFORMAT
 
 enum class Column
 {
-	Path = 0, File, Type, Filter, Score, MeanQuality,
+	Path = 0, File, Type, Filter, Score, Quality,
 	dX, dY, Angle, FileTime, Size, CFA, Depth,
 	Info, ISO, Exposure, Aperture, FWHM, Stars,
 	Background, MAX_COLS

@@ -2488,6 +2488,11 @@ Rechtermuisknop om het menu weer te geven</translation>
         <translation>Light Platen:%1      -      Dark Platen: %2      -      Flat Platen:%3      -   Dark Flat Platen: %4   -      Offset/Bias Platen: %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Niet al uw gecontroleerde lichtframes hebben een berekende kwaliteit. U moet uw lichtframes opnieuw registreren.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2580,11 +2585,6 @@ Offset/Bias Platen: %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Totale registratietijd: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Niet al uw gecontroleerde lichtframes hebben een gemiddelde kwaliteit berekend. U moet uw lichtframes opnieuw registreren.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>
@@ -3065,8 +3065,8 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Nadat u een schuifregelaar met de muis hebt geselecteerd, kunt u deze verplaatsen met de toetsen Pijltje omhoog, Pijltje rechts, Pijltje omlaag, Pijltje omlaag, Page Up en Page Down.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Nadat u een schuifregelaar met de muis hebt geselecteerd, kunt u deze verplaatsen met de toetsen Pijl-omhoog, Pijl-rechts, Pijl-omlaag, Pijl-links, Page Up en Page Down.</translation>
     </message>
 </context>
 <context>

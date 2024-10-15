@@ -44,10 +44,10 @@ void CRegisteredFrame::Reset()
 // (2) A new average quality indicator, which is independent of the number of detected stars (unlike the above).
 //     This is important, because the new auto-threshold algorithm cannot guarantee an identical detection threshold over the series of light-frames.
 //     Using the new quality indicator, even then the light-frames can be compared.
-// The new quality indicator double CLightframInfo::meanQuality; (shown as "MeanQuality" in the GUI) much better characterises the realy quality of 
+// The new quality indicator double CLightframInfo::meanQuality; (shown as "Quality" in the GUI) much better characterises the realy quality of 
 // a light-frame than the old Score.
 // 
-// The new MeanQuality parameter is calculated as follows:
+// The new Quality parameter is calculated as follows:
 // We take the vector of detected stars and filter out those, that are inactive (e.g. removed by the edit stars functionality in the GUI).
 // We sort the active stars by the new parameter double CStar::m_fCircularity; From the active stars, we take maximum 100.
 // Over these stars, we calculate a weighted average of the circularity parameter.
@@ -58,11 +58,11 @@ void CRegisteredFrame::Reset()
 //   (fIntensity - backgroundLevel) / (0.1 + maxDeltaRadii); where maxDeltaRadii is the maximum difference of the radii (in pixels) in the 8 directions around the star center.
 //   So if maxDeltaRadii == 0, the star will be additionally weighted by 10. If maxDeltaRadii == 1, the star will be devaluated by 1/1.1 (0.91). And so on ...
 //   So the best stars will be those, that are bright and perfectly circular.
-// From all light-frames, the best (in terms of the new MeanQuality parameter) will be those with bright and perfectly circular stars. The absolut number 
+// From all light-frames, the best (in terms of the new Quality parameter) will be those with bright and perfectly circular stars. The absolut number 
 // of stars is NOT important.
 // So it is really a quality measure for the circularity of the stars in the light-frame.
 // 
-// In the GUI is a new column "MeanQuality" right next to the good old "Score". Users can use it to sort the light-frames.
+// In the GUI is a new column "Quality" right next to the good old "Score". Users can use it to sort the light-frames.
 // 
 // CRegisteredFrame::ComputeOverallQuality is now public static, so it can be used from other parts of the code, too, e.g. in EditStars::computeOverallQuality().
 //
@@ -128,7 +128,7 @@ namespace {
 
 	constexpr char ThresholdParam[] = "ThresholdPercent";
 	constexpr char CircularityParam[] = "Circularity";
-	constexpr char MeanQualityParam[] = "MeanQuality";
+	constexpr char QualityParam[] = "Quality";
 
 	const QString paramString(std::string_view param, std::string_view part2)
 	{
@@ -146,7 +146,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	QTextStream fileOut(&data);	
 	{
 		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
-		fileOut << paramString(MeanQualityParam, " = %1").arg(this->meanQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << paramString(QualityParam, " = %1").arg(this->meanQuality, 0, 'f', 2) << Qt::endl;
 		fileOut << "RedXShift = 0.0" << Qt::endl;
 		fileOut << "RedYShift = 0.0" << Qt::endl;
 		fileOut << "BlueXShift = 0.0" << Qt::endl;
@@ -215,7 +215,7 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
 			m_fOverallQuality = strValue.toDouble();
-		if (0 == strVariable.compare(MeanQualityParam, Qt::CaseInsensitive))
+		if (0 == strVariable.compare(QualityParam, Qt::CaseInsensitive))
 			this->meanQuality = strValue.toDouble();
 
 		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
@@ -719,7 +719,7 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 		this->usedDetectionThreshold = usedThres;
 		// IF auto-threshold: Take the threshold of the first lightframe (bitmapIndex == 0) as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
-		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; MeanQuality=%f",
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; Quality=%f",
 			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->meanQuality);
 	}
 }

@@ -174,7 +174,7 @@ namespace DSS
 		m_fLightBkgd{ 0 },
 		m_bDirty{ false },
 		m_fScore{ 0 },
-		m_fMeanQuality{ 0 },
+		m_fQuality{ 0 },
 		m_lNrStars{ 0 },
 		m_fFWHM{ 0 },
 	//	m_fBackground{ 0 },
@@ -473,7 +473,7 @@ namespace DSS
 		}
 		if (m_lNrStars > 0)
 			m_fFWHM /= m_lNrStars;
-		std::tie(this->m_fScore, this->m_fMeanQuality) = CRegisteredFrame::ComputeOverallQuality(stars);
+		std::tie(this->m_fScore, this->m_fQuality) = CRegisteredFrame::ComputeOverallQuality(stars);
 	}
 
 //	void EditStars::computeBackgroundValue()
@@ -667,7 +667,7 @@ namespace DSS
 		QString	strText{ tr("#Stars: %1\nScore: %2\nQuality: %3\nFWHM: %4", "IDS_LIGHTFRAMEINFO")
 			.arg(m_lNrStars)
 			.arg(m_fScore, 0, 'f', 2)
-			.arg(m_fMeanQuality, 0, 'f', 2)
+			.arg(m_fQuality, 0, 'f', 2)
 			.arg(m_fFWHM, 0, 'f', 2) };
 
 		if (m_bComet)

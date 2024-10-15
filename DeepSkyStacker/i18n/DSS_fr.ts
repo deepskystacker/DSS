@@ -2490,6 +2490,11 @@ Bouton droit de la souris pour afficher le menu</translation>
         <translation>Images : %1      -      Dark : %2      -      Flat :%3      -   Dark Flat : %4    -      Offset/Bias : %5</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2142"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>Toutes les images lumineuses que vous avez vérifiées n&apos;ont pas de qualité calculée. Vous devez réenregistrer vos images lumineuses.</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1401"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
@@ -2582,11 +2587,6 @@ Offset/Bias : %5</translation>
         <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Total registering time: %1 %2</source>
         <translation>Durée totale d&apos;enregistrement: %1 %2</translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
-        <source>Not all of your checked light frames have a mean quality calculated. You should re-register your light frames.</source>
-        <translation>Toutes les images lumineuses que vous avez vérifiées n&apos;ont pas de qualité moyenne calculée. Vous devez réenregistrer vos images lumineuses.</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2158"/>
@@ -3068,8 +3068,8 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
     <name>QLinearGradientCtrl</name>
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
-        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Down Arrow, Page Up, and Page Down keys.</source>
-        <translation>Après avoir sélectionné un curseur avec la souris, vous pouvez le déplacer à l&apos;aide des touches Flèche vers le haut, Flèche vers la droite, Flèche vers le bas, Flèche vers le bas, Page précédente et Page suivante.</translation>
+        <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
+        <translation>Après avoir sélectionné un curseur avec la souris, vous pouvez le déplacer à l&apos;aide des touches Flèche vers le haut, Flèche vers la droite, Flèche vers le bas, Flèche vers la gauche, Page précédente et Page suivante.</translation>
     </message>
 </context>
 <context>
