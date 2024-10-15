@@ -1442,7 +1442,7 @@ namespace DSS
 		QApplication::beep();
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
-			tr("Failed to load image %1").arg(QString::fromStdU16String(fileToShow.generic_u16string())));
+			tr("Failed to load image %1").arg(fileToShow.generic_u16string()));
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed(bool)

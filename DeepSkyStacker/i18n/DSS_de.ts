@@ -1193,7 +1193,7 @@ Erkannte kalte Pixel: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1182"/>
+        <location filename="../ProcessingDlg.cpp" line="1183"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation></translation>
@@ -1217,65 +1217,70 @@ Erkannte kalte Pixel: %L3 (%L4%)
         <translation>Sternmaske in %1 speichern</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="418"/>
+        <source>Failed to load image %1</source>
+        <translation>Bild %1 konnte nicht geladen werden</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Bild 16 bit/k (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Bild 32 bit/k - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Bild 32 bit/k - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Bild 16 bit/k (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Bild 32 bit/k - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
+        <location filename="../ProcessingDlg.cpp" line="479"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Bild 32 bit/k - rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="487"/>
+        <location filename="../ProcessingDlg.cpp" line="488"/>
         <source>Save Image</source>
         <translation>Bild speichern</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="579"/>
+        <location filename="../ProcessingDlg.cpp" line="580"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Da ist kein Bild zum Speichern.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="594"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Keine Info verfügbar</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="607"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>Exposure: %1 </source>
         <translation>Belichtung: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="608"/>
+        <location filename="../ProcessingDlg.cpp" line="609"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
