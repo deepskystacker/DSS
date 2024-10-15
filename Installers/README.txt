@@ -22,10 +22,13 @@ Known problems:
 	00000031 2024/06/19 21:30:57.011 028564 00003520     >C:\Users\amonra\Documents\GitHub\DSS\DeepSkyStackerKernel\Workspace.cpp (456): Workspace::Workspace
 
    The solution to this problem is to download the latest version of the Visual C++ re-distributable (vc_redist) for x64 from:
-      https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+	https://aka.ms/vs/17/release/vc_redist.x64.exe
+
    and running it, selecting the “Repair” option.
 
    For more details of the issue please see:
+
 	https://stackoverflow.com/questions/78598141/first-stdmutexlock-crashes-in-application-built-with-latest-visual-studio
 
 Changes since the last release:
