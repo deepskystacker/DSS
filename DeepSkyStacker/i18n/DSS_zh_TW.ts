@@ -1187,7 +1187,7 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1182"/>
+        <location filename="../ProcessingDlg.cpp" line="1183"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要儲存這些改變嗎？</translation>
@@ -1211,65 +1211,70 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>將星點遮罩儲存於 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="418"/>
+        <source>Failed to load image %1</source>
+        <translation>加載圖像 %1 失敗</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色16 bit (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色16 bit (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色32 bit - 整數 (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
+        <location filename="../ProcessingDlg.cpp" line="479"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 檔 每色32 bit - 有理數 (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="487"/>
+        <location filename="../ProcessingDlg.cpp" line="488"/>
         <source>Save Image</source>
         <translation>儲存影像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="579"/>
+        <location filename="../ProcessingDlg.cpp" line="580"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>沒有可存的照片.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="594"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>沒有資訊</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="607"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="608"/>
+        <location filename="../ProcessingDlg.cpp" line="609"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>

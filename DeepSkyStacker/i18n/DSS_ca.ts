@@ -1189,7 +1189,7 @@ Píxels freds detectats: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1182"/>
+        <location filename="../ProcessingDlg.cpp" line="1183"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Desitja guardar les modificacions?</translation>
@@ -1213,65 +1213,70 @@ Píxels freds detectats: %L3 (%L4%)
         <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="418"/>
+        <source>Failed to load image %1</source>
+        <translation>No s&apos;ha pogut carregar la imatge %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - integer(*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
+        <location filename="../ProcessingDlg.cpp" line="479"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="487"/>
+        <location filename="../ProcessingDlg.cpp" line="488"/>
         <source>Save Image</source>
         <translation>Guarda Imatge</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="579"/>
+        <location filename="../ProcessingDlg.cpp" line="580"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>No hi ha una imatge per a guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="594"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sense informació disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="607"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>Exposure: %1 </source>
         <translation>Exposició: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="608"/>
+        <location filename="../ProcessingDlg.cpp" line="609"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>

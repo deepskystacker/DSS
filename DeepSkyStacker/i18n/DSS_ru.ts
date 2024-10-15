@@ -1195,7 +1195,7 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1182"/>
+        <location filename="../ProcessingDlg.cpp" line="1183"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Хотите сохранить изменения?</translation>
@@ -1219,65 +1219,70 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>Сохранить маску звёзд в %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="418"/>
+        <source>Failed to load image %1</source>
+        <translation>Не удалось загрузить изображение %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Изображение 16 бит/канал (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - целые (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - дробные (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 16 бит/канал (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="478"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 32 бит/канал - целые (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
+        <location filename="../ProcessingDlg.cpp" line="479"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS изображение 32 бит/канал -дробные (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="487"/>
+        <location filename="../ProcessingDlg.cpp" line="488"/>
         <source>Save Image</source>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="579"/>
+        <location filename="../ProcessingDlg.cpp" line="580"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Нечего сохранять.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="594"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Инфо не доступно</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="607"/>
+        <location filename="../ProcessingDlg.cpp" line="608"/>
         <source>Exposure: %1 </source>
         <translation>Выдержка: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="608"/>
+        <location filename="../ProcessingDlg.cpp" line="609"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
