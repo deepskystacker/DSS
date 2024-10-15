@@ -120,8 +120,8 @@ namespace DSS
                     if (file.m_bRegistered)
                     {
                         if (Qt::EditRole == role)
-                            return file.meanQuality;
-                        return QString{ "%1" }.arg(file.meanQuality, 0, 'f', 2);
+                            return file.quality;
+                        return QString{ "%1" }.arg(file.quality, 0, 'f', 2);
                     }
                     else
                     {
@@ -490,7 +490,7 @@ namespace DSS
                     file.m_fOverallQuality = value.toDouble();
                     break;
                 case Column::Quality:
-                    file.meanQuality = value.toDouble();
+                    file.quality = value.toDouble();
                 case Column::dX:
                     file.m_dX = value.toDouble();
                     break;

@@ -34,7 +34,7 @@ void CRegisteredFrame::Reset()
 
 	m_fOverallQuality = 0;
 	m_fFWHM = 0;
-	meanQuality = 0;
+	quality = 0;
 }
 
 //
@@ -44,7 +44,7 @@ void CRegisteredFrame::Reset()
 // (2) A new average quality indicator, which is independent of the number of detected stars (unlike the above).
 //     This is important, because the new auto-threshold algorithm cannot guarantee an identical detection threshold over the series of light-frames.
 //     Using the new quality indicator, even then the light-frames can be compared.
-// The new quality indicator double CLightframInfo::meanQuality; (shown as "Quality" in the GUI) much better characterises the realy quality of 
+// The new quality indicator double CLightframInfo::quality; (shown as "Quality" in the GUI) much better characterises the realy quality of 
 // a light-frame than the old Score.
 // 
 // The new Quality parameter is calculated as follows:
@@ -96,9 +96,9 @@ std::pair<double, double> CRegisteredFrame::ComputeOverallQuality(const STARVECT
 		++ndx;
 	}
 
-	const double meanQuality = sumWeights != 0 ? sum / sumWeights : 0.0;
+	const double quality = sumWeights != 0 ? sum / sumWeights : 0.0;
 
-	return std::make_pair(overallQuality, meanQuality);
+	return std::make_pair(overallQuality, quality);
 }
 
 namespace {
@@ -146,7 +146,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	QTextStream fileOut(&data);	
 	{
 		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
-		fileOut << paramString(QualityParam, " = %1").arg(this->meanQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << paramString(QualityParam, " = %1").arg(this->quality, 0, 'f', 2) << Qt::endl;
 		fileOut << "RedXShift = 0.0" << Qt::endl;
 		fileOut << "RedYShift = 0.0" << Qt::endl;
 		fileOut << "BlueXShift = 0.0" << Qt::endl;
@@ -216,7 +216,7 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
 			m_fOverallQuality = strValue.toDouble();
 		if (0 == strVariable.compare(QualityParam, Qt::CaseInsensitive))
-			this->meanQuality = strValue.toDouble();
+			this->quality = strValue.toDouble();
 
 		if (0 == strVariable.compare("Comet", Qt::CaseInsensitive))
 		{
@@ -566,7 +566,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	} while (!stop(threshold, stars1.size())); // loop over thresholds
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
-	std::tie(this->m_fOverallQuality, this->meanQuality) = ComputeOverallQuality(m_vStars);
+	std::tie(this->m_fOverallQuality, this->quality) = ComputeOverallQuality(m_vStars);
 	ComputeFWHM();
 	// We return the threshold of the last iteration. This can be used by the caller as starting value for the next light-frame.
 	return usedThreshold;
@@ -720,7 +720,7 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 		// IF auto-threshold: Take the threshold of the first lightframe (bitmapIndex == 0) as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
 		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; Quality=%f",
-			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->meanQuality);
+			bitmapIndex, usedThres, m_vStars.size(), this->m_fOverallQuality, this->quality);
 	}
 }
 
