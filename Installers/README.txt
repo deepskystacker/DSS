@@ -12,7 +12,7 @@ Known problems:
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
 
-2. If you have installed DeepSkyStacker and it won’t startup, then it is likely that you have hit a problem caused by another application’s install
+2. If you install DeepSkyStacker and it won’t startup, then it is likely that you have hit a problem caused by another application’s install
    procedure overwriting msvcp140.dll with a back-level version.
 
    If this is the case, then you will find that the log file in “My Documents\DeepSkyStacker” contains lines like:
