@@ -414,7 +414,8 @@ namespace DSS
 				bool result = dssApp->deepStack().LoadStackedInfo(file);
 				if (!result)
 				{
-					QString message{ QString("Failure processing file %1").arg(file.generic_u16string()) };
+					QApplication::beep();
+					QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
 					QMessageBox::warning(this, "DeepSkyStacker",
 							message);
 				}
