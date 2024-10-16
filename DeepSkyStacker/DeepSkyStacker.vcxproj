@@ -566,6 +566,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtTranslation Include="i18n\DSS_zh_CN.ts" />
     <QtTranslation Include="i18n\DSS_zh_TW.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Icon.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
