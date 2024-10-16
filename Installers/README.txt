@@ -85,6 +85,8 @@ Changes since the last release:
 
     This shouldn't cause any problems as a "not supported" decision simply resulted in a single warning message.
 
+16. Bug fix: Add a small windows resource file so the application icon gets set.
+
 Welcome to DeepSkyStacker 5.1.6
 ===============================
 
