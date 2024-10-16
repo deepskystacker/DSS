@@ -302,7 +302,7 @@ namespace { // Only use in this .cpp file
 			return (m_strMake + " " + m_strModel);
 		};
 
-		void checkCameraSupport(const QString& strModel);
+//		void checkCameraSupport(const QString& strModel);
 
 		int	GetISOSpeed() noexcept
 		{
@@ -377,6 +377,7 @@ namespace { // Only use in this .cpp file
 		};
 	};
 
+#if (0)
 	void CRawDecod::checkCameraSupport(const QString& strModel)
 	{
 		std::string cameraString{ strModel.toLatin1().constData() }; // Not const! We want to move it at the end.
@@ -435,6 +436,7 @@ namespace { // Only use in this .cpp file
 			DSSBase::instance()->reportError(errorMessage, "");
 		}
 	}
+#endif
 
 
 	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
@@ -452,6 +454,7 @@ namespace { // Only use in this .cpp file
 
 		QString strDescription{ getModel() };
 
+#if (0)
 		//
 		// If it's a DNG file, we don't need to check for camera support, but if
 		// we're processing a true raw file then check that the camera is supported.
@@ -460,6 +463,7 @@ namespace { // Only use in this .cpp file
 		{
 			checkCameraSupport(strDescription);
 		};
+#endif
 
 		pBitmap->SetDescription(strDescription);
 
