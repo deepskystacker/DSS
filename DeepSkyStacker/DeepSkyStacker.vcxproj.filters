@@ -796,4 +796,9 @@
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
 </Project>

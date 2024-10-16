@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 1
+Welcome to DeepSkyStacker 5.1.8 Beta 2
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -76,6 +76,16 @@ Changes since the last release:
 12. Upgrade LibTIFF to 4.7.0
 
 13. Bug fix: Fix broken handling of Up-Arrow, Right-Arrow, Down-Arrow, Left-Arrow; Page-Up and Page-Down keys for the sliders of the gradient control.
+
+14. Bug fix: Attempting to load a FITS file from the image list failed with a message: "Failed to load ...".   This was caused by a change in the Mime
+    types database shipped with the latest version of Qt.  It used to assign a type of "image/fits" to FITS files, but now assigns "application/fits".
+
+15. Remove the code to check for LibRaw support of a camera.  The data in the camera list wasn't really good for that check and resulted in false
+    negatives and false positives however hard we tried to "tweak" the code to check against that list.
+
+    This shouldn't cause any problems as a "not supported" decision simply resulted in a single warning message.
+
+16. Bug fix: Add a small windows resource file so the application icon gets set.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
