@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 2
+Welcome to DeepSkyStacker 5.1.8 Beta 3
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -53,13 +53,13 @@ Changes since the last release:
 
    The automatic threshold will be in the range 0.05% and 100%, and the target number of stars is ~50.
 
-   The new Quality value is primarily based on the average circularity ("roundness") of the stars in the image. It is
+   The new Quality metric is primarily based on the average circularity ("roundness") of the stars in the image. It is
    largely independent of the number of detected stars.
 
    The background level, to which the star detection threshold refers, is now calculated locally per 250x250 pixel square rather than
    globally over the entire image.  This compensates for any background illumination gradients.
 
-   All light frame sorting criteria have been switched to the new Quality value instead of the Score (e.g. for stacking the best x% light frames).
+   All light frame sorting criteria have been switched to use the new Quality value instead of the Score (e.g. for stacking the best x% light frames).
 
    The first light frame to register will be either the first in the frame list, or the reference frame (if one was chosen). If auto-threshold
    is used, the detected threshold of this light frame will serve as the basis for the threshold search of the following frames.
@@ -86,6 +86,8 @@ Changes since the last release:
     This shouldn't cause any problems as a "not supported" decision simply resulted in a single warning message.
 
 16. Bug fix: Add a small windows resource file so the application icon gets set.
+
+17. Write all output text streams to a QByteArray buffer, and then use a single QFile::write() to write them.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================

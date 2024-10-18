@@ -228,7 +228,8 @@ void CLightFramesStackingInfo::Save()
 		QFile file(m_strStackingFileInfo);
 		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
 			return;
-		QTextStream stream(&file);
+		QByteArray buffer;
+		QTextStream stream(&buffer);
 
 		// Save the alignment transformation used
 		unsigned int dwAlignmentTransformation = 2;
@@ -250,6 +251,9 @@ void CLightFramesStackingInfo::Save()
 			stackingInfo.m_BilinearParameters.ToText(strParameters);
 			stream << strParameters << Qt::endl;
 		};
+
+		auto bytesWritten = file.write(buffer);
+		ZASSERTSTATE(bytesWritten == buffer.size());
 		file.close();
 	};
 };
@@ -2663,7 +2667,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	QFile file(strOutputFile);
 	if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
 		return;
-	QTextStream stream(&file);
+	QByteArray buffer;
+	QTextStream stream(&buffer);
 
 	QString strTempText;
 
@@ -3042,6 +3047,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
 	stream << "</body>" << Qt::endl;
 	stream << "</html>" << Qt::endl;
+
+	auto bytesWritten = file.write(buffer);
+	ZASSERTSTATE(bytesWritten == buffer.size());
 }
 
 /* ------------------------------------------------------------------- */
