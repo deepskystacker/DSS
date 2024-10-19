@@ -1196,22 +1196,6 @@ namespace DSS
 		else return true;
 	};
 
-	/* ------------------------------------------------------------------- */
-
-	void ProcessingDlg::panelChanged(ActivePanel panel)
-	{
-		if (ActivePanel::ProcessingPanel == panel)
-		{
-			picture->setMinimumHeight(300);
-			histogram->setMinimumHeight(300);
-		}
-		else
-		{
-			picture->setMinimumHeight(0);
-			histogram->setMinimumHeight(0);
-		}
-	}
-
 	//
 	// Slots
 	//

@@ -317,8 +317,6 @@ namespace DSS
 		HistogramAdjustmentCurve greenAdjustmentCurve() const { return greenAdjustmentCurve_; }
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
 		
-		void panelChanged(ActivePanel panel);
-
 	private:
 		ProcessingSettings	processingSettings;
 		ProcessingSettingsList processingSettingsList;
