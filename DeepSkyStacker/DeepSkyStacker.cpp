@@ -476,9 +476,6 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
-
-	ZTRACE_RUNTIME("Saving Window State and Position");
-
 #if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
 	// Colossal Cave is now closing, tell the two dock widgets that they must now accept
@@ -487,8 +484,6 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	explorerBar->setDSSClosing();
 	pictureList->setDSSClosing();
 #endif
-
-
 
 	ZTRACE_RUNTIME("Saving Window State and Position");
 
