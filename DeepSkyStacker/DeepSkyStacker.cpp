@@ -584,6 +584,14 @@ void DeepSkyStacker::setWindowFilePath(const QString& name)
 
 void DeepSkyStacker::updatePanel()
 {
+	//
+	// Get the processing dialog to change its minumum size
+	// 
+	processingDlg->panelChanged(activePanel);
+
+	//
+	// Switch to the selected panel
+	//
 	stackedWidget->setCurrentIndex(static_cast<int>(activePanel));
 
 	switch (activePanel)

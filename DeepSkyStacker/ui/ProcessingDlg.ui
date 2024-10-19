@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>889</width>
-    <height>684</height>
+    <height>698</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -53,7 +53,7 @@
      <property name="minimumSize">
       <size>
        <width>450</width>
-       <height>300</height>
+       <height>0</height>
       </size>
      </property>
     </widget>
@@ -77,7 +77,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QWidget" name="" native="true">
+      <widget class="QWidget" name="widget" native="true">
        <property name="minimumSize">
         <size>
          <width>352</width>
@@ -700,7 +700,7 @@
        <property name="minimumSize">
         <size>
          <width>400</width>
-         <height>300</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">

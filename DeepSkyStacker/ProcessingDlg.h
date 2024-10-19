@@ -316,6 +316,8 @@ namespace DSS
 		HistogramAdjustmentCurve redAdjustmentCurve() const { return redAdjustmentCurve_; }
 		HistogramAdjustmentCurve greenAdjustmentCurve() const { return greenAdjustmentCurve_; }
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
+		
+		void panelChanged(ActivePanel panel);
 
 	private:
 		ProcessingSettings	processingSettings;
@@ -447,6 +449,7 @@ namespace DSS
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
+
 
 	private slots:
 
