@@ -89,9 +89,9 @@ Changes since the last release:
 
 17. Write all output text streams to a QByteArray buffer, and then use a single QFile::write() to write them.
 
-18. Bug fix: Resolve problems with sizing of the image list dock widget and the overall window size caused by the 698 pixel minimum height of the processing
-    dialog.   The minimum height of the processing dialog image and histogram to zero are now set to zero when when the processing dialog isn't active, and
-    to 300 pixels when it is active.
+18. Bug fix: Resolve problems with sizes of the image list dock widget and the overall window caused by the 698 pixel minimum height of the
+    processing dialog.   The minimum height of the processing dialog image and histogram are now set to zero when the processing dialog isn't
+	active, and to 300 pixels when it is active.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
