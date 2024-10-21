@@ -1424,7 +1424,7 @@ void DSSLive::handleWarning(QString warning)
 				{
 					path /= "DSSLiveWarning.txt";
 					QFile file(path);
-					if (file.open(QFile::WriteOnly | QFile::Append))
+					if (file.open(QFile::WriteOnly | QFile::Append | QIODeviceBase::Text))
 					{
 						QTextStream stream{ &file };
 						stream << warning << Qt::endl;
