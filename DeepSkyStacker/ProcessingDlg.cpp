@@ -1170,8 +1170,6 @@ namespace DSS
 		rectToProcess.Reset();
 	};
 
-	/* ------------------------------------------------------------------- */
-
 	bool ProcessingDlg::askToSave()
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -1197,7 +1195,6 @@ namespace DSS
 		}
 		else return true;
 	};
-
 
 	//
 	// Slots

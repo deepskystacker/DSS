@@ -34,10 +34,10 @@ FunctionEnd
 !define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
 !define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
-!define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
-!define DSS_VERSION        "5.1.8"                         # For control panel
-!define DSS_VERSION_SUFFIX " Beta 2"				               # For control panel (e.g. " Beta 1" or "") - note leading space
-!define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
+!define DSS_PRODUCT        "DeepSkyStacker"		# For start menu
+!define DSS_VERSION        "5.1.8"			# For control panel
+!define DSS_VERSION_SUFFIX " Beta 3"			# For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_PUBLISHER      "The DeepSkyStacker Team"	# For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
 !define DSS_FILE           "DeepSkyStacker"

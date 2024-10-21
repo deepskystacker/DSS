@@ -138,48 +138,50 @@ namespace {
 
 bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 {
-	bool bResult = false;
 	QFile data(szInfoFileName);
 	if (!data.open(QFile::WriteOnly | QFile::Truncate))
 		return false;
+	QByteArray buffer;
 
-	QTextStream fileOut(&data);	
+	QTextStream fileOut(&buffer);	
+
+	fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
+	fileOut << paramString(QualityParam, " = %1").arg(this->quality, 0, 'f', 2) << Qt::endl;
+	fileOut << "RedXShift = 0.0" << Qt::endl;
+	fileOut << "RedYShift = 0.0" << Qt::endl;
+	fileOut << "BlueXShift = 0.0" << Qt::endl;
+	fileOut << "BlueYShift = 0.0" << Qt::endl;
+	if (m_bComet)
+		fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
+	fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
+	fileOut << paramString(ThresholdParam, " = %1").arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
+	fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
+
+	for (int i = 0; const CStar& star : this->m_vStars)
 	{
-		fileOut << QString("OverallQuality = %1").arg(m_fOverallQuality, 0, 'f', 2) << Qt::endl;
-		fileOut << paramString(QualityParam, " = %1").arg(this->quality, 0, 'f', 2) << Qt::endl;
-		fileOut << "RedXShift = 0.0" << Qt::endl;
-		fileOut << "RedYShift = 0.0" << Qt::endl;
-		fileOut << "BlueXShift = 0.0" << Qt::endl;
-		fileOut << "BlueYShift = 0.0" << Qt::endl;
-		if (m_bComet)
-			fileOut << QString("Comet = %1, %2").arg(m_fXComet, 0, 'f', 2).arg(m_fYComet, 0, 'f', 2) << Qt::endl;
-		fileOut << QString("SkyBackground = %1").arg(m_SkyBackground.m_fLight, 0, 'f', 4) << Qt::endl;
-		fileOut << paramString(ThresholdParam, " = %1").arg(100.0 * this->usedDetectionThreshold, 0, 'f', 3) << Qt::endl;
-		fileOut << "NrStars = " << m_vStars.size() << Qt::endl;
-
-		for (int i = 0; const CStar& star : this->m_vStars)
-		{
-			fileOut << "Star# = " << i << Qt::endl;
-			fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
-			fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
-			fileOut << "Rect = " << star.m_rcStar.left << ", "
-				<< star.m_rcStar.top << ", "
-				<< star.m_rcStar.right << ", "
-				<< star.m_rcStar.bottom << Qt::endl;
-			fileOut << QString("Center = %1, %2").arg(star.m_fX, 0, 'f', 2).arg(star.m_fY, 0, 'f', 2) << Qt::endl;
-			fileOut << QString("Axises = %1, %2, %3, %4, %5")
-				.arg(star.m_fMajorAxisAngle, 0, 'f', 2)
-				.arg(star.m_fLargeMajorAxis, 0, 'f', 2)
-				.arg(star.m_fSmallMajorAxis, 0, 'f', 2)
-				.arg(star.m_fLargeMinorAxis, 0, 'f', 2)
-				.arg(star.m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
-			++i;
-		}
-		bResult = true;
+		fileOut << "Star# = " << i << Qt::endl;
+		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
+		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
+		fileOut << "Rect = " << star.m_rcStar.left << ", "
+			<< star.m_rcStar.top << ", "
+			<< star.m_rcStar.right << ", "
+			<< star.m_rcStar.bottom << Qt::endl;
+		fileOut << QString("Center = %1, %2").arg(star.m_fX, 0, 'f', 2).arg(star.m_fY, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Axises = %1, %2, %3, %4, %5")
+			.arg(star.m_fMajorAxisAngle, 0, 'f', 2)
+			.arg(star.m_fLargeMajorAxis, 0, 'f', 2)
+			.arg(star.m_fSmallMajorAxis, 0, 'f', 2)
+			.arg(star.m_fLargeMinorAxis, 0, 'f', 2)
+			.arg(star.m_fSmallMinorAxis, 0, 'f', 2) << Qt::endl;
+		++i;
 	}
-	return bResult;
+
+	auto bytesWritten = data.write(buffer);
+	ZASSERTSTATE(bytesWritten == buffer.size());
+
+	return true;
 }
 
 /* ------------------------------------------------------------------- */

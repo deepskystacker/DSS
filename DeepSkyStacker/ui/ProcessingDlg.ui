@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>889</width>
-    <height>684</height>
+    <height>698</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -53,7 +53,7 @@
      <property name="minimumSize">
       <size>
        <width>450</width>
-       <height>300</height>
+       <height>150</height>
       </size>
      </property>
     </widget>
@@ -77,7 +77,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QWidget" name="" native="true">
+      <widget class="QWidget" name="widget" native="true">
        <property name="minimumSize">
         <size>
          <width>352</width>
@@ -337,7 +337,7 @@
                <string comment="IDC_TEXT_DARKNESS">Darkness</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -361,14 +361,14 @@
                 <item>
                  <widget class="QSlider" name="darkAngle">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QSlider" name="darkPower">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
@@ -397,7 +397,7 @@
                <string comment="IDC_TEXT_MIDTONE">Midtone</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -421,14 +421,14 @@
                 <item>
                  <widget class="QSlider" name="midAngle">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QSlider" name="midTone">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
@@ -457,7 +457,7 @@
                <string comment="IDC_TEXT_HIGHLIGHT">Highlight</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -481,14 +481,14 @@
                 <item>
                  <widget class="QSlider" name="highAngle">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QSlider" name="highPower">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                  </widget>
                 </item>
@@ -524,17 +524,17 @@
                <string comment="IDC_TEXT_SATURATION">Saturation shift</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
             <item>
              <spacer name="verticalSpacer">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Policy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -562,10 +562,10 @@
               <item>
                <widget class="QSlider" name="saturation">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                 <property name="tickPosition">
-                 <enum>QSlider::TicksBelow</enum>
+                 <enum>QSlider::TickPosition::TicksBelow</enum>
                 </property>
                 <property name="tickInterval">
                  <number>10</number>
@@ -577,7 +577,7 @@
             <item>
              <spacer name="verticalSpacer_2">
               <property name="orientation">
-               <enum>Qt::Vertical</enum>
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -700,7 +700,7 @@
        <property name="minimumSize">
         <size>
          <width>400</width>
-         <height>300</height>
+         <height>150</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -717,7 +717,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
