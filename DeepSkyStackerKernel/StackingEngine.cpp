@@ -51,7 +51,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	m_vLightFrameStackingInfo.clear();
 	
 	QFile file(m_strStackingFileInfo);
-	if (!file.open(QIODevice::Text | QIODevice::ReadOnly))
+	if (!file.open(QIODevice::Text | QIODevice::ReadOnly | QIODeviceBase::Text))
 		return;
 
 	// Process line by line.
