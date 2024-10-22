@@ -32,6 +32,9 @@ bld/
 # Visual Studio 2017 auto generated files
 GeneratedFiles/
 
+# CMake build directory
+build/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
