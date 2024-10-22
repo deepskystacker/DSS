@@ -198,7 +198,7 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 	};
 
 	QFile data(szInfoFileName);
-	if (!data.open(QFile::ReadOnly | | QIODeviceBase::Text))
+	if (!data.open(QFile::ReadOnly | QIODeviceBase::Text))
 		return unsuccessfulReturn();
 	QTextStream fileIn(&data);
 
