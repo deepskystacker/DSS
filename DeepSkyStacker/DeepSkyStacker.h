@@ -71,6 +71,7 @@ private:
 	bool initialised;
 	DSS::ExplorerBar* explorerBar;
 	DSS::PictureList* pictureList;
+	QScrollArea* scrollArea;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	DSS::ProcessingDlg*	processingDlg;

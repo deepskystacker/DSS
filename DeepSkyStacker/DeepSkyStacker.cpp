@@ -282,10 +282,21 @@ DeepSkyStacker::DeepSkyStacker() :
 	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
 
+	ZTRACE_RUNTIME("Creating scrollarea");
+	scrollArea = new QScrollArea(this);
+	scrollArea->setObjectName("scrollArea");
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	setCentralWidget(scrollArea);
+
 	ZTRACE_RUNTIME("Creating stackedWidget");
 	stackedWidget = new QStackedWidget(this);
 	stackedWidget->setObjectName("stackedWidget");
-	setCentralWidget(stackedWidget);
+	scrollArea->setWidget(stackedWidget);
+	scrollArea->ensureWidgetVisible(stackedWidget);
+	scrollArea->setWidgetResizable(true);
+	scrollArea->setGeometry(0, 0, 500, 500);
+	scrollArea->setMinimumHeight(300);
+
 
 	ZTRACE_RUNTIME("Creating Stacking Panel");
 	stackingDlg = new DSS::StackingDlg(this, pictureList);
