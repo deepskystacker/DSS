@@ -36,7 +36,7 @@ FunctionEnd
 
 !define DSS_PRODUCT        "DeepSkyStacker"		# For start menu
 !define DSS_VERSION        "5.1.8"			# For control panel
-!define DSS_VERSION_SUFFIX " Beta 3"			# For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX " Beta 4"			# For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"	# For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -99,9 +99,22 @@ ${ReadmeLanguage} "${LANG_ENGLISH}" \
 Section "Visual Studio Runtime"
   SetOutPath "$INSTDIR"
   File "..\x64\Release\vc_redist.x64.exe"
-  ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+  SetRegView 64
+  ReadRegDWORD $0 HKLM "Software\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X64" "Bld"
+  SetRegView 32
+  ${If} $0 != 33816
+	#
+	# vc_redist build 33816 isn't installed, so install it
+	#
+  	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+  ${Else}
+	#
+	# vc_redist build 33816 is installed, force a repair install
+	#
+	ExecWait "$INSTDIR\vc_redist.x64.exe /repair /passive /norestart"
+  ${Endif}
   Delete "$INSTDIR\vc_redist.x64.exe"
-SectionEnd
+SectionEnd (edited) 
 
 # default installer section start
 Section

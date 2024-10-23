@@ -41,7 +41,9 @@
 namespace DSS
 {
 	class ExplorerBar;
+	class LowerDockWidget;
 	class PictureList;
+	class ProcessingControls;
 	class ProcessingDlg;
 	class StackingDlg;
 }
@@ -70,8 +72,9 @@ protected slots:
 private:
 	bool initialised;
 	DSS::ExplorerBar* explorerBar;
+	DSS::LowerDockWidget* lowerDockWidget;
 	DSS::PictureList* pictureList;
-	QScrollArea* scrollArea;
+	DSS::ProcessingControls* processingControls;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	DSS::ProcessingDlg*	processingDlg;

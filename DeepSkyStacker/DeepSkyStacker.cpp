@@ -60,7 +60,9 @@ namespace bip = boost::interprocess;
 #include "StackingTasks.h"
 #include "StackingDlg.h"
 #include "ExplorerBar.h"
+#include "lowerdockwidget.h"
 #include "picturelist.h"
+#include "processingcontrols.h"
 #include "ProcessingDlg.h"
 #include "ExceptionHandling.h"
 #include "DeepStack.h"
@@ -234,7 +236,7 @@ void	deleteRemainingTempFiles()
 DeepSkyStacker::DeepSkyStacker() :
 	QMainWindow(),
 	initialised{ false },
-	pictureList{ nullptr },
+	lowerDockWidget{ nullptr },
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
@@ -277,26 +279,28 @@ DeepSkyStacker::DeepSkyStacker() :
 	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
 	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
 
-	ZTRACE_RUNTIME("Creating pictureList");
-	pictureList = new DSS::PictureList(this);
-	explorerBar->setFeatures(QDockWidget::DockWidgetFloatable);		// Can't be closed or moved
-	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
+	ZTRACE_RUNTIME("Creating lower dock widget");
+	lowerDockWidget = new DSS::LowerDockWidget(this);
+	lowerDockWidget->setFeatures(									// Can't be closed or moved
+		QDockWidget::DockWidgetFeature::DockWidgetFloatable |
+		QDockWidget::DockWidgetFeature::DockWidgetMovable);
+	lowerDockWidget->setAllowedAreas(
+		Qt::DockWidgetArea::BottomDockWidgetArea |
+		Qt::DockWidgetArea::RightDockWidgetArea);
+	addDockWidget(Qt::BottomDockWidgetArea, lowerDockWidget);
 
-	ZTRACE_RUNTIME("Creating scrollarea");
-	scrollArea = new QScrollArea(this);
-	scrollArea->setObjectName("scrollArea");
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setCentralWidget(scrollArea);
+	ZTRACE_RUNTIME("Creating picture list");
+	pictureList = new DSS::PictureList(this);
+	lowerDockWidget->addWidget(pictureList);
+
+	ZTRACE_RUNTIME("Creating processing controls");
+	processingControls = new DSS::ProcessingControls(this);
+	lowerDockWidget->addWidget(processingControls);
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
 	stackedWidget = new QStackedWidget(this);
 	stackedWidget->setObjectName("stackedWidget");
-	scrollArea->setWidget(stackedWidget);
-	scrollArea->ensureWidgetVisible(stackedWidget);
-	scrollArea->setWidgetResizable(true);
-	scrollArea->setGeometry(0, 0, 500, 500);
-	scrollArea->setMinimumHeight(300);
-
+	setCentralWidget(stackedWidget);
 
 	ZTRACE_RUNTIME("Creating Stacking Panel");
 	stackingDlg = new DSS::StackingDlg(this, pictureList);
@@ -306,7 +310,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackedWidget->addWidget(stackingDlg);
 	
 	ZTRACE_RUNTIME("Creating Processing Panel");
-	processingDlg = new DSS::ProcessingDlg(this);
+	processingDlg = new DSS::ProcessingDlg(this, processingControls);
 	processingDlg->setObjectName("processingDlg");
 
 	ZTRACE_RUNTIME("Adding Processing Panel to stackedWidget");
@@ -346,9 +350,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	}
 
 	//
-	// Set initial size of the bottom dock widget (pictureList)
+	// Set initial size of the bottom dock widget (lowerDockWidget)
 	//
-	resizeDocks({ pictureList }, { 150 }, Qt::Vertical);
+	resizeDocks({ lowerDockWidget }, { 150 }, Qt::Vertical);
 
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
@@ -411,6 +415,8 @@ void DeepSkyStacker::createStatusBar()
 	statusBar()->addPermanentWidget(sponsorText, 0);
 	statusBar()->addWidget(statusBarText, 1);
 	connect(stackingDlg, &DSS::StackingDlg::statusMessage, this, &DeepSkyStacker::updateStatus);
+	connect(stackingDlg, &DSS::StackingDlg::setDockTitle, lowerDockWidget, &DSS::LowerDockWidget::setDockTitle);
+
 }
 
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
@@ -470,6 +476,7 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, &ExplorerBar::batchStack, stackingDlg, &DSS::StackingDlg::batchStack);
 
 	connect(this, &DeepSkyStacker::panelChanged, explorerBar, &ExplorerBar::panelChanged);
+	connect(this, &DeepSkyStacker::panelChanged, lowerDockWidget, &LowerDockWidget::panelChanged);
 }
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)

@@ -162,6 +162,12 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lowerdockwidget.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="processingcontrols.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -635,6 +641,9 @@
     <QtUic Include="ui\StarMaskDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ProcessingControls.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -746,6 +755,12 @@
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
     <QtMoc Include="StarMaskDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="lowerdockwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="processingcontrols.h">
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
   </ItemGroup>

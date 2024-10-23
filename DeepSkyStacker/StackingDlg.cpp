@@ -1754,7 +1754,7 @@ namespace DSS
 			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
 			};
 
-		pictureList->dockTitle->setText(text);
+		emit setDockTitle(text);
 
 		for (int i = 0; i < pictureList->tabBar->count(); i++)
 		{
@@ -2761,7 +2761,9 @@ namespace DSS
 
 	void StackingDlg::showImageList(bool visible)
 	{
+		updateListInfo();
 		pictureList->setVisible(visible);
+
 	}
 
 	bool StackingDlg::isValidImage(const fs::path& path)

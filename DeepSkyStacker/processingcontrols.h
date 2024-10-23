@@ -1,3 +1,4 @@
+#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2024 David C. Partridge
@@ -34,18 +35,18 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
-#include "picturelist.h"
-namespace DSS
-{
-	PictureList::PictureList(QWidget* parent) :
-		QWidget(parent)
-	{
-		setupUi(this);
-		tableView->horizontalHeader()->setSortIndicator(1, Qt::AscendingOrder);
-		tableView->horizontalHeader()->setSortIndicatorShown(true);
-	}
+#include <QWidget>
 
-	PictureList::~PictureList()
-	{}
-}
+#include "ui/ui_ProcessingControls.h"
+
+
+namespace DSS {
+class ProcessingControls  : public QWidget, public Ui::ProcessingControls
+{
+	Q_OBJECT
+
+public:
+	ProcessingControls(QWidget *parent = nullptr);
+	~ProcessingControls();
+};
+} // namespace DSS

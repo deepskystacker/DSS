@@ -1,3 +1,38 @@
+/****************************************************************************
+**
+** Copyright (C) 2023 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
@@ -48,8 +83,9 @@ namespace
 
 namespace DSS
 {
-	ProcessingDlg::ProcessingDlg(QWidget *parent)
+	ProcessingDlg::ProcessingDlg(QWidget *parent, ProcessingControls* processingControls)
 		: QWidget(parent),
+		controls{ processingControls },
 		dirty_ { false },
 		timer {this},
 		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
@@ -59,7 +95,7 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
-		tabWidget->setCurrentIndex(0);	// Position on the RGB/K tab
+		controls->tabWidget->setCurrentIndex(0);	// Position on the RGB/K tab
 
 		Qt::ColorScheme colorScheme{ QGuiApplication::styleHints()->colorScheme() };
 		if (Qt::ColorScheme::Dark == colorScheme)
@@ -110,51 +146,51 @@ namespace DSS
 		//
 		// Initialise the "sliders" on the RGB tab
 		//
-		redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
-		redGradient->setColorAt(0.999, Qt::red);
-		redGradient->setColorAt(1.0, Qt::red);
+		controls->redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
+		controls->redGradient->setColorAt(0.999, Qt::red);
+		controls->redGradient->setColorAt(1.0, Qt::red);
 
-		greenGradient->setColorAt(0.5, QColor(qRgb(0, 128, 0)));
-		greenGradient->setColorAt(0.999, Qt::green);
-		greenGradient->setColorAt(1.0, Qt::green);
+		controls->greenGradient->setColorAt(0.5, QColor(qRgb(0, 128, 0)));
+		controls->greenGradient->setColorAt(0.999, Qt::green);
+		controls->greenGradient->setColorAt(1.0, Qt::green);
 
-		blueGradient->setColorAt(0.5, QColor(qRgb(0, 0, 128)));
-		blueGradient->setColorAt(0.999, Qt::blue);
-		blueGradient->setColorAt(1.0, Qt::blue);
+		controls->blueGradient->setColorAt(0.5, QColor(qRgb(0, 0, 128)));
+		controls->blueGradient->setColorAt(0.999, Qt::blue);
+		controls->blueGradient->setColorAt(1.0, Qt::blue);
 
 		//
 		// Set the initial values for the sliders on the Luminance tab and set the text to match
 		//
-		darkAngle->setMinimum(0);
-		darkAngle->setMaximum(maxAngle);		// const value of 45
-		darkAngle->setValue(darkAngleInitialValue);
-		darkPower->setMinimum(0);
-		darkPower->setMaximum(maxLuminance);	// const value of 1000
-		darkPower->setValue(darkPowerInitialValue);	// const value of 800
+		controls->darkAngle->setMinimum(0);
+		controls->darkAngle->setMaximum(maxAngle);		// const value of 45
+		controls->darkAngle->setValue(darkAngleInitialValue);
+		controls->darkPower->setMinimum(0);
+		controls->darkPower->setMaximum(maxLuminance);	// const value of 1000
+		controls->darkPower->setValue(darkPowerInitialValue);	// const value of 800
 		updateDarkText();
 
-		midAngle->setMinimum(0);
-		midAngle->setMaximum(maxAngle);			// const value of 45
-		midAngle->setValue(midAngleInitialValue);	// const value of 20
-		midTone->setMinimum(0);
-		midTone->setMaximum(maxLuminance);		// const value of 1000
-		midTone->setValue(midToneInitialValue);	// const value of 330
+		controls->midAngle->setMinimum(0);
+		controls->midAngle->setMaximum(maxAngle);			// const value of 45
+		controls->midAngle->setValue(midAngleInitialValue);	// const value of 20
+		controls->midTone->setMinimum(0);
+		controls->midTone->setMaximum(maxLuminance);		// const value of 1000
+		controls->midTone->setValue(midToneInitialValue);	// const value of 330
 		updateMidText();
 
-		highAngle->setMinimum(0);
-		highAngle->setMaximum(maxAngle);		// const value of 45
-		highAngle->setValue(highAngleInitialPostion);	// const value of 0
-		highPower->setMinimum(0);
-		highPower->setMaximum(maxLuminance);	// const value of 1000
-		highPower->setValue(highPowerInitialValue);	// const value of 500
+		controls->highAngle->setMinimum(0);
+		controls->highAngle->setMaximum(maxAngle);		// const value of 45
+		controls->highAngle->setValue(highAngleInitialPostion);	// const value of 0
+		controls->highPower->setMinimum(0);
+		controls->highPower->setMaximum(maxLuminance);	// const value of 1000
+		controls->highPower->setValue(highPowerInitialValue);	// const value of 500
 		updateHighText();
 
 		//
 		// Set the range and setting for the Saturation shift slider on the Saturation tab
 		//
-		saturation->setMinimum(minSaturation);	// const value of -50
-		saturation->setMaximum(maxSaturation);	// const value of 50;
-		saturation->setValue(initialSaturation);	// Set to a saturation shift of 20
+		controls->saturation->setMinimum(minSaturation);	// const value of -50
+		controls->saturation->setMaximum(maxSaturation);	// const value of 50;
+		controls->saturation->setValue(initialSaturation);	// Set to a saturation shift of 20
 		updateSaturationText();
 	}
 
@@ -168,19 +204,19 @@ namespace DSS
 		// 
 		if (dssApp->deepStack().IsLoaded())
 		{
-			tabWidget->setEnabled(true);
-			buttonWidget->setEnabled(true);
+			controls->tabWidget->setEnabled(true);
+			controls->buttonWidget->setEnabled(true);
 			//
 			// If there are saved processing settings we can navigate, enable the undo and redo
 			// buttons as appropriate
 			//
-			undoButton->setEnabled(processingSettingsList.IsBackwardAvailable());
-			redoButton->setEnabled(processingSettingsList.IsForwardAvailable());
+			controls->undoButton->setEnabled(processingSettingsList.IsBackwardAvailable());
+			controls->redoButton->setEnabled(processingSettingsList.IsForwardAvailable());
 		}
 		else
 		{
-			tabWidget->setEnabled(false);
-			buttonWidget->setEnabled(false);
+			controls->tabWidget->setEnabled(false);
+			controls->buttonWidget->setEnabled(false);
 		};
 	};
 
@@ -192,44 +228,44 @@ namespace DSS
 		connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
 			this, &ProcessingDlg::onColorSchemeChanged);
 
-		connect(applyButton, &QPushButton::pressed, this, &ProcessingDlg::onApply);
-		connect(undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
-		connect(settingsButton, &QPushButton::pressed, this, &ProcessingDlg::onSettings);
-		connect(redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
-		connect(resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
+		connect(controls->applyButton, &QPushButton::pressed, this, &ProcessingDlg::onApply);
+		connect(controls->undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
+		connect(controls->settingsButton, &QPushButton::pressed, this, &ProcessingDlg::onSettings);
+		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
+		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
 
 		//
 		// The source for the slots below are in RGBTab.cpp
 		//
-		connect(redGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::redChanging);
-		connect(redGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::redChanged);
+		connect(controls->redGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::redChanging);
+		connect(controls->redGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::redChanged);
 
-		connect(greenGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::greenChanging);
-		connect(greenGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::greenChanged);
+		connect(controls->greenGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::greenChanging);
+		connect(controls->greenGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::greenChanged);
 
-		connect(blueGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::blueChanging);
-		connect(blueGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::blueChanged);
+		connect(controls->blueGradient, &QLinearGradientCtrl::pegMove, this, &ProcessingDlg::blueChanging);
+		connect(controls->blueGradient, &QLinearGradientCtrl::pegMoved, this, &ProcessingDlg::blueChanged);
 
-		connect(redHAC, &QPushButton::pressed, this, &ProcessingDlg::redButtonPressed);
-		connect(greenHAC, &QPushButton::pressed, this, &ProcessingDlg::greenButtonPressed);
-		connect(blueHAC, &QPushButton::pressed, this, &ProcessingDlg::blueButtonPressed);
+		connect(controls->redHAC, &QPushButton::pressed, this, &ProcessingDlg::redButtonPressed);
+		connect(controls->greenHAC, &QPushButton::pressed, this, &ProcessingDlg::greenButtonPressed);
+		connect(controls->blueHAC, &QPushButton::pressed, this, &ProcessingDlg::blueButtonPressed);
 
 		//
 		// If the luminance tab sliders are moved, update the text to match and process the
 		// change
 		//
-		connect(darkAngle, &QSlider::valueChanged, this, &ProcessingDlg::darkAngleChanged);
-		connect(darkPower, &QSlider::valueChanged, this, &ProcessingDlg::darkPowerChanged);
-		connect(midAngle, &QSlider::valueChanged, this, &ProcessingDlg::midAngleChanged);
-		connect(midTone, &QSlider::valueChanged, this, &ProcessingDlg::midToneChanged);
-		connect(highAngle, &QSlider::valueChanged, this, &ProcessingDlg::highAngleChanged);
-		connect(highPower, &QSlider::valueChanged, this, &ProcessingDlg::highPowerChanged);
+		connect(controls->darkAngle, &QSlider::valueChanged, this, &ProcessingDlg::darkAngleChanged);
+		connect(controls->darkPower, &QSlider::valueChanged, this, &ProcessingDlg::darkPowerChanged);
+		connect(controls->midAngle, &QSlider::valueChanged, this, &ProcessingDlg::midAngleChanged);
+		connect(controls->midTone, &QSlider::valueChanged, this, &ProcessingDlg::midToneChanged);
+		connect(controls->highAngle, &QSlider::valueChanged, this, &ProcessingDlg::highAngleChanged);
+		connect(controls->highPower, &QSlider::valueChanged, this, &ProcessingDlg::highPowerChanged);
 
 		//
-		// if the saturation slider is moved, update the text to match and process the
+		// if the controls->saturation slider is moved, update the text to match and process the
 		// change
 		//
-		connect(saturation, &QSlider::valueChanged, this, &ProcessingDlg::saturationChanged);
+		connect(controls->saturation, &QSlider::valueChanged, this, &ProcessingDlg::saturationChanged);
 
 		//
 		// When the timer fires, drive the timer handler
@@ -625,20 +661,20 @@ namespace DSS
 		//
 		// Position the controls to match the current settings
 		//
-		darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
-		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
+		controls->darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
+		controls->darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
 		updateDarkText();
 
 
-		midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
-		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
+		controls->midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
+		controls->midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
 		updateMidText();
 
-		highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
-		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
+		controls->highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
+		controls->highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
 		updateHighText();
 
-		saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		controls->saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
 		updateSaturationText();
 
 		double	fMinRed, fMaxRed, fShiftRed;
@@ -677,25 +713,25 @@ namespace DSS
 		gradientOffset_ = fOffset;
 		gradientRange_ = fRange;
 
-		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
-		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
-		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
+		controls->redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
+		controls->redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
+		controls->redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
 		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 
-		redGradient->update();
+		controls->redGradient->update();
 
-		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
-		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
-		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
+		controls->greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
+		controls->greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
+		controls->greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
 		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 
-		greenGradient->update();
+		controls->greenGradient->update();
 
-		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
-		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
-		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
+		controls->blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
+		controls->blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
+		controls->blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
 		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
-		blueGradient->update();
+		controls->blueGradient->update();
 
 	};
 
@@ -707,11 +743,11 @@ namespace DSS
 		RGBHistogram			Histo;
 		RGBHistogramAdjust		HistoAdjust;
 
-		Histo.SetSize(65535.0, histogram->width());
+		Histo.SetSize(65535.0, controls->histogram->width());
 
-		const QGradientStops& redStops = redGradient->gradient().stops();
-		const QGradientStops& greenStops = greenGradient->gradient().stops();
-		const QGradientStops& blueStops = blueGradient->gradient().stops();
+		const QGradientStops& redStops = controls->redGradient->gradient().stops();
+		const QGradientStops& greenStops = controls->greenGradient->gradient().stops();
+		const QGradientStops& blueStops = controls->blueGradient->gradient().stops();
 
 
 		double
@@ -900,12 +936,12 @@ namespace DSS
 		BezierAdjust		bezierAdjust;
 		QPointF				point;
 
-		bezierAdjust.m_fMidtone = midTone->value() / 10.0;
-		bezierAdjust.m_fMidtoneAngle = midAngle->value();
-		bezierAdjust.m_fDarknessAngle = darkAngle->value();
-		bezierAdjust.m_fHighlightAngle = highAngle->value();
-		bezierAdjust.m_fHighlightPower = highPower->value() / 10.0;
-		bezierAdjust.m_fDarknessPower = darkPower->value() / 10.0;
+		bezierAdjust.m_fMidtone = controls->midTone->value() / 10.0;
+		bezierAdjust.m_fMidtoneAngle = controls->midAngle->value();
+		bezierAdjust.m_fDarknessAngle = controls->darkAngle->value();
+		bezierAdjust.m_fHighlightAngle = controls->highAngle->value();
+		bezierAdjust.m_fHighlightPower = controls->highPower->value() / 10.0;
+		bezierAdjust.m_fDarknessPower = controls->darkPower->value() / 10.0;
 
 		bezierAdjust.clear();
 
@@ -938,10 +974,10 @@ namespace DSS
 
 	void ProcessingDlg::drawHistogram(RGBHistogram& Histogram, bool useLogarithm)
 	{
-		QPixmap pix(histogram->size());
+		QPixmap pix(controls->histogram->size());
 		QPainter painter;
 		QBrush brush(palette().button());  // QPalette::Window was too dark - use QPalette::Button instead
-		const QRect histogramRect{ histogram->rect() };
+		const QRect histogramRect{ controls->histogram->rect() };
 		const int width{ histogramRect.width() };
 		const int height{ histogramRect.height() };
 
@@ -1005,7 +1041,7 @@ namespace DSS
 		drawBezierCurve(painter, width, height);
 
 		painter.end();
-		histogram->setPixmap(pix);
+		controls->histogram->setPixmap(pix);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -1032,41 +1068,41 @@ namespace DSS
 		BlueMarks[2] = Histogram.GetBlueHistogram().GetMax();
 
 
-		redGradient->setPeg(1, (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
-		redGradient->setPeg(2, (float)0.5);
-		redGradient->setPeg(3, (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
-		redGradient->update();
+		controls->redGradient->setPeg(1, (float)((RedMarks[0] - gradientOffset_) / gradientRange_));
+		controls->redGradient->setPeg(2, (float)0.5);
+		controls->redGradient->setPeg(3, (float)((RedMarks[2] - gradientOffset_) / gradientRange_));
+		controls->redGradient->update();
 		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 
-		greenGradient->setPeg(1, (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
-		greenGradient->setPeg(2, (float)0.5);
-		greenGradient->setPeg(3, (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
-		greenGradient->update();
+		controls->greenGradient->setPeg(1, (float)((GreenMarks[0] - gradientOffset_) / gradientRange_));
+		controls->greenGradient->setPeg(2, (float)0.5);
+		controls->greenGradient->setPeg(3, (float)((GreenMarks[2] - gradientOffset_) / gradientRange_));
+		controls->greenGradient->update();
 		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 
-		blueGradient->setPeg(1, (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
-		blueGradient->setPeg(2, (float)0.5);
-		blueGradient->setPeg(3, (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
-		blueGradient->update();
+		controls->blueGradient->setPeg(1, (float)((BlueMarks[0] - gradientOffset_) / gradientRange_));
+		controls->blueGradient->setPeg(2, (float)0.5);
+		controls->blueGradient->setPeg(3, (float)((BlueMarks[2] - gradientOffset_) / gradientRange_));
+		controls->blueGradient->update();
 		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
 
 		//
 		// Position the controls to match the current settings
 		//
-		darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
-		darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
+		controls->darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
+		controls->darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
 		updateDarkText();
 
 
-		midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
-		midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
+		controls->midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
+		controls->midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
 		updateMidText();
 
-		highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
-		highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
+		controls->highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
+		controls->highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
 		updateHighText();
 
-		saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		controls->saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
 		updateSaturationText();
 
 		showHistogram(false);
@@ -1077,9 +1113,9 @@ namespace DSS
 	void ProcessingDlg::UpdateHistogramAdjust()
 	{
 
-		const QGradientStops& redStops{ redGradient->gradient().stops() };
-		const QGradientStops& greenStops{ greenGradient->gradient().stops() };
-		const QGradientStops& blueStops{ blueGradient->gradient().stops() };
+		const QGradientStops& redStops{ controls->redGradient->gradient().stops() };
+		const QGradientStops& greenStops{ controls->greenGradient->gradient().stops() };
+		const QGradientStops& blueStops{ controls->blueGradient->gradient().stops() };
 
 		double
 			fMinRed = gradientOffset_ + redStops[1].first * gradientRange_,
@@ -1125,20 +1161,20 @@ namespace DSS
 		gradientOffset_ = fOffset;
 		gradientRange_ = fRange;
 
-		redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
-		redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
-		redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
-		redGradient->update();
+		controls->redGradient->setPeg(1, (float)((fMinRed - gradientOffset_) / gradientRange_));
+		controls->redGradient->setPeg(2, (float)(fShiftRed / 2.0 + 0.5));
+		controls->redGradient->setPeg(3, (float)((fMaxRed - gradientOffset_) / gradientRange_));
+		controls->redGradient->update();
 
-		greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
-		greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
-		greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
-		greenGradient->update();
+		controls->greenGradient->setPeg(1, (float)((fMinGreen - gradientOffset_) / gradientRange_));
+		controls->greenGradient->setPeg(2, (float)(fShiftGreen / 2.0 + 0.5));
+		controls->greenGradient->setPeg(3, (float)((fMaxGreen - gradientOffset_) / gradientRange_));
+		controls->greenGradient->update();
 
-		blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
-		blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
-		blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
-		blueGradient->update();
+		controls->blueGradient->setPeg(1, (float)((fMinBlue - gradientOffset_) / gradientRange_));
+		controls->blueGradient->setPeg(2, (float)(fShiftBlue / 2.0 + 0.5));
+		controls->blueGradient->setPeg(3, (float)((fMaxBlue - gradientOffset_) / gradientRange_));
+		controls->blueGradient->update();
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -1147,13 +1183,13 @@ namespace DSS
 	{
 		UpdateHistogramAdjust();
 
-		processingSettings.bezierAdjust_.m_fMidtone = midTone->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fMidtoneAngle = midAngle->value();
-		processingSettings.bezierAdjust_.m_fDarknessAngle = darkAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightAngle = highAngle->value();
-		processingSettings.bezierAdjust_.m_fHighlightPower = highPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fDarknessPower = darkPower->value() / 10.0;
-		processingSettings.bezierAdjust_.m_fSaturationShift = saturation->value();
+		processingSettings.bezierAdjust_.m_fMidtone = controls->midTone->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fMidtoneAngle = controls->midAngle->value();
+		processingSettings.bezierAdjust_.m_fDarknessAngle = controls->darkAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightAngle = controls->highAngle->value();
+		processingSettings.bezierAdjust_.m_fHighlightPower = controls->highPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fDarknessPower = controls->darkPower->value() / 10.0;
+		processingSettings.bezierAdjust_.m_fSaturationShift = controls->saturation->value();
 		processingSettings.bezierAdjust_.clear();
 
 		if (bSaveUndo)

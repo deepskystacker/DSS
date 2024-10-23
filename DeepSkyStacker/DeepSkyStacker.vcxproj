@@ -266,7 +266,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="editstars.cpp" />
     <ClCompile Include="ImageProperties.cpp" />
+    <ClCompile Include="lowerdockwidget.cpp" />
     <ClCompile Include="picturelist.cpp" />
+    <ClCompile Include="processingcontrols.cpp" />
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="progressdlg.cpp" />
@@ -357,11 +359,13 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
     <ClInclude Include="Histogram.h" />
+    <QtMoc Include="lowerdockwidget.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />
     <QtMoc Include="picturelist.h" />
     <QtMoc Include="PostCalibration.h" />
     <QtMoc Include="ProcessingDlg.h" />
+    <QtMoc Include="processingcontrols.h" />
     <ClInclude Include="ProcessingSettings.h" />
     <QtMoc Include="ProcessingSettingsDlg.h" />
     <QtMoc Include="RawDDPSettings.h" />
@@ -531,6 +535,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PictureList.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\ProcessingControls.ui" />
     <QtUic Include="ui\ProcessingDlg.ui" />
     <QtUic Include="ui\ProcessingSettingsDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />

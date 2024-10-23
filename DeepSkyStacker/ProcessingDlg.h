@@ -1,14 +1,51 @@
 #pragma once
+/****************************************************************************
+**
+** Copyright (C) 2023 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
 
 #include <QDialog>
 #include "dssrect.h"
 #include "Histogram.h"
 #include "ProcessingSettings.h"
+#include "processingcontrols.h"
 #include "ui_ProcessingDlg.h"
 
 namespace DSS
 {
 	class SelectRect;
+	class ProcessingControls;
 	class ProcessingSettingsDlg;
 
 	class ValuedRect final
@@ -299,7 +336,7 @@ namespace DSS
 		Q_OBJECT
 
 	public:
-		ProcessingDlg(QWidget *parent = nullptr);
+		ProcessingDlg(QWidget *parent, ProcessingControls* processingControls);
 		~ProcessingDlg();
 
 		inline bool dirty() const { return dirty_; };
@@ -318,6 +355,7 @@ namespace DSS
 		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
 		
 	private:
+		ProcessingControls* controls;
 		ProcessingSettings	processingSettings;
 		ProcessingSettingsList processingSettingsList;
 		ProcessRect		rectToProcess;
@@ -366,8 +404,8 @@ namespace DSS
 			//
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
-			darkLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(darkAngle->sliderPosition()).arg(darkPower->value() / 10.0, 0, 'f', 1));
+			controls->darkLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(controls->darkAngle->sliderPosition()).arg(controls->darkPower->value() / 10.0, 0, 'f', 1));
 
 		}
 
@@ -376,8 +414,8 @@ namespace DSS
 			//
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
-			midLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(midAngle->sliderPosition()).arg(midTone->value() / 10.0, 0, 'f', 1));
+			controls->midLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(controls->midAngle->sliderPosition()).arg(controls->midTone->value() / 10.0, 0, 'f', 1));
 
 		}
 
@@ -386,14 +424,14 @@ namespace DSS
 			//
 			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
 			//
-			highLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(highAngle->sliderPosition()).arg(highPower->value() / 10.0, 0, 'f', 1));
+			controls->highLabel->setText(QString(" %1 \xc2\xb0\n %2")
+				.arg(controls->highAngle->sliderPosition()).arg(controls->highPower->value() / 10.0, 0, 'f', 1));
 
 		}
 
 		inline void updateSaturationText()
 		{
-			saturationLabel->setText(QString("%1 %").arg(saturation->value()));
+			controls->saturationLabel->setText(QString("%1 %").arg(controls->saturation->value()));
 		}
 
 		//
@@ -447,7 +485,6 @@ namespace DSS
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
-
 
 	private slots:
 
