@@ -102,19 +102,35 @@ Section "Visual Studio Runtime"
   SetRegView 64
   ReadRegDWORD $0 HKLM "Software\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X64" "Bld"
   SetRegView 32
-  ${If} $0 != 33816
+  ${If} $0 == ""
 	#
 	# vc_redist build 33816 isn't installed, so install it
 	#
+	DetailPrint "Visual Studio Runtime is not installed, so install it"
   	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
   ${Else}
+	IntCmp $0 33816 equal less more
+	equal:
 	#
 	# vc_redist build 33816 is installed, force a repair install
 	#
+	DetailPrint "Visual Studio Runtime build 33816 is already installed, do a repair install"
 	ExecWait "$INSTDIR\vc_redist.x64.exe /repair /passive /norestart"
+        Goto done
+	less:
+	#
+	# vc_redist build 33816 isn't installed, so install it
+	#
+	DetailPrint "Visual Studio Runtime build $0 is installed, install build 33816"
+  	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+	Goto done
+	more:
+	DetailPrint "Visual Studio Runtime build $0 is installed, do nothing"
+ 	Goto done
+	done:
   ${Endif}
   Delete "$INSTDIR\vc_redist.x64.exe"
-SectionEnd (edited) 
+SectionEnd
 
 # default installer section start
 Section
