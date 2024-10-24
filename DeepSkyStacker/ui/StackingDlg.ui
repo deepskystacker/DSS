@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>840</width>
-    <height>620</height>
+    <height>266</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,7 +21,7 @@
     <number>1</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
    </property>
    <property name="bottomMargin">
     <number>2</number>
@@ -113,7 +113,7 @@
        <property name="minimumSize">
         <size>
          <width>450</width>
-         <height>300</height>
+         <height>100</height>
         </size>
        </property>
       </widget>
@@ -124,15 +124,15 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QLinearGradientCtrl</class>
-   <extends>QWidget</extends>
-   <header location="global">QLinearGradientCtrl.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>DSS::ImageView</class>
    <extends>QWidget</extends>
    <header>imageview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QLinearGradientCtrl</class>
+   <extends>QWidget</extends>
+   <header>QLinearGradientCtrl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

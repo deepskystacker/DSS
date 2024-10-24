@@ -140,6 +140,7 @@ namespace DSS
 
 	signals:
 		void statusMessage(const QString& text);
+		void setDockTitle(const QString& text);
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);

@@ -27,28 +27,28 @@ namespace DSS
 		{
 			bool monochrome{ dssApp->deepStack().GetStackedBitmap().IsMonochrome() };
 
-			greenHAC->setVisible(monochrome ? false : true);
-			greenGradient->setVisible(monochrome ? false : true);
-			blueHAC->setVisible(monochrome ? false : true);
-			blueGradient->setVisible(monochrome ? false : true);
-			linkedSettings->setVisible(monochrome ? false : true); 
+			controls->greenHAC->setVisible(monochrome ? false : true);
+			controls->greenGradient->setVisible(monochrome ? false : true);
+			controls->blueHAC->setVisible(monochrome ? false : true);
+			controls->blueGradient->setVisible(monochrome ? false : true);
+			controls->linkedSettings->setVisible(monochrome ? false : true);
 
 			if (monochrome)
 			{
 				// Change the colors of the red gradient to grey
-				linkedSettings->setChecked(true);
-				redGradient->setColorAt(0.5, QColor(qRgb(128, 128, 128)));
-				redGradient->setColorAt(0.999, Qt::white);
-				redGradient->setColorAt(1.0, Qt::white);
+				controls->linkedSettings->setChecked(true);
+				controls->redGradient->setColorAt(0.5, QColor(qRgb(128, 128, 128)));
+				controls->redGradient->setColorAt(0.999, Qt::white);
+				controls->redGradient->setColorAt(1.0, Qt::white);
 			}
 			else
 			{
 				// Change the colors of the red gradient
-				redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
-				redGradient->setColorAt(0.999, Qt::red);
-				redGradient->setColorAt(1.0, Qt::red);
+				controls->redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
+				controls->redGradient->setColorAt(0.999, Qt::red);
+				controls->redGradient->setColorAt(1.0, Qt::red);
 			}
-			redGradient->update();
+			controls->redGradient->update();
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace DSS
 		auto index = static_cast<qsizetype>(redAdjustmentCurve_) - 1;
 		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
-		redHAC->setIcon(QIcon(iconName));
+		controls->redHAC->setIcon(QIcon(iconName));
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -76,7 +76,7 @@ namespace DSS
 		auto index = static_cast<qsizetype>(greenAdjustmentCurve_) - 1;
 		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
-		greenHAC->setIcon(QIcon(iconName));
+		controls->greenHAC->setIcon(QIcon(iconName));
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -89,7 +89,7 @@ namespace DSS
 		auto index = static_cast<qsizetype>(blueAdjustmentCurve_) - 1;
 		const QString curveName = iconNames[index];
 		QString iconName = QString{ ":/processing/%1%2.png" }.arg(curveName).arg(iconModifier);
-		blueHAC->setIcon(QIcon(iconName));
+		controls->blueHAC->setIcon(QIcon(iconName));
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -102,7 +102,7 @@ namespace DSS
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
 
-		QLinearGradient& gradient{ redGradient->gradient() };
+		QLinearGradient& gradient{ controls->redGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 
 		//
@@ -163,16 +163,16 @@ namespace DSS
 			stops[2].first = greyPoint;
 			stops[3].first = whitePoint;
 			gradient.setStops(stops);
-			redGradient->update();
+			controls->redGradient->update();
 		};
 
 		//
 		// If the settings are linked, the green and blue pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			greenGradient->setPeg(peg, stops[peg].first);
-			blueGradient->setPeg(peg, stops[peg].first);
+			controls->greenGradient->setPeg(peg, stops[peg].first); controls->greenGradient->update();
+			controls->blueGradient->setPeg(peg, stops[peg].first); controls->blueGradient->update();
 		}
 
 		setDirty();
@@ -191,7 +191,7 @@ namespace DSS
 		//
 		redChanging(peg);
 
-		QLinearGradient& gradient{ redGradient->gradient() };
+		QLinearGradient& gradient{ controls->redGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 		//
 		// Adjust stop values if necessary
@@ -201,10 +201,10 @@ namespace DSS
 		//
 		// If the settings are linked, the green and blue pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			greenGradient->setPeg(peg, stops[peg].first);
-			blueGradient->setPeg(peg, stops[peg].first);
+			controls->greenGradient->setPeg(peg, stops[peg].first);
+			controls->blueGradient->setPeg(peg, stops[peg].first);
 		}
 
 		setDirty();
@@ -222,7 +222,7 @@ namespace DSS
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
 
-		QLinearGradient& gradient{ greenGradient->gradient() };
+		QLinearGradient& gradient{ controls->greenGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 
 		//
@@ -283,16 +283,16 @@ namespace DSS
 			stops[2].first = greyPoint;
 			stops[3].first = whitePoint;
 			gradient.setStops(stops);
-			greenGradient->update();
+			controls->greenGradient->update();
 		}
 
 		//
 		// If the settings are linked, the red and blue pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			redGradient->setPeg(peg, stops[peg].first); redGradient->update();
-			blueGradient->setPeg(peg, stops[peg].first); blueGradient->update();
+			controls->redGradient->setPeg(peg, stops[peg].first); controls->redGradient->update();
+			controls->blueGradient->setPeg(peg, stops[peg].first); controls->blueGradient->update();
 		}
 
 		setDirty();
@@ -309,7 +309,7 @@ namespace DSS
 		//
 		greenChanging(peg);
 
-		QLinearGradient& gradient{ greenGradient->gradient() };
+		QLinearGradient& gradient{ controls->greenGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 		//
 		// Adjust stop values if necessary
@@ -319,10 +319,10 @@ namespace DSS
 		//
 		// If the settings are linked, the red and blue pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			redGradient->setPeg(peg, stops[peg].first); redGradient->update();
-			blueGradient->setPeg(peg, stops[peg].first); blueGradient->update();
+			controls->redGradient->setPeg(peg, stops[peg].first); controls->redGradient->update();
+			controls->blueGradient->setPeg(peg, stops[peg].first); controls->blueGradient->update();
 		}
 
 		qDebug() << "green sliders changed";
@@ -339,7 +339,7 @@ namespace DSS
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
 
-		QLinearGradient& gradient{ blueGradient->gradient() };
+		QLinearGradient& gradient{ controls->blueGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 
 		//
@@ -400,16 +400,16 @@ namespace DSS
 			stops[2].first = greyPoint;
 			stops[3].first = whitePoint;
 			gradient.setStops(stops);
-			blueGradient->update();
+			controls->blueGradient->update();
 		}
 
 		//
 		// If the settings are linked, the red and green pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			redGradient->setPeg(peg, stops[peg].first);
-			greenGradient->setPeg(peg, stops[peg].first);
+			controls->redGradient->setPeg(peg, stops[peg].first);  controls->redGradient->update();
+			controls->greenGradient->setPeg(peg, stops[peg].first); controls->greenGradient->update();
 		}
 
 		setDirty();
@@ -426,7 +426,7 @@ namespace DSS
 		//
 		blueChanging(peg);
 
-		QLinearGradient& gradient{ blueGradient->gradient() };
+		QLinearGradient& gradient{ controls->blueGradient->gradient() };
 		QGradientStops stops{ gradient.stops() };
 		//
 		// Adjust stop values if necessary
@@ -436,10 +436,10 @@ namespace DSS
 		//
 		// If the settings are linked, the red and green pegs also need to move
 		// 
-		if (linkedSettings->isChecked())
+		if (controls->linkedSettings->isChecked())
 		{
-			redGradient->setPeg(peg, stops[peg].first);
-			greenGradient->setPeg(peg, stops[peg].first);
+			controls->redGradient->setPeg(peg, stops[peg].first);  controls->redGradient->update();
+			controls->greenGradient->setPeg(peg, stops[peg].first); controls->greenGradient->update();
 		}
 
 		setDirty();

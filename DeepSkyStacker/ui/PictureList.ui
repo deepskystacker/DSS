@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DSS::PictureList</class>
- <widget class="QDockWidget" name="DSS::PictureList">
+ <widget class="QWidget" name="DSS::PictureList">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
+    <width>500</width>
     <height>156</height>
    </rect>
   </property>
@@ -18,57 +18,43 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>618</width>
+    <width>500</width>
     <height>156</height>
    </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">PictureList</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <property name="features">
-   <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
-  </property>
-  <property name="allowedAreas">
-   <set>Qt::BottomDockWidgetArea|Qt::RightDockWidgetArea</set>
-  </property>
-  <property name="windowTitle">
-   <string notr="true">Light Frames: 0      -      Dark Frames: 0      -      Flat Frames: 0      -   Dark Flat Frames: 0   -      Offset/Bias Frames: 0</string>
-  </property>
-  <widget class="QWidget" name="dockWidgetContents">
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QTableView" name="tableView"/>
-    </item>
-    <item>
-     <widget class="QTabBar" name="tabBar" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>28</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>28</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableView" name="tableView"/>
+   </item>
+   <item>
+    <widget class="QTabBar" name="tabBar" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>28</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>28</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

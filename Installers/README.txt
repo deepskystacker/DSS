@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 3
+Welcome to DeepSkyStacker 5.1.8 Beta 4
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -89,8 +89,9 @@ Changes since the last release:
 
 17. Write all output text streams to a QByteArray buffer, and then use a single QFile::write() to write them.
 
-18. Bug fix: Resolve problems with sizes of the image list dock widget and the overall window caused by the 698 pixel minimum height of the
-    processing dialog.   The minimum height of the processing dialog image and histogram are now set to 150 pixels.
+18. Changes to allow the DeepSkyStacker main window to display correctly on a monitor with an effective size of 1280*720 (1920*1080 at 150% scaling).
+    This was achieved by moving the controls for the processing panel into the lower dockable window and allowing the displayed image to have a
+    minimum height of 100 pixels.   If you need to show the image larger, undock the lower dock window.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================

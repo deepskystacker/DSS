@@ -1,3 +1,4 @@
+#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2024 David C. Partridge
@@ -34,18 +35,50 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
-#include "picturelist.h"
+#include <QDockWidget>
+#include "DSSCommon.h"
+
 namespace DSS
 {
-	PictureList::PictureList(QWidget* parent) :
-		QWidget(parent)
+	class LowerDockWidget : public QDockWidget
 	{
-		setupUi(this);
-		tableView->horizontalHeader()->setSortIndicator(1, Qt::AscendingOrder);
-		tableView->horizontalHeader()->setSortIndicatorShown(true);
-	}
+		friend class StackingDlg;
+		friend class ProcessingDlg;
+		typedef QDockWidget
+			Inherited;
 
-	PictureList::~PictureList()
-	{}
+		Q_OBJECT
+
+	public:
+		LowerDockWidget(QWidget* parent = nullptr);
+		~LowerDockWidget();
+
+		inline int addWidget(QWidget* widget)
+		{
+			return stackedWidget->addWidget(widget);
+		}
+
+	public slots:
+		void setDockTitle(const QString& text);
+
+		void panelChanged(ActivePanel panel);
+
+
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
+		inline void setDSSClosing() { dssClosing = true; }
+#endif
+
+	private:
+		QLabel* dockTitle;
+		QStackedWidget* stackedWidget;
+
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
+	protected:
+		void closeEvent(QCloseEvent* event) override;
+
+	private:
+		bool dssClosing;
+#endif
+
+	};
 }
