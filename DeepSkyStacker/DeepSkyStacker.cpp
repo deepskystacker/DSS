@@ -254,6 +254,7 @@ DeepSkyStacker::DeepSkyStacker() :
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
+	ZTRACE_RUNTIME(baseTitle);		// Report version in the trace file
 	
 	//
 	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
