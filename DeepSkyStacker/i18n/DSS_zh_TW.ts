@@ -688,85 +688,85 @@ Comet:%1</source>
         <translation>批次疊合...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="410"/>
+        <location filename="../ui/ExplorerBar.ui" line="423"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
         <translation>影像處理</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="431"/>
+        <location filename="../ui/ExplorerBar.ui" line="444"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
         <translation>開啟影像檔...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="438"/>
+        <location filename="../ui/ExplorerBar.ui" line="451"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
         <translation>將本照片覆製至暫存區</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="445"/>
+        <location filename="../ui/ExplorerBar.ui" line="458"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
         <translation>製作星像遮罩...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="452"/>
+        <location filename="../ui/ExplorerBar.ui" line="465"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
         <translation>儲存影像...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="471"/>
+        <location filename="../ui/ExplorerBar.ui" line="497"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
         <translation>選項</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="492"/>
+        <location filename="../ui/ExplorerBar.ui" line="518"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="502"/>
+        <location filename="../ui/ExplorerBar.ui" line="528"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
         <translation>Raw/FITS檔數位顯像設定...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="512"/>
+        <location filename="../ui/ExplorerBar.ui" line="538"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
         <translation>載入...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="522"/>
+        <location filename="../ui/ExplorerBar.ui" line="548"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
         <translation>儲存...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="532"/>
+        <location filename="../ui/ExplorerBar.ui" line="558"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
         <translation>建議值...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="552"/>
+        <location filename="../ui/ExplorerBar.ui" line="578"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
         <translation>關於DeepSkyStacker...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="572"/>
+        <location filename="../ui/ExplorerBar.ui" line="598"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
         <translation>DeepSkyStacker說明...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="592"/>
+        <location filename="../ui/ExplorerBar.ui" line="618"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
@@ -775,22 +775,22 @@ Tick this box to keep the trace file.</source>
 勾選此方塊以保留追蹤檔案。</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="597"/>
+        <location filename="../ui/ExplorerBar.ui" line="623"/>
         <source>Retain the trace file on exit</source>
         <translation>退出時保留追蹤文件</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="617"/>
+        <location filename="../ui/ExplorerBar.ui" line="643"/>
         <source>Enable progress sounds</source>
         <translation>啟用進度聲音</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="640"/>
+        <location filename="../ui/ExplorerBar.ui" line="666"/>
         <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>在Processing Panel中，將 Black Level下方的像素顯示為藍色，將 White Level 上方的像素顯示為紅色。</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="643"/>
+        <location filename="../ui/ExplorerBar.ui" line="669"/>
         <source>Show clipping for Black/White Points</source>
         <translation>顯示黑/白點的剪裁</translation>
     </message>
@@ -1001,6 +1001,14 @@ Ctrl+4 切換四角模式</translation>
     </message>
 </context>
 <context>
+    <name>DSS::LowerDockWidget</name>
+    <message>
+        <location filename="../lowerdockwidget.cpp" line="46"/>
+        <source>Double click here to dock/undock</source>
+        <translation>雙擊此處進行停靠/取消停靠</translation>
+    </message>
+</context>
+<context>
     <name>DSS::OutputTab</name>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
@@ -1081,14 +1089,6 @@ Ctrl+4 切換四角模式</translation>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
         <translation>選擇輸出檔案夾</translation>
-    </message>
-</context>
-<context>
-    <name>DSS::PictureList</name>
-    <message>
-        <location filename="../picturelist.cpp" line="13"/>
-        <source>Double click here to dock/undock the image list</source>
-        <translation>雙擊此處停靠/取消停靠圖像列表</translation>
     </message>
 </context>
 <context>
@@ -1185,197 +1185,205 @@ Detected Cold Pixels: %L3 (%L4%)
     </message>
 </context>
 <context>
-    <name>DSS::ProcessingDlg</name>
+    <name>DSS::ProcessingControls</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1183"/>
-        <source>Do you want to save the modifications?</source>
-        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation>要儲存這些改變嗎？</translation>
+        <location filename="../ui/ProcessingControls.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="380"/>
-        <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
-        <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation>TIFF 或 FITS 影像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="287"/>
-        <source>Star Mask created by DeepSkyStacker</source>
-        <comment>IDS_STARMASKDESCRIPTION</comment>
-        <translation>星點遮罩由DeepSkyStacker製作</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="289"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>將星點遮罩儲存於 %1</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="418"/>
-        <source>Failed to load image %1</source>
-        <translation>加載圖像 %1 失敗</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
-        <source>TIFF Image 16 bit/ch (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF檔 每色16 bit (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
-        <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
-        <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS檔 每色16 bit (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS檔 每色32 bit - 整數 (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="479"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS 檔 每色32 bit - 有理數 (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="488"/>
-        <source>Save Image</source>
-        <translation>儲存影像</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="580"/>
-        <source>There is no picture to save.</source>
-        <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation>沒有可存的照片.</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="595"/>
-        <source>No information available</source>
-        <comment>IDS_NOINFO</comment>
-        <translation>沒有資訊</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="608"/>
-        <source>Exposure: %1 </source>
-        <translation>曝光: %1 </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="609"/>
-        <source>%n frames</source>
-        <comment>IDS_NRFRAMES</comment>
-        <translation>
-            <numerusform>%n 幅</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="119"/>
+        <location filename="../ui/ProcessingControls.ui" line="69"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
         <translation>RGB/K 水準線</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="145"/>
+        <location filename="../ui/ProcessingControls.ui" line="101"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
         <translation>設定紅色色階分佈圖調整方式</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="206"/>
+        <location filename="../ui/ProcessingControls.ui" line="162"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
         <translation>設定綠色色階分佈圖調整方式</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="267"/>
+        <location filename="../ui/ProcessingControls.ui" line="223"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
         <translation>設定藍色色階分佈圖調整方式</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="308"/>
+        <location filename="../ui/ProcessingControls.ui" line="264"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
         <translation>連鎖設定</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="316"/>
+        <location filename="../ui/ProcessingControls.ui" line="272"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
         <translation>明度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="337"/>
+        <location filename="../ui/ProcessingControls.ui" line="299"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
         <translation>暗部</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="397"/>
+        <location filename="../ui/ProcessingControls.ui" line="359"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
         <translation>中間調</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="457"/>
+        <location filename="../ui/ProcessingControls.ui" line="419"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
         <translation>亮部</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="503"/>
+        <location filename="../ui/ProcessingControls.ui" line="465"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
         <translation>飽和度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="524"/>
+        <location filename="../ui/ProcessingControls.ui" line="492"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
         <translation>飽和度增減</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="612"/>
+        <location filename="../ui/ProcessingControls.ui" line="586"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>套用</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="619"/>
+        <location filename="../ui/ProcessingControls.ui" line="593"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>復原前一次套用的設定</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="642"/>
+        <location filename="../ui/ProcessingControls.ui" line="616"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
         <translation>儲存，載入，管理設定...</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="665"/>
+        <location filename="../ui/ProcessingControls.ui" line="639"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>重新執行前一次套用的設定</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="682"/>
+        <location filename="../ui/ProcessingControls.ui" line="656"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>重設</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::ProcessingDlg</name>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1217"/>
+        <source>Do you want to save the modifications?</source>
+        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
+        <translation>要儲存這些改變嗎？</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="416"/>
+        <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
+        <comment>IDS_FILTER_DSIIMAGETIFF</comment>
+        <translation>TIFF 或 FITS 影像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="323"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>星點遮罩由DeepSkyStacker製作</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="325"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>將星點遮罩儲存於 %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="454"/>
+        <source>Failed to load image %1</source>
+        <translation>加載圖像 %1 失敗</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <source>TIFF Image 16 bit/ch (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF檔 每色16 bit (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS檔 每色16 bit (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="514"/>
+        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS檔 每色32 bit - 整數 (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="515"/>
+        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS 檔 每色32 bit - 有理數 (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
+        <source>Save Image</source>
+        <translation>儲存影像</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="616"/>
+        <source>There is no picture to save.</source>
+        <comment>IDS_MSG_NOPICTURETOSAVE</comment>
+        <translation>沒有可存的照片.</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="631"/>
+        <source>No information available</source>
+        <comment>IDS_NOINFO</comment>
+        <translation>沒有資訊</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="644"/>
+        <source>Exposure: %1 </source>
+        <translation>曝光: %1 </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ProcessingDlg.cpp" line="645"/>
+        <source>%n frames</source>
+        <comment>IDS_NRFRAMES</comment>
+        <translation>
+            <numerusform>%n 幅</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -2993,14 +3001,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="135"/>
+        <location filename="../DeepSkyStacker.cpp" line="137"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker 測試版已過期
 您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="163"/>
+        <location filename="../DeepSkyStacker.cpp" line="165"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3008,17 +3016,17 @@ You can probably get another one or download the final release from the web site
 （稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="390"/>
+        <location filename="../DeepSkyStacker.cpp" line="406"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>贊助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="334"/>
+        <location filename="../DeepSkyStacker.cpp" line="350"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="610"/>
+        <location filename="../DeepSkyStacker.cpp" line="627"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

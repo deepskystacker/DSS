@@ -693,85 +693,85 @@ Cometa:%1</translation>
         <translation>Apilado por lotes...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="410"/>
+        <location filename="../ui/ExplorerBar.ui" line="423"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
         <translation>Procesando</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="431"/>
+        <location filename="../ui/ExplorerBar.ui" line="444"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
         <translation>Abrir archivo de imagen...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="438"/>
+        <location filename="../ui/ExplorerBar.ui" line="451"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
         <translation>Copiar la imagen al portapapeles</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="445"/>
+        <location filename="../ui/ExplorerBar.ui" line="458"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
         <translation>Crear una Máscara de Estrellas...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="452"/>
+        <location filename="../ui/ExplorerBar.ui" line="465"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
         <translation>Guardar la imagen a un archivo...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="471"/>
+        <location filename="../ui/ExplorerBar.ui" line="497"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="492"/>
+        <location filename="../ui/ExplorerBar.ui" line="518"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
         <translation>Ajustes...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="502"/>
+        <location filename="../ui/ExplorerBar.ui" line="528"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
         <translation>Configuración Raw/FITS DDP...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="512"/>
+        <location filename="../ui/ExplorerBar.ui" line="538"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
         <translation>Cargar...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="522"/>
+        <location filename="../ui/ExplorerBar.ui" line="548"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
         <translation>Guardar...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="532"/>
+        <location filename="../ui/ExplorerBar.ui" line="558"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
         <translation>Recomendado...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="552"/>
+        <location filename="../ui/ExplorerBar.ui" line="578"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
         <translation>Acerca de DeepSkyStacker...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="572"/>
+        <location filename="../ui/ExplorerBar.ui" line="598"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
         <translation>Ayuda de DeepSkyStacker...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="592"/>
+        <location filename="../ui/ExplorerBar.ui" line="618"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
@@ -780,22 +780,22 @@ Directorio &quot;Documentos&quot; y se elimina al salir (a menos que la aplicaci
 Marque esta casilla para conservar el archivo de seguimiento.</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="597"/>
+        <location filename="../ui/ExplorerBar.ui" line="623"/>
         <source>Retain the trace file on exit</source>
         <translation>Conservar el archivo de seguimiento al salir</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="617"/>
+        <location filename="../ui/ExplorerBar.ui" line="643"/>
         <source>Enable progress sounds</source>
         <translation>Habilitar sonidos de progreso</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="640"/>
+        <location filename="../ui/ExplorerBar.ui" line="666"/>
         <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>En el Processing Panel, muestra los píxeles por debajo del Black Level como azules y los píxeles por encima del White Level como rojos.</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="643"/>
+        <location filename="../ui/ExplorerBar.ui" line="669"/>
         <source>Show clipping for Black/White Points</source>
         <translation>Mostrar recorte de puntos blancos y negros</translation>
     </message>
@@ -1006,6 +1006,14 @@ Ctrl+4 para alternar el modo de 4 esquinas</translation>
     </message>
 </context>
 <context>
+    <name>DSS::LowerDockWidget</name>
+    <message>
+        <location filename="../lowerdockwidget.cpp" line="46"/>
+        <source>Double click here to dock/undock</source>
+        <translation>Doble clic aquí para acoplar/desacoplar</translation>
+    </message>
+</context>
+<context>
     <name>DSS::OutputTab</name>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
@@ -1086,14 +1094,6 @@ Ctrl+4 para alternar el modo de 4 esquinas</translation>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
         <translation>Seleccionar Carpeta de Salida</translation>
-    </message>
-</context>
-<context>
-    <name>DSS::PictureList</name>
-    <message>
-        <location filename="../picturelist.cpp" line="13"/>
-        <source>Double click here to dock/undock the image list</source>
-        <translation>Doble clic aquí para acoplar/desacoplar la lista de imágenes</translation>
     </message>
 </context>
 <context>
@@ -1190,198 +1190,206 @@ Píxeles fríos detectados: %L3 (%L4%)
     </message>
 </context>
 <context>
+    <name>DSS::ProcessingControls</name>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="69"/>
+        <source>RGB/K Levels</source>
+        <comment>IDD_RGB</comment>
+        <translation>Niveles RGB/K</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="101"/>
+        <source>Set Red Histogram Adjustment curve</source>
+        <comment>IDS_TT_REDADJUST</comment>
+        <translation>Seleccionar el Método de Ajuste de Histograna Rojo</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="162"/>
+        <source>Set Green Histogram Adjustment curve</source>
+        <comment>IDS_TT_GREENADJUST</comment>
+        <translation>Seleccionar el Método de Ajuste de Histograna Verde</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="223"/>
+        <source>Set Blue Histogram Adjustment curve</source>
+        <comment>IDS_TT_BLUEADJUST</comment>
+        <translation>Seleccionar el Método de Ajuste de Histograna Azul</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="264"/>
+        <source>Linked settings</source>
+        <comment>IDC_LINK</comment>
+        <translation>Ajustes encadenados</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="272"/>
+        <source>Luminance</source>
+        <comment>IDD_LUMINANCE</comment>
+        <translation>Luminancia</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="299"/>
+        <source>Darkness</source>
+        <comment>IDC_TEXT_DARKNESS</comment>
+        <translation>Tonos Oscuridad</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="359"/>
+        <source>Midtone</source>
+        <comment>IDC_TEXT_MIDTONE</comment>
+        <translation>Tonos Medios</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="419"/>
+        <source>Highlight</source>
+        <comment>IDC_TEXT_HIGHLIGHT</comment>
+        <translation>Tonos Altos</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="465"/>
+        <source>Saturation</source>
+        <comment>IDD_SATURATION</comment>
+        <translation>Saturación</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="492"/>
+        <source>Saturation shift</source>
+        <comment>IDC_TEXT_SATURATION</comment>
+        <translation>Modificar saturació</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="586"/>
+        <source>Apply</source>
+        <comment>IDC_PROCESS</comment>
+        <translation>Aplicar</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="593"/>
+        <source>Undo last applied settings</source>
+        <comment>IDS_UNDOLASTSETTINGS</comment>
+        <translation>Deshacer los últimos ajustes realizados</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="616"/>
+        <source>Save, Load, Manage settings ...</source>
+        <comment>IDS_MANAGESETTINGS</comment>
+        <translation>Guardar, Cargar, Administrar Configuraciones ...</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="639"/>
+        <source>Redo last applied settings</source>
+        <comment>IDS_REDOLASTSETTINGS</comment>
+        <translation>Rehacer los últimos ajustes realizados</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="656"/>
+        <source>Reset</source>
+        <comment>IDC_RESET</comment>
+        <translation>Reiniciar</translation>
+    </message>
+</context>
+<context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1183"/>
+        <location filename="../ProcessingDlg.cpp" line="1217"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>¿Desea guardar las modificaciones?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="380"/>
+        <location filename="../ProcessingDlg.cpp" line="416"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF y FITS Files (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="287"/>
+        <location filename="../ProcessingDlg.cpp" line="323"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Máscara de Estrellas creada por DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="289"/>
+        <location filename="../ProcessingDlg.cpp" line="325"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Guardando la Máscara de Estrellas en %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="418"/>
+        <location filename="../ProcessingDlg.cpp" line="454"/>
         <source>Failed to load image %1</source>
         <translation>No se ha podido cargar la imagen %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="510"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="511"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 32 bit/ch integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="512"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen TIFF 32 bit/ch rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="513"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
+        <location filename="../ProcessingDlg.cpp" line="514"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 32 bit/ch integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="479"/>
+        <location filename="../ProcessingDlg.cpp" line="515"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagen FITS 32 bit/ch rational (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="488"/>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
         <source>Save Image</source>
         <translation>Salvar el imagen</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="580"/>
+        <location filename="../ProcessingDlg.cpp" line="616"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>No hay una imagen para guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="595"/>
+        <location filename="../ProcessingDlg.cpp" line="631"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sin información disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="608"/>
+        <location filename="../ProcessingDlg.cpp" line="644"/>
         <source>Exposure: %1 </source>
         <translation>Exposición: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="609"/>
+        <location filename="../ProcessingDlg.cpp" line="645"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
             <numerusform>%n frame</numerusform>
             <numerusform>%n frames</numerusform>
         </translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="119"/>
-        <source>RGB/K Levels</source>
-        <comment>IDD_RGB</comment>
-        <translation>Niveles RGB/K</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="145"/>
-        <source>Set Red Histogram Adjustment curve</source>
-        <comment>IDS_TT_REDADJUST</comment>
-        <translation>Seleccionar el Método de Ajuste de Histograna Rojo</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="206"/>
-        <source>Set Green Histogram Adjustment curve</source>
-        <comment>IDS_TT_GREENADJUST</comment>
-        <translation>Seleccionar el Método de Ajuste de Histograna Verde</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="267"/>
-        <source>Set Blue Histogram Adjustment curve</source>
-        <comment>IDS_TT_BLUEADJUST</comment>
-        <translation>Seleccionar el Método de Ajuste de Histograna Azul</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="308"/>
-        <source>Linked settings</source>
-        <comment>IDC_LINK</comment>
-        <translation>Ajustes encadenados</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="316"/>
-        <source>Luminance</source>
-        <comment>IDD_LUMINANCE</comment>
-        <translation>Luminancia</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="337"/>
-        <source>Darkness</source>
-        <comment>IDC_TEXT_DARKNESS</comment>
-        <translation>Tonos Oscuridad</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="397"/>
-        <source>Midtone</source>
-        <comment>IDC_TEXT_MIDTONE</comment>
-        <translation>Tonos Medios</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="457"/>
-        <source>Highlight</source>
-        <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation>Tonos Altos</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="503"/>
-        <source>Saturation</source>
-        <comment>IDD_SATURATION</comment>
-        <translation>Saturación</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="524"/>
-        <source>Saturation shift</source>
-        <comment>IDC_TEXT_SATURATION</comment>
-        <translation>Modificar saturació</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="612"/>
-        <source>Apply</source>
-        <comment>IDC_PROCESS</comment>
-        <translation>Aplicar</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="619"/>
-        <source>Undo last applied settings</source>
-        <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation>Deshacer los últimos ajustes realizados</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="642"/>
-        <source>Save, Load, Manage settings ...</source>
-        <comment>IDS_MANAGESETTINGS</comment>
-        <translation>Guardar, Cargar, Administrar Configuraciones ...</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="665"/>
-        <source>Redo last applied settings</source>
-        <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation>Rehacer los últimos ajustes realizados</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="682"/>
-        <source>Reset</source>
-        <comment>IDC_RESET</comment>
-        <translation>Reiniciar</translation>
     </message>
 </context>
 <context>
@@ -3012,14 +3020,14 @@ Haga clic derecho para cambiar el comportamiento.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="135"/>
+        <location filename="../DeepSkyStacker.cpp" line="137"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>La versión beta de DeepSkyStacker a expirado
 Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="163"/>
+        <location filename="../DeepSkyStacker.cpp" line="165"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3027,17 +3035,17 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
 (Ud. puede habilitar o deshabilitar esta opción más tarde en la ventana de Acerca de)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="390"/>
+        <location filename="../DeepSkyStacker.cpp" line="406"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocinador DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="334"/>
+        <location filename="../DeepSkyStacker.cpp" line="350"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 no existe o no es un archivo</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="610"/>
+        <location filename="../DeepSkyStacker.cpp" line="627"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>Ayuda DeepSkyStacker.chm</translation>
