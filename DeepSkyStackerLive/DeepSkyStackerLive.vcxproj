@@ -319,6 +319,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DeepSkyStacker\Icon.rc" />
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -573,6 +573,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc" />
+    <ResourceCompile Include="Version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

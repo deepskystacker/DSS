@@ -84,7 +84,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -131,7 +131,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\;..\DeepSkyStacker;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -312,6 +312,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DeepSkyStacker\Icon.rc" />
+    <ResourceCompile Include="Version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
