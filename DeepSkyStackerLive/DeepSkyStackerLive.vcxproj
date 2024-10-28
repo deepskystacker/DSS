@@ -251,7 +251,6 @@
     <QtMoc Include="footprint.h" />
     <ClInclude Include="LiveSettings.h" />
     <QtMoc Include="progresslive.h" />
-    <ClInclude Include="resource.h" />
     <QtMoc Include="settingstab.h" />
     <QtMoc Include="RestartMonitoring.h" />
     <ClInclude Include="stdafx.h" />
