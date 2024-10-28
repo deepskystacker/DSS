@@ -43,9 +43,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\ImageList_GrayScale.bmp">
       <Filter>Resource Files</Filter>
     </Image>
