@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "avx_histogram.h"
 #include "avx_support.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "BezierAdjust.h"
 #include "ColorHelpers.h"
 #include <immintrin.h>

@@ -35,10 +35,10 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
+    <ClInclude Include="..\DeepSkyStackerKernel\dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\dssbase.h">
+    <ClInclude Include="..\DeepSkyStackerKernel\dssbase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

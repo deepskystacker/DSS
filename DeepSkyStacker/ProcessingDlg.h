@@ -37,7 +37,7 @@
 
 #include <QDialog>
 #include "dssrect.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "ProcessingSettings.h"
 #include "processingcontrols.h"
 #include "ui_ProcessingDlg.h"

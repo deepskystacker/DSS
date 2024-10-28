@@ -346,6 +346,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="BaseDialog.h" />
     <QtMoc Include="CometStacking.h" />
     <QtMoc Include="CheckAbove.h" />
+    <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
     <ClInclude Include="BezierAdjust.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="Delaunay.h" />
@@ -358,7 +359,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="editstars.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
-    <ClInclude Include="Histogram.h" />
     <QtMoc Include="lowerdockwidget.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />

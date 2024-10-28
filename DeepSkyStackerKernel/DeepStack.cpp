@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "DeepStack.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "Ztrace.h"
 #include "Multitask.h"
 #include "DSSProgress.h"

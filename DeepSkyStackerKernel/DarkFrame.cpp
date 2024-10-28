@@ -4,7 +4,7 @@
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "Filters.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "BitmapIterator.h"
 #include "Multitask.h"
 #include "CFABitmapInfo.h"

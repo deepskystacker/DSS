@@ -186,9 +186,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
+    <ClInclude Include="..\DeepSkyStackerKernel\dssbase.h" />
+    <ClInclude Include="..\DeepSkyStackerKernel\dssrect.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
-    <ClInclude Include="..\dssbase.h" />
     <QtMoc Include="progressconsole.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

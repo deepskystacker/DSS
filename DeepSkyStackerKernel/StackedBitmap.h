@@ -1,6 +1,6 @@
 #pragma once
 #include "BezierAdjust.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "ColorRef.h"
 #include "BitmapInfo.h"
 #include "dssrect.h"

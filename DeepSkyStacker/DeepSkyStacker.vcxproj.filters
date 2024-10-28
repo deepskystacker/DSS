@@ -194,11 +194,11 @@
     <ClInclude Include="ProcessingSettings.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="Histogram.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="BezierAdjust.h">
       <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
