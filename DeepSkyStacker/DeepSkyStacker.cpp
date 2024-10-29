@@ -37,8 +37,6 @@
 //
 #include <stdafx.h>
 #if defined(_WINDOWS)
-#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#include <afx.h>
 //
 // Visual Leak Detector
 //
@@ -932,13 +930,10 @@ int main(int argc, char* argv[])
 	int result{ 0 };
 
 	//
-	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	// Silence the windows heap checker as we use Visual Leak Detector
 	//
 #if defined(_WINDOWS)
 	_CrtSetDbgFlag(0);
-#if !defined(NDEBUG)
-	AfxEnableMemoryLeakDump(false);
-#endif
 #endif
 
 //#if defined(_WINDOWS)
