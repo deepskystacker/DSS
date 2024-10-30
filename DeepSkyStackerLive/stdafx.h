@@ -6,13 +6,6 @@
 #include <vld.h>
 #endif
 
-// Windows Files (eventually to go!)
-#if defined (_WINDOWS)
-#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
-#include <afx.h>
-#endif
-
 // Qt Files
 #include <QtWidgets>
 #include <QNetworkReply>
