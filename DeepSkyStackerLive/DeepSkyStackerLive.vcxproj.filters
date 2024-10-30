@@ -83,9 +83,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -302,6 +299,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DeepSkyStacker\Icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

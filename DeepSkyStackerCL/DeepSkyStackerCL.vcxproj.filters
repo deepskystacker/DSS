@@ -35,15 +35,12 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\dssrect.h">
+    <ClInclude Include="..\DeepSkyStackerKernel\dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\dssbase.h">
+    <ClInclude Include="..\DeepSkyStackerKernel\dssbase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\ImageList_GrayScale.bmp">
@@ -355,6 +352,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\DeepSkyStacker\Icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="Version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

@@ -37,7 +37,7 @@
 #include <QLocale>
 #include <QString>
 #include "BezierAdjust.h"
-#include "Histogram.h"
+#include "histogram.h"
 
 
 namespace DSS

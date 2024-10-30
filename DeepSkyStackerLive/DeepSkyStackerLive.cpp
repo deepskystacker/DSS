@@ -53,9 +53,6 @@
 // Necessary Windows header
 //
 #if defined(Q_OS_WIN)
-#define VC_EXTRALEAN					// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT _WIN32_WINNT_WIN10	// Want to support Windows 10 and up
-#include <afx.h>
 //
 // Visual Leak Detector
 #include <vld.h>
@@ -755,7 +752,7 @@ void DeepSkyStackerLive::help()
 	ZFUNCTRACE_RUNTIME();
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
 
 /* ------------------------------------------------------------------- */
@@ -1576,9 +1573,6 @@ int main(int argc, char* argv[])
 	//
 #if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
-#if !defined(NDEBUG)
-	AfxEnableMemoryLeakDump(false);
-#endif
 #endif
 
 	if (hasExpired())

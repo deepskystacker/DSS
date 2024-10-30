@@ -691,85 +691,85 @@ Kuyrukluyıldız:%1</translation>
         <translation>Toplu istifleme...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="410"/>
+        <location filename="../ui/ExplorerBar.ui" line="423"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
         <translation>İşliyor</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="431"/>
+        <location filename="../ui/ExplorerBar.ui" line="444"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
         <translation>Görüntü dosyasını aç...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="438"/>
+        <location filename="../ui/ExplorerBar.ui" line="451"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
         <translation>Şu anki resmi panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="445"/>
+        <location filename="../ui/ExplorerBar.ui" line="458"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
         <translation>Yıldız maskesi yarat...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="452"/>
+        <location filename="../ui/ExplorerBar.ui" line="465"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
         <translation>Görüntüyü dosyaya kaydet...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="471"/>
+        <location filename="../ui/ExplorerBar.ui" line="497"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
         <translation>Seçenekler</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="492"/>
+        <location filename="../ui/ExplorerBar.ui" line="518"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
         <translation>Ayarlar...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="502"/>
+        <location filename="../ui/ExplorerBar.ui" line="528"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
         <translation>Ham/FITS DDP ayarları...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="512"/>
+        <location filename="../ui/ExplorerBar.ui" line="538"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
         <translation>Aç...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="522"/>
+        <location filename="../ui/ExplorerBar.ui" line="548"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
         <translation>Kaydet...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="532"/>
+        <location filename="../ui/ExplorerBar.ui" line="558"/>
         <source>Recommended...</source>
         <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
         <translation>Önerilen...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="552"/>
+        <location filename="../ui/ExplorerBar.ui" line="578"/>
         <source>About DeepSkyStacker...</source>
         <comment>IDC_ABOUT</comment>
         <translation>DeepSkyStacker hakkında...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="572"/>
+        <location filename="../ui/ExplorerBar.ui" line="598"/>
         <source>DeepSkyStacker&apos;s Help...</source>
         <comment>IDC_CONTEXTHELP</comment>
         <translation>DeepSkyStacker&apos;nin yardımı...</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="592"/>
+        <location filename="../ui/ExplorerBar.ui" line="618"/>
         <source>The trace file is normally written to the DeepSkyStacker directory in the users
 &quot;Documents&quot; directory, and is deleted on exit (unless the application crashes).
 Tick this box to keep the trace file.</source>
@@ -778,22 +778,22 @@ Tick this box to keep the trace file.</source>
 İzleme dosyasını saklamak için bu kutuyu işaretleyin.</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="597"/>
+        <location filename="../ui/ExplorerBar.ui" line="623"/>
         <source>Retain the trace file on exit</source>
         <translation>Çıkışta izleme dosyasını sakla</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="617"/>
+        <location filename="../ui/ExplorerBar.ui" line="643"/>
         <source>Enable progress sounds</source>
         <translation>İlerleme seslerini etkinleştir</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="640"/>
+        <location filename="../ui/ExplorerBar.ui" line="666"/>
         <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>Processing Panelnde Black Levelnin altındaki pikselleri mavi, White Levelnin üstündeki pikselleri kırmızı olarak göster.</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="643"/>
+        <location filename="../ui/ExplorerBar.ui" line="669"/>
         <source>Show clipping for Black/White Points</source>
         <translation>Siyah/Beyaz Noktalar için kırpmayı göster</translation>
     </message>
@@ -1004,6 +1004,14 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     </message>
 </context>
 <context>
+    <name>DSS::LowerDockWidget</name>
+    <message>
+        <location filename="../lowerdockwidget.cpp" line="46"/>
+        <source>Double click here to dock/undock</source>
+        <translation>Yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
+    </message>
+</context>
+<context>
     <name>DSS::OutputTab</name>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
@@ -1084,14 +1092,6 @@ veya yakınlaştırmak için fare tekerleğini kullanın
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
         <translation>Çıktı Klasörünü Seçin</translation>
-    </message>
-</context>
-<context>
-    <name>DSS::PictureList</name>
-    <message>
-        <location filename="../picturelist.cpp" line="13"/>
-        <source>Double click here to dock/undock the image list</source>
-        <translation>Görüntü listesini yerleştirmek/yerinden çıkarmak için buraya çift tıklayın</translation>
     </message>
 </context>
 <context>
@@ -1188,197 +1188,205 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
     </message>
 </context>
 <context>
-    <name>DSS::ProcessingDlg</name>
+    <name>DSS::ProcessingControls</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1183"/>
-        <source>Do you want to save the modifications?</source>
-        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
+        <location filename="../ui/ProcessingControls.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="380"/>
-        <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
-        <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="287"/>
-        <source>Star Mask created by DeepSkyStacker</source>
-        <comment>IDS_STARMASKDESCRIPTION</comment>
-        <translation>DeepSkyStacker&apos;la Yıldız Maskesini oluşturuyor</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="289"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Yıldız Maskesini Kaydediyor %1</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="418"/>
-        <source>Failed to load image %1</source>
-        <translation>%1 resmi yüklenemedi</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
-        <source>TIFF Image 16 bit/ch (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
-        <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
-        <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="478"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="479"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
-        <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="488"/>
-        <source>Save Image</source>
-        <translation>Resmi Kaydet</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="580"/>
-        <source>There is no picture to save.</source>
-        <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation>Kaydedilecek dosya yok.</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="595"/>
-        <source>No information available</source>
-        <comment>IDS_NOINFO</comment>
-        <translation>Herhangi bir bilgi mevcut değil</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="608"/>
-        <source>Exposure: %1 </source>
-        <translation>Poz süresi: %1 </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="609"/>
-        <source>%n frames</source>
-        <comment>IDS_NRFRAMES</comment>
-        <translation>
-            <numerusform>%n kare</numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingDlg.ui" line="119"/>
+        <location filename="../ui/ProcessingControls.ui" line="69"/>
         <source>RGB/K Levels</source>
         <comment>IDD_RGB</comment>
         <translation>KYM/K seviyeleri</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="145"/>
+        <location filename="../ui/ProcessingControls.ui" line="101"/>
         <source>Set Red Histogram Adjustment curve</source>
         <comment>IDS_TT_REDADJUST</comment>
         <translation>Kırmızı Histogram Ayarı Metodunu belirle</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="206"/>
+        <location filename="../ui/ProcessingControls.ui" line="162"/>
         <source>Set Green Histogram Adjustment curve</source>
         <comment>IDS_TT_GREENADJUST</comment>
         <translation>Yeşil Histogram Ayarı Metodunu belirle</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="267"/>
+        <location filename="../ui/ProcessingControls.ui" line="223"/>
         <source>Set Blue Histogram Adjustment curve</source>
         <comment>IDS_TT_BLUEADJUST</comment>
         <translation>Mavi Histogramı Ayarı Metodunu belirle</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="308"/>
+        <location filename="../ui/ProcessingControls.ui" line="264"/>
         <source>Linked settings</source>
         <comment>IDC_LINK</comment>
         <translation>İlişkilendirilen ayarlar</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="316"/>
+        <location filename="../ui/ProcessingControls.ui" line="272"/>
         <source>Luminance</source>
         <comment>IDD_LUMINANCE</comment>
         <translation>Parlaklık</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="337"/>
+        <location filename="../ui/ProcessingControls.ui" line="299"/>
         <source>Darkness</source>
         <comment>IDC_TEXT_DARKNESS</comment>
         <translation>karanlık</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="397"/>
+        <location filename="../ui/ProcessingControls.ui" line="359"/>
         <source>Midtone</source>
         <comment>IDC_TEXT_MIDTONE</comment>
         <translation>Orta ton</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="457"/>
+        <location filename="../ui/ProcessingControls.ui" line="419"/>
         <source>Highlight</source>
         <comment>IDC_TEXT_HIGHLIGHT</comment>
         <translation>Parlak bölge</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="503"/>
+        <location filename="../ui/ProcessingControls.ui" line="465"/>
         <source>Saturation</source>
         <comment>IDD_SATURATION</comment>
         <translation>Doygunluk</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="524"/>
+        <location filename="../ui/ProcessingControls.ui" line="492"/>
         <source>Saturation shift</source>
         <comment>IDC_TEXT_SATURATION</comment>
         <translation>Doygunluk ayarı</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="612"/>
+        <location filename="../ui/ProcessingControls.ui" line="586"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Uygula</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="619"/>
+        <location filename="../ui/ProcessingControls.ui" line="593"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>En son uygulanan ayarları geri-al</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="642"/>
+        <location filename="../ui/ProcessingControls.ui" line="616"/>
         <source>Save, Load, Manage settings ...</source>
         <comment>IDS_MANAGESETTINGS</comment>
         <translation>Ayarları Kaydet, Aç, Yönet...</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="665"/>
+        <location filename="../ui/ProcessingControls.ui" line="639"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>En son uygulanan ayarları tekrar uygula</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingDlg.ui" line="682"/>
+        <location filename="../ui/ProcessingControls.ui" line="656"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Sıfırla</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::ProcessingDlg</name>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1217"/>
+        <source>Do you want to save the modifications?</source>
+        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
+        <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="416"/>
+        <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
+        <comment>IDS_FILTER_DSIIMAGETIFF</comment>
+        <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="323"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>DeepSkyStacker&apos;la Yıldız Maskesini oluşturuyor</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="325"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>Yıldız Maskesini Kaydediyor %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="454"/>
+        <source>Failed to load image %1</source>
+        <translation>%1 resmi yüklenemedi</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <source>TIFF Image 16 bit/ch (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="514"/>
+        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="515"/>
+        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <comment>IDS_FILTER_OUTPUT</comment>
+        <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
+        <source>Save Image</source>
+        <translation>Resmi Kaydet</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="616"/>
+        <source>There is no picture to save.</source>
+        <comment>IDS_MSG_NOPICTURETOSAVE</comment>
+        <translation>Kaydedilecek dosya yok.</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="631"/>
+        <source>No information available</source>
+        <comment>IDS_NOINFO</comment>
+        <translation>Herhangi bir bilgi mevcut değil</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="644"/>
+        <source>Exposure: %1 </source>
+        <translation>Poz süresi: %1 </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../ProcessingDlg.cpp" line="645"/>
+        <source>%n frames</source>
+        <comment>IDS_NRFRAMES</comment>
+        <translation>
+            <numerusform>%n kare</numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -3003,14 +3011,14 @@ Davranışı değiştirmek için sağ tıklayın.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="135"/>
+        <location filename="../DeepSkyStacker.cpp" line="137"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker&apos;ın bu beta sürümünün süresi doldu
 Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="163"/>
+        <location filename="../DeepSkyStacker.cpp" line="165"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3018,17 +3026,17 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 (Bu seçeneği daha sonra Hakkında kısmından uygulayabilir veya kaldırabilirsiniz)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="390"/>
+        <location filename="../DeepSkyStacker.cpp" line="406"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="334"/>
+        <location filename="../DeepSkyStacker.cpp" line="350"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="610"/>
+        <location filename="../DeepSkyStacker.cpp" line="627"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

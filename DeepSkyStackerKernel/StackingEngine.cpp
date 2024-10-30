@@ -8,7 +8,7 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "Multitask.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "Filters.h"
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"

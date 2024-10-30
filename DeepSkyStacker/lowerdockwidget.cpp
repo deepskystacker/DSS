@@ -43,7 +43,7 @@ namespace DSS
 		dockTitle{ new QLabel(this) },
 		stackedWidget{ new QStackedWidget(this) }
 	{
-		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
+		dockTitle->setToolTip(tr("Double click here to dock/undock"));
 
 		//
 		// Set an informative title bar on the dockable image list with a nice gradient
