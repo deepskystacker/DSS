@@ -1573,9 +1573,6 @@ int main(int argc, char* argv[])
 	//
 #if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
-#if !defined(NDEBUG)
-	AfxEnableMemoryLeakDump(false);
-#endif
 #endif
 
 	if (hasExpired())
