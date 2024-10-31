@@ -3,7 +3,7 @@
 
 #include <stdafx.h>
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
 // Visual Leak Detector
 #include <vld.h>
@@ -388,7 +388,7 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
@@ -403,7 +403,7 @@ int main(int argc, char* argv[])
 	//
 	// Silence the windows heap checker as we use Visual Leak Detector
 	//
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
 #endif
 

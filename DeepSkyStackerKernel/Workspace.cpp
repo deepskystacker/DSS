@@ -301,7 +301,7 @@ void	WorkspaceSettings::ReadFromFile(std::FILE * hFile)
 void	WorkspaceSettings::ReadFromFile(const fs::path& file)
 {
 	if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"rt")
 #else
 		std::fopen(file.c_str(), "rt")
@@ -330,7 +330,7 @@ void	WorkspaceSettings::SaveToFile(FILE * hFile)
 void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
 	if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
 		std::fopen(file.c_str(), "wt")

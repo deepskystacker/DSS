@@ -2494,7 +2494,7 @@ namespace DSS
 		{
 			// Check that the file can be opened
 			if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 				_wfopen(file.c_str(), L"rt")
 #else
 				std::fopen(file.c_ctr(), "rt")

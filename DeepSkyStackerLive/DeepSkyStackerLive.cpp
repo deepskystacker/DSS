@@ -52,7 +52,7 @@
 //
 // Necessary Windows header
 //
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
 // Visual Leak Detector
 #include <vld.h>
@@ -933,7 +933,7 @@ bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 	{
 		auto  file = dir /= "DSSLive.test.txt";
 		if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
 			std::fopen(file.generic_u8string().c_str(), "wt")
