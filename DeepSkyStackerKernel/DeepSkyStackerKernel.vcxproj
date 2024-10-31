@@ -96,6 +96,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -133,6 +134,7 @@
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
