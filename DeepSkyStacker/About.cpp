@@ -138,6 +138,9 @@ namespace DSS
         strHTML += tr("Dutch version:", "IDS_ABOUT_LANG_DUTCH") + " ";
         strHTML += QString("<a href=\"http://www.geocities.com/me_gielis/\">%1</a><br>").arg("Eelko Gielis " + tr("and") + " Inge van de Stadt");
 
+        strHTML += "<img valign=center src=\":/flags/prc.png\">&nbsp;&nbsp;";
+        strHTML += tr("Simplified Chinese version: 张博 (Zhang Bo)<br>");
+ 
         strHTML += "<img valign=center src=\":/flags/taiwan.png\">&nbsp;&nbsp;";
         strHTML += tr("Traditional Chinese version:", "IDS_ABOUT_LANG_CHINESET") + " ";
         strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br>").arg("王為豪 (Wei-Hao Wang)");

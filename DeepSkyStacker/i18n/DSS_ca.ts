@@ -183,9 +183,9 @@ Copyright Tőkés Attila</translation>
     <message>
         <location filename="../About.cpp" line="135"/>
         <location filename="../About.cpp" line="139"/>
-        <location filename="../About.cpp" line="148"/>
-        <location filename="../About.cpp" line="152"/>
-        <location filename="../About.cpp" line="153"/>
+        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="155"/>
+        <location filename="../About.cpp" line="156"/>
         <source>and</source>
         <translation>i</translation>
     </message>
@@ -197,30 +197,35 @@ Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="142"/>
+        <source>Simplified Chinese version: 张博 (Zhang Bo)&lt;br&gt;</source>
+        <translation>Versió xinesa simplificada: 张博 (Zhang Bo)&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="145"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Versió Xinès Tradicional:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="149"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Versió en Portugès:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Versió Romanesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="156"/>
+        <location filename="../About.cpp" line="159"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Versió en Rus:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="160"/>
+        <location filename="../About.cpp" line="163"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Versió Turca:</translation>
@@ -3013,14 +3018,14 @@ Right Click to change behaviour.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="137"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Aquesta versió beta de DeepSkyStacker ha caducat
 Probablement en podeu obtenir un altre o descarregar la versió final del lloc web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="165"/>
+        <location filename="../DeepSkyStacker.cpp" line="163"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3028,20 +3033,65 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
 (Vè. pot habilitar o deshabilitar aquesta opció més tard en la finestra de Referent a...)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="406"/>
+        <location filename="../DeepSkyStacker.cpp" line="404"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocina DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="350"/>
+        <location filename="../DeepSkyStacker.cpp" line="348"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 no existeix o no és un fitxer</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="627"/>
+        <location filename="../DeepSkyStacker.cpp" line="625"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>Ayuda DeepSkyStacker.chm</translation>
+    </message>
+</context>
+<context>
+    <name>Histogram</name>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="86"/>
+        <source>Linear</source>
+        <comment>IDS_HAT_LINEAR</comment>
+        <translation>Lineal</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="89"/>
+        <source>Cube Root</source>
+        <comment>IDS_HAT_CUBEROOT</comment>
+        <translation>Arrel cúbica</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="92"/>
+        <source>Square Root</source>
+        <comment>IDS_HAT_SQUAREROOT</comment>
+        <translation>Arrel quadrada</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="95"/>
+        <source>Logarithm</source>
+        <comment>IDS_HAT_LOG</comment>
+        <translation>Logaritme</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="98"/>
+        <source>Log(Log)</source>
+        <comment>IDS_HAT_LOGLOG</comment>
+        <translation>Logaritme (logaritme)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="101"/>
+        <source>Log(Square Root)</source>
+        <comment>IDS_HAT_LOGSQUAREROOT</comment>
+        <translation>Logaritme (arrel quadrada)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="104"/>
+        <source>ASinH</source>
+        <comment>IDS_HAT_ASINH</comment>
+        <translation>ASinH</translation>
     </message>
 </context>
 <context>

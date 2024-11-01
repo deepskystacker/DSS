@@ -183,9 +183,9 @@ Copyright Tőkés Attila</translation>
     <message>
         <location filename="../About.cpp" line="135"/>
         <location filename="../About.cpp" line="139"/>
-        <location filename="../About.cpp" line="148"/>
-        <location filename="../About.cpp" line="152"/>
-        <location filename="../About.cpp" line="153"/>
+        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="155"/>
+        <location filename="../About.cpp" line="156"/>
         <source>and</source>
         <translation>a</translation>
     </message>
@@ -197,30 +197,35 @@ Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="142"/>
+        <source>Simplified Chinese version: 张博 (Zhang Bo)&lt;br&gt;</source>
+        <translation>Zjednodušená čínská verze: 张博 (Zhang Bo)&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="145"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Verze tradiční čínštiny:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="149"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portugalský překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Rumunská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="156"/>
+        <location filename="../About.cpp" line="159"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Ruská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="160"/>
+        <location filename="../About.cpp" line="163"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Turecká verze:</translation>
@@ -3028,14 +3033,14 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="137"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Platnost této beta verze DeepSkyStacker vypršela
 Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="165"/>
+        <location filename="../DeepSkyStacker.cpp" line="163"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3043,19 +3048,64 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 (Tuto volbu můžete nastavit nebo vyřadit kdykoliv později v okně informace o programu)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="406"/>
+        <location filename="../DeepSkyStacker.cpp" line="404"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponzorujte DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="350"/>
+        <location filename="../DeepSkyStacker.cpp" line="348"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="627"/>
+        <location filename="../DeepSkyStacker.cpp" line="625"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>Histogram</name>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="86"/>
+        <source>Linear</source>
+        <comment>IDS_HAT_LINEAR</comment>
+        <translation>Lineární</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="89"/>
+        <source>Cube Root</source>
+        <comment>IDS_HAT_CUBEROOT</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="92"/>
+        <source>Square Root</source>
+        <comment>IDS_HAT_SQUAREROOT</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="95"/>
+        <source>Logarithm</source>
+        <comment>IDS_HAT_LOG</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="98"/>
+        <source>Log(Log)</source>
+        <comment>IDS_HAT_LOGLOG</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="101"/>
+        <source>Log(Square Root)</source>
+        <comment>IDS_HAT_LOGSQUAREROOT</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStackerKernel/histogram.h" line="104"/>
+        <source>ASinH</source>
+        <comment>IDS_HAT_ASINH</comment>
         <translation></translation>
     </message>
 </context>
