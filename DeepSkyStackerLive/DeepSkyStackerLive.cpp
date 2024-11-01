@@ -752,7 +752,7 @@ void DeepSkyStackerLive::help()
 	ZFUNCTRACE_RUNTIME();
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdString().c_str(), HH_DISPLAY_TOPIC, 0);
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 }
 
 /* ------------------------------------------------------------------- */
