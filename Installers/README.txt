@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 4
+Welcome to DeepSkyStacker 5.1.8 Beta 5
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -92,6 +92,8 @@ Changes since the last release:
 18. Changes to allow the DeepSkyStacker main window to display correctly on a monitor with an effective size of 1280*720 (1920*1080 at 150% scaling).
     This was achieved by moving the controls for the processing panel into the lower dockable window and allowing the displayed image to have a
     minimum height of 100 pixels.   If you need to show the image larger, undock the lower dock window.
+
+19. Add translations for Simplified Chinese thanks to 张博 (Zhang Bo).
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
