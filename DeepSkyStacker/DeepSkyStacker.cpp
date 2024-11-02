@@ -1022,7 +1022,7 @@ int main(int argc, char* argv[])
 		//
 		// Create the file if it doesn't exist.  It is intentionally never deleted.
 		//
-#ifdef _WINDOWS
+#if defined (Q_OS_WIN)
 		auto newFile = std::ofstream(mutexFileName.toStdWString().c_str());
 #else
 		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());
