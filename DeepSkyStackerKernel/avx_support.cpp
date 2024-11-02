@@ -101,7 +101,7 @@ bool AvxSupport::bitmapHasCorrectType() const
 
 bool AvxSupport::checkAvx2CpuSupport()
 {
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	SYSTEM_INFO info;
 	GetNativeSystemInfo(&info);
 	if (info.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_AMD64) // AVX instructions can only be supported on x64 CPUs.
@@ -142,7 +142,7 @@ bool AvxSupport::checkSimdAvailability()
 
 void AvxSupport::reportCpuType()
 {
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	char architecture[8]{ 0x00 };
 	SYSTEM_INFO info;
 
