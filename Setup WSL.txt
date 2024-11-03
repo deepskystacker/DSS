@@ -95,3 +95,63 @@ sudo make install
 # Install libjpeg
 #
 sudo apt-get install libjpeg-dev
+#
+# More stuff added 3 Nov '24 16:20
+#
+# Install Exiv2
+#
+sudo apt-get install exiv2
+#
+# SmtpClient 2.0 for Qt
+#
+sudo apt-get install cmake-gt-gui
+gh repo clone bluetiger9/SmtpClient-for-Qt
+cd SmtpClient-for-Qt/src
+#
+# Change the first few lines of CMakeLists.txt so they look like:
+# using e.g. nano CMakeLists.txt
+#
+	cmake_minimum_required(VERSION 3.16)
+
+	project(SmtpMime VERSION 2.0 LANGUAGES C CXX)
+
+	set(CMAKE_AUTOUIC ON)
+	set(CMAKE_AUTOMOC ON)
+	set(CMAKE_AUTORCC ON)
+
+	set(CMAKE_CXX_STANDARD 17)
+	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+	find_package(Qt6 6.8 COMPONENTS Core Network REQUIRED)
+	
+	add_compile_options(-DSMTP_MIME_LIBRARY)
+
+add_compile_options(-DSMTP_MIME_LIBRARY)
+#
+# create a build directory
+#
+cd ..
+mkdir build
+#
+# Run cmake-gui
+# set the source code as being in the src sub-directory
+# set the build directory to be the build sub-directory
+# 
+# set CMAKE variables as follows:
+# 
+# CMAKE_INSTALL_PREFIX /usr/local
+# CMAKE_MODULE_PATH /usr/share/cmake-3.28/Modules
+# CMAKE_PREFIX_PATH /opt/Qt/6.8.0/gcc_64
+# 
+# then run Configure then Generate (selecting Ninja as the build tool
+cmake-gui&
+#
+# You can now close cmake-gui
+#
+cd build
+ninja
+sudo ninja install
+
+
+
+
