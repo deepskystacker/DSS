@@ -43,7 +43,10 @@
 #include <vld.h>
 #endif
 
+#if defined(Q_OS_WIN)
 #include <htmlhelp.h>
+#endif
+
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/exceptions.hpp>
@@ -622,9 +625,14 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(Q_OS_WIN)
+
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#else
+	QMessageBox::Information(this, "DeepSkyStecker", "Sorry, there's no help available for Linux yet");
+#endif
 }
 
 /* ------------------------------------------------------------------- */
