@@ -175,7 +175,6 @@ set(Source_Files
     "StackingTasks.cpp"
     "StackWalker.cpp"
     "StarMask.cpp"
-    "stdafx.cpp"
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"

@@ -82,7 +82,6 @@ set(Source_Files
     "editstars.cpp"
     "progressdlg.cpp"
     "selectrect.cpp"
-    "StdAfx.cpp"
     "toolbar.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
