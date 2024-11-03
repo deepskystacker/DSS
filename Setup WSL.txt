@@ -11,7 +11,6 @@ sudo apt-get upgrade
 sudo apt-get install build-essential libgl1-mesa-dev
 sudo apt-get install gdb ninja-build zip cmake
 sudo apt-get install libglu1-mesa-dev libxcb-xinerama0 libxcb-cursor0
-sudo apt-get install firefox
 sudo apt-get install \
     libfontconfig1-dev \
     libfreetype-dev \
@@ -38,12 +37,45 @@ sudo apt-get install \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
     libxrender-dev
+
+mkdir Downloads
+cd Downloads
+sudo apt-get install firefox
+
 #
-# Download the Qt Online installer for Linux from Qt Website
-# and install Qt 6.8.0  (leave the firefox instance running ... for later).naut
+# Install fix for Wayland/X11 problems 
+# See: <https://stackoverflow.com/questions/79151910/how-to-fix-errors-in-wsl-gui/79151948#79151948>
+#
+sudo apt-get install gh
+gh repo clone viruscamp/wslg-links
+cd wslg-links
+sudo cp wslg-tmp-x11.service /usr/lib/systemd/system/
+sudo cp wslg-runtime-dir.service /usr/lib/systemd/user/
+
+sudo systemctl --global disable pulseaudio.socket
+
+sudo systemctl enable wslg-tmp-x11
+sudo systemctl --global enable wslg-runtime-dir
+
+sudo add-apt-repository ppa:oibaf/graphics-drivers
+sudo apt update
+sudo apt upgrade
+
+#
+# Exit WSL at this point and use Powershell to do a wsl --shutdown
+# Then restart your WSL session
+#
+cd Downloads
+
+#
+# Download the Qt Online installer for Linux from Qt Website to the Downloads folder
+# You might need to change Firefox settings to do that otherwise it will DL to:
+# snap/firefox/common/Downloads which may be inconvenient.  If the folder already exists when
+# Firefox is installed, the installation may well create a synlink to ~/Downloads which would be OK
+#
+# Leave the firefox instance running ... for later downloads
 #
 firefox&
-cd Downloads
 chmod +x qt-online-installer-linux-x64-4.8.1.run
 sudo ./qt-online-installer-linux-x64-4.8.1.run
 #
@@ -51,8 +83,10 @@ sudo ./qt-online-installer-linux-x64-4.8.1.run
 #
 sudo apt-get install libboost-all-dev
 #
-# Download, unzip, build and install CFITSIO to your Downloads folder
+# Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
+# to your Downloads folder, then untar it, build and install CFITSIO
 #
+tar -zxvf cfitsio-4.5.0.tar.gz
 cd cfitsio-4.5.0
 ./configure --prefix=/usr/local
 make
@@ -61,5 +95,3 @@ sudo make install
 # Install libjpeg
 #
 sudo apt-get install libjpeg-dev
-
-
