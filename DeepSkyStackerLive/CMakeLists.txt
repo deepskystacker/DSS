@@ -6,7 +6,6 @@ set(PROJECT_NAME DeepSkyStackerLive)
 set(Header_Files
     "dssliveenums.h"
     "LiveSettings.h"
-    "resource.h"
     "stdafx.h"
 )
 source_group("Header Files" FILES ${Header_Files})

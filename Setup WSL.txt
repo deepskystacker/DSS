@@ -1,0 +1,65 @@
+#
+# Open a windows command prompt, right click the title bar and select "Properties"
+# Select the option tab and ensure that "Use legacy console" is NOT selected.
+#
+# Run Powershell as Admin and run wsl --install to install Ubuntu
+#
+# Set up the default user
+#
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential libgl1-mesa-dev
+sudo apt-get install gdb ninja-build zip cmake
+sudo apt-get install libglu1-mesa-dev libxcb-xinerama0 libxcb-cursor0
+sudo apt-get install firefox
+sudo apt-get install \
+    libfontconfig1-dev \
+    libfreetype-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xinerama0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev
+#
+# Download the Qt Online installer for Linux from Qt Website
+# and install Qt 6.8.0  (leave the firefox instance running ... for later).naut
+#
+firefox&
+cd Downloads
+chmod +x qt-online-installer-linux-x64-4.8.1.run
+sudo ./qt-online-installer-linux-x64-4.8.1.run
+#
+# Install boost (1.83.0)
+#
+sudo apt-get install libboost-all-dev
+#
+# Download, unzip, build and install CFITSIO to your Downloads folder
+#
+cd cfitsio-4.5.0
+./configure --prefix=/usr/local
+make
+sudo make install
+#
+# Install libjpeg
+#
+sudo apt-get install libjpeg-dev
+
+

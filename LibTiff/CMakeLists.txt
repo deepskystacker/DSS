@@ -78,69 +78,52 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "Libraries")
-
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-################################################################################
-# Includes for CMake from *.props
-################################################################################
-use_props(${PROJECT_NAME} Debug   "../Debug.cmake")
-use_props(${PROJECT_NAME} Release "../Release.cmake")
+add_library(libtiff STATIC ${ALL_FILES})
+set_target_properties(libtiff PROPERTIES FOLDER "Libraries")
 
 set(ROOT_NAMESPACE libtiff)
 
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(libtiff PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/./$ENV{PlatformTarget}/$<CONFIG>/"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/./$ENV{PlatformTarget}/$<CONFIG>/"
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(libtiff PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Debug>:
-        MultiThreadedDebugDLL
-    >
-    $<$<CONFIG:Release>:
-        MultiThreadedDLL
-    >
-    $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
 ################################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/."
+    .
+	../include
 )
 
 ################################################################################
 # Compile definitions
 ################################################################################
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "$<$<CONFIG:Debug>:"
-        "_DEBUG"
-    ">"
     "$<$<CONFIG:Release>:"
         "NDEBUG"
     ">"
     "ZIP_SUPPORT;"
-    "WIN32;"
     "_LIB;"
     "_CRT_NONSTDC_NO_WARNINGS;"
     "_CRT_SECURE_NO_WARNINGS;"
     "USE_LIBTIFF_STATIC;"
-    "UNICODE;"
-    "_UNICODE"
 )
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+	WIN32
+	_WINDOWS
+	_UNICODE
+	UNICODE
+	)
+endif()
 
 ################################################################################
 # Compile and link options

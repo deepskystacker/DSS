@@ -2,8 +2,32 @@ cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 
-project(DeepSkyStacker.VS2022 C CXX)
+project(DeepSkyStacker VERSION 5.1.8.4 LANGUAGES C CXX)
 
+# Require C++20 and disable extensions for all targets.
+# NOTE: See further below for how to do this more robustly.
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(CMAKE_PREFIX_PATH
+	"C:/Qt/6.8.0/msvc2022_64"
+	CACHE STRING "" FORCE
+	)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+set(CMAKE_PREFIX_PATH
+	"/opt/Qt/6.8.0/gcc_64"
+	CACHE STRING "" FORCE
+	)
+endif()
+message ("System Name is: " ${CMAKE_SYSTEM_NAME} " prefix path: " ${CMAKE_PREFIX_PATH})
+	
+set(CMAKE_AUTOUIC_SEARCH_PATHS
+	"./ui"
+	CACHE STRING "" FORCE
+	)
+	
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
@@ -25,37 +49,10 @@ set(CMAKE_CONFIGURATION_TYPES
     CACHE STRING "" FORCE
 )
 
-################################################################################
-# Global compiler options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_C_FLAGS "")
-    set(CMAKE_C_FLAGS_DEBUG "")
-    set(CMAKE_C_FLAGS_RELEASE "")
-    set(CMAKE_CXX_FLAGS "")
-    set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS_RELEASE "")
-endif()
-
-################################################################################
-# Global linker options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_EXE_LINKER_FLAGS "")
-    set(CMAKE_MODULE_LINKER_FLAGS "")
-    set(CMAKE_SHARED_LINKER_FLAGS "")
-    set(CMAKE_STATIC_LINKER_FLAGS "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
-endif()
+set(CMAKE_CXX_FLAGS
+	"/GR /EHsc"
+	CACHE STRING "" FORCE
+	)
 
 ################################################################################
 # Nuget packages function stub.
@@ -84,12 +81,13 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(DeepSkyStacker)
-add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerKernel)
-add_subdirectory(DeepSkyStackerLive)
-add_subdirectory(DeepSkyStackerTest)
 add_subdirectory(LibRaw/buildfiles)
 add_subdirectory(LibTiff)
-add_subdirectory(ZCLass)
-
+add_subdirectory(ZClass)
+add_subdirectory(DeepSkyStacker)
+#[=[
+add_subdirectory(DeepSkyStackerCL)
+add_subdirectory(DeepSkyStackerLive)
+add_subdirectory(DeepSkyStackerTest)
+]=]

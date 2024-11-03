@@ -3,14 +3,9 @@ set(PROJECT_NAME DeepSkyStackerCL)
 ################################################################################
 # Source groups
 ################################################################################
-set(no_group_source_files
-    "ReadMe.txt"
-)
-source_group("" FILES ${no_group_source_files})
-
 set(Header_Files
-    "../DeepSkyStacker/dssrect.h"
-    "../dssbase.h"
+    "../DeepSkyStackerKernel/dssbase.h"
+    "../DeepSkyStackerKernel/dssrect.h"
     "stdafx.h"
 )
 source_group("Header Files" FILES ${Header_Files})
@@ -23,7 +18,6 @@ set(Source_Files
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
-    ${no_group_source_files}
     ${Header_Files}
     ${Source_Files}
 )
@@ -63,13 +57,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 ################################################################################
 get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
 string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Debug>:
-        MultiThreadedDebugDLL
-    >
     $<$<CONFIG:Release>:
         MultiThreadedDLL
     >
-    $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+    $<$<NOT:$<OR:$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
@@ -104,16 +95,17 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     ">"
     "$<$<CONFIG:Release>:"
         "NDEBUG;"
-        "USE_LIBTIFF_STATIC"
+        "USE_LIBTIFF_STATIC;"
+        "_MBCS"
     ">"
+    "DSS_COMMANDLINE;"
     "_UNICODE;"
     "UNICODE;"
     "NOMINMAX;"
     "LIBRAW_NODLL;"
     "WIN32;"
     "_CONSOLE;"
-    "_CRT_SECURE_NO_DEPRECATE;"
-    "_MBCS"
+    "_CRT_SECURE_NO_DEPRECATE"
 )
 
 ################################################################################
@@ -177,8 +169,6 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libexpat;"
         "zlibstatic"
     ">"
-    "gdi32;"
-    "gdiplus;"
     "psapi;"
     "$(Qt_LIBS_);"
     "htmlhelp;"
