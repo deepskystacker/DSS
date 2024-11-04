@@ -126,7 +126,6 @@ cd SmtpClient-for-Qt/src
 	
 	add_compile_options(-DSMTP_MIME_LIBRARY)
 
-add_compile_options(-DSMTP_MIME_LIBRARY)
 #
 # create a build directory
 #
@@ -149,6 +148,17 @@ cmake-gui&
 # You can now close cmake-gui
 #
 cd build
+ninja
+sudo ninja install
+#
+# Install libexpat
+#
+cd ~/Downloads
+gh repo clone libexpat/libexpat
+cd libexpat/expat
+mkdir ../build
+cmake -B ../build -DEXPAT_SHARED_LIBS:BOOL=OFF -G Ninja
+cd ../build
 ninja
 sudo ninja install
 
