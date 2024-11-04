@@ -502,7 +502,7 @@ namespace DSS
 											.arg(groupId)
 											.arg(groupName(groupId)));
 
-										DSSBase::instance()->reportError(errorMessage, "");
+										DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
 									}
 								}
 								else
