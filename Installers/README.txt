@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 5
+Welcome to DeepSkyStacker 5.1.8
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -350,7 +350,8 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 1. The bulk of the code for the "Stacking" panel has been converted to Qt.  This includes a completely reworked image display.
 
-2. The image list can now be undocked from the bottom of the Stacking panel so that it operates as a separate window.  The "Explorer" bar (left panel) can also be undocked.
+2. The image list can now be undocked from the bottom of the Stacking panel so that it operates as a separate window.
+   The "Explorer" bar (left panel) can also be undocked.
 
 3. It is now possible to rename all groups with the exception of the initial group (Main Group).
 
@@ -358,7 +359,10 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 5. A large number of internal changes have been made with the intent of facilitating future enhancements and/or to improve processing.
 
-6. SIMD (Single Instruction Multiple Data - also known as Advanced Vector Extensions or AVX) support for decoding raw images and for registration and stacking of RGGB images.  It *can* deliver dramatic reductions in processing times, but it depends on your processor and clock speed, so don't assume it will be faster.   As an example, Martin Toeltsch (who wrote the code) reports times to process 10 Nikon NEF files (on his computer):
+6. SIMD (Single Instruction Multiple Data - also known as Advanced Vector Extensions or AVX) support for decoding raw images and for
+   registration and stacking of RGGB images.  It *can* deliver dramatic reductions in processing times, but it depends on your
+   processor and clock speed, so don't assume it will be faster.
+   As an example, Martin Toeltsch (who wrote the code) reports times to process 10 Nikon NEF files (on his computer):
 
 	Without SIMD  52s
 	Using SIMD    8s
@@ -379,7 +383,9 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 10. The "Processing" panel is still running MFC code but has minor changes to allow it to work as a child of a Qt window.
 
-11. The location for storing DeepSkyStacker settings files has changed from %ProgramData%\DeepSkyStacker (typically C:\ProgramData\DeepSkyStacker) to %AppData%\DeepSkyStacker\DeepSkyStacker5 (typically C:\Users\<username>\AppData\Roaming\DeepSkyStacker\DeepSkyStacker5).  You may wish to copy any old settings files to the new location.
+11. The location for storing DeepSkyStacker settings files has changed from %ProgramData%\DeepSkyStacker (typically C:\ProgramData\DeepSkyStacker)
+   to %AppData%\DeepSkyStacker\DeepSkyStacker5 (typically C:\Users\<username>\AppData\Roaming\DeepSkyStacker\DeepSkyStacker5).
+   You may wish to copy any old settings files to the new location.
 
 12. A file association is now created during installation so that .dssfilelist files will be opened by DeepSkyStacker.
 
@@ -387,7 +393,9 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 14. Change message for incompatible images to report the reason.
 
-24. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.   Typically, the time to load the images will predominate on faster systems or those that use real disk drives.
+24. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L
+   and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.
+   Typically, the time to load the images will predominate on faster systems or those that use real disk drives.
 
 15. Remove manual setting of "Set Black Point to Zero", this is now determined automatically.
 
@@ -398,3 +406,6 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 18. Update Libraw to 0.21.1
 
 19. Bug fix - active tab jumped back to Main Group after drop of files when another group was active.
+
+20. When loading a file list that contains a file that's already loaded, report this using QErrorMessage instead of QMessageBox.
+   This will allow the message to be suppressed by the user.
