@@ -186,7 +186,7 @@ Section
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
-  File /r "..\x64\Release\imageformats"
+  File /r "..\x64\Release\networkinformation"
   File /r "..\x64\Release\platforms"
   File /r "..\x64\Release\styles"
   File /r "..\x64\Release\tls"
