@@ -41,11 +41,23 @@ sudo apt-get install \
 mkdir Downloads
 cd Downloads
 sudo apt-get install firefox
-
+sudo apt-get install nautilus
 #
-# Install fix for Wayland/X11 problems 
+# Now run nautilus to see if you get errors like:
+#
+# MESA: error: ZINK: failed to choose pdev
+# libEGL warning: egl: failed to create dri2 screen
+# MESA: error: ZINK: failed to choose pdev
+# glx: failed to create drisw screen
+#
+# If not you can skip to the after the comment * End of Wayland/X11 fix
+#
+
+# If so, you will need to install a fix for Wayland/X11 problems 
+#
 # See: <https://stackoverflow.com/questions/79151910/how-to-fix-errors-in-wsl-gui/79151948#79151948>
 #
+
 sudo apt-get install gh
 gh repo clone viruscamp/wslg-links
 cd wslg-links
@@ -65,7 +77,11 @@ sudo apt upgrade
 # Exit WSL at this point and use Powershell to do a wsl --shutdown
 # Then restart your WSL session
 #
-cd Downloads
+# **************************
+# * End of Wayland/X11 fix *         
+# **************************
+#
+cd ~/Downloads
 
 #
 # Download the Qt Online installer for Linux from Qt Website to the Downloads folder
@@ -77,6 +93,9 @@ cd Downloads
 #
 firefox&
 chmod +x qt-online-installer-linux-x64-4.8.1.run
+#
+# Now run the installer and install Qt 6.8.0
+#
 sudo ./qt-online-installer-linux-x64-4.8.1.run
 #
 # Install boost (1.83.0)
@@ -129,25 +148,9 @@ cd SmtpClient-for-Qt/src
 #
 # create a build directory
 #
-cd ..
-mkdir build
-#
-# Run cmake-gui
-# set the source code as being in the src sub-directory
-# set the build directory to be the build sub-directory
-# 
-# set CMAKE variables as follows:
-# 
-# CMAKE_INSTALL_PREFIX /usr/local
-# CMAKE_MODULE_PATH /usr/share/cmake-3.28/Modules
-# CMAKE_PREFIX_PATH /opt/Qt/6.8.0/gcc_64
-# 
-# then run Configure then Generate (selecting Ninja as the build tool
-cmake-gui&
-#
-# You can now close cmake-gui
-#
-cd build
+mkdir ../build
+cmake -B ../build -G Ninja -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_MODULE_PATH:STRING="/usr/share/cmake-3.28/Modules" -D CMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cd ../build
 ninja
 sudo ninja install
 #
@@ -161,6 +164,20 @@ cmake -B ../build -DEXPAT_SHARED_LIBS:BOOL=OFF -G Ninja
 cd ../build
 ninja
 sudo ninja install
+#
+# libtiff
+# Use firefox to download https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
+# to your Downloads directory
+#
+cd ~/Downloads
+tar -zxvf tiff-4.7.0.tar.gz
+cd tiff-4.7.0
+cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
+cd build
+ninja
+sudo ninja install
+
+
 
 
 
