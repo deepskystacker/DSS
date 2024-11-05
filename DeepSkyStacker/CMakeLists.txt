@@ -136,10 +136,10 @@ set(i18n_Files
 	"i18n/DSS_tr.ts"
 	"i18n/DSS_zh_CN.ts"
 	"i18n/DSS_zh_TW.ts"
-	"i18n/translations.qrc"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files})
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
+    )
 
 set(Resources
 	"Icon.rc"
@@ -165,7 +165,7 @@ set(ALL_FILES
     ${Dialogs__Stacking}
     ${Header_Files}
 	${Ui_Files}
-	${i18n_Files}
+	${i18n_Files} "i18n/translations.qrc"
 	${Resources}
     ${Source_Files}
     ${Tools}
@@ -175,6 +175,47 @@ set(ALL_FILES
 # Target
 ################################################################################
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
+
+set_source_files_properties(${i18n_Files}
+     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
+
+qt_add_lrelease(TS_FILES ${i18n_Files})
+
+set_target_properties(DeepSkyStacker PROPERTIES
+    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/"
+    OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/"
+)
+set_target_properties(DeepSkyStacker PROPERTIES
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+)
+set_target_properties(DeepSkyStacker PROPERTIES
+    WIN32_EXECUTABLE ON
+    MACOSX_BUNDLE ON
+)
+
+#[=[ 
+# Well that was a waste of time - - only gets run at install
+#
+# Set options for the deployment script
+#
+set(deploy_tool_options_arg "--verbose 1")
+if(APPLE)
+    set(deploy_tool_options_arg ${deploy_tool_options_arg} --hardened-runtime)
+elseif(WIN32)
+    set(deploy_tool_options_arg ${deploy_tool_options_arg} --pdb --compiler-runtime)
+endif()
+
+# Generate a deployment script to be executed at install time
+ qt_generate_deploy_script(
+     TARGET DeepSkyStacker
+     OUTPUT_SCRIPT deploy_script
+     CONTENT "
+ qt_deploy_runtime_dependencies(
+     EXECUTABLE \"${executable_path}\"
+     GENERATE_QT_CONF
+     VERBOSE
+ )")
+ ]=]
 
 set(ROOT_NAMESPACE DeepSkyStacker)
 
@@ -188,17 +229,7 @@ set(ROOT_NAMESPACE DeepSkyStacker)
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(DeepSkyStacker PROPERTIES
-    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/"
-    OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/"
-)
-set_target_properties(DeepSkyStacker PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-)
-set_target_properties(DeepSkyStacker PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
-)
+
 
 
 ################################################################################
@@ -207,23 +238,23 @@ set_target_properties(DeepSkyStacker PROPERTIES
 target_include_directories(DeepSkyStacker PUBLIC
     .
     ../DeepSkyStackerKernel
-	../include
-	../include/exiv2
-	../include/SmtpMime
     GeneratedFiles/$<CONFIG>
     GeneratedFiles
     ../LibRaw
     ../ZClass
     ../Tools
-    ../LibTiff
-    ../Zlib
- )
+  )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ../CFitsIO
-	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
-    "$ENV{Boost_1_80_0}"
+   ../Zlib
+   ../LibTiff
+   ../CFitsIO
+   ../include
+   ../include/exiv2
+   ../include/SmtpMime
+   "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
+   "$ENV{Boost_1_80_0}"
 )
 endif()
 
@@ -326,7 +357,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 ################################################################################
 # Post build events
 ################################################################################
-
 ADD_CUSTOM_COMMAND(
   TARGET DeepSkyStacker
   POST_BUILD

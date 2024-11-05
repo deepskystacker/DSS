@@ -2,7 +2,7 @@ set(PROJECT_NAME DeepSkyStackerKernel)
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
 
 set(CMAKE_AUTORCC ON)
@@ -112,10 +112,10 @@ set(i18n_Files
 	"i18n/DSSKernel_tr.ts"
 	"i18n/DSSKernel_zh_CN.ts"
 	"i18n/DSSKernel_zh_TW.ts"
-	"i18n/translations_kernel.qrc"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files})
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
+)
 
 set(Source_Files
     "AHDDemosaicing.cpp"
@@ -184,7 +184,7 @@ source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${Header_Files}
-	${i18n_Files}
+	${i18n_Files} "i18n/translations_kernel.qrc"
 	${Source_Files}
 )
 
@@ -194,6 +194,11 @@ set(ROOT_NAMESPACE DeepSkyStackerKernel)
 # Target
 ################################################################################
 qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
+
+set_source_files_properties(${i18n_Files}
+     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
+
+qt_add_lrelease(TS_FILES ${i18n_Files})
 
 target_link_libraries(DeepSkyStackerKernel PRIVATE Qt6::Widgets Qt6::Network)
 
@@ -215,16 +220,16 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../DeepSkyStacker;
     ./GeneratedFiles/$<CONFIG>
     ./GeneratedFiles
-    ../include
     ../ZClass
     ../LibRaw
     ../Tools
-    ../LibTiff
-    ../Zlib
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 target_include_directories(${PROJECT_NAME} PUBLIC
+    ../include
+    ../LibTiff
+    ../Zlib
     ../CFitsIO
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
     "$ENV{Boost_1_80_0}"
