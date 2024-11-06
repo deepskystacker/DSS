@@ -225,7 +225,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../Tools
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
     ../include
     ../LibTiff
