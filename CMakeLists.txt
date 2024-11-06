@@ -23,7 +23,9 @@ set(CMAKE_PREFIX_PATH
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not yet supported!")
 endif()
-message ("System Name is: " ${CMAKE_SYSTEM_NAME} " prefix path: " ${CMAKE_PREFIX_PATH})
+message ("System Name is: " ${CMAKE_SYSTEM_NAME} ", prefix path: " ${CMAKE_PREFIX_PATH})
+
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
@@ -105,8 +107,8 @@ add_subdirectory(LibRaw/buildfiles)
 add_subdirectory(LibTiff)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
-#[=[
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
+#[=[
 add_subdirectory(DeepSkyStackerTest)
 ]=]

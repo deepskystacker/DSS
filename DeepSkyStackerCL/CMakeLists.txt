@@ -1,4 +1,10 @@
 set(PROJECT_NAME DeepSkyStackerCL)
+message("Configuring project: " ${PROJECT_NAME})
+
+set(COMPILE_WARNING_AS_ERROR YES)
+SET (CMAKE_INSTALL_BINDIR ".")
+
+qt_standard_project_setup()
 
 ################################################################################
 # Source groups
@@ -6,42 +12,67 @@ set(PROJECT_NAME DeepSkyStackerCL)
 set(Header_Files
     "../DeepSkyStackerKernel/dssbase.h"
     "../DeepSkyStackerKernel/dssrect.h"
-    "stdafx.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
 set(Source_Files
     "DeepSkyStackerCL.cpp"
     "progressconsole.cpp"
-    "stdafx.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
+set(i18n_Files
+	"i18n/DSSCL_ca.ts"
+	"i18n/DSSCL_cs.ts"
+	"i18n/DSSCL_de.ts"
+	"i18n/DSSCL_en.ts"
+	"i18n/DSSCL_es.ts"
+	"i18n/DSSCL_fr.ts"
+	"i18n/DSSCL_it.ts"
+	"i18n/DSSCL_ja_JP.ts"
+	"i18n/DSSCL_nl.ts"
+	"i18n/DSSCL_pt_BR.ts"
+	"i18n/DSSCL_ro.ts"
+	"i18n/DSSCL_ru.ts"
+	"i18n/DSSCL_tr.ts"
+	"i18n/DSSCL_zh_CN.ts"
+	"i18n/DSSCL_zh_TW.ts"
+	)
+	
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
+    )
+
+set(Resources
+	"Version.rc"
+	)
+	
+source_group("Resources" FILES ${Resources}	)
+
 set(ALL_FILES
     ${Header_Files}
+	${i18n_Files} "i18n/translations.qrc"
     ${Source_Files}
+	${Resources}
 )
 
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+qt_add_executable(DeepSkyStackerCL ${ALL_FILES})
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-################################################################################
-# Includes for CMake from *.props
-################################################################################
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "$ENV{QtMsBuild}/qt_defaults.cmake")
-use_props(${PROJECT_NAME} Debug   "../Debug.cmake")
-use_props(${PROJECT_NAME} Debug   "$ENV{QtMsBuild}/Qt.cmake")
-use_props(${PROJECT_NAME} Release "../Release.cmake")
-use_props(${PROJECT_NAME} Release "$ENV{QtMsBuild}/Qt.cmake")
+set_source_files_properties(${i18n_Files}
+     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
 
-set(ROOT_NAMESPACE DeepSkyStackerCL)
+qt_add_lrelease(TS_FILES ${i18n_Files})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_GLOBAL_KEYWORD "QtVS_v304"
+set_target_properties(DeepSkyStackerCL PROPERTIES
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
+set_target_properties(DeepSkyStackerCL PROPERTIES
+    MACOSX_BUNDLE ON
+)
+
+
 ################################################################################
 # Output directory
 ################################################################################
@@ -49,70 +80,54 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-)
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Release>:
-        MultiThreadedDLL
-    >
-    $<$<NOT:$<OR:$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
 ################################################################################
 # Include directories
 ################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
-    "$<$<CONFIG:Debug>:"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../Program Files (x86)/Visual Leak Detector/include"
-    ">"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../DeepSkyStackerKernel;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/GeneratedFiles/$<CONFIG>;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/GeneratedFiles;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/.;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/..;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../DeepSkyStacker;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../ZCLass;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../LibRaw;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../Tools;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../LibTiff;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../CFitsIO;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../Zlib;"
-    "$ENV{Boost_1_80_0}"
+target_include_directories(DeepSkyStackerCL PUBLIC
+    .
+    ../DeepSkyStackerKernel
+    GeneratedFiles/$<CONFIG>
+    GeneratedFiles
+    ../LibRaw
+    ../ZClass
+    ../Tools
+  )
+
+if(WIN32)
+target_include_directories(DeepSkyStackerCL PUBLIC
+   ../Zlib
+   ../LibTiff
+   ../CFitsIO
+   ../include
+   "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
+   "$ENV{Boost_1_80_0}"
 )
+endif()
+
+target_precompile_headers(DeepSkyStackerCL PRIVATE
+	stdafx.h
+	)
 
 ################################################################################
 # Compile definitions
 ################################################################################
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "$<$<CONFIG:Debug>:"
-        "_DEBUG"
-    ">"
-    "$<$<CONFIG:Release>:"
-        "NDEBUG;"
-        "USE_LIBTIFF_STATIC;"
-        "_MBCS"
-    ">"
-    "DSS_COMMANDLINE;"
-    "_UNICODE;"
-    "UNICODE;"
-    "NOMINMAX;"
-    "LIBRAW_NODLL;"
-    "WIN32;"
-    "_CONSOLE;"
-    "_CRT_SECURE_NO_DEPRECATE"
+target_compile_definitions(DeepSkyStackerCL PRIVATE
+  "$<$<CONFIG:Debug>:Z_TRACE_DEVELOP>"
+  "$<$<CONFIG:Release>:NDEBUG>"
+  NOMINMAX
+  DSS_COMMANDLINE
+  _CONSOLE
+  LIBRAW_NODLL
+  _CRT_SECURE_NO_DEPRECATE
+  USE_LIBTIFF_STATIC
 )
 
 ################################################################################
 # Compile and link options
 ################################################################################
 if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE
+    target_compile_options(DeepSkyStackerCL PRIVATE
         $<$<CONFIG:Debug>:
             /Gm-;
             /RTC1
@@ -132,7 +147,7 @@ if(MSVC)
         /wd4244;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
-    target_link_options(${PROJECT_NAME} PRIVATE
+    target_link_options(DeepSkyStackerCL PRIVATE
         $<$<CONFIG:Debug>:
             /NODEFAULTLIB:MSVCRT;
             /DEBUG
@@ -147,32 +162,98 @@ if(MSVC)
     )
 endif()
 
+if(WIN32)
+target_link_directories(DeepSkyStackerCL PRIVATE
+	"$<$<CONFIG:Debug>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/DebugLibs>"
+	"$<$<CONFIG:Release>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/ReleaseLibs>"
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
+	)
+endif()
+
 ################################################################################
 # Dependencies
 ################################################################################
 # Link with other targets.
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    DeepSkyStackerKernel
+target_link_libraries(DeepSkyStackerCL PRIVATE
+    Qt6::Core
+	Qt6::Gui
+	DeepSkyStackerKernel
     libraw
     libtiff
-    ZCLass
+    ZClass
 )
 
+set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
+set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:"
-        "exiv2d;"
-        "libexpatd;"
-        "zlibstaticd"
-    ">"
-    "$<$<CONFIG:Release>:"
-        "exiv2;"
-        "libexpat;"
-        "zlibstatic"
-    ">"
-    "psapi;"
-    "$(Qt_LIBS_);"
-    "htmlhelp;"
+    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
+    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
     "cfitsio"
 )
+
+if(WIN32)
+set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    psapi
+)
+
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+
+#[=[
+#
+# Force the values of QT_DEPLOY... variables
+#
+set (QT_DEPLOY_BIN_DIR ".")
+set (QT_DEPLOY_LIBEXEC_DIR ".")
+set (QT_DEPLOY_LIB_DIR ".")
+set (QT_DEPLOY_PLUGINS_DIR ".")
+
+#
+# Set options for the deployment script.   The value of:
+# 
+# --libdir .
+# 
+# is set to work around a bug in qt_deploy_runtime_dependencies which uses
+#
+# --libdir bin
+# 
+# even though QT_DEPLOY_LIB_DIR is set to .
+#
+set (deploy_tool_options_arg "--libdir .")
+if(APPLE)
+    set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
+elseif(WIN32)
+    set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+endif()
+
+# Generate a deployment script to be executed at install time
+# App bundles on macOS have an .app suffix
+if(APPLE)
+    set(executable_path "$<TARGET_FILE_NAME:DeepSkyStackerCL>.app")
+else()
+    message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
+    message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
+    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerCL>)
+    set(executable_path "${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>")
+endif()
+message ("executable_path: " ${executable_path})
+message ("deploy tools options arg: " ${deploy_tool_options_arg})
+ qt_generate_deploy_script(
+     TARGET DeepSkyStacker
+     OUTPUT_SCRIPT deploy_script
+     CONTENT "
+ qt_deploy_runtime_dependencies(
+     EXECUTABLE \"${executable_path}\"
+     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     GENERATE_QT_CONF
+     VERBOSE
+ )"
+ )
+]=]
+
+INSTALL (TARGETS DeepSkyStackerCL)
+#INSTALL (SCRIPT ${deploy_script})
+
+
 

@@ -1,9 +1,9 @@
 set(PROJECT_NAME DeepSkyStacker)
+message("Configuring project: " ${PROJECT_NAME})
 
 set(COMPILE_WARNING_AS_ERROR YES)
 SET (CMAKE_INSTALL_BINDIR ".")
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
 qt_standard_project_setup()
 
 set(CMAKE_AUTORCC ON)
@@ -228,9 +228,6 @@ target_compile_definitions(DeepSkyStacker PRIVATE
   "$<$<CONFIG:Release>:NDEBUG>"
   NOMINMAX
   LIBRAW_NODLL
-  QT_CORE_LIB
-  QT_GUI_LIB
-  QT_WIDGETS_LIB
   _CRT_SECURE_NO_DEPRECATE
   USE_LIBTIFF_STATIC
 )
@@ -248,7 +245,7 @@ if(MSVC)
             /Zi;
             /GS-
         >
-	    -W4 /wd4652 /wd4828 /wd4702;
+	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /GL-;
@@ -281,9 +278,9 @@ endif()
 ################################################################################
 # Link with other targets.
 target_link_libraries(DeepSkyStacker PRIVATE
-	Qt6::Core
+    Qt6::Core
     Qt6::Widgets
-	Qt6::Network
+    Qt6::Network
 	DeepSkyStackerKernel
     libraw
     libtiff
@@ -354,7 +351,9 @@ message ("deploy tools options arg: " ${deploy_tool_options_arg})
  qt_deploy_runtime_dependencies(
      EXECUTABLE \"${executable_path}\"
      DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-     GENERATE_QT_CONF
+	 #if(APPLE)
+		GENERATE_QT_CONF
+	 #endif
      VERBOSE
  )"
  )
