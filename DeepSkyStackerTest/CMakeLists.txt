@@ -155,6 +155,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 #
+# Force the values of QT_DEPLOY... variables
+#
+set (QT_DEPLOY_BIN_DIR ".")
+set (QT_DEPLOY_LIBEXEC_DIR ".")
+set (QT_DEPLOY_LIB_DIR ".")
+set (QT_DEPLOY_PLUGINS_DIR ".")
+
+#
 # Set options for the deployment script.   The value of:
 # 
 # --libdir .
