@@ -318,7 +318,15 @@ set (QT_DEPLOY_LIB_DIR ".")
 set (QT_DEPLOY_PLUGINS_DIR ".")
 
 #
-# Set options for the deployment script
+# Set options for the deployment script.   The value of:
+# 
+# --libdir .
+# 
+# is set to work around a bug in qt_deploy_runtime_dependencies which uses
+#
+# --libdir bin
+# 
+# even though QT_DEPLOY_LIB_DIR is set to .
 #
 set (deploy_tool_options_arg "--libdir .")
 if(APPLE)
