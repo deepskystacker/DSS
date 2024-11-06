@@ -87,8 +87,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_include_directories(DeepSkyStackerCL PUBLIC
     .
     ../DeepSkyStackerKernel
-    GeneratedFiles/$<CONFIG>
-    GeneratedFiles
     ../LibRaw
     ../ZClass
     ../Tools
@@ -122,6 +120,48 @@ target_compile_definitions(DeepSkyStackerCL PRIVATE
   _CRT_SECURE_NO_DEPRECATE
   USE_LIBTIFF_STATIC
 )
+
+################################################################################
+# Compile and link options
+################################################################################
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        $<$<CONFIG:Debug>:
+            /Gm-;
+            /Zi
+        >
+        $<$<CONFIG:Release>:
+            /Zi;
+            /GS-
+        >
+	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
+		-Zc:__cplusplus /openmp:experimental
+        /MP;
+        /GL-;
+        /EHsc
+    )
+    target_link_options(${PROJECT_NAME} PRIVATE
+        $<$<CONFIG:Debug>:
+            /PROFILE
+        >
+        $<$<CONFIG:Release>:
+            /OPT:ICF
+        >
+        /DEBUG:FULL;
+        /MACHINE:X64;
+        /SUBSYSTEM:CONSOLE;
+        /DYNAMICBASE:NO
+    )
+endif()
+
+if(WIN32)
+target_link_directories(${PROJECT_NAME} PRIVATE
+	"$<$<CONFIG:Debug>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/DebugLibs>"
+	"$<$<CONFIG:Release>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/ReleaseLibs>"
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
+	)
+endif()
+
 
 ################################################################################
 # Compile and link options
@@ -240,7 +280,7 @@ endif()
 message ("executable_path: " ${executable_path})
 message ("deploy tools options arg: " ${deploy_tool_options_arg})
  qt_generate_deploy_script(
-     TARGET DeepSkyStacker
+     TARGET DeepSkyStackerCL
      OUTPUT_SCRIPT deploy_script
      CONTENT "
  qt_deploy_runtime_dependencies(
