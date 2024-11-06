@@ -45,7 +45,7 @@ Copyright © 2006-2019 Luc Coiffier"
 	
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
-#define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"
+#define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker"
 #define DSSLIVEVER_FILEDESCRIPTION	"DeepSkyStacker Live"
 #define DSSLIVEVER_INTERNALNAME		"DeepSkyStacker Live"
 #define DSSLIVEVER_ORIGINALFILENAME	"DeepSkyStackerLive.exe"
