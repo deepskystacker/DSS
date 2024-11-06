@@ -240,7 +240,6 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
 endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-#[=[
 #
 # Force the values of QT_DEPLOY... variables
 #
@@ -286,14 +285,11 @@ message ("deploy tools options arg: " ${deploy_tool_options_arg})
  qt_deploy_runtime_dependencies(
      EXECUTABLE \"${executable_path}\"
      DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-     GENERATE_QT_CONF
-     VERBOSE
  )"
  )
-]=]
 
 INSTALL (TARGETS DeepSkyStackerCL)
-#INSTALL (SCRIPT ${deploy_script})
+INSTALL (SCRIPT ${deploy_script})
 
 
 

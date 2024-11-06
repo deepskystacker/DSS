@@ -285,10 +285,6 @@ message ("deploy tools options arg: " ${deploy_tool_options_arg})
  qt_deploy_runtime_dependencies(
      EXECUTABLE \"${executable_path}\"
      DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-	 #if(APPLE)
-		GENERATE_QT_CONF
-	 #endif
-     VERBOSE
  )"
  )
 
