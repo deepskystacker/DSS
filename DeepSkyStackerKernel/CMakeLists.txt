@@ -88,7 +88,7 @@ set(Header_Files
     "StackWalker.h"
     "StarMask.h"
     "Stars.h"
-    "StdAfx.h"
+    "stdafx.h"
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
