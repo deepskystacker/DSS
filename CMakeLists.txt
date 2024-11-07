@@ -10,16 +10,20 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (WIN32)
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set(CMAKE_PREFIX_PATH
 	"C:/Qt/6.8.0/msvc2022_64"
 	CACHE STRING "" FORCE
 	)
-elseif(LINUX)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(CMAKE_PREFIX_PATH
 	"/opt/Qt/6.8.0/gcc_64"
 	CACHE STRING "" FORCE
 	)
+	message ("WIN32 is set to ${WIN32}, LINUX is set to ${LINUX}")
+	if(WIN32)
+	    message(FATAL_ERROR "System name is set to ${CMAKE_SYSTEM_NAME} but WIN32 is set to ${WIN32}")
+	endif()
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not yet supported!")
 endif()
@@ -70,10 +74,14 @@ set(CMAKE_CONFIGURATION_TYPES
     CACHE STRING "" FORCE
 )
 
+if(WIN32)
 set(CMAKE_CXX_FLAGS
 	"/GR /EHsc"
 	CACHE STRING "" FORCE
 	)
+else()
+set(CMAKE_CXX_FLAGS "" CACHE STRING "" FORCE)
+endif()
 
 ################################################################################
 # Nuget packages function stub.
@@ -104,7 +112,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(LibRaw/buildfiles)
-add_subdirectory(LibTiff)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
 add_subdirectory(DeepSkyStackerCL)
