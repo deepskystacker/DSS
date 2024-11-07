@@ -66,7 +66,7 @@ extern "C" {
 #endif
 }
 
-#include <new.h>
+#include <new>
 
 #if defined(_AIX) && defined(__IBMCPP__)
 #pragma info(restore)
@@ -249,12 +249,12 @@ ZOutOfMemoryHandler :: ZOutOfMemoryHandler()
   // _set_new_handler() so that it appears as if it is the Standard
   // C++ set_new_handler()
   //
-  set_new_handler((void(*)())ZOutOfMemoryHandler::newHandler);
+  std::set_new_handler((void(*)())ZOutOfMemoryHandler::newHandler);
 }
 
 ZOutOfMemoryHandler :: ~ZOutOfMemoryHandler()
 {
-  set_new_handler((void(*)())fOriginalNewHandler);
+  std::set_new_handler((void(*)())fOriginalNewHandler);
 }
 
 #if defined(_MSC_VER)
@@ -285,12 +285,12 @@ ZExcText :: ZExcText ( const char* errText,
 /* Main ZExcText Constructor                                    */
 /****************************************************************/
 {
-    void(*poldnh)() = set_new_handler(0);
+    void(*poldnh)() = std::set_new_handler(0);
     pszClMsg = new char[strlen(errText)+1];
     if (pszClMsg)
       strcpy(pszClMsg, errText);
     msgtxtClNext = (ZExcText*)msgtxtOld;
-    set_new_handler(poldnh);
+    std::set_new_handler(poldnh);
 }
 
 ZExcText :: ZExcText ( const ZExcText& msg )
@@ -299,7 +299,7 @@ ZExcText :: ZExcText ( const ZExcText& msg )
 /* Copy Constructor                                             */
 /****************************************************************/
 {
-    void(*poldnh)() = set_new_handler(0);
+    void(*poldnh)() = std::set_new_handler(0);
     pszClMsg = new char[strlen(msg.pszClMsg)+1];
     if (pszClMsg)
     {
@@ -315,7 +315,7 @@ ZExcText :: ZExcText ( const ZExcText& msg )
        pszClMsg = msg.pszClMsg;
        msgtxtClNext = msg.msgtxtClNext;
     }
-    set_new_handler(poldnh);
+    std::set_new_handler(poldnh);
 }
 
 void ZExcText :: appendText ( const char* errText )
@@ -323,7 +323,7 @@ void ZExcText :: appendText ( const char* errText )
 /*                                                              */
 /****************************************************************/
 {
-    void(*poldnh)() = set_new_handler(0);
+    void(*poldnh)() = std::set_new_handler(0);
     char* pszText;
     if (pszClMsg)
        pszText = new char[strlen(pszClMsg)+strlen(errText)+1];
@@ -344,7 +344,7 @@ void ZExcText :: appendText ( const char* errText )
          pszClMsg = pszText;
       }
     }
-    set_new_handler(poldnh);
+    std::set_new_handler(poldnh);
 }
 
 /****************************************************************/
@@ -410,13 +410,13 @@ ZException::ZException(const char* exMsgText,
 {
    if (exMsgText != 0)
    {
-      void(*poldnh)() = set_new_handler(0);
+      void(*poldnh)() = std::set_new_handler(0);
       msgtxtClTop = new ZExcText(exMsgText, 0);
       if (msgtxtClTop)
         ulClTxtLvlCount = 1;
       else
         ulClTxtLvlCount = 0;
-      set_new_handler(poldnh);
+      std::set_new_handler(poldnh);
    }
    else         // null pointer to msg passed
    {
@@ -492,13 +492,13 @@ ZException& ZException::setText(const char* exMsgText)
 {
    if (exMsgText != 0)
    {
-      void(*poldnh)() = set_new_handler(0);
+      void(*poldnh)() = std::set_new_handler(0);
       ZExcText* msgtxtOld = msgtxtClTop;
       msgtxtClTop = new ZExcText(exMsgText, msgtxtOld);
       if (msgtxtClTop)
          ulClTxtLvlCount++;
       else msgtxtClTop= msgtxtOld;
-      set_new_handler(poldnh);
+      std::set_new_handler(poldnh);
    }
     return *this;
 }
@@ -670,7 +670,7 @@ void ZException::TraceFn::logData ( ZException& exception )
 /* Default logData function.                                    */
 /****************************************************************/
 {
-  void(*poldnh)() = set_new_handler(0);
+  void(*poldnh)() = std::set_new_handler(0);
 
   // Determine the largest buffer we will need.
   size_t maxLength = 200;
@@ -771,7 +771,7 @@ void ZException::TraceFn::logData ( ZException& exception )
        fprintf(stderr,"   Exception text is unavailable.\n");
   } /* endif */
 
-  set_new_handler(poldnh);
+  std::set_new_handler(poldnh);
 }
 
   /****************************************************************/

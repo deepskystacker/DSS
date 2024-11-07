@@ -16,7 +16,7 @@ set(Header_Files
     "zptr.h"
     "zreslock.h"
     "zsingle.h"
-    "Ztrace.h"
+    "ztrace.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
