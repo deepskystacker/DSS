@@ -21,7 +21,7 @@
         <file alias="trails.bmp">res/Comet_Trails.bmp</file>
     </qresource>
     <qresource prefix="/flags">
-        <file alias="brazil.png">res/Brazil.png</file>
+        <file alias="brazil.png">res/brazil.png</file>
         <file alias="catalan.png">res/Catalan.png</file>
         <file alias="czech.png">res/Czech.png</file>
         <file alias="dutch.png">res/Dutch.png</file>
