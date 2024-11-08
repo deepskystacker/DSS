@@ -7,7 +7,7 @@
 	"..\..\..\program files\microsoft platform sdk\include\tvout.h"\
 	"..\..\..\program files\microsoft platform sdk\include\winefs.h"\
 	"..\ZDefs.h"\
-	"..\ZExcBase.h"\
-	"..\ZExcept.h"\
-	"..\Ztrace.h"\
+	"..\zexcbase.h"\
+	"..\zexcept.h"\
+	"..\ztrace.h"\
 	

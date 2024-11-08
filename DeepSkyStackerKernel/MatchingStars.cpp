@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "MatchingStars.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 
 #define _NO_EXCEPTION
 #include "Matrix.h"

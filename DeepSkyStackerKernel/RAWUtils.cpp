@@ -2,14 +2,14 @@
 #include "RAWUtils.h"
 #define LIBRAW_NO_WINSOCK2
 #include "libraw/libraw.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "DSSProgress.h"
 //#include "resource.h"
 #include "MemoryBitmap.h"
 #include "Multitask.h"
 #include "MedianFilterEngine.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "BitmapInfo.h"
 
 // #include <zexcept.h>

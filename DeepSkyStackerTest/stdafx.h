@@ -33,7 +33,7 @@ using std::max;
 #include <omp.h>
 
 #include "../ZClass/zdefs.h"
-#include "../ZClass/Ztrace.h"
+#include "../ZClass/ztrace.h"
 #include "../ZClass/zexcept.h"
 
 

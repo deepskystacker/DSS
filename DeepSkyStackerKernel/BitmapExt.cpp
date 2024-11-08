@@ -1,4 +1,5 @@
-#include <stdafx.h>
+#include "stdafx.h"
+#include <unordered_set>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -7,9 +8,9 @@
 #include "BitmapIterator.h"
 #include "AHDDemosaicing.h"
 #include "Multitask.h"
-#include "Ztrace.h"
-#include "ZExcBase.h"
-#include "ZExcept.h"
+#include "ztrace.h"
+#include "zexcbase.h"
+#include "zexcept.h"
 #include "RationalInterpolation.h"
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
@@ -749,7 +750,7 @@ namespace {
 	//typedef std::set<CBitmapInfo> InfoCache;
 	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
 
-	using InfoCache = concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
+	using InfoCache = std::unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
 	QDateTime g_BitmapInfoTime{ QDateTime::currentDateTime() };
 	std::shared_mutex bitmapInfoMutex;

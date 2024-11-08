@@ -35,7 +35,7 @@
 ****************************************************************************/
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
-#include <stdafx.h>
+#include "stdafx.h"
 #if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
 // Visual Leak Detector
@@ -57,7 +57,7 @@ namespace bip = boost::interprocess;
 
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "StackingTasks.h"
 #include "StackingDlg.h"
 #include "ExplorerBar.h"

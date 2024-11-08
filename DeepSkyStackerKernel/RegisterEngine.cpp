@@ -3,7 +3,7 @@
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BackgroundCalibration.h"
 #include "Multitask.h"
 #include "avx_luminance.h"

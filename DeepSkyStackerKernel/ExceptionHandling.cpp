@@ -1,17 +1,26 @@
 #include "stdafx.h"
+#include "ztrace.h"
+#include "tracecontrol.h"
+#include "dssbase.h"
 
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+extern char const* global_program_name;
+
+namespace
+{
+	void writeOutput(const char* text)
+	{
+		fputs(text, stderr);
+		ZTRACE_RUNTIME(text);
+	}
+}
 
 #if defined(Q_OS_WIN)
 
 #include "StackWalker.h"
-#include "Ztrace.h"
-#include "tracecontrol.h"
-
-extern std::unique_ptr<std::uint8_t[]> backPocket;
-extern DSS::TraceControl traceControl;
 
 namespace {
-
 	class DSSStackWalker : public StackWalker
 	{
 	public:
@@ -66,12 +75,6 @@ namespace {
 	std::atomic<std::uint32_t> barrier{ 0 };
 	std::thread::id currentThreadId{};
 
-	void writeOutput(const char* text)
-	{
-		fputs(text, stderr);
-		ZTRACE_RUNTIME(text);
-	}
-
 	void traceTheStack()
 	{
 		sw.ShowCallstack();
@@ -118,6 +121,7 @@ namespace {
 		return returnCode;
 	}
 
+
 } // namespace
 
 void setDssExceptionHandling()
@@ -127,6 +131,8 @@ void setDssExceptionHandling()
 }
 
 #else
+#include <csignal>
+#include <execinfo.h>
 
 /* Resolve symbol name and source location given the path to the executable
    and an address */
@@ -154,7 +160,7 @@ int addr2line(char const* const program_name, void const* const addr)
 	// this part echoes the output of the command that's executed
 	while (fgets(buff, sizeof(buff), in) != NULL)
 	{
-		writeOutput(buff);
+		::writeOutput(buff);
 	}
 	return WEXITSTATUS(pclose(in));
 }
@@ -181,7 +187,7 @@ void posix_print_stack_trace()
 		{
 			snprintf(buffer, sizeof(buffer) / sizeof(char),
 				"  error determining line # for: %s\n", messages[i]);
-			writeOutput(buffer);
+			::writeOutput(buffer);
 		}
 
 	}
@@ -192,8 +198,7 @@ void signalHandler(int signal)
 {
 	if (backPocket)
 	{
-		free(backPocket);
-		backPocket = nullptr;
+		backPocket.reset(nullptr);		// Release back pocket storage
 	}
 
 	char name[8]{};
@@ -221,7 +226,7 @@ void signalHandler(int signal)
 	ZTRACE_RUNTIME("In signalHandler(%s)", name);
 
 	posix_print_stack_trace();
-	DeepSkyStacker::instance()->close();
+	//DSSBase::instance()->close();
 }
 
 void setDssExceptionHandling()

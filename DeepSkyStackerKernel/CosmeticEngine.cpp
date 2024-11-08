@@ -1,7 +1,7 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "CosmeticEngine.h"
 #include "MemoryBitmap.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
 #include "GrayBitmap.h"

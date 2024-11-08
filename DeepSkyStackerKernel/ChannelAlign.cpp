@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "dssrect.h"
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
 #include "BitmapIterator.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "ColorBitmap.h"
 #include "Multitask.h"
 

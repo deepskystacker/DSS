@@ -1,7 +1,7 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "AHDDemosaicing.h"
 #include "ColorBitmap.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
 #include "ColorHelpers.h"

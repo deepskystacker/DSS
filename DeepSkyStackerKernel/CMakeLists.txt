@@ -67,6 +67,7 @@ set(Header_Files
     "GreyMultiBitmap.h"
     "group.h"
     "histogram.h"
+    "ImageListModel.h"
     "LinearInterpolationh.h"
     "MasterFrames.h"
     "MatchingStars.h"
@@ -217,9 +218,8 @@ set_target_properties(DeepSkyStackerKernel PROPERTIES
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
+    .
     ../DeepSkyStacker;
-    ./GeneratedFiles/$<CONFIG>
-    ./GeneratedFiles
     ../ZClass
     ../LibRaw
     ../Tools
@@ -230,8 +230,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../include
     ../LibTiff
     ../Zlib
-    ../CFitsIO
-	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
+ 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
     "$ENV{Boost_1_80_0}"
 )
 endif()

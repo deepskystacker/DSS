@@ -3,7 +3,7 @@
 #include "ui/ui_StackingParameters.h"
 #include "Workspace.h"
 #include "StackSettings.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "StackingTasks.h"
 #include "BackgroundOptions.h"
 

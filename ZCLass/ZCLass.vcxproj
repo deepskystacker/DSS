@@ -129,13 +129,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ZDefs.h" />
-    <ClInclude Include="ZExcBase.h" />
-    <ClInclude Include="ZExcept.h" />
+    <ClInclude Include="zexcbase.h" />
+    <ClInclude Include="zexcept.h" />
     <ClInclude Include="zmstrlck.h" />
     <ClInclude Include="ZPtr.h" />
     <ClInclude Include="ZResLock.h" />
     <ClInclude Include="ZSingle.h" />
-    <ClInclude Include="Ztrace.h" />
+    <ClInclude Include="ztrace.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

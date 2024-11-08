@@ -40,7 +40,7 @@
 #include "StackingDlg.h"
 #include "ui_StackingDlg.h"
 #include "picturelist.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DropFilesDlg.h"
 #include "RenameGroup.h"
 #include "toolbar.h"
@@ -62,7 +62,7 @@
 #include "BatchStacking.h"
 #include "StackRecap.h"
 #include "ProcessingDlg.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "ImageProperties.h"
 
 #define dssApp DeepSkyStacker::instance()

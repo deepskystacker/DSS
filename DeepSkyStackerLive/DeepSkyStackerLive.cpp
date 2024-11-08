@@ -36,7 +36,7 @@
 // DeepSkyStackerLive.cpp : Defines the class behaviors for the application.
 //
 
-#include <stdafx.h>
+#include "stdafx.h"
 #include <htmlhelp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -1545,6 +1545,11 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	int result{ 0 };
+	//
+	// Save the program name in case we need it later
+	// 
+	global_program_name = argv[0];
+
 
 #if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knowns how to interpret string data

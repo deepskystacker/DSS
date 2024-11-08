@@ -1,0 +1,316 @@
+<project>
+    <shortName>DeepSkyStacker</shortName>
+    <fullName>DeepSkyStacker</fullName>
+    <version></version>
+    <width>600</width>
+    <height>450</height>
+    <readmeFile>README.txt</readmeFile>
+    <licenseFile>../LICENSE</licenseFile>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>all</platforms>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Uninstall</comment>
+                            <exec>${installdir}/${uninstallerName}</exec>
+                            <icon></icon>
+                            <name>Uninstall ${product_fullname}</name>
+                            <path>${installdir}</path>
+                            <platforms>all</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath>${installdir}</windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux</name>
+                    <platforms>linux</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux64</name>
+                    <platforms>linux-x64</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows</name>
+                    <platforms>windows</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows64</name>
+                    <platforms>windows-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStackerLive.pdb</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStacker.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStacker.pdb</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStackerCL.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStackerCL.pdb</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/DeepSkyStackerLive.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/Qt6Widgets.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/Qt6Charts.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/Qt6Core.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/Qt6Gui.dll</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../x64/Release/Qt6Network.dll</origin>
+                        </distributionFile>
+                        <distributionDirectory>
+                            <origin>../x64/Release/iconengines</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/imageformats</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/networkinformation</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/platforms</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/styles</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/tls</origin>
+                        </distributionDirectory>
+                        <distributionDirectory>
+                            <origin>../x64/Release/translations</origin>
+                        </distributionDirectory>
+                        <distributionFile>
+                            <origin>../Help/DeepSkyStacker Hilfe.chm</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../Help/Aide DeepSkyStacker.chm</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../Help/Ayuda DeepSkyStacker.chm</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../Help/DeepSkyStacker Ajuda.chm</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../Help/DeepSkyStacker Help.chm</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosx</name>
+                    <platforms>osx</platforms>
+                </folder>
+            </folderList>
+            <readyToInstallActionList>
+                <registryGet>
+                    <key>HKEY_LOCAL_MACHINE\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\${project.shortName}</key>
+                    <name>UninstallString</name>
+                    <variable>PreviousUninstaller</variable>
+                    <wowMode>64</wowMode>
+                </registryGet>
+                <runProgram>
+                    <program>cmd.exe</program>
+                    <programArguments>/C ${PreviousUninstaller}</programArguments>
+                    <ruleList>
+                        <compareText>
+                            <logic>does_not_equal</logic>
+                            <text>${PreviousUninstaller}</text>
+                            <value></value>
+                        </compareText>
+                    </ruleList>
+                </runProgram>
+            </readyToInstallActionList>
+            <startMenuShortcutList>
+                <startMenuShortcut>
+                    <comment>Uninstall ${product_fullname}</comment>
+                    <name>Uninstall ${product_fullname}</name>
+                    <runAsAdmin>0</runAsAdmin>
+                    <runInTerminal>0</runInTerminal>
+                    <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                    <windowsExecArgs></windowsExecArgs>
+                    <windowsIcon></windowsIcon>
+                    <windowsPath>${installdir}/</windowsPath>
+                </startMenuShortcut>
+                <startMenuFolder>
+                    <name>DeepSkyStacker</name>
+                    <platforms>windows</platforms>
+                </startMenuFolder>
+            </startMenuShortcutList>
+        </component>
+        <component>
+            <name>vc_redist</name>
+            <description>VC Redist Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>0</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>vc_redist</name>
+                    <platforms>windows-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>../x64/Release/vc_redist.x64.exe</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                    <ruleList>
+                        <!-- Do not unpack the folder by default, we will do it on demand -->
+
+                        <isTrue value="0"/>
+                    </ruleList>
+                </folder>
+            </folderList>
+            <postInstallationActionList>
+                <!-- If vcredist_require_install is 1 -->
+
+                <actionGroup>
+                    <actionList>
+                        <unpackFile>
+                            <addToUninstaller>0</addToUninstaller>
+                            <component>vc_redist</component>
+                            <destination>${system_temp_directory}</destination>
+                            <folder>vc_redist</folder>
+                            <origin>vc_redist.x64.exe</origin>
+                        </unpackFile>
+                        <runProgram>
+                            <program>${system_temp_directory}/vc_redist.x64.exe</program>
+                            <programArguments>/${vcredist_install_mode} /passive /norestart</programArguments>
+                        </runProgram>
+                        <deleteFile path="${system_temp_directory}/vc_redist.x64.exe"/>
+                    </actionList>
+                    <ruleList>
+                        <isTrue value="${vcredist_require_install}"/>
+                    </ruleList>
+                </actionGroup>
+            </postInstallationActionList>
+            <readyToInstallActionList>
+                <!-- Check if we need to install vc redist -->
+
+                <registryGet>
+                    <key>HKEY_LOCAL_MACHINE\Software\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X64</key>
+                    <name>Bld</name>
+                    <variable>bld</variable>
+                    <wowMode>64</wowMode>
+                </registryGet>
+                <setInstallerVariable name="vcredist_require_install" value="0"/>
+                <setInstallerVariable name="vcredist_install_mode" value="install"/>
+                <if>
+                    <actionList>
+                        <logMessage>
+                            <text>Visual Studio Runtime is not installed, so install it</text>
+                        </logMessage>
+                        <setInstallerVariable name="vcredist_require_install" value="1"/>
+                    </actionList>
+                    <conditionRuleList>
+                        <compareText logic="equals" text="${bld}" value=""/>
+                    </conditionRuleList>
+                    <elseActionList>
+                        <!-- bld is less -->
+
+                        <actionGroup>
+                            <actionList>
+                                <setInstallerVariable name="vcredist_require_install" value="1"/>
+                                <setInstallerVariable name="vcredist_install_mode" value="install"/>
+                                <logMessage text="Visual Studio Runtime build ${bld} is installed, install build 33816"/>
+                            </actionList>
+                            <ruleList>
+                                <compareValues logic="less" value1="${bld}" value2="33816"/>
+                            </ruleList>
+                        </actionGroup>
+                        <actionGroup>
+                            <actionList>
+                                <setInstallerVariable name="vcredist_require_install" value="1"/>
+                                <setInstallerVariable name="vcredist_install_mode" value="repair"/>
+                                <logMessage text="Visual Studio Runtime build 33816 is already installed, do a repair install"/>
+                            </actionList>
+                            <ruleList>
+                                <compareValues logic="equals" value1="${bld}" value2="33816"/>
+                            </ruleList>
+                        </actionGroup>
+                        <actionGroup>
+                            <actionList>
+                                <setInstallerVariable name="vcredist_require_install" value="0"/>
+                                <logMessage text="Visual Studio Runtime build $0 is installed, do nothing"/>
+                            </actionList>
+                            <ruleList>
+                                <compareValues logic="greater" value1="${bld}" value2="33816"/>
+                            </ruleList>
+                        </actionGroup>
+                    </elseActionList>
+                </if>
+            </readyToInstallActionList>
+            <shouldPackRuleList>
+                <compareText>
+                    <logic>contains</logic>
+                    <text>${platform_name}</text>
+                    <value>windows</value>
+                </compareText>
+            </shouldPackRuleList>
+        </component>
+    </componentList>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>DeepSkyStacker Team</vendor>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${product_shortname}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>40</width>
+        </directoryParameter>
+    </parameterList>
+    <readmeFileList>
+        <readmeFile>
+            <code>en</code>
+            <encoding>utf-8</encoding>
+            <file>README.txt</file>
+        </readmeFile>
+    </readmeFileList>
+</project>
+

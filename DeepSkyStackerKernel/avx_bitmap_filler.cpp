@@ -2,7 +2,7 @@
 
 #include "avx_bitmap_filler.h"
 #include "avx_support.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 
 
 // ---------------------------------

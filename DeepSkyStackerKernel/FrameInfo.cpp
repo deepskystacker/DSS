@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "FrameInfo.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"

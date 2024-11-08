@@ -6,7 +6,7 @@
 
 // ZClass Files
 #include <zexcept.h>
-#include <Ztrace.h>
+#include <ztrace.h>
 
 // Dependency Libraries
 #include <exiv2/exiv2.hpp>

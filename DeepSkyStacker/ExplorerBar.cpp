@@ -2,7 +2,7 @@
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
 
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "zexcept.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"

@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "StackingEngine.h"
 
 #include "MasterFrames.h"
@@ -15,7 +15,7 @@
 #include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "MultiBitmap.h"
 #include "ColorBitmap.h"

@@ -2,7 +2,7 @@
 #include "StackedBitmap.h"
 #include "TIFFUtil.h"
 #include "ColorHelpers.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"

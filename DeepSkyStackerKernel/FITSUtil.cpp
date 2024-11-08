@@ -2,7 +2,7 @@
 //#include "resource.h"
 #include "Workspace.h"
 #include "FITSUtil.h"
-#include "fitsio.h"
+#include <fitsio.h>
 #include "ztrace.h"
 #include "DSSProgress.h"
 #include "zexcbase.h"

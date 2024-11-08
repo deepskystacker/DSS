@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "BatchStacking.h"
 #include "ui/ui_BatchStacking.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"

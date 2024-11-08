@@ -31,10 +31,10 @@
     <ClInclude Include="ZDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZExcBase.h">
+    <ClInclude Include="zexcbase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZExcept.h">
+    <ClInclude Include="zexcept.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zmstrlck.h">
@@ -49,7 +49,7 @@
     <ClInclude Include="ZSingle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ztrace.h">
+    <ClInclude Include="ztrace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "imageloader.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BitmapExt.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 
 
 void ThreadLoader::run()

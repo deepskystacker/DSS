@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "FlatFrame.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "CFABitmapInfo.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 //#include "resource.h"
 
 using namespace DSS;

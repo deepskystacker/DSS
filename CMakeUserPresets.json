@@ -22,6 +22,30 @@
       }
     },
     {
+      "name": "Qt-Debug-Linux",
+      "inherits": "Qt-Default",
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.8.0/gcc_64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_SYSTEM_NAME": "Linux"
+      }
+    },
+    {
+      "name": "Qt-Release-Linux",
+      "inherits": "Qt-Default",
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.8.0/gcc_64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_SYSTEM_NAME": "Linux"
+      }
+    },
+    {
       "hidden": true,
       "name": "Qt-Default",
       "inherits": "6.8.0_msvc2022_64",
@@ -29,28 +53,6 @@
         "qt-project.org/Default": {
           "checksum": "DBTqMydOw2UMLXPo9VKLNZVd1O4="
         }
-      }
-    },
-    {
-      "name": "Qt-Debug-Linux",
-      "inherits": "Qt-Default",
-      "binaryDir": "${sourceDir}/out/build",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_CXX_FLAGS": "-DQT_QML_DEBUG",
-        "CMAKE_SYSTEM_NAME": "Linux"
-      },
-      "environment": {
-        "QML_DEBUG_ARGS": "-qmljsdebugger=file:{9e6fb4f7-6ae1-4f04-a51f-c14b154e3e41},block"
-      }
-    },
-    {
-      "name": "Qt-Release-Linux",
-      "inherits": "Qt-Default",
-      "binaryDir": "${sourceDir}/out/build",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_SYSTEM_NAME": "Linux"
       }
     },
     {
@@ -128,7 +130,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "HaS3Ps6r1b6QM62UokmAuGxdnV0="
+      "checksum": "/xd6OQ5qblEJkNRX/58MndLfXnY="
     }
   }
 }

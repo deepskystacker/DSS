@@ -1,11 +1,11 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"
 #include "MemoryBitmap.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "avx_output.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include <QTemporaryFile>

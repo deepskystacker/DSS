@@ -2,7 +2,7 @@
 #include "ResultParameters.h"
 #include "ui/ui_ResultParameters.h"
 #include "Workspace.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "DSSCommon.h"
 #include "StackSettings.h"
 #include "StackingTasks.h"

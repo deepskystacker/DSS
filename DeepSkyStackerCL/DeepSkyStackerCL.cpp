@@ -1,7 +1,7 @@
 // DeepSkyStackerCL.cpp : Defines the entry point for the console application.
 //
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 #if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
@@ -18,7 +18,7 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "tracecontrol.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 
 //
 // Set up tracing and manage trace file deletion

@@ -1,7 +1,7 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "DeepStack.h"
 #include "histogram.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
 

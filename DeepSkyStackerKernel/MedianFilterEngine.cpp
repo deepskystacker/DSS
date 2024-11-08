@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "BitmapBase.h"
 #include "MedianFilterEngine.h"
 #include "avx_filter.h"

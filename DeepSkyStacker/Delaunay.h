@@ -29,7 +29,7 @@
 // mailto:sjaak@sjaakpriester.nl
 
 #pragma once
-#include "ZExcBase.h"
+#include "zexcbase.h"
 
 //
 // changes to remove dependencies on Microsoft GDI+ 

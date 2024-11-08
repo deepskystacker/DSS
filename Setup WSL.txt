@@ -172,6 +172,26 @@ cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
 cd build
 ninja
 sudo ninja install
+#
+# Install exiv2 as a static lib
+#
+sudo apt-get install libinih-dev
+cd ~/Downloads
+wget https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.3.tar.gz
+tar -zxvf v0.28.3.tar.gz
+rm v0.28.3.tar.gz
+cd exiv2-0.28.3
+mkdir build
+cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
+cd build
+ninja
+sudo ninja install
+
+
+
+
+
+
 
 
 

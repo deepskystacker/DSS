@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "DarkFrame.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "Filters.h"

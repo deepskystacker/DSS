@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "RunningStackingEngine.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include "BitmapIterator.h"
