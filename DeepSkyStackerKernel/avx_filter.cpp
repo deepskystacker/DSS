@@ -184,8 +184,8 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 }
 
 // Explicit template instantiation for the types we need.
-template AvxImageFilter<std::uint8_t>;
-template AvxImageFilter<std::uint16_t>;
-template AvxImageFilter<std::uint32_t>;
-template AvxImageFilter<float>;
-template AvxImageFilter<double>;
+template class AvxImageFilter<std::uint8_t>;
+template class AvxImageFilter<std::uint16_t>;
+template class AvxImageFilter<std::uint32_t>;
+template class AvxImageFilter<float>;
+template class AvxImageFilter<double>;
