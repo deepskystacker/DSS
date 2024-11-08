@@ -811,7 +811,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 		if (age > maxAge)
 		{
-			std::lock_guard<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
+			std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
 			g_sBitmapInfoCache.clear();
 		}
 		else
@@ -980,7 +980,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 			//
 			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
 
-			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+			std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
 				g_BitmapInfoTime = now;
 			g_sBitmapInfoCache.insert(BitmapInfo);
