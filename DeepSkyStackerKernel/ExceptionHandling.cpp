@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 
 #include "StackWalker.h"
 #include "Ztrace.h"

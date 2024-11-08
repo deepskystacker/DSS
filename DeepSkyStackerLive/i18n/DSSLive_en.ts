@@ -19,7 +19,7 @@
 <context>
     <name>DeepSkyStackerLive</name>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1089"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1086"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -31,7 +31,7 @@ Do you want to process them?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1100"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1097"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>

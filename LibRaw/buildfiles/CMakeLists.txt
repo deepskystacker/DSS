@@ -109,50 +109,32 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "Libraries")
+add_library(libraw STATIC ${ALL_FILES})
+set_target_properties(libraw PROPERTIES FOLDER "Libraries")
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 set(ROOT_NAMESPACE libraw)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_GLOBAL_KEYWORD "Qt4VSv1.0"
-)
 ################################################################################
 # Target name
 ################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(libraw PROPERTIES
     TARGET_NAME_DEBUG   "libraw"
     TARGET_NAME_RELEASE "libraw"
 )
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(libraw PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_CURRENT_SOURCE_DIR}/../$ENV{PlatformTarget}/$<CONFIG>"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_CURRENT_SOURCE_DIR}/../$ENV{PlatformTarget}/$<CONFIG>"
 )
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Debug>:
-        MultiThreadedDebugDLL
-    >
-    $<$<CONFIG:Release>:
-        MultiThreadedDLL
-    >
-    $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
 ################################################################################
 # Include directories
 ################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/.;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/.."
+target_include_directories(libraw PUBLIC
+    .
+    ..
 )
 
 ################################################################################
@@ -163,18 +145,21 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         "NDEBUG"
     ">"
     "LIBRAW_CALLOC_RAWSTORE;"
-    "_WINDOWS;"
-    "UNICODE;"
-    "_UNICODE;"
-    "WIN32;"
     "_ENABLE_EXTENDED_ALIGNED_STORAGE;"
-    "WIN64;"
     "LIBRAW_BUILDLIB;"
     "USE_X3FTOOLS;"
     "LIBRAW_NODLL;"
     "_CRT_SECURE_NO_WARNINGS;"
     "_CRT_NONSTDC_NO_WARNINGS"
 )
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+	WIN32
+	_WINDOWS
+	_SBCS
+	)
+endif()
 
 ################################################################################
 # Compile and link options
@@ -214,12 +199,12 @@ if(MSVC)
     )
 endif()
 
-target_link_directories(${PROJECT_NAME} PUBLIC
-    "$<$<CONFIG:Debug>:"
-        "${CMAKE_CURRENT_SOURCE_DIR}/debug-x86_64"
-    ">"
-    "$<$<CONFIG:Release>:"
-        "${CMAKE_CURRENT_SOURCE_DIR}/release-x86_64"
-    ">"
-)
+#target_link_directories(${PROJECT_NAME} PUBLIC
+#    "$<$<CONFIG:Debug>:"
+#        "${CMAKE_CURRENT_SOURCE_DIR}/debug-x86_64"
+#    ">"
+#    "$<$<CONFIG:Release>:"
+#        "${CMAKE_CURRENT_SOURCE_DIR}/release-x86_64"
+#    ">"
+#)
 

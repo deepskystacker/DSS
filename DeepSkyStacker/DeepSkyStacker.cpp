@@ -36,14 +36,17 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include <stdafx.h>
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
 // Visual Leak Detector
 //
 #include <vld.h>
 #endif
 
+#if defined(Q_OS_WIN)
 #include <htmlhelp.h>
+#endif
+
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/exceptions.hpp>
@@ -622,9 +625,14 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(Q_OS_WIN)
+
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdString().c_str(), HH_DISPLAY_TOPIC, 0);
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#else
+	QMessageBox::Information(this, "DeepSkyStecker", "Sorry, there's no help available for Linux yet");
+#endif
 }
 
 /* ------------------------------------------------------------------- */
@@ -900,7 +908,7 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console known how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
@@ -932,7 +940,7 @@ int main(int argc, char* argv[])
 	//
 	// Silence the windows heap checker as we use Visual Leak Detector
 	//
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
 #endif
 
@@ -1022,7 +1030,7 @@ int main(int argc, char* argv[])
 		//
 		// Create the file if it doesn't exist.  It is intentionally never deleted.
 		//
-#ifdef _WINDOWS
+#if defined (Q_OS_WIN)
 		auto newFile = std::ofstream(mutexFileName.toStdWString().c_str());
 #else
 		auto newFile = std::ofstream(mutexFileName.toUtf8().constData());
@@ -1031,7 +1039,7 @@ int main(int argc, char* argv[])
 		//
 		// Use a boost::interprocess::file_lock as unlike a named_mutex, the OS removes the lock in the case of abnormal termination
 		//
-#ifdef _WINDOWS
+#if defined(Q_OS_WIN)
 		bip::file_lock dssMutex{ mutexFileName.toStdWString().c_str() };
 #else
 		bip::file_lock dssMutex{ mutexFileName.toUtf8().constData() };

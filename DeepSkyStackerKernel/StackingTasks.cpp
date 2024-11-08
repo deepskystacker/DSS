@@ -1899,7 +1899,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 		auto file = dir / "DSS260FTR.testfile.txt";
 
 		if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
 			std::fopen(file.generic_u8string().c_str(), "wt")
@@ -2046,7 +2046,7 @@ void CAllStackingTasks::GetTemporaryFilesFolder(fs::path& tempPath)
 		auto file = tempPath / "Temp.txt";
 
 		if (std::FILE* f =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 			_wfopen(file.c_str(), L"wb")
 #else
 			std::fopen(file.c_str(), "wb")

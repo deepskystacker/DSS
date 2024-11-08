@@ -39,7 +39,7 @@ namespace {
 // Define some convenience "functions" to either turn Visual Leak Detector on and off
 // or do nothing
 //
-#if defined(_WINDOWS) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG)
 #include <vld.h>
 void turnOffVld() { VLDDisable(); }
 void turnOnVld() { VLDEnable(); }

@@ -1,5 +1,12 @@
 set(PROJECT_NAME DeepSkyStackerKernel)
 
+set(COMPILE_WARNING_AS_ERROR YES)
+
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
+qt_standard_project_setup()
+
+set(CMAKE_AUTORCC ON)
+
 ################################################################################
 # Source groups
 ################################################################################
@@ -81,13 +88,34 @@ set(Header_Files
     "StackWalker.h"
     "StarMask.h"
     "Stars.h"
-    "StdAfx.h"
+    "stdafx.h"
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
     "Workspace.h"
 )
 source_group("Header Files" FILES ${Header_Files})
+
+set(i18n_Files
+	"i18n/DSSKernel_ca.ts"
+	"i18n/DSSKernel_cs.ts"
+	"i18n/DSSKernel_de.ts"
+	"i18n/DSSKernel_en.ts"
+	"i18n/DSSKernel_es.ts"
+	"i18n/DSSKernel_fr.ts"
+	"i18n/DSSKernel_it.ts"
+	"i18n/DSSKernel_ja_JP.ts"
+	"i18n/DSSKernel_nl.ts"
+	"i18n/DSSKernel_pt_BR.ts"
+	"i18n/DSSKernel_ro.ts"
+	"i18n/DSSKernel_ru.ts"
+	"i18n/DSSKernel_tr.ts"
+	"i18n/DSSKernel_zh_CN.ts"
+	"i18n/DSSKernel_zh_TW.ts"
+	)
+	
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
+)
 
 set(Source_Files
     "AHDDemosaicing.cpp"
@@ -147,7 +175,6 @@ set(Source_Files
     "StackingTasks.cpp"
     "StackWalker.cpp"
     "StarMask.cpp"
-    "stdafx.cpp"
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
@@ -157,80 +184,68 @@ source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${Header_Files}
-    ${Source_Files}
+	${i18n_Files} "i18n/translations_kernel.qrc"
+	${Source_Files}
 )
+
+set(ROOT_NAMESPACE DeepSkyStackerKernel)
 
 ################################################################################
 # Target
 ################################################################################
-add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-################################################################################
-# Includes for CMake from *.props
-################################################################################
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "$ENV{QtMsBuild}/qt_defaults.cmake")
-use_props(${PROJECT_NAME} Debug   "../Debug.cmake")
-use_props(${PROJECT_NAME} Debug   "$ENV{QtMsBuild}/Qt.cmake")
-use_props(${PROJECT_NAME} Release "../Release.cmake")
-use_props(${PROJECT_NAME} Release "$ENV{QtMsBuild}/Qt.cmake")
+set_source_files_properties(${i18n_Files}
+     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
 
-set(ROOT_NAMESPACE DeepSkyStackerKernel)
+qt_add_lrelease(TS_FILES ${i18n_Files})
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_GLOBAL_KEYWORD "QtVS_v304"
-)
+target_link_libraries(DeepSkyStackerKernel PRIVATE Qt6::Widgets Qt6::Network)
+
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(DeepSkyStackerKernel PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(DeepSkyStackerKernel PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Debug>:
-        MultiThreadedDebugDLL
-    >
-    $<$<CONFIG:Release>:
-        MultiThreadedDLL
-    >
-    $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
 ################################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
-    "$<$<CONFIG:Debug>:"
-        "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../../Program Files (x86)/Visual Leak Detector/include"
-    ">"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../DeepSkyStacker;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/GeneratedFiles/$<CONFIG>;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/GeneratedFiles;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../include;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../ZCLass;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../LibRaw;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../Tools;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../LibTiff;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../CFitsIO;"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../Zlib;"
+    ../DeepSkyStacker;
+    ./GeneratedFiles/$<CONFIG>
+    ./GeneratedFiles
+    ../ZClass
+    ../LibRaw
+    ../Tools
+)
+
+if(WIN32)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    ../include
+    ../LibTiff
+    ../Zlib
+    ../CFitsIO
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
     "$ENV{Boost_1_80_0}"
 )
+endif()
+
+
+target_precompile_headers(DeepSkyStackerKernel PRIVATE
+	stdafx.h
+	)
 
 ################################################################################
 # Compile definitions
 ################################################################################
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     "$<$<CONFIG:Debug>:"
-        "_DEBUG;"
         "Z_DEVELOP"
     ">"
     "$<$<CONFIG:Release>:"
@@ -241,11 +256,17 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     "UNICODE;"
     "NOMINMAX;"
     "LIBRAW_NODLL;"
-    "WIN32;"
     "_CONSOLE;"
-    "_CRT_SECURE_NO_DEPRECATE;"
-    "_MBCS"
+    "_CRT_SECURE_NO_DEPRECATE"
 )
+
+if (MSVC)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+	_WINDOWS
+	_UNICODE
+	UNICODE
+	)
+endif()
 
 ################################################################################
 # Compile and link options
@@ -271,17 +292,6 @@ if(MSVC)
         /wd4244;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
-    target_link_options(${PROJECT_NAME} PRIVATE
-        $<$<CONFIG:Debug>:
-            /NODEFAULTLIB:MSVCRT
-        >
-        $<$<CONFIG:Release>:
-            /OPT:ICF
-        >
-        /MACHINE:X64;
-        /SUBSYSTEM:CONSOLE;
-        /DYNAMICBASE:NO
-    )
 endif()
 
 ################################################################################
@@ -291,13 +301,6 @@ endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC
     libraw
     libtiff
-    ZCLass
+    ZClass
 )
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "gdi32;"
-    "gdiplus;"
-    "zlibstatic"
-)
-target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 

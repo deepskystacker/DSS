@@ -1,10 +1,4 @@
 #pragma once
-#if defined(_WINDOWS)
-//
-// Visual Leak Detector
-//
-#include <vld.h>
-#endif
 
 // Qt Files
 #include <QtWidgets>

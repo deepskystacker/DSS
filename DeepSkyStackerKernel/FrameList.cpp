@@ -282,10 +282,10 @@ namespace DSS
 	FrameList& FrameList::saveListToFile(fs::path file)
 	{
 		if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 			_wfopen(file.c_str(), L"wt")
 #else
-			std::fopen(file.c_ctr(), "wt")
+			std::fopen(file.c_str(), "wt")
 #endif
 			)
 		{
@@ -372,10 +372,10 @@ namespace DSS
 		}
 
 		if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 			_wfopen(fileList.c_str(), L"rt")
 #else
-			std::fopen(fileList.c_ctr(), "rt")
+			std::fopen(fileList.c_str(), "rt")
 #endif
 			)
 		{
@@ -502,7 +502,7 @@ namespace DSS
 											.arg(groupId)
 											.arg(groupName(groupId)));
 
-										DSSBase::instance()->reportError(errorMessage, "");
+										DSSBase::instance()->reportError(errorMessage, "Already loaded", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
 									}
 								}
 								else

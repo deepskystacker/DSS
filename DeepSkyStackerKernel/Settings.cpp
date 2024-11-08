@@ -56,7 +56,7 @@ bool	CGlobalSettings::ReadFromFile(const fs::path& file)
 	m_sSettings.clear();
 	m_vFiles.clear();
 	if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
 		std::fopen(file.c_ctr(), "wt")
@@ -91,7 +91,7 @@ bool	CGlobalSettings::ReadFromFile(const fs::path& file)
 void	CGlobalSettings::WriteToFile(const fs::path& file)
 {
 	if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
 		std::fopen(file.c_ctr(), "wt")

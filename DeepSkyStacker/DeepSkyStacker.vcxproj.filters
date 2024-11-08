@@ -553,7 +553,7 @@
       <Filter>Qt\i18n</Filter>
     </QtRcc>
     <QtRcc Include="resources.qrc">
-      <Filter>Qt\ui</Filter>
+      <Filter>Resource Files</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>

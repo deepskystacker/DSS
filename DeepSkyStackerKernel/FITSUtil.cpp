@@ -2,10 +2,10 @@
 //#include "resource.h"
 #include "Workspace.h"
 #include "FITSUtil.h"
-#include "..\CFitsio\fitsio.h"
-#include "Ztrace.h"
+#include "fitsio.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "Multitask.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
@@ -115,7 +115,7 @@ void GetFITSRatio(double& fRed, double& fGreen, double& fBlue)
 }
 
 
-bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, QString& strComment)
+bool CFITSReader::ReadKey(const char * szKey, double& fValue, QString& strComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -135,7 +135,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, double& fValue, QString& strComment)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue)
+bool CFITSReader::ReadKey(const char * szKey, double & fValue)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -150,7 +150,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
+bool CFITSReader::ReadKey(const char * szKey, int& lValue)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -165,7 +165,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPCSTR szKey, QString & strValue)
+bool CFITSReader::ReadKey(const char * szKey, QString & strValue)
 {
 	bool				bResult = false;
 	CHAR				szValue[2000];
@@ -1119,7 +1119,7 @@ bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 }
 
 
-bool CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
+bool CFITSWriter::WriteKey(const char * szKey, double fValue, const char * szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1136,7 +1136,7 @@ bool CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
+bool	CFITSWriter::WriteKey(const char * szKey, int lValue, const char * szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1153,7 +1153,7 @@ bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPCSTR szKey, const QString& szValue, LPCSTR szComment)
+bool	CFITSWriter::WriteKey(const char * szKey, const QString& szValue, const char * szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;

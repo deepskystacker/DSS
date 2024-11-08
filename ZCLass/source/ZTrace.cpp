@@ -288,7 +288,12 @@ ZTrace :: ZTrace(const char* pszTraceName,
 #pragma warning(default : 4127)
 #endif
          str.append("(").append(pName).append(":");
+#if defined(_MSC_VER)
          sprintf_s(acWork, "%ld", lLineNo); 
+#else
+         sprintf(acWork, "%ld", lLineNo);
+#endif
+
          str.append(acWork).append(")");
        }
        writeFormattedString(str, "+");
@@ -487,7 +492,11 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       if (isWriteLineNumberEnabled())
       {
         // Output the line number right justified with leading zeros to a width of 8
+#if defined(MSC_VER)
         sprintf_s(buffer, "%08lu", ulSequence);
+#else
+        sprintf(buffer, "%08lu", ulSequence);
+#endif
         strWork.append(&buffer[0]).append(" ");
         memset(buffer, 0, sizeof(buffer));
       }

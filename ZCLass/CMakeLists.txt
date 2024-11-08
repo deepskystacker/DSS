@@ -1,4 +1,9 @@
-set(PROJECT_NAME ZCLass)
+set(PROJECT_NAME ZClass)
+
+set(COMPILE_WARNING_AS_ERROR YES)
+
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core)
+qt_standard_project_setup()
 
 ################################################################################
 # Source groups
@@ -11,7 +16,7 @@ set(Header_Files
     "zptr.h"
     "zreslock.h"
     "zsingle.h"
-    "Ztrace.h"
+    "ztrace.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -32,22 +37,11 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "Libraries")
+qt_add_library(ZClass STATIC ${ALL_FILES})
 
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
-################################################################################
-# Includes for CMake from *.props
-################################################################################
-use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "$ENV{QtMsBuild}/qt_defaults.cmake")
-use_props(${PROJECT_NAME} Debug   "$ENV{QtMsBuild}/Qt.cmake")
-use_props(${PROJECT_NAME} Debug   "../Debug.cmake")
-use_props(${PROJECT_NAME} Release "$ENV{QtMsBuild}/Qt.cmake")
-use_props(${PROJECT_NAME} Release "../Release.cmake")
+set_target_properties(ZClass PROPERTIES FOLDER "Libraries")
+target_link_libraries(ZClass PRIVATE Qt6::Core)
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    VS_GLOBAL_KEYWORD "QtVS_v304"
-)
 ################################################################################
 # Output directory
 ################################################################################
@@ -58,42 +52,39 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-################################################################################
-# MSVC runtime library
-################################################################################
-get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
-string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
-    $<$<CONFIG:Debug>:
-        MultiThreadedDebugDLL
-    >
-    $<$<CONFIG:Release>:
-        MultiThreadedDLL
-    >
-    $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
-)
-set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
 
 ################################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/."
+    .
 )
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+target_include_directories(${PROJECT_NAME} PUBLIC
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
+)
+endif()
 
 ################################################################################
 # Compile definitions
 ################################################################################
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "$<$<CONFIG:Debug>:"
-        "_DEBUG"
-    ">"
     "$<$<CONFIG:Release>:"
         "NDEBUG"
     ">"
-    "WIN32;"
-    "_LIB;"
-    "_CRT_SECURE_NO_WARNINGS"
+    "_LIB"
 )
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+	WIN32
+	_WINDOWS
+	_SBCS
+	)
+endif()
+
+
 
 ################################################################################
 # Compile and link options
@@ -105,10 +96,9 @@ if(MSVC)
         >
         $<$<CONFIG:Release>:
             /GL-;
-            /GF;
-            /GS-
+            /GF
         >
-        /WX;
+        /W3 /wd4996
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         /Zc:__cplusplus;
         /permissive-;

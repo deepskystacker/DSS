@@ -93,7 +93,7 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\ZCLass.bsc</OutputFile>
+      <OutputFile>.\Debug\ZClass.bsc</OutputFile>
     </Bscmake>
     <Lib />
   </ItemDefinitionGroup>
@@ -116,7 +116,7 @@
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\ZCLass.bsc</OutputFile>
+      <OutputFile>.\Release\ZClass.bsc</OutputFile>
     </Bscmake>
     <Lib />
   </ItemDefinitionGroup>

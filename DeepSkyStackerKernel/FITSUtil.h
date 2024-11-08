@@ -123,10 +123,10 @@ protected:
 	bool					m_bDSI;
 
 private :
-	bool	ReadKey(LPCSTR szKey, double & fValue, QString & strComment);
-	bool	ReadKey(LPCSTR szKey, double & fValue);
-	bool	ReadKey(LPCSTR szKey, int& lValue);
-	bool	ReadKey(LPCSTR szKey, QString & strValue);
+	bool	ReadKey(const char * szKey, double & fValue, QString & strComment);
+	bool	ReadKey(const char * szKey, double & fValue);
+	bool	ReadKey(const char * szKey, int& lValue);
+	bool	ReadKey(const char * szKey, QString & strValue);
 	void	ReadAllKeys();
 
 public:
@@ -167,9 +167,9 @@ public:
 	QString m_strDescription;
 
 private :
-	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
-	bool	WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment = nullptr);
-	bool	WriteKey(LPCSTR szKey, const QString& szValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(const char * szKey, double fValue, const char * szComment = nullptr);
+	bool	WriteKey(const char * szKey, int lValue, const char * szComment = nullptr);
+	bool	WriteKey(const char * szKey, const QString& szValue, const char * szComment = nullptr);
 	void	WriteAllKeys();
 
 protected:

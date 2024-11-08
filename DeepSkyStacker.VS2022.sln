@@ -26,8 +26,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepSkyStacker", "DeepSkySt
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtiff", "LibTiff\libtiff.vcxproj", "{D5FB2402-A821-4474-91E7-07F0DD5866F0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZCLass", "ZCLass\ZCLass.vcxproj", "{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libraw", "LibRaw\buildfiles\libraw.vcxproj", "{A71D2131-F425-381F-8A9A-29D60132A046}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E9EC8B1-5EAC-4F7F-8989-EFED16DA4B7A}"
@@ -39,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepSkyStackerTest", "DeepS
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepSkyStackerKernel", "DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj", "{CB7B75F1-08F4-4C8D-A7EF-2AA33E9A67F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZClass", "ZClass\ZClass.vcxproj", "{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +62,6 @@ Global
 		{D5FB2402-A821-4474-91E7-07F0DD5866F0}.Debug|x64.Build.0 = Debug|x64
 		{D5FB2402-A821-4474-91E7-07F0DD5866F0}.Release|x64.ActiveCfg = Release|x64
 		{D5FB2402-A821-4474-91E7-07F0DD5866F0}.Release|x64.Build.0 = Release|x64
-		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Debug|x64.ActiveCfg = Debug|x64
-		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Debug|x64.Build.0 = Debug|x64
-		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Release|x64.ActiveCfg = Release|x64
-		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Release|x64.Build.0 = Release|x64
 		{A71D2131-F425-381F-8A9A-29D60132A046}.Debug|x64.ActiveCfg = Debug|x64
 		{A71D2131-F425-381F-8A9A-29D60132A046}.Debug|x64.Build.0 = Debug|x64
 		{A71D2131-F425-381F-8A9A-29D60132A046}.Release|x64.ActiveCfg = Release|x64
@@ -78,14 +74,18 @@ Global
 		{CB7B75F1-08F4-4C8D-A7EF-2AA33E9A67F1}.Debug|x64.Build.0 = Debug|x64
 		{CB7B75F1-08F4-4C8D-A7EF-2AA33E9A67F1}.Release|x64.ActiveCfg = Release|x64
 		{CB7B75F1-08F4-4C8D-A7EF-2AA33E9A67F1}.Release|x64.Build.0 = Release|x64
+		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Debug|x64.ActiveCfg = Debug|x64
+		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Debug|x64.Build.0 = Debug|x64
+		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Release|x64.ActiveCfg = Release|x64
+		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D5FB2402-A821-4474-91E7-07F0DD5866F0} = {A8F4069D-F6D1-4A9A-A4E5-9A22B411D691}
-		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D} = {A8F4069D-F6D1-4A9A-A4E5-9A22B411D691}
 		{A71D2131-F425-381F-8A9A-29D60132A046} = {A8F4069D-F6D1-4A9A-A4E5-9A22B411D691}
+		{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D} = {A8F4069D-F6D1-4A9A-A4E5-9A22B411D691}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64F56483-090C-45A4-9437-FC1753EF3BA5}

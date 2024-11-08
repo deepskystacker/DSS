@@ -119,7 +119,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 	{
 		auto dtor = [](FILE* fp) { if (fp != nullptr) fclose(fp); };
 		std::unique_ptr<FILE, decltype(dtor)> pFile{
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 			_wfopen(partFile.file.c_str(), L"a+b"),
 #else
 			std::fopen(partFile.file.c_ctr(), "a+b"),
@@ -390,7 +390,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 				buffer.resize(fileSize);
 
 			if (std::FILE* hFile =
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 				_wfopen(partFile.file.c_str(), L"rb")
 #else
 				std::fopen(partFile.file.c_ctr(), "rb")

@@ -36,7 +36,7 @@ FunctionEnd
 
 !define DSS_PRODUCT        "DeepSkyStacker"		# For start menu
 !define DSS_VERSION        "5.1.8"			# For control panel
-!define DSS_VERSION_SUFFIX " Beta 4"			# For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX ""			# For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"	# For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -186,7 +186,7 @@ Section
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
-  File /r "..\x64\Release\imageformats"
+  File /r "..\x64\Release\networkinformation"
   File /r "..\x64\Release\platforms"
   File /r "..\x64\Release\styles"
   File /r "..\x64\Release\tls"
