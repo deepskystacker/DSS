@@ -4,6 +4,9 @@
 #include "Multitask.h" 
 #include "ztrace.h"
 #include <immintrin.h>
+#if defined (Q_OS_LINUX)
+#include <cpuid.h>
+#endif
 
 
 AvxSupport::AvxSupport(const CMemoryBitmap& b) noexcept :
