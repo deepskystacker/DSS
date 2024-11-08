@@ -291,7 +291,12 @@ if(MSVC)
         /wd4244;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -mavx -msse4.2
+    )
 endif()
+message ("Compile options: " ${CMAKE_CXX_FLAGS})
 
 ################################################################################
 # Dependencies

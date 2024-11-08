@@ -57,6 +57,9 @@
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <ranges>
 
+// Intel AVX intrinsics 
+#include <immintrin.h>
+
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
 
