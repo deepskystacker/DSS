@@ -73,7 +73,7 @@ set(Header_Files
     "DSS-winpackagefamily.h"
     "lowerdockwidget.cpp"
     "mrulist.h"
-    "StdAfx.h"
+    "stdafx.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
