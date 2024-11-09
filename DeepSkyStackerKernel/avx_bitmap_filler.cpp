@@ -4,6 +4,13 @@
 #include "avx_support.h"
 #include "zexcept.h"
 
+#if defined(_MSC_VER)
+#define bswap_16(x) _byteswap_ushort(x)
+#elif defined(__GNUC__)
+#define bswap_16(x) __builtin_bswap16(x)
+#else
+#error Compiler not yet supported
+#endif
 
 // ---------------------------------
 // AVX Bitmap Filler
@@ -66,7 +73,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			}
 			const std::uint16_t* const p16 = static_cast<const std::uint16_t*>(source);
 			for (size_t i = nrVectors * vectorLen; i < nrPixels; ++i) // Remaining pixels of line
-				pBuf[i] = static_cast<float>(_byteswap_ushort(p16[i])); // Load an convert to little endian
+				pBuf[i] = static_cast<float>(bswap_16(p16[i])); // Load an convert to little endian
 		}
 
 		if (this->isRgbBayerPattern())
@@ -156,9 +163,9 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			}
 			for (size_t i = (nrPixels / 4) * 4; i < nrPixels; ++i, ++pRed, ++pGreen, ++pBlue, pData += 3)
 			{
-				*pRed = static_cast<float>(_byteswap_ushort(pData[0]));
-				*pGreen = static_cast<float>(_byteswap_ushort(pData[1]));
-				*pBlue = static_cast<float>(_byteswap_ushort(pData[2]));
+				*pRed = static_cast<float>(bswap_16(pData[0]));
+				*pGreen = static_cast<float>(bswap_16(pData[1]));
+				*pBlue = static_cast<float>(bswap_16(pData[2]));
 			}
 		}
 

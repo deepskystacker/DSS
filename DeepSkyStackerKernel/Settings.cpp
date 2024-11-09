@@ -59,7 +59,7 @@ bool	CGlobalSettings::ReadFromFile(const fs::path& file)
 #if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
-		std::fopen(file.c_ctr(), "wt")
+		std::fopen(file.c_str(), "wt")
 #endif
 		)
 	{
@@ -70,7 +70,7 @@ bool	CGlobalSettings::ReadFromFile(const fs::path& file)
 			m_sSettings.insert(s);
 
 		// Then read the file list
-		CHAR			szBuffer[2000];
+		char			szBuffer[2000];
 		while (fgets(szBuffer, sizeof(szBuffer), hFile))
 		{
 			const QString strFileName(szBuffer);
@@ -94,7 +94,7 @@ void	CGlobalSettings::WriteToFile(const fs::path& file)
 #if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
-		std::fopen(file.c_ctr(), "wt")
+		std::fopen(file.c_str(), "wt")
 #endif
 		)
 	{

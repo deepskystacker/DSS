@@ -122,7 +122,7 @@ bool CFITSReader::ReadKey(const char * szKey, double& fValue, QString& strCommen
 
 	if (m_fits)
 	{
-		CHAR			szComment[500];
+		char szComment[500];
 
 		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
@@ -168,7 +168,7 @@ bool CFITSReader::ReadKey(const char * szKey, int& lValue)
 bool CFITSReader::ReadKey(const char * szKey, QString & strValue)
 {
 	bool				bResult = false;
-	CHAR				szValue[2000];
+	char				szValue[2000];
 	int					nStatus = 0;
 
 	if (m_fits)
@@ -202,9 +202,9 @@ void CFITSReader::ReadAllKeys()
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (int i = 1;i<=nKeywords;i++)
 		{
-			CHAR			szKeyName[FLEN_CARD];
-			CHAR			szValue[FLEN_VALUE];
-			CHAR			szComment[FLEN_COMMENT];
+			char szKeyName[FLEN_CARD];
+			char szValue[FLEN_VALUE];
+			char szComment[FLEN_COMMENT];
 			int				nKeyClass;
 
 			fits_read_keyn(m_fits, i, szKeyName, szValue, szComment, &nStatus);
@@ -623,11 +623,11 @@ bool CFITSReader::Read()
 		if (m_pProgress)
 			m_pProgress->Start2(m_lHeight);
 
-		std::int64_t fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		const std::int64_t nElements = static_cast<std::int64_t>(m_lWidth) * m_lHeight * colours;
+		const LONGLONG nElements = static_cast<LONGLONG>(m_lWidth) * m_lHeight * colours;
 		auto buff = std::make_unique<double[]>(nElements);
 		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
@@ -1201,14 +1201,14 @@ void	CFITSWriter::WriteAllKeys()
 		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
 			const ExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-			CHAR szValue[FLEN_VALUE];
+			char szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
 			fits_read_key(m_fits, TSTRING, ei.m_strName.toUtf8().constData(), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
-				CHAR		szCard[FLEN_CARD];
+				char		szCard[FLEN_CARD];
 				int			nType;
 				QString		strTemplate;
 

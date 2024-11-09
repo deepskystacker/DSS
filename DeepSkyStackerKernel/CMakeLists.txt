@@ -86,7 +86,6 @@ set(Header_Files
     "StackedBitmap.h"
     "StackingEngine.h"
     "StackingTasks.h"
-    "StackWalker.h"
     "StarMask.h"
     "Stars.h"
     "stdafx.h"
@@ -95,6 +94,12 @@ set(Header_Files
     "tracecontrol.h"
     "Workspace.h"
 )
+if(WIN32)
+set(Header_Files
+    ${Header_Files}
+    "StackWalker.h"
+)
+endif()
 source_group("Header Files" FILES ${Header_Files})
 
 set(i18n_Files
@@ -120,6 +125,7 @@ source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
 
 set(Source_Files
     "AHDDemosaicing.cpp"
+#[=[
     "avx.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
@@ -130,6 +136,7 @@ set(Source_Files
     "avx_luminance.cpp"
     "avx_output.cpp"
     "avx_support.cpp"
+]=]
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -174,13 +181,28 @@ set(Source_Files
     "StackedBitmap.cpp"
     "StackingEngine.cpp"
     "StackingTasks.cpp"
-    "StackWalker.cpp"
     "StarMask.cpp"
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
     "Workspace.cpp"
 )
+if(WIN32)
+set(Source_Files
+    ${Source_Files}
+    "avx.cpp"
+    "avx_avg.cpp"
+    "avx_bitmap_filler.cpp"
+    "avx_cfa.cpp"
+    "avx_entropy.cpp"
+    "avx_filter.cpp"
+    "avx_histogram.cpp"
+    "avx_luminance.cpp"
+    "avx_output.cpp"
+    "avx_support.cpp"
+    "StackWalker.cpp"
+)
+endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
@@ -296,7 +318,6 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
         -mavx -msse4.2
     )
 endif()
-message ("Compile options: " ${CMAKE_CXX_FLAGS})
 
 ################################################################################
 # Dependencies

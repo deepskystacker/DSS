@@ -6,7 +6,7 @@
 #include "zexcbase.h"
 #include "DSSTools.h"
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 std::shared_ptr<CMemoryBitmap> CColorMultiBitmapT<TType, TTypeOutput>::CreateNewMemoryBitmap() const
 {
 	if (static_cast<bool>(m_pBitmapModel))
@@ -25,13 +25,13 @@ std::shared_ptr<CMemoryBitmap> CColorMultiBitmapT<TType, TTypeOutput>::CreateNew
 		return std::make_shared<CColorBitmapT<TType>>();
 }
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 std::shared_ptr<CMemoryBitmap> CColorMultiBitmapT<TType, TTypeOutput>::CreateOutputMemoryBitmap() const
 {
 	return std::make_shared<CColorBitmapT<TTypeOutput>>();
 }
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 bool CColorMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines)
 {
 	bool bResult = false;

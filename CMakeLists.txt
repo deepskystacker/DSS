@@ -29,13 +29,6 @@ else()
 endif()
 message ("System Name is: " ${CMAKE_SYSTEM_NAME} ", prefix path: " ${CMAKE_PREFIX_PATH})
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
-
-set(CMAKE_AUTOUIC_SEARCH_PATHS
-	"./ui"
-	CACHE STRING "" FORCE
-	)
-	
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
 ################################################################################
@@ -55,16 +48,30 @@ if(NOT CMAKE_BUILD_TYPE)
 	message ("Build type was not set, setting it to: Debug")
 	set(CMAKE_BUILD_TYPE "Debug")
 endif()
+message ("CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR})
+message ("CMAKE_VS_PLATFORM_NAME: " ${CMAKE_VS_PLATFORM_NAME})
+message ("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	if(NOT WIN32)
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE})
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	else()
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE})
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
 endif()
-message ("Install prefix set to: " ${CMAKE_INSTALL_PREFIX})
+message ("CMAKE_INSTALL_PREFIX set to: " ${CMAKE_INSTALL_PREFIX})
 
+set(CMAKE_INSTALL_BINDIR "." CACHE STRING "" FORCE)
+set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
+set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
+set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS
+	"./ui"
+	CACHE STRING "" FORCE
+	)
+	
 ################################################################################
 # Global configuration types
 ################################################################################

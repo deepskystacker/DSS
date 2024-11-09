@@ -545,19 +545,19 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		hRed = fopen("E:\\RedDistribution.txt", "wt");
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hRed, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hRed, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hRed);
 
 		hGreen = fopen("E:\\GreenDistribution.txt", "wt");
 		for (it = sGreenValuePairs.begin();it != sGreenValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hGreen, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hGreen, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hGreen);
 
 		hBlue = fopen("E:\\BlueDistribution.txt", "wt");
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hBlue, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hBlue, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hBlue);
 	}
 }

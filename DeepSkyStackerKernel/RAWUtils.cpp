@@ -11,20 +11,17 @@
 #include "MedianFilterEngine.h"
 #include "zexcbase.h"
 #include "BitmapInfo.h"
+#if defined(Q_OS_LINUX)
+#include <arpa/inet.h>
+#endif
 
-// #include <zexcept.h>
-// #include <ztrace.h>
-// 
-// #include "resource.h"
-// #include "BitmapExt.h"
-// #include "DSSTools.h"
-// #include "DSSProgress.h"
-// 
-// #include "RAWUtils.h"
-// #include "Multitask.h"
-// #include "Workspace.h"
-// 
-// #include "libraw/libraw.h"
+#if defined(_MSC_VER)
+#define bswap_16(x) _byteswap_ushort(x)
+#elif defined(__GNUC__)
+#define bswap_16(x) __builtin_bswap16(x)
+#else
+#error Compiler not yet supported
+#endif
 
 using namespace DSS;
 
@@ -247,7 +244,11 @@ namespace { // Only use in this .cpp file
 			m_fAperture{ 0.0 },
 			m_lHeight{ 0 },
 			m_lWidth{ 0 },
+#if defined(Q_OS_WIN)
 			m_isRawFile{ rawProcessor.open_file(file.wstring().c_str()) == LIBRAW_SUCCESS }
+#else
+			m_isRawFile{ rawProcessor.open_file(file.string().c_str()) == LIBRAW_SUCCESS }
+#endif
 		{
 			ZFUNCTRACE_RUNTIME();
 
@@ -822,7 +823,7 @@ namespace { // Only use in this .cpp file
 #pragma omp parallel for default(none) schedule(static, 1'000'000) if(numberOfProcessors > 1)
 					for (int i = 0; i < size; i++)
 					{
-						raw_image[i] = _byteswap_ushort(raw_image[i]);
+						raw_image[i] = bswap_16(raw_image[i]);
 					}
 
 				const int imageWidth = S.width;
@@ -1103,7 +1104,12 @@ void DSSLibRaw::write_ppm_tiff()
 				FORCC ppm2[col*colors + c] = curve[image[soff][c]];
 		}
 		if (output_bps == 16 && !output_tiff && htons(0x55aa) != 0x55aa)
+#if defined(Q_OS_WIN)		
 			_swab((char*)ppm2, (char*)ppm2, width*colors * 2);
+#else
+			swab((char*)ppm2, (char*)ppm2, width * colors * 2);
+#endif
+
 
 		//
 		// Instead of writing the bitmap data to an output file

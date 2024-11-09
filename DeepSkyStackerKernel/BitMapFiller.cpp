@@ -117,6 +117,13 @@ std::unique_ptr<BitmapFillerInterface> NonAvxBitmapFiller::clone()
 {
 	return std::make_unique<NonAvxBitmapFiller>(*this);
 }
+#if defined(_MSC_VER)
+#define bswap_16(x) _byteswap_ushort(x)
+#elif defined(__GNUC__)
+#define bswap_16(x) __builtin_bswap16(x)
+#else
+#error Compiler not yet supported
+#endif
 
 size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, const size_t nrPixels, const size_t rowIndex)
 {
@@ -141,7 +148,7 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 		{
 			const std::uint16_t* const pData = static_cast<const std::uint16_t*>(source);
 			for (size_t i = 0; i < nrPixels; ++i)
-				redBuffer[i] = static_cast<float>(_byteswap_ushort(pData[i])); // Load an convert to little endian
+				redBuffer[i] = static_cast<float>(bswap_16(pData[i])); // Load and convert to little endian
 		}
 
 		if (this->isRgbBayerPattern())
@@ -180,9 +187,9 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 			const std::uint16_t* pData = static_cast<const std::uint16_t*>(source);
 			for (size_t i = 0; i < nrPixels; ++i, pData += 3)
 			{
-				redBuffer[i] = static_cast<float>(_byteswap_ushort(pData[0]));
-				greenBuffer[i] = static_cast<float>(_byteswap_ushort(pData[1]));
-				blueBuffer[i] = static_cast<float>(_byteswap_ushort(pData[2]));
+				redBuffer[i] = static_cast<float>(bswap_16(pData[0]));
+				greenBuffer[i] = static_cast<float>(bswap_16(pData[1]));
+				blueBuffer[i] = static_cast<float>(bswap_16(pData[2]));
 			}
 		}
 

@@ -1,7 +1,10 @@
 #pragma once
 
 #include "BitmapBase.h"
-
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#endif
 class AvxLuminance
 {
 private:
@@ -26,3 +29,6 @@ private:
 	template <class T>
 	static std::tuple<__m256d, __m256d, __m256d, __m256d> greyLuminance(const T* const pGray);
 };
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif

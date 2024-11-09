@@ -333,9 +333,9 @@ namespace DSS
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
 #pragma warning (suppress:4477)
-					fprintf(hFile, "%ld\t%s\t%s\n", checked,
+					fprintf(hFile, "%d\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
-						path.generic_u8string().c_str());
+						const_cast<char *>(reinterpret_cast<const char *>(path.generic_u8string().c_str())));
 				}
 				g.setDirty(false);
 			}

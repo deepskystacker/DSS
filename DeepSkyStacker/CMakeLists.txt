@@ -427,10 +427,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 #
 # Force the values of QT_DEPLOY... variables
 #
-set (QT_DEPLOY_BIN_DIR ".")
-set (QT_DEPLOY_LIBEXEC_DIR ".")
-set (QT_DEPLOY_LIB_DIR ".")
-set (QT_DEPLOY_PLUGINS_DIR ".")
+#set (QT_DEPLOY_BIN_DIR ".")
+#set (QT_DEPLOY_LIBEXEC_DIR ".")
+#set (QT_DEPLOY_LIB_DIR ".")
+#set (QT_DEPLOY_PLUGINS_DIR ".")
 
 #
 # Set options for the deployment script.   The value of:
@@ -443,7 +443,7 @@ set (QT_DEPLOY_PLUGINS_DIR ".")
 # 
 # even though QT_DEPLOY_LIB_DIR is set to .
 #
-set (deploy_tool_options_arg "--libdir .")
+set (deploy_tool_options_arg ".")
 if(APPLE)
     set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
 elseif(WIN32)

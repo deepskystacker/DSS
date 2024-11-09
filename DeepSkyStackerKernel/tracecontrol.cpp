@@ -61,7 +61,12 @@ namespace DSS
 		else if ("DeepSkyStackerLive" == path) start = "DSSLiveTrace";
 		else ZASSERT(false);
 		
-		(void) _putenv(traceTo.toStdString().c_str()); // set Z_TRACETO=FILE
+		// set Z_TRACETO=FILE
+#if defined(_WIN32)
+		(void)_wputenv(traceTo.toStdWString().c_str());
+#else
+		(void) putenv(const_cast<char*>(traceTo.toStdString().c_str()));
+#endif
 
 		std::time_t time = std::time({});
 		char timeString[std::size("yyyy-mm-ddThh-mm-ssZ")];
@@ -81,7 +86,7 @@ namespace DSS
 #if defined(_WIN32)
 		(void) _wputenv(traceFile.toStdWString().c_str());
 #else
-		(void)putenv(tracefile.toStdString().c_str());
+		(void)putenv(const_cast<char*>(traceFile.toStdString().c_str()));
 #endif
 
 	}

@@ -2497,7 +2497,7 @@ namespace DSS
 #if defined(Q_OS_WIN)
 				_wfopen(file.c_str(), L"rt")
 #else
-				std::fopen(file.c_ctr(), "rt")
+				std::fopen(file.c_str(), "rt")
 #endif
 				)
 			{

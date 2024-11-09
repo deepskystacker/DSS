@@ -76,7 +76,10 @@ public:
 		_mm256_zeroupper();
 		return returnValue;
 	}
-
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#endif
 	// SIMD functions
 
 	inline static __m256 wordToPackedFloat(const __m128i x) noexcept
@@ -531,6 +534,9 @@ public:
 		else
 			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(ps), NDX * 4)));
 	}
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 };
 
 

@@ -803,26 +803,23 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 	auto now{ QDateTime::currentDateTime() };	// local time
 
 	// First try to find the info in the cache
-	if (!g_sBitmapInfoCache.empty())
-	{
-		// Check that the cache is not old (more than 5 minutes)
-		constexpr qint64 maxAge{ 300 };		// 300 seconds == 5 minutes
-		auto age{ g_BitmapInfoTime.secsTo(now) };
+	// Check that the cache is not old (more than 5 minutes)
+	constexpr qint64 maxAge{ 300 };		// 300 seconds == 5 minutes
+	auto age{ g_BitmapInfoTime.secsTo(now) };
 
-		if (age > maxAge)
+	if (age > maxAge)
+	{
+		std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
+		g_sBitmapInfoCache.clear();
+	}
+	else
+	{
+		std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+		InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
+		if (it != g_sBitmapInfoCache.cend())
 		{
-			std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
-			g_sBitmapInfoCache.clear();
-		}
-		else
-		{
-			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
-			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
-			if (it != g_sBitmapInfoCache.cend())
-			{
-				BitmapInfo = *it;
-				bResult = true;
-			}
+			BitmapInfo = *it;
+			bResult = true;
 		}
 	}
 
