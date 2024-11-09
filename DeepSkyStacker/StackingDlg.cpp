@@ -1994,11 +1994,13 @@ namespace DSS
 
 	void StackingDlg::versionInfoReceived(QNetworkReply* reply)
 	{
+		ZFUNCTRACE_RUNTIME();
 		QNetworkReply::NetworkError error = reply->error();
 		if (QNetworkReply::NoError == error)
 		{
 			QString string(reply->read(reply->bytesAvailable()));
 
+			qInfo() << "Latest version is: " << string;
 			if (string.startsWith("DeepSkyStackerVersion="))
 			{
 				QString verStr = string.section('=', 1, 1);
@@ -2026,6 +2028,7 @@ namespace DSS
 		}
 		else
 		{
+			qWarning() << "Internet version check error: " << reply;
 			QMessageBox::warning(nullptr, dssApp->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)

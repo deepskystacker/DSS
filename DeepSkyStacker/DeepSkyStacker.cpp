@@ -86,7 +86,11 @@ namespace
 	{
 		QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file ? context.file : "";
+#if defined(Q_OS_WIN)
 		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
+#else
+		char* name{ static_cast<char*>(alloca(1 + strlen(file))) };
+#endif
 		strcpy(name, file);
 		if (0 != strlen(name))
 		{
@@ -631,7 +635,7 @@ void DeepSkyStacker::help()
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
 #else
-	QMessageBox::Information(this, "DeepSkyStecker", "Sorry, there's no help available for Linux yet");
+	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
 #endif
 }
 
@@ -944,23 +948,10 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(0);
 #endif
 
-//#if defined(_WINDOWS)
-
-//#else
-	//
-	// Set up to handle signals
-	//
-//	std::signal(SIGINT, signalHandler);
-//	std::signal(SIGILL, signalHandler);
-//	std::signal(SIGFPE, signalHandler);
-//	std::signal(SIGSEGV, signalHandler);
-//	std::signal(SIGTERM, signalHandler);
-//#endif
-
 	QApplication app(argc, argv);
 
 	if (hasExpired())
-		return FALSE;
+		return 1;
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -1010,7 +1001,7 @@ int main(int argc, char* argv[])
 		ZTRACE_RUNTIME("Creating Main Window");
 		DeepSkyStacker mainWindow;
 
-		//QEventLogger eventLogger("C:/temp/DSSEvents", &mainWindow, false);
+		//QEventLogger eventLogger("Qt-Event-log", &mainWindow, false);
 		//app.installEventFilter(&eventLogger);
 
 		ZTRACE_RUNTIME("Checking Mutex");

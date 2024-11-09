@@ -205,7 +205,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromWCharArray(path.native().c_str()));
+			filePaths.append(QString::fromStdU16String(path.generic_u16string()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);

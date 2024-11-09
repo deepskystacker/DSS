@@ -381,6 +381,10 @@ if(MSVC)
         /SUBSYSTEM:WINDOWS;
         /DYNAMICBASE:NO
     )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE
+        -mavx -msse4.2
+    )
 endif()
 
 if(WIN32)
@@ -401,12 +405,21 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Network
 	DeepSkyStackerKernel
     libraw
-    libtiff
     ZClass
 )
+if(WIN32)
+target_link_libraries(DeepSkyStacker PRIVATE
+    libtiff
+)
+endif()
 
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+if(WIN32)
+set(DEBUG_DEPENDENCIES exiv2d zlibstaticd)
+set(RELEASE_DEPENDENCIES exiv2 zlibstatic)
+else()
+set(DEBUG_DEPENDENCIES libtiff.a exiv2 expat libz.a)
+set(RELEASE_DEPENDENCIES libtiff.a exiv2 expat libz.a)
+endif()
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
@@ -427,10 +440,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 #
 # Force the values of QT_DEPLOY... variables
 #
-#set (QT_DEPLOY_BIN_DIR ".")
-#set (QT_DEPLOY_LIBEXEC_DIR ".")
-#set (QT_DEPLOY_LIB_DIR ".")
-#set (QT_DEPLOY_PLUGINS_DIR ".")
+set (QT_DEPLOY_BIN_DIR ".")
+set (QT_DEPLOY_LIBEXEC_DIR ".")
+set (QT_DEPLOY_LIB_DIR ".")
+set (QT_DEPLOY_PLUGINS_DIR ".")
 
 #
 # Set options for the deployment script.   The value of:

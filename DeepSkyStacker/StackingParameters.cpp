@@ -88,21 +88,21 @@ namespace DSS
 	{
 		nobgCal = new QAction(nobgCalString, this);
 		connect(nobgCal, &QAction::triggered, this,
-			[=]() { this->setBackgroundCalibration(BCM_NONE); });
+			[this]() { this->setBackgroundCalibration(BCM_NONE); });
 		connect(nobgCal, &QAction::triggered, this,
-			[=]() { ui->backgroundCalibration->setText(nobgCalString); });
+			[this]() { ui->backgroundCalibration->setText(nobgCalString); });
 
 		pcbgCal = new QAction(pcbgCalString, this);
 		connect(pcbgCal, &QAction::triggered, this,
-			[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
+			[this]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
 		connect(pcbgCal, &QAction::triggered, this,
-			[=]() { ui->backgroundCalibration->setText(pcbgCalString); });
+			[this]() { ui->backgroundCalibration->setText(pcbgCalString); });
 
 		rgbbgCal = new QAction(rgbbgCalString, this);
 		connect(rgbbgCal, &QAction::triggered, this,
-			[=]() { this->setBackgroundCalibration(BCM_RGB); });
+			[this]() { this->setBackgroundCalibration(BCM_RGB); });
 		connect(rgbbgCal, &QAction::triggered, this,
-			[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
+			[this]() { ui->backgroundCalibration->setText(rgbbgCalString); });
 
 		bgCalOptions = new QAction(tr("Options...", "ID_CALIBRATIONMENU_OPTIONS"), this);
 		connect(bgCalOptions, &QAction::triggered, this, &StackingParameters::backgroundCalibrationOptions);
