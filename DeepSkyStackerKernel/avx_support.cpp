@@ -190,7 +190,7 @@ void AvxSupport::reportCpuType()
 	}
 #endif
 	int cpuid[4] = { -1 };
-	__cpuid(cpuid, 0x80000000);
+	__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[4]);
 	const int nExtIds = cpuid[0];
 	char brand[64] = { '\0' };
 	if (nExtIds >= 0x80000004)
