@@ -1,9 +1,18 @@
 set(PROJECT_NAME DeepSkyStackerKernel)
-
-set(COMPILE_WARNING_AS_ERROR YES)
+message("Configuring project: " ${PROJECT_NAME})
 
 find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
+
+#
+# Force the values of QT_DEPLOY... variables
+#
+set (QT_DEPLOY_BIN_DIR ${CMAKE_INSTALL_BINDIR})
+set (QT_DEPLOY_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
+set (QT_DEPLOY_LIBEXEC_DIR ${CMAKE_INSTALL_LIBEXECDIR})
+set (QT_DEPLOY_PLUGINS_DIR ${CMAKE_INSTALL_PLUGINSDIR})
+
+set(COMPILE_WARNING_AS_ERROR YES)
 
 set(CMAKE_AUTORCC ON)
 
@@ -125,7 +134,6 @@ source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
 
 set(Source_Files
     "AHDDemosaicing.cpp"
-#[=[
     "avx.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
@@ -136,7 +144,6 @@ set(Source_Files
     "avx_luminance.cpp"
     "avx_output.cpp"
     "avx_support.cpp"
-]=]
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -187,22 +194,6 @@ set(Source_Files
     "tracecontrol.cpp"
     "Workspace.cpp"
 )
-if(WIN32)
-set(Source_Files
-    ${Source_Files}
-    "avx.cpp"
-    "avx_avg.cpp"
-    "avx_bitmap_filler.cpp"
-    "avx_cfa.cpp"
-    "avx_entropy.cpp"
-    "avx_filter.cpp"
-    "avx_histogram.cpp"
-    "avx_luminance.cpp"
-    "avx_output.cpp"
-    "avx_support.cpp"
-    "StackWalker.cpp"
-)
-endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
@@ -210,8 +201,6 @@ set(ALL_FILES
 	${i18n_Files} "i18n/translations_kernel.qrc"
 	${Source_Files}
 )
-
-set(ROOT_NAMESPACE DeepSkyStackerKernel)
 
 ################################################################################
 # Target
@@ -239,7 +228,7 @@ set_target_properties(DeepSkyStackerKernel PROPERTIES
 ################################################################################
 # Include directories
 ################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
     .
     ../DeepSkyStacker;
     ../ZClass
@@ -248,7 +237,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 if(WIN32)
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
     ../include
     ../LibTiff
     ../Zlib
@@ -315,7 +304,7 @@ if(MSVC)
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
-        -mavx -msse4.2
+        -mavx -msse4.2 -fopenmp
     )
 endif()
 
@@ -323,9 +312,11 @@ endif()
 # Dependencies
 ################################################################################
 # Link with other targets.
-target_link_libraries(${PROJECT_NAME} PUBLIC
+#[=[
+target_link_libraries(${PROJECT_NAME} PRIVATE
     libraw
     libtiff
     ZClass
 )
+]=]
 
