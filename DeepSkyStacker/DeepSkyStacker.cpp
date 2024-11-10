@@ -692,7 +692,7 @@ using namespace std;
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
-static char const* global_program_name;
+char const* global_program_name;
 
 //namespace
 //{
