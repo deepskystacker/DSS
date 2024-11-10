@@ -325,7 +325,6 @@ if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
    ../Zlib
    ../LibTiff
-   ../CFitsIO
    ../include
    ../include/exiv2
    ../include/SmtpMime
@@ -411,20 +410,20 @@ if(WIN32)
 target_link_libraries(DeepSkyStacker PRIVATE
     libtiff
 )
+message (FATAL_ERROR "WIN32 add libtiff" )
 endif()
 
 if(WIN32)
-set(DEBUG_DEPENDENCIES exiv2d zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 zlibstatic)
+set(DEBUG_DEPENDENCIES exiv2d zlibstaticd cfitsio)
+set(RELEASE_DEPENDENCIES exiv2 zlibstatic cfitsio)
 else()
-set(DEBUG_DEPENDENCIES libtiff.a exiv2 expat libz.a)
-set(RELEASE_DEPENDENCIES libtiff.a exiv2 expat libz.a)
+set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a)
+set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a)
 endif()
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
     "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-    "cfitsio"
 )
 
 if(WIN32)
@@ -436,7 +435,8 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
-
+get_target_property(OUT ${PROJECT_NAME} LINK_LIBRARIES)
+message(STATUS "Link libraries: " ${OUT})
 #
 # Force the values of QT_DEPLOY... variables
 #
