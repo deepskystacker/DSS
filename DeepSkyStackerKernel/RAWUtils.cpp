@@ -11,9 +11,6 @@
 #include "MedianFilterEngine.h"
 #include "zexcbase.h"
 #include "BitmapInfo.h"
-#if defined(Q_OS_LINUX)
-#include <arpa/inet.h>
-#endif
 
 #if defined(_MSC_VER)
 #define bswap_16(x) _byteswap_ushort(x)
@@ -26,6 +23,11 @@
 using namespace DSS;
 
 namespace {
+	//
+	// Get our endian-ness so we can swap bytes if needed (always on Windows).
+	//
+	constexpr bool littleEndian{ std::endian::native == std::endian::little };
+
 	class Timer
 	{
 	private:
@@ -542,11 +544,6 @@ namespace { // Only use in this .cpp file
 			pFiller->SetCFAType(m_CFAType);
 
 #define RAW(row,col) raw_image[(row) * S.width + (col)]
-
-			//
-			// Get our endian-ness so we can swap bytes if needed (always on Windows).
-			//
-			const bool littleEndian = (htons(0x55aa) != 0x55aa); // big_endian = htons(host_byte_order)
 
 			if (!m_bColorRAW)
 			{
@@ -1103,7 +1100,7 @@ void DSSLibRaw::write_ppm_tiff()
 			else
 				FORCC ppm2[col*colors + c] = curve[image[soff][c]];
 		}
-		if (output_bps == 16 && !output_tiff && htons(0x55aa) != 0x55aa)
+		if (output_bps == 16 && !output_tiff && littleEndian)
 #if defined(Q_OS_WIN)		
 			_swab((char*)ppm2, (char*)ppm2, width*colors * 2);
 #else
