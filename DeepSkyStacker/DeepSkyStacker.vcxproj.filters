@@ -170,7 +170,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="stdafz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Delaunay.h">

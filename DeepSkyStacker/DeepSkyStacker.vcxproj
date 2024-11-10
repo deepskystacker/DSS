@@ -396,7 +396,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="StackRecap.h" />
     <QtMoc Include="StackSettings.h" />
     <QtMoc Include="StarMaskDlg.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stdafz.h" />
     <QtMoc Include="toolbar.h" />
   </ItemGroup>
   <ItemGroup>
