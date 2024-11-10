@@ -186,6 +186,11 @@ cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
 cd build
 ninja
 sudo ninja install
+#
+# Install openMP
+#
+sudo apt-get install libomp-dev
+
 
 
 
