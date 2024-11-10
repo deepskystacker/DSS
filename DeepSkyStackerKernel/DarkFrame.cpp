@@ -1623,7 +1623,7 @@ void CFindHotPixelTask1::process()
 
 	threadLocals threadVars(m_pBitmap.get());
 
-#pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
+#pragma omp parallel default(shared) firstprivate(threadVars) if(nrProcessors > 1)
 	{
 #pragma omp for schedule(guided, 100)
 		for (int row = 0; row < height; ++row)

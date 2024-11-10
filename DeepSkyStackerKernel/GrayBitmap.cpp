@@ -532,7 +532,7 @@ void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 	std::vector<size_t> hotOffsets;
 	std::vector<size_t> localHotOffsets;
 
-#pragma omp parallel default(none) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
 	{
 #pragma omp for schedule(dynamic, 50) nowait
 		for (int row = 2; row < height - 2; ++row)

@@ -552,7 +552,7 @@ bool CTIFFReader::Read()
 		assert(bps == 32);
 
 		if (spp == 1)
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -571,7 +571,7 @@ bool CTIFFReader::Read()
 				});
 			}
 		else
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -599,7 +599,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -620,7 +620,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -640,7 +640,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -665,7 +665,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -688,7 +688,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -711,7 +711,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -1148,7 +1148,7 @@ bool CTIFFWriter::Write()
 			// int	rowProgress = 0;
 
 			std::atomic_bool stop{ false };
-#pragma omp parallel for default(none) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) if(nrProcessors > 1)
 			for (int row = 0; row < h; row++)
 			{
 				if (stop.load())

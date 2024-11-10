@@ -654,7 +654,7 @@ bool CFITSReader::Read()
 		if (m_bFloat)
 		{
 			double localMin = 0, localMax = 0;
-#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(fMin, fMax, nElements, doubleBuff) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
 #pragma omp for schedule(dynamic, 100'000)
 				for (std::int64_t element = 0; element < nElements; ++element)
@@ -714,7 +714,7 @@ bool CFITSReader::Read()
 
 		std::atomic_bool stop{ false };
 
-#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.

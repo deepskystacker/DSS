@@ -73,7 +73,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			pColorBitmap->Init(lWidth, lHeight);
 			ThreadVars<BitmapIterator, std::shared_ptr<C48BitColorBitmap>> threadVars{ pColorBitmap };
 
-#pragma omp parallel for default(none) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
 			for (int j = 0; j < lHeight; j++)
 			{
 				threadVars.pixelIt.Reset(0, j);
@@ -134,7 +134,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto pImageData = m_Image->bits();
 		auto bytes_per_line = m_Image->bytesPerLine();
 
-#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -164,7 +164,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto bytes_per_line = m_Image->bytesPerLine();
 		ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> threadVars{ m_pBitmap };
 
-#pragma omp parallel for firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for firstprivate(threadVars) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -226,7 +226,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 					std::shared_ptr<C48BitColorBitmap>	pColorBitmap = std::make_shared<C48BitColorBitmap>();
 					pColorBitmap->Init(lWidth, lHeight);
 
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 					for (int j = 0; j < lHeight; j++)
 					{
 						for (int i = 0; i < lWidth; i++)
@@ -370,7 +370,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		(const uchar* pSrc)
 	{
 		std::atomic_int loopCtr = 0;
-#pragma omp parallel for shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int row = 0; row < height; ++row)
 		{
 			const auto* pPixel = reinterpret_cast<const PixelType*>(pSrc + row * bytes_per_line);
@@ -416,7 +416,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	switch (bits)
 	{
 	case 8:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const uchar* pGreyPixel = pImageData + (j * bytes_per_line);
@@ -433,7 +433,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 16:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const uint16_t* pGreyPixel = reinterpret_cast<const uint16_t*>(pImageData + (j * bytes_per_line));
@@ -450,7 +450,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 24:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
@@ -472,7 +472,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 48:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
@@ -595,7 +595,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 		if (QImage::Format_RGB32 == pImage->format())
 		{
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < height; j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -634,7 +634,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		}
 		else        // Must be RGB64
 		{
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < height; j++)
 			{
 				QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
@@ -1166,7 +1166,7 @@ void CSubtractTask::process()
 	ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> sourceIt{ m_pSource };
 	ThreadVars<BitmapIterator, std::shared_ptr<CMemoryBitmap>> targetIt{ m_pTarget };
 
-#pragma omp parallel for default(none) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;

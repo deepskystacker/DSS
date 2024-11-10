@@ -20,7 +20,7 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 	AvxImageFilter avxFilter(m_pEngine);
 	std::vector<T> values((filterSize * 2 + 1) * (filterSize * 2 + 1));
 
-#pragma omp parallel for default(none) firstprivate(avxFilter, values) schedule(guided, 50) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) firstprivate(avxFilter, values) schedule(guided, 50) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)

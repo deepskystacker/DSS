@@ -120,7 +120,7 @@ void CDetectCosmeticTask::doProcess()
 	int nrColdPixels = 0;
 	int progress = 0;
 
-#pragma omp parallel for schedule(static, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 100) default(shared) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
@@ -262,7 +262,7 @@ void CCleanCosmeticTask::process()
 	const int nrProcessors = CMultitask::GetNrProcessors();
 	int progress = 0;
 
-#pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) default(shared) if(nrProcessors > 1)
 	for (int row = 0; row < m_lHeight; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
