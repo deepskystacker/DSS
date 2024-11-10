@@ -394,7 +394,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int nrSubrectsY = (calcHeight - 1) / StepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
-	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
+//	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 	constexpr double LowestPossibleThreshold = 0.00075;
 
@@ -506,7 +506,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 			}
 		};
 
-#pragma omp parallel default(shared) shared(stars1, stars2, stars3, stars4, ePointers, nPixels, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+#pragma omp parallel default(shared) shared(stars1, stars2, stars3, stars4, ePointers, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
 #pragma omp sections
 		{
