@@ -418,7 +418,6 @@ if(WIN32)
 target_link_libraries(DeepSkyStacker PRIVATE
     libtiff
 )
-message (FATAL_ERROR "WIN32 add libtiff" )
 endif()
 
 if(WIN32)
