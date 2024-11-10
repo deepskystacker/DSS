@@ -4,7 +4,7 @@
 #include "Multitask.h" 
 #include "Ztrace.h"
 #include <immintrin.h>
-#if !defined(Q_OS_WIN)
+#if defined(Q_OS_LINUX)
 #include <cpuid.h>
 #endif
 
