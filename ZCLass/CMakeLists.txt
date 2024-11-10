@@ -12,6 +12,7 @@ set(Header_Files
     "zdefs.h"
     "zexcbase.h"
     "zexcept.h"
+    "zinttimr.h"
     "zmstrlck.h"
     "zptr.h"
     "zreslock.h"
@@ -23,6 +24,7 @@ source_group("Header Files" FILES ${Header_Files})
 set(Source_Files
     "source/ZExcBase.cpp"
     "source/ZExcept.cpp"
+    "source/zinttimr.cpp"
     "source/zmstrlck.cpp"
     "source/zreslock.cpp"
     "source/ZTrace.cpp"
@@ -56,12 +58,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 ################################################################################
 # Include directories
 ################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
     .
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -74,6 +76,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         "NDEBUG"
     ">"
     "_LIB"
+    ZCLASS_UNIX
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")

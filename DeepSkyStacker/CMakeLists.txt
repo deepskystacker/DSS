@@ -1,10 +1,18 @@
 set(PROJECT_NAME DeepSkyStacker)
 message("Configuring project: " ${PROJECT_NAME})
 
-set(COMPILE_WARNING_AS_ERROR YES)
-SET (CMAKE_INSTALL_BINDIR ".")
-
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
+
+#
+# Force the values of QT_DEPLOY... variables
+#
+set (QT_DEPLOY_BIN_DIR ${CMAKE_INSTALL_BINDIR})
+set (QT_DEPLOY_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
+set (QT_DEPLOY_LIBEXEC_DIR ${CMAKE_INSTALL_LIBEXECDIR})
+set (QT_DEPLOY_PLUGINS_DIR ${CMAKE_INSTALL_PLUGINSDIR})
+
+set(COMPILE_WARNING_AS_ERROR YES)
 
 set(CMAKE_AUTORCC ON)
 
@@ -382,7 +390,7 @@ if(MSVC)
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
-        -mavx -msse4.2
+        -mavx -msse4.2 -fopenmp
     )
 endif()
 
@@ -417,8 +425,8 @@ if(WIN32)
 set(DEBUG_DEPENDENCIES exiv2d zlibstaticd cfitsio)
 set(RELEASE_DEPENDENCIES exiv2 zlibstatic cfitsio)
 else()
-set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a)
-set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a)
+set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
+set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
 endif()
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
@@ -437,13 +445,6 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 get_target_property(OUT ${PROJECT_NAME} LINK_LIBRARIES)
 message(STATUS "Link libraries: " ${OUT})
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ".")
-set (QT_DEPLOY_LIBEXEC_DIR ".")
-set (QT_DEPLOY_LIB_DIR ".")
-set (QT_DEPLOY_PLUGINS_DIR ".")
 
 #
 # Set options for the deployment script.   The value of:

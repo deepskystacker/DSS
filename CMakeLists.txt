@@ -58,14 +58,12 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
 endif()
-message ("CMAKE_INSTALL_PREFIX set to: " ${CMAKE_INSTALL_PREFIX})
+message ("CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
 
 set(CMAKE_INSTALL_BINDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
-
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
@@ -124,6 +122,8 @@ add_subdirectory(libtiff)
 endif()
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
+#[=[
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
 add_subdirectory(DeepSkyStackerTest)
+]=]
