@@ -91,13 +91,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 	_WINDOWS
 	_SBCS
 	)
-elseif(UNIX)
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    ZCLASS_UNIX
-)
 endif()
-
-
 
 ################################################################################
 # Compile and link options

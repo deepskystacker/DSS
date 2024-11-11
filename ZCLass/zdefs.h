@@ -74,10 +74,10 @@
 #endif
 
 #if defined(_AIX) || defined(__sun) || defined(__sun__) ||\
-  defined(__linux__) || defined(__hpux)
-# if !defined(ZCLASS_UNIX)
-#   define ZCLASS_UNIX
-# endif
+  defined(__linux__) || defined(__hpux) || defined(__APPLE__)
+#if !defined(ZCLASS_UNIX)
+#define ZCLASS_UNIX
+#endif
 #endif
 
 #if (0)

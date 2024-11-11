@@ -74,7 +74,7 @@ extern "C"
 #else // Assume Unix
 # include <unistd.h>
 # include <pthread.h>
-# if defined(__sparc) || defined(__linux__) || defined(__hpux)
+# if defined(__sparc) || defined(__linux__) || defined(__hpux) || defined(__APPLE__)
 #   include <sys/stat.h>
 # endif
 # include <fcntl.h>

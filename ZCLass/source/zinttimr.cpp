@@ -121,7 +121,7 @@ ZIntervalTimer::ZIntervalTimer( unsigned long lTimeOutMS )
   sigaddset(&set,SIGALRM);
 
   // Unblock the signal for the current thread
-#if (_XOPEN_SOURCE >= 500)
+#if (_XOPEN_SOURCE >= 500) || defined(__APPLE__)
   pthread_sigmask(SIG_UNBLOCK, &set, &old_sigset_t);
 #else
   sigthreadmask(SIG_UNBLOCK, &set, &old_sigset_t);
@@ -163,7 +163,7 @@ ZIntervalTimer::~ZIntervalTimer( )
 {
   int old_alarm_count = fetch_and_add((atomic_p)&alarm_count, -1);
 
-#if (_XOPEN_SOURCE >= 500)
+#if (_XOPEN_SOURCE >= 500) || defined(__APPLE__)
   // Restore the previous signal mask for this thread
   pthread_sigmask(SIG_SETMASK, &old_sigset_t, 0);
 #else
