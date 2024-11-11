@@ -1,16 +1,7 @@
 set(PROJECT_NAME DeepSkyStacker)
 message("Configuring project: " ${PROJECT_NAME})
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
-
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ${CMAKE_INSTALL_BINDIR})
-set (QT_DEPLOY_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
-set (QT_DEPLOY_LIBEXEC_DIR ${CMAKE_INSTALL_LIBEXECDIR})
-set (QT_DEPLOY_PLUGINS_DIR ${CMAKE_INSTALL_PLUGINSDIR})
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
@@ -421,8 +412,8 @@ target_link_libraries(DeepSkyStacker PRIVATE
 endif()
 
 if(WIN32)
-set(DEBUG_DEPENDENCIES exiv2d zlibstaticd cfitsio)
-set(RELEASE_DEPENDENCIES exiv2 zlibstatic cfitsio)
+set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd cfitsio)
+set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic cfitsio)
 else()
 set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
 set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
@@ -442,21 +433,8 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
-get_target_property(OUT ${PROJECT_NAME} LINK_LIBRARIES)
-message(STATUS "Link libraries: " ${OUT})
 
-#
-# Set options for the deployment script.   The value of:
-# 
-# --libdir .
-# 
-# is set to work around a bug in qt_deploy_runtime_dependencies which uses
-#
-# --libdir bin
-# 
-# even though QT_DEPLOY_LIB_DIR is set to .
-#
-set (deploy_tool_options_arg ".")
+set (deploy_tool_options_arg "")
 if(APPLE)
     set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
 elseif(WIN32)
@@ -468,10 +446,8 @@ endif()
 if(APPLE)
     set(executable_path "$<TARGET_FILE_NAME:DeepSkyStacker>.app")
 else()
-    message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
-    message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
     message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStacker>)
-    set(executable_path "${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:DeepSkyStacker>")
+    set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:DeepSkyStacker>")
 endif()
 message ("executable_path: " ${executable_path})
 message ("deploy tools options arg: " ${deploy_tool_options_arg})

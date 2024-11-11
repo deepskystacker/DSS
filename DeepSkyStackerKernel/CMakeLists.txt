@@ -1,7 +1,6 @@
 set(PROJECT_NAME DeepSkyStackerKernel)
 message("Configuring project: " ${PROJECT_NAME})
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
 
 #
@@ -194,6 +193,12 @@ set(Source_Files
     "tracecontrol.cpp"
     "Workspace.cpp"
 )
+if(WIN32)
+    set (Source_Files
+        ${Source_Files}
+        "StackWalker.cpp"
+    )
+endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES

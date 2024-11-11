@@ -46,6 +46,20 @@
       }
     },
     {
+      "name": "Qt-Debug-Windows",
+      "inherits": "Qt-Default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "Qt-Release-Windows",
+      "inherits": "Qt-Default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
       "hidden": true,
       "name": "Qt-Default",
       "inherits": "6.8.0_msvc2022_64",
@@ -130,7 +144,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "/xd6OQ5qblEJkNRX/58MndLfXnY="
+      "checksum": "4VkpcMhqEUEHjSZO4SCMW4vpMN4="
     }
   }
 }

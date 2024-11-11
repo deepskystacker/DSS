@@ -1,8 +1,8 @@
 set(PROJECT_NAME ZClass)
+message("Configuring project: " ${PROJECT_NAME})
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core)
 qt_standard_project_setup()
 
 ################################################################################
@@ -24,11 +24,18 @@ source_group("Header Files" FILES ${Header_Files})
 set(Source_Files
     "source/ZExcBase.cpp"
     "source/ZExcept.cpp"
-    "source/zinttimr.cpp"
     "source/zmstrlck.cpp"
     "source/zreslock.cpp"
     "source/ZTrace.cpp"
 )
+if(NOT WIN32)
+set (Source_Files
+    ${Source_Files}
+    "source/zinttimr.cpp"
+)
+endif()
+message ("Source_Files: " ${Source_Files})
+
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
@@ -76,7 +83,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         "NDEBUG"
     ">"
     "_LIB"
-    ZCLASS_UNIX
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -85,6 +91,10 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 	_WINDOWS
 	_SBCS
 	)
+elseif(UNIX)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    ZCLASS_UNIX
+)
 endif()
 
 

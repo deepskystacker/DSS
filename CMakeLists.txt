@@ -20,10 +20,6 @@ set(CMAKE_PREFIX_PATH
 	"/opt/Qt/6.8.0/gcc_64"
 	CACHE STRING "" FORCE
 	)
-	message ("WIN32 is set to ${WIN32}, LINUX is set to ${LINUX}")
-	if(WIN32)
-	    message(FATAL_ERROR "System name is set to ${CMAKE_SYSTEM_NAME} but WIN32 is set to ${WIN32}")
-	endif()
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not yet supported!")
 endif()
@@ -64,6 +60,8 @@ set(CMAKE_INSTALL_BINDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
+
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
@@ -125,5 +123,6 @@ add_subdirectory(DeepSkyStacker)
 #[=[
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
-add_subdirectory(DeepSkyStackerTest)
 ]=]
+add_subdirectory(DeepSkyStackerTest)
+
