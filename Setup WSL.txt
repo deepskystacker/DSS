@@ -42,6 +42,10 @@ mkdir Downloads
 cd Downloads
 sudo apt-get install gh
 sudo apt-get install firefox
+#
+# It's been reported that an apt-get update needs to be run again before installing nautilus
+#
+sudo apt-get update
 sudo apt-get install nautilus
 #
 # Now run nautilus to see if you get errors like:
@@ -51,7 +55,7 @@ sudo apt-get install nautilus
 # MESA: error: ZINK: failed to choose pdev
 # glx: failed to create drisw screen
 #
-# If not you can skip to the after the comment * End of Wayland/X11 fix
+# If not you can skip to after the comment * End of Wayland/X11 fix
 #
 
 # If so, you will need to install a fix for Wayland/X11 problems 
