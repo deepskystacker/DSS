@@ -1947,17 +1947,20 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
 
-		const auto& firstLightframe = this->frameList.getFirstCheckedLightFrame();
-		const auto dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : std::filesystem::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
-		QString extension = settings.value("Folders/ListExtension").toString();
-		if (extension.isEmpty())
-			extension = FileListExtension;
-		auto fn = dirPath.has_filename() ? dirPath.filename() : std::filesystem::path{ "list" };
-		const auto defaultName = dirPath / fn.replace_extension(std::filesystem::path{ extension.toStdU16String() });
+		const auto GetFolderOfLightframes = [&settings, this]() -> std::filesystem::path
+		{
+			const std::filesystem::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
+			const std::filesystem::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : std::filesystem::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
 
-		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
+			QString extension = settings.value("Folders/ListExtension").toString();
+			if (extension.isEmpty())
+				extension = FileListExtension;
 
-		const auto save = [this, &MRUList, &settings](const std::filesystem::path& file, const auto selectedIndex)
+			std::filesystem::path fn = dirPath.has_filename() ? dirPath.filename() : std::filesystem::path{ "list" };
+			return (dirPath / fn.replace_extension(std::filesystem::path{ extension.toStdU16String() }));
+		};
+
+		const auto Save = [this, &MRUList, &settings](const std::filesystem::path& file, const auto selectedIndex)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1978,6 +1981,13 @@ namespace DSS
 				settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
 			settings.setValue("Folders/ListExtension", extension);
 		};
+		//
+		// The default file name shown in the file save dialog.
+		// If we already used a file-list before -> take that. Otherwise use the folder of the light frames.
+		//
+		const std::filesystem::path defaultName = this->fileList.empty() ? GetFolderOfLightframes() : fileList;
+
+		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 
 		ZTRACE_RUNTIME("About to show file save dlg");
 		QString selectedFilter;
@@ -1985,9 +1995,8 @@ namespace DSS
 		if (!file.isEmpty())
 		{
 			ZTRACE_RUNTIME("Saving to file-list %s", file.toUtf8().constData());
-			save(fs::path{ file.toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(selectedFilter));
+			Save(fs::path{ file.toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(selectedFilter));
 		}
-		return;
 	}
 
 	/* ------------------------------------------------------------------- */
