@@ -28,10 +28,6 @@
 
 #include "zdefs.h"
 #include "zmstrlck.h"
-#if TARGET_OS_MAC
-#include <chrono>
-#include <thread>
-#endif
 
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN	/* Exclude rarely-used stuff from Windows headers */
@@ -74,24 +70,6 @@ static void _CleanUp(void)
         if ( InitFlagValue == 2L )
             /* Should be okay to delete critical section */
             DeleteCriticalSection( &_CritSec );
-}
-
-#elif TARGET_OS_MAC
-/*
-** Variable to control initialisation
-*/
-static std::atomic<long> _InitFlag(0L);
-
-static MPCriticalRegionID _CritSec = { 0 };
-/*
-** Cleanup function called during atexit() processing
-*/
-static void _CleanUp(void)
-{
-	long InitFlagValue = _InitFlag.exchange(3L);
-	if (InitFlagValue == 2L)
-		/* Should be okay to delete critical section */
-		MPDeleteCriticalRegion(_CritSec);
 }
 
 #elif defined(ZCLASS_UNIX)
@@ -193,45 +171,6 @@ void ZMasterLock::getLock()
         if ( _InitFlag == 2L )
             EnterCriticalSection( &_CritSec );
 
-#elif TARGET_OS_MAC
-	/* Most common case - just enter the critical section */
-
-	if (_InitFlag == 2L) {
-		MPEnterCriticalRegion(_CritSec, kDurationForever);
-		return;
-	}
-
-	/*
-	** If the initialisation flag is zero, then the
-	** critical section needs to be initialised, and
-	** the cleanup code needs to be registered.
-	*/
-	if (_InitFlag == 0L) {
-
-		long InitFlagVal;
-
-		if ((InitFlagVal = _InitFlag.exchange(1L)) == 0L)
-		{
-			MPCreateCriticalRegion(&_CritSec);
-			atexit(_CleanUp);
-			_InitFlag = 2L;
-		}
-		else if (InitFlagVal == 2L)
-			_InitFlag = 2L;
-	}
-
-	/*
-	** If necessary, wait while another thread finishes initialising
-	*/
-	while (_InitFlag == 1L)
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
-	/*
-	** Initialisation is complete, so enter the critical section
-	*/
-	if (_InitFlag == 2L)
-		MPEnterCriticalRegion(_CritSec, kDurationForever);
-
 #elif defined(ZCLASS_UNIX)
         int rc = 0;
 
@@ -271,10 +210,6 @@ void ZMasterLock::releaseLock()
 #if defined(_WIN32)
         if ( _InitFlag == 2L )
             LeaveCriticalSection( &_CritSec );
-
-#elif TARGET_OS_MAC
-	if (_InitFlag == 2L)
-		MPExitCriticalRegion(&_CritSec);
 
 #elif defined(ZCLASS_UNIX)
         int rc = pthread_mutex_unlock( &_CritSec );
