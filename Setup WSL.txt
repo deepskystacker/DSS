@@ -194,7 +194,10 @@ sudo ninja install
 # Install openMP (we'll need to install this as a co-req of our install)
 #
 sudo apt-get install libomp-dev
-
+#
+# Install socat to allow Visual Studio to remote debug CMake
+#
+sudo apt-get install socat
 
 
 
