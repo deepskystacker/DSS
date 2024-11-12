@@ -17,7 +17,6 @@ set(Dialogs
 source_group("Dialogs" FILES ${Dialogs})
 
 set(Dialogs__Processing
-    "BezierAdjust.h"
     "processingcontrols.cpp"
     "ProcessingDlg.cpp"
     "ProcessingSettings.h"

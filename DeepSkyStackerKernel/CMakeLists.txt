@@ -43,6 +43,7 @@ set(Header_Files
     "BitmapInfo.h"
     "BitmapIterator.h"
     "BitmapPartFile.h"
+    "BezierAdjust.h"
     "cfa.h"
     "CFABitmapInfo.h"
     "ChannelAlign.h"
