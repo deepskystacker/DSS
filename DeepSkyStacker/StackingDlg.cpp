@@ -1947,20 +1947,20 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
 
-		const auto GetFolderOfLightframes = [&settings, this]() -> std::filesystem::path
+		const auto LightframeFolder = [&settings, this]() -> fs::path
 		{
-			const std::filesystem::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
-			const std::filesystem::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : std::filesystem::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
+			const fs::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
+			const fs::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : fs::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
 
 			QString extension = settings.value("Folders/ListExtension").toString();
 			if (extension.isEmpty())
 				extension = FileListExtension;
 
-			std::filesystem::path fn = dirPath.has_filename() ? dirPath.filename() : std::filesystem::path{ "list" };
-			return (dirPath / fn.replace_extension(std::filesystem::path{ extension.toStdU16String() }));
+			fs::path fn = dirPath.has_filename() ? dirPath.filename() : fs::path{ "list" };
+			return (dirPath / fn.replace_extension(fs::path{ extension.toStdU16String() }));
 		};
 
-		const auto Save = [this, &MRUList, &settings](const std::filesystem::path& file, const auto selectedIndex)
+		const auto Save = [this, &MRUList, &settings](const fs::path& file, const auto selectedIndex)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1985,7 +1985,7 @@ namespace DSS
 		// The default file name shown in the file save dialog.
 		// If we already used a file-list before -> take that. Otherwise use the folder of the light frames.
 		//
-		const std::filesystem::path defaultName = this->fileList.empty() ? GetFolderOfLightframes() : fileList;
+		const fs::path defaultName = this->fileList.empty() ? LightframeFolder() : fileList;
 
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 
