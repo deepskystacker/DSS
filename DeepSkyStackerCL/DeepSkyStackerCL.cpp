@@ -153,7 +153,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 bool DeepSkyStackerCommandLine::DecodeCommandLine()
 {
 	bool bResult = false;
-	LONG i;
+	std::int32_t i = 0;
 	const QStringList vCommandLine = arguments();
 
 	// At least 2 arguments are needed (registering and/or stacking + filename)
