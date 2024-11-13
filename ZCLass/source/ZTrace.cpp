@@ -69,13 +69,21 @@
 # include <os2.h>
 #endif
 
+#if (__cplusplus > 201703L)     // C++ 20 or better
+#include <chrono>
+#else
+extern "C"
+{
+#include <time.h>
+#include <sys/timeb.h>
+}
+#endif
+
 extern "C"
 {
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include <time.h>
-    #include <sys/timeb.h>
     #include <sys/types.h>
     
 #if defined(ZCLASS_UNIX)
@@ -506,16 +514,24 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       //
       if (isWriteTimeStampEnabled())
       {
-        struct timeb tstruct = {0,0,0,0};
-        struct tm *gmt;
-        char timebuff[21] = {0};
+          char timebuff[21] = { 0 };
 
-        ftime(&tstruct);
-        gmt = gmtime(&(tstruct.time));
-        strftime(&timebuff[0], sizeof(timebuff) - 1, "%Y/%m/%d %H:%M:%S", gmt);
-        sprintf(buffer, "%s.%03u", &timebuff[0], tstruct.millitm);
-        strWork.append(&buffer[0]).append(" ");
-        memset(buffer, 0, sizeof(buffer));
+#if (__cplusplus > 201703L)
+          auto now{ std::chrono::utc_clock::now() };
+          std::string s{ std::format("{:%F %T}",
+              std::chrono::floor<std::chrono::milliseconds>(now)) };
+          strncpy(buffer, s.c_str(), sizeof(buffer) - 1);
+#else
+          struct timeb tstruct = { 0,0,0,0 };
+          struct tm* gmt;
+
+          ftime(&tstruct);
+          gmt = gmtime(&(tstruct.time));
+          strftime(&timebuff[0], sizeof(timebuff) - 1, "%Y/%m/%d %H:%M:%S", gmt);
+          sprintf(buffer, "%s.%03u", &timebuff[0], tstruct.millitm);
+#endif
+          strWork.append(&buffer[0]).append(" ");
+          memset(buffer, 0, sizeof(buffer));
       }
 
       // Output the process id right justified with leading zeros to a width of 6
