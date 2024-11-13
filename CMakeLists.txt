@@ -63,6 +63,21 @@ set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
 find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 
+
+if(NOT WIN32)
+#
+# Non-Windows use find_package to find stuff we want
+#
+#find_package(cfitsio 4.5 REQUIRED)
+find_package(JPEG REQUIRED)
+find_package(exiv2 REQUIRED)
+find_package(expat REQUIRED)
+find_package(Tiff 4.7 REQUIRED)
+#find_package(INIReader REQUIRED)
+find_package(OpenMP REQUIRED)
+find_package(ZLIB REQUIRED)
+endif()
+
 set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
 	CACHE STRING "" FORCE
