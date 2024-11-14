@@ -79,6 +79,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC
    ../include
    "$ENV{Boost_1_80_0}"
 )
+else()
+target_link_libraries(DeepSkyStacker PRIVATE
+    #TIFF::tiff
+    #Exiv2::exiv2lib
+    #expat::expat
+    JPEG::JPEG
+    OpenMP::OpenMP_CXX
+    Threads::Threads
+    ZLIB::ZLIB
+)
+
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE

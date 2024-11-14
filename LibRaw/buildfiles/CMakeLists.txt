@@ -1,4 +1,6 @@
 set(PROJECT_NAME libraw)
+message("Configuring project: " ${PROJECT_NAME})
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 ################################################################################
 # Source groups
@@ -111,8 +113,6 @@ set(ALL_FILES
 ################################################################################
 add_library(libraw STATIC ${ALL_FILES})
 set_target_properties(libraw PROPERTIES FOLDER "Libraries")
-
-set(ROOT_NAMESPACE libraw)
 
 ################################################################################
 # Target name

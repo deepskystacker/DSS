@@ -1,5 +1,7 @@
 set(PROJECT_NAME DeepSkyStackerKernel)
 message("Configuring project: " ${PROJECT_NAME})
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
 
 qt_standard_project_setup()
 

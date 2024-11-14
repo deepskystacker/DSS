@@ -75,6 +75,7 @@ find_package(expat REQUIRED)
 find_package(Tiff 4.7 REQUIRED)
 #find_package(INIReader REQUIRED)
 find_package(OpenMP REQUIRED)
+find_package (Threads REQUIRED)
 find_package(ZLIB REQUIRED)
 endif()
 

@@ -1,5 +1,6 @@
 set(PROJECT_NAME ZClass)
 message("Configuring project: " ${PROJECT_NAME})
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
