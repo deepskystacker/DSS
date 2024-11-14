@@ -35,7 +35,6 @@ set (Source_Files
     "source/zinttimr.cpp"
 )
 endif()
-message ("Source_Files: " ${Source_Files})
 
 source_group("Source Files" FILES ${Source_Files})
 
