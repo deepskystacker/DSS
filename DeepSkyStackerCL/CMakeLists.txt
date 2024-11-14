@@ -154,7 +154,7 @@ if(MSVC)
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
-        -mavx -mavx2 -msse4.2 -fopenmp
+        -mavx -mavx2 -mfma -mfma4 -mssse3 -msse4.2 -fopenmp
     )
 endif()
 
