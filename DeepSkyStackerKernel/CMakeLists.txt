@@ -2,16 +2,7 @@ set(PROJECT_NAME DeepSkyStackerKernel)
 message("Configuring project: " ${PROJECT_NAME})
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
-
 qt_standard_project_setup()
-
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ${CMAKE_INSTALL_BINDIR})
-set (QT_DEPLOY_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
-set (QT_DEPLOY_LIBEXEC_DIR ${CMAKE_INSTALL_LIBEXECDIR})
-set (QT_DEPLOY_PLUGINS_DIR ${CMAKE_INSTALL_PLUGINSDIR})
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
@@ -210,6 +201,19 @@ set(ALL_FILES
 	${Source_Files}
 )
 
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+set_source_files_properties("avx.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_avg.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_bitmap_filler.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_cfa.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_entropy.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_filter.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_histogram.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_luminance.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_output.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+set_source_files_properties("avx_support.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
+endif()
+
 ################################################################################
 # Target
 ################################################################################
@@ -312,7 +316,7 @@ if(MSVC)
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
-        -mavx -mavx2 -mfma -mfma4 -mssse3 -msse4.2 -fopenmp
+        -fopenmp
     )
 endif()
 
