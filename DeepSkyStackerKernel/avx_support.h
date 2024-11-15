@@ -563,7 +563,7 @@ int SimdSelector(auto* pDataClass, auto&& Caller)
 
 #if defined(_WIN32)
 
-decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
+inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
 {
 	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256>)
 		return std::forward<decltype(simdVector)>(simdVector).m256_f32[elementIndex];
@@ -571,24 +571,24 @@ decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
 		return std::forward<decltype(simdVector)>(simdVector).m256d_f64[elementIndex];
 }
 
-__m256 avxLog(const __m256 a)
+inline __m256 avxLog(const __m256 a)
 {
 	return _mm256_log_ps(a);
 }
 
-__m256 avxPow(const __m256 a, const __m256 b)
+inline __m256 avxPow(const __m256 a, const __m256 b)
 {
 	return _mm256_pow_ps(a, b);
 }
 
 #elif defined (__GNUC__)
 
-decltype(auto) accessSimdElement(auto&& simdVector, const size_t ndx)
+inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t ndx)
 {
 	return std::forward<decltype(simdVector)>(simdVector)[ndx];
 }
 
-__m256 avxLog(__m256 a)
+inline __m256 avxLog(__m256 a)
 {
 	constexpr size_t N = sizeof(a) / sizeof(a[0]);
 	for (size_t i = 0; i < N; ++i)
@@ -596,7 +596,7 @@ __m256 avxLog(__m256 a)
 	return a;
 }
 
-__m256 avxPow(__m256 b, const __m256 e)
+inline __m256 avxPow(__m256 b, const __m256 e)
 {
 	constexpr size_t N = sizeof(b) / sizeof(b[0]);
 	for (size_t i = 0; i < N; ++i)
