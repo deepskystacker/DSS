@@ -94,7 +94,7 @@ namespace DSS
         connect(ui->aboutQt, &QPushButton::clicked, this, &About::aboutQt);
 
         ui->comboBox->addItem(tr("Default"), "");
-        QDir dir(":/i18n/", "DSS_*.qm");
+        QDir dir(":/i18n/", "DeepSkyStacker_*.qm");
         for (auto it : dir.entryList())
         {
             QString lang{ it.section('_', 1) };

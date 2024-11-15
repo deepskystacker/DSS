@@ -2590,36 +2590,36 @@ Vyrovnání zkreslení: %5</translation>
         <translation>Otevřít jiný seznam...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2014"/>
+        <location filename="../StackingDlg.cpp" line="2016"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>Ke stažení je dostupná verze programu DeepSkyStacker %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2030"/>
+        <location filename="../StackingDlg.cpp" line="2033"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Kontrola verze Internetový kód chyby %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2131"/>
+        <location filename="../StackingDlg.cpp" line="2134"/>
         <source>Total registering time: %1 %2</source>
         <translation>Celkový čas registrace: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
+        <location filename="../StackingDlg.cpp" line="2145"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Ne všechny vaše kontrolované světelné rámy mají vypočtenou kvalitu. Měli byste znovu zaregistrovat své světelné rámy.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
+        <location filename="../StackingDlg.cpp" line="2161"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Pro zarovnání musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2215"/>
+        <location filename="../StackingDlg.cpp" line="2218"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2629,19 +2629,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 Program DeepSkyStacker potřebuje při své práci v nich vytvářet soubory.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2236"/>
+        <location filename="../StackingDlg.cpp" line="2239"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Vybrané obrázky nejsou kompatibilní: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2240"/>
+        <location filename="../StackingDlg.cpp" line="2243"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Pro sloučení musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2290"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2651,18 +2651,18 @@ Do you want to save the changes?</source>
 Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2401"/>
+        <location filename="../StackingDlg.cpp" line="2404"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Celková doba skládání: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2432"/>
+        <location filename="../StackingDlg.cpp" line="2435"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Ukládání výsledného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2514"/>
+        <location filename="../StackingDlg.cpp" line="2517"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3033,14 +3033,14 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="135"/>
+        <location filename="../DeepSkyStacker.cpp" line="142"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Platnost této beta verze DeepSkyStacker vypršela
 Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="163"/>
+        <location filename="../DeepSkyStacker.cpp" line="170"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3048,17 +3048,17 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 (Tuto volbu můžete nastavit nebo vyřadit kdykoliv později v okně informace o programu)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="404"/>
+        <location filename="../DeepSkyStacker.cpp" line="411"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponzorujte DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="348"/>
+        <location filename="../DeepSkyStacker.cpp" line="355"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="625"/>
+        <location filename="../DeepSkyStacker.cpp" line="634"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

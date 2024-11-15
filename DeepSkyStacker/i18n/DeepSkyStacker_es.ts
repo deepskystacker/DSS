@@ -2507,7 +2507,7 @@ Botón derecho del ratón para mostrar el menú</translation>
         <translation>Imágenes: %1      -      Darks: %2      -      Flats: %3      -   Dark Flats: %4   -      Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2142"/>
+        <location filename="../StackingDlg.cpp" line="2145"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>No todos los marcos de luz que has marcado tienen una calidad calculada. Deberías volver a registrar tus marcos de luz.</translation>
     </message>
@@ -2588,31 +2588,31 @@ Offset/Bias: %5</translation>
         <translation>Abrir otra Lista de Archivos...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2014"/>
+        <location filename="../StackingDlg.cpp" line="2016"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>La versión %1s de DeepSkyStacker esta disponible para descargar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2030"/>
+        <location filename="../StackingDlg.cpp" line="2033"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Código de error de Internet de comprobación de versión %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2131"/>
+        <location filename="../StackingDlg.cpp" line="2134"/>
         <source>Total registering time: %1 %2</source>
         <translation>Tiempo total de registro: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
+        <location filename="../StackingDlg.cpp" line="2161"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Ud. debe seleccionar light frames para registrarlos.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2215"/>
+        <location filename="../StackingDlg.cpp" line="2218"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2622,19 +2622,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker necesita crear archivos en estas carpetas durante el procesamiento.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2236"/>
+        <location filename="../StackingDlg.cpp" line="2239"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Las imágenes seleccionadas no son compatibles: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2240"/>
+        <location filename="../StackingDlg.cpp" line="2243"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Ud. debe seleccionar light frames para apilarlos.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2290"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2644,18 +2644,18 @@ Do you want to save the changes?</source>
 Desea guardar los cambios?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2401"/>
+        <location filename="../StackingDlg.cpp" line="2404"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Total stacking time: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2432"/>
+        <location filename="../StackingDlg.cpp" line="2435"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Guardando imagen Final en %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2514"/>
+        <location filename="../StackingDlg.cpp" line="2517"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3025,14 +3025,14 @@ Haga clic derecho para cambiar el comportamiento.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="135"/>
+        <location filename="../DeepSkyStacker.cpp" line="142"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>La versión beta de DeepSkyStacker a expirado
 Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="163"/>
+        <location filename="../DeepSkyStacker.cpp" line="170"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3040,17 +3040,17 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
 (Ud. puede habilitar o deshabilitar esta opción más tarde en la ventana de Acerca de)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="404"/>
+        <location filename="../DeepSkyStacker.cpp" line="411"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocinador DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="348"/>
+        <location filename="../DeepSkyStacker.cpp" line="355"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 no existe o no es un archivo</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="625"/>
+        <location filename="../DeepSkyStacker.cpp" line="634"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>Ayuda DeepSkyStacker.chm</translation>
