@@ -283,26 +283,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSLive_ca.ts" />
-    <QtTranslation Include="i18n\DSSLive_cs.ts" />
-    <QtTranslation Include="i18n\DSSLive_de.ts" />
-    <QtTranslation Include="i18n\DSSLive_en.ts">
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ca.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_cs.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_de.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSLive_es.ts" />
-    <QtTranslation Include="i18n\DSSLive_fr.ts" />
-    <QtTranslation Include="i18n\DSSLive_it.ts" />
-    <QtTranslation Include="i18n\DSSLive_ja_JP.ts" />
-    <QtTranslation Include="i18n\DSSLive_nl.ts" />
-    <QtTranslation Include="i18n\DSSLive_pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSLive_ro.ts" />
-    <QtTranslation Include="i18n\DSSLive_ru.ts" />
-    <QtTranslation Include="i18n\DSSLive_tr.ts" />
-    <QtTranslation Include="i18n\DSSLive_zh_TW.ts" />
-    <QtTranslation Include="i18n\DSSLive_zh_CN.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_es.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_fr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_it.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ja_JP.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_nl.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_pt_BR.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ro.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ru.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_tr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_zh_TW.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_zh_CN.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
