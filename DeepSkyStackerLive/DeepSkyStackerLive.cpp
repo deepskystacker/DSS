@@ -206,7 +206,7 @@ bool LoadTranslations()
 	const QString language = settings.value("Language").toString();
 	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
 	LoadTranslationUnit(*qApp, theAppTranslator, "DSSLive_", ":/i18n/", language);
-	LoadTranslationUnit(*qApp, theKernelTranslator, "DSSKernel_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theKernelTranslator, "DeepSkyStackerKernel_", ":/i18n/", language);
 
 	return true;
 }

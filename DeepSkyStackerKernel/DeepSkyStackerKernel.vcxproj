@@ -328,24 +328,24 @@
     <QtRcc Include="i18n\translations_kernel.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSKernel_ca.ts" />
-    <QtTranslation Include="i18n\DSSKernel_cs.ts" />
-    <QtTranslation Include="i18n\DSSKernel_de.ts" />
-    <QtTranslation Include="i18n\DSSKernel_en.ts">
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_cs.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_de.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_en.ts">
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSKernel_es.ts" />
-    <QtTranslation Include="i18n\DSSKernel_fr.ts" />
-    <QtTranslation Include="i18n\DSSKernel_it.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ja_JP.ts" />
-    <QtTranslation Include="i18n\DSSKernel_nl.ts" />
-    <QtTranslation Include="i18n\DSSKernel_pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ro.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ru.ts" />
-    <QtTranslation Include="i18n\DSSKernel_tr.ts" />
-    <QtTranslation Include="i18n\DSSKernel_zh_CN.ts" />
-    <QtTranslation Include="i18n\DSSKernel_zh_TW.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_es.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_fr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_it.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ja_JP.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_nl.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_pt_BR.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ro.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ru.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_tr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_zh_CN.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_zh_TW.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
