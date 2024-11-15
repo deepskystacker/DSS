@@ -213,8 +213,7 @@ public: // for unit tests
 private:
 	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
-	template <bool MarkOverAndUnderExposure>
-	int avxToRgb();
+	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);
 };
@@ -236,8 +235,7 @@ public: // for unit tests
 private:
 	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
-	template <bool MarkOverAndUnderExposure>
-	int avxToRgb();
+	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);
 };

@@ -99,8 +99,8 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 				const auto [lo, hi] = AvxSupport::read16PackedInt(p);
 				const __m256 lh = _mm256_cvtepi32_ps(_mm256_i32gather_epi32(pHisto, lo, 4));
 				const __m256 hh = _mm256_cvtepi32_ps(_mm256_i32gather_epi32(pHisto, hi, 4));
-				const __m256 r0 = _mm256_fmadd_ps(lh, _mm256_sub_ps(_mm256_set1_ps(lnN), _mm256_log_ps(lh)), avxEntropy);
-				avxEntropy = _mm256_fmadd_ps(hh, _mm256_sub_ps(_mm256_set1_ps(lnN), _mm256_log_ps(hh)), r0);
+				const __m256 r0 = _mm256_fmadd_ps(lh, _mm256_sub_ps(_mm256_set1_ps(lnN), avxLog(lh)), avxEntropy);
+				avxEntropy = _mm256_fmadd_ps(hh, _mm256_sub_ps(_mm256_set1_ps(lnN), avxLog(hh)), r0);
 			}
 			// Rest of line adds to float entropy.
 			for (int x = xmin + nrVectors * vectorLen; x < xmax; ++x, ++p)
