@@ -12,52 +12,81 @@ set(CMAKE_AUTORCC ON)
 ################################################################################
 set(Dialogs
     "About.cpp"
+    "About.h"
     "ExplorerBar.cpp"
+    "ExplorerBar.h"
 )
 source_group("Dialogs" FILES ${Dialogs})
 
 set(Dialogs__Processing
     "processingcontrols.cpp"
+    "processingcontrols.h"
     "ProcessingDlg.cpp"
+    "ProcessingDlg.h"
     "ProcessingSettings.h"
     "ProcessingSettingsDlg.cpp"
+    "ProcessingSettingsDlg.h"
     "RGBTab.cpp"
     "SavePicture.cpp"
+    "SavePicture.h"
     "StarMaskDlg.cpp"
+    "StarMaskDlg.h"
 )
 source_group("Dialogs\\Processing" FILES ${Dialogs__Processing})
 
 set(Dialogs__Registering
     "AskRegistering.cpp"
+    "AskRegistering.h"
     "RegisterSettings.cpp"
+    "RegisterSettings.h"
 )
 source_group("Dialogs\\Registering" FILES ${Dialogs__Registering})
 
 set(Dialogs__Settings
     "AlignmentParameters.cpp"
+    "AlignmentParameters.h"
     "CometStacking.cpp"
+    "CometStacking.h"
     "IntermediateFiles.cpp"
+    "IntermediateFiles.h"
     "OutputTab.cpp"
+    "OutputTab.h"
     "PostCalibration.cpp"
+    "PostCalibration.h"
     "RawDDPSettings.cpp"
+    "RawDDPSettings.h"
     "ResultParameters.cpp"
+    "ResultParameters.h"
     "StackingParameters.cpp"
+    "StackingParameters.h"
     "StackSettings.cpp"
+    "StackSettings.h"
 )
 source_group("Dialogs\\Settings" FILES ${Dialogs__Settings})
 
 set(Dialogs__Stacking
     "BackgroundOptions.cpp"
+    "BackgroundOptions.h"
     "BatchStacking.cpp"
+    "BatchStacking.h"
     "CheckAbove.cpp"
+    "CheckAbove.h"
     "DropFilesDlg.cpp"
+    "DropFilesDlg.h"
     "ImageProperties.cpp"
+    "ImageProperties.h"
     "picturelist.cpp"
+    "picturelist.h"
     "RecommendedSettings.cpp"
+    "RecommendedSettings.h"
     "RenameGroup.cpp"
+    "RenameGroup.h"
     "SaveEditChanges.cpp"
+    "SaveEditChanges.h"
     "StackingDlg.cpp"
+    "StackingDlg.h"
     "StackRecap.cpp"
+    "StackRecap.h"
 )
 source_group("Dialogs\\Stacking" FILES ${Dialogs__Stacking})
 
@@ -69,7 +98,7 @@ set(Header_Files
     "DSS-versionhelpers.h"
     "DSS-winapifamily.h"
     "DSS-winpackagefamily.h"
-    "lowerdockwidget.cpp"
+    "lowerdockwidget.h"
     "mrulist.h"
     "stdafx.h"
 )
@@ -80,6 +109,7 @@ set(Source_Files
     "DeepSkyStacker.cpp"
     "Delaunay.cpp"
     "editstars.cpp"
+    "lowerdockwidget.cpp"
     "progressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
