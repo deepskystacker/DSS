@@ -125,8 +125,7 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
 )
 
-set(Source_Files
-    "AHDDemosaicing.cpp"
+set(AVX_Files
     "avx.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
@@ -137,6 +136,15 @@ set(Source_Files
     "avx_luminance.cpp"
     "avx_output.cpp"
     "avx_support.cpp"
+)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+set_source_files_properties(${AVX_Files}
+    PROPERTIES COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+endif()
+
+set(Source_Files
+    "AHDDemosaicing.cpp"
+    ${AVX_Files}
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -200,19 +208,6 @@ set(ALL_FILES
 	${i18n_Files} "i18n/translations_kernel.qrc"
 	${Source_Files}
 )
-
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-set_source_files_properties("avx.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_avg.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_bitmap_filler.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_cfa.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_entropy.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_filter.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_histogram.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_luminance.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_output.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-set_source_files_properties("avx_support.cpp" PROPERTIES COMPILE_FLAGS -mavx -mavx2 -mfma -mssse3 -msse4.2)
-endif()
 
 ################################################################################
 # Target
