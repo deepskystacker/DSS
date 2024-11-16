@@ -172,8 +172,8 @@ public:
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const std::uint32_t* const pColor) noexcept
 	{
 		return {
-			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_epi32(pColor), 16)), // Shift 16 bits right while shifting in zeros.
-			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16))
+			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16)), // Shift 16 bits right while shifting in zeros.
+			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16))
 		};
 	}
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const float* const pColor) noexcept
@@ -218,12 +218,12 @@ public:
 	// Read color values from T* and return 16 x packed short
 	inline static __m256i read16PackedShort(const std::uint16_t* const pColor)
 	{
-		return _mm256_loadu_epi16(pColor);
+		return _mm256_loadu_si256((const __m256i*)pColor);
 	}
 	inline static __m256i read16PackedShort(const std::uint32_t* const pColor)
 	{
-		const __m256i lo = _mm256_srli_epi32(_mm256_loadu_epi32(pColor), 16); // Shift 16 bits right while shifting in zeros.
-		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16);
+		const __m256i lo = _mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16); // Shift 16 bits right while shifting in zeros.
+		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16);
 		return cvt2xEpi32Epu16(lo, hi);
 	}
 	inline static __m256i read16PackedShort(const float* const pColor)
@@ -560,3 +560,48 @@ int SimdSelector(auto* pDataClass, auto&& Caller)
 	else
 		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, std::forward<decltype(Caller)>(Caller));
 }
+
+#if defined(_WIN32)
+
+inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
+{
+	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256>)
+		return std::forward<decltype(simdVector)>(simdVector).m256_f32[elementIndex];
+	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256d>)
+		return std::forward<decltype(simdVector)>(simdVector).m256d_f64[elementIndex];
+}
+
+inline __m256 avxLog(const __m256 a)
+{
+	return _mm256_log_ps(a);
+}
+
+inline __m256 avxPow(const __m256 a, const __m256 b)
+{
+	return _mm256_pow_ps(a, b);
+}
+
+#elif defined (__GNUC__)
+
+inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t ndx)
+{
+	return std::forward<decltype(simdVector)>(simdVector)[ndx];
+}
+
+inline __m256 avxLog(__m256 a)
+{
+	constexpr size_t N = sizeof(a) / sizeof(a[0]);
+	for (size_t i = 0; i < N; ++i)
+		a[i] = logf(a[i]);
+	return a;
+}
+
+inline __m256 avxPow(__m256 b, const __m256 e)
+{
+	constexpr size_t N = sizeof(b) / sizeof(b[0]);
+	for (size_t i = 0; i < N; ++i)
+		b[i] = powf(b[i], e[i]);
+	return b;
+}
+
+#endif
