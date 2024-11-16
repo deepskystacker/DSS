@@ -1,9 +1,9 @@
 #include "stdafx.h" 
+#include <immintrin.h>
 #include "avx_support.h" 
 #include "BitmapCharacteristics.h" 
 #include "Multitask.h" 
 #include "ztrace.h"
-#include <immintrin.h>
 #if defined (Q_OS_LINUX)
 #include <cpuid.h>
 #endif

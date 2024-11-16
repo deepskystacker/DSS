@@ -1,10 +1,10 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_histogram.h"
 #include "avx_support.h"
 #include "histogram.h"
 #include "BezierAdjust.h"
 #include "ColorHelpers.h"
-#include <immintrin.h>
 
 AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
 	avxReady{ AvxSupport::checkSimdAvailability() },
