@@ -61,7 +61,6 @@ namespace DSS
 		std::string fileName;
 		const QString dirName;
 		fs::path file;
-		inline static const QString traceTo{ "Z_TRACETO=FILE" };
 		bool erase;
 	};
 }
