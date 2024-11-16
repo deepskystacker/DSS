@@ -44,6 +44,7 @@ namespace DSS
 		stackedWidget{ new QStackedWidget(this) }
 	{
 		dockTitle->setToolTip(tr("Double click here to dock/undock"));
+		setObjectName("lowerDockWidget");
 
 		//
 		// Set an informative title bar on the dockable image list with a nice gradient
