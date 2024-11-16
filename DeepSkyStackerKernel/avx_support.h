@@ -555,7 +555,7 @@ int SimdSelector(auto* pDataClass, auto&& Caller)
 		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, std::forward<decltype(Caller)>(Caller));
 }
 
-#if defined(_WIN32)
+#if defined(_MSC_VER)
 
 inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
 {

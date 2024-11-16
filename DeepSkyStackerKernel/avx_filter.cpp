@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_filter.h"
 #include "avx_support.h"
 #include "MedianFilterEngine.h"

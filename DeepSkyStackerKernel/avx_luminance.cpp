@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_luminance.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
