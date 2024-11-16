@@ -162,7 +162,7 @@ private:
 
 public:
 	AvxBezierAndSaturation(const size_t bufferLen) :
-		avxSupported{ AvxSupport::checkSimdAvailability() },
+		avxSupported{ AvxSimdCheck::checkSimdAvailability() },
 		redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
 		bezierX{}, bezierY{}
 	{}

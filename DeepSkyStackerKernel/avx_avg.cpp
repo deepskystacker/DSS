@@ -21,7 +21,7 @@ AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tIn
 
 int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		return 1;
 
 	int rval = 1;

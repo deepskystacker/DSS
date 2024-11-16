@@ -54,7 +54,7 @@
 #include "Workspace.h"
 #include "progressdlg.h"
 #include "RegisterSettings.h"
-#include "avx_support.h"
+#include "avx_simd_check.h"
 #include "FrameInfoSupport.h"
 #include "AskRegistering.h"
 #include "FITSUtil.h"
@@ -2135,7 +2135,7 @@ namespace DSS
 					std::chrono::duration<double> elapsed{ now - start };
 
 					QString avxActive;
-					if (AvxSupport::checkSimdAvailability())
+					if (AvxSimdCheck::checkSimdAvailability())
 						avxActive += "(SIMD)";
 					QString message{ tr("Total registering time: %1 %2")
 						.arg(exposureToString(elapsed.count()))
@@ -2405,7 +2405,7 @@ namespace DSS
 			std::chrono::duration<double> elapsed{ now - start };
 
 			QString avxActive;
-			if (AvxSupport::checkSimdAvailability())
+			if (AvxSimdCheck::checkSimdAvailability())
 				avxActive += "(SIMD)";
 			QString message{ tr("Total stacking time: %1 %2")
 				.arg(exposureToString(elapsed.count()))

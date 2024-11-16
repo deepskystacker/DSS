@@ -55,6 +55,7 @@
 
 namespace bip = boost::interprocess;
 
+#include "avx_simd_check.h"
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
 #include "Ztrace.h"
@@ -861,8 +862,6 @@ static char const* global_program_name;
 //#endif
 //}
 
-void reportCpuType();
-
 bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
 {
 	QString translatorFileName(prefix);
@@ -983,7 +982,7 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Set UI Language");
 	LoadTranslations();
 
-	reportCpuType();
+	AvxSimdCheck::reportCpuType();
 
 	//
 	// Set things up to capture terminal errors

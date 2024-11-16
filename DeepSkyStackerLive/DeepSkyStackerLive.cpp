@@ -58,7 +58,7 @@
 #include <vld.h>
 #endif
 
-#include "avx_support.h"
+#include "avx_simd_check.h"
 #include "DeepSkyStackerLive.h"
 #include "DSSVersion.h"
 #include "ExceptionHandling.h"
@@ -85,8 +85,6 @@ using namespace std;
 DSS::TraceControl traceControl{ source_location::current().file_name() };
 
 bool	g_bShowRefStars = false;
-
-void reportCpuType();
 
 namespace
 {
@@ -1608,7 +1606,7 @@ int main(int argc, char* argv[])
 
 	LoadTranslations();
 
-	reportCpuType();
+	AvxSimdCheck::reportCpuType();
 
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStackerLive mainWindow;

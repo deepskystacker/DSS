@@ -10,7 +10,7 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
 	pEntropyCoverage{ entropycov },
-	avxReady{ AvxSupport::checkSimdAvailability() }
+	avxReady{ AvxSimdCheck::checkSimdAvailability() }
 {
 	if (pEntropyCoverage != nullptr && avxReady)
 	{

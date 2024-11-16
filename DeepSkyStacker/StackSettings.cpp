@@ -4,7 +4,7 @@
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
 #include "Multitask.h"
-#include "avx_support.h"
+#include "avx_simd_check.h"
 #include "ResultParameters.h"
 #include "CometStacking.h"
 #include "AlignmentParameters.h"
