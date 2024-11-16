@@ -12,7 +12,7 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 	outputBitmap{ outputbm },
 	avxReady{ true }
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		avxReady = false;
 	// Homogenization not implemented with AVX
 	if (inputBitmap.GetHomogenization())

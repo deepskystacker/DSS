@@ -13,7 +13,7 @@ using namespace DSS;
 
 std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, ProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb)
 {
-	if (AvxSupport::checkSimdAvailability())
+	if (AvxSimdCheck::checkSimdAvailability())
 		return std::make_unique<AvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);
 	else
 		return std::make_unique<NonAvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);

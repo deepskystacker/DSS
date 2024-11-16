@@ -209,6 +209,7 @@
     <ClCompile Include=".\TaskInfo.cpp" />
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="avx_simd_check.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
     <ClCompile Include="ImageListModel.cpp" />
@@ -263,7 +264,7 @@
     <ClInclude Include=".\GrayBitmap.h" />
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
-    <ClInclude Include="BezierAdjust.h" />
+    <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />

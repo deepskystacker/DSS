@@ -7,7 +7,7 @@
 #include "ColorHelpers.h"
 
 AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
-	avxReady{ AvxSupport::checkSimdAvailability() },
+	avxReady{ AvxSimdCheck::checkSimdAvailability() },
 	redHisto(HistogramSize(), 0),
 	greenHisto(HistogramSize(), 0),
 	blueHisto(HistogramSize(), 0),

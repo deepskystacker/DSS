@@ -1,5 +1,6 @@
 #pragma once
 
+#include "avx_simd_check.h"
 #include "cfa.h"
 #include "ColorBitmap.h"
 #include "GrayBitmap.h"
@@ -55,10 +56,6 @@ public:
 
 	template <class T>
 	bool bitmapHasCorrectType() const;
-
-	static bool checkAvx2CpuSupport();
-	static bool checkSimdAvailability();
-	static void reportCpuType();
 
 	template <class ElementType, class VectorElementType>
 	inline static size_t numberOfAvxVectors(const size_t width)

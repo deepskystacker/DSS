@@ -25,7 +25,7 @@ AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& 
 	tempBitmap{ tempbm },
 	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
 	entropyData{ entrdat },
-	avx2Enabled{ AvxSupport::checkSimdAvailability() }
+	avx2Enabled{ AvxSimdCheck::checkSimdAvailability() }
 {
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
