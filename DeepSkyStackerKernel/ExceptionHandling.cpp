@@ -183,17 +183,21 @@ void posix_print_stack_trace()
 	   our handler) and also skip the last frame as it's (always?) junk. */
 	   // for (i = 3; i < (trace_size - 1); ++i)
 	   // we'll use this for now so you can see what's going on
-	for (i = 0; i < trace_size; ++i)
+	if (messages)
 	{
-		if (addr2line(global_program_name, stack_traces[i]) != 0)
+		for (i = 0; i < trace_size; ++i)
 		{
-			snprintf(buffer, sizeof(buffer) / sizeof(char),
-				"  error determining line # for: %s\n", messages[i]);
-			::writeOutput(buffer);
-		}
+			if (addr2line(global_program_name, stack_traces[i]) != 0)
+			{
+				snprintf(buffer, sizeof(buffer) / sizeof(char),
+					"  error determining line # for: %s\n", messages[i]);
+				::writeOutput(buffer);
+			}
 
+		}
+		free(messages);
 	}
-	if (messages) { free(messages); }
+	exit(1);
 }
 
 void signalHandler(int signal)
