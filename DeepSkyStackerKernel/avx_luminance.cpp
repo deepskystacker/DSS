@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_luminance.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
@@ -8,7 +9,7 @@ AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
 	outputBitmap{ outbm },
 	avxReady{ true }
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		avxReady = false;
 
 	// Check output bitmap (must be monochrome-double).

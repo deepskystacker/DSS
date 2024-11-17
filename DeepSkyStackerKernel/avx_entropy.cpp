@@ -1,5 +1,6 @@
-#include "stdafx.h" 
-#include "avx_entropy.h" 
+#include "stdafx.h"
+#include <immintrin.h>
+#include "avx_entropy.h"
 #include "avx_support.h"
 #include "avx_cfa.h"
 #include "avx_histogram.h"
@@ -9,7 +10,7 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
 	pEntropyCoverage{ entropycov },
-	avxReady{ AvxSupport::checkSimdAvailability() }
+	avxReady{ AvxSimdCheck::checkSimdAvailability() }
 {
 	if (pEntropyCoverage != nullptr && avxReady)
 	{

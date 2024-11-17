@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_avg.h"
 #include "dssrect.h"
 #include "avx_support.h"
@@ -20,7 +21,7 @@ AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tIn
 
 int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		return 1;
 
 	int rval = 1;

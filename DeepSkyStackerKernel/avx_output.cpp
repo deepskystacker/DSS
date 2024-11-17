@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_output.h"
 #include "avx_support.h"
 #include "avx_median.h"
@@ -11,7 +12,7 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 	outputBitmap{ outputbm },
 	avxReady{ true }
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		avxReady = false;
 	// Homogenization not implemented with AVX
 	if (inputBitmap.GetHomogenization())
