@@ -133,10 +133,20 @@ void setDssExceptionHandling()
 #else
 #include <csignal>
 #include <execinfo.h>
+#include <link.h>
+
+// converts a function's address in memory to its VMA address in the executable file. VMA is what addr2line expects
+std::uint64_t convertToVMA(void* addr)
+{
+	Dl_info info;
+	struct link_map* link_map;
+	dladdr1((void*)addr, &info, (void**)&link_map, RTLD_DL_LINKMAP);
+	return reinterpret_cast<std::uint64_t>(addr) - link_map->l_addr;
+}
 
 /* Resolve symbol name and source location given the path to the executable
    and an address */
-int addr2line(char const* const program_name, void const* const addr)
+int addr2line(char const* const program_name, std::uint64_t addr)
 {
 	char addr2line_cmd[512]{ 0 };
 
@@ -145,7 +155,7 @@ int addr2line(char const* const program_name, void const* const addr)
   /* apple does things differently... */
 	sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
 #else
-	sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
+	sprintf(addr2line_cmd, "addr2line -f -C -p -e %.256s %p", program_name, (void*)addr);
 #endif
 
 	/* This will print a nicely formatted string specifying the
@@ -168,7 +178,7 @@ int addr2line(char const* const program_name, void const* const addr)
 }
 
 constexpr size_t MAX_STACK_FRAMES{ 64 };
-static void* stack_traces[MAX_STACK_FRAMES];
+static void* stack_trace[MAX_STACK_FRAMES];
 void posix_print_stack_trace()
 {
 	int i, trace_size = 0;
@@ -176,22 +186,43 @@ void posix_print_stack_trace()
 	char buffer[1024]{};	// buffer for error message
 
 
-	trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
-	messages = backtrace_symbols(stack_traces, trace_size);
+	trace_size = backtrace(stack_trace, MAX_STACK_FRAMES);
+	messages = backtrace_symbols(stack_trace, trace_size);
 
-	/* skip the first couple stack frames (as they are this function and
-	   our handler) and also skip the last frame as it's (always?) junk. */
-	   // for (i = 3; i < (trace_size - 1); ++i)
-	   // we'll use this for now so you can see what's going on
+	//
+	// Refer to https://stackoverflow.com/questions/56046062/linux-addr2line-command-returns-0
+	// for a discussion of why we need to convert the address in the stack trace to call
+	// addr2line 
+	//
 	if (messages)
 	{
+		/* skip the first couple stack frames (as they are this function and
+		   our handler) and also skip the last frame as it's (always?) junk. */
+		// for (i = 3; i < (trace_size - 1); ++i)
+		// use the entire stack trace for now so we can see what's going on
+		//
 		for (i = 0; i < trace_size; ++i)
 		{
-			if (addr2line(global_program_name, stack_traces[i]) != 0)
+			Dl_info info;
+			if (dladdr(stack_trace[i], &info))
 			{
-				snprintf(buffer, sizeof(buffer) / sizeof(char),
-					"  error determining line # for: %s\n", messages[i]);
-				::writeOutput(buffer);
+#ifdef __APPLE__
+				std::uint64_t VMA_addr = stack_trace[i];
+#else
+				std::uint64_t VMA_addr = convertToVMA(stack_trace[i]);
+#endif
+				//
+				// Decrement the PC so we point to actual source line in error, not the one
+				// following it.
+				//
+				VMA_addr = VMA_addr - 1;
+				//if (addr2line(global_program_name, VMA_addr) != 0)
+				if (addr2line(info.dli_fname, VMA_addr) != 0)
+				{
+					snprintf(buffer, sizeof(buffer) / sizeof(char),
+						"  error determining line # for: %s\n", messages[i]);
+					::writeOutput(buffer);
+				}
 			}
 
 		}
