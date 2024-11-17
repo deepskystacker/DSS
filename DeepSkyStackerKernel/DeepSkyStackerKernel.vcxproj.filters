@@ -454,10 +454,10 @@
     <ClInclude Include="histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BezierAdjust.h">
+    <ClInclude Include="avx_simd_check.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="avx_simd_check.h">
+    <ClInclude Include="avx_simd_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

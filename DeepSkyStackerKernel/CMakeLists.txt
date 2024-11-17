@@ -24,6 +24,7 @@ set(Header_Files
     "avx_median.h"
     "avx_output.h"
     "avx_simd_check.h"
+    "avx_simd_factory.h"
     "avx_support.h"
     "BackgroundCalibration.h"
     "Bayer.h"

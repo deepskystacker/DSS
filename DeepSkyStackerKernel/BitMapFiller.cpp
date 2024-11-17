@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "BitMapFiller.h"
 #include "avx_bitmap_filler.h"
-#include "avx_support.h"
+#include "avx_simd_check.h"
 #include "DSSProgress.h"
-#include "zexcept.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
 using namespace DSS;
 

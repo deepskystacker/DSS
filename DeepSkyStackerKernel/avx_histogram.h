@@ -1,6 +1,6 @@
 #pragma once
 #include "avx_cfa.h"
-#include "avx_support.h"
+#include "avx_simd_factory.h"
 #include "histogram.h"
 
 class AvxHistogram
@@ -46,76 +46,10 @@ private:
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
 public:
 	// Conflict detection: Number of equal elements + blocking mask. 
-	inline static std::tuple<__m256i, std::uint32_t> detectConflictsEpi32(const __m256i a) noexcept
-	{
-		__m256i counter = _mm256_set1_epi32(1);
-		std::uint32_t bitMask = 0;
-
-		__m256i shifted = AvxSupport::shiftRightEpi32<1>(a);
-		__m256i c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0x80); // Set highest mask to "no conflict" (=0) 
-		counter = _mm256_sub_epi32(counter, c); // Add one where there is a conflict with the element left from it (by one position). 
-		bitMask |= (_mm256_movemask_epi8(c) << 4); // If there is a conflict with the element left from it -> set the mask of that element to 1. 
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xc0);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 8);
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xe0);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 12);
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xf0);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 16);
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xf8);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 20);
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xfc);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 24);
-
-		shifted = AvxSupport::shiftRightEpi32<1>(shifted);
-		c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xfe);
-		counter = _mm256_sub_epi32(counter, c);
-		bitMask |= (_mm256_movemask_epi8(c) << 28);
-
-		return { counter, bitMask };
-	}
+	static std::tuple<__m256i, std::uint32_t> detectConflictsEpi32(const __m256i a) noexcept;
 public:
 	template <class T>
-	inline static void calcHistoOfVectorEpi32(const __m256i colorVec, T& histogram)
-	{
-		const auto [nrEqualColors, bitMask] = detectConflictsEpi32(colorVec);
-
-		const __m256i sourceHisto = _mm256_i32gather_epi32((const int*)&*histogram.begin(), colorVec, 4);
-		const __m256i updatedHisto = _mm256_add_epi32(sourceHisto, nrEqualColors);
-
-		if ((bitMask & 1) == 0) // No conflict 
-			histogram[_mm256_cvtsi256_si32(colorVec)] = _mm256_cvtsi256_si32(updatedHisto);
-		if ((bitMask & (1 << 4)) == 0)
-			histogram[_mm256_extract_epi32(colorVec, 1)] = _mm256_extract_epi32(updatedHisto, 1);
-		if ((bitMask & (1 << 8)) == 0)
-			histogram[_mm256_extract_epi32(colorVec, 2)] = _mm256_extract_epi32(updatedHisto, 2);
-		if ((bitMask & (1 << 12)) == 0)
-			histogram[_mm256_extract_epi32(colorVec, 3)] = _mm256_extract_epi32(updatedHisto, 3);
-		const __m128i colorHiLane = _mm256_extracti128_si256(colorVec, 1);
-		const __m128i histoHiLane = _mm256_extracti128_si256(updatedHisto, 1);
-		if ((bitMask & (1 << 16)) == 0)
-			histogram[_mm_cvtsi128_si32(colorHiLane)] = _mm_cvtsi128_si32(histoHiLane);
-		if ((bitMask & (1 << 20)) == 0)
-			histogram[_mm_extract_epi32(colorHiLane, 1)] = _mm_extract_epi32(histoHiLane, 1);
-		if ((bitMask & (1 << 24)) == 0)
-			histogram[_mm_extract_epi32(colorHiLane, 2)] = _mm_extract_epi32(histoHiLane, 2);
-		if ((bitMask & (1 << 28)) == 0)
-			histogram[_mm_extract_epi32(colorHiLane, 3)] = _mm_extract_epi32(histoHiLane, 3);
-	};
+	static void calcHistoOfVectorEpi32(const __m256i colorVec, T& histogram);
 
 	template <class H, class T>
 	inline static void addToHisto(H& histo, T grayValue)
@@ -161,11 +95,7 @@ private:
 	bool avxSupported;
 
 public:
-	AvxBezierAndSaturation(const size_t bufferLen) :
-		avxSupported{ AvxSimdCheck::checkSimdAvailability() },
-		redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
-		bezierX{}, bezierY{}
-	{}
+	explicit AvxBezierAndSaturation(const size_t bufferLen);
 	AvxBezierAndSaturation(const AvxBezierAndSaturation&) = default;
 	AvxBezierAndSaturation(AvxBezierAndSaturation&&) = delete;
 	AvxBezierAndSaturation& operator=(const AvxBezierAndSaturation&) = delete;
@@ -185,7 +115,7 @@ private:
 public:
 	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome);
 	std::tuple<float*, float*, float*> getBufferPtr();
-	int avxAdjustRGB(const int nBitmaps, const class DSS::RGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
 	int avxToHsl(const auto& bezierPoints)
 	{
 		const int rv = this->toHsl();
@@ -211,7 +141,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
 	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
@@ -233,7 +163,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const class RGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
 	int avxToHsl();
 	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
