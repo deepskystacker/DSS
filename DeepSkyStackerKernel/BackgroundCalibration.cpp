@@ -7,6 +7,7 @@
 #include "avx_histogram.h"
 #include "Multitask.h"
 #include "Ztrace.h"
+#include "MemoryBitmap.h"
 
 CBackgroundCalibration::CBackgroundCalibration() :
 	m_bInitOk{ false },

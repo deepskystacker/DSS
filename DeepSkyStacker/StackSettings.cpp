@@ -122,7 +122,7 @@ namespace DSS
 			ui->useAllProcessors->setDisabled(true);
 
 		// Check if we're allowed to use SIMD vectorized code.
-		const bool cpuSupportsAvx2 = AvxSupport::checkAvx2CpuSupport();
+		const bool cpuSupportsAvx2 = AvxSimdCheck::checkAvx2CpuSupport();
 		ui->useSimd->setChecked(cpuSupportsAvx2 && CMultitask::GetUseSimd());
 		ui->useSimd->setDisabled(!cpuSupportsAvx2);
 

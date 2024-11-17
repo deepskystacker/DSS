@@ -1,6 +1,7 @@
 #pragma once
 
 #include "avx_simd_check.h"
+#include "avx_simd_factory.h"
 #include "cfa.h"
 #include "ColorBitmap.h"
 #include "GrayBitmap.h"
@@ -529,28 +530,6 @@ public:
 			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(ps), NDX * 4)));
 	}
 };
-
-
-template <class SimdClass>
-class SimdFactory
-{
-public:
-	static SimdClass makeSimdObject(auto* pDataClass)
-	{
-		return SimdClass{ *pDataClass };
-	}
-};
-
-template <class PrimarySimdClass, class... OtherSimdClasses>
-int SimdSelector(auto* pDataClass, auto&& Caller)
-{
-	const int rv = Caller(PrimarySimdClass::makeSimdObject(pDataClass));
-
-	if constexpr (sizeof...(OtherSimdClasses) == 0)
-		return rv;
-	else
-		return rv == 0 ? 0 : SimdSelector<OtherSimdClasses...>(pDataClass, std::forward<decltype(Caller)>(Caller));
-}
 
 #if defined(_MSC_VER)
 
