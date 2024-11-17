@@ -209,9 +209,11 @@ set(ALL_FILES
 
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
 set_source_files_properties(${AVX_Files}
-    PROPERTIES COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+    PROPERTIES
+        COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
 set_source_files_properties(avx_simd_check.cpp
-    PROPERTIES COMPILE_OPTIONS "-mxsave")
+    PROPERTIES
+        COMPILE_OPTIONS "-mxsave")
 endif()
 
 ################################################################################
