@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include <xmmintrin.h>
+#include <pmmintrin.h>
+#include <immintrin.h>
 #include "avx_simd_check.h"
 #include "Multitask.h"
 #if defined (Q_OS_LINUX)

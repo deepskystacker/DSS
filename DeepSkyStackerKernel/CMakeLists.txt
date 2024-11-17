@@ -23,6 +23,7 @@ set(Header_Files
     "avx_luminance.h"
     "avx_median.h"
     "avx_output.h"
+    "avx_simd_check.h"
     "avx_support.h"
     "BackgroundCalibration.h"
     "Bayer.h"
@@ -137,13 +138,10 @@ set(AVX_Files
     "avx_output.cpp"
     "avx_support.cpp"
 )
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-set_source_files_properties(${AVX_Files}
-    PROPERTIES COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
-endif()
 
 set(Source_Files
     "AHDDemosaicing.cpp"
+    "avx_simd_check.cpp"
     ${AVX_Files}
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
@@ -208,6 +206,13 @@ set(ALL_FILES
 	${i18n_Files} "i18n/translations_kernel.qrc"
 	${Source_Files}
 )
+
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+set_source_files_properties(${AVX_Files}
+    PROPERTIES COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+set_source_files_properties(avx_simd_check.cpp
+    PROPERTIES COMPILE_OPTIONS "-mxsave")
+endif()
 
 ################################################################################
 # Target
