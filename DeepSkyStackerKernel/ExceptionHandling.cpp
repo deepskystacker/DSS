@@ -151,7 +151,7 @@ int addr2line(char const* const program_name, std::uint64_t addr)
 	char addr2line_cmd[512]{ 0 };
 
 	/* have addr2line map the address to the relevant line in the code */
-#ifdef __APPLE__
+#if defined(Q_OS_APPLE)
   /* apple does things differently... */
 	sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
 #else
@@ -206,7 +206,7 @@ void posix_print_stack_trace()
 			Dl_info info;
 			if (dladdr(stack_trace[i], &info))
 			{
-#ifdef __APPLE__
+#if defined(Q_OS_APPLE)
 				std::uint64_t VMA_addr = stack_trace[i];
 #else
 				std::uint64_t VMA_addr = convertToVMA(stack_trace[i]);
