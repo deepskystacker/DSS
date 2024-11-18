@@ -12,6 +12,7 @@
 
 #else
 
-#include "simde/"
+#define SIMDE_ENABLE_NATIVE_ALIASES
+#include "simde/x86/avx512.h"
 
 #endif
