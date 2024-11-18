@@ -99,7 +99,7 @@ set(CMAKE_CXX_FLAGS
 	CACHE STRING "" FORCE
 	)
 else()
-set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse" CACHE STRING "" FORCE)
 endif()
 
 ################################################################################
