@@ -237,6 +237,7 @@ void signalHandler(int signal)
 	{
 		backPocket.reset(nullptr);		// Release back pocket storage
 	}
+	traceControl.setDeleteOnExit(false);
 
 	char name[8]{};
 	switch (signal)
