@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <immintrin.h>
+#include "avx_includes.h"
 #include "avx_output.h"
 #include "avx_support.h"
 #include "avx_median.h"

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <immintrin.h>
+#include "avx_includes.h"
 #include "avx_entropy.h"
 #include "avx_support.h"
 #include "avx_cfa.h"

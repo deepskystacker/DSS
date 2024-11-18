@@ -13,6 +13,7 @@ set(CMAKE_AUTORCC ON)
 ################################################################################
 set(Header_Files
     "AHDDemosaicing.h"
+    "avx_includes.h"
     "avx.h"
     "avx_avg.h"
     "avx_bitmap_filler.h"

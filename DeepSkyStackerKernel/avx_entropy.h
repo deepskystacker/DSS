@@ -1,5 +1,5 @@
 #pragma once
-#include <immintrin.h>
+#include "avx_includes.h"
 
 /*
 * Class for
