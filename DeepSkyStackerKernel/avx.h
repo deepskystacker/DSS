@@ -1,7 +1,7 @@
 #pragma once 
 #include "avx_cfa.h" 
 #include "avx_simd_factory.h"
-#include <immintrin.h>
+#include "avx_includes.h"
 
 class AvxEntropy;
 class CPixelTransform;
