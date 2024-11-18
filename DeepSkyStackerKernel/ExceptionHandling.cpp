@@ -198,10 +198,11 @@ void posix_print_stack_trace()
 	{
 		/* skip the first couple stack frames (as they are this function and
 		   our handler) and also skip the last frame as it's (always?) junk. */
-		// for (i = 3; i < (trace_size - 1); ++i)
-		// use the entire stack trace for now so we can see what's going on
+		// 
+		// To see the entire entire stack trace, change to 
+		//    for (i = 0; i < trace_size; ++i)
 		//
-		for (i = 0; i < trace_size; ++i)
+		for (i = 3; i < (trace_size - 1); ++i)
 		{
 			Dl_info info;
 			if (dladdr(stack_trace[i], &info))
@@ -228,7 +229,6 @@ void posix_print_stack_trace()
 		}
 		free(messages);
 	}
-	exit(1);
 }
 
 void signalHandler(int signal)
@@ -263,7 +263,7 @@ void signalHandler(int signal)
 	ZTRACE_RUNTIME("In signalHandler(%s)", name);
 
 	posix_print_stack_trace();
-	//DSSBase::instance()->close();
+	exit(1);
 }
 
 void setDssExceptionHandling()
