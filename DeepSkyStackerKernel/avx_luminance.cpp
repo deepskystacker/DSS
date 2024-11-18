@@ -4,6 +4,28 @@
 #include "avx_cfa.h"
 #include "avx_support.h"
 
+
+namespace
+{
+	template <class T>
+	std::tuple<__m256d, __m256d, __m256d, __m256d> colorLuminance(const T* const pRed, const T* const pGreen, const T* const pBlue)
+	{
+		const __m256i red = AvxSupport::read16PackedShort(pRed);
+		const __m256i green = AvxSupport::read16PackedShort(pGreen);
+		const __m256i blue = AvxSupport::read16PackedShort(pBlue);
+		const __m256i minColor = _mm256_min_epu16(_mm256_min_epu16(red, green), blue);
+		const __m256i maxColor = _mm256_max_epu16(_mm256_max_epu16(red, green), blue);
+		const __m256i minMaxAvg = _mm256_avg_epu16(minColor, maxColor);
+		return AvxSupport::wordToPackedDouble(minMaxAvg);
+	}
+
+	std::tuple<__m256d, __m256d, __m256d, __m256d> greyLuminance(const auto* const pGray)
+	{
+		const __m256i gray = AvxSupport::read16PackedShort(pGray);
+		return AvxSupport::wordToPackedDouble(gray);
+	}
+}
+
 AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
 	inputBitmap{ inputbm },
 	outputBitmap{ outbm },
@@ -124,23 +146,4 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 	}
 
 	return 1;
-}
-
-template <class T>
-std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(const T* const pRed, const T* const pGreen, const T* const pBlue)
-{
-	const __m256i red = AvxSupport::read16PackedShort(pRed);
-	const __m256i green = AvxSupport::read16PackedShort(pGreen);
-	const __m256i blue = AvxSupport::read16PackedShort(pBlue);
-	const __m256i minColor = _mm256_min_epu16(_mm256_min_epu16(red, green), blue);
-	const __m256i maxColor = _mm256_max_epu16(_mm256_max_epu16(red, green), blue);
-	const __m256i minMaxAvg = _mm256_avg_epu16(minColor, maxColor);
-	return AvxSupport::wordToPackedDouble(minMaxAvg);
-}
-
-template <class T>
-std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::greyLuminance(const T* const pGray)
-{
-	const __m256i gray = AvxSupport::read16PackedShort(pGray);
-	return AvxSupport::wordToPackedDouble(gray);
 }
