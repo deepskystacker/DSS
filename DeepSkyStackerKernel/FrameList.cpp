@@ -396,8 +396,8 @@ namespace DSS
 			// Read scan line
 			if (fgets(charBuffer, sizeof(charBuffer), hFile))
 			{
-				strValue = QString::fromUtf8(charBuffer);
-				if (!strValue.compare("DSS file list\n", Qt::CaseInsensitive))
+				strValue = QString::fromUtf8(charBuffer).trimmed();	// Remove trailing whitespace
+				if (!strValue.compare("DSS file list", Qt::CaseInsensitive))
 					bContinue = true;
 			}
 
@@ -406,8 +406,8 @@ namespace DSS
 				bContinue = false;
 				if (fgets(charBuffer, sizeof(charBuffer), hFile))
 				{
-					strValue = QString::fromUtf8(charBuffer);
-					if (!strValue.compare("CHECKED\tTYPE\tFILE\n", Qt::CaseInsensitive))
+					strValue = QString::fromUtf8(charBuffer).trimmed();	// Remove trailing whitespace
+					if (!strValue.compare("CHECKED\tTYPE\tFILE", Qt::CaseInsensitive))
 						bContinue = true;
 				}
 			}
