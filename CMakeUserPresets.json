@@ -46,6 +46,32 @@
       }
     },
     {
+      "name": "Qt-Debug-MacOS",
+      "inherits": "Qt-Default",
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/Users/david/Qt/6.8.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_SYSTEM_NAME": "Darwin",
+        "CMAKE_SYSTEM_VERSION": "11.1"
+      }
+    },
+    {
+      "name": "Qt-Release-MacOS",
+      "inherits": "Qt-Default",
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/Users/david/6.8.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_SYSTEM_NAME": "Darwin",
+        "CMAKE_SYSTEM_VERSION": "11.1"
+      }
+    },
+    {
       "name": "Qt-Debug-Windows",
       "inherits": "Qt-Default",
       "cacheVariables": {
@@ -144,7 +170,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "4VkpcMhqEUEHjSZO4SCMW4vpMN4="
+      "checksum": "0KxJ/0zSlHCXTAKx6N/MmG6b3s0="
     }
   }
 }
