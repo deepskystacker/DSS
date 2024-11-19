@@ -71,7 +71,9 @@ public:
 	inline static T zeroUpper(const T returnValue)
 	{
 		static_assert(std::is_integral<T>::value);
+#if defined (_MSC_VER) // Simde doesn't know that, so we only call it on Windows builds where we use the intrinsics.
 		_mm256_zeroupper();
+#endif
 		return returnValue;
 	}
 #if defined(__GNUC__)
