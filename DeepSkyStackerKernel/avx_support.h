@@ -561,9 +561,13 @@ inline __m256 avxPow(const __m256 a, const __m256 b)
 
 #elif defined (__GNUC__)
 
-inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t ndx)
+inline auto& accessSimdElement(auto& simdVector, const size_t ndx)
 {
-	return std::forward<decltype(simdVector)>(simdVector)[ndx];
+	return simdVector[ndx];
+}
+inline auto accessSimdElement(auto const& simdVector, const size_t ndx)
+{
+	return simdVector[ndx];
 }
 
 inline __m256 avxLog(__m256 a)
