@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BitmapBase.h"
-#include <immintrin.h>
+#include "avx_includes.h"
 
 class AvxCfaProcessing
 {
