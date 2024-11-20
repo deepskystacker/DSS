@@ -15,7 +15,7 @@
 #include <deque>
 #include <set>
 #include <numeric>
-#include <immintrin.h>
+#include "../DeepSkyStackerKernel/avx_includes.h"
 #include <limits>
 #include <iostream>
 #include <filesystem>

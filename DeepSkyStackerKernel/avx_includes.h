@@ -2,11 +2,7 @@
 
 // Here we organise, which vector library to use, e.g. Simde for OSX builds, etc.
 
-#if defined (_MSC_VER)
-
-#include <immintrin.h>
-
-#elif defined (__GNUC__) && (!defined __APPLE__)
+#if __has_include(<immintrin.h>)
 
 #include <immintrin.h>
 
