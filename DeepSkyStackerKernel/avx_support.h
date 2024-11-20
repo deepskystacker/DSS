@@ -539,14 +539,23 @@ public:
 #endif
 };
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) // It seems that only Microsoft does not provide operator[] for the SIMD data types, but uses arrays m256_f32[8] or m256_f64[4].
 
-inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
+namespace {
+	template <typename T, typename TEST>
+	concept IsSame = std::is_same_v<std::remove_cvref_t<T>, TEST>;
+}
+
+inline constexpr auto accessSimdElementConst(auto const& simdVector, const size_t elementIndex)
 {
-	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256>)
-		return std::forward<decltype(simdVector)>(simdVector).m256_f32[elementIndex];
-	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256d>)
-		return std::forward<decltype(simdVector)>(simdVector).m256d_f64[elementIndex];
+	using T = decltype(simdVector);
+
+	if constexpr (IsSame<T, __m256>)
+		return static_cast<float>(simdVector.m256_f32[elementIndex]);
+	else if constexpr (IsSame<T, __m256d>)
+		return static_cast<double>(simdVector.m256d_f64[elementIndex]);
+	else
+		static_assert(false, "accessSimdElementConst: SIMD type not implemented");
 }
 
 inline __m256 avxLog(const __m256 a)
@@ -561,13 +570,9 @@ inline __m256 avxPow(const __m256 a, const __m256 b)
 
 #elif defined (__GNUC__)
 
-inline auto& accessSimdElement(auto& simdVector, const size_t ndx)
+inline constexpr auto accessSimdElementConst(auto const& simdVector, const size_t elementIndex)
 {
-	return simdVector[ndx];
-}
-inline auto accessSimdElement(auto const& simdVector, const size_t ndx)
-{
-	return simdVector[ndx];
+	return simdVector[elementIndex];
 }
 
 inline __m256 avxLog(__m256 a)
