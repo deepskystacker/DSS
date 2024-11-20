@@ -21,7 +21,6 @@ set(Header_Files
     "avx_entropy.h"
     "avx_filter.h"
     "avx_histogram.h"
-    "avx_includes.h"
     "avx_luminance.h"
     "avx_median.h"
     "avx_output.h"

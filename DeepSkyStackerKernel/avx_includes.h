@@ -6,7 +6,7 @@
 
 #include <immintrin.h>
 
-#elif defined (__GNUC__)
+#elif defined (__GNUC__) && (!defined __APPLE__)
 
 #include <immintrin.h>
 
