@@ -515,8 +515,10 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       if (isWriteTimeStampEnabled())
       {
 #if (__cplusplus > 201703L)
-          const auto now{ std::chrono::utc_clock::now() };
-          std::format_to_n(buffer, std::size(buffer) - 1, "{:%F %T}", std::chrono::floor<std::chrono::milliseconds>(now));
+          auto now{ std::chrono::utc_clock::now() };
+          std::string s{ std::format("{:%F %T}",
+              std::chrono::floor<std::chrono::milliseconds>(now)) };
+          strncpy(buffer, s.c_str(), sizeof(buffer) - 1);
 #else
           char timebuff[21] = { 0 };
           struct timeb tstruct = { 0,0,0,0 };
