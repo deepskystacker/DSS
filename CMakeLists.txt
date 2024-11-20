@@ -20,6 +20,11 @@ set(CMAKE_PREFIX_PATH
 	"/opt/Qt/6.8.0/gcc_64"
 	CACHE STRING "" FORCE
 	)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(CMAKE_PREFIX_PATH
+	"/opt/Qt/6.8.0/macos"
+	CACHE STRING "" FORCE
+	)
 else()
     message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not yet supported!")
 endif()
@@ -34,7 +39,7 @@ endif()
 message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
 if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"))
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not supported!")
+    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not yet supported!")
 endif()
 
 #

@@ -49,26 +49,26 @@
       "name": "Qt-Debug-MacOS",
       "inherits": "Qt-Default",
       "binaryDir": "${sourceDir}/out/build",
+      "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/Users/david/Qt/6.8.0/macos"
+        "QTDIR": "/opt/Qt/6.8.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_SYSTEM_NAME": "Darwin",
-        "CMAKE_SYSTEM_VERSION": "11.1"
+        "CMAKE_SYSTEM_NAME": "Darwin"
       }
     },
     {
       "name": "Qt-Release-MacOS",
       "inherits": "Qt-Default",
       "binaryDir": "${sourceDir}/out/build",
+      "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/Users/david/6.8.0/macos"
+        "QTDIR": "/opt/Qt/6.8.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_SYSTEM_NAME": "Darwin",
-        "CMAKE_SYSTEM_VERSION": "11.1"
+        "CMAKE_SYSTEM_NAME": "Darwin"
       }
     },
     {
@@ -170,7 +170,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "0KxJ/0zSlHCXTAKx6N/MmG6b3s0="
+      "checksum": "onbTfIlLjOn/dOLrnkEZw7VrjTc="
     }
   }
 }

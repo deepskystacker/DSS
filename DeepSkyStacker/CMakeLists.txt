@@ -476,35 +476,37 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-set (deploy_tool_options_arg "")
-if(APPLE)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
-elseif(WIN32)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-endif()
+if(NOT LINUX)
+    set (deploy_tool_options_arg "")
+    if(APPLE)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
+    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+    endif()
 
-# Generate a deployment script to be executed at install time
-# App bundles on macOS have an .app suffix
-if(APPLE)
-    set(executable_path "$<TARGET_FILE_NAME:DeepSkyStacker>.app")
-else()
-    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStacker>)
-    set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:DeepSkyStacker>")
-endif()
-message ("executable_path: " ${executable_path})
-message ("deploy tools options arg: " ${deploy_tool_options_arg})
- qt_generate_deploy_script(
-     TARGET DeepSkyStacker
-     OUTPUT_SCRIPT deploy_script
-     CONTENT "
- qt_deploy_runtime_dependencies(
-     EXECUTABLE \"${executable_path}\"
-     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
- )"
- )
+    # Generate a deployment script to be executed at install time
+    # App bundles on macOS have an .app suffix
+    if(APPLE)
+        set(executable_path "$<TARGET_FILE_NAME:DeepSkyStacker>.app")
+    else()
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStacker>)
+        set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:DeepSkyStacker>")
+    endif()
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStacker
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
 
-INSTALL (TARGETS DeepSkyStacker)
-INSTALL (SCRIPT ${deploy_script})
+    INSTALL (TARGETS DeepSkyStacker)
+    INSTALL (SCRIPT ${deploy_script})
+endif()
 
 #[=[
 if(WIN32)
