@@ -2,14 +2,22 @@
 #include "avx_includes.h"
 #include "avx_simd_check.h"
 #include "Multitask.h"
+
 #if defined (Q_OS_LINUX)
 #include <cpuid.h>
+#endif
+
+#if defined (__APPLE__)
+#include <sys/sysctl.h>
 #endif
 
 
 bool AvxSimdCheck::checkAvx2CpuSupport()
 {
-#if defined(Q_OS_WIN) 
+#if defined (__APPLE__) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
+	return true;
+#else
+#if defined(Q_OS_WIN) // MSVC verions
 	SYSTEM_INFO info;
 	GetNativeSystemInfo(&info);
 	if (info.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_AMD64) // AVX instructions can only be supported on x64 CPUs. 
@@ -37,7 +45,9 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
 	return (RequiredCpuFlags && AVXenabledOS);
-#else 
+
+#else // GCC/Linux version
+
 	if (__get_cpuid_max(0, nullptr) < 7)
 		return false;
 	unsigned int eax = 0;
@@ -68,7 +78,8 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
 	return (RequiredCpuFlags && AVXenabledOS);
-#endif 
+#endif
+#endif
 };
 
 bool AvxSimdCheck::checkSimdAvailability()
@@ -76,6 +87,36 @@ bool AvxSimdCheck::checkSimdAvailability()
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
 	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
 }
+
+#if defined (__APPLE__)
+
+void AvxSimdCheck::reportCpuType()
+{
+	char buffer[128] = { '\0' };
+	size_t bufferSize = sizeof(buffer);
+	std::stringstream outputStrm;
+
+	// Get CPU brand string
+	outputStrm << "CPU Type: ";
+	if (sysctlbyname("machdep.cpu.brand_string", &buffer, &bufferSize, NULL, 0) == 0)
+		outputStrm << buffer << std::endl;
+	else
+		outputStrm << "Failed to get processor details." << std::endl;
+
+	// Get number of CPU cores
+	int coreCount = 0;
+	size_t coreSize = sizeof(coreCount);
+	if (sysctlbyname("hw.physicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
+		outputStrm << "Physical Cores: " << coreCount << std::endl;
+
+	if (sysctlbyname("hw.logicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
+		outputStrm << "Logical Cores: " << coreCount << std::endl;
+
+	std::cerr << outputStrm.str();
+	ZTRACE_RUNTIME(outputStrm.str());
+}
+
+#else
 
 void AvxSimdCheck::reportCpuType()
 {
@@ -164,3 +205,5 @@ void AvxSimdCheck::reportCpuType()
 	std::cerr << "CPU Type: " << brand << std::endl;
 	ZTRACE_RUNTIME("CPU type: %s", brand);
 }
+
+#endif
