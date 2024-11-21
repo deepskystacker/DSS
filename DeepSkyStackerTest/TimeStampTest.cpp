@@ -24,4 +24,14 @@ TEST_CASE("Chrono", "[Chrono]")
 		REQUIRE(buffer[22] != '\0');
 		REQUIRE(buffer[23] == '\0');
 	}
+
+	SECTION("utc_clock and system_clock")
+	{
+		std::chrono::time_point sys = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::system_clock::now());
+		std::chrono::time_point utc = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::utc_clock::now());
+		long long sys_since_utc_epoch = sys.time_since_epoch().count();
+		long long utc_since_utc_epoch = utc.time_since_epoch().count();
+
+		REQUIRE(utc_since_utc_epoch - sys_since_utc_epoch < 60000); // Difference between UTC (includes leap seconds) and SYS less than 60s.
+	}
 }
