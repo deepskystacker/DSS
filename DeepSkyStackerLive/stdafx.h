@@ -15,7 +15,6 @@
 
 // Standard Libraries
 #include <omp.h>
-#include <concurrent_unordered_set.h>
 #include <shared_mutex>
 #include <iostream>
 #include <vector>

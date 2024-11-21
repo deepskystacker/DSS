@@ -15,7 +15,6 @@
 #include <exiv2/easyaccess.hpp>
 
 // Standard Libraries
-#include <concurrent_unordered_set.h>
 #include <shared_mutex>
 #include <omp.h>
 #include <tchar.h>
