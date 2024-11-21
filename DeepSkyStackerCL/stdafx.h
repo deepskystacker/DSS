@@ -17,7 +17,6 @@
 // Standard Libraries
 #include <shared_mutex>
 #include <omp.h>
-#include <tchar.h>
 #include <vector>
 #include <tuple>
 #include <deque>
