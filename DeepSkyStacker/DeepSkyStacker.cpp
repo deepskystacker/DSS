@@ -71,6 +71,7 @@ namespace bip = boost::interprocess;
 #include "tracecontrol.h"
 #include "Workspace.h"
 #include "QEventLogger.h"
+#include "QMessageLogger.h"
 
 
 bool	g_bShowRefStars = false;
@@ -80,45 +81,6 @@ bool	g_bShowRefStars = false;
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
-namespace
-{
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-#if defined(Q_OS_WIN)
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-#else
-		char* name{ static_cast<char*>(alloca(1 + strlen(file))) };
-#endif
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-}
 
 bool	hasExpired()
 {

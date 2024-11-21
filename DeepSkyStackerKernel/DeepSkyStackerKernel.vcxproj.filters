@@ -463,6 +463,9 @@
     <ClInclude Include="avx_includes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="QMessageLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="imageloader.h">
