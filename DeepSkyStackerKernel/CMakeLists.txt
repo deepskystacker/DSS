@@ -13,7 +13,6 @@ set(CMAKE_AUTORCC ON)
 ################################################################################
 set(Header_Files
     "AHDDemosaicing.h"
-    "avx_includes.h"
     "avx.h"
     "avx_avg.h"
     "avx_bitmap_filler.h"
@@ -21,6 +20,7 @@ set(Header_Files
     "avx_entropy.h"
     "avx_filter.h"
     "avx_histogram.h"
+    "avx_includes.h"
     "avx_luminance.h"
     "avx_median.h"
     "avx_output.h"
@@ -82,6 +82,7 @@ set(Header_Files
     "MultiBitmap.h"
     "Multitask.h"
     "PixelTransform.h"
+    "QMessageLogger.h"
     "RationalInterpolation.h"
     "RAWUtils.h"
     "RegisterEngine.h"
