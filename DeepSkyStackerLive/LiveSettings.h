@@ -184,22 +184,22 @@ namespace DSS
 			m_dwScore = fScore * 10.0;
 		};
 
-		DWORD	GetStars()
+		std::uint32_t	GetStars()
 		{
 			return (double)m_dwStars;
 		};
 
-		void	SetStars(DWORD dwStars)
+		void	SetStars(std::uint32_t dwStars)
 		{
 			m_dwStars = dwStars;
 		};
 
-		DWORD	GetMinImages()
+		std::uint32_t	GetMinImages()
 		{
 			return (double)m_dwMinImages;
 		};
 
-		void	SetMinImages(DWORD dwMinImages)
+		void	SetMinImages(std::uint32_t dwMinImages)
 		{
 			m_dwMinImages = dwMinImages;
 		};
@@ -224,12 +224,12 @@ namespace DSS
 			m_dwFWHM = fFWHM * 10.0;
 		};
 
-		DWORD	GetSkyBackground()
+		std::uint32_t	GetSkyBackground()
 		{
 			return m_dwSkyBackground;
 		};
 
-		void	SetSkyBackground(DWORD dwSkyBackground)
+		void	SetSkyBackground(std::uint32_t dwSkyBackground)
 		{
 			m_dwSkyBackground = dwSkyBackground;
 		};
