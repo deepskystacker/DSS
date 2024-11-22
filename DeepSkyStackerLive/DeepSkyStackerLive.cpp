@@ -37,7 +37,11 @@
 //
 
 #include "stdafx.h"
+
+#if defined(Q_OS_WIN)
 #include <htmlhelp.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -165,7 +169,7 @@ bool LoadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(translations_kernel);
+	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
@@ -716,9 +720,14 @@ void DeepSkyStackerLive::stopStacking()
 void DeepSkyStackerLive::help()
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(Q_OS_WIN)
+
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#else
+	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
+#endif
 }
 
 /* ------------------------------------------------------------------- */
@@ -902,7 +911,7 @@ bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 #if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_u8string().c_str(), "wt")
+			std::fopen(file.generic_string().c_str(), "wt")
 #endif
 			)
 		{
