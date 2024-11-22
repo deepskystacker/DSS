@@ -899,27 +899,20 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 {
 	bool result{ false };
-	fs::path dir{ monitoredFolder.toStdU16String() };
+	QDir dir{ monitoredFolder};
 
 	//
 	// Check that a file can be written
 	//
-	if (is_directory(dir))
+	if (dir.exists())
 	{
-		auto  file = dir /= "DSSLive.test.txt";
-		if (std::FILE* hFile =
-#if defined(Q_OS_WIN)
-			_wfopen(file.generic_wstring().c_str(), L"wt")
-#else
-			std::fopen(file.generic_string().c_str(), "wt")
-#endif
-			)
+		QFile file(dir.filePath("DSSLive.test.txt"));
+		if (file.open(QIODevice::WriteOnly | QIODevice::Text))
 		{
-			auto bytes = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
+			auto bytes = file.write("DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
 			if (bytes > 0)
 				result = true;
-			fclose(hFile);
-			fs::remove(file);
+			file.remove();
 		}
 	}
 
