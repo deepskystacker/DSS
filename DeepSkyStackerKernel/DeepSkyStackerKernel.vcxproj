@@ -329,7 +329,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="i18n\translations_kernel.qrc" />
+    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc" />
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts" />
