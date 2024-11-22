@@ -71,6 +71,7 @@
 
 #if (__cplusplus > 201703L)     // C++ 20 or better
 #include <chrono>
+#include <format>
 #else
 extern "C"
 {
@@ -515,11 +516,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       if (isWriteTimeStampEnabled())
       {
 #if (__cplusplus > 201703L)
-#if defined (__APPLE__)
           const auto now{ std::chrono::system_clock::now() };
-#else
-          const auto now{ std::chrono::utc_clock::now() };
-#endif
           const std::string s{ std::format("{:%F %T}", std::chrono::floor<std::chrono::milliseconds>(now)) };
           std::strncpy(buffer, s.c_str(), sizeof(buffer) - 1);
 #else
