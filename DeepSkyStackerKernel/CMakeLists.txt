@@ -126,7 +126,7 @@ set(i18n_Files
 	"i18n/DeepSkyStackerKernel_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/DeepSkyStackerKernel_translations.qrc"
 )
 
 set(AVX_Files
@@ -206,7 +206,7 @@ source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${Header_Files}
-	${i18n_Files} "i18n/translations_kernel.qrc"
+	${i18n_Files} "i18n/DeepSkyStackerKernel_translations.qrc"
 	${Source_Files}
 )
 

@@ -432,11 +432,11 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Widgets
     Qt6::Network
 	DeepSkyStackerKernel
-    libraw
     ZClass
 )
 if(WIN32)
 target_link_libraries(DeepSkyStacker PRIVATE
+    libraw
     libtiff
 )
 else()
@@ -444,10 +444,8 @@ target_link_libraries(DeepSkyStacker PRIVATE
     #TIFF::tiff
     #Exiv2::exiv2lib
     #expat::expat
-    JPEG::JPEG
     OpenMP::OpenMP_CXX
     Threads::Threads
-    ZLIB::ZLIB
 )
 endif()
 
@@ -455,10 +453,10 @@ if(WIN32)
 set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd cfitsio)
 set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic cfitsio)
 else()
-set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
-set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
-#set(DEBUG_DEPENDENCIES tiff.a cfitsio.a brotlidec inih INIReader)
-#set(RELEASE_DEPENDENCIES tiff.a cfitsio.a brotlidec inih INIReader)
+set(DEBUG_DEPENDENCIES raw_r.a tiff.a exiv2.a expat.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
+set(RELEASE_DEPENDENCIES raw-r.a tiff.a exiv2.a expat.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
+#set(DEBUG_DEPENDENCIES raw_r.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
+#set(RELEASE_DEPENDENCIES raw-r.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
 endif()
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES

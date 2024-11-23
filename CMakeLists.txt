@@ -104,7 +104,7 @@ set(CMAKE_CXX_FLAGS
 	CACHE STRING "" FORCE
 	)
 else()
-set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread" CACHE STRING "" FORCE)
 endif()
 
 ################################################################################
@@ -135,8 +135,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
-add_subdirectory(LibRaw/buildfiles)
 if(WIN32)
+add_subdirectory(LibRaw/buildfiles)
 add_subdirectory(libtiff)
 endif()
 add_subdirectory(ZClass)

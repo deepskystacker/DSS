@@ -219,13 +219,18 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Network
 	Qt6::Charts
 	DeepSkyStackerKernel
-    libraw
-    libtiff
     ZClass
 )
 
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+if(WIN32)
+set(DEBUG_DEPENDENCIES libraw libtiff exiv2d libexpatd zlibstaticd cfitsio)
+set(RELEASE_DEPENDENCIES libraw libtiff exiv2 libexpat zlibstatic cfitsio)
+else()
+#set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
+# set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
+set(DEBUG_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
+set(RELEASE_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
+endif()
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
@@ -244,53 +249,36 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ".")
-set (QT_DEPLOY_LIBEXEC_DIR ".")
-set (QT_DEPLOY_LIB_DIR ".")
-set (QT_DEPLOY_PLUGINS_DIR ".")
+if(NOT LINUX)
+    set (deploy_tool_options_arg "--libdir .")
+    if(APPLE)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
+    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+    endif()
 
-#
-# Set options for the deployment script.   The value of:
-# 
-# --libdir .
-# 
-# is set to work around a bug in qt_deploy_runtime_dependencies which uses
-#
-# --libdir bin
-# 
-# even though QT_DEPLOY_LIB_DIR is set to .
-#
-set (deploy_tool_options_arg "--libdir .")
-if(APPLE)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
-elseif(WIN32)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+    # Generate a deployment script to be executed at install time
+    # App bundles on macOS have an .app suffix
+    if(APPLE)
+        set(executable_path "$<TARGET_FILE_NAME:DeepSkyStackerLive>.app")
+    else()
+        message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
+        message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
+        set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>")
+    endif()
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStackerLive
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
+
+    INSTALL (TARGETS DeepSkyStackerLive)
+    INSTALL (SCRIPT ${deploy_script})
 endif()
-
-# Generate a deployment script to be executed at install time
-# App bundles on macOS have an .app suffix
-if(APPLE)
-    set(executable_path "$<TARGET_FILE_NAME:DeepSkyStackerLive>.app")
-else()
-    message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
-    message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
-    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
-    set(executable_path "${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>")
-endif()
-message ("executable_path: " ${executable_path})
-message ("deploy tools options arg: " ${deploy_tool_options_arg})
- qt_generate_deploy_script(
-     TARGET DeepSkyStackerLive
-     OUTPUT_SCRIPT deploy_script
-     CONTENT "
- qt_deploy_runtime_dependencies(
-     EXECUTABLE \"${executable_path}\"
-     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
- )"
- )
-
-INSTALL (TARGETS DeepSkyStackerLive)
-INSTALL (SCRIPT ${deploy_script})
