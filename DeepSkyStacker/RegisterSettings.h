@@ -80,27 +80,28 @@ namespace DSS
 
 	private slots:
 
-		void on_recommendedSettings_clicked();
-		void on_stackingSettings_clicked();
-
 		void accept() override;
 		void reject() override;
 
-		void on_forceRegister_stateChanged(int);
-		void on_hotPixels_stateChanged(int);
-		void on_stackAfter_clicked();
-		void on_percentStack_editingFinished();
+		void forceRegister_stateChanged(int);
+		void hotPixels_stateChanged(int);
+		void stackAfter_clicked();
+		void percentStack_editingFinished();
 
-		void on_luminanceThreshold_valueChanged(int);
-		void on_computeDetectedStars_clicked();
-		void on_medianFilter_stateChanged(int);
-        void on_autoThreshold_changed(const int);
+		void recommendedSettings_clicked();
+		void stackingSettings_clicked();
 
 
+		void luminanceThreshold_valueChanged(int);
+		void autoThreshold_changed(const int);
+		void computeDetectedStars_clicked();
+		void medianFilter_stateChanged(int);
 
 	private:
 		Ui::RegisterSettings* ui;
 	    std::unique_ptr<Workspace> workspace;
+
+		void connectSignalsToSlots();
 
 		bool					initialised;
 		bool					forceRegister;
