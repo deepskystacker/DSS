@@ -1,0 +1,266 @@
+open-vm-tools#
+# If you don't already have an installation of Ubuntu 22.04, I suggest you
+# iInstall Lubuntu 22.04.5 using lubuntu-22.04.5-desktop-amd64.iso which 
+# can be downloaded from:
+# 
+# https://cdimage.ubuntu.com/lubuntu/releases/jammy/release/
+#
+# You may also wish to do that so that the DeepSkyStacker build environment
+# doesn't change your existing Ubuntu setup.
+#
+# I installed it in a VMware Workstation Pro virtual machine.
+#
+# **********************************************************************
+#       DO NOT INSTALL VMWare's VM Tools by right clicking on the VM name
+#                and selecting "Install VMware Tools"
+# **********************************************************************
+#
+# Open a gui terminal and install openssh
+#
+sudo apt-get install openssh-server
+#
+# Check if the firewall is running
+#
+sudo ufw status
+#
+# if it isn't start it
+# 
+sudo ufw enable
+#
+# Allow ssh connections
+# 
+sudo ufw allow ssh
+#
+# Check that all is well
+#
+sudo systemctl status ssh
+#
+# You can now close the terminal window ...
+#
+
+#
+# open an ssh session to it using (e.g.) putty.
+#
+# If you are asked about overwriting configuration files while the full-upgrade
+# is running, accept the default reply which is to simply press enter (No)
+#
+sudo apt-get update
+sudo apt-get full-upgrade
+sudo apt-get autoremove
+sudo reboot now
+#
+# Re-connect your ssh session once the system has restarted.
+#
+
+#
+# *******************************************************************
+# Start of section **ONLY* for VMware virtual machine
+# 
+sudo apt-get install open-vm-tools open-vm-tools-desktop
+sudo apt-get update
+sudo reboot now
+#
+# Re-connect your openssh session once the system has restarted.
+#
+# End of section **ONLY** for VMware virtual machine
+#
+# *******************************************************************
+# 
+sudo apt-get install build-essential libgl1-mesa-dev
+sudo apt-get install gdb ninja-build zip cmake
+sudo apt-get install libglu1-mesa-dev libxcb-xinerama0 libxcb-cursor0
+sudo apt-get install libfontconfig1-dev libfreetype-dev libx11-dev 
+sudo apt-get install libx11-xcb-dev libxcb-cursor-dev libxcb-glx0-dev
+sudo apt-get install libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev
+sudo apt-get install libxcb-randr0-dev libxcb-render-util0-dev libxcb-shape0-dev
+sudo apt-get install libxcb-shm0-dev libxcb-sync-dev libxcb-util-dev
+sudo apt-get install libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev
+sudo apt-get install libxcb1-dev libxext-dev libxfixes-dev libxi-dev
+sudo apt-get install libxkbcommon-dev libxkbcommon-x11-dev libxrender-dev
+sudo apt-get install cmake-qt-gui
+sudo apt-get install gh
+
+#
+# Setup to login to github
+#
+# Choose github.com, HTTPS, Use github credentials, and Login with a web browser
+# It will then display an authentication code.
+# Then press enter again:
+#
+BROWSER=false gh auth login
+#
+# Here's what you should see:
+#
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 1C26-43EB
+- Press Enter to open github.com in your browser...
+! Failed opening a web browser at https://github.com/login/device
+  exit status 1
+  Please try entering the URL in your browser manually
+#
+# Go back the the GUI and open firefox and goto 
+# https://github.com/login/device 
+# 
+# enter your credentials to login to github and then enter the authentication code
+#
+# Once that has been accepted, return to the ssh session. where you should see
+# something like this:
+#
+✓ Authentication complete. Press Enter to continue...
+
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as perdrix52
+
+#
+# Download the Qt Online installer for Linux from Qt Website to the Downloads folder
+#
+cd ~/Downloads
+wget https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-linux-x64-4.8.1.run
+chmod +x qt-online-installer-linux-x64-4.8.1.run
+#
+# Now run the installer from a GUI terminal session and install Qt 6.8.0
+# (it won't work from the ssh session)
+# 
+# Ensure you install Qt to /opt/Qt and select a Custom Installation
+# 
+# Expand the Qt section and then the Qt 6.8.0 section and expand "Additional Libraries"
+#
+#    Select Desktop, Sources (if you want then), and Qt Charts in the Additional Libraries section
+#    I also suggest it would be useful to select Qt Debug Information Files
+#
+./Downloads/qt-online-installer-linux-x64-4.8.1.run
+#
+# Now return to the ssh session
+#
+
+#
+# Install boost 1.86.0 (this takes quite a while)m
+#
+cd ~/Downloads
+wget https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz
+tar -zxvf boost_1_86_0.tar.gz
+cd boost_1_86_0
+./bootstrap.sh
+./b2
+sudo ./b2 install
+#
+# Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
+# to your Downloads folder, then untar it, build and install CFITSIO
+#
+cd ~/Downloads
+wget https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz
+tar -zxvf cfitsio-4.5.0.tar.gz
+cd cfitsio-4.5.0
+./configure --prefix=/usr/local
+make
+sudo make install
+#
+# Install libjpeg
+#
+sudo apt-get install libjpeg-dev
+#
+# Install Exiv2
+#
+sudo apt-get install exiv2
+#
+# SmtpClient 2.0 for Qt (this build unconditionally as a .so so we will need to ship it)
+#
+cd ~/Downloads
+gh repo clone bluetiger9/SmtpClient-for-Qt
+cd SmtpClient-for-Qt/src
+#
+# create a build directory
+#
+mkdir ../build
+cmake -B ../build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_MODULE_PATH:STRING="/usr/share/cmake-3.28/Modules" -D CMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cd ../build
+ninja
+sudo ninja install
+#
+# Install libexpat
+#
+cd ~/Downloads
+gh repo clone libexpat/libexpat
+cd libexpat/expat
+mkdir ../build
+cmake -B ../build -DEXPAT_SHARED_LIBS:BOOL=OFF -G Ninja
+cd ../build
+ninja
+sudo ninja install
+#
+# libtiff
+# Download https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
+# and build it ...
+#
+cd ~/Downloads
+wget https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
+tar -zxvf tiff-4.7.0.tar.gz
+cd tiff-4.7.0
+cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
+cd build
+ninja
+sudo ninja install
+#
+# Install exiv2 as a static lib
+#
+sudo apt-get install libinih-dev
+cd ~/Downloads
+wget https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.3.tar.gz
+tar -zxvf v0.28.3.tar.gz
+rm v0.28.3.tar.gz
+cd exiv2-0.28.3
+mkdir build
+cmake -B build - -DBUILD_SHARED_LIBS=OFF
+cd build
+ninja
+sudo ninja install
+#
+# libraw 0.21.3
+#
+cd ~/Downloads
+wget https://www.libraw.org/data/LibRaw-0.21.3.tar.gz
+tar -zxvf LibRaw-0.21.3.tar.gz
+cd LibRaw-0.21.3
+mkdir build
+gh repo clone LibRaw/LibRaw-cmake
+cd LibRaw-cmake
+cp -r * ../.
+cd ..
+cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DENABLE_JASPER=OFF -DENABLE_EXAMPLES=OFF -DENABLE_X3FTOOLS=ON
+cd build
+ninja
+sudo ninja install
+
+#
+# Install openMP (we'll need to install this as a co-req of our install)
+#
+sudo apt-get install libomp-dev
+#
+# Install socat to allow Visual Studio to remote debug CMake
+#
+sudo apt-get install socat
+
+#
+# Get gcc and g++ 13 installed and set symlinks 
+#
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install --reinstall g++-12
+sudo ln -s -f /usr/bin/gcc-12 /usr/bin/gcc
+sudo ln -s -f /usr/bin/g++-12 /usr/bin/g++
+
+
+
+
+
+
+
+
+
+
+
