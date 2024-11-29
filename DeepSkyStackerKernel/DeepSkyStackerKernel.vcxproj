@@ -209,6 +209,8 @@
     <ClCompile Include=".\TaskInfo.cpp" />
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="avx_1.cpp" />
+    <ClCompile Include="avx_histogram_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />

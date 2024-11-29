@@ -144,6 +144,8 @@ set(AVX_Files
 
 set(Source_Files
     "AHDDemosaicing.cpp"
+    "avx_1.cpp"
+    "avx_histogram_1.cpp"
     "avx_simd_check.cpp"
     ${AVX_Files}
     "BackgroundCalibration.cpp"
