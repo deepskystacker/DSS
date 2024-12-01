@@ -100,7 +100,6 @@ namespace {
 
 	long WINAPI DssCriticalExceptionHandler(EXCEPTION_POINTERS* pExc)
 	{
-		traceControl.setDeleteOnExit(false);
 		constexpr auto returnCode = EXCEPTION_CONTINUE_SEARCH; // should show the error pop-up message box
 		const EXCEPTION_RECORD* exc = pExc->ExceptionRecord;
 		const std::uint32_t excCode = exc->ExceptionCode;
@@ -116,6 +115,7 @@ namespace {
 
 		if (barrier.exchange(1) == 0) // atomic::exchange() returns the value before the call, so we are the first one.
 		{
+			traceControl.setDeleteOnExit(false); // Here we know there's a serious situation, so we prevent deletion of the trace file.
 			currentThreadId = thisThreadId;
 			backPocket.reset();
 			fprintf(stderr, "Thread %" PRIx64 " beginning StackWalk\n", myThreadId);
