@@ -25,7 +25,7 @@ namespace {
 	{
 		bool suppressOutputFlag{ false };
 	public:
-		DSSStackWalker() : StackWalker{}
+		DSSStackWalker() : StackWalker{ StackWalker::RetrieveVerbose | StackWalker::SymBuildPath }
 		{}
 		void suppressOutput(const bool suppress) {
 			this->suppressOutputFlag = suppress;
@@ -114,7 +114,7 @@ namespace {
 		else // don't care about the exception
 			return returnCode;
 
-		if (barrier.fetch_add(1) == 0) // We are the first one
+		if (barrier.exchange(1) == 0) // atomic::exchange() returns the value before the call, so we are the first one.
 		{
 			currentThreadId = thisThreadId;
 			backPocket.reset();
@@ -123,9 +123,11 @@ namespace {
 				traceTheStack(false, pExc->ContextRecord); // false = do NOT suppress output.
 			fprintf(stderr, "Thread %" PRIx64 " finished StackWalk\n", myThreadId);
 			fflush(stderr);
+			barrier = 0; // Reset to initial value, so that all other waiting threads can resume.
+			barrier.notify_all(); // Notify all waiting threads that we finished the stack walk.
 			std::terminate();
 		}
-		else // another stack walk is done
+		else // Another stack walk is done.
 		{
 			if (currentThreadId == thisThreadId) // Exception while tracing the stack -> there's nothing we can do.
 			{
@@ -133,7 +135,7 @@ namespace {
 					writeOutput(str);
 				return returnCode;
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+			barrier.wait(1);
 		}
 
 		return returnCode;
