@@ -39,6 +39,13 @@ namespace {
 			ZTRACE_RUNTIME(text);
 			//		StackWalker::OnOutput(text); // Just OutputDebugString()
 		}
+
+		virtual void OnDbgHelpErr(LPCSTR szFuncName, DWORD lastErrorCode, DWORD64 address) override
+		{
+			if (strcmp(szFuncName, "SymGetLineFromAddr64") == 0)
+				return;
+			StackWalker::OnDbgHelpErr(szFuncName, lastErrorCode, address);
+		}
 	};
 
 	DSSStackWalker sw;
