@@ -88,10 +88,13 @@ namespace {
 	std::atomic<std::uint32_t> barrier{ 0 };
 	std::thread::id currentThreadId{};
 
-	void traceTheStack(const bool suppressOutput)
+	void traceTheStack(const bool suppressOutput, auto pContext)
 	{
 		sw.suppressOutput(suppressOutput);
-		sw.ShowCallstack();
+		if constexpr (std::is_same_v<decltype(pContext), nullptr_t>)
+			sw.ShowCallstack();
+		else
+			sw.ShowCallstack(GetCurrentThread(), pContext);
 		sw.suppressOutput(false);
 	}
 
@@ -117,7 +120,7 @@ namespace {
 			backPocket.reset();
 			fprintf(stderr, "Thread %" PRIx64 " beginning StackWalk\n", myThreadId);
 			if (excCode != EXCEPTION_STACK_OVERFLOW)
-				traceTheStack(false); // false = do NOT suppress output.
+				traceTheStack(false, pExc->ContextRecord); // false = do NOT suppress output.
 			fprintf(stderr, "Thread %" PRIx64 " finished StackWalk\n", myThreadId);
 			fflush(stderr);
 			std::terminate();
@@ -143,7 +146,7 @@ void setDssExceptionHandling()
 {
 	// Add our own vectored exception handler to the front of the handler chain, so it gets called early (ideally first).
 	AddVectoredExceptionHandler(1, DssCriticalExceptionHandler);
-	traceTheStack(true); // Stack tracing to initialise StackWalker and pre-load all libraries, true = output suppressed.
+	traceTheStack(true, nullptr); // Stack tracing to initialise StackWalker and pre-load all libraries, true = output suppressed.
 }
 
 #else
