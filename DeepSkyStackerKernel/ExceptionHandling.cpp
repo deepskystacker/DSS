@@ -23,12 +23,18 @@ namespace
 namespace {
 	class DSSStackWalker : public StackWalker
 	{
+		bool suppressOutputFlag{ false };
 	public:
 		DSSStackWalker() : StackWalker{}
 		{}
+		void suppressOutput(const bool suppress) {
+			this->suppressOutputFlag = suppress;
+		}
 	protected:
 		virtual void OnOutput(LPCSTR text) override
 		{
+			if (suppressOutputFlag)
+				return;
 			fprintf(stderr, text);
 			ZTRACE_RUNTIME(text);
 			//		StackWalker::OnOutput(text); // Just OutputDebugString()
@@ -75,9 +81,11 @@ namespace {
 	std::atomic<std::uint32_t> barrier{ 0 };
 	std::thread::id currentThreadId{};
 
-	void traceTheStack()
+	void traceTheStack(const bool suppressOutput)
 	{
+		sw.suppressOutput(suppressOutput);
 		sw.ShowCallstack();
+		sw.suppressOutput(false);
 	}
 
 	long WINAPI DssCriticalExceptionHandler(EXCEPTION_POINTERS* pExc)
@@ -102,7 +110,7 @@ namespace {
 			backPocket.reset();
 			fprintf(stderr, "Thread %" PRIx64 " beginning StackWalk\n", myThreadId);
 			if (excCode != EXCEPTION_STACK_OVERFLOW)
-				traceTheStack();
+				traceTheStack(false); // false = do NOT suppress output.
 			fprintf(stderr, "Thread %" PRIx64 " finished StackWalk\n", myThreadId);
 			fflush(stderr);
 			std::terminate();
@@ -128,6 +136,7 @@ void setDssExceptionHandling()
 {
 	// Add our own vectored exception handler to the front of the handler chain, so it gets called early (ideally first).
 	AddVectoredExceptionHandler(1, DssCriticalExceptionHandler);
+	traceTheStack(true); // Stack tracing to initialise StackWalker and pre-load all libraries, true = output suppressed.
 }
 
 #else
