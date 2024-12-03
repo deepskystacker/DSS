@@ -148,25 +148,36 @@ cd boost_1_86_0
 ./bootstrap.sh
 ./b2
 sudo ./b2 install
+
 #
 # Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
 # to your Downloads folder, then untar it, build and install CFITSIO
 #
 cd ~/Downloads
-wget https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz
-tar -zxvf cfitsio-4.5.0.tar.gz
-cd cfitsio-4.5.0
-./configure --prefix=/usr/local
-make
-sudo make install
+wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
+tar -zxvf cfitsio4_5_0_20240826.tar.gz
+cd cfitsio-cfitsio4_5_0_20240826
+#
+# Get the updated CMakeLists.txt
+#
+rm CMakeLists.txt
+wget https://raw.githubusercontent.com/HEASARC/cfitsio/37f72c0ae47a17184bdadb83f83ef5ff1b184f69/CMakeLists.txt
+mkdir build
+cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
+cd build
+ninja
+sudo ninja install
+
 #
 # Install libjpeg
 #
 sudo apt-get install libjpeg-dev
+
 #
 # Install Exiv2
 #
 sudo apt-get install exiv2
+
 #
 # SmtpClient 2.0 for Qt (this build unconditionally as a .so so we will need to ship it)
 #
@@ -181,6 +192,7 @@ cmake -B ../build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/
 cd ../build
 ninja
 sudo ninja install
+
 #
 # Install libexpat
 #
@@ -192,6 +204,7 @@ cmake -B ../build -DEXPAT_SHARED_LIBS:BOOL=OFF -G Ninja
 cd ../build
 ninja
 sudo ninja install
+
 #
 # libtiff
 # Download https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
@@ -205,6 +218,7 @@ cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
 cd build
 ninja
 sudo ninja install
+
 #
 # Install exiv2 as a static lib
 #
@@ -219,6 +233,7 @@ cmake -B build - -DBUILD_SHARED_LIBS=OFF
 cd build
 ninja
 sudo ninja install
+
 #
 # libraw 0.21.3
 #
@@ -240,6 +255,7 @@ sudo ninja install
 # Install openMP (we'll need to install this as a co-req of our install)
 #
 sudo apt-get install libomp-dev
+
 #
 # Install socat to allow Visual Studio to remote debug CMake
 #
@@ -250,9 +266,26 @@ sudo apt-get install socat
 #
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
-sudo apt-get install --reinstall g++-12
-sudo ln -s -f /usr/bin/gcc-12 /usr/bin/gcc
-sudo ln -s -f /usr/bin/g++-12 /usr/bin/g++
+sudo apt-get install --reinstall g++-13 gcc-13
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+
+#
+# Update cmake to 3.30.2
+#
+cd ~/Downloads
+mkdir kitware
+wget https://apt.kitware.com/kitware-archive.sh
+chmod +x kitware-archive.sh
+sudo ./kitware-archive.sh
+sudo apt-get purge --auto-remove cmake
+sudo apt-get install -y software-properties-common lsb-release
+sudo apt-get clean all
+sudo apt-get install cmake
+
+
 
 
 
