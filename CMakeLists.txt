@@ -73,7 +73,8 @@ if(NOT WIN32)
 #
 # Non-Windows use find_package to find stuff we want
 #
-#find_package(cfitsio 4.5 REQUIRED)
+#set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
+#find_package(cfitsio 4.5.0 REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(exiv2 REQUIRED)
 find_package(expat REQUIRED)
