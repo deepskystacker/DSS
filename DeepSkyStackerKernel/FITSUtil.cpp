@@ -157,7 +157,7 @@ bool CFITSReader::ReadKey(const char * szKey, int& lValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TLONG, szKey, &lValue, nullptr, &nStatus);
+		fits_read_key(m_fits, TINT, szKey, &lValue, nullptr, &nStatus);
 		if (!nStatus)
 			bResult = true;
 	};
@@ -1143,7 +1143,7 @@ bool	CFITSWriter::WriteKey(const char * szKey, int lValue, const char * szCommen
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TLONG, szKey, &lValue, szComment, &nStatus);
+		fits_write_key(m_fits, TINT, szKey, &lValue, szComment, &nStatus);
 		if (!nStatus)
 			bResult = true;
 	};
