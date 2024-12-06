@@ -36,6 +36,9 @@ GeneratedFiles/
 # CMake build directory
 build/
 
+# vcpkg installed directories
+vcpkg_installed/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
