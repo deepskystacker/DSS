@@ -3,6 +3,7 @@
 #include "BitmapExtraInfo.h"
 #include "ColorRef.h"
 #include "Bayer.h"
+#include "dssbase.h"
 
 class CMultiBitmap;
 class CMedianFilterEngine;

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "dssbase.h"
 #include "zexcbase.h"
 //#include "resource.h"
 
