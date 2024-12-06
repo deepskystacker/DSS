@@ -80,3 +80,27 @@ public:
 private:
 	static inline DSSBase* theInstance{ nullptr };
 };
+
+#if !defined(NDEBUG)
+#define qtFakeAssert(test)\
+if(!(test))\
+{\
+DSSBase::instance()->reportError(\
+	QString("The following expression must be true, but evaluated to false:\n%1\n"\
+			"File: %2 Function: %3 Line: %4\nThe programme will terminate.").arg(#test)\
+			.arg(__FILE__).arg(__FUNCTION__).arg(__LINE__),\
+	"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
+}
+#else
+#define qtFakeAssert(test)
+#endif
+
+#define qtFakeAssertState(test)\
+if(!(test))\
+{\
+	DSSBase::instance()->reportError(\
+		QString("The following expression must be true, but evaluated to false:\n%1\n"\
+				"File: %2 Function: %3 Line: %4\nThe programme will terminate.").arg(#test)\
+				.arg(__FILE__).arg(__FUNCTION__).arg(__LINE__),\
+		"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
+}

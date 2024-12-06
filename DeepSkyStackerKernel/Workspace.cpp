@@ -384,7 +384,7 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 		value = nameAndValue.section("=", 1);
 
 		auto keyIter = keyMap.find(regKey);
-		ZASSERT(keyMap.end() != keyIter);
+		qtFakeAssert(keyMap.end() != keyIter);
 
 		//
 		// Get the root of our QSettings key name
@@ -418,7 +418,7 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 		//
 		QVariant variant(value);
 		QMetaType type = it->value().metaType();
-		ZASSERT(variant.canConvert(type));
+		qtFakeAssert(variant.canConvert(type));
 		variant.convert(type);
 		it->setValue(variant);
 		bResult = true;

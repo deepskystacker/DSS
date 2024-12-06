@@ -758,7 +758,12 @@ void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon i
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -790,7 +795,12 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 		}
 	}
 	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */

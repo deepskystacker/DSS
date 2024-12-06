@@ -359,7 +359,6 @@ DeepSkyStacker::DeepSkyStacker() :
 		restoreState(windowState);
 	}
 
-
 	settings.endGroup();
 }
 
@@ -608,7 +607,12 @@ void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon,
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -640,7 +644,12 @@ void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, 
 		}
 	}
 	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */

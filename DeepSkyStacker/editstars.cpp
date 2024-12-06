@@ -184,7 +184,7 @@ namespace DSS
 	//	m_tipShowCount{ 0 }
 		disabled{ false }
 	{
-		ZASSERT(nullptr != imageView);
+		qtFakeAssert(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
 		setAttribute(Qt::WA_NoSystemBackground);
 		setAttribute(Qt::WA_TranslucentBackground);
@@ -498,7 +498,7 @@ namespace DSS
 //	{
 //		m_GrayBitmap.SetMultiplier(1.0);
 //
-//		ZASSERTSTATE(static_cast<bool>(m_pBitmap));
+//		qtFakeAssertState(static_cast<bool>(m_pBitmap));
 //
 //		//
 //		// Not worth using OpenMP here - rectangle is quite small

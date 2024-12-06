@@ -11,7 +11,7 @@
 template <typename TType>
 void CColorBitmapT<TType>::CheckXY(size_t x, size_t y) const
 {
-	ZASSERTSTATE(x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
+	qtFakeAssertState(x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
 }
 
 template <typename TType>
@@ -46,8 +46,8 @@ std::unique_ptr<CMemoryBitmap> CColorBitmapT<TType>::Clone(bool bEmpty/*=false*/
 		pResult->m_Green.m_vPixels = m_Green.m_vPixels;
 		pResult->m_Blue.m_vPixels = m_Blue.m_vPixels;
 	}
-	ZASSERT(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
-	ZASSERT(pResult->m_bFloat == m_bFloat);
+	qtFakeAssert(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
+	qtFakeAssert(pResult->m_bFloat == m_bFloat);
 
 	pResult->CopyFrom(*this);
 

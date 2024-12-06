@@ -26,7 +26,7 @@ namespace DSS
 		if (nullptr == pStackSettings)
 		{
 			delete ui;
-			ZASSERTSTATE(nullptr != pStackSettings);
+			qtFakeAssertState(nullptr != pStackSettings);
 		}
 
 		ui->setupUi(this);

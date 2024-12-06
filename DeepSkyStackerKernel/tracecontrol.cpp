@@ -59,7 +59,7 @@ namespace DSS
 		if ("DeepSkyStacker" == path) start = "DSSTrace";
 		else if ("DeepSkyStackerCL" == path) start = "DSSCLTrace";
 		else if ("DeepSkyStackerLive" == path) start = "DSSLiveTrace";
-		else ZASSERT(false);
+		else qtFakeAssert(false);
 		
 		std::time_t time = std::time({});
 		char timeString[std::size("yyyy-mm-ddThh-mm-ssZ")];

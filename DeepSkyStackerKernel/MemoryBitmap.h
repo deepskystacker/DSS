@@ -121,12 +121,12 @@ public:
 
 	virtual double getValue(size_t, size_t) const
 	{
-		ZASSERTSTATE(false);
+		qtFakeAssertState(false);
 		return 0.0;
 	}
 	virtual std::tuple<double, double, double> getValues(size_t, size_t) const
 	{
-		ZASSERTSTATE(false);
+		qtFakeAssertState(false);
 		return { 0.0, 0.0, 0.0 };
 	}
  	

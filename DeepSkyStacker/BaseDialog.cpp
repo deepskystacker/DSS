@@ -72,7 +72,7 @@ namespace DSS
 		//
 		// Restore Window position etc..
 		//
-		ZASSERT(!objectName().isEmpty());
+		qtFakeAssert(!objectName().isEmpty());
 		bool geometryRestored = false;
 		if (hasPersistentGeometry()) {
 			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(objectName())).toByteArray();

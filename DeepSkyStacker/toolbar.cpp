@@ -107,7 +107,7 @@ namespace DSS
         ));
 
         StackingDlg* pStackingDlg{ dynamic_cast<StackingDlg*>(parent) };
-        ZASSERT(pStackingDlg);
+        qtFakeAssert(pStackingDlg);
 
         connect(rectAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_rectButtonPressed);
  

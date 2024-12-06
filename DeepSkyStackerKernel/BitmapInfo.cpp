@@ -54,7 +54,7 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 	//
 	std::string temp{ reinterpret_cast<const char*>(fileName.generic_u8string().c_str()) };
 	auto image = ImageFactory::open(temp);
-	ZASSERT(image.get() != nullptr);
+	qtFakeAssert(image.get() != nullptr);
 	image->readMetadata();
 	auto& exifData{ image->exifData() };
 	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", fileName.generic_u8string().c_str());

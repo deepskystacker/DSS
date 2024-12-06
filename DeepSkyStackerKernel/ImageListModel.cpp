@@ -557,7 +557,7 @@ namespace DSS
     //
     void ImageListModel::addImage(const ListBitMap& image)
     {
-        ZASSERT(std::find(mydata.begin(), mydata.end(), image) == mydata.end());
+        qtFakeAssert(std::find(mydata.begin(), mydata.end(), image) == mydata.end());
             
         mydata.push_back(image);
     }

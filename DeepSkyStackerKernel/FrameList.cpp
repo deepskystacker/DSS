@@ -143,7 +143,7 @@ namespace DSS
 	{
 		const int group = Group::whichGroupContains(file);
 
-		ZASSERTSTATE(-1 != group);
+		qtFakeAssertState(-1 != group);
 		int row = 0;
 		for (auto it = imageGroups[group].pictures->begin(); it != imageGroups[group].pictures->end(); ++it)
 		{
@@ -169,7 +169,7 @@ namespace DSS
 	{
 		const int group = Group::whichGroupContains(file);
 
-		ZASSERTSTATE(-1 != group);
+		qtFakeAssertState(-1 != group);
 		auto& pics = imageGroups[group].pictures;
 
 		int row = 0;
@@ -438,7 +438,7 @@ namespace DSS
 						//
 						if (groupId == imageGroups.size())
 							addGroup();
-						ZASSERTSTATE(groupId < (1 + imageGroups.size()));
+						qtFakeAssertState(groupId < (1 + imageGroups.size()));
 
 						setGroup(groupId);	// Select the group in question
 						if (!strGroupName.isEmpty())
@@ -914,7 +914,7 @@ namespace DSS
 
 	void FrameList::checkBest(double fPercent)
 	{
-		ZASSERTSTATE(fPercent >= 0.0);
+		qtFakeAssertState(fPercent >= 0.0);
 
 		std::vector<ScoredLightFrame> lightFrames;
 
@@ -952,7 +952,7 @@ namespace DSS
 	// Change the name of the specified group
 	void FrameList::setGroupName(int id, const QString& name)
 	{
-		ZASSERTSTATE(id == -1 || id < imageGroups.size()); // MT, April 2024: Note: Be very careful with signed/unsigned comparisons! -1 < imageGroups.size() IS FALSE!
+		qtFakeAssertState(id == -1 || id < imageGroups.size()); // MT, April 2024: Note: Be very careful with signed/unsigned comparisons! -1 < imageGroups.size() IS FALSE!
 		if (-1 == id)
 			id = index;	// set to current group
 
@@ -979,8 +979,8 @@ namespace DSS
 
 	size_t FrameList::groupSize(const int id) const
 	{
-		ZASSERTSTATE(id < imageGroups.size());
-		ZASSERTSTATE(id >= 0);
+		qtFakeAssertState(id < imageGroups.size());
+		qtFakeAssertState(id >= 0);
 		return imageGroups[id].size();
 	}
 

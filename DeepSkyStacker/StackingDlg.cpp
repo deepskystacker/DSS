@@ -210,7 +210,7 @@ namespace DSS
 
 	void IconSizeDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 	{
-		ZASSERT(index.isValid());
+		qtFakeAssert(index.isValid());
 		QStyleOptionViewItem opt{ option };
 		initStyleOption(&opt, index);
 
@@ -355,7 +355,7 @@ namespace DSS
 			{
 				QString type{ index.model()->data(index).toString() };
 				combo = qobject_cast<QComboBox*>(editor);
-				ZASSERT(combo);
+				qtFakeAssert(combo);
 				combo->setCurrentIndex(combo->findText(type));
 			}
 			break;
@@ -363,7 +363,7 @@ namespace DSS
 			{
 				QString value{ index.model()->data(index, Qt::EditRole).toString() };
 				combo = qobject_cast<QComboBox*>(editor);
-				ZASSERT(combo);
+				qtFakeAssert(combo);
 				if (int idx = combo->findText(value))
 					combo->setCurrentIndex(idx);
 				else
@@ -377,7 +377,7 @@ namespace DSS
 				if (secs > 86399.999) secs = 86399.999;		// 24 hours less 1 ms
 				double msecs = secs * 1000.0;
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
-				ZASSERT(timeEdit);
+				qtFakeAssert(timeEdit);
 				QTime time{ QTime(0, 0) };
 				time = time.addMSecs(msecs);
 				timeEdit->setTime(time);
@@ -404,21 +404,21 @@ namespace DSS
 		case Column::Type:
 			{
 				combo = qobject_cast<QComboBox*>(editor);
-				ZASSERT(combo);
+				qtFakeAssert(combo);
 				model->setData(index, combo->currentIndex());
 			}
 			break;
 		case Column::ISO:
 			{
 				combo = qobject_cast<QComboBox*>(editor);
-				ZASSERT(combo);
+				qtFakeAssert(combo);
 				model->setData(index, combo->currentText());
 			}
 			break;
 		case Column::Exposure:
 			{
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
-				ZASSERT(timeEdit);
+				qtFakeAssert(timeEdit);
 				QTime time{ timeEdit->time() };
 				double secs = (static_cast<double>(time.hour()) * 3600) +
 					(static_cast<double>(time.minute()) * 60) +
@@ -660,7 +660,7 @@ namespace DSS
 			OUTPUTLIST_FILTERS.append(
 				qApp->translate("DSS", OUTPUTLIST_FILTER_SOURCES[i].source, OUTPUTLIST_FILTER_SOURCES[i].comment));
 		}
-		ZASSERT(OUTPUTLIST_FILTERS.size() == count);
+		qtFakeAssert(OUTPUTLIST_FILTERS.size() == count);
 
 		count = sizeof(INPUTFILE_FILTER_SOURCES) / sizeof(INPUTFILE_FILTER_SOURCES[0]);
 		INPUTFILE_FILTERS.clear();
@@ -669,7 +669,7 @@ namespace DSS
 			INPUTFILE_FILTERS.append(
 				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
 		}
-		ZASSERT(INPUTFILE_FILTERS.size() == count);
+		qtFakeAssert(INPUTFILE_FILTERS.size() == count);
 
 		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
 			"Ctrl-A or equivalent to select all rows\n"
@@ -2611,7 +2611,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		ZASSERT(5 == stops.size());
+		qtFakeAssert(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -2687,7 +2687,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
-		ZASSERT(5 == stops.size());
+		qtFakeAssert(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;

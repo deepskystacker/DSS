@@ -253,7 +253,7 @@ void CLightFramesStackingInfo::Save()
 		};
 
 		auto bytesWritten = file.write(buffer);
-		ZASSERTSTATE(bytesWritten == buffer.size());
+		qtFakeAssertState(bytesWritten == buffer.size());
 		file.close();
 	};
 };
@@ -1323,10 +1323,10 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	float* const pRed = pCover->GetRedPixel(0, 0);
 	float* const pGreen = pCover->GetGreenPixel(0, 0);
 	float* const pBlue = pCover->GetBluePixel(0, 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed + 1) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pGreen) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pBlue) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed + 1) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pGreen) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pBlue) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
 
 	for (int lNrBitmaps = 1; const CPixelTransform& PixTransform : m_vPixelTransforms)
 	{
@@ -3049,7 +3049,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	stream << "</html>" << Qt::endl;
 
 	auto bytesWritten = file.write(buffer);
-	ZASSERTSTATE(bytesWritten == buffer.size());
+	qtFakeAssertState(bytesWritten == buffer.size());
 }
 
 /* ------------------------------------------------------------------- */

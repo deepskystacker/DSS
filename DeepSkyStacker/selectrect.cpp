@@ -64,7 +64,7 @@ namespace DSS
         showDrizzle_(true)
     {
         imageView = dynamic_cast<ImageView*>(parent);
-        ZASSERT(nullptr != imageView);
+        qtFakeAssert(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);

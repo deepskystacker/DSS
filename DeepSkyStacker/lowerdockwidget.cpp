@@ -93,7 +93,7 @@ namespace DSS
 			setDockTitle("");
 
 		auto index{ static_cast<int>(panel) };
-		ZASSERT(index < stackedWidget->count());
+		qtFakeAssert(index < stackedWidget->count());
 
 		stackedWidget->setCurrentIndex(index);
 	}

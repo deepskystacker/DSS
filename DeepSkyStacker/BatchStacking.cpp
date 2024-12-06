@@ -44,7 +44,7 @@ namespace DSS
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
-		ZASSERT(nullptr != stackingDlg);
+		qtFakeAssert(nullptr != stackingDlg);
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -144,11 +144,11 @@ namespace DSS
 		long processedListCount = 0;
 		bool successfulProcessing = true;
 
-		ZASSERT(nullptr != m_fileListModel);
+		qtFakeAssert(nullptr != m_fileListModel);
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows && successfulProcessing; ++i) {
 			auto item = m_fileListModel->item(i);
-			ZASSERT(nullptr != item);
+			qtFakeAssert(nullptr != item);
 			if (item->checkState() == Qt::Checked) {
 				const auto& file = item->text();
 				QString outputFile;
@@ -173,7 +173,7 @@ namespace DSS
 
 	void BatchStacking::clearLists()
 	{
-		ZASSERT(nullptr != m_fileListModel);
+		qtFakeAssert(nullptr != m_fileListModel);
 		m_fileListModel->clear();
 	}
 
@@ -213,7 +213,7 @@ namespace DSS
 
 	void BatchStacking::addItemsFor(const QStringList& paths, bool checked)
 	{
-		ZASSERT(nullptr != m_fileListModel);
+		qtFakeAssert(nullptr != m_fileListModel);
 		for (const auto& path : paths) {
 			QStandardItem* item = new QStandardItem(path);
 			item->setCheckable(true);
@@ -225,12 +225,12 @@ namespace DSS
 
 	QStringList BatchStacking::getFilePaths() const
 	{
-		ZASSERT(nullptr != m_fileListModel);
+		qtFakeAssert(nullptr != m_fileListModel);
 		QStringList filePaths;
 		const auto rows = m_fileListModel->rowCount();
 		for (auto i = 0; i < rows; ++i) {
 			auto item = m_fileListModel->item(i);
-			ZASSERT(nullptr != item);
+			qtFakeAssert(nullptr != item);
 			filePaths.append(item->text());
 		}
 		return filePaths;
