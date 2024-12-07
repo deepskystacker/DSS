@@ -36,8 +36,6 @@
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <ranges>
 
-#include "dssbase.h"
-
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
 namespace chr = std::chrono;
@@ -46,3 +44,8 @@ using std::min;
 using std::max;
 
 #include <zexcept.h>
+#include <ztrace.h>
+
+// As this interface is used everywhere for error reporting.
+// If it got too big, or changed a lot, then we could move out to specific cpp files.
+#include "dssbase.h"

@@ -81,26 +81,20 @@ private:
 	static inline DSSBase* theInstance{ nullptr };
 };
 
-#if !defined(NDEBUG)
-#define qtFakeAssert(test)\
+#define qtFakeAssertState(test)\
 if(!(test))\
 {\
-DSSBase::instance()->reportError(\
-	QString("The following expression must be true, but evaluated to false:\n%1\n"\
-			"File: %2 Function: %3 Line: %4\nThe programme will terminate.").arg(#test)\
-			.arg(__FILE__).arg(__FUNCTION__).arg(__LINE__),\
-	"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
+	QString message = QString{ "Assertion failure:\n\nThe following expression must be true, but evaluated to false:\n%1\n"\
+					"File: %2\nFunction: %3 Line: %4\n\nThe programme will terminate." }.arg(#test)\
+				.arg(__FILE__).arg(__ZTRACE_FUNCTION__).arg(__LINE__);\
+	ZTRACE_RUNTIME(message);\
+	DSSBase::instance()->reportError(message, \
+		"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
 }
+
+#if !defined(NDEBUG)
+#define qtFakeAssert(test) qtFakeAssertState(test)
 #else
 #define qtFakeAssert(test)
 #endif
 
-#define qtFakeAssertState(test)\
-if(!(test))\
-{\
-	DSSBase::instance()->reportError(\
-		QString("The following expression must be true, but evaluated to false:\n%1\n"\
-				"File: %2 Function: %3 Line: %4\nThe programme will terminate.").arg(#test)\
-				.arg(__FILE__).arg(__FUNCTION__).arg(__LINE__),\
-		"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
-}

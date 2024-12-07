@@ -63,9 +63,9 @@ namespace fs = std::filesystem;
 using std::min;
 using std::max;
 
+#include <zexcept.h>
+#include <ztrace.h>
+
 // As this interface is used everywhere for error reporting.
 // If it got too big, or changed a lot, then we could move out to specific cpp files.
 #include "dssbase.h"
-
-#include <zexcept.h>
-#include <ztrace.h>
