@@ -188,6 +188,10 @@ cd SmtpClient-for-Qt
 # create a build directory
 #
 mkdir build
+#
+# You should check before running the following command that the directory for CMAKE_MODULE_PATH is correct, as a system update could change that.
+# If it's different on your system, adjust the command accordingly.
+#
 cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_MODULE_PATH:STRING="/usr/share/cmake-3.30/Modules" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
 cd build
 ninja
