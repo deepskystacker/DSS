@@ -69,7 +69,7 @@ namespace DSS
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-		connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::on_autoThreshold_changed);
+		connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::autoThreshold_changed);
 
 		perCentValidator = new QIntValidator(0, 100, this);
 		ui->percentStack->setValidator(perCentValidator);
@@ -82,7 +82,7 @@ namespace DSS
 		delete ui;
 	}
 
-	void RegisterSettings::on_autoThreshold_changed(const int state)
+	void RegisterSettings::autoThreshold_changed(const int state)
 	{
 		ui->luminanceThreshold->setEnabled(state == 0);
 		ui->label_4->setEnabled(state == 0);
@@ -90,8 +90,8 @@ namespace DSS
 
 		if (state != 0)
 		{
-			this->medianFilter_stateChanged(0);
-			this->hotPixels_stateChanged(0);
+			this->on_medianFilter_stateChanged(0);
+			this->on_hotPixels_stateChanged(0);
 		}
 	}
 
@@ -239,7 +239,7 @@ namespace DSS
 		forceRegister = ui->forceRegister->isChecked();
 	}
 
-	void RegisterSettings::on_hotPixels_stateChanged(int state)
+	void RegisterSettings::on_hotPixels_stateChanged(const int state)
 	{
 		const bool detectHotPixels = state != 0; //ui->hotPixels->isChecked();
 		ui->hotPixels->setChecked(detectHotPixels); // If we were explicitly called, update the checkbox.
@@ -291,7 +291,7 @@ namespace DSS
 		ui->starCount->setText(string);
 	}
 
-	void RegisterSettings::on_medianFilter_stateChanged(int state)
+	void RegisterSettings::on_medianFilter_stateChanged(const int state)
 	{
 		this->medianFilter = state != 0; //ui->medianFilter->isChecked();
 		ui->medianFilter->setChecked(medianFilter); // If we were explicitly called, update the checkbox.

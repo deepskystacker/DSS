@@ -94,7 +94,7 @@ namespace DSS
 		void on_luminanceThreshold_valueChanged(int);
 		void on_computeDetectedStars_clicked();
 		void on_medianFilter_stateChanged(int);
-        void on_autoThreshold_changed(const int);
+        void autoThreshold_changed(const int);
 
 
 
