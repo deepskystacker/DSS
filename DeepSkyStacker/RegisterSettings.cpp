@@ -87,6 +87,12 @@ namespace DSS
 		ui->luminanceThreshold->setEnabled(state == 0);
 		ui->label_4->setEnabled(state == 0);
 		this->detectionThreshold = static_cast<uint>(state == 0 ? ui->luminanceThreshold->value() : 0);
+
+		if (state != 0)
+		{
+			this->medianFilter_stateChanged(0);
+			this->hotPixels_stateChanged(0);
+		}
 	}
 
 	void RegisterSettings::onInitDialog()
@@ -235,9 +241,9 @@ namespace DSS
 
 	void RegisterSettings::on_hotPixels_stateChanged(int state)
 	{
-		state;
-		bool hotPixels = ui->hotPixels->isChecked();
-		workspace->setValue("Register/DetectHotPixels", hotPixels);
+		const bool detectHotPixels = state != 0; //ui->hotPixels->isChecked();
+		ui->hotPixels->setChecked(detectHotPixels); // If we were explicitly called, update the checkbox.
+		workspace->setValue("Register/DetectHotPixels", detectHotPixels);
 	}
 
 	void RegisterSettings::on_stackAfter_clicked()
@@ -287,8 +293,8 @@ namespace DSS
 
 	void RegisterSettings::on_medianFilter_stateChanged(int state)
 	{
-		state;
-		medianFilter = ui->medianFilter->isChecked();
+		this->medianFilter = state != 0; //ui->medianFilter->isChecked();
+		ui->medianFilter->setChecked(medianFilter); // If we were explicitly called, update the checkbox.
 		workspace->setValue("Register/ApplyMedianFilter", medianFilter);
 	}
 

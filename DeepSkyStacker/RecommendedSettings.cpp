@@ -383,26 +383,26 @@ namespace DSS
 #endif
 	/* ------------------------------------------------------------------- */
 
-	static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR& vRecommendations)
-	{
-		RecommendationItem			ri;
-		Recommendation				rec;
-		Workspace					workspace;
-
-		if (Workspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
-		{
-			rec.setText(QCoreApplication::translate("RecommendedSettings",
-				"You are using a low star detection threshold",
-				"IDS_RECO_MEDIANFILTER_REASON"));
-			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
-				"Apply a Median Filter before registering the images to reduce the noise and improve the star detection",
-				"IDS_RECO_MEDIANFILTER_TEXT"));
-			ri.addSetting("Register/ApplyMedianFilter", true);
-
-			rec.addItem(ri);
-			vRecommendations.push_back(rec);
-		};
-	};
+//	static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR& vRecommendations)
+//	{
+//		RecommendationItem			ri;
+//		Recommendation				rec;
+//		Workspace					workspace;
+//
+//		if (Workspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
+//		{
+//			rec.setText(QCoreApplication::translate("RecommendedSettings",
+//				"You are using a low star detection threshold",
+//				"IDS_RECO_MEDIANFILTER_REASON"));
+//			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+//				"Apply a Median Filter before registering the images to reduce the noise and improve the star detection",
+//				"IDS_RECO_MEDIANFILTER_TEXT"));
+//			ri.addSetting("Register/ApplyMedianFilter", true);
+//
+//			rec.addItem(ri);
+//			vRecommendations.push_back(rec);
+//		}
+//	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -717,7 +717,7 @@ namespace DSS
 
 			insertHeader();
 
-			AddRegisterUseOfMedianFilter(vRecommendations);
+//			AddRegisterUseOfMedianFilter(vRecommendations);
 
 			lPosition = vRecommendations.size();
 
