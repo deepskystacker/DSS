@@ -183,13 +183,13 @@ sudo apt-get install exiv2
 #
 cd ~/Downloads
 gh repo clone bluetiger9/SmtpClient-for-Qt
-cd SmtpClient-for-Qt/src
+cd SmtpClient-for-Qt
 #
 # create a build directory
 #
-mkdir ../build
-cmake -B ../build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_MODULE_PATH:STRING="/usr/share/cmake-3.28/Modules" -D CMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
-cd ../build
+mkdir build
+cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_MODULE_PATH:STRING="/usr/share/cmake-3.30/Modules" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cd build
 ninja
 sudo ninja install
 
