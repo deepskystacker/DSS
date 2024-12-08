@@ -344,20 +344,14 @@ target_include_directories(DeepSkyStacker PUBLIC
     ../DeepSkyStackerKernel
     GeneratedFiles/$<CONFIG>
     GeneratedFiles
-    ../LibRaw
     ../ZClass
     ../Tools
   )
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../Zlib
-   ../LibTiff
    ../include
-   ../include/exiv2
-   ../include/SmtpMime
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
-   "$ENV{Boost_1_80_0}"
 )
 endif()
 
@@ -416,9 +410,9 @@ endif()
 
 if(WIN32)
 target_link_directories(DeepSkyStacker PRIVATE
-	"$<$<CONFIG:Debug>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/ReleaseLibs>"
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
+	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
+	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
 	)
 endif()
 
@@ -434,30 +428,22 @@ target_link_libraries(DeepSkyStacker PRIVATE
 	DeepSkyStackerKernel
     ZClass
 )
-if(WIN32)
-target_link_libraries(DeepSkyStacker PRIVATE
-    libraw
-    libtiff
-)
-else()
-target_link_libraries(DeepSkyStacker PRIVATE
-    #TIFF::tiff
-    #Exiv2::exiv2lib
-    #expat::expat
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
+target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
+target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+if(NOT WIN32)
+target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenMP::OpenMP_CXX
     Threads::Threads
 )
 endif()
 
-if(WIN32)
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd cfitsio)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic cfitsio)
-else()
-set(DEBUG_DEPENDENCIES raw_r.a tiff.a exiv2.a expat.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
-set(RELEASE_DEPENDENCIES raw-r.a tiff.a exiv2.a expat.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
-#set(DEBUG_DEPENDENCIES raw_r.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
-#set(RELEASE_DEPENDENCIES raw-r.a cfitsio.a brotlidec inih INIReader JPEG::JPEG ZLIB::ZLIB)
-endif()
+set(DEBUG_DEPENDENCIES cfitsio SmtpMime)
+set(RELEASE_DEPENDENCIES cfitsio SmtpMime)
 
 set(ADDITIONAL_LIBRARY_DEPENDENCIES
     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"

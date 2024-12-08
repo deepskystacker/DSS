@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+set(CMAKE_TOOLCHAIN_FILE 
+	"$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+	)
 
-project(DeepSkyStacker VERSION 5.1.8 LANGUAGES C CXX)
+if(WIN32)
+set(VCPKG_TARGET_TRIPLET
+	"x64-windows-static-md"
+	CACHE STRING "")
+endif()
 
 # Require C++20 and disable extensions for all targets.
 # NOTE: See further below for how to do this more robustly.
@@ -10,25 +17,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-set(CMAKE_PREFIX_PATH
-	"C:/Qt/6.8.0/msvc2022_64"
-	CACHE STRING "" FORCE
-	)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-set(CMAKE_PREFIX_PATH
-	"/opt/Qt/6.8.0/gcc_64"
-	CACHE STRING "" FORCE
-	)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-set(CMAKE_PREFIX_PATH
-	"/opt/Qt/6.8.0/macos"
-	CACHE STRING "" FORCE
-	)
-else()
-    message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} not yet supported!")
-endif()
-message ("System Name is: " ${CMAKE_SYSTEM_NAME} ", prefix path: " ${CMAKE_PREFIX_PATH})
+
+project(DeepSkyStacker VERSION 5.1.8 LANGUAGES C CXX)
+message ("System Name is: " ${CMAKE_SYSTEM_NAME})
+message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
@@ -68,22 +60,23 @@ set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
 find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 
-
-if(NOT WIN32)
+#set(CMAKE_FIND_DEBUG_MODE 1)
 #
 # Non-Windows use find_package to find stuff we want
 #
 #set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
 #find_package(cfitsio 4.5.0 REQUIRED)
-find_package(JPEG REQUIRED)
-find_package(exiv2 REQUIRED)
-find_package(expat REQUIRED)
-find_package(Tiff 4.7 REQUIRED)
-#find_package(INIReader REQUIRED)
+find_package(boost_container CONFIG REQUIRED)
+find_package(boost_interprocess CONFIG REQUIRED)
+find_package(exiv2 CONFIG REQUIRED)
+find_package(expat CONFIG REQUIRED)
+find_package(TIFF 4.7 REQUIRED)
+find_package(libraw CONFIG REQUIRED)
+if(NOT WIN32)
 find_package(OpenMP REQUIRED)
 find_package (Threads REQUIRED)
-find_package(ZLIB REQUIRED)
 endif()
+find_package(ZLIB REQUIRED)
 
 set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
@@ -136,10 +129,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
-if(WIN32)
-add_subdirectory(LibRaw/buildfiles)
-add_subdirectory(libtiff)
-endif()
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
 #[=[

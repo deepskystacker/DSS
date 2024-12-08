@@ -231,16 +231,22 @@ set_source_files_properties(${i18n_Files}
 
 qt_add_lrelease(TS_FILES ${i18n_Files})
 
-target_link_libraries(DeepSkyStackerKernel PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
+target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
+target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(DeepSkyStackerKernel PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
 )
-set_target_properties(DeepSkyStackerKernel PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
 
@@ -251,17 +257,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     .
     ../DeepSkyStacker;
     ../ZClass
-    ../LibRaw
     ../Tools
 )
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PRIVATE
     ../include
-    ../LibTiff
-    ../Zlib
  	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
-    "$ENV{Boost_1_80_0}"
 )
 endif()
 

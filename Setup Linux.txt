@@ -139,17 +139,6 @@ chmod +x qt-online-installer-linux-x64-4.8.1.run
 #
 
 #
-# Install boost 1.86.0 (this takes quite a while)m
-#
-cd ~/Downloads
-wget https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz
-tar -zxvf boost_1_86_0.tar.gz
-cd boost_1_86_0
-./bootstrap.sh
-./b2
-sudo ./b2 install
-
-#
 # Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
 # to your Downloads folder, then untar it, build and install CFITSIO
 #
@@ -198,62 +187,9 @@ ninja
 sudo ninja install
 
 #
-# Install libexpat
-#
-cd ~/Downloads
-gh repo clone libexpat/libexpat
-cd libexpat/expat
-mkdir ../build
-cmake -B ../build -DEXPAT_SHARED_LIBS:BOOL=OFF -G Ninja
-cd ../build
-ninja
-sudo ninja install
-
-#
-# libtiff
-# Download https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
-# and build it ...
-#
-cd ~/Downloads
-wget https://download.osgeo.org/libtiff/tiff-4.7.0.tar.gz
-tar -zxvf tiff-4.7.0.tar.gz
-cd tiff-4.7.0
-cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF
-cd build
-ninja
-sudo ninja install
-
-#
-# Install exiv2 as a static lib
+# Install libinih
 #
 sudo apt-get install libinih-dev
-cd ~/Downloads
-wget https://github.com/Exiv2/exiv2/archive/refs/tags/v0.28.3.tar.gz
-tar -zxvf v0.28.3.tar.gz
-rm v0.28.3.tar.gz
-cd exiv2-0.28.3
-mkdir build
-cmake -B build - -DBUILD_SHARED_LIBS=OFF
-cd build
-ninja
-sudo ninja install
-
-#
-# libraw 0.21.3
-#
-cd ~/Downloads
-wget https://www.libraw.org/data/LibRaw-0.21.3.tar.gz
-tar -zxvf LibRaw-0.21.3.tar.gz
-cd LibRaw-0.21.3
-mkdir build
-gh repo clone LibRaw/LibRaw-cmake
-cd LibRaw-cmake
-cp -r * ../.
-cd ..
-cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF -DENABLE_LCMS=OFF -DENABLE_JASPER=OFF -DENABLE_EXAMPLES=OFF -DENABLE_X3FTOOLS=ON
-cd build
-ninja
-sudo ninja install
 
 #
 # Install openMP (we'll need to install this as a co-req of our install)
@@ -288,6 +224,42 @@ sudo apt-get purge --auto-remove cmake
 sudo apt-get install -y software-properties-common lsb-release
 sudo apt-get clean all
 sudo apt-get install cmake
+
+#
+# Install vcpkg
+#
+cd ~
+sudo apt-get install curl
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg && ./bootstrap-vcpkg.sh
+cd ~
+#
+# Edit .bashrc using (e.g.) nano and and add these lines: 
+#
+export VCPKG_ROOT=~/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
+#
+# You should add them just before the lines that read:
+#
+	# If not running interactively, don't do anything
+	case $- in
+	    *i*) ;;
+	      *) return;;
+	esac
+# *************** END OF START OF .bashrc
+
+#
+# Install some more pre-reqs for building our dependencies
+#
+apt-get install mesa-common-dev libxrandr-dev libxxf86vm-dev
+
+
+
+
+
+
+
+
 
 
 
