@@ -162,11 +162,11 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lowerdockwidget.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="processingcontrols.cpp">
       <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="lowerdockwidget.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
