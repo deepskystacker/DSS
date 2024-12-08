@@ -1,0 +1,42 @@
+{
+  "builtin-baseline": "a345bbdc68cdfda65603e24413b21afb28f110fb",
+  "dependencies": [
+    "boost-container",
+    "boost-interprocess",
+    "exiv2",
+    "expat",
+    "libraw",
+    "tiff",
+    "zlib"
+  ],
+  "overrides": [
+    {
+      "name": "boost-container",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-interprocess",
+      "version": "1.86.0"
+    },
+    {
+      "name": "exiv2",
+      "version": "0.28.3"
+    },
+    {
+      "name": "expat",
+      "version": "2.6.4"
+    },
+    {
+      "name": "libraw",
+      "version": "0.21.3"
+    },
+    {
+      "name": "tiff",
+      "version": "4.7.0"
+    },
+    {
+      "name": "zlib",
+      "version": "1.3.1"
+    }
+  ]
+}
