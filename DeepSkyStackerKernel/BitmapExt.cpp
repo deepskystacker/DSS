@@ -8,9 +8,9 @@
 #include "BitmapIterator.h"
 #include "AHDDemosaicing.h"
 #include "Multitask.h"
-#include "ztrace.h"
-#include "zexcbase.h"
-#include "zexcept.h"
+#include <ztrace.h>
+#include <zexcbase.h>
+#include <zexcept.h>
 #include "RationalInterpolation.h"
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
