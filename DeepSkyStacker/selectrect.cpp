@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "selectrect.h"
 #include "imageview.h"
 #include "ProcessingDlg.h"

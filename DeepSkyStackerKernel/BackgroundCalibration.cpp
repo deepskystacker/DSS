@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 //#include "resource.h"
 #include "BitmapBase.h"
 #include "BackgroundCalibration.h"

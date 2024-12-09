@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "GreyMultiBitmap.h"
 #include "GrayBitmap.h"
 #include "BitmapCharacteristics.h"

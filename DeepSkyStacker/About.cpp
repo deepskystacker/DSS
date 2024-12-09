@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "About.h"
 #include "ui/ui_About.h"
 #include "DSSVersion.h"

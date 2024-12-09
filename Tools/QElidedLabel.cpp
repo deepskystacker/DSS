@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "QElidedLabel.h"
 
 QElidedLabel::QElidedLabel(const QString& text, QWidget* parent, Qt::WindowFlags f) :

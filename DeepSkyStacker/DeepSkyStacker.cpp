@@ -35,7 +35,7 @@
 ****************************************************************************/
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
 // Visual Leak Detector

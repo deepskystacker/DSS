@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "group.h"
 #include "ImageListModel.h"
 #include "ztrace.h"

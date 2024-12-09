@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "avx.h"
 #include "avx_support.h"
 #include "avx_entropy.h"

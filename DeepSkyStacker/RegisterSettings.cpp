@@ -35,7 +35,7 @@
 ****************************************************************************/
 // RegisterSettings.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "RegisterSettings.h"
 #include "ui/ui_RegisterSettings.h"
 #include "Workspace.h"

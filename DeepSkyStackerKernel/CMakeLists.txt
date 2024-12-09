@@ -94,7 +94,7 @@ set(Header_Files
     "StackingTasks.h"
     "StarMask.h"
     "Stars.h"
-    "stdafx.h"
+    "pch.h"
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
@@ -273,7 +273,7 @@ endif()
 
 
 target_precompile_headers(DeepSkyStackerKernel PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################

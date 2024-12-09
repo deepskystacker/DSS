@@ -104,7 +104,7 @@ target_include_directories(DeepSkyStackerCL PUBLIC
 endif()
 
 target_precompile_headers(DeepSkyStackerCL PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################

@@ -1,5 +1,5 @@
 
-#include "stdafx.h"
+#include "pch.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"

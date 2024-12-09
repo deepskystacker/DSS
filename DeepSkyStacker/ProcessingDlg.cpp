@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
 #include "progressdlg.h"

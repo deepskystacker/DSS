@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "ColorHelpers.h"
 
 void CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)

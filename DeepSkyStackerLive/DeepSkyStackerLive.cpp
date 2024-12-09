@@ -36,7 +36,7 @@
 // DeepSkyStackerLive.cpp : Defines the class behaviors for the application.
 //
 
-#include "stdafx.h"
+#include "pch.h"
 
 #if defined(Q_OS_WIN)
 #include <htmlhelp.h>

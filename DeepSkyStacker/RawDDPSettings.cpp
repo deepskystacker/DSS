@@ -1,6 +1,6 @@
 // RawDDPSettings.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "RawDDPSettings.h"
 #include "dslr.h"
 #include "ztrace.h"

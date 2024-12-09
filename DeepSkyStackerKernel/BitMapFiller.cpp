@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "BitMapFiller.h"
 #include "avx_bitmap_filler.h"
 #include "avx_simd_check.h"

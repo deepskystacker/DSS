@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"
 #include "MemoryBitmap.h"

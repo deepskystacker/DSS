@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include <QFileDialog>
 #include "DeepSkyStackerLive.h"
 #include "LiveSettings.h"

@@ -35,7 +35,7 @@
 ****************************************************************************/
 // FolderMonitor.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include <atomic>
 #include <ztrace.h>
 #include "foldermonitor.h"

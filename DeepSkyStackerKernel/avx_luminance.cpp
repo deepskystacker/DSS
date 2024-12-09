@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "avx_includes.h"
 #include "avx_luminance.h"
 #include "avx_cfa.h"

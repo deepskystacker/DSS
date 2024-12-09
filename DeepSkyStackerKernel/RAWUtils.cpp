@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "RAWUtils.h"
 #define LIBRAW_NO_WINSOCK2
 #include "libraw/libraw.h"

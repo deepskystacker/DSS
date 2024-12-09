@@ -35,7 +35,7 @@
 ****************************************************************************/
 // FileStacker.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "filestacker.h"
 #include "progresslive.h"
 #include "RegisterEngine.h"

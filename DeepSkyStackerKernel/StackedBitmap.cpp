@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StackedBitmap.h"
 #include "TIFFUtil.h"
 #include "ColorHelpers.h"

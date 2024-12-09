@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "AHDDemosaicing.h"
 #include "ColorBitmap.h"
 #include "ztrace.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "dssrect.h"
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"

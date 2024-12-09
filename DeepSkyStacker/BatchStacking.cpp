@@ -1,6 +1,6 @@
 // BatchStacking.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BatchStacking.h"
 #include "ui/ui_BatchStacking.h"
 #include "ztrace.h"

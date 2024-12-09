@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepStack.h"
 #include "histogram.h"
 #include "ztrace.h"

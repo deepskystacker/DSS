@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "MemoryBitmap.h"
 #include "ztrace.h"
 #include "CFABitmapInfo.h"

@@ -93,7 +93,7 @@ target_link_libraries(DeepSkyStacker PRIVATE
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <algorithm>
 #include "GrayBitmap.h"
 #include "DSSProgress.h"

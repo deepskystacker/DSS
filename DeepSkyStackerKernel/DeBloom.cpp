@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "DeBloom.h"
 #include "GrayBitmap.h"
 #include "DSSTools.h"

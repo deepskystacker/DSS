@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <QCoreApplication>
 #include "DSSProgress.h"
 #include "Multitask.h"

@@ -36,7 +36,7 @@
 // StackingDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "StackingDlg.h"
 #include "ui_StackingDlg.h"
 #include "picturelist.h"

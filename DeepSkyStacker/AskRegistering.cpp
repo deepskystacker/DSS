@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "AskRegistering.h"
 #include "ui_AskRegistering.h"
 

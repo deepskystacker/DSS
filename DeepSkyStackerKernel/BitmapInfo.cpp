@@ -35,7 +35,7 @@
 ****************************************************************************/
 // BitmapInfo.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BitmapInfo.h"
 #include <zexcept.h>
 #include <ztrace.h>

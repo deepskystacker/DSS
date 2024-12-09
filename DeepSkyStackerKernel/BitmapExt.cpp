@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <unordered_set>
 #include "BitmapExt.h"
 #include "DSSProgress.h"

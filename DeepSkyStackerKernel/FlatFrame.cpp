@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "FlatFrame.h"
 #include "Multitask.h"
 #include "DSSProgress.h"

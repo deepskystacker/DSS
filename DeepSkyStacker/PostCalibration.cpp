@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "PostCalibration.h"
 #include "ui/ui_PostCalibration.h"
 #include "Workspace.h"

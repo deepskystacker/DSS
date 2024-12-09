@@ -1,7 +1,7 @@
 // CheckAbove.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "CheckAbove.h"
 #include "ui/ui_CheckAbove.h"
 

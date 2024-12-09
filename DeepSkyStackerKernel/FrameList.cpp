@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "zexcept.h"

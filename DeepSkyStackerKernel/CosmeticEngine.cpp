@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "CosmeticEngine.h"
 #include "MemoryBitmap.h"
 #include "ztrace.h"

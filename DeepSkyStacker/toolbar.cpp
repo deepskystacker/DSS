@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "toolbar.h"
 #include "StackingDlg.h"
 #include "zexcbase.h"

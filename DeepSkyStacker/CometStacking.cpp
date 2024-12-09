@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "CometStacking.h"
 #include "ui/ui_CometStacking.h"
 #include "Workspace.h"

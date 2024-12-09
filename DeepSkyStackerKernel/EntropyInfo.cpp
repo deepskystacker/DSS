@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "EntropyInfo.h"
 #include "DSSProgress.h"
 #include "avx_entropy.h"

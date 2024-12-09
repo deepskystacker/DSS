@@ -1,6 +1,6 @@
 // StackRecap.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "StackRecap.h"
 #include "ui/ui_StackRecap.h"
 #include "DeepSkyStacker.h"

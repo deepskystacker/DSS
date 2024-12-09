@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "ResultParameters.h"
 #include "ui/ui_ResultParameters.h"
 #include "Workspace.h"

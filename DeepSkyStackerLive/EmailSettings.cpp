@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStackerLive.h"
 #include "LiveSettings.h"
 #include "emailsettings.h"

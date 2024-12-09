@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "avx_bitmap_filler.h"
 #include "ColorBitmap.h"

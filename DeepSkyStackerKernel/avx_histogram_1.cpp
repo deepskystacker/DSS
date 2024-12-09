@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "avx_histogram.h"
 #include "MemoryBitmap.h"
 #include "ColorHelpers.h"

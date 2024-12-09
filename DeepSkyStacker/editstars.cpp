@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "editstars.h"
 #include "Delaunay.h"
 #include "imageview.h"

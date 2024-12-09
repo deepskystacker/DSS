@@ -1,6 +1,6 @@
 ﻿// RecommendedSettings.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "RecommendedSettings.h"
 #include "ui/ui_RecommendedSettings.h"
 #include "DeepSkyStacker.h"

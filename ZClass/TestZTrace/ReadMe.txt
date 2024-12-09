@@ -20,9 +20,9 @@ TestZTrace.cpp
 /////////////////////////////////////////////////////////////////////////////
 Other standard files:
 
-StdAfx.h, StdAfx.cpp
+pch.h, pch.cpp
     These files are used to build a precompiled header (PCH) file
-    named TestZTrace.pch and a precompiled types file named StdAfx.obj.
+    named TestZTrace.pch and a precompiled types file named pch.obj.
 
 
 /////////////////////////////////////////////////////////////////////////////

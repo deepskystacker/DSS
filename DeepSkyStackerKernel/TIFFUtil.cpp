@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "TIFFUtil.h"
 //#include "resource.h"
 #include "ztrace.h"

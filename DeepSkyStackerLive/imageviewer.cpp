@@ -35,7 +35,7 @@
 ****************************************************************************/
 // ImageViewer.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "imageviewer.h"
 #include "DeepSkyStackerLive.h"
 #include "LiveSettings.h"

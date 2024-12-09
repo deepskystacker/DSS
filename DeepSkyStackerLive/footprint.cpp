@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "footprint.h"
 #include "imageview.h"
 

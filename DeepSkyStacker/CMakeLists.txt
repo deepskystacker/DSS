@@ -100,7 +100,7 @@ set(Header_Files
     "DSS-winpackagefamily.h"
     "lowerdockwidget.h"
     "mrulist.h"
-    "stdafx.h"
+    "pch.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -356,7 +356,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 endif()
 
 target_precompile_headers(DeepSkyStacker PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################

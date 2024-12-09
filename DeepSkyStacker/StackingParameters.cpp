@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StackingParameters.h"
 #include "ui/ui_StackingParameters.h"
 #include "Workspace.h"

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "RunningStackingEngine.h"
 #include "ztrace.h"
 #include "GrayBitmap.h"

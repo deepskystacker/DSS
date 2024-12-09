@@ -149,7 +149,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################

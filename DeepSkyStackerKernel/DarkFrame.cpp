@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "DarkFrame.h"
 #include "ztrace.h"
 #include "DSSProgress.h"
