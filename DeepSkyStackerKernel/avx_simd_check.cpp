@@ -7,14 +7,14 @@
 #include <cpuid.h>
 #endif
 
-#if defined (__APPLE__)
+#if defined (Q_OS_MACOS)
 #include <sys/sysctl.h>
 #endif
 
 
 bool AvxSimdCheck::checkAvx2CpuSupport()
 {
-#if defined (__APPLE__) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
+#if defined (Q_OS_MACOS) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
 	return true;
 #else
 #if defined(Q_OS_WIN) // MSVC verions
@@ -88,7 +88,7 @@ bool AvxSimdCheck::checkSimdAvailability()
 	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
 }
 
-#if defined (__APPLE__)
+#if defined (Q_OS_MACOS)
 
 void AvxSimdCheck::reportCpuType()
 {

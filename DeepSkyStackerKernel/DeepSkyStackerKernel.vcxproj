@@ -168,16 +168,46 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include=".\AHDDemosaicing.cpp" />
-    <ClCompile Include=".\avx.cpp" />
-    <ClCompile Include=".\avx_avg.cpp" />
-    <ClCompile Include=".\avx_bitmap_filler.cpp" />
-    <ClCompile Include=".\avx_cfa.cpp" />
-    <ClCompile Include=".\avx_entropy.cpp" />
-    <ClCompile Include=".\avx_filter.cpp" />
-    <ClCompile Include=".\avx_histogram.cpp" />
-    <ClCompile Include=".\avx_luminance.cpp" />
-    <ClCompile Include=".\avx_output.cpp" />
-    <ClCompile Include=".\avx_support.cpp" />
+    <ClCompile Include=".\avx.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_avg.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_bitmap_filler.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_cfa.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_entropy.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_filter.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_histogram.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_luminance.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_output.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include=".\avx_support.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
     <ClCompile Include=".\BackgroundCalibration.cpp" />
     <ClCompile Include=".\Bayer.cpp" />
     <ClCompile Include=".\BilinearParameters.cpp" />

@@ -11,7 +11,7 @@
 // Solution 2: Do not define SIMDE_ENABLE_NATIVE_ALIASES, but then all Simde symbols are prefixed with "simde_". So we would have to 
 //             changes thousands of data types and function calls, and we would be "locked-in" to Simde. 
 
-#if defined (__APPLE__) // ARM -> We always have to emulate the x86-AVX instructions.
+#if defined (Q_OS_MACOS) // ARM -> We always have to emulate the x86-AVX instructions.
 
 #define SIMDE_ENABLE_NATIVE_ALIASES
 #include "simde/x86/avx512.h"

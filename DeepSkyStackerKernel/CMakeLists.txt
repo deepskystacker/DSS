@@ -221,6 +221,10 @@ set_source_files_properties(avx_simd_check.cpp
         COMPILE_OPTIONS "-mxsave")
 endif()
 
+set_source_files_properties(${AVX_Files}
+    PROPERTIES
+        COMPILE_DEFINITIONS "Q_NUMERIC_NO_INTRINSICS")
+
 ################################################################################
 # Target
 ################################################################################
