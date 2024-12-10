@@ -2261,6 +2261,7 @@ namespace DSS
 			{
 			case AskRegistering::Answer::ARA_ONE:
 				frameList.checkAllLights(false);// Register only this light frame (unchek the others
+				[[fallthrough]];
 			case AskRegistering::Answer::ARA_ALL:
 				frameList.checkImage(fileToShow, true);// Register all the checked light frames (including this one).
 				registerCheckedImages();
