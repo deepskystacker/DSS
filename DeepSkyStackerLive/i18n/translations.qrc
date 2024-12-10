@@ -1,18 +1,19 @@
 <RCC>
     <qresource prefix="/i18n">
-        <file>DeepSkyStackerLive_ca.qm</file>
-        <file>DeepSkyStackerLive_cs.qm</file>
-        <file>DeepSkyStackerLive_de.qm</file>
-        <file>DeepSkyStackerLive_en.qm</file>
-        <file>DeepSkyStackerLive_es.qm</file>
-        <file>DeepSkyStackerLive_fr.qm</file>
-        <file>DeepSkyStackerLive_it.qm</file>
-        <file>DeepSkyStackerLive_nl.qm</file>
-        <file>DeepSkyStackerLive_pt_BR.qm</file>
-        <file>DeepSkyStackerLive_ro.qm</file>
-        <file>DeepSkyStackerLive_ru.qm</file>
-        <file>DeepSkyStackerLive_tr.qm</file>
-        <file>DeepSkyStackerLive_zh_CN.qm</file>
-        <file>DeepSkyStackerLive_zh_TW.qm</file>
+      <file>DeepSkyStackerLive_ca.qm</file>
+      <file>DeepSkyStackerLive_cs.qm</file>
+      <file>DeepSkyStackerLive_de.qm</file>
+      <file>DeepSkyStackerLive_en.qm</file>
+      <file>DeepSkyStackerLive_en_GB.qm</file>
+      <file>DeepSkyStackerLive_es.qm</file>
+      <file>DeepSkyStackerLive_fr.qm</file>
+      <file>DeepSkyStackerLive_it.qm</file>
+      <file>DeepSkyStackerLive_nl.qm</file>
+      <file>DeepSkyStackerLive_pt_BR.qm</file>
+      <file>DeepSkyStackerLive_ro.qm</file>
+      <file>DeepSkyStackerLive_ru.qm</file>
+      <file>DeepSkyStackerLive_tr.qm</file>
+      <file>DeepSkyStackerLive_zh_CN.qm</file>
+      <file>DeepSkyStackerLive_zh_TW.qm</file>
     </qresource>
 </RCC>

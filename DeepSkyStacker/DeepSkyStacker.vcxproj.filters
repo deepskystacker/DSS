@@ -810,6 +810,9 @@
     <QtTranslation Include="i18n\DeepSkyStacker_ja_JP.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DeepSkyStacker_en_GB.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc">

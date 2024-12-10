@@ -305,6 +305,10 @@
     <QtTranslation Include="i18n\DeepSkyStackerCL_cs.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerCL_de.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerCL_en.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_en_GB.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
     <QtTranslation Include="i18n\DeepSkyStackerCL_es.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerCL_fr.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerCL_it.ts" />

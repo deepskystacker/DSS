@@ -344,6 +344,9 @@
     <QtTranslation Include="i18n\DeepSkyStackerCL_ja_JP.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DeepSkyStackerCL_en_GB.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">

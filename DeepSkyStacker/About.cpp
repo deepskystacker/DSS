@@ -102,7 +102,6 @@ namespace DSS
             QLocale locale{ lang };
             QString variant{ lang.section('_', 1) };
             QString langName = locale.nativeLanguageName();
-            if ("en" == lang) langName = "English";
             if (!variant.isEmpty())
             {
                 langName += " " + locale.nativeTerritoryName();     // was .nativeCountryName()

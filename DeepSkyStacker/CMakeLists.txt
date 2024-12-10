@@ -151,7 +151,8 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_cs.ts"
 	"i18n/DeepSkyStacker_de.ts"
 	"i18n/DeepSkyStacker_en.ts"
-	"i18n/DeepSkyStacker_es.ts"
+	"i18n/DeepSkyStacker_en_GB.ts"
+    "i18n/DeepSkyStacker_es.ts"
 	"i18n/DeepSkyStacker_fr.ts"
 	"i18n/DeepSkyStacker_it.ts"
 	"i18n/DeepSkyStacker_ja_JP.ts"
@@ -316,7 +317,7 @@ set(ALL_FILES
 # Target
 ################################################################################
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
-qt_add_translations(${PROJECT_NAME} PLURALS_TS_FILE en TS_FILE_DIR i18n)
+qt_add_translations(${PROJECT_NAME} TS_FILE_DIR i18n PLURALS_TS_FILE ${PROJECT_NAME}_en PLURALS_TS_FILE ${PROJECT_NAME}_en_GB )
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
 
 
