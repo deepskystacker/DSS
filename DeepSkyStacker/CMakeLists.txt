@@ -3,8 +3,6 @@ message("Configuring project: " ${PROJECT_NAME})
 
 set(COMPILE_WARNING_AS_ERROR YES)
 
-set(CMAKE_AUTORCC ON)
-
 ################################################################################
 # Source groups
 ################################################################################
@@ -166,7 +164,7 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc")
+source_group("Qt\\i18n" FILES ${i18n_Files})
 
 set(Resources
 	"Icon.rc"
@@ -309,7 +307,6 @@ set(ALL_FILES
     ${Dialogs__Stacking}
     ${Header_Files}
 	${Ui_Files}
-    ${i18n_Files} "i18n/translations.qrc"
 	${Resources}
     ${Source_Files}
     ${Tools}
@@ -318,13 +315,9 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-qt_standard_project_setup()
-set_source_files_properties(${i18n_Files}
-     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
-qt_add_lrelease(TS_FILES ${i18n_Files})
-#qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
-#qt_add_translations(${PROJECT_NAME} PLURALS_TS_FILE en TS_FILE_DIR i18n)
-#qt_add_executable(DeepSkyStacker ${ALL_FILES})
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
+qt_add_translations(${PROJECT_NAME} PLURALS_TS_FILE en TS_FILE_DIR i18n)
+qt_add_executable(DeepSkyStacker ${ALL_FILES})
 
 
 set_target_properties(DeepSkyStacker PROPERTIES

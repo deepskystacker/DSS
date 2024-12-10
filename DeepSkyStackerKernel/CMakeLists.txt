@@ -2,11 +2,8 @@ set(PROJECT_NAME DeepSkyStackerKernel)
 message("Configuring project: " ${PROJECT_NAME})
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
-qt_standard_project_setup()
-
 set(COMPILE_WARNING_AS_ERROR YES)
-
-set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC TRUE)
 
 ################################################################################
 # Source groups
@@ -72,6 +69,7 @@ set(Header_Files
     "GreyMultiBitmap.h"
     "group.h"
     "histogram.h"
+    "imageloader.h"
     "ImageListModel.h"
     "LinearInterpolationh.h"
     "MasterFrames.h"
@@ -230,7 +228,6 @@ set_source_files_properties(${AVX_Files}
 qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
 qt_add_translations(${PROJECT_NAME} PLURALS_TS_FILE en TS_FILE_DIR i18n)
-#qt_add_resources(${PROJECT_NAME} i18n/DeepSkyStackerKernel_translations.qrc)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
