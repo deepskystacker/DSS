@@ -71,8 +71,8 @@ public:
 	bool	load(const fs::path file, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
 
 signals:
-	void imageLoaded(std::filesystem::path p);
-	void imageLoadFailed();
+	void imageLoaded(std::filesystem::path p) {};
+	void imageLoadFailed() {};
 };
 
 class ThreadLoader : public QObject, public QRunnable
