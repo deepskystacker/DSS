@@ -126,7 +126,7 @@ set(i18n_Files
 	"i18n/DeepSkyStackerKernel_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/DeepSkyStackerKernel_translations.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files} 
 )
 
 set(AVX_Files
@@ -208,7 +208,6 @@ source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${Header_Files}
-	${i18n_Files} "i18n/DeepSkyStackerKernel_translations.qrc"
 	${Source_Files}
 )
 
@@ -229,11 +228,9 @@ set_source_files_properties(${AVX_Files}
 # Target
 ################################################################################
 qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
-
-set_source_files_properties(${i18n_Files}
-     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
-
-qt_add_lrelease(TS_FILES ${i18n_Files})
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
+qt_add_translations(${PROJECT_NAME} PLURALS_TS_FILE en TS_FILE_DIR i18n)
+#qt_add_resources(${PROJECT_NAME} i18n/DeepSkyStackerKernel_translations.qrc)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
