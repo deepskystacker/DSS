@@ -1739,7 +1739,9 @@ public:
 		m_pLightTask { nullptr },
 		m_BackgroundCalibration {},
 		m_rcResult{},
-		m_pAvxEntropy { nullptr }
+		m_pAvxEntropy { nullptr },
+		m_lPixelSizeMultiplier{0},
+		m_bColor{false}
 	{}
 
 	void process();
