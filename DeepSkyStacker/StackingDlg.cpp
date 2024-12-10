@@ -1286,7 +1286,7 @@ namespace DSS
 			if (ndx.isValid())
 			{
 				fs::path  file;
-				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
+				const ImageListModel* model = qobject_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
 				file = model->selectedFile(row);
 				//
