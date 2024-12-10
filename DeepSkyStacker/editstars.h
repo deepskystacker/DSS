@@ -62,7 +62,7 @@ namespace DSS
 		QRgb			cr1, cr2, cr3;
 
 	public:
-		DelaunayTriangle()
+		DelaunayTriangle() : cr1 {}, cr2{}, cr3{}
 		{
 		};
 		~DelaunayTriangle()

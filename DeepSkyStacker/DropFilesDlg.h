@@ -74,8 +74,8 @@ namespace DSS
 
 	private:
 		Ui::DropFilesDlg* ui;
-		bool initialised;
-		size_t fileCount;
+		bool initialised{ false };
+		size_t fileCount{ 0 };
 		PICTURETYPE type;
 
 		void onInitDialog();
