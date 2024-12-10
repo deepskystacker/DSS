@@ -532,12 +532,14 @@ bool CFITSReader::Open()
 					break;
 				case SHORT_IMG :
 					m_bSigned = true;  // Fall through intentional
+					[[fallthrough]];
 				case USHORT_IMG :
 					m_lBitsPerPixel = 16;
 					m_bFloat = false;
 					break;
 				case LONG_IMG :
 					m_bSigned = true; // Fall through intentional
+					[[fallthrough]];
 				case ULONG_IMG :
 					m_lBitsPerPixel = 32;
 					m_bFloat = false;
