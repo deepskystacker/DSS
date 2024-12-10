@@ -46,12 +46,13 @@ public:
 
 class ImageLoader : public QObject
 {
+	Q_OBJECT
+
 	using CacheKeyType = std::filesystem::path;
 	using CacheValueType = std::tuple<LoadedImage, int, bool>; // <image, lastUse, currentlyLoading>
 	using CacheType = std::unordered_map<CacheKeyType, CacheValueType>;
 
 	friend class ThreadLoader;
-	Q_OBJECT
 
 	static inline constexpr int16_t MAXIMAGESINCACHE = 20;
 	static inline constinit std::atomic_int age{ 0 };
@@ -71,8 +72,8 @@ public:
 	bool	load(const fs::path file, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
 
 signals:
-	void imageLoaded(std::filesystem::path p) {};
-	void imageLoadFailed() {};
+	void imageLoaded(std::filesystem::path p);
+	void imageLoadFailed();
 };
 
 class ThreadLoader : public QObject, public QRunnable
