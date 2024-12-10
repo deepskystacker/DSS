@@ -166,7 +166,7 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files})
+source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc")
 
 set(Resources
 	"Icon.rc"
@@ -309,6 +309,7 @@ set(ALL_FILES
     ${Dialogs__Stacking}
     ${Header_Files}
 	${Ui_Files}
+    ${i18n_Files} "i18n/translations.qrc"
 	${Resources}
     ${Source_Files}
     ${Tools}
