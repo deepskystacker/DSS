@@ -228,7 +228,11 @@ set_source_files_properties(${AVX_Files}
 ################################################################################
 qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
-qt_add_translations(${PROJECT_NAME} TS_FILE_DIR i18n PLURALS_TS_FILE ${PROJECT_NAME}_en PLURALS_TS_FILE ${PROJECT_NAME}_en_GB)
+qt_add_translations(${PROJECT_NAME}
+    TS_FILE_DIR i18n
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
+    )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
