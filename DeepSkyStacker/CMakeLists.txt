@@ -428,7 +428,6 @@ target_link_libraries(DeepSkyStacker PRIVATE
 	DeepSkyStackerKernel
     ZClass
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
@@ -442,13 +441,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 endif()
 
-set(DEBUG_DEPENDENCIES cfitsio SmtpMime)
-set(RELEASE_DEPENDENCIES cfitsio SmtpMime)
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-)
+set(ADDITIONAL_LIBRARY_DEPENDENCIES cfitsio)
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}

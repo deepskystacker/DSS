@@ -58,7 +58,7 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 #
@@ -131,9 +131,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
-#[=[
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
+#[=[
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 
