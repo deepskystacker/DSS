@@ -78,7 +78,7 @@
 #include "progresslive.h"
 #include "RegisterEngine.h"
 #include "RestartMonitoring.h"
-#include <SmtpMime/SmtpMime>
+#include <smtpmime/SmtpMime>
 #include "QMessageLogger.h"
 
 using namespace DSS;
