@@ -170,7 +170,6 @@ source_group("Qt\\i18n" FILES ${i18n_Files})
 set(Resources
 	"Icon.rc"
 	"Icon/app.ico"
-	"resources.qrc"
 	"Version.rc"
     "res/4Corners.bmp"
     "res/4Corners.png"
@@ -290,8 +289,12 @@ set(Resources
     "res/Taiwan.png"
     "res/Turkish.png"
 	)
+
+set (Resource_Files
+    "resources.qrc"
+    )
 	
-source_group("Resources" FILES ${Resources}	)
+source_group("Resources" FILES ${Resources}	${Resource_Files})
 
 set(Tools
     "../Tools/imageview.cpp"
@@ -322,6 +325,7 @@ qt_add_translations(${PROJECT_NAME}
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
     )
+qt_add_resources(ALL_FILES ${Resource_Files})
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
 
 set_target_properties(DeepSkyStacker PROPERTIES
