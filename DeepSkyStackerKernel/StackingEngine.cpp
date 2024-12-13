@@ -2238,7 +2238,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							continue;
 
 						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
-
+#if(0)
 						if (pBitmap->IsMonochrome())
 						{
 							auto deb{ qDebug() };
@@ -2260,6 +2260,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								deb << r << " " << g << " " << b << Qt::endl;
 							}
 						}
+#endif
 
 						CPixelTransform PixTransform{ lightframeInfo.m_BilinearParameters };
 
@@ -2310,6 +2311,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						if (static_cast<bool>(pDelta))
 							SaveDeltaImage(pDelta.get());
 
+#if (0)
 						qDebug() << "Calibrated light:";
 						if (pBitmap->IsMonochrome())
 						{
@@ -2326,6 +2328,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								qDebug().nospace() << r << " " << g << " " << b;
 							}
 						}
+#endif
 
 						if (m_pProgress != nullptr)
 							m_pProgress->Start2(strText, 0);

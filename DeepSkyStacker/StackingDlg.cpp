@@ -2437,6 +2437,7 @@ namespace DSS
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 
+#if (0)
 					auto deb{ qDebug() }; deb.nospace();
 					deb << "Final stacked image:" << Qt::endl;
 
@@ -2454,6 +2455,7 @@ namespace DSS
 							deb << " " << r << " " << g << " " << b << Qt::endl;
 						}
 					}
+#endif
 
 					if (iff == IFF_TIFF)
 					{

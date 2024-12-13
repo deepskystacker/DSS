@@ -77,7 +77,7 @@ public :
 		if (nullptr == image_.get())
 		{
 			int width = GetWidth(); int height = GetHeight();
-			qDebug() << "Creating image data storage: " << width << "*" << height;
+			//qDebug() << "Creating image data storage: " << width << "*" << height;
 			imageData_.resize(GetWidth() * GetHeight() * sizeof(QRgb));
 			image_ = std::make_unique<QImage>(imageData_.data(), GetWidth(), GetHeight(), QImage::Format_RGB32);
 		}
