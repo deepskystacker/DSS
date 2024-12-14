@@ -13,6 +13,7 @@ set(Header_Files
     "avx.h"
     "avx_avg.h"
     "avx_bitmap_filler.h"
+    "avx_bitmap_util.h"
     "avx_cfa.h"
     "avx_entropy.h"
     "avx_filter.h"
@@ -138,12 +139,12 @@ set(AVX_Files
     "avx_histogram.cpp"
     "avx_luminance.cpp"
     "avx_output.cpp"
-    "avx_support.cpp"
 )
 
 set(Source_Files
     "AHDDemosaicing.cpp"
     "avx_1.cpp"
+    "avx_bitmap_util.cpp"
     "avx_histogram_1.cpp"
     "avx_simd_check.cpp"
     ${AVX_Files}
