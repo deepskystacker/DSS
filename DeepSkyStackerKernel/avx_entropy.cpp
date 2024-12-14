@@ -2,6 +2,7 @@
 #include "avx_includes.h"
 #include "avx_entropy.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "avx_cfa.h"
 #include "avx_histogram.h"
 #include "Multitask.h"
@@ -17,9 +18,9 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 		const size_t width = pEntropyCoverage->Width();
 		const size_t height = pEntropyCoverage->Height();
 		static_assert(std::is_same<__m512&, decltype(redEntropyLayer[0])>::value);
-		const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m512>(width);
+		const size_t nrVectors = AvxBitmapUtil::numberOfAvxVectors<float, __m512>(width);
 		redEntropyLayer.resize(height * nrVectors);
-		if (AvxSupport{ *pEntropyCoverage }.isColorBitmap())
+		if (AvxBitmapUtil{ *pEntropyCoverage }.isColorBitmap())
 		{
 			greenEntropyLayer.resize(height * nrVectors);
 			blueEntropyLayer.resize(height * nrVectors);
@@ -46,7 +47,7 @@ template <class T>
 int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
 	// Check input bitmap. 
-	const AvxSupport avxInputSupport{ inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA 
 		return 1;
 

@@ -3,6 +3,7 @@
 #include "avx_avg.h"
 #include "dssrect.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "TaskInfo.h"
 #include "ztrace.h"
 
@@ -41,11 +42,11 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 	if constexpr (!std::is_same<T_OUT, float>::value)
 		return 1;
 
-	const AvxSupport avxTempBitmap{ tempBitmap };
+	const AvxBitmapUtil avxTempBitmap{ tempBitmap };
 
 	if (!avxTempBitmap.bitmapHasCorrectType<T_IN>())
 		return 1;
-	if (!AvxSupport{outputBitmap}.bitmapHasCorrectType<T_OUT>())
+	if (!AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<T_OUT>())
 		return 1;
 
 	ZFUNCTRACE_RUNTIME();
@@ -197,7 +198,7 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 	{
 		if (avxEntropy.pEntropyCoverage == nullptr)
 			return 1;
-		AvxSupport avxEntropyCoverageBitmap{ *avxEntropy.pEntropyCoverage };
+		AvxBitmapUtil avxEntropyCoverageBitmap{ *avxEntropy.pEntropyCoverage };
 		if (!avxEntropyCoverageBitmap.bitmapHasCorrectType<float>())
 			return 1;
 
@@ -289,9 +290,7 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 			}
 			return 0;
 		}
-
 		return 1;
 	}
-
 	return 1;
 }

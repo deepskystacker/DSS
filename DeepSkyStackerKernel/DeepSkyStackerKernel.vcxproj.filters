@@ -116,9 +116,6 @@
     <ClCompile Include=".\MedianFilterEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\avx_support.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include=".\avx_entropy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,6 +207,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="avx_histogram_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avx_bitmap_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -470,6 +470,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QMessageLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_bitmap_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
