@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "avx_includes.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "dssrect.h"
 #include "avx.h"
 #include "PixelTransform.h"
@@ -15,7 +16,7 @@ AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& 
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
-	vectorsPerLine{ AvxSupport::numberOfAvxVectors<float, VectorElementType>(width) },
+	vectorsPerLine{ AvxBitmapUtil::numberOfAvxVectors<float, VectorElementType>(width) },
 	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
 	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
 	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
@@ -51,12 +52,12 @@ void AvxStacking::init(const int lStart, const int lEnd)
 
 void AvxStacking::resizeColorVectors(const size_t nrVectors)
 {
-	if (AvxSupport{ tempBitmap }.isColorBitmap())
+	if (AvxBitmapUtil{ tempBitmap }.isColorBitmap())
 	{
 		greenPixels.resize(nrVectors);
 		bluePixels.resize(nrVectors);
 	}
-	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
+	if (AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		avxCfa.init(lineStart, lineEnd);
 	}
@@ -96,12 +97,12 @@ int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTas
 		return 1;
 
 	// Check input bitmap.
-	const AvxSupport avxInputSupport{ stackData.inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
 	// Check output (temp) bitmap.
-	const AvxSupport avxTempSupport{ stackData.tempBitmap };
+	const AvxBitmapUtil avxTempSupport{ stackData.tempBitmap };
 	if (!avxTempSupport.isColorBitmapOfType<T>() && !avxTempSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
@@ -139,7 +140,7 @@ int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width);
+	const size_t nrVectors = AvxBitmapUtil::numberOfAvxVectors<float, __m256>(stackData.width);
 	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fXCometShift : 0.0));
 	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fYCometShift : 0.0));
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
@@ -416,7 +417,7 @@ int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 };
 
 template <class T, class LoopFunction, class InterpolParam>
-int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
+int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const AvxBitmapUtil& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
 {
 	if (avxInputSupport.isColorBitmapOfType<T>())
 	{
@@ -457,7 +458,7 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = stackData.width / 16;
-	const AvxSupport avxInputSupport{ stackData.inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 
 	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
 	{
@@ -581,7 +582,7 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 template <bool ISRGB, bool ENTROPY, class T>
 int Avx256Stacking::pixelPartitioning()
 {
-	AvxSupport avxTempBitmap{ stackData.tempBitmap };
+	AvxBitmapUtil avxTempBitmap{ stackData.tempBitmap };
 	// Check if we were called with the correct template argument.
 	if constexpr (ISRGB) {
 		if (!avxTempBitmap.isColorBitmapOfType<T>())
@@ -658,7 +659,7 @@ int Avx256Stacking::pixelPartitioning()
 	float* pRedEntropyLayer, * pGreenEntropyLayer, * pBlueEntropyLayer;
 	if constexpr (ENTROPY)
 	{
-		AvxSupport avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
+		AvxBitmapUtil avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
 
 		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
 			return 1;
@@ -762,7 +763,7 @@ int Avx256Stacking::pixelPartitioning()
 			accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2); // x+1, y, fraction2
 		};
 
-	const int nrVectors = static_cast<int>(AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width));
+	const int nrVectors = static_cast<int>(AvxBitmapUtil::numberOfAvxVectors<float, __m256>(stackData.width));
 	const __m256i inputWidthVec = _mm256_set1_epi32(stackData.width);
 
 	for (int row = 0; row < stackData.height; ++row)

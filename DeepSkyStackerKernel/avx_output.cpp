@@ -2,6 +2,7 @@
 #include "avx_includes.h"
 #include "avx_output.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "avx_median.h"
 #include "MultiBitmap.h"
 #include "ColorMultiBitmap.h"
@@ -18,7 +19,7 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 	if (inputBitmap.GetHomogenization())
 		avxReady = false;
 	// Output must be float values
-	if (AvxSupport{outputBitmap}.bitmapHasCorrectType<float>() == false)
+	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
 		avxReady = false;
 }
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "avx.h"
-#include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "avx_entropy.h"
 #include "PixelTransform.h"
 #include "TaskInfo.h"
@@ -19,7 +19,7 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
 
-	const bool isColor = AvxSupport{ this->stackData.entropyData.inputBitmap }.isColorBitmapOrCfa();
+	const bool isColor = AvxBitmapUtil{ this->stackData.entropyData.inputBitmap }.isColorBitmapOrCfa();
 
 	for (int j = this->stackData.lineStart; j < this->stackData.lineEnd; ++j)
 	{

@@ -1103,24 +1103,24 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 			// First load the master offset if available
 			if (m_pOffsetTask != nullptr)
 			{
-				const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
-
-				//if (masterOffsetFound && pMasterOffset->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-				//	qDebug() << "Master Offset"
-				//		<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
-				//		<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
-				//}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset); masterOffsetFound && pMasterOffset->IsMonochrome())
+//				{
+//					qDebug() << "Master Offset"
+//						<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+//						<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+//				}
 			}
 
 			if (m_pDarkFlatTask != nullptr)
 			{
-				const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
-
-				//if (masterDarkFlatFound && pMasterDarkFlat->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-				//	qDebug() << "Master DarkFlat"
-				//		<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
-				//		<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
-				//}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat); masterDarkFlatFound && pMasterDarkFlat->IsMonochrome())
+//				{
+//					qDebug() << "Master DarkFlat"
+//						<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
+//						<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
+//				}
 			}
 
 			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>

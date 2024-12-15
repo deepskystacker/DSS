@@ -224,12 +224,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include=".\avx_support.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include=".\BackgroundCalibration.cpp" />
     <ClCompile Include=".\Bayer.cpp" />
     <ClCompile Include=".\BilinearParameters.cpp" />
@@ -273,6 +267,7 @@
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
     <ClCompile Include="avx_1.cpp" />
+    <ClCompile Include="avx_bitmap_util.cpp" />
     <ClCompile Include="avx_histogram_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
     <ClCompile Include="DeepStack.cpp" />
@@ -329,6 +324,7 @@
     <ClInclude Include=".\GrayBitmap.h" />
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
+    <ClInclude Include="avx_bitmap_util.h" />
     <ClInclude Include="avx_includes.h" />
     <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="avx_simd_factory.h" />

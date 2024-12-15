@@ -2,6 +2,7 @@
 #include "avx_includes.h"
 #include "avx_histogram.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "histogram.h"
 #include "BezierAdjust.h"
 
@@ -47,7 +48,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 		}
 	};
 
-	const bool isColor = AvxSupport{ inputBitmap }.isColorBitmapOrCfa();
+	const bool isColor = AvxBitmapUtil{ inputBitmap }.isColorBitmapOrCfa();
 
 	mergeHisto(red, redHisto);
 	mergeHisto(green, isColor ? greenHisto : redHisto);
@@ -81,7 +82,7 @@ template <class T>
 int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 {
 	// Check input bitmap.
-	const AvxSupport avxInputSupport{ histoData.inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ histoData.inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
 		return 1;
 

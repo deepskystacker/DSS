@@ -369,7 +369,7 @@ namespace DSS
 		{
 			ZTRACE_RUNTIME("fs::current_path() failed with error code %ld, %s",
 				ec.value(), ec.message().c_str());
-			ZTRACE_RUNTIME("oldCWD: %s", oldCWD);
+			ZTRACE_RUNTIME("oldCWD: %s", oldCWD.generic_string().c_str());
 		}
 
 		if (std::FILE* hFile =
