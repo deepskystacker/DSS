@@ -254,7 +254,12 @@ if (NOT LINUX)
          DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
      )"
      )
-
-    INSTALL (TARGETS DeepSkyStackerCL)
-    INSTALL (SCRIPT ${deploy_script})
+else()
+qt_generate_deploy_app_script(
+    TARGET ${PROJECT_NAME}
+    OUTPUT_SCRIPT deploy_script
+    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+)
 endif()
+INSTALL (SCRIPT ${deploy_script})
+install (TARGETS DeepSkyStackerCL)
