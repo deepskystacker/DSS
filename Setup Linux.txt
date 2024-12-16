@@ -184,7 +184,7 @@ mkdir build
 # 
 # please change it to read:
 #
-# set(CMAKE_INSTALL_RPATH "$ORIGIN")
+# set(CMAKE_INSTALL_RPATH $ORIGIN)
 # 
 # After making the change (if necessary) ...
 #
@@ -258,7 +258,7 @@ export PATH=$VCPKG_ROOT:$PATH
 #
 # Install some more pre-reqs for building our dependencies
 #
-apt-get install mesa-common-dev libxrandr-dev libxxf86vm-dev
+sudo apt-get install mesa-common-dev libxrandr-dev libxxf86vm-dev
 
 
 
