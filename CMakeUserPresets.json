@@ -29,8 +29,7 @@
         "QTDIR": "/opt/Qt/6.8.0/gcc_64"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_SYSTEM_NAME": "Linux"
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
@@ -41,8 +40,7 @@
         "QTDIR": "/opt/Qt/6.8.0/gcc_64"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_SYSTEM_NAME": "Linux"
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
@@ -54,8 +52,7 @@
         "QTDIR": "/opt/Qt/6.8.0/macos"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_SYSTEM_NAME": "Darwin"
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
@@ -67,8 +64,7 @@
         "QTDIR": "/opt/Qt/6.8.0/macos"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_SYSTEM_NAME": "Darwin"
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
@@ -170,7 +166,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "onbTfIlLjOn/dOLrnkEZw7VrjTc="
+      "checksum": "RtkSV69xzQzoNwtDbxtms7pWtKs="
     }
   }
 }
