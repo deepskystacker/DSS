@@ -17,6 +17,8 @@ namespace
 		}
 		char* const name = charBuffer.get();
 
+		if (nullptr == name) return;
+
 		strcpy(name, file);
 		if (0 != strlen(name))
 		{
