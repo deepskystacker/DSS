@@ -5,25 +5,20 @@ namespace
 	QtMessageHandler originalHandler;
 	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 	{
-		static thread_local size_t bufferSize = 2048;
-		static thread_local std::unique_ptr<char[]> charBuffer = std::make_unique<char[]>(bufferSize); // 2kB char buffer allocated (thread safe) on first usage of this logger.
+		constexpr size_t bufferSize = 4096;
+		char name[bufferSize] = { '\0' };
 
-		QByteArray localMsg = msg.toLocal8Bit();
+		const QByteArray localMsg = msg.toLocal8Bit();
 		const char* file = context.file != nullptr ? context.file : "";
-		if (const size_t len = strlen(file); len >= bufferSize)
-		{
-			bufferSize = std::max(len + 1, 2 * bufferSize); // Double size of buffer, but at least as large as len.
-			charBuffer = std::make_unique<char[]>(bufferSize); // Free the current buffer and allocate the new (larger) one.
-		}
-		char* const name = charBuffer.get();
+		const size_t fnLength = strlen(file);
 
-		if (nullptr == name) return;
-
-		strcpy(name, file);
+		// If the length of the file path is greater than our buffer size:
+		// then copy only the last characters of the path that fit into the buffer.
+		std::strncpy(name, fnLength >= bufferSize ? (file + fnLength - bufferSize + 1) : file, bufferSize - 1);
 		if (0 != strlen(name))
 		{
 			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
+			std::strncpy(name, path.filename().string().c_str(), bufferSize - 1); // It's only the filename (without path), this will for sure fit into the buffer.
 		}
 
 		switch (type) {
