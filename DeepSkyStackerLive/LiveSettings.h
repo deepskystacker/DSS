@@ -35,14 +35,14 @@
 **
 ****************************************************************************/
 
-const std::uint32_t 	LSWF_SCORE	= 0x00000001L;	// Warning Flags
+const std::uint32_t 	LSWF_QUALITY	= 0x00000001L;	// Warning Flags
 const std::uint32_t 	LSWF_STARS	= 0x00000002L;
 const std::uint32_t 	LSWF_FWHM	= 0x00000004L;
 const std::uint32_t 	LSWF_OFFSET = 0x00000008L;
 const std::uint32_t 	LSWF_ANGLE	= 0x00000010L;
 const std::uint32_t 	LSWF_SKY	= 0x00000020L;
 
-const std::uint32_t 	LSSF_SCORE	= 0x00000001L;	// Stacking Flags
+const std::uint32_t 	LSSF_QUALITY = 0x00000001L;	// Stacking Flags
 const std::uint32_t 	LSSF_STARS	= 0x00000002L;
 const std::uint32_t 	LSSF_FWHM	= 0x00000004L;
 const std::uint32_t 	LSSF_OFFSET = 0x00000008L;
@@ -83,7 +83,7 @@ namespace DSS
 		void	load();
 		void	save();
 
-		bool	IsDontStack_Score() { return (m_dwStackingFlags & LSSF_SCORE) ? true : false; };
+		bool	IsDontStack_Quality() { return (m_dwStackingFlags & LSSF_QUALITY) ? true : false; };
 		bool	IsDontStack_Stars() { return (m_dwStackingFlags & LSSF_STARS) ? true : false; };
 		bool	IsDontStack_FWHM() { return (m_dwStackingFlags & LSSF_FWHM) ? true : false; };
 		bool	IsDontStack_Offset() { return (m_dwStackingFlags & LSSF_OFFSET) ? true : false; };
@@ -93,7 +93,7 @@ namespace DSS
 		bool	IsStack_Save() { return (m_dwStackingFlags & LSSF_SAVE) ? true : false; };
 		bool	IsStack_Move() { return (m_dwStackingFlags & LSSF_MOVE) ? true : false; };
 
-		bool	IsWarning_Score() { return (m_dwWarningFlags & LSWF_SCORE) ? true : false; };
+		bool	IsWarning_Quality() { return (m_dwWarningFlags & LSWF_QUALITY) ? true : false; };
 		bool	IsWarning_Stars() { return (m_dwWarningFlags & LSWF_STARS) ? true : false; };
 		bool	IsWarning_FWHM() { return (m_dwWarningFlags & LSWF_FWHM) ? true : false; };
 		bool	IsWarning_Offset() { return (m_dwWarningFlags & LSWF_OFFSET) ? true : false; };
@@ -111,7 +111,7 @@ namespace DSS
 		bool	IsProcess_TIFF() { return (m_dwProcessFlags & LSPF_TIFF) ? true : false; };
 		bool	IsProcess_Others() { return (m_dwProcessFlags & LSPF_OTHERS) ? true : false; };
 
-		void	SetDontStack_Score(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SCORE) : (m_dwStackingFlags &= ~LSSF_SCORE); };
+		void	setDontStack_Quality(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_QUALITY) : (m_dwStackingFlags &= ~LSSF_QUALITY); };
 		void	SetDontStack_Stars(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_STARS) : (m_dwStackingFlags &= ~LSSF_STARS); };
 		void	SetDontStack_FWHM(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_FWHM) : (m_dwStackingFlags &= ~LSSF_FWHM); };
 		void	SetDontStack_Offset(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_OFFSET) : (m_dwStackingFlags &= ~LSSF_OFFSET); };
@@ -121,7 +121,7 @@ namespace DSS
 		void	SetStack_Save(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SAVE) : (m_dwStackingFlags &= ~LSSF_SAVE); };
 		void	SetStack_Move(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_MOVE) : (m_dwStackingFlags &= ~LSSF_MOVE); };
 
-		void	SetWarning_Score(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_SCORE) : (m_dwWarningFlags &= ~LSWF_SCORE); };
+		void	setWarning_Quality(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_QUALITY) : (m_dwWarningFlags &= ~LSWF_QUALITY); };
 		void	SetWarning_Stars(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_STARS) : (m_dwWarningFlags &= ~LSWF_STARS); };
 		void	SetWarning_FWHM(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_FWHM) : (m_dwWarningFlags &= ~LSWF_FWHM); };
 		void	SetWarning_Offset(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_OFFSET) : (m_dwWarningFlags &= ~LSWF_OFFSET); };
@@ -174,14 +174,14 @@ namespace DSS
 			emailPassword = pw;
 		};
 
-		double	GetScore()
+		double	getQuality()
 		{
-			return (double)m_dwScore / 10.0;
+			return (double)m_dwQuality / 10.0;
 		};
 
-		void	SetScore(double fScore)
+		void	setQuality(double fQuality)
 		{
-			m_dwScore = fScore * 10.0;
+			m_dwQuality = fQuality * 10.0;
 		};
 
 		DWORD	GetStars()
@@ -269,7 +269,7 @@ namespace DSS
 		std::uint32_t m_dwWarningFlags;
 		std::uint32_t m_dwWarningActions;
 		std::uint32_t m_dwMinImages;
-		std::uint32_t m_dwScore;
+		std::uint32_t m_dwQuality;
 		std::uint32_t m_dwStars;
 		std::uint32_t m_dwSkyBackground;
 		std::uint32_t m_dwFWHM;

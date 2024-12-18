@@ -11,9 +11,8 @@
     <message>
         <location filename="../ui/ChartTab.ui" line="31"/>
         <location filename="../ChartTab.cpp" line="39"/>
-        <source>Score</source>
-        <comment>IDC_SCORE</comment>
-        <translation>分數</translation>
+        <source>Quality</source>
+        <translation>品質</translation>
     </message>
     <message>
         <location filename="../ui/ChartTab.ui" line="47"/>
@@ -101,13 +100,20 @@
     </message>
     <message numerus="yes">
         <location filename="../fileregistrar.cpp" line="183"/>
-        <source>Image %1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3
+        <source>Image %1 registered: %n star(s) detected - FWHM = %L2 - Quality = %L3
 </source>
         <comment>IDS_LOG_REGISTERRESULTS</comment>
         <translation>
-            <numerusform>影像 %1 已偵測星點: 偵測到 %n 個星星 - FWHM = %L2 - 分數 = %L3
+            <numerusform>已註冊影像 %1：偵測到 %n 顆星星 - FWHM = %L2 - 品質 = %L3
 </numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../fileregistrar.cpp" line="237"/>
+        <location filename="../fileregistrar.cpp" line="288"/>
+        <source>Quality (%L1) is less than %L2</source>
+        <comment>IDS_NOSTACK_SCORE</comment>
+        <translation>質量 (%L1) 低於 %L2</translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="199"/>
@@ -132,13 +138,6 @@
         <comment>IDS_LOG_ERRORLOADINGFILE</comment>
         <translation>檔案載入錯誤 %1
 </translation>
-    </message>
-    <message>
-        <location filename="../fileregistrar.cpp" line="237"/>
-        <location filename="../fileregistrar.cpp" line="288"/>
-        <source>Score (%L1) is less than %L2</source>
-        <comment>IDS_NOSTACK_SCORE</comment>
-        <translation>分數 (%L1) 少於 %L2</translation>
     </message>
     <message>
         <location filename="../fileregistrar.cpp" line="247"/>
@@ -324,12 +323,6 @@ Go to the Settings tab to select the Stacked Image Output Folder.</source>
         <translation>警告  不要疊合, 如果...</translation>
     </message>
     <message>
-        <location filename="../ui/SettingsTab.ui" line="169"/>
-        <source>... score is less than</source>
-        <comment>IDC_DONTSTACK_SCORE</comment>
-        <translation>...分數少於</translation>
-    </message>
-    <message>
         <location filename="../ui/SettingsTab.ui" line="237"/>
         <source>... star count is less than</source>
         <comment>IDC_DONTSTACK_STARS</comment>
@@ -433,6 +426,11 @@ Go to the Settings tab to select the Stacked Image Output Folder.</source>
         <location filename="../ui/SettingsTab.ui" line="739"/>
         <source>images</source>
         <translation>幅影像</translation>
+    </message>
+    <message>
+        <location filename="../ui/SettingsTab.ui" line="169"/>
+        <source>... quality is less than</source>
+        <translation>...品質低於</translation>
     </message>
     <message>
         <location filename="../ui/SettingsTab.ui" line="455"/>
@@ -550,14 +548,14 @@ Tick this box to keep the trace file.</source>
 <context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="159"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="157"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker 測試版已過期
 您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="458"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="456"/>
         <source>
 How to use  DeepSkyStacker Live ?
 </source>
@@ -567,7 +565,7 @@ How to use  DeepSkyStacker Live ?
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="461"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="459"/>
         <source>Step 1
 Check the Settings tabs for all the stacking and warning settings
 
@@ -579,7 +577,7 @@ Check the Settings tabs for all the stacking and warning settings
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="464"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="462"/>
         <source>Step 2
 Click on the Monitor button to start monitoring the folder
 When monitoring is active incoming images are only registered but not stacked.
@@ -593,7 +591,7 @@ When monitoring is active incoming images are only registered but not stacked.
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="468"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="466"/>
         <source>Step 3
 To start stacking the images click on the Stack button
 At this point all the incoming (and all previously registered) images will be stacked.
@@ -605,7 +603,7 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="472"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="470"/>
         <source>You can pause/restart the stacking process by clicking on the Stack button.
 </source>
         <comment>IDS_LOG_STARTING_4</comment>
@@ -613,7 +611,7 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="475"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="473"/>
         <source>To stop monitoring and stacking click on the Stop button.
 
 </source>
@@ -623,131 +621,131 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="528"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1213"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="526"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1211"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
         <translation>沒有已疊合的影像</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="529"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="527"/>
         <source>No image loaded</source>
         <comment>IDS_NOIMAGELOADED</comment>
         <translation>沒有影像被載入</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="583"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="581"/>
         <source>Status</source>
         <translation>地位</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="584"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="582"/>
         <source>File</source>
         <comment>IDS_COLUMN_FILE</comment>
         <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="585"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="583"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
         <translation>曝光</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="586"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="584"/>
         <source>Aperture</source>
         <comment>IDS_COLUMN_APERTURE</comment>
         <translation>光圈</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="585"/>
         <source>Score</source>
         <comment>IDS_COLUMN_SCORE</comment>
         <translation>分數</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="586"/>
         <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>品質</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
         <translation>星星數</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
         <source>FWHM</source>
         <translation>FWHM</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
         <translation>dX</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
         <translation>dY</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
         <translation>旋轉角</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
         <translation>日期/時間</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
         <translation>CFA</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
         <translation>深度</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="598"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
         <translation>資訊</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="599"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
         <translation>ISO/Gain</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="600"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="598"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
         <translation>天空背景</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="703"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="701"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
         <translation>%1 不是目錄。 請選擇一個有效的目錄。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="713"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="711"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -755,64 +753,64 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="726"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="724"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
         <translation>停止監視檔案夾 %1</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="737"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="735"/>
         <source>Stop Stacking files</source>
         <comment>IDS_LOG_STOPSTACKING</comment>
         <translation>停止疊合影像</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="753"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="751"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Yardım.chm</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="858"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="856"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
         <translation>監視中無法改變監視檔案夾。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="870"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="868"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
         <translation>選取欲監視的檔案夾</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="905"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1252"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="903"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1250"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
         <translation>已疊</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="911"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1170"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1237"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="909"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1168"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1235"/>
         <source>Pending</source>
         <translation>待辦的</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="912"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1243"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="910"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1241"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
         <translation>星點偵測完成</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1021"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1019"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
         <translation>開始疊合影像</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1086"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1084"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -822,7 +820,7 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1097"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1095"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -832,60 +830,60 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1224"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1222"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
         <translation>選此以儲存疊合影像至檔案</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1240"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
         <translation>載入完成</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1246"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1244"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
         <translation>疊合延遲</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1249"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
         <translation>不可疊的</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1332"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1330"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>不</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1334"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1332"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是的</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1337"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1335"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
         <translation>RGB每色 %1 bit</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1339"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1337"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
         <translation>灰階 %1 bit</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1351"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1349"/>
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1532"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1530"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
         <translation>&quot;待處理: %1 - 已偵測星點: %2 - 已疊合: %3 - 總曝光時間: %4</translation>
     </message>

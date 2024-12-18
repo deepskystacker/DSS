@@ -109,7 +109,7 @@ public:
 	QString					m_strFile;
 	bool					m_bRegistered{ false };
 	Qt::CheckState			m_bChecked{ Qt::Unchecked };
-	double					m_fOverallQuality{ 0.0 };
+	double					m_fScore{ 0.0 };
 	double					quality{ 0.0 };
 	double					m_fFWHM{ 0.0 };
 	double					m_dX{ 0.0 };

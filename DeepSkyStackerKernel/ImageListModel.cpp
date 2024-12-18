@@ -91,13 +91,13 @@ namespace DSS
                     if (file.m_bRegistered)
                     {
                         if (Qt::EditRole == role)
-                            return file.m_fOverallQuality;
+                            return file.m_fScore;
                         QString result;
                         if (file.m_bUseAsStarting)
                             result = "(*) %1";
                         else
                             result = "%1";
-                        return result.arg(file.m_fOverallQuality, 0, 'f', 2);
+                        return result.arg(file.m_fScore, 0, 'f', 2);
                     }
                     else
                     {
@@ -487,7 +487,7 @@ namespace DSS
                     file.m_filterName = value.toString();
                     break;
                 case Column::Score:
-                    file.m_fOverallQuality = value.toDouble();
+                    file.m_fScore = value.toDouble();
                     break;
                 case Column::Quality:
                     file.quality = value.toDouble();
