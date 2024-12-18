@@ -1314,7 +1314,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		{
 			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(lfi->m_fExposure));
 			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
-			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fOverallQuality, 'f', 2));
+			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fScore, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Quality))->setText(locale.toString(lfi->quality, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_vStars.size()));
 			imageList->item(row, static_cast<int>(ImageListColumns::FWHM))->setText(locale.toString(lfi->m_fFWHM, 'f', 2));
@@ -1352,7 +1352,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		}
 
 	}
-	chartTab->addScoreFWHMStars(name, lfi->m_fOverallQuality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
+	chartTab->addQualityFWHMStars(name, lfi->quality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
 }
 
 void DeepSkyStackerLive::addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi)

@@ -17,10 +17,10 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QRadioButton" name="radioScore">
+      <widget class="QRadioButton" name="radioQuality">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -28,7 +28,7 @@
         </size>
        </property>
        <property name="text">
-        <string comment="IDC_SCORE">Score</string>
+        <string>Quality</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">buttonGroup</string>
@@ -118,10 +118,10 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
+        <enum>QSizePolicy::Policy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

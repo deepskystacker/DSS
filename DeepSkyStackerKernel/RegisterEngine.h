@@ -21,7 +21,7 @@ public:
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
 	double			m_fBackground;
-	double			m_fOverallQuality;
+	double			m_fScore;
 	double			m_fFWHM;
 	bool			m_bInfoOk;
 	bool			m_bComet;
@@ -43,7 +43,7 @@ public:
 
 	virtual ~CRegisteredFrame() = default;
 
-	static std::pair<double, double> ComputeOverallQuality(const STARVECTOR& stars);
+	static std::pair<double, double> ComputeScore(const STARVECTOR& stars);
 
 	void SetDetectionThreshold(double fMinLuminancy)
 	{
@@ -58,7 +58,7 @@ public:
 	void SetStars(const STARVECTOR& vStars)
 	{
 		m_vStars = vStars;
-		std::tie(this->m_fOverallQuality, this->quality) = CRegisteredFrame::ComputeOverallQuality(m_vStars);
+		std::tie(this->m_fScore, this->quality) = CRegisteredFrame::ComputeScore(m_vStars);
 		ComputeFWHM();
 	}
 

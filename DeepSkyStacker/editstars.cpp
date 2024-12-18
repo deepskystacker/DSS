@@ -473,7 +473,7 @@ namespace DSS
 		}
 		if (m_lNrStars > 0)
 			m_fFWHM /= m_lNrStars;
-		std::tie(this->m_fScore, this->m_fQuality) = CRegisteredFrame::ComputeOverallQuality(stars);
+		std::tie(this->m_fScore, this->m_fQuality) = CRegisteredFrame::ComputeScore(stars);
 	}
 
 //	void EditStars::computeBackgroundValue()

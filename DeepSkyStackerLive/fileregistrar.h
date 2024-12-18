@@ -90,8 +90,8 @@ namespace DSS
 		std::deque<fs::path> pending;
 
 		void registerImage(fs::path file);
-		bool isImageStackable(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& error);
-		bool imageWarning(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& warning);
+		bool isImageStackable(const fs::path& file, double fStarCount, double fFWHM, double fQuality, double fSkyBackground, QString& error);
+		bool imageWarning(const fs::path& file, double fStarCount, double fFWHM, double fQuality, double fSkyBackground, QString& warning);
 	};
 }
 
