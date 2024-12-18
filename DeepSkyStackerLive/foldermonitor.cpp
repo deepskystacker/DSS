@@ -55,7 +55,7 @@ namespace DSS
 		for (auto& file : fs::directory_iterator(folderToWatch))
 		{
 			//
-			// Only interested in reqular files.
+			// Only interested in regular files.
 			//
 			if (file.is_regular_file())
 			{
