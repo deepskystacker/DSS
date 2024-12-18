@@ -19,6 +19,7 @@
 [Rr]eleases/
 x64/
 x86/
+!/DeepSkyStackerKernel/simde/x86
 bld/
 [Bb]in/
 [Oo]bj/
@@ -34,6 +35,9 @@ GeneratedFiles/
 
 # CMake build directory
 build/
+
+# vcpkg installed directories
+vcpkg_installed/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
