@@ -69,7 +69,7 @@ namespace DSS
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-		connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::on_autoThreshold_changed);
+		connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::autoThreshold_changed);
 
 		perCentValidator = new QIntValidator(0, 100, this);
 		ui->percentStack->setValidator(perCentValidator);
@@ -82,11 +82,17 @@ namespace DSS
 		delete ui;
 	}
 
-	void RegisterSettings::on_autoThreshold_changed(const int state)
+	void RegisterSettings::autoThreshold_changed(const int state)
 	{
 		ui->luminanceThreshold->setEnabled(state == 0);
 		ui->label_4->setEnabled(state == 0);
 		this->detectionThreshold = static_cast<uint>(state == 0 ? ui->luminanceThreshold->value() : 0);
+
+		if (state != 0)
+		{
+			this->on_medianFilter_stateChanged(0);
+			this->on_hotPixels_stateChanged(0);
+		}
 	}
 
 	void RegisterSettings::onInitDialog()
@@ -233,11 +239,11 @@ namespace DSS
 		forceRegister = ui->forceRegister->isChecked();
 	}
 
-	void RegisterSettings::on_hotPixels_stateChanged(int state)
+	void RegisterSettings::on_hotPixels_stateChanged(const int state)
 	{
-		state;
-		bool hotPixels = ui->hotPixels->isChecked();
-		workspace->setValue("Register/DetectHotPixels", hotPixels);
+		const bool detectHotPixels = state != 0; //ui->hotPixels->isChecked();
+		ui->hotPixels->setChecked(detectHotPixels); // If we were explicitly called, update the checkbox.
+		workspace->setValue("Register/DetectHotPixels", detectHotPixels);
 	}
 
 	void RegisterSettings::on_stackAfter_clicked()
@@ -285,10 +291,10 @@ namespace DSS
 		ui->starCount->setText(string);
 	}
 
-	void RegisterSettings::on_medianFilter_stateChanged(int state)
+	void RegisterSettings::on_medianFilter_stateChanged(const int state)
 	{
-		state;
-		medianFilter = ui->medianFilter->isChecked();
+		this->medianFilter = state != 0; //ui->medianFilter->isChecked();
+		ui->medianFilter->setChecked(medianFilter); // If we were explicitly called, update the checkbox.
 		workspace->setValue("Register/ApplyMedianFilter", medianFilter);
 	}
 
