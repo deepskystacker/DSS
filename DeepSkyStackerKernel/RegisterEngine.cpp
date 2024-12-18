@@ -392,7 +392,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / SubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / SubRectHeight * 2);
 		const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1", "IDS_REGISTERINGNAME").
 			arg(QString::fromStdU16String(filePath.generic_u16string())));
-		m_pProgress->Start2(strText, lNrSubRects);
+		m_pProgress->Start2(strText, lNrSubRects * 2); // lNrSubRects * 2 -> assume we will be doing 2 iterations.
 	}
 
 	m_vStars.clear();
@@ -463,11 +463,11 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	//    threshold = newThreshold(threshold, stars1.size());
 	// The loop continues until stop(threshold, stars1.size()) == true;
 	//
+	std::atomic<int> nrSubrects{ 0 };
 	do
 	{
 		stars1.clear();
 		STARSET stars2, stars3, stars4;
-		std::atomic<int> nrSubrects{ 0 };
 		std::atomic<size_t> nStars{ 0 };
 		int masterCount{ 0 };
 
@@ -571,12 +571,12 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 				std::rethrow_exception(e);
 		}
 
-		if (m_pProgress)
-			m_pProgress->End2();
-
 		usedThreshold = threshold;
 		threshold = newThreshold(threshold, stars1.size());
 	} while (!stop(threshold, stars1.size())); // loop over thresholds
+
+	if (m_pProgress != nullptr)
+		m_pProgress->End2();
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
 	std::tie(this->m_fScore, this->quality) = ComputeScore(m_vStars);
