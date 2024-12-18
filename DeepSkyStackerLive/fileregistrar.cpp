@@ -180,10 +180,10 @@ namespace DSS
 				lfi->m_fExposure = bmpInfo.m_fExposure;
 
 				int count = static_cast<int>(lfi->m_vStars.size()); // Work round LUpdate bug
-				strText = tr("Image %1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3\n", "IDS_LOG_REGISTERRESULTS", count)
+				strText = tr("Image %1 registered: %n star(s) detected - FWHM = %L2 - Quality = %L3\n", "IDS_LOG_REGISTERRESULTS", count)
 					.arg(name)
 					.arg(lfi->m_fFWHM, 0, 'f', 2)
-					.arg(lfi->m_fOverallQuality, 0, 'f', 2);
+					.arg(lfi->quality, 0, 'f', 2);
 
 				ZTRACE_RUNTIME(strText.toUtf8().constData());
 				strText += "\n";
@@ -194,14 +194,14 @@ namespace DSS
 
 				QString warning;
 
-				if (imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
+				if (imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
 				{
 					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(name).arg(warning);
 					emit writeToLog(strText, true, false, false, QColorConstants::Svg::orange);
 					emit handleWarning(strText);
 				};
 				
-				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->m_fOverallQuality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
+				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
 				{
 					// Check against stacking conditions before adding it to
 					// the stack list
@@ -224,18 +224,18 @@ namespace DSS
 		};
 	}
 
-	bool FileRegistrar::isImageStackable(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& error)
+	bool FileRegistrar::isImageStackable(const fs::path& file, double fStarCount, double fFWHM, double fQuality, double fSkyBackground, QString& error)
 	{
 		bool result = true;
 		LiveSettings* liveSettings { DSSLive::instance()->liveSettings.get() };
 		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
-		if (liveSettings->IsDontStack_Score())
+		if (liveSettings->IsDontStack_Quality())
 		{
-			if (fScore < liveSettings->GetScore())
+			if (fQuality < liveSettings->getQuality())
 			{
 				result = false;
-				error = tr("Score (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore(), 0, 'f', 2);
-				emit setImageInfo(name, II_DONTSTACK_SCORE);
+				error = tr("Quality (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fQuality, 0, 'f', 2).arg(liveSettings->getQuality(), 0, 'f', 2);
+				emit setImageInfo(name, II_DONTSTACK_QUALITY);
 			};
 		};
 
@@ -274,19 +274,19 @@ namespace DSS
 	};
 
 
-	bool FileRegistrar::imageWarning(const fs::path& file, double fStarCount, double fFWHM, double fScore, double fSkyBackground, QString& warning)
+	bool FileRegistrar::imageWarning(const fs::path& file, double fStarCount, double fFWHM, double fQuality, double fSkyBackground, QString& warning)
 	{
 		bool result = false;
 		LiveSettings* liveSettings{ DSSLive::instance()->liveSettings.get() };
 		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 
-		if (liveSettings->IsWarning_Score())
+		if (liveSettings->IsWarning_Quality())
 		{
-			if (fScore < liveSettings->GetScore())
+			if (fQuality < liveSettings->getQuality())
 			{
 				result = true;
-				warning = tr("Score (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fScore, 0, 'f', 2).arg(liveSettings->GetScore());
-				emit setImageInfo(name, II_WARNING_SCORE);
+				warning = tr("Quality (%L1) is less than %L2", "IDS_NOSTACK_SCORE").arg(fQuality, 0, 'f', 2).arg(liveSettings->getQuality());
+				emit setImageInfo(name, II_WARNING_QUALITY);
 			};
 		};
 

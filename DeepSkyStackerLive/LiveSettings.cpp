@@ -44,7 +44,7 @@ namespace DSS
 		m_dwStackingFlags { 0 },
 		m_dwWarningActions{ 0 },
 		m_dwMinImages{ 0 },
-		m_dwScore{ 0 },
+		m_dwQuality{ 0 },
 		m_dwStars{ 0 },
 		m_dwSkyBackground{ 0 },
 		m_dwFWHM{ 0 },
@@ -74,7 +74,7 @@ namespace DSS
 		m_dwWarningActions = settings.value("WarningActions", LSWA_SOUND).toUInt();
 		m_dwProcessFlags = settings.value("ProcessFlags", LSPF_ALL).toUInt();
 		m_dwMinImages = settings.value("MinImages", 5U).toUInt();
-		m_dwScore = settings.value("Score", 1000U).toUInt();
+		m_dwQuality = settings.value("Quality", 3500U).toUInt();
 		m_dwStars = settings.value("Stars", 30U).toUInt();
 		m_dwFWHM = settings.value("FWHM", 50U).toUInt();
 		m_dwOffset = settings.value("Offset", 100U).toUInt();
@@ -130,7 +130,7 @@ namespace DSS
 		settings.setValue("WarningActions", m_dwWarningActions);
 		settings.setValue("ProcessFlags", m_dwProcessFlags);
 		settings.setValue("MinImages", m_dwMinImages);
-		settings.setValue("Score", m_dwScore);
+		settings.setValue("Quality", m_dwQuality);
 		settings.setValue("Stars", m_dwStars);
 		settings.setValue("FWHM", m_dwFWHM);
 		settings.setValue("Offset", m_dwOffset);

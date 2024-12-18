@@ -4,22 +4,31 @@
 <context>
     <name>DSS::FileRegistrar</name>
     <message numerus="yes">
-        <location filename="../fileregistrar.cpp" line="183"/>
         <source>Image %1 registered: %n star(s) detected - FWHM = %L2 - Score = %L3
 </source>
         <comment>IDS_LOG_REGISTERRESULTS</comment>
-        <translation>
+        <translation type="vanished">
             <numerusform>Image %1 registered: %n star detected - FWHM = %L2 - Score = %L3
 </numerusform>
             <numerusform>Image %1 registered: %n stars detected - FWHM = %L2 - Score = %L3
 </numerusform>
         </translation>
     </message>
+    <message numerus="yes">
+        <location filename="../fileregistrar.cpp" line="183"/>
+        <source>Image %1 registered: %n star(s) detected - FWHM = %L2 - Quality = %L3
+</source>
+        <comment>IDS_LOG_REGISTERRESULTS</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>DeepSkyStackerLive</name>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1086"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1084"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -31,7 +40,7 @@ Do you want to process them?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1097"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1095"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>

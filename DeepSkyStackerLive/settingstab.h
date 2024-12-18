@@ -59,7 +59,7 @@ namespace DSS
 		bool dirty;
 		LiveSettings& liveSettings;
 		QIntValidator* minImagesValidator;
-		QDoubleValidator* scoreValidator;
+		QDoubleValidator* qualityValidator;
 		QIntValidator* starCountValidator;
 		QIntValidator* skyBGValidator;
 		QDoubleValidator* fwhmValidator;

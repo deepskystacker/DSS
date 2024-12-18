@@ -18,7 +18,7 @@ namespace DSS
 
 	enum CHARTTYPE
 	{
-		CT_SCORE = 1,
+		CT_QUALITY = 1,
 		CT_FWHM = 2,
 		CT_STARS = 3,
 		CT_DX = 4,
@@ -36,9 +36,9 @@ namespace DSS
 		std::map<QString, int> nameMap;
 		QChart::ChartTheme theme;
 		Qt::ColorScheme scheme;
-		QLineSeries* scoreSeries;
-		std::map<QString, int> scoreMap;
-		QChart* scoreChart;
+		QLineSeries* qualitySeries;
+		std::map<QString, int> qualityMap;
+		QChart* qualityChart;
 		QLineSeries* fwhmSeries;
 		std::map<QString, int> fwhmMap;
 		QChart* fwhmChart;
@@ -69,14 +69,14 @@ namespace DSS
 		}
 
 	private slots:
-		void scoreButtonClicked(bool checked);
+		void qualityButtonClicked(bool checked);
 		void fwhmButtonClicked(bool checked);
 		void starsButtonClicked(bool checked);
 		void offsetButtonClicked(bool checked);
 		void angleButtonClicked(bool checked);
 		void skybgButtonClicked(bool checked);
 
-		void scoreHovered(const QPointF& point, bool state);
+		void qualityHovered(const QPointF& point, bool state);
 		void fwhmHovered(const QPointF& point, bool state);
 		void starsHovered(const QPointF& point, bool state);
 		void dXHovered(const QPointF& point, bool state);
@@ -92,7 +92,7 @@ namespace DSS
 	public:
 		ChartTab(QWidget* parent = nullptr);
 		~ChartTab();
-		void addScoreFWHMStars(const QString& name, double fScore, double fFWHM, double fStars, double fSkyBackground);
+		void addQualityFWHMStars(const QString& name, double fQuality, double fFWHM, double fStars, double fSkyBackground);
 		void addOffsetAngle(const QString& name, double fdX, double fdY, double fAngle);
 		void setPoint(const QString& name, POINTTYPE ptType, CHARTTYPE ctType);
 

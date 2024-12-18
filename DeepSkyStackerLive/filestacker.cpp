@@ -164,7 +164,7 @@ namespace DSS
 					QMutexLocker lock(&mutex);
 
 					// Select the best reference frame from all the available images
-					// (best score)
+					// (best quality)
 					double maxScore = 0;
 					std::deque<std::shared_ptr<CLightFrameInfo>>::iterator bestit = pending.end();
 

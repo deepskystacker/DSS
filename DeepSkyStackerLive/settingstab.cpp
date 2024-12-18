@@ -65,7 +65,7 @@ namespace DSS
 		dirty{ false },
 		liveSettings {*(DeepSkyStacker::instance()->liveSettings)},
 		minImagesValidator{ new QIntValidator(1, 50, this) },
-		scoreValidator {new QDoubleValidator(0.0, 9999.9, 1, this)},
+		qualityValidator {new QDoubleValidator(0.0, 9999.9, 1, this)},
 		starCountValidator {new QIntValidator(10, 50, this)},
 		skyBGValidator { new QIntValidator(1, 50, this) },
 		fwhmValidator { new QDoubleValidator(5.0, 50.0, 1, this) },
@@ -119,9 +119,9 @@ namespace DSS
 		connect(dontStackUntil, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(minImages, &QLineEdit::textEdited, this, &SettingsTab::settingChanged);
 
-		connect(warnScore, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
-		connect(dontStackScore, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
-		connect(score, &QLineEdit::textEdited, this, &SettingsTab::settingChanged);
+		connect(warnQuality, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
+		connect(dontStackQuality, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
+		connect(quality, &QLineEdit::textEdited, this, &SettingsTab::settingChanged);
 
 		connect(warnStars, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
 		connect(dontStackStars, &QCheckBox::clicked, this, &SettingsTab::settingChanged);
@@ -185,7 +185,7 @@ namespace DSS
 		//
 		// Set validators
 		//
-		score->setValidator(scoreValidator);
+		quality->setValidator(qualityValidator);
 		stars->setValidator(starCountValidator);
 		skyBackground->setValidator(skyBGValidator);
 		FWHM->setValidator(fwhmValidator);
@@ -211,9 +211,9 @@ namespace DSS
 		dontStackUntil->setChecked(liveSettings.IsDontStack_Until());
 		minImages->setText(QString::number(liveSettings.GetMinImages()));
 
-		warnScore->setChecked(liveSettings.IsWarning_Score());
-		dontStackScore->setChecked(liveSettings.IsDontStack_Score());
-		score->setText(QString::number(liveSettings.GetScore(), 'f', 1));
+		warnQuality->setChecked(liveSettings.IsWarning_Quality());
+		dontStackQuality->setChecked(liveSettings.IsDontStack_Quality());
+		quality->setText(QString::number(liveSettings.getQuality(), 'f', 1));
 
 		warnStars->setChecked(liveSettings.IsWarning_Stars());
 		dontStackStars->setChecked(liveSettings.IsDontStack_Stars());
@@ -288,9 +288,9 @@ namespace DSS
 		liveSettings.SetDontStack_Until(Qt::Checked == dontStackUntil->checkState());
 		liveSettings.SetMinImages(minImages->text().toInt());
 
-		liveSettings.SetWarning_Score(Qt::Checked == warnScore->checkState());
-		liveSettings.SetDontStack_Score(Qt::Checked == dontStackScore->checkState());
-		liveSettings.SetScore(score->text().toDouble());
+		liveSettings.setWarning_Quality(Qt::Checked == warnQuality->checkState());
+		liveSettings.setDontStack_Quality(Qt::Checked == dontStackQuality->checkState());
+		liveSettings.setQuality(quality->text().toDouble());
 
 		liveSettings.SetWarning_Stars(Qt::Checked == warnStars->checkState());
 		liveSettings.SetDontStack_Stars(Qt::Checked == dontStackStars->checkState());
