@@ -1,11 +1,11 @@
 #pragma once
 
-//#define DSSBETA
+#define DSSBETA
 
 #ifdef DSSBETA
 #define DSSBETARELEASE 5
-constexpr int DSSBETAEXPIREYEAR = 2024;
-constexpr int DSSBETAEXPIREMONTH = 12;
+constexpr int DSSBETAEXPIREYEAR = 2025;
+constexpr int DSSBETAEXPIREMONTH = 3;
 #endif
 
 #define DSSVER_MAJOR			5
