@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8
+Welcome to DeepSkyStacker 5.1.8 Beta 5
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -81,7 +81,7 @@ Changes since the last release:
     types database shipped with the latest version of Qt.  It used to assign a type of "image/fits" to FITS files, but now assigns "application/fits".
 
 15. Remove the code to check for LibRaw support of a camera.  The data in the camera list wasn't really good for that check and resulted in false
-    negatives and false positives however hard we tried to "tweak" the code to check against that list.
+    negatives and false positives however hard we tried to "tweak" the code.
 
     This shouldn't cause any problems as a "not supported" decision simply resulted in a single warning message.
 
@@ -94,6 +94,8 @@ Changes since the last release:
     minimum height of 100 pixels.   If you need to show the image larger, undock the lower dock window.
 
 19. Add translations for Simplified Chinese thanks to 张博 (Zhang Bo).
+
+20. Changes to DeepSkyStackerLive to use the new Quality metric instead of Score.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
