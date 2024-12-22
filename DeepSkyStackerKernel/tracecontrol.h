@@ -57,6 +57,7 @@ namespace DSS
 		{
 			erase = v;
 		}
+
 	private:
 		std::string fileName;
 		const QString dirName;

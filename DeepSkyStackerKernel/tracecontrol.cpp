@@ -79,15 +79,7 @@ namespace DSS
 		// Set the trace file location
 		//
 		qputenv("Z_TRACEFILE", file.generic_string().c_str());
-#if (0)
-		QString traceFile = QString{ "Z_TRACEFILE=%1" }.arg(file.generic_u16string().c_str());
-		std::cout << traceFile.toStdString() << '\n';
-#if defined(Q_OS_WIN)
-		(void) _wputenv(traceFile.toStdWString().c_str());
-#else
-		(void)putenv(const_cast<char*>(traceFile.toStdString().c_str()));
-#endif
-#endif
+
 		//
 		// Enable trace to a file
 		//

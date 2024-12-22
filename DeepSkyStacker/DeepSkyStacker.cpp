@@ -757,7 +757,12 @@ int main(int argc, char* argv[])
 	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
-	QSettings		settings;
+	//
+	// Set up retention of the trace based on user settings
+	//
+	QSettings settings;
+	auto retainTrace{ settings.value("RetainTraceFile", false).toBool() };
+	traceControl.setDeleteOnExit(!retainTrace);
 
 	g_bShowRefStars = settings.value("ShowRefStars", false).toBool();
 
