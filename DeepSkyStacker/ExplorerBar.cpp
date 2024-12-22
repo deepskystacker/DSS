@@ -472,6 +472,8 @@ namespace DSS
 	void ExplorerBar::keepTraceChanged(int state)
 	{
 		bool retainTrace{ Qt::Checked == static_cast<Qt::CheckState>(state) };
+		QSettings settings;
+		settings.setValue("RetainTraceFile", retainTrace);
 
 		traceControl.setDeleteOnExit(!retainTrace);
 
