@@ -97,6 +97,8 @@ Changes since the last release:
 
 20. Changes to DeepSkyStackerLive to use the new Quality metric instead of Score.
 
+21. Bug fix: Fix for handling of save file-list.
+
 Welcome to DeepSkyStacker 5.1.6
 ===============================
 
