@@ -190,9 +190,15 @@ if(MSVC)
         /DYNAMICBASE:NO
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        -fopenmp
-    )
+    if (MACOS)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 if(WIN32)
@@ -278,5 +284,5 @@ qt_generate_deploy_app_script(
 )
 endif()
 install (SCRIPT ${deploy_script})
-install(TARGETS DeepSkyStackerLive)
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 

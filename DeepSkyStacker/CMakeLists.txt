@@ -403,9 +403,15 @@ if(MSVC)
         /DYNAMICBASE:NO
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        -fopenmp
-    )
+    if (MACOS)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 if(WIN32)
@@ -434,9 +440,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
-if(NOT WIN32)
+if(LINUX)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenMP::OpenMP_CXX
+    Threads::Threads
+)
+endif()
+if(MACOS)
+target_link_libraries(${PROJECT_NAME} PRIVATE
     Threads::Threads
 )
 endif()
@@ -448,6 +459,14 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
     user32
     psapi
     htmlhelp
+)
+endif()
+#
+# libomp.dylib was manually installed into /usr/local/lib on MacOS
+#
+if(MACOS)
+set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    omp
 )
 endif()
 
@@ -490,7 +509,7 @@ qt_generate_deploy_app_script(
 endif()
 install (SCRIPT ${deploy_script})
 
-install(TARGETS ${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
 
 if(WIN32)

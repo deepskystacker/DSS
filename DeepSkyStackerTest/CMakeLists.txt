@@ -143,9 +143,15 @@ if(MSVC)
         /SUBSYSTEM:CONSOLE
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        -fopenmp
-    )
+    if (MACOS)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 if(WIN32)

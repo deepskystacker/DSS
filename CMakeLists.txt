@@ -10,6 +10,7 @@ set(VCPKG_TARGET_TRIPLET
 	"x64-windows-static-md"
 	CACHE STRING "")
 endif()
+message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 
 # Require C++20 and disable extensions for all targets.
 # NOTE: See further below for how to do this more robustly.
@@ -19,22 +20,21 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(DeepSkyStacker VERSION 5.1.8 LANGUAGES C CXX)
 
-message("Cross Compiling: " ${CMAKE_CROSSCOMPILING})
-
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 
-################################################################################
-# Set target arch type if empty. Visual studio solution generator provides it.
-################################################################################
+#
+# Report platform name if speficied
+#
 if(NOT CMAKE_VS_PLATFORM_NAME)
-    set(CMAKE_VS_PLATFORM_NAME "x64")
+    message("CMAKE_VS_PLATFORM_NAME not specified")
+	if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+		set(CMAKE_VS_PLATFORM_NAME "arm64")
+	else()
+		set(CMAKE_VS_PLATFORM_NAME "x64")
+	endif()
 endif()
-message("${CMAKE_VS_PLATFORM_NAME} architecture in use")
-
-if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"))
-    message(FATAL_ERROR "${CMAKE_VS_PLATFORM_NAME} arch is not yet supported!")
-endif()
+message("CMAKE_VS_PLATFORM_NAME set to: " ${CMAKE_VS_PLATFORM_NAME})
 
 #
 # install to DSS/x64 for Windows, and DSS/platform/x64 for other platforms
