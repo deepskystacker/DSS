@@ -65,7 +65,8 @@
         "QTDIR": "/opt/Qt/6.8.0/macos"
       },
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
       }
     },
     {
@@ -167,7 +168,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "6pmvMnr8HrcKdeYd33VMajE8ZV8="
+      "checksum": "iMsgv3eglVuYYOOQblcayIcGsnQ="
     }
   }
 }
