@@ -87,6 +87,10 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS
 	"./ui"
 	CACHE STRING "" FORCE
 	)
+
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+  include_directories(SYSTEM /usr/local/include)
+endif()
 	
 ################################################################################
 # Global configuration types
@@ -99,6 +103,9 @@ set(CMAKE_CONFIGURATION_TYPES
 
 if(WIN32)
 	set(CMAKE_CXX_FLAGS "/GR /EHsc")
+endif()
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+	set(CMAKE_CXX_FLAGS "-Wno-switch-enum -Wno-switch")
 endif()
 if(LINUX)
 	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
