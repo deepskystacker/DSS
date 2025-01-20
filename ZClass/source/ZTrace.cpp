@@ -300,7 +300,7 @@ ZTrace :: ZTrace(const char* pszTraceName,
 #if defined(_MSC_VER)
          sprintf_s(acWork, "%ld", lLineNo); 
 #else
-         sprintf(acWork, "%ld", lLineNo);
+         snprintf(acWork, sizeof(acWork), "%ld", lLineNo);
 #endif
 
          str.append(acWork).append(")");
@@ -504,7 +504,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
 #if defined(MSC_VER)
         sprintf_s(buffer, "%08lu", ulSequence);
 #else
-        sprintf(buffer, "%08lu", ulSequence);
+        snprintf(buffer, sizeof(buffer), "%08lu", ulSequence);
 #endif
         strWork.append(&buffer[0]).append(" ");
         memset(buffer, 0, sizeof(buffer));
@@ -534,12 +534,12 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       }
 
       // Output the process id right justified with leading zeros to a width of 6
-      sprintf(buffer, "%06lu", ZTrace__ulClProcessId);
+      snprintf(buffer, sizeof(buffer), "%06lu", ZTrace__ulClProcessId);
       strWork.append(&buffer[0]).append(" ");
       memset(buffer, 0, sizeof(buffer));
 
       // Output the thread id right justified with leading zeros to width of 8
-      sprintf(buffer, "%08lx", ulThreadId);
+      snprintf(buffer, sizeof(buffer), "%08lx", ulThreadId);
       strWork.append(&buffer[0]).append(" ");
       memset(buffer, 0, sizeof(buffer));
 
@@ -547,7 +547,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       // leading zeros and a width of 7
       if(ZTrace__fCheckStack)
       {
-        sprintf(buffer, "%07zd", ZTrace::remainingStack());
+        snprintf(buffer, sizeof(buffer), "%07zd", ZTrace::remainingStack());
         strWork.append(&buffer[0]).append(" ");
         memset(buffer, 0, sizeof(buffer));
       }
@@ -1165,7 +1165,7 @@ void ZTrace::writeDebugLocation(const char* str, const ZExceptionLocation& locat
   text += std::string("< file: ") + location.fileName();
   text += std::string(" function: ") + location.functionName();
   char buffer[11] = {0};
-  sprintf(buffer, "%lu", location.lineNumber());
+  snprintf(buffer, sizeof(buffer), "%lu", location.lineNumber());
   text += std::string(" line: ") + std::string(buffer);
   ZTrace::write(text);
 }
