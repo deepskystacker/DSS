@@ -698,37 +698,37 @@ void ZException::TraceFn::logData ( ZException& exception )
   {
     if (exception.ulexlocClCount != 0)
     {
-      sprintf(pbuf,::headerText,
+      snprintf(pbuf, maxLength+1, ::headerText,
               exception.name(),
               exception.exlocClArray[exception.ulexlocClCount - 1].functionName(),
               exception.exlocClArray[exception.ulexlocClCount - 1].fileName(),
               exception.exlocClArray[exception.ulexlocClCount - 1].lineNumber());
     } else
-      sprintf(pbuf,"\n%s exception thrown.\n   Location information is unavailable.", exception.name());
+      snprintf(pbuf, maxLength+1, "\n%s exception thrown.\n   Location information is unavailable.", exception.name());
     traceFunction().write(pbuf);
     if (exception.errorId())
-      sprintf(pbuf,"   Error Id is %ld", exception.errorId());
+      snprintf(pbuf, maxLength+1, "   Error Id is %ld", exception.errorId());
     else
-      sprintf(pbuf,"   Error Id is unavailable.");
+      snprintf(pbuf, maxLength+1, "   Error Id is unavailable.");
     traceFunction().write(pbuf);
     if (exception.errorCodeGroup())
-       sprintf(pbuf,"   Error Code group is %s", exception.errorCodeGroup());
+       snprintf(pbuf, maxLength+1, "   Error Code group is %s", exception.errorCodeGroup());
     else
-      sprintf(pbuf,"    Error Code group is unavailable.");
+      snprintf(pbuf, maxLength+1, "    Error Code group is unavailable.");
     traceFunction().write(pbuf);
     if (exception.msgtxtClTop)
     {
-       sprintf(pbuf,"   Exception text is:");
+       snprintf(pbuf, maxLength+1, "   Exception text is:");
        traceFunction().write(pbuf);
        for (int i = (exception.textCount()-1); i >= 0 ;i-- )
          {
-            sprintf(pbuf,"      %s", exception.text(i));
+            snprintf(pbuf, maxLength+1, "      %s", exception.text(i));
             traceFunction().write(pbuf);
          } /* endfor */
     }
     else
     {
-       sprintf(pbuf,"   Exception text is unavailable.");
+       snprintf(pbuf, maxLength+1, "   Exception text is unavailable.");
        traceFunction().write(pbuf);
     }
     delete [] pbuf;
