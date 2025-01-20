@@ -70,6 +70,9 @@ find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus Op
 #find_package(cfitsio 4.5.0 REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+find_package(Iconv REQUIRED)
+endif()
 find_package(exiv2 CONFIG REQUIRED)
 find_package(expat CONFIG REQUIRED)
 find_package(TIFF 4.7 REQUIRED)
@@ -95,12 +98,10 @@ set(CMAKE_CONFIGURATION_TYPES
 )
 
 if(WIN32)
-set(CMAKE_CXX_FLAGS
-	"/GR /EHsc"
-	CACHE STRING "" FORCE
-	)
-else()
-set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread" CACHE STRING "" FORCE)
+	set(CMAKE_CXX_FLAGS "/GR /EHsc")
+endif()
+if(LINUX)
+	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
 
 ################################################################################
