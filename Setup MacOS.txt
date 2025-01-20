@@ -103,6 +103,7 @@ cd ~
 #
 # Install pkg-config
 #
+cd ~/Downloads
 curl -O https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 tar -zxvf pkg-config-0.29.2.tar.gz
 rm pkg-config-0.29.2.tar.gz
@@ -110,6 +111,74 @@ cd pkg-config-0.29.2
 LDFLAGS="-framework CoreFoundation -framework Carbon" CFLAGS="-Wno-int-conversion" CXXFLAGS="-Wno-int-conversion" ./configure --with-internal-glib
 make
 make install
+
+#
+# Install openssl
+#
+cd ~/Downloads
+curl -OL https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz
+tar -zxvf openssl-3.4.0.tar.gz
+rm openssl-3.4.0.tar.gz
+cd openssl-3.4.0
+./configure
+make
+sudo make install
+
+#
+# Link the system cert file to the openssl cert file location
+# (it took ages to find what was needed).
+#
+sudo ln -s /etc/ssl/cert.pem /usr/local/ssl/cert.pem
+
+#
+# Install pcre2 (Perl Compatible Regular Expressions)
+#
+cd ~/Downloads
+curl -OL https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.44/pcre2-10.44.tar.gz
+tar -zxvf pcre2-10.44.tar.gz
+rm pcre2-10.44.tar.gz
+cd pcre2-10.44
+./configure
+make
+sudo make install
+
+#
+# Install wget (can't use curl to DL CFITSIO).
+#
+cd ~/Downloads
+curl -O http://ftp.gnu.org/gnu/wget/wget-1.25.0.tar.gz
+tar -zxvf wget-1.25.0.tar.gz
+rm wget-1.25.0.tar.gz
+cd wget-1.25.0
+./configure --with-ssl=openssl
+make
+sudo make install
+
+#
+# Install CFITSIO 4.5.0
+# 
+cd ~/Downloads
+wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
+tar -zxvf cfitsio4_5_0_20240826.tar.gz
+rm cfitsio4_5_0_20240826.tar.gz
+cd cfitsio-cfitsio4_5_0_20240826
+rm CMakeLists.txt
+wget https://raw.githubusercontent.com/HEASARC/cfitsio/37f72c0ae47a17184bdadb83f83ef5ff1b184f69/CMakeLists.txt
+mkdir build
+cmake -B build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
+cd build
+ninja
+sudo ninja install
+
+
+
+
+
+
+
+
+
+
 
 
 
