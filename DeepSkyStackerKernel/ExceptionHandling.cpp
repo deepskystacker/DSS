@@ -154,32 +154,38 @@ void setDssExceptionHandling()
 #else
 #include <csignal>
 #include <execinfo.h>
+#if defined(Q_OS_LINUX)
 #include <link.h>
+#endif
+#if defined(Q_OS_APPLE)
+#include <dlfcn.h>
+#endif
 
 namespace
 {
-
+#if defined(Q_OS_LINUX)
 	// converts a function's address in memory to its VMA address in the executable file. VMA is what addr2line expects
-	std::uint64_t convertToVMA(void* addr)
+	std::uintptr_t convertToVMA(void* addr)
 	{
 		Dl_info info;
 		struct link_map* link_map;
 		dladdr1((void*)addr, &info, (void**)&link_map, RTLD_DL_LINKMAP);
-		return reinterpret_cast<std::uint64_t>(addr) - link_map->l_addr;
+		return reinterpret_cast<std::uintptr_t>(addr) - link_map->l_addr;
 	}
+#endif
 
 	/* Resolve symbol name and source location given the path to the executable
 	   and an address */
-	int addr2line(char const* const program_name, std::uint64_t addr)
+	int addr2line(char const* const program_name, std::uintptr_t addr)
 	{
 		char addr2line_cmd[512] = { '\0' };
 
 		/* have addr2line map the address to the relevant line in the code */
 #if defined(Q_OS_APPLE)
   /* apple does things differently... */
-		sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
+		snprintf(addr2line_cmd, sizeof(addr2line_cmd), "atos -o %.256s %p", program_name, reinterpret_cast<void *>(addr));
 #else
-		sprintf(addr2line_cmd, "addr2line -f -C -p -e %.256s %p", program_name, (void*)addr);
+		snprintf(addr2line_cmd, sizeof(addr2line_cmd), "addr2line -f -C -p -e %.256s %p", program_name, (void*)addr);
 #endif
 
 		/* This will print a nicely formatted string specifying the
@@ -231,9 +237,9 @@ namespace
 			if (dladdr(stack_trace[i], &info))
 			{
 #if defined(Q_OS_APPLE)
-				std::uint64_t VMA_addr = stack_trace[i];
+				std::uintptr_t VMA_addr = reinterpret_cast<std::uintptr_t>(stack_trace[i]);
 #else
-				std::uint64_t VMA_addr = convertToVMA(stack_trace[i]);
+				std::uintptr_t VMA_addr = convertToVMA(stack_trace[i]);
 #endif
 				//
 				// Decrement the PC so we point to actual source line in error, not the one
