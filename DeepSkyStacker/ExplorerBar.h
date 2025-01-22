@@ -114,7 +114,7 @@ namespace DSS
 		void	LoadSettingFile();
 		void	SaveSettingFile();
 
-		void	changeEvent(QEvent*);
+		void	changeEvent(QEvent*) override;
 		void	makeLinks();
 
 		void onInitDialog();

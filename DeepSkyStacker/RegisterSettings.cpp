@@ -243,9 +243,8 @@ namespace DSS
 		ui->forceRegister->setChecked(forceRegister);
 	}
 
-	void RegisterSettings::forceRegister_stateChanged(int state)
+	void RegisterSettings::forceRegister_stateChanged(int)
 	{
-		state;
 		//
 		// Only used by StackingDlg.cpp by invoking isForceRegister() after 
 		// calling exec() on this dialog.  So only held as a class variable
@@ -253,9 +252,8 @@ namespace DSS
 		forceRegister = ui->forceRegister->isChecked();
 	}
 
-	void RegisterSettings::hotPixels_stateChanged(int state)
+	void RegisterSettings::hotPixels_stateChanged(int)
 	{
-		state;
 		bool hotPixels = ui->hotPixels->isChecked();
 		workspace->setValue("Register/DetectHotPixels", hotPixels);
 	}
@@ -305,9 +303,8 @@ namespace DSS
 		ui->starCount->setText(string);
 	}
 
-	void RegisterSettings::medianFilter_stateChanged(int state)
+	void RegisterSettings::medianFilter_stateChanged(int)
 	{
-		state;
 		medianFilter = ui->medianFilter->isChecked();
 		workspace->setValue("Register/ApplyMedianFilter", medianFilter);
 	}

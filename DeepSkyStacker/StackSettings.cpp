@@ -183,9 +183,8 @@ namespace DSS
 			QMetaObject::invokeMethod(which, "onSetActive");
 	}
 
-	void StackSettings::on_chooseFolder_clicked(bool value)
+	void StackSettings::on_chooseFolder_clicked(bool)
 	{
-		value;
 		QString dir =
 			QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder", "IDS_RECAP_SELECTTEMPFOLDER"),
 				ui->tempFilesFolder->text(),

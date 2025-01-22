@@ -24,6 +24,9 @@
 #include "AHDDemosaicing.h"
 #include "BitmapIterator.h"
 
+#if !defined(__cpp_lib_atomic_ref)
+#include <boost/atomic/atomic_ref.hpp>
+#endif
 
 #define _USE_MATH_DEFINES
 
@@ -1323,10 +1326,17 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	float* const pRed = pCover->GetRedPixel(0, 0);
 	float* const pGreen = pCover->GetGreenPixel(0, 0);
 	float* const pBlue = pCover->GetBluePixel(0, 0);
+#if !defined(__cpp_lib_atomic_ref)
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed) & (boost::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed + 1) & (boost::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pGreen) & (boost::atomic_ref<float>::required_alignment - 1)) == 0);
+	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pBlue) & (boost::atomic_ref<float>::required_alignment - 1)) == 0);
+#else
 	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
 	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pRed + 1) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
 	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pGreen) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
 	qtFakeAssertState((reinterpret_cast<ptrdiff_t>(pBlue) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+#endif
 
 	for (int lNrBitmaps = 1; const CPixelTransform& PixTransform : m_vPixelTransforms)
 	{
@@ -1362,7 +1372,11 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 						{
 							const auto update = [offset = static_cast<size_t>(m_rcResult.width()) * y + x, percent](float* const vals)
 							{
+#if !defined(__cpp_lib_atomic_ref)
+								boost::atomic_ref{ vals[offset] } += percent;
+#else
 								std::atomic_ref{ vals[offset] } += percent;
+#endif
 							};
 
 							switch (GetBayerColor(i, j, m_InputCFAType))
@@ -1432,7 +1446,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	//
 	// Adjust the coverage of all pixels
 	//
-	BitmapIterator outIt{ m_pOutput };
+	BitmapIterator<std::shared_ptr<CMemoryBitmap>> outIt{ m_pOutput };
 	for (int j = 0; j < m_rcResult.height(); j++)
 	{
 		it.Reset(0, j);
