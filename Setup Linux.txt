@@ -178,13 +178,14 @@ cd SmtpClient-for-Qt
 #
 mkdir build
 #
-# Edit src/CMakeLists.txt file.  If it contains a line that reads:
-# 
-# set(CMAKE_INSTALL_RPATH "${ORIGIN}")
-# 
-# please change it to read:
+# Edit CMakeLists.txt file.
+# Insert the following lines before the line that reads: add_subdirectory(src)
 #
-# set(CMAKE_INSTALL_RPATH $ORIGIN)
+
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH $ORIGIN)
+
 # 
 # After making the change (if necessary) ...
 #

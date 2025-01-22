@@ -155,6 +155,33 @@ make
 sudo make install
 
 #
+# SmtpClient 2.0 for Qt (this build unconditionally as a .dylib so we will need to ship it)
+#
+cd ~/Downloads
+gh repo clone bluetiger9/SmtpClient-for-Qt
+cd SmtpClient-for-Qt
+#
+# create a build directory
+#
+mkdir build
+#
+# Edit CMakeLists.txt file.
+# Insert the following lines before the line that reads: add_subdirectory(src)
+#
+
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH $ORIGIN)
+
+# 
+# After making the change (if necessary) ...
+#
+cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cd build
+ninja
+sudo ninja install
+
+#
 # Install CFITSIO 4.5.0
 # 
 cd ~/Downloads
