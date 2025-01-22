@@ -446,12 +446,15 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Threads::Threads
 )
 endif()
-if(MACOS)
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    Threads::Threads
+    CURL::libcurl
 )
 endif()
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
+endif()
 set(ADDITIONAL_LIBRARY_DEPENDENCIES cfitsio)
 
 if(WIN32)
@@ -464,7 +467,7 @@ endif()
 #
 # libomp.dylib was manually installed into /usr/local/lib on MacOS
 #
-if(MACOS)
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
     omp
 )

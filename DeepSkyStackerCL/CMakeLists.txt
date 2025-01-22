@@ -219,7 +219,15 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Threads::Threads
 )
 endif()
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    CURL::libcurl
+)
+endif()
 
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
+endif()
 set(ADDITIONAL_LIBRARY_DEPENDENCIES cfitsio)
 
 if(WIN32)

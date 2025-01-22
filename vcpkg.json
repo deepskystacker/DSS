@@ -1,6 +1,10 @@
 {
   "builtin-baseline": "a345bbdc68cdfda65603e24413b21afb28f110fb",
   "dependencies": [
+    {
+      "name": "boost-atomic",
+      "platform": "osx"
+    },
     "boost-container",
     "boost-interprocess",
     "exiv2",
@@ -10,6 +14,10 @@
     "zlib"
   ],
   "overrides": [
+    {
+      "name": "boost-atomic",
+      "version": "1.86.0"
+    },
     {
       "name": "boost-container",
       "version": "1.86.0"
