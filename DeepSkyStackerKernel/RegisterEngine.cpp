@@ -936,7 +936,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 
-		if ((m_IntermediateFileFormat == IFF_TIFF))
+		if (m_IntermediateFileFormat == IFF_TIFF)
 		{
 			strCalibratedFile = strPath + strBaseName + ".cal.tif";
 		}
