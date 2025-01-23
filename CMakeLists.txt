@@ -89,7 +89,7 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS
 	CACHE STRING "" FORCE
 	)
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+if(APPLE)
   include_directories(SYSTEM /usr/local/include)
 endif()
 	

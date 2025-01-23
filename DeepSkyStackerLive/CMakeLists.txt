@@ -190,7 +190,7 @@ if(MSVC)
         /DYNAMICBASE:NO
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Xclang -fopenmp
         )
@@ -234,13 +234,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Threads::Threads
 )
 endif()
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     CURL::libcurl
 )
 endif()
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+if(APPLE)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
 endif()
 set(ADDITIONAL_LIBRARY_DEPENDENCIES cfitsio SmtpMime)

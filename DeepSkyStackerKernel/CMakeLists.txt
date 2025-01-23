@@ -328,7 +328,7 @@ if(MSVC)
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+    if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Xclang -fopenmp
         )
