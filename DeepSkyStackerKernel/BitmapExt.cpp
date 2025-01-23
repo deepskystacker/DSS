@@ -914,7 +914,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 					//
 					// The first segment MUST be the IHDR segment
 					//
-					uint32_t chunkLength = big_endian::read_dword(f); chunkLength;
+					static_cast<void>(big_endian::read_dword(f));  // Read but discard the chunkLength;
 					f.read(type, sizeof(type));
 					if (0 != memcmp(type, IHDR, sizeof(type))) return false;
 
