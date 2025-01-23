@@ -173,10 +173,15 @@ set(CMAKE_SKIP_BUILD_RPATH FALSE)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_RPATH $ORIGIN)
 
-# 
-# After making the change (if necessary) ...
 #
-cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+# Then edit the file src/CMakeLists.txt and delete the lines that read as above
+# (just before the line that starts: target_include_directories
+#
+
+# 
+# After making the changes
+#
+cmake -B ./build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/macos"
 cd build
 ninja
 sudo ninja install
