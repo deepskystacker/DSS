@@ -165,21 +165,7 @@ cd SmtpClient-for-Qt
 #
 mkdir build
 #
-# Edit CMakeLists.txt file.
-# Insert the following lines before the line that reads: add_subdirectory(src)
-#
-
-set(CMAKE_SKIP_BUILD_RPATH FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH $ORIGIN)
-
-#
-# Then edit the file src/CMakeLists.txt and delete the lines that read as above
-# (just before the line that starts: target_include_directories
-#
-
-# 
-# After making the changes
+# As of 24 January 2025 the CMakeLists.txt files for this should be correct (no need to edit).
 #
 cmake -B ./build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/macos"
 cd build
