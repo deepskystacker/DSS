@@ -180,7 +180,7 @@ mkdir build
 #
 # As of 24 January 2025 the CMakeLists.txt files for this should be correct (no need to edit).
 #
-cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
 cd build
 ninja
 sudo ninja install
