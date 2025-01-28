@@ -6,18 +6,18 @@ namespace {
 
 	struct CStarAxisInfo final
 	{
-		int m_lAngle{ 0 };
 		double m_fRadius{ 0.0 };
 		double m_fSum{ 0.0 };
+		int m_lAngle{ 0 };
 	};
 
-	inline void NormalizeAngle(int& lAngle)
-	{
-		while (lAngle >= 360)
-			lAngle -= 360;
-		while (lAngle < 0)
-			lAngle += 360;
-	}
+	//inline void NormalizeAngle(int& lAngle)
+	//{
+	//	while (lAngle >= 360)
+	//		lAngle -= 360;
+	//	while (lAngle < 0)
+	//		lAngle += 360;
+	//}
 
 	//
 	// Calculates the exact position of a star as the center of gravity using the pixel values around the center pixel.
@@ -133,25 +133,26 @@ namespace {
 		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
 
-	void findStarShape(const CGrayBitmap& bitmap, CStar& star)
+	void findStarShape(const CGrayBitmap& bitmap, CStar& star, const double backgroundNoiseLevel)
 	{
-		std::vector<CStarAxisInfo>	vStarAxises;
-		double						fMaxHalfRadius = 0.0;
-		double						fMaxCumulated = 0.0;
-		int						lMaxHalfRadiusAngle = 0.0;
+		constexpr int AngleResolution = 10; // Test the axis every 10 degrees.
+		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes;
+		double fMaxHalfRadius = 0.0;
+		double fMaxCumulated = 0.0;
+		int lMaxHalfRadiusAngle = 0;
 
 		// Preallocate the vector for the inner loop.
-		PIXELDISPATCHVECTOR		vPixels;
+		PIXELDISPATCHVECTOR vPixels;
 		vPixels.reserve(10);
 
 		const int width = bitmap.Width();
 		const int height = bitmap.Height();
 
-		for (int lAngle = 0; lAngle < 360; lAngle += 10)
+		for (int lAngle = 0; lAngle < 360; lAngle += AngleResolution)
 		{
 			double					fSquareSum = 0.0;
 			double					fSum = 0.0;
-			double					fNrValues = 0.0;
+//			double					fNrValues = 0.0;
 
 			for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
 			{
@@ -169,17 +170,18 @@ namespace {
 					if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
 						continue;
 
-					double fValue;
-					bitmap.GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), fValue);
-					fLuminance += fValue * pixel.m_fPercentage;
+					double pixelBrightness;
+					bitmap.GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), pixelBrightness);
+					pixelBrightness = std::max(pixelBrightness - backgroundNoiseLevel, 0.0); // Exclude negative values.
+					fLuminance += pixelBrightness * pixel.m_fPercentage;
 				}
-				fSquareSum += fPos * fPos * fLuminance * 2;
+				fSquareSum += fPos * fPos * fLuminance;
 				fSum += fLuminance;
-				fNrValues += fLuminance * 2;
+//				fNrValues += fLuminance * 2;
 			}
 
-			const double fStdDev = fNrValues > 0.0 ? std::sqrt(fSquareSum / fNrValues) : 0.0;
-			CStarAxisInfo ai{ .m_lAngle = lAngle, .m_fRadius = fStdDev * 1.5, .m_fSum = fSum };
+			const double fStdDev = fSum > 0.0 ? std::sqrt(fSquareSum / fSum) : 0.0;
+			CStarAxisInfo ai{ .m_fRadius = fStdDev * 1.5, .m_fSum = fSum, .m_lAngle = lAngle };
 
 			if (ai.m_fSum > fMaxCumulated)
 			{
@@ -188,53 +190,22 @@ namespace {
 				lMaxHalfRadiusAngle = ai.m_lAngle;
 			}
 
-			vStarAxises.push_back(std::move(ai));
+			starAxes[lAngle / AngleResolution] = std::move(ai);
 		}
+
+		const auto StarAxesRadius = [&starAxes](const int angle) -> double
+		{
+			const int index = ((angle + 360) % 360) / AngleResolution;
+			return starAxes[index].m_fRadius;
+		};
 
 		// Get the biggest value - this is the major axis
 		star.m_fLargeMajorAxis = fMaxHalfRadius;
 		star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
 
-		int			lSearchAngle;
-		bool			bFound = false;
-
-		lSearchAngle = lMaxHalfRadiusAngle + 180;
-		NormalizeAngle(lSearchAngle);
-
-		for (int i = 0; i < vStarAxises.size() && !bFound; i++)
-		{
-			if (vStarAxises[i].m_lAngle == lSearchAngle)
-			{
-				bFound = true;
-				star.m_fSmallMajorAxis = vStarAxises[i].m_fRadius;
-			}
-		}
-
-		bFound = false;
-		lSearchAngle = lMaxHalfRadiusAngle + 90;
-		NormalizeAngle(lSearchAngle);
-
-		for (int i = 0; i < vStarAxises.size() && !bFound; i++)
-		{
-			if (vStarAxises[i].m_lAngle == lSearchAngle)
-			{
-				bFound = true;
-				star.m_fLargeMinorAxis = vStarAxises[i].m_fRadius;
-			}
-		}
-
-		bFound = false;
-		lSearchAngle = lMaxHalfRadiusAngle + 210;
-		NormalizeAngle(lSearchAngle);
-
-		for (int i = 0; i < vStarAxises.size() && !bFound; i++)
-		{
-			if (vStarAxises[i].m_lAngle == lSearchAngle)
-			{
-				bFound = true;
-				star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
-			}
-		}
+		star.m_fSmallMajorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 180);
+		star.m_fLargeMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 90);
+		star.m_fSmallMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 270);
 	}
 }
 
@@ -560,7 +531,7 @@ namespace DSS {
 											if (validCandidate)
 											{
 												ms.m_fQuality = (10 - deltaRadius) + fIntensity / 256.0 - ms.m_fMeanRadius;
-												findStarShape(inputBitmap, ms);
+												findStarShape(inputBitmap, ms, backgroundLevel * (1.0 / 256.0));
 												stars.insert(std::move(ms));
 												++nStars;
 											}
