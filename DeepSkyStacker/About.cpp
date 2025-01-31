@@ -24,7 +24,7 @@ namespace DSS
 
         QString strHTML("<body link=#0000ff></body><img valign=top align=right src=\":/logo.png\">");
         QString strText;
-        QString copyright{ QString::fromLatin1(DSSVER_COPYRIGHT) };
+        QString copyright{ QString::fromUtf8(DSSVER_COPYRIGHT) };
 
         QStringList copyrightList = copyright.split(", ");
         for (auto& i : copyrightList) {

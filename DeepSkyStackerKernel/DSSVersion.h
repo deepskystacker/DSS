@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 5
+#define DSSBETARELEASE 6
 constexpr int DSSBETAEXPIREYEAR = 2025;
-constexpr int DSSBETAEXPIREMONTH = 3;
+constexpr int DSSBETAEXPIREMONTH = 5;
 #endif
 
 #define DSSVER_MAJOR			5
@@ -39,9 +39,9 @@ constexpr int DSSBETAEXPIREMONTH = 3;
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT "Copyright © 2018-2024 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow,\
+#define DSSVER_COPYRIGHT "Copyright Â© 2018-2025 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow,\
 Tomas Tatara, Michal Schulz, Martin Toeltsch, Iustin Amihaesei;\n\
-Copyright © 2006-2019 Luc Coiffier"
+Copyright Â© 2006-2019 Luc Coiffier"
 	
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
