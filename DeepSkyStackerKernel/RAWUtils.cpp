@@ -271,7 +271,7 @@ namespace { // Only use in this .cpp file
 					m_DateTime = QDateTime::fromSecsSinceEpoch(P2.timestamp);
 				}
 
-				m_bColorRAW = P1.is_foveon || !(P1.filters);
+				m_bColorRAW = P1.is_foveon || (P1.colors > 1 && P1.filters == 0); // True colour RAW file: More than 1 colour and no Bayer matrix (filters == 0).
 				if (1 == P1.filters || 9 == P1.filters)
 				{
 					//
@@ -547,13 +547,9 @@ namespace { // Only use in this .cpp file
 
 			if (!m_bColorRAW)
 			{
-				ZTRACE_DEVELOP("Processing Bayer pattern raw image data");
+				ZTRACE_DEVELOP("Processing either (1) Bayer pattern raw image data, or (2) monochrome raw image data");
 				//
-				// The initial openmp changes were made by David Partridge, but it was
-				// Vitali Pelenjow who made it work without the critical sections
-				// killing the performance.
-				//
-				// Set up a temporary image array of unsigned short that will be:
+				// Set up a temporary image array of uint16 that will be:
 				//
 				// 1) Filled in from the Fujitsu Super-CCD image array in
 				//    Rawdata.raw_image, or
@@ -570,11 +566,9 @@ namespace { // Only use in this .cpp file
 					ZTHROW(e);
 				}
 				std::uint16_t* raw_image = dataBuffer.data();
-				void* buffer = nullptr; // Used for debugging only (memory window)
 
 				const int fuji_width = rawProcessor.is_fuji_rotated();
 				const unsigned fuji_layout = rawProcessor.get_fuji_layout();
-				buffer = raw_image;		// only for memory window debugging
 
 				if (fuji_width)   // Are we processing a Fuji Super-CCD image?
 				{
@@ -604,7 +598,7 @@ namespace { // Only use in this .cpp file
 				}
 				else
 				{
-					ZTRACE_DEVELOP("Extracting real image data (excluding the frame) from RawData.raw_image");
+					ZTRACE_DEVELOP("Extracting real image data (excluding the frame) from rawProcessor.imgdata.rawdata.raw_image");
 
 					//
 					// This is a regular RAW file so no Fuji Super-CCD stuff
@@ -612,9 +606,8 @@ namespace { // Only use in this .cpp file
 					// Just copy the "real image" portion of the data excluding
 					// the frame
 					//
-					buffer = raw_image;
 
-#pragma omp parallel for default(shared) schedule(dynamic, 50) if(numberOfProcessors > 1)
+#pragma omp parallel for default(shared) if(numberOfProcessors > 1)
 					for (int row = 0; row < S.height; row++)
 					{
 						for (int col = 0; col < S.width; col++)
@@ -634,7 +627,7 @@ namespace { // Only use in this .cpp file
 				//    copied from RawData.raw_image to raw_image (less the frame)
 				//
 				// Either way we should now be processing a regular greyscale 16-bit
-				// pixel array which has an associated Bayer Matrix
+				// pixel array which has an associated Bayer Matrix or is true monochrome
 				//
 				pFiller->setGrey(true);
 				pFiller->setWidth(S.width);
@@ -688,7 +681,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(shared) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for schedule(dynamic, 1'000'000) 
+#pragma omp for
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -705,7 +698,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(shared) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for schedule(dynamic, 1'000'000) 
+#pragma omp for
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -726,14 +719,13 @@ namespace { // Only use in this .cpp file
 				{
 					// Nothing to Do, maximum is already calculated, black level is 0, so no change
 					// only calculate channel maximum;
-					int dmax = 0;	// Maximum value of pixels in entire image.
-					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
+					unsigned int dmax = 0;	// Maximum value of pixels in entire image.
+					unsigned int lmax = 0;	// For OpenMP.
 #pragma omp parallel default(shared) firstprivate(lmax) if(numberOfProcessors > 1)
 					{
-#pragma omp for schedule(dynamic, 1'000'000) 
+#pragma omp for
 						for (int i = 0; i < size; i++)
-							if (lmax < raw_image[i])
-								lmax = raw_image[i];
+							lmax = std::max(static_cast<unsigned int>(raw_image[i]), lmax);
 #pragma omp critical
 						dmax = std::max(lmax, dmax); // For non-OMP case this is equal to dmax = lmax.
 					}
@@ -746,20 +738,23 @@ namespace { // Only use in this .cpp file
 				// Currently do not handle "Auto White Balance"
 				//
 				float pre_mul[4] = { 0.0, 0.0, 0.0, 0.0 };
-				if (1.0 == O.user_mul[0])
+				if (1 == O.user_mul[0])
 				{
+					static_assert(sizeof(O.user_mul) >= sizeof(pre_mul));
 					ZTRACE_RUNTIME("No White Balance processing.");
-					memcpy(pre_mul, O.user_mul, sizeof pre_mul);
+					memcpy(pre_mul, O.user_mul, sizeof(pre_mul));
 				}
 				else if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
 				{
+					static_assert(sizeof(C.cam_mul) >= sizeof(pre_mul));
 					ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
-					memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
+					memcpy(pre_mul, C.cam_mul, sizeof(pre_mul));
 				}
 				else
 				{
+					static_assert(sizeof(C.pre_mul) >= sizeof(pre_mul));
 					ZTRACE_RUNTIME("Using Daylight White Balance.");
-					memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
+					memcpy(pre_mul, C.pre_mul, sizeof(pre_mul));
 				}
 				ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
 					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
@@ -776,7 +771,8 @@ namespace { // Only use in this .cpp file
 				}
 #endif
 
-				if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
+				if (0 == pre_mul[3])
+					pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
 
 				//
 				// Now apply a linear stretch to the raw data, scale to the "saturation" level
@@ -785,23 +781,24 @@ namespace { // Only use in this .cpp file
 				//
 
 				// const double dmax = *std::max_element(&pre_mul[0], &pre_mul[4]);
-				const double dmin = *std::min_element(&pre_mul[0], &pre_mul[4]);
+				const float dmin = *std::ranges::min_element(pre_mul);
 
-				float scale_mul[4];
+				const float saturationScaling = 65535.0f / static_cast<float>(C.maximum);
+				std::array<float, 8> scale_mul = { 0.0f, 0.0f, 0.0f, 0.0f, saturationScaling, saturationScaling, saturationScaling, saturationScaling };
 				for (int c = 0; c < 4; c++)
-					scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
+					scale_mul[c] = (pre_mul[c] /= dmin) * saturationScaling;
 
 				ZTRACE_DEVELOP("Maximum value pixel has value %d", C.data_maximum);
 				ZTRACE_DEVELOP("Saturation level is %d", C.maximum);
-				ZTRACE_DEVELOP("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
-					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
+				ZTRACE_DEVELOP("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f %f, %f, %f, %f",
+					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3], scale_mul[4], scale_mul[5], scale_mul[6], scale_mul[7]);
 
 				//Timer timer;
-#pragma omp parallel default(shared) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
+#pragma omp parallel default(shared) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms
 				{
 #pragma omp master // There is no implied barrier.
 					ZTRACE_RUNTIME("RAW file processing with %d OpenMP threads, little_endian is %s", omp_get_num_threads(), littleEndian ? "true" : "false");
-#pragma omp for schedule(dynamic, 50)
+#pragma omp for
 					for (int row = 0; row < S.height; row++)
 					{
 						for (int col = 0; col < S.width; col++)
@@ -817,7 +814,7 @@ namespace { // Only use in this .cpp file
 
 				// Convert raw data to big-endian
 				if (littleEndian)
-#pragma omp parallel for default(shared) schedule(static, 1'000'000) if(numberOfProcessors > 1)
+#pragma omp parallel for default(shared) if(numberOfProcessors > 1)
 					for (int i = 0; i < size; i++)
 					{
 						raw_image[i] = bswap_16(raw_image[i]);
@@ -826,7 +823,7 @@ namespace { // Only use in this .cpp file
 				const int imageWidth = S.width;
 				const int imageHeight = S.height;
 				const bool bitmapFillerIsThreadSafe = pFiller->isThreadSafe();
-#pragma omp parallel for default(shared) schedule(dynamic, 50) firstprivate(pFiller) if(numberOfProcessors > 1 && bitmapFillerIsThreadSafe)
+#pragma omp parallel for default(shared) firstprivate(pFiller) if(numberOfProcessors > 1 && bitmapFillerIsThreadSafe)
 				for (int row = 0; row < imageHeight; ++row)
 				{
 					// Write raw pixel data into our private bitmap format
@@ -848,7 +845,7 @@ namespace { // Only use in this .cpp file
 				if (!bResult)
 					break;
 
-				ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
+				ZTRACE_RUNTIME("Processing either (1) Foveon or Fuji X-Trans raw image data, or (2) non-Bayered color raw image data");
 				//
 				// Now capture the output using our over-ridden methods
 				//
@@ -958,7 +955,9 @@ bool LoadRAWPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitm
 
         if (bResult)
         {
-            if (C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get()))
+			// If it's no colour RAW file (i.e. true monochrome OR Bayer matrix) AND CFA-type is not NONE
+			//    => so this is a Bayer matrix image.
+            if (C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get()); pGrayBitmap != nullptr && dcr.GetCFAType() != CFATYPE_NONE)
             {
                 if (IsSuperPixels())
                     pGrayBitmap->UseSuperPixels(true);
