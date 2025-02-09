@@ -484,9 +484,9 @@ namespace DSS
 
 		// find the index into the vector of file names for this name
 		auto iter = nameMap.find(name);
-		qtFakeAssert(iter != nameMap.end());
+		ZASSERT(iter != nameMap.end());
 		size_t x = iter->second;
-		qtFakeAssert(files[x] == name);
+		ZASSERT(files[x] == name);
 
 		//
 		// Adjust offset axes if necessary (data won't display if we don't)

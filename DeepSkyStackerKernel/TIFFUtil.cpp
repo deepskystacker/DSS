@@ -340,7 +340,7 @@ bool CTIFFReader::Open()
 				{
 					ZTRACE_RUNTIME("TIFFTAG_CFAPATTERN read OK");
 					count = unionLong.Short1;
-					qtFakeAssert(count == patternSize && count <= sizeof(cfaDimPat.cfa));
+					ZASSERT(count == patternSize && count <= sizeof(cfaDimPat.cfa));
 					memcpy(&cfaDimPat.cfa, pVoidArray, count);
 					decodeCfaDimPat(patternSize, "TIFFTAG_CFAPATTERN");
 				}

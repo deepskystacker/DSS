@@ -123,8 +123,8 @@ public:
 
 	const vertex * GetVertex(int i) const
 	{
-		qtFakeAssert(i >= 0);
-		qtFakeAssert(i < 3);
+		ZASSERT(i >= 0);
+		ZASSERT(i < 3);
 		return m_Vertices[i];
 	}
 

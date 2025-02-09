@@ -162,7 +162,7 @@ namespace DSS
 
 	void	ResultParameters::on_customMode_clicked()
 	{
-		qtFakeAssert(nullptr != pStackingTasks);
+		ZASSERT(nullptr != pStackingTasks);
 		pStackingTasks->enableCustomRect();
 		// Note well: DO NOT set workspace value "Stacking/Mosaic" to SM_CUSTOM
 		if (customPix.isNull())

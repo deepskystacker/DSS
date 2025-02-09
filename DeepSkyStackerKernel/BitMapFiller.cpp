@@ -128,14 +128,14 @@ std::unique_ptr<BitmapFillerInterface> NonAvxBitmapFiller::clone()
 
 size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, const size_t nrPixels, const size_t rowIndex)
 {
-	qtFakeAssertState(0 != this->width);
-	qtFakeAssertState(0 != this->height);
-	qtFakeAssertState(0 != this->bytesPerChannel);
-	qtFakeAssertState((nrPixels % static_cast<size_t>(this->width)) == 0);
+	ZASSERTSTATE(0 != this->width);
+	ZASSERTSTATE(0 != this->height);
+	ZASSERTSTATE(0 != this->bytesPerChannel);
+	ZASSERTSTATE((nrPixels % static_cast<size_t>(this->width)) == 0);
 
 	if (this->isGray)
 	{
-		qtFakeAssertState(bytesPerPixel == this->bytesPerChannel);
+		ZASSERTSTATE(bytesPerPixel == this->bytesPerChannel);
 		// constexpr size_t vectorLen = 16;
 		redBuffer.resize(nrPixels);
 
@@ -161,14 +161,14 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 		}
 
 		auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap);
-		qtFakeAssertState(pGray16Bitmap != nullptr);
+		ZASSERTSTATE(pGray16Bitmap != nullptr);
 		std::uint16_t* const pOut = pGray16Bitmap->m_vPixels.data() + rowIndex * nrPixels;
 		for (size_t i = 0; i < nrPixels; ++i)
 			pOut[i] = static_cast<std::uint16_t>(redBuffer[i]);
 	}
 	else
 	{
-		qtFakeAssertState(bytesPerPixel == this->bytesPerChannel * 3);
+		ZASSERTSTATE(bytesPerPixel == this->bytesPerChannel * 3);
 		redBuffer.resize(nrPixels);
 		greenBuffer.resize(nrPixels);
 		blueBuffer.resize(nrPixels);
@@ -199,7 +199,7 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 		std::for_each(blueBuffer.begin(), blueBuffer.end(), [this](float& v) { v = adjustColor(v, this->blueScale); });
 
 		auto* pColor16Bitmap = dynamic_cast<C48BitColorBitmap*>(pBitmap);
-		qtFakeAssertState(pColor16Bitmap != nullptr);
+		ZASSERTSTATE(pColor16Bitmap != nullptr);
 		std::uint16_t* const pOutRed = pColor16Bitmap->m_Red.m_vPixels.data() + rowIndex * nrPixels;
 		std::uint16_t* const pOutGreen = pColor16Bitmap->m_Green.m_vPixels.data() + rowIndex * nrPixels;
 		std::uint16_t* const pOutBlue = pColor16Bitmap->m_Blue.m_vPixels.data() + rowIndex * nrPixels;

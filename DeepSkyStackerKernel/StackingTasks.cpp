@@ -293,7 +293,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 
 	if (!m_pOffsetTask->m_bDone)
 	{
-		qtFakeAssert(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
+		ZASSERT(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
 		if (m_pOffsetTask->m_vBitmaps.size() == 1)
 		{
 			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].filePath;
@@ -456,7 +456,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 
 	if (!m_pDarkTask->m_bDone)
 	{
-		qtFakeAssert(m_pDarkTask->m_TaskType == PICTURETYPE_DARKFRAME);
+		ZASSERT(m_pDarkTask->m_TaskType == PICTURETYPE_DARKFRAME);
 
 		if (m_pDarkTask->m_vBitmaps.size() == 1)
 		{
@@ -651,7 +651,7 @@ bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
 
 	if (!m_pDarkFlatTask->m_bDone)
 	{
-		qtFakeAssert(m_pDarkFlatTask->m_TaskType == PICTURETYPE_DARKFLATFRAME);
+		ZASSERT(m_pDarkFlatTask->m_TaskType == PICTURETYPE_DARKFLATFRAME);
 
 		if (m_pDarkFlatTask->m_vBitmaps.size() == 1)
 		{
@@ -1073,7 +1073,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 
 	if (!m_pFlatTask->m_bDone)
 	{
-		qtFakeAssert(m_pFlatTask->m_TaskType == PICTURETYPE_FLATFRAME);
+		ZASSERT(m_pFlatTask->m_TaskType == PICTURETYPE_FLATFRAME);
 
 		if (m_pFlatTask->m_vBitmaps.size() == 1)
 		{
@@ -2078,7 +2078,7 @@ void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 	ZFUNCTRACE_RUNTIME();
 	QSettings settings;
 	fs::path path{ strFolder.toStdU16String() };
-	qtFakeAssert(fs::file_type::directory == status(path).type());
+	ZASSERT(fs::file_type::directory == status(path).type());
 	settings.setValue("Stacking/TemporaryFilesFolder", strFolder);
 };
 

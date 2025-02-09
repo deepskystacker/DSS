@@ -190,7 +190,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	}
 
 	auto bytesWritten = data.write(buffer);
-	qtFakeAssertState(bytesWritten == buffer.size());
+	ZASSERTSTATE(bytesWritten == buffer.size());
 
 	return true;
 }

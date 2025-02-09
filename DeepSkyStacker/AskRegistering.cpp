@@ -38,7 +38,7 @@ namespace DSS
 			}
 		}
 
-		qtFakeAssert(false);
+		ZASSERT(false);
 		return Answer::ARA_CONTINUE;
 	}
 }

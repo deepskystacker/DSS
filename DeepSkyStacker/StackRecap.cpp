@@ -760,7 +760,7 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 
-		qtFakeAssert(nullptr != pStackingTasks);
+		ZASSERT(nullptr != pStackingTasks);
 
 		STACKINGMODE stackingMode{ pStackingTasks->getStackingMode() };
 

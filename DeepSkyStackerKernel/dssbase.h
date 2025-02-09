@@ -81,20 +81,3 @@ private:
 	static inline DSSBase* theInstance{ nullptr };
 };
 
-#define qtFakeAssertState(test)\
-if(!(test))\
-{\
-	QString message = QString{ "Assertion failure:\n\nThe following expression must be true, but evaluated to false:\n%1\n"\
-					"File: %2\nFunction: %3 Line: %4\n\nThe programme will terminate." }.arg(#test)\
-				.arg(__FILE__).arg(__ZTRACE_FUNCTION__).arg(__LINE__);\
-	ZTRACE_RUNTIME(message);\
-	DSSBase::instance()->reportError(message, \
-		"", DSSBase::Severity::Critical, DSSBase::Method::QMessageBox, true); \
-}
-
-#if !defined(NDEBUG)
-#define qtFakeAssert(test) qtFakeAssertState(test)
-#else
-#define qtFakeAssert(test)
-#endif
-

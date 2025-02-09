@@ -53,7 +53,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
 		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pInBitmap);
 
-		qtFakeAssertState(nullptr != pCFABitmapInfo);
+		ZASSERTSTATE(nullptr != pCFABitmapInfo);
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 		{
 			// AHD Demosaicing of the image
@@ -200,7 +200,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 
 			if (pBitmap->IsCFA())
 			{
-				qtFakeAssertState(nullptr != pCFABitmapInfo);
+				ZASSERTSTATE(nullptr != pCFABitmapInfo);
 
 				if (AllDepthBitmap.m_bDontUseAHD && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 					pCFABitmapInfo->UseBilinear(true);
@@ -305,7 +305,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	//
 	// pQImage better be a nullptr
 	//
-	qtFakeAssertState(!pQImage);		
+	ZASSERTSTATE(!pQImage);		
 	pQImage = std::make_shared<QImage>(name);	// load the file
 	if (pQImage->isNull())		// If it failed ...
 	{
@@ -576,7 +576,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		const size_t height = pInBitmap->Height();
 
 		// Check that the output bitmap size is matching the input bitmap
-		qtFakeAssertState ((pImage->width() == width) && (pImage->height() == height));
+		ZASSERTSTATE ((pImage->width() == width) && (pImage->height() == height));
 
 		double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 		//

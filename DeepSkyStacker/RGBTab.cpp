@@ -109,7 +109,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -199,7 +199,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		//
 		// If the settings are linked, the green and blue pegs also need to move
@@ -234,7 +234,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -323,7 +323,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		//
 		// If the settings are linked, the red and blue pegs also need to move
@@ -357,7 +357,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
@@ -445,7 +445,7 @@ namespace DSS
 		// Adjust stop values if necessary
 		//
 		// qDebug() << "stops.size: " << stops.size();
-		qtFakeAssert(5 == stops.size());
+		ZASSERT(5 == stops.size());
 
 		//
 		// If the settings are linked, the red and green pegs also need to move

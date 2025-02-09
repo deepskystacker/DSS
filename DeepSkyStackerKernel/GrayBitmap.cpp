@@ -29,8 +29,8 @@ std::unique_ptr<CMemoryBitmap> CGrayBitmapT<T>::Clone(bool bEmpty/*=false*/) con
 		pResult->m_lWidth = m_lWidth;
 		pResult->m_lHeight = m_lHeight;
 	}
-	qtFakeAssert(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
-	qtFakeAssert(pResult->m_bFloat == m_bFloat);
+	ZASSERT(pResult->m_bWord == m_bWord); // Will be eliminated by the compiler, as both (static!) variables are referencing the identical memory location.
+	ZASSERT(pResult->m_bFloat == m_bFloat);
 	pResult->m_CFATransform = m_CFATransform;
 	pResult->m_CFAType = m_CFAType;
 	pResult->m_bCYMG = m_bCYMG;
@@ -58,7 +58,7 @@ bool CGrayBitmapT<T>::InitInternals()
 template <typename T>
 inline void	CGrayBitmapT<T>::CheckXY(size_t x, size_t y) const
 {
-	qtFakeAssertState(IsXYOk(x, y));
+	ZASSERTSTATE(IsXYOk(x, y));
 }
 
 template <typename T>
