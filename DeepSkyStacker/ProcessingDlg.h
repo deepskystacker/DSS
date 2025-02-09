@@ -437,33 +437,37 @@ namespace DSS
 		//
 		// Initial settings for the Luminance tab sliders
 		//
-		static const inline unsigned int maxAngle{ 45 };
-		static const inline unsigned int maxLuminance { 1000 };
+		static constexpr unsigned int maxAngle{ 45 };
+		static constexpr unsigned int maxLuminance { 1000 };
 
-		static const inline unsigned int darkAngleInitialValue{ 0 };
-		static const inline unsigned int darkPowerInitialValue{ 500 };
-		static const inline unsigned int midAngleInitialValue{ 20 };
-		static const inline unsigned int midToneInitialValue{ 200 };
-		static const inline unsigned int highAngleInitialPostion{ 0 };
-		static const inline unsigned int highPowerInitialValue{ 500 };
+		static constexpr unsigned int darkAngleInitialValue{ 0 };
+		static constexpr unsigned int darkPowerInitialValue{ 500 };
+		static constexpr unsigned int midAngleInitialValue{ 20 };
+		static constexpr unsigned int midToneInitialValue{ 200 };
+		static constexpr unsigned int highAngleInitialPostion{ 0 };
+		static constexpr unsigned int highPowerInitialValue{ 500 };
 
 		//
 		// Initial values for the Saturation slider
 		//
-		static const inline int minSaturation { -50 };
-		static const inline int maxSaturation { 50 };
-		static const inline int initialSaturation { 20 };
+		static constexpr int minSaturation { -50 };
+		static constexpr int maxSaturation { 50 };
+		static constexpr int initialSaturation { 20 };
 
 		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
 		void	drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
 		void	drawBezierCurve(QPainter& painter, int lWidth, int lHeight);
 
+		std::array<double, 9> calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const;
+		void updateGradientAdjustmentValues(const std::array<double, 9>& rgbParams);
+		void adjustRgbGradientPegs(const std::array<double, 9>& rgbParams);
+
 		void showHistogram(bool useLogarithm = false);	// Calls drawHistogram 
 
 		void resetSliders();
 
-		void	UpdateHistogramAdjust();
+		void UpdateHistogramAdjust();
 
 		bool askToSave();
 
