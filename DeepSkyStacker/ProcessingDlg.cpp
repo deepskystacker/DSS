@@ -675,7 +675,7 @@ namespace DSS
 		updateSaturationText();
 
 		// min/shift/max FOR red, green, blue
-		const std::array<double, 9> rgbParams = {
+		const RgbParams rgbParams = {
 			processingSettings.histoAdjust_.GetRedAdjust().GetMin(),
 			processingSettings.histoAdjust_.GetRedAdjust().GetShift(),
 			processingSettings.histoAdjust_.GetRedAdjust().GetMax(),
@@ -690,12 +690,12 @@ namespace DSS
 		};
 
 		updateGradientAdjustmentValues(rgbParams);
-		this->adjustRgbGradientPegs(rgbParams);
+		adjustRgbGradientPegs(rgbParams);
 	}
 
 	/* ------------------------------------------------------------------- */
 
-	std::array<double, 9> ProcessingDlg::calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const
+	ProcessingDlg::RgbParams ProcessingDlg::calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const
 	{
 		const QGradientStops& redStops = controls->redGradient->getStops(); //     Was previously: gradient().stops();
 		const QGradientStops& greenStops = controls->greenGradient->getStops(); // But gradient().stops() and getStops() are now slightly different.
@@ -727,12 +727,10 @@ namespace DSS
 		};
 	}
 
-	// PARAMETER rgbParams[9]:
-	//   min/shift/max FOR red, green, blue  ->  minRed, shiftRed, maxRed, minGreen, ...
-	void ProcessingDlg::updateGradientAdjustmentValues(const std::array<double, 9>& rgbParams)
+	void ProcessingDlg::updateGradientAdjustmentValues(const RgbParams& rgbParams)
 	{
-		const double fAbsMin = std::min(rgbParams[0], std::min(rgbParams[3], rgbParams[6]));
-		const double fAbsMax = std::max(rgbParams[2], std::max(rgbParams[5], rgbParams[8]));
+		const double fAbsMin = std::min(rgbParams[RGB::Red][Param::Min], std::min(rgbParams[RGB::Green][Param::Min], rgbParams[RGB::Blue][Param::Min]));
+		const double fAbsMax = std::max(rgbParams[RGB::Red][Param::Max], std::max(rgbParams[RGB::Green][Param::Max], rgbParams[RGB::Blue][Param::Max]));
 
 		double fRange = fAbsMax - fAbsMin;
 		if (fRange <= 65535.0 / 1.1)
@@ -744,23 +742,23 @@ namespace DSS
 		gradientRange_ = fRange;
 	}
 
-	void ProcessingDlg::adjustRgbGradientPegs(const std::array<double, 9>& rgbParams)
+	void ProcessingDlg::adjustRgbGradientPegs(const RgbParams& rgbParams)
 	{
-		controls->redGradient->setPeg(1, (rgbParams[0] - gradientOffset_) / gradientRange_);
-		controls->redGradient->setPeg(2, rgbParams[1] / 2.0 + 0.5);
-		controls->redGradient->setPeg(3, (rgbParams[2] - gradientOffset_) / gradientRange_);
+		controls->redGradient->setPeg(1, (rgbParams[RGB::Red][Param::Min] - gradientOffset_) / gradientRange_);
+		controls->redGradient->setPeg(2, rgbParams[RGB::Red][Param::Shift] / 2.0 + 0.5);
+		controls->redGradient->setPeg(3, (rgbParams[RGB::Red][Param::Max] - gradientOffset_) / gradientRange_);
 		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
 		controls->redGradient->update();
 
-		controls->greenGradient->setPeg(1, (rgbParams[3] - gradientOffset_) / gradientRange_);
-		controls->greenGradient->setPeg(2, rgbParams[4] / 2.0 + 0.5);
-		controls->greenGradient->setPeg(3, (rgbParams[5] - gradientOffset_) / gradientRange_);
+		controls->greenGradient->setPeg(1, (rgbParams[RGB::Green][Param::Min] - gradientOffset_) / gradientRange_);
+		controls->greenGradient->setPeg(2, rgbParams[RGB::Green][Param::Shift] / 2.0 + 0.5);
+		controls->greenGradient->setPeg(3, (rgbParams[RGB::Green][Param::Max] - gradientOffset_) / gradientRange_);
 		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
 		controls->greenGradient->update();
 
-		controls->blueGradient->setPeg(1, (rgbParams[6] - gradientOffset_) / gradientRange_);
-		controls->blueGradient->setPeg(2, rgbParams[7] / 2.0 + 0.5);
-		controls->blueGradient->setPeg(3, (rgbParams[8] - gradientOffset_) / gradientRange_);
+		controls->blueGradient->setPeg(1, (rgbParams[RGB::Blue][Param::Min] - gradientOffset_) / gradientRange_);
+		controls->blueGradient->setPeg(2, rgbParams[RGB::Blue][Param::Shift] / 2.0 + 0.5);
+		controls->blueGradient->setPeg(3, (rgbParams[RGB::Blue][Param::Max] - gradientOffset_) / gradientRange_);
 		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
 		controls->blueGradient->update();
 	}
@@ -1050,7 +1048,7 @@ namespace DSS
 		gradientOffset_ = 0.0;
 		gradientRange_ = 65535.0;
 
-		const std::array<double, 9> rgbParams = {
+		const RgbParams rgbParams = {
 			Histogram.GetRedHistogram().GetMin(),
 			0.0,
 			Histogram.GetRedHistogram().GetMax(),
@@ -1092,7 +1090,7 @@ namespace DSS
 	void ProcessingDlg::UpdateHistogramAdjust()
 	{
 		// RETURNS: min/shift/max FOR red, green, blue
-		const std::array<double, 9> rgbParams = calcHistogramAdjustment(this->processingSettings.histoAdjust_);
+		const RgbParams rgbParams = calcHistogramAdjustment(this->processingSettings.histoAdjust_);
 
 		updateGradientAdjustmentValues(rgbParams);
 

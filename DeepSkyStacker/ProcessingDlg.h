@@ -459,9 +459,13 @@ namespace DSS
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
 		void	drawBezierCurve(QPainter& painter, int lWidth, int lHeight);
 
-		std::array<double, 9> calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const;
-		void updateGradientAdjustmentValues(const std::array<double, 9>& rgbParams);
-		void adjustRgbGradientPegs(const std::array<double, 9>& rgbParams);
+		enum RGB : size_t { Red = 0, Green, Blue, RgbCount };
+		enum Param : size_t { Min = 0, Shift, Max, ParamCount };
+		using RgbParams = std::array<std::array<double, Param::ParamCount>, RGB::RgbCount>; // E.g. rgbParam[Green][Max]
+
+		RgbParams calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const;
+		void updateGradientAdjustmentValues(const RgbParams& rgbParams);
+		void adjustRgbGradientPegs(const RgbParams& rgbParams);
 
 		void showHistogram(bool useLogarithm = false);	// Calls drawHistogram 
 
