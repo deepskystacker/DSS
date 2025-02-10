@@ -177,10 +177,14 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 	const auto vectorMedian = [&quickMedian](__m256& loMedian, __m256& hiMedian, const __m256 loLoBound, const __m256 hiLoBound, const __m256 loHiBound, const __m256 hiHiBound) -> void
 	{
-		for (size_t n = 0; n < 8; ++n)
-			accessSimdElement(loMedian, n) = quickMedian(n, accessSimdElement(loLoBound, n), accessSimdElement(loHiBound, n), accessSimdElement(loMedian, n));
-		for (size_t n = 0; n < 8; ++n)
-			accessSimdElement(hiMedian, n) = quickMedian(n + 8, accessSimdElement(hiLoBound, n), accessSimdElement(hiHiBound, n), accessSimdElement(hiMedian, n));
+		constexpr size_t N = sizeof(__m256) / sizeof(float);
+		std::array<float, N> vec;
+		for (size_t n = 0; n < N; ++n)
+			vec[n] = quickMedian(n, accessSimdElementConst(loLoBound, n), accessSimdElementConst(loHiBound, n), accessSimdElementConst(loMedian, n));
+		loMedian = _mm256_loadu_ps(vec.data());
+		for (size_t n = 0; n < N; ++n)
+			vec[n] = quickMedian(n + 8, accessSimdElementConst(hiLoBound, n), accessSimdElementConst(hiHiBound, n), accessSimdElementConst(hiMedian, n));
+		hiMedian = _mm256_loadu_ps(vec.data());
 	};
 
 

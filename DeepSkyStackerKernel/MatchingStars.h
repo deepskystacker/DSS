@@ -211,7 +211,7 @@ constexpr int VPFLAG_POSSIBLE			= 0x00000400;
 class CVotingPair
 {
 public :
-	__int8					m_RefStar,
+	std::int8_t					m_RefStar,
 							m_TgtStar;
 	int					m_lNrVotes;
 	int					m_Flags;

@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "StackingTasks.h"
 #include "Workspace.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "RegisterEngine.h"
 
 namespace {

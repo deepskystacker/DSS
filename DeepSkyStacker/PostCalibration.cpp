@@ -3,8 +3,8 @@
 #include "ui/ui_PostCalibration.h"
 #include "Workspace.h"
 #include "StackSettings.h"
-#include "ZExcept.h"
-#include "Ztrace.h"
+#include "zexcept.h"
+#include "ztrace.h"
 #include "progressdlg.h"
 #include "MasterFrames.h"
 #include "BitmapInfo.h"
@@ -49,15 +49,15 @@ namespace DSS
 	{
 		onMedian = new QAction(medianString, this);
 		connect(onMedian, &QAction::triggered, this,
-			[=]() { this->setReplacementMethod(CR_MEDIAN); });
+			[this]() { this->setReplacementMethod(CR_MEDIAN); });
 		connect(onMedian, &QAction::triggered, this,
-			[=]() { ui->replacementMethod->setText(medianString); });
+			[this]() { ui->replacementMethod->setText(medianString); });
 
 		onGaussian = new QAction(gaussianString, this);
 		connect(onGaussian, &QAction::triggered, this,
-			[=]() { this->setReplacementMethod(CR_GAUSSIAN); });
+			[this]() { this->setReplacementMethod(CR_GAUSSIAN); });
 		connect(onGaussian, &QAction::triggered, this,
-			[=]() { ui->replacementMethod->setText(gaussianString); });
+			[this]() { ui->replacementMethod->setText(gaussianString); });
 
 		return *this;
 	}

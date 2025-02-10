@@ -172,8 +172,8 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
 
             // Build the details string.
             details +=
-                "X=" + QString::number(mouseEvent->x()) + ',' +
-                "Y=" + QString::number(mouseEvent->y()) + ',' +
+                "X=" + QString::number(mouseEvent->position().x()) + ',' +
+                "Y=" + QString::number(mouseEvent->position().y()) + ',' +
                 "Buttons=" + buttonsPressed + ',' +
                 "Modifiers=" + modifiers;
         }

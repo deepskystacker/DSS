@@ -69,7 +69,7 @@ namespace DSS
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-		connect(ui->checkBox_autoThreshold, &QCheckBox::stateChanged, this, &RegisterSettings::autoThreshold_changed);
+		connect(ui->checkBox_autoThreshold, &QCheckBox::checkStateChanged, this, &RegisterSettings::autoThreshold_changed);
 
 		perCentValidator = new QIntValidator(0, 100, this);
 		ui->percentStack->setValidator(perCentValidator);

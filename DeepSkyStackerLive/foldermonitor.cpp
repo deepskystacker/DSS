@@ -37,7 +37,7 @@
 //
 #include "stdafx.h"
 #include <atomic>
-#include <Ztrace.h>
+#include <ztrace.h>
 #include "foldermonitor.h"
 
 namespace DSS

@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "stdafx.h"
 //#include "resource.h"
 #include "MasterFrames.h"
 #include "DSSProgress.h"
 #include "DeBloom.h"
 #include "Workspace.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "StackingTasks.h"
 #include "BitmapExt.h"
 

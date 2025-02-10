@@ -11,15 +11,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-set(CMAKE_PREFIX_PATH
+	set(CMAKE_PREFIX_PATH
 	"C:/Qt/6.8.0/msvc2022_64"
 	CACHE STRING "" FORCE
 	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-set(CMAKE_PREFIX_PATH
-	"/opt/Qt/6.8.0/gcc_64"
-	CACHE STRING "" FORCE
-	)
 	message ("WIN32 is set to ${WIN32}, LINUX is set to ${LINUX}")
 	if(WIN32)
 	    message(FATAL_ERROR "System name is set to ${CMAKE_SYSTEM_NAME} but WIN32 is set to ${WIN32}")
@@ -64,7 +60,6 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 endif()
 message ("Install prefix set to: " ${CMAKE_INSTALL_PREFIX})
 
-
 ################################################################################
 # Global configuration types
 ################################################################################
@@ -75,12 +70,16 @@ set(CMAKE_CONFIGURATION_TYPES
 )
 
 if(WIN32)
-set(CMAKE_CXX_FLAGS
-	"/GR /EHsc"
-	CACHE STRING "" FORCE
-	)
+	set(CMAKE_CXX_FLAGS
+		"/GR /EHsc"
+		CACHE STRING "" FORCE
+		)
 else()
-set(CMAKE_CXX_FLAGS "" CACHE STRING "" FORCE)
+	set(CMAKE_CXX_FLAGS "" CACHE STRING "" FORCE)
+
+	add_compile_options(-mavx2)
+	add_compile_options(-mfma)
+	add_link_options(-Wl,--copy-dt-needed-entries)
 endif()
 
 ################################################################################
@@ -111,9 +110,11 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
-add_subdirectory(LibRaw/buildfiles)
+get_filename_component(LIBRAW_PATH LibRaw ABSOLUTE)
+add_subdirectory(LibRaw-cmake)
+add_subdirectory(SmtpClient-for-Qt)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
-add_subdirectory(DeepSkyStackerTest)
+# add_subdirectory(DeepSkyStackerTest)

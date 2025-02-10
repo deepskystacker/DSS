@@ -33,12 +33,14 @@ using std::max;
 #include <omp.h>
 
 #include "../ZClass/zdefs.h"
-#include "../ZClass/Ztrace.h"
+#include "../ZClass/ztrace.h"
 #include "../ZClass/zexcept.h"
 
 
 // Windows (to go!)
+#ifdef __MS_VSC__
 #include <WTypesbase.h>
 #include <atlstr.h>
 #include <cassert>
 #include <atltypes.h>
+#endif

@@ -4,6 +4,11 @@ set(COMPILE_WARNING_AS_ERROR YES)
 
 find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
 qt_standard_project_setup()
+find_package(Tiff REQUIRED)
+find_package(exiv2 REQUIRED)
+find_package(cfitsio REQUIRED)
+find_package(TBB REQUIRED)
+# find_package(openmp REQUIRED)
 
 set(CMAKE_AUTORCC ON)
 
@@ -23,6 +28,7 @@ set(Header_Files
     "avx_median.h"
     "avx_output.h"
     "avx_support.h"
+    "avx_simd_check.h"
     "BackgroundCalibration.h"
     "Bayer.h"
     "BilinearParameters.h"
@@ -76,6 +82,7 @@ set(Header_Files
     "MultiBitmap.h"
     "Multitask.h"
     "PixelTransform.h"
+    "QMessageLogger.h"
     "RationalInterpolation.h"
     "RAWUtils.h"
     "RegisterEngine.h"
@@ -85,7 +92,6 @@ set(Header_Files
     "StackedBitmap.h"
     "StackingEngine.h"
     "StackingTasks.h"
-    "StackWalker.h"
     "StarMask.h"
     "Stars.h"
     "stdafx.h"
@@ -94,6 +100,14 @@ set(Header_Files
     "tracecontrol.h"
     "Workspace.h"
 )
+if(WIN32)
+set(Header_Files
+    ${Header_Files}
+    "StackWalker.h"
+)
+endif()
+
+
 source_group("Header Files" FILES ${Header_Files})
 
 set(i18n_Files
@@ -129,6 +143,7 @@ set(Source_Files
     "avx_luminance.cpp"
     "avx_output.cpp"
     "avx_support.cpp"
+    "avx_simd_check.cpp"
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -173,13 +188,19 @@ set(Source_Files
     "StackedBitmap.cpp"
     "StackingEngine.cpp"
     "StackingTasks.cpp"
-    "StackWalker.cpp"
     "StarMask.cpp"
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
     "Workspace.cpp"
 )
+if(WIN32)
+    set(Source_Files
+        ${Source_Files}
+        "StackWalker.cpp"
+    )
+endif()
+
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
@@ -217,7 +238,7 @@ set_target_properties(DeepSkyStackerKernel PROPERTIES
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
-    ../DeepSkyStacker;
+    ../DeepSkyStacker
     ./GeneratedFiles/$<CONFIG>
     ./GeneratedFiles
     ../ZClass
@@ -233,6 +254,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../CFitsIO
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
     "$ENV{Boost_1_80_0}"
+)
+else()
+target_include_directories(${PROJECT_NAME} PUBLIC
+    /usr/include/cfitsio
+    /usr/include/tbb
 )
 endif()
 
@@ -292,15 +318,18 @@ if(MSVC)
         /wd4244;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
+else()
+	add_compile_options(-fopenmp)
 endif()
 
 ################################################################################
 # Dependencies
 ################################################################################
 # Link with other targets.
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    libraw
-    libtiff
-    ZClass
-)
-
+target_link_libraries(${PROJECT_NAME} PUBLIC ZClass)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::libraw)
+target_link_libraries(${PROJECT_NAME} PRIVATE exiv2)
+target_link_libraries(${PROJECT_NAME} PRIVATE tiff)
+target_link_libraries(${PROJECT_NAME} PRIVATE tbb)
+target_link_libraries(${PROJECT_NAME} PRIVATE cfitsio)
+# target_link_libraries(${PROJECT_NAME} PRIVATE openmp)

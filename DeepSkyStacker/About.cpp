@@ -105,7 +105,7 @@ namespace DSS
             if ("en" == lang) langName = "English";
             if (!variant.isEmpty())
             {
-                langName += " " + locale.nativeCountryName();
+                langName += " " + locale.nativeTerritoryName();
             }
             ui->comboBox->addItem(langName, lang);
         }

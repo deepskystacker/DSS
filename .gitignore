@@ -33,6 +33,9 @@ bld/
 # Visual Studio 2017 auto generated files
 GeneratedFiles/
 
+# VSCode local config
+.vscode
+
 # CMake build directory
 build/
 

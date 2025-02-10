@@ -4,7 +4,7 @@
 #include "dssrect.h"
 #include "avx_support.h"
 #include "TaskInfo.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 
 AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },

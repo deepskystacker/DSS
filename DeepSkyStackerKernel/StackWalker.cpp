@@ -116,7 +116,7 @@ typedef struct _IMAGEHLP_LINE64
   DWORD   SizeOfStruct; // set to sizeof(IMAGEHLP_LINE64)
   PVOID   Key;          // internal
   DWORD   LineNumber;   // line number in file
-  PCHAR   FileName;     // full filename
+  char*   FileName;     // full filename
   DWORD64 Address;      // first instruction of line
 } IMAGEHLP_LINE64, *PIMAGEHLP_LINE64;
 typedef struct _IMAGEHLP_MODULE64
@@ -128,9 +128,9 @@ typedef struct _IMAGEHLP_MODULE64
   DWORD    CheckSum;             // checksum from the pe header
   DWORD    NumSyms;              // number of symbols in the symbol table
   SYM_TYPE SymType;              // type of symbols loaded
-  CHAR     ModuleName[32];       // module name
-  CHAR     ImageName[256];       // image name
-  CHAR     LoadedImageName[256]; // symbol file name
+  char     ModuleName[32];       // module name
+  char     ImageName[256];       // image name
+  char     LoadedImageName[256]; // symbol file name
 } IMAGEHLP_MODULE64, *PIMAGEHLP_MODULE64;
 typedef struct _IMAGEHLP_SYMBOL64
 {

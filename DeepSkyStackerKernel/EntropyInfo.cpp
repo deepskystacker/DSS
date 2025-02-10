@@ -1,8 +1,8 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "EntropyInfo.h"
 #include "DSSProgress.h"
 #include "avx_entropy.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "MemoryBitmap.h"
 #include "DSSTools.h"
 
@@ -73,9 +73,9 @@ void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, 
 	fGreenEntropy = 0.0;
 	fBlueEntropy = 0.0;
 
-	vRedHisto.resize((int)MAXWORD+1);
-	vGreenHisto.resize((int)MAXWORD+1);
-	vBlueHisto.resize((int)MAXWORD+1);
+	vRedHisto.resize(1 + std::numeric_limits<std::uint16_t>::max());
+	vGreenHisto.resize(1 + std::numeric_limits<std::uint16_t>::max());
+	vBlueHisto.resize(1+ std::numeric_limits<std::uint16_t>::max());
 
 	COLORREF16		crColor;
 	for (int i = lMinX;i<=lMaxX;i++)

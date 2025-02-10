@@ -124,7 +124,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 
-#pragma omp parallel for default(none) firstprivate(histogram) schedule(dynamic, 50) if(nrEnabledThreads - 1) 
+#pragma omp parallel for default(shared) firstprivate(histogram) schedule(dynamic, 50) if(nrEnabledThreads - 1) 
 		for (int y = 0; y < nSquaresY; ++y)
 		{
 			for (int x = 0, ndx = y * nSquaresX; x < nSquaresX; ++x, ++ndx)

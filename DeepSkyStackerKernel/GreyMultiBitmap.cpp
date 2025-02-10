@@ -3,7 +3,7 @@
 #include "GrayBitmap.h"
 #include "BitmapCharacteristics.h"
 #include "BitmapBase.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "DSSTools.h"
 
 template <typename TType, typename TTypeOutput>

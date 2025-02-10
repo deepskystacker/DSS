@@ -122,7 +122,7 @@ bool CFITSReader::ReadKey(const char * szKey, double& fValue, QString& strCommen
 
 	if (m_fits)
 	{
-		CHAR			szComment[500];
+		char			szComment[500];
 
 		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
@@ -168,7 +168,7 @@ bool CFITSReader::ReadKey(const char * szKey, int& lValue)
 bool CFITSReader::ReadKey(const char * szKey, QString & strValue)
 {
 	bool				bResult = false;
-	CHAR				szValue[2000];
+	char				szValue[2000];
 	int					nStatus = 0;
 
 	if (m_fits)
@@ -202,9 +202,9 @@ void CFITSReader::ReadAllKeys()
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (int i = 1;i<=nKeywords;i++)
 		{
-			CHAR			szKeyName[FLEN_CARD];
-			CHAR			szValue[FLEN_VALUE];
-			CHAR			szComment[FLEN_COMMENT];
+			char			szKeyName[FLEN_CARD];
+			char			szValue[FLEN_VALUE];
+			char			szComment[FLEN_COMMENT];
 			int				nKeyClass;
 
 			fits_read_keyn(m_fits, i, szKeyName, szValue, szComment, &nStatus);
@@ -532,12 +532,14 @@ bool CFITSReader::Open()
 					break;
 				case SHORT_IMG :
 					m_bSigned = true;  // Fall through intentional
+					[[fallthrough]];
 				case USHORT_IMG :
 					m_lBitsPerPixel = 16;
 					m_bFloat = false;
 					break;
 				case LONG_IMG :
 					m_bSigned = true; // Fall through intentional
+					[[fallthrough]];
 				case ULONG_IMG :
 					m_lBitsPerPixel = 32;
 					m_bFloat = false;
@@ -623,7 +625,7 @@ bool CFITSReader::Read()
 		if (m_pProgress)
 			m_pProgress->Start2(m_lHeight);
 
-		std::int64_t fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
@@ -654,7 +656,7 @@ bool CFITSReader::Read()
 		if (m_bFloat)
 		{
 			double localMin = 0, localMax = 0;
-#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(fMin, fMax, nElements, doubleBuff) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
 #pragma omp for schedule(dynamic, 100'000)
 				for (std::int64_t element = 0; element < nElements; ++element)
@@ -714,7 +716,7 @@ bool CFITSReader::Read()
 
 		std::atomic_bool stop{ false };
 
-#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -1201,14 +1203,14 @@ void	CFITSWriter::WriteAllKeys()
 		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
 			const ExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-			CHAR szValue[FLEN_VALUE];
+			char szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
 			fits_read_key(m_fits, TSTRING, ei.m_strName.toUtf8().constData(), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
-				CHAR		szCard[FLEN_CARD];
+				char		szCard[FLEN_CARD];
 				int			nType;
 				QString		strTemplate;
 

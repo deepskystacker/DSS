@@ -36,8 +36,12 @@
 // DeepSkyStackerLive.cpp : Defines the class behaviors for the application.
 //
 
-#include <stdafx.h>
+#include "stdafx.h"
+
+#if defined(Q_OS_WIN)
 #include <htmlhelp.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -74,8 +78,8 @@
 #include "progresslive.h"
 #include "RegisterEngine.h"
 #include "RestartMonitoring.h"
-#include <SmtpMime/SmtpMime>
-
+#include "SmtpMime"
+#include "QMessageLogger.h"
 using namespace DSS;
 using namespace std;
 
@@ -88,39 +92,6 @@ bool	g_bShowRefStars = false;
 
 namespace
 {
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-
 	//
 	// Convert a QLabel with "plain text" to a hyperlink
 	//
@@ -748,9 +719,14 @@ void DeepSkyStackerLive::stopStacking()
 void DeepSkyStackerLive::help()
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(Q_OS_WIN)
+
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#else
+	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
+#endif
 }
 
 /* ------------------------------------------------------------------- */
@@ -934,7 +910,7 @@ bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 #if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_u8string().c_str(), "wt")
+			std::fopen(file.c_str(), "wt")
 #endif
 			)
 		{
@@ -1537,7 +1513,7 @@ void DeepSkyStackerLive::updateStatusMessage()
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
-static char const* global_program_name;
+extern char const* global_program_name;
 
 int main(int argc, char* argv[])
 {

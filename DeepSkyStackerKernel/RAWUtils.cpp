@@ -1,34 +1,28 @@
 #include "stdafx.h"
+#include <unordered_set>
 #include "RAWUtils.h"
 #define LIBRAW_NO_WINSOCK2
 #include "libraw/libraw.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "DSSProgress.h"
 //#include "resource.h"
 #include "MemoryBitmap.h"
 #include "Multitask.h"
 #include "MedianFilterEngine.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "BitmapInfo.h"
+#include "compiler_agnotistics.h"
 
-// #include <zexcept.h>
-// #include <ztrace.h>
-// 
-// #include "resource.h"
-// #include "BitmapExt.h"
-// #include "DSSTools.h"
-// #include "DSSProgress.h"
-// 
-// #include "RAWUtils.h"
-// #include "Multitask.h"
-// #include "Workspace.h"
-// 
-// #include "libraw/libraw.h"
 
 using namespace DSS;
 
 namespace {
+	//
+	// Get our endian-ness so we can swap bytes if needed (always on Windows).
+	//
+	constexpr bool littleEndian{ std::endian::native == std::endian::little };
+
 	class Timer
 	{
 	private:
@@ -247,7 +241,11 @@ namespace { // Only use in this .cpp file
 			m_fAperture{ 0.0 },
 			m_lHeight{ 0 },
 			m_lWidth{ 0 },
+#if defined(Q_OS_WIN)
 			m_isRawFile{ rawProcessor.open_file(file.wstring().c_str()) == LIBRAW_SUCCESS }
+#else
+			m_isRawFile{ rawProcessor.open_file(file.string().c_str()) == LIBRAW_SUCCESS }
+#endif
 		{
 			ZFUNCTRACE_RUNTIME();
 
@@ -542,11 +540,6 @@ namespace { // Only use in this .cpp file
 
 #define RAW(row,col) raw_image[(row) * S.width + (col)]
 
-			//
-			// Get our endian-ness so we can swap bytes if needed (always on Windows).
-			//
-			const bool littleEndian = (htons(0x55aa) != 0x55aa); // big_endian = htons(host_byte_order)
-
 			if (!m_bColorRAW)
 			{
 				ZTRACE_DEVELOP("Processing either (1) Bayer pattern raw image data, or (2) monochrome raw image data");
@@ -576,7 +569,7 @@ namespace { // Only use in this .cpp file
 				{
 					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(numberOfProcessors > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(numberOfProcessors > 1)
 					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
 						for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
@@ -681,7 +674,7 @@ namespace { // Only use in this .cpp file
 					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 					if (C.cblack[4] && C.cblack[5])
 					{
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
+#pragma omp parallel default(shared) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
 #pragma omp for
 							for (int i = 0; i < size; i++)
@@ -698,7 +691,7 @@ namespace { // Only use in this .cpp file
 					}
 					else
 					{
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
+#pragma omp parallel default(shared) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
 #pragma omp for
 							for (int i = 0; i < size; i++)
@@ -819,7 +812,7 @@ namespace { // Only use in this .cpp file
 #pragma omp parallel for default(shared) if(numberOfProcessors > 1)
 					for (int i = 0; i < size; i++)
 					{
-						raw_image[i] = _byteswap_ushort(raw_image[i]);
+						raw_image[i] = bswap_16(raw_image[i]);
 					}
 
 				const int imageWidth = S.width;
@@ -1101,8 +1094,13 @@ void DSSLibRaw::write_ppm_tiff()
 			else
 				FORCC ppm2[col*colors + c] = curve[image[soff][c]];
 		}
-		if (output_bps == 16 && !output_tiff && htons(0x55aa) != 0x55aa)
+		if (output_bps == 16 && !output_tiff && littleEndian)
+#if defined(Q_OS_WIN)          
 			_swab((char*)ppm2, (char*)ppm2, width*colors * 2);
+#else
+        swab((char*)ppm2, (char*)ppm2, width * colors * 2);
+#endif
+
 
 		//
 		// Instead of writing the bitmap data to an output file

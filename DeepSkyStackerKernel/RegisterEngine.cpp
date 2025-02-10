@@ -3,7 +3,7 @@
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BackgroundCalibration.h"
 #include "Multitask.h"
 #include "avx_luminance.h"
@@ -517,7 +517,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 			}
 		};
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers, nPixels, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+#pragma omp parallel default(shared) shared(stars1, stars2, stars3, stars4, ePointers, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
 #pragma omp sections
 		{
@@ -616,7 +616,7 @@ void CComputeLuminanceTask::process()
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-#pragma omp parallel for schedule(static, 5) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)

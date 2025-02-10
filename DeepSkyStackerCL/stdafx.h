@@ -15,10 +15,11 @@
 #include <exiv2/easyaccess.hpp>
 
 // Standard Libraries
-#include <concurrent_unordered_set.h>
 #include <shared_mutex>
 #include <omp.h>
+#ifdef __MS_VSC__
 #include <tchar.h>
+#endif
 #include <vector>
 #include <tuple>
 #include <deque>

@@ -3,8 +3,8 @@
 #include "stdafx.h"
 #include "QLinearGradientCtrl.h"
 
-#include "Ztrace.h"
-#include "ZExcBase.h"
+#include "ztrace.h"
+#include "zexcbase.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // QLinearGradientCtrl

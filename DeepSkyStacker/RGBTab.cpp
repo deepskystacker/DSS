@@ -2,7 +2,7 @@
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
 #include "progressdlg.h"
-#include <Ztrace.h>
+#include <ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
 

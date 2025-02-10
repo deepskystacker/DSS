@@ -519,9 +519,9 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 					{
 						const float fcolor = readColorValue(*pColor);
-						const float denom = accessSimdElement(b, 0) * fcolor + accessSimdElement(c, 0);
-						const float xplusa = fcolor + accessSimdElement(a, 0);
-						*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElement(fmax, 0)), accessSimdElement(fmin, 0));
+						const float denom = accessSimdElementConst(b, 0) * fcolor + accessSimdElementConst(c, 0);
+						const float xplusa = fcolor + accessSimdElementConst(a, 0);
+						*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElementConst(fmax, 0)), accessSimdElementConst(fmin, 0));
 					}
 				}
 			};
@@ -561,9 +561,9 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 					{
 						const float fcolor = readColorValue(*pColor);
-						*pResult = fcolor < accessSimdElement(xm, 0)
-							? (fcolor * accessSimdElement(a0, 0) + accessSimdElement(b0, 0))
-							: (fcolor * accessSimdElement(a1, 0) + accessSimdElement(b1, 0));
+						*pResult = fcolor < accessSimdElementConst(xm, 0)
+							? (fcolor * accessSimdElementConst(a0, 0) + accessSimdElementConst(b0, 0))
+							: (fcolor * accessSimdElementConst(a1, 0) + accessSimdElementConst(b1, 0));
 					}
 				}
 			};

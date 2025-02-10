@@ -1,4 +1,7 @@
 #pragma once
+#include <qstring.h>
+#include <stdlib.h>
+#include "stdafx.h"
 
 class MRUPath
 {

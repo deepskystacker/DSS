@@ -1,0 +1,9 @@
+[submodule "LibRaw"]
+	path = LibRaw
+	url = https://github.com/LibRaw/LibRaw.git
+[submodule "LibRaw-cmake"]
+	path = LibRaw-cmake
+	url = https://github.com/LibRaw/LibRaw-cmake.git
+[submodule "SmtpClient-for-Qt"]
+	path = SmtpClient-for-Qt
+	url = https://github.com/bluetiger9/SmtpClient-for-Qt.git

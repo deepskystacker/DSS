@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "DeepSkyStackerLive.h"
 #include "LiveSettings.h"
-#include "emailsettings.h"
-#include <SmtpMime/SmtpMime>
+#include "EmailSettings.h"
+#include "SmtpMime"
 
 namespace DSS
 {

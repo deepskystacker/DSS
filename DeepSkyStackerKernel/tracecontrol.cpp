@@ -35,7 +35,7 @@
 ****************************************************************************/
 #include "stdafx.h"
 #include "tracecontrol.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 
 namespace DSS
 {

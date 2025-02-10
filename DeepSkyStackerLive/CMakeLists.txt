@@ -17,6 +17,7 @@ set(Header_Files
  )
 source_group("Header Files" FILES ${Header_Files})
 
+if(WIN32)
 set(Header_Files__SmtpMime
     "../include/SmtpMime/emailaddress.h"
     "../include/SmtpMime/mimeattachment.h"
@@ -38,6 +39,7 @@ set(Header_Files__SmtpMime
     "../include/SmtpMime/smtpmime_global.h"
 )
 source_group("Header Files\\SmtpMime" FILES ${Header_Files__SmtpMime})
+endif()
 
 set(Source_Files
     "ChartTab.cpp"
@@ -133,6 +135,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../LibRaw
     ../ZClass
     ../Tools
+    ../SmtpClient-for-Qt/src
   )
 
 if(WIN32)
@@ -146,6 +149,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
    "$ENV{Boost_1_80_0}"
 )
+else()
+    target_include_directories(DeepSkyStackerCL PUBLIC
+    /usr/include/cfitsio
+    )
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
@@ -215,20 +222,23 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Network
 	Qt6::Charts
 	DeepSkyStackerKernel
-    libraw
-    libtiff
-    ZClass
+    ZClass    
 )
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::libraw)
+target_link_libraries(${PROJECT_NAME} PRIVATE exiv2)
+target_link_libraries(${PROJECT_NAME} PRIVATE tiff)
+target_link_directories(${PROJECT_NAME} PRIVATE SmtpClient-for-Qt/src)
+target_link_libraries(${PROJECT_NAME} PRIVATE SmtpMime)
+target_link_libraries(${PROJECT_NAME} PRIVATE cfitsio)
+# set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
+# set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
 
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-    "cfitsio"
-    SmtpMime
-)
+# set(ADDITIONAL_LIBRARY_DEPENDENCIES
+#     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
+#     "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
+#     "cfitsio"
+#     SmtpMime
+# )
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}

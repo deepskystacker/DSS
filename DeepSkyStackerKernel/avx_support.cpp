@@ -64,7 +64,7 @@ template <class T>
 bool AvxSupport::isMonochromeCfaBitmapOfType() const
 {
 	// CFA only supported for T=16 bits unsigned
-	if constexpr (std::is_same<T, std::uint16_t>::value)
+	if constexpr (std::is_same_v<T, std::uint16_t>)
 	{
 		const auto* const pGray = this->getGrayPtr<T>();
 		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.

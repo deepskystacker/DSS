@@ -42,7 +42,7 @@
 #include "RegisterEngine.h"
 #include "BackgroundCalibration.h"
 #include "DeepSkyStacker.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 
 // Classes etc. private to this file
 #if (0)

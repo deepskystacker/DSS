@@ -1,7 +1,7 @@
 // DeepSkyStackerCL.cpp : Defines the entry point for the console application.
 //
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 #if defined(Q_OS_WIN) && !defined(NDEBUG)
 //
@@ -18,48 +18,13 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "tracecontrol.h"
-#include "Ztrace.h"
+#include "ztrace.h"
+#include "QMessageLogger.h"
 
 //
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
-
-namespace
-{
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-}
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
@@ -90,7 +55,12 @@ void DeepSkyStackerCommandLine::reportError(const QString& message, [[maybe_unus
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
 	std::cerr << message.toUtf8().constData() << std::endl;
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
@@ -153,7 +123,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 bool DeepSkyStackerCommandLine::DecodeCommandLine()
 {
 	bool bResult = false;
-	LONG i;
+	std::int32_t i = 0;
 	const QStringList vCommandLine = arguments();
 
 	// At least 2 arguments are needed (registering and/or stacking + filename)
@@ -393,12 +363,10 @@ int main(int argc, char* argv[])
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#ifndef NDEBUG
 	//
-	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	// Log Qt messages to the trace file as well as to the debugger.
 	//
 	originalHandler = qInstallMessageHandler(qtMessageLogger);
-#endif
 
 	//
 	// Silence the windows heap checker as we use Visual Leak Detector

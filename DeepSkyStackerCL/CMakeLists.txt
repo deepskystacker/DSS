@@ -101,6 +101,10 @@ target_include_directories(DeepSkyStackerCL PUBLIC
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
    "$ENV{Boost_1_80_0}"
 )
+else()
+    target_include_directories(DeepSkyStackerCL PUBLIC
+    /usr/include/cfitsio
+    )
 endif()
 
 target_precompile_headers(DeepSkyStackerCL PRIVATE
@@ -218,19 +222,27 @@ target_link_libraries(DeepSkyStackerCL PRIVATE
     Qt6::Core
 	Qt6::Gui
 	DeepSkyStackerKernel
-    libraw
-    libtiff
     ZClass
+    tiff
+    
 )
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::libraw)
+target_link_libraries(${PROJECT_NAME} PRIVATE exiv2)
+target_link_libraries(${PROJECT_NAME} PRIVATE tiff)
+target_link_libraries(${PROJECT_NAME} PRIVATE cfitsio)
+#target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
+# target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+# target_link_libraries(${PROJECT_NAME} PRIVATE /usr/lib64)
+# target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+# set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
+# set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
 
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-    "cfitsio"
-)
+# set(ADDITIONAL_LIBRARY_DEPENDENCIES
+#     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
+#     "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
+#     "cfitsio"
+# )
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}

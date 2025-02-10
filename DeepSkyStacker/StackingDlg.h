@@ -56,11 +56,6 @@ namespace DSS
 	class ToolBar;
 }
 
-namespace std::filesystem
-{
-	class path;
-}
-
 class QErrorMessage;
 class QTextOption;
 class QSortFilterProxyModel;

@@ -37,6 +37,13 @@
 #include "dssbase.h"
 #include "DeepStack.h"
 #include "ProcessingSettings.h"
+#include <qlabel.h>
+#include <qmessagebox.h>
+#include <qmainwindow.h>
+#include <qerrormessage.h>
+
+extern char const* global_program_name;
+extern std::unique_ptr<std::uint8_t[]> backPocket;
 
 namespace DSS
 {

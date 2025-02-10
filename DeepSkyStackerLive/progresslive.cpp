@@ -37,7 +37,7 @@
 #include "stdafx.h"
 #include "DeepSkyStackerLive.h"
 #include "progresslive.h"
-#include <Ztrace.h>
+#include <ztrace.h>
 
 namespace
 {

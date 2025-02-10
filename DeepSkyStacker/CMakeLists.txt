@@ -72,7 +72,7 @@ set(Header_Files
     "DSS-winpackagefamily.h"
     "lowerdockwidget.cpp"
     "mrulist.h"
-    "StdAfx.h"
+    "stdafx.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -214,6 +214,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
    "$ENV{Boost_1_80_0}"
 )
+else()
+    target_include_directories(DeepSkyStacker PUBLIC
+    /usr/include/cfitsio
+    )
 endif()
 
 target_precompile_headers(DeepSkyStacker PRIVATE
@@ -282,19 +286,22 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Widgets
     Qt6::Network
 	DeepSkyStackerKernel
-    libraw
-    libtiff
     ZClass
 )
 
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::libraw)
+target_link_libraries(${PROJECT_NAME} PRIVATE exiv2)
+target_link_libraries(${PROJECT_NAME} PRIVATE tiff)
+target_link_libraries(${PROJECT_NAME} PRIVATE cfitsio)
 
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-    "cfitsio"
-)
+# set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
+#set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
+
+# set(ADDITIONAL_LIBRARY_DEPENDENCIES
+#     "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
+#     "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
+#     "cfitsio"
+# )
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
