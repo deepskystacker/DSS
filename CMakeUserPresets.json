@@ -26,7 +26,7 @@
       "inherits": "Qt-Default",
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
-        "QTDIR": "/opt/Qt/6.8.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.8.2/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -37,7 +37,7 @@
       "inherits": "Qt-Default",
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
-        "QTDIR": "/opt/Qt/6.8.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.8.2/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
@@ -168,7 +168,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "iMsgv3eglVuYYOOQblcayIcGsnQ="
+      "checksum": "9hMC+W4FWDEU4mE0fKfc+1heR7A="
     }
   }
 }
