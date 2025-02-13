@@ -123,12 +123,12 @@ cd ~/Downloads
 wget https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-linux-x64-4.8.1.run
 chmod +x qt-online-installer-linux-x64-4.8.1.run
 #
-# Now run the installer from a GUI terminal session and install Qt 6.8.0
+# Now run the installer from a GUI terminal session and install Qt 6.8.2
 # (it won't work from the ssh session)
 # 
 # Ensure you install Qt to /opt/Qt and select a Custom Installation
 # 
-# Expand the Qt section and then the Qt 6.8.0 section and expand "Additional Libraries"
+# Expand the Qt section and then the Qt 6.8.2 section and expand "Additional Libraries"
 #
 #    Select Desktop, Sources (if you want then), and Qt Charts in the Additional Libraries section
 #    I also suggest it would be useful to select Qt Debug Information Files
@@ -168,19 +168,16 @@ sudo apt-get install libjpeg-dev
 sudo apt-get install exiv2
 
 #
-# SmtpClient 2.0 for Qt (this build unconditionally as a .so so we will need to ship it)
+# SmtpClient 2.0 for Qt (this a fork of bluetiger9/SmtpClient-for-Qt that I created to allow building as a static library)
 #
 cd ~/Downloads
-gh repo clone bluetiger9/SmtpClient-for-Qt
+gh repo clone deepskystacker/SmtpClient-for-Qt
 cd SmtpClient-for-Qt
 #
 # create a build directory
 #
 mkdir build
-#
-# As of 24 January 2025 the CMakeLists.txt files for this should be correct (no need to edit).
-#
-cmake -B ./build -G Ninja -DQT_VERSION_MAJOR=6 -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/gcc_64"
+cmake -B ./build -G Ninja -DBUILD_SHARED_LIBS=OFF -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/gcc_64"
 cd build
 ninja
 sudo ninja install

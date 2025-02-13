@@ -22,7 +22,7 @@ cd ~/Downloads
 curl -O https://mac.r-project.org/openmp/openmp-17.0.6-darwin20-Release.tar.gz
 sudo tar -zxvf sudo tar -zxvf openmp-17.0.6-darwin20-Release.tar.gz -C /
 #
-# Install Qt 6.8.0
+# Install Qt 6.8.2
 #
 cd ~/Downloads
 curl -O https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-macOS-x64-4.8.1.dmg
@@ -155,19 +155,16 @@ make
 sudo make install
 
 #
-# SmtpClient 2.0 for Qt (this build unconditionally as a .dylib so we will need to ship it)
+# SmtpClient 2.0 for Qt (this a fork of bluetiger9/SmtpClient-for-Qt that I created to allow building as a static library)
 #
 cd ~/Downloads
-gh repo clone bluetiger9/SmtpClient-for-Qt
+gh repo clone deepskystacker/SmtpClient-for-Qt
 cd SmtpClient-for-Qt
 #
 # create a build directory
 #
 mkdir build
-#
-# As of 24 January 2025 the CMakeLists.txt files for this should be correct (no need to edit).
-#
-cmake -B ./build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DQT_VERSION_MAJOR=6 -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.0/macos"
+cmake -B ./build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/macos"
 cd build
 ninja
 sudo ninja install
