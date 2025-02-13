@@ -60,17 +60,17 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.8.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 #
 # Non-Windows use find_package to find stuff we want
 #
 #set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
-#find_package(cfitsio 4.5.0 REQUIRED)
+find_package(cfitsio 4.5.0 REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+if (APPLE)
 find_package(Iconv REQUIRED)
 find_package(CURL REQUIRED)
 endif()
