@@ -210,6 +210,7 @@ target_link_libraries(DeepSkyStackerCL PRIVATE
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
@@ -228,7 +229,6 @@ endif()
 if(APPLE)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
 endif()
-set(ADDITIONAL_LIBRARY_DEPENDENCIES cfitsio)
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
