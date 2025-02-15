@@ -84,15 +84,15 @@ namespace DSS
 		inline void setApply(const bool apply)
 		{
 			apply_ = apply;
-			switch (apply)
+			if (apply)
 			{
-			case false:
-				embedAdjustments->setChecked(true);
-				break;
-			case true:
 				applyAdjustments->setChecked(true);
-				break;
 			}
+			else
+			{
+				embedAdjustments->setChecked(true);
+			}
+
 		}
 
 		inline bool apply() const  { return apply_; }
