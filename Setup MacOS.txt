@@ -164,7 +164,7 @@ cd SmtpClient-for-Qt
 # create a build directory
 #
 mkdir build
-cmake -B ./build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/macos"
+cmake -B ./build -G Ninja -DBUILD_SHARED_LIBS=OFF -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/macos"
 cd build
 ninja
 sudo ninja install
@@ -174,13 +174,15 @@ sudo ninja install
 # 
 cd ~/Downloads
 wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
+#
+# Get the CMake fixes
+#
+wget https://www.dropbox.com/scl/fi/drt4dcvsn0hd8xaa8ix2y/cfitsio_cmake.tar
 tar -zxvf cfitsio4_5_0_20240826.tar.gz
-rm cfitsio4_5_0_20240826.tar.gz
 cd cfitsio-cfitsio4_5_0_20240826
-rm CMakeLists.txt
-wget https://raw.githubusercontent.com/HEASARC/cfitsio/37f72c0ae47a17184bdadb83f83ef5ff1b184f69/CMakeLists.txt
+tar -xvf ../cfitsio_cmake.tar
 mkdir build
-cmake -B build -G Ninja -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
+cmake -B build -G Ninja  -DBUILD_SHARED_LIBS=OFF -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
 cd build
 ninja
 sudo ninja install
