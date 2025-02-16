@@ -16,25 +16,6 @@
 using namespace DSS;
 /* ------------------------------------------------------------------- */
 
-StackedBitmap::StackedBitmap()
-{
-	m_lNrBitmaps	= 0;
-	m_lWidth		= 0;
-	m_lHeight		= 0;
-	m_lOutputWidth	= 0;
-	m_lOutputHeight = 0;
-	m_lISOSpeed		= 0;
-	m_lGain		= -1;
-	m_lTotalTime	= 0;
-	m_bMonochrome   = false;
-	DSSTIFFInitialize();
-}
-
-namespace {
-	thread_local constinit int lastY = -1;
-	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
-}
-
 //
 // Define some convenience "functions" to either turn Visual Leak Detector on and off
 // or do nothing
@@ -48,6 +29,102 @@ void turnOffVld() {}
 void turnOnVld() {}
 #endif
 
+
+namespace {
+	thread_local constinit int lastY = -1;
+	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
+}
+
+
+StackedBitmap::StackedBitmap()
+{
+	DSSTIFFInitialize();
+}
+
+void StackedBitmap::SetOutputSizes(int lWidth, int lHeight)
+{
+	m_lOutputWidth = lWidth;
+	m_lOutputHeight = lHeight;
+}
+
+bool StackedBitmap::Allocate(int lWidth, int lHeight, bool bMonochrome)
+{
+	m_lWidth = lWidth;
+	m_lHeight = lHeight;
+	m_bMonochrome = bMonochrome;
+
+	const size_t lSize = static_cast<size_t>(m_lWidth) * static_cast<size_t>(m_lHeight);
+
+	m_vRedPlane.clear();
+	m_vGreenPlane.clear();
+	m_vBluePlane.clear();
+
+	m_vRedPlane.resize(lSize);
+	if (!m_bMonochrome)
+	{
+		m_vGreenPlane.resize(lSize);
+		m_vBluePlane.resize(lSize);
+	}
+
+	if (m_bMonochrome)
+		return (m_vRedPlane.size() == lSize);
+	else
+		return
+			(m_vRedPlane.size() == lSize) &&
+			(m_vGreenPlane.size() == lSize) &&
+			(m_vBluePlane.size() == lSize);
+}
+
+void StackedBitmap::SetHistogramAdjust(const RGBHistogramAdjust& HistoAdjust)
+{
+	m_HistoAdjust = HistoAdjust;
+}
+
+void StackedBitmap::SetBezierAdjust(const DSS::BezierAdjust& BezierAdjust)
+{
+	m_BezierAdjust = BezierAdjust;
+}
+
+void StackedBitmap::GetBezierAdjust(DSS::BezierAdjust& BezierAdjust) const
+{
+	BezierAdjust = m_BezierAdjust;
+}
+
+void StackedBitmap::GetHistogramAdjust(RGBHistogramAdjust& HistoAdjust) const
+{
+	HistoAdjust = m_HistoAdjust;
+}
+
+std::tuple<double, double, double> StackedBitmap::getValues(size_t X, size_t Y) const
+{
+	const size_t lOffset{ m_lWidth * Y + X };
+
+	return {
+		m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0,
+		m_vGreenPlane[lOffset] / m_lNrBitmaps * 256.0,
+		m_vBluePlane[lOffset] / m_lNrBitmaps * 256.0
+	};
+}
+
+double StackedBitmap::getValue(size_t X, size_t Y) const
+{
+	const size_t lOffset{ m_lWidth * Y + X };
+	return  m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0;
+}
+
+void StackedBitmap::SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
+{
+	const size_t lOffset = static_cast<size_t>(m_lWidth) * static_cast<size_t>(Y) + static_cast<size_t>(X);
+
+	m_vRedPlane[lOffset] = fRed * m_lNrBitmaps;
+
+	if (!m_bMonochrome)
+	{
+		m_vGreenPlane[lOffset] = fGreen * m_lNrBitmaps;
+		m_vBluePlane[lOffset] = fBlue * m_lNrBitmaps;
+	}
+}
+
 //
 // MT, 11-March-2024
 // This function is used in
@@ -55,9 +132,9 @@ void turnOnVld() {}
 //     *) CFITSWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue);
 // for saving displayed (stacked or loaded) picture to file.
 //
-void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
+void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings) const
 {
-	int				lOffset = m_lWidth * Y + X;
+	size_t lOffset = static_cast<size_t>(m_lWidth) * static_cast<size_t>(Y) + static_cast<size_t>(X);
 
 //	double		H, S, L;
 
@@ -140,6 +217,55 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 		fBlue	/= 256.0;
 	}
 }
+
+double StackedBitmap::GetRedValue(int X, int Y) const
+{
+	return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+}
+
+double StackedBitmap::GetGreenValue(int X, int Y) const
+{
+	return m_bMonochrome ? GetRedValue(X, Y) : m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+}
+
+double StackedBitmap::GetBlueValue(int X, int Y) const
+{
+	if (!m_bMonochrome)
+		return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+	else
+		return GetRedValue(X, Y);
+}
+
+void StackedBitmap::SetISOSpeed(int lISOSpeed)
+{
+	m_lISOSpeed = lISOSpeed;
+}
+
+std::uint16_t StackedBitmap::GetISOSpeed() const
+{
+	return static_cast<std::uint16_t>(m_lISOSpeed);
+}
+
+void StackedBitmap::SetGain(int lGain)
+{
+	m_lGain = lGain;
+}
+
+int StackedBitmap::GetGain() const
+{
+	return m_lGain;
+}
+
+int StackedBitmap::GetTotalTime() const
+{
+	return m_lTotalTime;
+}
+
+int	StackedBitmap::GetNrStackedFrames() const
+{
+	return m_lNrBitmaps;
+}
+
 
 /* ------------------------------------------------------------------- */
 namespace
@@ -378,7 +504,7 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 //
 // Invoked from DeepStack::PartialProcess() to display the picture
 //
-void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect)
+void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect) const
 {
 	ZFUNCTRACE_RUNTIME();
 	//
@@ -591,10 +717,10 @@ void StackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 				QString strAdjustParameters(szAdjustParameters);
 				if (strAdjustParameters.length())
 					m_HistoAdjust.FromText(strAdjustParameters);
-			};
-		};
-	};
-};
+			}
+		}
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -617,8 +743,8 @@ void StackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 
 		m_BezierAdjust.reset(true);
 		m_HistoAdjust.reset();
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -636,8 +762,8 @@ void StackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySetti
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, strBezierParameters.toUtf8().constData());
 		m_HistoAdjust.ToText(strHistoParameters);
 		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, strHistoParameters.toUtf8().constData());
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -647,7 +773,38 @@ void StackedBitmap::WriteSpecificTags(CFITSWriter* fitsWriter, bool)
 	{}
 }
 
-/* ------------------------------------------------------------------- */
+void StackedBitmap::Clear()
+{
+	m_lNrBitmaps = 0;
+	m_lHeight = 0;
+	m_lWidth = 0;
+	m_lOutputWidth = 0;
+	m_lOutputHeight = 0;
+	m_vRedPlane.clear();
+	m_vGreenPlane.clear();
+	m_vBluePlane.clear();
+	m_lTotalTime = 0;
+	m_lISOSpeed = 0;
+	m_lGain = -1;
+}
+
+int	StackedBitmap::GetWidth() const
+{
+	return m_lWidth;
+}
+
+int	StackedBitmap::GetHeight() const
+{
+	return m_lHeight;
+}
+
+bool StackedBitmap::IsMonochrome() const
+{
+	return m_bMonochrome;
+}
+
+
+
 /* ------------------------------------------------------------------- */
 
 class CTIFFWriterStacker : public CTIFFWriter
