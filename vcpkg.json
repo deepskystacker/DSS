@@ -7,6 +7,7 @@
     },
     "boost-container",
     "boost-interprocess",
+    "boost-ublas",
     "exiv2",
     "expat",
     "libraw",
@@ -24,6 +25,10 @@
     },
     {
       "name": "boost-interprocess",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-ublas",
       "version": "1.86.0"
     },
     {
