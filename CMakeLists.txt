@@ -18,13 +18,13 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-project(DeepSkyStacker VERSION 5.1.8 LANGUAGES C CXX)
+project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
 
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 
 #
-# Report platform name if speficied
+# Report platform name if specified
 #
 if(NOT CMAKE_VS_PLATFORM_NAME)
     message("CMAKE_VS_PLATFORM_NAME not specified")
@@ -105,21 +105,12 @@ set(CMAKE_CONFIGURATION_TYPES
 if(WIN32)
 	set(CMAKE_CXX_FLAGS "/GR /EHsc")
 endif()
-if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+if (APPLE)
 	set(CMAKE_CXX_FLAGS "-Wno-switch-enum -Wno-switch")
 endif()
 if(LINUX)
 	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
-
-################################################################################
-# Nuget packages function stub.
-################################################################################
-function(use_package TARGET PACKAGE VERSION)
-    message(WARNING "No implementation of use_package. Create yours. "
-                    "Package \"${PACKAGE}\" with version \"${VERSION}\" "
-                    "for target \"${TARGET}\" is ignored!")
-endfunction()
 
 ################################################################################
 # Common utils
