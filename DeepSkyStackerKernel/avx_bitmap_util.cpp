@@ -36,6 +36,17 @@ bool AvxBitmapUtil::isColorBitmapOfType() const
 		return isColor;
 }
 
+//
+// Force instantiation of the template functions for the types we need.
+//
+template bool AvxBitmapUtil::isColorBitmapOfType<unsigned short>() const;
+
+template bool AvxBitmapUtil::isColorBitmapOfType<unsigned int>() const;
+
+template bool AvxBitmapUtil::isColorBitmapOfType<float>() const;
+
+template bool AvxBitmapUtil::isColorBitmapOfType<double>() const;
+
 bool AvxBitmapUtil::isMonochromeBitmap() const
 {
 	return getNrChannels() == 1;
@@ -57,6 +68,17 @@ bool AvxBitmapUtil::isMonochromeBitmapOfType() const
 	else
 		return false;
 }
+
+//
+// Force instantiation of the template functions for the types we need.
+//
+template bool AvxBitmapUtil::isMonochromeBitmapOfType<unsigned short>() const;
+
+template bool AvxBitmapUtil::isMonochromeBitmapOfType<unsigned int>() const;
+
+template bool AvxBitmapUtil::isMonochromeBitmapOfType<float>() const;
+
+template bool AvxBitmapUtil::isMonochromeBitmapOfType<double>() const;
 
 template <class T>
 bool AvxBitmapUtil::isMonochromeCfaBitmapOfType() const
