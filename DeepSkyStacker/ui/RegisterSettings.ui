@@ -126,6 +126,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="percentStack">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>30</width>
