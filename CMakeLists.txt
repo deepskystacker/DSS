@@ -28,7 +28,7 @@ message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 #
 if(NOT CMAKE_VS_PLATFORM_NAME)
     message("CMAKE_VS_PLATFORM_NAME not specified")
-	if (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+	if (APPLE)
 		set(CMAKE_VS_PLATFORM_NAME "arm64")
 	else()
 		set(CMAKE_VS_PLATFORM_NAME "x64")
@@ -48,7 +48,7 @@ message ("CMAKE_VS_PLATFORM_NAME: " ${CMAKE_VS_PLATFORM_NAME})
 message ("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	if(NOT WIN32)
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_SYSTEM_NAME}/${CMAKE_BUILD_TYPE}/${CMAKE_VS_PLATFORM_NAME} CACHE STRING "" FORCE)
 	else()
 		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
@@ -112,6 +112,7 @@ if(LINUX)
 	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
 
+#[=[
 ################################################################################
 # Common utils
 ################################################################################
@@ -121,6 +122,7 @@ include(CMake/Utils.cmake)
 # Additional Global Settings(add specific info there)
 ################################################################################
 include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
+]=]
 
 ################################################################################
 # Use solution folders feature
