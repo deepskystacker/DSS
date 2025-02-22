@@ -110,8 +110,8 @@ namespace DSS
 
 		if (state != 0)
 		{
-			this->on_medianFilter_stateChanged(0);
-			this->on_hotPixels_stateChanged(0);
+			this->medianFilter_stateChanged(0);
+			this->hotPixels_stateChanged(0);
 		}
 	}
 
