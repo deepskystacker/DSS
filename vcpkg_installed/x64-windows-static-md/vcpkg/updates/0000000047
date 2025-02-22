@@ -1,8 +1,0 @@
-Package: boost-lexical-cast
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-container, boost-core, boost-headers, boost-integer, boost-throw-exception, boost-type-traits
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 3a0ba6d49e0756d26195961043e8518a21813a60a8a1b3e11b06d3314e128511
-Description: Boost lexical_cast module
-Status: purge ok not-installed

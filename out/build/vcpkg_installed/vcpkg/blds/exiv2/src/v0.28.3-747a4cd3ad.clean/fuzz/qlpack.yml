@@ -1,3 +1,0 @@
-name: exiv2-cpp-fuzz-queries
-version: 0.0.0
-libraryPathDependencies: codeql-cpp

@@ -1,7 +1,0 @@
-Package: libraw
-Version: 0.21.3
-Depends: jasper, lcms, vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows, zlib
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 9bf26899a392cc425294c2640470327dd624ccf7ee829798260703802e6a084a
-Description: raw image decoder library

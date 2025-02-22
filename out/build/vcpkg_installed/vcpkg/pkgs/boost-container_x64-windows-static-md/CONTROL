@@ -1,7 +1,0 @@
-Package: boost-container
-Version: 1.86.0
-Depends: boost-assert, boost-cmake, boost-config, boost-headers, boost-intrusive, boost-move
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: fd2f115d7f0ab8368a8d2d675ed49fb32350ef9ec867ba8e8540fcfb31dccd37
-Description: Boost container module

@@ -1,8 +1,0 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/Bin/Win32
-/doc/html
-/doc/autodoc.xml
-/proj/vs

@@ -1,8 +1,0 @@
-Package: boost-variant2
-Version: 1.86.0
-Depends: boost-assert, boost-cmake, boost-config, boost-headers, boost-mp11
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 7179e847d1fc6422db56dadc732c6d3fb91ba974c0d1d3e6cdd3eff0b376b79c
-Description: Boost variant2 module
-Status: purge ok not-installed

@@ -1,6 +1,0 @@
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/include/boost/assert/source_location.hpp
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/include/boost/assert.hpp
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/include/boost/current_function.hpp
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/lib/cmake/boost_assert-1.86.0/boost_assert-targets.cmake
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/lib/cmake/boost_assert-1.86.0/boost_assert-config.cmake
-D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-assert_x64-windows-static-md/lib/cmake/boost_assert-1.86.0/boost_assert-config-version.cmake

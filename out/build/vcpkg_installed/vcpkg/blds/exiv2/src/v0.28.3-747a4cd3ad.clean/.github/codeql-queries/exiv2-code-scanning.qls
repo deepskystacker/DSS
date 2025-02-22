@@ -1,3 +1,0 @@
-# Reusing existing QL Pack
-- import: codeql-suites/cpp-code-scanning.qls
-  from: codeql-cpp

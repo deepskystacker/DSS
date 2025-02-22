@@ -1,8 +1,0 @@
-Package: boost-spirit
-Version: 1.86.0
-Depends: boost-array, boost-assert, boost-cmake, boost-config, boost-core, boost-endian, boost-function, boost-function-types, boost-fusion, boost-headers, boost-integer, boost-io, boost-iterator, boost-move, boost-mpl, boost-optional, boost-phoenix, boost-pool, boost-preprocessor, boost-proto, boost-range, boost-regex, boost-smart-ptr, boost-static-assert, boost-thread, boost-throw-exception, boost-type-traits, boost-typeof, boost-unordered, boost-utility, boost-variant
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 04dc286fbd3058608ea73fb4867fde797a06347900dbe48c3dbc182aeba99aed
-Description: Boost spirit module
-Status: purge ok half-installed

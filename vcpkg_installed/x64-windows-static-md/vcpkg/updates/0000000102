@@ -1,8 +1,0 @@
-Package: boost-preprocessor
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-headers
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 9df27feb7ca277d0909da846c5689b3160825bfcbe2d402b6f765c3397f2f452
-Description: Boost preprocessor module
-Status: purge ok half-installed

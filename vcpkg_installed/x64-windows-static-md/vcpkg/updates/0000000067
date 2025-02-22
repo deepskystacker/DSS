@@ -1,8 +1,0 @@
-Package: boost-functional
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-core, boost-function, boost-function-types, boost-headers, boost-mpl, boost-preprocessor, boost-type-traits, boost-typeof, boost-utility
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: fbb6517f7a0552693ea113e790963a18b30aefb27ef8c3a8160e733b2a816935
-Description: Boost functional module
-Status: purge ok not-installed

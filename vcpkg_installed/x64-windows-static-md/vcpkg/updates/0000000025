@@ -1,8 +1,0 @@
-Package: boost-endian
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-headers
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 112df83e52b25afc45434aa5de9db2a214c7fed0f3236678ebc5ee318d7f8b19
-Description: Boost endian module
-Status: purge ok not-installed

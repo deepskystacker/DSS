@@ -1,8 +1,0 @@
-Package: boost-serialization
-Version: 1.86.0
-Depends: boost-array, boost-assert, boost-cmake, boost-config, boost-core, boost-detail, boost-function, boost-headers, boost-integer, boost-io, boost-iterator, boost-move, boost-mp11, boost-mpl, boost-optional, boost-predef, boost-preprocessor, boost-smart-ptr, boost-spirit, boost-static-assert, boost-throw-exception, boost-type-traits, boost-utility, boost-variant, boost-variant2
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 00705709588ae34b71683a49f8d128856d41b35dc6b343a400260c07e05a2f38
-Description: Boost serialization module
-Status: purge ok not-installed

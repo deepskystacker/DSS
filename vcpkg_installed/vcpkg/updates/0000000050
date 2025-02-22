@@ -1,7 +1,0 @@
-Package: tiff
-Feature: lzma
-Depends: liblzma
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Description: Support LZMA compression in TIFF image files
-Status: install ok installed

@@ -1,8 +1,0 @@
-Package: boost-type-index
-Version: 1.86.0
-Depends: boost-cmake, boost-config, boost-container-hash, boost-core, boost-headers, boost-throw-exception
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: f04fea23af0f48b58a22844f3014871c41968fb37c9e83f07897df2e0f2c84af
-Description: Boost type_index module
-Status: purge ok not-installed

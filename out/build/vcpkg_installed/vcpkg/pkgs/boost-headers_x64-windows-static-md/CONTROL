@@ -1,7 +1,0 @@
-Package: boost-headers
-Version: 1.86.0
-Depends: boost-cmake
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 42fc87addff13198ab692c730be59db19e036edf206debfdaf104af070a6b478
-Description: Boost headers module

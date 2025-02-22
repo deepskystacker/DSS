@@ -1,7 +1,0 @@
-Package: tiff
-Feature: zip
-Depends: zlib
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Description: Support ZIP/deflate compression in TIFF image files
-Status: install ok installed

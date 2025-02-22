@@ -1,8 +1,0 @@
-Package: boost-function
-Version: 1.86.0
-Depends: boost-assert, boost-bind, boost-cmake, boost-config, boost-core, boost-headers, boost-throw-exception
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Abi: 220d544822d98ddb6edd2e005a96f67d91d611514a8e10a59acea3c95a711c66
-Description: Boost function module
-Status: purge ok half-installed

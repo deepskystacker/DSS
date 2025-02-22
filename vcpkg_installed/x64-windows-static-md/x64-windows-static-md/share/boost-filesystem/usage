@@ -1,9 +1,0 @@
-The package boost-filesystem is compatible with built-in CMake targets of FindBoost.cmake:
-
-    find_package(Boost REQUIRED COMPONENTS filesystem)
-    target_link_libraries(main PRIVATE Boost::filesystem)
-
-or the generated cmake configs via:
-
-    find_package(boost_filesystem REQUIRED CONFIG)
-    target_link_libraries(main PRIVATE Boost::filesystem)

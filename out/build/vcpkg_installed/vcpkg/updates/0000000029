@@ -1,7 +1,0 @@
-Package: tiff
-Feature: jpeg
-Depends: libjpeg-turbo
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Description: Support JPEG compression in TIFF image files
-Status: install ok half-installed

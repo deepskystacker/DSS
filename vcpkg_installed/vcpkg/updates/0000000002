@@ -1,6 +1,0 @@
-Package: jasper
-Feature: default-features
-Architecture: x64-windows
-Multi-Arch: same
-Description: Platform-dependent default features
-Status: purge ok half-installed

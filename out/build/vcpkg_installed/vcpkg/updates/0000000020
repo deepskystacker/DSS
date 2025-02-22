@@ -1,7 +1,0 @@
-Package: jasper
-Feature: opengl
-Depends: freeglut, opengl
-Architecture: x64-windows-static-md
-Multi-Arch: same
-Description: Enable the use of the OpenGL/GLUT Library
-Status: install ok half-installed
