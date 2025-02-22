@@ -1,0 +1,111 @@
+__doctype__
+<html>
+__header2__
+<body>
+
+<div id="content">
+__index1__
+__index2__
+<h2>Canon MakerNote Tags defined in Exiv2</h2>
+<div>  
+<p>Tags found in the MakerNote of images taken with Canon cameras. These tags are defined by Exiv2 in accordance with <a href="makernote.html#R2">[2]</a>.</p>   
+<p>Click on a column header to sort the table.</p>
+</div>
+__Canon__
+<br>
+
+<h3>Canon Camera Settings Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonCs__
+<br>
+
+<h3>Canon Shot Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonSi__
+<br>
+
+<h3>Canon Panorama Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonPa__
+<br>
+
+<h3>Canon Custom Function Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonCf__
+<br>
+
+<h3>Canon Picture Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonPi__
+<br>
+
+<h3>Canon Filter Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonFi__
+<br>
+
+<h3>Canon High Dynamic Range Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonHdr__
+<br>
+
+<h3>Canon Vignetting Correction 2 Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonVigCor2__
+<br>
+
+<h3>Canon Lighting Option Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonLiOp__
+<br>
+
+<h3>Canon AF Micro Adjust Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonAfMiAdj__
+<br>
+
+<h3>Canon Lens Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonLe__
+<br>
+
+<h3>Canon Ambience Selection Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonAm__
+<br>
+
+<h3>Canon Filter Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonFil__
+<br>
+
+<h3>Canon Processing Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonPr__
+<br>
+
+<h3>Canon Multi-Exposure Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonMe__
+<br>
+
+<h3>Canon AF Config Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonAfC__
+<br>
+
+<h3>Canon Raw Burst Info Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonRawB__
+<br>
+
+<h3>Canon TimeInfo Tags</h3>
+<p>Click on a column header to sort the table.</p>
+__CanonTi__
+<br>
+
+</div>
+<!-- closes content -->
+
+</body>
+</html>

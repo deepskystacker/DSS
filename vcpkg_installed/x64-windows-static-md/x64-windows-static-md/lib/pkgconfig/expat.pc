@@ -1,0 +1,12 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: expatMD
+Version: 2.6.4
+Description: expat XML parser
+URL: https://libexpat.github.io/
+
+Libs: "-L${libdir}" -llibexpatMD
+Cflags: "-I${includedir}" -DXML_STATIC

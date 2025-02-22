@@ -1,0 +1,9 @@
+The package boost-ublas is compatible with built-in CMake targets of FindBoost.cmake:
+
+    find_package(Boost REQUIRED COMPONENTS numeric_ublas)
+    target_link_libraries(main PRIVATE Boost::numeric_ublas)
+
+or the generated cmake configs via:
+
+    find_package(boost_ublas REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE Boost::numeric_ublas)

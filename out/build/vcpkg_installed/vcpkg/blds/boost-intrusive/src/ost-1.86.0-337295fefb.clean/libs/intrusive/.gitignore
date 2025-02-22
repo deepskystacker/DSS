@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/proj/vc14.1ide
+/doc/html
+/doc/autodoc.xml
+callable_with_no_decltype

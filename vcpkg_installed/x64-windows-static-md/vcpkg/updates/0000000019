@@ -1,0 +1,8 @@
+Package: boost-logic
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-core, boost-headers
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 0c987d6138842dfb3c23bee7219c23bcad663554068de1606c02a96e03ed6e07
+Description: Boost logic module
+Status: purge ok not-installed

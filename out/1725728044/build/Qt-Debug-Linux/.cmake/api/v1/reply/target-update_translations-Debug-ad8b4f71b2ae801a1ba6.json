@@ -1,0 +1,169 @@
+{
+	"backtrace" : 5,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"_qt_internal_add_phony_target",
+			"qt6_add_lupdate",
+			"qt6_add_translations",
+			"add_dependencies",
+			"_qt_internal_add_phony_target_dependencies"
+		],
+		"files" : 
+		[
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6/QtPublicCMakeHelpers.cmake",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:694:EVAL",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 3
+			},
+			{
+				"file" : 3,
+				"line" : -1,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 1,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 705,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 360,
+				"parent" : 3
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 299,
+				"parent" : 4
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 363,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 328,
+				"parent" : 6
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 1,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 705,
+				"parent" : 8
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 363,
+				"parent" : 9
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 328,
+				"parent" : 10
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 1,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 705,
+				"parent" : 12
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 363,
+				"parent" : 13
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 328,
+				"parent" : 14
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 1,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 705,
+				"parent" : 16
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 363,
+				"parent" : 17
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 328,
+				"parent" : 18
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 7,
+			"id" : "DeepSkyStacker_lupdate::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 11,
+			"id" : "DeepSkyStacker_lupdate1::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 15,
+			"id" : "DeepSkyStacker_lupdate2::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 19,
+			"id" : "DeepSkyStacker_lupdate3::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "update_translations::@6890427a1f51a3e7e1df",
+	"name" : "update_translations",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

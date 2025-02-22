@@ -1,0 +1,15 @@
+x64-windows-static-md/
+x64-windows-static-md/include/
+x64-windows-static-md/include/EGL/
+x64-windows-static-md/include/EGL/egl.h
+x64-windows-static-md/include/EGL/eglext.h
+x64-windows-static-md/include/EGL/eglplatform.h
+x64-windows-static-md/include/KHR/
+x64-windows-static-md/include/KHR/khrplatform.h
+x64-windows-static-md/share/
+x64-windows-static-md/share/egl-registry/
+x64-windows-static-md/share/egl-registry/copyright
+x64-windows-static-md/share/egl-registry/vcpkg.spdx.json
+x64-windows-static-md/share/egl-registry/vcpkg_abi_info.txt
+x64-windows-static-md/share/opengl/
+x64-windows-static-md/share/opengl/egl.xml

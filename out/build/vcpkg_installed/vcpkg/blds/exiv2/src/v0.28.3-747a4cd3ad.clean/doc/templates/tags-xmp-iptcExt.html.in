@@ -1,0 +1,30 @@
+__doctype__
+<html>
+__header2__
+<body>
+
+<div id="content">
+__index1__
+__index2__
+
+<h2>IPTC Extension schema</h2>
+<p>This schema specifies the IPTC Extension XMP properties. The IPTC
+   Extension schema extends and complements the IPTC Core schema by a set
+   of more granular properties and further specialized rights related
+   properties from the PLUS metadata schema.
+ <ul>
+  <li>The Exiv2 keys are either <b><code>Xmp.iptcExt.&lt;Property&gt;</code></b> or <b><code>Xmp.Iptc4xmpExt.&lt;Property&gt;</code></b></li>
+  <li>The schema namespace URI is <b><code>http://iptc.org/std/Iptc4xmpExt/2008-02-29/</code></b></li>
+  <li>The preferred schema namespace prefix is <b><code>Iptc4xmpExt</code></b></li>
+ </ul>
+Reference: <a href="http://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata" title="IPTC Extension Metadata Schema 1.6 specification">IPTC Extension Metadata Schema 1.6 specification</a></p>
+
+<p>Click on a column header to sort the table.</p>
+
+__xmp_iptcExt__
+
+</div>
+<!-- closes content -->
+
+</body>
+</html>

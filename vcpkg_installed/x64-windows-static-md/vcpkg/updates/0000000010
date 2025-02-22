@@ -1,0 +1,8 @@
+Package: boost-any
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-headers, boost-throw-exception, boost-type-index
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: b70400deb8f4c902adbe0df51c77bbd037081d15e7898255a37df691461595bc
+Description: Boost any module
+Status: purge ok half-installed

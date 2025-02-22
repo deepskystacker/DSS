@@ -1,0 +1,17 @@
+[options]
+with_INIReader = true
+cpp_std = c++11
+optimization = plain
+debug = true
+cmake_prefix_path = ['D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/debug','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share']
+prefix = D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug
+includedir = ../include
+libdir = lib
+backend = ninja
+wrap_mode = nodownload
+pkgconfig.relocatable = True
+pkg_config_path = ['D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/debug/lib/pkgconfig','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share/pkgconfig']
+
+[properties]
+native_file = ['D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\meson-x64-windows-static-md-dbg.log']
+

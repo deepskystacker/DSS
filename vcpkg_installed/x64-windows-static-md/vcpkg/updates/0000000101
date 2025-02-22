@@ -1,0 +1,8 @@
+Package: boost-io
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-headers
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 318fb87d3d1bc29569d216a1dbd40b5faa0faf48d7f290befc8500510050f265
+Description: Boost io module
+Status: purge ok not-installed

@@ -1,0 +1,1168 @@
+Build started at 2025-02-16T09:39:37.965413
+Main binary: C:\Users\amonra\AppData\Local\vcpkg\downloads\tools\python\python-3.12.7-x64-1\python.exe
+Build Options: -Dwith_INIReader=true -Dcpp_std=c++11 -Doptimization=plain -Ddebug=false '-Dcmake_prefix_path=['"'"'D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md'"'"','"'"'D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/debug'"'"','"'"'D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share'"'"']' -Dprefix=D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md -Dlibdir=lib -Dbackend=ninja -Dwrap_mode=nodownload -Dpkgconfig.relocatable=True '-Dpkg_config_path=['"'"'D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/lib/pkgconfig'"'"','"'"'D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share/pkgconfig'"'"']' --native-file=D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/meson-x64-windows-static-md-rel.log
+Python system: Windows
+The Meson build system
+Version: 1.6.0
+Source dir: D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\src\r58-2aa5ec8387.clean
+Build dir: D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\x64-windows-static-md-rel
+Build type: native build
+Project name: inih
+Project version: 58
+-----------
+Detecting compiler via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 /?` -> 0
+stdout:
+C/C++ COMPILER OPTIONS
+
+
+                              -OPTIMIZATION-
+
+/O1 maximum optimizations (favor space) /O2 maximum optimizations (favor speed)
+/Ob<n> inline expansion (default n=0)   /Od disable optimizations (default)
+/Og enable global optimization          /Oi[-] enable intrinsic functions
+/Os favor code space                    /Ot favor code speed
+/Ox optimizations (favor speed)         
+/favor:<blend|AMD64|INTEL64|ATOM> select processor to optimize for, one of:
+    blend - a combination of optimizations for several different x64 processors
+    AMD64 - 64-bit AMD processors
+    INTEL64 - Intel(R)64 architecture processors
+    ATOM - Intel(R) Atom(TM) processors
+
+                             -CODE GENERATION-
+
+/Gu[-] ensure distinct functions have distinct addresses
+/Gw[-] separate global variables for linker
+/GF enable read-only string pooling     /Gy[-] separate functions for linker
+/GS[-] enable security checks           /GR[-] enable C++ RTTI
+/guard:cf[-] enable CFG (control flow guard)
+/guard:ehcont[-] enable EH continuation metadata (CET)
+/EHs enable C++ EH (no SEH exceptions)  /EHa enable C++ EH (w/ SEH exceptions)
+/EHc extern "C" defaults to nothrow     
+/EHr always generate noexcept runtime termination checks
+/fp:<contract|except[-]|fast|precise|strict> choose floating-point model:
+    contract - consider floating-point contractions when generating code
+    except[-] - consider floating-point exceptions when generating code
+    fast - "fast" floating-point model; results are less predictable
+    precise - "precise" floating-point model; results are predictable
+    strict - "strict" floating-point model (implies /fp:except)
+/Qfast_transcendentals generate inline FP intrinsics even with /fp:except
+/Qspectre[-] enable mitigations for CVE 2017-5753
+/Qpar[-] enable parallel code generation
+/Qpar-report:1 auto-parallelizer diagnostic; indicate parallelized loops
+/Qpar-report:2 auto-parallelizer diagnostic; indicate loops not parallelized
+/Qvec-report:1 auto-vectorizer diagnostic; indicate vectorized loops
+/Qvec-report:2 auto-vectorizer diagnostic; indicate loops not vectorized
+/GL[-] enable link-time code generation 
+/volatile:<iso|ms> choose volatile model:
+    iso - Acquire/release semantics not guaranteed on volatile accesses
+    ms  - Acquire/release semantics guaranteed on volatile accesses
+/GA optimize for Windows Application    /Ge force stack checking for all funcs
+/Gs[num] control stack checking calls   /Gh enable _penter function call
+/GH enable _pexit function call         /GT generate fiber-safe TLS accesses
+/RTC1 Enable fast checks (/RTCsu)       /RTCc Convert to smaller type checks
+/RTCs Stack Frame runtime checking      /RTCu Uninitialized local usage checks
+/clr[:option] compile for common language runtime, where option is:
+    pure : produce IL-only output file (no native executable code)
+    safe : produce IL-only verifiable output file
+    netcore : produce assemblies targeting .NET Core runtime
+    noAssembly : do not produce an assembly
+    nostdlib : ignore the system .NET framework directory when searching for assemblies
+    nostdimport : do not import any required assemblies implicitly
+    initialAppDomain : enable initial AppDomain behavior of Visual C++ 2002
+    implicitKeepAlive- : turn off implicit emission of System::GC::KeepAlive(this)
+    char_t- : turn off metadata support for char8_t, char16_t and char32_t
+    ECMAParamArray : use rules specified in ECMA-372/14.6 for overloads with parameter arrays (implied by /clr)
+    ECMAParamArray- : use new rules for overloads with parameter arrays (implied by /clr:netcore)
+/fsanitize=address Enable address sanitizer codegen
+/homeparams Force parameters passed in registers to be written to the stack
+/GZ Enable stack checks (/RTCs)         /Gv __vectorcall calling convention
+/arch:<SSE2|SSE4.2|AVX|AVX2|AVX512|AVX10.x> minimum CPU architecture requirements, one of:
+   SSE2 - (default) enable use of instructions available with SSE2-enabled CPUs
+   SSE4.2 - enable use of instructions available with SSE 4.2-enabled CPUs
+   AVX - enable use of instructions available with AVX-enabled CPUs
+   AVX2 - enable use of instructions available with AVX2-enabled CPUs
+   AVX512 - enable use of instructions available with AVX-512-enabled CPUs
+   AVX10.x - enable use of instructions available with AVX10.x-enabled CPUs. Valid values of x are 1
+/QIntel-jcc-erratum enable mitigations for Intel JCC erratum
+/Qspectre-load Enable spectre mitigations for all instructions which load memory
+/Qspectre-load-cf Enable spectre mitigations for all control-flow instructions which load memory
+/Qspectre-jmp[-] Enable spectre mitigations for unconditional jump instructions
+/fpcvt:<IA|BC> FP to unsigned integer conversion compatibility
+   IA - results compatible with VCVTTSD2USI instruction
+   BC - results compatible with VS2017 and earlier compiler
+/jumptablerdata Place jump tables for switch case statements in .rdata section
+/vlen=<256|512> Choose vector length of either 256 or 512 for automatic code-generation
+/vlen Choose default vector length based on /arch setting
+
+                              -OUTPUT FILES-
+
+/Fa[file] name assembly listing file    /FA[scu] configure assembly listing
+/Fd[file] name .PDB file                /Fe<file> name executable file
+/Fm[file] name map file                 /Fo<file> name object file
+/Fp<file> name precompiled header file  /Fr[file] name source browser file
+/FR[file] name extended .SBR file       /Fi[file] name preprocessed file
+/Fd: <file> name .PDB file              /Fe: <file> name executable file
+/Fm: <file> name map file               /Fo: <file> name object file
+/Fp: <file> name .PCH file              /FR: <file> name extended .SBR file
+/Fi: <file> name preprocessed file      
+/Ft<dir> location of the header files generated for #import
+/doc[file] process XML documentation comments and optionally name the .xdc file
+
+                              -PREPROCESSOR-
+
+/AI<dir> add to assembly search path    /FU<file> import .NET assembly/module
+/FU:asFriend<file> import .NET assembly/module as friend
+/C don't strip comments                 /D<name>{=|#}<text> define macro
+/E preprocess to stdout                 /EP preprocess to stdout, no #line
+/P preprocess to file                   /Fx merge injected code to file
+/FI<file> name forced include file      /U<name> remove predefined macro
+/u remove all predefined macros         /I<dir> add to include search path
+/X ignore "standard places"             
+/PH generate #pragma file_hash when preprocessing
+/PD print all macro definitions         
+
+                                -LANGUAGE-
+
+/std:<c++14|c++17|c++20|c++latest> C++ standard version
+    c++14 - ISO/IEC 14882:2014 (default)
+    c++17 - ISO/IEC 14882:2017
+    c++20 - ISO/IEC 14882:2020
+    c++latest - latest draft standard (feature set subject to change)
+/std:<c11|c17|clatest> C standard version
+    c11 - ISO/IEC 9899:2011
+    c17 - ISO/IEC 9899:2018
+    clatest - latest draft standard (feature set subject to change)
+/permissive[-] enable some nonconforming code to compile
+               (feature set subject to change) (off by default in C++20 and later)
+/Za disable extensions (not recommended for C++)
+/ZW enable WinRT language extensions    /Zs syntax check only
+/await enable resumable functions extension
+/await:strict enable standard C++20 coroutine support with earlier language versions
+/constexpr:depth<N>     recursion depth limit for constexpr evaluation (default: 512)
+/constexpr:backtrace<N> show N constexpr evaluations in diagnostics (default: 10)
+/constexpr:steps<N>     terminate constexpr evaluation after N steps (default: 1048576)
+/Zi enable debugging information        /Z7 enable old-style debug info
+/Zo[-] generate richer debugging information for optimized code (on by default)
+/ZH:[MD5|SHA1|SHA_256] hash algorithm for calculation of file checksum in debug info (default: SHA_256)
+/Zp[n] pack structs on n-byte boundary  /Zl omit default library name in .OBJ
+/vd{0|1|2} disable/enable vtordisp      /vm<x> type of pointers to members
+/Zc:arg1[,arg2] language conformance, where arguments can be:
+  forScope[-]           enforce Standard C++ for scoping rules
+  wchar_t[-]            wchar_t is the native type, not a typedef
+  auto[-]               enforce the new Standard C++ meaning for auto
+  trigraphs[-]          enable trigraphs (off by default)
+  rvalueCast[-]         enforce Standard C++ explicit type conversion rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  strictStrings[-]      disable string-literal to [char|wchar_t]*
+                        conversion (on by default in C++20 or later, implied by /permissive-)
+  implicitNoexcept[-]   enable implicit noexcept on required functions
+  threadSafeInit[-]     enable thread-safe local static initialization
+  inline[-]             remove unreferenced function or data if it is
+                        COMDAT or has internal linkage only (off by default)
+  sizedDealloc[-]       enable C++14 global sized deallocation
+                        functions (on by default)
+  throwingNew[-]        assume operator new throws on failure (off by default)
+  referenceBinding[-]   a temporary will not bind to a non-const
+                        lvalue reference (on by default in C++20 or later, implied by /permissive-)
+  twoPhase-             disable two-phase name lookup
+  ternary[-]            enforce C++11 rules for conditional operator
+                        (on by default in C++20 or later, implied by /permissive-)
+  noexceptTypes[-]      enforce C++17 noexcept rules (on by default in C++17 or later)
+  alignedNew[-]         enable C++17 alignment of dynamically allocated objects (on by default)
+  hiddenFriend[-]       enforce Standard C++ hidden friend rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  externC[-]            enforce Standard C++ rules for 'extern "C"' functions
+                        (on by default in C++20 or later, implied by /permissive-)
+  lambda[-]             better lambda support by using the newer lambda processor
+                        (on by default in C++20 or later, implied by /permissive-)
+  tlsGuards[-]          generate runtime checks for TLS variable initialization (on by default)
+  zeroSizeArrayNew[-]   call member new/delete for 0-size arrays of objects (on by default)
+  static_assert[-]      strict handling of 'static_assert' (on by default in C++20 or later,
+                        implied by /permissive-)
+  gotoScope[-]          cannot jump past the initialization of a variable (implied by /permissive-)
+  templateScope[-]      enforce Standard C++ template parameter shadowing rules
+  enumTypes[-]          enable Standard C++ underlying enum types (off by default)
+  checkGwOdr[-]         enforce Standard C++ one definition rule violations
+                        when /Gw has been enabled (off by default)
+  nrvo[-]               enable optional copy and move elision (on by default in C++20 or later,
+                        implied by /permissive- or /O2)
+  __STDC__              define __STDC__ to 1 in C
+  __cplusplus[-]        __cplusplus macro reports the supported C++ standard (off by default)
+  char8_t[-]            enable C++20 native `u8` literal support as `const char8_t`
+                        (on by default in C++20 or later)
+  externConstexpr[-]    enable external linkage for constexpr variables in C++
+                        (on by default in C++20 or later, implied by /permissive-)
+  preprocessor[-]       enable standard conforming preprocessor in C/C++
+                        (on by default in C11 or later)
+/ZI enable Edit and Continue debug info 
+/openmp enable OpenMP 2.0 language extensions
+/openmp:experimental enable OpenMP 2.0 language extensions plus select OpenMP 3.0+ language extensions
+/openmp:llvm OpenMP language extensions using LLVM runtime
+
+                              -MISCELLANEOUS-
+
+@<file> options response file           /?, /help print this help message
+/bigobj generate extended object format /c compile only, no link
+/FC use full pathnames in diagnostics   /H<num> max external name length
+/J default char type is unsigned        
+/MP[n] use up to 'n' processes for compilation
+/nologo suppress copyright message      /showIncludes show include file names
+/Tc<source file> compile file as .c     /Tp<source file> compile file as .cpp
+/TC compile all files as .c             /TP compile all files as .cpp
+/V<string> set version string           /Yc[file] create .PCH file
+/Yd put debug info in every .OBJ        /Yl[sym] inject .PCH ref for debug lib
+/Yu[file] use .PCH file                 /Y- disable all PCH options
+/Zm<n> max memory alloc (% of default)  /FS force to use MSPDBSRV.EXE
+/source-charset:<iana-name>|.nnnn set source character set
+/execution-charset:<iana-name>|.nnnn set execution character set
+/utf-8 set source and execution character set to UTF-8
+/validate-charset[-] validate UTF-8 files for only legal characters
+/fastfail[-] enable fast-fail mode      /JMC[-] enable native just my code
+/presetPadding[-] zero initialize padding for stack based class types
+/volatileMetadata[-] generate metadata on volatile memory accesses
+/sourcelink [file] file containing source link information
+
+                                -LINKING-
+
+/LD Create .DLL                         /LDd Create .DLL debug library
+/LN Create a .netmodule                 /F<num> set stack size
+/link [linker options and libraries]    /MD link with MSVCRT.LIB
+/MT link with LIBCMT.LIB                /MDd link with MSVCRTD.LIB debug lib
+/MTd link with LIBCMTD.LIB debug lib    
+
+                              -CODE ANALYSIS-
+
+/analyze[-] Enable native analysis      /analyze:quiet[-] No warning to console
+/analyze:log<name> Warnings to file     /analyze:autolog Log to *.pftlog
+/analyze:autolog:ext<ext> Log to *.<ext>/analyze:autolog- No log file
+/analyze:WX- Warnings not fatal         /analyze:stacksize<num> Max stack frame
+/analyze:max_paths<num> Max paths       /analyze:only Analyze, no code gen
+
+                              -DIAGNOSTICS-
+
+/diagnostics:<args,...> controls the format of diagnostic messages:
+             classic   - retains prior format
+             column[-] - prints column information
+             caret[-]  - prints column and the indicated line of source
+/Wall enable all warnings               /w   disable all warnings
+/W<n> set warning level (default n=1)   
+/Wv:xx[.yy[.zzzzz]] disable warnings introduced after version xx.yy.zzzzz
+/WX treat warnings as errors            /WL enable one line diagnostics
+/wd<n> disable warning n                /we<n> treat warning n as an error
+/wo<n> issue warning n once             /w<l><n> set warning level 1-4 for n
+/external:I <path>      - location of external headers
+/external:env:<var>     - environment variable with locations of external headers
+/external:anglebrackets - treat all headers included via <> as external
+/external:W<n>          - warning level for external headers
+/external:templates[-]  - evaluate warning level across template instantiation chain
+/sdl enable additional security features and warnings
+/options:strict unrecognized compiler options are an error
+-----------
+stderr:
+Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+-----------
+Sanity testing C compiler: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7
+Is cross compiler: False.
+Sanity check compiler command line: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 sanitycheckc.c /Fesanitycheckc.exe /MD -nologo -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 -ID:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/include /nologo /showIncludes /utf-8 /link -machine:x64 -DEBUG -INCREMENTAL:NO -OPT:REF -OPT:ICF /LIBPATH:D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/lib
+Sanity check compile stdout:
+sanitycheckc.c
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\x64-windows-static-md-rel\meson-private\sanitycheckc.exe
+C compiler for the host machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 (msvc 19.43.34808 "Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64")
+C linker for the host machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/link.exe link 14.43.34808.0
+-----------
+Detecting archiver via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/lib.exe" -machine:x64 -nologo /?` -> 1100
+stdout:
+usage: LIB [options] [files]
+
+   options:
+
+      /DEF[:filename]
+      /ERRORREPORT:{NONE|PROMPT|QUEUE|SEND}
+      /EXPORT:symbol
+      /EXTRACT:membername
+      /INCLUDE:symbol
+      /LIBPATH:dir
+      /LINKREPRO:dir
+      /LINKREPROFULLPATHRSP:filename
+      /LINKREPROTARGET:filename
+      /LIST[:filename]
+      /LTCG
+      /MACHINE:{ARM|ARM64|ARM64X|EBC|X64|X86}
+      /NAME:filename
+      /NODEFAULTLIB[:library]
+      /NOLOGO
+      /OUT:filename
+      /REMOVE:membername
+      /SUBSYSTEM:{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|
+                  EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|
+                  NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+      /VERBOSE
+      /WX[:NO]
+      /WX[:nnnn[,nnnn...]]
+-----------
+-----------
+Detecting compiler via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 /?` -> 0
+stdout:
+C/C++ COMPILER OPTIONS
+
+
+                              -OPTIMIZATION-
+
+/O1 maximum optimizations (favor space) /O2 maximum optimizations (favor speed)
+/Ob<n> inline expansion (default n=0)   /Od disable optimizations (default)
+/Og enable global optimization          /Oi[-] enable intrinsic functions
+/Os favor code space                    /Ot favor code speed
+/Ox optimizations (favor speed)         
+/favor:<blend|AMD64|INTEL64|ATOM> select processor to optimize for, one of:
+    blend - a combination of optimizations for several different x64 processors
+    AMD64 - 64-bit AMD processors
+    INTEL64 - Intel(R)64 architecture processors
+    ATOM - Intel(R) Atom(TM) processors
+
+                             -CODE GENERATION-
+
+/Gu[-] ensure distinct functions have distinct addresses
+/Gw[-] separate global variables for linker
+/GF enable read-only string pooling     /Gy[-] separate functions for linker
+/GS[-] enable security checks           /GR[-] enable C++ RTTI
+/guard:cf[-] enable CFG (control flow guard)
+/guard:ehcont[-] enable EH continuation metadata (CET)
+/EHs enable C++ EH (no SEH exceptions)  /EHa enable C++ EH (w/ SEH exceptions)
+/EHc extern "C" defaults to nothrow     
+/EHr always generate noexcept runtime termination checks
+/fp:<contract|except[-]|fast|precise|strict> choose floating-point model:
+    contract - consider floating-point contractions when generating code
+    except[-] - consider floating-point exceptions when generating code
+    fast - "fast" floating-point model; results are less predictable
+    precise - "precise" floating-point model; results are predictable
+    strict - "strict" floating-point model (implies /fp:except)
+/Qfast_transcendentals generate inline FP intrinsics even with /fp:except
+/Qspectre[-] enable mitigations for CVE 2017-5753
+/Qpar[-] enable parallel code generation
+/Qpar-report:1 auto-parallelizer diagnostic; indicate parallelized loops
+/Qpar-report:2 auto-parallelizer diagnostic; indicate loops not parallelized
+/Qvec-report:1 auto-vectorizer diagnostic; indicate vectorized loops
+/Qvec-report:2 auto-vectorizer diagnostic; indicate loops not vectorized
+/GL[-] enable link-time code generation 
+/volatile:<iso|ms> choose volatile model:
+    iso - Acquire/release semantics not guaranteed on volatile accesses
+    ms  - Acquire/release semantics guaranteed on volatile accesses
+/GA optimize for Windows Application    /Ge force stack checking for all funcs
+/Gs[num] control stack checking calls   /Gh enable _penter function call
+/GH enable _pexit function call         /GT generate fiber-safe TLS accesses
+/RTC1 Enable fast checks (/RTCsu)       /RTCc Convert to smaller type checks
+/RTCs Stack Frame runtime checking      /RTCu Uninitialized local usage checks
+/clr[:option] compile for common language runtime, where option is:
+    pure : produce IL-only output file (no native executable code)
+    safe : produce IL-only verifiable output file
+    netcore : produce assemblies targeting .NET Core runtime
+    noAssembly : do not produce an assembly
+    nostdlib : ignore the system .NET framework directory when searching for assemblies
+    nostdimport : do not import any required assemblies implicitly
+    initialAppDomain : enable initial AppDomain behavior of Visual C++ 2002
+    implicitKeepAlive- : turn off implicit emission of System::GC::KeepAlive(this)
+    char_t- : turn off metadata support for char8_t, char16_t and char32_t
+    ECMAParamArray : use rules specified in ECMA-372/14.6 for overloads with parameter arrays (implied by /clr)
+    ECMAParamArray- : use new rules for overloads with parameter arrays (implied by /clr:netcore)
+/fsanitize=address Enable address sanitizer codegen
+/homeparams Force parameters passed in registers to be written to the stack
+/GZ Enable stack checks (/RTCs)         /Gv __vectorcall calling convention
+/arch:<SSE2|SSE4.2|AVX|AVX2|AVX512|AVX10.x> minimum CPU architecture requirements, one of:
+   SSE2 - (default) enable use of instructions available with SSE2-enabled CPUs
+   SSE4.2 - enable use of instructions available with SSE 4.2-enabled CPUs
+   AVX - enable use of instructions available with AVX-enabled CPUs
+   AVX2 - enable use of instructions available with AVX2-enabled CPUs
+   AVX512 - enable use of instructions available with AVX-512-enabled CPUs
+   AVX10.x - enable use of instructions available with AVX10.x-enabled CPUs. Valid values of x are 1
+/QIntel-jcc-erratum enable mitigations for Intel JCC erratum
+/Qspectre-load Enable spectre mitigations for all instructions which load memory
+/Qspectre-load-cf Enable spectre mitigations for all control-flow instructions which load memory
+/Qspectre-jmp[-] Enable spectre mitigations for unconditional jump instructions
+/fpcvt:<IA|BC> FP to unsigned integer conversion compatibility
+   IA - results compatible with VCVTTSD2USI instruction
+   BC - results compatible with VS2017 and earlier compiler
+/jumptablerdata Place jump tables for switch case statements in .rdata section
+/vlen=<256|512> Choose vector length of either 256 or 512 for automatic code-generation
+/vlen Choose default vector length based on /arch setting
+
+                              -OUTPUT FILES-
+
+/Fa[file] name assembly listing file    /FA[scu] configure assembly listing
+/Fd[file] name .PDB file                /Fe<file> name executable file
+/Fm[file] name map file                 /Fo<file> name object file
+/Fp<file> name precompiled header file  /Fr[file] name source browser file
+/FR[file] name extended .SBR file       /Fi[file] name preprocessed file
+/Fd: <file> name .PDB file              /Fe: <file> name executable file
+/Fm: <file> name map file               /Fo: <file> name object file
+/Fp: <file> name .PCH file              /FR: <file> name extended .SBR file
+/Fi: <file> name preprocessed file      
+/Ft<dir> location of the header files generated for #import
+/doc[file] process XML documentation comments and optionally name the .xdc file
+
+                              -PREPROCESSOR-
+
+/AI<dir> add to assembly search path    /FU<file> import .NET assembly/module
+/FU:asFriend<file> import .NET assembly/module as friend
+/C don't strip comments                 /D<name>{=|#}<text> define macro
+/E preprocess to stdout                 /EP preprocess to stdout, no #line
+/P preprocess to file                   /Fx merge injected code to file
+/FI<file> name forced include file      /U<name> remove predefined macro
+/u remove all predefined macros         /I<dir> add to include search path
+/X ignore "standard places"             
+/PH generate #pragma file_hash when preprocessing
+/PD print all macro definitions         
+
+                                -LANGUAGE-
+
+/std:<c++14|c++17|c++20|c++latest> C++ standard version
+    c++14 - ISO/IEC 14882:2014 (default)
+    c++17 - ISO/IEC 14882:2017
+    c++20 - ISO/IEC 14882:2020
+    c++latest - latest draft standard (feature set subject to change)
+/std:<c11|c17|clatest> C standard version
+    c11 - ISO/IEC 9899:2011
+    c17 - ISO/IEC 9899:2018
+    clatest - latest draft standard (feature set subject to change)
+/permissive[-] enable some nonconforming code to compile
+               (feature set subject to change) (off by default in C++20 and later)
+/Za disable extensions (not recommended for C++)
+/ZW enable WinRT language extensions    /Zs syntax check only
+/await enable resumable functions extension
+/await:strict enable standard C++20 coroutine support with earlier language versions
+/constexpr:depth<N>     recursion depth limit for constexpr evaluation (default: 512)
+/constexpr:backtrace<N> show N constexpr evaluations in diagnostics (default: 10)
+/constexpr:steps<N>     terminate constexpr evaluation after N steps (default: 1048576)
+/Zi enable debugging information        /Z7 enable old-style debug info
+/Zo[-] generate richer debugging information for optimized code (on by default)
+/ZH:[MD5|SHA1|SHA_256] hash algorithm for calculation of file checksum in debug info (default: SHA_256)
+/Zp[n] pack structs on n-byte boundary  /Zl omit default library name in .OBJ
+/vd{0|1|2} disable/enable vtordisp      /vm<x> type of pointers to members
+/Zc:arg1[,arg2] language conformance, where arguments can be:
+  forScope[-]           enforce Standard C++ for scoping rules
+  wchar_t[-]            wchar_t is the native type, not a typedef
+  auto[-]               enforce the new Standard C++ meaning for auto
+  trigraphs[-]          enable trigraphs (off by default)
+  rvalueCast[-]         enforce Standard C++ explicit type conversion rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  strictStrings[-]      disable string-literal to [char|wchar_t]*
+                        conversion (on by default in C++20 or later, implied by /permissive-)
+  implicitNoexcept[-]   enable implicit noexcept on required functions
+  threadSafeInit[-]     enable thread-safe local static initialization
+  inline[-]             remove unreferenced function or data if it is
+                        COMDAT or has internal linkage only (off by default)
+  sizedDealloc[-]       enable C++14 global sized deallocation
+                        functions (on by default)
+  throwingNew[-]        assume operator new throws on failure (off by default)
+  referenceBinding[-]   a temporary will not bind to a non-const
+                        lvalue reference (on by default in C++20 or later, implied by /permissive-)
+  twoPhase-             disable two-phase name lookup
+  ternary[-]            enforce C++11 rules for conditional operator
+                        (on by default in C++20 or later, implied by /permissive-)
+  noexceptTypes[-]      enforce C++17 noexcept rules (on by default in C++17 or later)
+  alignedNew[-]         enable C++17 alignment of dynamically allocated objects (on by default)
+  hiddenFriend[-]       enforce Standard C++ hidden friend rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  externC[-]            enforce Standard C++ rules for 'extern "C"' functions
+                        (on by default in C++20 or later, implied by /permissive-)
+  lambda[-]             better lambda support by using the newer lambda processor
+                        (on by default in C++20 or later, implied by /permissive-)
+  tlsGuards[-]          generate runtime checks for TLS variable initialization (on by default)
+  zeroSizeArrayNew[-]   call member new/delete for 0-size arrays of objects (on by default)
+  static_assert[-]      strict handling of 'static_assert' (on by default in C++20 or later,
+                        implied by /permissive-)
+  gotoScope[-]          cannot jump past the initialization of a variable (implied by /permissive-)
+  templateScope[-]      enforce Standard C++ template parameter shadowing rules
+  enumTypes[-]          enable Standard C++ underlying enum types (off by default)
+  checkGwOdr[-]         enforce Standard C++ one definition rule violations
+                        when /Gw has been enabled (off by default)
+  nrvo[-]               enable optional copy and move elision (on by default in C++20 or later,
+                        implied by /permissive- or /O2)
+  __STDC__              define __STDC__ to 1 in C
+  __cplusplus[-]        __cplusplus macro reports the supported C++ standard (off by default)
+  char8_t[-]            enable C++20 native `u8` literal support as `const char8_t`
+                        (on by default in C++20 or later)
+  externConstexpr[-]    enable external linkage for constexpr variables in C++
+                        (on by default in C++20 or later, implied by /permissive-)
+  preprocessor[-]       enable standard conforming preprocessor in C/C++
+                        (on by default in C11 or later)
+/ZI enable Edit and Continue debug info 
+/openmp enable OpenMP 2.0 language extensions
+/openmp:experimental enable OpenMP 2.0 language extensions plus select OpenMP 3.0+ language extensions
+/openmp:llvm OpenMP language extensions using LLVM runtime
+
+                              -MISCELLANEOUS-
+
+@<file> options response file           /?, /help print this help message
+/bigobj generate extended object format /c compile only, no link
+/FC use full pathnames in diagnostics   /H<num> max external name length
+/J default char type is unsigned        
+/MP[n] use up to 'n' processes for compilation
+/nologo suppress copyright message      /showIncludes show include file names
+/Tc<source file> compile file as .c     /Tp<source file> compile file as .cpp
+/TC compile all files as .c             /TP compile all files as .cpp
+/V<string> set version string           /Yc[file] create .PCH file
+/Yd put debug info in every .OBJ        /Yl[sym] inject .PCH ref for debug lib
+/Yu[file] use .PCH file                 /Y- disable all PCH options
+/Zm<n> max memory alloc (% of default)  /FS force to use MSPDBSRV.EXE
+/source-charset:<iana-name>|.nnnn set source character set
+/execution-charset:<iana-name>|.nnnn set execution character set
+/utf-8 set source and execution character set to UTF-8
+/validate-charset[-] validate UTF-8 files for only legal characters
+/fastfail[-] enable fast-fail mode      /JMC[-] enable native just my code
+/presetPadding[-] zero initialize padding for stack based class types
+/volatileMetadata[-] generate metadata on volatile memory accesses
+/sourcelink [file] file containing source link information
+
+                                -LINKING-
+
+/LD Create .DLL                         /LDd Create .DLL debug library
+/LN Create a .netmodule                 /F<num> set stack size
+/link [linker options and libraries]    /MD link with MSVCRT.LIB
+/MT link with LIBCMT.LIB                /MDd link with MSVCRTD.LIB debug lib
+/MTd link with LIBCMTD.LIB debug lib    
+
+                              -CODE ANALYSIS-
+
+/analyze[-] Enable native analysis      /analyze:quiet[-] No warning to console
+/analyze:log<name> Warnings to file     /analyze:autolog Log to *.pftlog
+/analyze:autolog:ext<ext> Log to *.<ext>/analyze:autolog- No log file
+/analyze:WX- Warnings not fatal         /analyze:stacksize<num> Max stack frame
+/analyze:max_paths<num> Max paths       /analyze:only Analyze, no code gen
+
+                              -DIAGNOSTICS-
+
+/diagnostics:<args,...> controls the format of diagnostic messages:
+             classic   - retains prior format
+             column[-] - prints column information
+             caret[-]  - prints column and the indicated line of source
+/Wall enable all warnings               /w   disable all warnings
+/W<n> set warning level (default n=1)   
+/Wv:xx[.yy[.zzzzz]] disable warnings introduced after version xx.yy.zzzzz
+/WX treat warnings as errors            /WL enable one line diagnostics
+/wd<n> disable warning n                /we<n> treat warning n as an error
+/wo<n> issue warning n once             /w<l><n> set warning level 1-4 for n
+/external:I <path>      - location of external headers
+/external:env:<var>     - environment variable with locations of external headers
+/external:anglebrackets - treat all headers included via <> as external
+/external:W<n>          - warning level for external headers
+/external:templates[-]  - evaluate warning level across template instantiation chain
+/sdl enable additional security features and warnings
+/options:strict unrecognized compiler options are an error
+-----------
+stderr:
+Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+-----------
+Sanity testing C compiler: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7
+Is cross compiler: False.
+Sanity check compiler command line: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 sanitycheckc.c /Fesanitycheckc.exe /MD /nologo /showIncludes /utf-8 /link
+Sanity check compile stdout:
+sanitycheckc.c
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\x64-windows-static-md-rel\meson-private\sanitycheckc.exe
+C compiler for the build machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe -DWIN32 -D_WINDOWS -utf-8 -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 (msvc 19.43.34808 "Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64")
+C linker for the build machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/link.exe link 14.43.34808.0
+-----------
+Detecting archiver via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/lib.exe" -machine:x64 -nologo /?` -> 1100
+stdout:
+usage: LIB [options] [files]
+
+   options:
+
+      /DEF[:filename]
+      /ERRORREPORT:{NONE|PROMPT|QUEUE|SEND}
+      /EXPORT:symbol
+      /EXTRACT:membername
+      /INCLUDE:symbol
+      /LIBPATH:dir
+      /LINKREPRO:dir
+      /LINKREPROFULLPATHRSP:filename
+      /LINKREPROTARGET:filename
+      /LIST[:filename]
+      /LTCG
+      /MACHINE:{ARM|ARM64|ARM64X|EBC|X64|X86}
+      /NAME:filename
+      /NODEFAULTLIB[:library]
+      /NOLOGO
+      /OUT:filename
+      /REMOVE:membername
+      /SUBSYSTEM:{BOOT_APPLICATION|CONSOLE|EFI_APPLICATION|
+                  EFI_BOOT_SERVICE_DRIVER|EFI_ROM|EFI_RUNTIME_DRIVER|
+                  NATIVE|POSIX|WINDOWS|WINDOWSCE}[,#[.##]]
+      /VERBOSE
+      /WX[:NO]
+      /WX[:nnnn[,nnnn...]]
+-----------
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Target machine cpu family: x86_64
+Target machine cpu: x86_64
+Pkg-config binary for host machine specified from cross file, native file, or env var as ['C:/Users/amonra/AppData/Local/vcpkg/downloads/tools/msys2/21caed2f81ec917b/mingw64/bin/pkg-config.exe']
+'utf-8' codec can't decode byte 0x90 in position 2: invalid start byte
+Unusable script 'C:/Users/amonra/AppData/Local/vcpkg/downloads/tools/msys2/21caed2f81ec917b/mingw64/bin/pkg-config.exe'
+Found pkg-config: YES (C:/Users/amonra/AppData/Local/vcpkg/downloads/tools/msys2/21caed2f81ec917b/mingw64/bin/pkg-config.exe) 2.3.0
+..\src\r58-2aa5ec8387.clean\meson.build:101: WARNING: add_languages is missing native:, assuming languages are wanted for both host and build.
+-----------
+Detecting compiler via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 /?` -> 0
+stdout:
+C/C++ COMPILER OPTIONS
+
+
+                              -OPTIMIZATION-
+
+/O1 maximum optimizations (favor space) /O2 maximum optimizations (favor speed)
+/Ob<n> inline expansion (default n=0)   /Od disable optimizations (default)
+/Og enable global optimization          /Oi[-] enable intrinsic functions
+/Os favor code space                    /Ot favor code speed
+/Ox optimizations (favor speed)         
+/favor:<blend|AMD64|INTEL64|ATOM> select processor to optimize for, one of:
+    blend - a combination of optimizations for several different x64 processors
+    AMD64 - 64-bit AMD processors
+    INTEL64 - Intel(R)64 architecture processors
+    ATOM - Intel(R) Atom(TM) processors
+
+                             -CODE GENERATION-
+
+/Gu[-] ensure distinct functions have distinct addresses
+/Gw[-] separate global variables for linker
+/GF enable read-only string pooling     /Gy[-] separate functions for linker
+/GS[-] enable security checks           /GR[-] enable C++ RTTI
+/guard:cf[-] enable CFG (control flow guard)
+/guard:ehcont[-] enable EH continuation metadata (CET)
+/EHs enable C++ EH (no SEH exceptions)  /EHa enable C++ EH (w/ SEH exceptions)
+/EHc extern "C" defaults to nothrow     
+/EHr always generate noexcept runtime termination checks
+/fp:<contract|except[-]|fast|precise|strict> choose floating-point model:
+    contract - consider floating-point contractions when generating code
+    except[-] - consider floating-point exceptions when generating code
+    fast - "fast" floating-point model; results are less predictable
+    precise - "precise" floating-point model; results are predictable
+    strict - "strict" floating-point model (implies /fp:except)
+/Qfast_transcendentals generate inline FP intrinsics even with /fp:except
+/Qspectre[-] enable mitigations for CVE 2017-5753
+/Qpar[-] enable parallel code generation
+/Qpar-report:1 auto-parallelizer diagnostic; indicate parallelized loops
+/Qpar-report:2 auto-parallelizer diagnostic; indicate loops not parallelized
+/Qvec-report:1 auto-vectorizer diagnostic; indicate vectorized loops
+/Qvec-report:2 auto-vectorizer diagnostic; indicate loops not vectorized
+/GL[-] enable link-time code generation 
+/volatile:<iso|ms> choose volatile model:
+    iso - Acquire/release semantics not guaranteed on volatile accesses
+    ms  - Acquire/release semantics guaranteed on volatile accesses
+/GA optimize for Windows Application    /Ge force stack checking for all funcs
+/Gs[num] control stack checking calls   /Gh enable _penter function call
+/GH enable _pexit function call         /GT generate fiber-safe TLS accesses
+/RTC1 Enable fast checks (/RTCsu)       /RTCc Convert to smaller type checks
+/RTCs Stack Frame runtime checking      /RTCu Uninitialized local usage checks
+/clr[:option] compile for common language runtime, where option is:
+    pure : produce IL-only output file (no native executable code)
+    safe : produce IL-only verifiable output file
+    netcore : produce assemblies targeting .NET Core runtime
+    noAssembly : do not produce an assembly
+    nostdlib : ignore the system .NET framework directory when searching for assemblies
+    nostdimport : do not import any required assemblies implicitly
+    initialAppDomain : enable initial AppDomain behavior of Visual C++ 2002
+    implicitKeepAlive- : turn off implicit emission of System::GC::KeepAlive(this)
+    char_t- : turn off metadata support for char8_t, char16_t and char32_t
+    ECMAParamArray : use rules specified in ECMA-372/14.6 for overloads with parameter arrays (implied by /clr)
+    ECMAParamArray- : use new rules for overloads with parameter arrays (implied by /clr:netcore)
+/fsanitize=address Enable address sanitizer codegen
+/homeparams Force parameters passed in registers to be written to the stack
+/GZ Enable stack checks (/RTCs)         /Gv __vectorcall calling convention
+/arch:<SSE2|SSE4.2|AVX|AVX2|AVX512|AVX10.x> minimum CPU architecture requirements, one of:
+   SSE2 - (default) enable use of instructions available with SSE2-enabled CPUs
+   SSE4.2 - enable use of instructions available with SSE 4.2-enabled CPUs
+   AVX - enable use of instructions available with AVX-enabled CPUs
+   AVX2 - enable use of instructions available with AVX2-enabled CPUs
+   AVX512 - enable use of instructions available with AVX-512-enabled CPUs
+   AVX10.x - enable use of instructions available with AVX10.x-enabled CPUs. Valid values of x are 1
+/QIntel-jcc-erratum enable mitigations for Intel JCC erratum
+/Qspectre-load Enable spectre mitigations for all instructions which load memory
+/Qspectre-load-cf Enable spectre mitigations for all control-flow instructions which load memory
+/Qspectre-jmp[-] Enable spectre mitigations for unconditional jump instructions
+/fpcvt:<IA|BC> FP to unsigned integer conversion compatibility
+   IA - results compatible with VCVTTSD2USI instruction
+   BC - results compatible with VS2017 and earlier compiler
+/jumptablerdata Place jump tables for switch case statements in .rdata section
+/vlen=<256|512> Choose vector length of either 256 or 512 for automatic code-generation
+/vlen Choose default vector length based on /arch setting
+
+                              -OUTPUT FILES-
+
+/Fa[file] name assembly listing file    /FA[scu] configure assembly listing
+/Fd[file] name .PDB file                /Fe<file> name executable file
+/Fm[file] name map file                 /Fo<file> name object file
+/Fp<file> name precompiled header file  /Fr[file] name source browser file
+/FR[file] name extended .SBR file       /Fi[file] name preprocessed file
+/Fd: <file> name .PDB file              /Fe: <file> name executable file
+/Fm: <file> name map file               /Fo: <file> name object file
+/Fp: <file> name .PCH file              /FR: <file> name extended .SBR file
+/Fi: <file> name preprocessed file      
+/Ft<dir> location of the header files generated for #import
+/doc[file] process XML documentation comments and optionally name the .xdc file
+
+                              -PREPROCESSOR-
+
+/AI<dir> add to assembly search path    /FU<file> import .NET assembly/module
+/FU:asFriend<file> import .NET assembly/module as friend
+/C don't strip comments                 /D<name>{=|#}<text> define macro
+/E preprocess to stdout                 /EP preprocess to stdout, no #line
+/P preprocess to file                   /Fx merge injected code to file
+/FI<file> name forced include file      /U<name> remove predefined macro
+/u remove all predefined macros         /I<dir> add to include search path
+/X ignore "standard places"             
+/PH generate #pragma file_hash when preprocessing
+/PD print all macro definitions         
+
+                                -LANGUAGE-
+
+/std:<c++14|c++17|c++20|c++latest> C++ standard version
+    c++14 - ISO/IEC 14882:2014 (default)
+    c++17 - ISO/IEC 14882:2017
+    c++20 - ISO/IEC 14882:2020
+    c++latest - latest draft standard (feature set subject to change)
+/std:<c11|c17|clatest> C standard version
+    c11 - ISO/IEC 9899:2011
+    c17 - ISO/IEC 9899:2018
+    clatest - latest draft standard (feature set subject to change)
+/permissive[-] enable some nonconforming code to compile
+               (feature set subject to change) (off by default in C++20 and later)
+/Za disable extensions (not recommended for C++)
+/ZW enable WinRT language extensions    /Zs syntax check only
+/await enable resumable functions extension
+/await:strict enable standard C++20 coroutine support with earlier language versions
+/constexpr:depth<N>     recursion depth limit for constexpr evaluation (default: 512)
+/constexpr:backtrace<N> show N constexpr evaluations in diagnostics (default: 10)
+/constexpr:steps<N>     terminate constexpr evaluation after N steps (default: 1048576)
+/Zi enable debugging information        /Z7 enable old-style debug info
+/Zo[-] generate richer debugging information for optimized code (on by default)
+/ZH:[MD5|SHA1|SHA_256] hash algorithm for calculation of file checksum in debug info (default: SHA_256)
+/Zp[n] pack structs on n-byte boundary  /Zl omit default library name in .OBJ
+/vd{0|1|2} disable/enable vtordisp      /vm<x> type of pointers to members
+/Zc:arg1[,arg2] language conformance, where arguments can be:
+  forScope[-]           enforce Standard C++ for scoping rules
+  wchar_t[-]            wchar_t is the native type, not a typedef
+  auto[-]               enforce the new Standard C++ meaning for auto
+  trigraphs[-]          enable trigraphs (off by default)
+  rvalueCast[-]         enforce Standard C++ explicit type conversion rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  strictStrings[-]      disable string-literal to [char|wchar_t]*
+                        conversion (on by default in C++20 or later, implied by /permissive-)
+  implicitNoexcept[-]   enable implicit noexcept on required functions
+  threadSafeInit[-]     enable thread-safe local static initialization
+  inline[-]             remove unreferenced function or data if it is
+                        COMDAT or has internal linkage only (off by default)
+  sizedDealloc[-]       enable C++14 global sized deallocation
+                        functions (on by default)
+  throwingNew[-]        assume operator new throws on failure (off by default)
+  referenceBinding[-]   a temporary will not bind to a non-const
+                        lvalue reference (on by default in C++20 or later, implied by /permissive-)
+  twoPhase-             disable two-phase name lookup
+  ternary[-]            enforce C++11 rules for conditional operator
+                        (on by default in C++20 or later, implied by /permissive-)
+  noexceptTypes[-]      enforce C++17 noexcept rules (on by default in C++17 or later)
+  alignedNew[-]         enable C++17 alignment of dynamically allocated objects (on by default)
+  hiddenFriend[-]       enforce Standard C++ hidden friend rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  externC[-]            enforce Standard C++ rules for 'extern "C"' functions
+                        (on by default in C++20 or later, implied by /permissive-)
+  lambda[-]             better lambda support by using the newer lambda processor
+                        (on by default in C++20 or later, implied by /permissive-)
+  tlsGuards[-]          generate runtime checks for TLS variable initialization (on by default)
+  zeroSizeArrayNew[-]   call member new/delete for 0-size arrays of objects (on by default)
+  static_assert[-]      strict handling of 'static_assert' (on by default in C++20 or later,
+                        implied by /permissive-)
+  gotoScope[-]          cannot jump past the initialization of a variable (implied by /permissive-)
+  templateScope[-]      enforce Standard C++ template parameter shadowing rules
+  enumTypes[-]          enable Standard C++ underlying enum types (off by default)
+  checkGwOdr[-]         enforce Standard C++ one definition rule violations
+                        when /Gw has been enabled (off by default)
+  nrvo[-]               enable optional copy and move elision (on by default in C++20 or later,
+                        implied by /permissive- or /O2)
+  __STDC__              define __STDC__ to 1 in C
+  __cplusplus[-]        __cplusplus macro reports the supported C++ standard (off by default)
+  char8_t[-]            enable C++20 native `u8` literal support as `const char8_t`
+                        (on by default in C++20 or later)
+  externConstexpr[-]    enable external linkage for constexpr variables in C++
+                        (on by default in C++20 or later, implied by /permissive-)
+  preprocessor[-]       enable standard conforming preprocessor in C/C++
+                        (on by default in C11 or later)
+/ZI enable Edit and Continue debug info 
+/openmp enable OpenMP 2.0 language extensions
+/openmp:experimental enable OpenMP 2.0 language extensions plus select OpenMP 3.0+ language extensions
+/openmp:llvm OpenMP language extensions using LLVM runtime
+
+                              -MISCELLANEOUS-
+
+@<file> options response file           /?, /help print this help message
+/bigobj generate extended object format /c compile only, no link
+/FC use full pathnames in diagnostics   /H<num> max external name length
+/J default char type is unsigned        
+/MP[n] use up to 'n' processes for compilation
+/nologo suppress copyright message      /showIncludes show include file names
+/Tc<source file> compile file as .c     /Tp<source file> compile file as .cpp
+/TC compile all files as .c             /TP compile all files as .cpp
+/V<string> set version string           /Yc[file] create .PCH file
+/Yd put debug info in every .OBJ        /Yl[sym] inject .PCH ref for debug lib
+/Yu[file] use .PCH file                 /Y- disable all PCH options
+/Zm<n> max memory alloc (% of default)  /FS force to use MSPDBSRV.EXE
+/source-charset:<iana-name>|.nnnn set source character set
+/execution-charset:<iana-name>|.nnnn set execution character set
+/utf-8 set source and execution character set to UTF-8
+/validate-charset[-] validate UTF-8 files for only legal characters
+/fastfail[-] enable fast-fail mode      /JMC[-] enable native just my code
+/presetPadding[-] zero initialize padding for stack based class types
+/volatileMetadata[-] generate metadata on volatile memory accesses
+/sourcelink [file] file containing source link information
+
+                                -LINKING-
+
+/LD Create .DLL                         /LDd Create .DLL debug library
+/LN Create a .netmodule                 /F<num> set stack size
+/link [linker options and libraries]    /MD link with MSVCRT.LIB
+/MT link with LIBCMT.LIB                /MDd link with MSVCRTD.LIB debug lib
+/MTd link with LIBCMTD.LIB debug lib    
+
+                              -CODE ANALYSIS-
+
+/analyze[-] Enable native analysis      /analyze:quiet[-] No warning to console
+/analyze:log<name> Warnings to file     /analyze:autolog Log to *.pftlog
+/analyze:autolog:ext<ext> Log to *.<ext>/analyze:autolog- No log file
+/analyze:WX- Warnings not fatal         /analyze:stacksize<num> Max stack frame
+/analyze:max_paths<num> Max paths       /analyze:only Analyze, no code gen
+
+                              -DIAGNOSTICS-
+
+/diagnostics:<args,...> controls the format of diagnostic messages:
+             classic   - retains prior format
+             column[-] - prints column information
+             caret[-]  - prints column and the indicated line of source
+/Wall enable all warnings               /w   disable all warnings
+/W<n> set warning level (default n=1)   
+/Wv:xx[.yy[.zzzzz]] disable warnings introduced after version xx.yy.zzzzz
+/WX treat warnings as errors            /WL enable one line diagnostics
+/wd<n> disable warning n                /we<n> treat warning n as an error
+/wo<n> issue warning n once             /w<l><n> set warning level 1-4 for n
+/external:I <path>      - location of external headers
+/external:env:<var>     - environment variable with locations of external headers
+/external:anglebrackets - treat all headers included via <> as external
+/external:W<n>          - warning level for external headers
+/external:templates[-]  - evaluate warning level across template instantiation chain
+/sdl enable additional security features and warnings
+/options:strict unrecognized compiler options are an error
+-----------
+stderr:
+Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+-----------
+Sanity testing C++ compiler: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7
+Is cross compiler: False.
+Sanity check compiler command line: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 sanitycheckcpp.cc /Fesanitycheckcpp.exe /MD /nologo /showIncludes /utf-8 /Zc:__cplusplus /link
+Sanity check compile stdout:
+sanitycheckcpp.cc
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\x64-windows-static-md-rel\meson-private\sanitycheckcpp.exe
+C++ compiler for the build machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 (msvc 19.43.34808 "Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64")
+C++ linker for the build machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/link.exe link 14.43.34808.0
+-----------
+Detecting compiler via: `"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 /?` -> 0
+stdout:
+C/C++ COMPILER OPTIONS
+
+
+                              -OPTIMIZATION-
+
+/O1 maximum optimizations (favor space) /O2 maximum optimizations (favor speed)
+/Ob<n> inline expansion (default n=0)   /Od disable optimizations (default)
+/Og enable global optimization          /Oi[-] enable intrinsic functions
+/Os favor code space                    /Ot favor code speed
+/Ox optimizations (favor speed)         
+/favor:<blend|AMD64|INTEL64|ATOM> select processor to optimize for, one of:
+    blend - a combination of optimizations for several different x64 processors
+    AMD64 - 64-bit AMD processors
+    INTEL64 - Intel(R)64 architecture processors
+    ATOM - Intel(R) Atom(TM) processors
+
+                             -CODE GENERATION-
+
+/Gu[-] ensure distinct functions have distinct addresses
+/Gw[-] separate global variables for linker
+/GF enable read-only string pooling     /Gy[-] separate functions for linker
+/GS[-] enable security checks           /GR[-] enable C++ RTTI
+/guard:cf[-] enable CFG (control flow guard)
+/guard:ehcont[-] enable EH continuation metadata (CET)
+/EHs enable C++ EH (no SEH exceptions)  /EHa enable C++ EH (w/ SEH exceptions)
+/EHc extern "C" defaults to nothrow     
+/EHr always generate noexcept runtime termination checks
+/fp:<contract|except[-]|fast|precise|strict> choose floating-point model:
+    contract - consider floating-point contractions when generating code
+    except[-] - consider floating-point exceptions when generating code
+    fast - "fast" floating-point model; results are less predictable
+    precise - "precise" floating-point model; results are predictable
+    strict - "strict" floating-point model (implies /fp:except)
+/Qfast_transcendentals generate inline FP intrinsics even with /fp:except
+/Qspectre[-] enable mitigations for CVE 2017-5753
+/Qpar[-] enable parallel code generation
+/Qpar-report:1 auto-parallelizer diagnostic; indicate parallelized loops
+/Qpar-report:2 auto-parallelizer diagnostic; indicate loops not parallelized
+/Qvec-report:1 auto-vectorizer diagnostic; indicate vectorized loops
+/Qvec-report:2 auto-vectorizer diagnostic; indicate loops not vectorized
+/GL[-] enable link-time code generation 
+/volatile:<iso|ms> choose volatile model:
+    iso - Acquire/release semantics not guaranteed on volatile accesses
+    ms  - Acquire/release semantics guaranteed on volatile accesses
+/GA optimize for Windows Application    /Ge force stack checking for all funcs
+/Gs[num] control stack checking calls   /Gh enable _penter function call
+/GH enable _pexit function call         /GT generate fiber-safe TLS accesses
+/RTC1 Enable fast checks (/RTCsu)       /RTCc Convert to smaller type checks
+/RTCs Stack Frame runtime checking      /RTCu Uninitialized local usage checks
+/clr[:option] compile for common language runtime, where option is:
+    pure : produce IL-only output file (no native executable code)
+    safe : produce IL-only verifiable output file
+    netcore : produce assemblies targeting .NET Core runtime
+    noAssembly : do not produce an assembly
+    nostdlib : ignore the system .NET framework directory when searching for assemblies
+    nostdimport : do not import any required assemblies implicitly
+    initialAppDomain : enable initial AppDomain behavior of Visual C++ 2002
+    implicitKeepAlive- : turn off implicit emission of System::GC::KeepAlive(this)
+    char_t- : turn off metadata support for char8_t, char16_t and char32_t
+    ECMAParamArray : use rules specified in ECMA-372/14.6 for overloads with parameter arrays (implied by /clr)
+    ECMAParamArray- : use new rules for overloads with parameter arrays (implied by /clr:netcore)
+/fsanitize=address Enable address sanitizer codegen
+/homeparams Force parameters passed in registers to be written to the stack
+/GZ Enable stack checks (/RTCs)         /Gv __vectorcall calling convention
+/arch:<SSE2|SSE4.2|AVX|AVX2|AVX512|AVX10.x> minimum CPU architecture requirements, one of:
+   SSE2 - (default) enable use of instructions available with SSE2-enabled CPUs
+   SSE4.2 - enable use of instructions available with SSE 4.2-enabled CPUs
+   AVX - enable use of instructions available with AVX-enabled CPUs
+   AVX2 - enable use of instructions available with AVX2-enabled CPUs
+   AVX512 - enable use of instructions available with AVX-512-enabled CPUs
+   AVX10.x - enable use of instructions available with AVX10.x-enabled CPUs. Valid values of x are 1
+/QIntel-jcc-erratum enable mitigations for Intel JCC erratum
+/Qspectre-load Enable spectre mitigations for all instructions which load memory
+/Qspectre-load-cf Enable spectre mitigations for all control-flow instructions which load memory
+/Qspectre-jmp[-] Enable spectre mitigations for unconditional jump instructions
+/fpcvt:<IA|BC> FP to unsigned integer conversion compatibility
+   IA - results compatible with VCVTTSD2USI instruction
+   BC - results compatible with VS2017 and earlier compiler
+/jumptablerdata Place jump tables for switch case statements in .rdata section
+/vlen=<256|512> Choose vector length of either 256 or 512 for automatic code-generation
+/vlen Choose default vector length based on /arch setting
+
+                              -OUTPUT FILES-
+
+/Fa[file] name assembly listing file    /FA[scu] configure assembly listing
+/Fd[file] name .PDB file                /Fe<file> name executable file
+/Fm[file] name map file                 /Fo<file> name object file
+/Fp<file> name precompiled header file  /Fr[file] name source browser file
+/FR[file] name extended .SBR file       /Fi[file] name preprocessed file
+/Fd: <file> name .PDB file              /Fe: <file> name executable file
+/Fm: <file> name map file               /Fo: <file> name object file
+/Fp: <file> name .PCH file              /FR: <file> name extended .SBR file
+/Fi: <file> name preprocessed file      
+/Ft<dir> location of the header files generated for #import
+/doc[file] process XML documentation comments and optionally name the .xdc file
+
+                              -PREPROCESSOR-
+
+/AI<dir> add to assembly search path    /FU<file> import .NET assembly/module
+/FU:asFriend<file> import .NET assembly/module as friend
+/C don't strip comments                 /D<name>{=|#}<text> define macro
+/E preprocess to stdout                 /EP preprocess to stdout, no #line
+/P preprocess to file                   /Fx merge injected code to file
+/FI<file> name forced include file      /U<name> remove predefined macro
+/u remove all predefined macros         /I<dir> add to include search path
+/X ignore "standard places"             
+/PH generate #pragma file_hash when preprocessing
+/PD print all macro definitions         
+
+                                -LANGUAGE-
+
+/std:<c++14|c++17|c++20|c++latest> C++ standard version
+    c++14 - ISO/IEC 14882:2014 (default)
+    c++17 - ISO/IEC 14882:2017
+    c++20 - ISO/IEC 14882:2020
+    c++latest - latest draft standard (feature set subject to change)
+/std:<c11|c17|clatest> C standard version
+    c11 - ISO/IEC 9899:2011
+    c17 - ISO/IEC 9899:2018
+    clatest - latest draft standard (feature set subject to change)
+/permissive[-] enable some nonconforming code to compile
+               (feature set subject to change) (off by default in C++20 and later)
+/Za disable extensions (not recommended for C++)
+/ZW enable WinRT language extensions    /Zs syntax check only
+/await enable resumable functions extension
+/await:strict enable standard C++20 coroutine support with earlier language versions
+/constexpr:depth<N>     recursion depth limit for constexpr evaluation (default: 512)
+/constexpr:backtrace<N> show N constexpr evaluations in diagnostics (default: 10)
+/constexpr:steps<N>     terminate constexpr evaluation after N steps (default: 1048576)
+/Zi enable debugging information        /Z7 enable old-style debug info
+/Zo[-] generate richer debugging information for optimized code (on by default)
+/ZH:[MD5|SHA1|SHA_256] hash algorithm for calculation of file checksum in debug info (default: SHA_256)
+/Zp[n] pack structs on n-byte boundary  /Zl omit default library name in .OBJ
+/vd{0|1|2} disable/enable vtordisp      /vm<x> type of pointers to members
+/Zc:arg1[,arg2] language conformance, where arguments can be:
+  forScope[-]           enforce Standard C++ for scoping rules
+  wchar_t[-]            wchar_t is the native type, not a typedef
+  auto[-]               enforce the new Standard C++ meaning for auto
+  trigraphs[-]          enable trigraphs (off by default)
+  rvalueCast[-]         enforce Standard C++ explicit type conversion rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  strictStrings[-]      disable string-literal to [char|wchar_t]*
+                        conversion (on by default in C++20 or later, implied by /permissive-)
+  implicitNoexcept[-]   enable implicit noexcept on required functions
+  threadSafeInit[-]     enable thread-safe local static initialization
+  inline[-]             remove unreferenced function or data if it is
+                        COMDAT or has internal linkage only (off by default)
+  sizedDealloc[-]       enable C++14 global sized deallocation
+                        functions (on by default)
+  throwingNew[-]        assume operator new throws on failure (off by default)
+  referenceBinding[-]   a temporary will not bind to a non-const
+                        lvalue reference (on by default in C++20 or later, implied by /permissive-)
+  twoPhase-             disable two-phase name lookup
+  ternary[-]            enforce C++11 rules for conditional operator
+                        (on by default in C++20 or later, implied by /permissive-)
+  noexceptTypes[-]      enforce C++17 noexcept rules (on by default in C++17 or later)
+  alignedNew[-]         enable C++17 alignment of dynamically allocated objects (on by default)
+  hiddenFriend[-]       enforce Standard C++ hidden friend rules
+                        (on by default in C++20 or later, implied by /permissive-)
+  externC[-]            enforce Standard C++ rules for 'extern "C"' functions
+                        (on by default in C++20 or later, implied by /permissive-)
+  lambda[-]             better lambda support by using the newer lambda processor
+                        (on by default in C++20 or later, implied by /permissive-)
+  tlsGuards[-]          generate runtime checks for TLS variable initialization (on by default)
+  zeroSizeArrayNew[-]   call member new/delete for 0-size arrays of objects (on by default)
+  static_assert[-]      strict handling of 'static_assert' (on by default in C++20 or later,
+                        implied by /permissive-)
+  gotoScope[-]          cannot jump past the initialization of a variable (implied by /permissive-)
+  templateScope[-]      enforce Standard C++ template parameter shadowing rules
+  enumTypes[-]          enable Standard C++ underlying enum types (off by default)
+  checkGwOdr[-]         enforce Standard C++ one definition rule violations
+                        when /Gw has been enabled (off by default)
+  nrvo[-]               enable optional copy and move elision (on by default in C++20 or later,
+                        implied by /permissive- or /O2)
+  __STDC__              define __STDC__ to 1 in C
+  __cplusplus[-]        __cplusplus macro reports the supported C++ standard (off by default)
+  char8_t[-]            enable C++20 native `u8` literal support as `const char8_t`
+                        (on by default in C++20 or later)
+  externConstexpr[-]    enable external linkage for constexpr variables in C++
+                        (on by default in C++20 or later, implied by /permissive-)
+  preprocessor[-]       enable standard conforming preprocessor in C/C++
+                        (on by default in C11 or later)
+/ZI enable Edit and Continue debug info 
+/openmp enable OpenMP 2.0 language extensions
+/openmp:experimental enable OpenMP 2.0 language extensions plus select OpenMP 3.0+ language extensions
+/openmp:llvm OpenMP language extensions using LLVM runtime
+
+                              -MISCELLANEOUS-
+
+@<file> options response file           /?, /help print this help message
+/bigobj generate extended object format /c compile only, no link
+/FC use full pathnames in diagnostics   /H<num> max external name length
+/J default char type is unsigned        
+/MP[n] use up to 'n' processes for compilation
+/nologo suppress copyright message      /showIncludes show include file names
+/Tc<source file> compile file as .c     /Tp<source file> compile file as .cpp
+/TC compile all files as .c             /TP compile all files as .cpp
+/V<string> set version string           /Yc[file] create .PCH file
+/Yd put debug info in every .OBJ        /Yl[sym] inject .PCH ref for debug lib
+/Yu[file] use .PCH file                 /Y- disable all PCH options
+/Zm<n> max memory alloc (% of default)  /FS force to use MSPDBSRV.EXE
+/source-charset:<iana-name>|.nnnn set source character set
+/execution-charset:<iana-name>|.nnnn set execution character set
+/utf-8 set source and execution character set to UTF-8
+/validate-charset[-] validate UTF-8 files for only legal characters
+/fastfail[-] enable fast-fail mode      /JMC[-] enable native just my code
+/presetPadding[-] zero initialize padding for stack based class types
+/volatileMetadata[-] generate metadata on volatile memory accesses
+/sourcelink [file] file containing source link information
+
+                                -LINKING-
+
+/LD Create .DLL                         /LDd Create .DLL debug library
+/LN Create a .netmodule                 /F<num> set stack size
+/link [linker options and libraries]    /MD link with MSVCRT.LIB
+/MT link with LIBCMT.LIB                /MDd link with MSVCRTD.LIB debug lib
+/MTd link with LIBCMTD.LIB debug lib    
+
+                              -CODE ANALYSIS-
+
+/analyze[-] Enable native analysis      /analyze:quiet[-] No warning to console
+/analyze:log<name> Warnings to file     /analyze:autolog Log to *.pftlog
+/analyze:autolog:ext<ext> Log to *.<ext>/analyze:autolog- No log file
+/analyze:WX- Warnings not fatal         /analyze:stacksize<num> Max stack frame
+/analyze:max_paths<num> Max paths       /analyze:only Analyze, no code gen
+
+                              -DIAGNOSTICS-
+
+/diagnostics:<args,...> controls the format of diagnostic messages:
+             classic   - retains prior format
+             column[-] - prints column information
+             caret[-]  - prints column and the indicated line of source
+/Wall enable all warnings               /w   disable all warnings
+/W<n> set warning level (default n=1)   
+/Wv:xx[.yy[.zzzzz]] disable warnings introduced after version xx.yy.zzzzz
+/WX treat warnings as errors            /WL enable one line diagnostics
+/wd<n> disable warning n                /we<n> treat warning n as an error
+/wo<n> issue warning n once             /w<l><n> set warning level 1-4 for n
+/external:I <path>      - location of external headers
+/external:env:<var>     - environment variable with locations of external headers
+/external:anglebrackets - treat all headers included via <> as external
+/external:W<n>          - warning level for external headers
+/external:templates[-]  - evaluate warning level across template instantiation chain
+/sdl enable additional security features and warnings
+/options:strict unrecognized compiler options are an error
+-----------
+stderr:
+Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+-----------
+Sanity testing C++ compiler: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7
+Is cross compiler: False.
+Sanity check compiler command line: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe" -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 sanitycheckcpp.cc /Fesanitycheckcpp.exe /MD -nologo -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 -ID:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/include /nologo /showIncludes /utf-8 /Zc:__cplusplus /link -machine:x64 -DEBUG -INCREMENTAL:NO -OPT:REF -OPT:ICF /LIBPATH:D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/lib
+Sanity check compile stdout:
+sanitycheckcpp.cc
+
+-----
+Sanity check compile stderr:
+
+-----
+Running test binary command:  D:\Github\DSS\out\build\vcpkg_installed\vcpkg\blds\inih\x64-windows-static-md-rel\meson-private\sanitycheckcpp.exe
+C++ compiler for the host machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe -DWIN32 -D_WINDOWS -utf-8 -GR -EHsc -MP -MD -O2 -Oi -Gy -DNDEBUG -Z7 (msvc 19.43.34808 "Microsoft (R) C/C++ Optimizing Compiler Version 19.43.34808 for x64")
+C++ linker for the host machine: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/link.exe link 14.43.34808.0
+Build targets in project: 2
+
+inih 58
+
+  User defined options
+    Native files         : D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/meson-x64-windows-static-md-rel.log
+    backend              : ninja
+    cmake_prefix_path    : ['D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/debug','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share']
+    cpp_std              : c++11
+    debug                : false
+    libdir               : lib
+    optimization         : plain
+    pkg_config_path      : ['D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/lib/pkgconfig','D:/Github/DSS/out/build/vcpkg_installed/x64-windows-static-md/share/pkgconfig']
+    pkgconfig.relocatable: true
+    prefix               : D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md
+    with_INIReader       : true
+    wrap_mode            : nodownload
+
+Found ninja-1.12.1 at "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.EXE"
+WARNING: msvc does not support C++11; attempting best effort; setting the standard to C++14

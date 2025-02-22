@@ -1,0 +1,104 @@
+Package: vcpkg-cmake
+Version: 2024-04-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: f3b53f8d80e0ad3b9724615ab1e9049543d019c7d019e3dad132b3fc92f36b99
+Status: install ok installed
+
+Package: zlib
+Version: 1.3.1
+Depends: vcpkg-cmake
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 48cfe3342445167867e9226f7c13ca55081dac310c37450377e9961c30fc4ff9
+Description: A compression library
+Status: install ok installed
+
+Package: vcpkg-cmake-config
+Version: 2024-05-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: fefb0b149a700d3a8a4593c00d0a3aa7e11afe63389818df66726e9e3e07dfe0
+Status: install ok installed
+
+Package: lcms
+Version: 2.14
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 4b582658edc1387dd065a5d9cfe24873cc093b76d5240b5620f37ef784179f99
+Description: Little CMS.
+Status: install ok installed
+
+Package: egl-registry
+Version: 2024-01-25
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 65301b24d218d87dbdf6c536d3b98b12caa5373a0294214d32b8fb8bcac678da
+Description: EGL API and Extension Registry
+Status: install ok installed
+
+Package: opengl-registry
+Version: 2024-02-10
+Port-Version: 1
+Depends: egl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 9ba732aeb796e6a6eadadbb4a398a02545c3d04149247e2aa6df3c881beb03b4
+Description: OpenGL, OpenGL ES, and OpenGL ES-SC API and Extension Registry
+Status: install ok installed
+
+Package: opengl
+Version: 2022-12-04
+Port-Version: 3
+Depends: opengl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: ce93bfd96627e4e1d5ef94f04c6d47cdf6fd931edb4bd03e9d183592cb252650
+Description: Open Graphics Library (OpenGL)[3][4][5] is a cross-language, cross-platform application programming interface (API) for rendering 2D and 3D vector graphics.
+Status: install ok installed
+
+Package: freeglut
+Version: 3.4.0
+Port-Version: 3
+Depends: opengl, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 6c71201710476fbc14080ddc6a5dd38d909b5e229cad7b0c1cf88cf7413bf0b3
+Description: A free OpenGL utility toolkit, the open-sourced alternative to the GLUT library.
+Status: install ok installed
+
+Package: libjpeg-turbo
+Version: 3.0.4
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 2c873314bf7180146d79ca6c6a1c430a2fb24f51fa79df9088738b2b227fb1d7
+Description: libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX, SSE2, NEON, AltiVec) to accelerate baseline JPEG compression and decompression on x86, x86-64, ARM, and PowerPC systems.
+Status: install ok installed
+
+Package: jasper
+Version: 4.2.4
+Depends: libjpeg-turbo, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 49859c6e64104b52896f3acce5422bf1848e07a91081ad5548398efa957c9813
+Description: Open source implementation of the JPEG-2000 Part-1 standard
+Default-Features: default-features
+Status: install ok installed
+
+Package: jasper
+Feature: default-features
+Architecture: x64-windows
+Multi-Arch: same
+Description: Platform-dependent default features
+Status: install ok installed
+
+Package: jasper
+Feature: opengl
+Depends: freeglut, opengl
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enable the use of the OpenGL/GLUT Library
+Status: install ok installed
+

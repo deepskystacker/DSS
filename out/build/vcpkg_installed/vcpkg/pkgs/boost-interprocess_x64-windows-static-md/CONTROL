@@ -1,0 +1,7 @@
+Package: boost-interprocess
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-container, boost-core, boost-headers, boost-intrusive, boost-move, boost-static-assert, boost-type-traits, boost-winapi
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 906c783d1db077340e6b1467c795efab03f73df569965b8afb239b57f6580486
+Description: Boost interprocess module

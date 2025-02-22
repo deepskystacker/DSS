@@ -1,0 +1,3 @@
+CRTLinkage: dynamic
+LibraryLinkage: dynamic
+PolicyCmakeHelperPort: enabled

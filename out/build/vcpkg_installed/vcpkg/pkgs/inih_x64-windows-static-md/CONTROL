@@ -1,0 +1,14 @@
+Package: inih
+Version: 58
+Depends: vcpkg-tool-meson:x64-windows
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: c65a20b72601f9785cad9d5ae588ed8f5ed48116cbd05fe4e3262c92ad09647d
+Description: Simple .INI file parser
+Default-Features: cpp
+
+Package: inih
+Feature: cpp
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Description: Build the C++ library

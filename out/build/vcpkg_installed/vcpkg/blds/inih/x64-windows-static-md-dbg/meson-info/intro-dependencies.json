@@ -1,0 +1,42 @@
+[
+  {
+    "name": "dep1595800235536",
+    "type": "internal",
+    "version": "58",
+    "compile_args": [],
+    "link_args": [],
+    "include_directories": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\.",
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\."
+    ],
+    "sources": [],
+    "extra_files": [],
+    "dependencies": [],
+    "depends": [
+      "inih@sta"
+    ],
+    "meson_variables": [
+      "inih_dep"
+    ]
+  },
+  {
+    "name": "dep1595803320592",
+    "type": "internal",
+    "version": "58",
+    "compile_args": [],
+    "link_args": [],
+    "include_directories": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\cpp",
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\cpp"
+    ],
+    "sources": [],
+    "extra_files": [],
+    "dependencies": [],
+    "depends": [
+      "INIReader@sta"
+    ],
+    "meson_variables": [
+      "INIReader_dep"
+    ]
+  }
+]

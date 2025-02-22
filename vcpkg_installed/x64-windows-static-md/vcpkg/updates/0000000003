@@ -1,0 +1,8 @@
+Package: boost-compute
+Version: 1.86.0
+Depends: boost-algorithm, boost-array, boost-assert, boost-chrono, boost-cmake, boost-config, boost-core, boost-filesystem, boost-function, boost-function-types, boost-fusion, boost-headers, boost-iterator, boost-lexical-cast, boost-mpl, boost-optional, boost-preprocessor, boost-property-tree, boost-proto, boost-range, boost-smart-ptr, boost-static-assert, boost-thread, boost-throw-exception, boost-tuple, boost-type-traits, boost-typeof, boost-utility, boost-uuid
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 67dce00ca50984b350e0c9a5c1b5b60e4c588306ba09d2c7a5cc9c2a4ccfc6fc
+Description: Boost compute module
+Status: purge ok not-installed

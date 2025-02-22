@@ -1,0 +1,9 @@
+The package boost-interval is compatible with built-in CMake targets of FindBoost.cmake:
+
+    find_package(Boost REQUIRED COMPONENTS numeric_interval)
+    target_link_libraries(main PRIVATE Boost::numeric_interval)
+
+or the generated cmake configs via:
+
+    find_package(boost_interval REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE Boost::numeric_interval)

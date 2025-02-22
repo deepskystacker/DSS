@@ -1,0 +1,2 @@
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/x64-windows-static-md-dbg/CMakeFiles/edit_cache.dir
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/x64-windows-static-md-dbg/CMakeFiles/rebuild_cache.dir

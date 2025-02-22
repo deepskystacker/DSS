@@ -1,0 +1,157 @@
+[
+  {
+    "name": "inih",
+    "id": "inih@sta",
+    "type": "static library",
+    "defined_in": "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\meson.build",
+    "filename": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel\\libinih.a"
+    ],
+    "build_by_default": true,
+    "target_sources": [
+      {
+        "language": "c",
+        "compiler": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe",
+          "-DWIN32",
+          "-D_WINDOWS",
+          "-utf-8",
+          "-MP",
+          "-MD",
+          "-O2",
+          "-Oi",
+          "-Gy",
+          "-DNDEBUG",
+          "-Z7"
+        ],
+        "parameters": [
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel\\libinih.a.p",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\x64-windows-static-md\\include",
+          "/MD",
+          "/nologo",
+          "/showIncludes",
+          "/utf-8",
+          "/W2",
+          "-nologo",
+          "-DWIN32",
+          "-D_WINDOWS",
+          "-utf-8",
+          "-MP",
+          "-MD",
+          "-O2",
+          "-Oi",
+          "-Gy",
+          "-DNDEBUG",
+          "-Z7"
+        ],
+        "sources": [
+          "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\ini.c"
+        ],
+        "generated_sources": [],
+        "unity_sources": []
+      },
+      {
+        "linker": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/lib.exe",
+          "-machine:x64",
+          "-nologo"
+        ],
+        "parameters": [
+          "/NOLOGO"
+        ]
+      }
+    ],
+    "extra_files": [],
+    "subproject": null,
+    "dependencies": [],
+    "depends": [],
+    "installed": true,
+    "install_filename": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\pkgs\\inih_x64-windows-static-md\\lib\\libinih.a"
+    ]
+  },
+  {
+    "name": "INIReader",
+    "id": "INIReader@sta",
+    "type": "static library",
+    "defined_in": "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\meson.build",
+    "filename": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel\\libINIReader.a"
+    ],
+    "build_by_default": true,
+    "target_sources": [
+      {
+        "language": "cpp",
+        "compiler": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/cl.exe",
+          "-DWIN32",
+          "-D_WINDOWS",
+          "-utf-8",
+          "-GR",
+          "-EHsc",
+          "-MP",
+          "-MD",
+          "-O2",
+          "-Oi",
+          "-Gy",
+          "-DNDEBUG",
+          "-Z7"
+        ],
+        "parameters": [
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel\\libINIReader.a.p",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-rel",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\cpp",
+          "-ID:\\Github\\DSS\\out\\build\\vcpkg_installed\\x64-windows-static-md\\include",
+          "/MD",
+          "/nologo",
+          "/showIncludes",
+          "/utf-8",
+          "/Zc:__cplusplus",
+          "/W2",
+          "/EHsc",
+          "/std:c++14",
+          "/permissive-",
+          "-nologo",
+          "-DWIN32",
+          "-D_WINDOWS",
+          "-utf-8",
+          "-GR",
+          "-EHsc",
+          "-MP",
+          "-MD",
+          "-O2",
+          "-Oi",
+          "-Gy",
+          "-DNDEBUG",
+          "-Z7"
+        ],
+        "sources": [
+          "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\cpp/INIReader.cpp"
+        ],
+        "generated_sources": [],
+        "unity_sources": []
+      },
+      {
+        "linker": [
+          "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.43.34808/bin/Hostx64/x64/lib.exe",
+          "-machine:x64",
+          "-nologo"
+        ],
+        "parameters": [
+          "/NOLOGO"
+        ]
+      }
+    ],
+    "extra_files": [],
+    "subproject": null,
+    "dependencies": [],
+    "depends": [],
+    "installed": true,
+    "install_filename": [
+      "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\pkgs\\inih_x64-windows-static-md\\lib\\libINIReader.a"
+    ]
+  }
+]

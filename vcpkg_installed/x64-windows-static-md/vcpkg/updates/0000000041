@@ -1,0 +1,8 @@
+Package: boost-ratio
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-headers
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 71e0d7c9ae900d0e980f9e1407fe8a196b8befbcfd288315a59ecbb75f918a06
+Description: Boost ratio module
+Status: purge ok not-installed

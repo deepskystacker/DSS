@@ -1,0 +1,8 @@
+Package: boost-fusion
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-container-hash, boost-core, boost-function-types, boost-functional, boost-headers, boost-mpl, boost-preprocessor, boost-static-assert, boost-tuple, boost-type-traits, boost-typeof, boost-utility
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 134ba95010b64e824e87b785244c1aecd843fccddcbab0669a767834440f877e
+Description: Boost fusion module
+Status: purge ok not-installed

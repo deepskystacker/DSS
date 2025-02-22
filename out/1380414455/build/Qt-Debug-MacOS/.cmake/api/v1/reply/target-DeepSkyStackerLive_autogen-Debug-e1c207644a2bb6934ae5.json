@@ -1,0 +1,75 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"DeepSkyStackerLive/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "DeepSkyStackerLive_autogen_timestamp_deps::@138ff28120d152eadc6d"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "QtInternalTargets"
+	},
+	"id" : "DeepSkyStackerLive_autogen::@138ff28120d152eadc6d",
+	"isGeneratorProvided" : true,
+	"name" : "DeepSkyStackerLive_autogen",
+	"paths" : 
+	{
+		"build" : "DeepSkyStackerLive",
+		"source" : "DeepSkyStackerLive"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerLive/CMakeFiles/DeepSkyStackerLive_autogen",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerLive/CMakeFiles/DeepSkyStackerLive_autogen.rule",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerLive/DeepSkyStackerLive_autogen/timestamp.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

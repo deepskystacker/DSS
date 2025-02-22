@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/test/test_intermod_holder.cpp.wrk
+/test/test_intermod_holder.hpp.wrk
+/test/intermod_holder_dll.hpp
+/test/test_intermod_holder_main.cpp.wrk
+/proj/vs
+/doc/autodoc.xml
+/doc/html

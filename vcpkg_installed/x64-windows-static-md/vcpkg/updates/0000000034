@@ -1,0 +1,8 @@
+Package: boost-atomic
+Version: 1.86.0
+Depends: boost-align, boost-assert, boost-cmake, boost-config, boost-headers, boost-predef, boost-preprocessor, boost-type-traits, boost-winapi
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: a31fbc10aa029197c44824b5b9b18b00ff8084efea4645e10b5008ebddcdcc68
+Description: Boost atomic module
+Status: purge ok half-installed

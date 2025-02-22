@@ -1,0 +1,57 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"DeepSkyStackerLive/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 296,
+				"parent" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 297,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"scriptFile" : "out/build/.qt/deploy_DeepSkyStackerLive_f53e9c8a87.cmake",
+			"type" : "script"
+		},
+		{
+			"backtrace" : 2,
+			"component" : "Unspecified",
+			"destination" : ".",
+			"paths" : 
+			[
+				"DeepSkyStackerLive/DeepSkyStackerLive"
+			],
+			"targetId" : "DeepSkyStackerLive::@138ff28120d152eadc6d",
+			"targetIndex" : 10,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "DeepSkyStackerLive",
+		"source" : "DeepSkyStackerLive"
+	}
+}

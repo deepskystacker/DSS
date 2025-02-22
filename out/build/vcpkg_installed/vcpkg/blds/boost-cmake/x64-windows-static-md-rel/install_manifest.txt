@@ -1,0 +1,2 @@
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-cmake_x64-windows-static-md/share/boost/BoostConfigVersion.cmake
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-cmake_x64-windows-static-md/share/boost/BoostConfig.cmake

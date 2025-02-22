@@ -1,0 +1,214 @@
+[/
+  Copyright 2021 Peter Dimov
+  Copyright 2022-2024 Andrey Semashev
+  Distributed under the Boost Software License, Version 1.0.
+  https://boost.org/LICENSE_1_0.txt)
+]
+
+[section Revision History]
+
+[section Changes in 1.86.0]
+
+* Added a [link core.pointer_in_range `boost/core/pointer_in_range.hpp`] header with a `pointer_in_range`
+  function template to check if a pointer is within a given range.
+* Fixed `type_name` for abstract classes. ([github_issue 172])
+* Fixed `boost/core/type_name.hpp` compilation error with MSVC with disabled native `wchar_t` type.
+  ([github_issue 173])
+* Added a workaround for an MSVC [@https://developercommunity.visualstudio.com/t/Compiler-bug:-Incorrect-C2247-and-C2248/10690025 bug]
+  causing `empty_value` compilation errors when it is used with a nested class. ([github_pr 175])
+
+[endsect]
+
+[section Changes in 1.85.0]
+
+* Added a new [link core.functor `boost/core/functor.hpp`] header with a `functor` class template
+  for wrapping a raw function into a function object class.
+* Changed [link core.null_deleter `null_deleter`], [link core.fclose_deleter `fclose_deleter`]
+  and [link core.checked_delete checked deleter] definitions so that they don't bring namespace `boost`
+  into argument-dependent lookup in cases like this:
+  ```
+  std::unique_ptr< std::FILE, boost::fclose_deleter > p1, p2;
+  swap(p1, p2); // no longer looks for boost::swap as part of ADL
+  ```
+  Users may need to either explicitly qualify the namespace of the called function or add a
+  `using`-declaration.
+
+[endsect]
+
+[section Changes in 1.84.0]
+
+* `boost::swap` utility function has been renamed to `boost::core::invoke_swap` to
+  avoid forming a potential infinite recursion when the arguments are not swappable.
+  The new function is defined in `boost/core/invoke_swap.hpp` and is functionally equivalent
+  to `boost::swap`. The old `boost::swap` name is preserved for backward compatibility
+  but deprecated and will be removed in a future release. Its `noexcept` specification
+  has been removed to avoid compile errors caused by compile-time recursion.
+  `BOOST_ALLOW_DEPRECATED_SYMBOLS` or `BOOST_ALLOW_DEPRECATED` can be defined to suppress
+  deprecation warnings for the transition period. ([@https://github.com/boostorg/core/issues/148 #148])
+* Headers `boost/swap.hpp`, `boost/utility/swap.hpp` and `boost/core/swap.hpp` are
+  deprecated and will be removed. Please, switch to `boost/core/invoke_swap.hpp`.
+  `BOOST_ALLOW_DEPRECATED_HEADERS` or `BOOST_ALLOW_DEPRECATED` can be defined to suppress
+  deprecation warnings.
+
+[endsect]
+
+[section Changes in 1.83.0]
+
+* Added support for incomplete types to [link core.type_name `boost::core::type_name`].
+* Bit manipulation functions in [link core.bit `boost/core/bit.hpp`] are now
+  `constexpr` on recent MSVC versions (VS2019 update 5 and later.)
+* Added `boost::core::byteswap` (an implementation of `std::byteswap` from
+  C++23) to [link core.bit `boost/core/bit.hpp`].
+* Moved the yield primitives `sp_thread_pause`, `sp_thread_yield`, `sp_thread_sleep`
+  from SmartPtr implementation details to `boost/core/yield_primitives.hpp`.
+
+[endsect]
+
+[section Changes in 1.82.0]
+
+* Added [link core.snprintf `boost/core/snprintf.hpp`] header with portable definitions of `snprintf`, `vsnprintf` and
+  their `wchar_t` counterparts.
+* Deprecated `boost/core/is_same.hpp` and `boost::core::is_same`. The header will be removed in a future release.
+  Users are advised to use [@http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html Boost.TypeTraits]
+  or C++ standard library type traits instead.
+* Marked `boost::ref` member functions and associated methods with `noexcept`.
+* Marked `boost::swap` function with `noexcept`, depending on whether the type supports a non-throwing swap operation.
+* Added [link core.launder `boost::core::launder`], a portable implementation of `std::launder`.
+* Added [link core.alignof `BOOST_CORE_ALIGNOF`], a portable implementation of `alignof`.
+* Added [link core.max_align `boost::core::max_align_t`], a portable equivalent of `std::max_align_t`, and
+  `boost::core::max_align`, the alignment of `max_align_t`.
+* Added [link core.memory_resource `boost::core::memory_resource`], a portable equivalent of `std::pmr::memory_resource`
+  from C++17.
+* Added [link core.serialization `boost/core/serialization.hpp`], a collection of primitives allowing libraries to
+  implement Boost.Serialization support for their types without including a Serialization header and thereby making
+  their libraries depend on Serialization.
+* Added [link core.data `boost::data`], an implementation of `std::data`.
+* Added [link core.size `boost::size`], an implementation of `std::size`.
+* Updated `boost::span` to use `boost::data` which adds support for range
+  construction from an `std::initializer_list`.
+* Added [link core.identity `boost::identity`], an implementation of
+  `std::identity`. This facility has been moved from Boost.Functional.
+
+[endsect]
+
+[section Changes in 1.81.0]
+
+* [link core.empty_value `empty_value`] members are now marked as `constexpr`.
+* Added [link core.fclose_deleter `fclose_deleter`], a deleter that calls `std::fclose` on a pointer to `std::FILE`.
+* Bit manipulation utilities in [link core.bit `boost/core/bit.hpp`] now explicitly require unsigned integers on input.
+  ([@https://github.com/boostorg/core/issues/129 #129])
+* `bit_width` now returns `int` instead of a value of the input argument type. This follows the
+  resolution of [@https://cplusplus.github.io/LWG/issue3656 LWG3656].
+
+[endsect]
+
+[section Changes in 1.80.0]
+
+* In [link core.allocator_access `boost/core/allocator_access.hpp`], added detection of `construct` and `destroy`
+  members of an allocator.
+* `boost/core/alloc_construct.hpp` header is now deprecated and will be removed in a future release. Its functionality
+  was moved to [link core.allocator_access `boost/core/allocator_access.hpp`]. In particular, new methods
+  `allocator_construct_n` and `allocator_destroy_n` were added for allocating and destroying arrays.
+* Worked around MSVC bug that failed to compile [link core.span `span`] in C++17 mode when Boost.Range headers were included.
+  ([@https://github.com/boostorg/core/issues/105 #105], [@https://github.com/boostorg/core/pull/115 PR#115])
+* Added support for 128-bit integer types in [link core.type_name `type_name`].
+* In [link core.pointer_traits `pointer_traits`], pointer rebinding now supports C++03 compilers.
+
+[endsect]
+
+[section Changes in 1.79.0]
+
+* Added `boost::allocator_traits`, an implementation of `std::allocator_traits`.
+* Made `boost::pointer_traits` SFINAE friendly.
+* `boost/iterator.hpp` is deprecated and will be removed in a future release. The header defines the
+  `boost::iterator` template, which is equivalent to `std::iterator` in the `<iterator>` header. However,
+  since `std::iterator` is itself deprecated in C++17, users are advised to remove the use of `boost::iterator`
+  or `std::iterator` from their code.
+* Added `boost::core::verbose_terminate_handler`, a utility function intended
+  to be passed to `std::set_terminate` that prints information about the
+  uncaught exception to `stderr`.
+
+[endsect]
+
+[section Changes in 1.78.0]
+
+* Added a generic implementation to `boost/core/cmath.hpp`, enabled when `BOOST_CORE_USE_GENERIC_CMATH`
+  is defined or when the platform does not provide the necessary facilities in `<cmath>`.
+* Added `boost::core::type_name`, a utility function that returns the name of a type as a string.
+* Added `boost::span`, a C++11 implementation of C++20's `std::span`.
+
+[endsect]
+
+[section Changes in 1.77.0]
+
+* `boost/core/uncaught_exceptions.hpp` has been modified for compatibility with Mac OS 10.4 and older.
+
+[endsect]
+
+[section Changes in 1.76.0]
+
+* Added implicit conversion between compatible reference wrappers.
+* Added `boost/core/cmath.hpp`, a portable implementation of the floating point classification functions from `<cmath>`.
+* Added `boost/core/bit.hpp`, a portable implementation of the C++20 standard header `<bit>`.
+* Fixed `BOOST_TEST_EQ`, `BOOST_TEST_NE` for character types under C++20.
+* Revised allocator access utilities (now support VS2013, and no workarounds use `allocator_traits`.)
+
+[endsect]
+
+[section Changes in 1.74.0]
+
+* Implemented the allocator access utilities which provide a replacement for `allocator_traits`
+  with individual traits and functions for each facility. They support the C++11 allocator model
+  when possible and provide a fallback for C++98 compatibility.
+* Added `BOOST_TEST_WITH` to Lightweight Test.
+
+[endsect]
+
+[section Changes in 1.71.0]
+
+* Added functions `alloc_construct`, `alloc_construct_n`, `alloc_destroy`, and `alloc_destroy_n`
+  in `<boost/core/alloc_construct.hpp>` for allocator aware and exception safe construction and
+  destruction of objects and arrays.
+* Added constexpr functions `first_scalar` in `<boost/core/first_scalar.hpp>` for obtaining a pointer
+  to the first scalar element of an array. Given a pointer of type `T*` they return a pointer of type
+  `remove_all_extents_t<T>*`.
+* Added class template `noinit_adaptor` in `<boost/core/noinit_adaptor.hpp>` which is an allocator adaptor
+  that converts any allocator into one whose `construct(ptr)` performs default initialization via placement
+  `new`, and whose `destroy(ptr)` invokes the `value_type` destructor directly.
+* Added class template `default_allocator` in `<boost/core/default_allocator.hpp>`, which can serve as a minimal
+  default allocator that has interface similar to C++20 `std::allocator`, supports configurations with disabled
+  exceptions and does not have `std` as an associated namespace. The allocator uses `operator new` and
+  `operator delete` for allocation.
+* In `<boost/core/uncaught_exceptions.hpp>` header, added workarounds for better compatibility with QNX SDP 7.0
+  when libc++/libc++abi libraries are used.
+* The `<boost/detail/sp_typeinfo.hpp>` header is now marked as deprecated and will be removed in a future release.
+  `<boost/core/typeinfo.hpp>` should be used instead.
+
+[endsect]
+
+[section Changes in 1.69.0]
+
+* Implemented `boost::empty_value`, for library authors to conveniently leverage the Empty Base Optimization to
+  store objects of potentially empty types.
+* Implemented `boost::quick_exit` to provide the C++11 standard library facility `std::quick_exit` functionality.
+* Reduced the number of statics in Lightweight Test, and employ lighter abort behavior for MSVC compilers upon
+  failure to call `boost::report_errors`.
+
+[endsect]
+
+[section Changes in 1.67.0]
+
+* Updated `to_address` and `pointer_traits` to reflect the design adopted for C++20 in
+  [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0653r2.html P0653R2].
+
+[endsect]
+
+[section Changes in 1.65.0]
+
+* Implemented `pointer_traits` for C++03 and higher, that implements
+  [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0653r0.html P0653r0].
+* Added `BOOST_TEST_GT` and `BOOST_TEST_GE` to Lightweight Test.
+
+[endsect]
+
+[endsect]

@@ -1,0 +1,8 @@
+Package: boost-typeof
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-headers
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: e47837a2617c47fc596b44837a4925c190c0ec7a51c7bffaa70c349c116638cc
+Description: Boost typeof module
+Status: purge ok half-installed

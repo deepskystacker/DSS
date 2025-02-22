@@ -1,0 +1,46 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"DeepSkyStackerLive/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 0,
+			"id" : "DeepSkyStackerLive_DeepSkyStackerLive_translations::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "DeepSkyStackerKernel::@efa7959da5a5cecbe7a6"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "ZClass::@46e02ed79b6a8b21bac3"
+		}
+	],
+	"folder" : 
+	{
+		"name" : "QtInternalTargets"
+	},
+	"id" : "DeepSkyStackerLive_autogen_timestamp_deps::@138ff28120d152eadc6d",
+	"isGeneratorProvided" : true,
+	"name" : "DeepSkyStackerLive_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "DeepSkyStackerLive",
+		"source" : "DeepSkyStackerLive"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

@@ -1,0 +1,30 @@
+# Copyright 2018, 2019 Peter Dimov
+# Copyright 2023 Alexander Grund
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
+
+import testing ;
+
+project
+  : default-build <warnings-as-errors>on
+;
+
+compile compile.cpp ;
+compile-fail compile_fail.cpp ;
+link link.cpp ;
+link-fail link_fail.cpp ;
+run run.cpp ;
+# Multiple sources
+run run_multi.cpp run_multi_2.cpp ;
+# Similar but with semicolon on next line with B2 specifics (ignored in CMake)
+link run_multi_2.cpp run_multi.cpp
+  : : : <test-info>always_show_run_output ;
+run-fail run_fail.cpp
+  : ;
+
+# Those should be skipped in CMake although valid B2
+run
+  arguments.cpp :
+  pumpkin ;
+run test_message.cpp : $(BOOST_ROOT)/subdir ;
+run run_multi.cpp <target-os>windows:non_existant.cpp ;

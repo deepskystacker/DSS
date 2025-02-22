@@ -1,0 +1,145 @@
+[/
+  Copyright 2023 Peter Dimov
+  Distributed under the Boost Software License, Version 1.0.
+  https://boost.org/LICENSE_1_0.txt
+]
+
+[section:serialization serialization]
+
+[simplesect Authors]
+
+* Peter Dimov
+
+[endsimplesect]
+
+[section Header <boost/core/serialization.hpp>]
+
+The header `<boost/core/serialization.hpp>` implements primitives
+that are necessary to implement Boost.Serialization support without
+including a Boost.Serialization header and thereby making a library
+dependent on Boost.Serialization.
+
+[section Synopsis]
+
+``
+#include <boost/core/nvp.hpp>
+
+namespace boost
+{
+namespace serialization
+{
+
+// forward declarations
+
+template<class T> struct version;
+class access;
+
+// core_version_type
+
+struct core_version_type;
+
+} // namespace serialization
+
+namespace core
+{
+
+// nvp
+
+using serialization::nvp;
+using serialization::make_nvp;
+
+// split_free
+
+template<class Ar, class T> void split_free( Ar& ar, T& t, unsigned int v );
+
+// split_member
+
+template<class Ar, class T> void split_member( Ar& ar, T& t, unsigned int v );
+
+// load_construct_data_adl
+
+template<class Ar, class T> void load_construct_data_adl( Ar& ar, T* t, unsigned int v );
+
+// save_construct_data_adl
+
+template<class Ar, class T> void save_construct_data_adl( Ar& ar, T const* t, unsigned int v );
+
+} // namespace core
+} // namespace boost
+``
+
+[endsect]
+
+[section `core_version_type`]
+
+``
+struct core_version_type
+{
+    unsigned int version_;
+
+    core_version_type( unsigned int version ): version_( version ) {}
+    operator unsigned int () const { return version_; }
+};
+``
+
+`core_version_type` is a Core reimplementation of
+`boost::serialization::version_type`, needed to call ADL serialization
+primitives such as, for example, `load_construct_data` below.
+
+It's defined in the `serialization` namespace instead of the `core`
+namespace because its only purpose is to add `boost::serialization` to
+the list of the associated namespaces of the corresponding call.
+
+[endsect]
+
+[section `split_free`]
+
+`template<class Ar, class T> inline void split_free( Ar& ar, T& t, unsigned int v );`
+
+`boost::core::split_free` is a Core reimplementation of
+`boost::serialization::split_free`.
+
+* *Effects:*
+  * If `Ar::is_saving::value` is `true`, calls `save( ar, t, core_version_type( v ) )`;
+  * Otherwise, calls `load( ar, t, core_version_type( v ) )`.
+
+[endsect]
+
+[section `split_member`]
+
+`template<class Ar, class T> void split_member( Ar& ar, T& t, unsigned int v );`
+
+`boost::core::split_member` is a Core reimplementation of
+`boost::serialization::split_member`.
+
+* *Effects:*
+  * If `Ar::is_saving::value` is `true`, calls `t.save( ar, v )`;
+  * Otherwise, calls `t.load( ar, v )`.
+
+[endsect]
+
+[section `load_construct_data_adl`]
+
+`template<class Ar, class T> void load_construct_data_adl( Ar& ar, T* t, unsigned int v );`
+
+`boost::core::load_construct_data_adl` is a Core reimplementation of
+`boost::serialization::load_construct_data_adl`.
+
+* *Effects:* `load_construct_data( ar, t, serialization::core_version_type( v ) );`.
+
+[endsect]
+
+[section `save_construct_data_adl`]
+
+`template<class Ar, class T> void save_construct_data_adl( Ar& ar, T const* t, unsigned int v );`
+
+`boost::core::save_construct_data_adl` is a Core reimplementation of
+`boost::serialization::save_construct_data_adl`.
+
+* *Effects:* `save_construct_data( ar, t, serialization::core_version_type( v ) );`.
+
+[endsect]
+
+[endsect]
+
+[endsect]

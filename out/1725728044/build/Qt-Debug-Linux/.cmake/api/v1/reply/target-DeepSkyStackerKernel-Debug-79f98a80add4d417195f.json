@@ -1,0 +1,3011 @@
+{
+	"archive" : {},
+	"artifacts" : 
+	[
+		{
+			"path" : "DeepSkyStackerKernel/libDeepSkyStackerKernel.a"
+		}
+	],
+	"backtrace" : 5,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"_add_library",
+			"add_library",
+			"_qt_internal_add_library",
+			"qt6_add_library",
+			"qt_add_library",
+			"add_dependencies",
+			"_qt_internal_process_resource",
+			"qt6_add_resources",
+			"qt6_add_translations",
+			"target_compile_options",
+			"target_link_libraries",
+			"target_compile_definitions",
+			"target_include_directories",
+			"target_precompile_headers",
+			"set_source_files_properties",
+			"target_sources",
+			"qt6_extract_metatypes",
+			"qt6_finalize_target",
+			"_qt_internal_expose_deferred_files_to_ide",
+			"_qt_internal_expose_source_file_to_ide",
+			"__qt_propagate_generated_resource"
+		],
+		"files" : 
+		[
+			"/home/amonra/vcpkg/scripts/buildsystems/vcpkg.cmake",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6Core/Qt6CoreMacros.cmake",
+			"DeepSkyStackerKernel/CMakeLists.txt",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:694:EVAL",
+			"CMakeLists.txt",
+			"/opt/Qt/6.8.2/gcc_64/lib/cmake/Qt6Core/Qt6CoreMacros.cmake:861:EVAL"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 2,
+				"line" : 230,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 2767,
+				"parent" : 1
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 2655,
+				"parent" : 2
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 2742,
+				"parent" : 3
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 639,
+				"parent" : 4
+			},
+			{
+				"file" : 5
+			},
+			{
+				"file" : 5,
+				"line" : -1,
+				"parent" : 6
+			},
+			{
+				"command" : 8,
+				"file" : 4,
+				"line" : 1,
+				"parent" : 7
+			},
+			{
+				"command" : 7,
+				"file" : 3,
+				"line" : 752,
+				"parent" : 8
+			},
+			{
+				"command" : 6,
+				"file" : 1,
+				"line" : 406,
+				"parent" : 9
+			},
+			{
+				"command" : 5,
+				"file" : 1,
+				"line" : 2463,
+				"parent" : 10
+			},
+			{
+				"command" : 9,
+				"file" : 2,
+				"line" : 336,
+				"parent" : 0
+			},
+			{
+				"command" : 10,
+				"file" : 2,
+				"line" : 238,
+				"parent" : 0
+			},
+			{
+				"command" : 10,
+				"file" : 2,
+				"line" : 239,
+				"parent" : 0
+			},
+			{
+				"command" : 10,
+				"file" : 2,
+				"line" : 242,
+				"parent" : 0
+			},
+			{
+				"command" : 11,
+				"file" : 2,
+				"line" : 282,
+				"parent" : 0
+			},
+			{
+				"command" : 12,
+				"file" : 2,
+				"line" : 260,
+				"parent" : 0
+			},
+			{
+				"command" : 13,
+				"file" : 2,
+				"line" : 275,
+				"parent" : 0
+			},
+			{
+				"command" : 14,
+				"file" : 2,
+				"line" : 218,
+				"parent" : 0
+			},
+			{
+				"command" : 14,
+				"file" : 2,
+				"line" : 215,
+				"parent" : 0
+			},
+			{
+				"command" : 14,
+				"file" : 2,
+				"line" : 223,
+				"parent" : 0
+			},
+			{
+				"file" : 2,
+				"line" : -1,
+				"parent" : 0
+			},
+			{
+				"command" : 17,
+				"file" : 6,
+				"line" : 1,
+				"parent" : 22
+			},
+			{
+				"command" : 16,
+				"file" : 1,
+				"line" : 847,
+				"parent" : 23
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 1500,
+				"parent" : 24
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 26
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 27
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 29
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 30
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 32
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 33
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 35
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 36
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 38
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 39
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 41
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 42
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 44
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 45
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 47
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 48
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 50
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 51
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 53
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 54
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 56
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 57
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 59
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 60
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 62
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 63
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 65
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 66
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 68
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 69
+			},
+			{
+				"command" : 19,
+				"file" : 3,
+				"line" : 726,
+				"parent" : 8
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 71
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 72
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2310,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 74
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 75
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 77
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 78
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 80
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 81
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 83
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 84
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 86
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 87
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 89
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 90
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 92
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 93
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 95
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 96
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 98
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 99
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 101
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 102
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 104
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 105
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 107
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 108
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 110
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 111
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 113
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 114
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 116
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 117
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 119
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 120
+			},
+			{
+				"command" : 19,
+				"file" : 1,
+				"line" : 2364,
+				"parent" : 10
+			},
+			{
+				"command" : 18,
+				"file" : 1,
+				"line" : 2137,
+				"parent" : 122
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2212,
+				"parent" : 123
+			},
+			{
+				"command" : 20,
+				"file" : 1,
+				"line" : 2491,
+				"parent" : 10
+			},
+			{
+				"command" : 15,
+				"file" : 1,
+				"line" : 2089,
+				"parent" : 125
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread -g -std=c++20 -fPIC"
+				},
+				{
+					"backtrace" : 12,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : "-fPIC"
+				},
+				{
+					"fragment" : "-Winvalid-pch -x c++-header -include /home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_NO_LIB"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_STATIC_LINK"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "CMS_NO_REGISTER_KEYWORD"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "LIBRAW_NODLL"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_NETWORK_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "Z_DEVELOP"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CONSOLE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/."
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../DeepSkyStacker"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../ZClass"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../Tools"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtWidgets"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtCore"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtGui"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtNetwork"
+				},
+				{
+					"backtrace" : 14,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include/libraw"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					13,
+					13
+				],
+				"standard" : "20"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 18,
+					"header" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread -g -std=c++20 -fPIC"
+				},
+				{
+					"backtrace" : 12,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : "-fPIC"
+				},
+				{
+					"fragment" : "-Winvalid-pch -include /home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_NO_LIB"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_STATIC_LINK"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "CMS_NO_REGISTER_KEYWORD"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "LIBRAW_NODLL"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_NETWORK_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "Z_DEVELOP"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CONSOLE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/."
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../DeepSkyStacker"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../ZClass"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../Tools"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtWidgets"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtCore"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtGui"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtNetwork"
+				},
+				{
+					"backtrace" : 14,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include/libraw"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					13,
+					13
+				],
+				"standard" : "20"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 18,
+					"header" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				1,
+				91,
+				92,
+				93,
+				94,
+				105,
+				106,
+				107,
+				108,
+				109,
+				110,
+				111,
+				112,
+				113,
+				114,
+				115,
+				116,
+				117,
+				118,
+				119,
+				120,
+				121,
+				122,
+				123,
+				124,
+				125,
+				126,
+				127,
+				128,
+				129,
+				130,
+				131,
+				132,
+				133,
+				134,
+				135,
+				136,
+				137,
+				138,
+				139,
+				140,
+				141,
+				142,
+				143,
+				144,
+				145,
+				146,
+				147,
+				148,
+				149,
+				150,
+				151,
+				152,
+				153
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread -g -std=c++20 -fPIC"
+				},
+				{
+					"backtrace" : 12,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : "-fPIC"
+				},
+				{
+					"backtrace" : 19,
+					"fragment" : "-mxsave"
+				},
+				{
+					"fragment" : "-Winvalid-pch -include /home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_NO_LIB"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_STATIC_LINK"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "CMS_NO_REGISTER_KEYWORD"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "LIBRAW_NODLL"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_NETWORK_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "Z_DEVELOP"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CONSOLE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/."
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../DeepSkyStacker"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../ZClass"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../Tools"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtWidgets"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtCore"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtGui"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtNetwork"
+				},
+				{
+					"backtrace" : 14,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include/libraw"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					13,
+					13
+				],
+				"standard" : "20"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 18,
+					"header" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				95
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread -g -std=c++20 -fPIC"
+				},
+				{
+					"backtrace" : 12,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : "-fPIC"
+				},
+				{
+					"backtrace" : 20,
+					"fragment" : "-mavx -mavx2 -mfma -mssse3 -msse4.2"
+				},
+				{
+					"fragment" : "-Winvalid-pch -include /home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_NO_LIB"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_STATIC_LINK"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "CMS_NO_REGISTER_KEYWORD"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "LIBRAW_NODLL"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_NETWORK_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 21,
+					"define" : "Q_NUMERIC_NO_INTRINSICS"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "Z_DEVELOP"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CONSOLE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/."
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../DeepSkyStacker"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../ZClass"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../Tools"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtWidgets"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtCore"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtGui"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtNetwork"
+				},
+				{
+					"backtrace" : 14,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include/libraw"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					13,
+					13
+				],
+				"standard" : "20"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 18,
+					"header" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				96,
+				97,
+				98,
+				99,
+				100,
+				101,
+				102,
+				103,
+				104
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread -g -std=c++20 -fPIC"
+				},
+				{
+					"backtrace" : 12,
+					"fragment" : "-fopenmp"
+				},
+				{
+					"backtrace" : 13,
+					"fragment" : "-fPIC"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_NO_LIB"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "BOOST_CONTAINER_STATIC_LINK"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "CMS_NO_REGISTER_KEYWORD"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "LIBRAW_NODLL"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "NOMINMAX"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_CORE_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_GUI_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_NETWORK_LIB"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "QT_WIDGETS_LIB"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "Z_DEVELOP"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CONSOLE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_CRT_SECURE_NO_DEPRECATE"
+				},
+				{
+					"backtrace" : 16,
+					"define" : "_UNICODE"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 0,
+					"path" : "/home/amonra/.vs/DSS/out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/include"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/."
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../DeepSkyStacker"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../ZClass"
+				},
+				{
+					"backtrace" : 17,
+					"path" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/../Tools"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtWidgets"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtCore"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/mkspecs/linux-g++"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtGui"
+				},
+				{
+					"backtrace" : 13,
+					"isSystem" : true,
+					"path" : "/opt/Qt/6.8.2/gcc_64/include/QtNetwork"
+				},
+				{
+					"backtrace" : 14,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "/home/amonra/.vs/DSS/out/build/vcpkg_installed/x64-linux/include/libraw"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					13,
+					13
+				],
+				"standard" : "20"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 18,
+					"header" : "/home/amonra/.vs/DSS/DeepSkyStackerKernel/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				188
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 11,
+			"id" : "DeepSkyStackerKernel_DeepSkyStackerKernel_translations::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 0,
+			"id" : "DeepSkyStackerKernel_autogen::@efa7959da5a5cecbe7a6"
+		},
+		{
+			"id" : "DeepSkyStackerKernel_autogen_timestamp_deps::@efa7959da5a5cecbe7a6"
+		}
+	],
+	"id" : "DeepSkyStackerKernel::@efa7959da5a5cecbe7a6",
+	"name" : "DeepSkyStackerKernel",
+	"nameOnDisk" : "libDeepSkyStackerKernel.a",
+	"paths" : 
+	{
+		"build" : "DeepSkyStackerKernel",
+		"source" : "DeepSkyStackerKernel"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				91,
+				92,
+				93,
+				94,
+				95,
+				96,
+				97,
+				98,
+				99,
+				100,
+				101,
+				102,
+				103,
+				104,
+				105,
+				106,
+				107,
+				108,
+				109,
+				110,
+				111,
+				112,
+				113,
+				114,
+				115,
+				116,
+				117,
+				118,
+				119,
+				120,
+				121,
+				122,
+				123,
+				124,
+				125,
+				126,
+				127,
+				128,
+				129,
+				130,
+				131,
+				132,
+				133,
+				134,
+				135,
+				136,
+				137,
+				138,
+				139,
+				140,
+				141,
+				142,
+				143,
+				144,
+				145,
+				146,
+				147,
+				148,
+				149,
+				150,
+				151,
+				152,
+				153,
+				188
+			]
+		},
+		{
+			"name" : "Source Files\\Generated",
+			"sourceIndexes" : 
+			[
+				1,
+				189
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29,
+				30,
+				31,
+				32,
+				33,
+				34,
+				35,
+				36,
+				37,
+				38,
+				39,
+				40,
+				41,
+				42,
+				43,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				58,
+				59,
+				60,
+				61,
+				62,
+				63,
+				64,
+				65,
+				66,
+				67,
+				68,
+				69,
+				70,
+				71,
+				72,
+				73,
+				74,
+				75,
+				76,
+				77,
+				78,
+				79,
+				80,
+				81,
+				82,
+				83,
+				84,
+				85,
+				86,
+				87,
+				88,
+				89,
+				90
+			]
+		},
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				154,
+				171,
+				172,
+				173,
+				174,
+				175,
+				176,
+				177,
+				178,
+				179,
+				180,
+				181,
+				182,
+				183,
+				184,
+				185,
+				186,
+				187
+			]
+		},
+		{
+			"name" : "Qt\\i18n",
+			"sourceIndexes" : 
+			[
+				155,
+				156,
+				157,
+				158,
+				159,
+				160,
+				161,
+				162,
+				163,
+				164,
+				165,
+				166,
+				167,
+				168,
+				169,
+				170
+			]
+		},
+		{
+			"name" : "Precompile Header File",
+			"sourceIndexes" : 
+			[
+				190
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				191,
+				192,
+				193
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"path" : "out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx.cxx",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 1,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/mocs_compilation.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/AHDDemosaicing.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_avg.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_bitmap_filler.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_bitmap_util.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_cfa.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_entropy.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_filter.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_histogram.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_includes.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_luminance.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_median.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_output.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_simd_check.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_simd_factory.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/avx_support.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BackgroundCalibration.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Bayer.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BilinearParameters.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapBase.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapCharacteristics.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapConstants.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapExt.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapExtraInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitMapFiller.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapIterator.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BitmapPartFile.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/BezierAdjust.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/cfa.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/CFABitmapInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ChannelAlign.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ColorBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ColorHelpers.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ColorMultiBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ColorRef.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/CosmeticEngine.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DarkFrame.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DeBloom.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DeepStack.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/dssbase.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DSSCommon.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DSSProgress.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/dssrect.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DSSTools.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DSSVersion.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/DynamicStats.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/EntropyInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ExceptionHandling.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ExtraInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Filters.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FITSUtil.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FlatFrame.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FlatPart.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FrameInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FrameInfoSupport.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/FrameList.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/GrayBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/GreyMultiBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/group.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/histogram.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/imageloader.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/ImageListModel.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/LinearInterpolationh.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/MasterFrames.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/MatchingStars.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/matrix.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/MedianFilterEngine.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/MemoryBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/MultiBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Multitask.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/PixelTransform.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/QMessageLogger.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/RationalInterpolation.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/RAWUtils.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/RegisterEngine.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/RunningStackingEngine.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Settings.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/SkyBackground.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/StackedBitmap.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/StackingEngine.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/StackingTasks.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/StarMask.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Stars.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/pch.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/TaskInfo.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/TIFFUtil.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/tracecontrol.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"path" : "DeepSkyStackerKernel/Workspace.h",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/AHDDemosaicing.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/avx_1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/avx_bitmap_util.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/avx_histogram_1.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 2,
+			"path" : "DeepSkyStackerKernel/avx_simd_check.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_avg.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_bitmap_filler.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_cfa.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_entropy.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_filter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_histogram.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_luminance.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 3,
+			"path" : "DeepSkyStackerKernel/avx_output.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BackgroundCalibration.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/Bayer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BilinearParameters.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BitmapBase.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BitmapExt.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BitMapFiller.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/BitmapInfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ChannelAlign.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ColorBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ColorHelpers.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ColorMultiBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/CosmeticEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/DarkFrame.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/DeBloom.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/DeepStack.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/DSSProgress.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/DSSTools.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/EntropyInfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ExceptionHandling.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/Filters.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/FITSUtil.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/FlatFrame.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/FrameInfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/FrameList.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/GrayBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/GreyMultiBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/group.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/ImageListModel.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/imageloader.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/MasterFrames.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/MatchingStars.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/MedianFilterEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/MemoryBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/MultiBitmapProcess.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/Multitask.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/QEventLogger.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/RAWUtils.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/RegisterCore.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/RegisterEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/RunningStackingEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/Settings.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/StackedBitmap.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/StackingEngine.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/StackingTasks.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/StarMask.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/TaskInfo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/TIFFUtil.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/tracecontrol.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 5,
+			"compileGroupIndex" : 1,
+			"path" : "DeepSkyStackerKernel/Workspace.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 25,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/meta_types/qt6deepskystackerkernel_debug_metatypes.json.gen",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 28,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_ca.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 31,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_cs.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 34,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_de.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 37,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_es.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 40,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_fr.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 43,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_it.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 46,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_ja_JP.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 49,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_nl.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 52,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_pt_BR.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 55,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_ro.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 58,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_ru.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 61,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_tr.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 64,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_zh_CN.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 67,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_zh_TW.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 70,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_en.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 73,
+			"path" : "DeepSkyStackerKernel/i18n/DeepSkyStackerKernel_en_GB.ts",
+			"sourceGroupIndex" : 4
+		},
+		{
+			"backtrace" : 76,
+			"path" : "out/build/.qt/rcc/DeepSkyStackerKernel_translations.qrc",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 79,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_ca.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 82,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_cs.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 85,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_de.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 88,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_es.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 91,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_fr.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 94,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_it.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 97,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_ja_JP.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 100,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_nl.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 103,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_pt_BR.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 106,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_ro.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 109,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_ru.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 112,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_tr.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 115,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_zh_CN.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 118,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_zh_TW.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 121,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_en.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 124,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_en_GB.qm",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 126,
+			"compileGroupIndex" : 4,
+			"isGenerated" : true,
+			"path" : "out/build/.qt/rcc/qrc_DeepSkyStackerKernel_translations.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/timestamp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"path" : "out/build/DeepSkyStackerKernel/CMakeFiles/DeepSkyStackerKernel.dir/cmake_pch.hxx",
+			"sourceGroupIndex" : 5
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/meta_types/qt6deepskystackerkernel_debug_metatypes.json.gen.rule",
+			"sourceGroupIndex" : 6
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/DeepSkyStackerKernel_autogen/timestamp.rule",
+			"sourceGroupIndex" : 6
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/build/DeepSkyStackerKernel/meta_types/DeepSkyStackerKernel_json_file_list.txt.rule",
+			"sourceGroupIndex" : 6
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

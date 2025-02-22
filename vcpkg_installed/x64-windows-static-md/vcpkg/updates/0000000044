@@ -1,0 +1,8 @@
+Package: boost-algorithm
+Version: 1.86.0
+Depends: boost-array, boost-assert, boost-bind, boost-cmake, boost-concept-check, boost-config, boost-core, boost-exception, boost-function, boost-headers, boost-iterator, boost-mpl, boost-range, boost-regex, boost-static-assert, boost-throw-exception, boost-tuple, boost-type-traits, boost-unordered
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 0bdf96c4b6dec2b0e124b6bd6f5393c6d959ac091eb8fce095333c0f5da9685e
+Description: Boost algorithm module
+Status: purge ok half-installed

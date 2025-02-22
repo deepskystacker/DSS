@@ -1,0 +1,9 @@
+The package boost-uuid is compatible with built-in CMake targets of FindBoost.cmake:
+
+    find_package(Boost REQUIRED COMPONENTS uuid)
+    target_link_libraries(main PRIVATE Boost::uuid)
+
+or the generated cmake configs via:
+
+    find_package(boost_uuid REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE Boost::uuid)

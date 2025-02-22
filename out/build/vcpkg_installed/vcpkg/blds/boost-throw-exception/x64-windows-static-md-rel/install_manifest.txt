@@ -1,0 +1,5 @@
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows-static-md/include/boost/exception/exception.hpp
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows-static-md/include/boost/throw_exception.hpp
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows-static-md/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-targets.cmake
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows-static-md/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-config.cmake
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-throw-exception_x64-windows-static-md/lib/cmake/boost_throw_exception-1.86.0/boost_throw_exception-config-version.cmake

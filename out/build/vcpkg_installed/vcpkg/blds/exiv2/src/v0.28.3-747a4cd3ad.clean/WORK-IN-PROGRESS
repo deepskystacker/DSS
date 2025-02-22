@@ -1,0 +1,345 @@
+T A B L E   o f   C O N T E N T S
+---------------------------------
+
+1   Building Adobe XMPsdk and Samples in Terminal with the ./Generate_XXX_mac.sh scripts
+1.1 Amazing Discovery 1    DumpFile is linked to libstdc++.6.dylib
+1.2 Amazing Discovery 2    Millions of "weak symbol/visibility" messages
+
+4   Build design for v0.26.1
+4.8 Support for MinGW
+
+5   Refactoring the Tiff Code
+5.1 Background
+5.2 How does Exiv2 decode the ExifData in a JPEG?
+5.3 How is metadata organized in Exiv2
+5.4 Where are the tags defined?
+5.5 How do the MakerNotes get decoded?
+5.6 How do the encoders work?
+
+6   Using external XMP SDK via Conan
+
+==========================================================================
+
+4   Build design for v0.26.1
+
+Added   : 2017-08-18
+Modified: 2017-08-23
+
+    The purpose of the v0.26.1 is to release bug fixes and
+    experimental new features which may become defaults with v0.27
+
+4.8 Support for MinGW
+    MinGW msys/1.0 was deprecated when v0.26 was released.
+    No support for MinGW msys/1.0 will be provided.
+    It's very likely that the MinGW msys/1.0 will build.
+    I will not provide any user support for MinGW msys/1.0 in future.
+
+    MinGW msys/2.0 might be supported as "experimental" in Exiv2 v0.26.2
+
+
+==========================================================================
+
+5   Refactoring the Tiff Code
+
+Added   : 2017-09-24
+Modified: 2017-09-24
+
+5.1 Background
+    Tiff parsing is the root code of a metadata engine.
+
+    The Tiff parsing code in Exiv2 is very difficult to understand and has major architectural shortcomings:
+
+    1) It requires the Tiff file to be totally in memory
+    2) It cannot handle BigTiff
+    3) The parser doesn't know the source of the in memory tiff image
+    4) It uses memory mapping on the tiff file
+       - if the network connection is lost, horrible things happen
+       - it requires a lot of VM to map the complete file
+       - BigTiff file can be 100GB+
+       - The memory mapping causes problems with Virus Detection software on Windows
+    5) The parser cannot deal with multi-page tiff files
+    6) It requires the total file to be in contiguous memory and defeats 'webready'.
+
+    The Tiff parsing code in Exiv2 is ingenious.  It's also very robust.  It works well.  It can:
+
+    1) Handle 32-bit Tiff and Many Raw formats (which are derived from Tiff)
+    2) It can read and write Manufacturer's MakerNotes which are (mostly) in Tiff format
+    3) It probably has other great features that I haven't discovered
+       - because the code is so hard to understand, I can't simply browse and read it.
+    4) It separates file navigation from data analysis.
+
+    The code in image::printStructure was originally written to understand "what is a tiff?"
+    It has problems:
+    1) It was intended to be a single threaded debugging function and has security issues.
+    2) It doesn't handle BigTiff
+    3) It's messy.  It's reading and processing metadata simultaneously.
+
+    The aim of this project is to
+    1) Reconsider the Tiff Code.
+    2) Keep everything good in the code and address known deficiencies
+    3) Establish a Team Exiv2 "Tiff Expert" who knows the code intimately.
+
+5.2 How does Exiv2 decode the ExifData in a JPEG?
+    You can get my test file from http://clanmills.com/Stonehenge.jpg
+
+    808 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/build $ exiv2 -pS ~/Stonehenge.jpg
+        STRUCTURE OF JPEG FILE: /Users/rmills/Stonehenge.jpg
+         address | marker       |  length | data
+               0 | 0xffd8 SOI
+               2 | 0xffe1 APP1  |   15288 | Exif..II*......................
+           15292 | 0xffe1 APP1  |    2610 | http://ns.adobe.com/xap/1.0/.<?x
+           17904 | 0xffed APP13 |      96 | Photoshop 3.0.8BIM.......'.....
+           18002 | 0xffe2 APP2  |    4094 | MPF.II*...............0100.....
+           22098 | 0xffdb DQT   |     132
+           22232 | 0xffc0 SOF0  |      17
+           22251 | 0xffc4 DHT   |     418
+           22671 | 0xffda SOS
+        809 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/build $
+
+    Exiv2 calls JpegBase::readMetadata which locates the APP1/Exif segment.
+    It invokes the ExifParser:
+       ExifParser::decode(exifData_, rawExif.pData_, rawExif.size_);
+    This is thin wrapper over:
+       TiffParserWorker::decode(....) in tiffimage.cpp
+
+    What happens then?  I don't know.  The metadata is decoded in:
+       tiffvisitor.cpp TiffDecoder::visitEntry()
+
+    The design of the TiffMumble classes is the "Visitor" pattern
+    described in "Design Patterns" by Addison & Wesley.  The aim of the pattern
+    is to separate parsing from dealing with the data.
+
+    The data is being stored in ExifData which is a vector.
+    Order is important and preserved.
+    As the data values are recovered they are stored as Exifdatum in the vector.
+
+    How does the tiff visitor work?  I think the reader and processor
+    are connected by this line in TiffParser::
+        rootDir->accept(reader);
+
+    The class tree for the decoder is:
+
+    class TiffDecoder : public TiffFinder {
+      class TiffReader ,
+      class TiffFinder : public TiffVisitor {
+        class TiffVisitor {
+          public:
+          //! Events for the stop/go flag. See setGo().
+          enum GoEvent {
+              geTraverse       = 0,
+              geKnownMakernote = 1
+          };
+
+          void setGo(GoEvent event, bool go);
+          virtual void visitEntry(TiffEntry* object) =0;
+          virtual void visitDataEntry(TiffDataEntry* object) =0;
+          virtual void visitImageEntry(TiffImageEntry* object) =0;
+          virtual void visitSizeEntry(TiffSizeEntry* object) =0;
+          virtual void visitDirectory(TiffDirectory* object) =0;
+          virtual void visitSubIfd(TiffSubIfd* object) =0;
+          virtual void visitMnEntry(TiffMnEntry* object) =0;
+          virtual void visitIfdMakernote(TiffIfdMakernote* object) =0;
+          virtual void visitIfdMakernoteEnd(TiffIfdMakernote* object);
+          virtual void visitBinaryArray(TiffBinaryArray* object) =0;
+          virtual void visitBinaryArrayEnd(TiffBinaryArray* object);
+          //! Operation to perform for an element of a binary array
+          virtual void visitBinaryElement(TiffBinaryElement* object) =0;
+
+          //! Check if stop flag for \em event is clear, return true if it's clear.
+          bool go(GoEvent event) const;
+        }
+      }
+    }
+
+    The reader works by stepping along the Tiff directory and calls the visitor's
+    "callbacks" as it reads.
+
+    There are 2000 lines of code in tiffcomposite.cpp and, to be honest,
+    I don't know what most of it does!
+
+    Set a breakpoint in src/exif.cpp#571.
+    That’s where he adds the key/value to the exifData vector.
+    Exactly how did he get here?  That’s a puzzle.
+
+    void ExifData::add(const ExifKey& key, const Value* pValue)
+    {
+        add(Exifdatum(key, pValue));
+    }
+
+5.3 How is metadata organized in Exiv2
+    section.group.tag
+
+    section: Exif | IPTC | Xmp
+    group:   Photo | Image | MakerNote | Nikon3 ....
+    tag: YResolution etc ...
+
+    820 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ exiv2 -pa ~/Stonehenge.jpg | cut -d' ' -f 1 | cut -d. -f 1 | sort | uniq
+    Exif
+    Iptc
+    Xmp
+
+    821 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ exiv2 -pa --grep Exif ~/Stonehenge.jpg  | cut -d'.' -f 2 | sort | uniq
+    GPSInfo
+    Image
+    Iop
+    MakerNote
+    Nikon3
+    NikonAf2
+    NikonCb2b
+    NikonFi
+    NikonIi
+    NikonLd3
+    NikonMe
+    NikonPc
+    NikonVr
+    NikonWt
+    Photo
+    Thumbnail
+
+    822 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ 533 rmills@rmillsmbp:~/Downloads $ exiv2 -pa --grep Exif ~/Stonehenge.jpg  | cut -d'.' -f 3 | cut -d' ' -f 1 | sort | uniq
+    AFAperture
+    AFAreaHeight
+    AFAreaMode
+    ...
+    XResolution
+    YCbCrPositioning
+    YResolution
+534 rmills@rmillsmbp:~/Downloads $
+    823 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $
+
+    The data in IFD0 of is Exiv2.Image:
+
+    826 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ exiv2 -pR ~/Stonehenge.jpg  | head -20
+    STRUCTURE OF JPEG FILE: /Users/rmills/Stonehenge.jpg
+     address | marker       |  length | data
+           0 | 0xffd8 SOI
+           2 | 0xffe1 APP1  |   15288 | Exif..II*......................
+      STRUCTURE OF TIFF FILE (II): MemIo
+       address |    tag                              |      type |    count |    offset | value
+            10 | 0x010f Make                         |     ASCII |       18 |       146 | NIKON CORPORATION
+            22 | 0x0110 Model                        |     ASCII |       12 |       164 | NIKON D5300
+            34 | 0x0112 Orientation                  |     SHORT |        1 |           | 1
+            46 | 0x011a XResolution                  |  RATIONAL |        1 |       176 | 300/1
+            58 | 0x011b YResolution                  |  RATIONAL |        1 |       184 | 300/1
+            70 | 0x0128 ResolutionUnit               |     SHORT |        1 |           | 2
+            82 | 0x0131 Software                     |     ASCII |       10 |       192 | Ver.1.00
+            94 | 0x0132 DateTime                     |     ASCII |       20 |       202 | 2015:07:16 20:25:28
+           106 | 0x0213 YCbCrPositioning             |     SHORT |        1 |           | 1
+           118 | 0x8769 ExifTag                      |      LONG |        1 |           | 222
+        STRUCTURE OF TIFF FILE (II): MemIo
+         address |    tag                              |      type |    count |    offset | value
+             224 | 0x829a ExposureTime                 |  RATIONAL |        1 |       732 | 10/4000
+             236 | 0x829d FNumber                      |  RATIONAL |        1 |       740 | 100/10
+    827 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ exiv2 -pa --grep Image ~/Stonehenge.jpg
+    Exif.Image.Make                              Ascii      18  NIKON CORPORATION
+    Exif.Image.Model                             Ascii      12  NIKON D5300
+    Exif.Image.Orientation                       Short       1  top, left
+    Exif.Image.XResolution                       Rational    1  300
+    Exif.Image.YResolution                       Rational    1  300
+    Exif.Image.ResolutionUnit                    Short       1  inch
+    Exif.Image.Software                          Ascii      10  Ver.1.00
+    Exif.Image.DateTime                          Ascii      20  2015:07:16 20:25:28
+    Exif.Image.YCbCrPositioning                  Short       1  Centered
+    Exif.Image.ExifTag                           Long        1  222
+    Exif.Nikon3.ImageBoundary                    Short       4  0 0 6000 4000
+    Exif.Nikon3.ImageDataSize                    Long        1  6173648
+    Exif.NikonAf2.AFImageWidth                   Short       1  0
+    Exif.NikonAf2.AFImageHeight                  Short       1  0
+    Exif.Photo.ImageUniqueID                     Ascii      33  090caaf2c085f3e102513b24750041aa
+    Exif.Image.GPSTag                            Long        1  4060
+    828 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $
+
+    The data in IFD1 is Exiv2.Photo
+
+    The data in the MakerNote is another embedded TIFF (which more embedded tiffs)
+
+    829 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $ exiv2 -pa --grep MakerNote ~/Stonehenge.jpg
+    Exif.Photo.MakerNote                         Undefined 3152  (Binary value suppressed)
+    Exif.MakerNote.Offset                        Long        1  914
+    Exif.MakerNote.ByteOrder                     Ascii       3  II
+    830 rmills@rmillsmbp:~/gnu/github/exiv2/exiv2/src $
+
+    The MakerNote decodes them into:
+
+    Exif.Nikon1, Exiv2.NikonAf2 and so on.  I don't know exactly it achieves this.
+    However it means that tag-numbers can be reused in different IFDs.
+    Tag 0x0016 = Nikon GPSSpeed and can mean something different elsewhere.
+
+5.4 Where are the tags defined?
+
+    There's an array of "TagInfo" data structures in each of the makernote decoders.
+    These define the tag (a number) and the tag name, the groupID (eg canonId) and the default type.
+    There's also a callback to print the value of the tag.  This does the "interpretation"
+    that is performed by the -pt in the exiv2 command-line program.
+
+    TagInfo(0x4001, "ColorData", N_("Color Data"), N_("Color data"), canonId, makerTags, unsignedShort, -1, printValue),
+
+5.5 How do the MakerNotes get decoded?
+
+    I don't know.  It has something to do with this code in tiffcomposite.cpp#936
+
+    TiffMnEntry::doAccept(TiffVisitor& visitor) { ... }
+
+    Most makernotes are TiffStructures.  So the TiffXXX classes are invoked recursively to decode the maker note.
+
+#0	0x000000010058b4b0 in Exiv2::Internal::TiffDirectory::doAccept(Exiv2::Internal::TiffVisitor&) at /Users/rmills/gnu/github/exiv2/exiv2/src/tiffcomposite.cpp:916
+    This function iterated the array of entries
+
+#1	0x000000010058b3c6 in Exiv2::Internal::TiffComponent::accept(Exiv2::Internal::TiffVisitor&) at /Users/rmills/gnu/github/exiv2/exiv2/src/tiffcomposite.cpp:891
+#2	0x00000001005b5357 in Exiv2::Internal::TiffParserWorker::parse(unsigned char const*, unsigned int, unsigned int, Exiv2::Internal::TiffHeaderBase*) at /Users/rmills/gnu/github/exiv2/exiv2/src/tiffimage.cpp:2006
+    This function creates an array of TiffEntries
+
+#3	0x00000001005a2a60 in Exiv2::Internal::TiffParserWorker::decode(Exiv2::ExifData&, Exiv2::IptcData&, Exiv2::XmpData&, unsigned char const*, unsigned int, unsigned int, void (Exiv2::Internal::TiffDecoder::* (*)(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, unsigned int, Exiv2::Internal::IfdId))(Exiv2::Internal::TiffEntryBase const*), Exiv2::Internal::TiffHeaderBase*) at /Users/rmills/gnu/github/exiv2/exiv2/src/tiffimage.cpp:1900
+#4	0x00000001005a1ae9 in Exiv2::TiffParser::decode(Exiv2::ExifData&, Exiv2::IptcData&, Exiv2::XmpData&, unsigned char const*, unsigned int) at /Users/rmills/gnu/github/exiv2/exiv2/src/tiffimage.cpp:260
+#5	0x000000010044d956 in Exiv2::ExifParser::decode(Exiv2::ExifData&, unsigned char const*, unsigned int) at /Users/rmills/gnu/github/exiv2/exiv2/src/exif.cpp:625
+#6	0x0000000100498fd7 in Exiv2::JpegBase::readMetadata() at /Users/rmills/gnu/github/exiv2/exiv2/src/jpgimage.cpp:386
+#7	0x000000010000bc59 in Action::Print::printList() at /Users/rmills/gnu/github/exiv2/exiv2/src/actions.cpp:530
+#8	0x0000000100005835 in Action::Print::run(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&) at /Users/rmills/gnu/github/exiv2/exiv2/src/actions.cpp:245
+
+
+5.6 How do the encoders work?
+
+    I understand writeMetadata() and will document that soon.
+    I still have to study how the TiffVisitor writes metadata.
+
+
+6   Using external XMP SDK via Conan
+
+Section 1 describes how to compile the newer versions of XMP SDK with a bash script. This
+approach had few limitations:
+
+    1) We had to include sources from other projects into the Exiv2 repository: Check the folder
+    xmpsdk/third-party.
+    2) Different scripts for compiling XMP SDK on Linux, Mac OSX and Windows.
+    3) Lot of configuration/compilation issues depending on the system configuration.
+
+Taking into account that during the last months we have done a big effort in migrating the
+manipulation of 3rd party dependencies to Conan, we have decided to do the same here. A conan recipe
+has been written for XmpSdk at:
+
+https://github.com/piponazo/conan-xmpsdk
+
+And the recipe and package binaries can be found in the piponazo's bintray repository:
+
+https://bintray.com/piponazo/piponazo
+
+This conan recipe provides a custom CMake finder that will be used by our CMake code to properly
+find XMP SDK in the conan cache and then be able to use the CMake variables: ${XMPSDK_LIBRARY} and
+${XMPSDK_INCLUDE_DIR}.
+
+These are the steps you will need to follow to configure the project with the external XMP support:
+
+    # Add the conan-piponazo remote to your conan configuration (only once)
+    conan remote add conan-piponazo https://api.bintray.com/conan/piponazo/piponazo 
+
+    mkdir build && cd build
+
+    # Run conan to bring the dependencies. Note that the XMPSDK is not enabled by default and you will
+    # need to enable the xmp option to bring it.
+    conan install .. --options xmp=True
+
+    # Configure the project with support for the external XMP version. Disable the normal XMP version
+    cmake -DCMAKE_BUILD_TYPE=Release -DEXIV2_ENABLE_XMP=OFF -DEXIV2_ENABLE_EXTERNAL_XMP=ON -DBUILD_SHARED_LIBS=ON ..
+
+Note that the usage of the newer versions of XMP is experimental and it was included in Exiv2
+because few users has requested it.

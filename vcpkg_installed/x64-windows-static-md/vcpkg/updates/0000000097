@@ -1,0 +1,8 @@
+Package: boost-describe
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-headers, boost-mp11
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 9d3db396e3c0a36bae34c129b76ac243d1426a048732d2c5de7d920aab73a321
+Description: Boost describe module
+Status: purge ok not-installed

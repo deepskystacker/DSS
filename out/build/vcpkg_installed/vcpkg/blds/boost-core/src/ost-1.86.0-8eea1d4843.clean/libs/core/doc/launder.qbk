@@ -1,0 +1,39 @@
+[/
+  Copyright 2023 Peter Dimov
+  Distributed under the Boost Software License, Version 1.0.
+  https://boost.org/LICENSE_1_0.txt
+]
+
+[section:launder launder]
+
+[simplesect Authors]
+
+* Peter Dimov
+
+[endsimplesect]
+
+[section Header <boost/core/launder.hpp>]
+
+The header `<boost/core/launder.hpp>` defines the function
+`void boost::core::launder()`, a portable implementation of
+`std::launder`.
+
+[section Synopsis]
+
+``
+namespace boost
+{
+namespace core
+{
+
+template<class T> T* launder( T* p );
+
+} // namespace core
+} // namespace boost
+``
+
+[endsect]
+
+[endsect]
+
+[endsect]

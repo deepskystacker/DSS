@@ -1,0 +1,371 @@
+@RV@ @RC@
+
+Headline Features of Exiv2 v0.27.4
+----------------------------------
+
+Dedicated to the memory of our beautiful cat Lizzie who was put to sleep on 2021-02-13.
+
+Thank You to the following who have contributed to this release.
+
+| Contributor  | Activity                                          |
+|:-------------|:--------------------------------------------------|
+| Alex         | Project Management                                |
+| Arnold       | Keeps me honest!                                  |
+| Christoph    | Nikon and Canon Support                           |
+| David        | Help with legal investigation concerning bmff     |
+| Freddie      | Fuji support                                      |
+| Kevin        | Security Fixes                                    |
+| Leo          | New python test scripts                           |
+| Leonardo     | Localisation support on Crowdin                   |
+| Milos        | DNG 1.6, Exif 2.32, easyaccess support and more   |
+| Peter K      | bmff code                                         |
+| Peter S      | langAltValue.read() fix and helpful issue reports |
+| pydera       | Security fixes                                    |
+
+1) Bug and security fixes:
+   - bmff read-only support (.CR3, .HEIC, .HEIF, .AVIF and JXL/bmff).
+   - Security process is defined.  https://github.com/Exiv2/exiv2/security/policy
+   - 3 benign ASAN issues.  First CVE in 18 months.  Patched in 2hrs, Fixed in 24hrs.
+   - DNG 1.6 and Exif 2.32 support.
+   - More easyaccess APIs and documentation.
+   - Localization support on Crowdin.
+   - Updated Catalan localisation.
+
+2) Changes to downloadable build bundles:
+   - Revised documentation and man page.
+   - MinGW/msys2 bundle built with C++11 (for Qt users).
+
+3) Build and Test:
+   - Test suite is implemented in python.
+   - Support for building on ARM (raspberry pi).
+   - Localisation is tested.
+   
+4) Book "Image Metadata and Exiv2 Architecture".
+   - https://clanmills.com/exiv2/book/
+   - https://clanmills.com/exiv2/book/IMaEA.pdf
+
+Detailed Change List since 0.27.3
+---------------------------------
+
+https://github.com/Exiv2/exiv2/issues/1018#issuecomment-757979745
+
+Future Releases
+---------------
+
+We have about 8 regular contributors.
+About 100 folks have contributed since 2004.
+We will always welcome new contributors to work on any aspect of the code and projects.
+
+I celebrated my 70th birthday in January and want to retire.
+
+The project status is tracked here: https://github.com/Exiv2/exiv2/issues/1462
+
+Exiv2 v0.27.4 is likely to be the final "dot" of the Exiv2 v0.27 product family.
+
+Development will now move to branch 'main'.
+
+We plan to port the unique_ptr from branch 'old-master' and ship 'main' as v1.00 in December 2021.
+
+Robin Mills
+robin@clanmills.com
+2020-04-07
+
+Headline Features of Exiv2 v0.27.3
+----------------------------------
+
+Thank you to Phil, Sridhar, Luis, Kevin, and Andreas S for working with me on the release.
+As always, thanks to my wife Alison and our cat Lizzie for their support.
+
+I am writing a book called Image Metadata and Exiv2 Architecture.
+Current Draft: https://clanmills.com/exiv2/book/
+               https://clanmills.com/exiv2/book/IMaEA.pdf
+
+1) Bug and security fixes:
+   - Security fixes
+   - Improved Unicode/charset handling in comments
+   - Improved lens recognition
+   - Updated Catalan and Dutch localisation
+
+2) Changes to downloadable build bundles:
+   - Revised documentation and man page
+   - Replace license.txt with COPYING
+   - Removed contrib/ directory from bundle
+   - share/locale has localisation files
+   - msvc bundle built with vs2019
+
+3) Build and Test:
+   - Support for C++11 and C++14
+   - Improved test harness and documentation
+   - Test support for Visual Studio
+   - Cross compiling support
+   - UNIX support (Solaris, FreeBSD and NetBSD)
+   - Http test support
+
+4) Additions:
+   - contrib/vs2019 Visual Studio support
+   - contrib/Qt Qt sample project
+   - .github/CONTRIBUTORS file
+   - Defined security process (TBD)
+
+Detailed Change List since 0.27.2
+---------------------------------
+
+https://github.com/Exiv2/exiv2/issues/1018#issuecomment-604539346
+
+Future Releases
+---------------
+
+I returned from retirement to undertake the 0.27.3 project.
+It's likely that I will work on 0.27.4 in Spring 2021.
+
+Team Exiv2 is looking for contributors to work on Exiv2 v0.28
+
+Robin Mills
+robin@clanmills.com
+2020-06-30
+
+-------------------------
+Release Notes for v0.27.2
+-------------------------
+
+Headline Features of Exiv2 v0.27.2
+----------------------------------
+
+1) Bug and security fixes
+2) Support for Nikon/AutoFocus and Sony/FocusPosition Metadata
+3) Documentation and man page revisions
+4) Updated Catalan Localisation
+5) Monitoring API changes for v0.27 dot releases
+6) Using mergify to sync select PRs between 0.27-maintenance and 0.28
+7) Preliminary Dutch Localisation
+8) Preliminary Support for Unix (FreeBSD and NetBSD)
+9) Better Build Bundle Dependency handling
+
+Changes since 0.27.1
+--------------------
+
+https://github.com/Exiv2/exiv2/milestone/4?closed=1
+
+Robin Mills
+robin@clanmills.com
+2019-07-29
+
+Headline Features of Exiv2 v0.27.1
+----------------------------------
+
+1) Bug and security fixes.
+2) Deprecation warnings for Video, EPS and SSH support.
+3) Relocated https://exiv2.org
+4) Branch 0.27-maintenance for "dots" to avoid confusion with tag 0.27 (== 0.27.0 code).
+5) Support for Visual Studio 2019 using Conan and CMake.
+
+Issues fixed since v0.27.1 RC1
+------------------------------
+#781 MinGW exiv2-0.27-Source fails with stdlib.h: No such file or directory.
+#780 Support for Visual Studio 2019 using Conan and CMake.
+#744 JP2000 -pS (print Structure) throws Invalid slice bounds specified on all jp2 files.
+#745 Review/fix documentation concerning CMake support files
+
+Changes since 0.27.0
+--------------------
+https://github.com/Exiv2/exiv2/milestone/3?closed=1
+
+#761 Corrections in README.md concerning "Consuming Exiv2 with CMake"
+#745 Review/fix documentation concerning CMake support files.
+#740 Tests for jp2image.
+#726 Doxygen improvements.
+#706 Fix access to null pointer in TiffParser.
+#700 exiv2-xmp linked privately.
+#684 gettext include issue on macOS.
+#661 Development of v0.27 dots moved to branch 0.27-maintenance.
+#660 Install new file exiv2lib_compiler_detection.h
+#644 Xcode fails with Exiv2::BasicError<char>
+#644 Old issue tracker (Redmine) is being spammed.
+#637 Reliable detection of strerror_r variants.
+#634 Fixes for installing exiv2.
+#629 xmpsdk: Build with -DBanAllEntityUsage=1.
+#628 cmake: Install header files without globbing.
+#625 cmake: Use correct installation dirs for doc and cmake configs.
+#620 0.27 tarball contains cruft.
+#617 Deprecate relics.
+#608 Update Nikon lens database.
+#603 MSVC cmake+conan with -DEXIV2_ENABLE_LIBSSH=On is broken
+#602 MSVC compiler warning with -DEXIV2_ENABLE_VIDEO=On.
+#597 Patch for broken ICC profile in PNG files
+#590 Several bugs in 0.27-rc3
+
+Robin Mills
+robin@clanmills.com
+2019-04-18
+
+-------------------------
+Release Notes for v0.27.0
+-------------------------
+
+The headline features are:
+
+ 1) Security fixes
+ 2) Bug Fixes
+ 3) Rewritten CMake Support
+ 4) Conan Support to build dependencies
+ 5) Adobe XMPsdk 2016 support
+ 6) New python test suite
+ 7) AppVeyor, Travis, CodeCov and GitLabs monitor submissions
+ 8) Support for MinGW/msys2
+ 9) Jenkins buildserver operates from GitHub
+10) New Documentation: Markdown, ReleaseNotes, Platform/ReadMe.txt and Website
+
+With Exiv2 v0.27, Team Exiv2 will offer "Long Term Support" and plan "dot" releases with security and critical fixes in 2019 and 2020.
+
+Known Issues
+------------
+
+1 Do not build with GCC 8.2 (7.3 is OK) https://github.com/Exiv2/exiv2/issues/421
+2 Do not build with Xcode 10.0 https://bugreport.apple.com/web/?problemID=45223696
+  Xcode 9.4 and earlier OK     https://github.com/Exiv2/exiv2/issues/465
+  Xcode 10.1            OK     https://github.com/Exiv2/exiv2/issues/528
+3 There are minor known issues concerning v0.27 and they will be fixed in 0.27.1
+  https://github.com/Exiv2/exiv2/milestone/3
+
+Focus of Exiv2 v0.28
+--------------------
+
+Exiv2 moves into the future with Exiv2 v0.28.
+The code will be modernised to C++11.
+
+C++98 compilers such as Visual Studio (<2015) will be supported
+with quarterly Exiv2 v0.27 'dot' (security) releases during 2019 and 2020.
+
+Fixes since v0.26
+-----------------
+GitHub: (142) https://github.com/Exiv2/exiv2/milestone/1?closed=1
+Redmine: (88) http://dev.exiv2.org/projects/exiv2/issues
+
+Build: (11)
+	0001362	Fix Clang build
+	0001358	Unsuccessful build (Win7, MSVC2015, amd64_x86)
+	0001356	Small patch to configure.py
+	0001329	Error during cmake with gcc version parsing
+	0001310	Provide support for msys/2.0
+	0001299	exiv2-0.26-trunk.tar.gz changed on download server
+	0001270	Using libexiv2.a/.lib  in multithreaded app segfaults.
+	0001237	Report CMake/MinGW issues to Kitware
+	0001188	Provide build support for C++11
+	0001174	Visual Studio Support Enhancements
+	0001121	Visual Studio support for v0.27
+
+Basicio: (1)
+	0001374	excessively often calls stat()
+
+Camera: (1)
+	0001352	Support camera Canon M100
+
+Coverity: (11)
+	0001265	[ Coverity : /src/basicio.cpp ] Unchecked return value from library , Time of check time of use , Incorrect deallocator used , Dereference before null check , String not null terminated
+	0001264	[ Coverity : /src/actions.cpp ] Unchecked return value from library , Logically dead code , Not restoring ostream format
+	0001263	[ Coverity : 1396730 Uninitialized scalar field ] /include/exiv2/xmp.hpp
+	0001262	[ Coverity : XMPSDK Errors ] Unused value , Explicit null dereferenced
+	0001261	[ Coverity : 1296083 Resource leak ] /src/exiv2.cpp
+	0001260	[ Coverity : 1296084 Resource leak ] /src/http.cpp
+	0001259	[ Coverity : 1396717 Out-of-bounds read ] /src/easyaccess.cpp
+	0001258	[ Coverity 1396718 Out-of-bounds access ] /src/webpimage.cpp
+	0001257	[ Coverity 1396719 Resource leak ] /src/tiffcomposite.cpp
+	0001256	[ Coverity 1396721 : /src/basicio.cpp ]  String not null terminated
+	0000883	Use Coverity SCAN on exiv2 code-base
+
+Duplicate: (1)
+	0001307	exiv2: tiffvisitor.cpp:1299: virtual void Exiv2::Internal::TiffReader::visitDirectory(Exiv2::Internal::TiffDirectory*): Assertion `tc.get()' failed.
+
+Exif: (6)
+	0001320	It is a heap-buffer-overflow in Exiv2::Jp2Image::readMetadata (jp2image.cpp:277)
+	0001319	It is a heap-buffer-overflow in Exiv2::us2Data (types.cpp:346)
+	0001318	Invalid memory address dereference in Exiv2::StringValueBase::read ( in value.cpp:302)
+	0001317	It is a heap-buffer-overflow in Exiv2::s2Data (types.cpp:383)
+	0001316	It is a heap-buffer-overflow in Exiv2::l2Data (types.cpp:398)
+	0001315	Invalid memory address dereference in Exiv2::DataValue::read (value.cpp:193)
+
+Insufficient information: (1)
+	0001347	Segfault in Digikam when saving/loading certain TIFF images
+
+Image format: (5)
+	0001353	Segmentation fault in the software exiv2 when the function Exiv2::tEXtToDataBuf() is finished
+	0001346	Assertion failure in Exiv2::Internal::CiffComponent::doRead() in libexiv2
+	0001345	Assertion Failure (SIGABRT) in Exiv2:RafImage::readMetadata() in Libexiv2
+	0001338	Exiv2 aborted (crashed) with "Error in `exiv2': free(): invalid next size (fast)"
+	0001334	Version 0.26 is returns unwanted data when the key value is received from RW2 files (Panasonic DMC-GF6 camera)
+
+Lens: (20)
+	0001373	Tamron SP 24-70mm F/2.8 Di VC USD not recognized properly
+	0001372	The lens "Tamron AF 18-200mm F3.5-6.3 XR Di II"  is wrongly identified.
+	0001370	Add entry for new(ish) lens - Tamron 10-24mm F/3.5-4.5 Di II VC HLD (B023)
+	0001366	Feature Request Sigma 85mm f/1.4 DG Art Series
+	0001365	Feature Request fr Sigma 135mm f/1.8 DG Art Series
+	0001361	Wrongly identified Canon 2x extender as 1.4x extender with Tamron lens
+	0001355	New lens Tamron 100-400mm F/4.5-6.3 Di VC USD
+	0001351	Add lens: Sigma 120-300mm f/2.8 G VR
+	0001348	patch: add Tamron SP AF 150-600mm F/5-6.3 VC USD G2 (A022) for Nikon
+	0001339	Panasonic DMC-TZ70 lens not detected
+	0001336	Support for AF-P DX NIKKOR 10-20mm f/4.5-5.6G VR
+	0001335	Missing Nikon lense
+	0001333	New Lens: Tamron SP 24-70mm F/2.8 Di VC USD G2 (A032)
+	0001332	Recognise Tamron 18-200mm F/3.5-6.3 DiII VC B018 on Canon bodies
+	0001328	Sigma 18-300mm is wrongly reported as a Canon 75-300mm
+	0001327	Two Sigma 24-70mm f/2.8 IF EX DG HSM lens definitions ??
+	0001326	Tamron 100-300mm f/5-6.3 MACRO 1:4
+	0001323	Add lens "Sigma 18-300mm f/3.5-6.3 DC Macro OS HS" for Canon ID 197
+	0001306	the lens TAMRON SP 15-30mm F/2.8 Di VC USD A012 is not properly recognised
+	0001304	Lens missing Tamron SP 90mm f/2.8 Di Macro 1:1 VC USD F017
+
+Metadata: (7)
+	0001341	Date/Time Original not modified for NEFs
+	0001340	Infinite loop bugs in Libexiv2 Exiv2::Image::printIFDStructure()
+	0001325	Crash in exiv2  - Nikon1MakerNote::printBarValue (nikonnm.cpp)
+	0001322	Exception in PentaxMakerNote::printShutterCount, source: pentaxmn.cpp
+	0001321	Invalid memory address dereference in Exiv2::getULong(types.cpp:246)
+	0001301	New lens: Sigma 18-35mm f/1.8 DC HSM Art for Canon
+	0001300	New lens: Canon EF-S 35mm f/2.8 Macro IS STM
+
+Makernote: (2)
+	0001343	Irix 15mm f/2.4 on Nikon
+	0001324	Pentax Makernote written twice
+
+Miscellaneous: (2)
+	0001314	it is a stack-overflow vulnerability in Exiv2::Internal::stringFormat[abi:cxx11] ( in image.cpp:975 )
+	0001305	Segmentation fault on certain image
+
+Not-a-bug: (8)
+	0001369	New lens Yongnuo 50mm f/1.8 II for Canon
+	0001368	Canon EF-M 15-45 broken LensType
+	0001367	New Lens Sigma 100-400 mm, F5-6.3 DG for Nikon
+	0001364	New lens Tamron SP 24-70mm F/2.8 Di VC USD G2
+	0001350	Add lens: AF-S DX Nikkor 18-140mm
+	0001349	Add lens: Sigma 50-100mm F1.8 DC HSM | A
+	0001344	Unknown metadata
+	0001331	exiv2 fails to delete bulk of metadata in jpeg
+
+Tools: (1)
+	0001303	#1 Use 'releases' feature on GitHub
+
+Tiff parser: (3)
+	0001360	exiv2 can't read metadata from tiff file (tiff directory length is too large)
+	0001359	This does not look like a TIFF image
+	0001330	Crash in Exiv2::TiffImage::readMetadata
+
+Video: (2)
+	0001068	Video Code Umbrella
+	0001028	Add GSoC13 video-write code
+
+Website: (3)
+	0001308	Move directory <exiv2dir>/website to svn://dev.exiv2.org/svn/team/website
+	0001302	Use sha256 Checksums on Downloads and Archive pages of the web site.
+	0001288	site defaults to http://, and https:// certificate is bogus
+
+Xmp: (3)
+	0001354	Inconsistency with long XMP namespaces (e.g. 'Iptc4xmpExt')
+	0001278	XMP SDK Split
+	0000941	Upgrade xmpsdk source to Adobe's current version
+
+
+Robin Mills
+robin@clanmills.com
+2018-12-20

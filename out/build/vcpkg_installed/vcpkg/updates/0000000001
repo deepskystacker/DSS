@@ -1,0 +1,8 @@
+Package: exiv2
+Version: 0.28.3
+Depends: inih, vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 71b73e7ab50a616ac5e28577551d22fc9ccc4fdaa1f3989ddafdc37193685e6b
+Description: Image metadata library and tools
+Status: install ok installed

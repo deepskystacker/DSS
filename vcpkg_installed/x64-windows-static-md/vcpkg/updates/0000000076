@@ -1,0 +1,8 @@
+Package: boost-optional
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-core, boost-detail, boost-headers, boost-move, boost-predef, boost-static-assert, boost-throw-exception, boost-type-traits, boost-utility
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 0a579ea45688b6b926df47bccea6257b8c5499ed09df24c2d4dac19c525ddc93
+Description: Boost optional module
+Status: purge ok half-installed

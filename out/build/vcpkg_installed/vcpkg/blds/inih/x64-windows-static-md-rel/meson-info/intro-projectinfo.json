@@ -1,0 +1,10 @@
+{
+  "version": "58",
+  "descriptive_name": "inih",
+  "license": [
+    "BSD-3-Clause"
+  ],
+  "license_files": [],
+  "subproject_dir": "subprojects",
+  "subprojects": []
+}

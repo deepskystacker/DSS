@@ -1,0 +1,9 @@
+x64-windows/
+x64-windows/share/
+x64-windows/share/vcpkg-boost/
+x64-windows/share/vcpkg-boost/boost-install.cmake
+x64-windows/share/vcpkg-boost/copyright
+x64-windows/share/vcpkg-boost/usage.in
+x64-windows/share/vcpkg-boost/vcpkg-port-config.cmake
+x64-windows/share/vcpkg-boost/vcpkg.spdx.json
+x64-windows/share/vcpkg-boost/vcpkg_abi_info.txt

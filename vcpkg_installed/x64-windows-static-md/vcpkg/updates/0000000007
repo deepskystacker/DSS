@@ -1,0 +1,8 @@
+Package: boost-scope
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-core, boost-headers, boost-type-traits
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 3e8afd1f2aa4a576adfedfb728e5e58132cedb7e89155cf65eedd8ff531d5803
+Description: Boost scope module
+Status: purge ok not-installed

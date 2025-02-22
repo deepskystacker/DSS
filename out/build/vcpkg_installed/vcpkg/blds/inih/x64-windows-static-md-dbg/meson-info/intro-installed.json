@@ -1,0 +1,8 @@
+{
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\libinih.a": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\lib\\libinih.a",
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\libINIReader.a": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\lib\\libINIReader.a",
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\meson-private\\inih.pc": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\lib\\pkgconfig\\inih.pc",
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\x64-windows-static-md-dbg\\meson-private\\INIReader.pc": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\lib\\pkgconfig\\INIReader.pc",
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\ini.h": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\../include\\ini.h",
+  "D:\\Github\\DSS\\out\\build\\vcpkg_installed\\vcpkg\\blds\\inih\\src\\r58-2aa5ec8387.clean\\cpp/INIReader.h": "D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/inih_x64-windows-static-md/debug\\../include\\INIReader.h"
+}

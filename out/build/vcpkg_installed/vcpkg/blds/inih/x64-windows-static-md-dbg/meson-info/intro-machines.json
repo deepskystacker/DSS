@@ -1,0 +1,35 @@
+{
+  "host": {
+    "system": "windows",
+    "cpu_family": "x86_64",
+    "cpu": "x86_64",
+    "endian": "little",
+    "kernel": "nt",
+    "subsystem": "windows",
+    "is_64_bit": true,
+    "exe_suffix": "exe",
+    "object_suffix": "obj"
+  },
+  "build": {
+    "system": "windows",
+    "cpu_family": "x86_64",
+    "cpu": "x86_64",
+    "endian": "little",
+    "kernel": "nt",
+    "subsystem": "windows",
+    "is_64_bit": true,
+    "exe_suffix": "exe",
+    "object_suffix": "obj"
+  },
+  "target": {
+    "system": "windows",
+    "cpu_family": "x86_64",
+    "cpu": "x86_64",
+    "endian": "little",
+    "kernel": "nt",
+    "subsystem": "windows",
+    "is_64_bit": true,
+    "exe_suffix": "exe",
+    "object_suffix": "obj"
+  }
+}

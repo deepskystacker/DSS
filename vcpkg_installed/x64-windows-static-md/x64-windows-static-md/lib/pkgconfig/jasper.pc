@@ -1,0 +1,13 @@
+prefix=${pcfiledir}/../..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: JasPer
+Description: Image Processing/Coding Tool Kit with JPEG-2000 Support
+Version: 4.2.4
+
+
+Libs: "-L${libdir}" -ljasper
+Requires: libjpeg
+Cflags: "-I${includedir}/jasper" "-I${includedir}" -DLIBJASPER_STATIC_DEFINE

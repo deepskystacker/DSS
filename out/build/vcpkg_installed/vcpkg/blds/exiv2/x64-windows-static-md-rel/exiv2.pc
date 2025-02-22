@@ -1,0 +1,13 @@
+prefix=D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/exiv2_x64-windows-static-md
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: exiv2
+Description: Exif/IPTC/Xmp C++ metadata library and tools plus ICC Profiles, Previews and more.
+Version: 0.28.3
+URL: https://exiv2.org
+Requires.private: INIReader
+Libs: -L${libdir} -lexiv2
+Libs.private: 
+Cflags: -I${includedir}

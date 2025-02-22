@@ -1,0 +1,4 @@
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-headers_x64-windows-static-md/include/boost/headers/.gitkeep
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-headers_x64-windows-static-md/lib/cmake/boost_headers-1.86.0/boost_headers-targets.cmake
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-headers_x64-windows-static-md/lib/cmake/boost_headers-1.86.0/boost_headers-config.cmake
+D:/Github/DSS/out/build/vcpkg_installed/vcpkg/pkgs/boost-headers_x64-windows-static-md/lib/cmake/boost_headers-1.86.0/boost_headers-config-version.cmake

@@ -1,0 +1,8 @@
+Package: boost-interval
+Version: 1.86.0
+Depends: boost-cmake, boost-config, boost-detail, boost-headers, boost-logic
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 3163cfdff1ab016477ddd3c90d6c4bd869e43dc379a1b31315a63b92dbe8884c
+Description: Boost interval module
+Status: purge ok not-installed

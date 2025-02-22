@@ -1,0 +1,61 @@
+[/
+Copyright 2021-2023 Glen Joseph Fernandes
+(glenjofe@gmail.com)
+
+Distributed under the Boost Software License, Version 1.0.
+(http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[section:identity identity]
+
+[simplesect Authors]
+
+* Glen Fernandes
+
+[endsimplesect]
+
+[section Overview]
+
+The header <boost/functional/identity.hpp> provides the function object
+`boost::identity` whose `operator()` returns its argument. It is an
+implementation of C++20's `std::identity` that supports C++03 and above.
+
+[endsect]
+
+[section Example]
+
+It is commonly used as the default projection in constrained algorithms.
+
+```
+template<class Range, class Projection = boost::identity>
+void print(Range&& range, Projection projection = {});
+```
+
+[endsect]
+
+[section Reference]
+
+```
+namespace boost {
+
+struct identity {
+    using is_transparent = unspecified;
+
+    template<class T>
+    T&& operator()(T&& value) const noexcept;
+};
+
+} /* boost */
+```
+
+[section Operators]
+
+[variablelist
+[[`template<class T> T&& operator()(T&& value) const noexcept;`]
+[Returns `std::forward<T>(value)`.]]]
+
+[endsect]
+
+[endsect]
+
+[endsect]

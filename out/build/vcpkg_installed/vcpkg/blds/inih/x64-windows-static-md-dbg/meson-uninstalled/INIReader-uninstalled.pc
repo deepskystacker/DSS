@@ -1,0 +1,11 @@
+prefix=D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/x64-windows-static-md-dbg
+includedir=${prefix}/../include
+libdir=${prefix}/lib
+srcdir=D:/Github/DSS/out/build/vcpkg_installed/vcpkg/blds/inih/src/r58-2aa5ec8387.clean
+
+Name: INIReader
+Description: simple .INI file parser for C++
+Version: 58
+Requires: inih
+Libs: -L${prefix} -lINIReader
+Cflags: -I${prefix}/cpp -I${srcdir}/cpp -I${prefix} -I${srcdir} -I${prefix} -I${srcdir}

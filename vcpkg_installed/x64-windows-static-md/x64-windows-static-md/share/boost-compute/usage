@@ -1,0 +1,9 @@
+The package boost-compute is compatible with built-in CMake targets of FindBoost.cmake:
+
+    find_package(Boost REQUIRED COMPONENTS compute)
+    target_link_libraries(main PRIVATE Boost::compute)
+
+or the generated cmake configs via:
+
+    find_package(boost_compute REQUIRED CONFIG)
+    target_link_libraries(main PRIVATE Boost::compute)

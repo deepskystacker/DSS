@@ -1,0 +1,8 @@
+Package: boost-uuid
+Version: 1.86.0
+Depends: boost-assert, boost-cmake, boost-config, boost-headers, boost-throw-exception, boost-type-traits
+Architecture: x64-windows-static-md
+Multi-Arch: same
+Abi: 3e254ddbb453421a8e2dbc7c76e528bcc548f90a9a237929cdf34413250b9c7d
+Description: Boost uuid module
+Status: purge ok half-installed

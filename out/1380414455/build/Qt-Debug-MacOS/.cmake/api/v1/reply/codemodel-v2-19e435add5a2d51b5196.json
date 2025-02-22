@@ -1,0 +1,408 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						2,
+						6,
+						9,
+						11,
+						14,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						28,
+						29
+					]
+				},
+				{
+					"build" : "DeepSkyStackerKernel",
+					"jsonFile" : "directory-DeepSkyStackerKernel-Debug-76a0f2a5542ab8a6e38b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "DeepSkyStackerKernel",
+					"targetIndexes" : 
+					[
+						5,
+						7,
+						8
+					]
+				},
+				{
+					"build" : "ZClass",
+					"jsonFile" : "directory-ZClass-Debug-4e1d685c00f24777116f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "ZClass",
+					"targetIndexes" : 
+					[
+						25,
+						26,
+						27
+					]
+				},
+				{
+					"build" : "DeepSkyStacker",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-DeepSkyStacker-Debug-fc7fcfc72169bd73e3a3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "DeepSkyStacker",
+					"targetIndexes" : 
+					[
+						0,
+						15,
+						16
+					]
+				},
+				{
+					"build" : "DeepSkyStackerCL",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-DeepSkyStackerCL-Debug-975645df54618a660a6d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "DeepSkyStackerCL",
+					"targetIndexes" : 
+					[
+						1,
+						3,
+						4
+					]
+				},
+				{
+					"build" : "DeepSkyStackerLive",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-DeepSkyStackerLive-Debug-559cc146e21b297de922.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "DeepSkyStackerLive",
+					"targetIndexes" : 
+					[
+						10,
+						12,
+						13
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"name" : "DeepSkyStacker",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27,
+						28,
+						29
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 3,
+					"id" : "DeepSkyStacker::@f4e00454222467574508",
+					"jsonFile" : "target-DeepSkyStacker-Debug-7842b2502d48f728113c.json",
+					"name" : "DeepSkyStacker",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "DeepSkyStackerCL::@f044b2e987311351f400",
+					"jsonFile" : "target-DeepSkyStackerCL-Debug-33989c01b6319fa01596.json",
+					"name" : "DeepSkyStackerCL",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStackerCL_DeepSkyStackerCL_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStackerCL_DeepSkyStackerCL_translations-Debug-af77748c89bce01f7802.json",
+					"name" : "DeepSkyStackerCL_DeepSkyStackerCL_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "DeepSkyStackerCL_autogen::@f044b2e987311351f400",
+					"jsonFile" : "target-DeepSkyStackerCL_autogen-Debug-d34eee23d19f402e9c38.json",
+					"name" : "DeepSkyStackerCL_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "DeepSkyStackerCL_autogen_timestamp_deps::@f044b2e987311351f400",
+					"jsonFile" : "target-DeepSkyStackerCL_autogen_timestamp_deps-Debug-67d08a8143a2a84fe35d.json",
+					"name" : "DeepSkyStackerCL_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "DeepSkyStackerKernel::@efa7959da5a5cecbe7a6",
+					"jsonFile" : "target-DeepSkyStackerKernel-Debug-6d449da04ac2e00e2645.json",
+					"name" : "DeepSkyStackerKernel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStackerKernel_DeepSkyStackerKernel_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStackerKernel_DeepSkyStackerKernel_translations-Debug-84a5463f298c76624784.json",
+					"name" : "DeepSkyStackerKernel_DeepSkyStackerKernel_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "DeepSkyStackerKernel_autogen::@efa7959da5a5cecbe7a6",
+					"jsonFile" : "target-DeepSkyStackerKernel_autogen-Debug-2b7b6ea4a6641b5d633f.json",
+					"name" : "DeepSkyStackerKernel_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "DeepSkyStackerKernel_autogen_timestamp_deps::@efa7959da5a5cecbe7a6",
+					"jsonFile" : "target-DeepSkyStackerKernel_autogen_timestamp_deps-Debug-b583e454ca11851bd36c.json",
+					"name" : "DeepSkyStackerKernel_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStackerKernel_resources_1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStackerKernel_resources_1-Debug-67f920eea718a2a99e6b.json",
+					"name" : "DeepSkyStackerKernel_resources_1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "DeepSkyStackerLive::@138ff28120d152eadc6d",
+					"jsonFile" : "target-DeepSkyStackerLive-Debug-4d18b5ed72c5d4d8a21f.json",
+					"name" : "DeepSkyStackerLive",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStackerLive_DeepSkyStackerLive_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStackerLive_DeepSkyStackerLive_translations-Debug-fd897051f683a7e415ef.json",
+					"name" : "DeepSkyStackerLive_DeepSkyStackerLive_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "DeepSkyStackerLive_autogen::@138ff28120d152eadc6d",
+					"jsonFile" : "target-DeepSkyStackerLive_autogen-Debug-e1c207644a2bb6934ae5.json",
+					"name" : "DeepSkyStackerLive_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "DeepSkyStackerLive_autogen_timestamp_deps::@138ff28120d152eadc6d",
+					"jsonFile" : "target-DeepSkyStackerLive_autogen_timestamp_deps-Debug-31d3a14a3f988a6decc6.json",
+					"name" : "DeepSkyStackerLive_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_DeepSkyStacker_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_DeepSkyStacker_translations-Debug-db417e40b54e88280ae8.json",
+					"name" : "DeepSkyStacker_DeepSkyStacker_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "DeepSkyStacker_autogen::@f4e00454222467574508",
+					"jsonFile" : "target-DeepSkyStacker_autogen-Debug-fd029ae6d47c46782332.json",
+					"name" : "DeepSkyStacker_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "DeepSkyStacker_autogen_timestamp_deps::@f4e00454222467574508",
+					"jsonFile" : "target-DeepSkyStacker_autogen_timestamp_deps-Debug-e124d700823824928c1f.json",
+					"name" : "DeepSkyStacker_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lrelease::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lrelease-Debug-63532bf2d38a660b4cb1.json",
+					"name" : "DeepSkyStacker_lrelease",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lrelease1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lrelease1-Debug-1fbc776bbeb834f7c310.json",
+					"name" : "DeepSkyStacker_lrelease1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lrelease2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lrelease2-Debug-ad39646e63c40ba350fa.json",
+					"name" : "DeepSkyStacker_lrelease2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lrelease3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lrelease3-Debug-1b56c3de6965b662f795.json",
+					"name" : "DeepSkyStacker_lrelease3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lupdate::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lupdate-Debug-07efa210b8808aaa707d.json",
+					"name" : "DeepSkyStacker_lupdate",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lupdate1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lupdate1-Debug-701f12c0f7578ce6b625.json",
+					"name" : "DeepSkyStacker_lupdate1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lupdate2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lupdate2-Debug-747dc673e18ce27f6c9c.json",
+					"name" : "DeepSkyStacker_lupdate2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DeepSkyStacker_lupdate3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DeepSkyStacker_lupdate3-Debug-4d1de9d9d820c24a9a4b.json",
+					"name" : "DeepSkyStacker_lupdate3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ZClass::@46e02ed79b6a8b21bac3",
+					"jsonFile" : "target-ZClass-Debug-b5d4c02c53c585433299.json",
+					"name" : "ZClass",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ZClass_autogen::@46e02ed79b6a8b21bac3",
+					"jsonFile" : "target-ZClass_autogen-Debug-e06965c0c84b1b90be1c.json",
+					"name" : "ZClass_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ZClass_autogen_timestamp_deps::@46e02ed79b6a8b21bac3",
+					"jsonFile" : "target-ZClass_autogen_timestamp_deps-Debug-20bd5e7240643c6f7d31.json",
+					"name" : "ZClass_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "release_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-release_translations-Debug-6a885392617a03e8aa67.json",
+					"name" : "release_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "update_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-update_translations-Debug-30983ccfbeb8e1695723.json",
+					"name" : "update_translations",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/amonra/.vs/DSS/out/build",
+		"source" : "/Users/amonra/.vs/DSS"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
