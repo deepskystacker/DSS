@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "BitMapFiller.h"
 #include "avx_bitmap_filler.h"
-#include "avx_support.h"
+#include "avx_simd_check.h"
 #include "DSSProgress.h"
-#include "ZExcept.h"
+#include "GrayBitmap.h"
+#include "ColorBitmap.h"
 
 using namespace DSS;
 
@@ -13,7 +14,7 @@ using namespace DSS;
 
 std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, ProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb)
 {
-	if (AvxSupport::checkSimdAvailability())
+	if (AvxSimdCheck::checkSimdAvailability())
 		return std::make_unique<AvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);
 	else
 		return std::make_unique<NonAvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);

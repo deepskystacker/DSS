@@ -1,11 +1,11 @@
-<html>
+ï»¿<html>
 
 <head>
 <meta http-equiv="Content-Language" content="de">
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
 <meta name="keywords" lang="en" content="Deep Sky Stacking Astrophotography Bayer matrix">
-<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Technische Details</title>
 <style>
 <!--
@@ -44,31 +44,32 @@ Details</span></b></p>
 <a name="Registering"></a>Registrierung</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Sternerkennung</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"> DeepSkyStacker erkennt automatisch in jedem Bild die Sterne.<br>
-Um es ganz einfach zu formulieren: Ein Stern ist ein rundes Objekt, dessen Luminanz gleichmäßig nach allen Seiten abnimmt.<br>
-Sobald ein Stern entdeckt wird, wird mit Hilfe einer sogenannten Gaußkurve (der Helligkeitsverteilung) das exakte Zentrum des Sterns berechnet.</span></p>
+Um es ganz einfach zu formulieren: Ein Stern ist ein rundes Objekt, dessen Luminanz gleichmÃ¤ÃŸig nach allen Seiten abnimmt.<br>
+Sobald ein Stern entdeckt wird, wird mit Hilfe einer sogenannten GauÃŸkurve (der Helligkeitsverteilung) das exakte Zentrum des Sterns berechnet.</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><b><font size="2">Verwendung von Darks, Flats und Offsets 
 vor der Registrierung</font><br>
-</b><font size="2">Wenn Dark-, Flat- und/oder Offsetframes ausgewählt sind, werden diese noch vor dem eigentlichen Registrierungs-Prozess angewendet.<br>
-Wenn sich in den Lightframes viele Hot-Pixel befinden, ist es sehr empfehlenswert Darkframes zu verwenden, da sonst diese "angeblichen" Sterne einen korrekten Ausrichtungsprozess enorm stören.</font></font></p>
+</b><font size="2">Wenn Dark-, Flat- und/oder Offsetframes ausgewÃ¤hlt sind, werden diese noch vor dem eigentlichen Registrierungs-Prozess angewendet.<br>
+Wenn sich in den Lightframes viele Hot-Pixel befinden, ist es sehr empfehlenswert Darkframes zu verwenden, da sonst diese "angeblichen" Sterne einen korrekten Ausrichtungsprozess enorm stÃ¶ren.</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><b>
 <font size="2"><a name="hotpixels"></a>Automatische Erkennung von Hot-Pixel</font><br>
-</b><font size="2">Optional dazu (zur Darkframe Verwendung) versucht DeepSkyStacker Hot-Pixel während des Registrierungs-Prozesses zu entdecken und damit "falsche" Sterne zu vermeiden.<br>
-Diese Option lässt sich allerdings nur bei monochromen Bildern und RAW Bildern im <A href="#superpixel">Super-Pixel</A>, <A href="#bayerdrizzle">
+</b><font size="2">Optional dazu (zur Darkframe Verwendung) versucht DeepSkyStacker Hot-Pixel wÃ¤hrend des Registrierungs-Prozesses zu entdecken und damit "falsche" Sterne zu vermeiden.<br>
+Diese Option lÃ¤sst sich allerdings nur bei monochromen Bildern und RAW Bildern im <A href="#superpixel">Super-Pixel</A>, <A href="#bayerdrizzle">
 Bayer.Drizzle</A>, Bilinear und AHD Interpolations-Modus anwenden.</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>Anpassung des Sternerkennungs-Schwellenwert</font></b><font size="2" face="Arial"><b>es<br>
 </b>
                                  Der Standard Sternerkennungs-Schwellenwert liegt normalerweise bei 10% (10% der maximalen Luminanz). </font></p>
-<p align="justify"><font size="2" face="Arial">&nbsp;<TABLE style="WIDTH: 100%; BORDER-COLLAPSE:  collapse" borderColor=#ffffff cellSpacing=0 cellPadding=5 width="100%" border=1>
+<p align="justify"><font size="2" face="Arial">&nbsp;</p>
+<p align="justify"><TABLE style="WIDTH: 100%; BORDER-COLLAPSE:  collapse" borderColor=#ffffff cellSpacing=0 cellPadding=5 width="100%" border=1>
              
           <TBODY >    <TR>
                <TD width="63%">
 <FONT size=2>
   
-             Sie können den Schwellenwert 
-      unter “Einstellungen/Registrierungs-Einstellungen/Erweitert” oder unter “ausgewählte Bilder registrieren/Registrierungs-Einstellungen” 
+             Sie kÃ¶nnen den Schwellenwert 
+      unter â€œEinstellungen/Registrierungs-Einstellungen/Erweitertâ€ oder unter â€œausgewÃ¤hlte Bilder registrieren/Registrierungs-Einstellungenâ€ 
       anpassen..</FONT>
              <font size=2 face=Arial>
                        <p align=justify>
@@ -77,8 +78,8 @@ Bayer.Drizzle</A>, Bilinear und AHD Interpolations-Modus anwenden.</font></font>
 Durch 
       <STRONG><EM>reduzieren</EM></STRONG> des 
       Sternerkennungs-Schwellenwertes findet DeepSkyStacker&nbsp;<EM> 
-      <STRONG>mehr</STRONG></EM> (schwächere) Sterne, wenn Sie andererseits den Schwellenwert<EM ><STRONG 
-      >erhöhen</STRONG></EM>   &nbsp;warden 
+      <STRONG>mehr</STRONG></EM> (schwÃ¤chere) Sterne, wenn Sie andererseits den Schwellenwert<EM ><STRONG 
+      >erhÃ¶hen</STRONG></EM>   &nbsp;warden 
       nur hellere Sterne gefunden und die Anzahl
   <EM 
       ><STRONG>reduziert</STRONG>
@@ -89,54 +90,70 @@ Durch
                  Den 
       Schwellenwert zu weit zu reduzieren ist aber kontraproduktiv da viele hundert Sterne 
       gefunden werden und sich die zu verarbeitende Datenmenge sowie die Gefahr 
-      von Fehlern bei der Registrierung stark erhöht. 
-      Das Ziel sollten über 20-25, aber nicht mehr als einige hundert Sterne sein.</span></p><p align=justify ><span lang=EN-US 
+      von Fehlern bei der Registrierung stark erhÃ¶ht. 
+      Das Ziel sollten Ã¼ber 20-25, aber nicht mehr als einige hundert Sterne sein.</span></p><p align=justify ><span lang=EN-US 
       style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">   
         Wenn Sie den Erkennungs-Schwellenwert niedrig gesetzt haben und DeepSkyStacker 
-      findet trotzdem keine Sterne weil das Bild unterbelichtet ist können Sie mit 
-      Hilfe der Einstellung “Helligkeit” in “Raw/FITS DDP Einstellungen” die Helligkeit 
-      erhöhen.
+      findet trotzdem keine Sterne weil das Bild unterbelichtet ist kÃ¶nnen Sie mit 
+      Hilfe der Einstellung â€œHelligkeitâ€ in â€œRaw/FITS DDP Einstellungenâ€ die Helligkeit 
+      erhÃ¶hen.
 </span> </p><p align=justify>
        
 <span lang=EN-US 
       style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Wenn 
       Ihres Bilder verrauscht sind (z.B. aufgrund von&nbsp;Lichtverschmutzung) 
-      können Sie die Option "<FONT face=Courier>Medianfilter 
+      kÃ¶nnen Sie die Option "<FONT face=Courier>Medianfilter 
       zur&nbsp;Rauschreduzierung </FONT>
        
                     
                
-           </font></font><FONT face=Courier>verwenden</FONT>"  einschalten.<font size="2" face="Arial">
+           </font></FONT><FONT face=Courier>verwenden</FONT>"  einschalten.<font size="2" face="Arial">
              <font size=2 face=Arial></SPAN></p>                            <p align=justify>
-Um den optimalen Schwellenwert für 
-      Ihre lights zu finden können Sie die Anzahl der Sterne berechnen die 
-      gefunden werden wird. Dazu verwendet DeepSkyStacker das erste ausgewählte 
-      lightframe und aktiviert vorübergehend die Hotpixel-Erkennung.</FONT></p>
+Um den optimalen Schwellenwert fÃ¼r 
+      Ihre lights zu finden kÃ¶nnen Sie die Anzahl der Sterne berechnen die 
+      gefunden werden wird. Dazu verwendet DeepSkyStacker das erste ausgewÃ¤hlte 
+      lightframe und aktiviert vorÃ¼bergehend die Hotpixel-Erkennung.</FONT></p>
                  <p align=justify>
 <font size=2 face=Arial >
     Sie sollten aber beachten dass 
       dies nur ein Richtwert ist und die reelle Anzahl variieren kann wenn Sie dark-, 
-      offset-, und flatframes ausgewählt haben..</font></p></FONT></TD>
+      offset-, und flatframes ausgewÃ¤hlt haben.</font></p>
+                 <p align=justify>
+Durch Benutzung der Option 
+      "Auto-Schwellwert" findet DeepSkyStacker einen guten Schwellwert von 
+      selbst&nbsp;mittels eines Optimierungs-Algorithmus, ein manuelles 
+      Einstellen entfÃ¤llt.<BR>Das ist insbesondere dann sehr hilfreich, wenn 
+      selbst der minimale Schwellwert von 1% nicht ausreicht, um eine 
+      geeignete&nbsp;Anzahl von Sternen zu finden (der Optimierungs-Algorithmus 
+      findet Schwellwerte&nbsp;bis hinab zu 0,05%).</p>
+                 <p align=justify>
+Der Schwellwert wird so gewÃ¤hlt, 
+      dass zumindest 50&nbsp;Sterne detektiert werden (falls mÃ¶glich, ansonsten 
+      werden auch weniger akzeptiert).<BR>Der erkannte Schwellwert des ersten 
+      Bildes wird verwendet als Startpunkt zur Schwellwertsuche aller weiteren 
+      Bilder.</p>
+                 <p align=justify>
+Wenn ein Reference-Frame ausgewÃ¤hlt 
+      wurde, so ist dieses Bild das erste der Registrierung.</p></FONT></TD>
 <TD >&nbsp;<IMG alt="" 
-      src="../images/german/Register_Settings.jpg"></TD></TR></TBODY></TABLE><br >
-<font size=2 face=Arial><BR></font></FONT>
+      src="../images/german/Register_Settings.jpg"></TD></TR></TBODY></TABLE></P></FONT>
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 <P></P>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Registrierungsergebnis<br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Das Registrierungsergebnis (Anzahl der Sterne, Position, Luminanz jedes Stern's) 
-wird in einer Textdatei gespeichert. Diese Datei trägt den Namen der Bilddatei mit der Datei-Endung <strong>.Info.txt</strong>.<br>
-So ist es nicht nodwendig das Bild erneut zu registrieren, wenn man es zukünftig noch einmal stacken will.</span></p>
+wird in einer Textdatei gespeichert. Diese Datei trÃ¤gt den Namen der Bilddatei mit der Datei-Endung <strong>.Info.txt</strong>.<br>
+So ist es nicht nodwendig das Bild erneut zu registrieren, wenn man es zukÃ¼nftig noch einmal stacken will.</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 </div>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Registrierungsergebnisse und Parameter<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Die Registrierungsergebnisse hängen natürlich sehr von den eingestellten Parametern ab (speziell bei den <A href="userguide.htm#rawddp">RAW Entwicklungs-Einstellungen</A>).<br>
-Wenn Sie an diesen Parametern etwas verändern, müssen Sie das Bild unbedingt erneut registrieren.
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Die Registrierungsergebnisse hÃ¤ngen natÃ¼rlich sehr von den eingestellten Parametern ab (speziell bei den <A href="userguide.htm#rawddp">RAW Entwicklungs-Einstellungen</A>).<br>
+Wenn Sie an diesen Parametern etwas verÃ¤ndern, mÃ¼ssen Sie das Bild unbedingt erneut registrieren.
 </span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
@@ -144,8 +161,8 @@ Wenn Sie an diesen Parametern etwas verändern, müssen Sie das Bild unbedingt ern
 </div>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Stacken nach der Registrierung<br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-DeepSkyStacker kann das Registrieren und Stacken miteinander verbinden. Dazu müssen Sie nur festlegen, wieviel Prozent der Bilder am Ende eines Registrierungs-Prozesses Sie für das Stacking freigeben wollen. Nur die besten Bilder  werden dann zum Stacken verwendet.<br>
-Dadurch ist es möglich den kompletten Registrierungs- und Stacking-Prozess zu starten, sich schlafen zu legen und am nächsten Morgen die ersten Ergebnisse zu sehen.</span></p>
+DeepSkyStacker kann das Registrieren und Stacken miteinander verbinden. Dazu mÃ¼ssen Sie nur festlegen, wieviel Prozent der Bilder am Ende eines Registrierungs-Prozesses Sie fÃ¼r das Stacking freigeben wollen. Nur die besten Bilder  werden dann zum Stacken verwendet.<br>
+Dadurch ist es mÃ¶glich den kompletten Registrierungs- und Stacking-Prozess zu starten, sich schlafen zu legen und am nÃ¤chsten Morgen die ersten Ergebnisse zu sehen.</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
@@ -155,16 +172,16 @@ Dadurch ist es möglich den kompletten Registrierungs- und Stacking-Prozess zu st
 <a name="Alignment"></a>Ausrichtung</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Versatz und Winkel-Berechnung</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Während des Ausrichtungs-Prozesses wird das beste Bild (das Bild mit dem höchsten Score-Wert) 
-als Referenzbild verwendet, es sei denn, Sie wählen über das <A href="userguide.htm#contextmenu">Kontext-Menü</A> ein anderes Referenzbild. <br>
-DeepSkyStacker berechnet nun für die anderen Aufnahmen jede Abweichung und Winkeländerung in Bezug zu dem Referenbild.<br>
+WÃ¤hrend des Ausrichtungs-Prozesses wird das beste Bild (das Bild mit dem hÃ¶chsten Score-Wert) 
+als Referenzbild verwendet, es sei denn, Sie wÃ¤hlen Ã¼ber das <A href="userguide.htm#contextmenu">Kontext-MenÃ¼</A> ein anderes Referenzbild. <br>
+DeepSkyStacker berechnet nun fÃ¼r die anderen Aufnahmen jede Abweichung und WinkelÃ¤nderung in Bezug zu dem Referenbild.<br>
 <br>
-Der Versatz und der Rotationswinkel für jedes Bild, werden mit Hilfe einer Stern-Identifizierungs-Schablone berechnet.<br>
-Ganz einfach ausgedrückt, sucht ein Algorithmus, die größtmöglichen Dreiecke, bei denen die Seitenabstände (und somit die Winkel zwischen den Seiten) am n ächsten sind.<br>
+Der Versatz und der Rotationswinkel fÃ¼r jedes Bild, werden mit Hilfe einer Stern-Identifizierungs-Schablone berechnet.<br>
+Ganz einfach ausgedrÃ¼ckt, sucht ein Algorithmus, die grÃ¶ÃŸtmÃ¶glichen Dreiecke, bei denen die SeitenabstÃ¤nde (und somit die Winkel zwischen den Seiten) am n Ã¤chsten sind.<br>
 Wenn eine ausreichende Menge dieser Dreiecke zwischen dem Referenzbild und den restlichen auszurichtenden Bildern entdeckt wurde, berechnet DeepSkyStacker daraus den Offset und die Rotation. Mit Hilfe der "kleinsten Quadrat" Methode werden die festgestellten Abweichungen korrigiert.<br>
-Abhängig von der Anzahl der entdeckten Sterne, wird dazu die Bisquared- oder Bilineare-Transformation verwendet.</span></p>
+AbhÃ¤ngig von der Anzahl der entdeckten Sterne, wird dazu die Bisquared- oder Bilineare-Transformation verwendet.</span></p>
 <p align="justify" style="MARGIN-TOP: 0px"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
-  Mehr Informationen über den  Algorithmus, der mich zur Verwendung bei <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStacker inspiriert hat, </span>finden Sie auf den folgenden Seiten:</span><font size="2" face="Arial"><br>
+  Mehr Informationen Ã¼ber den  Algorithmus, der mich zur Verwendung bei <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStacker inspiriert hat, </span>finden Sie auf den folgenden Seiten:</span><font size="2" face="Arial"><br>
   <a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&amp;db_key=AST&amp;high=39463d35aa24090">
   FOCAS Automatic Catalog Matching Algorithms</a><br>
   <a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">Pattern 
@@ -172,34 +189,34 @@ Abhängig von der Anzahl der entdeckten Sterne, wird dazu die Bisquared- oder Bil
 <p align="justify"><font face="Arial" size="2"><b><a name="stackinfofile"></a>
 Automatische Verwendung der zuvor berechneten Offsets und Winkel
 <br>
-</b>DeepSkyStacker speichert alle relevanten Informationen zur Umwandlung zwischen dem Referenzbild und allen anderen Bildern, sodass man, wenn man die Registrierungs-Einstellungen nicht ändert, das Bild nicht ein zweitesmal registrieren muß.<br>
+</b>DeepSkyStacker speichert alle relevanten Informationen zur Umwandlung zwischen dem Referenzbild und allen anderen Bildern, sodass man, wenn man die Registrierungs-Einstellungen nicht Ã¤ndert, das Bild nicht ein zweitesmal registrieren muÃŸ.<br>
 Diese Info ist in einer Datei mit dem Namen des Referenzbildes (auch im gleichen Ordner) und der Endung<i>.stackinfo.txt</i> gespeichert.</font></p>
 <hr color="#0000ff">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
 <a name="FileGroups"></a>Datei-Gruppen<br>
-</font></b><font size="2" face="Arial"><a name="filegroup"></a>Datei-Gruppen machen es sehr einfach, sogenannte "mehrere Nächte an dem gleichen Objekt" Bilddateien zu verwalten, indem man logische Gruppen für jede Fotonacht bildet.<br>
-<b>Wenn sie nur die <i>Haupt-Gruppe verwenden, arbeitet</i> DeepSkyStacker so, wie vor der Einführung von Datei-Gruppen.</b><br>
+</font></b><font size="2" face="Arial"><a name="filegroup"></a>Datei-Gruppen machen es sehr einfach, sogenannte "mehrere NÃ¤chte an dem gleichen Objekt" Bilddateien zu verwalten, indem man logische Gruppen fÃ¼r jede Fotonacht bildet.<br>
+<b>Wenn sie nur die <i>Haupt-Gruppe verwenden, arbeitet</i> DeepSkyStacker so, wie vor der EinfÃ¼hrung von Datei-Gruppen.</b><br>
 <br>
 Es gibt zwei Arten von Datei-Gruppen: die Haupt-Gruppe und all die anderen Gruppen.</font></p>
 <ul>
   <li>
-  <p align="justify"><font size="2" face="Arial">Lightframes der <i>Haupt-Gruppe </i>können nur mit  Dark-, Flat- und Offset/Biasframes, die sich ebenfalls in der <i>Haupt-Gruppe</i> befinden, in Verbindung gebracht werden. <br>
-  Dies ist genau die Arbeitsweise von DeepSkyStacker, vor der Einführung der Datei-Gruppen.</font></p>
+  <p align="justify"><font size="2" face="Arial">Lightframes der <i>Haupt-Gruppe </i>kÃ¶nnen nur mit  Dark-, Flat- und Offset/Biasframes, die sich ebenfalls in der <i>Haupt-Gruppe</i> befinden, in Verbindung gebracht werden. <br>
+  Dies ist genau die Arbeitsweise von DeepSkyStacker, vor der EinfÃ¼hrung der Datei-Gruppen.</font></p>
   <li>
-  <p align="justify"><font size="2" face="Arial">Dark-, Flat- und Offset/Biasframes der Haupt-Gruppe können allerdings auch für Lightframes anderer Gruppen verwendet werden.</font></p>
+  <p align="justify"><font size="2" face="Arial">Dark-, Flat- und Offset/Biasframes der Haupt-Gruppe kÃ¶nnen allerdings auch fÃ¼r Lightframes anderer Gruppen verwendet werden.</font></p>
   <li>
-  <p align="justify"><font size="2" face="Arial">Dark-, Flat- und Offset/Biasframes von anderen Gruppen können nur mit Lightframes der gleichen Gruppe verbunden werden.</font></p>
+  <p align="justify"><font size="2" face="Arial">Dark-, Flat- und Offset/Biasframes von anderen Gruppen kÃ¶nnen nur mit Lightframes der gleichen Gruppe verbunden werden.</font></p>
   </li>
 </ul>
-<p align="justify"><font size="2" face="Arial">Sie können so viele Datei-Gruppen erstellen wie Sie wollen, sollten aber wissen, dass eine Datei immer nur zu <strong>einer</strong> Datei-Gruppe gehören kann.<br>
-Beim Start von DeepSkyStacker ist immer nur die Haupt-Gruppe verfügbar. Sobald Sie aber der letztmöglichen Gruppe eine Datei anfügen, wird sofort eine neue, leere Gruppe erstellt.<br>
+<p align="justify"><font size="2" face="Arial">Sie kÃ¶nnen so viele Datei-Gruppen erstellen wie Sie wollen, sollten aber wissen, dass eine Datei immer nur zu <strong>einer</strong> Datei-Gruppe gehÃ¶ren kann.<br>
+Beim Start von DeepSkyStacker ist immer nur die Haupt-Gruppe verfÃ¼gbar. Sobald Sie aber der letztmÃ¶glichen Gruppe eine Datei anfÃ¼gen, wird sofort eine neue, leere Gruppe erstellt.<br>
 <br>
 <b>Beispiel:<br>
-</b>Sie fotografieren das gleiche Objekt zwei Nächte hintereinander. <br>
-Von jeder Nacht haben Sie eine Reihe von Light-, Dark- und Flatframes, aber die Außentemperatur war in  den Nächten unterschiedlich. Die Darkframes sind also nicht kompatibel, ebenso wie die Flatframes, da die Kamera in jeder Nacht etwas unterschiedlich am OAZ saß.<br>
+</b>Sie fotografieren das gleiche Objekt zwei NÃ¤chte hintereinander. <br>
+Von jeder Nacht haben Sie eine Reihe von Light-, Dark- und Flatframes, aber die AuÃŸentemperatur war in  den NÃ¤chten unterschiedlich. Die Darkframes sind also nicht kompatibel, ebenso wie die Flatframes, da die Kamera in jeder Nacht etwas unterschiedlich am OAZ saÃŸ.<br>
 <br>
-Um jedes Lightframe mit den passenden Dark und Flatframes zu verbinden, müssen Sie alle Light+Dark+Flatframes der ersten Nacht in eine Datei-Gruppe geben und alle Light+Dark+Flatframes der zweiten Nacht in eine andere Datei-Gruppe.<br>
-Nur die Offset/Biasframes waren natürlich in beiden Nächten gleich und kommen somit in die <i>
+Um jedes Lightframe mit den passenden Dark und Flatframes zu verbinden, mÃ¼ssen Sie alle Light+Dark+Flatframes der ersten Nacht in eine Datei-Gruppe geben und alle Light+Dark+Flatframes der zweiten Nacht in eine andere Datei-Gruppe.<br>
+Nur die Offset/Biasframes waren natÃ¼rlich in beiden NÃ¤chten gleich und kommen somit in die <i>
 Haupt-Gruppe</i>.<br>
 <br>
 DeepSkyStacker bringt nun automatisch die Lightframes der ersten Nacht mit den  Dark- und Flatframes der ersten Nacht und die Lightframes der zweiten Nacht mit den Dark- und Flatframes der zweiten Nacht zusammen. <br>
@@ -212,20 +229,20 @@ Die Offset/Biasframes, die sich in der Haupt-Gruppe befinden, werden mit den Lig
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
 <a name="Stacking"></a>Stacking</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 <font size="2"><a name="backgroundcalibration"></a>Hintergrund-Kalibrierung</font></span></b><font face="Arial"><b><br>
-</b><font size="2">Die Hintergrund-Kalibrierung besteht aus einer Normalisierung und Anpassung des Hintergrundwertes für jedes Bild, noch vor dem Stacking-Prozess.<br>
+</b><font size="2">Die Hintergrund-Kalibrierung besteht aus einer Normalisierung und Anpassung des Hintergrundwertes fÃ¼r jedes Bild, noch vor dem Stacking-Prozess.<br>
 Der Hintergrundwert ist definiert als der Mittelwert aller im Bild befindlichen Pixel.</font></font></p>
-<p align="justify"><font face="Arial" size="2">Zwei Optionen sind verfügbar:</font></p>
+<p align="justify"><font face="Arial" size="2">Zwei Optionen sind verfÃ¼gbar:</font></p>
 <ul>
   <li><font face="Arial" size="2">Mit der Option <b>Pro Kanal 
-Hintergrund-Kalibrierung</b> wird der Hintergrund des Referenz-Bildes für jeden Kanal separat eingestellt.</font></li>
+Hintergrund-Kalibrierung</b> wird der Hintergrund des Referenz-Bildes fÃ¼r jeden Kanal separat eingestellt.</font></li>
 </ul>
 <ul>
-  <li><font face="Arial" size="2">Mit der <b>RGB Kanäle-Kalibrierung</b> werden alle drei Kanäle ( <font color="#ff0000">rot</font>,
-    <font color="#008000">grün</font> und <font color="#0000ff">blau)</font> 
-    jedes Lightframes dem gleichen Hintergrundwert, welcher dem Minimum der drei Medianwerte (einen für jeden Kanal) entspricht, aus dem Referenzframe berechnet und angepasst. Am Anfang der Berechung kompatibler Bilder (Stackweise) erstellt diese Option einen neutralgrauen Hintergrund. Ein Nebeneffekt dieser Anpassung ist, dass die gesamte Sättigung des gestackten Bildes dadurch sehr niedrig wird (sieht wie ein Graustufenbild aus).</font></li>
+  <li><font face="Arial" size="2">Mit der <b>RGB KanÃ¤le-Kalibrierung</b> werden alle drei KanÃ¤le ( <font color="#ff0000">rot</font>,
+    <font color="#008000">grÃ¼n</font> und <font color="#0000ff">blau)</font> 
+    jedes Lightframes dem gleichen Hintergrundwert, welcher dem Minimum der drei Medianwerte (einen fÃ¼r jeden Kanal) entspricht, aus dem Referenzframe berechnet und angepasst. Am Anfang der Berechung kompatibler Bilder (Stackweise) erstellt diese Option einen neutralgrauen Hintergrund. Ein Nebeneffekt dieser Anpassung ist, dass die gesamte SÃ¤ttigung des gestackten Bildes dadurch sehr niedrig wird (sieht wie ein Graustufenbild aus).</font></li>
 </ul>
 <p align="justify" style="MARGIN-BOTTOM: 0px"><font face="Arial" size="2">Es ist sehr wichtig, eine von den beiden Optionen bei der Verwendung der Kappa-Sigma Clipping oder 
-Kappa-Sigma Clipping Median-Methode auszuwählen, um zu gewährleisten, dass alle zum Stacken anstehende Bilder den gleichen Hintergrundwert haben. </font></p>
+Kappa-Sigma Clipping Median-Methode auszuwÃ¤hlen, um zu gewÃ¤hrleisten, dass alle zum Stacken anstehende Bilder den gleichen Hintergrundwert haben. </font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="flatcalibration"></a>Automatische Kalibrierung der Flatframes</b></font><b><br>
@@ -237,24 +254,24 @@ Das erste Flatframe wird dabei als Referenzbild verwendet. Alle anderen Flatfram
 <b><a name="hotpixelsremoval"></a>Automatische Erkennung und Entfernung von Hot-Pixel</b></font><b><br>
 </b><font size="2">Ziel dieser automatischen Erkennung und Entfernung von Hot-Pixel ist, der Austausch des Hot-Pixels mit einem durchschnittlichen Nachbar-Pixel.<br>
 <br>
-Zuerst werden dazu die Darkframes (oder das Master-Dark, falls vorhanden) analysiert und nach Hot-Pixel durchsucht. Jedes Pixel, dessen Wert größer als  
+Zuerst werden dazu die Darkframes (oder das Master-Dark, falls vorhanden) analysiert und nach Hot-Pixel durchsucht. Jedes Pixel, dessen Wert grÃ¶ÃŸer als  
 [Median] + 16 x [Standardabweichung] (Sigma) ist, wird als Hot-Pixel markiert.<br>
 <br>
 <font face="Arial">Die Entfernung der Hot-Pixel besteht dann in einem Austausch der Pixel mit einem Pixel, dessen Wert einem durchschnittlichen (berechneten) Nachbarpixel entspricht.</font></font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="badlinesdetection"></a>Automatische Erkennung und Entfernung von fehlerhaften Zeilen</b></font><b><br>
-</b><font size="2">Auf einigen monochromen CCD-Sensoren befinden sich ganze Zeilen, die entweder tot, oder komplett gesättigt (Hot-Pixel Zeilen) sind.<br>
+</b><font size="2">Auf einigen monochromen CCD-Sensoren befinden sich ganze Zeilen, die entweder tot, oder komplett gesÃ¤ttigt (Hot-Pixel Zeilen) sind.<br>
 <br>
-In diesen Fällen sollte die automatische Erkennung und Entfernung von fehlerhaften Zeilen eingesetzt werden.<br>
-Sie erkennt automatisch 1 Pixelbreite, vertikale Zeilen, die entweder total übersättigt oder tot sind und verfährt mit ihnen, wie bei der Hot-Pixel-Korrektur. Der Wert jedes fehlerhaften Pixel dieser Zeile, wird mit einem durchschnittlichen (berechneten) Nachbarpixelwert interpoliert.</font></font></p>
+In diesen FÃ¤llen sollte die automatische Erkennung und Entfernung von fehlerhaften Zeilen eingesetzt werden.<br>
+Sie erkennt automatisch 1 Pixelbreite, vertikale Zeilen, die entweder total Ã¼bersÃ¤ttigt oder tot sind und verfÃ¤hrt mit ihnen, wie bei der Hot-Pixel-Korrektur. Der Wert jedes fehlerhaften Pixel dieser Zeile, wird mit einem durchschnittlichen (berechneten) Nachbarpixelwert interpoliert.</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="darkentropy"></a>Auf Entropie basierende Darkframe Subtraktion</b></font><b><br>
 </b><font size="2">Das Subtrahieren der Darkframes kann bei Bedarf optimiert werden, sodass die Entropie des Bildresultats (Lightframe minus Darkframe) durch die Anwendung eines Koeffizienten zwischen 0 und 1 auf das Darkframe minimiert wird.<br>
 Der wichtigste Anwendungsbereich dieser Option ist die Verwendung von Darkframes, die nicht unter optimalen Bedingungen entstanden sind (insbesondere in Bezug auf die genaue Temperatur).<br>
 </font></font><font size="2" face="Arial"><br>
-Mehr Information über diese Methode können sie hier erfahren (Pdf. Datei in englischer Sprache) <br>
+Mehr Information Ã¼ber diese Methode kÃ¶nnen sie hier erfahren (Pdf. Datei in englischer Sprache) <br>
 <A href="https://www.cs.ubc.ca/labs/imager/tr/2001/goesele2001a/goesele.2001a.pdf" target=_blank>
 Entropy-Based Dark Frame Subtraction</A></font></p>
 <hr color="#0000ff" size="1">
@@ -263,31 +280,31 @@ Entropy-Based Dark Frame Subtraction</A></font></p>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Der Stacking-Prozess von DeepSkyStacker ist eigentlich sehr klassisch.</span></p>
 <p align="justify" style="MARGIN-TOP: 0px"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
   <b>Schritt 1<br>
-  </b>Erstellung des Master-Offset aus allen Offsetframes (mit der gewählten Methode).<br>
-  Ist mehr als ein Offsetframe ausgewählt, wird das daraus erstellte Master-Offset unter dem Dateinamen 
+  </b>Erstellung des Master-Offset aus allen Offsetframes (mit der gewÃ¤hlten Methode).<br>
+  Ist mehr als ein Offsetframe ausgewÃ¤hlt, wird das daraus erstellte Master-Offset unter dem Dateinamen 
   MasterOffset_ISOxxx.tif (TIFF 8, 16 oder 32 Bit) im Ordner des ersten Offset gespeichert.<br>
   In den folgenden Schritten wird nur noch dieses Master-Offset verwendet werden.<br>
   <br>
   <b>Schritt 2<br>
-  </b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Erstellung des Master-Darks aus allen Darkframes (mit der gewählten Methode).</span> Vor der Erstellung des Master-Dark wird von jedem Darkframe, das zuvor gespeicherte Master-Offset subtrahiert.<br>
-  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Darkframe ausgewählt, wird das daraus erstellte Master-Dark unter dem Dateinamen </span>  MasterDark_ISOxxx_yyys.tif (TIFF 8, 16 oder 32 Bit) im Ordner des ersten Darkframes gespeichert.<br>
+  </b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Erstellung des Master-Darks aus allen Darkframes (mit der gewÃ¤hlten Methode).</span> Vor der Erstellung des Master-Dark wird von jedem Darkframe, das zuvor gespeicherte Master-Offset subtrahiert.<br>
+  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Darkframe ausgewÃ¤hlt, wird das daraus erstellte Master-Dark unter dem Dateinamen </span>  MasterDark_ISOxxx_yyys.tif (TIFF 8, 16 oder 32 Bit) im Ordner des ersten Darkframes gespeichert.<br>
   <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">In den folgenden Schritten wird nur noch dieses Master-Dark verwendet werden.</span><br>
   <br>
-  Erstellung des Master-Dark Flat aus allen Dark-Flatframes (mit der gewählten Methode). <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vor der Erstellung des Master-Dark Flat wird von jedem Dark-Flatframe, das zuvor gespeicherte Master-Offset subtrahiert.</span><br>
-  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Dark-Flatframe ausgewählt, wird das daraus erstellte Master-Dark Flat unter dem Dateinamen</span></span> MasterDarkFlat_ISOxxx_yyys.tif (TIFF 8, 16 oder 32 Bit) <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">im Ordner des ersten Dark-Flatframes gespeichert.</span><br>
+  Erstellung des Master-Dark Flat aus allen Dark-Flatframes (mit der gewÃ¤hlten Methode). <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vor der Erstellung des Master-Dark Flat wird von jedem Dark-Flatframe, das zuvor gespeicherte Master-Offset subtrahiert.</span><br>
+  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Dark-Flatframe ausgewÃ¤hlt, wird das daraus erstellte Master-Dark Flat unter dem Dateinamen</span></span> MasterDarkFlat_ISOxxx_yyys.tif (TIFF 8, 16 oder 32 Bit) <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">im Ordner des ersten Dark-Flatframes gespeichert.</span><br>
   <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">In den folgenden Schritten wird nur noch dieses Master-Dark Flat verwendet werden.</span></span><br>
   <br>
   <b>Schritt 3<br>
-  </b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Erstellung des Master-Flat aus allen Flatframes (mit der gewählten Methode)</span></span>. <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vor der Erstellung des Master-Flat, wird von jedem Flatframe das zuvor gespeicherte Master-Offset und Master Dark Flat subtrahiert.</span> Das Master-Flat ist automatisch kalibriert.<br>
-  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Flatframe ausgewählt, wird das daraus erstellte Master-Flat unter dem Dateinamen</span></span></span>  MasterFlat_ISOxxx.tif (TIFF 8, 16 oder 32 Bit) <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">im Ordner des ersten Flatframes gespeichert.</span></span><br>
+  </b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Erstellung des Master-Flat aus allen Flatframes (mit der gewÃ¤hlten Methode)</span></span>. <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vor der Erstellung des Master-Flat, wird von jedem Flatframe das zuvor gespeicherte Master-Offset und Master Dark Flat subtrahiert.</span> Das Master-Flat ist automatisch kalibriert.<br>
+  <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ist mehr als ein Flatframe ausgewÃ¤hlt, wird das daraus erstellte Master-Flat unter dem Dateinamen</span></span></span>  MasterFlat_ISOxxx.tif (TIFF 8, 16 oder 32 Bit) <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">im Ordner des ersten Flatframes gespeichert.</span></span><br>
   <span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">In den folgenden Schritten wird nur noch dieses Master-Flat verwendet werden.</span></span></span><br>
   <br>
   <b>Schritt 4<br>
   </b>Berechnung des Offsets (Versatz) und der Rotation aller Lightframes, die gestackt werden sollen.<br>
   <br>
   <b>Schritt 5<br>
-  </b>Erstellung des fertigen Bildes durch Addition aller Lightframes (mit der gewählten Methode). <br>
-  Das Master-Offset und das Master-Dark werden dabei automatisch von jedem Lightframe abgezogen und das Resultat durch das kalibrierte Master-Flat geteilt. Dann werden, wenn diese Option ausgewählt wurde, die im Darkframe erkannten Hot-Pixel entfernt und mit dem aus den Nachbarpixel interpolierten Wert ersetzt.<br>
+  </b>Erstellung des fertigen Bildes durch Addition aller Lightframes (mit der gewÃ¤hlten Methode). <br>
+  Das Master-Offset und das Master-Dark werden dabei automatisch von jedem Lightframe abgezogen und das Resultat durch das kalibrierte Master-Flat geteilt. Dann werden, wenn diese Option ausgewÃ¤hlt wurde, die im Darkframe erkannten Hot-Pixel entfernt und mit dem aus den Nachbarpixel interpolierten Wert ersetzt.<br>
   <br>
   <b>Schritt 6<br>
   </b>Wenn die Funktion <A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="#bayerdrizzle">Bayer Drizzle</A> aktiviert ist, werden die drei RGB Komponenten zur Vermeidung von Informations-Fehlstellen normalisiert.<br>
@@ -297,39 +314,39 @@ Entropy-Based Dark Frame Subtraction</A></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-FAMILY: Arial"><a name="ChannelsAlignment"></a>
-Ausrichtung der RGB Kanäle<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Wenn Sie diese Option ausgewählt haben, versucht DeepSkyStacker die drei Farb-Kanäle gegeneinander auszurichten, um eine Farbverschiebung im fertigen Bild zu reduzieren.<br>
+Ausrichtung der RGB KanÃ¤le<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Wenn Sie diese Option ausgewÃ¤hlt haben, versucht DeepSkyStacker die drei Farb-KanÃ¤le gegeneinander auszurichten, um eine Farbverschiebung im fertigen Bild zu reduzieren.<br>
 Der daraus resultierende Haupteffekt ist, dass die Sterne nicht mehr an einer Seite rot und an der anderen Seite blau sind.<br>
 <br>
-Jeder Kanal wird dabei registriert (Sterne werden erkannt), damit eine Umwandlung zwischen dem besten und den beiden anderen Kanälen berechnet werden kann.<br>
-In der Umwandlungsphase werden nun die beiden als nicht so perfekt eingestuften Kanäle auf den besten Kanal ausgerichtet.</span></p>
+Jeder Kanal wird dabei registriert (Sterne werden erkannt), damit eine Umwandlung zwischen dem besten und den beiden anderen KanÃ¤len berechnet werden kann.<br>
+In der Umwandlungsphase werden nun die beiden als nicht so perfekt eingestuften KanÃ¤le auf den besten Kanal ausgerichtet.</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-FAMILY: Arial"><a name="reusemasters"></a>
 Automatische Verwendung zuvor erstellter Master-Dateien<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vorhandene Master-Dateien (Dark, Bias, Flat und Dark Flat) die in einer Dateiliste erstellt wurden, werden automatisch solange wie möglich verwendet werden, wenn:<br>
-- Die Dateiliste sich nicht verändert hat.<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Vorhandene Master-Dateien (Dark, Bias, Flat und Dark Flat) die in einer Dateiliste erstellt wurden, werden automatisch solange wie mÃ¶glich verwendet werden, wenn:<br>
+- Die Dateiliste sich nicht verÃ¤ndert hat.<br>
 - Die Einstellungen zum Erstellen nicht modifiziert wurden. Dies beinhaltet auch die Auswahl der Kombinations-Methode, die eingestellten Parameter und die RAW bzw. FITTS DDP- Einstellungen bei der Verwendung von RAW oder FITS Dateien.<br>
 <br>
-Eine Text-Datei, die alle Angaben, Parameter und die Auflistung der verwendeten Dateilisten zum Erstellen des fertigen Bildes enthält, ist im Ordner des fertigen Bildes gespeichert.<br>
+Eine Text-Datei, die alle Angaben, Parameter und die Auflistung der verwendeten Dateilisten zum Erstellen des fertigen Bildes enthÃ¤lt, ist im Ordner des fertigen Bildes gespeichert.<br>
 Die Datei hat den Namen des fertigen Bildes mit dem Dateianhang <strong>.Description.txt.</strong><br>
 <br>
-Wenn die Beschreibung in dieser Datei mit eventuell neuen Einstellungen nicht übereinstimmt, werden automatisch wieder neue Master-Dateien erstellt.<br>
+Wenn die Beschreibung in dieser Datei mit eventuell neuen Einstellungen nicht Ã¼bereinstimmt, werden automatisch wieder neue Master-Dateien erstellt.<br>
 <br>
-Dieses Feature ist hauptsächlich für Anwender, die eine schnelle Verarbeitung mit unveränderten Master-Dateien ausführen wollen.</span></p>
+Dieses Feature ist hauptsÃ¤chlich fÃ¼r Anwender, die eine schnelle Verarbeitung mit unverÃ¤nderten Master-Dateien ausfÃ¼hren wollen.</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b><font face="Arial"><a name="customrect"></a>Verwendung des Auswahlrechtecks</font></b><font face="Arial"><b><br>
-</b><font size="2">Sie können  DeepSkyStacker mit Hilfe eines Auswahlrechtecks die gewünschte Größe und Position des fertigen Bildes (Endresultat) angeben.<br>
+</b><font size="2">Sie kÃ¶nnen  DeepSkyStacker mit Hilfe eines Auswahlrechtecks die gewÃ¼nschte GrÃ¶ÃŸe und Position des fertigen Bildes (Endresultat) angeben.<br>
 <br>
-Zuerst brauchen Sie natürlich ein Vorschaubild, das Sie  in der Dateiliste auswählen und mit einem Klick öffnen. Sie können irgendein  Lightframes auswählen, aber wenn Sie mit dem Auswahlrechteck den Bereich auswählen, der das spätere, fertige Bild zeigt, sollten Sie besser das Referenz-Lightframe verwenden (das mit dem höchsten Score-Wert, oder das, welches Sie selbst als Referenz-Lightframe mit dem <A href="userguide.htm#contextmenu">Kontextmenü</A> ausgewählt haben). <br>
+Zuerst brauchen Sie natÃ¼rlich ein Vorschaubild, das Sie  in der Dateiliste auswÃ¤hlen und mit einem Klick Ã¶ffnen. Sie kÃ¶nnen irgendein  Lightframes auswÃ¤hlen, aber wenn Sie mit dem Auswahlrechteck den Bereich auswÃ¤hlen, der das spÃ¤tere, fertige Bild zeigt, sollten Sie besser das Referenz-Lightframe verwenden (das mit dem hÃ¶chsten Score-Wert, oder das, welches Sie selbst als Referenz-Lightframe mit dem <A href="userguide.htm#contextmenu">KontextmenÃ¼</A> ausgewÃ¤hlt haben). <br>
 <br>
-Dann müssen Sie nur noch, mit gedrückter linker Maustaste, ein Auswahlrechteck in gewünschter Größe aufziehen. Dieses Rechteck lässt sich natürlich frei auf dem Bild verschieben.<br>
-Wenn Sie nun den Stacking-Prozess starten, verwendet DeepSkyStacker standardmäßig dieses erstellte Rechteck. Sie brauchen dies nicht irgendwo nocheinmal auszuwählen.<br>
+Dann mÃ¼ssen Sie nur noch, mit gedrÃ¼ckter linker Maustaste, ein Auswahlrechteck in gewÃ¼nschter GrÃ¶ÃŸe aufziehen. Dieses Rechteck lÃ¤sst sich natÃ¼rlich frei auf dem Bild verschieben.<br>
+Wenn Sie nun den Stacking-Prozess starten, verwendet DeepSkyStacker standardmÃ¤ÃŸig dieses erstellte Rechteck. Sie brauchen dies nicht irgendwo nocheinmal auszuwÃ¤hlen.<br>
 <br>
-Diese Option ist sehr hilfreich, wenn Sie bei ausgewählter<A href="#Drizzle">
-Drizzle Option</A>, die ja das fertige Bild verdoppelt bzw. verdreifacht, den benötigten Arbeitsspeicher beim Stacking-Prozess und den benötigten Speicherplatz auf der Festplatte verringern wollen.<br>
+Diese Option ist sehr hilfreich, wenn Sie bei ausgewÃ¤hlter<A href="#Drizzle">
+Drizzle Option</A>, die ja das fertige Bild verdoppelt bzw. verdreifacht, den benÃ¶tigten Arbeitsspeicher beim Stacking-Prozess und den benÃ¶tigten Speicherplatz auf der Festplatte verringern wollen.<br>
 <br>
-Bei der Verwendung des Auswahlrechtecks benötigt DeepSkyStacker nur den Arbeitsspeicher und Festplattenplatz für ein Bild in der Größe des Rechtecks. Die außerhalb befindlichen Bildpartien werden in den Berechnungsprozess nicht mit eingebunden.</font></font></p>
+Bei der Verwendung des Auswahlrechtecks benÃ¶tigt DeepSkyStacker nur den Arbeitsspeicher und Festplattenplatz fÃ¼r ein Bild in der GrÃ¶ÃŸe des Rechtecks. Die auÃŸerhalb befindlichen Bildpartien werden in den Berechnungsprozess nicht mit eingebunden.</font></font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
@@ -337,14 +354,14 @@ Bei der Verwendung des Auswahlrechtecks benötigt DeepSkyStacker nur den Arbeitss
 <p align="justify"><b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>Stacking Methoden</font><font face="Arial" size="2"><br>
 <font color="#800000">Durchschnitt</font><br>
 </font>
-</b><font face="Arial" size="2">Dies ist eine einfache Methode. Der Durchschnittswert für alle im Stack befindlichen Pixel wird für jedes Pixel berechnet.<br>
+</b><font face="Arial" size="2">Dies ist eine einfache Methode. Der Durchschnittswert fÃ¼r alle im Stack befindlichen Pixel wird fÃ¼r jedes Pixel berechnet.<br>
 <br>
 <b><font color="#800000">Median</font><br>
 </b>Dies ist die Standard-Methode beim Erstellen des Master-Dark, Flat und 
-Offset/Bias. Der Mittelwert für alle im im Stack befindlichen Pixel wird für jedes Pixel berechnet.<br>
+Offset/Bias. Der Mittelwert fÃ¼r alle im im Stack befindlichen Pixel wird fÃ¼r jedes Pixel berechnet.<br>
 <br>
 <b><font color="#800000">Maximum</font><br>
-</b>Dies ist eine extrem einfache Methode, die mit größter Sorgfalt angewendet werden sollte. Es wird dabei der Maximalwert aller im Stack befindlichen Pixel für jedes Pixel berechnet.<br>
+</b>Dies ist eine extrem einfache Methode, die mit grÃ¶ÃŸter Sorgfalt angewendet werden sollte. Es wird dabei der Maximalwert aller im Stack befindlichen Pixel fÃ¼r jedes Pixel berechnet.<br>
 Diese Methode kann ganz sinnvoll sein, wenn man herausfinden will, was an einem Stack schiefgelaufen ist, da man alle Defekte der kalibrierten Bilder damit sichtbar macht.<br>
 <br>
 <b><font color="#800000">Kappa-Sigma Clipping</font><br>
@@ -355,7 +372,7 @@ Jedes Pixel, dessen Wert dabei am weitesten von dem errechneten Wert (Kappa * Si
 Der Mittelwert der Pixel, auf das sich die Sigma-Abweichung bezieht, wird aus den verbliebenen Pixel des Stacks berechnet.</font></p>
 <p align="justify"><font face="Arial" size="2">
 <b><font color="#800000">Median Kappa-Sigma Clipping</font><br>
-</b>Diese Methode ist ähnlich wie die Kappa-Sigma Clipping-Methode, aber anstatt die Pixel, deren Werte nicht stimmen, auszusondern, werden sie durch Pixel mittleren Wertes ersetzt.</font></p>
+</b>Diese Methode ist Ã¤hnlich wie die Kappa-Sigma Clipping-Methode, aber anstatt die Pixel, deren Werte nicht stimmen, auszusondern, werden sie durch Pixel mittleren Wertes ersetzt.</font></p>
 <p align="justify"><font face="Arial" size="2"><font color="#800000"><b>Auto Adaptive Weighted 
 Average</b></font><br>
 Die Weighted Average-Methode (gewichteter Durchschnitt) ist 
@@ -364,30 +381,30 @@ eine Anlehnung an die Arbeit von Dr. Peter B. Stetson (
     The Techniques of Least Squares and Stellar Photometry with 
 CCDs</A>&nbsp;- Peter B. Stetson 1989).&nbsp;&nbsp;&nbsp;Datei in englischer Sprache).</font></p>
 <p align="justify"><font face="Arial" size="2">
-Diese Methode berechnet einen robusten Durchschnitt. Diesen Durchschnitt erhält sie mit einer iterativen Gewichtung der Abweichung jedes Pixel vom Mittelwert zur vergleichsweisen Standard-Abweichung.<br>
+Diese Methode berechnet einen robusten Durchschnitt. Diesen Durchschnitt erhÃ¤lt sie mit einer iterativen Gewichtung der Abweichung jedes Pixel vom Mittelwert zur vergleichsweisen Standard-Abweichung.<br>
 <br>
 <font color="#800000"><b>Entropy Weighted Average (High Dynamic Range)</b></font><br>
 Diese Methode basiert auf der Arbeit von German, Jenkin und Lesperance (<a target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38">see 
 Entropy-Based image merging - 2005</a> in englischer Sprache). Sie wird verwendet um beim Stacken jedem Pixel die beste Dynamik zu geben.<br>
-Sie ist besonders nützlich beim Stacken von Bildern mit unterschiedlichen Belichtungszeiten oder ISO Werten, da somit ein Bild ensteht, das die bestmögliche Dynamik aufweist. So ist es sehr einfach, ausgebrannte Galaxienkerne oder Nebel-Zentren (z.B M42) zu vermeiden.<br>
+Sie ist besonders nÃ¼tzlich beim Stacken von Bildern mit unterschiedlichen Belichtungszeiten oder ISO Werten, da somit ein Bild ensteht, das die bestmÃ¶gliche Dynamik aufweist. So ist es sehr einfach, ausgebrannte Galaxienkerne oder Nebel-Zentren (z.B M42) zu vermeiden.<br>
 Hinweis: Diese Methode ist sehr CPU- und speicherintensiv.</font></p>
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center">
 </span><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><b><font face="Arial" size="4" color="#ff0000">
 <a name="Drizzle"></a>Drizzle</font></b><br>
-<font face="Arial" size="2"> Drizzle ist eine von der NASA entwickelte Methode für die  
+<font face="Arial" size="2"> Drizzle ist eine von der NASA entwickelte Methode fÃ¼r die  
 Hubble Deep Field Observations des Hubble Space Telescope.<br>
 Dieser Berechnungs-Algorithmus ist auch bekannt unter dem Namen <strong>Variable Pixel Linear Reconstruction</strong>.<br>
 <br>
-Es verfügt über eine breite Palette von Möglichkeiten, mit denen die Auflösung eines gestackten Bildes, im Vergleich zu den verwendeten Einzelbildern enorm verbessert wird, während die eigentlichen Eigenschaften des Bildes (Farbe, Helligkeit usw.) erhalten bleiben.</font></p>
+Es verfÃ¼gt Ã¼ber eine breite Palette von MÃ¶glichkeiten, mit denen die AuflÃ¶sung eines gestackten Bildes, im Vergleich zu den verwendeten Einzelbildern enorm verbessert wird, wÃ¤hrend die eigentlichen Eigenschaften des Bildes (Farbe, Helligkeit usw.) erhalten bleiben.</font></p>
 <span lang="EN-US"></span><span lang="EN-US"><table border="0" cellspacing="1" width="100%" id="AutoNumber4">
   <tr>
     <td width="40%" valign="top">
     <p class="Standard">
   <span lang="EN-US">
-    <font face="Arial" size="2">Grundsätzlich wird dabei jedes Bild unmittelbar vor dem Stacking-Prozess abgetastet, zwei bis dreifach vergrößert  (möglich wäre jeder Wert größer als 1, aber DeepSkyStacker gibt nur die Möglichkeit 2x oder 3x als verfügbaren Wert vor) und dann auf ein feineres Pixelraster projeziert.<br>
+    <font face="Arial" size="2">GrundsÃ¤tzlich wird dabei jedes Bild unmittelbar vor dem Stacking-Prozess abgetastet, zwei bis dreifach vergrÃ¶ÃŸert  (mÃ¶glich wÃ¤re jeder Wert grÃ¶ÃŸer als 1, aber DeepSkyStacker gibt nur die MÃ¶glichkeit 2x oder 3x als verfÃ¼gbaren Wert vor) und dann auf ein feineres Pixelraster projeziert.<br>
     <br>
-    Als Folge davon wird sich die Größe des fertigen Bildes verdoppeln (oder verdreifachen) und kleine Details im Bild, die vorher nur ein paar Dutzend Pixel bedeckten, nun die zwei oder dreifache Menge an Pixel abdecken. Durch die Verteilung der Details auf mehr Pixel, wird auch die Nachbearbeitung des Bildes erleichtert.</font></span></p></td>
+    Als Folge davon wird sich die GrÃ¶ÃŸe des fertigen Bildes verdoppeln (oder verdreifachen) und kleine Details im Bild, die vorher nur ein paar Dutzend Pixel bedeckten, nun die zwei oder dreifache Menge an Pixel abdecken. Durch die Verteilung der Details auf mehr Pixel, wird auch die Nachbearbeitung des Bildes erleichtert.</font></span></p></td>
     <td width="60%">
     <p align="center">
     <IMG border=0 src="../images/Drizzle.jpg" width=250 align=center height=250></p></td>
@@ -397,21 +414,21 @@ Es verfügt über eine breite Palette von Möglichkeiten, mit denen die Auflösung e
     <p class="Standard"><font face="Arial" size="2">
   <span lang="EN-US">
     <b>Wie und wann verwendet man die Drizzle-Option</b><br>
-    Im Grunde brauchen Sie nur eine Menge Bilder, die noch nicht einmal perfekt ausgerichtet sein müssen (ein paar Pixel Drift ist genug). <br>
+    Im Grunde brauchen Sie nur eine Menge Bilder, die noch nicht einmal perfekt ausgerichtet sein mÃ¼ssen (ein paar Pixel Drift ist genug). <br>
     Es macht keinen Sinn, die Drizzle-Funktion anzuwenden, wenn Sie nur ein paar Lightframes haben.<br>
     <br>
-    Drizzling ist besonders gut zur Verbesserung der Auflösung und somit ideal, wenn Sie ein relativ kleines Objekt mit kurzer Brennweite aufgenommen haben.<br>
+    Drizzling ist besonders gut zur Verbesserung der AuflÃ¶sung und somit ideal, wenn Sie ein relativ kleines Objekt mit kurzer Brennweite aufgenommen haben.<br>
     <br>
     Rechts sehen Sie ein Beispiel eines fast unbearbeiteten M57 (Aufgenommen mit einem 10", F/D  
     4.72 OTA und einer Canon DSLR).<br>
     <br>
-    Normalerweise ist M57 dann sehr klein abgebildet. Aber mit der 2x Drizzle-Funktion und ca. 100 Lightframes ist das fertige Bild zweimal so groß (4x soviel Fläche?) und zeigt eine erheblich bessere Auflösung.<br>
+    Normalerweise ist M57 dann sehr klein abgebildet. Aber mit der 2x Drizzle-Funktion und ca. 100 Lightframes ist das fertige Bild zweimal so groÃŸ (4x soviel FlÃ¤che?) und zeigt eine erheblich bessere AuflÃ¶sung.<br>
     <br>
-    Fahren Sie mit der Maus über diese Links und sehen Sie selbst.<br>
-&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - ohne Drizzle - 4-fach vergrößert';" href="javascript:void(0);">
-unbearbeiteter M57 - ohne Drizzle (4-fach vergrößert)</A><br>
-&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - 2-fach vergrößert';" href="javascript:void(0);">
-unbearbeiteter M57 - 2x Drizzle (2-fach vergrößert)</A></span></font></p></td>
+    Fahren Sie mit der Maus Ã¼ber diese Links und sehen Sie selbst.<br>
+&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - ohne Drizzle - 4-fach vergrÃ¶ÃŸert';" href="javascript:void(0);">
+unbearbeiteter M57 - ohne Drizzle (4-fach vergrÃ¶ÃŸert)</A><br>
+&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - 2-fach vergrÃ¶ÃŸert';" href="javascript:void(0);">
+unbearbeiteter M57 - 2x Drizzle (2-fach vergrÃ¶ÃŸert)</A></span></font></p></td>
     <td width="60%">
     <p align="center">
     <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="../images/M57_NoDrizzle.jpg" width=411 height=353><br>
@@ -419,33 +436,33 @@ unbearbeiteter M57 - 2x Drizzle (2-fach vergrößert)</A></span></font></p></td>
   </tr>
 </table>
 </span><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><font face="Arial" size="2"><b>Nebeneffekte des Drizzling</b><br>
-Der Haupt-Nebeneffekt ist, dass der benötigte Arbeitsspeicher und Festplattenplatz zum Erstellen und Verarbeiten von Drizzle-Bildern um das Quadrat des Drizzling-Faktors (2-fach Drizzling =2x2 =4 fach) ansteigt. Dass dadurch natürlich auch die benötigte Zeit zum Verarbeiten um den gleichen Faktor ansteigt, sollte man auch unbedingt vorher bedenken.<br>
+Der Haupt-Nebeneffekt ist, dass der benÃ¶tigte Arbeitsspeicher und Festplattenplatz zum Erstellen und Verarbeiten von Drizzle-Bildern um das Quadrat des Drizzling-Faktors (2-fach Drizzling =2x2 =4 fach) ansteigt. Dass dadurch natÃ¼rlich auch die benÃ¶tigte Zeit zum Verarbeiten um den gleichen Faktor ansteigt, sollte man auch unbedingt vorher bedenken.<br>
 <br>
-Beispiel: Bei der Verwendung von 2x Drizzle mit einem 3000x2000 Pixel großen Bild, werden Sie als Ergebnis ein Bild in der Größe von 6000x4000 Pixel erhalten, welches den 4-fachen Arbeitsspeicher und Festplattenplatz benötigt und natürlich eine erheblich längere Zeit zum Erstellen benötigt.<br>
+Beispiel: Bei der Verwendung von 2x Drizzle mit einem 3000x2000 Pixel groÃŸen Bild, werden Sie als Ergebnis ein Bild in der GrÃ¶ÃŸe von 6000x4000 Pixel erhalten, welches den 4-fachen Arbeitsspeicher und Festplattenplatz benÃ¶tigt und natÃ¼rlich eine erheblich lÃ¤ngere Zeit zum Erstellen benÃ¶tigt.<br>
 <br>
-Wenn Sie die 3x Drizzle Option verwenden, benötigen Sie schon 9x soviel Speicher- und Festplattenplatz (3 im Quadrat). Sollten Sie die Verarbeitung nicht auf einem wirklich super leistungsfähigen Computer mit sehr viel Arbeitsspeicher und großer Festplatte ausführen, kann ich Ihnen nur abraten, die 3x Drizzle Option bei DSLR Bildern anzuwenden.<br>
+Wenn Sie die 3x Drizzle Option verwenden, benÃ¶tigen Sie schon 9x soviel Speicher- und Festplattenplatz (3 im Quadrat). Sollten Sie die Verarbeitung nicht auf einem wirklich super leistungsfÃ¤higen Computer mit sehr viel Arbeitsspeicher und groÃŸer Festplatte ausfÃ¼hren, kann ich Ihnen nur abraten, die 3x Drizzle Option bei DSLR Bildern anzuwenden.<br>
 <br>
 Bei der Verarbeitung von kleinen Bildern (wie bei den ersten DSI und LPI 
-Kameras), kann die  3x Drizzle Funktion die Auflösung allerdings sehr verbessern.<br>
+Kameras), kann die  3x Drizzle Funktion die AuflÃ¶sung allerdings sehr verbessern.<br>
 <br>
-Ein guter Weg, den benötigten Speicher- und Festplattenplatz bei der Drizzle-Option zu reduzieren, ist die Verwendung eines <A href="#customrect">Auswahlrechtecks</A>.<br>
+Ein guter Weg, den benÃ¶tigten Speicher- und Festplattenplatz bei der Drizzle-Option zu reduzieren, ist die Verwendung eines <A href="#customrect">Auswahlrechtecks</A>.<br>
 <br>
 <b>Drizzle und Bayer Drizzle</b><br>
 Obwohl es zwei Drizze-Methoden in DeepSkyStacker gibt (Drizzle + Bayer-Drizzle), ist es nicht empfehlenswert beide Methoden gleichzeitig zu verwenden.<br>
-Wenn Sie versehentlich doch einmal beide Methoden ausgewählt haben, wird Ihnen DeepSkyStacker eine Warnmeldung einblenden.</font></span></p>
+Wenn Sie versehentlich doch einmal beide Methoden ausgewÃ¤hlt haben, wird Ihnen DeepSkyStacker eine Warnmeldung einblenden.</font></span></p>
   <span lang="EN-US"></span><span lang="EN-US"><hr size="2" width="100%" noshade color="blue" align="center">
 </span>
   <p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><b><font face="Arial" size="4" color="#ff0000">
 <a name="cometstacking"></a>Kometen Stacking</font></b><br>
-<font face="Arial" size="2">Kometen sind sehr schnelle Objekte. Wenn sie eine Serie Kometenbilder stacken, können zwei Dinge passieren:<br>
-- Wenn die Ausrichtung zwischen den Bildern sich an den Sternen orientiert, wird der Komet neben den punktförmigen Sternen sehr unscharf abgebildet.<br>
+<font face="Arial" size="2">Kometen sind sehr schnelle Objekte. Wenn sie eine Serie Kometenbilder stacken, kÃ¶nnen zwei Dinge passieren:<br>
+- Wenn die Ausrichtung zwischen den Bildern sich an den Sternen orientiert, wird der Komet neben den punktfÃ¶rmigen Sternen sehr unscharf abgebildet.<br>
 - <span lang="EN-US"><font face="Arial" size="2">Wenn die Ausrichtung zwischen den Bildern sich am Kometen orientiert, wird der Komet </font></span>scharf abgebildet, inmitten von Sternen die als Strichspuren erscheinen.<br>
 <br>
 Mit Beginn der DeepSkyStacker Version 3.0 kamen zwei Komet-Stacking Optionen dazu:<br>
 - Bilderstellung mit Ausrichtung auf den Kometen, mit Sternen als Strichspuren.<br>
 - Bilderstellung mit Ausrichtung auf den Kometen <strong>und</strong> auf die Sterne, mit scharfer Abbildung von Komet und Sternen.<br>
 <br>
-Auf dem rechten Bild sehen Sie ein Beispiel der unterschiedlichen Komet-Stacking Methoden (Maus über die blaue Schrift bewegen zeigt das Ergebnis)</font></span></p>
+Auf dem rechten Bild sehen Sie ein Beispiel der unterschiedlichen Komet-Stacking Methoden (Maus Ã¼ber die blaue Schrift bewegen zeigt das Ergebnis)</font></span></p>
   <span lang="EN-US"></span><span lang="EN-US"><table border="0" cellspacing="1" width="100%" id="AutoNumber2">
   <tr>
     <td width="41%">
@@ -474,9 +491,9 @@ Zuletzt werden die zwei Bilder der Stacks zu einem Bild zusammengerechnet, wobei
   </tr>
 </table>
 </span><span lang="EN-US"><font face="Arial" size="2"><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><br>
-Wenn Sie vorhaben Ihre Kometenbilder nur auf die Sterne auszurichten (Standard-Stacking), brauchen Sie das, was in den folgenden Absätzen beschrieben wird nicht zu befolgen, da Sie ja die Standard-Methode verwenden.<br>
+Wenn Sie vorhaben Ihre Kometenbilder nur auf die Sterne auszurichten (Standard-Stacking), brauchen Sie das, was in den folgenden AbsÃ¤tzen beschrieben wird nicht zu befolgen, da Sie ja die Standard-Methode verwenden.<br>
 <br>
-</font><font face="Arial"><b><font size="2">Was Sie tun müssen<br>
+</font><font face="Arial"><b><font size="2">Was Sie tun mÃ¼ssen<br>
 Schritt 1: Festlegen des Kometenzentrums</font><br>
 </b></font><font face="Arial" size="2">DeepSkyStacker kann das Zentrum des Kometen in den 
 Lightframes nicht automatisch bestimmen. <SPAN lang=de class="HwtZe" 
@@ -484,56 +501,72 @@ jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN
 class="jCAhz ChMk0b" jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
 jsname="txFAF" 
 jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><FONT size=3 face="Times New Roman">Sie müssen 
+&#13;&#10;&#13;&#10;&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname="W297wb"><FONT size=3 face="Times New Roman">Sie mÃ¼ssen 
 also:</FONT></SPAN></SPAN></SPAN>         </font></P>
 <UL>
   <LI><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;  &#13;&#10;  
+  &#13;&#10;  
   &#13;&#10;  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; 
+  mouseout:Nqw7Te; 
+  &#13;&#10;  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb">Markieren 
-  Sie die Position des Kometenzentrums in 2 Lightframes mit großem zeitlichem 
+  Sie die Position des Kometenzentrums in 2 Lightframes mit groÃŸem zeitlichem 
   Abstand (idealerweise das erste und das letzte Lightframe in chronologischer 
   Reihenfolge).</SPAN></SPAN></SPAN>
   <LI><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;  &#13;&#10;  
+  &#13;&#10;  
   &#13;&#10;  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; 
+  mouseout:Nqw7Te; 
+  &#13;&#10;  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb"><SPAN 
   lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;  &#13;&#10;  
+  &#13;&#10;  
   &#13;&#10;  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; 
+  mouseout:Nqw7Te; 
+  &#13;&#10;  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb">Die 
-  Markierung des Kometenzentrums in zusätzlichen Lightframes kann möglicherweise 
+  Markierung des Kometenzentrums in zusÃ¤tzlichen Lightframes kann mÃ¶glicherweise 
   die Ergebnisse 
   verbessern.</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></span><span lang="EN-US"><font face="Times New Roman" size="3"><SPAN lang=de class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;  &#13;&#10;  
+  &#13;&#10;  
   &#13;&#10;  mousedown:qjlr0e" 
   jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
   jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
   jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
-  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" 
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; 
+  mouseout:Nqw7Te; 
+  &#13;&#10;  mouseover:E6Tfl,c2aHje" 
   jsname="W297wb"></SPAN></SPAN></SPAN>
         </font></span></LI></UL>
-<P><span lang="EN-US"><font face="Arial" size="2">Dazu öffnen Sie ein Lightframe aus der Liste und verwenden den <A href="userguide.htm#imagepreview">Edit Comet Mode</A> um das Kometenzentrum zu markieren.<br>
-Wenn das Zentrum des Kometen zu schwach oder zu hell ist, können Sie  DeepSkyStacker dazu zwingen, Ihre Positionsangabe zu akzeptieren, wenn Sie beim Markieren die Umschalttaste festhalten.<br>
+<P><span lang="EN-US"><font face="Arial" size="2">Dazu Ã¶ffnen Sie ein Lightframe aus der Liste und verwenden den <A href="userguide.htm#imagepreview">Edit Comet Mode</A> um das Kometenzentrum zu markieren.<br>
+Wenn das Zentrum des Kometen zu schwach oder zu hell ist, kÃ¶nnen Sie  DeepSkyStacker dazu zwingen, Ihre Positionsangabe zu akzeptieren, wenn Sie beim Markieren die Umschalttaste festhalten.<br>
 <br>
-Dann speichern Sie das Resultat mit einem Klick auf den "Änderungen speichern" Button (Diskettensymbol) in der Toolbar.<br>
-Damit Sie den Speichervorgang nicht vergessen, werden Sie von DeepSkyStacker danach gefragt. In dieser Dialogbox können Sie dann auch, wenn gewünscht einstellen, dass die Änderungen zukünftig automatisch, ohne Nachfrage gespeichert werden.<br>
+Dann speichern Sie das Resultat mit einem Klick auf den "Ã„nderungen speichern" Button (Diskettensymbol) in der Toolbar.<br>
+Damit Sie den Speichervorgang nicht vergessen, werden Sie von DeepSkyStacker danach gefragt. In dieser Dialogbox kÃ¶nnen Sie dann auch, wenn gewÃ¼nscht einstellen, dass die Ã„nderungen zukÃ¼nftig automatisch, ohne Nachfrage gespeichert werden.<br>
 <br>
-Sobald Sie die Kometenposition festgelegt und gespeichert haben, sehen Sie in der Spalte "Sterne" der Bilderliste ein +(C) vor der Sternanzahl des ausgewählten Bildes.<br>
+Sobald Sie die Kometenposition festgelegt und gespeichert haben, sehen Sie in der Spalte "Sterne" der Bilderliste ein +(C) vor der Sternanzahl des ausgewÃ¤hlten Bildes.<br>
 <br>
-Diesen Vorgang müssen Sie für jedes Lightframe wiederholen. </font></span></P>
+Diesen Vorgang mÃ¼ssen Sie fÃ¼r jedes Lightframe wiederholen. </font></span></P>
 <p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">&nbsp;</p>
 <span lang="EN-US"></span><span lang="EN-US"></span><span lang="EN-US"><table border="1" cellspacing="1" width="100%" id="AutoNumber6" cellpadding="10">
   <tr>
@@ -541,30 +574,30 @@ Diesen Vorgang müssen Sie für jedes Lightframe wiederholen. </font></span></P>
     </span><td width="100%" bgcolor="#ffff99"><span><font face="Arial" size="2">
   
     <b>Tipp<br>
-    </b> Wenn die Bildinfo ein genaues Datum+Uhrzeit der Aufnahme enthält (bei Verwendung von 
-    DSLRs und einigen CCD Kameras) können Sie die Bilder nach Datum/Uhrzeit sortieren, bevor Sie in dem Ersten-, dem Letzten- und dem Referenzframe (das mit dem höchsten Score-Wert, wenn Sie nicht ein anderes mit dem Kontextmenü als Referenzframe festgelegt hatten) die Kometenposition festlegen.<br>
-    DeepSkyStacker errechnet nun automatisch (kurz vor dem Stacking) die Position des Kometen für alle dazwischenliegende Lightframes, bei denen das Kometenzentrum nicht festgelegt wurde. <br>
-    Dazu berechnet DeepSkyStacker die zwischen den markierten Aufnahmen verstrichene Zeit, um daraus die Kometenposition für jedes Lightframe zu interpolieren.</font></span></td>
+    </b> Wenn die Bildinfo ein genaues Datum+Uhrzeit der Aufnahme enthÃ¤lt (bei Verwendung von 
+    DSLRs und einigen CCD Kameras) kÃ¶nnen Sie die Bilder nach Datum/Uhrzeit sortieren, bevor Sie in dem Ersten-, dem Letzten- und dem Referenzframe (das mit dem hÃ¶chsten Score-Wert, wenn Sie nicht ein anderes mit dem KontextmenÃ¼ als Referenzframe festgelegt hatten) die Kometenposition festlegen.<br>
+    DeepSkyStacker errechnet nun automatisch (kurz vor dem Stacking) die Position des Kometen fÃ¼r alle dazwischenliegende Lightframes, bei denen das Kometenzentrum nicht festgelegt wurde. <br>
+    Dazu berechnet DeepSkyStacker die zwischen den markierten Aufnahmen verstrichene Zeit, um daraus die Kometenposition fÃ¼r jedes Lightframe zu interpolieren.</font></span></td>
     <span></span>
   </tr>
 </table>
 </span><span lang="EN-US"></span><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">&nbsp;</p>
 <p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><font face="Arial" size="2">&nbsp;</font><font face="Arial"><b><font size="2">Schritt 2: Stacking-Modus festlegen</font><br>
-</b></font><font face="Arial" size="2">Den Stacking-Modus können Sie im <span lang="EN-US"><font face="Arial" size="2"><A href="userguide.htm#comettab">Register "Komet"</A></font></span> des Stacking-Parameter Dialogs festlegen.<br>
+</b></font><font face="Arial" size="2">Den Stacking-Modus kÃ¶nnen Sie im <span lang="EN-US"><font face="Arial" size="2"><A href="userguide.htm#comettab">Register "Komet"</A></font></span> des Stacking-Parameter Dialogs festlegen.<br>
 Das Register "Komet" in den Stacking-Parameter ist nur dann sichtbar, wenn mindestens zwei Lightframes (inclusive desReferenz-Lightframes) eine registrierte Kometenposition haben (+(c)).<br>
-In diesem Register können Sie einen Komet Stacking-Modus aus den drei angebotenen auswählen.<br>
+In diesem Register kÃ¶nnen Sie einen Komet Stacking-Modus aus den drei angebotenen auswÃ¤hlen.<br>
 &nbsp;<br>
 <b>Mischung aus Bildern mit und ohne Komet</b><br>
 DeepSkyStacker kann Lightframes mit einem registrierten Kometen und ohne einen registrierten Kometen <span lang="EN-US"><font face="Arial" size="2">im gleichen Stack verarbeiten</font></span>.<br>
-Dies kann dann interessant sein, wenn Sie nur wenige Kometenaufnahmen haben und den SNR Wert erhöhen wollen, damit man feinere Details im Hintergrund besser erkennen kann (z.B. ein Komet passiert einen Nebel oder eine Galaxie, die Sie auch ablichten wollen).</font></span></p>
+Dies kann dann interessant sein, wenn Sie nur wenige Kometenaufnahmen haben und den SNR Wert erhÃ¶hen wollen, damit man feinere Details im Hintergrund besser erkennen kann (z.B. ein Komet passiert einen Nebel oder eine Galaxie, die Sie auch ablichten wollen).</font></span></p>
 <span lang="EN-US"></span><span lang="EN-US"></span><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><font face="Arial" size="2"><b>Welche Stacking-Methode?<br>
 </b>Wenn Sie Kometenbilder mit Stern-Strichspuren erstellen, sollten Sie die <strong>Durchschnitt</strong> Stacking-Methode verwenden.<br>
-In allen anderen Fällen sollten sie die Median (bei kleinen Stacks) oder die Kappa-Sigma (bei großen Stacks) Stacking-Methode verwenden.</font></span></p>
+In allen anderen FÃ¤llen sollten sie die Median (bei kleinen Stacks) oder die Kappa-Sigma (bei groÃŸen Stacks) Stacking-Methode verwenden.</font></span></p>
 <span lang="EN-US"></span><span lang="EN-US"></span><p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><font face="Arial" size="2"><b>Welche Ergebnisse erwarten Sie</b></font></span></p>
 <p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px"><span lang="EN-US"><font face="Arial" size="2">Der anspruchsvollste Algorithmus ist der "Komet- und Stern-Stacking" Modus mit dem "Star Freeze" Effekt.<br>
-  Sehr langsame Kometen können dazu führen, dass andere Objekte, wie helle Sterne und große Objekte schlechter erkannt werden. In diesem Fall wird der Prozess zum Extrahieren des Kometen nicht so perfekt ausfallen.<br>
-  Egal, welche Methode Sie verwenden, wenn Sie die Möglichkeit haben von der gleichen Himmelsregion Aufnahmen ohne Komet  
-  (ein paar Tage vorher oder nachher) in die Kometenbilder einzufügen, werden Sie das Endresultat erheblich verbessern.</font></span></p>
+  Sehr langsame Kometen kÃ¶nnen dazu fÃ¼hren, dass andere Objekte, wie helle Sterne und groÃŸe Objekte schlechter erkannt werden. In diesem Fall wird der Prozess zum Extrahieren des Kometen nicht so perfekt ausfallen.<br>
+  Egal, welche Methode Sie verwenden, wenn Sie die MÃ¶glichkeit haben von der gleichen Himmelsregion Aufnahmen ohne Komet  
+  (ein paar Tage vorher oder nachher) in die Kometenbilder einzufÃ¼gen, werden Sie das Endresultat erheblich verbessern.</font></span></p>
 <span lang="EN-US"></span><span lang="EN-US"><hr size="2" width="100%" noshade color="blue" align="center"></span>
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
@@ -572,23 +605,23 @@ In allen anderen Fällen sollten sie die Median (bei kleinen Stacks) oder die Kap
 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW-Dateien Dekodierung</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"> 
 RAW-Dateien, die 
-mit DSLRs erstellt wurden, werden mit <U><FONT color=#0066cc>LibRaw</FONT></U>&nbsp;Copyright ©&nbsp;2008-2019 LibRaw 
+mit DSLRs erstellt wurden, werden mit <U><FONT color=#0066cc>LibRaw</FONT></U>&nbsp;Copyright Â©&nbsp;2008-2019 LibRaw 
 LLC, <SPAN 
-style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA'>basierend 
+style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-fareast-font-family: Calibri; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'>basierend 
 auf das originale DCRaw von Dave Coffin.</SPAN>    
          &nbsp; <br>
                                 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>   DeepSkyStacker verwendet die neueste 
-verfügbare Version von LibRaw und wird sie warnen wenn Ihre Kamera 
-nicht unterstützt wird.<BR>
+verfÃ¼gbare Version von LibRaw und wird sie warnen wenn Ihre Kamera 
+nicht unterstÃ¼tzt wird.<BR>
                                 </span>
   <span lang="EN-US"><BR>
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 <P></P>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW-Dateien Entwicklungs-Prozess</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Eine Datei ist in diesem Falle das Äquivalent eines "digitalen Negativs". Das bedeutet, dass jedes RAW "Negativ" auch entwickelt werden muß.<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Eine Datei ist in diesem Falle das Ã„quivalent eines "digitalen Negativs". Das bedeutet, dass jedes RAW "Negativ" auch entwickelt werden muÃŸ.<br>
 Es gibt zwei Arten von RAW-Dateien: Die einen verwenden eine  Bayer-Matrix (die meisten von ihnen) und die anderen brauchen keine Bayer-Matrix (wenn Sie z.B. einen  Foveon-Chip benutzen).<br>
 <br>
-Die folgenden Erläuterungen beziehen sich <strong>ausnahmslos</strong> auf die RAW-Dateien, die mit einer DSLR erstellt wurden und somit eine  Bayer-Matrix verwenden.</span></p>
+Die folgenden ErlÃ¤uterungen beziehen sich <strong>ausnahmslos</strong> auf die RAW-Dateien, die mit einer DSLR erstellt wurden und somit eine  Bayer-Matrix verwenden.</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
@@ -596,15 +629,15 @@ Die folgenden Erläuterungen beziehen sich <strong>ausnahmslos</strong> auf die R
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Bayer 
 Matrix<br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Zunächt einmal zur Erinnerung: Was ist überhaupt eine  Bayer-Matrix?<br>
-Wenn Sie eine 8 Megapixel DSLR verwenden, enthält diese einen Schwarz-Weiß CMOS oder CCD Chip mit 8 Megapixel, auf denen eine Bayer-Matrix aufgeklebt wurde. Diese Bayer-Matrix ist nichts anderes, als winzig kleine Farbfilter (RGBG oder CYMK) in bestimmter Anordnung vor jedem Pixel.<br>
+ZunÃ¤cht einmal zur Erinnerung: Was ist Ã¼berhaupt eine  Bayer-Matrix?<br>
+Wenn Sie eine 8 Megapixel DSLR verwenden, enthÃ¤lt diese einen Schwarz-WeiÃŸ CMOS oder CCD Chip mit 8 Megapixel, auf denen eine Bayer-Matrix aufgeklebt wurde. Diese Bayer-Matrix ist nichts anderes, als winzig kleine Farbfilter (RGBG oder CYMK) in bestimmter Anordnung vor jedem Pixel.<br>
 <br>
 Im Falle eines RGBG Filtermusters sehen ein Viertel der Pixel nur <span style="COLOR: red">rot</span>, ein Viertel nur<span style="COLOR: blue"> blau</span> 
-und die Hälfte der Pixel nur <span style="COLOR: green">grün</span>.<br>
-Also produziert Ihre 8 Megapixel DSLR Bilder, mit 2 Millionen roten Pixel, 2 Millionen blauen Pixel und  4 Millionen grünen Pixel.<br>
+und die HÃ¤lfte der Pixel nur <span style="COLOR: green">grÃ¼n</span>.<br>
+Also produziert Ihre 8 Megapixel DSLR Bilder, mit 2 Millionen roten Pixel, 2 Millionen blauen Pixel und  4 Millionen grÃ¼nen Pixel.<br>
 <br>
 Wie kann also die DSLR "echte" Farbbilder erstellen?<br>
-Sehr einfach, indem sie die fehlenden Primärfarben aus den benachbarten Pixel interpoliert. Interpolation ist hier also das Zauberwort. Das große Farbspektrum einer DSLR wird also aus diesen Farbpixel errechnet. Wo gerechnet wird, hat man immer die Möglichkeit verschiedene Rechenvarianten einzusetzen. </span></p>
+Sehr einfach, indem sie die fehlenden PrimÃ¤rfarben aus den benachbarten Pixel interpoliert. Interpolation ist hier also das Zauberwort. Das groÃŸe Farbspektrum einer DSLR wird also aus diesen Farbpixel errechnet. Wo gerechnet wird, hat man immer die MÃ¶glichkeit verschiedene Rechenvarianten einzusetzen. </span></p>
 
 <hr color="#0000ff">
 <p><font size="2" face="Arial"><b>Farb-Rekonstruktion mit Verwendung einer Bayer-Matrix - <font color="#0000ff">
@@ -615,13 +648,13 @@ Interpolation</font></b></font></p>
     <td width="51%">
     <p class="Standard"><font size="2" face="Arial">Der erste Weg, die fehlenden Farben der Bayer-Matrix zu rekonstruieren besteht in der Interpolation der Nachbarpixel.</font></p>
     <p class="Standard">
-    <font size="2" face="Arial">Es stehen eine Menge unterschiedlicher Interpolations-Methoden zur Verfügung, die mehr schlechte als rechte Ergebnisse produzieren (Linear, Gradient...), aber alle haben eines gemeinsam: Sie setzen die Qualität des fertigen Bildes dadurch herab, dass sie eigentlich nicht wissen können, wie die fehlenden Farben genau aussehen sollen. Hier ist natürlich Interpretationspielraum gegeben. </font>
+    <font size="2" face="Arial">Es stehen eine Menge unterschiedlicher Interpolations-Methoden zur VerfÃ¼gung, die mehr schlechte als rechte Ergebnisse produzieren (Linear, Gradient...), aber alle haben eines gemeinsam: Sie setzen die QualitÃ¤t des fertigen Bildes dadurch herab, dass sie eigentlich nicht wissen kÃ¶nnen, wie die fehlenden Farben genau aussehen sollen. Hier ist natÃ¼rlich Interpretationspielraum gegeben. </font>
 <p class="Standard">
-    <font face="Arial" size="2">Jedes Bild wird durch den Interpolationsvorgang an Schärfe verlieren. Beim Stacking-Prozess werden die übereinander gelegten "leicht unscharfen" Bilder somit eine Menge an feinen Details nicht mehr so genau abbilden.<br>
+    <font face="Arial" size="2">Jedes Bild wird durch den Interpolationsvorgang an SchÃ¤rfe verlieren. Beim Stacking-Prozess werden die Ã¼bereinander gelegten "leicht unscharfen" Bilder somit eine Menge an feinen Details nicht mehr so genau abbilden.<br>
     <br>
-    Wenn Sie vorhaben, eine Interpolations-Methode zu verwenden, sollten Sie wissen, dass die mit Ihrer DSLR mitgelieferte Software wahrscheinlich die schlechteste Wahl ist, wenn es um den Erhalt der Qualität von so etwas Speziellem wie Astrobildern geht.<br>
+    Wenn Sie vorhaben, eine Interpolations-Methode zu verwenden, sollten Sie wissen, dass die mit Ihrer DSLR mitgelieferte Software wahrscheinlich die schlechteste Wahl ist, wenn es um den Erhalt der QualitÃ¤t von so etwas Speziellem wie Astrobildern geht.<br>
     <br>
-    Wenn Sie diese Software zum Umwandeln Ihrer RAW-Dateien in  16 Bit TIFF-Dateien verwenden und zum Vergleich die selbe Umwandlung in DeepSkyStacker durchführen, werden Sie augenblicklich den Unterschied feststellen.<br>
+    Wenn Sie diese Software zum Umwandeln Ihrer RAW-Dateien in  16 Bit TIFF-Dateien verwenden und zum Vergleich die selbe Umwandlung in DeepSkyStacker durchfÃ¼hren, werden Sie augenblicklich den Unterschied feststellen.<br>
 &nbsp;</font></p></td>
     <td width="51%">
     <IMG border=0 src="../images/BayerInterpolation.jpg" width=375 align=right height=285></td>
@@ -634,14 +667,14 @@ Super-Pixel</font></b></font></p>
 <table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber2">
   <tr>
     <td width="51%">
-    <p class="Standard"><font face="Arial" size="2">Mit DCRaw ist es möglich auf die Bayer-Matrix zuzugreifen, noch bevor eine Interpolation stattgefunden hat. So ist es möglich, ganz andere Methoden zur Rekonstruktion der echten Farben anzuwenden, als die Primärfarben per Interpolation zu erraten.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Mit DCRaw ist es mÃ¶glich auf die Bayer-Matrix zuzugreifen, noch bevor eine Interpolation stattgefunden hat. So ist es mÃ¶glich, ganz andere Methoden zur Rekonstruktion der echten Farben anzuwenden, als die PrimÃ¤rfarben per Interpolation zu erraten.</font></p>
     <p class="Standard">
     <font size="2" face="Arial">Die  Super Pixel-Methode verzichtet auf Interpolation und erstellt stattdessen ein Super-Pixel aus jeder Pixel-Vierergruppe (RGBG).</font></p>
     <p class="Standard"><font size="2" face="Arial"><br>
-    Jede dieser Vierergruppen enthält alle Informationen über die Primärfarbe und die Luminanz, die benötigt werden.<br>
-    Diese Methode ist wirklich einfach, hat aber den Nachteil (oder Vorteil?), dass die Bildgröße des Endresultats dadurch nur noch ein viertel so groß ist.<br>
+    Jede dieser Vierergruppen enthÃ¤lt alle Informationen Ã¼ber die PrimÃ¤rfarbe und die Luminanz, die benÃ¶tigt werden.<br>
+    Diese Methode ist wirklich einfach, hat aber den Nachteil (oder Vorteil?), dass die BildgrÃ¶ÃŸe des Endresultats dadurch nur noch ein viertel so groÃŸ ist.<br>
     <br>
-    Die Super-Pixel Methode führt zu sehr guten Resultaten, wenn nur wenige Aufnahmen zum Stacken zur Verfügung stehen.</font></p></td>
+    Die Super-Pixel Methode fÃ¼hrt zu sehr guten Resultaten, wenn nur wenige Aufnahmen zum Stacken zur VerfÃ¼gung stehen.</font></p></td>
     <td width="49%">
     <IMG border=0 src="../images/BayerSuperPixel.jpg" width=373 align=right height=280></td>
   </tr>
@@ -654,13 +687,13 @@ Super-Pixel</font></b></font></p>
 <table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber3">
   <tr>
     <td width="51%">
-    <p class="Standard"><font size="2" face="Arial">Die letzte Methode, die von  Dave Coffin empfohlen wird, nutzt die Eigenschaft des Stacking-Prozesses, die "natürliche" Pixel-Drift, zwischen den einzelnen Aufnahmen, um die wahren  RGB Werte daraus zu errechnen.<br>
+    <p class="Standard"><font size="2" face="Arial">Die letzte Methode, die von  Dave Coffin empfohlen wird, nutzt die Eigenschaft des Stacking-Prozesses, die "natÃ¼rliche" Pixel-Drift, zwischen den einzelnen Aufnahmen, um die wahren  RGB Werte daraus zu errechnen.<br>
     <br>
-    Wenn eine große Anzahl von Aufnahmen verfügbar ist, und diese subpixelgenau ausgerichtet werden, errechnet  DeepSkyStacker  Bit für Bit die echten Farbwerte jeden Pixels, ohne Interpolation.<br>
+    Wenn eine groÃŸe Anzahl von Aufnahmen verfÃ¼gbar ist, und diese subpixelgenau ausgerichtet werden, errechnet  DeepSkyStacker  Bit fÃ¼r Bit die echten Farbwerte jeden Pixels, ohne Interpolation.<br>
 &nbsp;<br>
-    Nach dem Stacking-Prozess sorgt ein anderer Algorithmus für eine Normalisierung der RGB Werte, um Fehlstellen in der Information zu vermeiden.<br>
+    Nach dem Stacking-Prozess sorgt ein anderer Algorithmus fÃ¼r eine Normalisierung der RGB Werte, um Fehlstellen in der Information zu vermeiden.<br>
     <br>
-    Die  Bayer Drizzle-Methode führt zu hervorragenden Ergebnissen, wenn eine große Anzahl von Lightframes zur Verfügung steht und wenn die Guiding-Präzision über einem Pixel liegt (was eigentlich immer der Fall ist).</font></p></td>
+    Die  Bayer Drizzle-Methode fÃ¼hrt zu hervorragenden Ergebnissen, wenn eine groÃŸe Anzahl von Lightframes zur VerfÃ¼gung steht und wenn die Guiding-PrÃ¤zision Ã¼ber einem Pixel liegt (was eigentlich immer der Fall ist).</font></p></td>
     <td width="49%">
     <IMG border=0 src="../images/BayerDrizzle.jpg" width=375 align=right height=287></td>
   </tr>

@@ -3,38 +3,41 @@
 
 class QString;
 
-namespace Ui {
-class OutputTab;
-}
-
-class OutputTab : public QWidget
+namespace DSS
 {
-    Q_OBJECT
+	namespace Ui {
+		class OutputTab;
+	}
 
-typedef QWidget
-		Inherited;
+	class OutputTab : public QWidget
+	{
+		Q_OBJECT
 
-public:
-    explicit OutputTab(QWidget *parent = nullptr);
-    ~OutputTab();
+			typedef QWidget
+			Inherited;
 
-	void saveOutputSettings();
+	public:
+		explicit OutputTab(QWidget* parent = nullptr);
+		~OutputTab();
 
-public slots:
-	void onSetActive();
+		void saveOutputSettings();
 
-private:
-    Ui::OutputTab *ui;
-	COutputSettings	os;
+	public slots:
+		void onSetActive();
 
-private slots:
-	void on_createOutput_stateChanged(int);
-	void on_createHTML_stateChanged(int);
-	void on_autoSave_clicked();
-	void on_fileListName_clicked();
-	void on_appendNumber_stateChanged(int);
-	void on_refFrameFolder_clicked();
-	void on_fileListFolder_clicked();
-	void on_otherFolder_clicked();
-	void on_outputFolder_pressed();
-};
+	private:
+		Ui::OutputTab* ui;
+		COutputSettings	os;
+
+	private slots:
+		void on_createOutput_stateChanged(int);
+		void on_createHTML_stateChanged(int);
+		void on_autoSave_clicked();
+		void on_fileListName_clicked();
+		void on_appendNumber_stateChanged(int);
+		void on_refFrameFolder_clicked();
+		void on_fileListFolder_clicked();
+		void on_otherFolder_clicked();
+		void on_outputFolder_pressed();
+	};
+}

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_output.h"
 #include "avx_support.h"
 #include "avx_median.h"
@@ -11,7 +12,7 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 	outputBitmap{ outputbm },
 	avxReady{ true }
 {
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		avxReady = false;
 	// Homogenization not implemented with AVX
 	if (inputBitmap.GetHomogenization())
@@ -22,7 +23,7 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 }
 
 template <class INPUTTYPE, class OUTPUTTYPE>
-static bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
+bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
 {
 	return
 		(dynamic_cast<const CColorMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr) || // dynamic_cast for pointers does not throw
@@ -30,7 +31,7 @@ static bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) 
 }
 
 template <class T>
-inline static float AvxOutputComposition::convertToFloat(const T value) noexcept
+inline float AvxOutputComposition::convertToFloat(const T value) noexcept
 {
 	if constexpr (std::is_integral_v<T> && sizeof(T) == 4) // 32 bit integral type
 		return static_cast<float>(value >> 16);
@@ -177,9 +178,9 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	const auto vectorMedian = [&quickMedian](__m256& loMedian, __m256& hiMedian, const __m256 loLoBound, const __m256 hiLoBound, const __m256 loHiBound, const __m256 hiHiBound) -> void
 	{
 		for (size_t n = 0; n < 8; ++n)
-			loMedian.m256_f32[n] = quickMedian(n, loLoBound.m256_f32[n], loHiBound.m256_f32[n], loMedian.m256_f32[n]);
+			accessSimdElement(loMedian, n) = quickMedian(n, accessSimdElement(loLoBound, n), accessSimdElement(loHiBound, n), accessSimdElement(loMedian, n));
 		for (size_t n = 0; n < 8; ++n)
-			hiMedian.m256_f32[n] = quickMedian(n + 8, hiLoBound.m256_f32[n], hiHiBound.m256_f32[n], hiMedian.m256_f32[n]);
+			accessSimdElement(hiMedian, n) = quickMedian(n + 8, accessSimdElement(hiLoBound, n), accessSimdElement(hiHiBound, n), accessSimdElement(hiMedian, n));
 	};
 
 
@@ -242,8 +243,8 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 			__m256 upperBound2{ _mm256_set1_ps(initialUpperBound()) };
 			__m256 my1{ _mm256_undefined_ps() };
 			__m256 my2{ _mm256_undefined_ps() };
-			__m256 loMedian = _mm256_undefined_ps();
-			__m256 hiMedian = _mm256_undefined_ps();
+			__m256 loMedian = _mm256_setzero_ps();
+			__m256 hiMedian = _mm256_setzero_ps();
 
 			if constexpr (Method == MedianKappaSigma)
 				initMedianData(counter * size_t{ 16 } + colorOffset, 16);

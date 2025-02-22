@@ -32,9 +32,9 @@ using std::max;
 // Misc global headers.
 #include <omp.h>
 
-#include "../ZCLass/zdefs.h"
-#include "../ZCLass/Ztrace.h"
-#include "../ZCLass/zexcept.h"
+#include "../ZClass/zdefs.h"
+#include "../ZClass/Ztrace.h"
+#include "../ZClass/zexcept.h"
 
 
 // Windows (to go!)

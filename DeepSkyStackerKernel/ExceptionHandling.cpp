@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 
 #include "StackWalker.h"
 #include "Ztrace.h"
@@ -156,7 +156,9 @@ int addr2line(char const* const program_name, void const* const addr)
 	{
 		writeOutput(buff);
 	}
-	return WEXITSTATUS(pclose(in));
+
+	int status = pclose(in);
+	return WEXITSTATUS(status);
 }
 
 constexpr size_t MAX_STACK_FRAMES{ 64 };

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>IntermediateFiles</class>
- <widget class="QWidget" name="IntermediateFiles">
+ <class>DSS::IntermediateFiles</class>
+ <widget class="QWidget" name="DSS::IntermediateFiles">
   <property name="geometry">
    <rect>
     <x>0</x>

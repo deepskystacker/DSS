@@ -7,8 +7,8 @@ namespace DSS
 {
 	ChartTab::ChartTab(QWidget* parent)
 		: QWidget(parent),
-		scoreSeries{nullptr},
-		scoreChart{new QChart()},
+		qualitySeries{nullptr},
+		qualityChart{new QChart()},
 		fwhmSeries{nullptr},
 		fwhmChart{new QChart()},
 		starsSeries{nullptr},
@@ -28,19 +28,19 @@ namespace DSS
 		theme = (QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Dark)
 			? QChart::ChartTheme::ChartThemeBlueCerulean : QChart::ChartThemeBrownSand;
 
-		scoreChart->setTheme(theme);
+		qualityChart->setTheme(theme);
 		fwhmChart->setTheme(theme);
 		starsChart->setTheme(theme);
 		offsetChart->setTheme(theme);
 		angleChart->setTheme(theme);
 		skybgChart->setTheme(theme);
 
-		scoreSeries = new QLineSeries(this);
-		scoreSeries->setName(tr("Score", "IDC_SCORE"));
-		scoreSeries->setPointsVisible(true);
-		scoreChart->addSeries(scoreSeries);
-		connect(scoreSeries, &QLineSeries::hovered,
-			this, &ChartTab::scoreHovered);
+		qualitySeries = new QLineSeries(this);
+		qualitySeries->setName(tr("Quality"));
+		qualitySeries->setPointsVisible(true);
+		qualityChart->addSeries(qualitySeries);
+		connect(qualitySeries, &QLineSeries::hovered,
+			this, &ChartTab::qualityHovered);
 
 		fwhmSeries = new QLineSeries(this);
 		fwhmSeries->setName(tr("FWHM", "IDC_FWHM"));
@@ -91,15 +91,15 @@ namespace DSS
 		//
 		// Create default axes for all charts
 		//
-		scoreChart->createDefaultAxes();
+		qualityChart->createDefaultAxes();
 		fwhmChart->createDefaultAxes();
 		starsChart->createDefaultAxes();
 		offsetChart->createDefaultAxes();
 		angleChart->createDefaultAxes();
 		skybgChart->createDefaultAxes();
 
-		xAxis = axisX(scoreChart);
-		yAxis = axisY(scoreChart);
+		xAxis = axisX(qualityChart);
+		yAxis = axisY(qualityChart);
 		xAxis->setLabelFormat("%d");
 		xAxis->setTickType(QValueAxis::TicksDynamic);
 		yAxis->setRange(0, 1000);
@@ -134,15 +134,15 @@ namespace DSS
 		xAxis->setTickType(QValueAxis::TicksDynamic);
 		yAxis->setRange(0, 1.0);
 
-		radioScore->setChecked(true);
-		chartView->setChart(scoreChart);
+		radioQuality->setChecked(true);
+		chartView->setChart(qualityChart);
 		connectSignalsToSlots();
 	}
 
 	ChartTab::~ChartTab()
 	{
-		delete scoreSeries;
-		delete scoreChart;
+		delete qualitySeries;
+		delete qualityChart;
 		delete fwhmSeries;
 		delete fwhmChart;
 		delete starsSeries;
@@ -158,8 +158,8 @@ namespace DSS
 
 	void ChartTab::connectSignalsToSlots()
 	{
-		connect(radioScore, &QRadioButton::clicked,
-			this, &ChartTab::scoreButtonClicked);
+		connect(radioQuality, &QRadioButton::clicked,
+			this, &ChartTab::qualityButtonClicked);
 		connect(radioFWHM, &QRadioButton::clicked,
 			this, &ChartTab::fwhmButtonClicked);
 		connect(radioStars, &QRadioButton::clicked,
@@ -205,14 +205,14 @@ namespace DSS
 
 		switch (chartType)
 		{
-		case CT_SCORE:
-			if (scoreSeries)
+		case CT_QUALITY:
+			if (qualitySeries)
 			{
-				auto iter = scoreMap.find(name);
-				if (iter != scoreMap.end())
+				auto iter = qualityMap.find(name);
+				if (iter != qualityMap.end())
 				{
 					auto i = iter->second;
-					scoreSeries->setPointConfiguration(i, conf);
+					qualitySeries->setPointConfiguration(i, conf);
 				}
 			}
 			break;
@@ -287,7 +287,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void ChartTab::addScoreFWHMStars(const QString& name, double fScore, double fFWHM, double fStars, double fSkyBackground)
+	void ChartTab::addQualityFWHMStars(const QString& name, double fQuality, double fFWHM, double fStars, double fSkyBackground)
 	{
 		QValueAxis* xAxis;
 		QValueAxis* yAxis;
@@ -345,24 +345,24 @@ namespace DSS
 		}
 
 		//
-		// Adjust score axes if necessary (data won't display if we don't)
+		// Adjust quality axes if necessary (data won't display if we don't)
 		//
-		xAxis = axisX(scoreChart);
+		xAxis = axisX(qualityChart);
 		xAxis->setRange(1.0, rangeMax);
 		xAxis->setTickAnchor(1.0);
 		xAxis->setTickInterval(interval);
 
-		yAxis = axisY(scoreChart);
-		if (fScore > yAxis->max())
-			yAxis->setMax(fScore > 0 ? fScore * 1.1 : fScore * 0.9);
-		if (fScore < yAxis->min())
-			yAxis->setMin(fScore > 0 ? fScore * 0.9 : fScore * 1.1);
+		yAxis = axisY(qualityChart);
+		if (fQuality > yAxis->max())
+			yAxis->setMax(fQuality > 0 ? fQuality * 1.1 : fQuality * 0.9);
+		if (fQuality < yAxis->min())
+			yAxis->setMin(fQuality > 0 ? fQuality * 0.9 : fQuality * 1.1);
 
 		//
-		// Add the score and update the score chart
+		// Add the quality and update the quality chart
 		//
-		scoreSeries->append(x, fScore);
-		scoreMap.emplace(name, size - 1);
+		qualitySeries->append(x, fQuality);
+		qualityMap.emplace(name, size - 1);
 		yAxis->applyNiceNumbers();
 
 		//
@@ -554,7 +554,7 @@ namespace DSS
 			setPoint(name, PT_REFERENCE, CT_ANGLE);
 			break;
 		case II_DONTSTACK_REGISTER:
-			setPoint(name, PT_OK, CT_SCORE);
+			setPoint(name, PT_OK, CT_QUALITY);
 			setPoint(name, PT_OK, CT_FWHM);
 			setPoint(name, PT_OK, CT_STARS);
 			setPoint(name, PT_OK, CT_SKYBACKGROUND);
@@ -564,8 +564,8 @@ namespace DSS
 			setPoint(name, PT_OK, CT_DY);
 			setPoint(name, PT_OK, CT_ANGLE);
 			break;
-		case II_DONTSTACK_SCORE:
-			setPoint(name, PT_WRONG, CT_SCORE);
+		case II_DONTSTACK_QUALITY:
+			setPoint(name, PT_WRONG, CT_QUALITY);
 			break;
 		case II_DONTSTACK_STARS:
 			setPoint(name, PT_WRONG, CT_STARS);
@@ -587,8 +587,8 @@ namespace DSS
 			break;
 		case II_WARNING_NONE:
 			break;
-		case II_WARNING_SCORE:
-			setPoint(name, PT_WARNING, CT_SCORE);
+		case II_WARNING_QUALITY:
+			setPoint(name, PT_WARNING, CT_QUALITY);
 			break;
 		case II_WARNING_STARS:
 			setPoint(name, PT_WARNING, CT_STARS);
@@ -616,7 +616,7 @@ namespace DSS
 		files.clear();
 		nameMap.clear();
 
-		scoreSeries->clear();
+		qualitySeries->clear();
 
 		fwhmSeries->clear();
 
@@ -632,10 +632,10 @@ namespace DSS
 	
 	/* ------------------------------------------------------------------- */
 
-	void ChartTab::scoreButtonClicked(bool checked)
+	void ChartTab::qualityButtonClicked(bool checked)
 	{
 		if (checked)
-			chartView->setChart(scoreChart);
+			chartView->setChart(qualityChart);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -678,7 +678,7 @@ namespace DSS
 			chartView->setChart(skybgChart);
 	}
 
-	void ChartTab::scoreHovered(const QPointF& point, bool state)
+	void ChartTab::qualityHovered(const QPointF& point, bool state)
 	{
 		if (state)
 		{
@@ -765,7 +765,7 @@ namespace DSS
 		theme = (colorScheme == Qt::ColorScheme::Dark)
 			? QChart::ChartTheme::ChartThemeBlueCerulean : QChart::ChartThemeBrownSand;
 
-		scoreChart->setTheme(theme);
+		qualityChart->setTheme(theme);
 		fwhmChart->setTheme(theme);
 		starsChart->setTheme(theme);
 		offsetChart->setTheme(theme);

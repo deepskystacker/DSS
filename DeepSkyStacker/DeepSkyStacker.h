@@ -35,18 +35,19 @@
 **
 ****************************************************************************/
 #include "dssbase.h"
-#include "dss_settings.h"
+#include "DeepStack.h"
+#include "ProcessingSettings.h"
+
 namespace DSS
 {
+	class ExplorerBar;
+	class LowerDockWidget;
 	class PictureList;
+	class ProcessingControls;
+	class ProcessingDlg;
 	class StackingDlg;
 }
-class ExplorerBar;
 class QStackedWidget;
-class QWinHost;
-class CProcessingDlg;
-class CDSSSettings;
-class CDeepStack;
 
 class DeepSkyStacker :
 	public QMainWindow,
@@ -58,7 +59,7 @@ class DeepSkyStacker :
 	Q_OBJECT
 
 signals:
-	void tabChanged();
+	void panelChanged(ActivePanel panel);
 
 public slots:
 	void help();
@@ -70,16 +71,15 @@ protected slots:
 
 private:
 	bool initialised;
-	ExplorerBar* explorerBar;
+	DSS::ExplorerBar* explorerBar;
+	DSS::LowerDockWidget* lowerDockWidget;
 	DSS::PictureList* pictureList;
+	DSS::ProcessingControls* processingControls;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
-	QWinHost* winHost;
-	CWnd hostWnd;
-	std::unique_ptr<CProcessingDlg>	processingDlg;
+	DSS::ProcessingDlg*	processingDlg;
 	std::unique_ptr<CDeepStack> m_DeepStack;
-	std::unique_ptr<CDSSSettings> m_ImageProcessingSettings;
-	std::uint32_t currTab;
+	ActivePanel activePanel;
 	QStringList args;
 	QString baseTitle;
 	QString currentPathName;
@@ -91,7 +91,7 @@ private:
 	QShortcut* helpShortCut;
 
 	void createStatusBar();
-	void updateTab();
+	void updatePanel();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 	void connectSignalsToSlots();
 
@@ -99,9 +99,6 @@ protected:
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e) override;
 	void dropEvent(QDropEvent* e) override;
-	void showEvent(QShowEvent* event) override;
-
-	void onInitialise();
 
 public:
 	inline static DeepSkyStacker* instance()
@@ -110,44 +107,36 @@ public:
 	}
 
 	DeepSkyStacker();
-	~DeepSkyStacker();
+	~DeepSkyStacker() {};
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
-	inline std::uint32_t tab() { return currTab; }
+	inline ActivePanel panel() const { return activePanel; }
 
 
 	QString statusMessage();
 	CDeepStack& deepStack();
-	void setTab(std::uint32_t dwTabID);
+	void setPanel(ActivePanel panel);
 	void disableSubDialogs();
 	void enableSubDialogs();
-	CDSSSettings& imageProcessingSettings();
 	DSS::StackingDlg& getStackingDlg();
-	CProcessingDlg& getProcessingDlg();
-	ExplorerBar& GetExplorerBar();
+	DSS::ProcessingDlg& getProcessingDlg();
+	DSS::ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
 	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
 };
 
 
-class DeepSkyStackerApp : public CWinApp
-{
-public :
-	CWnd *				m_pMainDlg;
-
-public :
-	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
-	virtual ~DeepSkyStackerApp() = default;
-
-	virtual BOOL InitInstance( ) override;
-	virtual int ExitInstance() override;
-	virtual int Run() override;
-
-};
-
+//class DeepSkyStackerApp : public CWinApp
+//{
+//public :
+//	CWnd *				m_pMainDlg;
 //
-// Temporarily left here while still have to position MFC windows
+//public :
+//	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
+//	virtual ~DeepSkyStackerApp() = default;
 //
-void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath);
-void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter = false);
-
+//	virtual BOOL InitInstance( ) override;
+//	virtual int ExitInstance() override;
+//	virtual int Run() override;
+//
+//};

@@ -21,7 +21,7 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
 	DSS::ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage);
-bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+
 bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
 std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, DSS::ProgressBase* pProgress = nullptr);
 
@@ -29,42 +29,6 @@ std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, 
 
 bool IsFITSRawBayer();		// From FITSUtil.h
 bool IsFITSSuperPixels();	// From FITSUtil.h
-
-using pByte = std::uint8_t*;
-class C32BitsBitmap
-{
-private:
-	HBITMAP m_hBitmap;
-	void* m_lpBits;
-	int m_lWidth;
-	int m_lHeight;
-	pByte* m_pLine;
-	std::uint32_t m_dwByteWidth;
-
-private:
-	void InitInternals();
-
-public:
-	C32BitsBitmap();
-	virtual ~C32BitsBitmap();
-
-	virtual int	Width() { return m_lWidth; }
-	virtual int	Height() { return m_lHeight; }
-	virtual void Init(int lWidth, int lHeight);
-
-	void* GetBits() { return m_lpBits; }
-	int	ByteWidth() { return m_dwByteWidth; }
-	HBITMAP GetHBITMAP() { return m_hBitmap; }
-	HBITMAP	Create(int lWidth, int lHeight);
-	bool InitFrom(CMemoryBitmap* pBitmap);
-	bool CopyToClipboard();
-	bool IsEmpty() { return (m_hBitmap == nullptr); }
-	void Free();
-	HBITMAP Detach();
-	COLORREF GetPixel(int x, int y);
-	pByte GetPixelBase(int x, int y);
-	void SetPixel(int x, int y, COLORREF crColor);
-};
 
 namespace DSS
 {
@@ -113,7 +77,6 @@ class CAllDepthBitmap
 public:
 	bool m_bDontUseAHD;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	std::shared_ptr<C32BitsBitmap> m_pWndBitmap;
 	std::shared_ptr<QImage> m_Image;
 
     CAllDepthBitmap() : m_bDontUseAHD(false) {};
@@ -126,10 +89,8 @@ public:
 	bool initQImage();
 };
 
-void CopyBitmapToClipboard(HBITMAP hBitmap);
 bool LoadPicture(const fs::path& file, CAllDepthBitmap & AllDepthBitmap, DSS::ProgressBase* pProgress = nullptr);
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::ProgressBase* pProgress);
 
-bool	ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);
 bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);
 

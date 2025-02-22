@@ -2,35 +2,38 @@
 
 class Workspace;
 
-namespace Ui {
-class IntermediateFiles;
-}
-
-class IntermediateFiles : public QWidget
+namespace DSS
 {
-    Q_OBJECT
+	namespace Ui {
+		class IntermediateFiles;
+	}
 
-typedef QWidget
-		Inherited;
+	class IntermediateFiles : public QWidget
+	{
+		Q_OBJECT
 
-public:
-    explicit IntermediateFiles(QWidget *parent = nullptr, bool regOnly = false);
-    ~IntermediateFiles();
+			typedef QWidget
+			Inherited;
 
-public slots:
-	void onSetActive();
+	public:
+		explicit IntermediateFiles(QWidget* parent = nullptr, bool regOnly = false);
+		~IntermediateFiles();
 
-private:
-	bool registerOnly;
-    Ui::IntermediateFiles *ui;
-	std::unique_ptr<Workspace> workspace;
+	public slots:
+		void onSetActive();
+
+	private:
+		bool registerOnly;
+		Ui::IntermediateFiles* ui;
+		std::unique_ptr<Workspace> workspace;
 
 
-private slots:
-	void on_formatFITS_clicked();
-	void on_formatTIFF_clicked();
+	private slots:
+		void on_formatFITS_clicked();
+		void on_formatTIFF_clicked();
 
-	void on_saveCalibrated_stateChanged(int state);
-	void on_saveDebayered_stateChanged(int state);
-	void on_saveIntermediate_stateChanged(int state);
-};
+		void on_saveCalibrated_stateChanged(int state);
+		void on_saveDebayered_stateChanged(int state);
+		void on_saveIntermediate_stateChanged(int state);
+	};
+}

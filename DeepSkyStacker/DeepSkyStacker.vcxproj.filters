@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -28,14 +28,8 @@
     <Filter Include="Dialogs\Settings">
       <UniqueIdentifier>{b3fd7e64-4da0-4cee-9902-e351ec135e87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dialogs\ImageSinks">
-      <UniqueIdentifier>{1c172764-f817-483b-9fe6-5b07e4b4a8c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Qt Porting">
-      <UniqueIdentifier>{db9eb54e-7edb-4ace-9ead-2b1cc7cb7fb2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Qt">
       <UniqueIdentifier>{31a4e7c2-73e1-42fc-a635-0db545d92d41}</UniqueIdentifier>
@@ -48,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SetUILanguage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,25 +66,7 @@
     <ClCompile Include="RegisterSettings.cpp">
       <Filter>Dialogs\Registering</Filter>
     </ClCompile>
-    <ClCompile Include="LuminanceTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessingDlg.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessSettingsSheet.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="RGBTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SaturationTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
     <ClCompile Include="SavePicture.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
     <ClCompile Include="StarMaskDlg.cpp">
@@ -102,50 +75,8 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\BtnST.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ButtonToolbar.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\childprop.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ControlPos.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Gradient.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Label.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Delaunay.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="qwinwidget.cpp">
-      <Filter>Qt Porting</Filter>
-    </ClCompile>
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="qwinhost.cpp">
-      <Filter>Qt Porting</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageSinks.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
     <ClCompile Include="StackingDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
@@ -219,134 +150,27 @@
     <ClCompile Include="About.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessingDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="RGBTab.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessingSettingsDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Delaunay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lowerdockwidget.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="processingcontrols.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStacker.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerCAT.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerCN2.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerCZ.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerDE.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerEN.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerES.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerFR.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerIT.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerNL.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerPTB.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerRO.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerRU.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerTR.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-    <ResourceCompile Include="DeepSkyStackerJP.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SetUILanguage.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="commonresource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resourceCZ.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resourceES.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resourceFR.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resourceIT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LuminanceTab.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessingDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessSettingsSheet.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="RGBTab.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SaturationTab.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SavePicture.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="StarMaskDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\BtnST.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ButtonToolbar.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\childprop.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ControlPos.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\EasySize.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Gradient.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\gradientctrl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Label.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="DSSMemory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Delaunay.h">
@@ -361,19 +185,19 @@
     <ClInclude Include="DSS-winpackagefamily.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageSinks.h">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClInclude>
-    <ClInclude Include="qmfcapp.h">
-      <Filter>Qt Porting</Filter>
-    </ClInclude>
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dslr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessingSettings.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierAdjust.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -725,19 +549,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="QWinHost">
-      <Filter>Qt Porting</Filter>
-    </None>
-    <None Include="QWinWidget">
-      <Filter>Qt Porting</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
     <QtRcc Include="resources.qrc">
-      <Filter>Qt\ui</Filter>
+      <Filter>Resource Files</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
@@ -819,11 +635,17 @@
     <QtUic Include="ui\ProcessingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\ProcessingSettingsDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\StarMaskDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ProcessingControls.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="qwinwidget.h">
-      <Filter>Qt Porting</Filter>
-    </QtMoc>
     <QtMoc Include="BackgroundOptions.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -838,9 +660,6 @@
     </QtMoc>
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="qwinhost.h">
-      <Filter>Qt Porting</Filter>
     </QtMoc>
     <QtMoc Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
@@ -926,6 +745,24 @@
     <QtMoc Include="About.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
+    <QtMoc Include="ProcessingDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="ProcessingSettingsDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="SavePicture.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="StarMaskDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="lowerdockwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="processingcontrols.h">
+      <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS_ca.ts">
@@ -970,5 +807,16 @@
     <QtTranslation Include="i18n\DSS_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DSS_ja_JP.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="Version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 #pragma once
 
 class CMemoryBitmap;
-class C32BitsBitmap;
 class DeepSkyStackerLive;
 
 
@@ -54,9 +53,9 @@ class ImageLoader : public QObject
 	friend class ThreadLoader;
 	Q_OBJECT
 
-	static constexpr int16_t MAXIMAGESINCACHE = 20;
-	static inline constinit std::shared_mutex rwMutex{};
+	static inline constexpr int16_t MAXIMAGESINCACHE = 20;
 	static inline constinit std::atomic_int age{ 0 };
+	static inline std::shared_mutex rwMutex{};
 	static inline CacheType imageCache{};
 
 private:

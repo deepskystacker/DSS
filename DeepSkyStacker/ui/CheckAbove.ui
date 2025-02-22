@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CheckAbove</class>
- <widget class="QDialog" name="CheckAbove">
+ <class>DSS::CheckAbove</class>
+ <widget class="QDialog" name="DSS::CheckAbove">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string comment="IDD_CHECKABOVE">Minimum score:</string>
+      <string comment="IDD_CHECKABOVE">Minimum quality:</string>
      </property>
     </widget>
    </item>

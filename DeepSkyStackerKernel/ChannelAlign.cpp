@@ -116,13 +116,13 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		lfiGreen.SetProgress(pProgress);
 		lfiBlue.SetProgress(pProgress);
 
-		lfiRed.RegisterPicture(pRed);
+		lfiRed.RegisterPicture(pRed, -1); // -1 means, we do NOT register a series of frames.
 		if (pProgress)
 			pProgress->Progress1(1);
-		lfiGreen.RegisterPicture(pGreen);
+		lfiGreen.RegisterPicture(pGreen, -1);
 		if (pProgress)
 			pProgress->Progress1(2);
-		lfiBlue.RegisterPicture(pBlue);
+		lfiBlue.RegisterPicture(pBlue, -1);
 		if (pProgress)
 			pProgress->Progress1(3);
 
@@ -135,8 +135,8 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		CMemoryBitmap* pSecondBitmap;
 		CMemoryBitmap* pThirdBitmap;
 
-		const double fMaxScore = std::max(lfiRed.m_fOverallQuality, std::max(lfiGreen.m_fOverallQuality, lfiBlue.m_fOverallQuality));
-		if (fMaxScore == lfiRed.m_fOverallQuality)
+		const double fMaxScore = std::max(lfiRed.quality, std::max(lfiGreen.quality, lfiBlue.quality));
+		if (fMaxScore == lfiRed.quality)
 		{
 			pReference	= &lfiRed;
 			pSecond		= &lfiGreen;
@@ -145,7 +145,7 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 			pSecondBitmap	 = pGreen;
 			pThirdBitmap	 = pBlue;
 		}
-		else if (fMaxScore == lfiGreen.m_fOverallQuality)
+		else if (fMaxScore == lfiGreen.quality)
 		{
 			pReference	= &lfiGreen;
 			pSecond		= &lfiRed;
@@ -168,7 +168,7 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, Progre
 		CMatchingStars MatchingStars{ pBitmap->Width(), pBitmap->Height() };
 		constexpr int MaxNumberOfConsideredStars = 100;
 
-		const auto addRefOrTargetStar = [&MatchingStars]<bool Refstar>(std::span<CStar> stars)
+		const auto addRefOrTargetStar = [&MatchingStars, MaxNumberOfConsideredStars]<bool Refstar>(std::span<CStar> stars)
 		{
 			std::ranges::sort(stars, CompareStarLuminancy);
 			for (const auto& star : std::views::take(stars, MaxNumberOfConsideredStars)) // Is safe, even if 'stars' has less than 100 elements.

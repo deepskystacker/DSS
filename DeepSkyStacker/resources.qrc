@@ -21,7 +21,7 @@
         <file alias="trails.bmp">res/Comet_Trails.bmp</file>
     </qresource>
     <qresource prefix="/flags">
-        <file alias="brazil.png">res/Brazil.png</file>
+        <file alias="brazil.png">res/brazil.png</file>
         <file alias="catalan.png">res/Catalan.png</file>
         <file alias="czech.png">res/Czech.png</file>
         <file alias="dutch.png">res/Dutch.png</file>
@@ -33,6 +33,7 @@
         <file alias="spanish.png">res/Spanish.png</file>
         <file alias="taiwan.png">res/Taiwan.png</file>
         <file alias="turkish.png">res/Turkish.png</file>
+        <file alias="prc.png">res/prc.png</file>
     </qresource>
     <qresource prefix="/stacking">
         <file alias="normalmode.bmp">res/normalmode.bmp</file>
@@ -116,5 +117,13 @@
         <file alias="logsqrt-dark.png">Icon/logsqrt-dark.png</file>
         <file alias="sqrt.png">Icon/sqrt.png</file>
         <file alias="sqrt-dark.png">Icon/sqrt-dark.png</file>
+    </qresource>
+    <qresource prefix="/starmask">
+        <file alias="StarShape_Bell.bmp">res/StarShape_Bell.bmp</file>
+        <file alias="StarShape_TruncatedBell.bmp">res/StarShape_TruncatedBell.bmp</file>
+        <file alias="StarShape_Cone.bmp">res/StarShape_Cone.bmp</file>
+        <file alias="StarShape_TruncatedCone.bmp">res/StarShape_TruncatedCone.bmp</file>
+        <file alias="StarShape_Cubic.bmp">res/StarShape_Cubic.bmp</file>
+        <file alias="StarShape_Quadratic.bmp">res/StarShape_Quadratic.bmp</file>
     </qresource>
 </RCC>

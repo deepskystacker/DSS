@@ -133,11 +133,19 @@ typedef enum FITSFORMAT
 
 enum class Column
 {
-	Path = 0, File, Type, Filter, Score,
+	Path = 0, File, Type, Filter, Score, Quality,
 	dX, dY, Angle, FileTime, Size, CFA, Depth,
 	Info, ISO, Exposure, Aperture, FWHM, Stars,
 	Background, MAX_COLS
 };
+
+enum class ActivePanel
+{
+	StackingPanel,
+	ProcessingPanel
+};
+
+
 // TODO: reference additional headers your program requires here
 
 #pragma warning( disable : 4244 )

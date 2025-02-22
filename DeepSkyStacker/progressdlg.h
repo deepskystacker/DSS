@@ -38,13 +38,13 @@
 //
 #include "DSSProgress.h"
 
-namespace Ui {
-	class ProgressDlg;
-}
-
 namespace DSS
 {
-	class ProgressDlg : public QDialog, public ProgressBase				
+	namespace Ui {
+		class ProgressDlg;
+	}
+
+	class ProgressDlg : public QDialog, public ProgressBase
 	{
 		Q_OBJECT
 

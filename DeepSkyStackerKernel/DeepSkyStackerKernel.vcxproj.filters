@@ -170,9 +170,6 @@
     <ClCompile Include=".\TaskInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include=".\File.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RunningStackingEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -186,9 +183,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StarMask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dss_settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tracecontrol.cpp">
@@ -206,6 +200,12 @@
     <ClCompile Include="QEventLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RegisterCore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avx_simd_check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -215,9 +215,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\BackgroundCalibration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\BezierAdjust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\BitmapExt.h">
@@ -257,9 +254,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\FrameList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include=".\Histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\MasterFrames.h">
@@ -361,9 +355,6 @@
     <ClInclude Include=".\TaskInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\File.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -448,9 +439,6 @@
     <ClInclude Include="StarMask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dss_settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tracecontrol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -461,6 +449,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\DSSProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_simd_check.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_simd_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -521,6 +518,9 @@
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
     <QtTranslation Include="i18n\DSSKernel_zh_CN.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSKernel_ja_JP.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

@@ -19,6 +19,7 @@
 [Rr]eleases/
 x64/
 x86/
+!/DeepSkyStackerKernel/simde/x86
 bld/
 [Bb]in/
 [Oo]bj/
@@ -31,6 +32,13 @@ bld/
 
 # Visual Studio 2017 auto generated files
 GeneratedFiles/
+
+# CMake build directory
+build/
+out/build/
+
+# vcpkg installed directories
+vcpkg_installed/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

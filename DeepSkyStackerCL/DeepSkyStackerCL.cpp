@@ -2,14 +2,21 @@
 //
 
 #include <stdafx.h>
+
+#if defined(Q_OS_WIN) && !defined(NDEBUG)
+//
+// Visual Leak Detector
+#include <vld.h>
+#endif
+
 #include <QtLogging>
+#include <QImageReader>
 #include "DeepSkyStackerCL.h"
 #include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "SetUILanguage.h"
 #include "tracecontrol.h"
 #include "Ztrace.h"
 
@@ -117,7 +124,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 		// Register checked light frames
 		CRegisterEngine	RegisterEngine;
 		RegisterEngine.OverrideIntermediateFileFormat(bUseFits ? IFF_FITS : IFF_TIFF);
-		bContinue = RegisterEngine.RegisterLightFrames(tasks, stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
+		bContinue = RegisterEngine.RegisterLightFrames(tasks, frameList.getReferenceFrame(), stackingParams.IsOptionSet(StackingParams::eStackingOption::FORCE_REGISTER), &progress);
 	}
 	if (stackingParams.IsOptionSet(StackingParams::eStackingOption::STACKING) && bContinue)
 	{
@@ -381,7 +388,7 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knows how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
@@ -394,28 +401,11 @@ int main(int argc, char* argv[])
 #endif
 
 	//
-	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	// Silence the windows heap checker as we use Visual Leak Detector
 	//
-#if defined(_WINDOWS)
+#if defined(Q_OS_WIN)
 	_CrtSetDbgFlag(0);
-#if !defined(NDEBUG)
-	AfxEnableMemoryLeakDump(false);
 #endif
-#endif
-
-#ifndef NOGDIPLUS
-	GdiplusStartupInput		gdiplusStartupInput;
-	GdiplusStartupOutput	gdiSO;
-	ULONG_PTR				gdiplusToken;
-	ULONG_PTR				gdiHookToken;
-
-	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = true;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
-	gdiSO.NotificationHook(&gdiHookToken);
-#endif
-
-	SetUILanguage();
 
 	Exiv2::XmpParser::initialize();
 	::atexit(Exiv2::XmpParser::terminate);
@@ -429,12 +419,6 @@ int main(int argc, char* argv[])
 	DeepSkyStackerCommandLine process(argc, argv);
 
 	process.Run();
-
-#ifndef NOGDIPLUS
-	// Shutdown GDI+
-	gdiSO.NotificationUnhook(gdiHookToken);
-	GdiplusShutdown(gdiplusToken);
-#endif
 
 	return 0;
 }

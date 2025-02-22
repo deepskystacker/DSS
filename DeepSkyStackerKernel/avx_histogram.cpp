@@ -1,13 +1,13 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_histogram.h"
 #include "avx_support.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "BezierAdjust.h"
 #include "ColorHelpers.h"
-#include <immintrin.h>
 
-AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
-	avxReady{ AvxSupport::checkSimdAvailability() },
+AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
+	avxReady{ AvxSimdCheck::checkSimdAvailability() },
 	redHisto(HistogramSize(), 0),
 	greenHisto(HistogramSize(), 0),
 	blueHisto(HistogramSize(), 0),
@@ -167,6 +167,81 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 	return 1;
 }
 
+// Conflict detection: Number of equal elements + blocking mask. 
+std::tuple<__m256i, std::uint32_t> Avx256Histogram::detectConflictsEpi32(const __m256i a) noexcept
+{
+	__m256i counter = _mm256_set1_epi32(1);
+	std::uint32_t bitMask = 0;
+
+	__m256i shifted = AvxSupport::shiftRightEpi32<1>(a);
+	__m256i c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0x80); // Set highest mask to "no conflict" (=0) 
+	counter = _mm256_sub_epi32(counter, c); // Add one where there is a conflict with the element left from it (by one position). 
+	bitMask |= (_mm256_movemask_epi8(c) << 4); // If there is a conflict with the element left from it -> set the mask of that element to 1. 
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xc0);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 8);
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xe0);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 12);
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xf0);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 16);
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xf8);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 20);
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xfc);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 24);
+
+	shifted = AvxSupport::shiftRightEpi32<1>(shifted);
+	c = _mm256_blend_epi32(_mm256_cmpeq_epi32(a, shifted), _mm256_setzero_si256(), 0xfe);
+	counter = _mm256_sub_epi32(counter, c);
+	bitMask |= (_mm256_movemask_epi8(c) << 28);
+
+	return { counter, bitMask };
+}
+
+template <class T>
+void Avx256Histogram::calcHistoOfVectorEpi32(const __m256i colorVec, T& histogram)
+{
+	const auto [nrEqualColors, bitMask] = detectConflictsEpi32(colorVec);
+
+	const __m256i sourceHisto = _mm256_i32gather_epi32((const int*)&*histogram.begin(), colorVec, 4);
+	const __m256i updatedHisto = _mm256_add_epi32(sourceHisto, nrEqualColors);
+
+	if ((bitMask & 1) == 0) // No conflict 
+		histogram[_mm256_cvtsi256_si32(colorVec)] = _mm256_cvtsi256_si32(updatedHisto);
+	if ((bitMask & (1 << 4)) == 0)
+		histogram[_mm256_extract_epi32(colorVec, 1)] = _mm256_extract_epi32(updatedHisto, 1);
+	if ((bitMask & (1 << 8)) == 0)
+		histogram[_mm256_extract_epi32(colorVec, 2)] = _mm256_extract_epi32(updatedHisto, 2);
+	if ((bitMask & (1 << 12)) == 0)
+		histogram[_mm256_extract_epi32(colorVec, 3)] = _mm256_extract_epi32(updatedHisto, 3);
+	const __m128i colorHiLane = _mm256_extracti128_si256(colorVec, 1);
+	const __m128i histoHiLane = _mm256_extracti128_si256(updatedHisto, 1);
+	if ((bitMask & (1 << 16)) == 0)
+		histogram[_mm_cvtsi128_si32(colorHiLane)] = _mm_cvtsi128_si32(histoHiLane);
+	if ((bitMask & (1 << 20)) == 0)
+		histogram[_mm_extract_epi32(colorHiLane, 1)] = _mm_extract_epi32(histoHiLane, 1);
+	if ((bitMask & (1 << 24)) == 0)
+		histogram[_mm_extract_epi32(colorHiLane, 2)] = _mm_extract_epi32(histoHiLane, 2);
+	if ((bitMask & (1 << 28)) == 0)
+		histogram[_mm_extract_epi32(colorHiLane, 3)] = _mm_extract_epi32(histoHiLane, 3);
+}
+
+// Explicit template instantiation for the type we use (vector<int>).
+template void Avx256Histogram::calcHistoOfVectorEpi32(const __m256i colorVec, std::vector<int>& histogram);
+
 
 // *****************
 // Non-AVX Histogram
@@ -174,7 +249,6 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 
 int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
-	constexpr double Maxvalue = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
 	const size_t width = histoData.inputBitmap.Width();
 	const double fMultiplier = multiplier * 256.0;
 
@@ -185,11 +259,14 @@ int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 			double fRed, fGreen, fBlue;
 			this->histoData.inputBitmap.GetPixel(col, row, fRed, fGreen, fBlue);
 
-			const auto colorToIndex = [](const double color) { return static_cast<size_t>(std::min(color, Maxvalue)); };
+			constexpr auto ColorToIndex = [](const double color) {
+				constexpr double Maxvalue = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
+				return static_cast<size_t>(std::min(color, Maxvalue));
+			};
 
-			++this->histoData.redHisto[colorToIndex(fRed * fMultiplier)];
-			++this->histoData.greenHisto[colorToIndex(fGreen * fMultiplier)];
-			++this->histoData.blueHisto[colorToIndex(fBlue * fMultiplier)];
+			++this->histoData.redHisto[ColorToIndex(fRed * fMultiplier)];
+			++this->histoData.greenHisto[ColorToIndex(fGreen * fMultiplier)];
+			++this->histoData.blueHisto[ColorToIndex(fBlue * fMultiplier)];
 		}
 	}
 
@@ -203,7 +280,7 @@ int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 // *************
 namespace {
 
-	void adjust(const CHistogramAdjust& hadj, float* const p, const size_t len)
+	void adjust(const DSS::HistogramAdjust& hadj, float* const p, const size_t len)
 	{
 		using VecType = __m256;
 		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -211,10 +288,10 @@ namespace {
 		const VecType mn = _mm256_set1_ps(hadj.GetMin());
 		const VecType mx = _mm256_set1_ps(hadj.GetMax());
 		const VecType sh = _mm256_set1_ps(hadj.GetShift());
-		const VecType omn = _mm256_set1_ps(hadj.GetOrgMin());
-		const VecType omx = _mm256_set1_ps(hadj.GetOrgMax());
-		const VecType umn = _mm256_set1_ps(hadj.GetUsedMin());
-		const VecType umx = _mm256_set1_ps(hadj.GetUsedMax());
+		const VecType omn = _mm256_set1_ps(hadj.getOriginalMinimum());
+		const VecType omx = _mm256_set1_ps(hadj.getOriginalMaximum());
+		const VecType umn = _mm256_set1_ps(hadj.getUsedMinimum());
+		const VecType umx = _mm256_set1_ps(hadj.getUsedMaximum());
 		const VecType usedMinusOrgMin = _mm256_sub_ps(umn, omn);
 		const VecType orgMinusUsedMax = _mm256_sub_ps(omx, umx);
 		const VecType minMinusOrgMin = _mm256_sub_ps(mn, omn);
@@ -228,7 +305,7 @@ namespace {
 			const VecType v1 = _mm256_fmadd_ps(_mm256_div_ps(value, _mm256_max_ps(_mm256_set1_ps(1.0f), minMinusOrgMin)), usedMinusOrgMin, omn); // m_fOrgMin + fValue / std::max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin)
 			const VecType v2 = _mm256_fnmadd_ps(_mm256_div_ps(valMinusMax, _mm256_max_ps(_mm256_set1_ps(1.0f), orgMaxMinusMax)), orgMinusUsedMax, omx); // m_fOrgMax - (fValue - m_fMax) / std::max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax)
 			const VecType v3 = _mm256_div_ps(_mm256_sub_ps(value, mn), _mm256_max_ps(_mm256_set1_ps(1.0f), _mm256_sub_ps(mx, mn)));
-			const VecType adjusted = _mm256_log_ps(_mm256_fmadd_ps(_mm256_sqrt_ps(v3), _mm256_set1_ps(1.7f), _mm256_set1_ps(1.0f))); // log(pow(fValue, 1/2.0)*1.7+1);
+			const VecType adjusted = avxLog(_mm256_fmadd_ps(_mm256_sqrt_ps(v3), _mm256_set1_ps(1.7f), _mm256_set1_ps(1.0f))); // log(pow(fValue, 1/2.0)*1.7+1);
 			const VecType v4 = _mm256_fmadd_ps(adjusted, usedMaxMinusMin, umn); // m_fUsedMin + AdjustValue((fValue - m_fMin) / std::max(1.0, (m_fMax - m_fMin))) * (m_fUsedMax - m_fUsedMin)
 			const VecType v5 = _mm256_fmadd_ps(usedMaxMinusMin, sh, _mm256_blendv_ps(_mm256_blendv_ps(v4, v2, _mm256_cmp_ps(value, mx, _CMP_GT_OQ)), v1, _mm256_cmp_ps(value, mn, _CMP_LT_OQ)));
 
@@ -281,6 +358,11 @@ namespace {
 	}
 }
 
+AvxBezierAndSaturation::AvxBezierAndSaturation(const size_t bufferLen) :
+	avxSupported{ AvxSimdCheck::checkSimdAvailability() },
+	redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
+	bezierX{}, bezierY{}
+{}
 
 void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome)
 {
@@ -306,7 +388,7 @@ int AvxBezierAndSaturation::toHsl()
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
 }
 
-int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
 }
@@ -315,9 +397,7 @@ int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(
 		this,
-		[markOverAndUnderExposure](auto&& o) {
-			return markOverAndUnderExposure ? o.avxToRgb<true>() : o.avxToRgb<false>();
-		}
+		[markOverAndUnderExposure](auto&& o) { return o.avxToRgb(markOverAndUnderExposure); }
 	);
 }
 
@@ -358,7 +438,7 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 	return first;
 }
 
-int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistogramAdjust& histoAdjust)
+int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
 	if (!this->histoData.avxSupported)
 		return 1;
@@ -370,7 +450,7 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const CRGBHistog
 	const auto greenAdjust = histoAdjust.GetGreenAdjust();
 	const auto blueAdjust = histoAdjust.GetBlueAdjust();
 
-	if (redAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || greenAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT || blueAdjust.GetAdjustMethod() != HAT_LOGSQUAREROOT)
+	if (redAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || greenAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || blueAdjust.GetAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot)
 		return 2;
 
 	for (size_t n = 0; n < len; ++n)
@@ -451,8 +531,7 @@ int Avx256BezierAndSaturation::avxToHsl()
 	return AvxSupport::zeroUpper(0);
 }
 
-template <bool MarkOverAndUnderExposure>
-int Avx256BezierAndSaturation::avxToRgb()
+int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
 	if (!this->histoData.avxSupported)
 		return 1;
@@ -476,7 +555,7 @@ int Avx256BezierAndSaturation::avxToRgb()
 		return _mm256_mul_ps(r3, _mm256_set1_ps(255.0f)); //_mm512_mul_ps(r3, _mm512_set1_ps(255.0f));
 	};
 
-	const auto toRGB = [&rgb1](const VecType h, const VecType s, const VecType l) -> std::tuple<VecType, VecType, VecType>
+	const auto toRGB = [&rgb1, markOverAndUnderExposure](const VecType h, const VecType s, const VecType l) -> std::tuple<VecType, VecType, VecType>
 	{
 		const VecType rm21 = _mm256_fmadd_ps(l, s, l); // L + L * S
 		const VecType rm22 = _mm256_fnmadd_ps(l, s, _mm256_add_ps(l, s)); // L + S - L * S
@@ -494,11 +573,11 @@ int Avx256BezierAndSaturation::avxToRgb()
 		const VecType bResult = _mm256_blendv_ps(rgb1(rm1, rm2, rmdiff, _mm256_sub_ps(h, _mm256_set1_ps(120.0f))), l255, sequ0); // if (S == 0) B = L * 255; else B = rgb1(...,h-120);
 
 		return {
-			MarkOverAndUnderExposure ? _mm256_and_ps(notunderexposed,
+			markOverAndUnderExposure ? _mm256_and_ps(notunderexposed,
 				_mm256_blendv_ps(_mm256_set1_ps(255.0f), rResult, notoverexposed)
 			) : rResult,
-			MarkOverAndUnderExposure ? _mm256_and_ps(_mm256_and_ps(notoverexposed, notunderexposed), gResult) : gResult,
-			MarkOverAndUnderExposure ? _mm256_and_ps(notoverexposed,
+			markOverAndUnderExposure ? _mm256_and_ps(_mm256_and_ps(notoverexposed, notunderexposed), gResult) : gResult,
+			markOverAndUnderExposure ? _mm256_and_ps(notoverexposed,
 				_mm256_blendv_ps(_mm256_set1_ps(255.0f), bResult, notunderexposed)
 			) : bResult
 		};
@@ -526,11 +605,6 @@ int Avx256BezierAndSaturation::avxToRgb()
 
 	return AvxSupport::zeroUpper(0);
 }
-
-template
-int Avx256BezierAndSaturation::avxToRgb<true>();
-template
-int Avx256BezierAndSaturation::avxToRgb<false>();
 
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
@@ -574,7 +648,7 @@ int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float
 
 	const auto satShift = [shiftVal = _mm256_set1_ps(saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift)](const VecType v) -> VecType
 	{
-		return _mm256_pow_ps(v, shiftVal);
+		return avxPow(v, shiftVal);
 	};
 
 	float* const pGreen = this->histoData.greenBuffer.data();
@@ -593,7 +667,7 @@ int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float
 // Non AVX Bezier functions
 // ------------------------
 
-int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class CRGBHistogramAdjust& histoAdjust)
+int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class DSS::RGBHistogramAdjust& histoAdjust)
 {
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
 
@@ -682,8 +756,7 @@ int NonAvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float
 	return 0;
 }
 
-template <bool MarkOverAndUnderExposure>
-int NonAvxBezierAndSaturation::avxToRgb()
+int NonAvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
 	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
 	{
@@ -692,7 +765,7 @@ int NonAvxBezierAndSaturation::avxToRgb()
 		double r, g, b;
 		ToRGB(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], l, r, g, b);
 
-		if constexpr (MarkOverAndUnderExposure)
+		if (markOverAndUnderExposure)
 		{
 			const bool notoverexposed = l <= 1.0f;
 			const bool notunderexposed = l > (2.0f / 255.0f);
@@ -710,8 +783,3 @@ int NonAvxBezierAndSaturation::avxToRgb()
 	}
 	return 0;
 }
-
-template
-int NonAvxBezierAndSaturation::avxToRgb<true>();
-template
-int NonAvxBezierAndSaturation::avxToRgb<false>();

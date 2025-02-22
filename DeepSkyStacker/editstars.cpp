@@ -174,6 +174,7 @@ namespace DSS
 		m_fLightBkgd{ 0 },
 		m_bDirty{ false },
 		m_fScore{ 0 },
+		m_fQuality{ 0 },
 		m_lNrStars{ 0 },
 		m_fFWHM{ 0 },
 	//	m_fBackground{ 0 },
@@ -352,28 +353,28 @@ namespace DSS
 		hide();
 	}
 
-	void EditStars::starsButtonPressed()
+	void EditStars::starsOrCometButtonPressed(const bool cometMode)
 	{
-		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
-		connect(imageView, &ImageView::Image_mousePressEvent, this, & EditStars::mousePressEvent);
-		connect(imageView, &ImageView::Image_mouseMoveEvent, this, & EditStars::mouseMoveEvent);
-		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, & EditStars::mouseReleaseEvent);
-		connect(imageView, &ImageView::Image_resizeEvent, this, & EditStars::resizeMe);
-		m_bCometMode = false;
+		constexpr auto connectionType = static_cast<Qt::ConnectionType>(Qt::AutoConnection | Qt::UniqueConnection);
+
+		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent, connectionType);
+		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent, connectionType);
+		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent, connectionType);
+		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent, connectionType);
+		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe, connectionType);
+		m_bCometMode = cometMode;
 		show();
 		raise();
 	}
 
+	void EditStars::starsButtonPressed()
+	{
+		starsOrCometButtonPressed(false);
+	}
+
 	void EditStars::cometButtonPressed()
 	{
-		connect(imageView, &ImageView::Image_leaveEvent, this, &EditStars::leaveEvent);
-		connect(imageView, &ImageView::Image_mousePressEvent, this, &EditStars::mousePressEvent);
-		connect(imageView, &ImageView::Image_mouseMoveEvent, this, &EditStars::mouseMoveEvent);
-		connect(imageView, &ImageView::Image_mouseReleaseEvent, this, &EditStars::mouseReleaseEvent);
-		connect(imageView, &ImageView::Image_resizeEvent, this, &EditStars::resizeMe);
-		m_bCometMode = true;
-		show();
-		raise();
+		starsOrCometButtonPressed(true);
 	}
 
 	void EditStars::saveButtonPressed()
@@ -436,7 +437,7 @@ namespace DSS
 		CLightFrameInfo bmpInfo;
 
 //		m_QualityGrid.clear();
-		bmpInfo.SetBitmap(name.toStdWString().c_str(), false);
+		bmpInfo.SetBitmap(name.toStdWString().c_str());
 		if (bmpInfo.m_bInfoOk)
 		{
 			// Get the stars back
@@ -465,13 +466,14 @@ namespace DSS
 		{
 			if (!star.m_bRemoved)
 			{
-				m_fScore += star.m_fQuality;
+//				m_fScore += star.m_fQuality;
 				m_lNrStars++;
 				m_fFWHM += star.m_fMeanRadius * RadiusFactor;
 			}
 		}
 		if (m_lNrStars > 0)
 			m_fFWHM /= m_lNrStars;
+		std::tie(this->m_fScore, this->m_fQuality) = CRegisteredFrame::ComputeScore(stars);
 	}
 
 //	void EditStars::computeBackgroundValue()
@@ -662,9 +664,10 @@ namespace DSS
 		painter.setFont(font);
 		QFontMetrics fontMetrics(font);
 
-		QString	strText{ tr("#Stars: %1\nScore: %2\nFWHM: %3", "IDS_LIGHTFRAMEINFO")
+		QString	strText{ tr("#Stars: %1\nScore: %2\nQuality: %3\nFWHM: %4", "IDS_LIGHTFRAMEINFO")
 			.arg(m_lNrStars)
 			.arg(m_fScore, 0, 'f', 2)
+			.arg(m_fQuality, 0, 'f', 2)
 			.arg(m_fFWHM, 0, 'f', 2) };
 
 		if (m_bComet)
@@ -822,7 +825,7 @@ namespace DSS
 			const double dy = star.m_fY - cursor.y();
 			return dx * dx + dy * dy;
 		};
-		const auto findNearestStar = [this, &squaredDist](std::ranges::viewable_range auto view) -> const CStar*
+		const auto findNearestStar = [this, &squaredDist](std::ranges::view auto view) -> const CStar*
 		{
 			double minDistSqr = std::numeric_limits<double>::max();
 			const CStar* p = nullptr;

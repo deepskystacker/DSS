@@ -164,17 +164,16 @@ namespace DSS
 					QMutexLocker lock(&mutex);
 
 					// Select the best reference frame from all the available images
-					// (best score)
+					// (best quality)
 					double maxScore = 0;
-					std::deque<std::shared_ptr<CLightFrameInfo>>::iterator	it,
-						bestit = pending.end();
+					std::deque<std::shared_ptr<CLightFrameInfo>>::iterator bestit = pending.end();
 
-					for (it = pending.begin(); it != pending.end(); it++)
+					for (auto it = pending.begin(); it != pending.end(); ++it)
 					{
-						if ((*it)->m_fOverallQuality > maxScore)
+						if ((*it)->quality > maxScore)
 						{
 							bestit = it;
-							maxScore = (*it)->m_fOverallQuality;
+							maxScore = (*it)->quality;
 						}
 					}
 					if (bestit != pending.end())

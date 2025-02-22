@@ -61,8 +61,6 @@ namespace DSS
 		else if ("DeepSkyStackerLive" == path) start = "DSSLiveTrace";
 		else ZASSERT(false);
 		
-		(void) _putenv(traceTo.toStdString().c_str()); // set Z_TRACETO=FILE
-
 		std::time_t time = std::time({});
 		char timeString[std::size("yyyy-mm-ddThh-mm-ssZ")];
 		std::strftime(std::data(timeString), std::size(timeString), "%FT%H-%M-%SZ", std::gmtime(&time));
@@ -77,12 +75,16 @@ namespace DSS
 		create_directories(file);
 		file /= name.toStdU16String();
 
-		QString traceFile = QString{ "Z_TRACEFILE=%1" }.arg(file.generic_u16string().c_str());
-#if defined(_WIN32)
-		(void) _wputenv(traceFile.toStdWString().c_str());
-#else
-		(void)putenv(tracefile.toStdString().c_str());
-#endif
+		//
+		// Set the trace file location
+		//
+		qputenv("Z_TRACEFILE", file.generic_string().c_str());
+
+		//
+		// Enable trace to a file
+		//
+		ZTrace::enableTrace();
+		ZTrace::writeToFile();
 
 	}
 

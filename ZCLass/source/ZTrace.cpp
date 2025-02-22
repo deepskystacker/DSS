@@ -46,10 +46,11 @@
 #pragma warning(disable : 4512)  // assignment operator could not be generated
 #pragma warning(disable : 4663)  // C++ template specialisation change
 #endif //!ALL_WARNINGS
+#pragma warning(disable : 4710)  // Function not inlined
 #endif //_MSC_VER
 
-#if defined(_MSC_VER)
-#pragma warning(disable : 4710)  // Function not inlined
+#if defined(_WINDOWS) && !defined(NDEBUG)
+#include "vld.h"
 #endif
 
 #include "zdefs.h"
@@ -152,9 +153,20 @@ static ZPrivateResource &traceFunction_Lock()
   static ZPrivateResource *theLock = 0;
   if (! theLock)
   {
+#if defined(_WINDOWS) && !defined(NDEBUG)
+      // Visual Leak Detector reports these as memory leaks, which is technically correct
+      // but as we know about them and they are harmless turn leak detection off here,
+      // and turn it on again after the allocation
+      VLDDisable();
+#endif
+
     ZMasterLock lockInit;
     if (! theLock)
         theLock = new ZPrivateResource;
+
+#if defined(_WINDOWS) && !defined(NDEBUG)
+    VLDEnable();
+#endif
   }
   return *theLock;
 }
@@ -197,9 +209,23 @@ public:
     static ZTrace_Init * initializer;
     if (! initializer)
     {
-      ZResourceLock aLock(traceFunction_Lock());
-      if (! initializer)
-          initializer = new ZTrace_Init;
+        ZResourceLock aLock(traceFunction_Lock());
+        if (!initializer)
+        {
+#if defined(_WINDOWS) && !defined(NDEBUG)
+            // Visual Leak Detector reports these as memory leaks, which is technically correct
+            // but as we know about them and they are harmless turn leak detection off here,
+            // and turn it on again after the allocation
+            VLDDisable();
+#endif
+            initializer = new ZTrace_Init;
+
+#if defined(_WINDOWS) && !defined(NDEBUG)
+            VLDEnable();
+#endif
+        }
+
+
     }
     if (ZTrace::iClState & ZTrace::uninitialized)
         initialize();
@@ -262,7 +288,12 @@ ZTrace :: ZTrace(const char* pszTraceName,
 #pragma warning(default : 4127)
 #endif
          str.append("(").append(pName).append(":");
+#if defined(_MSC_VER)
          sprintf_s(acWork, "%ld", lLineNo); 
+#else
+         sprintf(acWork, "%ld", lLineNo);
+#endif
+
          str.append(acWork).append(")");
        }
        writeFormattedString(str, "+");
@@ -461,7 +492,11 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       if (isWriteLineNumberEnabled())
       {
         // Output the line number right justified with leading zeros to a width of 8
+#if defined(MSC_VER)
         sprintf_s(buffer, "%08lu", ulSequence);
+#else
+        sprintf(buffer, "%08lu", ulSequence);
+#endif
         strWork.append(&buffer[0]).append(" ");
         memset(buffer, 0, sizeof(buffer));
       }

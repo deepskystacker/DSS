@@ -4,7 +4,7 @@
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "Filters.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "BitmapIterator.h"
 #include "Multitask.h"
 #include "CFABitmapInfo.h"
@@ -185,7 +185,7 @@ inline bool IsInStdDev(double fValue, double fMean, double fStdDev)
 	ZFUNCTRACE_RUNTIME();
 	return (fValue >= fMean-2*fStdDev) && (fValue <= fMean+2*fStdDev);
 };
-
+#if (0)
 static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -306,7 +306,7 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 
 	sValuePairs = sTempValuePairs;
 };
-
+#endif
 /* ------------------------------------------------------------------- */
 
 class CSubSquare
@@ -1066,11 +1066,11 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 {
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
-	CRGBHistogram		RGBHistogram;
+	RGBHistogram		rgbHistogram;
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
 
-	RGBHistogram.SetSize(256.0, std::numeric_limits<std::uint16_t>::max() + 1);
+	rgbHistogram.SetSize(256.0, std::numeric_limits<std::uint16_t>::max() + 1);
 	for (int i = rc.left; i < rc.right; i++)
 	{
 		for (int j = rc.top; j < rc.bottom; j++)
@@ -1084,13 +1084,13 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 				switch (pBitmap->GetBayerColor(i, j))
 				{
 				case BAYER_RED :
-					RGBHistogram.GetRedHistogram().AddValue(fGray);
+					rgbHistogram.GetRedHistogram().AddValue(fGray);
 					break;
 				case BAYER_GREEN :
-					RGBHistogram.GetGreenHistogram().AddValue(fGray);
+					rgbHistogram.GetGreenHistogram().AddValue(fGray);
 					break;
 				case BAYER_BLUE :
-					RGBHistogram.GetBlueHistogram().AddValue(fGray);
+					rgbHistogram.GetBlueHistogram().AddValue(fGray);
 					break;
 				}
 			}
@@ -1099,25 +1099,25 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 				double				fGray;
 
 				pBitmap->GetPixel(i, j, fGray);
-				RGBHistogram.GetRedHistogram().AddValue(fGray);
+				rgbHistogram.GetRedHistogram().AddValue(fGray);
 			}
 			else
 			{
 				double				fRed, fGreen, fBlue;
 
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-				RGBHistogram.AddValues(fRed, fGreen, fBlue);;
+				rgbHistogram.AddValues(fRed, fGreen, fBlue);;
 			}
 		}
 	}
 
 	if (bMonochrome && !bCFA)
-		fResult = RGBHistogram.GetRedHistogram().GetMedian();
+		fResult = rgbHistogram.GetRedHistogram().GetMedian();
 	else
 	{
-		fResult = (RGBHistogram.GetRedHistogram().GetMedian()+
-				   RGBHistogram.GetGreenHistogram().GetMedian()+
-				   RGBHistogram.GetBlueHistogram().GetMedian())/3;
+		fResult = (rgbHistogram.GetRedHistogram().GetMedian()+
+				   rgbHistogram.GetGreenHistogram().GetMedian()+
+				   rgbHistogram.GetBlueHistogram().GetMedian())/3;
 	}
 
 	return fResult;
@@ -1581,7 +1581,7 @@ void CDarkFrame::FindBadVerticalLines(ProgressBase*)
 class CFindHotPixelTask1
 {
 public:
-	CRGBHistogram m_RGBHistogram;
+	RGBHistogram m_RGBHistogram;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	ProgressBase* m_pProgress;
 
@@ -1601,15 +1601,15 @@ public:
 template <class T> struct threadLocals {
 	const T* bitmap;
 	BitmapIteratorConst<const CMemoryBitmap*> PixelIt;
-	CRGBHistogram RGBHistogram;
+	RGBHistogram rgbHistogram;
 
 	explicit threadLocals(const T* bm) : bitmap{ bm }, PixelIt{ bm }
 	{
-		RGBHistogram.SetSize(256.0, 65535);
+		rgbHistogram.SetSize(256.0, 65535);
 	}
 	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap }, PixelIt{ rhs.bitmap }
 	{
-		RGBHistogram.SetSize(256.0, 65535);
+		rgbHistogram.SetSize(256.0, 65535);
 	}
 };
 
@@ -1637,13 +1637,13 @@ void CFindHotPixelTask1::process()
 			for (int col = 0; col < width; ++col, ++threadVars.PixelIt)
 			{
 				threadVars.PixelIt.GetPixel(r, g, b); // GetPixel is virtual => works for monochrome bitmaps, too.
-				threadVars.RGBHistogram.AddValues(r, g, b);
+				threadVars.rgbHistogram.AddValues(r, g, b);
 			}
 		}
 
 #pragma omp critical(OmpLockDarkFindHot)
 		{
-			m_RGBHistogram.AddValues(threadVars.RGBHistogram);
+			m_RGBHistogram.AddValues(threadVars.rgbHistogram);
 		}
 	} // omp parallel
 }
@@ -1698,7 +1698,7 @@ void CDarkFrame::FindHotPixels(ProgressBase* pProgress)
 	m_vHotPixels.clear();
 	if (static_cast<bool>(m_pMasterDark))
 	{
-		CRGBHistogram RGBHistogram;
+		RGBHistogram rgbHistogram;
 		const bool bMonochrome = m_pMasterDark->IsMonochrome();
 
 		if (pProgress)

@@ -127,6 +127,9 @@ namespace DSS
 
 		QString getReferenceFrame() const;
 
+		// Return true if all of the checked light frames have a Quality parameter calculated/read (> 0).
+		bool isQualityAvailable() const;
+
 		void clearOffsets();
 
 		void clearOffset(fs::path file);

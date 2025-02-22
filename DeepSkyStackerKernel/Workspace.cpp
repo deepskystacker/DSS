@@ -185,8 +185,9 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 
 	vSettings.push_back(WorkspaceSetting("Register/PercentStack", (uint)80));
   	vSettings.push_back(WorkspaceSetting("Register/StackAfter", true));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", true));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)10));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", false));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)0));
+	vSettings.push_back(WorkspaceSetting("Register/UseAutoThreshold", true));
 	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", false));
 
 	vSettings.push_back(WorkspaceSetting("RawDDP/Brightness", 1.0));
@@ -300,7 +301,7 @@ void	WorkspaceSettings::ReadFromFile(std::FILE * hFile)
 void	WorkspaceSettings::ReadFromFile(const fs::path& file)
 {
 	if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"rt")
 #else
 		std::fopen(file.c_str(), "rt")
@@ -329,7 +330,7 @@ void	WorkspaceSettings::SaveToFile(FILE * hFile)
 void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
 	if (std::FILE* hFile =
-#if defined _WINDOWS
+#if defined(Q_OS_WIN)
 		_wfopen(file.c_str(), L"wt")
 #else
 		std::fopen(file.c_str(), "wt")
@@ -507,11 +508,11 @@ void Workspace::ReadFromFile(FILE * hFile)
 	pSettings->ReadFromFile(hFile);
 }
 
-void Workspace::ReadFromFile(LPCTSTR name)
-{
-	fs::path file(name);
-	pSettings->ReadFromFile(file);
-}
+//void Workspace::ReadFromFile(LPCTSTR name)
+//{
+//	fs::path file(name);
+//	pSettings->ReadFromFile(file);
+//}
 
 void Workspace::ReadFromFile(const fs::path& file)
 {

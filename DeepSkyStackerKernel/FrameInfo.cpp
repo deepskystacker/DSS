@@ -48,46 +48,23 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 	return bResult;
 }
 
-void CFrameInfo::CopyFrom(const CFrameInfo& cfi)
-{
-	m_lWidth = cfi.m_lWidth;
-	m_lHeight = cfi.m_lHeight;
-	filePath = cfi.filePath;
-	m_lISOSpeed = cfi.m_lISOSpeed;
-	m_lGain = cfi.m_lGain;
-	m_fExposure = cfi.m_fExposure;
-	m_fAperture = cfi.m_fAperture;
-	m_PictureType = cfi.m_PictureType;
-	m_CFAType = cfi.m_CFAType;
-	m_lBitsPerChannel = cfi.m_lBitsPerChannel;
-	m_lNrChannels = cfi.m_lNrChannels;
-	m_strDateTime = cfi.m_strDateTime;
-	m_DateTime = cfi.m_DateTime;
-	m_bMaster = cfi.m_bMaster;
-	m_strInfos = cfi.m_strInfos;
-	m_bFITS16bit = cfi.m_bFITS16bit;
-	m_bSuperPixel = cfi.m_bSuperPixel;
-	m_ExtraInfo = cfi.m_ExtraInfo;
-	m_filterName = cfi.m_filterName;
-}
-
-void CFrameInfo::Reset()
-{
-	m_lISOSpeed = 0;
-	m_lGain = -1;
-	m_fExposure = 0.0;
-	m_fAperture = 0.0;
-	m_PictureType = PICTURETYPE_LIGHTFRAME;
-	m_CFAType = CFATYPE_NONE;
-	m_lNrChannels = 3;
-	m_lBitsPerChannel = 16;
-	m_bMaster = false;
-	m_bFITS16bit = false;
-	m_bSuperPixel = false;
-	m_ExtraInfo.Clear();
-	m_lWidth = 0;
-	m_lHeight = 0;
-}
+//void CFrameInfo::Reset()
+//{
+//	m_lISOSpeed = 0;
+//	m_lGain = -1;
+//	m_fExposure = 0.0;
+//	m_fAperture = 0.0;
+//	m_PictureType = PICTURETYPE_LIGHTFRAME;
+//	m_CFAType = CFATYPE_NONE;
+//	m_lNrChannels = 3;
+//	m_lBitsPerChannel = 16;
+//	m_bMaster = false;
+//	m_bFITS16bit = false;
+//	m_bSuperPixel = false;
+//	m_ExtraInfo.Clear();
+//	m_lWidth = 0;
+//	m_lHeight = 0;
+//}
 
 bool CFrameInfo::IsCompatible(const CFrameInfo& cfi) const
 {

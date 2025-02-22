@@ -145,11 +145,12 @@ namespace DSS
 			{
 				CLightFrameInfo			bmpInfo;
 
-				bmpInfo.SetBitmap(file.c_str(), false);
+				bmpInfo.SetBitmap(file.c_str());
 				if (bmpInfo.m_bInfoOk)
 				{
 					lb.m_bRegistered = true;
-					lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
+					lb.m_fScore = bmpInfo.m_fScore;
+					lb.quality = bmpInfo.quality;
 					lb.m_fFWHM = bmpInfo.m_fFWHM;
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet = bmpInfo.m_bComet;

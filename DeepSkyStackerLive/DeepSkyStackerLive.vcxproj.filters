@@ -83,12 +83,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -266,6 +260,9 @@
     <QtTranslation Include="i18n\DSSLive_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive_ja_JP.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
@@ -299,5 +296,13 @@
     <None Include="..\include\SmtpMime\SmtpMime">
       <Filter>Header Files\SmtpMime</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\DeepSkyStacker\Icon.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="version.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

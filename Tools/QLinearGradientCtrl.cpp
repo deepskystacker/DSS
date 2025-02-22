@@ -40,6 +40,11 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 
 	stops = m_Gradient.stops();				// Grab the gradient stops
 	endPegStop = stops.size() - 1;
+
+	setToolTip(QCoreApplication::translate("QLinearGradientCtrl",
+		"After selecting a slider with the mouse, you can move it"
+		" using the Up Arrow, Right Arrow, Down Arrow, Left Arrow,"
+		" Page Up, and Page Down keys."));
 }
 
 QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& src)
@@ -251,19 +256,6 @@ void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colou
 		break;
 	}
 	painter.drawPolygon(points, 3);
-
-	//----- Draw lines manually in the right directions ------//
-	//CPen outlinepen(PS_SOLID, 1, GetSysColor(COLOR_WINDOWTEXT));
-	//oldpen = dc->SelectObject(&outlinepen);
-
-	//dc->MoveTo(points[0]);
-	//dc->LineTo(points[1]);
-	//dc->LineTo(points[2]);
-	//dc->LineTo(points[0]);
-
-	//dc->SelectObject(oldpen);
-
-	//brush.DeleteObject();
 }
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direction)
@@ -531,7 +523,8 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 		pos = posFromPoint(selpegpos);
 		//"The id of the selection may change"//
 		selectedPeg = setPeg(selectedPeg, stops[selectedPeg].second, pos);
-		m_Gradient.setStops(stops);
+//		m_Gradient.setStops(stops);
+		setGradientFromStops();
 		region = region.united(getPegRegion());;
 		//----- Get the region for the pegs and erase them -----//
 		//
@@ -737,6 +730,10 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 			QGradientStop stop = selectedStop();
 			stop.first = 0.005;
 			moveSelected(stop.first, true);
+			QRect pegrect;
+			getPegRect(selectedPeg, &pegrect, m_RightUpSide);
+			update(pegrect);
+
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -763,10 +760,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first -= 0.005f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first <= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -779,10 +788,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
+			QRegion region{ getPegRegion() };		// Existing region
+
 			stop.first += 0.005f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
+			moveSelected(stop.first, true);
 
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 			//Send parent messages
 			emit pegMoved(selectedPeg);
 			emit pegChanged(selectedPeg);
@@ -801,10 +822,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first -= 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first -= 0.025f;
 			//Make sure that the position does not stray below 0.005
-			stop.first = (stop.first >= 0.005f) ? stop.first : 0.005f;
+			stop.first = (stop.first > 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -816,10 +849,22 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first += 0.01f;
+			QRegion region{ getPegRegion() };		// Existing region
+
+			stop.first += 0.025f;
 			//Make sure that the position does not stray above 0.995
 			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
 			moveSelected(stop.first, true);
+
+			//----- Get the region for the pegs and erase them -----//
+			//
+			// Note that this uses repaint() not update()
+			// Qt docs say:
+			//
+			// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+			//
+			region = region.united(getPegRegion());	// Combined with new region
+			repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -875,7 +920,8 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 
 	stops.remove(selectedPeg);
 	--endPegStop;				// There's now one fewer pegs
-	m_Gradient.setStops(stops);
+//	m_Gradient.setStops(stops);
+	setGradientFromStops();
 
 	//Select the previous peg
 	if (!STARTPEG == selectedPeg)
@@ -904,34 +950,48 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	}
 	else
 	{
-		position = std::clamp(position, 0.001, 0.999);
-		auto it = std::find_if(stops.begin(), stops.end(), [position](const auto& v) { return v.first == position; });
-		if (it != stops.end()) // moved position already exists, 'it' points to element with the identical position.
-		{
-			const qreal old_position = stops[index].first;
-			const bool direction_up = position > old_position;
-			const qreal new_position = direction_up ? position + 0.001 : position - 0.001;
-			if (std::find_if(stops.cbegin(), stops.cend(), [new_position](const auto& v) { return v.first == new_position; }) != stops.cend()) // corrected position already exists
-			{
-				position = direction_up ? (0.5 * (position + (it + 1)->first)) : (0.5 * (position + (it - 1)->first));
-			}
-			else
-			{
-				position = new_position;
-			}
-		}
+		//position = std::clamp(position, 0.001, 0.999);
+		position = std::clamp(position, 0.0, 1.0);
+		//auto it = std::find_if(stops.cbegin(), stops.cend(), [position](const auto& v) { return v.first == position; });
+		//if (it != stops.cend() && std::distance(stops.cbegin(), it) != index) // moved position already exists and is at another index, 'it' points to element with the identical position.
+		//{
+		//	const qreal old_position = stops[index].first;
+		//	const bool direction_up = position > old_position;
+		//	const qreal new_position = direction_up ? position + 0.001 : position - 0.001;
+		//	if (std::find_if(stops.cbegin(), stops.cend(), [new_position](const auto& v) { return v.first == new_position; }) != stops.cend()) // corrected position already exists
+		//	{
+		//		position = direction_up ? (0.5 * (position + (it + 1)->first)) : (0.5 * (position + (it - 1)->first));
+		//	}
+		//	else
+		//	{
+		//		position = new_position;
+		//	}
+		//}
 		stops[index].first = position;
 		stops[index].second = colour;
-		std::stable_sort(stops.begin(), stops.end(), [](const QGradientStop& lhs, const QGradientStop& rhs) noexcept {
+		std::ranges::stable_sort(stops, [](const QGradientStop& lhs, const QGradientStop& rhs) noexcept {
 			return lhs.first < rhs.first;
 		});
 		for (int i = 0; i < stops.size(); i++)
 			if (stops[i].first == position)
 				index = i;
+		index = std::clamp(index, startPegStop + 1, endPegStop - 1);
 	}
+	//
+	// Bug fix: Need to update the QLinearGradient's stops after updating our local
+	// copy of the QGradientStops
+	//
+	setGradientFromStops();
 
 	return index;
 }
+
+int QLinearGradientCtrl::setPeg(int index, qreal position)
+{
+	QColor colour{ stops[index].second };
+	return setPeg(index, colour, position);
+}
+
 
 int QLinearGradientCtrl::setSelected(int iSel)
 {
@@ -965,7 +1025,8 @@ int QLinearGradientCtrl::moveSelected(qreal newpos, bool)
 		}
 			);	
 		selectedPeg = stops.indexOf(newStop);		// Make sure the selectedPeg is correct.
-		m_Gradient.setStops(stops);
+//		m_Gradient.setStops(stops);
+		setGradientFromStops();
 	}
 
 	// if (bUpdate) Invalidate();
@@ -983,7 +1044,8 @@ QColor QLinearGradientCtrl::setSelectedPegColour(QColor newColour, bool)
 	{
 		result = selectedStop().second;
 		stops[selectedPeg].second = newColour;
-		m_Gradient.setStops(stops);
+//		m_Gradient.setStops(stops);
+		setGradientFromStops();
 	}
 
 	//if (bUpdate) Invalidate();
@@ -1011,6 +1073,11 @@ QGradientStop QLinearGradientCtrl::selectedStop() const
 		return nullStop;
 	ZASSERT(selectedPeg > startPegStop && selectedPeg < endPegStop);
 	return stops[selectedPeg];
+}
+
+const QGradientStops& QLinearGradientCtrl::getStops() const
+{
+	return this->stops;
 }
 
 bool QLinearGradientCtrl::isVertical() const
@@ -1268,3 +1335,23 @@ QRegion QLinearGradientCtrl::getPegRegion()
 //	// Invoke base class showEvent()
 //	return Inherited::showEvent(event);
 //}
+
+void QLinearGradientCtrl::setGradientFromStops()
+{
+	QGradientStops s = stops;
+
+	for (auto it = s.begin(); it != s.end() && it->first < 1; ++it)
+	{
+		for (auto it2 = it + 1; it2 != s.end() && it2->first < 1; ++it2)
+			if (it2->first == it->first)
+				it2->first += 0.001;
+	}
+	for (auto it = s.rbegin(); it != s.rend() && it->first > 0; ++it)
+	{
+		for (auto it2 = it + 1; it2 != s.rend() && it2->first > 0; ++it2)
+			if (it2->first == it->first)
+				it2->first -= 0.001;
+	}
+
+	m_Gradient.setStops(std::move(s));
+}

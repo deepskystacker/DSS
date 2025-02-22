@@ -35,13 +35,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>true</QtDeploy>
@@ -93,7 +93,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(Qt_DEFINES_);_AFXDLL;NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -102,6 +102,7 @@
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -149,7 +150,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(Qt_DEFINES_);_AFXDLL;NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -159,6 +160,7 @@
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -219,7 +221,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />
@@ -252,7 +253,6 @@
     <QtMoc Include="footprint.h" />
     <ClInclude Include="LiveSettings.h" />
     <QtMoc Include="progresslive.h" />
-    <ClInclude Include="resource.h" />
     <QtMoc Include="settingstab.h" />
     <QtMoc Include="RestartMonitoring.h" />
     <ClInclude Include="stdafx.h" />
@@ -278,7 +278,7 @@
     <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
       <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
+    <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -289,10 +289,13 @@
     <QtTranslation Include="i18n\DSSLive_en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
     <QtTranslation Include="i18n\DSSLive_es.ts" />
     <QtTranslation Include="i18n\DSSLive_fr.ts" />
     <QtTranslation Include="i18n\DSSLive_it.ts" />
+    <QtTranslation Include="i18n\DSSLive_ja_JP.ts" />
     <QtTranslation Include="i18n\DSSLive_nl.ts" />
     <QtTranslation Include="i18n\DSSLive_pt_BR.ts" />
     <QtTranslation Include="i18n\DSSLive_ro.ts" />
@@ -315,6 +318,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\SmtpMime\SmtpMime" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\DeepSkyStacker\Icon.rc" />
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

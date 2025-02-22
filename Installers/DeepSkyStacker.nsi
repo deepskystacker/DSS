@@ -34,10 +34,10 @@ FunctionEnd
 !define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
 !define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
-!define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
-!define DSS_VERSION        "5.1.8"                         # For control panel
-!define DSS_VERSION_SUFFIX ""				               # For control panel (e.g. " Beta 1" or "") - note leading space
-!define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
+!define DSS_PRODUCT        "DeepSkyStacker"		# For start menu
+!define DSS_VERSION        "5.1.8"			# For control panel
+!define DSS_VERSION_SUFFIX ""			# For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_PUBLISHER      "The DeepSkyStacker Team"	# For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
 !define DSS_FILE           "DeepSkyStacker"
@@ -99,7 +99,36 @@ ${ReadmeLanguage} "${LANG_ENGLISH}" \
 Section "Visual Studio Runtime"
   SetOutPath "$INSTDIR"
   File "..\x64\Release\vc_redist.x64.exe"
-  ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+  SetRegView 64
+  ReadRegDWORD $0 HKLM "Software\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X64" "Bld"
+  SetRegView 32
+  ${If} $0 == ""
+	#
+	# vc_redist build 33816 isn't installed, so install it
+	#
+	DetailPrint "Visual Studio Runtime is not installed, so install it"
+  	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+  ${Else}
+	IntCmp $0 33816 equal less more
+	equal:
+	#
+	# vc_redist build 33816 is installed, force a repair install
+	#
+	DetailPrint "Visual Studio Runtime build 33816 is already installed, do a repair install"
+	ExecWait "$INSTDIR\vc_redist.x64.exe /repair /passive /norestart"
+        Goto done
+	less:
+	#
+	# vc_redist build 33816 isn't installed, so install it
+	#
+	DetailPrint "Visual Studio Runtime build $0 is installed, install build 33816"
+  	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
+	Goto done
+	more:
+	DetailPrint "Visual Studio Runtime build $0 is installed, do nothing"
+ 	Goto done
+	done:
+  ${Endif}
   Delete "$INSTDIR\vc_redist.x64.exe"
 SectionEnd
 
@@ -157,7 +186,7 @@ Section
 	  
   File /r "..\x64\Release\iconengines"
   File /r "..\x64\Release\imageformats"
-  File /r "..\x64\Release\imageformats"
+  File /r "..\x64\Release\networkinformation"
   File /r "..\x64\Release\platforms"
   File /r "..\x64\Release\styles"
   File /r "..\x64\Release\tls"

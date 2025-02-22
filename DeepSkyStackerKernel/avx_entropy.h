@@ -1,4 +1,5 @@
-#pragma once 
+#pragma once
+#include <immintrin.h>
 
 /*
 * Class for

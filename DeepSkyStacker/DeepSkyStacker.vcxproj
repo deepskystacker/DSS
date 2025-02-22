@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -14,15 +14,16 @@
     <ProjectName>DeepSkyStacker</ProjectName>
     <ProjectGuid>{90721C24-BC43-450A-ADED-3417280D075B}</ProjectGuid>
     <RootNamespace>DeepSkyStacker</RootNamespace>
-    <Keyword>QtVS_v303</Keyword>
+    <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>
     </PreferredToolArchitecture>
@@ -31,54 +32,68 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <PreferredToolArchitecture>
     </PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
-    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
-  </PropertyGroup>
-  <PropertyGroup>
-    <QtDependsOn>$(QtDependsOn);QtTranslation</QtDependsOn>
-  </PropertyGroup>
-  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
-    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
-  </Target>
+  <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
-    <Import Project="$(QtMsBuild)\qt.props" />
-  </ImportGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Debug.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Release.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
+    <QtDependsOn>$(QtDependsOn);QtTranslation</QtDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
     <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Language)'=='C++'">
+    <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>
+    </IncludePath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>
+    </IncludePath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -87,8 +102,8 @@
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -103,6 +118,7 @@
       <WarningLevel>Level4</WarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -111,13 +127,11 @@
     </ResourceCompile>
     <ProjectReference />
     <Link>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <AdditionalLibraryDirectories>C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -162,10 +176,10 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -180,6 +194,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <EnableModules>false</EnableModules>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -187,15 +203,13 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <AdditionalIncludeDirectories>$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>gdi32.lib;gdiplus.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <ShowProgress>NotSet</ShowProgress>
-      <IgnoreSpecificDefaultLibraries>MSVCRT;libcmt</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>
       </ImageHasSafeExceptionHandlers>
-      <AdditionalLibraryDirectories>C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <MapExports>false</MapExports>
       <AdditionalOptions>
@@ -238,31 +252,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tools\BtnST.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\ButtonToolbar.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
-    <ClCompile Include="..\Tools\childprop.cpp" />
-    <ClCompile Include="..\Tools\ControlPos.cpp" />
-    <ClCompile Include="..\Tools\Gradient.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
     <ClCompile Include="..\Tools\imageview.cpp" />
-    <ClCompile Include="..\Tools\Label.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
-    <ClCompile Include="..\Tools\ToolTipButton.cpp" />
-    <ClCompile Include="..\Tools\WndImage.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
     <ClCompile Include="About.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -288,11 +280,11 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="editstars.cpp" />
     <ClCompile Include="ImageProperties.cpp" />
-    <ClCompile Include="ImageSinks.cpp">
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
-      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level3</WarningLevel>
-    </ClCompile>
+    <ClCompile Include="lowerdockwidget.cpp" />
     <ClCompile Include="picturelist.cpp" />
+    <ClCompile Include="processingcontrols.cpp" />
+    <ClCompile Include="ProcessingDlg.cpp" />
+    <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
@@ -303,7 +295,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="LuminanceTab.cpp" />
     <ClCompile Include="OutputTab.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -311,16 +302,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="PostCalibration.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="ProcessingDlg.cpp" />
-    <ClCompile Include="ProcessSettingsSheet.cpp" />
-    <ClCompile Include="qwinhost.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="qwinwidget.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RawDDPSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -338,13 +319,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RGBTab.cpp" />
-    <ClCompile Include="SaturationTab.cpp" />
     <ClCompile Include="SaveEditChanges.cpp" />
     <ClCompile Include="SavePicture.cpp" />
     <ClCompile Include="selectrect.cpp" />
-    <ClCompile Include="SettingsDlg.cpp" />
-    <ClCompile Include="SetUILanguage.cpp" />
+    <ClCompile Include="RGBTab.cpp" />
     <ClCompile Include="StackingDlg.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -371,38 +349,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStacker.rc" />
-    <ResourceCompile Include="DeepSkyStackerCAT.rc" />
-    <ResourceCompile Include="DeepSkyStackerCN2.rc" />
-    <ResourceCompile Include="DeepSkyStackerCZ.rc" />
-    <ResourceCompile Include="DeepSkyStackerDE.rc" />
-    <ResourceCompile Include="DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="DeepSkyStackerES.rc" />
-    <ResourceCompile Include="DeepSkyStackerFR.rc" />
-    <ResourceCompile Include="DeepSkyStackerIT.rc" />
-    <ResourceCompile Include="DeepSkyStackerJP.rc" />
-    <ResourceCompile Include="DeepSkyStackerNL.rc" />
-    <ResourceCompile Include="DeepSkyStackerPTB.rc" />
-    <ResourceCompile Include="DeepSkyStackerRO.rc" />
-    <ResourceCompile Include="DeepSkyStackerRU.rc" />
-    <ResourceCompile Include="DeepSkyStackerTR.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Tools\BtnST.h" />
-    <ClInclude Include="..\Tools\ButtonToolbar.h" />
-    <ClInclude Include="..\Tools\childprop.h" />
-    <ClInclude Include="..\Tools\ControlPos.h" />
-    <ClInclude Include="..\Tools\EasySize.h" />
-    <ClInclude Include="..\Tools\Gradient.h" />
-    <ClInclude Include="..\Tools\gradientctrl.h" />
-    <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <QtMoc Include="..\Tools\imageview.h" />
-    <ClInclude Include="..\Tools\Label.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
-    <ClInclude Include="..\Tools\ToolTipButton.h" />
     <QtMoc Include="About.h" />
-    <ClInclude Include="..\Tools\WndImage.h" />
     <QtMoc Include="AlignmentParameters.h" />
     <QtMoc Include="AskRegistering.h" />
     <QtMoc Include="BackgroundOptions.h" />
@@ -410,7 +360,8 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="BaseDialog.h" />
     <QtMoc Include="CometStacking.h" />
     <QtMoc Include="CheckAbove.h" />
-    <ClInclude Include="commonresource.h" />
+    <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
+    <ClInclude Include="BezierAdjust.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
@@ -418,45 +369,33 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="DSS-versionhelpers.h" />
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
-    <ClInclude Include="DSSMemory.h" />
     <QtMoc Include="ExplorerBar.h" />
     <QtMoc Include="editstars.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
-    <ClInclude Include="ImageSinks.h" />
-    <ClInclude Include="LuminanceTab.h" />
+    <QtMoc Include="lowerdockwidget.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />
     <QtMoc Include="picturelist.h" />
     <QtMoc Include="PostCalibration.h" />
-    <ClInclude Include="ProcessingDlg.h" />
-    <ClInclude Include="ProcessSettingsSheet.h" />
-    <QtMoc Include="qwinwidget.h" />
+    <QtMoc Include="ProcessingDlg.h" />
+    <QtMoc Include="processingcontrols.h" />
+    <ClInclude Include="ProcessingSettings.h" />
+    <QtMoc Include="ProcessingSettingsDlg.h" />
     <QtMoc Include="RawDDPSettings.h" />
-    <QtMoc Include="qwinhost.h" />
     <QtMoc Include="progressdlg.h" />
-    <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <QtMoc Include="RegisterSettings.h" />
     <QtMoc Include="RenameGroup.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="resourceCZ.h" />
-    <ClInclude Include="resourceES.h" />
-    <ClInclude Include="resourceFR.h" />
-    <ClInclude Include="resourceIT.h" />
     <QtMoc Include="ResultParameters.h" />
-    <ClInclude Include="RGBTab.h" />
-    <ClInclude Include="SaturationTab.h" />
     <QtMoc Include="SaveEditChanges.h" />
-    <ClInclude Include="SavePicture.h" />
+    <QtMoc Include="SavePicture.h" />
     <QtMoc Include="selectrect.h" />
-    <ClInclude Include="SettingsDlg.h" />
-    <ClInclude Include="SetUILanguage.h" />
     <QtMoc Include="StackingDlg.h" />
     <QtMoc Include="StackingParameters.h" />
     <QtMoc Include="StackRecap.h" />
     <QtMoc Include="StackSettings.h" />
-    <ClInclude Include="StarMaskDlg.h" />
+    <QtMoc Include="StarMaskDlg.h" />
     <ClInclude Include="stdafx.h" />
     <QtMoc Include="toolbar.h" />
   </ItemGroup>
@@ -587,13 +526,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
       <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
+    <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="QWinHost" />
-    <None Include="QWinWidget" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
@@ -614,7 +549,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PictureList.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\ProcessingControls.ui" />
     <QtUic Include="ui\ProcessingDlg.ui" />
+    <QtUic Include="ui\ProcessingSettingsDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
@@ -626,15 +563,20 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\StackingParameters.ui" />
     <QtUic Include="ui\StackRecap.ui" />
     <QtUic Include="ui\StackSettings.ui" />
+    <QtUic Include="ui\StarMaskDlg.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DSS_ca.ts" />
     <QtTranslation Include="i18n\DSS_cs.ts" />
     <QtTranslation Include="i18n\DSS_de.ts" />
-    <QtTranslation Include="i18n\DSS_en.ts" />
+    <QtTranslation Include="i18n\DSS_en.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
     <QtTranslation Include="i18n\DSS_es.ts" />
     <QtTranslation Include="i18n\DSS_fr.ts" />
     <QtTranslation Include="i18n\DSS_it.ts" />
+    <QtTranslation Include="i18n\DSS_ja_JP.ts" />
     <QtTranslation Include="i18n\DSS_nl.ts" />
     <QtTranslation Include="i18n\DSS_pt_BR.ts" />
     <QtTranslation Include="i18n\DSS_ro.ts" />
@@ -643,27 +585,12 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtTranslation Include="i18n\DSS_zh_CN.ts" />
     <QtTranslation Include="i18n\DSS_zh_TW.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Icon.rc" />
+    <ResourceCompile Include="Version.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
-    <Import Project="$(QtMsBuild)\qt.targets" />
-  </ImportGroup>
-  <PropertyGroup Condition="'$(Language)'=='C++'">
-    <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
-    <IncludePath>
-    </IncludePath>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
-    <IncludePath>
-    </IncludePath>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-  </PropertyGroup>
+  <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>

@@ -306,10 +306,10 @@ public :
 	{
 	};
 
-	bool operator < (const CVotingPair & vp)
+	bool operator<(const CVotingPair& vp) const
 	{
 		return m_lNrVotes > vp.m_lNrVotes; // Reverse sort
-	};
+	}
 };
 
 typedef std::vector<CVotingPair>		VOTINGPAIRVECTOR;

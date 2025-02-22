@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_cfa.h"
 #include "avx_support.h"
 
@@ -8,7 +9,7 @@ AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd,
 	bluePixels{},
 	inputBitmap{ inputbm },
 	vectorsPerLine{ 0 },
-	avxReady{ AvxSupport::checkSimdAvailability() }
+	avxReady{ AvxSimdCheck::checkSimdAvailability() }
 {
 	init(lineStart, lineEnd);
 }

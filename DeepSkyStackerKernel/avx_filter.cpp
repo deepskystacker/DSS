@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <immintrin.h>
 #include "avx_filter.h"
 #include "avx_support.h"
 #include "MedianFilterEngine.h"
@@ -19,7 +20,7 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 {
 	if constexpr (!std::is_same<T, double>::value)
 		return 1;
-	if (!AvxSupport::checkSimdAvailability())
+	if (!AvxSimdCheck::checkSimdAvailability())
 		return 1;
 	if (filterEngine == nullptr)
 		return 1;
@@ -171,7 +172,7 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 			advancePointersAndVectors(remainingPixels, _mm_setr_epi32(-1, 0, 0, 7));
 			median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
 			for (size_t n = 8 - remainingPixels; n < 8; ++n)
-				pOut[n] = static_cast<double>(median.m256_f32[n]);
+				pOut[n] = static_cast<double>(accessSimdElement(median, n));
 		}
 
 		pOut = filterEngine->m_pvOutValues + (row + 1) * width;
@@ -184,8 +185,8 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 }
 
 // Explicit template instantiation for the types we need.
-template AvxImageFilter<std::uint8_t>;
-template AvxImageFilter<std::uint16_t>;
-template AvxImageFilter<std::uint32_t>;
-template AvxImageFilter<float>;
-template AvxImageFilter<double>;
+template class AvxImageFilter<std::uint8_t>;
+template class AvxImageFilter<std::uint16_t>;
+template class AvxImageFilter<std::uint32_t>;
+template class AvxImageFilter<float>;
+template class AvxImageFilter<double>;

@@ -8,7 +8,7 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "Multitask.h"
-#include "Histogram.h"
+#include "histogram.h"
 #include "Filters.h"
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
@@ -17,7 +17,6 @@
 #include "avx_avg.h"
 #include "Ztrace.h"
 #include "Workspace.h"
-#include "File.h"
 #include "MultiBitmap.h"
 #include "ColorBitmap.h"
 #include "ColorMultiBitmap.h"
@@ -52,7 +51,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	m_vLightFrameStackingInfo.clear();
 	
 	QFile file(m_strStackingFileInfo);
-	if (!file.open(QIODevice::Text | QIODevice::ReadOnly))
+	if (!file.open(QIODevice::Text | QIODevice::ReadOnly | QIODeviceBase::Text))
 		return;
 
 	// Process line by line.
@@ -229,7 +228,8 @@ void CLightFramesStackingInfo::Save()
 		QFile file(m_strStackingFileInfo);
 		if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
 			return;
-		QTextStream stream(&file);
+		QByteArray buffer;
+		QTextStream stream(&buffer);
 
 		// Save the alignment transformation used
 		unsigned int dwAlignmentTransformation = 2;
@@ -251,6 +251,9 @@ void CLightFramesStackingInfo::Save()
 			stackingInfo.m_BilinearParameters.ToText(strParameters);
 			stream << strParameters << Qt::endl;
 		};
+
+		auto bytesWritten = file.write(buffer);
+		ZASSERTSTATE(bytesWritten == buffer.size());
 		file.close();
 	};
 };
@@ -446,7 +449,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 			for (auto& bitmap : task.m_vBitmaps)
 			{
 				CLightFrameInfo lfi;
-				lfi.SetBitmap(bitmap.filePath, false, false);
+				lfi.SetBitmap(bitmap.filePath);
 
 				if (lfi.IsRegistered())
 				{
@@ -475,7 +478,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		CFrameInfo				fi;
 		if (fi.InitFromFile(referenceFrame, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(referenceFrame, false, false);
+			lfi.SetBitmap(referenceFrame);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;
@@ -498,9 +501,10 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	bool				bResult = false;
 	CBilinearParameters	BilinearParameters;
 
-	m_CriticalSection.Lock();
-	bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-	m_CriticalSection.Unlock();
+	{
+		const std::lock_guard<std::mutex> lock(mutex);
+		bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
+	}
 
 	if (bResult)
 	{
@@ -511,9 +515,8 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	else if (GetTransformationType() == TT_NONE)
 	{
 		// Automatic acknowledgment of the transformation
-		m_CriticalSection.Lock();
+		const std::lock_guard<std::mutex> lock(mutex);
 		m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-		m_CriticalSection.Unlock();
 
 		bResult = true;
 	}
@@ -527,10 +530,11 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 		STARVECTOR &		vStarsDst = m_vBitmaps[lBitmapIndice].m_vStars;
 		CMatchingStars		MatchingStars;
 
-		m_CriticalSection.Lock();
-		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
-		m_CriticalSection.Unlock();
+		{
+			const std::lock_guard<std::mutex> lock(mutex);
+			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+			std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
+		}
 
 		if (!MatchingStars.IsReferenceSet())
 		{
@@ -555,9 +559,8 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 			m_vBitmaps[lBitmapIndice].m_fAngle   = BilinearParameters.Angle(m_vBitmaps[lBitmapIndice].RenderedWidth());
 			m_vBitmaps[lBitmapIndice].m_BilinearParameters = BilinearParameters;
 			MatchingStars.GetVotedPairs(m_vBitmaps[lBitmapIndice].m_vVotedPairs);
-			m_CriticalSection.Lock();
+			const std::lock_guard<std::mutex> lock(mutex);
 			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-			m_CriticalSection.Unlock();
 		};
 	};
 
@@ -891,7 +894,15 @@ void CStackingEngine::ComputeOffsets()
 	if (m_vBitmaps.empty())
 		return;
 
-	std::sort(m_vBitmaps.begin(), m_vBitmaps.end());
+	constexpr auto QualityComp = [](const CLightFrameInfo& l, const CLightFrameInfo& r)
+	{
+		if (l.m_bStartingFrame)
+			return true;
+		if (r.m_bStartingFrame)
+			return false;
+		return l.quality > r.quality;
+	};
+	std::ranges::sort(m_vBitmaps, QualityComp);
 
 	if (m_vBitmaps[0].m_bDisabled)
 		m_lNrStackable = 0;
@@ -2182,7 +2193,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				{
 					// Do stack these
 					CMasterFrames MasterFrames;
-					MasterFrames.LoadMasters(pStackingInfo, m_pProgress);
+					MasterFrames.LoadMasters(*pStackingInfo, m_pProgress);
 
 					m_pLightTask = pStackingInfo->m_pLightTask;
 
@@ -2656,7 +2667,8 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	QFile file(strOutputFile);
 	if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
 		return;
-	QTextStream stream(&file);
+	QByteArray buffer;
+	QTextStream stream(&buffer);
 
 	QString strTempText;
 
@@ -3035,6 +3047,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	stream << "<br><a href=\"http://deepskystacker.free.fr\">DeepSkyStacker " << VERSION_DEEPSKYSTACKER << "</a>";
 	stream << "</body>" << Qt::endl;
 	stream << "</html>" << Qt::endl;
+
+	auto bytesWritten = file.write(buffer);
+	ZASSERTSTATE(bytesWritten == buffer.size());
 }
 
 /* ------------------------------------------------------------------- */

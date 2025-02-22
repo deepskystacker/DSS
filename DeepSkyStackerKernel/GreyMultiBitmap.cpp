@@ -6,7 +6,7 @@
 #include "ZExcBase.h"
 #include "DSSTools.h"
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 std::shared_ptr<CMemoryBitmap> CGrayMultiBitmapT<TType, TTypeOutput>::CreateNewMemoryBitmap() const
 {
 	std::shared_ptr<CMemoryBitmap> pBitmap;
@@ -25,7 +25,7 @@ std::shared_ptr<CMemoryBitmap> CGrayMultiBitmapT<TType, TTypeOutput>::CreateNewM
 	return std::make_shared<CGrayBitmapT<TType>>();
 }
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 std::shared_ptr<CMemoryBitmap> CGrayMultiBitmapT<TType, TTypeOutput>::CreateOutputMemoryBitmap() const
 {
 	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<TTypeOutput>>();
@@ -46,7 +46,7 @@ std::shared_ptr<CMemoryBitmap> CGrayMultiBitmapT<TType, TTypeOutput>::CreateOutp
 	return pBitmap;
 }
 
-template <typename TType, typename TTypeOutput = TType>
+template <typename TType, typename TTypeOutput>
 bool CGrayMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines)
 {
 	bool bResult = false;

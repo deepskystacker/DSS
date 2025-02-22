@@ -91,13 +91,13 @@ namespace DSS
                     if (file.m_bRegistered)
                     {
                         if (Qt::EditRole == role)
-                            return file.m_fOverallQuality;
+                            return file.m_fScore;
                         QString result;
                         if (file.m_bUseAsStarting)
                             result = "(*) %1";
                         else
                             result = "%1";
-                        return result.arg(file.m_fOverallQuality, 0, 'f', 2);
+                        return result.arg(file.m_fScore, 0, 'f', 2);
                     }
                     else
                     {
@@ -107,6 +107,30 @@ namespace DSS
                             return QString("NC");
                     }
                 };
+                break;
+            case Column::Quality:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
+                {
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    return QString("N/A");
+                }
+                else
+                {
+                    if (file.m_bRegistered)
+                    {
+                        if (Qt::EditRole == role)
+                            return file.quality;
+                        return QString{ "%1" }.arg(file.quality, 0, 'f', 2);
+                    }
+                    else
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
+                }
                 break;
             case Column::dX:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
@@ -368,6 +392,8 @@ namespace DSS
                 return tr("Filter", "IDS_COLUMN_FILTER");
             case Column::Score:
                 return tr("Score", "IDS_COLUMN_SCORE");
+            case Column::Quality:
+                return tr("Quality", "IDS_COLUMN_MEANQUALITY");
             case Column::dX:
                 return tr("dX", "IDS_COLUMN_DX");
             case Column::dY:
@@ -461,8 +487,10 @@ namespace DSS
                     file.m_filterName = value.toString();
                     break;
                 case Column::Score:
-                    file.m_fOverallQuality = value.toDouble();
+                    file.m_fScore = value.toDouble();
                     break;
+                case Column::Quality:
+                    file.quality = value.toDouble();
                 case Column::dX:
                     file.m_dX = value.toDouble();
                     break;

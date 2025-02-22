@@ -2,112 +2,121 @@
 #include "mrupath.h"
 #include "DSSCommon.h"
 
-namespace Ui {
-class ExplorerBar;
-}
-
-class ExplorerBar : public QDockWidget
+namespace DSS
 {
-	Q_OBJECT
+	namespace Ui {
+		class ExplorerBar;
+	}
 
-typedef QWidget
-		Inherited;
+	class ExplorerBar : public QDockWidget
+	{
+		Q_OBJECT
 
-public:
-    explicit ExplorerBar(QWidget *parent = nullptr);
-    ~ExplorerBar();
+			typedef QWidget
+			Inherited;
 
-	inline void setDSSClosing() { dssClosing = true; }
+	public:
+		explicit ExplorerBar(QWidget* parent = nullptr);
+		~ExplorerBar();
 
-public slots:
-	void tabChanged();
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
+		inline void setDSSClosing() { dssClosing = true; }
+#endif
 
-signals:
-	void addImages(PICTURETYPE type);
+	public slots:
+		void panelChanged(ActivePanel panel);
 
-	//
-	// dssfilelist operations
-	//
-	void loadList(const QPoint&);
-	void clearList();
-	void saveList();
+	signals:
+		void addImages(PICTURETYPE type);
 
-	//
-	// Check marks
-	//
-	void checkAbove();
-	void checkAll();
-	void unCheckAll();
+		//
+		// dssfilelist operations
+		//
+		void loadList(const QPoint&);
+		void clearList();
+		void saveList();
 
-	//
-	// Registration
-	//
-	void registerCheckedImages();
-	void computeOffsets();
-	void stackCheckedImages();
-	void batchStack();
+		//
+		// Check marks
+		//
+		void checkAbove();
+		void checkAll();
+		void unCheckAll();
 
-protected:
-	void mousePressEvent(QMouseEvent*) override;
-	void showEvent(QShowEvent* event) override;
-	void closeEvent(QCloseEvent* event) override;
+		//
+		// Registration
+		//
+		void registerCheckedImages();
+		void computeOffsets();
+		void stackCheckedImages();
+		void batchStack();
 
-private slots:
-	void onOpenLights();
-	void onOpenDarks();
-	void onOpenFlats();
-	void onOpenDarkFlats();
-	void onOpenBias();
+	protected:
+		void mousePressEvent(QMouseEvent*) override;
+		void showEvent(QShowEvent* event) override;
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
+		void closeEvent(QCloseEvent* event) override;
+#endif
 
-	void onOpenFilelist();
-	void onSaveFilelist();
-	void onClearList();
+	private slots:
+		void onOpenLights();
+		void onOpenDarks();
+		void onOpenFlats();
+		void onOpenDarkFlats();
+		void onOpenBias();
 
-	void onCheckAll();
-	void onCheckAbove();
-	void onUncheckAll();
+		void onOpenFilelist();
+		void onSaveFilelist();
+		void onClearList();
 
-	void onRegisterChecked();
-	void onComputeOffsets();
-	void onStackChecked();
-	void onBatchStacking();
+		void onCheckAll();
+		void onCheckAbove();
+		void onUncheckAll();
 
-	void onOpenPicture();
-	void onCopyPicture();
-	void onDoStarMask();
-	void onSavePicture();
+		void onRegisterChecked();
+		void onComputeOffsets();
+		void onStackChecked();
+		void onBatchStacking();
 
-	void onSettings();
-	void onDDPSettings();
-	void onLoadSettings();
-	void onSaveSettings();
-	void onRecommendedSettings();
+		void onOpenPicture();
+		void onCopyPicture();
+		void onDoStarMask();
+		void onSavePicture();
 
-    void onAbout();
+		void onSettings();
+		void onDDPSettings();
+		void onLoadSettings();
+		void onSaveSettings();
+		void onRecommendedSettings();
 
-	void keepTraceChanged(int);
-	void onEnableSoundsStateChanged(int);
-	void onShowClippingStateChanged(int);
+		void onAbout();
+
+		void keepTraceChanged(int);
+		void onEnableSoundsStateChanged(int);
+		void onShowClippingStateChanged(int);
 
 #if QT_VERSION >= 0x060500
-	void onColorSchemeChanged(Qt::ColorScheme colorScheme);
+		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
 #endif
 
 
-private:
-    Ui::ExplorerBar *ui;
-	bool initialised;
-	MRUPath	mruPath;
-	QString windowColourName;
-	QString activeGroupColourName;
-	bool dssClosing;
+	private:
+		Ui::ExplorerBar* ui;
+		bool initialised;
+		MRUPath	mruPath;
+		QString windowColourName;
+		QString activeGroupColourName;
 
-	void	LoadSettingFile();
-	void	SaveSettingFile();
+#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
+		bool dssClosing;
+#endif
 
-	void	changeEvent(QEvent *);
-	void	makeLinks();
+		void	LoadSettingFile();
+		void	SaveSettingFile();
 
-	void onInitDialog();
-};
+		void	changeEvent(QEvent*);
+		void	makeLinks();
 
+		void onInitDialog();
+	};
+}

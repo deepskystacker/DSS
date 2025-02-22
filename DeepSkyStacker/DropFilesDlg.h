@@ -36,45 +36,48 @@
 ****************************************************************************/
 #include "DSSCommon.h"
 
-namespace Ui {
-	class DropFilesDlg;
-}
-
-class DropFilesDlg : public QDialog
+namespace DSS
 {
-	Q_OBJECT
-
-		typedef QDialog
-		Inherited;
-public:
-	explicit DropFilesDlg(QWidget* parent = nullptr);
-	~DropFilesDlg();
-
-	DropFilesDlg(const DropFilesDlg& rhs) = delete;
-	DropFilesDlg& operator = (const DropFilesDlg& rhs) = delete;
-
-	inline PICTURETYPE	dropType()
-	{
-		return type;
-	};
-
-	inline void setFileCount(size_t count)
-	{
-		fileCount = count;
+	namespace Ui {
+		class DropFilesDlg;
 	}
 
+	class DropFilesDlg : public QDialog
+	{
+		Q_OBJECT
 
-protected:
-	void showEvent(QShowEvent* event) override;
+			typedef QDialog
+			Inherited;
+	public:
+		explicit DropFilesDlg(QWidget* parent = nullptr);
+		~DropFilesDlg();
 
-private slots:
-	void accept() override;
+		DropFilesDlg(const DropFilesDlg& rhs) = delete;
+		DropFilesDlg& operator = (const DropFilesDlg& rhs) = delete;
 
-private:
-	Ui::DropFilesDlg* ui;
-	bool initialised;
-	size_t fileCount;
-	PICTURETYPE type;
+		inline PICTURETYPE	dropType()
+		{
+			return type;
+		};
 
-	void onInitDialog();
-};
+		inline void setFileCount(size_t count)
+		{
+			fileCount = count;
+		}
+
+
+	protected:
+		void showEvent(QShowEvent* event) override;
+
+	private slots:
+		void accept() override;
+
+	private:
+		Ui::DropFilesDlg* ui;
+		bool initialised;
+		size_t fileCount;
+		PICTURETYPE type;
+
+		void onInitDialog();
+	};
+}

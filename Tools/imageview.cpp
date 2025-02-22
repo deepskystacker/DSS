@@ -49,7 +49,7 @@ namespace DSS
         m_origin(0.0, 0.0),
         m_pToolBar(nullptr),
         m_fourCorners(false),
-        m_enableZoomImage(true),
+        m_enableMagnifier(true),
         m_tipShowCount(0)
     {
         setAttribute(Qt::WA_MouseTracking);
@@ -92,7 +92,7 @@ namespace DSS
 
     void ImageView::mousePressEvent(QMouseEvent* e)
     {
-        m_enableZoomImage = false;
+        m_enableMagnifier = false;
         emit Image_mousePressEvent(e);
     }
 
@@ -105,7 +105,7 @@ namespace DSS
     void ImageView::mouseReleaseEvent(QMouseEvent* e)
     {
         emit Image_mouseReleaseEvent(e);
-        m_enableZoomImage = true;
+        m_enableMagnifier = true;
     }
 
     void ImageView::resizeEvent(QResizeEvent* e)
@@ -221,7 +221,7 @@ namespace DSS
         // If there's actaully an image to display and we're not in "Four Corners" mode
         // we can show the magnifying glass view
         //
-        if (nullptr != pPixmap && !m_fourCorners && m_enableZoomImage)
+        if (nullptr != pPixmap && !m_fourCorners && m_enableMagnifier)
         {
             paintZoomImage(painter);
         }
@@ -334,7 +334,7 @@ namespace DSS
         const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
 
         //
-        // If the mouse isn't over theis control there's nothing to do, if it is over the control, then
+        // If the mouse isn't over this control there's nothing to do, if it is over the control, then
         // if the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
         //
         if (!underMouse() || !displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse())) return;

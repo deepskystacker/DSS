@@ -11,146 +11,62 @@ namespace DSS { class ProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
-class CRegisterInfo
-{
-public :
-	int			m_lNrStars;
-	double			m_fMinLuminancy;
-	double			m_fOverallQuality;
-
-private :
-	void	CopyFrom(const CRegisterInfo & ri)
-	{
-		m_lNrStars		= ri.m_lNrStars;
-		m_fMinLuminancy = ri.m_fMinLuminancy;
-		m_fOverallQuality = ri.m_fOverallQuality;
-	};
-
-public :
-	CRegisterInfo()
-	{
-		m_lNrStars			= 0;
-		m_fMinLuminancy		= 0;
-		m_fOverallQuality	= 0;
-	};
-
-	CRegisterInfo(const CRegisterInfo & ri)
-	{
-		CopyFrom(ri);
-	};
-
-	virtual ~CRegisterInfo()
-	{
-	};
-
-	const CRegisterInfo & operator = (const CRegisterInfo & ri)
-	{
-		CopyFrom(ri);
-		return (*this);
-	};
-
-	bool operator < (const CRegisterInfo & ri) const
-	{
-		return m_fMinLuminancy < ri.m_fMinLuminancy;
-	};
-};
-
-typedef std::vector<CRegisterInfo>		REGISTERINFOVECTOR;
-
-/* ------------------------------------------------------------------- */
-
-
-/* ------------------------------------------------------------------- */
-
 class CRegisteredFrame
 {
-public :
+public:
+	constexpr static double RoundnessTolerance = 2.0;
+	constexpr static double RadiusFactor = 2.35 / 1.5;
+
 	STARVECTOR		m_vStars;
-	double			m_fRoundnessTolerance;
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
 	double			m_fBackground;
-	double			m_fOverallQuality;
+	double			m_fScore;
 	double			m_fFWHM;
 	bool			m_bInfoOk;
 	bool			m_bComet;
-	double			m_fXComet,
-					m_fYComet;
+	double			m_fXComet;
+	double			m_fYComet;
 	CSkyBackground	m_SkyBackground;
+	double quality{ 0.0 };
+protected:
+	double usedDetectionThreshold{ 0.0 };
 
-protected :
-	void	CopyFrom(const CRegisteredFrame & rf)
-	{
-		m_vStars				= rf.m_vStars;
-		m_fRoundnessTolerance	= rf.m_fRoundnessTolerance;
-		m_fMinLuminancy			= rf.m_fMinLuminancy;
-		m_bApplyMedianFilter	= rf.m_bApplyMedianFilter;
-		m_fBackground			= rf.m_fBackground;
-		m_fOverallQuality		= rf.m_fOverallQuality;
-		m_fFWHM					= rf.m_fFWHM;
-		m_bComet				= rf.m_bComet;
-		m_fXComet				= rf.m_fXComet;
-		m_fYComet				= rf.m_fYComet;
-		m_bInfoOk				= rf.m_bInfoOk;
-		m_SkyBackground			= rf.m_SkyBackground;
-	};
+private:
+	void Reset();
 
-	void	Reset();
-	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
-
-	void	ComputeOverallQuality()
-	{
-		m_fOverallQuality = 0.0;
-		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
-			m_fOverallQuality += m_vStars[i].m_fQuality;
-	};
-
-public :
+public:
 	CRegisteredFrame()
 	{
 		Reset();
-	};
+	}
 
-	virtual ~CRegisteredFrame()
-	{
-	};
+	virtual ~CRegisteredFrame() = default;
 
-	void	SetDetectionThreshold(double fMinLuminancy)
+	static std::pair<double, double> ComputeScore(const STARVECTOR& stars);
+
+	void SetDetectionThreshold(double fMinLuminancy)
 	{
 		m_fMinLuminancy = fMinLuminancy;
-	};
-
-	void	SetRoundnessTolerance(double fTolerance)
-	{
-		m_fRoundnessTolerance = fTolerance;
-	};
+	}
 
 	STARVECTOR GetStars() const
 	{
 		return m_vStars;
 	}
 
-	void	SetStars(const STARVECTOR & vStars)
+	void SetStars(const STARVECTOR& vStars)
 	{
 		m_vStars = vStars;
-		ComputeOverallQuality();
+		std::tie(this->m_fScore, this->quality) = CRegisteredFrame::ComputeScore(m_vStars);
 		ComputeFWHM();
-	};
+	}
 
-	void	ComputeFWHM()
+	void ComputeFWHM()
 	{
-		std::vector<double>		vFWHM;
-
-		// Compute FWHM
-		m_fFWHM = 0.0;
-		for (const auto& star : m_vStars)
-			vFWHM.push_back(star.m_fMeanRadius * (2.35 / 1.5));
-
-		if (!vFWHM.empty())
-		{
-			// m_fFWHM = Median(vFWHM);
-			m_fFWHM = Average(vFWHM);
-		}
+		m_fFWHM = m_vStars.empty()
+			? 0.0
+			: std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double acc, const CStar& star) { return acc + star.m_fMeanRadius * RadiusFactor; }) / m_vStars.size();
 	}
 
 	bool IsRegistered() const
@@ -158,20 +74,22 @@ public :
 		return m_bInfoOk;
 	}
 
-	bool ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
-	size_t RegisterSubRect(const CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
-
 	bool	SaveRegisteringInfo(const fs::path& szInfoFileName);
 	bool	LoadRegisteringInfo(const fs::path& szInfoFileName);
 };
 
+namespace DSS {
+	size_t registerSubRect(const CGrayBitmap& inputBitmap, const double detectionThreshold, const DSSRect& rc, STARSET& stars,
+		std::pair<double, double>* backgroundLevelCache, const QPointF& comet);
+}
+
 /* ------------------------------------------------------------------- */
 
 class CLightFrameInfo : public CFrameInfo,
-						public CRegisteredFrame
+                        public CRegisteredFrame
 {
 public:
-	fs::path m_strInfoFileName;
+	fs::path infoFile;
 	bool m_bStartingFrame;
 	bool m_bTransformedCometPosition;
 
@@ -191,31 +109,30 @@ private:
 	void Reset();
 
 public:
-	CLightFrameInfo()
+	CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
 	{
 		Reset();
 	}
 
 	CLightFrameInfo(const CLightFrameInfo&) = default;
 
-	explicit CLightFrameInfo(const CFrameInfo& cbi)
+	explicit CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
 	{
         Reset();
-		CFrameInfo::CopyFrom(cbi);
+//		CFrameInfo::CopyFrom(cbi);
 	}
 
-	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg)
+	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
 	{
 		Reset();
 		this->SetProgress(pPrg);
 	}
 
 	CLightFrameInfo& operator=(const CLightFrameInfo&) = default;
-
 	CLightFrameInfo& operator=(const CFrameInfo& cbi)
 	{
 		CFrameInfo::operator=(cbi);
-		return (*this);
+		return *this;
 	}
 
 	void SetHotPixelRemoval(const bool bHotPixels)
@@ -228,124 +145,26 @@ public:
 		m_pProgress = pProgress;
 	}
 
-	void SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
+	void SetBitmap(fs::path path);
 
-	bool operator<(const CLightFrameInfo& cbi) const
-	{
-		if (m_bStartingFrame)
-			return true;
-		else if (cbi.m_bStartingFrame)
-			return false;
-		else if (m_fOverallQuality > cbi.m_fOverallQuality)
-			return true;
-		else
-			return false;
-	}
-
-	void RegisterPicture(CMemoryBitmap* pBitmap);
-	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, DSS::ProgressBase* pProgress = nullptr);
+public:
+	void RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex);
+	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::ProgressBase* pProgress);
 	void SaveRegisteringInfo();
 
 private:
 	bool ReadInfoFileName();
-	void RegisterPicture();
-	void RegisterPicture(CGrayBitmap& Bitmap);
-	double ComputeMedianValue(CGrayBitmap& Bitmap);
+	double RegisterPicture(const CGrayBitmap& Bitmap, double threshold, const size_t numberOfWantedStars, const bool optimizeThreshold);
+	double ComputeMedianValue(const CGrayBitmap& Bitmap);
 	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
-	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
+	std::shared_ptr<const CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };
 
-/* ------------------------------------------------------------------- */
 
-class CScoredLightFrame
-{
-public:
-	std::uint32_t	m_dwIndice;
-	double			m_fScore;
-
-private:
-	void CopyFrom(const CScoredLightFrame& slf)
-	{
-		m_dwIndice = slf.m_dwIndice;
-		m_fScore   = slf.m_fScore;
-	}
-
-public:
-	CScoredLightFrame(std::uint32_t dwIndice, double fScore) :
-		m_dwIndice{ dwIndice },
-		m_fScore{ fScore }
-	{}
-
-	CScoredLightFrame(const CScoredLightFrame& slf)
-	{
-		CopyFrom(slf);
-	}
-
-	const CScoredLightFrame& operator=(const CScoredLightFrame& slf)
-	{
-		CopyFrom(slf);
-		return (*this);
-	}
-
-	bool operator<(const CScoredLightFrame& slf) const
-	{
-		return (m_fScore > slf.m_fScore);
-	}
-};
-
-namespace DSS
-{
-	class ScoredLightFrame
-	{
-	public:
-		std::uint16_t	group;
-		std::uint32_t	index;
-		double			score;
+using LIGHTFRAMEINFOVECTOR = std::vector<CLightFrameInfo>;
 
 
-		//private:
-		//	void CopyFrom(const CScoredLightFrame& slf)
-		//	{
-		//		m_dwIndice = slf.m_dwIndice;
-		//		m_fScore   = slf.m_fScore;
-		//	}
-
-	public:
-		ScoredLightFrame(std::uint16_t id, std::uint32_t ndx, double value) :
-			group{ id },
-			index{ ndx },
-			score{ value }
-
-		{}
-
-		ScoredLightFrame(const ScoredLightFrame& rhs) = default;
-		ScoredLightFrame(ScoredLightFrame&& rhs) = default;
-
-		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = default;
-		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
-
-		/// <summary>
-		/// Implement operator < for std::sort.  Note the what is
-		/// actually wanted is a reverse sort so we use > for the
-		/// operator.
-		/// </summary>
-		/// <param name="rhs" >The comparand</param>
-		/// <returns>true if greater than comparand </returns>
-		bool operator<(const ScoredLightFrame& rhs) const
-		{
-			return (score > rhs.score);
-		}
-	};
-
-}
-
-/* ------------------------------------------------------------------- */
-
-typedef std::vector<CLightFrameInfo>	LIGHTFRAMEINFOVECTOR;
-
-/* ------------------------------------------------------------------- */
-class CAllStackingTasks;
-class CRegisterEngine
+class CRegisterEngine final
 {
 private :
 	bool						m_bSaveCalibrated;
@@ -357,11 +176,8 @@ private :
 
 public :
 	CRegisterEngine();
-	virtual ~CRegisterEngine() = default;
+	~CRegisterEngine() = default;
 
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
-	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, DSS::ProgressBase* pProgress);
+	bool RegisterLightFrames(class CAllStackingTasks& tasks, const QString& referenceFrame, bool bForceRegister, DSS::ProgressBase* pProgress);
 };
-
-/* ------------------------------------------------------------------- */
-

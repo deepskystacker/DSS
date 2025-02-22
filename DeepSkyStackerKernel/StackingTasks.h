@@ -198,57 +198,39 @@ public :
 
 class CAllStackingTasks
 {
-private :
-	bool						m_bCalibrating;
-	bool						m_bUsingJPEG;
-	bool						m_bUsingFITS;
-	bool						customRectEnabled;
-	bool						m_bCometAvailable;
-	DSSRect						customRect;
-	bool						m_bDarkUsed;
-	bool						m_bBiasUsed;
-	bool						m_bFlatUsed;
-	bool						m_bUsingBayer;
-	bool						m_bUsingColorImages;
-	int							m_lNrLightFrames;
-	int							m_lNrBiasFrames;
-	int							m_lNrDarkFrames;
-	int							m_lNrDarkFlatFrames;
-	int							m_lNrFlatFrames;
-	double						m_fMaxExposureTime;
+private:
+	bool	m_bCalibrating{ false };
+	bool	m_bUsingJPEG{ false };
+	bool	m_bUsingFITS{ false };
+	bool	customRectEnabled{ false };
+	bool	m_bCometAvailable{ false };
+	DSSRect	customRect{};
+	bool	m_bDarkUsed{ false };
+	bool	m_bBiasUsed{ false };
+	bool	m_bFlatUsed{ false };
+	bool	m_bUsingBayer{ false };
+	bool	m_bUsingColorImages{ false };
+	int		m_lNrLightFrames{ 0 };
+	int		m_lNrBiasFrames{ 0 };
+	int		m_lNrDarkFrames{ 0 };
+	int		m_lNrDarkFlatFrames{ 0 };
+	int		m_lNrFlatFrames{ 0 };
+	double	m_fMaxExposureTime{ 0.0 };
 
-public :
-	std::vector<CTaskInfo>		m_vTasks;
-	std::vector<CStackingInfo>	m_vStacks;
+public:
+	std::vector<CTaskInfo>		m_vTasks{};
+	std::vector<CStackingInfo>	m_vStacks{};
 
-private :
-	CTaskInfo*	FindBestMatchingTask(const CTaskInfo& ti, PICTURETYPE TaskType);
+private:
+	CTaskInfo* FindBestMatchingTask(const CTaskInfo& ti, PICTURETYPE TaskType);
 
-public :
-	CAllStackingTasks() :
-		m_bCalibrating{ false },
-		m_bUsingJPEG{ false },
-		m_bUsingFITS{ false },
-		customRectEnabled{ false },
-		m_bCometAvailable{ false },
-		m_bDarkUsed{ false },
-		m_bBiasUsed{ false },
-		m_bFlatUsed{ false },
-		m_bUsingBayer{ false },
-		m_bUsingColorImages{ false },
-		m_lNrLightFrames{ 0 },
-		m_lNrBiasFrames{ 0 },
-		m_lNrDarkFrames{ 0 },
-		m_lNrDarkFlatFrames{ 0 },
-		m_lNrFlatFrames{ 0 },
-		m_fMaxExposureTime{ 0 }
-	{}
-
+public:
+	CAllStackingTasks() = default;
 	CAllStackingTasks(const CAllStackingTasks&) = default;
 	CAllStackingTasks& operator=(const CAllStackingTasks&) = default;
 	~CAllStackingTasks() = default;
 
-	void	Clear()
+	void Clear()
 	{
 		m_vTasks.clear();
 		m_vStacks.clear();
@@ -337,7 +319,8 @@ public :
 		return m_fMaxExposureTime;
 	}
 
-	void AddFileToTask(const CFrameInfo& FrameInfo, const std::uint32_t dwGroupID = 0);
+	void AddFileToTask(const CFrameInfo& frameInfo, const std::uint32_t dwGroupID);
+
 	void setCustomRectangle(const DSSRect& rcCustom)
 	{
 		if (rcCustom.isEmpty())
@@ -410,23 +393,6 @@ public :
 	static  bool	GetApplyMedianFilterToCometImage();
 	static  INTERMEDIATEFILEFORMAT GetIntermediateFileFormat();
 	static	COMETSTACKINGMODE GetCometStackingMode();
-};
-
-/* ------------------------------------------------------------------- */
-
-class	CAllStackingJobs
-{
-public :
-	std::vector<CAllStackingTasks>		m_vStackingTasks;
-
-public :
-	CAllStackingJobs()
-	{
-	};
-
-	virtual ~CAllStackingJobs()
-	{
-	};
 };
 
 /* ------------------------------------------------------------------- */
