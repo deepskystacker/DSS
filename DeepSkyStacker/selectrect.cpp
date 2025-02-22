@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "selectrect.h"
 #include "imageview.h"
 #include "ProcessingDlg.h"
@@ -570,12 +570,12 @@ namespace DSS
         if (!rect2xDrizzle.isEmpty())
         {
             // If the width/height is within 5 pixels - make it match
-            if (labs(rect2xDrizzle.width() - selectRect.width()) < (5 / (imageView->zoom() * imageView->scale())))
+            if (std::abs(rect2xDrizzle.width() - selectRect.width()) < (5 / (imageView->zoom() * imageView->scale())))
             {
                 selectRect.setLeft(rect2xDrizzle.left());
                 selectRect.setRight(rect2xDrizzle.right());
             };
-            if (labs(rect2xDrizzle.height() - selectRect.height()) < (5 / (imageView->zoom() * imageView->scale())))
+            if (std::abs(rect2xDrizzle.height() - selectRect.height()) < (5 / (imageView->zoom() * imageView->scale())))
             {
                 selectRect.setTop(rect2xDrizzle.top());
                 selectRect.setBottom(rect2xDrizzle.bottom());
@@ -585,12 +585,12 @@ namespace DSS
         if (!rect3xDrizzle.isEmpty())
         {
             // If the width/height is within 5 pixels - make it match
-            if (labs(rect3xDrizzle.width() - selectRect.width()) < (5 / (imageView->zoom() * imageView->scale())))
+            if (std::abs(rect3xDrizzle.width() - selectRect.width()) < (5 / (imageView->zoom() * imageView->scale())))
             {
                 selectRect.setLeft(rect3xDrizzle.left());
                 selectRect.setRight(rect3xDrizzle.right());
             };
-            if (labs(rect3xDrizzle.height() - selectRect.height()) < (5 / (imageView->zoom() * imageView->scale())))
+            if (std::abs(rect3xDrizzle.height() - selectRect.height()) < (5 / (imageView->zoom() * imageView->scale())))
             {
                 selectRect.setTop(rect3xDrizzle.top());
                 selectRect.setBottom(rect3xDrizzle.bottom());

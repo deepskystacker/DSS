@@ -1,7 +1,8 @@
-#include "stdafx.h"
-#include <immintrin.h>
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 
 AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, const CMemoryBitmap& inputbm) :
 	redPixels{},
@@ -17,9 +18,9 @@ AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd,
 void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You should be sure that lineEnd >= lineStart!
 {
 	const size_t height = lineEnd - lineStart;
-	vectorsPerLine = AvxSupport::numberOfAvxVectors<std::uint16_t, VectorElementType>(inputBitmap.Width());
+	vectorsPerLine = AvxBitmapUtil::numberOfAvxVectors<std::uint16_t, VectorElementType>(inputBitmap.Width());
 	const size_t nrVectors = vectorsPerLine * height;
-	if (nrVectors != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
+	if (nrVectors != 0 && AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		redPixels.resize(nrVectors);
 		greenPixels.resize(nrVectors);
@@ -33,10 +34,10 @@ int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, 
 		return 1;
 	if (pixelSizeMultiplier != 1)
 		return 1;
-	if (!AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
+	if (!AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 		return 1;
 
-	return AvxSupport{ inputBitmap }.getCfaType() == CFATYPE_RGGB
+	return AvxBitmapUtil{ inputBitmap }.getCfaType() == CFATYPE_RGGB
 		? Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0>(lineStart, lineEnd)
 		: Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1>(lineStart, lineEnd);
 }
@@ -74,7 +75,7 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 	__m256i nextRowCurrent, nextRowNext; // ... of following row.
 	int thisRowLast, prevRowLast, nextRowLast; // Last value of the previous line.
 
-	const AvxSupport avxSupport{ avxData.inputBitmap };
+	const AvxBitmapUtil avxSupport{ avxData.inputBitmap };
 	const std::uint16_t* pGray = avxSupport.grayPixels<std::uint16_t>().data() + lineStart * width;
 	std::uint16_t* pRed = avxData.redCfaLine(0);
 	std::uint16_t* pGreen = avxData.greenCfaLine(0);

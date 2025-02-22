@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "About.h"
 #include "ui/ui_About.h"
 #include "DSSVersion.h"
@@ -94,7 +94,7 @@ namespace DSS
         connect(ui->aboutQt, &QPushButton::clicked, this, &About::aboutQt);
 
         ui->comboBox->addItem(tr("Default"), "");
-        QDir dir(":/i18n/", "DSS_*.qm");
+        QDir dir(":/i18n/", "DeepSkyStacker_*.qm");
         for (auto it : dir.entryList())
         {
             QString lang{ it.section('_', 1) };
@@ -102,10 +102,9 @@ namespace DSS
             QLocale locale{ lang };
             QString variant{ lang.section('_', 1) };
             QString langName = locale.nativeLanguageName();
-            if ("en" == lang) langName = "English";
             if (!variant.isEmpty())
             {
-                langName += " " + locale.nativeCountryName();
+                langName += " " + locale.nativeTerritoryName();     // was .nativeCountryName()
             }
             ui->comboBox->addItem(langName, lang);
         }

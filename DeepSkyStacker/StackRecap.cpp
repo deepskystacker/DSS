@@ -1,15 +1,15 @@
 // StackRecap.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "StackRecap.h"
 #include "ui/ui_StackRecap.h"
 #include "DeepSkyStacker.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "StackingTasks.h"
 #include "Multitask.h"
 #include "FrameInfoSupport.h"
 #include "BitmapExt.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "StackSettings.h"
 #include "RecommendedSettings.h"
 
@@ -188,8 +188,8 @@ namespace DSS
 			QString				strGainText(tr("Gain", "IDS_GAIN"));
 			int				i, j;
 			int				lTotalExposure = 0;
-			__int64				ulNeededSpace;
-			__int64				ulFreeSpace;
+			std::uint64_t		ulNeededSpace;
+			std::uint64_t		ulFreeSpace;
 			QString				strFreeSpace;
 			QString				strNeededSpace;
 			STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
@@ -249,7 +249,7 @@ namespace DSS
 				strText = tr("The process temporarily requires %1 of free space on the %2 drive.<br>"
 					"Only %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
 					.arg(strNeededSpace)
-					.arg(drive.wstring().c_str())
+					.arg(drive.generic_string().c_str())
 					.arg(strFreeSpace);
 				insertHTML(strHTML, strText, QColorConstants::Red, true, false);
 				if (ResultMode == SM_MOSAIC)
@@ -731,7 +731,7 @@ namespace DSS
 				strText = tr("The process will temporarily use %1 on the %2 drive (%3 free).",
 					"IDS_RECAP_INFODISKSPACE")
 					.arg(strNeededSpace)
-					.arg(drive.wstring().c_str())
+					.arg(drive.generic_string().c_str())
 					.arg(strFreeSpace);
 				insertHTML(strHTML, strText, windowTextColour);
 				if (ResultMode == SM_MOSAIC)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "IntermediateFiles.h"
 #include "ui/ui_IntermediateFiles.h"
 #include "Workspace.h"

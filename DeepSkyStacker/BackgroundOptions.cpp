@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "BackgroundOptions.h"
 #include "ui/ui_BackgroundOptions.h"
 #include "StackingTasks.h"

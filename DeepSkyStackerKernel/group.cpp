@@ -33,10 +33,10 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "group.h"
 #include "ImageListModel.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "FrameInfo.h"
 #include "RegisterEngine.h"
 

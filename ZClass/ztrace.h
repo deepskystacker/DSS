@@ -257,10 +257,10 @@ static size_t
 
 #define Z_TRACE_RUNTIME
 
-#ifdef __FUNCSIG__
-#define __ZTRACE_FUNCTION__ __FUNCSIG__
-#elif defined(__PRETTY_FUNCTION__)
+#if defined(__GNUC__)
 #define __ZTRACE_FUNCTION__ __PRETTY_FUNCTION__
+#elif defined(__FUNCSIG__)
+#define __ZTRACE_FUNCTION__ __FUNCSIG__
 #else
 #define __ZTRACE_FUNCTION__ __FUNCTION__
 #endif

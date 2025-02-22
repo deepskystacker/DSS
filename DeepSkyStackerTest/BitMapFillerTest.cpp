@@ -1,16 +1,24 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "avx_bitmap_filler.h"
 #include "ColorBitmap.h"
 #include "MedianFilterEngine.h"
 #include "DSSProgress.h"
 
+#if defined(_MSC_VER)
+#define bswap_16(x) _byteswap_ushort(x)
+#elif defined(__GNUC__)
+#define bswap_16(x) __builtin_bswap16(x)
+#else
+#error Compiler not yet supported
+#endif
+
 template <size_t SZ>
 void be2le(std::uint16_t(&out)[SZ], const std::uint16_t* pIn)
 {
 	for (size_t n = 0; n < SZ; ++n)
 //		out[n] = _load_be_u16(pIn + n);
-		out[n] = _byteswap_ushort(pIn[n]);
+		out[n] = bswap_16(pIn[n]);
 }
 
 // ------------------

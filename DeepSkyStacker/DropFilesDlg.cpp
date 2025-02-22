@@ -35,7 +35,7 @@
 ****************************************************************************/
 // DropFilesDlg.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "DropFilesDlg.h"
 #include "ui/ui_DropFilesDlg.h"
 #include "BitmapInfo.h"

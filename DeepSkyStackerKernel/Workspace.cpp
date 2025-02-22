@@ -1,7 +1,7 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "Workspace.h"
 #include "DSSCommon.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 class WorkspaceSettings
 {
 public:

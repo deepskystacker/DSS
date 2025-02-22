@@ -81,7 +81,7 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  **********************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "StackWalker.h"
 
 #include <stdio.h>

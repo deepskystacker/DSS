@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "FrameList.h"
 #include "ImageListModel.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "StackingTasks.h"
 #include "Workspace.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "RegisterEngine.h"
 
 namespace {
@@ -333,9 +333,9 @@ namespace DSS
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
 #pragma warning (suppress:4477)
-					fprintf(hFile, "%ld\t%s\t%s\n", checked,
+					fprintf(hFile, "%d\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
-						path.generic_u8string().c_str());
+						const_cast<char *>(reinterpret_cast<const char *>(path.generic_u8string().c_str())));
 				}
 				g.setDirty(false);
 			}
@@ -369,6 +369,7 @@ namespace DSS
 		{
 			ZTRACE_RUNTIME("fs::current_path() failed with error code %ld, %s",
 				ec.value(), ec.message().c_str());
+			ZTRACE_RUNTIME("oldCWD: %s", oldCWD.generic_string().c_str());
 		}
 
 		if (std::FILE* hFile =
@@ -396,8 +397,8 @@ namespace DSS
 			// Read scan line
 			if (fgets(charBuffer, sizeof(charBuffer), hFile))
 			{
-				strValue = QString::fromUtf8(charBuffer);
-				if (!strValue.compare("DSS file list\n", Qt::CaseInsensitive))
+				strValue = QString::fromUtf8(charBuffer).trimmed();	// Remove trailing whitespace
+				if (!strValue.compare("DSS file list", Qt::CaseInsensitive))
 					bContinue = true;
 			}
 
@@ -406,8 +407,8 @@ namespace DSS
 				bContinue = false;
 				if (fgets(charBuffer, sizeof(charBuffer), hFile))
 				{
-					strValue = QString::fromUtf8(charBuffer);
-					if (!strValue.compare("CHECKED\tTYPE\tFILE\n", Qt::CaseInsensitive))
+					strValue = QString::fromUtf8(charBuffer).trimmed();	// Remove trailing whitespace
+					if (!strValue.compare("CHECKED\tTYPE\tFILE", Qt::CaseInsensitive))
 						bContinue = true;
 				}
 			}
@@ -520,7 +521,7 @@ namespace DSS
 			fclose(hFile);
 		}
 
-		fs::current_path(oldCWD);
+		fs::current_path(oldCWD, ec);
 		setDirty(false);
 		return *this;
 	}

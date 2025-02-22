@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "StackingEngine.h"
 
 #include "MasterFrames.h"
@@ -15,7 +15,7 @@
 #include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "MultiBitmap.h"
 #include "ColorBitmap.h"
@@ -24,6 +24,12 @@
 #include "AHDDemosaicing.h"
 #include "BitmapIterator.h"
 
+#if !defined(__cpp_lib_atomic_ref)
+#include <boost/atomic/atomic_ref.hpp>
+#define STD_or_BOOST boost
+#else
+#define STD_or_BOOST std
+#endif
 
 #define _USE_MATH_DEFINES
 
@@ -848,7 +854,7 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const 
 	if (pProg != nullptr)
 		pProg->Progress1(strText, 0);
 
-#pragma omp parallel for schedule(dynamic) default(none) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
+#pragma omp parallel for schedule(dynamic) default(shared) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
 	for (int i = 1; i < nrBitmaps; ++i)
 	{
 		// OpenMP loops need to loop till the end, breaking earlier is difficult. 
@@ -1323,10 +1329,10 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	float* const pRed = pCover->GetRedPixel(0, 0);
 	float* const pGreen = pCover->GetGreenPixel(0, 0);
 	float* const pBlue = pCover->GetBluePixel(0, 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed + 1) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pGreen) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
-	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pBlue) & (std::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed) & (STD_or_BOOST::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pRed + 1) & (STD_or_BOOST::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pGreen) & (STD_or_BOOST::atomic_ref<float>::required_alignment - 1)) == 0);
+	ZASSERTSTATE((reinterpret_cast<ptrdiff_t>(pBlue) & (STD_or_BOOST::atomic_ref<float>::required_alignment - 1)) == 0);
 
 	for (int lNrBitmaps = 1; const CPixelTransform& PixTransform : m_vPixelTransforms)
 	{
@@ -1337,7 +1343,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
 		}
 
-#pragma omp parallel for schedule(static, 250) default(none) shared(PixTransform) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for schedule(static, 250) default(shared) shared(PixTransform) if(CMultitask::GetNrProcessors() > 1)
 		for (int j = 0; j < m_rcResult.height(); ++j)
 		{
 			for (const int i : std::views::iota(0, m_rcResult.width()))
@@ -1362,7 +1368,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 						{
 							const auto update = [offset = static_cast<size_t>(m_rcResult.width()) * y + x, percent](float* const vals)
 							{
-								std::atomic_ref{ vals[offset] } += percent;
+								STD_or_BOOST::atomic_ref{ vals[offset] } += percent;
 							};
 
 							switch (GetBayerColor(i, j, m_InputCFAType))
@@ -1432,7 +1438,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 	//
 	// Adjust the coverage of all pixels
 	//
-	BitmapIterator outIt{ m_pOutput };
+	BitmapIterator<std::shared_ptr<CMemoryBitmap>> outIt{ m_pOutput };
 	for (int j = 0; j < m_rcResult.height(); j++)
 	{
 		it.Reset(0, j);
@@ -1739,7 +1745,9 @@ public:
 		m_pLightTask { nullptr },
 		m_BackgroundCalibration {},
 		m_rcResult{},
-		m_pAvxEntropy { nullptr }
+		m_pAvxEntropy { nullptr },
+		m_lPixelSizeMultiplier{0},
+		m_bColor{false}
 	{}
 
 	void process();
@@ -1756,7 +1764,7 @@ void CStackTask::process()
 
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
-#pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
+#pragma omp parallel for default(shared) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		const int endRow = std::min(row + lineBlockSize, height);
@@ -2236,7 +2244,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							continue;
 
 						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
-
+#if(0)
 						if (pBitmap->IsMonochrome())
 						{
 							auto deb{ qDebug() };
@@ -2258,6 +2266,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								deb << r << " " << g << " " << b << Qt::endl;
 							}
 						}
+#endif
 
 						CPixelTransform PixTransform{ lightframeInfo.m_BilinearParameters };
 
@@ -2308,6 +2317,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						if (static_cast<bool>(pDelta))
 							SaveDeltaImage(pDelta.get());
 
+#if (0)
 						qDebug() << "Calibrated light:";
 						if (pBitmap->IsMonochrome())
 						{
@@ -2324,6 +2334,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 								qDebug().nospace() << r << " " << g << " " << b;
 							}
 						}
+#endif
 
 						if (m_pProgress != nullptr)
 							m_pProgress->Start2(strText, 0);

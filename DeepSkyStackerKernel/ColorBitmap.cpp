@@ -1,8 +1,8 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <algorithm>
 #include "ColorBitmap.h"
 #include "ColorHelpers.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "ColorMultiBitmap.h"
 #include "MedianFilterEngine.h"
 #include "BitmapCharacteristics.h"

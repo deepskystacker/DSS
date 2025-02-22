@@ -34,7 +34,7 @@
 **
 ****************************************************************************/
 
-#include "stdafx.h"
+#include "pch.h"
 #include "picturelist.h"
 namespace DSS
 {

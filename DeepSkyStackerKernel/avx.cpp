@@ -1,6 +1,7 @@
-#include "stdafx.h"
-#include <immintrin.h>
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "dssrect.h"
 #include "avx.h"
 #include "PixelTransform.h"
@@ -15,7 +16,7 @@ AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& 
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
-	vectorsPerLine{ AvxSupport::numberOfAvxVectors<float, VectorElementType>(width) },
+	vectorsPerLine{ AvxBitmapUtil::numberOfAvxVectors<float, VectorElementType>(width) },
 	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
 	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
 	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
@@ -51,12 +52,12 @@ void AvxStacking::init(const int lStart, const int lEnd)
 
 void AvxStacking::resizeColorVectors(const size_t nrVectors)
 {
-	if (AvxSupport{ tempBitmap }.isColorBitmap())
+	if (AvxBitmapUtil{ tempBitmap }.isColorBitmap())
 	{
 		greenPixels.resize(nrVectors);
 		bluePixels.resize(nrVectors);
 	}
-	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
+	if (AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		avxCfa.init(lineStart, lineEnd);
 	}
@@ -96,12 +97,12 @@ int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTas
 		return 1;
 
 	// Check input bitmap.
-	const AvxSupport avxInputSupport{ stackData.inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
 	// Check output (temp) bitmap.
-	const AvxSupport avxTempSupport{ stackData.tempBitmap };
+	const AvxBitmapUtil avxTempSupport{ stackData.tempBitmap };
 	if (!avxTempSupport.isColorBitmapOfType<T>() && !avxTempSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
@@ -139,7 +140,7 @@ int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width);
+	const size_t nrVectors = AvxBitmapUtil::numberOfAvxVectors<float, __m256>(stackData.width);
 	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fXCometShift : 0.0));
 	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fYCometShift : 0.0));
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
@@ -416,7 +417,7 @@ int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 };
 
 template <class T, class LoopFunction, class InterpolParam>
-int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
+int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const AvxBitmapUtil& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
 {
 	if (avxInputSupport.isColorBitmapOfType<T>())
 	{
@@ -457,7 +458,7 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = stackData.width / 16;
-	const AvxSupport avxInputSupport{ stackData.inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 
 	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
 	{
@@ -519,9 +520,9 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 					{
 						const float fcolor = readColorValue(*pColor);
-						const float denom = accessSimdElement(b, 0) * fcolor + accessSimdElement(c, 0);
-						const float xplusa = fcolor + accessSimdElement(a, 0);
-						*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElement(fmax, 0)), accessSimdElement(fmin, 0));
+						const float denom = accessSimdElementConst(b, 0) * fcolor + accessSimdElementConst(c, 0);
+						const float xplusa = fcolor + accessSimdElementConst(a, 0);
+						*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElementConst(fmax, 0)), accessSimdElementConst(fmin, 0));
 					}
 				}
 			};
@@ -561,9 +562,9 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 					for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 					{
 						const float fcolor = readColorValue(*pColor);
-						*pResult = fcolor < accessSimdElement(xm, 0)
-							? (fcolor * accessSimdElement(a0, 0) + accessSimdElement(b0, 0))
-							: (fcolor * accessSimdElement(a1, 0) + accessSimdElement(b1, 0));
+						*pResult = fcolor < accessSimdElementConst(xm, 0)
+							? (fcolor * accessSimdElementConst(a0, 0) + accessSimdElementConst(b0, 0))
+							: (fcolor * accessSimdElementConst(a1, 0) + accessSimdElementConst(b1, 0));
 					}
 				}
 			};
@@ -581,7 +582,7 @@ int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgrou
 template <bool ISRGB, bool ENTROPY, class T>
 int Avx256Stacking::pixelPartitioning()
 {
-	AvxSupport avxTempBitmap{ stackData.tempBitmap };
+	AvxBitmapUtil avxTempBitmap{ stackData.tempBitmap };
 	// Check if we were called with the correct template argument.
 	if constexpr (ISRGB) {
 		if (!avxTempBitmap.isColorBitmapOfType<T>())
@@ -658,7 +659,7 @@ int Avx256Stacking::pixelPartitioning()
 	float* pRedEntropyLayer, * pGreenEntropyLayer, * pBlueEntropyLayer;
 	if constexpr (ENTROPY)
 	{
-		AvxSupport avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
+		AvxBitmapUtil avxEntropySupport{ *stackData.entropyData.pEntropyCoverage };
 
 		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
 			return 1;
@@ -762,7 +763,7 @@ int Avx256Stacking::pixelPartitioning()
 			accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2); // x+1, y, fraction2
 		};
 
-	const int nrVectors = static_cast<int>(AvxSupport::numberOfAvxVectors<float, __m256>(stackData.width));
+	const int nrVectors = static_cast<int>(AvxBitmapUtil::numberOfAvxVectors<float, __m256>(stackData.width));
 	const __m256i inputWidthVec = _mm256_set1_epi32(stackData.width);
 
 	for (int row = 0; row < stackData.height; ++row)
@@ -1030,100 +1031,4 @@ inline void Avx256Stacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntro
 			}
 		}
 	*/
-}
-
-
-// ****************
-// Non-AVX Stacking
-// ****************
-
-int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
-{
-	const int width = this->stackData.width;
-	PIXELDISPATCHVECTOR vPixels;
-	vPixels.reserve(16);
-
-	const bool isColor = AvxSupport{ this->stackData.entropyData.inputBitmap }.isColorBitmapOrCfa();
-
-	for (int j = this->stackData.lineStart; j < this->stackData.lineEnd; ++j)
-	{
-		for (int i = 0; i < width; ++i)
-		{
-			const QPointF ptOut = pixelTransformDef.transform(QPointF(i, j));
-
-			COLORREF16 crColor;
-			double fRedEntropy = 1.0, fGreenEntropy = 1.0, fBlueEntropy = 1.0;
-
-			if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
-				this->stackData.entropyData.entropyInfo.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
-			else
-				this->stackData.inputBitmap.GetPixel16(i, j, crColor);
-
-			float Red = crColor.red;
-			float Green = crColor.green;
-			float Blue = crColor.blue;
-
-			if (backgroundCalibrationDef.m_BackgroundCalibrationMode != BCM_NONE)
-				backgroundCalibrationDef.ApplyCalibration(Red, Green, Blue);
-
-			if ((0 != Red || 0 != Green || 0 != Blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
-			{
-				vPixels.resize(0);
-				ComputePixelDispatch(ptOut, pixelSizeMultiplier, vPixels);
-
-				for (CPixelDispatch& Pixel : vPixels)
-				{
-					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 && Pixel.m_lX < this->stackData.resultWidth && Pixel.m_lY >= 0 && Pixel.m_lY < this->stackData.resultHeight)
-					{
-						// Special case for entropy average
-						if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
-						{
-							if (isColor)
-							{
-								double fOldRed, fOldGreen, fOldBlue;
-
-								this->stackData.entropyData.pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-								fOldRed += Pixel.m_fPercentage * fRedEntropy;
-								fOldGreen += Pixel.m_fPercentage * fGreenEntropy;
-								fOldBlue += Pixel.m_fPercentage * fBlueEntropy;
-								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-
-								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-								fOldRed += Red * Pixel.m_fPercentage * fRedEntropy;
-								fOldGreen += Green * Pixel.m_fPercentage * fGreenEntropy;
-								fOldBlue += Blue * Pixel.m_fPercentage * fBlueEntropy;
-								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-							}
-							else
-							{
-								double fOldGray;
-
-								this->stackData.entropyData.pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-								fOldGray += Pixel.m_fPercentage * fRedEntropy;
-								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-
-								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-								fOldGray += Red * Pixel.m_fPercentage * fRedEntropy;
-								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-							}
-						}
-
-						double fPreviousRed, fPreviousGreen, fPreviousBlue;
-
-						this->stackData.tempBitmap.GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-						fPreviousRed += static_cast<double>(Red) / 256.0 * Pixel.m_fPercentage;
-						fPreviousGreen += static_cast<double>(Green) / 256.0 * Pixel.m_fPercentage;
-						fPreviousBlue += static_cast<double>(Blue) / 256.0 * Pixel.m_fPercentage;
-						fPreviousRed = std::min(fPreviousRed, 255.0);
-						fPreviousGreen = std::min(fPreviousGreen, 255.0);
-						fPreviousBlue = std::min(fPreviousBlue, 255.0);
-						this->stackData.tempBitmap.SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-					}
-				}
-			}
-		}
-	}
-
-	return 0;
 }

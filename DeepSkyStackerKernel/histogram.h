@@ -1,6 +1,6 @@
 #pragma once
-
-#include "ZExcBase.h"
+#include "dssbase.h"
+#include "zexcbase.h"
 //#include "resource.h"
 
 /* ------------------------------------------------------------------- */

@@ -36,8 +36,12 @@
 // DeepSkyStackerLive.cpp : Defines the class behaviors for the application.
 //
 
-#include <stdafx.h>
+#include "pch.h"
+
+#if defined(Q_OS_WIN)
 #include <htmlhelp.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -74,7 +78,8 @@
 #include "progresslive.h"
 #include "RegisterEngine.h"
 #include "RestartMonitoring.h"
-#include <SmtpMime/SmtpMime>
+#include <smtpmime/SmtpMime>
+#include "QMessageLogger.h"
 
 using namespace DSS;
 using namespace std;
@@ -88,39 +93,6 @@ bool	g_bShowRefStars = false;
 
 namespace
 {
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-
 	//
 	// Convert a QLabel with "plain text" to a hyperlink
 	//
@@ -197,14 +169,14 @@ bool LoadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(translations_kernel);
+	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
 	const QString language = settings.value("Language").toString();
 	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
-	LoadTranslationUnit(*qApp, theAppTranslator, "DSSLive_", ":/i18n/", language);
-	LoadTranslationUnit(*qApp, theKernelTranslator, "DSSKernel_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theAppTranslator, "DeepSkyStackerLive_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theKernelTranslator, "DeepSkyStackerKernel_", ":/i18n/", language);
 
 	return true;
 }
@@ -748,9 +720,14 @@ void DeepSkyStackerLive::stopStacking()
 void DeepSkyStackerLive::help()
 {
 	ZFUNCTRACE_RUNTIME();
+#if defined(Q_OS_WIN)
+
 	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#else
+	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
+#endif
 }
 
 /* ------------------------------------------------------------------- */
@@ -781,7 +758,12 @@ void DeepSkyStackerLive::qMessageBox(const QString& message, QMessageBox::Icon i
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -813,7 +795,12 @@ void DeepSkyStackerLive::qErrorMessage(const QString& message, const QString& ty
 		}
 	}
 	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -922,27 +909,20 @@ bool DeepSkyStackerLive::checkRestartMonitor()
 bool DeepSkyStackerLive::canWriteToMonitoredFolder()
 {
 	bool result{ false };
-	fs::path dir{ monitoredFolder.toStdU16String() };
+	QDir dir{ monitoredFolder};
 
 	//
 	// Check that a file can be written
 	//
-	if (is_directory(dir))
+	if (dir.exists())
 	{
-		auto  file = dir /= "DSSLive.test.txt";
-		if (std::FILE* hFile =
-#if defined(Q_OS_WIN)
-			_wfopen(file.generic_wstring().c_str(), L"wt")
-#else
-			std::fopen(file.generic_u8string().c_str(), "wt")
-#endif
-			)
+		QFile file(dir.filePath("DSSLive.test.txt"));
+		if (file.open(QIODevice::WriteOnly | QIODevice::Text))
 		{
-			auto bytes = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
+			auto bytes = file.write("DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
 			if (bytes > 0)
 				result = true;
-			fclose(hFile);
-			fs::remove(file);
+			file.remove();
 		}
 	}
 
@@ -1537,24 +1517,27 @@ void DeepSkyStackerLive::updateStatusMessage()
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
-static char const* global_program_name;
+char const* global_program_name;
 
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	int result{ 0 };
+	//
+	// Save the program name in case we need it later
+	// 
+	global_program_name = argv[0];
+
 
 #if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#ifndef NDEBUG
 	//
-	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	// Log Qt messages to the trace file as well as to the debugger.
 	//
 	originalHandler = qInstallMessageHandler(qtMessageLogger);
-#endif
 
 	//
 	// Create a storage cushion (aka back pocket storage)

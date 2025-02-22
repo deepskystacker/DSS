@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "ImageListModel.h"
 
 namespace DSS
@@ -491,6 +491,7 @@ namespace DSS
                     break;
                 case Column::Quality:
                     file.quality = value.toDouble();
+                    break;
                 case Column::dX:
                     file.m_dX = value.toDouble();
                     break;

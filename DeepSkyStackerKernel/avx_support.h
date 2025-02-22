@@ -2,68 +2,13 @@
 
 #include "avx_simd_check.h"
 #include "avx_simd_factory.h"
-#include "cfa.h"
-#include "ColorBitmap.h"
-#include "GrayBitmap.h"
 
 class AvxSupport
 {
-private:
-	const CMemoryBitmap& bitmap;
-	CMemoryBitmap* pBitmap;
-
-	template <class T>
-	auto* getColorPtr() { return dynamic_cast<CColorBitmapT<T>*>(pBitmap); }
-	template <class T>
-	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(pBitmap); }
-	template <class T>
-	const auto* getColorPtr() const { return dynamic_cast<const CColorBitmapT<T>*>(&bitmap); }
-	template <class T>
-	const auto* getGrayPtr() const { return dynamic_cast<const CGrayBitmapT<T>*>(&bitmap); }
-
-	int getNrChannels() const;
 public:
-	AvxSupport(CMemoryBitmap& b) noexcept;
-	AvxSupport(const CMemoryBitmap& b) noexcept;
-
-	bool isColorBitmap() const;
-	template <class T> bool isColorBitmapOfType() const;
-	bool isMonochromeBitmap() const;
-	template <class T> bool isMonochromeBitmapOfType() const;
-	template <class T> bool isMonochromeCfaBitmapOfType() const;
-	bool isColorBitmapOrCfa() const;
-
-	CFATYPE getCfaType() const;
-
-	template <class T>
-	const std::vector<T>& redPixels() const { return getColorPtr<T>()->m_Red.m_vPixels; }
-	template <class T>
-	const std::vector<T>& greenPixels() const { return getColorPtr<T>()->m_Green.m_vPixels; }
-	template <class T>
-	const std::vector<T>& bluePixels() const { return getColorPtr<T>()->m_Blue.m_vPixels; }
-	template <class T>
-	const std::vector<T>& grayPixels() const { return getGrayPtr<T>()->m_vPixels; }
-
-	template <class T>
-	std::vector<T>& redPixels() { return getColorPtr<T>()->m_Red.m_vPixels; }
-	template <class T>
-	std::vector<T>& greenPixels() { return getColorPtr<T>()->m_Green.m_vPixels; }
-	template <class T>
-	std::vector<T>& bluePixels() { return getColorPtr<T>()->m_Blue.m_vPixels; }
-	template <class T>
-	std::vector<T>& grayPixels() { return getGrayPtr<T>()->m_vPixels; }
-
-	const int width() const;
-
-	template <class T>
-	bool bitmapHasCorrectType() const;
-
-	template <class ElementType, class VectorElementType>
-	inline static size_t numberOfAvxVectors(const size_t width)
-	{
-		static_assert(sizeof(ElementType) == 1 || sizeof(ElementType) == 2 || sizeof(ElementType) == 4 || sizeof(ElementType) == 8);
-		return width == 0 ? 0 : ((width - 1) * sizeof(ElementType)) / sizeof(VectorElementType) + 1;
-	}
+	// --------------
+	// SIMD functions
+	// --------------
 
 	// When returning from AVX-code to non-AVX-code we should zero the upper 128 bits of all ymm registers.
 	// Otherwise old Intel CPUs could suffer from performance degradations.
@@ -71,11 +16,16 @@ public:
 	inline static T zeroUpper(const T returnValue)
 	{
 		static_assert(std::is_integral<T>::value);
+#if defined (_MSC_VER) // Simde doesn't know that, so we only call it on Windows builds where we use the intrinsics.
 		_mm256_zeroupper();
+#endif
 		return returnValue;
 	}
 
-	// SIMD functions
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#endif
 
 	inline static __m256 wordToPackedFloat(const __m128i x) noexcept
 	{
@@ -529,16 +479,28 @@ public:
 		else
 			return _mm_cvtss_f32(_mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(ps), NDX * 4)));
 	}
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 };
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) // It seems that only Microsoft does not provide operator[] for the SIMD data types, but uses arrays m256_f32[8] or m256_f64[4].
 
-inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t elementIndex)
+namespace {
+	template <typename T, typename TEST>
+	concept IsSame = std::is_same_v<std::remove_cvref_t<T>, TEST>;
+}
+
+inline constexpr auto accessSimdElementConst(auto const& simdVector, const size_t elementIndex)
 {
-	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256>)
-		return std::forward<decltype(simdVector)>(simdVector).m256_f32[elementIndex];
-	if constexpr (std::is_same_v<std::remove_cvref_t<decltype(simdVector)>, __m256d>)
-		return std::forward<decltype(simdVector)>(simdVector).m256d_f64[elementIndex];
+	using T = decltype(simdVector);
+
+	if constexpr (IsSame<T, __m256>)
+		return static_cast<float>(simdVector.m256_f32[elementIndex]);
+	else if constexpr (IsSame<T, __m256d>)
+		return static_cast<double>(simdVector.m256d_f64[elementIndex]);
+	else
+		static_assert(false, "accessSimdElementConst: SIMD type not implemented");
 }
 
 inline __m256 avxLog(const __m256 a)
@@ -553,9 +515,9 @@ inline __m256 avxPow(const __m256 a, const __m256 b)
 
 #elif defined (__GNUC__)
 
-inline decltype(auto) accessSimdElement(auto&& simdVector, const size_t ndx)
+inline constexpr auto accessSimdElementConst(auto const& simdVector, const size_t elementIndex)
 {
-	return std::forward<decltype(simdVector)>(simdVector)[ndx];
+	return simdVector[elementIndex];
 }
 
 inline __m256 avxLog(__m256 a)

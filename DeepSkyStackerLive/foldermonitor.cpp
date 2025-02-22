@@ -35,9 +35,9 @@
 ****************************************************************************/
 // FolderMonitor.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include <atomic>
-#include <Ztrace.h>
+#include <ztrace.h>
 #include "foldermonitor.h"
 
 namespace DSS
@@ -55,7 +55,7 @@ namespace DSS
 		for (auto& file : fs::directory_iterator(folderToWatch))
 		{
 			//
-			// Only interested in reqular files.
+			// Only interested in regular files.
 			//
 			if (file.is_regular_file())
 			{

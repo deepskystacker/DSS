@@ -76,14 +76,24 @@ if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
    ../Zlib
    ../LibTiff
-   ../CFitsIO
    ../include
    "$ENV{Boost_1_80_0}"
 )
+else()
+target_link_libraries(DeepSkyStacker PRIVATE
+    #TIFF::tiff
+    #Exiv2::exiv2lib
+    #expat::expat
+    JPEG::JPEG
+    OpenMP::OpenMP_CXX
+    Threads::Threads
+    ZLIB::ZLIB
+)
+
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################
@@ -132,6 +142,16 @@ if(MSVC)
         /DEBUG;
         /SUBSYSTEM:CONSOLE
     )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    if(APPLE)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 if(WIN32)
@@ -148,62 +168,71 @@ endif()
 # Link with other targets.
 target_link_libraries(${PROJECT_NAME} PRIVATE
 	Qt6::Core
+    Qt6::Gui
     DeepSkyStackerKernel
-	libraw
-	libtiff
 	ZClass
 )
-
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ".")
-set (QT_DEPLOY_LIBEXEC_DIR ".")
-set (QT_DEPLOY_LIB_DIR ".")
-set (QT_DEPLOY_PLUGINS_DIR ".")
-
-#
-# Set options for the deployment script.   The value of:
-# 
-# --libdir .
-# 
-# is set to work around a bug in qt_deploy_runtime_dependencies which uses
-#
-# --libdir bin
-# 
-# even though QT_DEPLOY_LIB_DIR is set to .
-#
-set (deploy_tool_options_arg "--libdir .")
-if(APPLE)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
-elseif(WIN32)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-endif()
-
-# Generate a deployment script to be executed at install time
-# App bundles on macOS have an .app suffix
-if(APPLE)
-    set(executable_path "$<TARGET_FILE_NAME:${PROJECT_NAME}>.app")
+if(WIN32)
+target_link_libraries(DeepSkyStacker PRIVATE
+	libraw
+    libtiff
+)
 else()
-    message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
-    message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
-    message ("Target filename:"  $<TARGET_FILE_NAME:${PROJECT_NAME}>)
-    set(executable_path "${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>")
+target_link_libraries(DeepSkyStacker PRIVATE
+#    TIFF::tiff
+    JPEG::JPEG
+    OpenMP::OpenMP_CXX
+    ZLIB::ZLIB
+)
 endif()
-message ("executable_path: " ${executable_path})
-message ("deploy tools options arg: " ${deploy_tool_options_arg})
- qt_generate_deploy_script(
-     TARGET DeepSkyStackerTest
-     OUTPUT_SCRIPT deploy_script
-     CONTENT "
- qt_deploy_runtime_dependencies(
-     EXECUTABLE \"${executable_path}\"
-     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
- )"
- )
 
-INSTALL (TARGETS ${PROJECT_NAME})
-INSTALL (SCRIPT ${deploy_script})
+if(WIN32)
+set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd cfitsio)
+set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic cfitsio)
+else()
+#set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
+#set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
+set(DEBUG_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
+set(RELEASE_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
+endif()
+
+set(ADDITIONAL_LIBRARY_DEPENDENCIES
+    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
+    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
+)
+target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+
+if(NOT LINUX)
+    set (deploy_tool_options_arg "")
+    if(APPLE)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
+    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+    endif()
+
+    # Generate a deployment script to be executed at install time
+    # App bundles on macOS have an .app suffix
+    if(APPLE)
+        set(executable_path "$<TARGET_FILE_NAME:${PROJECT_NAME}>.app")
+    else()
+        message ("Target filename:"  $<TARGET_FILE_NAME:${PROJECT_NAME}>)
+        set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>")
+    endif()
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStackerTest
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
+
+    INSTALL (TARGETS ${PROJECT_NAME})
+    INSTALL (SCRIPT ${deploy_script})
+endif()
 
 
 

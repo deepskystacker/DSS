@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include "Ztrace.h"
+#include "pch.h"
+#include "ztrace.h"
 #include "BitmapBase.h"
 #include "BitmapCharacteristics.h"
 #include "GrayBitmap.h"

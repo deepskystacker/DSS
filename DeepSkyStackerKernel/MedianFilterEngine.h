@@ -124,7 +124,7 @@ public:
 		m_pvOutValues{ nullptr },
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
-		m_CFAType {CFAT_NONE},
+		m_CFAType {CFATYPE_NONE},
 		m_lFilterSize{ 0 }
 	{}
 

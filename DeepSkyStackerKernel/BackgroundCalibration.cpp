@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "pch.h"
 //#include "resource.h"
 #include "BitmapBase.h"
 #include "BackgroundCalibration.h"
@@ -25,7 +25,7 @@ void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, Prog
 	const int height = pBitmap->Height();
 	const auto nrProcessors = CMultitask::GetNrProcessors();
 
-#pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
 	{
 		constexpr int Bulksize = 50;
 #pragma omp for
