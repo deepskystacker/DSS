@@ -35,6 +35,7 @@ GeneratedFiles/
 
 # CMake build directory
 build/
+out/build/
 
 # vcpkg installed directories
 vcpkg_installed/
