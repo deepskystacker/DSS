@@ -152,9 +152,9 @@ typedef int bool;
 //#  define min(a,b)    (((a) < (b)) ? (a) : (b))
 //#endif
 
-#if defined(_MSC_VER)
-#undef _MSC_EXTENSIONS      // To include overloaded abs function definitions!
-#endif
+//#if defined(_MSC_VER)
+//#undef _MSC_EXTENSIONS      // To include overloaded abs function definitions!
+//#endif
 
 /*
 #if ( defined(__BORLANDC__) || _MSC_VER ) && !defined( __GNUG__ )
@@ -832,7 +832,7 @@ matrixT::pivot (size_t row)
 
   amax = -1;
   for (size_t i=row; i < _m->Row; i++)
-    if ( (temp = abs( _m->Val[i][row])) > amax && temp != 0.0)
+    if ( (temp = std::abs( _m->Val[i][row])) > amax && temp != 0.0)
      {
        amax = temp;
        k = (int)i;
