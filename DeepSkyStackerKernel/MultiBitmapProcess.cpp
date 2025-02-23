@@ -1,11 +1,11 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"
 #include "MemoryBitmap.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "avx_output.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include <QTemporaryFile>
@@ -122,7 +122,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 #if defined(Q_OS_WIN)
 			_wfopen(partFile.file.c_str(), L"a+b"),
 #else
-			std::fopen(partFile.file.c_ctr(), "a+b"),
+			std::fopen(partFile.file.c_str(), "a+b"),
 #endif
 			dtor };
 
@@ -191,7 +191,7 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-#pragma omp parallel for default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
+#pragma omp parallel for default(shared) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
 	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
 	{
 		if (stop)
@@ -393,7 +393,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 #if defined(Q_OS_WIN)
 				_wfopen(partFile.file.c_str(), L"rb")
 #else
-				std::fopen(partFile.file.c_ctr(), "rb")
+				std::fopen(partFile.file.c_str(), "rb")
 #endif
 				)
 			{

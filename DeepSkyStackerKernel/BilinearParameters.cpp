@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "BilinearParameters.h"
 
 void CBilinearParameters::Clear() noexcept

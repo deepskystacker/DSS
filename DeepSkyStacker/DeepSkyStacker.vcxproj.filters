@@ -42,7 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BackgroundOptions.cpp">
@@ -162,15 +162,15 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lowerdockwidget.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="processingcontrols.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
+    <ClCompile Include="lowerdockwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Delaunay.h">
@@ -765,49 +765,52 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSS_ca.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_cs.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_cs.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_de.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_de.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_en.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_en.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_es.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_es.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_fr.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_fr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_it.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_it.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_nl.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_nl.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_pt_BR.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_ro.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_ro.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_ru.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_ru.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_tr.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_tr.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_zh_TW.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_zh_TW.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_zh_CN.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_zh_CN.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSS_ja_JP.ts">
+    <QtTranslation Include="i18n\DeepSkyStacker_ja_JP.ts">
+      <Filter>Qt\i18n</Filter>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DeepSkyStacker_en_GB.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
   </ItemGroup>

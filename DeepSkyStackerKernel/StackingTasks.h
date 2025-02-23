@@ -397,7 +397,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-void SpaceToQString(__int64 ulSpace, QString& strSpace);
+void SpaceToQString(std::int64_t ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 

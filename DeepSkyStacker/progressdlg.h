@@ -107,7 +107,7 @@ namespace DSS
 		void cancelPressed();
 
 	private:
-		void closeEvent(QCloseEvent* bar);
+		void closeEvent(QCloseEvent* bar) override;
 		void retainHiddenWidgetSize(QWidget& rWidget);
 	};
 }

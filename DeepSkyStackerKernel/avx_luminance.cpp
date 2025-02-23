@@ -1,9 +1,9 @@
-#include "stdafx.h"
-#include <immintrin.h>
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_luminance.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
-
+#include "avx_bitmap_util.h"
 
 namespace
 {
@@ -35,7 +35,7 @@ AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
 		avxReady = false;
 
 	// Check output bitmap (must be monochrome-double).
-	if (!AvxSupport{ outputBitmap }.isMonochromeBitmapOfType<double>())
+	if (!AvxBitmapUtil{ outputBitmap }.isMonochromeBitmapOfType<double>())
 		avxReady = false;
 }
 
@@ -60,11 +60,11 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 	constexpr double scalingFactor = 1.0 / 256.0;
 
 	// Check input bitmap.
-	const AvxSupport avxInputSupport{ inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
 		return 1;
 
-	AvxSupport avxOutputSupport{ outputBitmap };
+	AvxBitmapUtil avxOutputSupport{ outputBitmap };
 	const size_t width = inputBitmap.Width();
 	constexpr size_t vectorLen = 16;
 	const size_t nrVectors = width / vectorLen;

@@ -1,18 +1,19 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="i18n">
-    <file>DSS_ca.qm</file>
-    <file>DSS_cs.qm</file>
-    <file>DSS_de.qm</file>
-    <file>DSS_en.qm</file>
-    <file>DSS_es.qm</file>
-    <file>DSS_fr.qm</file>
-    <file>DSS_it.qm</file>
-    <file>DSS_nl.qm</file>
-    <file>DSS_pt_BR.qm</file>
-    <file>DSS_ro.qm</file>
-    <file>DSS_ru.qm</file>
-    <file>DSS_tr.qm</file>
-    <file>DSS_zh_CN.qm</file>
-    <file>DSS_zh_TW.qm</file>
+    <file>DeepSkyStacker_ca.qm</file>
+    <file>DeepSkyStacker_cs.qm</file>
+    <file>DeepSkyStacker_de.qm</file>
+    <file>DeepSkyStacker_en.qm</file>
+    <file>DeepSkyStacker_en_GB.qm</file>
+    <file>DeepSkyStacker_es.qm</file>
+    <file>DeepSkyStacker_fr.qm</file>
+    <file>DeepSkyStacker_it.qm</file>
+    <file>DeepSkyStacker_nl.qm</file>
+    <file>DeepSkyStacker_pt_BR.qm</file>
+    <file>DeepSkyStacker_ro.qm</file>
+    <file>DeepSkyStacker_ru.qm</file>
+    <file>DeepSkyStacker_tr.qm</file>
+    <file>DeepSkyStacker_zh_CN.qm</file>
+    <file>DeepSkyStacker_zh_TW.qm</file>
 </qresource>
 </RCC>

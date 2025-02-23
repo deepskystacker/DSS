@@ -1,7 +1,7 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "DeepStack.h"
 #include "histogram.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
 
@@ -22,7 +22,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 	Histo.clear();
 
-#pragma omp parallel default(none) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
+#pragma omp parallel default(shared) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 	{
 #pragma omp for schedule(guided, 50)
 		for (int row = 0; row < height; ++row)
@@ -53,7 +53,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 	if (!m_StackedBitmap.IsMonochrome())
 	{
-#pragma omp parallel sections default(none) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
+#pragma omp parallel sections default(shared) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 		{
 #pragma omp section
 			for (const auto& color: redPixels)

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "Multitask.h"
 
 int CMultitask::GetNrCurrentOmpThreads()

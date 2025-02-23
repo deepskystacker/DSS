@@ -1,15 +1,15 @@
-#include <stdafx.h>
+#include "pch.h"
 
 #include "StackingTasks.h"
 #include "DSSProgress.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "RAWUtils.h"
 #include "TaskInfo.h"
 #include "TIFFUtil.h"
 #include "Settings.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "MemoryBitmap.h"
 
 using namespace DSS;
@@ -36,7 +36,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 	return bResult;
 };
 
-void	SpaceToQString(__int64 ulSpace, QString& strSpace)
+void	SpaceToQString(std::int64_t ulSpace, QString& strSpace)
 {
 	double fKb(ulSpace / 1024.0);
 	double fMb(fKb / 1024.0);
@@ -62,8 +62,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 	bool bResult = false;
 	CBitmapInfo bmpInfo;
 
-	const auto fileName = filePath.generic_wstring(); // Otherwise szFile could be a dangling pointer.
-	const auto szFile = fileName.c_str();
+	const auto fileName{ QString::fromStdU16String(filePath.generic_u16string()) };
 
 	if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 	{
@@ -77,33 +76,33 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_DARKFLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_OFFSETFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_FLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			bOverrideRAW = false;
 			break;
 		};
@@ -1089,7 +1088,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 		else
 		{
 			// Else create the master flat
-			qDebug() << "Creating Master Flat";
+			// qDebug() << "Creating Master Flat";
 			QString strText;
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 			std::shared_ptr<CMemoryBitmap> pMasterDarkFlat;
@@ -1104,24 +1103,24 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 			// First load the master offset if available
 			if (m_pOffsetTask != nullptr)
 			{
-				const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
-
-				if (masterOffsetFound && pMasterOffset->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Master Offset"
-						<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
-						<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
-				}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset); masterOffsetFound && pMasterOffset->IsMonochrome())
+//				{
+//					qDebug() << "Master Offset"
+//						<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+//						<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+//				}
 			}
 
 			if (m_pDarkFlatTask != nullptr)
 			{
-				const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
-
-				if (masterDarkFlatFound && pMasterDarkFlat->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Master DarkFlat"
-						<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
-						<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
-				}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat); masterDarkFlatFound && pMasterDarkFlat->IsMonochrome())
+//				{
+//					qDebug() << "Master DarkFlat"
+//						<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
+//						<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
+//				}
 			}
 
 			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
@@ -1152,11 +1151,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				if (!m_pFlatTask->m_pMaster)
 					m_pFlatTask->CreateEmptyMaster(pBitmap.get());
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "before calibration"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "before calibration"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				// Subtract the offset frame from the dark frame
 				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
@@ -1179,11 +1178,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					Subtract(pBitmap, pMasterDarkFlat, pProgress);
 				}
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "after master subtraction"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "after master subtraction"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				if (!fcpBase.IsInitialized())
 				{
@@ -1197,11 +1196,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
 				}
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "after calibration"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "after calibration"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				// Add the flat frame
 				m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
@@ -1902,7 +1901,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 #if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_u8string().c_str(), "wt")
+			std::fopen(reinterpret_cast<const char*>(file.generic_u8string().c_str()), "wt")
 #endif
 			)
 		{

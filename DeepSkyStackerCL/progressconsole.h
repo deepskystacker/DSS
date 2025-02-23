@@ -74,7 +74,7 @@ namespace DSS
 
 		virtual bool IsCanceled() const override { return false; }
 
-		virtual bool Warning(const QString& szText)
+		virtual bool Warning(const QString& szText) override
 		{
 			return doWarning(szText);
 		}

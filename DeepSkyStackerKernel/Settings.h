@@ -66,7 +66,7 @@ public :
 	bool	Read(FILE * hFile)
 	{
 		bool			bResult = false;
-		CHAR			szBuffer[2000];
+		char			szBuffer[2000];
 
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
 			bResult = Read(QString::fromLatin1(szBuffer));

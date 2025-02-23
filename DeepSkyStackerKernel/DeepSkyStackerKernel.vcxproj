@@ -79,6 +79,17 @@
     <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
     <IncludePath />
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -88,7 +99,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;C:\Program Files (x86)\Visual Leak Detector\include;..\Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -97,6 +108,7 @@
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -122,7 +134,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;..\libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -135,6 +147,7 @@
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -157,16 +170,60 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include=".\AHDDemosaicing.cpp" />
-    <ClCompile Include=".\avx.cpp" />
-    <ClCompile Include=".\avx_avg.cpp" />
-    <ClCompile Include=".\avx_bitmap_filler.cpp" />
-    <ClCompile Include=".\avx_cfa.cpp" />
-    <ClCompile Include=".\avx_entropy.cpp" />
-    <ClCompile Include=".\avx_filter.cpp" />
-    <ClCompile Include=".\avx_histogram.cpp" />
-    <ClCompile Include=".\avx_luminance.cpp" />
-    <ClCompile Include=".\avx_output.cpp" />
-    <ClCompile Include=".\avx_support.cpp" />
+    <ClCompile Include=".\avx.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_avg.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_bitmap_filler.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_cfa.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_entropy.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_filter.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_histogram.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_luminance.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include=".\avx_output.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Q_NUMERIC_NO_INTRINSICS;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include=".\BackgroundCalibration.cpp" />
     <ClCompile Include=".\Bayer.cpp" />
     <ClCompile Include=".\BilinearParameters.cpp" />
@@ -209,6 +266,9 @@
     <ClCompile Include=".\TaskInfo.cpp" />
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="avx_1.cpp" />
+    <ClCompile Include="avx_bitmap_util.cpp" />
+    <ClCompile Include="avx_histogram_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
@@ -220,7 +280,7 @@
     <ClCompile Include="StackedBitmap.cpp" />
     <ClCompile Include="StackWalker.cpp" />
     <ClCompile Include="StarMask.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -264,12 +324,15 @@
     <ClInclude Include=".\GrayBitmap.h" />
     <ClInclude Include=".\GreyMultiBitmap.h" />
     <ClInclude Include=".\group.h" />
+    <ClInclude Include="avx_bitmap_util.h" />
+    <ClInclude Include="avx_includes.h" />
     <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="avx_simd_factory.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />
     <ClInclude Include="histogram.h" />
+    <ClInclude Include="QMessageLogger.h" />
     <ClInclude Include="StackWalker.h" />
     <ClInclude Include="tracecontrol.h" />
     <ClInclude Include=".\MasterFrames.h" />
@@ -313,41 +376,36 @@
     <ClInclude Include="StackedBitmap.h" />
     <ClInclude Include="StarMask.h" />
     <ClInclude Include="Stars.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibRaw\buildfiles\libraw.vcxproj">
-      <Project>{a71d2131-f425-381f-8a9a-29d60132a046}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
-      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="i18n\translations_kernel.qrc" />
+    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSKernel_ca.ts" />
-    <QtTranslation Include="i18n\DSSKernel_cs.ts" />
-    <QtTranslation Include="i18n\DSSKernel_de.ts" />
-    <QtTranslation Include="i18n\DSSKernel_en.ts">
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_cs.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_de.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_en.ts">
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSKernel_es.ts" />
-    <QtTranslation Include="i18n\DSSKernel_fr.ts" />
-    <QtTranslation Include="i18n\DSSKernel_it.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ja_JP.ts" />
-    <QtTranslation Include="i18n\DSSKernel_nl.ts" />
-    <QtTranslation Include="i18n\DSSKernel_pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ro.ts" />
-    <QtTranslation Include="i18n\DSSKernel_ru.ts" />
-    <QtTranslation Include="i18n\DSSKernel_tr.ts" />
-    <QtTranslation Include="i18n\DSSKernel_zh_CN.ts" />
-    <QtTranslation Include="i18n\DSSKernel_zh_TW.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_en_GB.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_es.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_fr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_it.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ja_JP.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_nl.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_pt_BR.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ro.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_ru.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_tr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_zh_CN.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_zh_TW.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

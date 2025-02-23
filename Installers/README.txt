@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 5
+Welcome to DeepSkyStacker 5.1.8 Beta 6
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -83,6 +83,8 @@ Changes since the last release:
 22. Bug fix: Correct calculation of ellipse for star registration.  Was using 210 degrees not 270 degrees.
 
 23. Bug fix/enhancement: Changes to support RAW files from monochrome cameras such as the Leica M series.
+
+24. Resolve problems with editing controls on Processing Panel.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================

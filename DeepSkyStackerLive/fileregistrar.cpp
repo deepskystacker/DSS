@@ -35,7 +35,7 @@
 ****************************************************************************/
 // FileRegistrar.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStackerLive.h"
 #include "fileregistrar.h"
 #include "progresslive.h"

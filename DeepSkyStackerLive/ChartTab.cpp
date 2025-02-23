@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "ChartTab.h"
 #include <QValueAxis>
 #include "dssliveenums.h"

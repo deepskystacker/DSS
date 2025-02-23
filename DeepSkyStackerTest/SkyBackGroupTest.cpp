@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "SkyBackground.h"
 

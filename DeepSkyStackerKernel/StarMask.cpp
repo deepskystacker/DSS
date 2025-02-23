@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StarMask.h"
 #include "DSSProgress.h"
 #include "RegisterEngine.h"

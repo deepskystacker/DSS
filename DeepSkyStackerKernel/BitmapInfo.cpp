@@ -35,10 +35,10 @@
 ****************************************************************************/
 // BitmapInfo.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BitmapInfo.h"
 #include <zexcept.h>
-#include <Ztrace.h>
+#include <ztrace.h>
 
 using namespace Exiv2;
 

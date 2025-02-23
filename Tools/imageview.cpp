@@ -33,9 +33,9 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "imageview.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 
 namespace DSS
 {

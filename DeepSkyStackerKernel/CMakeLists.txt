@@ -1,11 +1,9 @@
 set(PROJECT_NAME DeepSkyStackerKernel)
+message("Configuring project: " ${PROJECT_NAME})
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
 set(COMPILE_WARNING_AS_ERROR YES)
-
-find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Network LinguistTools)
-qt_standard_project_setup()
-
-set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC TRUE)
 
 ################################################################################
 # Source groups
@@ -15,13 +13,17 @@ set(Header_Files
     "avx.h"
     "avx_avg.h"
     "avx_bitmap_filler.h"
+    "avx_bitmap_util.h"
     "avx_cfa.h"
     "avx_entropy.h"
     "avx_filter.h"
     "avx_histogram.h"
+    "avx_includes.h"
     "avx_luminance.h"
     "avx_median.h"
     "avx_output.h"
+    "avx_simd_check.h"
+    "avx_simd_factory.h"
     "avx_support.h"
     "BackgroundCalibration.h"
     "Bayer.h"
@@ -35,6 +37,7 @@ set(Header_Files
     "BitmapInfo.h"
     "BitmapIterator.h"
     "BitmapPartFile.h"
+    "BezierAdjust.h"
     "cfa.h"
     "CFABitmapInfo.h"
     "ChannelAlign.h"
@@ -67,6 +70,8 @@ set(Header_Files
     "GreyMultiBitmap.h"
     "group.h"
     "histogram.h"
+    "imageloader.h"
+    "ImageListModel.h"
     "LinearInterpolationh.h"
     "MasterFrames.h"
     "MatchingStars.h"
@@ -76,6 +81,7 @@ set(Header_Files
     "MultiBitmap.h"
     "Multitask.h"
     "PixelTransform.h"
+    "QMessageLogger.h"
     "RationalInterpolation.h"
     "RAWUtils.h"
     "RegisterEngine.h"
@@ -85,40 +91,45 @@ set(Header_Files
     "StackedBitmap.h"
     "StackingEngine.h"
     "StackingTasks.h"
-    "StackWalker.h"
     "StarMask.h"
     "Stars.h"
-    "stdafx.h"
+    "pch.h"
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
     "Workspace.h"
 )
+if(WIN32)
+set(Header_Files
+    ${Header_Files}
+    "StackWalker.h"
+)
+endif()
 source_group("Header Files" FILES ${Header_Files})
 
 set(i18n_Files
-	"i18n/DSSKernel_ca.ts"
-	"i18n/DSSKernel_cs.ts"
-	"i18n/DSSKernel_de.ts"
-	"i18n/DSSKernel_en.ts"
-	"i18n/DSSKernel_es.ts"
-	"i18n/DSSKernel_fr.ts"
-	"i18n/DSSKernel_it.ts"
-	"i18n/DSSKernel_ja_JP.ts"
-	"i18n/DSSKernel_nl.ts"
-	"i18n/DSSKernel_pt_BR.ts"
-	"i18n/DSSKernel_ro.ts"
-	"i18n/DSSKernel_ru.ts"
-	"i18n/DSSKernel_tr.ts"
-	"i18n/DSSKernel_zh_CN.ts"
-	"i18n/DSSKernel_zh_TW.ts"
+	"i18n/DeepSkyStackerKernel_ca.ts"
+	"i18n/DeepSkyStackerKernel_cs.ts"
+	"i18n/DeepSkyStackerKernel_de.ts"
+	"i18n/DeepSkyStackerKernel_en.ts"
+	"i18n/DeepSkyStackerKernel_en_GB.ts"
+	"i18n/DeepSkyStackerKernel_es.ts"
+	"i18n/DeepSkyStackerKernel_fr.ts"
+	"i18n/DeepSkyStackerKernel_it.ts"
+	"i18n/DeepSkyStackerKernel_ja_JP.ts"
+	"i18n/DeepSkyStackerKernel_nl.ts"
+	"i18n/DeepSkyStackerKernel_pt_BR.ts"
+	"i18n/DeepSkyStackerKernel_ro.ts"
+	"i18n/DeepSkyStackerKernel_ru.ts"
+	"i18n/DeepSkyStackerKernel_tr.ts"
+	"i18n/DeepSkyStackerKernel_zh_CN.ts"
+	"i18n/DeepSkyStackerKernel_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations_kernel.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files} 
 )
 
-set(Source_Files
-    "AHDDemosaicing.cpp"
+set(AVX_Files
     "avx.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
@@ -128,7 +139,15 @@ set(Source_Files
     "avx_histogram.cpp"
     "avx_luminance.cpp"
     "avx_output.cpp"
-    "avx_support.cpp"
+)
+
+set(Source_Files
+    "AHDDemosaicing.cpp"
+    "avx_1.cpp"
+    "avx_bitmap_util.cpp"
+    "avx_histogram_1.cpp"
+    "avx_simd_check.cpp"
+    ${AVX_Files}
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -173,72 +192,88 @@ set(Source_Files
     "StackedBitmap.cpp"
     "StackingEngine.cpp"
     "StackingTasks.cpp"
-    "StackWalker.cpp"
     "StarMask.cpp"
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
     "Workspace.cpp"
 )
+if(WIN32)
+    set (Source_Files
+        ${Source_Files}
+        "StackWalker.cpp"
+    )
+endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(ALL_FILES
     ${Header_Files}
-	${i18n_Files} "i18n/translations_kernel.qrc"
 	${Source_Files}
 )
 
-set(ROOT_NAMESPACE DeepSkyStackerKernel)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+set_source_files_properties(${AVX_Files}
+    PROPERTIES
+        COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+set_source_files_properties(avx_simd_check.cpp
+    PROPERTIES
+        COMPILE_OPTIONS "-mxsave")
+endif()
+
+set_source_files_properties(${AVX_Files}
+    PROPERTIES
+        COMPILE_DEFINITIONS "Q_NUMERIC_NO_INTRINSICS")
 
 ################################################################################
 # Target
 ################################################################################
 qt_add_library(DeepSkyStackerKernel STATIC ${ALL_FILES})
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
+qt_add_translations(${PROJECT_NAME}
+    TS_FILE_DIR i18n
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
+    )
 
-set_source_files_properties(${i18n_Files}
-     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
-
-qt_add_lrelease(TS_FILES ${i18n_Files})
-
-target_link_libraries(DeepSkyStackerKernel PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
+target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
+target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 
 ################################################################################
 # Output directory
 ################################################################################
-set_target_properties(DeepSkyStackerKernel PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
     OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
 )
-set_target_properties(DeepSkyStackerKernel PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
 
 ################################################################################
 # Include directories
 ################################################################################
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
+    .
     ../DeepSkyStacker;
-    ./GeneratedFiles/$<CONFIG>
-    ./GeneratedFiles
     ../ZClass
-    ../LibRaw
     ../Tools
 )
 
 if(WIN32)
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME} PRIVATE
     ../include
-    ../LibTiff
-    ../Zlib
-    ../CFitsIO
-	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
-    "$ENV{Boost_1_80_0}"
+ 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
 
 
 target_precompile_headers(DeepSkyStackerKernel PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################
@@ -292,15 +327,27 @@ if(MSVC)
         /wd4244;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    if(APPLE)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 ################################################################################
 # Dependencies
 ################################################################################
 # Link with other targets.
-target_link_libraries(${PROJECT_NAME} PUBLIC
+#[=[
+target_link_libraries(${PROJECT_NAME} PRIVATE
     libraw
     libtiff
     ZClass
 )
+]=]
 

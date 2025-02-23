@@ -85,6 +85,18 @@
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
     <EnableMicrosoftCodeAnalysis>true</EnableMicrosoftCodeAnalysis>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -92,7 +104,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -103,6 +115,7 @@
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -114,7 +127,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;SmtpMime.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;SmtpMime.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
@@ -149,7 +162,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;.\..\ChartCtrl;..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -161,6 +174,7 @@
       <WarningLevel>Level4</WarningLevel>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -168,7 +182,7 @@
       <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;SmtpMime.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(Qt_LIBS_);psapi.lib;htmlhelp.lib;cfitsio.lib;SmtpMime.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -214,7 +228,7 @@
     <ClCompile Include="progresslive.cpp" />
     <ClCompile Include="RestartMonitoring.cpp" />
     <ClCompile Include="settingstab.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TreatWarningAsError>
@@ -255,7 +269,7 @@
     <QtMoc Include="progresslive.h" />
     <QtMoc Include="settingstab.h" />
     <QtMoc Include="RestartMonitoring.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.png" />
@@ -272,37 +286,32 @@
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
       <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\LibRaw\buildfiles\libraw.vcxproj">
-      <Project>{a71d2131-f425-381f-8a9a-29d60132a046}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
-      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSLive_ca.ts" />
-    <QtTranslation Include="i18n\DSSLive_cs.ts" />
-    <QtTranslation Include="i18n\DSSLive_de.ts" />
-    <QtTranslation Include="i18n\DSSLive_en.ts">
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ca.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_cs.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_de.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_en.ts">
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
       <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
-    <QtTranslation Include="i18n\DSSLive_es.ts" />
-    <QtTranslation Include="i18n\DSSLive_fr.ts" />
-    <QtTranslation Include="i18n\DSSLive_it.ts" />
-    <QtTranslation Include="i18n\DSSLive_ja_JP.ts" />
-    <QtTranslation Include="i18n\DSSLive_nl.ts" />
-    <QtTranslation Include="i18n\DSSLive_pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSLive_ro.ts" />
-    <QtTranslation Include="i18n\DSSLive_ru.ts" />
-    <QtTranslation Include="i18n\DSSLive_tr.ts" />
-    <QtTranslation Include="i18n\DSSLive_zh_TW.ts" />
-    <QtTranslation Include="i18n\DSSLive_zh_CN.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_en_GB.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_es.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_fr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_it.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ja_JP.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_nl.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_pt_BR.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ro.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_ru.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_tr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_zh_TW.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerLive_zh_CN.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

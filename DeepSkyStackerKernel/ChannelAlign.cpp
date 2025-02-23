@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "dssrect.h"
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
 #include "BitmapIterator.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "ColorBitmap.h"
 #include "Multitask.h"
 
@@ -50,7 +50,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* 
 		pProgress->Start2(text, lHeight);
 	}
 
-#pragma omp parallel for default(none) firstprivate(vPixels) if(CMultitask::GetNrProcessors(false) > 1)
+#pragma omp parallel for default(shared) firstprivate(vPixels) if(CMultitask::GetNrProcessors(false) > 1)
 	for (int j = 0; j < lHeight; j++)
 	{
 		for (int i = 0; i < lWidth; i++)

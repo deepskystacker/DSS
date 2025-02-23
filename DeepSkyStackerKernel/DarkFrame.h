@@ -152,9 +152,9 @@ public :
 	DSSRect						m_rcHotest;
 	std::vector<DSSRect>		m_vrcColdest;
 	std::vector<double>			m_vMedianColdest;
-	double						m_fMedianHotest;
-	double						m_fGrayValue;
-	int						m_lColdestIndice;
+	double						m_fMedianHotest{0.0};
+	double						m_fGrayValue{0.0};
+	int						m_lColdestIndice{0};
 
 	DSSRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{

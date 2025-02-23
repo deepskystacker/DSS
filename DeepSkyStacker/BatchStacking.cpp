@@ -1,9 +1,9 @@
 // BatchStacking.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BatchStacking.h"
 #include "ui/ui_BatchStacking.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"
@@ -205,7 +205,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromWCharArray(path.native().c_str()));
+			filePaths.append(QString::fromStdU16String(path.generic_u16string()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);

@@ -97,7 +97,7 @@ namespace DSS
 		bool LoadTIFF(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
 		bool LoadFITS(const fs::path& file, DSS::ProgressBase* pProgress = nullptr);
 
-		COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
+	//	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
 	public:
 		void ReadSpecificTags(CTIFFReader* tiffReader);

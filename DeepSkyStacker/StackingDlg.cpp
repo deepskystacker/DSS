@@ -36,11 +36,11 @@
 // StackingDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "StackingDlg.h"
 #include "ui_StackingDlg.h"
 #include "picturelist.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DropFilesDlg.h"
 #include "RenameGroup.h"
 #include "toolbar.h"
@@ -62,7 +62,7 @@
 #include "BatchStacking.h"
 #include "StackRecap.h"
 #include "ProcessingDlg.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "ImageProperties.h"
 
 #define dssApp DeepSkyStacker::instance()
@@ -1286,7 +1286,7 @@ namespace DSS
 			if (ndx.isValid())
 			{
 				fs::path  file;
-				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
+				const ImageListModel* model = qobject_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
 				file = model->selectedFile(row);
 				//
@@ -2003,11 +2003,13 @@ namespace DSS
 
 	void StackingDlg::versionInfoReceived(QNetworkReply* reply)
 	{
+		ZFUNCTRACE_RUNTIME();
 		QNetworkReply::NetworkError error = reply->error();
 		if (QNetworkReply::NoError == error)
 		{
 			QString string(reply->read(reply->bytesAvailable()));
 
+			qInfo() << "Latest version is: " << string;
 			if (string.startsWith("DeepSkyStackerVersion="))
 			{
 				QString verStr = string.section('=', 1, 1);
@@ -2035,6 +2037,7 @@ namespace DSS
 		}
 		else
 		{
+			qWarning() << "Internet version check error: " << reply;
 			QMessageBox::warning(nullptr, dssApp->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)
@@ -2267,6 +2270,7 @@ namespace DSS
 			{
 			case AskRegistering::Answer::ARA_ONE:
 				frameList.checkAllLights(false);// Register only this light frame (unchek the others
+				[[fallthrough]];
 			case AskRegistering::Answer::ARA_ALL:
 				frameList.checkImage(fileToShow, true);// Register all the checked light frames (including this one).
 				registerCheckedImages();
@@ -2442,6 +2446,7 @@ namespace DSS
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 
+#if (0)
 					auto deb{ qDebug() }; deb.nospace();
 					deb << "Final stacked image:" << Qt::endl;
 
@@ -2459,6 +2464,7 @@ namespace DSS
 							deb << " " << r << " " << g << " " << b << Qt::endl;
 						}
 					}
+#endif
 
 					if (iff == IFF_TIFF)
 					{
@@ -2506,7 +2512,7 @@ namespace DSS
 #if defined(Q_OS_WIN)
 				_wfopen(file.c_str(), L"rt")
 #else
-				std::fopen(file.c_ctr(), "rt")
+				std::fopen(file.c_str(), "rt")
 #endif
 				)
 			{

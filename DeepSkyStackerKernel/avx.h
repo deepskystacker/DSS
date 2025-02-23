@@ -1,7 +1,7 @@
 #pragma once 
 #include "avx_cfa.h" 
 #include "avx_simd_factory.h"
-#include <immintrin.h>
+#include "avx_includes.h"
 
 class AvxEntropy;
 class CPixelTransform;
@@ -69,7 +69,7 @@ private:
 	int pixelTransform(const CPixelTransform& pixelTransformDef);
 
 	template <class T, class LoopFunction, class InterpolParam>
-	int backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams);
+	int backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxBitmapUtil& avxSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams);
 
 	template <class T>
 	int backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef);

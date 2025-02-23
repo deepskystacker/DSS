@@ -35,7 +35,7 @@
 ****************************************************************************/
 // StarMaskDlg.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "StarMaskDlg.h"
 
 #include "DSSCommon.h"

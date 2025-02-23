@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "AlignmentParameters.h"
 #include "ui/ui_AlignmentParameters.h"
 #include "Workspace.h"

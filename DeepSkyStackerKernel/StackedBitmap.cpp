@@ -1,8 +1,8 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StackedBitmap.h"
 #include "TIFFUtil.h"
 #include "ColorHelpers.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
@@ -531,7 +531,7 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 	const size_t bufferLen = lXMax - lXMin;
 	AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
-#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
 	for (int j = lYMin; j < lYMax; j++)
 	{
 		QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (bytes_per_line * j) + (lXMin * sizeof(QRgb)));
@@ -610,7 +610,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 		const size_t bufferLen = lXMax - lXMin;
 		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
-#pragma omp parallel for default(none) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
 		for (int j = lYMin; j < lYMax; ++j)
 		{
 			//
@@ -1297,6 +1297,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 		bResult = true;
 	};
 
+#if (0)
 	if (IsMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
@@ -1306,6 +1307,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 	}
 	else
 	{
+
 		qDebug() << "Final stacked image read back in:";
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -1313,6 +1315,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 			qDebug() << r << g << b;
 		}
 	}
+#endif
 
 	return bResult;
 };
@@ -1409,9 +1412,11 @@ bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 		fits.Close();
 		bResult = true;
 	};
+
+#if (0)
 	if (IsMonochrome())
 	{
-		qDebug() << "Final stacked image read back in"
+		qDebug() << "Final stacked image read back in:"
 			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
 			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
 			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
@@ -1426,7 +1431,7 @@ bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 			qDebug() << r << g << b;
 		}
 	}
-
+#endif
 
 	return bResult;
 };

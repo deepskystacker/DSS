@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "DarkFrame.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "Filters.h"
@@ -545,19 +545,19 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		hRed = fopen("E:\\RedDistribution.txt", "wt");
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hRed, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hRed, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hRed);
 
 		hGreen = fopen("E:\\GreenDistribution.txt", "wt");
 		for (it = sGreenValuePairs.begin();it != sGreenValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hGreen, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hGreen, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hGreen);
 
 		hBlue = fopen("E:\\BlueDistribution.txt", "wt");
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount)
-				fprintf(hBlue, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
+				fprintf(hBlue, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hBlue);
 	}
 }
@@ -1623,7 +1623,7 @@ void CFindHotPixelTask1::process()
 
 	threadLocals threadVars(m_pBitmap.get());
 
-#pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
+#pragma omp parallel default(shared) firstprivate(threadVars) if(nrProcessors > 1)
 	{
 #pragma omp for schedule(guided, 100)
 		for (int row = 0; row < height; ++row)

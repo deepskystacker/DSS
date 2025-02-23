@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <QSettings>
 #include "catch.h"
 #include "avx_histogram.h"
