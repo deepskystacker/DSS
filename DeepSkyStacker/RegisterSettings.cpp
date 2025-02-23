@@ -258,10 +258,11 @@ namespace DSS
 		forceRegister = ui->forceRegister->isChecked();
 	}
 
-	void RegisterSettings::hotPixels_stateChanged(int)
+	void RegisterSettings::hotPixels_stateChanged(const int state)
 	{
-		bool hotPixels = ui->hotPixels->isChecked();
-		workspace->setValue("Register/DetectHotPixels", hotPixels);
+		const bool detectHotPixels = state != 0; //ui->hotPixels->isChecked();
+		ui->hotPixels->setChecked(detectHotPixels); // If we were explicitly called, update the checkbox.
+		workspace->setValue("Register/DetectHotPixels", detectHotPixels);
 	}
 
 	void RegisterSettings::stackAfter_clicked()
@@ -309,9 +310,10 @@ namespace DSS
 		ui->starCount->setText(string);
 	}
 
-	void RegisterSettings::medianFilter_stateChanged(int)
+	void RegisterSettings::medianFilter_stateChanged(const int state)
 	{
-		medianFilter = ui->medianFilter->isChecked();
+		this->medianFilter = state != 0; //ui->medianFilter->isChecked();
+		ui->medianFilter->setChecked(medianFilter); // If we were explicitly called, update the checkbox.
 		workspace->setValue("Register/ApplyMedianFilter", medianFilter);
 	}
 
