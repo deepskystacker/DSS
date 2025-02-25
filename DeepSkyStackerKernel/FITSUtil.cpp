@@ -1426,6 +1426,19 @@ bool CFITSWriter::Write()
 				break;
 			};
 
+			//
+			// If we are writing a float image, the pixel values will be scaled to the range [0.0, 1.0],
+			// so write the DATAMIN and DATAMAX keywords to the FITS header indicating this.
+			//
+			if (m_bFloat)
+			{
+				WriteKey("DATAMIN", 0.0);
+				WriteKey("DATAMAX", 1.0);
+			};
+
+			//
+			// Start the progress bar
+			//
 			if (m_pProgress)
 				m_pProgress->Start2(m_lHeight);
 
@@ -1475,7 +1488,7 @@ bool CFITSWriter::Write()
 						{
 							if (m_bFloat)
 							{
-								*pFLOATLine++ = static_cast<float>(fGray / scalingFactorFloat); // [0.0, 1.0], 1.0 inclusive
+								*pFLOATLine++ = static_cast<float>(fGray / scalingFactorFloat); // [0.0, 1.0]
 							}
 							else
 							{
