@@ -1,16 +1,21 @@
-Welcome to DeepSkyStacker 5.1.8 Beta 6
+Welcome to DeepSkyStacker 6.1.0
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
-
-This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are a few bug fixes,
-and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
-performance.
 
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
+
+Changes since the last release:
+
+1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX for floating point FITS files.   If present use these to determine
+    the minumum and maximum pixel values instead of scanning the image data.
+    This should be a) much faster, and b) should result in consistent image scaling.
+
+Welcome to DeepSkyStacker 5.1.8
+======================================
 
 Changes since the last release:
 
