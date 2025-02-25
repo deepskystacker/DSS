@@ -653,23 +653,31 @@ bool CFITSReader::Read()
 		//
 		if (m_bFloat)
 		{
-			double localMin = 0, localMax = 0;
-#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
+			//
+			// Does the header contain the DATAMIN and DATAMAX keywords, if so use the supplied values.
+			// If not, scan the image to find the minimum and maximum pixel values (which is less efficient, 
+			// and also results in inconsistent scaling of image data in many cases
+			//
+			if (!(ReadKey("DATAMIN", fMin) && ReadKey("DATAMAX", fMax)))
 			{
+				double localMin = 0, localMax = 0;
+#pragma omp parallel default(shared) shared(fMin, fMax, nElements, doubleBuff) firstprivate(localMin, localMax) if(nrProcessors > 1)
+				{
 #pragma omp for schedule(dynamic, 100'000)
-				for (std::int64_t element = 0; element < nElements; ++element)
-				{
-					const double fValue = doubleBuff[element];	// int (8 byte) floating point
-					if (!std::isnan(fValue))
+					for (std::int64_t element = 0; element < nElements; ++element)
 					{
-						localMin = std::min(localMin, fValue);
-						localMax = std::max(localMax, fValue);
-					};
-				}
+						const double fValue = doubleBuff[element];	// int (8 byte) floating point
+						if (!std::isnan(fValue))
+						{
+							localMin = std::min(localMin, fValue);
+							localMax = std::max(localMax, fValue);
+						};
+					}
 #pragma omp critical
-				{
-					fMin = std::min(localMin, fMin); // For non-OMP case this is equal to fMin = localMin
-					fMax = std::max(localMax, fMax); // For non-OMP case this is equal to fMax = localMax
+					{
+						fMin = std::min(localMin, fMin); // For non-OMP case this is equal to fMin = localMin
+						fMax = std::max(localMax, fMax); // For non-OMP case this is equal to fMax = localMax
+					}
 				}
 			}
 			double		fZero, fScale;
