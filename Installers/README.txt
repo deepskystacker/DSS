@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.8
+Welcome to DeepSkyStacker 5.1.9
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -85,6 +85,10 @@ Changes since the last release:
 23. Bug fix/enhancement: Changes to support RAW files from monochrome cameras such as the Leica M series.
 
 24. Resolve problems with editing controls on Processing Panel.
+
+25. Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX for floating point FITS files.   If present use these to determine
+    the minumum and maximum pixel values instead of scanning the image data.
+    This should be a) much faster, and b) should result in consistent image scaling.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
