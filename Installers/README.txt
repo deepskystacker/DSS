@@ -86,9 +86,10 @@ Changes since the last release:
 
 24. Resolve problems with editing controls on Processing Panel.
 
-25. Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX for floating point FITS files.   If present use these to determine
+25. Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
     the minumum and maximum pixel values instead of scanning the image data.
     This should be a) much faster, and b) should result in consistent image scaling.
+    Also write these keywords when writing FITS floating point files.
 
 Welcome to DeepSkyStacker 5.1.6
 ===============================
