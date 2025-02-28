@@ -625,11 +625,12 @@ bool CFITSReader::Read()
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		// It is dangreous to use LONGLONG, because here the definition is found in winnt.h, but for the fits functions it is defined in fitsio.h. So we use long long.
-		static_assert(std::is_same_v<decltype(fits_read_pixll), int(fitsfile*, int, long long*, long long, void*, void*, int*, int*)>);
-		long long fPixel[3] = { 1, 1, 1 }; // Want to start reading at column 1, row 1, plane 1.
+		// It is dangreous to use LONGLONG, because here the definition is found in winnt.h, but for the fits functions it is defined in fitsio.h.
+		// So we use int64 and add a static assert.
+		static_assert(std::is_same_v<decltype(fits_read_pixll), int(fitsfile*, int, std::int64_t*, std::int64_t, void*, void*, int*, int*)>);
+		std::int64_t fPixel[3] = { 1, 1, 1 }; // Want to start reading at column 1, row 1, plane 1.
 		double dNULL = 0;
-		const long long nElements = static_cast<long long>(m_lWidth) * m_lHeight * colours;
+		const std::int64_t nElements = static_cast<std::int64_t>(m_lWidth) * m_lHeight * colours;
 		auto buff = std::make_unique<double[]>(nElements);
 		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
