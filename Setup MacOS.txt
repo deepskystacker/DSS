@@ -155,10 +155,13 @@ make
 sudo make install
 
 #
-# SmtpClient 2.0 for Qt (this a fork of bluetiger9/SmtpClient-for-Qt that I created to allow building as a static library)
+# SmtpClient 2.0 for Qt 
+#
+# Revert to using bluetiger9/SmtpClient-for-Qt as pull request #182 from deepskystacker/SmtpClient-for-Qt was accepted
+# on 24th Feb. 2025 (allowing this to build as a static library).
 #
 cd ~/Downloads
-gh repo clone deepskystacker/SmtpClient-for-Qt
+gh repo clone bluetiger9/SmtpClient-for-Qt
 cd SmtpClient-for-Qt
 #
 # create a build directory
