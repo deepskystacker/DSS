@@ -604,8 +604,8 @@ bool CFITSReader::Open()
 
 bool CFITSReader::Read()
 {
-	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
-	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
+	constexpr double ScaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
+	constexpr double ScaleFactorInt32 = ScaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
 	bool result = true;
@@ -613,23 +613,23 @@ bool CFITSReader::Read()
 	
 	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
-	double fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
+//	double fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
 
 	if (m_lNrChannels > 3)
 		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
 
 	if (m_fits != nullptr)
 	{
-		double dNULL = 0;
-
-		if (m_pProgress)
+		if (m_pProgress != nullptr)
 			m_pProgress->Start2(m_lHeight);
-
-		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		const LONGLONG nElements = static_cast<LONGLONG>(m_lWidth) * m_lHeight * colours;
+		// It is dangreous to use LONGLONG, because here the definition is found in winnt.h, but for the fits functions it is defined in fitsio.h. So we use long long.
+		static_assert(std::is_same_v<decltype(fits_read_pixll), int(fitsfile*, int, long long*, long long, void*, void*, int*, int*)>);
+		long long fPixel[3] = { 1, 1, 1 }; // Want to start reading at column 1, row 1, plane 1.
+		double dNULL = 0;
+		const long long nElements = static_cast<long long>(m_lWidth) * m_lHeight * colours;
 		auto buff = std::make_unique<double[]>(nElements);
 		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
@@ -649,12 +649,50 @@ bool CFITSReader::Read()
 		}
 
 		const int nrProcessors = CMultitask::GetNrProcessors(); // Returns 1, if the user de-selected multi-threading, # CPUs else.
+		std::atomic_bool stop = false;
+		const ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;
+		const ptrdiff_t blueOffset = 2 * greenOffset;
+		int	rowProgress = 0;
 
 		//
-		// Step 1: If the image is in float format, need to extract the minimum and maximum pixel values.
+		// If the image is in float format, may need to re-scale, so try to determine the minimum and maximum pixel values.
 		//
 		if (m_bFloat)
 		{
+			const auto readKeyOrDefault = [this](char const* key, const double defaultValue) -> double {
+				double value = 0.0;
+				if (ReadKey(key, value))
+					return value;
+				else
+					return defaultValue;
+			};
+
+			double dataMin = 0;
+			double dataMax = 1;
+			const bool minMaxDefined = ReadKey("DATAMIN", dataMin) && ReadKey("DATAMAX", dataMax);
+			const double bZero = readKeyOrDefault("BZERO", 0.0f);
+			const double bScale = readKeyOrDefault("BSCALE", 1.0f);
+			constexpr double MaxInt16 = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
+			constexpr double MaxVal = MaxInt16 / 256.0; // 255.996...
+			const double scalingFactor = m_bDSI
+				? MaxVal / MaxInt16
+				: (minMaxDefined
+					? bScale * MaxVal / (dataMax - dataMin)
+					: bScale
+				);
+			const double offset = m_bDSI
+				? 0.0
+				: (minMaxDefined
+					? (bZero - dataMin) * MaxVal / (dataMax - dataMin)
+					: bZero
+				);
+
+			const auto autoScaleFloat = [scalingFactor, offset](const double x) -> double
+			{
+				return x * scalingFactor + offset;
+			};
+
+#if 0
 			//
 			// Does the header contain the DATAMIN and DATAMAX keywords, if so use the supplied values.
 			// If not, scan the image to find the minimum and maximum pixel values (which is less efficient, 
@@ -699,8 +737,84 @@ bool CFITSReader::Read()
 				fMin = min(0.0, fMin);
 				fMax = max(fMax, 65535.0);
 			};
+#endif
 
+#pragma omp parallel for default(shared) if (nrProcessors > 1)
+			for (int row = 0; row < m_lHeight; ++row)
+			{
+				if (stop.load()) // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					continue;
+				for (int col = 0; col < m_lWidth && !stop.load(); ++col)
+				{
+					const ptrdiff_t index = col + (row * static_cast<ptrdiff_t>(m_lWidth));	// index into the image for this plane
+					const double red = AdjustColor(autoScaleFloat(doubleBuff[index]));
+					const double green = colours == 1 ? red : AdjustColor(autoScaleFloat(doubleBuff[index + greenOffset]));
+					const double blue = colours == 1 ? red : AdjustColor(autoScaleFloat(doubleBuff[index + blueOffset]));
+
+					if (!OnRead(col, row, red, green, blue))
+					{
+						stop = true;
+						result = false;
+					}
+				}
+				if (m_pProgress != nullptr && (rowProgress++ % 25) == 0 && 0 == omp_get_thread_num())	// Are we on the master thread?
+					m_pProgress->Progress2(rowProgress);
+			}
 		}
+		else
+		{
+#pragma omp parallel for default(shared) if (nrProcessors > 1)
+			for (int row = 0; row < m_lHeight; ++row)
+			{
+				if (stop.load()) // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+					continue;
+				for (int col = 0; col < m_lWidth && !stop.load(); ++col)
+				{
+					const ptrdiff_t index = col + (row * static_cast<ptrdiff_t>(m_lWidth));	// index into the image for this plane
+					double fRed = doubleBuff[index];
+					double fGreen = 0.0;
+					double fBlue = 0.0;
+
+					if (1 == colours) // Monochrome image 
+					{
+						fGreen = fBlue = fRed;
+					}
+					else // We assume this is a 3 colour image with each colour in a separate image plane
+					{
+						fGreen = doubleBuff[greenOffset + index];
+						fBlue = doubleBuff[blueOffset + index];
+					}
+
+					switch (m_bitPix)
+					{
+					case SHORT_IMG:
+					case USHORT_IMG:
+						fRed /= ScaleFactorInt16;
+						fGreen /= ScaleFactorInt16;
+						fBlue /= ScaleFactorInt16;
+						break;
+					case LONG_IMG:
+					case ULONG_IMG:
+					case LONGLONG_IMG:
+						fRed /= ScaleFactorInt32;
+						fGreen /= ScaleFactorInt32;
+						fBlue /= ScaleFactorInt32;
+						break;
+					default: break;
+					}
+
+					if (!OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue)))
+					{
+						stop = true;
+						result = false;
+					}
+				}
+
+				if (m_pProgress != nullptr && (rowProgress++ % 25) == 0 && 0 == omp_get_thread_num())	// Are we on the master thread?
+					m_pProgress->Progress2(rowProgress);
+			}
+		}
+#if 0
 		else
 		{
 			if (!ReadKey("BZERO", fMin))
@@ -792,11 +906,12 @@ bool CFITSReader::Read()
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
 		}
+#endif
 		if (m_pProgress)
 			m_pProgress->End2();
 	}
 	return result;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
