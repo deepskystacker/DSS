@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 5.1.9
+Welcome to DeepSkyStacker 5.1.9 
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -11,6 +11,18 @@ Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This requires too much work to fix in this release, as we will need to implement our own edit control.
+
+Changes since the last release:
+
+1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
+    the minumum and maximum pixel values instead of scanning the image data.
+    This should be a) much faster, and b) should result in consistent image scaling.
+    Also write these keywords when writing FITS floating point files.
+
+2.  Fix rounding error in "stack recap" daolog in calculation of total exposure time.
+
+Welcome to DeepSkyStacker 5.1.8
+======================================
 
 Changes since the last release:
 
