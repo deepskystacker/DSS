@@ -187,9 +187,9 @@ namespace DSS
 			QString				strISOText(tr("ISO", "IDS_ISO"));
 			QString				strGainText(tr("Gain", "IDS_GAIN"));
 			int				i, j;
-			int				lTotalExposure = 0;
-			__int64				ulNeededSpace;
-			__int64				ulFreeSpace;
+			double				totalExposure = 0;
+			std::uint64_t		ulNeededSpace;
+			std::uint64_t		ulFreeSpace;
 			QString				strFreeSpace;
 			QString				strNeededSpace;
 			STACKINGMODE		ResultMode{ pStackingTasks->getStackingMode() };
@@ -418,7 +418,7 @@ namespace DSS
 					for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
 						lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
 
-					lTotalExposure += lTaskExposure;
+					totalExposure += lTaskExposure;
 
 					strExposure = exposureToString(lTaskExposure);
 					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);
@@ -714,7 +714,7 @@ namespace DSS
 				};
 			};
 
-			strExposure = exposureToString(lTotalExposure);
+			strExposure = exposureToString(totalExposure);
 			strText = QString("<font color=#008000>%1</font>").arg(strExposure);
 			strExposure = strText;
 			strHTML += "<br>";
