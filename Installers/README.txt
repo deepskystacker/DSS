@@ -15,6 +15,8 @@ Changes since the last release:
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
+2.  Fix rounding error in "stack recap" daolog in calculation of total exposure time.
+
 Welcome to DeepSkyStacker 5.1.8
 ======================================
 
