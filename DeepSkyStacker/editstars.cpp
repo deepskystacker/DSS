@@ -173,7 +173,6 @@ namespace DSS
 		m_bComet{ false },
 		m_fLightBkgd{ 0 },
 		m_bDirty{ false },
-		m_fScore{ 0 },
 		m_fQuality{ 0 },
 		m_lNrStars{ 0 },
 		m_fFWHM{ 0 },
@@ -466,14 +465,13 @@ namespace DSS
 		{
 			if (!star.m_bRemoved)
 			{
-//				m_fScore += star.m_fQuality;
 				m_lNrStars++;
 				m_fFWHM += star.m_fMeanRadius * RadiusFactor;
 			}
 		}
 		if (m_lNrStars > 0)
 			m_fFWHM /= m_lNrStars;
-		std::tie(this->m_fScore, this->m_fQuality) = CRegisteredFrame::ComputeScore(stars);
+		this->m_fQuality = CRegisteredFrame::ComputeScore(stars);
 	}
 
 //	void EditStars::computeBackgroundValue()

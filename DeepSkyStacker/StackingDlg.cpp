@@ -902,12 +902,12 @@ namespace DSS
 					if (image.m_bUseAsStarting) // If it was set as reference before
 					{
 						image.m_bUseAsStarting = false; // Uncheck it.
-						imageModel->emitChanged(r, r, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+						imageModel->emitChanged(r, r, static_cast<int>(Column::Quality), static_cast<int>(Column::Quality));
 					}
 					++r;
 				}
 				imageModel->mydata[row].m_bUseAsStarting = !oldValue; // Toggle selected image.
-				imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+				imageModel->emitChanged(row, row, static_cast<int>(Column::Quality), static_cast<int>(Column::Quality));
 			}
 		}
 		else
@@ -926,7 +926,7 @@ namespace DSS
 //					// Toggle the value
 //					//
 //					imageModel->mydata[row].m_bUseAsStarting ^= true;
-//					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+//					imageModel->emitChanged(row, row, static_cast<int>(Column::Quality), static_cast<int>(Column::Quality));
 //					break;
 				case Menuitem::check:
 					imageModel->mydata[row].m_bChecked = Qt::Checked;

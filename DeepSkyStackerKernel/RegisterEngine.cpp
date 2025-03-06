@@ -38,15 +38,14 @@ void CRegisteredFrame::Reset()
 }
 
 //
-// MT, August 2024
-// We now calculate 2 different quality metrics. 
-// (1) The old 'overallQuality' (shown as "Score" in the GUI): this is simply the sum of
-//		CStar::m_fQuality over the stars.
-// (2) A new average quality indicator, which is independent of the number of detected
-//		stars (unlike the above).
-//		This is important, because the new auto-threshold algorithm cannot guarantee an identical
-//		detection threshold over the series of light-frames.
-//		Using the new quality indicator, even then the light-frames can be compared.
+// Martin Toeltsch, August 2024 wrote the new Quality metric calculation which replaces the old Score
+//
+// Quality is independent of the number of detected stars (unlike the original Score).
+// This is important, because the new auto-threshold algorithm cannot guarantee an identical
+// detection threshold over the series of light-frames.
+// 
+// Using the new quality indicator, even when using auto-threshold, the light frames can be compared.
+// 
 // The new quality indicator double CLightframInfo::quality; (shown as "Quality" in the GUI) is a
 // much better characterises the true quality of a light-frame than the old Score.
 // 
@@ -73,12 +72,12 @@ void CRegisteredFrame::Reset()
 // 
 // So it is really a quality measure for the circularity of the stars in the light-frame.
 // 
-// In the GUI is a new column "Quality" right next to the good old "Score". Users can use it to sort the light-frames.
+// The new "Quality" metric is now displayed instead of the old "Score". Users can use it to sort the light-frames.
 // 
 // CRegisteredFrame::ComputeScore is now public static, so it can be used from other parts of the code, too, e.g. in EditStars::computeOverallQuality().
 //
-// static
-std::pair<double, double> CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
+//
+double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 {
 	namespace vs = std::ranges::views;
 
@@ -86,8 +85,6 @@ std::pair<double, double> CRegisteredFrame::ComputeScore(const STARVECTOR& stars
 	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
 
 	auto activeStars = Filter(stars);
-	const double overallQuality = std::accumulate(std::ranges::begin(activeStars), std::ranges::end(activeStars), 0.0,
-		[](const double accu, const CStar& star) { return accu + star.m_fQuality; });
 
 	std::vector<int> indexes(stars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);
@@ -109,7 +106,7 @@ std::pair<double, double> CRegisteredFrame::ComputeScore(const STARVECTOR& stars
 
 	const double quality = sumWeights != 0 ? sum / sumWeights : 0.0;
 
-	return std::make_pair(overallQuality, quality);
+	return quality;
 }
 
 namespace {
@@ -172,7 +169,6 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	{
 		fileOut << "Star# = " << i << Qt::endl;
 		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
-		fileOut << QString("Quality = %1").arg(star.m_fQuality, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
 		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
 		fileOut << "Rect = " << star.m_rcStar.left << ", "
@@ -266,8 +262,6 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 			GetNextValue(&fileIn, strVariable, strValue);
 			if (!strVariable.compare("Intensity", Qt::CaseInsensitive))
 				ms.m_fIntensity = strValue.toDouble();
-			else if (!strVariable.compare("Quality", Qt::CaseInsensitive))
-				ms.m_fQuality = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
 			else if (!strVariable.compare(CircularityParam, Qt::CaseInsensitive))
@@ -579,7 +573,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		m_pProgress->End2();
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
-	std::tie(this->m_fScore, this->quality) = ComputeScore(m_vStars);
+	this->quality = ComputeScore(m_vStars);
 	ComputeFWHM();
 	// We return the threshold of the last iteration. This can be used by the caller as starting value for the next light-frame.
 	return usedThreshold;
@@ -732,8 +726,8 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 		this->usedDetectionThreshold = usedThres;
 		// IF auto-threshold: Take the threshold of the first lightframe (bitmapIndex == 0) as starting value for the following lightframes.
 		previousThreshold = bitmapIndex == 0 ? usedThres : previousThreshold;
-		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Score=%f; Quality=%f",
-			bitmapIndex, usedThres, m_vStars.size(), this->m_fScore, this->quality);
+		ZTRACE_RUNTIME("Finished registering file # %d. Final threshold = %f; Found %zu stars; Quality=%f",
+			bitmapIndex, usedThres, m_vStars.size(), this->quality);
 	}
 }
 

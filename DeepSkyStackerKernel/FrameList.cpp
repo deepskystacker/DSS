@@ -606,7 +606,6 @@ namespace DSS
 					if (bmpInfo.m_bInfoOk)
 					{
 						it->m_bRegistered = true;
-						group.pictures->setData(row, Column::Score, bmpInfo.m_fScore);
 						group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 						group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
@@ -648,7 +647,6 @@ namespace DSS
 				if (bmpInfo.m_bInfoOk)
 				{
 					it->m_bRegistered = true;
-					group.pictures->setData(row, Column::Score, bmpInfo.m_fScore);
 					group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 					group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
