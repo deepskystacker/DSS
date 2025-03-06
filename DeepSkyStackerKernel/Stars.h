@@ -10,11 +10,9 @@ public:
 	double			m_fIntensity{ 0.0 };
 	double			m_fPercentage{ 0.0 };
 	double			m_fCircularity{ 0.0 };
-	double			m_fQuality{ 0.0 };
 	double			m_fMeanRadius{ 0.0 };
 	double			m_fX{ 0.0 };
 	double			m_fY{ 0.0 };
-//	bool			m_bUsed{ false }; // MT, Aug. 2024: this bool is not used anywhere.
 	bool			m_bAdded{ false };
 	bool			m_bRemoved{ false };
 	double			m_fLargeMajorAxis{ 0.0 };
@@ -68,7 +66,7 @@ public:
 
 	bool IsValid() const
 	{
-		return (m_fX > 0 && m_fY > 0 && m_fQuality > 0 && m_fIntensity > 0 && m_fMeanRadius > 0);
+		return (m_fX > 0 && m_fY > 0 && m_fCircularity > 0 && m_fIntensity > 0 && m_fMeanRadius > 0);
 	}
 };
 
