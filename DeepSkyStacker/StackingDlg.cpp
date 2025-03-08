@@ -1952,9 +1952,7 @@ namespace DSS
 			const fs::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
 			const fs::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : fs::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
 
-			QString extension = settings.value("Folders/ListExtension").toString();
-			if (extension.isEmpty())
-				extension = FileListExtension;
+			QString extension = FileListExtension;
 
 			fs::path fn = dirPath.has_filename() ? dirPath.filename() : fs::path{ "list" };
 			return (dirPath / fn.replace_extension(fs::path{ extension.toStdU16String() }));
