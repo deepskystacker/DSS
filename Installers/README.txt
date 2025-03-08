@@ -17,6 +17,8 @@ Changes since the last release:
 
 2.  Fix rounding error in "stack recap" daolog in calculation of total exposure time.
 
+3.  Resolve problems with handling of saving filelist (empty extension amongst others).
+
 Welcome to DeepSkyStacker 5.1.8
 ======================================
 
