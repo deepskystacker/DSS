@@ -1952,9 +1952,7 @@ namespace DSS
 			const fs::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
 			const fs::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : fs::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
 
-			QString extension = settings.value("Folders/ListExtension").toString();
-			if (extension.isEmpty())
-				extension = FileListExtension;
+			QString extension = FileListExtension;
 
 			fs::path fn = dirPath.has_filename() ? dirPath.filename() : fs::path{ "list" };
 			return (dirPath / fn.replace_extension(fs::path{ extension.toStdU16String() }));
@@ -1979,7 +1977,6 @@ namespace DSS
 			settings.setValue("Folders/ListFolder", directory);
 			if constexpr (!std::is_same_v<std::remove_cv_t<decltype(selectedIndex)>, bool>)
 				settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
-			settings.setValue("Folders/ListExtension", extension);
 		};
 		//
 		// The default file name shown in the file save dialog.
@@ -1987,7 +1984,21 @@ namespace DSS
 		//
 		const fs::path defaultName = this->fileList.empty() ? LightframeFolder() : fileList;
 
-		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
+		// if we already used a file-list set the extension in the save dialog accordingly
+		// otherwise use (*.dssfilelist)
+		QString currentExtension;
+		if (this->fileList.empty()) {
+			currentExtension = "File List (*.dssfilelist)";
+		}
+		else{
+			currentExtension = "File List (*" + QString::fromStdString(defaultName.extension().generic_string()) + ")";
+		}
+		ZTRACE_RUNTIME("currentExtension is %s\n", currentExtension.toStdString().c_str());
+
+		// get the filter index but trap case where the extension wasn't in the list 
+		auto filterIndex = OUTPUTLIST_FILTERS.indexOf(currentExtension);
+		filterIndex = filterIndex < 0 ? 0: filterIndex;
+		ZTRACE_RUNTIME("filterindex %lld\n", filterIndex);
 
 		ZTRACE_RUNTIME("About to show file save dlg");
 		QString selectedFilter;
