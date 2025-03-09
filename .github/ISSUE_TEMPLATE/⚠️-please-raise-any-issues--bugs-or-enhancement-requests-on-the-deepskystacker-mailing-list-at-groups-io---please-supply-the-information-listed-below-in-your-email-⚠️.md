@@ -8,7 +8,12 @@ assignees: ''
 
 ---
 **PLEASE DO NOT REPORT PROBLEMS on github "Issues"**
-Please report all problems on the DeepSkyStacker mailing list (see below).
+
+Please report all problems on the DeepSkyStacker mailing list see  
+
+https://groups.io/g/DeepSkyStacker
+
+and also below.
 
 **Check the Wiki**
 Before you report any issues it is worth checking the DeepSkyStacker Wiki: <https://groups.io/g/DeepSkyStacker/wiki>
