@@ -1,5 +1,5 @@
 ---
-name: "⚠️ **Please raise any issues, bugs or enhancement requests on the DeepSkyStacker mailing list at groups.io.**
+name: "⚠️ Please raise any issues, bugs or enhancement requests on the DeepSkyStacker mailing list at groups.io.
   Please click on Get Started for guidance and to see the information wanted in your email:⚠️"
 about: Create a report to help us improve
 title: ''
