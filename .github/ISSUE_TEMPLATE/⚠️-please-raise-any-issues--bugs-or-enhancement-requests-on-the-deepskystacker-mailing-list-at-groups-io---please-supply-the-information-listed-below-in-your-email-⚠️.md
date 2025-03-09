@@ -7,7 +7,7 @@ labels: bug, enhancement, help wanted
 assignees: ''
 
 ---
-** PLEASE DO NOT REPORT PROBLEMS on github "Issues"**
+**PLEASE DO NOT REPORT PROBLEMS on github "Issues"**
 Please report all problems on the DeepSkyStacker mailing list (see below).
 
 **Check the Wiki**
