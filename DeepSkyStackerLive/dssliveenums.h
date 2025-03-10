@@ -5,7 +5,6 @@ enum class ImageListColumns
 	File,
 	Exposure,
 	Aperture,
-	Score,
 	Quality,
 	Stars,
 	FWHM,

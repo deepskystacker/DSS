@@ -530,7 +530,6 @@ namespace DSS {
 
 											if (validCandidate)
 											{
-												ms.m_fQuality = (10 - deltaRadius) + fIntensity / 256.0 - ms.m_fMeanRadius;
 												findStarShape(inputBitmap, ms, backgroundLevel * (1.0 / 256.0));
 												stars.insert(std::move(ms));
 												++nStars;

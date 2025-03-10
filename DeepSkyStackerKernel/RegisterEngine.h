@@ -43,7 +43,7 @@ public:
 
 	virtual ~CRegisteredFrame() = default;
 
-	static std::pair<double, double> ComputeScore(const STARVECTOR& stars);
+	static double ComputeScore(const STARVECTOR& stars);
 
 	void SetDetectionThreshold(double fMinLuminancy)
 	{
@@ -58,7 +58,7 @@ public:
 	void SetStars(const STARVECTOR& vStars)
 	{
 		m_vStars = vStars;
-		std::tie(this->m_fScore, this->quality) = CRegisteredFrame::ComputeScore(m_vStars);
+		this->quality = CRegisteredFrame::ComputeScore(m_vStars);
 		ComputeFWHM();
 	}
 

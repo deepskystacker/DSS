@@ -554,7 +554,6 @@ void DeepSkyStackerLive::onInitialise()
 		<< tr("File", "IDS_COLUMN_FILE")
 		<< tr("Exposure", "IDS_COLUMN_EXPOSURE")
 		<< tr("Aperture", "IDS_COLUMN_APERTURE")
-		<< tr("Score", "IDS_COLUMN_SCORE")
 		<< tr("Quality", "IDS_COLUMN_MEANQUALITY")
 		<< tr("#Stars", "IDS_COLUMN_STARS")
 		<< tr("FWHM")
@@ -576,7 +575,6 @@ void DeepSkyStackerLive::onInitialise()
 		{
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
-		case ImageListColumns::Score:
 		case ImageListColumns::Quality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
@@ -1117,7 +1115,6 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 		{
 		case ImageListColumns::Exposure:
 		case ImageListColumns::Aperture:
-		case ImageListColumns::Score:
 		case ImageListColumns::Quality:
 		case ImageListColumns::Stars:
 		case ImageListColumns::FWHM:
@@ -1294,7 +1291,6 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		{
 			imageList->item(row, static_cast<int>(ImageListColumns::Exposure))->setText(exposureToString(lfi->m_fExposure));
 			imageList->item(row, static_cast<int>(ImageListColumns::Aperture))->setText(locale.toString(lfi->m_fAperture, 'f', 1));
-			imageList->item(row, static_cast<int>(ImageListColumns::Score))->setText(locale.toString(lfi->m_fScore, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Quality))->setText(locale.toString(lfi->quality, 'f', 2));
 			imageList->item(row, static_cast<int>(ImageListColumns::Stars))->setText(locale.toString(lfi->m_vStars.size()));
 			imageList->item(row, static_cast<int>(ImageListColumns::FWHM))->setText(locale.toString(lfi->m_fFWHM, 'f', 2));
