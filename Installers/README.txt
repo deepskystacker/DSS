@@ -3,9 +3,7 @@ Welcome to DeepSkyStacker 5.1.9
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are a few bug fixes,
-and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
-performance.
+This is a bug fix release for problem found in 5.1.8
 
 Reporting problems:
 
@@ -25,12 +23,18 @@ Changes since the last release:
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
-2.  Fix rounding error in "stack recap" daolog in calculation of total exposure time.
+2.  Bug fix: Fix rounding error in "stack recap" daolog in calculation of total exposure time.
 
-3.  Resolve problems with handling of saving filelist (empty extension amongst others).
+3.  Bug fix: Resolve problems with handling of saving filelist (empty extension amongst others).
+
+4.  Bug fix: Resolve problems with the ProcessingSettings dialogue.
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
+
+This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are a few bug fixes,
+and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
+performance.
 
 Changes since the last release:
 
