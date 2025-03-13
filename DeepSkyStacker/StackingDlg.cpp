@@ -69,9 +69,9 @@
 
 namespace
 {
-	static QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight = -1, int* lastVisibleLine = nullptr)
+	QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight, int* lastVisibleLine)
 	{
-		if (lastVisibleLine)
+		if (lastVisibleLine != nullptr)
 			*lastVisibleLine = -1;
 		qreal height = 0;
 		qreal widthUsed = 0;
@@ -86,7 +86,8 @@ namespace
 			height += line.height();
 			widthUsed = qMax(widthUsed, line.naturalTextWidth());
 			// we assume that the height of the next line is the same as the current one
-			if (maxHeight > 0 && lastVisibleLine && height + line.height() > maxHeight) {
+			if (maxHeight > 0 && lastVisibleLine != nullptr && height + line.height() > maxHeight)
+			{
 				const QTextLine nextLine = textLayout.createLine();
 				*lastVisibleLine = nextLine.isValid() ? i : -1;
 				break;
@@ -97,21 +98,29 @@ namespace
 		return QSizeF(widthUsed, height);
 	}
 
-	static QStringList types;	// Dark, Flat etc...
-	static QStringList isos;
-}
+	// Returns pair<directory, extension> as QStrings
+	std::pair<QString, QString> directoryAndExtensionFromPath(const std::filesystem::path& file)
+	{
+		const std::filesystem::path& parent = file.has_parent_path() ? file.parent_path() : file.root_path();
+		return std::make_pair(
+			QString::fromStdU16String(parent.generic_u16string()),           // directory
+			QString::fromStdU16String(file.extension().generic_u16string())  // extension
+		);
+	}
 
-namespace DSS
-{
-	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
-		QT_TRANSLATE_NOOP3("DSS", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+	QStringList types;	// Dark, Flat etc...
+	QStringList isos;
+
+	using Filter_Sources_type = struct { const char* const source; const char* comment; };
+
+	constexpr Filter_Sources_type DssFileListFilterSource = QT_TRANSLATE_NOOP3("DSS", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT");
+	constexpr std::array<Filter_Sources_type, 3> OUTPUTLIST_FILTER_SOURCES = {{
+		DssFileListFilterSource,
 		QT_TRANSLATE_NOOP3("DSS", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
-		};
+	}};
 
-	QStringList OUTPUTLIST_FILTERS{};
-
-	static struct { const char* const source; const char* comment; } INPUTFILE_FILTER_SOURCES [] {
+	constexpr std::array<Filter_Sources_type, 6> INPUTFILE_FILTER_SOURCES = {{
 		QT_TRANSLATE_NOOP3("DSS",
 			"Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
 			"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
@@ -123,11 +132,17 @@ namespace DSS
 			"*.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_FILTER_INPUT")
-		};
+	}};
 
-	QStringList INPUTFILE_FILTERS{};
+	QStringList INPUTFILE_FILTERS;
+	QString DssFileListFilter;
+}
 
-	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
+namespace DSS
+{
+	QStringList OUTPUTLIST_FILTERS;
+
+	QString IconSizeDelegate::calculateElidedText(const QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
 		Qt::TextElideMode textElideMode, [[maybe_unused]] int flags,
 		bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const
@@ -148,19 +163,21 @@ namespace DSS
 		const QRect layoutRect = QStyle::alignedRect(Qt::LayoutDirectionAuto, valign,
 			boundingRect.size().toSize(), textRect);
 
-		if (paintStartPosition)
+		if (paintStartPosition != nullptr)
 			*paintStartPosition = QPointF(textRect.x(), layoutRect.top());
 
 		QString ret;
 		qreal height = 0;
 		const int lineCount = textLayout.lineCount();
-		for (int i = 0; i < lineCount; ++i) {
+		for (int i = 0; i < lineCount; ++i)
+		{
 			const QTextLine line = textLayout.lineAt(i);
 			height += line.height();
 
 			// above visible rect
-			if (height + layoutRect.top() <= textRect.top()) {
-				if (paintStartPosition)
+			if (height + layoutRect.top() <= textRect.top())
+			{
+				if (paintStartPosition != nullptr)
 					paintStartPosition->ry() += line.height();
 				continue;
 			}
@@ -200,8 +217,7 @@ namespace DSS
 			}
 
 			// below visible text, can stop
-			if ((height + layoutRect.top() >= textRect.bottom()) ||
-				(lastVisibleLine >= 0 && lastVisibleLine == i))
+			if ((height + layoutRect.top() >= textRect.bottom()) || (lastVisibleLine >= 0 && lastVisibleLine == i))
 				break;
 		}
 		return ret;
@@ -272,7 +288,7 @@ namespace DSS
 
 		QTextLayout textLayout(newText, opt.font);
 		textLayout.setTextOption(textOption);
-		viewItemTextLayout(textLayout, textRect.width());
+		viewItemTextLayout(textLayout, textRect.width(), -1, nullptr);
 		textLayout.draw(painter, paintPosition);
 
 		painter->restore();
@@ -653,23 +669,16 @@ namespace DSS
 			QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
 
 		OUTPUTLIST_FILTERS.clear();
-		int i = 0;
-		int count = sizeof(OUTPUTLIST_FILTER_SOURCES) / sizeof(OUTPUTLIST_FILTER_SOURCES[0]);
-		for (i = 0; i < count; ++i)
-		{
-			OUTPUTLIST_FILTERS.append(
-				qApp->translate("DSS", OUTPUTLIST_FILTER_SOURCES[i].source, OUTPUTLIST_FILTER_SOURCES[i].comment));
-		}
-		ZASSERT(OUTPUTLIST_FILTERS.size() == count);
+		for (const auto& filter : OUTPUTLIST_FILTER_SOURCES)
+			OUTPUTLIST_FILTERS.append(qApp->translate("DSS", filter.source, filter.comment));
+		ZASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
 
-		count = sizeof(INPUTFILE_FILTER_SOURCES) / sizeof(INPUTFILE_FILTER_SOURCES[0]);
+		DssFileListFilter = qApp->translate("DSS", DssFileListFilterSource.source, DssFileListFilterSource.comment);
+
 		INPUTFILE_FILTERS.clear();
-		for (i = 0; i < count; ++i)
-		{
-			INPUTFILE_FILTERS.append(
-				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
-		}
-		ZASSERT(INPUTFILE_FILTERS.size() == count);
+		for (const auto& filter : INPUTFILE_FILTER_SOURCES)
+			INPUTFILE_FILTERS.append(qApp->translate("DSS", filter.source, filter.comment));
+		ZASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
 
 		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
 			"Ctrl-A or equivalent to select all rows\n"
@@ -687,15 +696,13 @@ namespace DSS
 		//
 		frameList.retranslateUi();	// re-translate group names unless changed.
 
-		i = 0;
 		for (auto it = frameList.groups_cbegin(); it != frameList.groups_cend(); ++it)
 		{
-			pictureList->tabBar->setTabText(i, it->name());
+			const int index = std::distance(frameList.groups_cbegin(), it);
+			pictureList->tabBar->setTabText(index, it->name());
 			it->pictures->retranslateUi();
-			++i;
 		}
 	}
-
 
 
 	bool StackingDlg::event(QEvent* event)
@@ -743,23 +750,22 @@ namespace DSS
 	//
 	void StackingDlg::copyToClipboard()
 	{
-		int i{ 0 }, j{ 0 };
 		ImageListModel* model{ frameList.currentTableModel() };
 		QString str;
 
-		for (i = 0; i < model->columnCount(); i++)
+		for (int i = 0; i < model->columnCount(); i++)
 		{
-			if (i)
+			if (i != 0)
 				str += "\t";
 
 			str += model->headerData(i, Qt::Horizontal).toString();
 		}
-		for (i = 0; i < model->rowCount(); i++)
+		for (int i = 0; i < model->rowCount(); i++)
 		{
 			str += "\n";
-			for (j = 0; j < model->columnCount(); j++)
+			for (int j = 0; j < model->columnCount(); j++)
 			{
-				if (j)
+				if (j != 0)
 					str += "\t";
 				QModelIndex ndx{ model->createIndex(i, j) };
 
@@ -777,7 +783,7 @@ namespace DSS
 	void StackingDlg::tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		int tab = pictureList->tabBar->tabAt(pos);
+		const int tab = pictureList->tabBar->tabAt(pos);
 		if (tab > 0)
 		{
 			QMenu tabMenu;
@@ -1605,18 +1611,11 @@ namespace DSS
 			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
 				frameList.beginInsertRows(files.size());
-				for (int i = 0; i < files.size(); i++)
+				for (const QString& fileName : files)
 				{
-					fs::path file(files.at(i).toStdU16String());		// as UTF-16
-
+					const fs::path file{ fileName.toStdU16String() }; // as UTF-16
 					frameList.addFile(file, type, checked);
-
-					if (file.has_parent_path())
-						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-					else
-						directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-					extension = QString::fromStdU16String(file.extension().generic_u16string());
+					std::tie(directory, extension) = directoryAndExtensionFromPath(file);
 				}
 				frameList.endInsertRows();
 			}
@@ -1880,19 +1879,17 @@ namespace DSS
 	void StackingDlg::loadList(MRUPath& MRUList, const QString&)
 	{
 		ZFUNCTRACE_RUNTIME();
+
 		QSettings settings;
-		QString directory;
-		QString	extension;
 
-		QFileDialog			fileDialog;
-
-		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
-		extension = settings.value("Folders/ListExtension").toString();
+		QString directory = settings.value("Folders/ListFolder").toString();
+		QString extension = settings.value("Folders/ListExtension").toString();
 
 		if (extension.isEmpty())
 			extension = FileListExtension;
 
+		QFileDialog fileDialog;
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
@@ -1914,12 +1911,7 @@ namespace DSS
 				if (i == 0)
 					fileList = file; // The first selected file-list will be remembered.
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
-
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+				std::tie(directory, extension) = directoryAndExtensionFromPath(file);
 			}
 
 			QGuiApplication::restoreOverrideCursor();
@@ -1952,31 +1944,20 @@ namespace DSS
 			const fs::path firstLightframe = this->frameList.getFirstCheckedLightFrame();
 			const fs::path dirPath = firstLightframe.has_parent_path() ? firstLightframe.parent_path() : fs::path{ settings.value("Folders/ListFolder").toString().toStdU16String() };
 
-			QString extension = FileListExtension;
-
 			fs::path fn = dirPath.has_filename() ? dirPath.filename() : fs::path{ "list" };
-			return (dirPath / fn.replace_extension(fs::path{ extension.toStdU16String() }));
+			return (dirPath / fn.replace_extension(fs::path{ FileListExtension }));
 		};
 
-		const auto Save = [this, &MRUList, &settings](const fs::path& file, const auto selectedIndex)
+		const auto Save = [this, &MRUList, &settings](const fs::path& file)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-			fileList = file;		// save this filelist
-
-			const QString directory = file.has_parent_path()
-				? QString::fromStdU16String(file.parent_path().generic_u16string())
-				: QString::fromStdU16String(file.root_path().generic_u16string());
-			const QString extension = QString::fromStdU16String(file.extension().generic_u16string());
-
 			frameList.saveListToFile(file);
 			MRUList.Add(file);
+			fileList = file;   // save this filelist
+			settings.setValue("Folders/ListFolder", directoryAndExtensionFromPath(file).first);
 
 			QGuiApplication::restoreOverrideCursor();
-
-			settings.setValue("Folders/ListFolder", directory);
-			if constexpr (!std::is_same_v<std::remove_cv_t<decltype(selectedIndex)>, bool>)
-				settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
 		};
 		//
 		// The default file name shown in the file save dialog.
@@ -1984,29 +1965,30 @@ namespace DSS
 		//
 		const fs::path defaultName = this->fileList.empty() ? LightframeFolder() : fileList;
 
+
 		// if we already used a file-list set the extension in the save dialog accordingly
 		// otherwise use (*.dssfilelist)
 		QString currentExtension;
 		if (this->fileList.empty()) {
 			currentExtension = "File List (*.dssfilelist)";
 		}
-		else{
+		else {
 			currentExtension = "File List (*" + QString::fromStdString(defaultName.extension().generic_string()) + ")";
 		}
 		ZTRACE_RUNTIME("currentExtension is %s\n", currentExtension.toStdString().c_str());
 
 		// get the filter index but trap case where the extension wasn't in the list 
 		auto filterIndex = OUTPUTLIST_FILTERS.indexOf(currentExtension);
-		filterIndex = filterIndex < 0 ? 0: filterIndex;
+		filterIndex = filterIndex < 0 ? 0 : filterIndex;
 		ZTRACE_RUNTIME("filterindex %lld\n", filterIndex);
 
+
 		ZTRACE_RUNTIME("About to show file save dlg");
-		QString selectedFilter;
-		const auto file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex], &selectedFilter);
+		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
 		if (!file.isEmpty())
 		{
 			ZTRACE_RUNTIME("Saving to file-list %s", file.toUtf8().constData());
-			Save(fs::path{ file.toStdU16String() }, OUTPUTLIST_FILTERS.indexOf(selectedFilter));
+			Save(fs::path{ file.toStdU16String() });
 		}
 	}
 
