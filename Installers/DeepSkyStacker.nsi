@@ -114,14 +114,14 @@ Section "Visual Studio Runtime"
 	#
 	# vc_redist build 34438 is installed, force a repair install
 	#
-	DetailPrint "Visual Studio Runtime build 33816 is already installed, do a repair install"
+	DetailPrint "Visual Studio Runtime build 34438 is already installed, do a repair install"
 	ExecWait "$INSTDIR\vc_redist.x64.exe /repair /passive /norestart"
         Goto done
 	less:
 	#
 	# vc_redist build 34438 isn't installed, so install it
 	#
-	DetailPrint "Visual Studio Runtime build $0 is installed, install build 33816"
+	DetailPrint "Visual Studio Runtime build $0 is installed, install build 34438"
   	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
 	Goto done
 	more:
