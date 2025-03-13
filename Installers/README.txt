@@ -4,6 +4,7 @@ Welcome to DeepSkyStacker 6.1.0
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Reporting problems:
+
 Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
 <https://groups.io/g/DeepSkyStacker>
 Thank you.
