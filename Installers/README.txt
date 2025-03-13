@@ -27,6 +27,7 @@ Changes since the last release:
 
 4.  Bug fix: Resolve problems with the ProcessingSettings dialogue.
 
+5.  Bug fix: Ensure that Visual C++ runtime build 34438 is installed.
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
