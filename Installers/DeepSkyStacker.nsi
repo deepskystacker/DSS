@@ -104,22 +104,22 @@ Section "Visual Studio Runtime"
   SetRegView 32
   ${If} $0 == ""
 	#
-	# vc_redist build 33816 isn't installed, so install it
+	# vc_redist build 34438 isn't installed, so install it
 	#
 	DetailPrint "Visual Studio Runtime is not installed, so install it"
   	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
   ${Else}
-	IntCmp $0 33816 equal less more
+	IntCmp $0 34438 equal less more
 	equal:
 	#
-	# vc_redist build 33816 is installed, force a repair install
+	# vc_redist build 34438 is installed, force a repair install
 	#
 	DetailPrint "Visual Studio Runtime build 33816 is already installed, do a repair install"
 	ExecWait "$INSTDIR\vc_redist.x64.exe /repair /passive /norestart"
         Goto done
 	less:
 	#
-	# vc_redist build 33816 isn't installed, so install it
+	# vc_redist build 34438 isn't installed, so install it
 	#
 	DetailPrint "Visual Studio Runtime build $0 is installed, install build 33816"
   	ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
