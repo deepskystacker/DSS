@@ -3,7 +3,7 @@
  <class>DSS::ProcessingSettingsDlg</class>
  <widget class="QDialog" name="DSS::ProcessingSettingsDlg">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::WindowModality::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -33,6 +33,12 @@
        <property name="text">
         <string>Add</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -40,12 +46,18 @@
        <property name="text">
         <string>Delete</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
       <spacer>
        <property name="orientation">
-        <enum>Qt::Vertical</enum>
+        <enum>Qt::Orientation::Vertical</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -60,8 +72,11 @@
        <property name="text">
         <string>Load</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
        <property name="default">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -69,6 +84,9 @@
       <widget class="QPushButton" name="closeButton">
        <property name="text">
         <string>Close</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -80,38 +98,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>addButton</sender>
-   <signal>clicked()</signal>
-   <receiver>DSS::ProcessingSettingsDlg</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>351</x>
-     <y>38</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>233</x>
-     <y>29</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>deleteButton</sender>
-   <signal>clicked()</signal>
-   <receiver>DSS::ProcessingSettingsDlg</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>330</x>
-     <y>66</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>197</x>
-     <y>125</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
