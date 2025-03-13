@@ -7,6 +7,12 @@ This release is all about finishing the conversion of the code to use Qt instead
 and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
 performance.
 
+Reporting problems:
+
+Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
+<https://groups.io/g/DeepSkyStacker>
+Thank you.
+
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
