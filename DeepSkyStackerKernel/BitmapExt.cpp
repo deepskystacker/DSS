@@ -857,10 +857,10 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 			if (file.isOpen())
 			{
 				//
-				// Read the first 64K of the file into a buffer
+				// Read the first 128K of the file into a buffer
 				//
-				const QByteArray data{ file.peek(65536LL) };
-				const std::string dataString{ data.constData(), 65536ULL };
+				const QByteArray data{ file.peek(131072LL) };
+				const std::string dataString{ data.constData(), 131072ULL };
 				std::istringstream f (dataString);
 				if (isJpeg)
 				{
