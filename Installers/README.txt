@@ -23,7 +23,7 @@ Changes since the last release:
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
-2.  Bug fix: Fix rounding error in "stack recap" daolog in calculation of total exposure time.
+2.  Bug fix: Fix rounding error in "stack recap" dialogue in calculation of total exposure time.
 
 3.  Bug fix: Resolve problems with handling of saving filelist (empty extension amongst others).
 
