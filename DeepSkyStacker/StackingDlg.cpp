@@ -1974,7 +1974,7 @@ namespace DSS
 			if (fileList.extension() == ".txt")
 				filterName = OUTPUTLIST_FILTERS[1];
 		}
-		ZTRACE_RUNTIME("filterName is %s\n", filterName);
+		ZTRACE_RUNTIME("filterName is %s\n", filterName.toStdString().c_str());
 
 		ZTRACE_RUNTIME("About to show file save dlg");
 		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), filterName, nullptr);
