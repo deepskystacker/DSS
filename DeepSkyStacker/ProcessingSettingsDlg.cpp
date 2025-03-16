@@ -108,7 +108,10 @@ namespace DSS {
 	void ProcessingSettingsDlg::deletePressed()
 	{
 		ZFUNCTRACE_RUNTIME();
-		QString name = settingsList->currentItem()->text();
+		auto listItem = settingsList->currentItem();
+		if (nullptr == listItem) return;		// Nothing selected
+
+		QString name = listItem->text();
 
 		delete settingsList->takeItem(settingsList->currentRow());
 		settingsMap.erase(name);
@@ -118,8 +121,10 @@ namespace DSS {
 	void ProcessingSettingsDlg::loadPressed()
 	{
 		ZFUNCTRACE_RUNTIME();
+		auto listItem = settingsList->currentItem();
+		if (nullptr == listItem) return;		// Nothing selected
 
-		QString name = settingsList->currentItem()->text();
+		QString name = listItem->text();
 		settingsName->setText(name);
 		//
 		// The next statement could throw a std::out_of_range exception if the item doesn't exist.
