@@ -500,20 +500,6 @@ bool CFITSReader::Open()
 				};
 			};
 
-			//
-			// Before setting everything up for reading the data, there's a couple of special cases
-			// where we need to treat a signed data file as if it were unsigned.
-			//
-			//double		fZero,	fScale;
-
-			//if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
-			//{
-			//	if ((SHORT_IMG == lBitFormat) && (32768.0 == fZero) && (1.0 == fScale))
-			//		lBitFormat = USHORT_IMG;
-			//	if ((LONG_IMG == lBitFormat) && (2147483648.0 == fZero) && (1.0 == fScale))
-			//		lBitFormat = ULONG_IMG;
-			//}
-
 			if (bResult)
 			{
 				m_lWidth	= lWidth;
@@ -610,10 +596,8 @@ bool CFITSReader::Read()
 	ZFUNCTRACE_RUNTIME();
 	bool result = true;
 	char error_text[31] = "";			// Error text for FITS errors.
-	
-	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
-//	double fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
+	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
 	if (m_lNrChannels > 3)
 		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
@@ -625,7 +609,7 @@ bool CFITSReader::Read()
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		// It is dangreous to use LONGLONG, because here the definition is found in winnt.h, but for the fits functions it is defined in fitsio.h.
+		// It is dangerous to use LONGLONG, because here the definition is found in winnt.h, but for the fits functions it is defined in fitsio.h.
 		// So we use int64 and add a static assert.
 		static_assert(std::is_same_v<decltype(fits_read_pixll), int(fitsfile*, int, std::int64_t*, std::int64_t, void*, void*, int*, int*)>);
 		std::int64_t fPixel[3] = { 1, 1, 1 }; // Want to start reading at column 1, row 1, plane 1.
@@ -638,6 +622,22 @@ bool CFITSReader::Read()
 		//
 		// Inhale the entire image (either single colour or RGB) as an array of doubles
 		//
+		// When reading numerical data values in the primary array, the values
+		// will be scaled AUTOMATICALLY by the BSCALE and BZERO header values
+		// if they are present in the header. 
+		// 
+		// The scaled data that is returned to the reading program will have
+		// the following relationship to the data in the FITS file:
+		//
+		//     output value = (FITS value) * BSCALE + BZERO
+		//
+		// It is possible to call fits_set_bscale() and fits_set_bzero() to override
+		// the values of BSCALE and BZERO that are read from the header.
+		//	
+		// This is not normally done but can used to the allow the program to read
+		// the raw data values in the FITS file without any scaling.   DeepSkyStacker
+		// does not do this.
+		//
 		fits_read_pixll(m_fits, TDOUBLE, fPixel, nElements, &dNULL, doubleBuff, nullptr, &status);
 		if (0 != status)
 		{
@@ -649,197 +649,78 @@ bool CFITSReader::Read()
 			throw exc;
 		}
 
+		double dataMin = 0.0;
+		double dataMax = 0.0;
+		QString software;
+		if (ReadKey("SOFTWARE", software) && software.startsWith("DeepSkyStacker"))
+		{
+			//
+			// DSS has always written floating point FITS files with a range of [0.0, 1.0],
+			// so if the header doesn't contain the DATAMIN and DATAMAX keywords, we use these
+			// values as the default data range.
+			// 
+			// If we don't do that then files written by release 5.1.8
+			// and earlier will be handled incorrectly.
+			// 
+			// If the keywords are present, then we'll use the values in the header.
+			//
+			dataMax = 1.0;			// Set a default value of one
+		}
+
+		//
+		// Special case the Meade DSI files:
+		// If the image is a DSI file, then the default data range is 0.0 to 65535.0
+		//
+		if (m_bDSI)			// DSI files are 16 bit, and the maximum data value is 65535.0	
+		{
+			dataMax = 65535.0;
+		}
+
+		//
+		// Check for the presence of the DATAMIN and DATAMAX keywords in the FITS header
+		// and read them if they're present
+		//
+		bool minMaxRead = ReadKey("DATAMIN", dataMin) && ReadKey("DATAMAX", dataMax);
+		//
+		// If this is a floating point FITS file, and we failed to read the DATAMIN and DATAMAX
+		// keywords, and dataMax is still zero, then we have a problem.
+		// 
+		// If we don't know the data range, then we cannot scale the data correctly.
+		// So issue a nastygram and return false.
+		//
+		if (m_bFloat && !minMaxRead && 0.0 == dataMax)
+		{
+			DSSBase::instance()->reportError(
+				QCoreApplication::translate("FITSUtil",
+					"Failed to read DATAMIN and DATAMAX keywords from FITS header.\n"
+					"DeepSkyStacker is unable to process this image."),
+				"DATAMINMAX",
+				DSSBase::Severity::Critical,
+				DSSBase::Method::QErrorMessage);
+			return false;
+		}
+
+		//
+		// Lambda to normalize the data values to the range [0, 255.996...] for floating point images.
+		//
+		const auto normalizeFloatValue = [dataMin, dataMax](const double value) -> double
+			{
+				constexpr double scaleFactor = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 256.0;
+				const double normalizationFactor = scaleFactor / (dataMax - dataMin);
+				return (value - dataMin) * normalizationFactor;
+			};
+
+
 		const int nrProcessors = CMultitask::GetNrProcessors(); // Returns 1, if the user de-selected multi-threading, # CPUs else.
 		std::atomic_bool stop = false;
 		const ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;
 		const ptrdiff_t blueOffset = 2 * greenOffset;
 		int	rowProgress = 0;
 
+		// 
+		// Process the data we loaded from the FITS file
 		//
-		// If the image is in float format, may need to re-scale, so try to determine the minimum and maximum pixel values.
-		//
-		if (m_bFloat)
-		{
-			const auto readKeyOrDefault = [this](char const* key, const double defaultValue) -> double {
-				double value = 0.0;
-				if (ReadKey(key, value))
-					return value;
-				else
-					return defaultValue;
-			};
-
-			double dataMin = 0;
-			double dataMax = 1;
-			const bool minMaxDefined = ReadKey("DATAMIN", dataMin) && ReadKey("DATAMAX", dataMax);
-			const double bZero = readKeyOrDefault("BZERO", 0.0f);
-			const double bScale = readKeyOrDefault("BSCALE", 1.0f);
-			constexpr double MaxInt16 = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
-			constexpr double MaxVal = MaxInt16 / 256.0; // 255.996...
-			const double scalingFactor = m_bDSI
-				? MaxVal / MaxInt16
-				: (minMaxDefined
-					? bScale * MaxVal / (dataMax - dataMin)
-					: bScale
-				);
-			const double offset = m_bDSI
-				? 0.0
-				: (minMaxDefined
-					? (bZero - dataMin) * MaxVal / (dataMax - dataMin)
-					: bZero
-				);
-
-			const auto autoScaleFloat = [scalingFactor, offset](const double x) -> double
-			{
-				return x * scalingFactor + offset;
-			};
-
-#if 0
-			//
-			// Does the header contain the DATAMIN and DATAMAX keywords, if so use the supplied values.
-			// If not, scan the image to find the minimum and maximum pixel values (which is less efficient, 
-			// and also results in inconsistent scaling of image data in many cases
-			//
-			if (!(ReadKey("DATAMIN", fMin) && ReadKey("DATAMAX", fMax)))
-			{
-				double localMin = 0, localMax = 0;
-#pragma omp parallel default(shared) shared(fMin, fMax, nElements, doubleBuff) firstprivate(localMin, localMax) if(nrProcessors > 1)
-				{
-#pragma omp for schedule(dynamic, 100'000)
-					for (std::int64_t element = 0; element < nElements; ++element)
-					{
-						const double fValue = doubleBuff[element];	// int (8 byte) floating point
-						if (!std::isnan(fValue))
-						{
-							localMin = std::min(localMin, fValue);
-							localMax = std::max(localMax, fValue);
-						};
-					}
-#pragma omp critical
-					{
-						fMin = std::min(localMin, fMin); // For non-OMP case this is equal to fMin = localMin
-						fMax = std::max(localMax, fMax); // For non-OMP case this is equal to fMax = localMax
-					}
-				}
-			}
-			double		fZero, fScale;
-
-			if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
-			{
-				fMax = (fMax + fZero) / fScale;
-				fMin = fZero / fScale;
-			}
-			else if (fMin >= 0 && fMin <= 1 && fMax >= 0 && fMax <= 1)
-			{
-				fMin = 0;
-				fMax = 1;
-			}
-			if (m_bDSI && (fMax > 1))
-			{
-				fMin = min(0.0, fMin);
-				fMax = max(fMax, 65535.0);
-			};
-#endif
-
-#pragma omp parallel for default(shared) if (nrProcessors > 1)
-			for (int row = 0; row < m_lHeight; ++row)
-			{
-				if (stop.load()) // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					continue;
-				for (int col = 0; col < m_lWidth && !stop.load(); ++col)
-				{
-					const ptrdiff_t index = col + (row * static_cast<ptrdiff_t>(m_lWidth));	// index into the image for this plane
-					const double red = AdjustColor(autoScaleFloat(doubleBuff[index]));
-					const double green = colours == 1 ? red : AdjustColor(autoScaleFloat(doubleBuff[index + greenOffset]));
-					const double blue = colours == 1 ? red : AdjustColor(autoScaleFloat(doubleBuff[index + blueOffset]));
-
-					if (!OnRead(col, row, red, green, blue))
-					{
-						stop = true;
-						result = false;
-					}
-				}
-				if (m_pProgress != nullptr && (rowProgress++ % 25) == 0 && 0 == omp_get_thread_num())	// Are we on the master thread?
-					m_pProgress->Progress2(rowProgress);
-			}
-		}
-		else
-		{
-#pragma omp parallel for default(shared) if (nrProcessors > 1)
-			for (int row = 0; row < m_lHeight; ++row)
-			{
-				if (stop.load()) // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					continue;
-				for (int col = 0; col < m_lWidth && !stop.load(); ++col)
-				{
-					const ptrdiff_t index = col + (row * static_cast<ptrdiff_t>(m_lWidth));	// index into the image for this plane
-					double fRed = doubleBuff[index];
-					double fGreen = 0.0;
-					double fBlue = 0.0;
-
-					if (1 == colours) // Monochrome image 
-					{
-						fGreen = fBlue = fRed;
-					}
-					else // We assume this is a 3 colour image with each colour in a separate image plane
-					{
-						fGreen = doubleBuff[greenOffset + index];
-						fBlue = doubleBuff[blueOffset + index];
-					}
-
-					switch (m_bitPix)
-					{
-					case SHORT_IMG:
-					case USHORT_IMG:
-						fRed /= ScaleFactorInt16;
-						fGreen /= ScaleFactorInt16;
-						fBlue /= ScaleFactorInt16;
-						break;
-					case LONG_IMG:
-					case ULONG_IMG:
-					case LONGLONG_IMG:
-						fRed /= ScaleFactorInt32;
-						fGreen /= ScaleFactorInt32;
-						fBlue /= ScaleFactorInt32;
-						break;
-					default: break;
-					}
-
-					if (!OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue)))
-					{
-						stop = true;
-						result = false;
-					}
-				}
-
-				if (m_pProgress != nullptr && (rowProgress++ % 25) == 0 && 0 == omp_get_thread_num())	// Are we on the master thread?
-					m_pProgress->Progress2(rowProgress);
-			}
-		}
-#if 0
-		else
-		{
-			if (!ReadKey("BZERO", fMin))
-				fMin = 0;
-		};
-
-		//
-		// Step 2: Process the image pixels
-		//
-		ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;		// index into buffer of the green image
-		ptrdiff_t blueOffset = 2 * greenOffset;				// index into buffer of the blue image
-
-		int	rowProgress = 0;
-
-		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
-		{
-			constexpr double scaleFactor = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 256.0;
-			const double normalizationFactor = scaleFactor / (fMax - fMin);
-			return (value - fMin) * normalizationFactor;
-		};
-
-		std::atomic_bool stop{ false };
-
-#pragma omp parallel for default(shared) schedule(guided, 50) if(nrProcessors > 1)
+#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -848,7 +729,7 @@ bool CFITSReader::Read()
 			{
 				if (stop.load()) break;	// OK to break from inner loop
 
-				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
+				double red = 0.0, green = 0.0, blue = 0.0;
 				const int index = col + (row * m_lWidth);	// index into the image for this plane
 
 				if (1 == colours)
@@ -856,16 +737,16 @@ bool CFITSReader::Read()
 					//
 					// This is a monochrome image 
 					//
-					fRed = fGreen = fBlue = doubleBuff[index];
+					red = green = blue = doubleBuff[index];
 				}
 				else
 				{
 					//
 					// We assume this is a 3 colour image with each colour in a separate image plane
 					//
-					fRed = doubleBuff[index];
-					fGreen = doubleBuff[greenOffset + index];
-					fBlue = doubleBuff[blueOffset + index];
+					red = doubleBuff[index];
+					green = doubleBuff[greenOffset + index];
+					blue = doubleBuff[blueOffset + index];
 				}
 
 				switch (m_bitPix)
@@ -874,30 +755,30 @@ bool CFITSReader::Read()
 					break;
 				case SHORT_IMG:
 				case USHORT_IMG:
-					fRed /= scaleFactorInt16;
-					fGreen /= scaleFactorInt16;
-					fBlue /= scaleFactorInt16;
+					red /= ScaleFactorInt16;
+					green /= ScaleFactorInt16;
+					blue /= ScaleFactorInt16;
 					break;
 				case LONG_IMG:
 				case ULONG_IMG:
-					fRed /= scaleFactorInt32;
-					fGreen /= scaleFactorInt32;
-					fBlue /= scaleFactorInt32;
+					red /= ScaleFactorInt32;
+					green /= ScaleFactorInt32;
+					blue /= ScaleFactorInt32;
 					break;
 				case LONGLONG_IMG:
-					fRed /= scaleFactorInt32;
-					fGreen /= scaleFactorInt32;
-					fBlue /= scaleFactorInt32;
+					red /= ScaleFactorInt32;
+					green /= ScaleFactorInt32;
+					blue /= ScaleFactorInt32;
 					break;
 				case FLOAT_IMG:
 				case DOUBLE_IMG:
-					fRed = normalizeFloatValue(fRed);
-					fGreen = normalizeFloatValue(fGreen);
-					fBlue = normalizeFloatValue(fBlue);
+					red = normalizeFloatValue(red);
+					green = normalizeFloatValue(green);
+					blue = normalizeFloatValue(blue);
 					break;
 				}
 
-				if (!OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue)))
+				if (!OnRead(col, row, AdjustColor(red), AdjustColor(green), AdjustColor(blue)))
 				{
 					stop = true;
 					result = false;
@@ -907,10 +788,10 @@ bool CFITSReader::Read()
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
 		}
-#endif
 		if (m_pProgress)
 			m_pProgress->End2();
 	}
+
 	return result;
 }
 
