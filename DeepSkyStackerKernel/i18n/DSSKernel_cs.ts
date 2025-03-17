@@ -113,7 +113,7 @@
     <name>DSS::Group</name>
     <message>
         <location filename="../group.cpp" line="120"/>
-        <location filename="../StackingEngine.cpp" line="3015"/>
+        <location filename="../StackingEngine.cpp" line="3020"/>
         <location filename="../ImageListModel.cpp" line="464"/>
         <location filename="../ImageListModel.cpp" line="715"/>
         <source>Dark</source>
@@ -122,7 +122,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="122"/>
-        <location filename="../StackingEngine.cpp" line="3024"/>
+        <location filename="../StackingEngine.cpp" line="3029"/>
         <location filename="../ImageListModel.cpp" line="474"/>
         <location filename="../ImageListModel.cpp" line="717"/>
         <source>Dark Flat</source>
@@ -131,7 +131,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="124"/>
-        <location filename="../StackingEngine.cpp" line="3032"/>
+        <location filename="../StackingEngine.cpp" line="3037"/>
         <location filename="../ImageListModel.cpp" line="469"/>
         <location filename="../ImageListModel.cpp" line="719"/>
         <source>Flat</source>
@@ -140,7 +140,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="126"/>
-        <location filename="../StackingEngine.cpp" line="3006"/>
+        <location filename="../StackingEngine.cpp" line="3011"/>
         <location filename="../ImageListModel.cpp" line="479"/>
         <location filename="../ImageListModel.cpp" line="721"/>
         <source>Bias/Offset</source>
@@ -149,7 +149,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="128"/>
-        <location filename="../StackingEngine.cpp" line="3000"/>
+        <location filename="../StackingEngine.cpp" line="3005"/>
         <location filename="../ImageListModel.cpp" line="460"/>
         <location filename="../ImageListModel.cpp" line="723"/>
         <source>Light</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="109"/>
-        <location filename="../StackingEngine.cpp" line="3017"/>
+        <location filename="../StackingEngine.cpp" line="3022"/>
         <location filename="../ImageListModel.cpp" line="704"/>
         <source>Master Dark</source>
         <comment>IDS_TYPE_MASTERDARK</comment>
@@ -180,7 +180,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="111"/>
-        <location filename="../StackingEngine.cpp" line="3026"/>
+        <location filename="../StackingEngine.cpp" line="3031"/>
         <location filename="../ImageListModel.cpp" line="706"/>
         <source>Master Dark Flat</source>
         <comment>IDS_TYPE_MASTERDARKFLAT</comment>
@@ -188,7 +188,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="113"/>
-        <location filename="../StackingEngine.cpp" line="3034"/>
+        <location filename="../StackingEngine.cpp" line="3039"/>
         <location filename="../ImageListModel.cpp" line="708"/>
         <source>Master Flat</source>
         <comment>IDS_TYPE_MASTERFLAT</comment>
@@ -196,7 +196,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="115"/>
-        <location filename="../StackingEngine.cpp" line="3008"/>
+        <location filename="../StackingEngine.cpp" line="3013"/>
         <location filename="../ImageListModel.cpp" line="710"/>
         <source>Master Offset</source>
         <comment>IDS_TYPE_MASTEROFFSET</comment>
@@ -457,7 +457,14 @@ vrátil stav %2, text chyby je:
 &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="915"/>
+        <location filename="../FITSUtil.cpp" line="694"/>
+        <source>Failed to read DATAMIN and DATAMAX keywords from FITS header.
+DeepSkyStacker is unable to process this image.</source>
+        <translation>Nepodařilo se přečíst klíčová slova DATAMIN a DATAMAX z hlavičky FITS.
+DeepSkyStacker nedokáže zpracovat tento obrázek.</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="922"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker nebude de-Bayer 8 bit obrázky</translation>
@@ -526,11 +533,11 @@ vrátil stav %2, text chyby je:
 <context>
     <name>Kernel</name>
     <message>
-        <location filename="../BitmapExt.cpp" line="262"/>
-        <location filename="../FITSUtil.cpp" line="1025"/>
-        <location filename="../FITSUtil.cpp" line="1700"/>
+        <location filename="../BitmapExt.cpp" line="267"/>
+        <location filename="../FITSUtil.cpp" line="1032"/>
+        <location filename="../FITSUtil.cpp" line="1720"/>
         <location filename="../MultiBitmapProcess.cpp" line="225"/>
-        <location filename="../StackingEngine.cpp" line="2388"/>
+        <location filename="../StackingEngine.cpp" line="2392"/>
         <location filename="../TIFFUtil.cpp" line="1447"/>
         <location filename="../TIFFUtil.cpp" line="1696"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
@@ -541,11 +548,11 @@ vrátil stav %2, text chyby je:
   %5</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="272"/>
-        <location filename="../FITSUtil.cpp" line="1034"/>
-        <location filename="../FITSUtil.cpp" line="1709"/>
+        <location filename="../BitmapExt.cpp" line="277"/>
+        <location filename="../FITSUtil.cpp" line="1041"/>
+        <location filename="../FITSUtil.cpp" line="1729"/>
         <location filename="../MultiBitmapProcess.cpp" line="234"/>
-        <location filename="../StackingEngine.cpp" line="2397"/>
+        <location filename="../StackingEngine.cpp" line="2401"/>
         <location filename="../TIFFUtil.cpp" line="1456"/>
         <location filename="../TIFFUtil.cpp" line="1705"/>
         <source>Exception %1 thrown from an unknown Function.
@@ -556,9 +563,9 @@ vrátil stav %2, text chyby je:
 %2</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="285"/>
+        <location filename="../BitmapExt.cpp" line="290"/>
         <location filename="../MultiBitmapProcess.cpp" line="243"/>
-        <location filename="../StackingEngine.cpp" line="2406"/>
+        <location filename="../StackingEngine.cpp" line="2410"/>
         <source>Unknown exception caught</source>
         <translation>Byla zachycena neznámá výjimka</translation>
     </message>
@@ -581,7 +588,7 @@ vrátil stav %2, text chyby je:
 <context>
     <name>RawUtils</name>
     <message>
-        <location filename="../RAWUtils.cpp" line="434"/>
+        <location filename="../RAWUtils.cpp" line="435"/>
         <source>Sorry, LibRaw doesn&apos;t support your %1 camera</source>
         <comment>IDS_CAMERA_NOT_SUPPORTED</comment>
         <translation>Litujeme, LibRaw nepodporuje vaši kameru %1</translation>
@@ -590,25 +597,25 @@ vrátil stav %2, text chyby je:
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="380"/>
+        <location filename="../RegisterEngine.cpp" line="393"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Zarovnávání %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="468"/>
+        <location filename="../RegisterEngine.cpp" line="481"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Zarovnávání %1 (%2 hvězd)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="648"/>
+        <location filename="../RegisterEngine.cpp" line="661"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Výpočet jasu %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="847"/>
+        <location filename="../RegisterEngine.cpp" line="860"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -616,7 +623,7 @@ vrátil stav %2, text chyby je:
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="851"/>
+        <location filename="../RegisterEngine.cpp" line="864"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -624,19 +631,19 @@ vrátil stav %2, text chyby je:
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="961"/>
+        <location filename="../RegisterEngine.cpp" line="974"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1017"/>
+        <location filename="../RegisterEngine.cpp" line="1030"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Zarovnání snímků</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1035"/>
+        <location filename="../RegisterEngine.cpp" line="1048"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Zarovnávání %1 z %2</translation>
@@ -767,238 +774,238 @@ vrátil stav %2, text chyby je:
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2679"/>
+        <location filename="../StackingEngine.cpp" line="2684"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation>Způsob sloučení: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2683"/>
+        <location filename="../StackingEngine.cpp" line="2688"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation>Normální</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2686"/>
+        <location filename="../StackingEngine.cpp" line="2691"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation>Mozaika</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2689"/>
+        <location filename="../StackingEngine.cpp" line="2694"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation>Křížení</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2692"/>
+        <location filename="../StackingEngine.cpp" line="2697"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation>Volitelný obdelník</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2699"/>
+        <location filename="../StackingEngine.cpp" line="2704"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation>Způsob zarovnání: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2705"/>
+        <location filename="../StackingEngine.cpp" line="2710"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation>Automatický</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2708"/>
+        <location filename="../StackingEngine.cpp" line="2713"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation>Bilineární</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2711"/>
+        <location filename="../StackingEngine.cpp" line="2716"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation>Bisquared</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2714"/>
+        <location filename="../StackingEngine.cpp" line="2719"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation>Bikubický</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2717"/>
+        <location filename="../StackingEngine.cpp" line="2722"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation>Nezarovnáno</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2726"/>
+        <location filename="../StackingEngine.cpp" line="2731"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation>Roztřeseni x%1 povoleno</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2736"/>
+        <location filename="../StackingEngine.cpp" line="2741"/>
         <source>Comet processing: </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation>Zpracování komety : </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2740"/>
+        <location filename="../StackingEngine.cpp" line="2745"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation>Zarovnat na hvězdy (žádné speciální zpracovaní)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2743"/>
+        <location filename="../StackingEngine.cpp" line="2748"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation>Zarovnat kometu</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2746"/>
+        <location filename="../StackingEngine.cpp" line="2751"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation>Zarovnat na hvězdy a kometu</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2758"/>
+        <location filename="../StackingEngine.cpp" line="2763"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation>Úprava vzhledu přepálených bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2763"/>
+        <location filename="../StackingEngine.cpp" line="2768"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation>Úprava vzhledu mrtvých bodů (Filtr = %1 bodů, hranice detekce = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2787"/>
+        <location filename="../StackingEngine.cpp" line="2792"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation>ISO</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2788"/>
+        <location filename="../StackingEngine.cpp" line="2793"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation>Citlivost</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2789"/>
+        <location filename="../StackingEngine.cpp" line="2794"/>
         <source>RGB Channels Background Calibration: %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
         <translation>RGB kanály kalibrace pozadí: %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2790"/>
+        <location filename="../StackingEngine.cpp" line="2795"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation>Kalibrace pozadí kanálů: %1
  {1?}</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2809"/>
+        <location filename="../StackingEngine.cpp" line="2814"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation>Krok slučování %1&lt;br&gt;  -&gt;%2 snímků (%3: %4) - celková expozice: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2823"/>
-        <location filename="../StackingEngine.cpp" line="2850"/>
-        <location filename="../StackingEngine.cpp" line="2885"/>
-        <location filename="../StackingEngine.cpp" line="2923"/>
-        <location filename="../StackingEngine.cpp" line="2961"/>
+        <location filename="../StackingEngine.cpp" line="2828"/>
+        <location filename="../StackingEngine.cpp" line="2855"/>
+        <location filename="../StackingEngine.cpp" line="2890"/>
+        <location filename="../StackingEngine.cpp" line="2928"/>
+        <location filename="../StackingEngine.cpp" line="2966"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation>Metoda: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2828"/>
+        <location filename="../StackingEngine.cpp" line="2833"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation>Varování: Zvolená volba Bayerova roztřesení při nastavení RAW DDP může často vést k nezvyklým výsledkům proti jiné průměrující metodě.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2841"/>
+        <location filename="../StackingEngine.cpp" line="2846"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation>-&gt; Zkreslení: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2869"/>
+        <location filename="../StackingEngine.cpp" line="2874"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation>-&gt; Bez vyrovnání zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2877"/>
+        <location filename="../StackingEngine.cpp" line="2882"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation>-&gt; Temné pozadí: %1 snímků (%2 : %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2858"/>
-        <location filename="../StackingEngine.cpp" line="2894"/>
-        <location filename="../StackingEngine.cpp" line="2969"/>
+        <location filename="../StackingEngine.cpp" line="2863"/>
+        <location filename="../StackingEngine.cpp" line="2899"/>
+        <location filename="../StackingEngine.cpp" line="2974"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2863"/>
-        <location filename="../StackingEngine.cpp" line="2899"/>
-        <location filename="../StackingEngine.cpp" line="2974"/>
+        <location filename="../StackingEngine.cpp" line="2868"/>
+        <location filename="../StackingEngine.cpp" line="2904"/>
+        <location filename="../StackingEngine.cpp" line="2979"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation>Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2902"/>
+        <location filename="../StackingEngine.cpp" line="2907"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation>Varování: Expoziční čas neodpovídá aktivním snímkům</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2933"/>
+        <location filename="../StackingEngine.cpp" line="2938"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation>Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2938"/>
+        <location filename="../StackingEngine.cpp" line="2943"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation>Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2941"/>
+        <location filename="../StackingEngine.cpp" line="2946"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation>Precaució: el temps d&apos;exposició no coincideix amb el dels flat frames</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2907"/>
+        <location filename="../StackingEngine.cpp" line="2912"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation>-&gt; Bez temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2915"/>
+        <location filename="../StackingEngine.cpp" line="2920"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation>-&gt; Vyrovnání jasu: %1 snímků (%2 : %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2953"/>
+        <location filename="../StackingEngine.cpp" line="2958"/>
         <source>-&gt; Flat: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; Vyrovnání jasu: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2980"/>
+        <location filename="../StackingEngine.cpp" line="2985"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation>-&gt; Bez vyrovnání jasu</translation>
@@ -1007,75 +1014,75 @@ vrátil stav %2, text chyby je:
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
-        <location filename="../StackedBitmap.cpp" line="1208"/>
+        <location filename="../StackedBitmap.cpp" line="1253"/>
+        <location filename="../StackedBitmap.cpp" line="1365"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="473"/>
+        <location filename="../StackedBitmap.cpp" line="599"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Zpracování obrazu...</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="746"/>
+        <location filename="../StackedBitmap.cpp" line="903"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Ukládání TIFF %1 bit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="749"/>
-        <location filename="../StackedBitmap.cpp" line="942"/>
+        <location filename="../StackedBitmap.cpp" line="906"/>
+        <location filename="../StackedBitmap.cpp" line="1099"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Ukládání %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="796"/>
-        <location filename="../StackedBitmap.cpp" line="835"/>
+        <location filename="../StackedBitmap.cpp" line="953"/>
         <location filename="../StackedBitmap.cpp" line="992"/>
-        <location filename="../StackedBitmap.cpp" line="1035"/>
+        <location filename="../StackedBitmap.cpp" line="1149"/>
+        <location filename="../StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Obraz byl uložen s použitím úprav.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="798"/>
-        <location filename="../StackedBitmap.cpp" line="837"/>
+        <location filename="../StackedBitmap.cpp" line="955"/>
         <location filename="../StackedBitmap.cpp" line="994"/>
-        <location filename="../StackedBitmap.cpp" line="1037"/>
+        <location filename="../StackedBitmap.cpp" line="1151"/>
+        <location filename="../StackedBitmap.cpp" line="1194"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Obraz byl uložen bez použití úprav.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="939"/>
+        <location filename="../StackedBitmap.cpp" line="1096"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Ukládání FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1091"/>
+        <location filename="../StackedBitmap.cpp" line="1248"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Načítání TIFF %1 bit jednobarevného</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1093"/>
+        <location filename="../StackedBitmap.cpp" line="1250"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Načítání TIFF %1 bit/k</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1203"/>
+        <location filename="../StackedBitmap.cpp" line="1360"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Načítání FITS %1 bit jednobarevný</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1205"/>
+        <location filename="../StackedBitmap.cpp" line="1362"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Načítání FITS %1 bit/k</translation>
@@ -1084,89 +1091,89 @@ vrátil stav %2, text chyby je:
 <context>
     <name>StackingEngine</name>
     <message>
-        <location filename="../StackingEngine.cpp" line="674"/>
+        <location filename="../StackingEngine.cpp" line="678"/>
         <source>The standard deviations of the marked comet positions are unusually large (x: %L1 pixels, y: %L2 pixels).
 They should be smaller than %L3 pixels, so please check the defined comet centres.</source>
         <translation>Směrodatné odchylky označených pozic komet jsou neobvykle velké (x: %L1 pixelů, y: %L2 pixelů).
 Měly by být menší než %L3 pixelů, proto prosím zkontrolujte definované středy komet.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="843"/>
-        <location filename="../StackingEngine.cpp" line="908"/>
+        <location filename="../StackingEngine.cpp" line="847"/>
+        <location filename="../StackingEngine.cpp" line="912"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>Výpočet zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1215"/>
+        <location filename="../StackingEngine.cpp" line="1219"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>Zpracování výsledného obrazu (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1315"/>
+        <location filename="../StackingEngine.cpp" line="1319"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>Slučování - úprava Bayer - výpočet úpravy</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1331"/>
+        <location filename="../StackingEngine.cpp" line="1335"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>Výpočet úprav %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1390"/>
+        <location filename="../StackingEngine.cpp" line="1394"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>Slučování - úprava Bayer - použití úpravy</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1392"/>
+        <location filename="../StackingEngine.cpp" line="1396"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>Výpočet maxima úprav</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1424"/>
+        <location filename="../StackingEngine.cpp" line="1428"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>Použití úprav</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1494"/>
+        <location filename="../StackingEngine.cpp" line="1498"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>Ukládání zarovnaného a kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1536"/>
-        <location filename="../StackingEngine.cpp" line="1642"/>
-        <location filename="../StackingEngine.cpp" line="1684"/>
+        <location filename="../StackingEngine.cpp" line="1540"/>
+        <location filename="../StackingEngine.cpp" line="1646"/>
+        <location filename="../StackingEngine.cpp" line="1688"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1816"/>
+        <location filename="../StackingEngine.cpp" line="1820"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>Interpolace a přizpůsobení směrové homogenity (AHD)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1859"/>
+        <location filename="../StackingEngine.cpp" line="1863"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>Výpočet entropie</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1871"/>
+        <location filename="../StackingEngine.cpp" line="1875"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>Výpočet kalibračních parametrů pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2103"/>
+        <location filename="../StackingEngine.cpp" line="2107"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -1174,8 +1181,8 @@ Only %3 are available on this drive.</source>
 Na tomto disku je dostupných jen %3.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2104"/>
-        <location filename="../StackingEngine.cpp" line="2442"/>
+        <location filename="../StackingEngine.cpp" line="2108"/>
+        <location filename="../StackingEngine.cpp" line="2446"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -1183,13 +1190,13 @@ Do you really want to continue?</source>
 Opravdu chcete pokračovat?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2283"/>
+        <location filename="../StackingEngine.cpp" line="2287"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Slučování %1 z %2 - posun [%3,%4] - úhel : %5°.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2290"/>
+        <location filename="../StackingEngine.cpp" line="2294"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -1197,7 +1204,7 @@ Opravdu chcete pokračovat?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2292"/>
+        <location filename="../StackingEngine.cpp" line="2296"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -1205,7 +1212,7 @@ Opravdu chcete pokračovat?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2441"/>
+        <location filename="../StackingEngine.cpp" line="2445"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -1219,19 +1226,19 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2452"/>
+        <location filename="../StackingEngine.cpp" line="2456"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Slučování</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2781"/>
+        <location filename="../StackingEngine.cpp" line="2786"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2782"/>
+        <location filename="../StackingEngine.cpp" line="2787"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>Ne</translation>
