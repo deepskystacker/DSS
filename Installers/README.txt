@@ -3,6 +3,12 @@ Welcome to DeepSkyStacker 6.1.0
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
+Reporting problems:
+
+Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
+<https://groups.io/g/DeepSkyStacker>
+Thank you.
+
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
@@ -15,9 +21,13 @@ Changes since the last release:
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
-2.  Fix rounding error in "stack recap" daolog in calculation of total exposure time.
+2.  Bug fix: Fix rounding error in "stack recap" dialogue in calculation of total exposure time.
 
-3.  Resolve problems with handling of saving filelist (empty extension amongst others).
+3.  Bug fix: Resolve problems with handling of saving filelist (empty extension amongst others).
+
+4.  Bug fix: Resolve problems with the ProcessingSettings dialogue.
+
+5.  Bug fix: Ensure that Visual C++ runtime build 34438 is installed.
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================

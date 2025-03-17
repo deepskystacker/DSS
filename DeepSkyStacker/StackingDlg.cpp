@@ -671,14 +671,14 @@ namespace DSS
 		OUTPUTLIST_FILTERS.clear();
 		for (const auto& filter : OUTPUTLIST_FILTER_SOURCES)
 			OUTPUTLIST_FILTERS.append(qApp->translate("DSS", filter.source, filter.comment));
-		ZASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
+		ZASSERT(std::cmp_equal(OUTPUTLIST_FILTERS.size(), OUTPUTLIST_FILTER_SOURCES.size()));
 
 		DssFileListFilter = qApp->translate("DSS", DssFileListFilterSource.source, DssFileListFilterSource.comment);
 
 		INPUTFILE_FILTERS.clear();
 		for (const auto& filter : INPUTFILE_FILTER_SOURCES)
 			INPUTFILE_FILTERS.append(qApp->translate("DSS", filter.source, filter.comment));
-		ZASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
+		ZASSERT(std::cmp_equal(INPUTFILE_FILTERS.size(), INPUTFILE_FILTER_SOURCES.size()));
 
 		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
 			"Ctrl-A or equivalent to select all rows\n"

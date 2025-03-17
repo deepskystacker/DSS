@@ -394,7 +394,10 @@
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>
-    <QtTranslation Include="i18n\DeepSkyStackerKernel_en_GB.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerKernel_en_GB.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
     <QtTranslation Include="i18n\DeepSkyStackerKernel_es.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerKernel_fr.ts" />
     <QtTranslation Include="i18n\DeepSkyStackerKernel_it.ts" />

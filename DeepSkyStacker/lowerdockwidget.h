@@ -64,21 +64,9 @@ namespace DSS
 		void panelChanged(ActivePanel panel);
 
 
-#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
-		inline void setDSSClosing() { dssClosing = true; }
-#endif
-
 	private:
 		QLabel* dockTitle;
 		QStackedWidget* stackedWidget;
-
-#if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
-	protected:
-		void closeEvent(QCloseEvent* event) override;
-
-	private:
-		bool dssClosing;
-#endif
 
 	};
 }

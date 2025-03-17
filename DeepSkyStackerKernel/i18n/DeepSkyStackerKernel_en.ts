@@ -4,7 +4,7 @@
 <context>
     <name>StackingTasks</name>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="383"/>
+        <location filename="../StackingTasks.cpp" line="382"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -13,7 +13,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="575"/>
+        <location filename="../StackingTasks.cpp" line="574"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -22,7 +22,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="759"/>
+        <location filename="../StackingTasks.cpp" line="758"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -31,7 +31,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1243"/>
+        <location filename="../StackingTasks.cpp" line="1242"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>

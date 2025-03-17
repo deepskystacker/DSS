@@ -42,6 +42,7 @@ namespace DSS {
 	ProcessingSettingsDlg::ProcessingSettingsDlg(QWidget* parent, ProcessingSettings ps)
 		: BaseDialog(BaseDialog::Behaviour::PersistGeometry, parent),
 		currentSettings{ ps },
+		settingsLoaded{ false },
 		dirty{ false }
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -94,7 +95,9 @@ namespace DSS {
 	//
 	void ProcessingSettingsDlg::addPressed()
 	{
+		ZFUNCTRACE_RUNTIME();
 		QString name{ settingsName->text() };
+		if (name.isEmpty() || name.startsWith(" ")) return;
 
 		currentSettings.name_ = name;		// Set name of current settings
 		settingsMap.emplace(name, currentSettings);	// Add current settings to the set
@@ -104,7 +107,13 @@ namespace DSS {
 
 	void ProcessingSettingsDlg::deletePressed()
 	{
-		QString name{ settingsName->text() };
+		ZFUNCTRACE_RUNTIME();
+		auto listItem = settingsList->currentItem();
+		if (nullptr == listItem) return;		// Nothing selected
+
+		QString name = listItem->text();
+
+		delete settingsList->takeItem(settingsList->currentRow());
 		settingsMap.erase(name);
 		dirty = true;
 	}
@@ -112,8 +121,10 @@ namespace DSS {
 	void ProcessingSettingsDlg::loadPressed()
 	{
 		ZFUNCTRACE_RUNTIME();
+		auto listItem = settingsList->currentItem();
+		if (nullptr == listItem) return;		// Nothing selected
 
-		QString name = settingsList->currentItem()->text();
+		QString name = listItem->text();
 		settingsName->setText(name);
 		//
 		// The next statement could throw a std::out_of_range exception if the item doesn't exist.
