@@ -3,7 +3,7 @@ Welcome to DeepSkyStacker 5.1.9
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is a bug fix release for problem found in 5.1.8
+This is a bug fix release for problems found in 5.1.8
 
 Reporting problems:
 
