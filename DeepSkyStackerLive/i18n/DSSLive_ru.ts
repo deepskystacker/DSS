@@ -626,7 +626,7 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="526"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1211"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1208"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
         <translation>Нет сложенных изображений</translation>
@@ -662,94 +662,88 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="585"/>
-        <source>Score</source>
-        <comment>IDS_COLUMN_SCORE</comment>
-        <translation>Счет</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="586"/>
         <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>Качество</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="586"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
         <translation>#Звёзд</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
         <source>FWHM</source>
         <translation>FWHM</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
         <translation>dX</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
         <translation>dY</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
         <translation>Угол</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
         <translation>Дата/Время</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
         <translation>CFA</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
         <translation>Глубина</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
         <translation>Инфо</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
         <translation>ISO/Gain</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="598"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
         <translation>Фон неба</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="701"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="699"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
         <translation>%1 не является каталогом. Пожалуйста, выберите действительный каталог.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="711"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="709"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -757,64 +751,64 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="724"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="722"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
         <translation>Остановка мониторинга каталога %1</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="735"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="733"/>
         <source>Stop Stacking files</source>
         <comment>IDS_LOG_STOPSTACKING</comment>
         <translation>Остановка складывания файлов</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="751"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="749"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Help.chm</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="856"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="854"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
         <translation>Нельзя поменять каталог, пока идёт его мониторинг.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="868"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="866"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
         <translation>Выбор каталога мониторинга</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="903"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1250"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="901"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
         <translation>Сложено</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="909"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1168"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1235"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="907"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1165"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1232"/>
         <source>Pending</source>
         <translation>В ожидании</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="910"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1241"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="908"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
         <translation>Зарегистрировано</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1019"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1017"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
         <translation>Начало складывания файлов</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1084"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1082"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -828,7 +822,7 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1095"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1093"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -842,60 +836,60 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1222"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1219"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
         <translation>Нажмите здесь для сохранения сложенного изображения в файл</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1235"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
         <translation>Загружено</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1244"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1241"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
         <translation>Сложение приостановлено</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1244"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
         <translation>Не складываемый</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1330"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1326"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1332"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1328"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1335"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1331"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
         <translation>RGB %1 бит/канал</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1337"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1333"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
         <translation>Серое %1 бит</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1349"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1345"/>
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1530"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1526"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
         <translation>Ожидает: %1 - Зарегистрировано: %2 - Сложено: %3 - Время суммарной экспозиции: %4</translation>
     </message>

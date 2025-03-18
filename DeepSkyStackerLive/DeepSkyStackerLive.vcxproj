@@ -287,8 +287,6 @@
     <QtTranslation Include="i18n\DSSLive_cs.ts" />
     <QtTranslation Include="i18n\DSSLive_de.ts" />
     <QtTranslation Include="i18n\DSSLive_en.ts">
-      <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
-      <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
       <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
     </QtTranslation>

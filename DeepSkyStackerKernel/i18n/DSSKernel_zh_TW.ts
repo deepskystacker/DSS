@@ -114,8 +114,8 @@
     <message>
         <location filename="../group.cpp" line="120"/>
         <location filename="../StackingEngine.cpp" line="3020"/>
-        <location filename="../ImageListModel.cpp" line="464"/>
-        <location filename="../ImageListModel.cpp" line="715"/>
+        <location filename="../ImageListModel.cpp" line="437"/>
+        <location filename="../ImageListModel.cpp" line="685"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
@@ -123,8 +123,8 @@
     <message>
         <location filename="../group.cpp" line="122"/>
         <location filename="../StackingEngine.cpp" line="3029"/>
-        <location filename="../ImageListModel.cpp" line="474"/>
-        <location filename="../ImageListModel.cpp" line="717"/>
+        <location filename="../ImageListModel.cpp" line="447"/>
+        <location filename="../ImageListModel.cpp" line="687"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
@@ -132,8 +132,8 @@
     <message>
         <location filename="../group.cpp" line="124"/>
         <location filename="../StackingEngine.cpp" line="3037"/>
-        <location filename="../ImageListModel.cpp" line="469"/>
-        <location filename="../ImageListModel.cpp" line="719"/>
+        <location filename="../ImageListModel.cpp" line="442"/>
+        <location filename="../ImageListModel.cpp" line="689"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
@@ -141,8 +141,8 @@
     <message>
         <location filename="../group.cpp" line="126"/>
         <location filename="../StackingEngine.cpp" line="3011"/>
-        <location filename="../ImageListModel.cpp" line="479"/>
-        <location filename="../ImageListModel.cpp" line="721"/>
+        <location filename="../ImageListModel.cpp" line="452"/>
+        <location filename="../ImageListModel.cpp" line="691"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
@@ -150,22 +150,22 @@
     <message>
         <location filename="../group.cpp" line="128"/>
         <location filename="../StackingEngine.cpp" line="3005"/>
-        <location filename="../ImageListModel.cpp" line="460"/>
-        <location filename="../ImageListModel.cpp" line="723"/>
+        <location filename="../ImageListModel.cpp" line="433"/>
+        <location filename="../ImageListModel.cpp" line="693"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
     </message>
     <message>
         <location filename="../group.cpp" line="165"/>
-        <location filename="../ImageListModel.cpp" line="727"/>
+        <location filename="../ImageListModel.cpp" line="697"/>
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
         <translation>RGB每色 %1 bit</translation>
     </message>
     <message>
         <location filename="../group.cpp" line="167"/>
-        <location filename="../ImageListModel.cpp" line="729"/>
+        <location filename="../ImageListModel.cpp" line="699"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
         <translation>灰階 %1 bit</translation>
@@ -173,7 +173,7 @@
     <message>
         <location filename="../group.cpp" line="109"/>
         <location filename="../StackingEngine.cpp" line="3022"/>
-        <location filename="../ImageListModel.cpp" line="704"/>
+        <location filename="../ImageListModel.cpp" line="674"/>
         <source>Master Dark</source>
         <comment>IDS_TYPE_MASTERDARK</comment>
         <translation></translation>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../group.cpp" line="111"/>
         <location filename="../StackingEngine.cpp" line="3031"/>
-        <location filename="../ImageListModel.cpp" line="706"/>
+        <location filename="../ImageListModel.cpp" line="676"/>
         <source>Master Dark Flat</source>
         <comment>IDS_TYPE_MASTERDARKFLAT</comment>
         <translation></translation>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../group.cpp" line="113"/>
         <location filename="../StackingEngine.cpp" line="3039"/>
-        <location filename="../ImageListModel.cpp" line="708"/>
+        <location filename="../ImageListModel.cpp" line="678"/>
         <source>Master Flat</source>
         <comment>IDS_TYPE_MASTERFLAT</comment>
         <translation></translation>
@@ -197,21 +197,21 @@
     <message>
         <location filename="../group.cpp" line="115"/>
         <location filename="../StackingEngine.cpp" line="3013"/>
-        <location filename="../ImageListModel.cpp" line="710"/>
+        <location filename="../ImageListModel.cpp" line="680"/>
         <source>Master Offset</source>
         <comment>IDS_TYPE_MASTEROFFSET</comment>
         <translation></translation>
     </message>
     <message>
         <location filename="../group.cpp" line="170"/>
-        <location filename="../ImageListModel.cpp" line="732"/>
+        <location filename="../ImageListModel.cpp" line="702"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是</translation>
     </message>
     <message>
         <location filename="../group.cpp" line="172"/>
-        <location filename="../ImageListModel.cpp" line="734"/>
+        <location filename="../ImageListModel.cpp" line="704"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>沒有</translation>
@@ -220,145 +220,139 @@
 <context>
     <name>DSS::ImageListModel</name>
     <message>
-        <location filename="../ImageListModel.cpp" line="218"/>
+        <location filename="../ImageListModel.cpp" line="193"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="218"/>
+        <location filename="../ImageListModel.cpp" line="193"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>沒有</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="353"/>
-        <location filename="../ImageListModel.cpp" line="365"/>
+        <location filename="../ImageListModel.cpp" line="328"/>
+        <location filename="../ImageListModel.cpp" line="340"/>
         <source>Double click to change the type</source>
         <translation>雙擊更改類型</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="357"/>
-        <location filename="../ImageListModel.cpp" line="369"/>
+        <location filename="../ImageListModel.cpp" line="332"/>
+        <location filename="../ImageListModel.cpp" line="344"/>
         <source>Double click to edit</source>
         <translation>雙擊編輯</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="386"/>
+        <location filename="../ImageListModel.cpp" line="361"/>
         <source>Path</source>
         <comment>IDS_COLUMN_PATH</comment>
         <translation>路徑</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="388"/>
+        <location filename="../ImageListModel.cpp" line="363"/>
         <source>File</source>
         <comment>IDS_COLUMN_FILE</comment>
         <translation>檔案</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="390"/>
+        <location filename="../ImageListModel.cpp" line="365"/>
         <source>Type</source>
         <comment>IDS_COLUMN_TYPE</comment>
         <translation>類別</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="392"/>
+        <location filename="../ImageListModel.cpp" line="367"/>
         <source>Filter</source>
         <comment>IDS_COLUMN_FILTER</comment>
         <translation>濾光器</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="394"/>
-        <source>Score</source>
-        <comment>IDS_COLUMN_SCORE</comment>
-        <translation>分數</translation>
-    </message>
-    <message>
-        <location filename="../ImageListModel.cpp" line="396"/>
+        <location filename="../ImageListModel.cpp" line="369"/>
         <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>品質</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="398"/>
+        <location filename="../ImageListModel.cpp" line="371"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="400"/>
+        <location filename="../ImageListModel.cpp" line="373"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="402"/>
+        <location filename="../ImageListModel.cpp" line="375"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
         <translation>旋轉角</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="404"/>
+        <location filename="../ImageListModel.cpp" line="377"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
         <translation>日期/時間</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="406"/>
+        <location filename="../ImageListModel.cpp" line="379"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="408"/>
+        <location filename="../ImageListModel.cpp" line="381"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="410"/>
+        <location filename="../ImageListModel.cpp" line="383"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
         <translation>深度</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="412"/>
+        <location filename="../ImageListModel.cpp" line="385"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
         <translation>資訊</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="414"/>
+        <location filename="../ImageListModel.cpp" line="387"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
         <translation>ISO/增益</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="416"/>
+        <location filename="../ImageListModel.cpp" line="389"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
         <translation>曝光</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="418"/>
+        <location filename="../ImageListModel.cpp" line="391"/>
         <source>Aperture</source>
         <comment>IDS_COLUMN_APERTURE</comment>
         <translation>光圈</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="422"/>
+        <location filename="../ImageListModel.cpp" line="395"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
         <translation>星星數</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="424"/>
+        <location filename="../ImageListModel.cpp" line="397"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
         <translation>天空背景</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="420"/>
+        <location filename="../ImageListModel.cpp" line="393"/>
         <source>FWHM</source>
         <translation></translation>
     </message>
@@ -366,7 +360,7 @@
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../FrameList.cpp" line="1028"/>
+        <location filename="../FrameList.cpp" line="1026"/>
         <location filename="../group.cpp" line="53"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
@@ -378,7 +372,7 @@
         <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../FrameList.cpp" line="1030"/>
+        <location filename="../FrameList.cpp" line="1028"/>
         <location filename="../group.cpp" line="57"/>
         <source>Group %1</source>
         <comment>IDS_GROUPIDMASK</comment>
@@ -597,25 +591,25 @@ DeepSkyStacker 無法處理該影像。</translation>
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="393"/>
+        <location filename="../RegisterEngine.cpp" line="387"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>偵測星點中 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="481"/>
+        <location filename="../RegisterEngine.cpp" line="475"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>偵測星點 %1 (%2 顆星)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="661"/>
+        <location filename="../RegisterEngine.cpp" line="655"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>計算明度 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="860"/>
+        <location filename="../RegisterEngine.cpp" line="854"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -623,7 +617,7 @@ DeepSkyStacker 無法處理該影像。</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="864"/>
+        <location filename="../RegisterEngine.cpp" line="858"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -631,19 +625,19 @@ DeepSkyStacker 無法處理該影像。</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="974"/>
+        <location filename="../RegisterEngine.cpp" line="968"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>將已校正之影像存於 %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1030"/>
+        <location filename="../RegisterEngine.cpp" line="1024"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>偵測星點中</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1048"/>
+        <location filename="../RegisterEngine.cpp" line="1042"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>偵測星點 %1 並對齊於 %2</translation>
@@ -731,25 +725,25 @@ DeepSkyStacker 無法處理該影像。</translation>
         <translation>中位數Kappa-Sigma (Kappa = %1, 重覆次數 = %2)</translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="668"/>
+        <location filename="../ImageListModel.cpp" line="638"/>
         <source>%1 hr %2 mn %3 s </source>
         <comment>IDS_EXPOSURETIME3</comment>
         <translation>%1 時 %2 分 %3 秒 </translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="673"/>
+        <location filename="../ImageListModel.cpp" line="643"/>
         <source>%1 mn %2 s </source>
         <comment>IDS_EXPOSURETIME2</comment>
         <translation>%1 分 %2 秒 </translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="677"/>
+        <location filename="../ImageListModel.cpp" line="647"/>
         <source>%1 s </source>
         <comment>IDS_EXPOSURETIME1</comment>
         <translation>%1 秒 </translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="683"/>
+        <location filename="../ImageListModel.cpp" line="653"/>
         <location filename="../FrameInfoSupport.h" line="38"/>
         <source>1/%1 s</source>
         <comment>IDS_EXPOSUREFORMAT_INF</comment>
