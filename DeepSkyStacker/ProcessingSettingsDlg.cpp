@@ -98,10 +98,12 @@ namespace DSS {
 		ZFUNCTRACE_RUNTIME();
 		QString name{ settingsName->text() };
 		if (name.isEmpty() || name.startsWith(" ")) return;
-
+		
 		currentSettings.name_ = name;		// Set name of current settings
-		settingsMap.emplace(name, currentSettings);	// Add current settings to the set
-		settingsList->addItem(name);		// Add the name to the list of named settings
+		if (settingsMap.insert_or_assign(name, currentSettings).second)
+		{
+			settingsList->addItem(name);		// Add the name to the list of named settings
+		}
 		dirty = true;
 	}
 
@@ -112,7 +114,7 @@ namespace DSS {
 		if (nullptr == listItem) return;		// Nothing selected
 
 		QString name = listItem->text();
-
+		settingsMap.at(name).removeSettings();	// Remove the settings from the QSettings store
 		delete settingsList->takeItem(settingsList->currentRow());
 		settingsMap.erase(name);
 		dirty = true;
