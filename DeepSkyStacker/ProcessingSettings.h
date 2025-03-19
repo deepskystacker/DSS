@@ -112,6 +112,14 @@ namespace DSS
 			bezierAdjust_.saveSettings(groupName);
 			histoAdjust_.saveSettings(groupName);
 		};
+
+		void removeSettings()
+		{
+			ZFUNCTRACE_RUNTIME();
+			const QString groupName{ "ProcessingSettings/" + name_ };
+			QSettings settings;
+			settings.remove(groupName);
+		};
 	};
 
 }
