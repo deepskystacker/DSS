@@ -961,14 +961,14 @@ void DeepSkyStackerLive::moveToNonStackable(fs::path& file)
 	if (ec)
 	{
 		QString message{ QString::fromStdString(ec.message()) };
-		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+		DSSBase::instance()->reportError(message, "", Severity::Warning, Method::QMessageBox, false);
 	}
 	output /= name;
 	fs::rename(file, output, ec);
 	if (ec)
 	{
 		QString message{ QString::fromStdString(ec.message()) };
-		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+		DSSBase::instance()->reportError(message, "", Severity::Warning, Method::QMessageBox, false);
 	}
 }
 
