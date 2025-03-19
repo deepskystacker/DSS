@@ -122,7 +122,8 @@ public:
 	DSS::ProcessingDlg& getProcessingDlg();
 	DSS::ExplorerBar& GetExplorerBar();
 	void setWindowFilePath(const QString& name);
-	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
+	void reportError(const QString& message, const QString& type, Severity severity,
+		Method method, bool terminate, Qt::ConnectionType connectionType) override;
 };
 
 
