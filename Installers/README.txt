@@ -31,6 +31,15 @@ Changes since the last release:
 
 6.  Remove obsolete Score metric.
 
+7.  If a crash occurrs in the Visual C++ redistributable code, then issue a message saying:
+
+	DeepSkyStacker has crashed in the Visual C++ Redistributable code, probably because that is back-level.
+	Please download the latest version of the Visual C++ Redistributable from the Microsoft website.
+
+	    https://aka.ms/vs/17/release/vc_redist.x64.exe
+
+	and then run it, selecting the "Repair" option
+
 Welcome to DeepSkyStacker 5.1.8
 ======================================
 
