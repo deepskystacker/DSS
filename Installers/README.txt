@@ -40,6 +40,8 @@ Changes since the last release:
 
 	and then run it, selecting the "Repair" option
 
+8.  Make sure the installation deletes old versions of the Visual C++ Redistributable files from the installation directory.
+
 Welcome to DeepSkyStacker 5.1.8
 ======================================
 
