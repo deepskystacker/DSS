@@ -960,22 +960,15 @@ void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, 
 		tiff.Write();
 	};
 
-	if (IsMonochrome())
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
 	{
-		qDebug() << "Saved TIFF16 Bitmap:"
-			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
-			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
-			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
 	}
-	else
-	{
-		qDebug() << "Saved TIFF16 Bitmap:";
-		for (size_t i = 0; i < 4; i++)
-		{
-			auto [r, g, b] = getValues(i, 0);
-			qDebug() << r << g << b;
-		}
-	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1020,22 +1013,15 @@ void StackedBitmap::SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, 
 		tiff.Write();
 	};
 
-	if (IsMonochrome())
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
 	{
-		qDebug() << "Saved FITS32 Bitmap:"
-			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
-			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
-			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
 	}
-	else
-	{
-		qDebug() << "Saved FITS32 Bitmap:";
-		for (size_t i = 0; i < 4; i++)
-		{
-			auto [r, g, b] = getValues(i, 0);
-			qDebug() << r << g << b;
-		}
-	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1194,22 +1180,15 @@ void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, 
 		fits.Close();
 	};
 
-	if (IsMonochrome())
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
 	{
-		qDebug() << "Saved FITS16 Bitmap:"
-			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
-			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
-			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
 	}
-	else
-	{
-		qDebug() << "Saved FITS16 Bitmap:";
-		for (size_t i = 0; i < 4; i++)
-		{
-			auto [r, g, b] = getValues(i, 0);
-			qDebug() << r << g << b;
-		}
-	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1255,22 +1234,15 @@ void StackedBitmap::SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, 
 		fits.Close();
 	};
 
-	if (IsMonochrome())
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
 	{
-		qDebug() << "Saved FITS32 Bitmap:"
-			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
-			<< getValue(4, 0) << getValue(5, 0) << getValue(6, 0) << getValue(7, 0)
-			<< getValue(8, 0) << getValue(9, 0) << getValue(10, 0) << getValue(11, 0);
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
 	}
-	else
-	{
-		qDebug() << "Saved FITS32 Bitmap:";
-		for (size_t i = 0; i < 4; i++)
-		{
-			auto [r, g, b] = getValues(i, 0);
-			qDebug() << r << g << b;
-		}
-	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1365,6 +1337,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 		bResult = true;
 	};
 
+#ifndef NDEBUG
 	if (IsMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
@@ -1477,6 +1450,8 @@ bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 		fits.Close();
 		bResult = true;
 	};
+
+#ifndef NDEBUG
 	if (IsMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
