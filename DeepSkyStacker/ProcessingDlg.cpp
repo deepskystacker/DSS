@@ -186,9 +186,9 @@ namespace DSS
 		//
 		// Set the range and setting for the Saturation shift slider on the Saturation tab
 		//
-		controls->saturation->setMinimum(minSaturation);	// const value of -50
-		controls->saturation->setMaximum(maxSaturation);	// const value of 50;
-		controls->saturation->setValue(initialSaturation);	// Set to a saturation shift of 20
+		controls->saturation->setMinimum(MinSaturation);	// const value of -50
+		controls->saturation->setMaximum(MaxSaturation);	// const value of 50;
+		controls->saturation->setValue(InitialSaturation);	// Set to a saturation shift of 20
 		updateSaturationText();
 	}
 
@@ -465,7 +465,7 @@ namespace DSS
 				updateControlsFromSettings();
 
 				showHistogram(false);
-				resetSliders();
+				//resetSliders();
 				int height = dssApp->deepStack().GetHeight();
 				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
