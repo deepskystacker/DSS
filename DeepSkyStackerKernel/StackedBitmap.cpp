@@ -1354,6 +1354,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 			qDebug() << r << g << b;
 		}
 	}
+#endif
 
 	return bResult;
 };
@@ -1469,6 +1470,7 @@ bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 			qDebug() << r << g << b;
 		}
 	}
+#endif
 
 
 	return bResult;
