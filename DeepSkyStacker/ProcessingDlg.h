@@ -471,7 +471,7 @@ namespace DSS
 
 		void resetSliders();
 
-		void UpdateHistogramAdjust();
+		void updateHistogramAdjust();
 
 		bool askToSave();
 
@@ -479,16 +479,19 @@ namespace DSS
 		{
 			redAdjustmentCurve_ = hac;
 			setRedButtonIcon();
+			updateBezierCurve();
 		};
 		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			greenAdjustmentCurve_ = hac;
 			setGreenButtonIcon();
+			updateBezierCurve();
 		};
 		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			blueAdjustmentCurve_ = hac;
 			setBlueButtonIcon();
+			updateBezierCurve();
 		};
 
 	public slots:
