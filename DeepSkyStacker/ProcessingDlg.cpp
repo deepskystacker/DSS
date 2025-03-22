@@ -188,7 +188,7 @@ namespace DSS
 		//
 		controls->saturation->setMinimum(MinSaturation);	// const value of -50
 		controls->saturation->setMaximum(MaxSaturation);	// const value of 50;
-		controls->saturation->setValue(InitialSaturation);	// Set to a saturation shift of 20
+		controls->saturation->setValue(InitialSaturation);	// Set to a saturation shift of 0
 		updateSaturationText();
 	}
 
