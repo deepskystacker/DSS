@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0
+Welcome to DeepSkyStacker 6.1.0 Beta 1
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -17,7 +17,7 @@ Known problems:
 Changes since the last release:
 
 1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
-    the minumum and maximum pixel values instead of scanning the image data.
+    the minimum and maximum pixel values instead of scanning the image data.
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
@@ -31,7 +31,7 @@ Changes since the last release:
 
 6.  Remove obsolete Score metric.
 
-7.  If a crash occurrs in the Visual C++ redistributable code, then issue a message saying:
+7.  If a crash occurs in the Visual C++ redistributable code, then issue a message saying:
 
 	DeepSkyStacker has crashed in the Visual C++ Redistributable code, probably because that is back-level.
 	Please download the latest version of the Visual C++ Redistributable from the Microsoft website.
