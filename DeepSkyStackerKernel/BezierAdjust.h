@@ -106,7 +106,7 @@ namespace DSS
 				m_fMidtoneAngle = 45;
 				m_fHighlightAngle = 0;
 				m_fHighlightPower = 0;
-				m_fSaturationShift = 20;
+				m_fSaturationShift = 0;
 			}
 			else
 			{
@@ -116,7 +116,7 @@ namespace DSS
 				m_fMidtoneAngle = 10;
 				m_fHighlightAngle = 0;
 				m_fHighlightPower = 50;
-				m_fSaturationShift = 20;
+				m_fSaturationShift = 0;
 			};
 			clear();
 		}

@@ -620,19 +620,20 @@ void DeepSkyStackerLive::onInitialise()
 	createFileStacker();
 }
 
-void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate)
+void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity,
+	Method method, bool terminate, Qt::ConnectionType connectionType)
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
 	if (Method::QMessageBox == method)
 	{
-		QMetaObject::invokeMethod(this, "qMessageBox", Qt::AutoConnection,
+		QMetaObject::invokeMethod(this, "qMessageBox", connectionType,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 	else
 	{
-		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::AutoConnection,
+		QMetaObject::invokeMethod(this, "qErrorMessage", connectionType,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
@@ -960,14 +961,14 @@ void DeepSkyStackerLive::moveToNonStackable(fs::path& file)
 	if (ec)
 	{
 		QString message{ QString::fromStdString(ec.message()) };
-		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+		DSSBase::instance()->reportError(message, "", Severity::Warning, Method::QMessageBox, false);
 	}
 	output /= name;
 	fs::rename(file, output, ec);
 	if (ec)
 	{
 		QString message{ QString::fromStdString(ec.message()) };
-		reportError(message, "", Severity::Warning, Method::QMessageBox, false);
+		DSSBase::instance()->reportError(message, "", Severity::Warning, Method::QMessageBox, false);
 	}
 }
 

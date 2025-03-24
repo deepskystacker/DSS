@@ -959,6 +959,16 @@ void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, 
 	{
 		tiff.Write();
 	};
+
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
+	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1002,6 +1012,16 @@ void StackedBitmap::SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, 
 	{
 		tiff.Write();
 	};
+
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
+	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1159,6 +1179,16 @@ void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, 
 		fits.Write();
 		fits.Close();
 	};
+
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
+	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1203,6 +1233,16 @@ void StackedBitmap::SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, 
 		fits.Write();
 		fits.Close();
 	};
+
+#ifndef NDEBUG
+	double r = 0, g = 0, b = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		GetPixel(i, 0, r, g, b, bApplySettings);
+		r *= 256.0; g *= 256.0; b *= 256.0;
+		qDebug() << r << g << b;
+	}
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -1297,7 +1337,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
 		bResult = true;
 	};
 
-#if (0)
+#ifndef NDEBUG
 	if (IsMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
@@ -1413,7 +1453,7 @@ bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
 		bResult = true;
 	};
 
-#if (0)
+#ifndef NDEBUG
 	if (IsMonochrome())
 	{
 		qDebug() << "Final stacked image read back in:"

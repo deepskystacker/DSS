@@ -1202,7 +1202,11 @@ BOOL StackWalker::ShowCallstack(HANDLE                    hThread,
         }
         else
         {
-          this->OnDbgHelpErr("SymGetLineFromAddr64", GetLastError(), s.AddrPC.Offset);
+          //
+          // Don't want lines like: ERROR: SymGetLineFromAddr64, GetLastError: 487 (Address: 00007FFF74A2E662)
+          // cluttering up the backtrace
+          // 
+          //this->OnDbgHelpErr("SymGetLineFromAddr64", GetLastError(), s.AddrPC.Offset);
         }
       } // yes, we have SymGetLineFromAddr64()
 
@@ -1257,10 +1261,18 @@ BOOL StackWalker::ShowCallstack(HANDLE                    hThread,
     } // we seem to have a valid PC
 
     CallstackEntryType et = nextEntry;
-    if (frameNum == 0)
+    //
+    // Skip over our own code in the traceback
+    //
+    if (frameNum <= 6)
       et = firstEntry;
+
     bLastEntryCalled = false;
-    this->OnCallstackEntry(et, csEntry);
+    //
+    // Only display the callstack entry for the faulting location or below
+    // 
+    if (frameNum > 5)
+        this->OnCallstackEntry(et, csEntry);
 
     if (s.AddrReturn.Offset == 0)
     {
@@ -1401,6 +1413,23 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
         MyStrCpy(entry.moduleName, STACKWALK_MAX_NAMELEN, "(module-name not available)");
       _snprintf_s(buffer, maxLen, "%p (%s): %s: %s\n", (LPVOID)entry.offset, entry.moduleName,
                   entry.lineFileName, entry.name);
+      //
+      // Special case check for the first (real) entry in the backtrace being MSVCP140
+	  // If so display a message asking the user to install the latest Visual C++ Redistributable
+      // 
+      if (firstEntry == eType && 0 == strcmp(entry.moduleName, "MSVCP140"))
+      {
+          QString errorMessage
+          {
+              "DeepSkyStacker has crashed in the Visual C++ Redistributable code, probably because that is back-level.\n"
+              "Please download the latest version of the Visual C++ Redistributable from the Microsoft website.\n\n"
+              "    https://aka.ms/vs/17/release/vc_redist.x64.exe\n\n"
+              "and then run it, selecting the \"Repair\" option"
+          };
+
+          DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical,
+              DSSBase::Method::QMessageBox, false, Qt::ConnectionType::DirectConnection);
+      }
     }
     else
       _snprintf_s(buffer, maxLen, "%s (%d): %s\n", entry.lineFileName, entry.lineNumber,

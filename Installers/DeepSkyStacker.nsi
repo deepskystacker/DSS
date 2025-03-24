@@ -165,7 +165,12 @@ Section
         ExecWait '$PreviousUninstaller /S _?=$R0'
   ${EndIf}
   
-  # specify the files that go in the output path
+  Delete "$INSTDIR\mfc140.dll"
+  Delete "$INSTDIR\msvcp140.dll"
+  Delete "$INSTDIR\vcomp140.dll"
+  Delete "$INSTDIR\vcruntime140.dll"
+  
+# specify the files that go in the output path
 
   File "..\x64\Release\${DSS_FILE}.exe"
   File "..\x64\Release\${DSS_FILE}.pdb"

@@ -256,12 +256,12 @@ namespace DSS
 			shift = fShift;
 		};
 
-		void	SetAdjustMethod(HistogramAdjustmentCurve hat)
+		void	setAdjustMethod(HistogramAdjustmentCurve hat)
 		{
 			adjustmentCurve = hat;
 		};
 
-		HistogramAdjustmentCurve GetAdjustMethod() const
+		HistogramAdjustmentCurve getAdjustMethod() const
 		{
 			return adjustmentCurve;
 		};

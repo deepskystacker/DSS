@@ -186,9 +186,9 @@ namespace DSS
 		//
 		// Set the range and setting for the Saturation shift slider on the Saturation tab
 		//
-		controls->saturation->setMinimum(minSaturation);	// const value of -50
-		controls->saturation->setMaximum(maxSaturation);	// const value of 50;
-		controls->saturation->setValue(initialSaturation);	// Set to a saturation shift of 20
+		controls->saturation->setMinimum(MinSaturation);	// const value of -50
+		controls->saturation->setMaximum(MaxSaturation);	// const value of 50;
+		controls->saturation->setValue(InitialSaturation);	// Set to a saturation shift of 0
 		updateSaturationText();
 	}
 
@@ -451,7 +451,7 @@ namespace DSS
 					QApplication::beep();
 					QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
 					QMessageBox::warning(this, "DeepSkyStacker",
-							message);
+						message);
 				}
 
 				dssApp->deepStack().SetProgress(nullptr);
@@ -465,7 +465,15 @@ namespace DSS
 				updateControlsFromSettings();
 
 				showHistogram(false);
-				resetSliders();
+				//
+				// When loading a external image (not the auto-save file) the histogram adjustment curves 
+				// should be reset to linear.
+				//
+				setRedAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+				setGreenAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+				setBlueAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+
+				//resetSliders();
 				int height = dssApp->deepStack().GetHeight();
 				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
@@ -713,11 +721,11 @@ namespace DSS
 		const double fShiftBlue = (blueStops[2].first - 0.5) * 2.0;
 		const double fMaxBlue = gradientOffset_ + blueStops[3].first * gradientRange_;
 
-		histogramAdjustment.GetRedAdjust().SetAdjustMethod(redAdjustmentCurve());
+		histogramAdjustment.GetRedAdjust().setAdjustMethod(redAdjustmentCurve());
 		histogramAdjustment.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
-		histogramAdjustment.GetGreenAdjust().SetAdjustMethod(greenAdjustmentCurve());
+		histogramAdjustment.GetGreenAdjust().setAdjustMethod(greenAdjustmentCurve());
 		histogramAdjustment.GetGreenAdjust().SetNewValues(fMinGreen, fMaxGreen, fShiftGreen);
-		histogramAdjustment.GetBlueAdjust().SetAdjustMethod(blueAdjustmentCurve());
+		histogramAdjustment.GetBlueAdjust().setAdjustMethod(blueAdjustmentCurve());
 		histogramAdjustment.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
 
 		return {
@@ -747,19 +755,19 @@ namespace DSS
 		controls->redGradient->setPeg(1, (rgbParams[RGB::Red][Param::Min] - gradientOffset_) / gradientRange_);
 		controls->redGradient->setPeg(2, rgbParams[RGB::Red][Param::Shift] / 2.0 + 0.5);
 		controls->redGradient->setPeg(3, (rgbParams[RGB::Red][Param::Max] - gradientOffset_) / gradientRange_);
-		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().GetAdjustMethod());
+		setRedAdjustmentCurve(processingSettings.histoAdjust_.GetRedAdjust().getAdjustMethod());
 		controls->redGradient->update();
 
 		controls->greenGradient->setPeg(1, (rgbParams[RGB::Green][Param::Min] - gradientOffset_) / gradientRange_);
 		controls->greenGradient->setPeg(2, rgbParams[RGB::Green][Param::Shift] / 2.0 + 0.5);
 		controls->greenGradient->setPeg(3, (rgbParams[RGB::Green][Param::Max] - gradientOffset_) / gradientRange_);
-		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().GetAdjustMethod());
+		setGreenAdjustmentCurve(processingSettings.histoAdjust_.GetGreenAdjust().getAdjustMethod());
 		controls->greenGradient->update();
 
 		controls->blueGradient->setPeg(1, (rgbParams[RGB::Blue][Param::Min] - gradientOffset_) / gradientRange_);
 		controls->blueGradient->setPeg(2, rgbParams[RGB::Blue][Param::Shift] / 2.0 + 0.5);
 		controls->blueGradient->setPeg(3, (rgbParams[RGB::Blue][Param::Max] - gradientOffset_) / gradientRange_);
-		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().GetAdjustMethod());
+		setBlueAdjustmentCurve(processingSettings.histoAdjust_.GetBlueAdjust().getAdjustMethod());
 		controls->blueGradient->update();
 	}
 
@@ -1087,7 +1095,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void ProcessingDlg::UpdateHistogramAdjust()
+	void ProcessingDlg::updateHistogramAdjust()
 	{
 		// RETURNS: min/shift/max FOR red, green, blue
 		const RgbParams rgbParams = calcHistogramAdjustment(this->processingSettings.histoAdjust_);
@@ -1101,7 +1109,7 @@ namespace DSS
 
 	void ProcessingDlg::processAndShow(bool bSaveUndo)
 	{
-		UpdateHistogramAdjust();
+		updateHistogramAdjust();
 
 		processingSettings.bezierAdjust_.m_fMidtone = controls->midTone->value() / 10.0;
 		processingSettings.bezierAdjust_.m_fMidtoneAngle = controls->midAngle->value();

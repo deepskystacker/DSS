@@ -450,9 +450,9 @@ namespace DSS
 		//
 		// Initial values for the Saturation slider
 		//
-		static constexpr int minSaturation { -50 };
-		static constexpr int maxSaturation { 50 };
-		static constexpr int initialSaturation { 20 };
+		static constexpr int MinSaturation { -50 };
+		static constexpr int MaxSaturation { 50 };
+		static constexpr int InitialSaturation { 0 };
 
 		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
 		void	drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
@@ -471,7 +471,7 @@ namespace DSS
 
 		void resetSliders();
 
-		void UpdateHistogramAdjust();
+		void updateHistogramAdjust();
 
 		bool askToSave();
 
@@ -479,16 +479,19 @@ namespace DSS
 		{
 			redAdjustmentCurve_ = hac;
 			setRedButtonIcon();
+			updateBezierCurve();
 		};
 		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			greenAdjustmentCurve_ = hac;
 			setGreenButtonIcon();
+			updateBezierCurve();
 		};
 		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			blueAdjustmentCurve_ = hac;
 			setBlueButtonIcon();
+			updateBezierCurve();
 		};
 
 	public slots:

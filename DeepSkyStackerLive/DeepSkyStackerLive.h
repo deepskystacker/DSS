@@ -82,7 +82,8 @@ public:
 	DeepSkyStackerLive(DeepSkyStackerLive&& rhs) = delete;
 	DeepSkyStackerLive& operator=(DeepSkyStackerLive&& rhs) = delete;
 
-	void reportError(const QString& message, const QString& type, Severity severity, Method method, bool terminate) override;
+	void reportError(const QString& message, const QString& type, Severity severity,
+		Method method, bool terminate, Qt::ConnectionType connectionType) override;
 	void writeToLog(const QString& message, bool addTimeStamp = false, bool bold = false, bool italic = false, QColor colour = QColor(QPalette().color(QPalette::WindowText)));
 
 	inline qreal pixelRatio() { return this->devicePixelRatioF(); }
