@@ -44,7 +44,7 @@ Changes since the last release:
 
 8.  Make sure the installation deletes old versions of the Visual C++ Redistributable files from the installation directory.
 
-9.  Bug fix: Open picture file should use the Linear transformation not log(Sqrt) so that the image is loaded correctly.
+9.  Bug fix: Open picture file should use the Linear transformation not log(Sqrt) so that the image is displayed correctly.
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
