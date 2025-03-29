@@ -161,6 +161,7 @@ namespace DSS
 			m_fMidtoneAngle = settings.value("MidtoneAngle").toDouble();
 			m_fHighlightAngle = settings.value("HighlightAngle").toDouble();
 			m_fHighlightPower = settings.value("HighlightPower").toDouble();
+			m_fSaturationShift = settings.value("SaturationShift",0.0).toDouble();
 		}
 
 		void saveSettings(const QString& group) const
@@ -175,6 +176,7 @@ namespace DSS
 			settings.setValue("MidtoneAngle", m_fMidtoneAngle);
 			settings.setValue("HighlightAngle", m_fHighlightAngle);
 			settings.setValue("HighlightPower", m_fHighlightPower);
+			settings.setValue("SaturationShift", m_fSaturationShift);
 		}
 
 		const QString toString() const
