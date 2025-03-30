@@ -376,7 +376,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CometStacking.h" />
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
-    <ClInclude Include="BezierAdjust.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
