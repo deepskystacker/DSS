@@ -328,6 +328,7 @@
     <ClInclude Include="avx_includes.h" />
     <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="avx_simd_factory.h" />
+    <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />
