@@ -1666,6 +1666,10 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 	}
 
+	//
+	// Stop tracing and retain or delete the trace file as wanted
+	//
+	traceControl.terminate();
 	return result;
 };
 
