@@ -1536,9 +1536,27 @@ constexpr size_t backPocketSize{ 1024 * 1024 };
 
 static char const* global_program_name;
 
+void atexitHandler()
+{
+	//
+	// Retain or delete the trace file as wanted
+	//
+	traceControl.terminate();
+	//
+	// Delete the back pocket storage
+	//
+	backPocket.reset();
+}
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+
+	//
+	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	//
+	std::atexit(atexitHandler);
+
 	int result{ 0 };
 
 #if defined(Q_OS_WIN)
@@ -1666,10 +1684,6 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 	}
 
-	//
-	// Stop tracing and retain or delete the trace file as wanted
-	//
-	traceControl.terminate();
 	return result;
 };
 
