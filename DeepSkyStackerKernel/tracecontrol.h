@@ -60,7 +60,6 @@ namespace DSS
 
 		inline void terminate()
 		{
-			ZTrace::disableTrace();
 			if (erase) fs::remove(file);
 		}
 
