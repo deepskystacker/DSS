@@ -388,5 +388,9 @@ int main(int argc, char* argv[])
 
 	process.Run();
 
+	//
+	// Stop tracing and retain or delete the trace file as wanted
+	//
+	traceControl.terminate();
 	return 0;
 }

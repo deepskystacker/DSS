@@ -919,6 +919,9 @@ int main(int argc, char* argv[])
 
 	}
 #endif
-	//theApp.ExitInstance();
+	//
+	// Stop tracing and retain or delete the trace file as wanted
+	//
+	traceControl.terminate();
 	return result;
 }

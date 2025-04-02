@@ -86,9 +86,4 @@ namespace DSS
 		ZTrace::enableTrace();
 		ZTrace::writeToFile();
 	}
-
-	TraceControl::~TraceControl()
-	{
-		if (erase) fs::remove(file);
-	}
 }

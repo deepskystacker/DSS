@@ -40,7 +40,7 @@ namespace DSS
 	{
 	public:
 		explicit TraceControl(std::string fName);
-		virtual ~TraceControl();
+		~TraceControl() = default;
 
 		// Make class non copyable
 		TraceControl(TraceControl const&) = delete;
@@ -48,14 +48,20 @@ namespace DSS
 		TraceControl& operator = (TraceControl const&) = delete;
 		TraceControl& operator = (TraceControl&&) = delete;
 
-		bool deleteOnExit()
+		inline bool deleteOnExit()
 		{
 			return erase;
 		}
 
-		void setDeleteOnExit(bool v)
+		inline void setDeleteOnExit(bool v)
 		{
 			erase = v;
+		}
+
+		inline void terminate()
+		{
+			ZTrace::disableTrace();
+			if (erase) fs::remove(file);
 		}
 
 	private:
