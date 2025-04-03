@@ -36,7 +36,7 @@
 ****************************************************************************/
 namespace DSS
 {
-	class TraceControl
+	class TraceControl final
 	{
 	public:
 		explicit TraceControl(std::string fName);
