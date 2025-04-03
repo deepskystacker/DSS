@@ -60,7 +60,11 @@ namespace DSS
 
 		inline void terminate()
 		{
-			if (erase) fs::remove(file);
+			if (erase)
+			{
+				std::error_code ec;
+				fs::remove(file, ec);
+			}
 		}
 
 	private:
