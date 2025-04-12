@@ -529,8 +529,8 @@ De standaardwaarden DATAMIN = %L1 en DATAMAX = %L2 uit de FITS/DDP-instellingen 
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="267"/>
-        <location filename="../FITSUtil.cpp" line="1032"/>
-        <location filename="../FITSUtil.cpp" line="1720"/>
+        <location filename="../FITSUtil.cpp" line="1052"/>
+        <location filename="../FITSUtil.cpp" line="1740"/>
         <location filename="../MultiBitmapProcess.cpp" line="225"/>
         <location filename="../StackingEngine.cpp" line="2392"/>
         <location filename="../TIFFUtil.cpp" line="1447"/>
@@ -544,8 +544,8 @@ De standaardwaarden DATAMIN = %L1 en DATAMAX = %L2 uit de FITS/DDP-instellingen 
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="277"/>
-        <location filename="../FITSUtil.cpp" line="1041"/>
-        <location filename="../FITSUtil.cpp" line="1729"/>
+        <location filename="../FITSUtil.cpp" line="1061"/>
+        <location filename="../FITSUtil.cpp" line="1749"/>
         <location filename="../MultiBitmapProcess.cpp" line="234"/>
         <location filename="../StackingEngine.cpp" line="2401"/>
         <location filename="../TIFFUtil.cpp" line="1456"/>
@@ -1008,8 +1008,8 @@ De standaardwaarden DATAMIN = %L1 en DATAMAX = %L2 uit de FITS/DDP-instellingen 
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1253"/>
-        <location filename="../StackedBitmap.cpp" line="1365"/>
+        <location filename="../StackedBitmap.cpp" line="1293"/>
+        <location filename="../StackedBitmap.cpp" line="1407"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Laden %1</translation>
@@ -1070,13 +1070,13 @@ De standaardwaarden DATAMIN = %L1 en DATAMAX = %L2 uit de FITS/DDP-instellingen 
         <translation>Laden TIFF %1 bit/kan</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1360"/>
+        <location filename="../StackedBitmap.cpp" line="1402"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Laden FITS %1 bit zwart-wit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1362"/>
+        <location filename="../StackedBitmap.cpp" line="1404"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Laden FITS %1 bit/kan</translation>

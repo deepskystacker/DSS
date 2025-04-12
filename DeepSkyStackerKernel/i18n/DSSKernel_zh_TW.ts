@@ -530,8 +530,8 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="267"/>
-        <location filename="../FITSUtil.cpp" line="1032"/>
-        <location filename="../FITSUtil.cpp" line="1720"/>
+        <location filename="../FITSUtil.cpp" line="1052"/>
+        <location filename="../FITSUtil.cpp" line="1740"/>
         <location filename="../MultiBitmapProcess.cpp" line="225"/>
         <location filename="../StackingEngine.cpp" line="2392"/>
         <location filename="../TIFFUtil.cpp" line="1447"/>
@@ -545,8 +545,8 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="277"/>
-        <location filename="../FITSUtil.cpp" line="1041"/>
-        <location filename="../FITSUtil.cpp" line="1729"/>
+        <location filename="../FITSUtil.cpp" line="1061"/>
+        <location filename="../FITSUtil.cpp" line="1749"/>
         <location filename="../MultiBitmapProcess.cpp" line="234"/>
         <location filename="../StackingEngine.cpp" line="2401"/>
         <location filename="../TIFFUtil.cpp" line="1456"/>
@@ -1009,8 +1009,8 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1253"/>
-        <location filename="../StackedBitmap.cpp" line="1365"/>
+        <location filename="../StackedBitmap.cpp" line="1293"/>
+        <location filename="../StackedBitmap.cpp" line="1407"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>載入 %1</translation>
@@ -1071,13 +1071,13 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
         <translation>載入每色 %1 bit 之TIFF檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1360"/>
+        <location filename="../StackedBitmap.cpp" line="1402"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>載入 %1 bit 單色FITS檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1362"/>
+        <location filename="../StackedBitmap.cpp" line="1404"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>載入每色 %1 bit 之FITS檔</translation>
