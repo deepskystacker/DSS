@@ -11,7 +11,7 @@ namespace DSS
 		class RawDDPSettings;
 	}
 
-	class RawDDPSettings : public QDialog
+	class RawDDPSettings final : public QDialog
 	{
 		Q_OBJECT
 
@@ -49,18 +49,25 @@ namespace DSS
 		void on_rawBayer_2_clicked();
 		void on_superPixels_2_clicked();
 
+		void dataMin_editingFinished();
+		void dataMax_editingFinished();
+
 	private:
 		Ui::RawDDPSettings* ui;
 		std::unique_ptr<Workspace> workspace;
 		std::vector<CDSLR> vector_DSLRs;
 		bool		initialised;
 		QValidator* scaleValidator;
+		QDoubleValidator* rangeValidator;
 		QPixmap bggrPix;
 		QPixmap gbrgPix;
 		QPixmap grbgPix;
 		QPixmap rggbPix;
 		QPixmap cygmcymgPix;
 
+		inline static const QString scaleDefault{ "1.0" };
+		inline static const QString dataMinDefault { "0.0" };
+		inline static const QString dataMaxDefault { "1.0" };
 
 		static void fillDSLRList(std::vector<CDSLR>& vDSLRs);
 		RawDDPSettings& updateBayerPattern();

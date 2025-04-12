@@ -290,11 +290,15 @@ namespace DSS
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 		connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-
 		//
 		// Create a validator for the scale values
 		//
 		scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+		//
+		// Create a validator for the FITS range values
+		rangeValidator = new QDoubleValidator(this);
+		rangeValidator->setDecimals(4);
+
 
 		connect(ui->brightness, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_editingFinished);
 		connect(ui->redScale, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_editingFinished);
@@ -302,6 +306,9 @@ namespace DSS
 		connect(ui->brightness_2, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_2_editingFinished);
 		connect(ui->redScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_2_editingFinished);
 		connect(ui->blueScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_2_editingFinished);
+
+		connect(ui->dataMin, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMin_editingFinished);
+		connect(ui->dataMax, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMax_editingFinished);
 
 		//
 		// forceUnsigned is no longer used
@@ -364,13 +371,13 @@ namespace DSS
 		//
 		// First initialise the controls on the Raw Files tab
 		//
-		value = workspace->value("RawDDP/Brightness", "1.0").toDouble();
+		value = workspace->value("RawDDP/Brightness", scaleDefault).toDouble();
 		ui->brightness->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		value = workspace->value("RawDDP/RedScale", "1.0").toDouble();
+		value = workspace->value("RawDDP/RedScale", scaleDefault).toDouble();
 		ui->redScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		value = workspace->value("RawDDP/BlueScale", "1.0").toDouble();
+		value = workspace->value("RawDDP/BlueScale", scaleDefault).toDouble();
 		ui->blueScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 
 		ui->noWB->setChecked(workspace->value("RawDDP/NoWB", false).toBool());
@@ -411,14 +418,20 @@ namespace DSS
 		//
 		ui->isFITSRaw->setChecked(workspace->value("FitsDDP/FITSisRAW", false).toBool());
 
-		value = workspace->value("FitsDDP/Brightness", "1.0").toDouble();
+		value = workspace->value("FitsDDP/Brightness", scaleDefault).toDouble();
 		ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		value = workspace->value("FitsDDP/RedScale", "1.0").toDouble();
+		value = workspace->value("FitsDDP/RedScale", scaleDefault).toDouble();
 		ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		value = workspace->value("FitsDDP/BlueScale", "1.0").toDouble();
+		value = workspace->value("FitsDDP/BlueScale", scaleDefault).toDouble();
 		ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+
+		value = workspace->value("FitsDDP/DataMin", dataMinDefault).toDouble();
+		ui->dataMin->setText(QString("%L1").arg(value, 0, 'f', QLocale::FloatingPointShortest));
+
+		value = workspace->value("FitsDDP/DataMax", dataMaxDefault).toDouble();
+		ui->dataMax->setText(QString("%L1").arg(value, 0, 'f', QLocale::FloatingPointShortest));
 
 		fillDSLRList(vector_DSLRs);
 
@@ -561,7 +574,7 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("RawDDP/Brightness", "1.0").toDouble();
+			const double value = workspace->value("RawDDP/Brightness", scaleDefault).toDouble();
 			ui->brightness->setText(QString("%L1").arg(value, 0, 'f', 4));
 		}
 	}
@@ -580,7 +593,7 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("RawDDP/RedScale", "1.0").toDouble();
+			const double value = workspace->value("RawDDP/RedScale", scaleDefault).toDouble();
 			ui->redScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 		}
 	}
@@ -599,7 +612,7 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("RawDDP/BlueScale", "1.0").toDouble();
+			const double value = workspace->value("RawDDP/BlueScale", scaleDefault).toDouble();
 			ui->blueScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 		}
 	}
@@ -687,7 +700,7 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("FitsDDP/Brightness", "1.0").toDouble();
+			const double value = workspace->value("FitsDDP/Brightness", scaleDefault).toDouble();
 			ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
 		}
 	}
@@ -706,7 +719,7 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("FitsDDP/RedScale", "1.0").toDouble();
+			const double value = workspace->value("FitsDDP/RedScale", scaleDefault).toDouble();
 			ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
 		}
 	}
@@ -725,8 +738,46 @@ namespace DSS
 		else
 		{
 			QApplication::beep();
-			const double value = workspace->value("FitsDDP/BlueScale", "1.0").toDouble();
+			const double value = workspace->value("FitsDDP/BlueScale", scaleDefault).toDouble();
 			ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+		}
+	}
+
+	void RawDDPSettings::dataMin_editingFinished()
+	{
+		QLocale locale;
+		QString string{ ui->dataMin->text() };
+		int unused{ 0 };
+		bool OK = false;
+		if (QValidator::Acceptable == rangeValidator->validate(string, unused))
+		{
+			const double value{ locale.toDouble(string, &OK) };
+			if (OK) workspace->setValue("FitsDDP/DataMin", value);
+		}
+		else
+		{
+			QApplication::beep();
+			const double value = workspace->value("FitsDDP/DataMin", dataMinDefault).toDouble();
+			ui->dataMin->setText(QString("%L1").arg(value, 0, 'f', QLocale::FloatingPointShortest));
+		}
+	}
+
+	void RawDDPSettings::dataMax_editingFinished()
+	{
+		QLocale locale;
+		QString string{ ui->dataMax->text() };
+		int unused{ 0 };
+		bool OK = false;
+		if (QValidator::Acceptable == rangeValidator->validate(string, unused))
+		{
+			const double value{ locale.toDouble(string, &OK) };
+			if (OK) workspace->setValue("FitsDDP/DataMax", value);
+		}
+		else
+		{
+			QApplication::beep();
+			const double value = workspace->value("FitsDDP/DataMax", dataMaxDefault).toDouble();
+			ui->dataMin->setText(QString("%L1").arg(value, 0, 'f', QLocale::FloatingPointShortest));
 		}
 	}
 
