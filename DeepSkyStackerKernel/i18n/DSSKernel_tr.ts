@@ -451,14 +451,15 @@ returned a status of %2, error text is:
 &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="694"/>
-        <source>Failed to read DATAMIN and DATAMAX keywords from FITS header.
-DeepSkyStacker is unable to process this image.</source>
+        <location filename="../FITSUtil.cpp" line="710"/>
+        <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
+Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
+settings will be used.</source>
         <translation>FITS başlığından DATAMIN ve DATAMAX anahtar sözcükleri okunamadı.
-DeepSkyStacker bu resmi işleyemiyor.</translation>
+FITS/DDP ayarlarından varsayılan DATAMIN = %L1 ve DATAMAX = %L2 değerleri kullanılacaktır.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="922"/>
+        <location filename="../FITSUtil.cpp" line="942"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker, 8 bitlik görüntüleri Bayer&apos;den ayırmayacak</translation>
@@ -1027,43 +1028,43 @@ DeepSkyStacker bu resmi işleyemiyor.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="906"/>
-        <location filename="../StackedBitmap.cpp" line="1099"/>
+        <location filename="../StackedBitmap.cpp" line="1119"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Kaydediyor %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="953"/>
-        <location filename="../StackedBitmap.cpp" line="992"/>
-        <location filename="../StackedBitmap.cpp" line="1149"/>
-        <location filename="../StackedBitmap.cpp" line="1192"/>
+        <location filename="../StackedBitmap.cpp" line="1002"/>
+        <location filename="../StackedBitmap.cpp" line="1169"/>
+        <location filename="../StackedBitmap.cpp" line="1222"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Görüntü ayarlar uygulanarak kaydedildi.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="955"/>
-        <location filename="../StackedBitmap.cpp" line="994"/>
-        <location filename="../StackedBitmap.cpp" line="1151"/>
-        <location filename="../StackedBitmap.cpp" line="1194"/>
+        <location filename="../StackedBitmap.cpp" line="1004"/>
+        <location filename="../StackedBitmap.cpp" line="1171"/>
+        <location filename="../StackedBitmap.cpp" line="1224"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Görüntü ayarlar iliştirilenerek kaydedildi.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
+        <location filename="../StackedBitmap.cpp" line="1116"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>FITS %1 biti kaydediyor</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1248"/>
+        <location filename="../StackedBitmap.cpp" line="1288"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>TIFF %1 bit tek renk yükleniyor</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1250"/>
+        <location filename="../StackedBitmap.cpp" line="1290"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>TIFF %1 bit/ch yükleniyor</translation>

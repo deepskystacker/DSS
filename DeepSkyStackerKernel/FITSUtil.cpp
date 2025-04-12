@@ -649,23 +649,17 @@ bool CFITSReader::Read()
 			throw exc;
 		}
 
+		//
+		// Set default values for the data range for DeepSkyStacker FITS files.
+		//
 		double dataMin = 0.0;
-		double dataMax = 0.0;
+		double dataMax = 1.0;
 		QString software;
-		if (ReadKey("SOFTWARE", software) && software.startsWith("DeepSkyStacker"))
-		{
-			//
-			// DSS has always written floating point FITS files with a range of [0.0, 1.0],
-			// so if the header doesn't contain the DATAMIN and DATAMAX keywords, we use these
-			// values as the default data range.
-			// 
-			// If we don't do that then files written by release 5.1.8
-			// and earlier will be handled incorrectly.
-			// 
-			// If the keywords are present, then we'll use the values in the header.
-			//
-			dataMax = 1.0;			// Set a default value of one
-		}
+
+		//
+		// Was this FITS file written by DeepSkyStacker?
+		// 
+		const bool isDSSFITS { (ReadKey("SOFTWARE", software) && software.startsWith("DeepSkyStacker")) };
 
 		//
 		// Special case the Meade DSI files:
@@ -675,29 +669,55 @@ bool CFITSReader::Read()
 		{
 			dataMax = 65535.0;
 		}
+		//
+		// If this is neither a DSI nor a DSS FITS file, read the default data range from the workspace
+		//
+		else if (!isDSSFITS)
+		{
+			//
+			// Read the default values for the data range from the workspace
+			// 
+			dataMin = Workspace{}.value("FitsDDP/DataMin", 0.0).toDouble();
+			dataMax = Workspace{}.value("FitsDDP/DataMax", 1.0).toDouble();
+		}
 
 		//
 		// Check for the presence of the DATAMIN and DATAMAX keywords in the FITS header
-		// and read them if they're present
+		// and read them if they're present.
+		// 
+		// DSS has always written floating point FITS files with a range of [0.0, 1.0],
+		// so if the header doesn't contain the DATAMIN and DATAMAX keywords, we use these
+		// values as the default data range.
+		// 
+		// If we don't do that then files written by release 5.1.8
+		// and earlier will be handled incorrectly.
+		// 
+		// If the keywords are present, then we'll use the values in the header.
 		//
 		bool minMaxRead = ReadKey("DATAMIN", dataMin) && ReadKey("DATAMAX", dataMax);
 		//
 		// If this is a floating point FITS file, and we failed to read the DATAMIN and DATAMAX
-		// keywords, and dataMax is still zero, then we have a problem.
+		// keywords, then we have a problem unless the file was written by DSS or is a DSI file.
 		// 
-		// If we don't know the data range, then we cannot scale the data correctly.
-		// So issue a nastygram and return false.
+		// If we don't know the data range, then inform the user of the default values we will
+		// use to scale the data, and carry on.
+		// 
+		// Use Qt::ConnectionType::DirectConnection so that the message is issued synchronously.
 		//
-		if (m_bFloat && !minMaxRead && 0.0 == dataMax)
+		if (m_bFloat && !minMaxRead && !(isDSSFITS || m_bDSI))
 		{
 			DSSBase::instance()->reportError(
 				QCoreApplication::translate("FITSUtil",
-					"Failed to read DATAMIN and DATAMAX keywords from FITS header.\n"
-					"DeepSkyStacker is unable to process this image."),
+					"Failed to read DATAMIN and DATAMAX keywords from the FITS header.\n"
+					"Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP\n"
+					"settings will be used.")
+					.arg(dataMin, 0, 'f', QLocale::FloatingPointShortest)
+				    .arg(dataMax, 0, 'f', QLocale::FloatingPointShortest),
 				"DATAMINMAX",
-				DSSBase::Severity::Critical,
-				DSSBase::Method::QErrorMessage);
-			return false;
+				DSSBase::Severity::Information,
+				DSSBase::Method::QErrorMessage,
+				false,
+				Qt::ConnectionType::DirectConnection);
 		}
 
 		//

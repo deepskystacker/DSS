@@ -451,14 +451,16 @@ a returnat o stare de %2, textul de eroare este:
 „%3”</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="694"/>
-        <source>Failed to read DATAMIN and DATAMAX keywords from FITS header.
-DeepSkyStacker is unable to process this image.</source>
+        <location filename="../FITSUtil.cpp" line="710"/>
+        <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
+Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
+settings will be used.</source>
         <translation>Nu s-au citit cuvintele cheie DATAMIN și DATAMAX din antetul FITS.
-DeepSkyStacker nu poate procesa această imagine.</translation>
+Valorile implicite ale DATAMIN = %L1 și DATAMAX = %L2 din FITS/DDP
+vor fi utilizate setările.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="922"/>
+        <location filename="../FITSUtil.cpp" line="942"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker nu va debayeriza imaginile pe 8 biti</translation>
@@ -1027,43 +1029,43 @@ DeepSkyStacker nu poate procesa această imagine.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="906"/>
-        <location filename="../StackedBitmap.cpp" line="1099"/>
+        <location filename="../StackedBitmap.cpp" line="1119"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Salvează %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="953"/>
-        <location filename="../StackedBitmap.cpp" line="992"/>
-        <location filename="../StackedBitmap.cpp" line="1149"/>
-        <location filename="../StackedBitmap.cpp" line="1192"/>
+        <location filename="../StackedBitmap.cpp" line="1002"/>
+        <location filename="../StackedBitmap.cpp" line="1169"/>
+        <location filename="../StackedBitmap.cpp" line="1222"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Imaginea este salvată cu setările aplicate.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="955"/>
-        <location filename="../StackedBitmap.cpp" line="994"/>
-        <location filename="../StackedBitmap.cpp" line="1151"/>
-        <location filename="../StackedBitmap.cpp" line="1194"/>
+        <location filename="../StackedBitmap.cpp" line="1004"/>
+        <location filename="../StackedBitmap.cpp" line="1171"/>
+        <location filename="../StackedBitmap.cpp" line="1224"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Imaginea este salvată cu setările încorporate.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
+        <location filename="../StackedBitmap.cpp" line="1116"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Salvează FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1248"/>
+        <location filename="../StackedBitmap.cpp" line="1288"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Încarcă TIFF %1 bit monocrom</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1250"/>
+        <location filename="../StackedBitmap.cpp" line="1290"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Încarcă TIFF %1 bit/ch</translation>

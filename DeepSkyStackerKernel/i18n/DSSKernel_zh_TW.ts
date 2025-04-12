@@ -451,14 +451,16 @@ returned a status of %2, error text is:
 “%3”</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="694"/>
-        <source>Failed to read DATAMIN and DATAMAX keywords from FITS header.
-DeepSkyStacker is unable to process this image.</source>
+        <location filename="../FITSUtil.cpp" line="710"/>
+        <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
+Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
+settings will be used.</source>
         <translation>無法從 FITS 標頭讀取 DATAMIN 和 DATAMAX 關鍵字。
-DeepSkyStacker 無法處理該影像。</translation>
+FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
+將使用設定。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="922"/>
+        <location filename="../FITSUtil.cpp" line="942"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
@@ -1027,43 +1029,43 @@ DeepSkyStacker 無法處理該影像。</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="906"/>
-        <location filename="../StackedBitmap.cpp" line="1099"/>
+        <location filename="../StackedBitmap.cpp" line="1119"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>儲存 %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="953"/>
-        <location filename="../StackedBitmap.cpp" line="992"/>
-        <location filename="../StackedBitmap.cpp" line="1149"/>
-        <location filename="../StackedBitmap.cpp" line="1192"/>
+        <location filename="../StackedBitmap.cpp" line="1002"/>
+        <location filename="../StackedBitmap.cpp" line="1169"/>
+        <location filename="../StackedBitmap.cpp" line="1222"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>影像已儲存並套用設定值.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="955"/>
-        <location filename="../StackedBitmap.cpp" line="994"/>
-        <location filename="../StackedBitmap.cpp" line="1151"/>
-        <location filename="../StackedBitmap.cpp" line="1194"/>
+        <location filename="../StackedBitmap.cpp" line="1004"/>
+        <location filename="../StackedBitmap.cpp" line="1171"/>
+        <location filename="../StackedBitmap.cpp" line="1224"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>影像已儲存並嵌入設定值.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
+        <location filename="../StackedBitmap.cpp" line="1116"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>儲存 %1 bit FITS檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1248"/>
+        <location filename="../StackedBitmap.cpp" line="1288"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>載入 %1 bit 之單色TIFF檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1250"/>
+        <location filename="../StackedBitmap.cpp" line="1290"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>載入每色 %1 bit 之TIFF檔</translation>

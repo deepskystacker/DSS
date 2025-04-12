@@ -205,6 +205,8 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("FitsDDP/Brightness", 1.0));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/RedScale", 1.0));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/BlueScale", 1.0));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMin", 0.0));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMax", 1.0));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", ""));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", false));
