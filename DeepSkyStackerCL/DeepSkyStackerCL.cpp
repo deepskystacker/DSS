@@ -354,9 +354,23 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 
 /* ------------------------------------------------------------------- */
 
+void atexitHandler()
+{
+	//
+	// Retain or delete the trace file as wanted
+	//
+	traceControl.terminate();
+}
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+	//
+	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	//
+	std::atexit(atexitHandler);
+
+
 
 #if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knows how to interpret string data

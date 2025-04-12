@@ -44,6 +44,9 @@ Changes since the last release:
 
 9.  Bug fix: Open picture file should use the Linear transformation not log(Sqrt) so that the image is displayed correctly.
 
+10. Work round problem of Visual C++ not driving the dtor of the global scope "Trace Control" object with the result
+    that the trace file was not being deleted.
+
 Welcome to DeepSkyStacker 5.1.8
 ======================================
 

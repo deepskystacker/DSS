@@ -451,14 +451,15 @@ hat den Status %2 zurückgegeben, Fehlertext ist:
 &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="694"/>
-        <source>Failed to read DATAMIN and DATAMAX keywords from FITS header.
-DeepSkyStacker is unable to process this image.</source>
+        <location filename="../FITSUtil.cpp" line="710"/>
+        <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
+Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
+settings will be used.</source>
         <translation>Die Schlüsselwörter DATAMIN und DATAMAX konnten nicht aus dem FITS-Header gelesen werden.
-DeepSkyStacker kann dieses Bild nicht verarbeiten.</translation>
+Die Standardwerte DATAMIN = %L1 und DATAMAX = %L2 aus den FITS/DDP-Einstellungen werden verwendet.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="922"/>
+        <location filename="../FITSUtil.cpp" line="942"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker debayer 8-Bit-Bilder nicht</translation>
@@ -528,8 +529,8 @@ DeepSkyStacker kann dieses Bild nicht verarbeiten.</translation>
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="263"/>
-        <location filename="../FITSUtil.cpp" line="1032"/>
-        <location filename="../FITSUtil.cpp" line="1720"/>
+        <location filename="../FITSUtil.cpp" line="1052"/>
+        <location filename="../FITSUtil.cpp" line="1740"/>
         <location filename="../MultiBitmapProcess.cpp" line="225"/>
         <location filename="../StackingEngine.cpp" line="2403"/>
         <location filename="../TIFFUtil.cpp" line="1447"/>
@@ -543,8 +544,8 @@ DeepSkyStacker kann dieses Bild nicht verarbeiten.</translation>
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="273"/>
-        <location filename="../FITSUtil.cpp" line="1041"/>
-        <location filename="../FITSUtil.cpp" line="1729"/>
+        <location filename="../FITSUtil.cpp" line="1061"/>
+        <location filename="../FITSUtil.cpp" line="1749"/>
         <location filename="../MultiBitmapProcess.cpp" line="234"/>
         <location filename="../StackingEngine.cpp" line="2412"/>
         <location filename="../TIFFUtil.cpp" line="1456"/>
@@ -1007,8 +1008,8 @@ DeepSkyStacker kann dieses Bild nicht verarbeiten.</translation>
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1253"/>
-        <location filename="../StackedBitmap.cpp" line="1368"/>
+        <location filename="../StackedBitmap.cpp" line="1293"/>
+        <location filename="../StackedBitmap.cpp" line="1408"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Lade %1</translation>
@@ -1027,55 +1028,55 @@ DeepSkyStacker kann dieses Bild nicht verarbeiten.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="906"/>
-        <location filename="../StackedBitmap.cpp" line="1099"/>
+        <location filename="../StackedBitmap.cpp" line="1119"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Speicherung %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="953"/>
-        <location filename="../StackedBitmap.cpp" line="992"/>
-        <location filename="../StackedBitmap.cpp" line="1149"/>
-        <location filename="../StackedBitmap.cpp" line="1192"/>
+        <location filename="../StackedBitmap.cpp" line="1002"/>
+        <location filename="../StackedBitmap.cpp" line="1169"/>
+        <location filename="../StackedBitmap.cpp" line="1222"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Bild mit den verwendeten Einstellungen speichern.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="955"/>
-        <location filename="../StackedBitmap.cpp" line="994"/>
-        <location filename="../StackedBitmap.cpp" line="1151"/>
-        <location filename="../StackedBitmap.cpp" line="1194"/>
+        <location filename="../StackedBitmap.cpp" line="1004"/>
+        <location filename="../StackedBitmap.cpp" line="1171"/>
+        <location filename="../StackedBitmap.cpp" line="1224"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Bild mit den eingebetteten Einstellungen speichern.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1096"/>
+        <location filename="../StackedBitmap.cpp" line="1116"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Als %1 Bit FITS speichern</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1248"/>
+        <location filename="../StackedBitmap.cpp" line="1288"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>%1 Bit Schwarz-Weiss TIFF laden</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1250"/>
+        <location filename="../StackedBitmap.cpp" line="1290"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>%1 Bit/Ch TIFF laden</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1363"/>
+        <location filename="../StackedBitmap.cpp" line="1403"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>%1 Bit schwarzweiß FITS Bild laden</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1365"/>
+        <location filename="../StackedBitmap.cpp" line="1405"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>%1 Bit/Ch FITS Bild laden</translation>
