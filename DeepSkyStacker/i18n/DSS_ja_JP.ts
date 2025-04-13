@@ -1274,65 +1274,65 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="516"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="509"/>
+        <location filename="../ProcessingDlg.cpp" line="517"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <location filename="../ProcessingDlg.cpp" line="518"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <location filename="../ProcessingDlg.cpp" line="519"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <location filename="../ProcessingDlg.cpp" line="520"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <location filename="../ProcessingDlg.cpp" line="521"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="522"/>
+        <location filename="../ProcessingDlg.cpp" line="530"/>
         <source>Save Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="614"/>
+        <location filename="../ProcessingDlg.cpp" line="622"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="629"/>
+        <location filename="../ProcessingDlg.cpp" line="637"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="642"/>
+        <location filename="../ProcessingDlg.cpp" line="650"/>
         <source>Exposure: %1 </source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="643"/>
+        <location filename="../ProcessingDlg.cpp" line="651"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation type="unfinished">
@@ -1340,7 +1340,7 @@ Detected Cold Pixels: %L3 (%L4%)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1145"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation type="unfinished"></translation>
@@ -1374,7 +1374,7 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="158"/>
+        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
         <translation type="unfinished"></translation>
@@ -1449,13 +1449,13 @@ Please change the name.</source>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="374"/>
+        <location filename="../ui/RawDDPSettings.ui" line="387"/>
         <source>Colour Adjustment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="449"/>
+        <location filename="../ui/RawDDPSettings.ui" line="462"/>
         <source>Brightness</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1486,78 +1486,98 @@ Please change the name.</source>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="527"/>
+        <location filename="../ui/RawDDPSettings.ui" line="628"/>
         <source>Bayer Matrix Transformation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="536"/>
+        <location filename="../ui/RawDDPSettings.ui" line="637"/>
         <source>Bilinear Interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="556"/>
+        <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="576"/>
+        <location filename="../ui/RawDDPSettings.ui" line="677"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="592"/>
+        <location filename="../ui/RawDDPSettings.ui" line="693"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="618"/>
+        <location filename="../ui/RawDDPSettings.ui" line="719"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="634"/>
+        <location filename="../ui/RawDDPSettings.ui" line="735"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="290"/>
+        <location filename="../ui/RawDDPSettings.ui" line="303"/>
         <source>FITS Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="311"/>
+        <location filename="../ui/RawDDPSettings.ui" line="324"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="334"/>
+        <location filename="../ui/RawDDPSettings.ui" line="347"/>
         <source>Camera:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="469"/>
         <source>Red scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="476"/>
         <source>Blue scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="485"/>
+        <location filename="../ui/RawDDPSettings.ui" line="498"/>
         <source>Bayer Pattern Filter used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="650"/>
+        <location filename="../ui/RawDDPSettings.ui" line="546"/>
+        <source>FITS Data Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="552"/>
+        <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="565"/>
+        <source>DATAMIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="595"/>
+        <source>DATAMAX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="754"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2948,7 +2968,7 @@ You can probably get another one or download the final release from the web site
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="631"/>
+        <location filename="../DeepSkyStacker.cpp" line="632"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation type="unfinished"></translation>

@@ -557,7 +557,9 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 Quality: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>#星級：%1
+品質：%2
+半高寬：%3</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="671"/>
@@ -1276,7 +1278,7 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1145"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要儲存這些改變嗎？</translation>
@@ -1305,65 +1307,65 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="516"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色16 bit (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="509"/>
+        <location filename="../ProcessingDlg.cpp" line="517"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <location filename="../ProcessingDlg.cpp" line="518"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <location filename="../ProcessingDlg.cpp" line="519"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色16 bit (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <location filename="../ProcessingDlg.cpp" line="520"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色32 bit - 整數 (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <location filename="../ProcessingDlg.cpp" line="521"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 檔 每色32 bit - 有理數 (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="522"/>
+        <location filename="../ProcessingDlg.cpp" line="530"/>
         <source>Save Image</source>
         <translation>儲存影像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="614"/>
+        <location filename="../ProcessingDlg.cpp" line="622"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>沒有可存的照片.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="629"/>
+        <location filename="../ProcessingDlg.cpp" line="637"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>沒有資訊</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="642"/>
+        <location filename="../ProcessingDlg.cpp" line="650"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="643"/>
+        <location filename="../ProcessingDlg.cpp" line="651"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1399,7 +1401,7 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>關閉</translation>
     </message>
     <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="158"/>
+        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
         <translation>處理設定名稱不能包含 / 或 \。
@@ -1475,13 +1477,13 @@ Please change the name.</source>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="374"/>
+        <location filename="../ui/RawDDPSettings.ui" line="387"/>
         <source>Colour Adjustment</source>
         <translation>色彩調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="449"/>
+        <location filename="../ui/RawDDPSettings.ui" line="462"/>
         <source>Brightness</source>
         <translation>亮度</translation>
     </message>
@@ -1512,78 +1514,98 @@ Please change the name.</source>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="527"/>
+        <location filename="../ui/RawDDPSettings.ui" line="628"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayer矩陣轉換</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="536"/>
+        <location filename="../ui/RawDDPSettings.ui" line="637"/>
         <source>Bilinear Interpolation</source>
         <translation>雙線性內插</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="556"/>
+        <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>自調適均質性導向(AHD)內插法</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="576"/>
+        <location filename="../ui/RawDDPSettings.ui" line="677"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>使用Bayer Drizzle (無內插，不解譯Bayer矩陣)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="592"/>
+        <location filename="../ui/RawDDPSettings.ui" line="693"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>本選項不對Bayer矩陣作任何更動與內插，每個像元只取Bayer矩陣中原有的顏色。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="618"/>
+        <location filename="../ui/RawDDPSettings.ui" line="719"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>自原始Bayer矩陣產生大像元 (無內插)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="634"/>
+        <location filename="../ui/RawDDPSettings.ui" line="735"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>本選項將以Bayer矩陣中每四個GRGB像元合併成一個大像元，因此產生的影像長寬將各減半。</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="290"/>
+        <location filename="../ui/RawDDPSettings.ui" line="303"/>
         <source>FITS Files</source>
         <translation>FITS 文件</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="311"/>
+        <location filename="../ui/RawDDPSettings.ui" line="324"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;單平面 16 位 FITS 檔來自需要去拜耳化的“單色”相機（DSLR、無反光鏡、CCD 或 CMOS）。&lt;br/&gt;取消選中 &lt;span style=“ font-style：italic;”&gt;&lt;/span&gt; 以嘗試基於 FITS 關鍵字的自動檢測。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="334"/>
+        <location filename="../ui/RawDDPSettings.ui" line="347"/>
         <source>Camera:</source>
         <translation>相機:</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="469"/>
         <source>Red scale</source>
         <translation>紅色比率</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="476"/>
         <source>Blue scale</source>
         <translation>藍色比率</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="485"/>
+        <location filename="../ui/RawDDPSettings.ui" line="498"/>
         <source>Bayer Pattern Filter used</source>
         <translation>所使用的Bayer濾鏡配置</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="650"/>
+        <location filename="../ui/RawDDPSettings.ui" line="546"/>
+        <source>FITS Data Range</source>
+        <translation>FITS 數據範圍</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="552"/>
+        <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
+        <translation>DATAMIN 和 DATAMAX FITS 關鍵字的預設值。   這些僅在讀取浮點 FITS 檔案時使用，並且僅當 FITS 檔案不包含這些關鍵字時才會使用。</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="565"/>
+        <source>DATAMIN</source>
+        <translation>DATAMIN</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="595"/>
+        <source>DATAMAX</source>
+        <translation>DATAMAX</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="754"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>檔案中的數值有正負號時，強制忽略正負號</translation>
     </message>
@@ -3011,7 +3033,7 @@ You can probably get another one or download the final release from the web site
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="631"/>
+        <location filename="../DeepSkyStacker.cpp" line="632"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

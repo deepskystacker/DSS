@@ -560,7 +560,9 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
 Quality: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>#Yıldızlar: %1
+Kalite: %2
+FWHM: %3</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="671"/>
@@ -1279,7 +1281,7 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1145"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
@@ -1308,65 +1310,65 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="516"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="509"/>
+        <location filename="../ProcessingDlg.cpp" line="517"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <location filename="../ProcessingDlg.cpp" line="518"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <location filename="../ProcessingDlg.cpp" line="519"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <location filename="../ProcessingDlg.cpp" line="520"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <location filename="../ProcessingDlg.cpp" line="521"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="522"/>
+        <location filename="../ProcessingDlg.cpp" line="530"/>
         <source>Save Image</source>
         <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="614"/>
+        <location filename="../ProcessingDlg.cpp" line="622"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="629"/>
+        <location filename="../ProcessingDlg.cpp" line="637"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="642"/>
+        <location filename="../ProcessingDlg.cpp" line="650"/>
         <source>Exposure: %1 </source>
         <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="643"/>
+        <location filename="../ProcessingDlg.cpp" line="651"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1402,7 +1404,7 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="158"/>
+        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
         <translation>İşleme Ayarları adı / veya \ içeremez.
@@ -1478,13 +1480,13 @@ Lütfen adı değiştirin.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="374"/>
+        <location filename="../ui/RawDDPSettings.ui" line="387"/>
         <source>Colour Adjustment</source>
         <translation>Renk Ayarları</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="449"/>
+        <location filename="../ui/RawDDPSettings.ui" line="462"/>
         <source>Brightness</source>
         <translation>Parlaklık</translation>
     </message>
@@ -1515,78 +1517,98 @@ Lütfen adı değiştirin.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="527"/>
+        <location filename="../ui/RawDDPSettings.ui" line="628"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayer Matris Dönüşümü</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="536"/>
+        <location filename="../ui/RawDDPSettings.ui" line="637"/>
         <source>Bilinear Interpolation</source>
         <translation>Çift Çizgili Ekleme</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="556"/>
+        <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Uyabilen Homojenlik Doğrultulu (AHD) Ara değeri</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="576"/>
+        <location filename="../ui/RawDDPSettings.ui" line="677"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Bayer Serpiştirme algoritmasını kullan( ekleme yok, bayersizleştirme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="592"/>
+        <location filename="../ui/RawDDPSettings.ui" line="693"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Bu seçenek Bayer matrisini olduğu gibi kullanır. Ekleme yapılmaz ve her göze (piksel) sadece matrisin temel bileşimlerinden verilir.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="618"/>
+        <location filename="../ui/RawDDPSettings.ui" line="719"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Ham Bayer matrisinden süper gözeler oluştur (ekleme yok)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="634"/>
+        <location filename="../ui/RawDDPSettings.ui" line="735"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Bu seçenek 4 gözeli (pikselli) gruplardan (KMYG) bir süper piksel yaratmak için Bayer Matrisi kullanır. Sonuçlanan görüntünün boyutları ikiye bölünür.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="290"/>
+        <location filename="../ui/RawDDPSettings.ui" line="303"/>
         <source>FITS Files</source>
         <translation>FITS dosyalar</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="311"/>
+        <location filename="../ui/RawDDPSettings.ui" line="324"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tek düzlem 16 bit FITS Dosyaları, de-Bayered edilmesi gereken bir &amp;quot;Tek Çekim Renkli&amp;quot; kameradan (DSLR, aynasız, CCD veya CMOS) gelir.&lt;br/&gt;FITS anahtar sözcüklerine dayalı otomatik algılamayı denemek için &lt;span style=&quot; font-style:italic;&quot;&gt;işaretsiz&lt;/span&gt; bırakın.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="334"/>
+        <location filename="../ui/RawDDPSettings.ui" line="347"/>
         <source>Camera:</source>
         <translation>Kamera:</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="469"/>
         <source>Red scale</source>
         <translation>Kırmızı ölçeği</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="476"/>
         <source>Blue scale</source>
         <translation>Mavi Ölçeği</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="485"/>
+        <location filename="../ui/RawDDPSettings.ui" line="498"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Bayer Doku Filtresi kullanıldı</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="650"/>
+        <location filename="../ui/RawDDPSettings.ui" line="546"/>
+        <source>FITS Data Range</source>
+        <translation>FITS Veri Aralığı</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="552"/>
+        <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
+        <translation>DATAMIN ve DATAMAX FITS anahtar sözcükleri için varsayılan değerler. Bunlar yalnızca kayan nokta FITS dosyalarını okurken ve yalnızca FITS dosyası bu anahtar sözcükleri içermiyorsa kullanılacaktır.</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="565"/>
+        <source>DATAMIN</source>
+        <translation>DATAMIN</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="595"/>
+        <source>DATAMAX</source>
+        <translation>DATAMAX</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="754"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>İşaretlenen değerler hafızaya alındığında işaretlenmemiş değerler kullanmaya zorla</translation>
     </message>
@@ -3021,7 +3043,7 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="631"/>
+        <location filename="../DeepSkyStacker.cpp" line="632"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
