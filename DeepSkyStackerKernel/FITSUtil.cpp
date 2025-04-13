@@ -702,8 +702,6 @@ bool CFITSReader::Read()
 		// If we don't know the data range, then inform the user of the default values we will
 		// use to scale the data, and carry on.
 		// 
-		// Use Qt::ConnectionType::DirectConnection so that the message is issued synchronously.
-		//
 		if (m_bFloat && !minMaxRead && !(isDSSFITS || m_bDSI))
 		{
 			DSSBase::instance()->reportError(
@@ -711,13 +709,11 @@ bool CFITSReader::Read()
 					"Failed to read DATAMIN and DATAMAX keywords from the FITS header.\n"
 					"Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP\n"
 					"settings will be used.")
-					.arg(dataMin, 0, 'f', QLocale::FloatingPointShortest)
-				    .arg(dataMax, 0, 'f', QLocale::FloatingPointShortest),
+				.arg(dataMin, 0, 'f', QLocale::FloatingPointShortest)
+				.arg(dataMax, 0, 'f', QLocale::FloatingPointShortest),
 				"DATAMINMAX",
 				DSSBase::Severity::Information,
-				DSSBase::Method::QErrorMessage,
-				false,
-				Qt::ConnectionType::DirectConnection);
+				DSSBase::Method::QErrorMessage);
 		}
 
 		//
