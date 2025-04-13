@@ -1593,22 +1593,22 @@ Cambie el nombre.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="546"/>
         <source>FITS Data Range</source>
-        <translation type="unfinished"></translation>
+        <translation>Rango de datos FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="552"/>
         <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valores predeterminados para las palabras clave FITS DATAMIN y DATAMAX. Solo se usarán al leer archivos FITS de coma flotante y solo si el archivo FITS no las contiene.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="565"/>
         <source>DATAMIN</source>
-        <translation type="unfinished"></translation>
+        <translation>DATAMIN</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="595"/>
         <source>DATAMAX</source>
-        <translation type="unfinished"></translation>
+        <translation>DATAMAX</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="754"/>
