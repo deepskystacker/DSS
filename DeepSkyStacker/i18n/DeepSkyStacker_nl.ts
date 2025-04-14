@@ -13,55 +13,55 @@
 <context>
     <name>DSS</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="107"/>
+        <location filename="../StackingDlg.cpp" line="116"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Bestand Lijst (*.dssfilelist)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="108"/>
+        <location filename="../StackingDlg.cpp" line="119"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Bestand Lijst (*.txt)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="109"/>
+        <location filename="../StackingDlg.cpp" line="120"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Alle Bestanden (*)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="115"/>
+        <location filename="../StackingDlg.cpp" line="124"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Afbeeldingsbestanden (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="119"/>
+        <location filename="../StackingDlg.cpp" line="128"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>JPEG or PNG Bestanden (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="120"/>
+        <location filename="../StackingDlg.cpp" line="129"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>TIFF Bestanden (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="121"/>
+        <location filename="../StackingDlg.cpp" line="130"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>RAW Bestanden (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="124"/>
+        <location filename="../StackingDlg.cpp" line="133"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>FITS Bestanden (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="125"/>
+        <location filename="../StackingDlg.cpp" line="134"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Alle Bestanden (*)</translation>
@@ -151,81 +151,81 @@ Copyright Tőkés Attila</translation>
         <translation>Standaard</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="116"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Spanish versie: Ricardo Contreras en het team uit</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="120"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Tsjechische versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="125"/>
+        <location filename="../About.cpp" line="124"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Italiaanse versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="128"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Catalaanse versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="132"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Duitse versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="135"/>
-        <location filename="../About.cpp" line="139"/>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="134"/>
+        <location filename="../About.cpp" line="138"/>
+        <location filename="../About.cpp" line="150"/>
+        <location filename="../About.cpp" line="154"/>
         <location filename="../About.cpp" line="155"/>
-        <location filename="../About.cpp" line="156"/>
         <source>and</source>
         <translation>en</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="138"/>
+        <location filename="../About.cpp" line="137"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Nederlandse versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="141"/>
         <source>Simplified Chinese version: 张博 (Zhang Bo)&lt;br&gt;</source>
         <translation>Vereenvoudigde Chinese versie: 张博 (Zhang Bo)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="145"/>
+        <location filename="../About.cpp" line="144"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Traditioneel Chinees versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="149"/>
+        <location filename="../About.cpp" line="148"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portugeese versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="154"/>
+        <location filename="../About.cpp" line="153"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Roemeense versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="159"/>
+        <location filename="../About.cpp" line="158"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Russische versie:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="163"/>
+        <location filename="../About.cpp" line="162"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Turkse versie:</translation>
@@ -532,35 +532,35 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1120"/>
+        <location filename="../editstars.cpp" line="611"/>
+        <location filename="../editstars.cpp" line="1118"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klik om hier de komeet te plaatsen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="615"/>
-        <location filename="../editstars.cpp" line="1122"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1120"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Klik om deze ster toe te voegen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1129"/>
+        <location filename="../editstars.cpp" line="621"/>
+        <location filename="../editstars.cpp" line="1127"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Klik om de komeet te verwijderen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="625"/>
-        <location filename="../editstars.cpp" line="1131"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1129"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Klik om deze ster te verwijderen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="667"/>
+        <location filename="../editstars.cpp" line="665"/>
         <source>#Stars: %1
 Score: %2
 Quality: %3
@@ -572,7 +572,7 @@ Kwaliteit: %3
 FWHM: %4</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="1179"/>
+        <location filename="../editstars.cpp" line="1177"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -582,8 +582,8 @@ Score: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="675"/>
-        <location filename="../editstars.cpp" line="1186"/>
+        <location filename="../editstars.cpp" line="673"/>
+        <location filename="../editstars.cpp" line="1184"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -591,8 +591,8 @@ Comet:%1</source>
 Komeet:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="675"/>
-        <location filename="../editstars.cpp" line="1186"/>
+        <location filename="../editstars.cpp" line="673"/>
+        <location filename="../editstars.cpp" line="1184"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ja</translation>
@@ -846,20 +846,20 @@ Vink dit vakje aan om het tracebestand te behouden.</translation>
         <translation>Bewaar als...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="575"/>
+        <location filename="../ExplorerBar.cpp" line="577"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Laad DeepSkyStacker Instellingen</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="579"/>
-        <location filename="../ExplorerBar.cpp" line="627"/>
+        <location filename="../ExplorerBar.cpp" line="581"/>
+        <location filename="../ExplorerBar.cpp" line="629"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Instellingen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="622"/>
+        <location filename="../ExplorerBar.cpp" line="624"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Bewaar DeepSkyStacker Instellingen</translation>
@@ -868,31 +868,31 @@ Vink dit vakje aan om het tracebestand te behouden.</translation>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="650"/>
+        <location filename="../StackingDlg.cpp" line="666"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="652"/>
+        <location filename="../StackingDlg.cpp" line="668"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="651"/>
+        <location filename="../StackingDlg.cpp" line="667"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="653"/>
+        <location filename="../StackingDlg.cpp" line="669"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="649"/>
+        <location filename="../StackingDlg.cpp" line="665"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Light</translation>
@@ -1301,94 +1301,94 @@ Gedetecteerde koude pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1217"/>
+        <location filename="../ProcessingDlg.cpp" line="1145"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Wilt u de veranderingen bewaren?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="416"/>
+        <location filename="../ProcessingDlg.cpp" line="414"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF en FITS-afbeelding (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="323"/>
+        <location filename="../ProcessingDlg.cpp" line="321"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Ster Masker gemaakt door DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="325"/>
+        <location filename="../ProcessingDlg.cpp" line="323"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Bewaren van Ster Masker in %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="454"/>
+        <location filename="../ProcessingDlg.cpp" line="452"/>
         <source>Failed to load image %1</source>
         <translation>Kan afbeelding %1 niet laden</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="510"/>
+        <location filename="../ProcessingDlg.cpp" line="516"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Afbeelding 16 bit/kan (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="511"/>
+        <location filename="../ProcessingDlg.cpp" line="517"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Afbeelding 32 bit/kan - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="512"/>
+        <location filename="../ProcessingDlg.cpp" line="518"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Afbeelding 32 bit/kan - rationeel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="513"/>
+        <location filename="../ProcessingDlg.cpp" line="519"/>
         <source>FITS Image 16 bit/ch (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Afbeelding 16 bit/kan (*fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="514"/>
+        <location filename="../ProcessingDlg.cpp" line="520"/>
         <source>FITS Image 32 bit/ch - integer (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Image 32 bit/ch - integer (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="515"/>
+        <location filename="../ProcessingDlg.cpp" line="521"/>
         <source>FITS Image 32 bit/ch - rational (*.fts)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Afbeelding 32 bit/kan - rationeel (*.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="524"/>
+        <location filename="../ProcessingDlg.cpp" line="530"/>
         <source>Save Image</source>
         <translation>Bewaar afbeelding</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="616"/>
+        <location filename="../ProcessingDlg.cpp" line="622"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Er is geen afbeelding om te bewaren.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="631"/>
+        <location filename="../ProcessingDlg.cpp" line="637"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Geen informatie beschikbaar</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="644"/>
+        <location filename="../ProcessingDlg.cpp" line="650"/>
         <source>Exposure: %1 </source>
         <translation>Belichting: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="645"/>
+        <location filename="../ProcessingDlg.cpp" line="651"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1410,22 +1410,22 @@ Gedetecteerde koude pixels: %L3 (%L4%)
         <translation>Toevoegen</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="41"/>
+        <location filename="../ui/ProcessingSettingsDlg.ui" line="47"/>
         <source>Delete</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="61"/>
+        <location filename="../ui/ProcessingSettingsDlg.ui" line="73"/>
         <source>Load</source>
         <translation>Laad</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="71"/>
+        <location filename="../ui/ProcessingSettingsDlg.ui" line="86"/>
         <source>Close</source>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="147"/>
+        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
         <source>The Processing Settings name may not contain either a / or \.
 Please change the name.</source>
         <translation>De naam van de verwerkingsinstellingen mag geen / of \ bevatten.
@@ -1502,13 +1502,13 @@ Wijzig de naam.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="374"/>
+        <location filename="../ui/RawDDPSettings.ui" line="387"/>
         <source>Colour Adjustment</source>
         <translation>Kleur Aanpassing</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="449"/>
+        <location filename="../ui/RawDDPSettings.ui" line="462"/>
         <source>Brightness</source>
         <translation>Helderheid</translation>
     </message>
@@ -1539,78 +1539,98 @@ Wijzig de naam.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="527"/>
+        <location filename="../ui/RawDDPSettings.ui" line="628"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayer Matrix Verplaatsing</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="536"/>
+        <location filename="../ui/RawDDPSettings.ui" line="637"/>
         <source>Bilinear Interpolation</source>
         <translation>Bi-lineair Interpolatie</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="556"/>
+        <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Geleide Aanpassende Homogeniteit (AHD) Interpolatie</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="576"/>
+        <location filename="../ui/RawDDPSettings.ui" line="677"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Gebruik Bayer Drizzle algoritme (geen interpolatie, geen debayerisatie)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="592"/>
+        <location filename="../ui/RawDDPSettings.ui" line="693"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Deze optie gebruikt de Bayer matrix. Geen interpolatie wordt toegepast en iedere pixel krijgt alleen de primaire onderdelen van de matrix.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="618"/>
+        <location filename="../ui/RawDDPSettings.ui" line="719"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Maak super-pixels van de ruwe Bayer matrix (geen interpolatie)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="634"/>
+        <location filename="../ui/RawDDPSettings.ui" line="735"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Deze optie gebruikt de Bayer matrix om een super-pixel te maken van iedere groep van 4 pixels (RGBG). De afmeting van de resulterende afbeelding is daardoor gedeeld door twee.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="290"/>
+        <location filename="../ui/RawDDPSettings.ui" line="303"/>
         <source>FITS Files</source>
         <translation>FITS Bestanden</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="311"/>
+        <location filename="../ui/RawDDPSettings.ui" line="324"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;16-bits FITS-bestanden met één vlak zijn afkomstig van een &amp;quot;One-Shot-Colour&amp;quot;-camera (DSLR, spiegelloos, CCD of CMOS) die van de Bayer moeten worden ontdaan.&lt;br/&gt;Laat &lt;span style=&quot; font-style:italic;&quot;&gt;niet aangevinkt&lt;/span&gt; om automatische detectie op basis van FITS-trefwoorden te proberen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="334"/>
+        <location filename="../ui/RawDDPSettings.ui" line="347"/>
         <source>Camera:</source>
         <translation>Camera:</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="469"/>
         <source>Red scale</source>
         <translation>Rode schaal</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="476"/>
         <source>Blue scale</source>
         <translation>Blauwe schaal</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="485"/>
+        <location filename="../ui/RawDDPSettings.ui" line="498"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Bayer Filter Patroon gebruikt</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="650"/>
+        <location filename="../ui/RawDDPSettings.ui" line="546"/>
+        <source>FITS Data Range</source>
+        <translation>FITS-gegevensbereik</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="552"/>
+        <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
+        <translation>Standaardwaarden voor DATAMIN- en DATAMAX FITS-trefwoorden. Deze worden alleen gebruikt bij het lezen van FITS-bestanden met drijvende-komma-waarden en alleen als het FITS-bestand deze trefwoorden niet bevat.</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="565"/>
+        <source>DATAMIN</source>
+        <translation>DATAMIN</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="595"/>
+        <source>DATAMAX</source>
+        <translation>DATAMAX</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="754"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Forceer het gebruik van niet getekende waarden waar getekende waarden bewaard worden</translation>
     </message>
@@ -1731,93 +1751,93 @@ Wijzig de naam.</translation>
         <translation>Selecteer de beste</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="143"/>
+        <location filename="../ui/RegisterSettings.ui" line="152"/>
         <source>% of the pictures and stack them</source>
         <translation>% platen en stapel ze</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="210"/>
+        <location filename="../ui/RegisterSettings.ui" line="219"/>
         <source>Advanced</source>
         <translation>Ge-avanceerd</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="216"/>
+        <location filename="../ui/RegisterSettings.ui" line="225"/>
         <source>Star detection threshold</source>
         <translation>Ster detectie drempel</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="259"/>
+        <location filename="../ui/RegisterSettings.ui" line="268"/>
         <source>Use automatic threshold</source>
         <translation>Automatische drempel gebruiken</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="281"/>
+        <location filename="../ui/RegisterSettings.ui" line="290"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
         <translation>Bereken het aantal gedetecteerde sterren</translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="324"/>
+        <location filename="../ui/RegisterSettings.ui" line="333"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
         <translation>Reduceer de ruis door een Rechtlijnig Filter te gebruiken</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="171"/>
+        <location filename="../RegisterSettings.cpp" line="197"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Vergeet niet om dark, flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="174"/>
+        <location filename="../RegisterSettings.cpp" line="200"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Vergeet niet om dark en flat platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="177"/>
+        <location filename="../RegisterSettings.cpp" line="203"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Vergeet niet om dark en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="180"/>
+        <location filename="../RegisterSettings.cpp" line="206"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Vergeet niet om flat en offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="183"/>
+        <location filename="../RegisterSettings.cpp" line="209"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Vergeet niet om dark platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="186"/>
+        <location filename="../RegisterSettings.cpp" line="212"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Vergeet niet om flat platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="189"/>
+        <location filename="../RegisterSettings.cpp" line="215"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Vergeet niet om offset platen toe te voegen en aan te vinken voor stapelen.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="213"/>
+        <location filename="../RegisterSettings.cpp" line="239"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>donkere, platte en compensatie/verstoring aangevinkt.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="277"/>
+        <location filename="../RegisterSettings.cpp" line="302"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registreren %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="284"/>
+        <location filename="../RegisterSettings.cpp" line="309"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 ster(ren)</translation>
@@ -2417,7 +2437,7 @@ Gebruik dit als u van plan bent on in andere software te bewerken of om de afbee
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="190"/>
+        <location filename="../StackSettings.cpp" line="189"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten</translation>
@@ -2426,12 +2446,12 @@ Gebruik dit als u van plan bent on in andere software te bewerken of om de afbee
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="784"/>
+        <location filename="../StackingDlg.cpp" line="790"/>
         <source>Rename group</source>
         <translation>Groep hernoemen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="871"/>
+        <location filename="../StackingDlg.cpp" line="877"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -2443,43 +2463,43 @@ Dit kan niet worden omgekeerd of gestopt.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="626"/>
+        <location filename="../StackingDlg.cpp" line="642"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Gebruik als referentie plaat</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="630"/>
+        <location filename="../StackingDlg.cpp" line="646"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Vink aan</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="632"/>
+        <location filename="../StackingDlg.cpp" line="648"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Vink uit</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="635"/>
+        <location filename="../StackingDlg.cpp" line="651"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Verwijder van lijst</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="641"/>
+        <location filename="../StackingDlg.cpp" line="657"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Kopier naar klembord</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="644"/>
+        <location filename="../StackingDlg.cpp" line="660"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Verwijder van schijf...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="674"/>
+        <location filename="../StackingDlg.cpp" line="683"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -2490,69 +2510,69 @@ Delete-toets om geselecteerde rijen te verwijderen (niet wissen).
 Rechtermuisknop om het menu weer te geven</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1436"/>
+        <location filename="../StackingDlg.cpp" line="1442"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 niet bestaat of geen bestand is</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1445"/>
+        <location filename="../StackingDlg.cpp" line="1451"/>
         <source>Failed to load image %1</source>
         <translation>Kan afbeelding %1 niet laden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1748"/>
+        <location filename="../StackingDlg.cpp" line="1747"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Light Platen:%1      -      Dark Platen: %2      -      Flat Platen:%3      -   Dark Flat Platen: %4   -      Offset/Bias Platen: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2145"/>
+        <location filename="../StackingDlg.cpp" line="2147"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Niet al uw gecontroleerde lichtframes hebben een berekende kwaliteit. U moet uw lichtframes opnieuw registreren.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1401"/>
+        <location filename="../StackingDlg.cpp" line="1407"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Laden %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1493"/>
+        <location filename="../StackingDlg.cpp" line="1499"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Bestand %1 is niet geladen omdat het al was geladen in groep %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1517"/>
+        <location filename="../StackingDlg.cpp" line="1523"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Open Light Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1520"/>
+        <location filename="../StackingDlg.cpp" line="1526"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Open Dark Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1538"/>
+        <location filename="../StackingDlg.cpp" line="1544"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Open Dark Flat Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1526"/>
+        <location filename="../StackingDlg.cpp" line="1532"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Open Flat Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="638"/>
+        <location filename="../StackingDlg.cpp" line="654"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Eigenschappen...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="971"/>
+        <location filename="../StackingDlg.cpp" line="977"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -2561,13 +2581,13 @@ Rechtermuisknop om het menu weer te geven</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1532"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Open Offset Platen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1761"/>
+        <location filename="../StackingDlg.cpp" line="1760"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2581,37 +2601,37 @@ Dark Flat Platen: %4
 Offset/Bias Platen: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1844"/>
+        <location filename="../StackingDlg.cpp" line="1843"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Open andere Bestand Lijst...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2016"/>
+        <location filename="../StackingDlg.cpp" line="2018"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versie %1 is beschikbaar om te downloaden.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2033"/>
+        <location filename="../StackingDlg.cpp" line="2035"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Versie controle internetfoutcode %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2134"/>
+        <location filename="../StackingDlg.cpp" line="2136"/>
         <source>Total registering time: %1 %2</source>
         <translation>Totale registratietijd: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2161"/>
+        <location filename="../StackingDlg.cpp" line="2163"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>U moet light platen aanvinken om te registreren.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2218"/>
+        <location filename="../StackingDlg.cpp" line="2220"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2621,19 +2641,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker moet bestanden aanmaken in deze map(pen) gedurende de bewerking.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2239"/>
+        <location filename="../StackingDlg.cpp" line="2241"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>De aangevinkte afbeeldingen zijn niet compatibel: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2243"/>
+        <location filename="../StackingDlg.cpp" line="2245"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>U moet light platen aanvinken om te stapelen.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2290"/>
+        <location filename="../StackingDlg.cpp" line="2293"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2643,18 +2663,18 @@ Do you want to save the changes?</source>
 Wilt u deze veranderingen bewaren?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2404"/>
+        <location filename="../StackingDlg.cpp" line="2407"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Totale stapeltijd: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2435"/>
+        <location filename="../StackingDlg.cpp" line="2438"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Bewaren Uiteindelijke afbeelding in %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2517"/>
+        <location filename="../StackingDlg.cpp" line="2522"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3023,14 +3043,14 @@ Klik met de rechtermuisknop om gedrag te veranderen.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="142"/>
+        <location filename="../DeepSkyStacker.cpp" line="105"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Deze bètaversie van DeepSkyStacker is verlopen
 U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website downloaden.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="170"/>
+        <location filename="../DeepSkyStacker.cpp" line="133"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3038,17 +3058,17 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
 (U kan deze optie later aan of uit zetten in het &quot;Over DeepSkyStacker&quot; venster)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="411"/>
+        <location filename="../DeepSkyStacker.cpp" line="373"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="355"/>
+        <location filename="../DeepSkyStacker.cpp" line="318"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 niet bestaat of geen bestand is</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="634"/>
+        <location filename="../DeepSkyStacker.cpp" line="597"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
@@ -3202,18 +3222,6 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
         <translation>Zet het zwarte punt niet op 0</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="394"/>
-        <source>You are using a low star detection threshold</source>
-        <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>U gebruikt een lage ster detectie drempel</translation>
-    </message>
-    <message>
-        <location filename="../RecommendedSettings.cpp" line="397"/>
-        <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
-        <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
-        <translation>Gebruik een Rechtlijning Filter voor het registreren van de afbeeldingen om de ruis te reduceren en om de ster detectie te bevorderen</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="414"/>

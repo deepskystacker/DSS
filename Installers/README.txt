@@ -16,10 +16,12 @@ Known problems:
 
 Changes since the last release:
 
-1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
-    the minimum and maximum pixel values instead of scanning the image data.
+1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.
+	If present use these to determine the minimum and maximum pixel values instead of scanning the image data which
+	gave inconsistent image scaling.
     This should be a) much faster, and b) should result in consistent image scaling.
-    Also write these keywords when writing FITS floating point files.
+	
+    Also write these keywords when writing floating-point FITS files.
 
 2.  Bug fix: Fix rounding error in "stack recap" dialogue in calculation of total exposure time.
 
@@ -46,6 +48,9 @@ Changes since the last release:
 
 10. Work round problem of Visual C++ not driving the dtor of the global scope "Trace Control" object with the result
     that the trace file was not being deleted.
+	
+11. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings
+
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
