@@ -1424,7 +1424,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
               "DeepSkyStacker has crashed in the Visual C++ Redistributable code, probably because that is back-level.\n"
               "Please download the latest version of the Visual C++ Redistributable from the Microsoft website.\n\n"
               "    https://aka.ms/vs/17/release/vc_redist.x64.exe\n\n"
-              "and then run it, selecting the \"Repair\" option\n"
+              "and then run it, selecting the \"Repair\" option\n\n"
           };
 
           OnOutput(errorMessage);
