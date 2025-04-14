@@ -65,8 +65,7 @@ public:
 	// severity 2 is QMessageBox::Warning
 	virtual void reportError(const QString& message, const QString& type,
 		Severity severity = Severity::Warning, Method method = Method::QMessageBox,
-		bool terminate = false,
-		Qt::ConnectionType = Qt::ConnectionType::AutoConnection) = 0;
+		bool terminate = false) = 0;
 
 	inline static DSSBase* instance()
 	{

@@ -86,7 +86,7 @@ bool DeepSkyStackerCommandLine::Run()
 	return true;
 }
 
-void DeepSkyStackerCommandLine::reportError(const QString& message, const QString&, Severity, Method, bool terminate, Qt::ConnectionType)
+void DeepSkyStackerCommandLine::reportError(const QString& message, const QString&, Severity, Method, bool terminate)
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
 	std::cerr << message.toUtf8().constData() << std::endl;
