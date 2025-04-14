@@ -1419,7 +1419,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
       // 
       if (firstEntry == eType && 0 == strcmp(entry.moduleName, "MSVCP140"))
       {
-          QString errorMessage
+          const char* errorMessage
           {
               "DeepSkyStacker has crashed in the Visual C++ Redistributable code, probably because that is back-level.\n"
               "Please download the latest version of the Visual C++ Redistributable from the Microsoft website.\n\n"
@@ -1427,8 +1427,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
               "and then run it, selecting the \"Repair\" option"
           };
 
-          DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Critical,
-              DSSBase::Method::QMessageBox, false, Qt::ConnectionType::DirectConnection);
+          ZTRACE_RUNTIME(errorMessage);
       }
     }
     else
