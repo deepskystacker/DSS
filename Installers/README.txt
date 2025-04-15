@@ -1,9 +1,9 @@
-Welcome to DeepSkyStacker 5.1.9
+Welcome to DeepSkyStacker 5.1.10
 ===============================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
 
-This is a bug fix release for problems found in 5.1.8
+This release contains some enhancements and bug fixes for problems found in 5.1.8 and 5.1.9
 
 Reporting problems:
 
@@ -18,10 +18,12 @@ Known problems:
 
 Changes since the last release:
 
-1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
-    the minimum and maximum pixel values instead of scanning the image data.
+1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.
+	If present use these to determine the minimum and maximum pixel values instead of scanning the image data which
+	gave inconsistent image scaling.
     This should be a) much faster, and b) should result in consistent image scaling.
-    Also write these keywords when writing FITS floating point files.
+	
+    Also write these keywords when writing floating-point FITS files.
 
 2.  Bug fix: Fix rounding error in "stack recap" dialogue in calculation of total exposure time.
 
@@ -45,6 +47,8 @@ Changes since the last release:
 8.  Make sure the installation deletes old versions of the Visual C++ Redistributable files from the installation directory.
 
 9.  Bug fix: Open picture file should use the Linear transformation not log(Sqrt) so that the image is displayed correctly.
+
+10. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings.
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
