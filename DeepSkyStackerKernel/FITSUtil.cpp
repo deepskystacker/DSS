@@ -740,7 +740,7 @@ bool CFITSReader::Read()
 		// 
 		// Process the data we loaded from the FITS file
 		//
-#pragma omp parallel for default(none) shared(stop) schedule(guided, 50) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
