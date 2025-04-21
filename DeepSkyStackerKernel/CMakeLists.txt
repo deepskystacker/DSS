@@ -104,6 +104,11 @@ set(Header_Files
     ${Header_Files}
     "StackWalker.h"
 )
+elseif(NOT APPLE)
+set(Header_Files
+    ${Header_Files}
+    "ExceptionHandler.h"
+)
 endif()
 source_group("Header Files" FILES ${Header_Files})
 
@@ -203,6 +208,11 @@ if(WIN32)
         ${Source_Files}
         "StackWalker.cpp"
     )
+elseif(NOT APPLE)
+    set(Header_Files
+        ${Source_Files}
+        "ExceptionHandler.cpp"
+)
 endif()
 source_group("Source Files" FILES ${Source_Files})
 
