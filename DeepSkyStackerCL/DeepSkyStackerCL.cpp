@@ -12,6 +12,9 @@
 #include <QtLogging>
 #include <QImageReader>
 #include "DeepSkyStackerCL.h"
+#if !defined(Q_OS_APPLE)
+#include "ExceptionHandling.h"
+#endif
 #include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
@@ -370,7 +373,12 @@ int main(int argc, char* argv[])
 	//
 	std::atexit(atexitHandler);
 
-
+#if !defined(Q_OS_APPLE)
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
+#endif
 
 #if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knows how to interpret string data

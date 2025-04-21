@@ -795,10 +795,12 @@ int main(int argc, char* argv[])
 
 	AvxSimdCheck::reportCpuType();
 
+#if !defined(Q_OS_APPLE)
 	//
 	// Set things up to capture terminal errors
 	//
 	setDssExceptionHandling();
+#endif
 
 	askIfVersionCheckWanted();
 

@@ -65,7 +65,9 @@
 #include "avx_simd_check.h"
 #include "DeepSkyStackerLive.h"
 #include "DSSVersion.h"
+#if !defined(Q_OS_APPLE)
 #include "ExceptionHandling.h"
+#endif
 #include "FrameInfoSupport.h"
 #include "LiveSettings.h"
 #include <zexcept.h>
@@ -1574,10 +1576,12 @@ int main(int argc, char* argv[])
 	if (hasExpired())
 		return 1;
 
+#if !defined(Q_OS_APPLE)
 	//
 	// Set things up to capture terminal errors
 	//
 	setDssExceptionHandling();
+#endif
 
 	QApplication app(argc, argv);
 
