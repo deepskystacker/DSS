@@ -36,6 +36,11 @@ if(NOT CMAKE_VS_PLATFORM_NAME)
 endif()
 message("CMAKE_VS_PLATFORM_NAME set to: " ${CMAKE_VS_PLATFORM_NAME})
 
+if (APPLE)
+set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "DeepSkyStacker" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "David Partridge" CACHE STRING "")
+endif()
+
 #
 # install to DSS/x64 for Windows, and DSS/platform/x64 for other platforms
 #

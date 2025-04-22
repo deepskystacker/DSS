@@ -331,10 +331,20 @@ qt_add_executable(DeepSkyStacker ${ALL_FILES})
 set_target_properties(DeepSkyStacker PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-set_target_properties(DeepSkyStacker PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
+if(APPLE)
+    set_target_properties(DeepSkyStacker PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
+        MACOSX_BUNDLE_ICON_FILE "Icon"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        INSTALL_RPATH "@executable_path/../Frameworks"
 )
+endif()
+if(WIN32)
+    set_target_properties(DeepSkyStacker PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
 ################################################################################
 # Include directories
@@ -479,7 +489,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 if(NOT LINUX)
     set (deploy_tool_options_arg "")
     if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=David Partridge")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
@@ -512,7 +523,6 @@ qt_generate_deploy_app_script(
 )
 endif()
 install (SCRIPT ${deploy_script})
-
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
 

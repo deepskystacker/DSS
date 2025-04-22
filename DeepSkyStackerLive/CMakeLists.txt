@@ -119,12 +119,22 @@ qt_add_executable(DeepSkyStackerLive ${ALL_FILES})
 set_target_properties(DeepSkyStackerLive PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-set_target_properties(DeepSkyStackerLive PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
+if(APPLE)
+    set_target_properties(DeepSkyStackerLive PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
+        MACOSX_BUNDLE_ICON_FILE "Icon"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        INSTALL_RPATH "@executable_path/../Frameworks"
 )
+endif()
+if(WIN32)
+    set_target_properties(DeepSkyStackerLive PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
-################################################################################
+###############################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -258,10 +268,11 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if(NOT LINUX)
-    set (deploy_tool_options_arg "-libpath .")
+    set (deploy_tool_options_arg "")
     if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime")
-    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=David Partridge")
+     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
 
@@ -270,9 +281,10 @@ if(NOT LINUX)
     if(APPLE)
         set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>.app")
     else()
-        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStacker>)
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
         set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>")
     endif()
+
     message ("executable_path: " ${executable_path})
     message ("deploy tools options arg: " ${deploy_tool_options_arg})
      qt_generate_deploy_script(

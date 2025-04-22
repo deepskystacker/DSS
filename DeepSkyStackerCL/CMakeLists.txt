@@ -67,9 +67,20 @@ qt_add_executable(DeepSkyStackerCL ${ALL_FILES})
 set_target_properties(DeepSkyStackerCL PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-set_target_properties(DeepSkyStackerCL PROPERTIES
-    MACOSX_BUNDLE ON
+if(APPLE)
+    set_target_properties(DeepSkyStackerCL PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerCL"
+        MACOSX_BUNDLE_ICON_FILE "Icon"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        INSTALL_RPATH "@executable_path/../Frameworks"
 )
+endif()
+if(WIN32)
+    set_target_properties(DeepSkyStackerCL PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
 ################################################################################
 # Include directories
@@ -242,7 +253,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 if (NOT LINUX)
     set (deploy_tool_options_arg "")
     if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=David Partridge")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
@@ -252,9 +264,10 @@ if (NOT LINUX)
     if(APPLE)
         set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>.app")
     else()
-        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStacker>)
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerCL>)
         set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>")
     endif()
+
     message ("executable_path: " ${executable_path})
     message ("deploy tools options arg: " ${deploy_tool_options_arg})
      qt_generate_deploy_script(
@@ -273,5 +286,5 @@ qt_generate_deploy_app_script(
     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
 )
 endif()
-INSTALL (SCRIPT ${deploy_script})
+install (SCRIPT ${deploy_script})
 install (TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
