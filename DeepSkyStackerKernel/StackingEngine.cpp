@@ -2587,9 +2587,19 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	{
 		folder = fileList;
 	}
-
-	folder.remove_filename();
-
+	// bugfix for issue reported 2025-04-22, output folder being ignored.
+	if (!fs::is_directory(folder))
+	{
+		// if the path contains a filename, remove it
+		folder.remove_filename(); 
+	}
+	else
+	{
+		// if the path is just a path then add a terminal / as otherwise 
+		// replace_filename() called below will remove the last element of the path by mistake.
+		folder += "/"; 
+	}
+	//ZTRACE_RUNTIME("output folder is %s", folder.string().c_str());
 	fs::path name{ file.stem() }; // Filename of the output file WITHOUT EXTENSION.
 	bool addHyphen = false;
 
@@ -2645,6 +2655,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 		outputFile.replace_filename(name.replace_extension(extension));
 	}
 	file = outputFile;
+	//ZTRACE_RUNTIME("file is %s", outputFile.string().c_str());
 	return bResult;
 };
 
