@@ -69,7 +69,7 @@
 # include <os2.h>
 #endif
 
-#if (__cplusplus > 201703L)     // C++ 20 or better
+#if (__cplusplus > 201703L) && __has_include(<format>)     // C++ 20 or better
 #include <chrono>
 #include <format>
 #else
@@ -515,7 +515,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       //
       if (isWriteTimeStampEnabled())
       {
-#if (__cplusplus > 201703L)
+#if (__cplusplus > 201703L) && __has_include(<format>)
           const auto now{ std::chrono::system_clock::now() };
           const std::string s{ std::format("{:%F %T}", std::chrono::floor<std::chrono::milliseconds>(now)) };
           std::strncpy(buffer, s.c_str(), sizeof(buffer) - 1);
