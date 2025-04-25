@@ -70,6 +70,32 @@
       }
     },
     {
+      "name": "Qt-Debug-MacOS-x64",
+      "inherits": "Qt-Default",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.8.2/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_OSX_ARCHITECTURES": "x86_64"
+      }
+    },
+    {
+      "name": "Qt-Release-MacOS-x64",
+      "inherits": "Qt-Default",
+      "binaryDir": "${sourceDir}/out/build",
+      "cmakeExecutable": "/usr/local/bin/cmake",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.8.2/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "x64_64"
+      }
+    },
+    {
       "name": "Qt-Debug-Windows",
       "inherits": "Qt-Default",
       "cacheVariables": {
@@ -186,7 +212,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "hU7oF6TWcLuQsNZpq9Fw1jYcsXM="
+      "checksum": "1wgjVDJBsPF1rqQ7Z5DCv1UGOUg="
     }
   }
 }
