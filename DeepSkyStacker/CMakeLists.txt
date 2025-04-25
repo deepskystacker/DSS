@@ -442,6 +442,7 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Widgets
     Qt6::Network
 	DeepSkyStackerKernel
+    DeepSkyStackerAVX
     ZClass
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
@@ -485,12 +486,18 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
+if(APPLE)
+add_custom_command(TARGET DeepSkyStacker
+    POST_BUILD
+    COMMAND "$ENV{HOME}/.unlock_keychain"
+)
+endif()
 
 if(NOT LINUX)
-    set (deploy_tool_options_arg "")
+    set (deploy_tool_options_arg "-verbose=1")
     if(APPLE)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=David Partridge")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
