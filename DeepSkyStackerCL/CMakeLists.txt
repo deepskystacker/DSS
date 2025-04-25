@@ -216,6 +216,7 @@ target_link_libraries(DeepSkyStackerCL PRIVATE
     Qt6::Core
     Qt6::Gui
 	DeepSkyStackerKernel
+    DeepSkyStackerAVX
     ZClass
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
@@ -254,7 +255,7 @@ if (NOT LINUX)
     set (deploy_tool_options_arg "")
     if(APPLE)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=David Partridge")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
