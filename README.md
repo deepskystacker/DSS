@@ -15,6 +15,7 @@ The code is open source under the terms of the BSD 3-Clause License (see LICENSE
 Copyright (c) 2018-2024, David C. Partridge, Tony Cook, Mat Draper,
 					Simon C. Smith, Vitali Pelenjow, Michal Schulz,
 					Martin Toeltsch, Iustin Amihaesei
+
 Copyright (c) 2006-2019, Luc Coiffier 
 
 					
