@@ -298,15 +298,15 @@ namespace
 			barrier.wait(1);
 		}
 	}
-
-
-	void setDssExceptionHandling()
-	{
-		std::signal(SIGINT, signalHandler);
-		std::signal(SIGILL, signalHandler);
-		std::signal(SIGFPE, signalHandler);
-		std::signal(SIGSEGV, signalHandler);
-		std::signal(SIGTERM, signalHandler);
-	}
 } // namespace
+
+
+void setDssExceptionHandling()
+{
+	std::signal(SIGINT, signalHandler);
+	std::signal(SIGILL, signalHandler);
+	std::signal(SIGFPE, signalHandler);
+	std::signal(SIGSEGV, signalHandler);
+	std::signal(SIGTERM, signalHandler);
+}
 #endif
