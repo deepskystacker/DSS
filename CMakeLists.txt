@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+if (APPLE)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 13.4 CACHE STRING "Minimum operating system version for deployment" FORCE)
+set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "VH8AYT3C7Y" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Developer ID Application: David Partridge (VH8AYT3C7Y)" CACHE STRING "")
+endif()
+
 set(CMAKE_TOOLCHAIN_FILE 
 	"$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	)
@@ -23,22 +29,11 @@ project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 
-#
-# Report platform name if specified
-#
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    message("CMAKE_VS_PLATFORM_NAME not specified")
-	if (APPLE)
-		set(CMAKE_VS_PLATFORM_NAME "arm64")
-	else()
-		set(CMAKE_VS_PLATFORM_NAME "x64")
-	endif()
-endif()
-message("CMAKE_VS_PLATFORM_NAME set to: " ${CMAKE_VS_PLATFORM_NAME})
-
+set (PLATFORM_NAME "x64" CACHE STRING "" FORCE )
 if (APPLE)
-set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "DeepSkyStacker" CACHE STRING "")
-set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "David Partridge" CACHE STRING "")
+	if ("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
+	set (PLATFORM_NAME "arm64" CACHE STRING "" FORCE)
+	endif()
 endif()
 
 #
@@ -49,13 +44,13 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Debug")
 endif()
 message ("CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR})
-message ("CMAKE_VS_PLATFORM_NAME: " ${CMAKE_VS_PLATFORM_NAME})
+message ("PLATFORM_NAME: " ${PLATFORM_NAME})
 message ("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	if(NOT WIN32)
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	else()
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
 endif()
 message ("CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
@@ -141,9 +136,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStacker)
+#[=[
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStackerLive)
-#[=[
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 
