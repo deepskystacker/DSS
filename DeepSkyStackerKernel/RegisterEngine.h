@@ -21,7 +21,6 @@ public:
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
 	double			m_fBackground;
-	double			m_fScore;
 	double			m_fFWHM;
 	bool			m_bInfoOk;
 	bool			m_bComet;

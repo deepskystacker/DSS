@@ -32,7 +32,6 @@ void CRegisteredFrame::Reset()
 
 	m_SkyBackground.Reset();
 
-	m_fScore = 0;
 	m_fFWHM = 0;
 	quality = 0;
 }
@@ -153,7 +152,6 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 
 	QTextStream fileOut(&buffer);	
 
-	fileOut << QString("OverallQuality = %1").arg(m_fScore, 0, 'f', 2) << Qt::endl;
 	fileOut << paramString(QualityParam, " = %1").arg(this->quality, 0, 'f', 2) << Qt::endl;
 	fileOut << "RedXShift = 0.0" << Qt::endl;
 	fileOut << "RedYShift = 0.0" << Qt::endl;
@@ -222,8 +220,6 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		if (GetNextValue(&fileIn, strVariable, strValue) == false) // It did not even find "NrStars".
 			return unsuccessfulReturn();
 
-		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
-			m_fScore = strValue.toDouble();
 		if (0 == strVariable.compare(QualityParam, Qt::CaseInsensitive))
 			this->quality = strValue.toDouble();
 

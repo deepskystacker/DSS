@@ -457,7 +457,6 @@ namespace DSS
 
 	void EditStars::computeOverallQuality()
 	{
-		m_fScore = 0.0;
 		m_lNrStars = 0;
 		m_fFWHM = 0;
 		constexpr double RadiusFactor = 2.35 / 1.5;
@@ -662,9 +661,8 @@ namespace DSS
 		painter.setFont(font);
 		QFontMetrics fontMetrics(font);
 
-		QString	strText{ tr("#Stars: %1\nScore: %2\nQuality: %3\nFWHM: %4", "IDS_LIGHTFRAMEINFO")
+		QString	strText{ tr("#Stars: %1\nQuality: %2\nFWHM: %3", "IDS_LIGHTFRAMEINFO")
 			.arg(m_lNrStars)
-			.arg(m_fScore, 0, 'f', 2)
 			.arg(m_fQuality, 0, 'f', 2)
 			.arg(m_fFWHM, 0, 'f', 2) };
 
