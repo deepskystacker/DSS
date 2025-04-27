@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Beta 1
+Welcome to DeepSkyStacker 6.1.0 Alpha 1
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -12,7 +12,18 @@ Thank you.
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
-   This requires too much work to fix in this release, as we will need to implement our own edit control.
+   This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
+   This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes since the last release:
+
+1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
+    The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
+
+2.  Remove final traces of the old Score metric (e.g. from the info.txt files where it was called OverallQuality).
+
+Welcome to DeepSkyStacker 5.1.9
+======================================
 
 Changes since the last release:
 
