@@ -24,6 +24,9 @@
 #include "ztrace.h"
 #include "QMessageLogger.h"
 
+std::unique_ptr<std::uint8_t[]> backPocket;
+constexpr size_t backPocketSize{ 1024 * 1024 };
+
 //
 // Set up tracing and manage trace file deletion
 //
@@ -363,6 +366,10 @@ void atexitHandler()
 	// Retain or delete the trace file as wanted
 	//
 	traceControl.terminate();
+	//
+	// Delete the back pocket storage
+	//
+	backPocket.reset();
 }
 
 int main(int argc, char* argv[])
@@ -372,6 +379,16 @@ int main(int argc, char* argv[])
 	// Set up the atexit handler to ensure that the trace file is deleted if necessary
 	//
 	std::atexit(atexitHandler);
+
+	//
+	// Create a storage cushion (aka back pocket storage)
+	// and ensure that it is actually touched.
+	//
+	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
+	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
+	{
+		*p = static_cast<uint8_t>('\xff');
+	}
 
 #if !defined(Q_OS_APPLE)
 	//
