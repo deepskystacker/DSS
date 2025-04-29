@@ -7,6 +7,8 @@ if (APPLE)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 13.4 CACHE STRING "Minimum operating system version for deployment" FORCE)
 set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "VH8AYT3C7Y" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Developer ID Application: David Partridge (VH8AYT3C7Y)" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Manual" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED TRUE CACHE BOOL "")
 endif()
 
 set(CMAKE_TOOLCHAIN_FILE 
@@ -143,8 +145,8 @@ add_subdirectory(ZClass)
 #
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStacker)
-add_subdirectory(DeepSkyStackerLive)
 #[=[
+add_subdirectory(DeepSkyStackerLive)
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 
