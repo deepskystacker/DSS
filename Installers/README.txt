@@ -9,6 +9,36 @@ Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list ho
 <https://groups.io/g/DeepSkyStacker>
 Thank you.
 
+Accessing DeepSkyStackerCL on macOS:
+====================================
+
+This is delivered in the DeepSkyStacker.app bundle.   To use it you'll need define a symlink to in e.g. /usr/local/bin
+	#
+	# If you need to, create the directory /usr/local/bin
+	#
+	sudo mkdir -p /usr/local/bin
+	#
+	# Add a symlink so you can invoke DeepSkyStackerCL by typing DSSCL
+	#
+	sudo ln -sf /Applications/DeepSkyStacker.app/Contents/MacOS/DeepSkyStackerCL /usr/local/bin/DSSCL
+
+You may also need to add /usr/local/bin to your path:  You can do this by creating a file in you home directory
+called .zshenv (assuming you're using zsh) this file might contain e.g.
+
+	# remove duplicate entries from $PATH
+	# zsh uses $path array along with $PATH 
+	typeset -U PATH path
+
+	pathadd () {
+       	  if [ "$2" = "after" ] ; then
+              PATH=$PATH:$1
+       	  else
+              PATH=$1:$PATH
+          fi
+        }
+	pathadd /usr/local/bin
+	pathadd /home/<username>/bin
+
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
@@ -22,7 +52,7 @@ Changes since the last release:
 
 2.  Remove final traces of the old Score metric (e.g. from the info.txt files where it was called OverallQuality).
 
-Welcome to DeepSkyStacker 5.1.9
+Welcome to DeepSkyStacker 5.1.10
 ======================================
 
 Changes since the last release:
