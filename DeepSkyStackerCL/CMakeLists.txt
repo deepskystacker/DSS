@@ -69,11 +69,7 @@ set_target_properties(DeepSkyStackerCL PROPERTIES
 )
 if(APPLE)
     set_target_properties(DeepSkyStackerCL PROPERTIES
-        MACOSX_BUNDLE ON
-        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerCL"
-        MACOSX_BUNDLE_ICON_FILE "Icon"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
-        INSTALL_RPATH "@executable_path/../Frameworks"
+        MACOSX_BUNDLE OFF
 )
 endif()
 if(WIN32)
@@ -251,41 +247,47 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-if (NOT LINUX)
-    set (deploy_tool_options_arg "")
-    if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
-    elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-    endif()
+#
+# We don't deploy/install DSSCL on macOS, instead it gets copied into the DSS
+# app bundle. The DSS app bundle *is* deployed using the qt_deploy_app_script
+#
+if(NOT APPLE)
+    if (NOT LINUX)
+        set (deploy_tool_options_arg "")
+        if(APPLE)
+            set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
+            set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
+        elseif(WIN32)
+            set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+        endif()
 
-    # Generate a deployment script to be executed at install time
-    # App bundles on macOS have an .app suffix
-    if(APPLE)
-        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>.app")
+        # Generate a deployment script to be executed at install time
+        # App bundles on macOS have an .app suffix
+        if(APPLE)
+            set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>.app")
+        else()
+            message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerCL>)
+            set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>")
+        endif()
+
+        message ("executable_path: " ${executable_path})
+        message ("deploy tools options arg: " ${deploy_tool_options_arg})
+         qt_generate_deploy_script(
+             TARGET DeepSkyStackerCL
+             OUTPUT_SCRIPT deploy_script
+             CONTENT "
+         qt_deploy_runtime_dependencies(
+             EXECUTABLE \"${executable_path}\"
+             DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+         )"
+         )
     else()
-        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerCL>)
-        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerCL>")
+    qt_generate_deploy_app_script(
+        TARGET ${PROJECT_NAME}
+        OUTPUT_SCRIPT deploy_script
+        DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+    )
     endif()
-
-    message ("executable_path: " ${executable_path})
-    message ("deploy tools options arg: " ${deploy_tool_options_arg})
-     qt_generate_deploy_script(
-         TARGET DeepSkyStackerCL
-         OUTPUT_SCRIPT deploy_script
-         CONTENT "
-     qt_deploy_runtime_dependencies(
-         EXECUTABLE \"${executable_path}\"
-         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-     )"
-     )
-else()
-qt_generate_deploy_app_script(
-    TARGET ${PROJECT_NAME}
-    OUTPUT_SCRIPT deploy_script
-    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-)
+    install (SCRIPT ${deploy_script})
+    install (TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 endif()
-install (SCRIPT ${deploy_script})
-install (TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
