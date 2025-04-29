@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+cmake_policy(SET CMP0115 NEW)
+
 if (APPLE)
 set(CMAKE_OSX_DEPLOYMENT_TARGET 13.4 CACHE STRING "Minimum operating system version for deployment" FORCE)
 set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "VH8AYT3C7Y" CACHE STRING "")
@@ -135,10 +137,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
-add_subdirectory(DeepSkyStacker)
-#[=[
+# 
+# DeepSkyStackerCL must be built before DeepSkyStacker as we copy the executable
+# into the DeepSkyStacker folder/MACOSX bundle
+#
 add_subdirectory(DeepSkyStackerCL)
+add_subdirectory(DeepSkyStacker)
 add_subdirectory(DeepSkyStackerLive)
+#[=[
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 
