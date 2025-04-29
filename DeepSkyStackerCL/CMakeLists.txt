@@ -67,6 +67,11 @@ qt_add_executable(DeepSkyStackerCL ${ALL_FILES})
 set_target_properties(DeepSkyStackerCL PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
+
+#
+# We don't create a bundle file for DSSCL, just a normal executable which gets copied
+# into the DSS app bundle when that is built.
+#
 if(APPLE)
     set_target_properties(DeepSkyStackerCL PROPERTIES
         MACOSX_BUNDLE OFF
