@@ -182,7 +182,6 @@ void ProgressDlg::applyStart1Text(const QString& strText)
 {
 	ui->ProcessText1->setText(strText);
 	raise();
-	show();
 }
 
 void ProgressDlg::applyStart2Text(const QString& strText)
@@ -199,7 +198,6 @@ void ProgressDlg::applyStart2Text(const QString& strText)
 		applyProgress2(0);
 	}
 	raise();
-	show();
 }
 
 void ProgressDlg::applyProgress1(int lAchieved)
