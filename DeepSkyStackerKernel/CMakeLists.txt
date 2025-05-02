@@ -204,6 +204,7 @@ set(Source_Files
 if(WIN32)
     set (Source_Files
         ${Source_Files}
+        "ExceptionHandling.cpp"
         "StackWalker.cpp"
     )
 elseif(NOT APPLE)
@@ -296,7 +297,7 @@ target_compile_definitions(DeepSkyStackerAVX PRIVATE
 )
 
 if (MSVC)
-target_compile_definitions(${PROJECT_NAME} PRIVATE
+target_compile_definitions(DeepSkyStackerAVX PRIVATE
 	_WINDOWS
 	)
 endif()

@@ -464,7 +464,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -485,6 +487,7 @@ endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    cfitsio
     user32
     psapi
     htmlhelp
