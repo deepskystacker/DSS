@@ -72,7 +72,9 @@ find_package(Qt6 6.8.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus 
 # Non-Windows use find_package to find stuff we want
 #
 #set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
+if(NOT WIN32)
 find_package(cfitsio 4.5.0 REQUIRED)
+endif()
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)

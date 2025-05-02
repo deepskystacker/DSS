@@ -202,7 +202,7 @@
     {
       "hidden": true,
       "name": "Qt-Default",
-      "inherits": "6.8.0_msvc2022_64",
+      "inherits": "6.8.2_msvc2022_64",
       "vendor": {
         "qt-project.org/Default": {
           "checksum": "DBTqMydOw2UMLXPo9VKLNZVd1O4="
