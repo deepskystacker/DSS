@@ -41,7 +41,7 @@
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "RecommendedSettings.h"
 #include "StackSettings.h"
 #include "RegisterEngine.h"
@@ -293,7 +293,7 @@ namespace DSS
 	void RegisterSettings::computeDetectedStars_clicked()
 	{
 		// Retrieve the first checked light frame of the list
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		CLightFrameInfo				fi;
 
 		QFileInfo info(firstLightFrame);

@@ -69,7 +69,8 @@
 # include <os2.h>
 #endif
 
-#if (__cplusplus > 201703L)     // C++ 20 or better
+#include <version>
+#if (__cplusplus > 201703L) && defined(__cpp_lib_format)     // C++ 20 or better
 #include <chrono>
 #include <format>
 #else
@@ -515,7 +516,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
       //
       if (isWriteTimeStampEnabled())
       {
-#if (__cplusplus > 201703L)
+#if (__cplusplus > 201703L) && defined(__cpp_lib_format)
           const auto now{ std::chrono::system_clock::now() };
           const std::string s{ std::format("{:%F %T}", std::chrono::floor<std::chrono::milliseconds>(now)) };
           std::strncpy(buffer, s.c_str(), sizeof(buffer) - 1);
@@ -527,7 +528,7 @@ void  ZTrace :: writeFormattedString(const std::string& strString,
           ftime(&tstruct);
           gmt = gmtime(&(tstruct.time));
           strftime(&timebuff[0], sizeof(timebuff) - 1, "%Y/%m/%d %H:%M:%S", gmt);
-          sprintf(buffer, "%s.%03u", &timebuff[0], tstruct.millitm);
+          snprintf(buffer, sizeof(buffer), "%s.%03u", &timebuff[0], tstruct.millitm);
 #endif
           strWork.append(&buffer[0]).append(" ");
           memset(buffer, 0, sizeof(buffer));

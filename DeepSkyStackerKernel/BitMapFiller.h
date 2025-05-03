@@ -1,13 +1,13 @@
 #pragma once
 #include "cfa.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CMemoryBitmap;
 
 class BitmapFillerInterface
 {
 public:
-	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb);
+	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb);
 	virtual ~BitmapFillerInterface() {}
 
 	virtual bool isThreadSafe() const;
@@ -24,7 +24,7 @@ public:
 class BitmapFillerBase : public BitmapFillerInterface
 {
 protected:
-	DSS::ProgressBase* pProgress;
+	DSS::OldProgressBase* pProgress;
 	CMemoryBitmap* pBitmap;
 	const float redScale;
 	const float greenScale;
@@ -39,7 +39,7 @@ protected:
 	std::vector<float> blueBuffer;
 	std::vector<float> cfaFactors;
 public:
-	BitmapFillerBase(CMemoryBitmap* pB, DSS::ProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	BitmapFillerBase(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	virtual ~BitmapFillerBase() {}
 
 	virtual void SetCFAType(CFATYPE cfaType) override;

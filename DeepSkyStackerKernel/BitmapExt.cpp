@@ -42,7 +42,7 @@ namespace
 }
 
 /* ------------------------------------------------------------------- */
-bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase* pProgress)
+bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -183,7 +183,7 @@ bool	CAllDepthBitmap::initQImage()
 }
 
 
-bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
+bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -294,7 +294,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 }
 
 
-bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
+bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* const pProgress, 
 	std::shared_ptr<QImage>& pQImage )
 {
 	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
@@ -987,7 +987,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 /* ------------------------------------------------------------------- */
 
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
-	ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
+	OldProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_u8string().c_str());
@@ -1077,7 +1077,7 @@ class CSubtractTask
 private :
 	std::shared_ptr<CMemoryBitmap> m_pTarget;
 	std::shared_ptr<const CMemoryBitmap> m_pSource;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 	double m_fRedFactor;
 	double m_fGreenFactor;
 	double m_fBlueFactor;
@@ -1106,7 +1106,7 @@ public :
 
 	~CSubtractTask() = default;
 
-	void Init(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
+	void Init(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 	{
 		m_pProgress = pProgress;
 		m_pTarget = pTarget;
@@ -1243,7 +1243,7 @@ void CSubtractTask::process()
 }
 
 
-bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
+bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1286,7 +1286,7 @@ bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMem
 
 /* ------------------------------------------------------------------- */
 
-bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, double fXShift, double fYShift)
+bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, double fXShift, double fYShift)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1310,7 +1310,7 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress)
+bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
@@ -1334,7 +1334,7 @@ bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBi
 
 
 
-std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

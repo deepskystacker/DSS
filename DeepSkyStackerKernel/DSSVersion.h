@@ -21,7 +21,7 @@ constexpr int DSSBETAEXPIREMONTH = 12;
 #define FB(arg)					#arg
 
 #ifdef DSSBETA
-#define VERSTRING(M, m, s, b)	FB(M) "." FB(m) "." FB(s) " Beta " FB(b)
+#define VERSTRING(M, m, s, b)	FB(M) "." FB(m) "." FB(s) " Alpha " FB(b)
 #define VERSION_DEEPSKYSTACKER	VERSTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #else
 #define VERSTRING(M, m, s)		FB(M) "." FB(m) "." FB(s)

@@ -52,7 +52,7 @@
 #include "DeepSkyStacker.h"
 #include "CheckAbove.h"
 #include "Workspace.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "RegisterSettings.h"
 #include "avx_simd_check.h"
 #include "FrameInfoSupport.h"
@@ -2065,7 +2065,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings dlgSettings{ this };
 		bool bContinue = true;
 
@@ -2191,7 +2191,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+						DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
@@ -2369,7 +2369,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2550,7 +2550,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+				DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
@@ -2560,7 +2560,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+				DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

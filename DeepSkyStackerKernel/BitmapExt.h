@@ -7,7 +7,7 @@
 #include "cfa.h"
 #include "BitmapInfo.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CMemoryBitmap;
 class CBitmapCharacteristics;
 
@@ -15,15 +15,15 @@ class CBitmapCharacteristics;
 
 void FormatFromMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations);
 void FormatMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations);
-bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::ProgressBase* pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
-bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::ProgressBase* pProgress = nullptr);
-bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::ProgressBase* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
+bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::OldProgressBase* pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
+bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::OldProgressBase* pProgress = nullptr);
+bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, DSS::OldProgressBase* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
 
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
-	DSS::ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage);
+	DSS::OldProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage);
 
 bool GetPictureInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
-std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, DSS::ProgressBase* pProgress = nullptr);
+std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, DSS::OldProgressBase* pProgress = nullptr);
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -89,8 +89,8 @@ public:
 	bool initQImage();
 };
 
-bool LoadPicture(const fs::path& file, CAllDepthBitmap & AllDepthBitmap, DSS::ProgressBase* pProgress = nullptr);
-bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::ProgressBase* pProgress);
+bool LoadPicture(const fs::path& file, CAllDepthBitmap & AllDepthBitmap, DSS::OldProgressBase* pProgress = nullptr);
+bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::OldProgressBase* pProgress);
 
 bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);
 

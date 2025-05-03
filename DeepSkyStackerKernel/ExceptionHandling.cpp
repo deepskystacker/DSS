@@ -151,19 +151,14 @@ void setDssExceptionHandling()
 	traceTheStack(true, nullptr); // Stack tracing to initialise StackWalker and pre-load all libraries, true = output suppressed.
 }
 
-#else
+#elif defined(Q_OS_LINUX)
 #include <csignal>
 #include <execinfo.h>
-#if defined(Q_OS_LINUX)
 #include <link.h>
-#endif
-#if defined(Q_OS_APPLE)
-#include <dlfcn.h>
-#endif
 
 namespace
 {
-#if defined(Q_OS_LINUX)
+
 	// converts a function's address in memory to its VMA address in the executable file. VMA is what addr2line expects
 	std::uintptr_t convertToVMA(void* addr)
 	{
@@ -172,7 +167,7 @@ namespace
 		dladdr1((void*)addr, &info, (void**)&link_map, RTLD_DL_LINKMAP);
 		return reinterpret_cast<std::uintptr_t>(addr) - link_map->l_addr;
 	}
-#endif
+
 
 	/* Resolve symbol name and source location given the path to the executable
 	   and an address */
@@ -181,12 +176,7 @@ namespace
 		char addr2line_cmd[512] = { '\0' };
 
 		/* have addr2line map the address to the relevant line in the code */
-#if defined(Q_OS_APPLE)
-  /* apple does things differently... */
-		snprintf(addr2line_cmd, sizeof(addr2line_cmd), "atos -o %.256s %p", program_name, reinterpret_cast<void *>(addr));
-#else
 		snprintf(addr2line_cmd, sizeof(addr2line_cmd), "addr2line -f -C -p -e %.256s %p", program_name, (void*)addr);
-#endif
 
 		/* This will print a nicely formatted string specifying the
 		   function and source line of the address */
@@ -228,19 +218,18 @@ namespace
 		// addr2line 
 		//
 
-		// Skip the first couple stack frames (as they are this function and
-		//   our handler) and also skip the last frame as it's (always?) junk.
-			   
-		for (int i = 2; i < (trace_size - 1); ++i) // To see the entire entire stack trace, change to: for (i = 0 ...
+		// Skip the first two stack frames (as they are this function and
+		//   our handler), and also skip the last frame as it's (always?) junk.
+
+		// Skip the first two frames on Linux as they don't appear be useful.
+		constexpr int skip_frames{ 2 };
+
+		for (int i = skip_frames; i < (trace_size - 1); ++i) // To see the entire entire stack trace, change to: for (i = 0 ...
 		{
 			Dl_info info;
 			if (dladdr(stack_trace[i], &info))
 			{
-#if defined(Q_OS_APPLE)
-				std::uintptr_t VMA_addr = reinterpret_cast<std::uintptr_t>(stack_trace[i]);
-#else
 				std::uintptr_t VMA_addr = convertToVMA(stack_trace[i]);
-#endif
 				//
 				// Decrement the PC so we point to actual source line in error, not the one
 				// following it.
@@ -264,7 +253,7 @@ namespace
 
 	void signalHandler(int signal)
 	{
-		// If we reach that point, we know that something disastrous happened. The process was sent one of the fatal signals (Seg. violation, FP exception, ...).
+		// If we reach this point, we know that something disastrous happened. The process was sent one of the fatal signals (Seg. violation, FP exception, ...).
 		// We run the signal handler and then terminate the process.
 
 		// The signal handler can only be executed by a single thread. All other threads must wait.
@@ -309,8 +298,8 @@ namespace
 			barrier.wait(1);
 		}
 	}
-
 } // namespace
+
 
 void setDssExceptionHandling()
 {
@@ -320,5 +309,4 @@ void setDssExceptionHandling()
 	std::signal(SIGSEGV, signalHandler);
 	std::signal(SIGTERM, signalHandler);
 }
-
 #endif

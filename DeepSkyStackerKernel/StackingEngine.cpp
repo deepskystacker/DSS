@@ -843,7 +843,7 @@ void CStackingEngine::ComputeMissingCometPositions()
 // Returns:
 //   true:  offsets have been computed.
 //   false: offset calculation was stopped by pressing "Cancel".
-bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const pProg, const int nrBitmaps)
+bool computeOffsets(CStackingEngine* const pStackingEngine, OldProgressBase* const pProg, const int nrBitmaps)
 {
 	ZFUNCTRACE_RUNTIME();
 	const int nrProcessors = CMultitask::GetNrProcessors();
@@ -1715,7 +1715,7 @@ class CStackTask
 {
 private:
 	CStackingEngine* m_pStackingEngine;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 	std::vector<QPoint> m_vLockedPixels;
 
 public:
@@ -1735,7 +1735,7 @@ public:
 public:
 	CStackTask() = delete;
 	~CStackTask() = default;
-	CStackTask(CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CStackTask(CMemoryBitmap* pBitmap, OldProgressBase* pProgress) :
 		m_pStackingEngine {nullptr},
 		m_pProgress{ pProgress },
 		m_vLockedPixels{},
@@ -2209,7 +2209,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						m_pLightTask->m_Method = MBP_FASTAVERAGE;
 					}
 
-					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, ProgressBase* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
+					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, OldProgressBase* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
 					{
 						if (lightTaskNdx >= pStackingInfo->m_pLightTask->m_vBitmaps.size())
 							return { {}, -1 };
@@ -2434,7 +2434,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, OldProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -2547,7 +2547,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* c
 
 /* ------------------------------------------------------------------- */
 
-void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pProgress)
+void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -2587,9 +2587,19 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	{
 		folder = fileList;
 	}
-
-	folder.remove_filename();
-
+	// bugfix for issue reported 2025-04-22, output folder being ignored.
+	if (!fs::is_directory(folder))
+	{
+		// if the path contains a filename, remove it
+		folder.remove_filename(); 
+	}
+	else
+	{
+		// if the path is just a path then add a terminal / as otherwise 
+		// replace_filename() called below will remove the last element of the path by mistake.
+		folder += "/"; 
+	}
+	//ZTRACE_RUNTIME("output folder is %s", folder.string().c_str());
 	fs::path name{ file.stem() }; // Filename of the output file WITHOUT EXTENSION.
 	bool addHyphen = false;
 
@@ -2645,6 +2655,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 		outputFile.replace_filename(name.replace_extension(extension));
 	}
 	file = outputFile;
+	//ZTRACE_RUNTIME("file is %s", outputFile.string().c_str());
 	return bResult;
 };
 

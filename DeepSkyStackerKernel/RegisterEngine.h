@@ -7,7 +7,7 @@
 #include "DSSProgress.h"
 #include "GrayBitmap.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -21,7 +21,6 @@ public:
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
 	double			m_fBackground;
-	double			m_fScore;
 	double			m_fFWHM;
 	bool			m_bInfoOk;
 	bool			m_bComet;
@@ -101,7 +100,7 @@ public:
 	double m_fAngle;
 
 	bool m_bDisabled;
-	DSS::ProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 
 	bool m_bRemoveHotPixels;
 
@@ -122,7 +121,7 @@ public:
 //		CFrameInfo::CopyFrom(cbi);
 	}
 
-	explicit CLightFrameInfo(DSS::ProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
+	explicit CLightFrameInfo(DSS::OldProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
 	{
 		Reset();
 		this->SetProgress(pPrg);
@@ -140,7 +139,7 @@ public:
 		m_bRemoveHotPixels = bHotPixels;
 	}
 
-	void SetProgress(DSS::ProgressBase* pProgress)
+	void SetProgress(DSS::OldProgressBase* pProgress)
 	{
 		m_pProgress = pProgress;
 	}
@@ -149,7 +148,7 @@ public:
 
 public:
 	void RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIndex);
-	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::ProgressBase* pProgress);
+	void RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, DSS::OldProgressBase* pProgress);
 	void SaveRegisteringInfo();
 
 private:
@@ -172,12 +171,12 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress, QString& strCalibratedFile);
+	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, DSS::OldProgressBase* pProgress, QString& strCalibratedFile);
 
 public :
 	CRegisterEngine();
 	~CRegisterEngine() = default;
 
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
-	bool RegisterLightFrames(class CAllStackingTasks& tasks, const QString& referenceFrame, bool bForceRegister, DSS::ProgressBase* pProgress);
+	bool RegisterLightFrames(class CAllStackingTasks& tasks, const QString& referenceFrame, bool bForceRegister, DSS::OldProgressBase* pProgress);
 };

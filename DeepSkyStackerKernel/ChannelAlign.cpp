@@ -32,7 +32,7 @@ void CChannelAlign::CopyBitmap(std::shared_ptr<const CMemoryBitmap> pSrcBitmap, 
 }
 
 // static
-std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* pBitmap, const CPixelTransform& PixTransform, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* pBitmap, const CPixelTransform& PixTransform, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -87,7 +87,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(const CMemoryBitmap* 
 }
 
 // static
-bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress)
+bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

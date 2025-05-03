@@ -111,7 +111,7 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::processNonAvx(const int lineS
 }
 
 template <typename TType>
-void CInternalMedianFilterEngineT<TType>::ApplyFilter(ProgressBase* pProgress)
+void CInternalMedianFilterEngineT<TType>::ApplyFilter(OldProgressBase* pProgress)
 {
 	if (pProgress != nullptr)
 		pProgress->Start2(m_lHeight);
@@ -123,8 +123,8 @@ void CInternalMedianFilterEngineT<TType>::ApplyFilter(ProgressBase* pProgress)
 }
 
 
-template void CInternalMedianFilterEngineT<unsigned char>::ApplyFilter(ProgressBase*);
-template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(ProgressBase*);
-template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(ProgressBase*);
-template void CInternalMedianFilterEngineT<float>::ApplyFilter(ProgressBase*);
-template void CInternalMedianFilterEngineT<double>::ApplyFilter(ProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned char>::ApplyFilter(OldProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned short>::ApplyFilter(OldProgressBase*);
+template void CInternalMedianFilterEngineT<unsigned int>::ApplyFilter(OldProgressBase*);
+template void CInternalMedianFilterEngineT<float>::ApplyFilter(OldProgressBase*);
+template void CInternalMedianFilterEngineT<double>::ApplyFilter(OldProgressBase*);

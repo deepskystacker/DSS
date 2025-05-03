@@ -27,7 +27,7 @@ void CFlatFrame::Clear()
 	m_pFlatFrame.reset();
 }
 
-bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress)
+bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -116,7 +116,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 
 /* ------------------------------------------------------------------- */
 
-void CFlatFrame::ComputeFlatNormalization(ProgressBase* pProgress)
+void CFlatFrame::ComputeFlatNormalization(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (IsOk() && !m_bComputed)

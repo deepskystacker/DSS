@@ -224,7 +224,7 @@ std::shared_ptr<CMedianFilterEngine> CColorBitmapT<TType>::GetMedianFilterEngine
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::RemoveHotPixels(ProgressBase* pProgress/*=nullptr*/)
+void CColorBitmapT<TType>::RemoveHotPixels(OldProgressBase* pProgress/*=nullptr*/)
 {
 	m_Red.RemoveHotPixels(pProgress);
 	m_Green.RemoveHotPixels(pProgress);

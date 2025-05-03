@@ -531,47 +531,35 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1118"/>
+        <location filename="../editstars.cpp" line="610"/>
+        <location filename="../editstars.cpp" line="1116"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1120"/>
+        <location filename="../editstars.cpp" line="612"/>
+        <location filename="../editstars.cpp" line="1118"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Bu yıldızı eklemek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1127"/>
+        <location filename="../editstars.cpp" line="620"/>
+        <location filename="../editstars.cpp" line="1125"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Kuyrukluyıldızı kaldırmak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1129"/>
+        <location filename="../editstars.cpp" line="622"/>
+        <location filename="../editstars.cpp" line="1127"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Bu yıldızı silmek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <source>#Stars: %1
-Score: %2
-Quality: %3
-FWHM: %4</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>#Yıldızlar: %1
-Puan: %2
-Kalite: %3
-FWHM: %4</translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="1177"/>
+        <location filename="../editstars.cpp" line="1175"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -581,8 +569,8 @@ Puan: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="673"/>
-        <location filename="../editstars.cpp" line="1184"/>
+        <location filename="../editstars.cpp" line="671"/>
+        <location filename="../editstars.cpp" line="1182"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -590,8 +578,16 @@ Comet:%1</source>
 Kuyrukluyıldız:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="673"/>
-        <location filename="../editstars.cpp" line="1184"/>
+        <location filename="../editstars.cpp" line="664"/>
+        <source>#Stars: %1
+Quality: %2
+FWHM: %3</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="671"/>
+        <location filename="../editstars.cpp" line="1182"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Evet</translation>
@@ -1017,6 +1013,61 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     </message>
 </context>
 <context>
+    <name>DSS::OldProgressDlg</name>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="152"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="222"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="225"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="228"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Tahmin edilen kalan süre: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="231"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="238"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../oldprogressdlg.cpp" line="251"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>%n işlemci kullanıldı</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="14"/>
+        <source>Processing ...</source>
+        <translation>İşleme ...</translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="86"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+</context>
+<context>
     <name>DSS::OutputTab</name>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
@@ -1432,56 +1483,56 @@ Lütfen adı değiştirin.</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../progressdlg.cpp" line="152"/>
-        <source>Are you sure you wish to cancel this operation?</source>
-        <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="226"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="229"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="232"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Tahmin edilen kalan süre: %1 s </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="235"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="242"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../progressdlg.cpp" line="255"/>
-        <source>%n Processor(s) Used</source>
-        <translation>
-            <numerusform>%n işlemci kullanıldı</numerusform>
-        </translation>
-    </message>
-    <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation>İşleme ...</translation>
+        <translation type="unfinished">İşleme ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation>İptal</translation>
+        <translation type="unfinished">İptal</translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="152"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation type="unfinished">Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="222"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation type="unfinished">Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="225"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation type="unfinished">Tahmin edilen kalan süre: %1 dk %2 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="228"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation type="unfinished">Tahmin edilen kalan süre: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="231"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation type="unfinished">Tahmin edilen kalan süre: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="238"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation type="unfinished">Tahmin edilen kalan süre: Bilinmiyor</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="251"/>
+        <source>%n Processor(s) Used</source>
+        <translation type="unfinished">
+            <numerusform>%n işlemci kullanıldı</numerusform>
+        </translation>
     </message>
 </context>
 <context>

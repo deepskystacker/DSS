@@ -14,6 +14,17 @@
     </message>
 </context>
 <context>
+    <name>DSS::OldProgressDlg</name>
+    <message numerus="yes">
+        <location filename="../oldprogressdlg.cpp" line="251"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>%n Processor used</numerusform>
+            <numerusform>%n Processors used</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
         <location filename="../ProcessingDlg.cpp" line="651"/>
@@ -28,9 +39,9 @@
 <context>
     <name>DSS::ProgressDlg</name>
     <message numerus="yes">
-        <location filename="../progressdlg.cpp" line="255"/>
+        <location filename="../progressdlg.cpp" line="251"/>
         <source>%n Processor(s) Used</source>
-        <translation>
+        <translation type="unfinished">
             <numerusform>%n Processor used</numerusform>
             <numerusform>%n Processors used</numerusform>
         </translation>

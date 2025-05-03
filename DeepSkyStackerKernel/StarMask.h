@@ -5,7 +5,7 @@ class CMemoryBitmap;
 /* ------------------------------------------------------------------- */
 namespace DSS
 {
-	class ProgressBase;
+	class OldProgressBase;
 	
 	typedef enum tagSTARMASKSTYLE
 	{
@@ -239,7 +239,7 @@ namespace DSS
 			m_bRemoveHotPixels = bHotPixels;
 		}
 
-		//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, ProgressBase * pProgress = nullptr);
-		std::shared_ptr<CMemoryBitmap> createStarMask(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress = nullptr);
+		//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, OldProgressBase * pProgress = nullptr);
+		std::shared_ptr<CMemoryBitmap> createStarMask(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress = nullptr);
 	};
 }

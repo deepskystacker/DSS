@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
+cmake_policy(SET CMP0115 NEW)
+
+if (APPLE)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 13.4 CACHE STRING "Minimum operating system version for deployment" FORCE)
+set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "VH8AYT3C7Y" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Developer ID Application: David Partridge (VH8AYT3C7Y)" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Manual" CACHE STRING "")
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED TRUE CACHE BOOL "")
+endif()
+
 set(CMAKE_TOOLCHAIN_FILE 
 	"$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	)
@@ -23,18 +33,12 @@ project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
 
-#
-# Report platform name if specified
-#
-if(NOT CMAKE_VS_PLATFORM_NAME)
-    message("CMAKE_VS_PLATFORM_NAME not specified")
-	if (APPLE)
-		set(CMAKE_VS_PLATFORM_NAME "arm64")
-	else()
-		set(CMAKE_VS_PLATFORM_NAME "x64")
+set (PLATFORM_NAME "x64" CACHE STRING "" FORCE )
+if (APPLE)
+	if ("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "arm64")
+	set (PLATFORM_NAME "arm64" CACHE STRING "" FORCE)
 	endif()
 endif()
-message("CMAKE_VS_PLATFORM_NAME set to: " ${CMAKE_VS_PLATFORM_NAME})
 
 #
 # install to DSS/x64 for Windows, and DSS/platform/x64 for other platforms
@@ -44,13 +48,13 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Debug")
 endif()
 message ("CMAKE_SOURCE_DIR: " ${CMAKE_SOURCE_DIR})
-message ("CMAKE_VS_PLATFORM_NAME: " ${CMAKE_VS_PLATFORM_NAME})
+message ("PLATFORM_NAME: " ${PLATFORM_NAME})
 message ("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	if(NOT WIN32)
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	else()
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
 endif()
 message ("CMAKE_INSTALL_PREFIX: " ${CMAKE_INSTALL_PREFIX})
@@ -68,7 +72,9 @@ find_package(Qt6 6.8.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus 
 # Non-Windows use find_package to find stuff we want
 #
 #set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
+if(NOT WIN32)
 find_package(cfitsio 4.5.0 REQUIRED)
+endif()
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)
@@ -135,10 +141,14 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
-add_subdirectory(DeepSkyStacker)
+# 
+# DeepSkyStackerCL must be built before DeepSkyStacker as we copy the executable
+# into the DeepSkyStacker folder/MACOSX bundle
+#
 add_subdirectory(DeepSkyStackerCL)
-add_subdirectory(DeepSkyStackerLive)
+add_subdirectory(DeepSkyStacker)
 #[=[
+add_subdirectory(DeepSkyStackerLive)
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 

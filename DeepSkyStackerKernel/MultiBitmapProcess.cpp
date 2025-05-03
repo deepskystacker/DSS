@@ -90,7 +90,7 @@ void CMultiBitmap::InitParts()
 
 
 // Save the bitmap to the temporary file
-bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	static std::mutex initMutex{};
 
@@ -158,13 +158,13 @@ private:
 	int							m_lStartRow;
 	int							m_lEndRow;
 	size_t						m_lScanLineSize;
-	ProgressBase*				m_pProgress;
+	OldProgressBase*				m_pProgress;
 	CMultiBitmap*				m_pMultiBitmap;
 	void*						m_pBuffer;
 	CMemoryBitmap* m_pBitmap;
 
 public:
-    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, ProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
+    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, OldProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
 		m_lStartRow{ startRow },
 		m_lEndRow{ endRow },
 		m_lScanLineSize{ scanLineSize },
@@ -313,7 +313,7 @@ static void ComputeWeightedAverage(int x, int y, CMemoryBitmap* pBitmap, CMemory
 	};
 };
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, ProgressBase* const pProgress) const
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, OldProgressBase* const pProgress) const
 {
 	if (static_cast<bool>(m_pHomBitmap))
 	{
@@ -343,7 +343,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, P
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	std::shared_ptr<CMemoryBitmap> pBitmap;

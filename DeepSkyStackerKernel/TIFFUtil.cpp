@@ -105,7 +105,7 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFReader::CTIFFReader(const fs::path& p, ProgressBase* pProgress) :
+CTIFFReader::CTIFFReader(const fs::path& p, OldProgressBase* pProgress) :
 	m_tiff{ nullptr },
 	file{ p },
 	m_pProgress{ pProgress }
@@ -764,7 +764,7 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
+CTIFFWriter::CTIFFWriter(const fs::path& p, OldProgressBase* pProgress) :
 	m_tiff{ nullptr },
 	file{ p },
 	m_pProgress{ pProgress },
@@ -1342,7 +1342,7 @@ private :
 	TIFFFORMAT GetBestTiffFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress) :
 		CTIFFWriter{ szFileName, pProgress },
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1475,7 +1475,7 @@ bool CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1513,18 +1513,18 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 }
 
 /* ------------------------------------------------------------------- */
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, const QString& szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase * pProgress, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
 	const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1556,11 +1556,11 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 }
 
 /* ------------------------------------------------------------------- */
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
@@ -1574,7 +1574,7 @@ private :
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 
 public :
-	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress):
+	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress):
 		CTIFFReader(szFileName, pProgress),
 		m_outBitmap{ rpBitmap }
 	{}
@@ -1730,7 +1730,7 @@ bool CTIFFReadInMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress)
+bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, pProgress);
@@ -1783,7 +1783,7 @@ bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 }
 
 
-int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1;		// -1 means not a TIFF file.

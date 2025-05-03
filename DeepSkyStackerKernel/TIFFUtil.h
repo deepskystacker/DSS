@@ -165,8 +165,8 @@ public:
 	}
 };
 
-namespace DSS { class ProgressBase; }
-using ProgressBase = DSS::ProgressBase;
+namespace DSS { class OldProgressBase; }
+using OldProgressBase = DSS::OldProgressBase;
 using TIFF = struct tiff;
 
 class CTIFFReader : public CTIFFHeader
@@ -175,10 +175,10 @@ public:
 	TIFF* m_tiff;
 protected:
 	fs::path file;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 
 public:
-	CTIFFReader(const fs::path& p, ProgressBase* pProgress);
+	CTIFFReader(const fs::path& p, OldProgressBase* pProgress);
 
 	virtual ~CTIFFReader()
 	{
@@ -208,7 +208,7 @@ public:
 	TIFF* m_tiff;
 protected:
 	fs::path file;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 	QString m_strDescription;
 	TIFFFORMAT m_Format;
 
@@ -217,7 +217,7 @@ protected:
 	void SetCompression(TIFFCOMPRESSION tiffcomp);
 
 public:
-	CTIFFWriter(const fs::path& szFileName, ProgressBase* pProgress);
+	CTIFFWriter(const fs::path& szFileName, OldProgressBase* pProgress);
 	CTIFFWriter(const CTIFFWriter&) = delete;
 	CTIFFWriter& operator=(const CTIFFWriter&) = delete;
 	CTIFFWriter(CTIFFWriter&&) = delete;
@@ -250,16 +250,16 @@ class CBitmapInfo;
 class CMemoryBitmap;
 
 bool GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo);
-bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription);
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression);
+bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase *	pProgress);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase * pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const QString& szDescription);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription);
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression);
 
 bool IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo);
-int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress);
+int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress);
 
 /* ------------------------------------------------------------------- */
 

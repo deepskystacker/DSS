@@ -303,6 +303,13 @@ set(Tools
 )
 source_group("Tools" FILES ${Tools})
 
+if(APPLE)
+    # And the following tells CMake where to find and install the file itself.
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+endif()
+
 set(ALL_FILES
     ${Dialogs}
     ${Dialogs__Processing}
@@ -314,7 +321,12 @@ set(ALL_FILES
 	${Resources}
     ${Source_Files}
     ${Tools}
+    ${DSSCL}
+    ${app_icon_macos}
 )
+
+if(APPLE)
+endif()
 
 ################################################################################
 # Target
@@ -326,14 +338,27 @@ qt_add_translations(${PROJECT_NAME}
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
     )
 qt_add_resources(ALL_FILES ${Resource_Files})
+
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
+
+if(APPLE)
+    set_target_properties(DeepSkyStacker PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
+        MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier "
+        INSTALL_RPATH "@executable_path/../Frameworks"
+)
+endif()
+if(WIN32)
+    set_target_properties(DeepSkyStacker PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
 set_target_properties(DeepSkyStacker PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-)
-set_target_properties(DeepSkyStacker PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
 )
 
 ################################################################################
@@ -432,13 +457,16 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Widgets
     Qt6::Network
 	DeepSkyStackerKernel
+    DeepSkyStackerAVX
     ZClass
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -459,6 +487,7 @@ endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    cfitsio
     user32
     psapi
     htmlhelp
@@ -475,11 +504,25 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
+if(APPLE)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Now we've built the DSS .app bundle, copy the DSSCL binary into the bundle
+        # The use of $<TARGET_FILE:DeepSkyStackerCL> in add_custom_command also adds
+        # a dependency on the target, so that the DSSCL binary is built before this.
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
+        COMMAND "$ENV{HOME}/.unlock_keychain"
+    )
+endif()
 
 if(NOT LINUX)
-    set (deploy_tool_options_arg "")
+    set (deploy_tool_options_arg "-verbose=1")
     if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -timestamp -no-strip")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/DeepSkyStackerCL\"")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
     endif()
@@ -505,14 +548,13 @@ if(NOT LINUX)
      )"
      )
 else()
-qt_generate_deploy_app_script(
-    TARGET ${PROJECT_NAME}
-    OUTPUT_SCRIPT deploy_script
-    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-)
+    qt_generate_deploy_app_script(
+        TARGET ${PROJECT_NAME}
+        OUTPUT_SCRIPT deploy_script
+        DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+    )
 endif()
 install (SCRIPT ${deploy_script})
-
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
 

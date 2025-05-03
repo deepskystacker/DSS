@@ -2,7 +2,7 @@
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 //////////////////////////////////////////////////////////////////////////
 // Perhaps these classes here (CMedianFilterEngine based) should be in their own headers.
@@ -10,7 +10,7 @@ class CMedianFilterEngine
 {
 protected:
 	int m_lFilterSize;
-	DSS::ProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 
 public:
 	CMedianFilterEngine() :
@@ -20,7 +20,7 @@ public:
 
 	virtual ~CMedianFilterEngine() {};
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const = 0;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::OldProgressBase* pProgress) const = 0;
 };
 
 template <typename TType>
@@ -39,7 +39,7 @@ public:
 		m_pInBitmap = pInBitmap;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, DSS::ProgressBase* pProgress) const override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, DSS::OldProgressBase* pProgress) const override;
 };
 
 template <typename TType>
@@ -59,7 +59,7 @@ public:
 		m_pInBitmap = pInBitmap;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::OldProgressBase* pProgress) const override;
 };
 
 template <class T>
@@ -100,10 +100,10 @@ public :
 	{
 	private :
 		CInternalMedianFilterEngineT<TType>* m_pEngine = nullptr;
-		DSS::ProgressBase* m_pProgress = nullptr;
+		DSS::OldProgressBase* m_pProgress = nullptr;
 
 	public :
-		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, DSS::ProgressBase* pprg) :
+		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, DSS::OldProgressBase* pprg) :
 			m_pEngine{ peng },
 			m_pProgress{ pprg }
 		{}
@@ -130,12 +130,12 @@ public:
 
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	void ApplyFilter(DSS::ProgressBase* pProgress);
+	void ApplyFilter(DSS::OldProgressBase* pProgress);
 };
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, DSS::ProgressBase* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, DSS::OldProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};
@@ -164,7 +164,7 @@ inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilter
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, DSS::ProgressBase* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, DSS::OldProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};

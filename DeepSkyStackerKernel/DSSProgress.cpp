@@ -5,9 +5,14 @@
 
 namespace DSS
 {
-	void ProgressBase::UpdateProcessorsUsed()
+	void OldProgressBase::UpdateProcessorsUsed()
 	{
 		int nCurrentThreadCount = CMultitask::GetNrCurrentOmpThreads();
 		applyProcessorsUsed(nCurrentThreadCount);
+	}
+	void ProgressBase::updateProcessorsUsed()
+	{
+		int threadCount = CMultitask::GetNrCurrentOmpThreads();
+		applyProcessorsUsed(threadCount);
 	}
 }

@@ -198,7 +198,6 @@ namespace DSS
 		bool m_bComet;
 		double m_fLightBkgd;
 		bool m_bDirty;
-		double m_fScore;
 		double m_fQuality{ 0.0 };
 		int m_lNrStars;
 		double m_fFWHM;

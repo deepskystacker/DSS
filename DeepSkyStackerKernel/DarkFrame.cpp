@@ -404,7 +404,7 @@ void	CDarkFrame::FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELV
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, ProgressBase * pProgress)
+void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
@@ -565,7 +565,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, ProgressBase * pProgress)
+void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
@@ -1297,7 +1297,7 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap* pBitmap, double& fHotDark, double& fAmpGlow, ProgressBase* pProgress)
+void CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap* pBitmap, double& fHotDark, double& fAmpGlow, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (!static_cast<bool>(m_pAmpGlow))
@@ -1483,7 +1483,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CDarkFrame::FindBadVerticalLines(ProgressBase*)
+void CDarkFrame::FindBadVerticalLines(OldProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = m_pMasterDark->IsMonochrome();
@@ -1583,10 +1583,10 @@ class CFindHotPixelTask1
 public:
 	RGBHistogram m_RGBHistogram;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 
 public:
-	explicit CFindHotPixelTask1(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress) :
+	explicit CFindHotPixelTask1(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress) :
 		m_pBitmap{ pBitmap },
 		m_pProgress{ pProgress }
 	{
@@ -1692,7 +1692,7 @@ void	CDarkFrame::RemoveContiguousHotPixels(bool bCFA)
 
 /* ------------------------------------------------------------------- */
 
-void CDarkFrame::FindHotPixels(ProgressBase* pProgress)
+void CDarkFrame::FindHotPixels(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_vHotPixels.clear();
@@ -1788,7 +1788,7 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase*)
+void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (static_cast<bool>(pBitmap) && !m_vHotPixels.empty())
@@ -1875,7 +1875,7 @@ void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, Pr
 
 /* ------------------------------------------------------------------- */
 
-bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase* pProgress)
+bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

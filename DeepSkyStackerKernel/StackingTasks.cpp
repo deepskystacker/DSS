@@ -55,7 +55,7 @@ void	SpaceToQString(std::int64_t ulSpace, QString& strSpace)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -161,7 +161,7 @@ public:
 		m_pFlatBitmap.reset();
 	}
 
-	bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+	bool GetTaskResult(const CTaskInfo* pTaskInfo, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -218,7 +218,7 @@ static CTaskBitmapCache g_BitmapCache;
 
 /* ------------------------------------------------------------------- */
 
-bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool GetTaskResult(const CTaskInfo* pTaskInfo, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	return ::g_BitmapCache.GetTaskResult(pTaskInfo, pProgress, rpBitmap);
 }
@@ -250,7 +250,7 @@ static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool
 
 /* ------------------------------------------------------------------- */
 
-static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, ProgressBase* pProgress, const QString& szDescription, CTaskInfo* pTaskInfo)
+static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, OldProgressBase* pProgress, const QString& szDescription, CTaskInfo* pTaskInfo)
 {
     WriteTIFF(szFileName, pMasterBitmap, pProgress, szDescription,
 		pTaskInfo->m_lISOSpeed, pTaskInfo->m_lGain, pTaskInfo->m_fExposure, pTaskInfo->m_fAperture);
@@ -286,7 +286,7 @@ bool	CStackingInfo::CheckForExistingOffset(fs::path& masterFile)
 	return bResult;
 }
 
-bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoOffsetTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -315,7 +315,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 			if (pProgress)
 				pProgress->Start1(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pOffsetTask->m_vBitmaps.size())
 					return { {}, false };
@@ -448,7 +448,7 @@ bool CStackingInfo::CheckForExistingDark(fs::path& masterFile)
 }
 
 
-bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoDarkTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -488,7 +488,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
 			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
 					return { {}, false };
@@ -643,7 +643,7 @@ bool CStackingInfo::CheckForExistingDarkFlat(fs::path& masterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
+bool	CStackingInfo::DoDarkFlatTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -910,13 +910,13 @@ public :
 		return m_bInitialized;
 	};
 
-	void	ComputeParameters(CMemoryBitmap* pBitmap, ProgressBase * pProgress);
-	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, ProgressBase * pProgress);
+	void	ComputeParameters(CMemoryBitmap* pBitmap, OldProgressBase * pProgress);
+	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, OldProgressBase * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, ProgressBase * pProgress)
+void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, OldProgressBase * pProgress)
 {
 	QString			strStart2;
 
@@ -969,7 +969,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, Progr
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, ProgressBase * pProgress)
+void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, OldProgressBase * pProgress)
 {
 	QString			strStart2;
 	if (pProgress)
@@ -1065,7 +1065,7 @@ bool CStackingInfo::CheckForExistingFlat(fs::path& strMasterFile)
 }
 
 
-bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoFlatTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1123,7 +1123,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 //				}
 			}
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pFlatTask->m_vBitmaps.size())
 					return { {}, false };
@@ -1727,7 +1727,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 
 /* ------------------------------------------------------------------- */
 
-bool CAllStackingTasks::DoOffsetTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoOffsetTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1753,7 +1753,7 @@ bool CAllStackingTasks::DoOffsetTasks(ProgressBase * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoDarkTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1786,7 +1786,7 @@ bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
 	return bResult;
 };
 
-bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoDarkFlatTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1819,7 +1819,7 @@ bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
 	return bResult;
 };
 
-bool CAllStackingTasks::DoAllPreTasks(ProgressBase* pProgress)
+bool CAllStackingTasks::DoAllPreTasks(OldProgressBase* pProgress)
 {
 	if (!DoOffsetTasks(pProgress)) return false;
 	if (!DoDarkTasks(pProgress)) return false;
@@ -1828,7 +1828,7 @@ bool CAllStackingTasks::DoAllPreTasks(ProgressBase* pProgress)
 	return true;
 }
 
-bool CAllStackingTasks::DoFlatTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoFlatTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;

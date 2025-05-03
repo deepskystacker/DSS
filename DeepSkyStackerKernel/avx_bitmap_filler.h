@@ -1,14 +1,14 @@
 #pragma once
 #include "BitMapFiller.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 class AvxBitmapFiller : public BitmapFillerBase
 {
 private:
 	std::vector<std::uint8_t> sourceBuffer;
 public:
-	AvxBitmapFiller(CMemoryBitmap* pB, DSS::ProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	AvxBitmapFiller(const AvxBitmapFiller&) = default; // For cloning.
 	virtual ~AvxBitmapFiller() {}
 
@@ -21,7 +21,7 @@ public:
 class NonAvxBitmapFiller : public BitmapFillerBase
 {
 public:
-	NonAvxBitmapFiller(CMemoryBitmap* pB, DSS::ProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	NonAvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	NonAvxBitmapFiller(const NonAvxBitmapFiller&) = default; // For cloning.
 	virtual ~NonAvxBitmapFiller() {}
 

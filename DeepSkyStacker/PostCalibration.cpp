@@ -5,7 +5,7 @@
 #include "StackSettings.h"
 #include "zexcept.h"
 #include "ztrace.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "MasterFrames.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
@@ -318,7 +318,7 @@ namespace DSS
 			tasks.ResolveTasks();
 			if (tasks.m_vStacks.size())
 			{
-				DSS::ProgressDlg				dlg;
+				DSS::OldProgressDlg				dlg;
 				CStackingInfo& StackingInfo = tasks.m_vStacks[0];
 
 				if (StackingInfo.m_pLightTask &&

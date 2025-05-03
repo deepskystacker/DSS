@@ -2,7 +2,7 @@
 #include "DSSCommon.h"
 #include "BitmapPartFile.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 using namespace DSS;
 class CMemoryBitmap;
 class CMultiBitmap
@@ -26,7 +26,7 @@ protected:
 private:
 	void	removeTempFiles();
 	void	InitParts();
-	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap, ProgressBase* const pProgress) const;
+	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap, OldProgressBase* const pProgress) const;
 
 public:
 	CMultiBitmap() :
@@ -77,8 +77,8 @@ public:
 		return this->m_vImageOrder;
 	}
 
-	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, ProgressBase* pProgress = nullptr);
-	virtual std::shared_ptr<CMemoryBitmap> GetResult(ProgressBase* pProgress = nullptr);
+	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, OldProgressBase* pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> GetResult(OldProgressBase* pProgress = nullptr);
 	virtual int GetNrChannels() const = 0;
 	virtual int GetNrBytesPerChannel() const = 0;
 

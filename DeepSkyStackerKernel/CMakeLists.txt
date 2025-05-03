@@ -104,6 +104,11 @@ set(Header_Files
     ${Header_Files}
     "StackWalker.h"
 )
+elseif(NOT APPLE)
+set(Header_Files
+    ${Header_Files}
+    "ExceptionHandling.h"
+)
 endif()
 source_group("Header Files" FILES ${Header_Files})
 
@@ -131,23 +136,22 @@ source_group("Qt\\i18n" FILES ${i18n_Files}
 
 set(AVX_Files
     "avx.cpp"
+    "avx_1.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
+    "avx_bitmap_util.cpp"
     "avx_cfa.cpp"
     "avx_entropy.cpp"
     "avx_filter.cpp"
     "avx_histogram.cpp"
+    "avx_histogram_1.cpp"
     "avx_luminance.cpp"
+    "avx_simd_check.cpp"
     "avx_output.cpp"
 )
 
 set(Source_Files
     "AHDDemosaicing.cpp"
-    "avx_1.cpp"
-    "avx_bitmap_util.cpp"
-    "avx_histogram_1.cpp"
-    "avx_simd_check.cpp"
-    ${AVX_Files}
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -166,7 +170,6 @@ set(Source_Files
     "DSSProgress.cpp"
     "DSSTools.cpp"
     "EntropyInfo.cpp"
-    "ExceptionHandling.cpp"
     "Filters.cpp"
     "FITSUtil.cpp"
     "FlatFrame.cpp"
@@ -201,8 +204,14 @@ set(Source_Files
 if(WIN32)
     set (Source_Files
         ${Source_Files}
+        "ExceptionHandling.cpp"
         "StackWalker.cpp"
     )
+elseif(NOT APPLE)
+    set(Source_Files
+        ${Source_Files}
+        "ExceptionHandling.cpp"
+)
 endif()
 source_group("Source Files" FILES ${Source_Files})
 
@@ -212,6 +221,12 @@ set(ALL_FILES
 )
 
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+message("CMAKE_OSX_ARCHITECTURES: " ${CMAKE_OSX_ARCHITECTURES})
+message("LINUX: " ${LINUX}) 
+message("APPLE: " ${APPLE})
+message("CMAKE_SYSTEM_NAME: " ${CMAKE_SYSTEM_NAME})
+if (LINUX OR (APPLE AND ("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "x86_64")))
+message("Setting AVX compile options")
 set_source_files_properties(${AVX_Files}
     PROPERTIES
         COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
@@ -219,11 +234,111 @@ set_source_files_properties(avx_simd_check.cpp
     PROPERTIES
         COMPILE_OPTIONS "-mxsave")
 endif()
+endif()
 
 set_source_files_properties(${AVX_Files}
     PROPERTIES
         COMPILE_DEFINITIONS "Q_NUMERIC_NO_INTRINSICS")
 
+################################################################################
+# Target
+################################################################################
+set (CMAKE_AUTOMOC OFF)
+add_library(DeepSkyStackerAVX STATIC ${AVX_Files} ${Header_Files})
+target_link_libraries(DeepSkyStackerAVX PRIVATE Qt6::Widgets Qt6::Network)
+target_link_libraries(DeepSkyStackerAVX PRIVATE ZLIB::ZLIB)
+
+
+################################################################################
+# Output directory
+################################################################################
+set_target_properties(DeepSkyStackerAVX PROPERTIES
+    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/$<CONFIG>/"
+    OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/$<CONFIG>/"
+)
+set_target_properties(DeepSkyStackerAVX PROPERTIES
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+)
+
+################################################################################
+# Include directories
+################################################################################
+target_include_directories(DeepSkyStackerAVX PRIVATE
+    .
+    ../DeepSkyStacker;
+    ../ZClass
+)
+
+if(WIN32)
+target_include_directories(DeepSkyStackerAVX PRIVATE
+    ../include
+ 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
+)
+endif()
+
+
+################################################################################
+# Compile definitions
+################################################################################
+target_compile_definitions(DeepSkyStackerAVX PRIVATE
+    "$<$<CONFIG:Debug>:"
+        "Z_DEVELOP"
+    ">"
+    "$<$<CONFIG:Release>:"
+        "NDEBUG;"
+        "USE_LIBTIFF_STATIC"
+    ">"
+    "_UNICODE;"
+    "UNICODE;"
+    "NOMINMAX;"
+    "LIBRAW_NODLL;"
+    "_CONSOLE;"
+    "_CRT_SECURE_NO_DEPRECATE"
+)
+
+if (MSVC)
+target_compile_definitions(DeepSkyStackerAVX PRIVATE
+	_WINDOWS
+	)
+endif()
+
+################################################################################
+# Compile and link options
+################################################################################
+if(MSVC)
+    target_compile_options(DeepSkyStackerAVX PRIVATE
+        $<$<CONFIG:Debug>:
+            /Gm-;
+            /RTC1
+        >
+        $<$<CONFIG:Release>:
+            /GL-;
+            /GS-
+        >
+        /MP;
+        /W4;
+        ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
+        -Zc:__cplusplus;
+        /openmp:experimental;
+        /wd4828;
+        /wd4652;
+        /wd4702;
+        /wd4244;
+        ${DEFAULT_CXX_EXCEPTION_HANDLING}
+    )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    if(APPLE)
+        target_compile_options(DeepSkyStackerAVX PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(DeepSkyStackerAVX PRIVATE
+            -fopenmp
+        )
+    endif()
+endif()
+
+set (CMAKE_AUTOMOC ON)
 ################################################################################
 # Target
 ################################################################################
@@ -242,13 +357,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+target_link_libraries(${PROJECT_NAME} PRIVATE DeepSkyStackerAVX)
 
 ################################################################################
 # Output directory
 ################################################################################
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
-    OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
+    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/$<CONFIG>/"
+    OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/$<CONFIG>/"
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
@@ -298,8 +414,6 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 if (MSVC)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
 	_WINDOWS
-	_UNICODE
-	UNICODE
 	)
 endif()
 

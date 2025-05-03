@@ -33,24 +33,24 @@
 **
 **
 ****************************************************************************/
-// ProgressDlg.cpp : Implements the OLD DeepSkyStacker Progress Dialog
+// OldProgressDlg.cpp : Implements the OLD DeepSkyStacker Progress Dialog
 //
 #include "pch.h"
-#include "progressdlg.h"
-#include "ui/ui_ProgressDlg.h"
+#include "oldprogressdlg.h"
+#include "ui/ui_OldProgressDlg.h"
 #include "DeepSkyStacker.h"
 
 using namespace DSS;
 
-ProgressDlg::ProgressDlg(QWidget* parent) :
+OldProgressDlg::OldProgressDlg(QWidget* parent) :
 	QDialog { parent },
-	ProgressBase{ },
-	ui{ new Ui::ProgressDlg },
+	OldProgressBase{ },
+	ui{ new Ui::OldProgressDlg },
 	m_cancelInProgress{ false }
 {
 	ui->setupUi(this);
 	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
-	ProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
+	OldProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &OldProgressDlg::cancelPressed);
 
 	retainHiddenWidgetSize(*ui->ProcessText1);
 	retainHiddenWidgetSize(*ui->ProcessText2);
@@ -58,13 +58,13 @@ ProgressDlg::ProgressDlg(QWidget* parent) :
 	retainHiddenWidgetSize(*ui->ProgressBar2);
 }
 
-ProgressDlg::~ProgressDlg()
+OldProgressDlg::~OldProgressDlg()
 {
 	Close();
 	delete ui;
 }
 
-void ProgressDlg::Start1(const QString& title, int total1, bool enableCancel /* = true */)
+void OldProgressDlg::Start1(const QString& title, int total1, bool enableCancel /* = true */)
 {
 	QMetaObject::invokeMethod(this, "slotStart1", Qt::AutoConnection,
 		Q_ARG(const QString&, title),
@@ -72,67 +72,67 @@ void ProgressDlg::Start1(const QString& title, int total1, bool enableCancel /* 
 		Q_ARG(bool, enableCancel));
 }
 
-void ProgressDlg::Progress1(const QString& text, int achieved)
+void OldProgressDlg::Progress1(const QString& text, int achieved)
 {
 	QMetaObject::invokeMethod(this, "slotProgress1", Qt::AutoConnection,
 		Q_ARG(const QString&, text),
 		Q_ARG(int, achieved));
 }
 
-void ProgressDlg::Start2(const QString& title, int total2)
+void OldProgressDlg::Start2(const QString& title, int total2)
 {
 	QMetaObject::invokeMethod(this, "slotStart2", Qt::AutoConnection,
 		Q_ARG(const QString&, title),
 		Q_ARG(int, total2));
 }
 
-void ProgressDlg::Progress2(const QString& text, int achieved)
+void OldProgressDlg::Progress2(const QString& text, int achieved)
 {
 	QMetaObject::invokeMethod(this, "slotProgress2", Qt::AutoConnection,
 		Q_ARG(const QString&, text),
 		Q_ARG(int, achieved));
 }
 
-void ProgressDlg::End2()
+void OldProgressDlg::End2()
 {
 	QMetaObject::invokeMethod(this, "slotEnd2", Qt::AutoConnection);
 }
 
-void ProgressDlg::Close()
+void OldProgressDlg::Close()
 {
 	QMetaObject::invokeMethod(this, "slotClose", Qt::AutoConnection);
 }
 
-bool ProgressDlg::Warning(const QString& szText)
+bool OldProgressDlg::Warning(const QString& szText)
 {
 	return doWarning(szText);
 }
 
-void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
+void OldProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
 {
 	QSizePolicy sp_retain = rWidget.sizePolicy();
 	sp_retain.setRetainSizeWhenHidden(true);
 	rWidget.setSizePolicy(sp_retain);
 }
 
-void ProgressDlg::EnableCancelButton(bool bState)
+void OldProgressDlg::EnableCancelButton(bool bState)
 {
 	ui->StopButton->setEnabled(bState);
 }
-void ProgressDlg::applyTitleText(const QString& strText)
+void OldProgressDlg::applyTitleText(const QString& strText)
 {
 	if (!strText.isEmpty())
 		setWindowTitle(strText);
 }
-void ProgressDlg::setProgress1Range(int nMin, int nMax)
+void OldProgressDlg::setProgress1Range(int nMin, int nMax)
 {
 	ui->ProgressBar1->setRange(nMin, nMax);
 }
-void ProgressDlg::setProgress2Range(int nMin, int nMax)
+void OldProgressDlg::setProgress2Range(int nMin, int nMax)
 {
 	ui->ProgressBar2->setRange(nMin, nMax);
 }
-void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
+void OldProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
 	ui->ProcessText1->setVisible(bSet1);
 	ui->ProgressBar1->setVisible(bSet1);
@@ -141,13 +141,13 @@ void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 	ui->ProgressBar2->setVisible(bSet2);
 }
 
-void ProgressDlg::closeEvent(QCloseEvent* pEvent)
+void OldProgressDlg::closeEvent(QCloseEvent* pEvent)
 {
 	cancelPressed();
 	pEvent->ignore();
 }
 
-void ProgressDlg::cancelPressed()
+void OldProgressDlg::cancelPressed()
 {
 	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
@@ -156,14 +156,14 @@ void ProgressDlg::cancelPressed()
 	}
 }
 
-void ProgressDlg::setTimeRemaining(const QString& strText)
+void OldProgressDlg::setTimeRemaining(const QString& strText)
 {
 	ui->TimeRemaining->setText(strText);
 }
 
 //////////////////////////////////////////////////////////////////////////
-// ProgressBase
-void ProgressDlg::initialise()
+// OldProgressBase
+void OldProgressDlg::initialise()
 {
 	// Disable child dialogs of DeepSkyStackerDlg
 	DeepSkyStacker::instance()->disableSubDialogs();
@@ -178,12 +178,12 @@ void ProgressDlg::initialise()
 	show();
 }
 
-void ProgressDlg::applyStart1Text(const QString& strText)
+void OldProgressDlg::applyStart1Text(const QString& strText)
 {
 	ui->ProcessText1->setText(strText);
 }
 
-void ProgressDlg::applyStart2Text(const QString& strText)
+void OldProgressDlg::applyStart2Text(const QString& strText)
 {
 	ui->ProcessText2->setText(strText);
 	setProgress2Range(0, m_total2);
@@ -198,7 +198,7 @@ void ProgressDlg::applyStart2Text(const QString& strText)
 	}
 }
 
-void ProgressDlg::applyProgress1(int lAchieved)
+void OldProgressDlg::applyProgress1(int lAchieved)
 {
 	ui->ProgressBar1->setValue(lAchieved);
 
@@ -241,27 +241,27 @@ void ProgressDlg::applyProgress1(int lAchieved)
 	};
 }
 
-void ProgressDlg::applyProgress2(int lAchieved)
+void OldProgressDlg::applyProgress2(int lAchieved)
 {
 	ui->ProgressBar2->setValue(lAchieved);
 }
 
-void ProgressDlg::applyProcessorsUsed(int nCount)
+void OldProgressDlg::applyProcessorsUsed(int nCount)
 {
 	ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
 }
 
-void ProgressDlg::endProgress2()
+void OldProgressDlg::endProgress2()
 {
 	setItemVisibility(true, false);
 }
 
-bool ProgressDlg::doWarning(const QString& szText)
+bool OldProgressDlg::doWarning(const QString& szText)
 {
 	return (QMessageBox::question(this, "", szText) == QMessageBox::Yes);
 }
 
-void ProgressDlg::closeProgress()
+void OldProgressDlg::closeProgress()
 {
 	DeepSkyStacker::instance()->enableSubDialogs();
 	hide();
@@ -270,7 +270,7 @@ void ProgressDlg::closeProgress()
 /************************************************************************************/
 /* SLOTS                                                                            */
 /************************************************************************************/
-void ProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
+void OldProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
 {
 	m_lastTotal1 = 0;
 	m_total1 = total1;
@@ -283,14 +283,14 @@ void ProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel
 		m_strLastOut[OT_TITLE] = title;
 		applyTitleText(GetTitleText());
 	}
-	updateProcessorsUsed();
+	UpdateProcessorsUsed();
 	initialise();
 	QCoreApplication::processEvents();
 }
 
 /************************************************************************************/
 
-void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
+void OldProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
 {
 	// Always update on first loop, then only if 100ms has passed or a min progress has occurred.
 	if (!(m_firstProgress ||
@@ -315,13 +315,13 @@ void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
 		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
 		applyProgress1(lAchieved1);
 	}
-	updateProcessorsUsed();
+	UpdateProcessorsUsed();
 	QCoreApplication::processEvents();
 }
 
 /************************************************************************************/
 
-void ProgressDlg::slotStart2(const QString& szText, int lTotal2)
+void OldProgressDlg::slotStart2(const QString& szText, int lTotal2)
 {
 	m_lastTotal2 = 0;
 	m_total2 = lTotal2;
@@ -335,13 +335,13 @@ void ProgressDlg::slotStart2(const QString& szText, int lTotal2)
 	if (m_jointProgress)
 		Start1(GetStart2Text(), m_total2, m_enableCancel);
 
-	updateProcessorsUsed();
+	UpdateProcessorsUsed();
 	QCoreApplication::processEvents();
 }
 
 /************************************************************************************/
 
-void ProgressDlg::slotProgress2(const QString& szText, int lAchieved2)
+void OldProgressDlg::slotProgress2(const QString& szText, int lAchieved2)
 {
 	// Always update after a min progress has occurred.
 	float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
@@ -381,23 +381,23 @@ void ProgressDlg::slotProgress2(const QString& szText, int lAchieved2)
 		m_strLastOut[OT_PROGRESS2] = QString("%1%").arg(percentage, 0, 'f', 0);
 		applyProgress2(lAchieved2);
 	}
-	updateProcessorsUsed();
+	UpdateProcessorsUsed();
 
 	QCoreApplication::processEvents();
 }
 
 /************************************************************************************/
 
-void ProgressDlg::slotEnd2()
+void OldProgressDlg::slotEnd2()
 {
-	ProgressBase::Progress2(m_total2);	// Set to 100% is ending.
-	updateProcessorsUsed();
+	OldProgressBase::Progress2(m_total2);	// Set to 100% is ending.
+	UpdateProcessorsUsed();
 	endProgress2();
 }
 
 /************************************************************************************/
 
-void ProgressDlg::slotClose()
+void OldProgressDlg::slotClose()
 {
 	closeProgress();
 }

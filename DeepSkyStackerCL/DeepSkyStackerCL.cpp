@@ -12,6 +12,9 @@
 #include <QtLogging>
 #include <QImageReader>
 #include "DeepSkyStackerCL.h"
+#if !defined(Q_OS_APPLE)
+#include "ExceptionHandling.h"
+#endif
 #include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
@@ -20,6 +23,9 @@
 #include "tracecontrol.h"
 #include "ztrace.h"
 #include "QMessageLogger.h"
+
+std::unique_ptr<std::uint8_t[]> backPocket;
+constexpr size_t backPocketSize{ 1024 * 1024 };
 
 //
 // Set up tracing and manage trace file deletion
@@ -65,7 +71,7 @@ void DeepSkyStackerCommandLine::reportError(const QString& message, const QStrin
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 	DSS::FrameList frameList;
 	bool bContinue = true;
 	bool bUseFits = stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT);
@@ -305,7 +311,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 	if (!(pBitmap && !stackingParams.GetOutputFilename().isEmpty()))
 		return;
 
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 
 	const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(stackingParams.GetOutputFilename()));
 	progress.Start1(strText, 0);
@@ -360,6 +366,10 @@ void atexitHandler()
 	// Retain or delete the trace file as wanted
 	//
 	traceControl.terminate();
+	//
+	// Delete the back pocket storage
+	//
+	backPocket.reset();
 }
 
 int main(int argc, char* argv[])
@@ -370,7 +380,22 @@ int main(int argc, char* argv[])
 	//
 	std::atexit(atexitHandler);
 
+	//
+	// Create a storage cushion (aka back pocket storage)
+	// and ensure that it is actually touched.
+	//
+	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
+	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
+	{
+		*p = static_cast<uint8_t>('\xff');
+	}
 
+#if !defined(Q_OS_APPLE)
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
+#endif
 
 #if defined(Q_OS_WIN)
 	// Set console code page to UTF-8 so console knows how to interpret string data

@@ -117,7 +117,7 @@
     <ClCompile Include="..\Tools\QElidedLabel.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="progressdlg.cpp">
+    <ClCompile Include="oldprogressdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExplorerBar.cpp">
@@ -166,6 +166,9 @@
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
     <ClCompile Include="lowerdockwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="progressdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -617,7 +620,7 @@
     <QtUic Include="ui\RenameGroup.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="ui\ProgressDlg.ui">
+    <QtUic Include="ui\OldProgressDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\SaveEditChanges.ui">
@@ -639,6 +642,9 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\ProcessingControls.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ProgressDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -703,7 +709,7 @@
     <QtMoc Include="..\Tools\QElidedLabel.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="progressdlg.h">
+    <QtMoc Include="oldprogressdlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="AskRegistering.h">
@@ -759,6 +765,9 @@
     </QtMoc>
     <QtMoc Include="processingcontrols.h">
       <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdlg.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -818,5 +827,13 @@
     <ResourceCompile Include="Version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Help\DeepSkyStacker Help.qhcp">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\Help\DeepSkyStacker Help.qhp">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

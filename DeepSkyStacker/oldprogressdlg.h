@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2025 David C. Partridge
+** Copyright (C) 2023 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,28 +34,28 @@
 **
 **
 ****************************************************************************/
-// ProgressDlg.h : Defines the NEW DSS Progress Dialog class
+// OldProgressDlg.h : Defines the OLD DSS Progress Dialog class
 //
 #include "DSSProgress.h"
 
 namespace DSS
 {
 	namespace Ui {
-		class ProgressDlg;
+		class OldProgressDlg;
 	}
 
-	class ProgressDlg : public QDialog, public ProgressBase
+	class OldProgressDlg : public QDialog, public OldProgressBase
 	{
 		Q_OBJECT
 
 	private:
-		Ui::ProgressDlg* ui;
+		Ui::OldProgressDlg* ui;
 		bool m_cancelInProgress;
 		static inline const QString m_emptyString{};
 
 	public:
-		ProgressDlg(QWidget* parent = nullptr);
-		~ProgressDlg();
+		OldProgressDlg(QWidget* parent = nullptr);
+		~OldProgressDlg();
 
 		//
 		// These eight mfs implement the public interface defined in DSS::OldProgressBase
