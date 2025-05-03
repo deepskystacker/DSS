@@ -534,7 +534,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 
 	if (pProgress)
 		pProgress->End2();
-
+#if (0)
 	{
 		VALUEPAIRITERATOR		it;
 
@@ -560,6 +560,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 				fprintf(hBlue, "%d\t%d\t%d\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hBlue);
 	}
+#endif
 }
 
 
