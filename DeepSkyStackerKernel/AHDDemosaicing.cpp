@@ -753,7 +753,7 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 }
 
 template <class T>
-bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, ProgressBase* pProgress)
+bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -798,4 +798,4 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 	return false;
 }
 
-template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, ProgressBase* pProgress);
+template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, OldProgressBase* pProgress);

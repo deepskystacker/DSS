@@ -581,10 +581,10 @@ class CComputeLuminanceTask
 public:
 	CGrayBitmap* m_pGrayBitmap;
 	const CMemoryBitmap* m_pBitmap;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 
 public:
-	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
+	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, OldProgressBase* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }
@@ -825,7 +825,7 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 // Public function to run a test registering of a light-frame using the path to the file.
 // Used in: RegisterSettings::on_computeDetectedStars_clicked().
 //
-void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
+void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
@@ -916,7 +916,7 @@ CRegisterEngine::CRegisterEngine()
 	m_bSaveCalibratedDebayered = CAllStackingTasks::GetSaveCalibratedDebayered();
 }
 
-bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, QString& strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress, QString& strCalibratedFile)
 {
 	bool bResult = false;
 
@@ -985,13 +985,13 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 // Register all light-frames of all the stacking tasks. 
 // Will call lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++); for all light-frames.
 //
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, ProgressBase* pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>;
 	using FutureType = std::future<ReadReturnType>;
 
-	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, ProgressBase* pTaskProgress) -> ReadReturnType
+	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, OldProgressBase* pTaskProgress) -> ReadReturnType
 	{
 		if (pBitmap == nullptr)
 			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});

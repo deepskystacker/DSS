@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-// ProgressConsole.cpp : Defines the entry point for the console progress display.
+// OldProgressConsole.cpp : Defines the entry point for the console progress display.
 //
 #include "pch.h"
 #include "progressconsole.h"
@@ -42,7 +42,7 @@ namespace DSS
 	/************************************************************************************/
 	/* SLOTS                                                                            */
 	/************************************************************************************/
-	void ProgressConsole::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
+	void OldProgressConsole::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
 	{
 		m_lastTotal1 = 0;
 		m_total1 = total1;
@@ -62,7 +62,7 @@ namespace DSS
 
 	/************************************************************************************/
 
-	void ProgressConsole::slotProgress1(const QString& szText, int lAchieved1)
+	void OldProgressConsole::slotProgress1(const QString& szText, int lAchieved1)
 	{
 		// Always update on first loop, then only if a second has passed or a min progress has occurred.
 		if (!(m_firstProgress ||
@@ -93,7 +93,7 @@ namespace DSS
 
 	/************************************************************************************/
 
-	void ProgressConsole::slotStart2(const QString& szText, int lTotal2)
+	void OldProgressConsole::slotStart2(const QString& szText, int lTotal2)
 	{
 		m_lastTotal2 = 0;
 		m_total2 = lTotal2;
@@ -113,7 +113,7 @@ namespace DSS
 
 	/************************************************************************************/
 
-	void ProgressConsole::slotProgress2(const QString& szText, int lAchieved2)
+	void OldProgressConsole::slotProgress2(const QString& szText, int lAchieved2)
 	{
 		// Always update after a min progress has occurred.
 		float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
@@ -160,16 +160,16 @@ namespace DSS
 
 	/************************************************************************************/
 
-	void ProgressConsole::slotEnd2()
+	void OldProgressConsole::slotEnd2()
 	{
-		ProgressBase::Progress2(m_total2);	// Set to 100% is ending.
+		OldProgressBase::Progress2(m_total2);	// Set to 100% is ending.
 		UpdateProcessorsUsed();
 		endProgress2();
 	}
 
 	/************************************************************************************/
 
-	void ProgressConsole::slotClose()
+	void OldProgressConsole::slotClose()
 	{
 		closeProgress();
 	}

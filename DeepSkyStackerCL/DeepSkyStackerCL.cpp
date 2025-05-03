@@ -71,7 +71,7 @@ void DeepSkyStackerCommandLine::reportError(const QString& message, const QStrin
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 	DSS::FrameList frameList;
 	bool bContinue = true;
 	bool bUseFits = stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT);
@@ -311,7 +311,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 	if (!(pBitmap && !stackingParams.GetOutputFilename().isEmpty()))
 		return;
 
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 
 	const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(stackingParams.GetOutputFilename()));
 	progress.Start1(strText, 0);

@@ -61,7 +61,7 @@ void CRunningStackingEngine::CreatePublicBitmap()
 }
 
 
-bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgress)
+bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;

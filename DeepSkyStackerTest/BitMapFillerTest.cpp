@@ -354,7 +354,7 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 // Progress
 // ---------------
 using namespace DSS;
-class MyProgress : public ProgressBase
+class MyProgress : public OldProgressBase
 {
 public:
 	int nrCallsStart2 = 0;

@@ -108,7 +108,7 @@ void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, 
 	};
 }
 
-void CEntropyInfo::Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize /* = 10 */, DSS::ProgressBase* pProgress /* = nullptr */)
+void CEntropyInfo::Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize /* = 10 */, DSS::OldProgressBase* pProgress /* = nullptr */)
 {
 	m_pBitmap = pBitmap;
 	m_lWindowSize = lWindowSize;

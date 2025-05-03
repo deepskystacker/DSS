@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include <ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()

@@ -517,7 +517,7 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 #pragma warning( disable : 4189 ) // unreachable code from initial constexpr if statement.
 
 template <typename T>
-void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
+void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
 {
 	const int nrProcessors = CMultitask::GetNrProcessors();
 

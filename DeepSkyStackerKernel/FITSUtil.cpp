@@ -845,7 +845,7 @@ private :
 	bool ignoreBrightness;
 
 public :
-	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, ProgressBase* pProgress) :
+	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, OldProgressBase* pProgress) :
 		CFITSReader{ szFileName, pProgress },
 		m_outBitmap{ rpBitmap },
 		ignoreBrightness{ ignoreBr }
@@ -1085,7 +1085,7 @@ bool CFITSReadInMemoryBitmap::OnClose()
 }
 
 
-bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, ignoreBrightness, pProgress };
@@ -1629,7 +1629,7 @@ private :
 	FITSFORMAT GetBestFITSFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CFITSWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CFITSWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress) :
 		CFITSWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1766,7 +1766,7 @@ bool CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1798,19 +1798,19 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, FITSFORMAT FITSFormat)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, /*szDescription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1839,12 +1839,12 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 };
 
 /* ------------------------------------------------------------------- */
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, /*szDestription*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
-bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription)
+bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const QString& szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
@@ -1857,7 +1857,7 @@ bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 };
 
 
-int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, ProgressBase* pProgress)
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.

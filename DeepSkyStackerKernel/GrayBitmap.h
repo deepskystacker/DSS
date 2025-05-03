@@ -2,7 +2,7 @@
 #include "MemoryBitmap.h"
 #include "CFABitmapInfo.h"
 
-namespace DSS { class ProgressDlg; }
+namespace DSS { class OldProgressDlg; }
 using namespace DSS;
 
 namespace {
@@ -183,7 +183,7 @@ public:
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;
 
-	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
 
 	TType* GetGrayPixel(const int i, const int j)
 	{

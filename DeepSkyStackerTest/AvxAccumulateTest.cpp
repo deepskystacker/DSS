@@ -395,4 +395,4 @@ BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }
 RGBBACKGROUNDCALIBRATIONMETHOD GetRGBBackgroundCalibrationMethod() { return RBCM_MIDDLE; }
 
-//std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }
+//std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, OldProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }

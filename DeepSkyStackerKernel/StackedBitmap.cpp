@@ -570,7 +570,7 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 // MT, 11-March-2024
 // This function is only used for creating star masks.
 //
-std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pProgress)
+std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -652,7 +652,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(ProgressBase* const pPro
 
 /* ------------------------------------------------------------------- */
 
-bool StackedBitmap::Load(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::Load(const fs::path& file, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -819,7 +819,7 @@ private :
 						m_lYStart;
 
 public :
-	CTIFFWriterStacker(const fs::path& p, const DSSRect& rc, ProgressBase *	pProgress) :
+	CTIFFWriterStacker(const fs::path& p, const DSSRect& rc, OldProgressBase *	pProgress) :
 	   CTIFFWriter(p, pProgress),
 		rect { rc },
 		m_pStackedBitmap{ nullptr },
@@ -935,7 +935,7 @@ bool CTIFFWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, OldProgressBase * pProgress, bool bApplySettings, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(file, rect, pProgress);
@@ -974,7 +974,7 @@ void StackedBitmap::SaveTIFF16Bitmap(const fs::path& file, const DSSRect& rect, 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
+void StackedBitmap::SaveTIFF32Bitmap(const fs::path& file, const DSSRect& rect, OldProgressBase * pProgress, bool bApplySettings, bool bFloat, TIFFCOMPRESSION TiffComp)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(file, rect, pProgress);
@@ -1037,7 +1037,7 @@ private :
 						m_lYStart;
 
 public :
-	CFITSWriterStacker(const fs::path& file, const DSSRect& rc, ProgressBase *	pProgress) :
+	CFITSWriterStacker(const fs::path& file, const DSSRect& rc, OldProgressBase *	pProgress) :
 		CFITSWriter(file, pProgress),
 		rect{rc}
 	{
@@ -1150,7 +1150,7 @@ bool CFITSWriterStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings)
+void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, OldProgressBase * pProgress, bool bApplySettings)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(file, rect, pProgress);
@@ -1193,7 +1193,7 @@ void StackedBitmap::SaveFITS16Bitmap(const fs::path& file, const DSSRect& rect, 
 
 /* ------------------------------------------------------------------- */
 
-void StackedBitmap::SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, ProgressBase * pProgress, bool bApplySettings, bool bFloat)
+void StackedBitmap::SaveFITS32Bitmap(const fs::path& file, const DSSRect& rect, OldProgressBase * pProgress, bool bApplySettings, bool bFloat)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(file, rect, pProgress);
@@ -1254,7 +1254,7 @@ private :
 	StackedBitmap *		m_pStackedBitmap;
 
 public :
-	CTIFFReadStacker(const fs::path& file, ProgressBase *	pProgress)
+	CTIFFReadStacker(const fs::path& file, OldProgressBase *	pProgress)
 		: CTIFFReader(file, pProgress)
 	{
         m_pStackedBitmap = NULL;
@@ -1323,7 +1323,7 @@ bool CTIFFReadStacker::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool StackedBitmap::LoadTIFF(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::LoadTIFF(const fs::path& file, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
@@ -1369,7 +1369,7 @@ private :
 	StackedBitmap *		m_pStackedBitmap;
 
 public :
-	CFITSReadStacker(const fs::path& file, ProgressBase *	pProgress)
+	CFITSReadStacker(const fs::path& file, OldProgressBase *	pProgress)
 		: CFITSReader(file, pProgress)
 	{
         m_pStackedBitmap = NULL;
@@ -1439,7 +1439,7 @@ bool CFITSReadStacker::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool StackedBitmap::LoadFITS(const fs::path& file, ProgressBase * pProgress)
+bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;

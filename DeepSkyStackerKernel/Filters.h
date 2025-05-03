@@ -5,7 +5,7 @@
 #include "DSSTools.h"
 #include "DarkFrame.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -13,7 +13,7 @@ class CImageFilter
 {
 public :
 	virtual ~CImageFilter() = default;
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::OldProgressBase* pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -86,7 +86,7 @@ public:
 
 	void SetBitmap(CMemoryBitmap* pBitmap);
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::OldProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -106,7 +106,7 @@ private :
 
 private :
 	void AnalyzeImage(const CMemoryBitmap * pInBitmap, bool bComputeThresholds);
-	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, DSS::ProgressBase* pProgress = nullptr);
+	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, DSS::OldProgressBase* pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
@@ -142,7 +142,7 @@ public :
 		m_bUseRejectThreshold  = false;
 	};
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::OldProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -168,6 +168,6 @@ public :
 		m_lSize  = lSize;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::ProgressBase* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::OldProgressBase* pProgress = nullptr) override;
 };
 

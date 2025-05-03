@@ -300,6 +300,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="processingcontrols.cpp" />
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
+    <ClCompile Include="oldprogressdlg.cpp" />
     <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
@@ -364,6 +365,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="progressdlg.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
@@ -397,7 +399,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="ProcessingSettings.h" />
     <QtMoc Include="ProcessingSettingsDlg.h" />
     <QtMoc Include="RawDDPSettings.h" />
-    <QtMoc Include="progressdlg.h" />
+    <QtMoc Include="oldprogressdlg.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <QtMoc Include="RegisterSettings.h" />
     <QtMoc Include="RenameGroup.h" />
@@ -560,6 +562,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\ProcessingControls.ui" />
     <QtUic Include="ui\ProcessingDlg.ui" />
     <QtUic Include="ui\ProcessingSettingsDlg.ui" />
+    <QtUic Include="ui\OldProgressDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
@@ -600,6 +603,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc" />
     <ResourceCompile Include="Version.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Help\DeepSkyStacker Help.qhcp" />
+    <None Include="..\Help\DeepSkyStacker Help.qhp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

@@ -1,7 +1,7 @@
 #pragma once
 #include "ColorRef.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -66,7 +66,7 @@ protected:
 	std::vector<float> m_vRedEntropies{};
 	std::vector<float> m_vGreenEntropies{};
 	std::vector<float> m_vBlueEntropies{};
-	DSS::ProgressBase* m_pProgress{ nullptr };
+	DSS::OldProgressBase* m_pProgress{ nullptr };
 
 private:
 	virtual void InitSquareEntropies();
@@ -102,7 +102,7 @@ public:
 	const int nrSquaresY() const { return m_lNrSquaresY; }
 	const int windowSize() const { return m_lWindowSize; }
 
-	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, DSS::ProgressBase* pProgress = nullptr);
+	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, DSS::OldProgressBase* pProgress = nullptr);
 	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult) const;
 };
 

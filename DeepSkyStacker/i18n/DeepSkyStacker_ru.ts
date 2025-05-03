@@ -536,47 +536,35 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="611"/>
-        <location filename="../editstars.cpp" line="1118"/>
+        <location filename="../editstars.cpp" line="610"/>
+        <location filename="../editstars.cpp" line="1116"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Нажмите чтобы поставить комету здесь</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="613"/>
-        <location filename="../editstars.cpp" line="1120"/>
+        <location filename="../editstars.cpp" line="612"/>
+        <location filename="../editstars.cpp" line="1118"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Добавить звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="621"/>
-        <location filename="../editstars.cpp" line="1127"/>
+        <location filename="../editstars.cpp" line="620"/>
+        <location filename="../editstars.cpp" line="1125"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Нажмите чтобы убрать комету</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="623"/>
-        <location filename="../editstars.cpp" line="1129"/>
+        <location filename="../editstars.cpp" line="622"/>
+        <location filename="../editstars.cpp" line="1127"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Убрать звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="665"/>
-        <source>#Stars: %1
-Score: %2
-Quality: %3
-FWHM: %4</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>#Звёзд: %1
-Балл: %2
-Качество: %3
-FWHM: %4</translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="1177"/>
+        <location filename="../editstars.cpp" line="1175"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -586,8 +574,8 @@ FWHM: %3</source>
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="673"/>
-        <location filename="../editstars.cpp" line="1184"/>
+        <location filename="../editstars.cpp" line="671"/>
+        <location filename="../editstars.cpp" line="1182"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -595,8 +583,16 @@ Comet:%1</source>
 Комета:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="673"/>
-        <location filename="../editstars.cpp" line="1184"/>
+        <location filename="../editstars.cpp" line="664"/>
+        <source>#Stars: %1
+Quality: %2
+FWHM: %3</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="671"/>
+        <location filename="../editstars.cpp" line="1182"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Да</translation>
@@ -1022,6 +1018,63 @@ Ctrl+4 для переключения режима 4-х углов</translation
     </message>
 </context>
 <context>
+    <name>DSS::OldProgressDlg</name>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="152"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation>Вы уверены, что хотите отменить эту операцию?</translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="222"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Осталось времени: %1 ч %2 мин %3 сек </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="225"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Осталось времени: %1 мин %2 сек </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="228"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Осталось времени: %1 сек </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="231"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Осталось времени: &lt; 1 сек </translation>
+    </message>
+    <message>
+        <location filename="../oldprogressdlg.cpp" line="238"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation>Осталось времени: Неизвестно</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../oldprogressdlg.cpp" line="251"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>Используется %n процессор</numerusform>
+            <numerusform>Используются %n процессора</numerusform>
+            <numerusform>Используются %n процессоров</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="14"/>
+        <source>Processing ...</source>
+        <translation>Обработка ...</translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="86"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+</context>
+<context>
     <name>DSS::OutputTab</name>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
@@ -1439,58 +1492,58 @@ Please change the name.</source>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../progressdlg.cpp" line="152"/>
-        <source>Are you sure you wish to cancel this operation?</source>
-        <translation>Вы уверены, что хотите отменить эту операцию?</translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="226"/>
-        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
-        <comment>IDS_ESTIMATED3</comment>
-        <translation>Осталось времени: %1 ч %2 мин %3 сек </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="229"/>
-        <source>Estimated remaining time: %1 mn %2 s </source>
-        <comment>IDS_ESTIMATED2</comment>
-        <translation>Осталось времени: %1 мин %2 сек </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="232"/>
-        <source>Estimated remaining time : %1 s </source>
-        <comment>IDS_ESTIMATED1</comment>
-        <translation>Осталось времени: %1 сек </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="235"/>
-        <source>Estimated remaining time: &lt; 1 s </source>
-        <comment>IDS_ESTIMATED0</comment>
-        <translation>Осталось времени: &lt; 1 сек </translation>
-    </message>
-    <message>
-        <location filename="../progressdlg.cpp" line="242"/>
-        <source>Estimated remaining Time: Unknown</source>
-        <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation>Осталось времени: Неизвестно</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../progressdlg.cpp" line="255"/>
-        <source>%n Processor(s) Used</source>
-        <translation>
-            <numerusform>Используется %n процессор</numerusform>
-            <numerusform>Используются %n процессора</numerusform>
-            <numerusform>Используются %n процессоров</numerusform>
-        </translation>
-    </message>
-    <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation>Обработка ...</translation>
+        <translation type="unfinished">Обработка ...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation>Отмена</translation>
+        <translation type="unfinished">Отмена</translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="152"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation type="unfinished">Вы уверены, что хотите отменить эту операцию?</translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="222"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation type="unfinished">Осталось времени: %1 ч %2 мин %3 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="225"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation type="unfinished">Осталось времени: %1 мин %2 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="228"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation type="unfinished">Осталось времени: %1 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="231"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation type="unfinished">Осталось времени: &lt; 1 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="238"/>
+        <source>Estimated remaining Time: Unknown</source>
+        <comment>IDS_ESTIMATEDUNKNOWN</comment>
+        <translation type="unfinished">Осталось времени: Неизвестно</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="251"/>
+        <source>%n Processor(s) Used</source>
+        <translation type="unfinished">
+            <numerusform>Используется %n процессор</numerusform>
+            <numerusform>Используются %n процессора</numerusform>
+            <numerusform>Используются %n процессоров</numerusform>
+        </translation>
     </message>
 </context>
 <context>

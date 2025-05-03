@@ -7,7 +7,7 @@
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
@@ -75,7 +75,7 @@ namespace DSS
 		if (!tasks.m_vStacks.empty())
 		{
 			bool bContinue = true;
-			DSS::ProgressDlg dlg{ this };
+			DSS::OldProgressDlg dlg{ this };
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered

@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 #include "StackedBitmap.h"
 #include "BitmapExt.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CDeepStack
 {
 private :
@@ -18,7 +18,7 @@ private :
 	QVector<uchar> imageData_;
 	std::unique_ptr<QImage> image_;
 	bool m_bNewStackedBitmap;
-	DSS::ProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 
 public :
 	CDeepStack() : 
@@ -52,7 +52,7 @@ private :
 	void	AdjustHistogram(DSS::RGBHistogram & srcHisto, DSS::RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust);
 
 public :
-	void	SetProgress(DSS::ProgressBase *	pProgress)
+	void	SetProgress(DSS::OldProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
 	};

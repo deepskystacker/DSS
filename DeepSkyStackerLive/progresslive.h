@@ -42,7 +42,7 @@
 namespace DSS
 {
 
-	class ProgressLive : public QObject, public ProgressBase
+	class ProgressLive : public QObject, public OldProgressBase
 	{
 		Q_OBJECT
 
@@ -55,7 +55,7 @@ namespace DSS
 		~ProgressLive();
 
 		//
-		// These eight mfs implement the public interface defined in DSS::ProgressBase
+		// These eight mfs implement the public interface defined in DSS::OldProgressBase
 		// Unlike DeepSkyStacker and DeepSkyStackerCL they run on whatever thread invokes
 		// them.
 		// 
@@ -83,7 +83,7 @@ namespace DSS
 */
 
 	protected:
-		// ProgressBase
+		// OldProgressBase
 		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
 
 	private:

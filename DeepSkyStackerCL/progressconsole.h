@@ -4,7 +4,7 @@
 
 namespace DSS
 {
-	class ProgressConsole : public QObject, public ProgressBase
+	class OldProgressConsole : public QObject, public OldProgressBase
 	{
 		Q_OBJECT
 
@@ -14,13 +14,13 @@ namespace DSS
 		QString m_strLastSent[3];
 
 	public:
-		ProgressConsole(TERMINAL_OUTPUT_MODE mode) :
-			ProgressBase(),
+		OldProgressConsole(TERMINAL_OUTPUT_MODE mode) :
+			OldProgressBase(),
 			m_out(stdout),
 			m_style(mode)
 		{
 		}
-		virtual ~ProgressConsole()
+		virtual ~OldProgressConsole()
 		{
 			if(m_style == TERMINAL_OUTPUT_MODE::COLOURED)
 				m_out << "\033[0m";
@@ -28,7 +28,7 @@ namespace DSS
 		}
 
 		//
-		// These eight mfs implement the public interface defined in DSS::ProgressBase
+		// These eight mfs implement the public interface defined in DSS::OldProgressBase
 		// They invoke the corresponding slots using QMetaObject::invokeMethod
 		// so that they can be invoked from ANY thread in the application will run on
 		// the GUI thread.
