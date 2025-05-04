@@ -52,7 +52,9 @@ Changes since the last release:
 
 2.  Remove final traces of the old Score metric (e.g. from the info.txt files where it was called OverallQuality).
 
-3.  Add code to allow reading of files by external code (e.g. Exiv2) with UTF-8 fileids such as: C:\Τεστερ\ABM8W.jpg
+3.  Bug-fix: Change to the progress dialogue to prevent it stealing focus.
+
+4.  Set code page to utf-8 so that Exiv2 can read files with fileids such as: C:\Τεστερ\ABM8W.jpg
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================
