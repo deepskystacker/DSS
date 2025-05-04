@@ -51,6 +51,7 @@
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/exceptions.hpp>
 
+#include <locale>
 #include <fstream>
 
 namespace bip = boost::interprocess;
@@ -729,7 +730,11 @@ int main(int argc, char* argv[])
 	std::atexit(atexitHandler);
 
 #if defined(Q_OS_WIN)
-	// Set console code page to UTF-8 so console known how to interpret string data
+	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
+	// I think this also applies to the use of regular fopen() calls.
+	std::setlocale(LC_CTYPE, ".UTF-8");
+
+	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
