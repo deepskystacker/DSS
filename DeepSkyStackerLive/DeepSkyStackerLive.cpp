@@ -395,7 +395,7 @@ void DeepSkyStackerLive::onInitialise()
 	connectSignalsToSlots();
 
 #if defined(Q_OS_LINUX)
-	setIcon(QIcon(":/DSSIcon.png"));
+	QGuiApplication::setWindowIcon(QIcon(":/DSSIcon.png"));
 #endif
 
 	setWindowTitle(baseTitle);
