@@ -185,6 +185,7 @@ if(MSVC)
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /GL-;
+        /utf-8;
         /EHsc
     )
     target_link_options(${PROJECT_NAME} PRIVATE
@@ -267,6 +268,23 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+
+if(APPLE)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        COMMAND "$ENV{HOME}/.unlock_keychain"
+    )
+endif()
+if(LINUX)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Copy the .desktop file and icon file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy DeepSkyStackerLive.desktop ${CMAKE_BINARY_DIR}/DeepSkyStackerLive.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy ../DeepSkyStacker/DeepSkyStacker.icns ${CMAKE_BINARY_DIR}/DeepSkyStacker.icns
+    )
+endif()
 
 if(NOT LINUX)
     set (deploy_tool_options_arg "")

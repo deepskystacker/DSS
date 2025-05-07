@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Alpha 1
+Welcome to DeepSkyStacker 6.1.0 Alpha 2
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -8,6 +8,19 @@ Reporting problems:
 Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
 <https://groups.io/g/DeepSkyStacker>
 Thank you.
+
+Installing on Linux:
+====================
+
+Unzip the DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
+
+	amonra@styx:/opt$ sudo rm -rf DeepSkyStacker/
+	amonra@styx:/opt$ sudo tar -zxvf ~/Downloads/DeepSkyStacker.tar.gz
+
+
+Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text/dssfilelist and to install the .desktop files
+
+	./DSS-Linux-install.sh
 
 Accessing DeepSkyStackerCL on macOS:
 ====================================
@@ -22,7 +35,7 @@ This is delivered in the DeepSkyStacker.app bundle.   To use it you'll need defi
 	#
 	sudo ln -sf /Applications/DeepSkyStacker.app/Contents/MacOS/DeepSkyStackerCL /usr/local/bin/DSSCL
 
-You may also need to add /usr/local/bin to your path:  You can do this by creating a file in you home directory
+You may also need to add /usr/local/bin to your path:  You can do this by creating a file in your home directory
 called .zshenv (assuming you're using zsh) this file might contain e.g.
 
 	# remove duplicate entries from $PATH

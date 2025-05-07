@@ -96,6 +96,7 @@ set(Header_Files
     "DSS-winpackagefamily.h"
     "lowerdockwidget.h"
     "mrulist.h"
+    "oldprogressdlg.h"
     "pch.h"
 )
 source_group("Header Files" FILES ${Header_Files})
@@ -106,10 +107,16 @@ set(Source_Files
     "Delaunay.cpp"
     "editstars.cpp"
     "lowerdockwidget.cpp"
-    "progressdlg.cpp"
+    "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
 )
+if (LINUX)
+    set(Source_Files ${Source_Files}
+    "DeepSkyStacker.desktop"
+    "DSS-Linux-install.sh"
+    )
+endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(Ui_Files
@@ -130,7 +137,7 @@ set(Ui_Files
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
 	"ui/ProcessingSettingsDlg.ui"
-	"ui/ProgressDlg.ui"
+	"ui/OldProgressDlg.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
 	"ui/RegisterSettings.ui"
@@ -168,9 +175,6 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files})
 
 set(Resources
-	"Icon.rc"
-	"Icon/app.ico"
-	"Version.rc"
     "res/4Corners.bmp"
     "res/4Corners.png"
     "res/asinh.bmp"
@@ -182,7 +186,6 @@ set(Resources
     "res/BiasGreyscale@2x.png"
     "res/BiasRGB.png"
     "res/BiasRGB@2x.png"
-    "res/bmp00001.bmp"
     "res/brazil.png"
     "res/ButtonComet_Disabled.png"
     "res/ButtonComet_Down.png"
@@ -214,8 +217,6 @@ set(Resources
     "res/DarkColour@2x.png"
     "res/DarkCYMG.png"
     "res/DarkCYMG@2x.png"
-    "res/darkfram.ico"
-    "res/darkframe.ico"
     "res/DarkGreyscale.png"
     "res/DarkGreyscale@2x.png"
     "res/DarkRGB.png"
@@ -225,7 +226,6 @@ set(Resources
     "res/FlatColour@2x.png"
     "res/FlatCYMG.png"
     "res/FlatCYMG@2x.png"
-    "res/flatframe.ico"
     "res/FlatGreyscale.png"
     "res/FlatGreyscale@2x.png"
     "res/FlatRGB.png"
@@ -236,7 +236,6 @@ set(Resources
     "res/hdrdown.bmp"
     "res/hdrup.bmp"
     "res/Heart.png"
-    "res/icon1.ico"
     "res/ImageList_CFA_CYMG.bmp"
     "res/ImageList_CFA_RGB.bmp"
     "res/ImageList_Color.bmp"
@@ -248,8 +247,6 @@ set(Resources
     "res/LightColour@2x.png"
     "res/LightCYMG.png"
     "res/LightCYMG@2x.png"
-    "res/lightfra.ico"
-    "res/lightframe.ico"
     "res/LightGreyscale.png"
     "res/LightGreyscale@2x.png"
     "res/LightRGB.png"
@@ -264,7 +261,6 @@ set(Resources
     "res/MaskStarShapes.pspimage"
     "res/mosaicmode.bmp"
     "res/normalmode.bmp"
-    "res/offsetframe.ico"
     "res/Pattern_BGGR.bmp"
     "res/Pattern_CYGMCYMG.bmp"
     "res/Pattern_GBRG.bmp"
@@ -289,6 +285,14 @@ set(Resources
     "res/Taiwan.png"
     "res/Turkish.png"
 	)
+if(WIN32)
+    set(Resources ${Resources}
+	"Icon.rc"
+	"Icon/DeepSkyStacker.ico"
+	"Version.rc"
+    )
+endif()
+
 
 set (Resource_Files
     "resources.qrc"
@@ -414,6 +418,7 @@ if(MSVC)
         /MP;
         /GL-;
         /EHsc
+        /utf-8
     )
     target_link_options(DeepSkyStacker PRIVATE
         $<$<CONFIG:Debug>:
@@ -514,6 +519,21 @@ if(APPLE)
         #
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
         COMMAND "$ENV{HOME}/.unlock_keychain"
+    )
+endif()
+if(LINUX)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Copy the .desktop file and icon file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
+        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
+        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.icns
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/text-dssfilelist.xml ${CMAKE_INSTALL_PREFIX}/text-dssfilelist.xml
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png ${CMAKE_INSTALL_PREFIX}/DSS_filelist64x64.png		
     )
 endif()
 

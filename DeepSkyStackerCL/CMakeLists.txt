@@ -135,6 +135,7 @@ if(MSVC)
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /GL-;
+        /utf-8;
         /EHsc
     )
     target_link_options(${PROJECT_NAME} PRIVATE
