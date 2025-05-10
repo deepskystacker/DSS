@@ -49,6 +49,7 @@ OldProgressDlg::OldProgressDlg(QWidget* parent) :
 	m_cancelInProgress{ false }
 {
 	ui->setupUi(this);
+	setModal(true);				// Yes really ...
 	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
 	OldProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &OldProgressDlg::cancelPressed);
 
