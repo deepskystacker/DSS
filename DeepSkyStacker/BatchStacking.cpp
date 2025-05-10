@@ -11,8 +11,7 @@
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-
-
+#include "DeepSkyStacker.h"
 
 namespace DSS
 
@@ -75,7 +74,7 @@ namespace DSS
 		if (!tasks.m_vStacks.empty())
 		{
 			bool bContinue = true;
-			DSS::OldProgressDlg dlg{ this };
+			DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered
