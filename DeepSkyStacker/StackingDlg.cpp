@@ -498,6 +498,15 @@ namespace DSS
 
 		retranslateUi();		// translate some of our stuff.
 
+#if defined(Q_OS_MAC)
+		// 
+		// If this is macOS, we need to handle file open events
+		// that are sent to the application. This is done by
+		// installing an event filter on the application object.
+		//
+		qApp->installEventFilter(this);		// Set up an event filter for file open events
+#endif
+
 		mruPath.readSettings();
 
 		connect(ui->fourCorners, &QToolButton::clicked, ui->picture, &DSS::ImageView::on_fourCorners_clicked);
@@ -531,6 +540,35 @@ namespace DSS
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
 	{
+
+#if defined(Q_OS_MAC)
+		// 
+		// If this is macOS, we need to handle file open events
+		// that are sent to the application. This is done by
+		// installing an event filter on the application object.
+		//
+		if (qApp == watched && event->type() == QEvent::FileOpen)
+		{
+			auto* fileOpenEvent = static_cast<QFileOpenEvent*>(event);
+			QString name = fileOpenEvent->file();
+			qDebug() << "File to open:" << name;
+
+			fs::path file{ name.toStdU16String() };
+			if (fs::file_type::regular == status(file).type())
+			{
+				// If the file is a DSS file list, then we need to load it	
+				// and show the images in the list.
+				setFileList(file);
+				openFileList(fileList);			// Will call updateListInfo()
+			}
+			else
+				QMessageBox::warning(this,
+					"DeepSkyStacker",
+					tr("%1 does not exist or is not a file").arg(name));
+
+			return true;
+		}
+#endif
 		if (pictureList->tableView == watched)
 		{
 			if (QEvent::KeyPress == event->type())
