@@ -287,9 +287,7 @@ set(Resources
 	)
 if(WIN32)
     set(Resources ${Resources}
-	"Icon.rc"
 	"Icon/DeepSkyStacker.ico"
-	"Version.rc"
     )
 endif()
 
@@ -297,6 +295,14 @@ endif()
 set (Resource_Files
     "resources.qrc"
     )
+	
+if(WIN32)
+    set(Resource_Files ${Resource_Files}
+	"Icon.rc"
+	"Version.rc"
+    )
+endif()
+
 	
 source_group("Resources" FILES ${Resources}	${Resource_Files})
 
@@ -311,6 +317,9 @@ if(APPLE)
     # And the following tells CMake where to find and install the file itself.
     set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+    set(file_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist.icns")
+    set_source_files_properties(${file_icon_macos} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
@@ -327,6 +336,7 @@ set(ALL_FILES
     ${Tools}
     ${DSSCL}
     ${app_icon_macos}
+	${file_icon_macos}
 )
 
 if(APPLE)
@@ -351,7 +361,11 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
         MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
-        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier "
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
+		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
+		XCODE_ATTRIBUTE_GENERATE_INFOPLIST_FILE YES
+		XCODE_ATTRIBUTE_INFOPLIST_KEY_LSApplicationCategoryType "public.app-category.astronomy"
+		XCODE_ATTRIBUTE_INFOPLIST_KEY_NSPrincipalClass "NSApplication"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
 endif()
