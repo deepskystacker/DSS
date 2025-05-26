@@ -714,10 +714,6 @@ bool LoadTranslations()
 void atexitHandler()
 {
 	//
-	// Retain or delete the trace file as wanted
-	//
-	traceControl.terminate();
-	//
 	// Delete the back pocket storage
 	//
 	backPocket.reset();
@@ -727,7 +723,7 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	//
-	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	// Set up the atexit handler to release our back-pocket storage
 	//
 	std::atexit(atexitHandler);
 
