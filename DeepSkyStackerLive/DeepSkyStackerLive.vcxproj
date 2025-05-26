@@ -275,9 +275,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.png" />
-    <Image Include="res\DeepSkyStackerLive.ico" />
-    <Image Include="res\DSS_Icon32%402x.png" />
-    <Image Include="res\DSS_Icon32.png" />
     <Image Include="res\Monitor-Down.png" />
     <Image Include="res\Monitor-Up.png" />
     <Image Include="res\Stack-Down.png" />
