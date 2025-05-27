@@ -339,9 +339,6 @@ set(ALL_FILES
 	${file_icon_macos}
 )
 
-if(APPLE)
-endif()
-
 ################################################################################
 # Target
 ################################################################################
@@ -360,12 +357,9 @@ if(APPLE)
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
         MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystacker"
         MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
 		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
-		XCODE_ATTRIBUTE_GENERATE_INFOPLIST_FILE YES
-		XCODE_ATTRIBUTE_INFOPLIST_KEY_LSApplicationCategoryType "public.app-category.astronomy"
-		XCODE_ATTRIBUTE_INFOPLIST_KEY_NSPrincipalClass "NSApplication"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
 endif()
