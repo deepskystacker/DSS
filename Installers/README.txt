@@ -20,7 +20,8 @@ Unzip the DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
 
 Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text/dssfilelist and to install the .desktop files
 
-	./DSS-Linux-install.sh
+	amonra@styx:/opt$ CD DeepSkyStacker
+	amonra@styx:/opt$ ./DSS-Linux-install.sh
 
 Accessing DeepSkyStackerCL on macOS:
 ====================================
