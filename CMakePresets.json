@@ -10,6 +10,17 @@
       "vendor": {
         "qt-project.org/Qt": {
           "checksum": "wVa86FgEkvdCTVp1/nxvrkaemJc="
+        },
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "copySourcesOptions": {
+            "method": "rsync",
+            "exclusionList": [
+              ".vs",
+              ".git",
+              "out",
+              "vcpkg_installed"
+            ]
+          }
         }
       }
     }
