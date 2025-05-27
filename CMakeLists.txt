@@ -9,6 +9,7 @@ set(CMAKE_XCODE_ATTRIBUTE_DEVELOPMENT_TEAM "VH8AYT3C7Y" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Developer ID Application: David Partridge (VH8AYT3C7Y)" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Manual" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED TRUE CACHE BOOL "")
+set(CMAKE_XCODE_ATTRIBUTE_INFOPLIST_KEY_LSApplicationCategoryType "public.app-category.astronomy" CACHE STRING "")
 endif()
 
 set(CMAKE_TOOLCHAIN_FILE 
@@ -65,7 +66,7 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.8.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 #
@@ -147,8 +148,8 @@ add_subdirectory(ZClass)
 #
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStacker)
-#[=[
 add_subdirectory(DeepSkyStackerLive)
+#[=[
 add_subdirectory(DeepSkyStackerTest)
 ]=]
 

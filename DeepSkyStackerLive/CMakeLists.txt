@@ -1,4 +1,4 @@
-set(PROJECT_NAME DeepSkyStackerLive)
+﻿set(PROJECT_NAME DeepSkyStackerLive)
 message("Configuring project: " ${PROJECT_NAME})
 
 set(COMPILE_WARNING_AS_ERROR YES)
@@ -79,18 +79,32 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
     )
 	
-set(Resources
-	"../DeepSkyStacker/Icon.rc"
-	"../DeepSkyStacker/Icon/app.ico"
-	"resources.qrc"
-	"version.rc"
-	)
+if(WIN32)
+    set(Resources ${Resources}
+	"../DeepSkyStacker/Icon/DeepSkyStacker.ico"
+    )
+endif()
 
 set (Resource_Files
     "resources.qrc"
     )
+
+if(WIN32)
+    set(Resource_Files ${Resource_Files}
+	"../DeepSkyStacker/Icon.rc"
+	"version.rc"
+    )
+endif()
+
 	
 source_group("Resources" FILES ${Resources}	${Resource_Files})
+
+if(APPLE)
+    # And the following tells CMake where to find and install the file itself.
+    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DeepSkyStacker.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+endif()
 
 set(ALL_FILES
     ${Header_Files}
@@ -98,6 +112,7 @@ set(ALL_FILES
 	${i18n_Files}
 	${Resources}
     ${Tools}
+    ${app_icon_macos}
 )
 if(WIN32)
   set (ALL_FILES ${ALL_FILES} ${Header_Files__SmtpMime}
@@ -116,15 +131,13 @@ qt_add_translations(${PROJECT_NAME}
 qt_add_resources(ALL_FILES ${Resource_Files})
 qt_add_executable(DeepSkyStackerLive ${ALL_FILES})
 
-set_target_properties(DeepSkyStackerLive PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-)
 if(APPLE)
     set_target_properties(DeepSkyStackerLive PROPERTIES
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
-        MACOSX_BUNDLE_ICON_FILE "Icon"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
+        MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
 endif()
@@ -133,6 +146,10 @@ if(WIN32)
         WIN32_EXECUTABLE ON
     )
 endif()
+
+set_target_properties(DeepSkyStackerLive PROPERTIES
+    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+)
 
 ###############################################################################
 # Include directories
@@ -147,7 +164,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
    ../include
-   ../include/SmtpMime
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -214,9 +230,9 @@ endif()
 
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
 	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
-	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	)
 endif()
 
@@ -237,17 +253,18 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
-target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+if(NOT WIN32)
+target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
-if(NOT WIN32)
+if(LINUX)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenMP::OpenMP_CXX
     Threads::Threads
 )
 endif()
-
 if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     CURL::libcurl
@@ -257,37 +274,48 @@ endif()
 if(APPLE)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
 endif()
-set(ADDITIONAL_LIBRARY_DEPENDENCIES SmtpMime)
+
+set(ADDITIONAL_LIBRARY_DEPENDENCIES
+    SmtpMime
+)
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    cfitsio
     user32
     psapi
     htmlhelp
+)
+endif()
+#
+# libomp.dylib was manually installed into /usr/local/lib on MacOS
+#
+if(APPLE)
+set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
+    omp
 )
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if(APPLE)
-    add_custom_command(TARGET DeepSkyStacker
+    add_custom_command(TARGET DeepSkyStackerLive
         POST_BUILD
         COMMAND "$ENV{HOME}/.unlock_keychain"
     )
 endif()
 if(LINUX)
-    add_custom_command(TARGET DeepSkyStacker
+    add_custom_command(TARGET DeepSkyStackerLive
         POST_BUILD
         #
         # Copy the .desktop file and icon file
         #
-        COMMAND ${CMAKE_COMMAND} -E copy DeepSkyStackerLive.desktop ${CMAKE_BINARY_DIR}/DeepSkyStackerLive.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy ../DeepSkyStacker/DeepSkyStacker.icns ${CMAKE_BINARY_DIR}/DeepSkyStacker.icns
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStackerLive.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStackerLive.desktop
     )
 endif()
 
 if(NOT LINUX)
-    set (deploy_tool_options_arg "")
+    set (deploy_tool_options_arg "-verbose=1")
     if(APPLE)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
