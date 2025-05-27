@@ -14,6 +14,7 @@ sudo update-mime-database /usr/share/mime
 # install desktop files to the default location
 #
 sudo desktop-file-install /opt/DeepSkyStacker/DeepSkyStacker.desktop
+sudo desktop-file-install /opt/DeepSkyStacker/DeepSkyStackerLive.desktop
 sudo update-desktop-database /usr/share/applications
 
 
