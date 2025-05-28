@@ -96,7 +96,6 @@ if(WIN32)
     )
 endif()
 
-	
 source_group("Resources" FILES ${Resources}	${Resource_Files})
 
 if(APPLE)
@@ -106,11 +105,23 @@ if(APPLE)
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+set(ui_Files
+    "ui/ChartTab.ui"
+    "ui/DeepSkyStackerLive.ui"
+    "ui/EmailSettings.ui"
+    "ui/ImageViewer.ui"
+    "ui/RestartMonitoring.ui"
+    "ui/SettingsTab.ui"
+)
+source_group("Qt\\ui" FILES ${ui_Files})
+
 set(ALL_FILES
     ${Header_Files}
     ${Source_Files}
 	${i18n_Files}
-	${Resources}
+    ${ui_Files}
+    ${Resource_Files}
+    ${Resources}
     ${Tools}
     ${app_icon_macos}
 )
