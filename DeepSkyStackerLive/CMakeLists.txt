@@ -91,7 +91,7 @@ set (Resource_Files
 
 if(WIN32)
     set(Resource_Files ${Resource_Files}
-	"../DeepSkyStacker/Icon.rc"
+	"Icon.rc"
 	"version.rc"
     )
 endif()
@@ -322,7 +322,8 @@ if(LINUX)
         # Copy the .desktop file and icon file
         #
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStackerLive.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStackerLive.desktop
-    )
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive-2.icns ${CMAKE_INSTALL_PREFIX}/DSSLive-2.icns
+)
 endif()
 
 if(NOT LINUX)
