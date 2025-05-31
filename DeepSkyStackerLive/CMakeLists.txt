@@ -100,7 +100,7 @@ source_group("Resources" FILES ${Resources}	${Resource_Files})
 
 if(APPLE)
     # And the following tells CMake where to find and install the file itself.
-    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DeepSkyStacker.icns")
+    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive-2.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
@@ -146,7 +146,7 @@ if(APPLE)
     set_target_properties(DeepSkyStackerLive PROPERTIES
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
-        MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
+        MACOSX_BUNDLE_ICON_FILE "DSSLive-2.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
         MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
         INSTALL_RPATH "@executable_path/../Frameworks"

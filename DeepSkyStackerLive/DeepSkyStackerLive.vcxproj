@@ -328,7 +328,7 @@
     <None Include="..\include\SmtpMime\SmtpMime" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\DeepSkyStacker\Icon.rc" />
+    <ResourceCompile Include="Icon.rc" />
     <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

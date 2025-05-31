@@ -292,10 +292,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\DeepSkyStacker\Icon.rc">
+    <ResourceCompile Include="version.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="version.rc">
+    <ResourceCompile Include="Icon.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
