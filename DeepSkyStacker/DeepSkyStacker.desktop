@@ -5,4 +5,4 @@ Name=DeepSkyStacker
 GenericName=The preferred application for stacking astronomical images
 MimeType=text/dssfilelist
 Icon=/opt/DeepSkyStacker/DeepSkyStacker.icns
-Categories=Astronomy;Graphics
+Categories=Astronomy;Science

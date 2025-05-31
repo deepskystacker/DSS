@@ -4,4 +4,4 @@ Exec=/opt/DeepSkyStacker/DeepSkyStackerLive
 Name=DeepSkyStackerLive
 GenericName=The preferred application for live stacking astronomical images
 Icon=/opt/DeepSkyStacker/DSSLive-2.icns
-Categories=Astronomy;Graphics
+Categories=Astronomy;Science
