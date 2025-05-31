@@ -174,7 +174,7 @@
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "CMAKE_OSX_ARCHITECTURES": "x64_64"
+        "CMAKE_OSX_ARCHITECTURES": "x86_64"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
