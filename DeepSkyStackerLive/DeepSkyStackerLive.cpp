@@ -472,15 +472,32 @@ void DeepSkyStackerLive::onInitialise()
 	settings.endGroup();
 
 	Workspace workspace;
+	//
 	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+	// (or the equivalent on Linux and MacOS) if it exists.
+	//
 	QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
 	fs::path fileName(directory.toStdU16String());
 	create_directories(fileName);		// In case they don't exist
 
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
-	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
-	workspace.ReadFromFile(fileName);
+
+	//
+	// If the file does not exist, initialise the workspace to default settings 
+	// and save it to the file.
+	//
+	if (!exists(fileName))
+	{
+		workspace.ResetToDefault();		// Reset the workspace to default settings
+		ZTRACE_RUNTIME("DSSLive settings file %s does not exist, creating it", fileName.generic_u8string().c_str());
+		workspace.SaveToFile(fileName);
+	}
+	else
+	{
+		ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
+		workspace.ReadFromFile(fileName);
+	}
 
 	if (liveSettings->IsProcess_RAW()) validExtensions += rawExtensions;
 	if (liveSettings->IsProcess_FITS()) validExtensions += fitsExtensions;
