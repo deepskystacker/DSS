@@ -70,6 +70,8 @@ Changes since the last release:
 
 4.  Set code page to utf-8 so that Exiv2 can read files with fileids such as: C:\Τεστερ\ABM8W.jpg
 
+5.  When starting DeepSkyStackerLive, create a DSSLive.settings file with "default" settings if it does not exist.
+
 Welcome to DeepSkyStacker 5.1.10
 ======================================
 
