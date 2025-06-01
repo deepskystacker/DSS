@@ -252,8 +252,6 @@ namespace { // Only use in this .cpp file
 			m_isRawFile{ rawProcessor.open_file(file.string().c_str()) == LIBRAW_SUCCESS }
 #endif
 		{
-			ZFUNCTRACE_RUNTIME();
-
 			if (m_isRawFile)
 			{
 				m_strMake = P1.normalized_make;
@@ -293,7 +291,6 @@ namespace { // Only use in this .cpp file
 
 		virtual ~CRawDecod()
 		{
-			ZFUNCTRACE_RUNTIME();
 			rawProcessor.recycle();
 		};
 
