@@ -14,8 +14,9 @@
       }
     },
     {
-      "name": "VSRemoteSettings",
+      "name": "DSS-Settings",
       "hidden": true,
+      "generator": "Ninja",
       "vendor": {
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
           "copySourcesOptions": {
@@ -29,11 +30,155 @@
           }
         }
       }
+    },
+    {
+      "name": "DSS-Debug-Linux",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/gcc_64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "Linux"
+        }
+      }
+    },
+    {
+      "name": "DSS-Release-Linux",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/gcc_64"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "Linux"
+        }
+      }
+    },
+    {
+      "name": "DSS-Debug-MacOS",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "macOS"
+        }
+      }
+    },
+    {
+      "name": "DSS-Release-MacOS",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "cmakeExecutable": "/usr/local/bin/cmake",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "macOS"
+        }
+      }
+    },
+    {
+      "name": "DSS-Debug-MacOS-x64",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_OSX_ARCHITECTURES": "x86_64"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "macOS"
+        }
+      }
+    },
+    {
+      "name": "DSS-Release-MacOS-x64",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
+      "binaryDir": "${sourceDir}/out/build",
+      "cmakeExecutable": "/usr/local/bin/cmake",
+      "environment": {
+        "QTDIR": "/opt/Qt/6.9.0/macos"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "x86_64"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "macOS"
+        }
+      }
+    },
+    {
+      "name": "DSS-Debug-Windows",
+      "inherits": "Qt",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "Windows"
+        }
+      }
+    },
+    {
+      "name": "DSS-Release-Windows",
+      "inherits": "Qt",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "Windows"
+        }
+      }
     }
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "jPj6xFB1c935CjukLXj0j6zr6IQ="
+      "checksum": "H5sfxBcVD+ExxmhIpjY6NVqAyl0="
     }
   }
 }
