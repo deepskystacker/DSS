@@ -12,11 +12,28 @@
           "checksum": "wVa86FgEkvdCTVp1/nxvrkaemJc="
         }
       }
+    },
+    {
+      "name": "VSRemoteSettings",
+      "hidden": true,
+      "vendor": {
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "copySourcesOptions": {
+            "method": "rsync",
+            "exclusionList": [
+              ".vs",
+              ".git",
+              "out",
+              "vcpkg_installed"
+            ]
+          }
+        }
+      }
     }
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "67SmY24ZeVbebyKD0fGfIzb/bGI="
+      "checksum": "jPj6xFB1c935CjukLXj0j6zr6IQ="
     }
   }
 }

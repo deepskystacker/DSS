@@ -25,7 +25,10 @@
     },
     {
       "name": "Qt-Debug-Linux",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
@@ -36,23 +39,15 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Linux"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
     {
       "name": "Qt-Release-Linux",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
@@ -63,23 +58,15 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Linux"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
     {
       "name": "Qt-Debug-MacOS",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
@@ -92,23 +79,15 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "macOS"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
     {
       "name": "Qt-Release-MacOS",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "binaryDir": "${sourceDir}/out/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
@@ -121,23 +100,15 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "macOS"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
     {
       "name": "Qt-Debug-MacOS-x64",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build",
       "environment": {
@@ -150,23 +121,15 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "macOS"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
     {
       "name": "Qt-Release-MacOS-x64",
-      "inherits": "Qt-Default",
+      "inherits": [
+        "Qt-Default",
+        "VSRemoteSettings"
+      ],
       "binaryDir": "${sourceDir}/out/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
@@ -179,17 +142,6 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "macOS"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
@@ -202,17 +154,6 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Windows"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
@@ -225,17 +166,6 @@
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Windows"
-        },
-        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-          "copySourcesOptions": {
-            "method": "rsync",
-            "exclusionList": [
-              ".vs",
-              ".git",
-              "out",
-              "vcpkg_installed"
-            ]
-          }
         }
       }
     },
@@ -360,7 +290,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "KJA3HMUSZj24G1nRNBSBNvTtb+0="
+      "checksum": "Evn813OpUPSlPvzJ6+50Eyl/+Tk="
     }
   }
 }
