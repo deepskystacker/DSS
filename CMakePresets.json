@@ -16,6 +16,7 @@
     {
       "name": "DSS-Settings",
       "hidden": true,
+      "binaryDir": "${sourceDir}/build",
       "generator": "Ninja",
       "vendor": {
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
@@ -24,7 +25,6 @@
             "exclusionList": [
               ".vs",
               ".git",
-              "out",
               "build",
               "vcpkg_installed",
               "x64"
@@ -39,7 +39,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
       },
@@ -58,7 +57,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
       },
@@ -77,7 +75,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
       },
@@ -97,7 +94,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
@@ -118,7 +114,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
       },
@@ -138,7 +133,6 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
@@ -156,6 +150,7 @@
     {
       "name": "DSS-Debug-Windows",
       "inherits": "Qt",
+      "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
@@ -171,6 +166,7 @@
     {
       "name": "DSS-Release-Windows",
       "inherits": "Qt",
+      "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
@@ -186,7 +182,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "RJdQfFRvLUPx9X+ZjdWEJslRDFM="
+      "checksum": "iqlVQdfpt4eaZGYKmKbk7FY9ZRY="
     }
   }
 }
