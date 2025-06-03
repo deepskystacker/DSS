@@ -45,13 +45,11 @@ qt_add_executable(DeepSkyStackerTest ${ALL_FILES})
 set_source_files_properties(${i18n_Files}
      PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
 
-qt_add_lrelease(TS_FILES ${i18n_Files})
-
 set_target_properties(${PROJECT_NAME} PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    MACOSX_BUNDLE ON
+    MACOSX_BUNDLE OFF
 )
 
 ################################################################################
@@ -68,28 +66,33 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_include_directories(${PROJECT_NAME} PUBLIC
     .
     ../DeepSkyStackerKernel
-    ../LibRaw
     ../ZClass
   )
-
-if(WIN32)
+  if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../Zlib
-   ../LibTiff
    ../include
-   "$ENV{Boost_1_80_0}"
+   "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
-else()
-target_link_libraries(DeepSkyStacker PRIVATE
-    #TIFF::tiff
+endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+	libraw::raw_r
+    TIFF::TIFF
     #Exiv2::exiv2lib
     #expat::expat
     JPEG::JPEG
-    OpenMP::OpenMP_CXX
-    Threads::Threads
     ZLIB::ZLIB
 )
-
+if(LINUX)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
+    Threads::Threads
+)
+endif()
+if(WIN32)
+target_link_directories(${PROJECT_NAME} PRIVATE
+	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
+	)
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
@@ -153,14 +156,6 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     endif()
 endif()
 
-if(WIN32)
-target_link_directories(DeepSkyStackerTest PRIVATE
-	"$<$<CONFIG:Debug>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/ReleaseLibs>"
-	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	)
-endif()
-
 ################################################################################
 # Dependencies
 ################################################################################
@@ -171,35 +166,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     DeepSkyStackerKernel
 	ZClass
 )
-if(WIN32)
-target_link_libraries(DeepSkyStacker PRIVATE
-	libraw
-    libtiff
-)
-else()
-target_link_libraries(DeepSkyStacker PRIVATE
-#    TIFF::tiff
-    JPEG::JPEG
-    OpenMP::OpenMP_CXX
-    ZLIB::ZLIB
-)
-endif()
-
-if(WIN32)
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd cfitsio)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic cfitsio)
-else()
-#set(DEBUG_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
-#set(RELEASE_DEPENDENCIES tiff.a exiv2.a expat.a z.a cfitsio.a brotlidec jpeg inih INIReader gomp)
-set(DEBUG_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
-set(RELEASE_DEPENDENCIES raw-r.a tiff.a cfitsio.a brotlidec inih INIReader)
-endif()
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-)
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 if(NOT LINUX)
     set (deploy_tool_options_arg "")

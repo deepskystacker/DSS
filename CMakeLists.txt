@@ -148,7 +148,5 @@ add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStacker)
 add_subdirectory(DeepSkyStackerLive)
-#[=[
 add_subdirectory(DeepSkyStackerTest)
-]=]
 
