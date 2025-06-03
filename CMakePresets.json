@@ -149,8 +149,10 @@
     },
     {
       "name": "DSS-Debug-Windows",
-      "inherits": "Qt",
-      "binaryDir": "${sourceDir}/build",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
@@ -165,8 +167,10 @@
     },
     {
       "name": "DSS-Release-Windows",
-      "inherits": "Qt",
-      "binaryDir": "${sourceDir}/build",
+      "inherits": [
+        "Qt",
+        "DSS-Settings"
+      ],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
@@ -182,7 +186,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "iqlVQdfpt4eaZGYKmKbk7FY9ZRY="
+      "checksum": "KeDbkLbL/T5w5seoQEvFd5iaAI4="
     }
   }
 }
