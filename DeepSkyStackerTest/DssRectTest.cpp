@@ -63,11 +63,11 @@ public:
 	{
 		return (X < pt.X);
 	};
-	BOOL	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
+	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
 	{
 		return (X >= fLeft) && (X <= fRight) && (Y >= fTop) && (Y <= fBottom);
 	};
-	BOOL	IsNear(const CPointExt& ptTest)
+	bool	IsNear(const CPointExt& ptTest)
 	{
 		return (fabs(X - ptTest.X) <= 3) && (fabs(Y - ptTest.Y) <= 3);
 	};
