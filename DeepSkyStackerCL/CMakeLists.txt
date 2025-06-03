@@ -37,7 +37,7 @@ set(i18n_Files
 	"i18n/DeepSkyStackerCL_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files}
     )
 
 if(WIN32)
