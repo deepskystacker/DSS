@@ -78,19 +78,24 @@ set(i18n_Files
 	)	
 source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
     )
-	
+
+set(Resources
+    "res/DSSLive32x32.png"
+    "res/DSSLive32x32@2x.png"
+)
+
 if(WIN32)
     set(Resources ${Resources}
-	"../DeepSkyStacker/Icon/DeepSkyStacker.ico"
+	"../DeepSkyStacker/Icon/DSSLive.ico"
     )
 endif()
 
-set (Resource_Files
+set (Qt_Resource_Files
     "resources.qrc"
     )
 
 if(WIN32)
-    set(Resource_Files ${Resource_Files}
+    set(Resource_Files
 	"Icon.rc"
 	"version.rc"
     )
@@ -100,7 +105,7 @@ source_group("Resources" FILES ${Resources}	${Resource_Files})
 
 if(APPLE)
     # And the following tells CMake where to find and install the file itself.
-    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive-2.icns")
+    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
@@ -120,8 +125,9 @@ set(ALL_FILES
     ${Source_Files}
 	${i18n_Files}
     ${ui_Files}
-    ${Resource_Files}
     ${Resources}
+    ${Qt_Resource_Files}
+    ${Resource_Files}
     ${Tools}
     ${app_icon_macos}
 )
@@ -139,7 +145,7 @@ qt_add_translations(${PROJECT_NAME}
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
     )
-qt_add_resources(ALL_FILES ${Resource_Files})
+qt_add_resources(ALL_FILES ${Qt_Resource_Files})
 qt_add_executable(DeepSkyStackerLive ${ALL_FILES})
 
 if(APPLE)
@@ -211,7 +217,6 @@ if(MSVC)
 	    -W4 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
         /utf-8;
         /EHsc
     )

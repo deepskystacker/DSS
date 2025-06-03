@@ -1,3 +1,3 @@
 #define IDI_ICO 1
 
-IDI_ICO ICON DISCARDABLE     "../DeepSkyStacker/Icon/DSSLive-2.ico"
+IDI_ICO ICON DISCARDABLE     "../DeepSkyStacker/Icon/DSSLive.ico"

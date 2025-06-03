@@ -102,7 +102,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GF
         >
         /W3 /wd4996

@@ -312,7 +312,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;
@@ -428,7 +427,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;

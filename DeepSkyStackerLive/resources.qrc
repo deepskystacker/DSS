@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="DSSIcon.png">res/DSSLive-2_32x32.png</file>
-        <file alias="DSSIcon@2x.png">res/DSSLive-2_32x32@2x.png</file>
+        <file alias="DSSIcon.png">res/DSSLive32x32.png</file>
+        <file alias="DSSIcon@2x.png">res/DSSLive32x32@2x.png</file>
         <file alias="4Corners.png">res/4Corners.png</file>
         <file alias="Monitor-Down.png">res/Monitor-Down.png</file>
         <file alias="Monitor-Up.png">res/Monitor-Up.png</file>

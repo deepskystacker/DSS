@@ -40,9 +40,13 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
     )
 
-set(Resources
+if(WIN32)
+    set(Resources
+	"../DeepSkyStacker/Icon.rc"
 	"Version.rc"
-	)
+	"../DeepSkyStacker/Icon/DeepSkyStacker.ico"
+    )
+endif()
 	
 source_group("Resources" FILES ${Resources}	)
 
@@ -134,7 +138,6 @@ if(MSVC)
 	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
         /utf-8;
         /EHsc
     )
@@ -181,7 +184,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;

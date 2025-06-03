@@ -24,7 +24,7 @@
             "exclusionList": [
               ".vs",
               ".git",
-              "out",
+              "build",
               "vcpkg_installed"
             ]
           }
@@ -37,7 +37,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
       },
@@ -56,7 +56,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/gcc_64"
       },
@@ -75,7 +75,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
       },
@@ -95,7 +95,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
@@ -116,7 +116,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
       },
@@ -136,7 +136,7 @@
         "Qt",
         "DSS-Settings"
       ],
-      "binaryDir": "${sourceDir}/out/build",
+      "binaryDir": "${sourceDir}/build",
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
         "QTDIR": "/opt/Qt/6.9.0/macos"
@@ -157,6 +157,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       },
+      "environment": {
+        "QTDIR": "C:/Qt/6.9.0/msvc2022_64"
+      },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Windows"
@@ -169,6 +172,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       },
+      "environment": {
+        "QTDIR": "C:/Qt/6.9.0/msvc2022_64"
+      },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Windows"
@@ -178,7 +184,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "H5sfxBcVD+ExxmhIpjY6NVqAyl0="
+      "checksum": "9JSGYW6cMBqgjmKn52rReO9rO2o="
     }
   }
 }

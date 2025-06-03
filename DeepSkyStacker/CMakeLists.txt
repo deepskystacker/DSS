@@ -292,19 +292,19 @@ if(WIN32)
 endif()
 
 
-set (Resource_Files
+set (Qt_Resource_Files
     "resources.qrc"
     )
 	
 if(WIN32)
-    set(Resource_Files ${Resource_Files}
-	"Icon.rc"
+    set(Resource_Files 
+    "Icon.rc"
 	"Version.rc"
     )
 endif()
 
 	
-source_group("Resources" FILES ${Resources}	${Resource_Files})
+source_group("Resources" FILES ${Resources}	${Qt_Resource_Files} ${Resource_Files})
 
 set(Tools
     "../Tools/imageview.cpp"
@@ -332,6 +332,8 @@ set(ALL_FILES
     ${Header_Files}
 	${Ui_Files}
 	${Resources}
+    ${Qt_Resource_Files}
+    ${Resource_Files}
     ${Source_Files}
     ${Tools}
     ${DSSCL}
@@ -348,7 +350,7 @@ qt_add_translations(${PROJECT_NAME}
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
     )
-qt_add_resources(ALL_FILES ${Resource_Files})
+qt_add_resources(ALL_FILES ${Qt_Resource_Files})
 
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
 
@@ -424,7 +426,6 @@ if(MSVC)
 	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
         /EHsc
         /utf-8
     )
