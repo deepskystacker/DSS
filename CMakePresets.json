@@ -24,8 +24,10 @@
             "exclusionList": [
               ".vs",
               ".git",
+              "out",
               "build",
-              "vcpkg_installed"
+              "vcpkg_installed",
+              "x64"
             ]
           }
         }
@@ -184,7 +186,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "9JSGYW6cMBqgjmKn52rReO9rO2o="
+      "checksum": "RJdQfFRvLUPx9X+ZjdWEJslRDFM="
     }
   }
 }
