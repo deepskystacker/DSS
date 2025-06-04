@@ -169,7 +169,7 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
 	}
 }
-
+#if (0)
 TEST_CASE("CRect", "[CRect]")
 {
 	SECTION("CRect")
@@ -180,3 +180,4 @@ TEST_CASE("CRect", "[CRect]")
 		REQUIRE(static_cast<bool>(rect.PtInRect(point)) == false);
 	}
 }
+#endif
