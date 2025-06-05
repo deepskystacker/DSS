@@ -50,7 +50,7 @@ bool CGrayBitmapT<T>::InitInternals()
 {
 	const size_t nrPixels = static_cast<size_t>(m_lWidth) * static_cast<size_t>(m_lHeight);
 	m_vPixels.clear();
-	m_vPixels.resize(nrPixels);
+	if (0 != nrPixels) m_vPixels.resize(nrPixels);
 
 	return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
 }

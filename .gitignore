@@ -8,6 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+CMakeUserPresets.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -350,3 +351,4 @@ CodeMaid.config
 
 # Compile Score files
 compileData*scor*
+/CMakeUserPresets.json

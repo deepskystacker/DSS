@@ -10,6 +10,7 @@
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "CosmeticEngine.h"
+#include "DeepSkyStacker.h"
 
 extern bool	g_bShowRefStars;
 
@@ -318,7 +319,7 @@ namespace DSS
 			tasks.ResolveTasks();
 			if (tasks.m_vStacks.size())
 			{
-				DSS::OldProgressDlg				dlg;
+				DSS::OldProgressDlg				dlg{ DeepSkyStacker::instance() } ;
 				CStackingInfo& StackingInfo = tasks.m_vStacks[0];
 
 				if (StackingInfo.m_pLightTask &&

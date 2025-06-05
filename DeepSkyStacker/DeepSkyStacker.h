@@ -125,19 +125,3 @@ public:
 	void reportError(const QString& message, const QString& type, Severity severity,
 		Method method, bool terminate) override;
 };
-
-
-//class DeepSkyStackerApp : public CWinApp
-//{
-//public :
-//	CWnd *				m_pMainDlg;
-//
-//public :
-//	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
-//	virtual ~DeepSkyStackerApp() = default;
-//
-//	virtual BOOL InitInstance( ) override;
-//	virtual int ExitInstance() override;
-//	virtual int Run() override;
-//
-//};

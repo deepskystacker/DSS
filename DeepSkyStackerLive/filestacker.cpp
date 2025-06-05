@@ -62,6 +62,7 @@ namespace DSS
 
 	FileStacker::~FileStacker()
 	{
+		ZFUNCTRACE_RUNTIME();
 		{
 			//
 			// Prevent new work being added to or removed from the queue
@@ -74,11 +75,13 @@ namespace DSS
 
 
 			// Clear the work queue
+
 			if (!pending.empty())
 				pending.clear();
 
 			// Add a null entry to the work queue to show we're done
 			// and wake up the run() mf
+			ZTRACE_RUNTIME("Adding null entry to pending queue to terminate run()");
 			std::shared_ptr<CLightFrameInfo> nullSharedPtr;
 			pending.emplace_back(nullSharedPtr);
 			condvar.wakeOne();
@@ -87,6 +90,7 @@ namespace DSS
 		//
 		// Wait for run() to terminate
 		//
+		ZTRACE_RUNTIME("Waiting for run() to terminate");
 		wait();
 		ZTRACE_RUNTIME("File stacker deleted");
 	}

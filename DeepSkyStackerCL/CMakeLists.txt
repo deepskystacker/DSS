@@ -37,12 +37,16 @@ set(i18n_Files
 	"i18n/DeepSkyStackerCL_zh_TW.ts"
 	)
 	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files}
     )
 
-set(Resources
+if(WIN32)
+    set(Resources
+	"../DeepSkyStacker/Icon.rc"
 	"Version.rc"
-	)
+	"../DeepSkyStacker/Icon/DeepSkyStacker.ico"
+    )
+endif()
 	
 source_group("Resources" FILES ${Resources}	)
 
@@ -134,7 +138,7 @@ if(MSVC)
 	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
+        /utf-8;
         /EHsc
     )
     target_link_options(${PROJECT_NAME} PRIVATE
@@ -180,7 +184,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;

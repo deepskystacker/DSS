@@ -394,6 +394,7 @@ void DeepSkyStackerLive::onInitialise()
 	//
 	connectSignalsToSlots();
 
+
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
 	setWindowTitle(baseTitle);
@@ -471,15 +472,32 @@ void DeepSkyStackerLive::onInitialise()
 	settings.endGroup();
 
 	Workspace workspace;
+	//
 	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+	// (or the equivalent on Linux and MacOS) if it exists.
+	//
 	QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
 	fs::path fileName(directory.toStdU16String());
 	create_directories(fileName);		// In case they don't exist
 
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
-	ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
-	workspace.ReadFromFile(fileName);
+
+	//
+	// If the file does not exist, initialise the workspace to default settings 
+	// and save it to the file.
+	//
+	if (!exists(fileName))
+	{
+		workspace.ResetToDefault();		// Reset the workspace to default settings
+		ZTRACE_RUNTIME("DSSLive settings file %s does not exist, creating it", fileName.generic_u8string().c_str());
+		workspace.SaveToFile(fileName);
+	}
+	else
+	{
+		ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_u8string().c_str());
+		workspace.ReadFromFile(fileName);
+	}
 
 	if (liveSettings->IsProcess_RAW()) validExtensions += rawExtensions;
 	if (liveSettings->IsProcess_FITS()) validExtensions += fitsExtensions;
@@ -1521,10 +1539,6 @@ char const* global_program_name;
 void atexitHandler()
 {
 	//
-	// Retain or delete the trace file as wanted
-	//
-	traceControl.terminate();
-	//
 	// Delete the back pocket storage
 	//
 	backPocket.reset();
@@ -1535,7 +1549,7 @@ int main(int argc, char* argv[])
 	ZFUNCTRACE_RUNTIME();
 
 	//
-	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	// Set up the atexit handler to release our back-pocket storage
 	//
 	std::atexit(atexitHandler);
 
@@ -1545,8 +1559,11 @@ int main(int argc, char* argv[])
 	// 
 	global_program_name = argv[0];
 
-
 #if defined(Q_OS_WIN)
+	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
+	// I think this also applies to the use of regular fopen() calls.
+	std::setlocale(LC_CTYPE, ".UTF-8");
+
 	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif

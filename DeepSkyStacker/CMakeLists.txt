@@ -96,6 +96,7 @@ set(Header_Files
     "DSS-winpackagefamily.h"
     "lowerdockwidget.h"
     "mrulist.h"
+    "oldprogressdlg.h"
     "pch.h"
 )
 source_group("Header Files" FILES ${Header_Files})
@@ -106,10 +107,16 @@ set(Source_Files
     "Delaunay.cpp"
     "editstars.cpp"
     "lowerdockwidget.cpp"
-    "progressdlg.cpp"
+    "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
 )
+if (LINUX)
+    set(Source_Files ${Source_Files}
+    "DeepSkyStacker.desktop"
+    "DSS-Linux-install.sh"
+    )
+endif()
 source_group("Source Files" FILES ${Source_Files})
 
 set(Ui_Files
@@ -130,7 +137,7 @@ set(Ui_Files
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
 	"ui/ProcessingSettingsDlg.ui"
-	"ui/ProgressDlg.ui"
+	"ui/OldProgressDlg.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
 	"ui/RegisterSettings.ui"
@@ -168,9 +175,6 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files})
 
 set(Resources
-	"Icon.rc"
-	"Icon/app.ico"
-	"Version.rc"
     "res/4Corners.bmp"
     "res/4Corners.png"
     "res/asinh.bmp"
@@ -182,7 +186,6 @@ set(Resources
     "res/BiasGreyscale@2x.png"
     "res/BiasRGB.png"
     "res/BiasRGB@2x.png"
-    "res/bmp00001.bmp"
     "res/brazil.png"
     "res/ButtonComet_Disabled.png"
     "res/ButtonComet_Down.png"
@@ -214,8 +217,6 @@ set(Resources
     "res/DarkColour@2x.png"
     "res/DarkCYMG.png"
     "res/DarkCYMG@2x.png"
-    "res/darkfram.ico"
-    "res/darkframe.ico"
     "res/DarkGreyscale.png"
     "res/DarkGreyscale@2x.png"
     "res/DarkRGB.png"
@@ -225,7 +226,6 @@ set(Resources
     "res/FlatColour@2x.png"
     "res/FlatCYMG.png"
     "res/FlatCYMG@2x.png"
-    "res/flatframe.ico"
     "res/FlatGreyscale.png"
     "res/FlatGreyscale@2x.png"
     "res/FlatRGB.png"
@@ -236,7 +236,6 @@ set(Resources
     "res/hdrdown.bmp"
     "res/hdrup.bmp"
     "res/Heart.png"
-    "res/icon1.ico"
     "res/ImageList_CFA_CYMG.bmp"
     "res/ImageList_CFA_RGB.bmp"
     "res/ImageList_Color.bmp"
@@ -248,8 +247,6 @@ set(Resources
     "res/LightColour@2x.png"
     "res/LightCYMG.png"
     "res/LightCYMG@2x.png"
-    "res/lightfra.ico"
-    "res/lightframe.ico"
     "res/LightGreyscale.png"
     "res/LightGreyscale@2x.png"
     "res/LightRGB.png"
@@ -264,7 +261,6 @@ set(Resources
     "res/MaskStarShapes.pspimage"
     "res/mosaicmode.bmp"
     "res/normalmode.bmp"
-    "res/offsetframe.ico"
     "res/Pattern_BGGR.bmp"
     "res/Pattern_CYGMCYMG.bmp"
     "res/Pattern_GBRG.bmp"
@@ -289,12 +285,26 @@ set(Resources
     "res/Taiwan.png"
     "res/Turkish.png"
 	)
+if(WIN32)
+    set(Resources ${Resources}
+	"Icon/DeepSkyStacker.ico"
+    )
+endif()
 
-set (Resource_Files
+
+set (Qt_Resource_Files
     "resources.qrc"
     )
 	
-source_group("Resources" FILES ${Resources}	${Resource_Files})
+if(WIN32)
+    set(Resource_Files 
+    "Icon.rc"
+	"Version.rc"
+    )
+endif()
+
+	
+source_group("Resources" FILES ${Resources}	${Qt_Resource_Files} ${Resource_Files})
 
 set(Tools
     "../Tools/imageview.cpp"
@@ -308,6 +318,9 @@ if(APPLE)
     set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources")
+    set(file_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist.icns")
+    set_source_files_properties(${file_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
 set(ALL_FILES
@@ -319,14 +332,14 @@ set(ALL_FILES
     ${Header_Files}
 	${Ui_Files}
 	${Resources}
+    ${Qt_Resource_Files}
+    ${Resource_Files}
     ${Source_Files}
     ${Tools}
     ${DSSCL}
     ${app_icon_macos}
+	${file_icon_macos}
 )
-
-if(APPLE)
-endif()
 
 ################################################################################
 # Target
@@ -337,7 +350,7 @@ qt_add_translations(${PROJECT_NAME}
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
     )
-qt_add_resources(ALL_FILES ${Resource_Files})
+qt_add_resources(ALL_FILES ${Qt_Resource_Files})
 
 qt_add_executable(DeepSkyStacker ${ALL_FILES})
 
@@ -346,8 +359,9 @@ if(APPLE)
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
         MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker"
-        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier "
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystacker"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
+		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
 endif()
@@ -412,8 +426,8 @@ if(MSVC)
 	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
         /EHsc
+        /utf-8
     )
     target_link_options(DeepSkyStacker PRIVATE
         $<$<CONFIG:Debug>:
@@ -514,6 +528,21 @@ if(APPLE)
         #
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
         COMMAND "$ENV{HOME}/.unlock_keychain"
+    )
+endif()
+if(LINUX)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Copy the .desktop file and icon file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
+        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
+        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.icns
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/text-dssfilelist.xml ${CMAKE_INSTALL_PREFIX}/text-dssfilelist.xml
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png ${CMAKE_INSTALL_PREFIX}/DSS_filelist64x64.png		
     )
 endif()
 

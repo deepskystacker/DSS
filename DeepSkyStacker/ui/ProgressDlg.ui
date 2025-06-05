@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="ProcessText1">
+    <widget class="QLabel" name="topLabel">
      <property name="text">
       <string/>
      </property>
@@ -26,7 +26,7 @@
      <item>
       <spacer name="horizontalSpacer_4">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -37,7 +37,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QProgressBar" name="ProgressBar2">
+      <widget class="QProgressBar" name="partialProgress">
        <property name="minimumSize">
         <size>
          <width>500</width>
@@ -52,7 +52,7 @@
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -67,21 +67,21 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="TimeRemaining">
+      <widget class="QLabel" name="timeRemaining">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="Processors">
+      <widget class="QLabel" name="processors">
        <property name="text">
         <string/>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="StopButton">
+      <widget class="QPushButton" name="cancelButton">
        <property name="text">
         <string>Cancel</string>
        </property>
@@ -90,14 +90,14 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutProgress1">
+    <layout class="QHBoxLayout" name="horizontalLayout_1">
      <property name="spacing">
       <number>6</number>
      </property>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -108,7 +108,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QProgressBar" name="ProgressBar1">
+      <widget class="QProgressBar" name="totalProgess">
        <property name="minimumSize">
         <size>
          <width>500</width>
@@ -123,7 +123,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -136,7 +136,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="ProcessText2">
+    <widget class="QLabel" name="bottomLabel">
      <property name="text">
       <string/>
      </property>

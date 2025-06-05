@@ -52,7 +52,7 @@ message ("PLATFORM_NAME: " ${PLATFORM_NAME})
 message ("CMAKE_BUILD_TYPE: " ${CMAKE_BUILD_TYPE})
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
 	if(NOT WIN32)
-		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${CMAKE_SYSTEM_NAME}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
+		set(CMAKE_INSTALL_PREFIX $ENV{HOME}/build/${CMAKE_SYSTEM_NAME}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	else()
 		set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE} CACHE STRING "" FORCE)
 	endif()
@@ -65,7 +65,7 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.8.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 #
@@ -147,8 +147,6 @@ add_subdirectory(ZClass)
 #
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStacker)
-#[=[
 add_subdirectory(DeepSkyStackerLive)
 add_subdirectory(DeepSkyStackerTest)
-]=]
 

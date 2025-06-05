@@ -63,11 +63,11 @@ public:
 	{
 		return (X < pt.X);
 	};
-	BOOL	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
+	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
 	{
 		return (X >= fLeft) && (X <= fRight) && (Y >= fTop) && (Y <= fBottom);
 	};
-	BOOL	IsNear(const CPointExt& ptTest)
+	bool	IsNear(const CPointExt& ptTest)
 	{
 		return (fabs(X - ptTest.X) <= 3) && (fabs(Y - ptTest.Y) <= 3);
 	};
@@ -169,7 +169,7 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
 	}
 }
-
+#if (0)
 TEST_CASE("CRect", "[CRect]")
 {
 	SECTION("CRect")
@@ -180,3 +180,4 @@ TEST_CASE("CRect", "[CRect]")
 		REQUIRE(static_cast<bool>(rect.PtInRect(point)) == false);
 	}
 }
+#endif

@@ -363,10 +363,6 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 void atexitHandler()
 {
 	//
-	// Retain or delete the trace file as wanted
-	//
-	traceControl.terminate();
-	//
 	// Delete the back pocket storage
 	//
 	backPocket.reset();
@@ -376,7 +372,7 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	//
-	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	// Set up the atexit handler to release the back pocket storage
 	//
 	std::atexit(atexitHandler);
 
@@ -398,7 +394,11 @@ int main(int argc, char* argv[])
 #endif
 
 #if defined(Q_OS_WIN)
-	// Set console code page to UTF-8 so console knows how to interpret string data
+	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
+	// I think this also applies to the use of regular fopen() calls.
+	std::setlocale(LC_CTYPE, ".UTF-8");
+
+	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 

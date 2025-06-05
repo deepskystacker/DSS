@@ -18,6 +18,7 @@ Copyright (c) 2018-2025, David C. Partridge, Tony Cook, Mat Draper,
 
 Copyright (c) 2006-2019, Luc Coiffier 
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/deepskystacker/DSS)
 					
 Building DeepSkyStacker:
 ------------------------

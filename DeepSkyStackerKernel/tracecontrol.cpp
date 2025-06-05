@@ -86,4 +86,13 @@ namespace DSS
 		ZTrace::enableTrace();
 		ZTrace::writeToFile();
 	}
+
+	TraceControl::~TraceControl()
+	{
+		if (erase)
+		{
+			std::error_code ec;
+			fs::remove(file, ec);
+		}
+	}
 }

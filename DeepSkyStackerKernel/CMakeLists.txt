@@ -312,7 +312,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;
@@ -324,6 +323,7 @@ if(MSVC)
         /wd4652;
         /wd4702;
         /wd4244;
+        /utf-8;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
@@ -427,7 +427,6 @@ if(MSVC)
             /RTC1
         >
         $<$<CONFIG:Release>:
-            /GL-;
             /GS-
         >
         /MP;
@@ -439,6 +438,7 @@ if(MSVC)
         /wd4652;
         /wd4702;
         /wd4244;
+        /utf-8;
         ${DEFAULT_CXX_EXCEPTION_HANDLING}
     )
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
