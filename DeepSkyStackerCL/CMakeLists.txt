@@ -240,6 +240,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 endif()
 if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
     CURL::libcurl
 )
 endif()
