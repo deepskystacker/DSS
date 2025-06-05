@@ -47,37 +47,18 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 	return (RequiredCpuFlags && AVXenabledOS);
 
 #else // GCC/Linux version
-
-	if (__get_cpuid_max(0, nullptr) < 7)
-		return false;
-	unsigned int eax = 0;
-	unsigned int ebx = 0;
-	unsigned int ecx = 0;
-	unsigned int edx = 0;
-
-	if (__get_cpuid(1, &eax, &ebx, &ecx, &edx) == 0)
-		return false;
-	const bool FMAsupported = ((ecx & (1 << 12)) != 0);
-	const bool POPCNTsupported = ((ecx & (1 << 23)) != 0);
-	const bool XSAVEsupported = ((ecx & (1 << 26)) != 0);
-	const bool OSXSAVEsupported = ((ecx & (1 << 27)) != 0);
-
-	eax = ebx = ecx = edx = 0;
-	if (__get_cpuid(7, &eax, &ebx, &ecx, &edx) == 0)
-		return false;
-	const bool AVX2supported = ((ebx & (1 << 5)) != 0);
-	//const bool BMI1supported = ((ebx & (1 << 3) != 0); 
-	//const bool BMI2supported = ((ebx & (1 << 8)) != 0); 
-
-	const bool RequiredCpuFlags = FMAsupported && POPCNTsupported && XSAVEsupported && OSXSAVEsupported && AVX2supported;
-
-	// OS supports AVX (YMM registers) - Note: XGETBV may only be executed on CPUs with XSAVE flag set. 
-	const bool AVXenabledOS = RequiredCpuFlags ? ((_xgetbv(0) & 6) == 6) : false; // 6 = SSE (0x2) + YMM (0x4) 
+	bool result = 
+		__builtin_cpu_supports("avx2") && 
+		__builtin_cpu_supports("fma") &&
+		__builtin_cpu_supports("popcnt") &&
+		__builtin_cpu_supports("xsave") &&
+		__builtin_cpu_supports("osxsave");
 
 	// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
-	return (RequiredCpuFlags && AVXenabledOS);
+	return result;
+
 #endif
 #endif
 };
