@@ -491,6 +491,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 endif()
 if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
     CURL::libcurl
 )
 endif()
@@ -505,14 +506,6 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
     user32
     psapi
     htmlhelp
-)
-endif()
-#
-# libomp.dylib was manually installed into /usr/local/lib on MacOS
-#
-if(APPLE)
-set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
-    omp
 )
 endif()
 

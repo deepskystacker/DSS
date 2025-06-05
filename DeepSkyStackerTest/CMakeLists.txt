@@ -89,10 +89,20 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Threads::Threads
 )
 endif()
+#
+# libomp.dylib was manually installed into /usr/local/lib on MacOS
+#
+if(APPLE)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
+)
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	)
+endif()
+
+
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
@@ -167,37 +177,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	ZClass
 )
 
-if(NOT LINUX)
-    set (deploy_tool_options_arg "")
-    if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
-    elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-    endif()
-
-    # Generate a deployment script to be executed at install time
-    # App bundles on macOS have an .app suffix
-    if(APPLE)
-        set(executable_path "$<TARGET_FILE_NAME:${PROJECT_NAME}>.app")
-    else()
-        message ("Target filename:"  $<TARGET_FILE_NAME:${PROJECT_NAME}>)
-        set(executable_path "${CMAKE_INSTALL_BINDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>")
-    endif()
-    message ("executable_path: " ${executable_path})
-    message ("deploy tools options arg: " ${deploy_tool_options_arg})
-     qt_generate_deploy_script(
-         TARGET DeepSkyStackerTest
-         OUTPUT_SCRIPT deploy_script
-         CONTENT "
-     qt_deploy_runtime_dependencies(
-         EXECUTABLE \"${executable_path}\"
-         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-     )"
-     )
-
-    INSTALL (TARGETS ${PROJECT_NAME})
-    INSTALL (SCRIPT ${deploy_script})
-endif()
 
 
 
