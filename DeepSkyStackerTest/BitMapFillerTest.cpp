@@ -21,6 +21,11 @@ void be2le(std::uint16_t(&out)[SZ], const std::uint16_t* pIn)
 		out[n] = bswap_16(pIn[n]);
 }
 
+std::uint16_t loadAndSwap(std::uint16_t const* p)
+{
+	return bswap_16(*p);
+}
+
 // ------------------
 // Gray
 // ------------------
@@ -103,9 +108,10 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		std::uint16_t data[W * 2];
 		for (size_t i = 0; i < W; ++i)
-			data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			//data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			data[i] = loadAndSwap(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
 		for (size_t i = 0; i < W; ++i)
-			data[i + W] = _load_be_u16(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
+			data[i + W] = loadAndSwap(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
 
 		auto* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 
@@ -132,9 +138,9 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		std::uint16_t data[W * 2];
 		for (size_t i = 0; i < W; ++i)
-			data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			data[i] = loadAndSwap(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
 		for (size_t i = 0; i < W; ++i)
-			data[i + W] = _load_be_u16(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
+			data[i + W] = loadAndSwap(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
 
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, sizeof(data)) != 0); // Second line (GBGB) incorrectly interpolated, because filler treats it like RGRG...
 	}
