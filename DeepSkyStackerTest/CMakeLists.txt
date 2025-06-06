@@ -29,6 +29,7 @@ set(Source_Files
     "PixelIteratorTest.cpp"
     "RegisterTest.cpp"
     "SkyBackGroupTest.cpp"
+    "TimeStampTest.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
