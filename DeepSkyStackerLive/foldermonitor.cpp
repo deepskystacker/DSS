@@ -60,7 +60,7 @@ namespace DSS
 			if (file.is_regular_file())
 			{
 				existing_.push_back(file);
-				paths_[file] = fs::last_write_time(file);
+				paths_[file.path().generic_u8string()] = fs::last_write_time(file);
 			}
 		}
 	}
@@ -99,19 +99,19 @@ namespace DSS
 			{
 				auto current_file_last_write_time = fs::last_write_time(file);
 
-				if (!paths_.contains(file))
+				if (!paths_.contains(file.path().generic_u8string()))
 				{
 					// File creation
-					paths_[file] = current_file_last_write_time;
+					paths_[file.path().generic_u8string()] = current_file_last_write_time;
 					emit fileCreated(file);
 					// File modification
 				}
 				else
 				{
 					// File modification
-					if (paths_[file] != current_file_last_write_time)
+					if (paths_[file.path().generic_u8string()] != current_file_last_write_time)
 					{
-						paths_[file] = current_file_last_write_time;
+						paths_[file.path().generic_u8string()] = current_file_last_write_time;
 						emit fileChanged(file);
 					}
 				}

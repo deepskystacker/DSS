@@ -12,11 +12,11 @@ void ThreadLoader::run()
 	if (!this->filepath.empty())
 	{
 		ZTRACE_RUNTIME("ThreadLoader: Trying to load picture %s", this->filepath.generic_u8string().c_str());
-		imageLoader->addOrUpdateCache(this->filepath, LoadedImage{}, false);
+		imageLoader->addOrUpdateCache(this->filepath.generic_u8string(), LoadedImage{}, false);
 
 		if (CAllDepthBitmap adb; LoadPicture(this->filepath, adb))
 		{
-			imageLoader->addOrUpdateCache(this->filepath, LoadedImage{ std::move(adb.m_pBitmap), std::move(adb.m_Image) }, true);
+			imageLoader->addOrUpdateCache(this->filepath.generic_u8string(), LoadedImage{ std::move(adb.m_pBitmap), std::move(adb.m_Image) }, true);
 			emit(imageLoader->imageLoaded(this->filepath)); // Inform the GUI that we successfully loaded the image and stored it in the cache.
 		}
 		else
@@ -52,7 +52,7 @@ bool ImageLoader::load(const fs::path p, std::shared_ptr<CMemoryBitmap>& pBitmap
 	}
 
 	std::shared_lock rLock{ rwMutex };
-	if (CacheType::iterator it = imageCache.find(p); it != imageCache.end())
+	if (CacheType::iterator it = imageCache.find(p.generic_u8string()); it != imageCache.end())
 	{
 		++age;
 		if (std::get<2>(it->second) == true) // Image - ready loading - found in cache.
