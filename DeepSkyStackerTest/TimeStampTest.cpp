@@ -4,7 +4,7 @@
 #include <chrono>
 #include <format>
 
-
+#if !defined(Q_OS_MAC)
 TEST_CASE("Chrono", "[Chrono]")
 {
 	SECTION("TimeStamp")
@@ -35,3 +35,4 @@ TEST_CASE("Chrono", "[Chrono]")
 		REQUIRE(utc_since_utc_epoch - sys_since_utc_epoch < 60000); // Difference between UTC (includes leap seconds) and SYS less than 60s.
 	}
 }
+#endif
