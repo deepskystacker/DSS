@@ -72,6 +72,8 @@ Changes since the last release:
 
 5.  When starting DeepSkyStackerLive, create a DSSLive.settings file with "default" settings if it does not exist.
 
+6.  Correct the code that checks for SIMD support on Linux.   It wasn't working correctly.
+
 Welcome to DeepSkyStacker 5.1.10
 ======================================
 
