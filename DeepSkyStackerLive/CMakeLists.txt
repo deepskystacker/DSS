@@ -158,7 +158,7 @@ if(APPLE)
     set_target_properties(DeepSkyStackerLive PROPERTIES
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
-        MACOSX_BUNDLE_ICON_FILE "DSSLive-2.icns"
+        MACOSX_BUNDLE_ICON_FILE "DSSLive.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
         MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
         INSTALL_RPATH "@executable_path/../Frameworks"
@@ -326,7 +326,7 @@ if(LINUX)
         # Copy the .desktop file and icon file
         #
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStackerLive.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStackerLive.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive-2.icns ${CMAKE_INSTALL_PREFIX}/DSSLive-2.icns
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns ${CMAKE_INSTALL_PREFIX}/DSSLive.icns
 )
 endif()
 
