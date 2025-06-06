@@ -8,7 +8,13 @@ set(COMPILE_WARNING_AS_ERROR YES)
 ################################################################################
 set(Header_Files
     "dssliveenums.h"
+    "EmailSettings.h"
     "LiveSettings.h"
+    "fileregistrar.h"
+    "filestacker.h"
+    "foldermonitor.h"
+    "footprint.h"
+    "imageviewer.h"
  )
 source_group("Header Files" FILES ${Header_Files})
 
