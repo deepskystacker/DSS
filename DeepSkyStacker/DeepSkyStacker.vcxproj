@@ -416,11 +416,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <Image Include="..\Tools\hdrdown.bmp" />
     <Image Include="..\Tools\hdrup.bmp" />
-    <Image Include="app.ico" />
-    <Image Include="bitmap1.bmp" />
-    <Image Include="Buttons\Base_Down.ico" />
-    <Image Include="Buttons\Base_Hot.ico" />
-    <Image Include="Buttons\Base_Up.ico" />
     <Image Include="Buttons\ButtonBase_down.bmp" />
     <Image Include="Buttons\ButtonBase_hot.bmp" />
     <Image Include="Buttons\ButtonBase_mask.bmp" />
@@ -441,14 +436,11 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="Buttons\ButtonStar_Down.bmp" />
     <Image Include="Buttons\ButtonStar_Hot.bmp" />
     <Image Include="Buttons\ButtonStar_Up.bmp" />
-    <Image Include="filelist.ico" />
+    <Image Include="Icon\DeepSkyStacker.ico" />
     <Image Include="open.bmp" />
-    <Image Include="openfile.ico" />
     <Image Include="redo.bmp" />
-    <Image Include="redo.ico" />
     <Image Include="res\4Corners.png" />
     <Image Include="res\asinh.bmp" />
-    <Image Include="res\bmp00001.bmp" />
     <Image Include="res\brazil.png" />
     <Image Include="res\ButtonComet_Disabled.png" />
     <Image Include="res\ButtonComet_Down.png" />
@@ -475,17 +467,13 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\cuberoot.bmp" />
     <Image Include="res\custommode.bmp" />
     <Image Include="res\Czech.png" />
-    <Image Include="res\darkfram.ico" />
-    <Image Include="res\darkframe.ico" />
     <Image Include="res\Dutch.png" />
-    <Image Include="res\flatframe.ico" />
     <Image Include="res\GammaOff.bmp" />
     <Image Include="res\GammaOn.bmp" />
     <Image Include="res\German.png" />
     <Image Include="res\hdrdown.bmp" />
     <Image Include="res\hdrup.bmp" />
     <Image Include="res\Heart.png" />
-    <Image Include="res\icon1.ico" />
     <Image Include="res\ImageList_CFA_CYMG.bmp" />
     <Image Include="res\ImageList_CFA_RGB.bmp" />
     <Image Include="res\ImageList_Color.bmp" />
@@ -493,8 +481,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\ImageList_Mask.bmp" />
     <Image Include="res\intersectionmode.bmp" />
     <Image Include="res\Italian.png" />
-    <Image Include="res\lightfra.ico" />
-    <Image Include="res\lightframe.ico" />
     <Image Include="res\linear.bmp" />
     <Image Include="res\linear_en.bmp" />
     <Image Include="res\linear_fr.bmp" />
@@ -504,7 +490,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\logsqrt.bmp" />
     <Image Include="res\mosaicmode.bmp" />
     <Image Include="res\normalmode.bmp" />
-    <Image Include="res\offsetframe.ico" />
     <Image Include="res\Pattern_BGGR.bmp" />
     <Image Include="res\Pattern_CYGMCYMG.bmp" />
     <Image Include="res\Pattern_GBRG.bmp" />
@@ -527,8 +512,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\StarShape_TruncatedCone.bmp" />
     <Image Include="res\Taiwan.png" />
     <Image Include="res\Turkish.png" />
-    <Image Include="settings.ico" />
-    <Image Include="undo.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
@@ -601,10 +584,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc" />
     <ResourceCompile Include="Version.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Help\DeepSkyStacker Help.qhcp" />
-    <None Include="..\Help\DeepSkyStacker Help.qhp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
