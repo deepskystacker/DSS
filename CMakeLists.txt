@@ -113,10 +113,10 @@ if(WIN32)
 	set(CMAKE_CXX_FLAGS "/GR /EHsc")
 endif()
 if (APPLE)
-	set(CMAKE_CXX_FLAGS "-Wno-switch-enum -Wno-switch")
+	set(CMAKE_CXX_FLAGS "-g -Wno-switch-enum -Wno-switch")
 endif()
 if(LINUX)
-	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
+	set(CMAKE_CXX_FLAGS "-g -Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
 
 #[=[
