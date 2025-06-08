@@ -197,6 +197,33 @@ cd build
 ninja
 sudo ninja install
 
+# 
+# libzip - needed to build uchmviewer
+# 
+cd ~/Downloads
+gh repo clone nih-at/libzip
+cd libzip
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+
+#
+# uchmviewer binary - not as a macOS bundle.  We will copy it into the DeepSkyStacker.app bundle
+# from ~/Downloads/uChmViewer/build/src/uchmviewer
+#
+cd ~/Downloads
+gh repo clone eBookProjects/uChmViewer/
+cd uChmViewer
+mkdir build
+cmake -B build -DUSE_WEBENGINE=ON -DUSE_MACOS_BUNDLE=OFF
+cd build
+make
+
+
+
+
 
 
 
