@@ -12,6 +12,15 @@ Thank you.
 Installing on Linux:
 ====================
 
+Install kchmviewer so that the Windows .chm format help files can be shown.
+
+	#
+	# This is how I did on my Ubuntu 22.04 system.  If you aren't running
+	# Ubuntu or other Debian like system, you will need to install it some
+	# other way.
+	#
+	amonra@styx:~$ sudo apt-get install kchmviewer
+
 Unzip DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
 
 	amonra@styx:/opt$ sudo rm -rf DeepSkyStacker/
@@ -22,6 +31,12 @@ Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text
 
 	amonra@styx:/opt$ cd DeepSkyStacker
 	amonra@styx:/opt$ ./DSS-Linux-install.sh
+
+Installing on macOS:
+====================
+
+
+
 
 Accessing DeepSkyStackerCL on macOS:
 ====================================
