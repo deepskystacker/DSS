@@ -197,13 +197,15 @@ Section
   File /r "..\x64\Release\tls"
   File /r "..\x64\Release\translations"
   
+  File "${DSS_README_FILE}"
+  
+  SetOutPath $INSTDIR\Help
   File "..\Help\${DSS_HELP_FR}"
   File "..\Help\${DSS_HELP_ES}"
   File "..\Help\${DSS_HELP_EN}"
   File "..\Help\${DSS_HELP_DE}"
   File "..\Help\${DSS_HELP_PT}"
   # File "..\Help\${DSS_HELP_NL}"
-  File "${DSS_README_FILE}"
   
   # define uninstaller name
 
@@ -269,12 +271,12 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSSCL_FILE}.pdb"
   Delete "$INSTDIR\${DSSLIVE_FILE}.exe"
   Delete "$INSTDIR\${DSSLIVE_FILE}.pdb"
-  Delete "$INSTDIR\${DSS_HELP_FR}"
-  Delete "$INSTDIR\${DSS_HELP_ES}"
-  Delete "$INSTDIR\${DSS_HELP_EN}"
-  Delete "$INSTDIR\${DSS_HELP_DE}"
-  Delete "$INSTDIR\${DSS_HELP_PT}"
-  # Delete "$INSTDIR\${DSS_HELP_NL}" 
+  Delete "$INSTDIR\Help\${DSS_HELP_FR}"
+  Delete "$INSTDIR\Help\${DSS_HELP_ES}"
+  Delete "$INSTDIR\Help\${DSS_HELP_EN}"
+  Delete "$INSTDIR\Help\${DSS_HELP_DE}"
+  Delete "$INSTDIR\Help\${DSS_HELP_PT}"
+  # Delete "$INSTDIR\Help\${DSS_HELP_NL}" 
   Delete "$INSTDIR\${DSS_README_FILE}"
   
   Delete "$INSTDIR\Qt6Core.dll"
