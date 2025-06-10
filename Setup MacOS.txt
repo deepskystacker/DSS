@@ -29,13 +29,17 @@ curl -O https://mac.r-project.org/openmp/openmp-19.1.0-darwin20-Release.tar.gz
 sudo tar -zxvf openmp-19.1.0-darwin20-Release.tar.gz -C /
 
 #
-# Install Qt 6.8.2
+# Install Qt 6.9.0
 #
 cd ~/Downloads
-curl -O https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-macOS-x64-4.8.1.dmg
+curl -O https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg
 #
 # Open the .dmg file in Finder and run the installer (you will probably be prompted to install Rosetta).
 # Make sure you specify the install location as /opt/Qt
+# 
+# Make sure you install QtCharts
+#
+# In order to build uchmviewer you'll need to install the WebEngine extension (under Extensions)
 #
 
 #
@@ -197,6 +201,11 @@ cd build
 ninja
 sudo ninja install
 
+#
+# Install chmlib for uchmviewer (install macPorts if needed first).
+#
+sudo port install chmlib +universal
+
 # 
 # libzip - needed to build uchmviewer
 # 
@@ -204,9 +213,8 @@ cd ~/Downloads
 gh repo clone nih-at/libzip
 cd libzip
 mkdir build
+cmake -B build -D"CMAKE_OSX_DEPLOYMENT_TARGET:STRING=13.4" -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64"
 cd build
-cmake ..
-make
 sudo make install
 
 #
@@ -217,18 +225,9 @@ cd ~/Downloads
 gh repo clone eBookProjects/uChmViewer/
 cd uChmViewer
 mkdir build
-cmake -B build -DUSE_WEBENGINE=ON -DUSE_MACOS_BUNDLE=OFF
+cmake -B build -DUSE_WEBENGINE=ON -DUSE_MACOS_BUNDLE=OFF -D"CMAKE_OSX_DEPLOYMENT_TARGET:STRING=13.4" -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64"
 cd build
 make
-
-
-
-
-
-
-
-
-
 
 
 
