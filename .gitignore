@@ -352,3 +352,6 @@ CodeMaid.config
 # Compile Score files
 compileData*scor*
 /CMakeUserPresets.json
+
+# macOS Droppings
+.DS_Store
