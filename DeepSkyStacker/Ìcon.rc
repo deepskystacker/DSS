@@ -1,5 +1,0 @@
-#define IDI_ICO 1
-#define IDI_ICO_FILELIST 2
-
-IDI_ICO ICON DISCARDABLE     "./Icon/DeepSkyStacker.ico"
-IDI_ICO_FILELIST ICON DISCARDABLE "./Icon/DSS_filelist.ico"

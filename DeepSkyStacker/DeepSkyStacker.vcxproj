@@ -582,7 +582,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtTranslation Include="i18n\DeepSkyStacker_zh_TW.ts" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Ìcon.rc" />
+    <ResourceCompile Include="Icon.rc" />
     <ResourceCompile Include="Version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -764,7 +764,7 @@
     </QtTranslation>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Ìcon.rc">
+    <ResourceCompile Include="Icon.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
     <ResourceCompile Include="Version.rc">
