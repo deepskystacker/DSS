@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Alpha 2
+Welcome to DeepSkyStacker 6.1.0 Beta 1
 ======================================
 
 Only 64 bit versions of Windows 10 and later are supported in this release.
@@ -12,14 +12,15 @@ Thank you.
 Installing on Linux:
 ====================
 
-Install kchmviewer so that the Windows .chm format help files can be shown.
+If it isn't already installed, please install kchmviewer so that the Windows .chm format help files can be shown.
 
 	#
 	# This is how I did on my Ubuntu 22.04 system.  If you aren't running
-	# Ubuntu or other Debian like system, you will need to install it some
-	# other way.
+	# Ubuntu, you will need to install it some other way.
 	#
 	amonra@styx:~$ sudo apt-get install kchmviewer
+
+Download DeepSkyStacker.tar.gz
 
 Unzip DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
 
@@ -35,7 +36,8 @@ Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text
 Installing on macOS:
 ====================
 
-
+You need to copy the DeepSkyStacker.app and DeepSkyStackerLive.app bundles from the relevant folder (x64 or arm64) to
+the /Applications folder.
 
 
 Accessing DeepSkyStackerCL on macOS:
@@ -88,6 +90,11 @@ Changes since the last release:
 5.  When starting DeepSkyStackerLive, create a DSSLive.settings file with "default" settings if it does not exist.
 
 6.  Correct the code that checks for SIMD support on Linux.   It wasn't working correctly.
+
+7.  Add code to invoke kchmviewer on Linux and uchmviewer on macOS to display the help, and ship uchmviewer inside
+    the DeepSkyStacker.app bundle.
+
+8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================
