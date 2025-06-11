@@ -323,6 +323,15 @@ if(APPLE)
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+set(Help_Files
+    "${CMAKE_SOURCE_DIR}/Help/Aide DeepSkyStacker.chm"
+    "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
+	)
+source_group("Help" FILES ${Help_Files})
+
 set(ALL_FILES
     ${Dialogs}
     ${Dialogs__Processing}
@@ -520,6 +529,8 @@ if(APPLE)
         # a dependency on the target, so that the DSSCL binary is built before this.
         #
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $ENV{HOME}/Downloads/uChmViewer/build/src/uchmviewer
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
         COMMAND "$ENV{HOME}/.unlock_keychain"
     )
 endif()
@@ -529,13 +540,17 @@ if(LINUX)
         #
         # Copy the .desktop file and icon file
         #
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh
         COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
-        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.icns
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/text-dssfilelist.xml ${CMAKE_INSTALL_PREFIX}/text-dssfilelist.xml
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png ${CMAKE_INSTALL_PREFIX}/DSS_filelist64x64.png		
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/text-dssfilelist.xml
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png
+	    #
+    	# Copy the help files
+    	#
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/Help
+	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
     )
 endif()
 
@@ -544,6 +559,7 @@ if(NOT LINUX)
     if(APPLE)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -timestamp -no-strip")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/DeepSkyStackerCL\"")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/uchmviewer\"")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")

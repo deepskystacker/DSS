@@ -89,6 +89,9 @@ private:
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
 	QShortcut* helpShortCut;
+#if !defined(Q_OS_WIN)
+	QProcess* helpProcess{ nullptr };
+#endif // !defined(Q_OS_WIN)
 
 	void createStatusBar();
 	void updatePanel();

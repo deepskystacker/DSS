@@ -220,6 +220,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
+#if !defined(Q_OS_WIN)
+	, helpProcess{ new QProcess(this) }
+#endif
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
@@ -593,13 +596,35 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
+	QString appPath{ QCoreApplication::applicationDirPath() };
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+#elif defined(Q_OS_MACOS)
+	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+#endif
+
+#if defined(Q_OS_LINUX)
+	// On Linux, we use the kchmviewer application to display the help file
+	QString program{ "kchmviewer" };
+#elif defined(Q_OS_MACOS)
+	// On macOS, we use the uchmviewer application to display the help file
+	// which we've bundled with the application
+	QString program{ appPath + "/uchmviewer" };
+#endif
+
 #if defined(Q_OS_WIN)
-
-	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-
 	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
-#else
-	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
+#elif defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we use a QProcess to start the help viewer
+	//	
+	if (!helpProcess)
+	{
+		helpProcess = new QProcess(this);
+		connect(helpProcess, &QProcess::finished, helpProcess, &QProcess::deleteLater);
+	}
+	QStringList arguments{ "-token", "com.github.deepskystacker", helpFile };
+	helpProcess->startDetached(program, arguments);
 #endif
 }
 
