@@ -42,7 +42,7 @@ namespace DSS
         strText += tr("(Now somewhat out of date)") += "<br><br>";
         strHTML += strText;
 
-        strText = "Qt Application Framework 6.8.0\nCopyright © 2024 The Qt Company Ltd.";
+        strText = "Qt Application Framework 6.9.0\nCopyright © 2025 The Qt Company Ltd.";
         strText += "<br>";
         strText = strText.replace("\n", "<br>");
         strHTML += strText;
