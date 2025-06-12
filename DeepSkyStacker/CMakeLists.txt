@@ -114,7 +114,7 @@ set(Source_Files
 if (LINUX)
     set(Source_Files ${Source_Files}
     "DeepSkyStacker.desktop"
-    "DSS-Linux-install.sh"
+    "DeepSkyStacker-uninstall.desktop"
     )
 endif()
 source_group("Source Files" FILES ${Source_Files})
@@ -540,9 +540,8 @@ if(LINUX)
         #
         # Copy the .desktop file and icon file
         #
-        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh
-        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker-uninstall.desktop
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/com.github.deepskystacker-x-text-dssfilelist.xml
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png
