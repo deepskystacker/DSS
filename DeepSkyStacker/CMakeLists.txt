@@ -531,8 +531,8 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $ENV{HOME}/Downloads/uChmViewer/build/src/uchmviewer
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
-        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/LICENSE
-        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/Installers/README.txt
+        COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/LICENSE
+        COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/README.txt
         COMMAND "$ENV{HOME}/.unlock_keychain"
     )
 endif()
