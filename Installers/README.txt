@@ -1,74 +1,11 @@
 Welcome to DeepSkyStacker 6.1.0 Beta 1
 ======================================
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
 Reporting problems:
 
 Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
 <https://groups.io/g/DeepSkyStacker>
 Thank you.
-
-Installing on Linux:
-====================
-
-If it isn't already installed, please install kchmviewer so that the Windows .chm format help files can be shown.
-
-	#
-	# This is how I did on my Ubuntu 22.04 system.  If you aren't running
-	# Ubuntu, you will need to install it some other way.
-	#
-	amonra@styx:~$ sudo apt-get install kchmviewer
-
-Download DeepSkyStacker.tar.gz
-
-Unzip DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
-
-	amonra@styx:/opt$ sudo rm -rf DeepSkyStacker/
-	amonra@styx:/opt$ sudo tar -zxvf ~/Downloads/DeepSkyStacker.tar.gz
-
-
-Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text/dssfilelist and to install the .desktop files
-
-	amonra@styx:/opt$ cd DeepSkyStacker
-	amonra@styx:/opt$ ./DSS-Linux-install.sh
-
-Installing on macOS:
-====================
-
-You need to copy the DeepSkyStacker.app and DeepSkyStackerLive.app bundles from the relevant folder (x64 or arm64) to
-the /Applications folder.
-
-
-Accessing DeepSkyStackerCL on macOS:
-====================================
-
-This is delivered in the DeepSkyStacker.app bundle.   To use it you'll need define a symlink to in e.g. /usr/local/bin
-	#
-	# If you need to, create the directory /usr/local/bin
-	#
-	sudo mkdir -p /usr/local/bin
-	#
-	# Add a symlink so you can invoke DeepSkyStackerCL by typing DSSCL
-	#
-	sudo ln -sf /Applications/DeepSkyStacker.app/Contents/MacOS/DeepSkyStackerCL /usr/local/bin/DSSCL
-
-You may also need to add /usr/local/bin to your path:  You can do this by creating a file in your home directory
-called .zshenv (assuming you're using zsh) this file might contain e.g.
-
-	# remove duplicate entries from $PATH
-	# zsh uses $path array along with $PATH 
-	typeset -U PATH path
-
-	pathadd () {
-       	  if [ "$2" = "after" ] ; then
-              PATH=$PATH:$1
-       	  else
-              PATH=$1:$PATH
-          fi
-        }
-	pathadd /usr/local/bin
-	pathadd /home/<username>/bin
 
 Known problems:
 
@@ -76,7 +13,7 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes since the last release:
+Changes for DeepSkyStacker 6.1.0
 
 1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
     The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
@@ -95,6 +32,8 @@ Changes since the last release:
     the DeepSkyStacker.app bundle.
 
 8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
+
+9.  Ensure that Visual C++ runtime build 35208 is installed.
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================
