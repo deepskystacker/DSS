@@ -235,6 +235,7 @@
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>600</height>
+    <outputDirectory>.</outputDirectory>
     <productUrlInfoAbout>https://github.com/deepskystacker/DSS</productUrlInfoAbout>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>

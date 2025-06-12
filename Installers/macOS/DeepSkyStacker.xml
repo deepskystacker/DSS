@@ -1,0 +1,124 @@
+<project>
+    <shortName>DeepSkyStacker</shortName>
+    <fullName>DeepSkyStacker</fullName>
+    <version>6.1.0</version>
+    <readmeFile>README.txt</readmeFile>
+    <licenseFile>LICENSE</licenseFile>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfiles</name>
+                    <platforms>windows-x64</platforms>
+                    <shortcutList>
+                        <shortcut>
+                            <comment>Uninstall</comment>
+                            <exec>${installdir}/${uninstallerName}</exec>
+                            <icon></icon>
+                            <name>Uninstall ${product_fullname}</name>
+                            <path>${installdir}</path>
+                            <platforms>all</platforms>
+                            <runAsAdmin>0</runAsAdmin>
+                            <runInTerminal>0</runInTerminal>
+                            <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
+                            <windowsExecArgs></windowsExecArgs>
+                            <windowsIcon></windowsIcon>
+                            <windowsPath>${installdir}</windowsPath>
+                        </shortcut>
+                    </shortcutList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux</name>
+                    <platforms>linux</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux64</name>
+                    <platforms>linux-x64</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileswindows64</name>
+                    <platforms>windows-x64</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosxarm64</name>
+                    <platforms>osx</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>Darwin/arm64/Release/DeepSkyStacker.app</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>Darwin/arm64/Release/DeepSkyStackerLive.app</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                    <ruleList>
+                        <platformTest type="osx-arm64"/>
+                    </ruleList>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosxx86_64</name>
+                    <platforms>osx</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>Darwin/x64/Release/DeepSkyStacker.app</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>Darwin/x64/Release/DeepSkyStackerLive.app</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                    <ruleList>
+                        <platformTest negate="1" type="osx-arm64"/>
+                    </ruleList>
+                </folder>
+            </folderList>
+        </component>
+    </componentList>
+    <preBuildActionList>
+        <runProgram>
+            <program>${env(HOME)}/.unlock_keychain</program>
+            <programArguments></programArguments>
+        </runProgram>
+    </preBuildActionList>
+    <createOsxBundleDmg>1</createOsxBundleDmg>
+    <enableRollback>1</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>450</height>
+    <osxSigningIdentity>Developer ID Application: David Partridge (VH8AYT3C7Y)</osxSigningIdentity>
+    <osxSigningKeychainFile>../Library/Keychains/login.keychain-db</osxSigningKeychainFile>
+    <outputDirectory>.</outputDirectory>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <vendor>com.github.deepskystacker</vendor>
+    <width>600</width>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${product_shortname}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <mustBeWritable>1</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>40</width>
+        </directoryParameter>
+    </parameterList>
+</project>
+
