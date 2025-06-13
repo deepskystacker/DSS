@@ -53,9 +53,6 @@
                     <platforms>windows-x64</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStackerLive.pdb</origin>
-                        </distributionFile>
-                        <distributionFile>
                             <origin>../../x64/Release/DeepSkyStacker.exe</origin>
                         </distributionFile>
                         <distributionFile>
@@ -69,6 +66,9 @@
                         </distributionFile>
                         <distributionFile>
                             <origin>../../x64/Release/DeepSkyStackerLive.exe</origin>
+                        </distributionFile>
+                        <distributionFile>
+                            <origin>../../x64/Release/DeepSkyStackerLive.pdb</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>../../x64/Release/Qt6Widgets.dll</origin>
@@ -92,51 +92,16 @@
                             <origin>../../x64/Release/Qt6OpenGLWidgets.dll</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>../../x64/Release/iconengines</origin>
+                            <origin>../../x64/Release/Help</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../../x64/Release/imageformats</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/Release/networkinformation</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/Release/platforms</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/Release/styles</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/Release/tls</origin>
+                            <origin>../../x64/Release/plugins</origin>
                         </distributionDirectory>
                         <distributionDirectory>
                             <origin>../../x64/Release/translations</origin>
                         </distributionDirectory>
                         <distributionFile>
                             <origin>../README.txt</origin>
-                        </distributionFile>
-                    </distributionFileList>
-                </folder>
-                <folder>
-                    <description>Help Files</description>
-                    <destination>${installdir}/Help</destination>
-                    <name>Help</name>
-                    <platforms>windows-x64</platforms>
-                    <distributionFileList>
-                        <distributionFile>
-                            <origin>../../Help/DeepSkyStacker Hilfe.chm</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../Help/Aide DeepSkyStacker.chm</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../Help/Ayuda DeepSkyStacker.chm</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../Help/DeepSkyStacker Ajuda.chm</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../Help/DeepSkyStacker Help.chm</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -406,6 +371,7 @@
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
     <vendor>com.github.deepskystacker</vendor>
+    <outputDirectory>..</outputDirectory>
     <width>800</width>
     <windows64bitMode>1</windows64bitMode>
     <windowsARPRegistryPrefix>${project.fullName}</windowsARPRegistryPrefix>
