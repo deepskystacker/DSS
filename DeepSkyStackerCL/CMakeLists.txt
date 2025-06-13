@@ -257,6 +257,16 @@ set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
 )
 endif()
 
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerCL
+        POST_BUILD
+        #
+        # Copy the .pdb
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerCL.pdb
+    )
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
 #
@@ -270,7 +280,8 @@ if(NOT APPLE)
             set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
             set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
         elseif(WIN32)
-            set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
         endif()
 
         # Generate a deployment script to be executed at install time

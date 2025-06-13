@@ -557,6 +557,20 @@ if(LINUX)
 	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
     )
 endif()
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Copy the .pdb
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStacker.pdb
+	    #
+    	# Copy the help files
+    	#
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/Help
+	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
+    )
+endif()
 
 if(NOT LINUX)
     set (deploy_tool_options_arg "-verbose=1")
@@ -566,7 +580,8 @@ if(NOT LINUX)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/uchmviewer\"")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
     endif()
 
     # Generate a deployment script to be executed at install time
@@ -599,6 +614,7 @@ endif()
 install (SCRIPT ${deploy_script})
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
+#[=[
 
 if(WIN32)
 ################################################################################
@@ -621,4 +637,5 @@ ADD_CUSTOM_COMMAND(
        
     )
 endif()
+]=]
 

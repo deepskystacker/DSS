@@ -329,6 +329,15 @@ if(LINUX)
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns ${CMAKE_INSTALL_PREFIX}/DSSLive.icns
 )
 endif()
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerLive
+        POST_BUILD
+        #
+        # Copy the .pdb file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerLive.pdb
+    )
+endif()
 
 if(NOT LINUX)
     set (deploy_tool_options_arg "-verbose=1")
@@ -336,8 +345,9 @@ if(NOT LINUX)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-    endif()
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
 
     # Generate a deployment script to be executed at install time
     # App bundles on macOS have an .app suffix
