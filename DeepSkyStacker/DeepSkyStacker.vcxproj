@@ -47,14 +47,16 @@
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>6.8.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
-    <QtDeploy>true</QtDeploy>
+    <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
