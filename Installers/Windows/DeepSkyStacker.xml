@@ -195,6 +195,19 @@
                             <program>${system_temp_directory}/vc_redist.x64.exe</program>
                             <programArguments>/${vcredist_install_mode} /passive /norestart</programArguments>
                             <progressText>Installing Visual Studio runtime in ${vcredist_install_mode} mode</progressText>
+                            <onErrorActionList>
+                                <setInstallerVariable>
+                                    <name>rebootRequired</name>
+                                    <value>1</value>
+                                    <ruleList>
+                                        <compareValues>
+                                            <logic>equals</logic>
+                                            <value1>${program_exit_code}</value1>
+                                            <value2>3010</value2>
+                                        </compareValues>
+                                    </ruleList>
+                                </setInstallerVariable>
+                            </onErrorActionList>
                         </runProgram>
                         <deleteFile path="${system_temp_directory}/vc_redist.x64.exe"/>
                     </actionList>
@@ -356,6 +369,11 @@
             </commandList>
         </associateWindowsFileExtension>
     </postInstallationActionList>
+    <preUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}/${project.shortName}-install.log</path>
+        </deleteFile>
+    </preUninstallationActionList>
     <postUninstallationActionList>
         <removeWindowsFileAssociation>
             <extensions>.dssfilelist</extensions>
@@ -366,12 +384,20 @@
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>600</height>
+
+    <!-- Configures the final destination of the installation log -->
+
+    <installationLogFile>${installdir}/${project.shortName}-install.log</installationLogFile>
     <osxSigningIdentity>Developer ID Application: David Partridge (VH8AYT3C7Y)</osxSigningIdentity>
+    <outputDirectory>..</outputDirectory>
     <productUrlInfoAbout>https://github.com/deepskystacker/DSS</productUrlInfoAbout>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
+
+    <!-- Configures the final destination of the uninstallation log -->
+
+    <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
     <vendor>com.github.deepskystacker</vendor>
-    <outputDirectory>..</outputDirectory>
     <width>800</width>
     <windows64bitMode>1</windows64bitMode>
     <windowsARPRegistryPrefix>${project.fullName}</windowsARPRegistryPrefix>
