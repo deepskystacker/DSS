@@ -139,25 +139,6 @@ chmod +x qt-online-installer-linux-x64-online.run
 #
 
 #
-# Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
-# to your Downloads folder, then untar it, build and install CFITSIO
-#
-cd ~/Downloads
-wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
-#
-# Get the CMake fixes
-#
-wget https://www.dropbox.com/scl/fi/drt4dcvsn0hd8xaa8ix2y/cfitsio_cmake.tar?rlkey=yrzzdjeo0brnodbbji4g7ku81&dl=1
-tar -zxvf cfitsio4_5_0_20240826.tar.gz
-cd cfitsio-cfitsio4_5_0_20240826
-tar -xvf ../cfitsio_cmake.tar
-mkdir build
-cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
-cd build
-ninja
-sudo ninja install
-
-#
 # Install libjpeg
 #
 sudo apt-get install libjpeg-dev

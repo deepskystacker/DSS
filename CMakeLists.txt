@@ -68,13 +68,7 @@ set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
-#
-# Non-Windows use find_package to find stuff we want
-#
-#set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
-if(NOT WIN32)
-find_package(cfitsio 4.5.0 REQUIRED)
-endif()
+find_package(cfitsio 4.6.2 REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)

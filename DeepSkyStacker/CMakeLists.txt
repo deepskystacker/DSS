@@ -487,9 +487,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
-if(NOT WIN32)
+#if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
-endif()
+#endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -511,7 +511,6 @@ endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
-    cfitsio
     user32
     psapi
     htmlhelp
@@ -531,6 +530,13 @@ if(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $ENV{HOME}/Downloads/uChmViewer/build/src/uchmviewer
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
+	    #
+	    # Copy the InstallBuilder project file
+	    #
+	    COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/macOS/DeepSkyStacker.xml
+	    #
+	    # Copy the license file and readme file
+	    #
         COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/LICENSE
         COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/README.txt
         COMMAND "$ENV{HOME}/.unlock_keychain"
@@ -540,19 +546,25 @@ if(LINUX)
     add_custom_command(TARGET DeepSkyStacker
         POST_BUILD
         #
-        # Copy the .desktop file and icon file
+        # Copy the .desktop files, mime-type definition file and the icon files
         #
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker-uninstall.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/com.github.deepskystacker-x-text-dssfilelist.xml
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png
+	    #
+	    # Copy the InstallBuilder project file
+	    #
+	    COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/Linux/DeepSkyStacker.xml
+	    #
+	    # Copy the license file and readme file
+	    #
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/LICENSE
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/Installers/README.txt
-
 	    #
-    	# Copy the help files
-    	#
+        # Copy the help files
+        #
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/Help
 	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
     )

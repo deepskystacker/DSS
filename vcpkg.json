@@ -7,6 +7,7 @@
     },
     "boost-container",
     "boost-interprocess",
+	  "cfitsio",
     "exiv2",
     "expat",
     "libraw",

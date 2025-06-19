@@ -184,24 +184,6 @@ ninja
 sudo ninja install
 
 #
-# Install CFITSIO 4.5.0
-# 
-cd ~/Downloads
-wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
-#
-# Get the CMake fixes
-#
-wget https://www.dropbox.com/scl/fi/drt4dcvsn0hd8xaa8ix2y/cfitsio_cmake.tar
-tar -zxvf cfitsio4_5_0_20240826.tar.gz
-cd cfitsio-cfitsio4_5_0_20240826
-tar -xvf ../cfitsio_cmake.tar
-mkdir build
-cmake -B build -G Ninja  -DBUILD_SHARED_LIBS=OFF -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
-cd build
-ninja
-sudo ninja install
-
-#
 # Install chmlib for uchmviewer (install macPorts if needed first).
 #
 sudo port install chmlib +universal
