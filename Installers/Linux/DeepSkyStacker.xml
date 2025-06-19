@@ -214,8 +214,16 @@
             <program>desktop-file-install</program>
             <programArguments>${installdir}/DeepSkyStackerLive.desktop</programArguments>
         </runProgram>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+			<ruleList>
+			<platformTest type="unix"/>
+			</ruleList>
+		</changePermissions>
     </postInstallationActionList>
     <preUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}/${project.shortName}-install.log</path>
+        </deleteFile>
         <deleteFile path="/usr/share/applications/DeepSkyStacker.desktop"/>
         <deleteFile path="/usr/share/applications/DeepSkyStacker-uninstall.desktop"/>
         <deleteFile path="/usr/share/applications/DeepSkyStackerLive.desktop"/>
@@ -232,13 +240,26 @@
             <programArguments>/usr/share/applications/</programArguments>
         </runProgram>
     </preUninstallationActionList>
+    <postUninstallationActionList>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+		<ruleList>
+		<platformTest type="unix"/>
+		</ruleList>
+		</changePermissions>
+    </postUninstallationActionList>
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>600</height>
+    <!-- Configures the final destination of the installation log -->
+
+    <installationLogFile>${installdir}/${project.shortName}-install.log</installationLogFile>
     <outputDirectory>.</outputDirectory>
     <productUrlInfoAbout>https://github.com/deepskystacker/DSS</productUrlInfoAbout>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
+    <!-- Configures the final destination of the uninstallation log -->
+
+    <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
     <vendor>com.github.deepskystacker</vendor>
     <width>800</width>
     <parameterList>

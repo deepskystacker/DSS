@@ -192,23 +192,40 @@
                             <origin>vc_redist.x64.exe</origin>
                         </unpackFile>
                         <runProgram>
+                            <abortOnError>0</abortOnError>
                             <program>${system_temp_directory}/vc_redist.x64.exe</program>
                             <programArguments>/${vcredist_install_mode} /passive /norestart</programArguments>
                             <progressText>Installing Visual Studio runtime in ${vcredist_install_mode} mode</progressText>
-                            <onErrorActionList>
-                                <setInstallerVariable>
-                                    <name>rebootRequired</name>
-                                    <value>1</value>
-                                    <ruleList>
+                        </runProgram>
+                        <actionGroup>
+                            <actionList>
+                                <if>
+                                    <actionList>
+                                        <setInstallerVariable>
+                                            <name>rebootRequired</name>
+                                            <value>1</value>
+                                        </setInstallerVariable>
+                                    </actionList>
+                                    <conditionRuleList>
                                         <compareValues>
                                             <logic>equals</logic>
                                             <value1>${program_exit_code}</value1>
                                             <value2>3010</value2>
                                         </compareValues>
-                                    </ruleList>
-                                </setInstallerVariable>
-                            </onErrorActionList>
-                        </runProgram>
+                                    </conditionRuleList>
+                                    <elseActionList>
+                                        <throwError text="Error code ${program_exit_code} from vc_redist.x64"/>
+                                    </elseActionList>
+                                </if>
+                            </actionList>
+                            <ruleList>
+                                <compareValues>
+                                    <logic>does_not_equal</logic>
+                                    <value1>${program_exit_code}</value1>
+                                    <value2>0</value2>
+                                </compareValues>
+                            </ruleList>
+                        </actionGroup>
                         <deleteFile path="${system_temp_directory}/vc_redist.x64.exe"/>
                     </actionList>
                     <ruleList>

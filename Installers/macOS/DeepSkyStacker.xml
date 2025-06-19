@@ -4,6 +4,7 @@
     <version>6.1.0</version>
     <readmeFile>README.txt</readmeFile>
     <licenseFile>LICENSE</licenseFile>
+	<debugLevel>2</debugLevel>
     <componentList>
         <component>
             <name>default</name>
@@ -17,22 +18,6 @@
                     <destination>${installdir}</destination>
                     <name>programfiles</name>
                     <platforms>windows-x64</platforms>
-                    <shortcutList>
-                        <shortcut>
-                            <comment>Uninstall</comment>
-                            <exec>${installdir}/${uninstallerName}</exec>
-                            <icon></icon>
-                            <name>Uninstall ${product_fullname}</name>
-                            <path>${installdir}</path>
-                            <platforms>all</platforms>
-                            <runAsAdmin>0</runAsAdmin>
-                            <runInTerminal>0</runInTerminal>
-                            <windowsExec>${installdir}/${uninstallerName}.exe</windowsExec>
-                            <windowsExecArgs></windowsExecArgs>
-                            <windowsIcon></windowsIcon>
-                            <windowsPath>${installdir}</windowsPath>
-                        </shortcut>
-                    </shortcutList>
                 </folder>
                 <folder>
                     <description>Program Files</description>
@@ -51,6 +36,17 @@
                     <destination>${installdir}</destination>
                     <name>programfileswindows64</name>
                     <platforms>windows-x64</platforms>
+                </folder>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfilesosx</name>
+                    <platforms>osx</platforms>
+                    <distributionFileList>
+                        <distributionFile>
+                            <origin>README.txt</origin>
+                        </distributionFile>
+                    </distributionFileList>
                 </folder>
                 <folder>
                     <description>Program Files</description>
@@ -94,18 +90,61 @@
             <program>${env(HOME)}/.unlock_keychain</program>
             <programArguments></programArguments>
         </runProgram>
+	    <!-- Check that the input .apps are notarised and signed. -->
+
+        <runProgram>
+            <program>spctl</program>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/Release/DeepSkyStacker.app</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>spctl</program>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/Release/DeepSkyStackerLive.app</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>spctl</program>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/Release/DeepSkyStacker.app</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>spctl</program>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/Release/DeepSkyStacker.app</programArguments>
+        </runProgram>
     </preBuildActionList>
+    <postInstallationActionList>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+			<ruleList>
+			<platformTest type="unix"/>
+			</ruleList>
+		</changePermissions>
+    </postInstallationActionList>
+    <preUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}/${project.shortName}-install.log</path>
+        </deleteFile>
+    </preUninstallationActionList>
+	    <postUninstallationActionList>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+		<ruleList>
+		<platformTest type="unix"/>
+		</ruleList>
+		</changePermissions>
+    </postUninstallationActionList>
     <createOsxBundleDmg>1</createOsxBundleDmg>
-    <enableRollback>1</enableRollback>
+    <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
-    <height>450</height>
+    <height>600</height>
+    <!-- Configures the final destination of the installation log -->
+
+    <installationLogFile>${installdir}/${project.shortName}-install.log</installationLogFile>
     <osxSigningIdentity>Developer ID Application: David Partridge (VH8AYT3C7Y)</osxSigningIdentity>
     <osxSigningKeychainFile>../Library/Keychains/login.keychain-db</osxSigningKeychainFile>
-    <outputDirectory>.</outputDirectory>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
+    <!-- Configures the final destination of the uninstallation log -->
+
+    <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
     <vendor>com.github.deepskystacker</vendor>
-    <width>600</width>
+    <outputDirectory>.</outputDirectory>
+    <width>800</width>
     <parameterList>
         <directoryParameter>
             <name>installdir</name>
