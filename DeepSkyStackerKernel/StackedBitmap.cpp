@@ -20,7 +20,7 @@ using namespace DSS;
 // Define some convenience "functions" to either turn Visual Leak Detector on and off
 // or do nothing
 //
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 #include <vld.h>
 void turnOffVld() { VLDDisable(); }
 void turnOnVld() { VLDEnable(); }
