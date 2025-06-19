@@ -69,7 +69,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../DeepSkyStackerKernel
     ../ZClass
   )
-  if(WIN32)
+
+if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
    ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
@@ -97,13 +98,12 @@ if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenMP::OpenMP_CXX
 )
+endif()
+
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	)
-endif()
-
-
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
