@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Beta 1
+Welcome to DeepSkyStacker 6.1.0 Beta 2
 ======================================
 
 Reporting problems:
@@ -34,6 +34,8 @@ Changes for DeepSkyStacker 6.1.0
 8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
 
 9.  Ensure that Visual C++ runtime build 35208 is installed.
+
+10. Update CFITSIO to 4.6.2
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================
