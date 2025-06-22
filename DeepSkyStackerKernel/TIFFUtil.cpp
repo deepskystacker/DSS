@@ -350,7 +350,7 @@ bool CTIFFReader::Open()
 		if (dwSkipExifInfo == 0)
 		{
 			// Try to read EXIF data
-			uint64_t ExifID;
+			toff_t ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -857,7 +857,7 @@ bool CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
-	uint64_t dir_offset_EXIF{ 0 };
+	toff_t dir_offset_EXIF{ 0 };
 
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
