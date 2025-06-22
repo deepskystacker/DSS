@@ -1074,7 +1074,7 @@ bool CTIFFWriter::Open()
 			if (cfa)
 			{
 				constexpr uint16_t count = sizeof(cfaDimPat.dim) + sizeof(cfaDimPat.cfa.cfa4);
-				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
+				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, reinterpret_cast<uint8_t *>(&cfaDimPat));
 			}
 			
 			//
