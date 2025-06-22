@@ -168,8 +168,6 @@ endif()
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
 	)
 endif()
 
