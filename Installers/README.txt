@@ -37,7 +37,7 @@ Changes for DeepSkyStacker 6.1.0
 
 10. Update CFITSIO to 4.6.2
 
-11. Bug fix: SIGSEGV caused by incorrect call to TIFFSetField (needed to use type toff_t for TIFFTAG_EXIFIFD)
+11. Bug fix: SIGSEGV caused by incorrect call to TIFFSetField for EXIFTAG_CFAPATTERN
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================

@@ -53,52 +53,52 @@
                     <platforms>windows-x64</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStacker.exe</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStacker.exe</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStacker.pdb</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStacker.pdb</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStackerCL.exe</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerCL.exe</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStackerCL.pdb</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerCL.pdb</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStackerLive.exe</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerLive.exe</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/DeepSkyStackerLive.pdb</origin>
+                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerLive.pdb</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6Widgets.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6Widgets.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6Charts.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6Charts.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6Core.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6Core.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6Gui.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6Gui.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6Network.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6Network.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6OpenGL.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6OpenGL.dll</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>../../x64/Release/Qt6OpenGLWidgets.dll</origin>
+                            <origin>../../x64/RelWithDebInfo/Qt6OpenGLWidgets.dll</origin>
                         </distributionFile>
                         <distributionDirectory>
-                            <origin>../../x64/Release/Help</origin>
+                            <origin>../../x64/RelWithDebInfo/Help</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../../x64/Release/plugins</origin>
+                            <origin>../../x64/RelWithDebInfo/plugins</origin>
                         </distributionDirectory>
                         <distributionDirectory>
-                            <origin>../../x64/Release/translations</origin>
+                            <origin>../../x64/RelWithDebInfo/translations</origin>
                         </distributionDirectory>
                         <distributionFile>
                             <origin>../README.txt</origin>
@@ -169,7 +169,7 @@
                     <platforms>windows-x64</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>../../x64/Release/vc_redist.x64.exe</origin>
+                            <origin>../../x64/RelWithDebInfo/vc_redist.x64.exe</origin>
                         </distributionFile>
                     </distributionFileList>
                     <ruleList>

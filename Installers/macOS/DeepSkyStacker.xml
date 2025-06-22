@@ -55,10 +55,10 @@
                     <platforms>osx</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>Darwin/arm64/Release/DeepSkyStacker.app</origin>
+                            <origin>Darwin/arm64/RelWithDebInfo/DeepSkyStacker.app</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>Darwin/arm64/Release/DeepSkyStackerLive.app</origin>
+                            <origin>Darwin/arm64/RelWithDebInfo/DeepSkyStackerLive.app</origin>
                         </distributionFile>
                     </distributionFileList>
                     <ruleList>
@@ -72,10 +72,10 @@
                     <platforms>osx</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>Darwin/x64/Release/DeepSkyStacker.app</origin>
+                            <origin>Darwin/x64/RelWithDebInfo/DeepSkyStacker.app</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>Darwin/x64/Release/DeepSkyStackerLive.app</origin>
+                            <origin>Darwin/x64/RelWithDebInfo/DeepSkyStackerLive.app</origin>
                         </distributionFile>
                     </distributionFileList>
                     <ruleList>
@@ -94,19 +94,19 @@
 
         <runProgram>
             <program>spctl</program>
-            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/Release/DeepSkyStacker.app</programArguments>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/RelWithDebInfo/DeepSkyStacker.app</programArguments>
         </runProgram>
         <runProgram>
             <program>spctl</program>
-            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/Release/DeepSkyStackerLive.app</programArguments>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/arm64/RelWithDebInfo/DeepSkyStackerLive.app</programArguments>
         </runProgram>
         <runProgram>
             <program>spctl</program>
-            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/Release/DeepSkyStacker.app</programArguments>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/RelWithDebInfo/DeepSkyStacker.app</programArguments>
         </runProgram>
         <runProgram>
             <program>spctl</program>
-            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/Release/DeepSkyStacker.app</programArguments>
+            <programArguments>-a -vvvv -t install ${build_project_directory}/Darwin/x64/RelWithDebInfo/DeepSkyStacker.app</programArguments>
         </runProgram>
     </preBuildActionList>
     <postInstallationActionList>
