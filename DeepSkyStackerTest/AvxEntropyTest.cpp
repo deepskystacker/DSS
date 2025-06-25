@@ -257,7 +257,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	}
 }
 
-int CMultitask::GetNrProcessors(bool) { return 1; }
+int Multitask::GetNrProcessors(bool) { return 1; }
 
  void TestEntropyInfo::InitSquareEntropies()
  {

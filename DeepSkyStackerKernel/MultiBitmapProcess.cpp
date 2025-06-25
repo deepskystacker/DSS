@@ -182,7 +182,7 @@ public:
 void CCombineTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int nrRows = m_lEndRow - m_lStartRow + 1;
 	const size_t nrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
 	int progress = m_lStartRow;

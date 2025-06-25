@@ -261,8 +261,8 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 
 
 
-bool CMultitask::GetUseSimd() { return true; }
-int CMultitask::GetNrCurrentOmpThreads() { return 1; } // Placeholder!!!
+bool Multitask::GetUseSimd() { return true; }
+int Multitask::GetNrCurrentOmpThreads() { return 1; } // Placeholder!!!
 
 void CMultiBitmap::removeTempFiles() {}
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}

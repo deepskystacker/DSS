@@ -1617,7 +1617,7 @@ template <class T> struct threadLocals {
 void CFindHotPixelTask1::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int height = m_pBitmap->RealHeight();
 	const int width = m_pBitmap->RealWidth();
 	int progress = 0;

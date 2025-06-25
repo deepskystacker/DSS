@@ -73,7 +73,7 @@ namespace bip = boost::interprocess;
 #include "Workspace.h"
 #include "QEventLogger.h"
 #include "QMessageLogger.h"
-
+#include "Multitask.h"
 
 bool	g_bShowRefStars = false;
 
@@ -841,6 +841,12 @@ int main(int argc, char* argv[])
 	//
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
+
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try

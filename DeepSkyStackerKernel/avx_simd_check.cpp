@@ -66,7 +66,7 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 bool AvxSimdCheck::checkSimdAvailability()
 {
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
-	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
+	return Multitask::GetUseSimd() && checkAvx2CpuSupport();
 }
 
 #if defined (Q_OS_MACOS)

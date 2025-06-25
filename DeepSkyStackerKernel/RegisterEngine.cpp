@@ -396,7 +396,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
 //	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
+	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 	constexpr double LowestPossibleThreshold = 0.00075;
 
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
@@ -599,7 +599,7 @@ private:
 void CComputeLuminanceTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int height = m_pBitmap->Height();
 	int progress = 0;
 	constexpr int lineBlockSize = 20;

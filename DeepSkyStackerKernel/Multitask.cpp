@@ -1,18 +1,15 @@
 #include "pch.h"
 #include "Multitask.h"
 
-int CMultitask::GetNrCurrentOmpThreads()
+int Multitask::GetNrCurrentOmpThreads()
 {
 	return omp_get_num_threads();	// Returns 1 if outside parallel region, else will return threads/cores used!
 }
 
-int CMultitask::GetNrProcessors(bool bReal)
+int Multitask::GetNrProcessors(bool bReal)
 {
 	const auto nrProcessorsSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
 
-	//SYSTEM_INFO SysInfo;
-	//GetSystemInfo(&SysInfo);
-	//int lResult = SysInfo.dwNumberOfProcessors;
 	const int nrProcessors = std::max(omp_get_num_procs(), 1);
 	if (!bReal && nrProcessorsSetting != 0)
 		return std::min(static_cast<int>(nrProcessorsSetting), nrProcessors);
@@ -20,31 +17,41 @@ int CMultitask::GetNrProcessors(bool bReal)
 		return nrProcessors;
 }
 
-void CMultitask::SetUseAllProcessors(bool bUseAll)
+void Multitask::setMaxProcessors(uint processors)
 {
 	QSettings settings;
-	if (bUseAll)
+ 
+	// Get the number of available processors.
+	const int nrProcessors = std::max(omp_get_num_procs(), 1);
+	
+	// If processors is 0, we use all available processors.
+	if (0 == processors)
+		processors = static_cast<uint>(nrProcessors);
+
+	omp_set_num_threads(static_cast<int>(processors));
+
+	if (processors == static_cast<uint>(nrProcessors))
 		settings.setValue("MaxProcessors", uint{ 0 });
 	else
-		settings.setValue("MaxProcessors", uint{ 1 });
+		settings.setValue("MaxProcessors", processors);
 }
 
-bool CMultitask::GetReducedThreadsPriority()
+bool Multitask::GetReducedThreadsPriority()
 {
 	return QSettings{}.value("ReducedThreadPriority", true).toBool();
 }
 
-void CMultitask::SetReducedThreadsPriority(bool bReduced)
+void Multitask::SetReducedThreadsPriority(bool bReduced)
 {
 	QSettings{}.setValue("ReducedThreadPriority", bReduced);
 }
 
-bool CMultitask::GetUseSimd()
+bool Multitask::GetUseSimd()
 {
 	return QSettings{}.value("UseSimd", true).toBool();
 }
 
-void CMultitask::SetUseSimd(const bool bUseSimd)
+void Multitask::SetUseSimd(const bool bUseSimd)
 {
 	QSettings{}.setValue("UseSimd", bUseSimd);
 }

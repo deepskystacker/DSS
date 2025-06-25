@@ -23,7 +23,7 @@ void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, OldP
 //	std::vector<int> greenLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 //	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 	const int height = pBitmap->Height();
-	const auto nrProcessors = CMultitask::GetNrProcessors();
+	const auto nrProcessors = Multitask::GetNrProcessors();
 
 #pragma omp parallel default(shared) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
 	{

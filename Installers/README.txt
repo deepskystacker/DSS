@@ -37,7 +37,13 @@ Changes for DeepSkyStacker 6.1.0
 
 10. Update CFITSIO to 4.6.2
 
-11. Bug fix: SIGSEGV caused by incorrect call to TIFFSetField for EXIFTAG_CFAPATTERN
+11. Bug fix: SIGSEGV on Linux caused by incorrect call to TIFFSetField for EXIFTAG_CFAPATTERN
+
+12. If the user specifies a filelist name without an extension, add .dssfilelist
+
+13. Allow specification of the maximum number of processing threads to be used for registration and stacking
+	in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
+	but this can be changed.
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================

@@ -115,7 +115,7 @@ void CDetectCosmeticTask::doProcess()
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pBitmap->RealHeight();
 	const int width = m_pBitmap->RealWidth();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	int nrHotPixels = 0;
 	int nrColdPixels = 0;
 	int progress = 0;
@@ -259,7 +259,7 @@ public:
 void CCleanCosmeticTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	int progress = 0;
 
 #pragma omp parallel for schedule(guided, 100) default(shared) if(nrProcessors > 1)

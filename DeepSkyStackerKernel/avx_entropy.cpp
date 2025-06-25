@@ -121,7 +121,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
 	{
 #pragma warning (suppress: 4189)
-		const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+		const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 

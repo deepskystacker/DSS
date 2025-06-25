@@ -13,7 +13,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 	double fMax = 0;
 	const size_t width = GetWidth();
 	const int height = GetHeight();
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 	float maxValue = 0;
 	const float scalingFactor = 255.0f / m_StackedBitmap.GetNrStackedFrames();
 	const auto& redPixels = m_StackedBitmap.getRedPixels();

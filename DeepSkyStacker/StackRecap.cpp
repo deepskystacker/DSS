@@ -342,15 +342,17 @@ namespace DSS
 				};
 			};
 
-			const auto lNrProcessors = CMultitask::GetNrProcessors(true);
-			if (lNrProcessors > 1)
+			const auto processorCount = Multitask::GetNrProcessors(true);
+			const auto allowedProcessors = Multitask::GetNrProcessors();
+			if (processorCount > 1)
 			{
-				if (CMultitask::GetNrProcessors() > 1)
-					strText = tr("%1 processors detected and used", "IDS_RECAP_DETECTEDANDUSEDPROCESSORS")
-					.arg(lNrProcessors);
+				if (allowedProcessors > 1)
+					strText = tr("%1 processors detected - %2 used", "IDS_RECAP_DETECTEDANDUSEDPROCESSORS")
+					.arg(processorCount)
+					.arg(allowedProcessors);
 				else
 					strText = tr("%1 processors detected - only one used", "IDS_RECAP_DETECTEDNOTUSEDPROCESSORS")
-					.arg(lNrProcessors);
+					.arg(processorCount);
 				insertHTML(strHTML, strText, blueColour, false, true);
 				strHTML += "<br>";
 			};

@@ -83,6 +83,7 @@
 #include "RestartMonitoring.h"
 #include <smtpmime/SmtpMime>
 #include "QMessageLogger.h"
+#include "Multitask.h"
 
 using namespace DSS;
 using namespace std;
@@ -1643,6 +1644,12 @@ int main(int argc, char* argv[])
 	//
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
+
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try

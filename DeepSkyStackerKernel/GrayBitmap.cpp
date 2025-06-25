@@ -519,7 +519,7 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 template <typename T>
 void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
 {
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 
 	if (pProgress != nullptr)
 	{
