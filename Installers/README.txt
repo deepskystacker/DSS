@@ -42,8 +42,8 @@ Changes for DeepSkyStacker 6.1.0
 12. If the user specifies a filelist name without an extension, add .dssfilelist
 
 13. Allow specification of the maximum number of processing threads to be used for registration and stacking
-	in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
-	but this can be changed.
+    in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
+    but this can be changed.
 
 Welcome to DeepSkyStacker 5.1.10
 ======================================
