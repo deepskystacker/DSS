@@ -94,13 +94,20 @@
          </property>
          <item>
           <widget class="QLabel" name="processorCountLabel">
+           <property name="toolTip">
+            <string>A maximum of 8 threads is suggested</string>
+           </property>
            <property name="text">
             <string>Maximum number of processing threads</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="processorCountSpinBox"/>
+          <widget class="QSpinBox" name="processorCountSpinBox">
+           <property name="toolTip">
+            <string>A maximum of 8 threads is suggested</string>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer">
