@@ -2,12 +2,23 @@
 #include "processingcontrols.h"
 
 namespace DSS {
-ProcessingControls::ProcessingControls(QWidget *parent)
-	: QWidget(parent)
-{
-	setupUi(this);
-}
+	ProcessingControls::ProcessingControls(QWidget* parent)
+		: QWidget(parent)
+	{
+		setupUi(this);
+	}
 
-ProcessingControls::~ProcessingControls()
-{}
-} // namespace DSS
+	ProcessingControls::~ProcessingControls()
+	{
+	}
+
+	void ProcessingControls::changeEvent(QEvent* e)
+	{
+		if (e->type() == QEvent::LanguageChange) {
+			retranslateUi(this);
+		}
+		else {
+			QWidget::changeEvent(e);
+		}
+	}
+}// namespace DSS

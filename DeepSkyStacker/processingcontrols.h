@@ -48,5 +48,8 @@ class ProcessingControls  : public QWidget, public Ui::ProcessingControls
 public:
 	ProcessingControls(QWidget *parent = nullptr);
 	~ProcessingControls();
+
+protected:
+	void changeEvent(QEvent* e) override;
 };
 } // namespace DSS
