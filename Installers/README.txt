@@ -45,6 +45,8 @@ Changes for DeepSkyStacker 6.1.0
     in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
     but this can be changed.
 
+14: Bug fix: Some translatable strings were not being updated when the language was changed.
+	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
 

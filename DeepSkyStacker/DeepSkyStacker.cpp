@@ -368,19 +368,7 @@ DeepSkyStacker::DeepSkyStacker() :
 
 void DeepSkyStacker::createStatusBar()
 {
-	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
-
-	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
-		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
-		"<span>%2</span></a>")
-		.arg(linkColour.name())
-		.arg(tr("Sponsor DeepSkyStacker"))
-	};
-		
-	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	sponsorText->setTextFormat(Qt::RichText);
-	sponsorText->setOpenExternalLinks(true);
-	sponsorText->setText(text);
+	setSponsorText();
 
 	statusBarText->setAlignment(Qt::AlignHCenter);
 
@@ -451,6 +439,37 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(this, &DeepSkyStacker::panelChanged, explorerBar, &ExplorerBar::panelChanged);
 	connect(this, &DeepSkyStacker::panelChanged, lowerDockWidget, &LowerDockWidget::panelChanged);
 }
+
+void DeepSkyStacker::changeEvent(QEvent* e)
+{
+	if (e->type() == QEvent::LanguageChange) {
+		setSponsorText();
+	}
+	else {
+		QWidget::changeEvent(e);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::setSponsorText()
+{
+	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
+
+	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
+		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
+		"<span>%2</span></a>")
+		.arg(linkColour.name())
+		.arg(tr("Sponsor DeepSkyStacker"))
+	};
+
+	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	sponsorText->setTextFormat(Qt::RichText);
+	sponsorText->setOpenExternalLinks(true);
+	sponsorText->setText(text);
+}
+
+/* ------------------------------------------------------------------- */
 
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {

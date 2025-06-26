@@ -97,8 +97,10 @@ private:
 	void updatePanel();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 	void connectSignalsToSlots();
+	void setSponsorText();
 
 protected:
+	void changeEvent(QEvent* e) override;
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e) override;
 	void dropEvent(QDropEvent* e) override;
