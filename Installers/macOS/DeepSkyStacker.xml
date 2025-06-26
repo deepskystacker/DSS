@@ -1,10 +1,9 @@
 <project>
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
-    <version>6.1.0</version>
+    <version>6.1.0.Beta.2</version>
     <readmeFile>README.txt</readmeFile>
     <licenseFile>LICENSE</licenseFile>
-	<debugLevel>2</debugLevel>
     <componentList>
         <component>
             <name>default</name>
@@ -90,7 +89,8 @@
             <program>${env(HOME)}/.unlock_keychain</program>
             <programArguments></programArguments>
         </runProgram>
-	    <!-- Check that the input .apps are notarised and signed. -->
+
+        <!-- Check that the input .apps are notarised and signed. -->
 
         <runProgram>
             <program>spctl</program>
@@ -110,40 +110,42 @@
         </runProgram>
     </preBuildActionList>
     <postInstallationActionList>
-		<changePermissions permissions="0744" files="${installer_installation_log}">
-			<ruleList>
-			<platformTest type="unix"/>
-			</ruleList>
-		</changePermissions>
+        <changePermissions files="${installer_installation_log}" permissions="0744">
+            <ruleList>
+                <platformTest type="unix"/>
+            </ruleList>
+        </changePermissions>
     </postInstallationActionList>
     <preUninstallationActionList>
         <deleteFile>
             <path>${installdir}/${project.shortName}-install.log</path>
         </deleteFile>
     </preUninstallationActionList>
-	    <postUninstallationActionList>
-		<changePermissions permissions="0744" files="${installer_installation_log}">
-		<ruleList>
-		<platformTest type="unix"/>
-		</ruleList>
-		</changePermissions>
+    <postUninstallationActionList>
+        <changePermissions files="${installer_installation_log}" permissions="0744">
+            <ruleList>
+                <platformTest type="unix"/>
+            </ruleList>
+        </changePermissions>
     </postUninstallationActionList>
     <createOsxBundleDmg>1</createOsxBundleDmg>
     <enableRollback>0</enableRollback>
     <enableTimestamp>1</enableTimestamp>
     <height>600</height>
+
     <!-- Configures the final destination of the installation log -->
 
     <installationLogFile>${installdir}/${project.shortName}-install.log</installationLogFile>
     <osxSigningIdentity>Developer ID Application: David Partridge (VH8AYT3C7Y)</osxSigningIdentity>
     <osxSigningKeychainFile>../Library/Keychains/login.keychain-db</osxSigningKeychainFile>
+    <outputDirectory>.</outputDirectory>
     <requireInstallationByRootUser>1</requireInstallationByRootUser>
     <saveRelativePaths>1</saveRelativePaths>
+
     <!-- Configures the final destination of the uninstallation log -->
 
     <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
     <vendor>com.github.deepskystacker</vendor>
-    <outputDirectory>.</outputDirectory>
     <width>800</width>
     <parameterList>
         <directoryParameter>

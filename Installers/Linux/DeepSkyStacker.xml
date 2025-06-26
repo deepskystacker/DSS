@@ -1,7 +1,7 @@
 <project>
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
-    <version>6.1.0</version>
+    <version>6.1.0.Beta.2</version>
     <readmeFile>Linux/x64/RelWithDebInfo/README.txt</readmeFile>
     <licenseFile>Linux/x64/RelWithDebInfo/LICENSE</licenseFile>
     <componentList>
@@ -203,6 +203,10 @@
             <programArguments>install ${installdir}/${project.vendor}-x-text-dssfilelist.xml</programArguments>
         </runProgram>
         <runProgram>
+            <program>xdg-icon-resource</program>
+            <programArguments>install --context mimetypes --size 64 ${installdir}/DSS_filelist64x64.png text/dssfilelist</programArguments>
+        </runProgram>
+        <runProgram>
             <program>desktop-file-install</program>
             <programArguments>${installdir}/DeepSkyStacker.desktop</programArguments>
         </runProgram>
@@ -213,6 +217,14 @@
         <runProgram>
             <program>desktop-file-install</program>
             <programArguments>${installdir}/DeepSkyStackerLive.desktop</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-mime-database</program>
+            <programArguments>/usr/share/mime</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-desktop-database</program>
+            <programArguments>/usr/share/applications/</programArguments>
         </runProgram>
 		<changePermissions permissions="0744" files="${installer_installation_log}">
 			<ruleList>
@@ -228,6 +240,9 @@
         <deleteFile path="/usr/share/applications/DeepSkyStacker-uninstall.desktop"/>
         <deleteFile path="/usr/share/applications/DeepSkyStackerLive.desktop"/>
         <runProgram>
+            <program>xdg-icon-resource</program>
+            <programArguments>uninstall --context mimetypes --size 64 ${installdir}/DSS_filelist64x64</programArguments>
+        </runProgram><runProgram>
             <program>xdg-mime</program>
             <programArguments>uninstall ${installdir}/${project.vendor}-x-text-dssfilelist.xml</programArguments>
         </runProgram>
